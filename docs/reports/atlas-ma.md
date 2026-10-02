@@ -5,25 +5,25 @@ Published sheets: 11 (23%)
 
 | CCN | Hospital | Domain | Status | Version | Completeness | Fields | Sources |
 |---|---|---|---|---|---|---|---|
-| 220029 | ANNA JAQUES HOSPITAL | ajh.org | published | 1 | 0.67 | 11 | 3 |
-| 221303 | ATHOL MEMORIAL HOSPITAL | atholhospital.org | held | 1 | 0.00 | 0 | 1 |
-| 220016 | BAYSTATE FRANKLIN MEDICAL CENTER | baystatehealth.org | published | 3 | 0.50 | 6 | 7 |
-| 220077 | BAYSTATE MEDICAL CENTER | baystatehealth.org | published | 3 | 0.67 | 10 | 6 |
-| 220065 | BAYSTATE NOBLE HOSPITAL | baystatehealth.org | published | 2 | 0.67 | 9 | 7 |
-| 220030 | BAYSTATE WING HOSPITAL | baystatehealth.org | published | 4 | 0.67 | 10 | 7 |
-| 220046 | BERKSHIRE MEDICAL CENTER | berkshirehealthsystems.org | held | 3 | 0.50 | 10 | 4 |
-| 220083 | BETH ISRAEL DEACONESS HOSPITAL - NEEDHAM | bidneedham.org | held | 2 | 0.17 | 2 | 6 |
-| 220060 | BETH ISRAEL DEACONESS HOSPITAL PLYMOUTH | bidplymouth.org | published | 2 | 0.67 | 9 | 8 |
-| 220086 | BETH ISRAEL DEACONESS MEDICAL CENTER | bidmc.org | published | 2 | 0.67 | 10 | 4 |
-| 220031 | BOSTON MEDICAL CENTER | bmc.org | published | 4 | 0.50 | 9 | 4 |
-| 220119 | BRIGHAM AND WOMEN FAULKNER HOSPITAL | massgeneralbrigham.org | held | 1 | 1.00 | 11 | 8 |
-| 220110 | BRIGHAM AND WOMEN'S HOSPITAL | massgeneralbrigham.org | published | 2 | 0.67 | 7 | 7 |
-| 220012 | CAPE COD HOSPITAL | capecodhealth.org | held | 1 | 0.00 | 0 | 1 |
+| 220029 | ANNA JAQUES HOSPITAL | ajh.org | published | 2 | 0.67 | 12 | 4 |
+| 221303 | ATHOL MEMORIAL HOSPITAL | atholhospital.org | held | 2 | 0.00 | 1 | 2 |
+| 220016 | BAYSTATE FRANKLIN MEDICAL CENTER | baystatehealth.org | published | 4 | 0.50 | 7 | 8 |
+| 220077 | BAYSTATE MEDICAL CENTER | baystatehealth.org | published | 4 | 0.67 | 11 | 7 |
+| 220065 | BAYSTATE NOBLE HOSPITAL | baystatehealth.org | published | 3 | 0.67 | 10 | 8 |
+| 220030 | BAYSTATE WING HOSPITAL | baystatehealth.org | published | 5 | 0.67 | 11 | 8 |
+| 220046 | BERKSHIRE MEDICAL CENTER | berkshirehealthsystems.org | held | 4 | 0.50 | 11 | 5 |
+| 220083 | BETH ISRAEL DEACONESS HOSPITAL - NEEDHAM | bidneedham.org | held | 3 | 0.17 | 3 | 7 |
+| 220060 | BETH ISRAEL DEACONESS HOSPITAL PLYMOUTH | bidplymouth.org | published | 3 | 0.67 | 10 | 9 |
+| 220086 | BETH ISRAEL DEACONESS MEDICAL CENTER | bidmc.org | published | 3 | 0.67 | 11 | 5 |
+| 220031 | BOSTON MEDICAL CENTER | bmc.org | published | 5 | 0.50 | 10 | 5 |
+| 220119 | BRIGHAM AND WOMEN FAULKNER HOSPITAL | massgeneralbrigham.org | held | 2 | 1.00 | 12 | 9 |
+| 220110 | BRIGHAM AND WOMEN'S HOSPITAL | massgeneralbrigham.org | published | 3 | 0.67 | 8 | 8 |
+| 220012 | CAPE COD HOSPITAL | capecodhealth.org | held | 2 | 0.00 | 1 | 2 |
 | 220015 | COOLEY DICKINSON HOSPITAL INC,THE | cooleydickinson.org | none | | | | |
-| 220084 | EMERSON HOSPITAL - | emersonhealth.org | held | 2 | 0.67 | 9 | 5 |
-| 221302 | FAIRVIEW HOSPITAL | berkshirehealthsystems.org | published | 2 | 0.50 | 9 | 4 |
-| 220135 | FALMOUTH HOSPITAL | capecodhealth.org | held | 1 | 0.00 | 0 | 4 |
-| 220095 | HEYWOOD HOSPITAL - | heywood.org | held | 1 | 0.00 | 0 | 1 |
+| 220084 | EMERSON HOSPITAL - | emersonhealth.org | held | 3 | 0.67 | 10 | 6 |
+| 221302 | FAIRVIEW HOSPITAL | berkshirehealthsystems.org | published | 3 | 0.50 | 10 | 5 |
+| 220135 | FALMOUTH HOSPITAL | capecodhealth.org | held | 2 | 0.00 | 1 | 5 |
+| 220095 | HEYWOOD HOSPITAL - | heywood.org | held | 2 | 0.00 | 1 | 2 |
 | 220024 | HOLYOKE MEDICAL CENTER |  | none | | | | |
 | 220171 | LAHEY HOSPITAL & MEDICAL CENTER, BURLINGTON |  | none | | | | |
 | 220063 | LOWELL GENERAL HOSPITAL |  | none | | | | |
@@ -45,7 +45,7 @@ Published sheets: 11 (23%)
 | 220052 | SIGNATURE HEALTHCARE BROCKTON HOSPITAL |  | none | | | | |
 | 220100 | SOUTH SHORE HOSPITAL |  | none | | | | |
 | 220074 | SOUTHCOAST HOSPITALS GROUP |  | none | | | | |
-| 229999 | ST. EXAMPLE MEDICAL CENTER | example.org | published | 1 | 0.83 | 8 | 1 |
+| 229999 | ST. EXAMPLE MEDICAL CENTER | example.org | published | 2 | 0.83 | 9 | 2 |
 | 220008 | STURDY MEMORIAL HOSPITAL |  | none | | | | |
 | 220116 | TUFTS MEDICAL CENTER |  | none | | | | |
 | 220019 | UMASS MEMORIAL HEALTH - HARRINGTON HOSPITAL |  | none | | | | |
