@@ -1,9 +1,9 @@
 # Waive build progress
 
-Last updated: 2026-10-02 16:25 ET
-Current phase: 1 — Domain core (Phase 0 done except 0.7 live check, which waits for keys, and 0.8 test hardening)
-Current plan: `docs/superpowers/plans/2026-10-02-waive-phase-1-domain-core.md`
-Next task: 1.1 Poverty guidelines (then 0.8, then 1.2–1.7)
+Last updated: 2026-10-02 16:58 ET
+Current phase: 2 — Massachusetts atlas (Phases 0 and 1 done; 0.7 live check waits for keys)
+Current plan: `docs/superpowers/plans/2026-10-02-waive-phase-2-ma-atlas.md`
+Next task: 2.1 Database foundation (2.1–2.7 need no keys; 2.8+ need U0.1 and U0.2)
 
 Master plan: `docs/superpowers/plans/2026-10-02-waive-master-plan.md` · Spec: `docs/superpowers/specs/2026-10-02-waive-design.md` · Loop rules: `docs/LOOP.md`
 
@@ -41,16 +41,16 @@ Master plan: `docs/superpowers/plans/2026-10-02-waive-master-plan.md` · Spec: `
 - [x] 0.5 Tavily gateway (e23cf58)
 - [x] 0.6 `waive doctor` (d47a952)
 - [ ] 0.7 Live connectivity check (needs U0.1, U0.2)
-- [ ] 0.8 Test hardening: add `pytest-socket` with `--disable-socket` in pytest addopts so a broken mock can never reach a real API (a first run of 0.4 sent a fake key to the real endpoint before respx was wired to the OpenAI client); live tests use `@pytest.mark.enable_socket`.
+- [x] 0.8 Test hardening with `pytest-socket` (b2e4fc5): unit tests cannot open sockets; live tests use `@pytest.mark.enable_socket`.
 
-### Phase 1 — Domain core
-- [ ] 1.1 Poverty guidelines
-- [ ] 1.2 Procedure sheet schema and sample hospital
-- [ ] 1.3 Eligibility engine
-- [ ] 1.4 Deadlines
-- [ ] 1.5 Plain-language messages
-- [ ] 1.6 Quote verification
-- [ ] 1.7 Phase 1 exit check
+### Phase 1 — Domain core (done 2026-10-02 16:55; coverage of waive.rules + waive.atlas 96.56%)
+- [x] 1.1 Poverty guidelines (20791f4)
+- [x] 1.2 Procedure sheet schema and sample hospital (ce2329f)
+- [x] 1.3 Eligibility engine (6e5718a)
+- [x] 1.4 Deadlines (e3fd79f)
+- [x] 1.5 Plain-language messages (5a0504e)
+- [x] 1.6 Quote verification (1833714)
+- [x] 1.7 Phase 1 exit check: 72 tests pass, ruff clean, coverage 96.56% ≥ 90%
 
 ### Phase 2 — Massachusetts atlas
 Plan: `docs/superpowers/plans/2026-10-02-waive-phase-2-ma-atlas.md`
@@ -113,4 +113,5 @@ Plan: `docs/superpowers/plans/2026-10-02-waive-phase-3-bill-reading.md`
 
 - 2026-10-02 15:40 — Spec, master plan, Phase 0 and Phase 1 plans written. Ready for task 0.1.
 - 2026-10-02 16:20 — Phase 0 tasks 0.1–0.6 done by an implementation subagent: 28 tests pass, ruff clean. Deviations: `extend-exclude = ["docs"]` for ruff (it was reformatting code blocks in plan files); `AIClient` now creates an explicit `httpx.Client` when none is given (openai 3.x's default transport bypasses respx). Incident: one early test run reached the real Token Factory endpoint with a fake key (401, no secret leaked, no spend) → task 0.8 added. Spend: 0.
+- 2026-10-02 16:55 — Phase 1 (1.1–1.7) and 0.8 done by a subagent: 72 tests pass, coverage 96.56%, ruff clean. Extra commit 67bd317 ignores `.hypothesis/`. Spend: 0.
 - 2026-10-02 16:25 — Detailed plans for Phase 2 (MA atlas, 10 tasks) and Phase 3 (bill reading, 8 tasks) written. Only tasks 0.7, 2.8, 2.10, the live steps of 3.3/3.8 and the overlay live run need API keys; everything else runs on fakes.
