@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block title %}Review{% endblock %}
+{% block content %}
+<h1>Review</h1>
+{% if case.status == "approved" %}<p class="card status-free big">Approved. Print the packet, have it signed, and send it.</p>{% endif %}
+{% if case.status == "new" %}<p class="big">Waiting for a photo of the bill.</p>{% endif %}
+
+{% if case.bill %}
+<h2>What we read from the bill</h2>
+<div class="card">
+  <div class="row"><span>Hospital</span><strong>{{ case.hospital_name or case.bill.hospital_name or "unknown" }}</strong></div>
+  <div class="row"><span>Amount due</span><strong>{{ money(case.bill.amount_due) }}</strong></div>
+  <div class="row"><span>Statement date</span><strong>{{ long_date(case.bill.statement_date) }}</strong></div>
+  {% if case.warnings %}<div class="row"><span>Photo</span><span>{{ case.warnings | join(", ") }}</span></div>{% endif %}
+</div>
+{% if case.needs_scouting %}<p class="card status-unknown">We do not have this hospital's policy yet. Our scouts have been asked to fetch it. Pick the hospital below if you recognise it.</p>{% endif %}
+{% endif %}
+
+{% if case.result %}
+<h2>Result</h2>
+<div class="card status-{{ case.tier.value }}">
+  {% for line in case.caregiver_text.split("\n") %}
+    {% if line.startswith("Policy says") %}<p class="quote">{{ line }}</p>{% else %}<p>{{ line }}</p>{% endif %}
+  {% endfor %}
+  {% for reason in case.result.reasons %}{% if reason.source_id and reason.source_id in sources %}
+    <p class="muted">Source: <a href="{{ sources[reason.source_id].url }}">{{ sources[reason.source_id].title or "policy document" }}</a> (checked {{ sources[reason.source_id].fetched_on }})</p>
+  {% endif %}{% endfor %}
+</div>
+{% endif %}
+
+{% if case.deadlines %}
+<h2>Dates that matter</h2>
+<div class="card">
+  <div class="row"><span>Apply by</span><strong>{{ long_date(case.deadlines.application_deadline) }}</strong></div>
+  <div class="row"><span>No collections before</span><strong>{{ long_date(case.deadlines.collections_allowed_from) }}</strong></div>
+  {% if case.deadlines.collection_notice_too_early %}<p>The collection notice came too early. The packet includes a note about this.</p>{% endif %}
+</div>
+{% endif %}
+
+<h2>Fix or add details</h2>
+<form method="post" action="{{ links.correct }}" class="stack">
+  <label for="hospital_ccn">Hospital</label>
+  <select id="hospital_ccn" name="hospital_ccn">
+    <option value="">Keep: {{ case.hospital_name or "unknown" }}</option>
+    {% for candidate in case.candidates %}<option value="{{ candidate.ccn }}">{{ candidate.name }} (match {{ candidate.score }})</option>{% endfor %}
+  </select>
+  <label for="amount_due">Amount due</label>
+  <input id="amount_due" name="amount_due" inputmode="decimal" value="{{ case.bill.amount_due if case.bill and case.bill.amount_due else '' }}">
+  <label for="statement_date">Statement date</label>
+  <input id="statement_date" name="statement_date" type="date" value="{{ case.bill.statement_date if case.bill and case.bill.statement_date else '' }}">
+  <label for="size">People in the household</label>
+  <input id="size" name="size" type="number" min="1" max="12" value="{{ case.household_size or 1 }}">
+  <label for="annual_income">Yearly household income (dollars)</label>
+  <input id="annual_income" name="annual_income" inputmode="decimal" value="{{ case.annual_income or '' }}">
+  <label for="programs">Programs (for example MassHealth, SNAP)</label>
+  <input id="programs" name="programs" value="">
+  <button type="submit" class="btn">Save and re-check</button>
+</form>
+
+{% if case.result and case.status != "approved" %}
+<form method="post" action="{{ links.approve }}" class="stack"><button type="submit" class="btn primary">Approve: prepare the packet</button></form>
+{% endif %}
+{% if case.status == "approved" %}
+<p><a class="btn primary" href="{{ links.packet }}">Download the packet (PDF)</a></p>
+<p><a class="btn" href="{{ links.reminders }}">Add reminders to my calendar</a></p>
+{% endif %}
+<form method="post" action="{{ links.delete }}" class="stack" onsubmit="return confirm('Delete this case and all its personal data?')">
+  <button type="submit" class="btn danger">Delete this case</button>
+</form>
+{% endblock %}
