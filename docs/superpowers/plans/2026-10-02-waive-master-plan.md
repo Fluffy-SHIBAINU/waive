@@ -75,17 +75,19 @@
 
 **Goal:** Published, verified procedure sheets for Massachusetts nonprofit acute-care and critical-access hospitals, stored with versions and exported as open data.
 
+**Detailed plan:** `docs/superpowers/plans/2026-10-02-waive-phase-2-ma-atlas.md` (written 2026-10-02)
+
 **Tasks:**
-- 2.0 Write the detailed Phase 2 plan.
 - 2.1 Database foundation: SQLAlchemy models (`hospitals`, `source_docs`, `sheets` with version + JSON body, `review_items`), `create_all` on startup, repository functions; SQLite in tests and local development, PostgreSQL in production via `WAIVE_DATABASE_URL`.
-- 2.2 Registry seed: `waive atlas seed --state MA` downloads the CMS Hospital General Information CSV, keeps nonprofit acute-care and critical-access hospitals, upserts `hospitals`, and saves a dated MA snapshot under `data/seed/`.
-- 2.3 Domain discovery: find each hospital's official website with Tavily Search, reject directories, confirm by name and phone with Tavily Extract; uncertain matches become review items.
-- 2.4 Document scouting: for each hospital or system, find FAP, plain-language summary, application and billing/collections policy URLs (Search with `include_domains`, Map as fallback), extract text, store `SourceDoc` + text (`var/docs/` locally; Object Storage in Phase 6), de-duplicate shared system documents by SHA-256.
-- 2.5 Structurer: prompt + JSON schema producing a `ProcedureSheet` draft from documents with Nemotron 3 Super; pick relevant passages for long PDFs; every documented field carries an exact quote.
-- 2.6 Verification and dual extraction: run `verify_sheet`; second extraction of critical fields with Nemotron 3 Nano; disagreements become review items; publish only when critical fields verify, otherwise status `held`.
-- 2.7 Publish, versions and export: version bump on change with stored diff; `waive atlas publish`; `waive atlas export --state MA` writes `data/atlas/ma.json` (CC BY 4.0).
-- 2.8 Massachusetts overlay: research the Health Safety Net and MassHealth application path from mass.gov sources (Tavily Extract) and add cited `state_programs` entries to MA sheets.
-- 2.9 Atlas runs: first batch of 10–15 hospitals (build day), then all MA hospitals; coverage report `docs/reports/atlas-ma.md`.
+- 2.2 Registry seed: `waive atlas seed --state MA` reads the CMS Hospital General Information datastore API, keeps nonprofit acute-care and critical-access hospitals, upserts `hospitals`, and saves a dated snapshot under `data/seed/`. No key needed.
+- 2.3 Domain discovery: find each hospital's official website with Tavily Search, reject directory sites, confirm by name tokens or phone in the result; uncertain matches become review items.
+- 2.4 Document scouting: on the official domain, find FAP, application, plain-language summary and billing/collections URLs with Tavily Search (`include_domains`), extract text, store documents once by SHA-256 and link them to every hospital that shares them.
+- 2.5 Structurer: prompt + JSON schema producing a procedure sheet draft from documents with Nemotron 3 Super; every documented field carries an exact quote; drafts are cast and invalid fields skipped.
+- 2.6 Verification, cross-check and publishing: run `verify_sheet` and drop rejected fields; cross-check critical fields with Nemotron 3 Nano; conflicts hold the sheet; version bump on change with stored diff; open-data export (CC BY 4.0).
+- 2.7 Pipeline and CLI: `waive atlas build / export / report`, coverage report `docs/reports/atlas-ma.md`.
+- 2.8 First live batch of 10–15 MA hospitals (needs keys).
+- 2.9 Massachusetts overlay: cited Health Safety Net entry from mass.gov on every MA sheet.
+- 2.10 Full MA run and Phase 2 exit.
 
 **Exit checks:** ≥ 80% of MA nonprofit acute-care and critical-access hospitals have published sheets; 100% of published documented fields pass quote verification; spend within budget; coverage report committed.
 
@@ -97,10 +99,11 @@
 
 **Spec sections:** §9, §11, §13.
 
+**Detailed plan:** `docs/superpowers/plans/2026-10-02-waive-phase-3-bill-reading.md` (written 2026-10-02; its task list supersedes the sketch below: 3.1 image intake, 3.2 synthetic corpus, 3.3 vision extraction, 3.4 matching, 3.5 vault, 3.6 case service, 3.7 log hygiene, 3.8 accuracy report).
+
 **Goal:** From a photo to an `EligibilityResult` with citations and deadlines, with personal data encrypted and nothing personal in logs.
 
-**Tasks:**
-- 3.0 Write the detailed Phase 3 plan.
+**Tasks (sketch):**
 - 3.1 Image intake: orientation fix, resize ≤ 2000px, metadata strip, JPEG encode, quality check (minimum size, blur score).
 - 3.2 Synthetic corpus: generator for fictional bills (several layouts, fonts, rotations, blur), Social Security letters and decision letters, each with ground-truth JSON under `tests/fixtures/corpus/`.
 - 3.3 Vision extraction: `BillExtract` schema and prompt; Token Factory vision call (`phi=True`); confirm the image input format live with one synthetic image; contract tests on recorded responses.

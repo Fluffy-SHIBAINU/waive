@@ -1,9 +1,9 @@
 # Waive build progress
 
-Last updated: 2026-10-02 15:40 ET
-Current phase: 0 — Foundations and connectivity
-Current plan: `docs/superpowers/plans/2026-10-02-waive-phase-0-foundations.md`
-Next task: 0.1 Project scaffold
+Last updated: 2026-10-02 16:25 ET
+Current phase: 1 — Domain core (Phase 0 done except 0.7 live check, which waits for keys, and 0.8 test hardening)
+Current plan: `docs/superpowers/plans/2026-10-02-waive-phase-1-domain-core.md`
+Next task: 1.1 Poverty guidelines (then 0.8, then 1.2–1.7)
 
 Master plan: `docs/superpowers/plans/2026-10-02-waive-master-plan.md` · Spec: `docs/superpowers/specs/2026-10-02-waive-design.md` · Loop rules: `docs/LOOP.md`
 
@@ -34,13 +34,14 @@ Master plan: `docs/superpowers/plans/2026-10-02-waive-master-plan.md` · Spec: `
 ## Phase checklist
 
 ### Phase 0 — Foundations and connectivity
-- [ ] 0.1 Project scaffold
-- [ ] 0.2 Settings
-- [ ] 0.3 Usage ledger and governor
-- [ ] 0.4 Token Factory client
-- [ ] 0.5 Tavily gateway
-- [ ] 0.6 `waive doctor`
+- [x] 0.1 Project scaffold (1318d56)
+- [x] 0.2 Settings (df5dad3)
+- [x] 0.3 Usage ledger and governor (265052c)
+- [x] 0.4 Token Factory client (d10a4fa)
+- [x] 0.5 Tavily gateway (e23cf58)
+- [x] 0.6 `waive doctor` (d47a952)
 - [ ] 0.7 Live connectivity check (needs U0.1, U0.2)
+- [ ] 0.8 Test hardening: add `pytest-socket` with `--disable-socket` in pytest addopts so a broken mock can never reach a real API (a first run of 0.4 sent a fake key to the real endpoint before respx was wired to the OpenAI client); live tests use `@pytest.mark.enable_socket`.
 
 ### Phase 1 — Domain core
 - [ ] 1.1 Poverty guidelines
@@ -52,10 +53,30 @@ Master plan: `docs/superpowers/plans/2026-10-02-waive-master-plan.md` · Spec: `
 - [ ] 1.7 Phase 1 exit check
 
 ### Phase 2 — Massachusetts atlas
-- [ ] 2.0 Write detailed Phase 2 plan (tasks are listed here once written)
+Plan: `docs/superpowers/plans/2026-10-02-waive-phase-2-ma-atlas.md`
+- [x] 2.0 Write detailed Phase 2 plan
+- [ ] 2.1 Database foundation
+- [ ] 2.2 Registry seed from CMS (no key needed)
+- [ ] 2.3 Official domain discovery
+- [ ] 2.4 Document scouting
+- [ ] 2.5 Structurer
+- [ ] 2.6 Verification, cross-check and publishing
+- [ ] 2.7 Pipeline and CLI
+- [ ] 2.8 First live batch (needs U0.1, U0.2, task 0.7)
+- [ ] 2.9 Massachusetts overlay
+- [ ] 2.10 Full MA run and Phase 2 exit (opens U2.1)
 
 ### Phase 3 — Bill reading and cases
-- [ ] 3.0 Write detailed Phase 3 plan
+Plan: `docs/superpowers/plans/2026-10-02-waive-phase-3-bill-reading.md`
+- [x] 3.0 Write detailed Phase 3 plan
+- [ ] 3.1 Image intake
+- [ ] 3.2 Synthetic bill corpus
+- [ ] 3.3 Vision extraction (live smoke needs U0.1)
+- [ ] 3.4 Hospital matching
+- [ ] 3.5 Case vault: encryption, capability tokens, case rows
+- [ ] 3.6 Case service
+- [ ] 3.7 Log hygiene check
+- [ ] 3.8 Accuracy report `waive eval bills` (live run needs U0.1)
 
 ### Phase 4 — Phone web app and packet
 - [ ] 4.0 Write detailed Phase 4 plan
@@ -91,3 +112,5 @@ Master plan: `docs/superpowers/plans/2026-10-02-waive-master-plan.md` · Spec: `
 ## Log
 
 - 2026-10-02 15:40 — Spec, master plan, Phase 0 and Phase 1 plans written. Ready for task 0.1.
+- 2026-10-02 16:20 — Phase 0 tasks 0.1–0.6 done by an implementation subagent: 28 tests pass, ruff clean. Deviations: `extend-exclude = ["docs"]` for ruff (it was reformatting code blocks in plan files); `AIClient` now creates an explicit `httpx.Client` when none is given (openai 3.x's default transport bypasses respx). Incident: one early test run reached the real Token Factory endpoint with a fake key (401, no secret leaked, no spend) → task 0.8 added. Spend: 0.
+- 2026-10-02 16:25 — Detailed plans for Phase 2 (MA atlas, 10 tasks) and Phase 3 (bill reading, 8 tasks) written. Only tasks 0.7, 2.8, 2.10, the live steps of 3.3/3.8 and the overlay live run need API keys; everything else runs on fakes.
