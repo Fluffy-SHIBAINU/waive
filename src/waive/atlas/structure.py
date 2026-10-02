@@ -235,7 +235,10 @@ def _tiers(value: Any) -> list[DiscountTier]:
             discount_percent=_int(item["discount_percent"]),
         )
         for item in value
+        if _int(item["discount_percent"]) < 100  # a 100% "discount" is the free-care band
     ]
+    if not tiers:
+        raise ValueError("only free-care bands were given; see free_care_max_fpl")
     return sorted(tiers, key=lambda tier: tier.min_fpl_exclusive)
 
 

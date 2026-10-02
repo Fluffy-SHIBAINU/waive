@@ -88,6 +88,28 @@ class TavilyGateway:
             ExtractedPage(url=item["url"], text=item.get("raw_content") or "") for item in results
         ]
 
+    def map(
+        self,
+        url: str,
+        *,
+        purpose: str,
+        select_paths: list[str] | None = None,
+        limit: int = 30,
+    ) -> list[str]:
+        """Discover a site's URLs (Tavily Map), optionally limited to matching paths."""
+        self._governor.ensure_tavily(map_cost(limit))
+        raw = self._client.map(url=url, max_depth=2, limit=limit, select_paths=select_paths or [])
+        results = raw.get("results", []) if isinstance(raw, dict) else []
+        urls = [item if isinstance(item, str) else str(item.get("url", "")) for item in results]
+        urls = [item for item in urls if item]
+        self._governor.record_tavily(map_cost(len(urls)), purpose)
+        return urls
+
+
+def map_cost(pages: int) -> Decimal:
+    """Tavily Map bills one credit per ten pages discovered (minimum one)."""
+    return Decimal(max(1, math.ceil(pages / 10)))
+
 
 def make_tavily_gateway(settings: Settings, governor: Governor) -> TavilyGateway:
     from tavily import TavilyClient

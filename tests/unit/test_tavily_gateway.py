@@ -2,7 +2,7 @@ from decimal import Decimal
 
 import pytest
 
-from waive.atlas.tavily_gateway import TavilyGateway, extract_cost, search_cost
+from waive.atlas.tavily_gateway import TavilyGateway, extract_cost, map_cost, search_cost
 from waive.governor import BudgetExceeded, Governor, Ledger
 
 
@@ -21,6 +21,16 @@ class FakeTavily:
                     "score": 0.9,
                 }
             ]
+        }
+
+    def map(self, url, **kwargs):
+        self.calls.append(("map", url, kwargs))
+        return {
+            "base_url": url,
+            "results": [
+                "https://www.example.org/financial-assistance",
+                "https://www.example.org/billing/financial-assistance-policy.pdf",
+            ],
         }
 
     def extract(self, urls, **kwargs):
@@ -68,6 +78,18 @@ def test_extract_with_no_urls_is_free(tmp_path):
     gateway, fake, _ = make(tmp_path)
     assert gateway.extract([], purpose="test") == []
     assert fake.calls == []
+
+
+def test_map_returns_urls_and_charges_per_ten_pages(tmp_path):
+    gateway, fake, governor = make(tmp_path)
+    urls = gateway.map("https://www.example.org", purpose="test", select_paths=[".*financial.*"])
+    assert urls == [
+        "https://www.example.org/financial-assistance",
+        "https://www.example.org/billing/financial-assistance-policy.pdf",
+    ]
+    assert fake.calls[-1][0] == "map" and fake.calls[-1][2]["select_paths"] == [".*financial.*"]
+    assert governor.summary()["tavily"][0] == Decimal("1")
+    assert map_cost(0) == Decimal("1") and map_cost(25) == Decimal("3")
 
 
 def test_cost_helpers():

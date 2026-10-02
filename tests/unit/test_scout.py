@@ -85,6 +85,45 @@ def test_scout_hospital_dedupes_and_extracts_selected_urls():
     assert docs[0].sha256 == hashlib.sha256(SAMPLE_POLICY_TEXT.encode()).hexdigest()
 
 
+class MapGateway:
+    def __init__(self):
+        self.extracted = []
+        self.mapped = []
+
+    def search(self, query, **kwargs):
+        return [
+            hit(
+                "https://www.example.org/patients/healthcare-prices-and-billing",
+                "Healthcare Prices & Billing",
+                0.6,
+            )
+        ]
+
+    def map(self, url, **kwargs):
+        self.mapped.append((url, kwargs.get("select_paths")))
+        return [
+            "https://www.example.org/patients/financial-assistance-policy.pdf",
+            "https://www.example.org/careers",
+        ]
+
+    def extract(self, urls, **kwargs):
+        self.extracted.append(urls)
+        return [ExtractedPage(url=url, text=SAMPLE_POLICY_TEXT) for url in urls]
+
+
+def test_scout_falls_back_to_site_map_when_search_finds_no_policy():
+    gateway = MapGateway()
+    docs = scout_hospital(gateway, HOSPITAL)
+    assert gateway.mapped[0][0] == "https://www.example.org"
+    assert [doc.doc_class for doc in docs] == ["fap", "billing"]
+    assert gateway.extracted == [
+        [
+            "https://www.example.org/patients/financial-assistance-policy.pdf",
+            "https://www.example.org/patients/healthcare-prices-and-billing",
+        ]
+    ]
+
+
 def test_scout_hospital_without_domain_returns_nothing():
     assert scout_hospital(FakeGateway(), HOSPITAL.model_copy(update={"website_domain": None})) == []
 
