@@ -1,9 +1,9 @@
 # Waive build progress
 
-Last updated: 2026-10-02 21:00 ET (loop iteration 2 done)
-Current phase: 2 (finishing the Massachusetts atlas) — Phases 0, 1, 3 and 4 are complete; 6 real MA hospitals published, 11 held
+Last updated: 2026-10-02 21:30 ET (loop iteration 3 done)
+Current phase: 2 (finishing the Massachusetts atlas) — Phases 0, 1, 3 and 4 are complete; 10 real MA hospitals published, 8 held, 21 not yet attempted
 Current plan: `docs/superpowers/plans/2026-10-02-waive-phase-2-ma-atlas.md`
-Next task: 2.8c (direct PDF download fallback for asset hosts, then rebuild Baystate ×4), then 2.9, 2.10, 4.9, then 5.0 (write the Phase 5 plan).
+Next task: 2.9 (Massachusetts overlay, ≈3 credits), then 2.10 (build the remaining 21 hospitals in batches of 10, ≈100 credits; then exit checks + gate U2.1), then 4.9, 2.8g–2.8i as time allows, then 5.0 (write the Phase 5 plan).
 
 Master plan: `docs/superpowers/plans/2026-10-02-waive-master-plan.md` · Spec: `docs/superpowers/specs/2026-10-02-waive-design.md` · Loop rules: `docs/LOOP.md`
 
@@ -66,7 +66,10 @@ Plan: `docs/superpowers/plans/2026-10-02-waive-phase-2-ma-atlas.md`
 - [x] 2.1–2.7 done by a subagent (a538636…fef7b0f), 46 MA hospitals seeded from CMS
 - [x] 2.8 First live batches (2026-10-02 17:30–19:30). Live runs exposed and fixed: Nemotron thinking starving JSON (`enable_thinking: false`), schema not shown to the model (schema hint + `json_object` mode), null-wrapped draft fields, bare-list fields from Nano, quote variance (quotes trimmed to verified spans), bogus residency/window values (semantic guards), wrong domains (registered-domain + title evidence), search index missing policy pages (Tavily Map fallback), presumptive-only conflicts (publish without that field), 100% "discount" tiers. Published so far: Boston Medical Center (11 fields), BIDMC; held: Baystate ×4, Athol, BID Plymouth, Berkshire (reachable pages state no income limits — needs PDF-link following, see Phase 7 ideas). `--reuse-sources` re-structures without Tavily spend.
 - [x] 2.8b Done 2026-10-02 (5088ade, 9f3a482, 531906e, b8e9c81; 161 tests): the scout now follows labelled policy links from entry pages (same domain or known asset hosts such as canto.com, widen.net, cloudfront), `classify_doc` ignores `application/pdf` query strings, `_tiers` skips unparseable items. Re-ran 16 hospitals: BID Plymouth and Brigham and Women's now published (real published = 5: BMC, BIDMC, Anna Jaques, BID Plymouth, BWH); report line "Published sheets: 6 (13%)" includes the demo hospital. Spend after: 204 Tavily credits, $0.51 Token Factory. Follow-ups:
-  - [ ] 2.8c Tavily Extract cannot fetch PDFs on asset hosts (Baystate's policies on `baystatehealth.canto.com` return "Failed to fetch url"). Add a direct download fallback: `httpx` GET (size cap 15 MB, timeout 30 s) + `pypdf` text extraction when the content type is PDF; store as a normal `SourceDoc`. Then `--rebuild` the four Baystate hospitals (≈16 credits).
+  - [x] 2.8c Done 2026-10-02 (34e4a98, ccac292; 170 tests): `atlas/fetch.py` downloads PDFs Tavily cannot fetch (streamed GET, 15 MB cap, pypdf); the scout falls back to it for any selected or linked URL with no usable text. Baystate ×4 published (real published = 10). Spend after: 241 credits, $0.61. New follow-ups:
+  - [ ] 2.8g Heywood (220095): the stored 2016 Credit and Collection Policy contains an FPL table ("0%-200% 100% … 201%-400%") at offset ~49.5k but the structurer returned no fields. Inspect the draft with `--reuse-sources`; likely the table is beyond `MAX_DOC_CHARS` (40,000) — raise it or select the passages around "Federal Poverty" before structuring. Free to iterate (no Tavily).
+  - [ ] 2.8h Cape Cod (220012): Tavily Extract returns only 643 chars of navigation for the financial-assistance page. Try `extract_depth="advanced"` for pages under 1,000 chars, or the direct HTML download with a simple tag strip.
+  - [ ] 2.8i Baystate ×4 and Emerson: "no usable tier (1 of 1 items failed to parse)" — capture the raw tier text the model produced and extend `_tiers`/the prompt (sliding scales written as ranges with percentages).
   - [x] 2.8d Done 2026-10-02 (c3638f7): directory hosts blocklisted; domains set by hand (Faulkner → massgeneralbrigham.org, Fairview → berkshirehealthsystems.org, Falmouth → capecodhealth.org) and rebuilt. Fairview published (real published = 6); Faulkner and Falmouth held (no income limits in reachable text). Spend after: 215 credits, $0.55.
   - [ ] 2.8e Berkshire's policy is a percentage-of-charges table by facility, not FPL bands; the schema cannot represent it. Leave held; revisit with a `charge_discount_percent` field if time allows.
   - [ ] 2.8f Cosmetic: the pipeline note "critical fields disagree" is appended even when the only conflict is `programs.presumptive` (which it then tolerates).
@@ -130,11 +133,13 @@ Plan: `docs/superpowers/plans/2026-10-02-waive-phase-4-phone-app.md`
 | 2026-10-02 | 123 (total) | 0.36 (total) | 0 | Atlas batches for 21 MA hospitals incl. debugging reruns; bill-eval 72 vision calls ($0.08). Ledger: `var/usage.jsonl` |
 | 2026-10-02 | 204 (total) | 0.51 (total) | 0 | Loop iteration 1: link-following scout re-run on 16 hospitals |
 | 2026-10-02 | 215 (total) | 0.55 (total) | 0 | Loop iteration 2: three domain fixes rebuilt |
+| 2026-10-02 | 241 (total) | 0.61 (total) | 0 | Loop iteration 3: PDF download fallback; Baystate ×4, Cape Cod, Heywood, Athol rebuilt |
 
 ## Log
 
 - 2026-10-02 15:40 — Spec, master plan, Phase 0 and Phase 1 plans written. Ready for task 0.1.
 - 2026-10-02 16:20 — Phase 0 tasks 0.1–0.6 done by an implementation subagent: 28 tests pass, ruff clean. Deviations: `extend-exclude = ["docs"]` for ruff (it was reformatting code blocks in plan files); `AIClient` now creates an explicit `httpx.Client` when none is given (openai 3.x's default transport bypasses respx). Incident: one early test run reached the real Token Factory endpoint with a fake key (401, no secret leaked, no spend) → task 0.8 added. Spend: 0.
+- 2026-10-02 21:30 — Loop iteration 3: task 2.8c done by a subagent (170 tests); Baystate ×4 published; follow-ups 2.8g–2.8i added. Spend 241 credits / $0.61.
 - 2026-10-02 21:00 — Loop iteration 2: task 2.8d done inline (161 tests); Fairview published. Spend 215 credits / $0.55.
 - 2026-10-02 20:45 — Loop iteration 1: task 2.8b done by an implementer subagent (161 tests, ruff clean); 2 more hospitals published; follow-ups 2.8c–2.8f added. Spend 204 credits / $0.51.
 - 2026-10-02 20:05 — Build day wrap-up. Phases 0, 1, 3, 4 complete (153 tests, ruff clean). Phase 2 code complete; live atlas runs for 21/46 MA hospitals produced 3 published + 14 held sheets and a long list of robustness fixes (see 2.8). Vision model = MiniCPM-V 4.5 (no NVIDIA vision model on Token Factory); Nemotron Super/Nano do structuring and cross-checks. Keys and vault secrets are in `.env`. Nothing pushed; no remote. Next for the loop: 2.8b, 2.9, 2.10, 4.9, then Phase 5 plan.
