@@ -137,6 +137,30 @@ def test_free_care_band_disguised_as_a_100_percent_tier_is_dropped():
     assert skipped and skipped[0].startswith("eligibility.discount_tiers: only free-care bands")
 
 
+def test_unparseable_tier_items_are_skipped_not_the_whole_list():
+    tiers = [
+        {"min_fpl_exclusive": 250, "max_fpl_inclusive": 300, "discount_percent": 75},
+        {"min_fpl_exclusive": 300, "max_fpl_inclusive": 400},
+        {"min_fpl_exclusive": "sliding", "max_fpl_inclusive": 500, "discount_percent": 25},
+        {"min_fpl_exclusive": None, "max_fpl_inclusive": None, "discount_percent": None},
+        "not an object",
+    ]
+    quote = (
+        "above 250% and at or below 400% of the Federal Poverty Guidelines receive a 60% discount"
+    )
+    draft = SheetDraft(discount_tiers=field(tiers, quote))
+    sheet, skipped = draft_to_sheet(draft, SAMPLE.hospital, [SAMPLE.sources[0]], TODAY)
+    assert skipped == []
+    assert [
+        (t.min_fpl_exclusive, t.max_fpl_inclusive, t.discount_percent)
+        for t in sheet.eligibility.discount_tiers.value
+    ] == [(Decimal(250), Decimal(300), 75)]
+    none_usable = SheetDraft(discount_tiers=field(tiers[1:], quote))
+    sheet, skipped = draft_to_sheet(none_usable, SAMPLE.hospital, [SAMPLE.sources[0]], TODAY)
+    assert sheet.eligibility.discount_tiers is None
+    assert skipped == ["eligibility.discount_tiers: no usable tier (4 of 4 items failed to parse)"]
+
+
 def test_null_values_and_missing_quotes_are_tolerated():
     draft = SheetDraft(
         free_care_max_fpl=DraftField(value=None, quote=None, source_id=None),

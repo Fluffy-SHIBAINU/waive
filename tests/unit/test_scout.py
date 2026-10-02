@@ -7,6 +7,7 @@ from waive.atlas.schema import SourceKind
 from waive.atlas.scout import (
     ScoutedDoc,
     classify_doc,
+    policy_links,
     scout_hospital,
     select_urls,
     source_id_for,
@@ -126,6 +127,107 @@ def test_scout_falls_back_to_site_map_when_search_finds_no_policy():
 
 def test_scout_hospital_without_domain_returns_nothing():
     assert scout_hospital(FakeGateway(), HOSPITAL.model_copy(update={"website_domain": None})) == []
+
+
+def test_policy_links_keeps_policy_links_on_the_hospital_domain():
+    text = (
+        "# Financial Assistance\n"
+        "[Financial Assistance Policy (PDF)](https://www.example.org/docs/fap.pdf)\n"
+        "[Application](/patients/financial-assistance-application.pdf)\n"
+        "[Plain language summary](https://billing.example.org/summary)\n"
+        "[Charity care policy](https://www.otherhospital.org/charity.pdf)\n"
+        "[Careers](https://www.example.org/careers)\n"
+        "[Email us](mailto:billing@example.org)\n"
+        "Also https://www.example.org/docs/fap.pdf#page=2 and https://www.example.org/forms/fa.pdf.\n"
+    )
+    assert policy_links(text, "example.org") == [
+        ("https://www.example.org/docs/fap.pdf", "Financial Assistance Policy (PDF)"),
+        ("https://www.example.org/patients/financial-assistance-application.pdf", "Application"),
+        ("https://billing.example.org/summary", "Plain language summary"),
+        ("https://www.example.org/forms/fa.pdf", ""),
+    ]
+
+
+ENTRY_PAGE = (
+    "# Financial Assistance\n"
+    "St. Example helps patients who cannot afford their care. Read the full policy and the "
+    "application form below, or call 617-555-0100 for help in any language. Interpreters are "
+    "available at no cost. Our partner hospital publishes its own charity care policy.\n"
+    "[Financial Assistance Policy (PDF)](https://www.example.org/docs/fap.pdf)\n"
+    "[Partner charity care policy](https://www.otherhospital.org/charity-care-policy.pdf)\n"
+)
+
+
+class LinkGateway:
+    """Search finds only the HTML entry page; its text links to the policy PDF."""
+
+    def __init__(self, entry_text=ENTRY_PAGE):
+        self.entry_text = entry_text
+        self.extracted = []
+
+    def search(self, query, **kwargs):
+        return [
+            hit(
+                "https://www.example.org/patients/financial-assistance", "Financial Assistance", 0.9
+            )
+        ]
+
+    def extract(self, urls, **kwargs):
+        self.extracted.append(urls)
+        if len(self.extracted) == 1:
+            return [ExtractedPage(url=url, text=self.entry_text) for url in urls]
+        return [ExtractedPage(url=url, text=SAMPLE_POLICY_TEXT) for url in urls]
+
+
+def test_scout_follows_policy_links_from_entry_pages_on_the_same_domain():
+    gateway = LinkGateway()
+    docs = scout_hospital(gateway, HOSPITAL)
+    assert gateway.extracted == [
+        ["https://www.example.org/patients/financial-assistance"],
+        ["https://www.example.org/docs/fap.pdf"],
+    ]
+    assert [(doc.url, doc.doc_class) for doc in docs] == [
+        ("https://www.example.org/patients/financial-assistance", "fap"),
+        ("https://www.example.org/docs/fap.pdf", "fap"),
+    ]
+    assert docs[1].title == "Financial Assistance Policy (PDF)"
+    assert docs[1].sha256 == hashlib.sha256(SAMPLE_POLICY_TEXT.encode()).hexdigest()
+
+
+def test_scout_follows_at_most_four_links_preferring_policy_then_application():
+    entry = ENTRY_PAGE + (
+        "[Billing and collections policy](/billing-policy)\n"
+        "[Financial assistance plain language summary](/fa/summary)\n"
+        "[Financial assistance application (English)](/fa/application-en.pdf)\n"
+        "[Financial assistance application (Spanish)](/fa/application-es.pdf)\n"
+        "[Charity care policy](/fa/charity-care-policy.pdf)\n"
+        "[Financial Assistance](/patients/financial-assistance)\n"
+    )
+    gateway = LinkGateway(entry)
+    scout_hospital(gateway, HOSPITAL)
+    assert gateway.extracted[1] == [
+        "https://www.example.org/docs/fap.pdf",
+        "https://www.example.org/fa/charity-care-policy.pdf",
+        "https://www.example.org/fa/application-en.pdf",
+        "https://www.example.org/fa/application-es.pdf",
+    ]
+
+
+class SamePageGateway(LinkGateway):
+    """The linked PDF turns out to be the very text the entry page already showed."""
+
+    def extract(self, urls, **kwargs):
+        self.extracted.append(urls)
+        return [ExtractedPage(url=url, text=self.entry_text) for url in urls]
+
+
+def test_scout_skips_followed_documents_identical_to_ones_already_fetched():
+    gateway = SamePageGateway(
+        SAMPLE_POLICY_TEXT + "\n[Policy (PDF)](https://www.example.org/fap.pdf)\n"
+    )
+    docs = scout_hospital(gateway, HOSPITAL)
+    assert len(gateway.extracted) == 2
+    assert [doc.url for doc in docs] == ["https://www.example.org/patients/financial-assistance"]
 
 
 def test_store_scouted_dedupes_shared_documents():
