@@ -157,6 +157,9 @@ SUBMIT_KINDS = {
     "in person": "in_person",
     "in-person": "in_person",
     "person": "in_person",
+    "phone": "phone",
+    "telephone": "phone",
+    "call": "phone",
 }
 
 
@@ -168,10 +171,10 @@ def _submit_methods(value: Any) -> list[SubmitMethod]:
             raise ValueError("submit method must be an object")
         kind = SUBMIT_KINDS.get(str(item.get("kind", "")).strip().lower())
         if kind is None:
-            raise ValueError(f"unknown submit kind {item.get('kind')!r}")
+            continue  # an unknown channel is dropped; the known ones are still useful
         methods.append(SubmitMethod(kind=kind, detail=str(item.get("detail", "")).strip()))
     if not methods:
-        raise ValueError("empty list")
+        raise ValueError("no recognised submit methods")
     return methods
 
 

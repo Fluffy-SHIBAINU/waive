@@ -1253,7 +1253,7 @@ DOC_LABELS = {
     "medicaid_denial": "Medicaid (MassHealth) denial letter",
     "other": "Other documents the hospital asks for",
 }
-METHOD_LABELS = {"mail": "Mail", "fax": "Fax", "email": "Email", "portal": "Online", "in_person": "In person"}
+METHOD_LABELS = {"mail": "Mail", "fax": "Fax", "email": "Email", "portal": "Online", "in_person": "In person", "phone": "Phone"}
 
 
 @dataclass
