@@ -148,6 +148,40 @@ def test_policy_links_keeps_policy_links_on_the_hospital_domain():
     ]
 
 
+def test_policy_links_ignores_accordion_toggles_icons_and_the_site_root():
+    text = (
+        "[### Financial Assistance Information\n\n![](/assets/icons/plus.svg)](#)\n"
+        "[### Ayuda económica (Financial Assistance Information in Spanish)](#)\n"
+        "[Financial assistance policy](/)\n"
+        "[Financial assistance policy (pdf)](/documents/fap.pdf)\n"
+    )
+    assert policy_links(text, "example.org") == [
+        ("https://www.example.org/documents/fap.pdf", "Financial assistance policy (pdf)")
+    ]
+
+
+def test_policy_links_follows_clearly_labelled_documents_on_asset_hosts_only():
+    """Baystate keeps its policies on baystatehealth.canto.com, a document host without .pdf
+    URLs. Follow such links when the label names the policy; never follow another site's."""
+    text = (
+        "[Hospital financial assistance policy (pdf)](https://h.canto.com/direct/document/a/origin)\n"
+        "[Hospital billing and collections policy (pdf)](https://h.canto.com/direct/document/b/origin)\n"
+        "[Provider listing (pdf)](https://h.canto.com/direct/document/c/origin)\n"
+        "[Individual and family application](https://www.mahealthconnector.org/)\n"
+        "[Financial assistance policy](https://www.otherhospital.org/fap.pdf)\n"
+    )
+    assert policy_links(text, "example.org") == [
+        (
+            "https://h.canto.com/direct/document/a/origin",
+            "Hospital financial assistance policy (pdf)",
+        ),
+        (
+            "https://h.canto.com/direct/document/b/origin",
+            "Hospital billing and collections policy (pdf)",
+        ),
+    ]
+
+
 ENTRY_PAGE = (
     "# Financial Assistance\n"
     "St. Example helps patients who cannot afford their care. Read the full policy and the "
