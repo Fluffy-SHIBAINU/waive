@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Hospital policies{% endblock %}
+{% block content %}
+<h1>Hospital financial assistance policies</h1>
+<form method="get" action="/atlas" class="stack">
+  <label for="q">Search by hospital or city</label>
+  <input id="q" name="q" value="{{ q }}">
+  <button class="btn" type="submit">Search</button>
+</form>
+{% for row in rows %}
+<div class="card"><a href="/atlas/{{ row.ccn }}"><strong>{{ row.name }}</strong></a><br>{{ row.city }}, {{ row.state }} — {{ row.status }}{% if row.version %} (version {{ row.version }}){% endif %}</div>
+{% else %}<p>No hospitals match.</p>{% endfor %}
+<p class="muted">Open data, CC BY 4.0. Every documented value shows the exact sentence it came from.</p>
+{% endblock %}
