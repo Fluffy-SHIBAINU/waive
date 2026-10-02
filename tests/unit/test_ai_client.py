@@ -1,3 +1,4 @@
+import json
 from decimal import Decimal
 
 import httpx
@@ -143,3 +144,30 @@ def test_estimate_usd_uses_price_table():
 
 def test_extract_json_strips_reasoning_and_fences():
     assert extract_json('<think>x</think> ```json {"a": 1} ```') == '{"a": 1}'
+
+
+@respx.mock
+def test_nemotron_requests_disable_thinking_but_other_models_do_not(tmp_path):
+    route = respx.post(f"{BASE}/chat/completions").mock(
+        return_value=httpx.Response(200, json=chat_payload('{"tier": "free", "percent": 100}'))
+    )
+    client, _ = make_client(tmp_path, zdr_confirmed=True)
+    client.complete_json("reason", USER, Answer, phi=False, purpose="test")
+    client.complete_json("vision", USER, Answer, phi=True, purpose="test")
+    nemotron_body = json.loads(route.calls[0].request.content)
+    vision_body = json.loads(route.calls[1].request.content)
+    assert nemotron_body["chat_template_kwargs"] == {"enable_thinking": False}
+    assert "chat_template_kwargs" not in vision_body
+
+
+@respx.mock
+def test_truncated_output_fails_fast(tmp_path):
+    payload = chat_payload("")
+    payload["choices"][0]["finish_reason"] = "length"
+    route = respx.post(f"{BASE}/chat/completions").mock(
+        return_value=httpx.Response(200, json=payload)
+    )
+    client, _ = make_client(tmp_path)
+    with pytest.raises(AIOutputError, match="cut off"):
+        client.complete_json("fast", USER, Answer, phi=False, purpose="test")
+    assert route.call_count == 1

@@ -43,6 +43,14 @@ def estimate_usd(model: str, prompt_tokens: int, completion_tokens: int) -> Deci
     return (price_in * prompt_tokens + price_out * completion_tokens) / Decimal(1_000_000)
 
 
+def request_options(model: str) -> dict[str, Any]:
+    """Nemotron models reason before answering by default; those thinking tokens count against
+    max_tokens and can starve a long JSON answer, so thinking is switched off for them."""
+    if model.lower().startswith("nvidia/"):
+        return {"extra_body": {"chat_template_kwargs": {"enable_thinking": False}}}
+    return {}
+
+
 def extract_json(text: str) -> str:
     cleaned = _THINK.sub("", text)
     start, end = cleaned.find("{"), cleaned.rfind("}")
@@ -105,7 +113,11 @@ class AIClient:
         for _attempt in range(2):
             self._governor.ensure_token_factory()
             response = self._client.chat.completions.create(
-                model=model, messages=conversation, temperature=0, max_tokens=max_tokens
+                model=model,
+                messages=conversation,
+                temperature=0,
+                max_tokens=max_tokens,
+                **request_options(model),
             )
             usage = response.usage
             if usage is not None:
@@ -115,7 +127,10 @@ class AIClient:
                     estimate_usd(model, usage.prompt_tokens, usage.completion_tokens),
                     purpose,
                 )
-            text = response.choices[0].message.content or ""
+            choice = response.choices[0]
+            text = choice.message.content or ""
+            if choice.finish_reason == "length":
+                raise AIOutputError(f"{model} output was cut off at {max_tokens} tokens")
             try:
                 return schema.model_validate_json(extract_json(text))
             except (ValidationError, AIOutputError) as error:
