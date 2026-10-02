@@ -88,6 +88,24 @@ def test_draft_to_sheet_casts_and_skips_bad_fields():
     assert verify_sheet(sheet, {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT}).ok
 
 
+def test_semantic_guards_reject_bogus_residency_and_short_windows():
+    draft = SheetDraft(
+        residency=field(["True"], "Proof of Residency required"),
+        window_days_from_first_bill=field(120, "collection action undertaken for 120 days"),
+        languages=field(["Massachusetts residents", "NH"], "serves Massachusetts and NH"),
+    )
+    sheet, skipped = draft_to_sheet(draft, SAMPLE.hospital, [SAMPLE.sources[0]], TODAY)
+    assert sheet.eligibility.residency is None
+    assert sheet.apply.window_days_from_first_bill is None
+    assert [s.split(":")[0] for s in skipped] == [
+        "eligibility.residency",
+        "apply.window_days_from_first_bill",
+    ]
+    good = SheetDraft(residency=field(["Massachusetts", "nh"], "residents of Massachusetts or NH"))
+    sheet, skipped = draft_to_sheet(good, SAMPLE.hospital, [SAMPLE.sources[0]], TODAY)
+    assert sheet.eligibility.residency.value == ["MA", "NH"] and skipped == []
+
+
 def test_null_values_and_missing_quotes_are_tolerated():
     draft = SheetDraft(
         free_care_max_fpl=DraftField(value=None, quote=None, source_id=None),
