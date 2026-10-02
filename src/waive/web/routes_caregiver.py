@@ -8,6 +8,7 @@ from fastapi.responses import HTMLResponse, RedirectResponse, Response
 
 from waive.atlas import repo
 from waive.cases.packet import build_packet, packet_data
+from waive.cases.reminders import build_ics, reminder_events
 from waive.cases.service import (
     approve,
     authorize,
@@ -143,4 +144,21 @@ def caregiver_packet(request: Request, token: str) -> Response:
         pdf,
         media_type="application/pdf",
         headers={"Content-Disposition": 'attachment; filename="waive-application.pdf"'},
+    )
+
+
+@router.get("/c/{token}/reminders.ics")
+def caregiver_reminders(request: Request, token: str) -> Response:
+    deps = deps_of(request)
+    with session_scope(deps.engine) as session:
+        ctx = deps.context(session)
+        row = authorize(ctx, token, "caregiver")
+        shown = view(ctx, row.id)
+        ics = build_ics(
+            reminder_events(ctx.today, shown.deadlines, shown.hospital_name or "the hospital")
+        )
+    return Response(
+        ics,
+        media_type="text/calendar",
+        headers={"Content-Disposition": 'attachment; filename="waive-reminders.ics"'},
     )
