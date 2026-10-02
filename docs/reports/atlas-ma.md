@@ -1,7 +1,7 @@
 # Atlas coverage — MA
 
 Hospitals in registry: 47
-Published sheets: 11 (23%)
+Published sheets: 12 (26%)
 
 | CCN | Hospital | Domain | Status | Version | Completeness | Fields | Sources |
 |---|---|---|---|---|---|---|---|
@@ -24,15 +24,15 @@ Published sheets: 11 (23%)
 | 221302 | FAIRVIEW HOSPITAL | berkshirehealthsystems.org | published | 3 | 0.50 | 10 | 5 |
 | 220135 | FALMOUTH HOSPITAL | capecodhealth.org | held | 2 | 0.00 | 1 | 5 |
 | 220095 | HEYWOOD HOSPITAL - | heywood.org | held | 2 | 0.00 | 1 | 2 |
-| 220024 | HOLYOKE MEDICAL CENTER |  | none | | | | |
-| 220171 | LAHEY HOSPITAL & MEDICAL CENTER, BURLINGTON |  | none | | | | |
-| 220063 | LOWELL GENERAL HOSPITAL |  | none | | | | |
-| 220049 | MARLBOROUGH HOSPITAL |  | none | | | | |
-| 221300 | MARTHA'S VINEYARD HOSPITAL INC |  | none | | | | |
-| 220075 | MASSACHUSETTS EYE AND EAR INFIRMARY - |  | none | | | | |
-| 220071 | MASSACHUSETTS GENERAL HOSPITAL |  | none | | | | |
-| 220070 | MELROSEWAKEFIELD HEALTHCARE |  | none | | | | |
-| 220066 | MERCY MEDICAL CTR |  | none | | | | |
+| 220024 | HOLYOKE MEDICAL CENTER | holyokehealth.com | held | 1 | 0.33 | 9 | 5 |
+| 220171 | LAHEY HOSPITAL & MEDICAL CENTER, BURLINGTON | lahey.org | held | 1 | 0.17 | 1 | 5 |
+| 220063 | LOWELL GENERAL HOSPITAL | payerprice.com | held | 1 | 0.00 | 0 | 1 |
+| 220049 | MARLBOROUGH HOSPITAL | umassmemorialhealthcare.org | held | 1 | 0.50 | 8 | 4 |
+| 221300 | MARTHA'S VINEYARD HOSPITAL INC | chiamass.gov | held | 1 | 0.00 | 0 | 8 |
+| 220075 | MASSACHUSETTS EYE AND EAR INFIRMARY - | payerprice.com | none | | | | |
+| 220071 | MASSACHUSETTS GENERAL HOSPITAL | massgeneralbrigham.org | held | 1 | 1.00 | 11 | 5 |
+| 220070 | MELROSEWAKEFIELD HEALTHCARE | tuftsmedicine.org | held | 1 | 0.50 | 8 | 6 |
+| 220066 | MERCY MEDICAL CTR | mercy.net | published | 1 | 0.83 | 11 | 4 |
 | 220010 | MERRIMACK HEALTH LAWRENCE HOSPITAL |  | none | | | | |
 | 220175 | METROWEST MEDICAL CENTER |  | none | | | | |
 | 220090 | MILFORD REGIONAL MEDICAL CENTER |  | none | | | | |
