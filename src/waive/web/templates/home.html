@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Waive — help with hospital bills{% endblock %}
+{% block content %}
+<h1>Hospital bills you may not have to pay</h1>
+{% if notice %}<p class="card big">{{ notice }}</p>{% endif %}
+<p class="lead">Nonprofit hospitals must offer free or discounted care to people with lower incomes. Waive checks a bill against the hospital's own policy and prepares the application.</p>
+<form method="post" action="/cases" class="stack">
+  <label for="state">Which state is the hospital in?</label>
+  <select id="state" name="state" required>
+    <option value="MA" selected>Massachusetts</option>
+  </select>
+  <button type="submit" class="btn primary">Start a case</button>
+</form>
+<p><a href="/atlas">Browse hospital policies</a></p>
+{% endblock %}

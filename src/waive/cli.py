@@ -203,3 +203,13 @@ def eval_bills(
     )
     _, tf_usd = governor.summary()["token_factory"]
     console.print(f"Token Factory spend so far: ${tf_usd:.4f}")
+
+
+@app.command()
+def serve(
+    host: str = typer.Option("0.0.0.0", "--host"), port: int = typer.Option(8000, "--port")
+) -> None:
+    """Run the web app (phones on the same Wi-Fi can open http://<this-computer-ip>:8000)."""
+    import uvicorn
+
+    uvicorn.run("waive.web.app:create_app", host=host, port=port, factory=True)
