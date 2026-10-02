@@ -26,9 +26,18 @@ PRICES_PER_MILLION: dict[str, tuple[Decimal, Decimal]] = {
 FALLBACK_PRICE = (Decimal("1.00"), Decimal("3.00"))
 
 _THINK = re.compile(r"<think>.*?</think>", re.DOTALL)
+_EMPTY_OBJECT = re.compile(r"\{\s*\}")
 _REPAIR_PROMPT = (
     "That was not valid JSON for the requested schema. Reply with only the corrected JSON object."
 )
+_EMPTY_PROMPT = (
+    "That JSON object was empty. Fill every field the input states, as the schema describes, "
+    "and reply with only the JSON object."
+)
+
+
+class EmptyAnswer(RuntimeError):
+    """The model returned "{}"; retried once in free-text mode before being accepted."""
 
 
 class ZDRRequired(RuntimeError):
@@ -131,14 +140,15 @@ class AIClient:
         model = self.model_for(role)
         conversation = with_schema_hint(messages, schema)
         last_error: Exception | None = None
-        for _attempt in range(2):
+        options: dict[str, Any] = {"response_format": {"type": "json_object"}}
+        for attempt in range(2):
             self._governor.ensure_token_factory()
             response = self._client.chat.completions.create(
                 model=model,
                 messages=conversation,
                 temperature=0,
                 max_tokens=max_tokens,
-                response_format={"type": "json_object"},
+                **options,
                 **request_options(model),
             )
             usage = response.usage
@@ -154,12 +164,21 @@ class AIClient:
             if choice.finish_reason == "length":
                 raise AIOutputError(f"{model} output was cut off at {max_tokens} tokens")
             try:
-                return schema.model_validate_json(extract_json(text))
+                payload = extract_json(text)
+                if attempt == 0 and _EMPTY_OBJECT.fullmatch(payload):
+                    raise EmptyAnswer("empty JSON object")
+                return schema.model_validate_json(payload)
+            except EmptyAnswer:
+                # Nemotron Super sometimes answers "{}" in json_object mode yet fills the schema
+                # when asked as free text (extract_json copes with prose and fences).
+                options = {}
+                repair = _EMPTY_PROMPT
             except (ValidationError, AIOutputError) as error:
                 last_error = error
-                conversation = [
-                    *conversation,
-                    {"role": "assistant", "content": text},
-                    {"role": "user", "content": _REPAIR_PROMPT},
-                ]
+                repair = _REPAIR_PROMPT
+            conversation = [
+                *conversation,
+                {"role": "assistant", "content": text},
+                {"role": "user", "content": repair},
+            ]
         raise AIOutputError(f"model output did not match {schema.__name__}") from last_error

@@ -83,6 +83,45 @@ def test_repairs_invalid_json_once(tmp_path):
     assert route.call_count == 2
 
 
+class Draft(BaseModel):
+    tier: str | None = None
+    percent: int | None = None
+
+
+@respx.mock
+def test_empty_object_in_json_mode_is_retried_as_free_text(tmp_path):
+    # Nemotron Super answered "{}" for Heywood and Berkshire in json_object mode, then filled the
+    # whole schema when asked again without it.
+    route = respx.post(f"{BASE}/chat/completions").mock(
+        side_effect=[
+            httpx.Response(200, json=chat_payload("{}")),
+            httpx.Response(
+                200,
+                json=chat_payload('Here it is:\n```json\n{"tier": "free", "percent": 100}\n```'),
+            ),
+        ]
+    )
+    client, _ = make_client(tmp_path)
+    result = client.complete_json("reason", USER, Draft, phi=False, purpose="test")
+    assert result == Draft(tier="free", percent=100)
+    assert route.call_count == 2
+    first, second = (json.loads(call.request.content) for call in route.calls)
+    assert first["response_format"] == {"type": "json_object"}
+    assert "response_format" not in second
+    assert second["messages"][-2] == {"role": "assistant", "content": "{}"}
+    assert "empty" in second["messages"][-1]["content"].lower()
+
+
+@respx.mock
+def test_empty_object_twice_is_returned_not_raised(tmp_path):
+    route = respx.post(f"{BASE}/chat/completions").mock(
+        return_value=httpx.Response(200, json=chat_payload("{ }"))
+    )
+    client, _ = make_client(tmp_path)
+    assert client.complete_json("reason", USER, Draft, phi=False, purpose="test") == Draft()
+    assert route.call_count == 2
+
+
 @respx.mock
 def test_gives_up_after_second_bad_answer(tmp_path):
     respx.post(f"{BASE}/chat/completions").mock(
