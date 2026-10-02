@@ -10,7 +10,7 @@ from waive.ai.client import AIClient, AIOutputError
 from waive.atlas import repo
 from waive.atlas.discover import MIN_CONFIDENCE, discover_domain
 from waive.atlas.publish import critical_conflicts, decide_status, drop_fields, publish_sheet
-from waive.atlas.schema import SourceKind
+from waive.atlas.schema import ProcedureSheet, SourceKind
 from waive.atlas.scout import scout_hospital, store_scouted
 from waive.atlas.structure import structure_sheet
 from waive.atlas.tavily_gateway import TavilyGateway
@@ -26,6 +26,22 @@ class BuildResult:
     outcome: Outcome
     version: int | None = None
     notes: list[str] = field(default_factory=list)
+
+
+def carry_over_state_programs(sheet: ProcedureSheet, previous: ProcedureSheet) -> ProcedureSheet:
+    """A rebuild re-reads hospital documents only; the state overlay (and its source) must survive."""
+    if sheet.programs.state_programs is not None or previous.programs.state_programs is None:
+        return sheet
+    cited = previous.programs.state_programs
+    sources = list(sheet.sources)
+    if cited.source_id and all(source.id != cited.source_id for source in sources):
+        sources.extend(s for s in previous.sources if s.id == cited.source_id)
+    return sheet.model_copy(
+        update={
+            "programs": sheet.programs.model_copy(update={"state_programs": cited}),
+            "sources": sources,
+        }
+    )
 
 
 def build_hospital(
@@ -109,6 +125,9 @@ def build_hospital(
             if conflicts:
                 result.notes.append("critical fields disagree: " + ", ".join(conflicts))
 
+    previous = repo.latest_sheet(session, ccn)
+    if previous is not None:
+        sheet = carry_over_state_programs(sheet, previous[0])
     status = decide_status(sheet, conflicts)
     published = publish_sheet(session, sheet.model_copy(update={"status": status}))
     result.outcome = "published" if status.value == "published" else "held"
