@@ -1362,7 +1362,7 @@ git commit -m "feat: exact-quote verification for procedure sheet fields"
 
 - [ ] **Step 1: Run lint and the full suite with coverage**
 
-Run: `uv run ruff check . && uv run pytest --cov=waive.rules --cov=waive.atlas.schema --cov=waive.atlas.verify --cov-report=term-missing --cov-fail-under=90`
+Run: `uv run ruff format . && uv run ruff check . && uv run pytest --cov=waive.rules --cov=waive.atlas --cov-report=term-missing --cov-fail-under=90`
 Expected: `All checks passed!`, all tests pass, `Required test coverage of 90% reached`.
 
 - [ ] **Step 2: If coverage is below 90%**

@@ -6,7 +6,7 @@
 
 **Architecture:** One Python service (FastAPI + server-rendered HTMX pages) on Nebius AI Cloud, calling NVIDIA Nemotron models on Nebius Token Factory (zero data retention) and Tavily. Pure, unit-tested domain logic (eligibility, deadlines, quote verification) sits under thin adapters for external services. PostgreSQL stores the atlas, cases and learning data.
 
-**Tech Stack:** Python 3.12 (uv), FastAPI, Jinja2 + HTMX, Tailwind (standalone CLI), SQLAlchemy 2 + Alembic, PostgreSQL 16, pydantic v2, OpenAI SDK (Token Factory), tavily-python, rapidfuzz, Pillow, WeasyPrint, cryptography, APScheduler, Typer, pytest, respx, hypothesis, Playwright, ruff, Docker, Nebius CLI.
+**Tech Stack:** Python 3.12 (uv), FastAPI, Jinja2 + HTMX, Tailwind (standalone CLI), SQLAlchemy 2 (SQLite locally, PostgreSQL 16 in production), pydantic v2, OpenAI SDK (Token Factory), tavily-python, rapidfuzz, Pillow, WeasyPrint, cryptography, APScheduler, Typer, pytest, respx, hypothesis, Playwright, ruff, Docker, Nebius CLI.
 
 **Spec:** `docs/superpowers/specs/2026-10-02-waive-design.md`
 
@@ -77,7 +77,7 @@
 
 **Tasks:**
 - 2.0 Write the detailed Phase 2 plan.
-- 2.1 Database foundation: SQLAlchemy models (`hospitals`, `source_docs`, `sheets` with version + JSON body, `review_items`), Alembic setup, `docker-compose.yml` with PostgreSQL 16, repository functions; unit tests on SQLite.
+- 2.1 Database foundation: SQLAlchemy models (`hospitals`, `source_docs`, `sheets` with version + JSON body, `review_items`), `create_all` on startup, repository functions; SQLite in tests and local development, PostgreSQL in production via `WAIVE_DATABASE_URL`.
 - 2.2 Registry seed: `waive atlas seed --state MA` downloads the CMS Hospital General Information CSV, keeps nonprofit acute-care and critical-access hospitals, upserts `hospitals`, and saves a dated MA snapshot under `data/seed/`.
 - 2.3 Domain discovery: find each hospital's official website with Tavily Search, reject directories, confirm by name and phone with Tavily Extract; uncertain matches become review items.
 - 2.4 Document scouting: for each hospital or system, find FAP, plain-language summary, application and billing/collections policy URLs (Search with `include_domains`, Map as fallback), extract text, store `SourceDoc` + text (`var/docs/` locally; Object Storage in Phase 6), de-duplicate shared system documents by SHA-256.

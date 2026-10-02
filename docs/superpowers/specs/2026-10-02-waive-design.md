@@ -109,7 +109,7 @@ Each unit is a Python package with a small public API exported from its `__init_
 ## 6. Technology
 
 - Python 3.12 managed by `uv`; FastAPI + Uvicorn; Jinja2 templates with HTMX; Tailwind CSS via the standalone CLI (no Node toolchain).
-- SQLAlchemy 2 + Alembic; PostgreSQL 16 in development (docker compose) and production (Nebius Managed PostgreSQL); SQLite only for fast unit tests.
+- SQLAlchemy 2 with JSON columns for sheet bodies; SQLite for tests and local development (`var/waive.db`), PostgreSQL 16 (Nebius Managed PostgreSQL) in production, selected by `WAIVE_DATABASE_URL`. Tables are created with `create_all`; Alembic is added only when a schema change is needed after the first deployment.
 - pydantic v2 + pydantic-settings; OpenAI Python SDK pointed at `https://api.tokenfactory.nebius.com/v1/` with `NEBIUS_API_KEY`; `tavily-python` with `TAVILY_API_KEY`.
 - rapidfuzz (hospital matching), Pillow (image normalization, synthetic test images), WeasyPrint (PDF packets), pypdf (filling AcroForm forms), cryptography (AES-GCM field encryption), APScheduler (scheduled scouting), Typer (CLI).
 - Tests: pytest, respx (HTTP mocking), hypothesis (property tests), Playwright (mobile E2E), axe-core via Playwright (accessibility), ruff (lint and format).

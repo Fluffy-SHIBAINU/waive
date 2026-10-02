@@ -223,6 +223,7 @@ git commit -m "chore: scaffold waive package with uv, pytest and ruff"
 `tests/unit/test_config.py`:
 
 ```python
+import os
 from decimal import Decimal
 from pathlib import Path
 
@@ -230,18 +231,11 @@ from pydantic import SecretStr
 
 from waive.config import Settings
 
-ENV_VARS = [
-    "NEBIUS_API_KEY",
-    "TAVILY_API_KEY",
-    "NEBIUS_PROJECT_ID",
-    "WAIVE_ZDR_CONFIRMED",
-    "WAIVE_REQUIRE_ZDR",
-    "WAIVE_TAVILY_CREDIT_CAP",
-]
+ENV_VARS = ["NEBIUS_API_KEY", "TAVILY_API_KEY", "NEBIUS_PROJECT_ID"]
 
 
 def clear_env(monkeypatch):
-    for name in ENV_VARS:
+    for name in ENV_VARS + [key for key in os.environ if key.startswith("WAIVE_")]:
         monkeypatch.delenv(name, raising=False)
 
 

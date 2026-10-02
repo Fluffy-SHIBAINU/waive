@@ -7,6 +7,13 @@ Next task: 0.1 Project scaffold
 
 Master plan: `docs/superpowers/plans/2026-10-02-waive-master-plan.md` · Spec: `docs/superpowers/specs/2026-10-02-waive-design.md` · Loop rules: `docs/LOOP.md`
 
+## Handoff (read this first if you are new to the build)
+
+- The user approved: build the whole project phase by phase, with user gates for keys, cloud resources, publishing and spending. Build day 2026-10-02 runs until 21:00 ET; afterwards the user runs `/loop` (see `docs/LOOP.md`), possibly on a different Claude model.
+- Working method: one task per iteration, tests first, commit per task, PROGRESS.md updated every time. Implementation subagents must not edit PROGRESS.md; the orchestrator (or the loop) does.
+- Nothing is pushed to a remote yet. There is no remote. Ask the user before adding one.
+- Spend so far is in the table below; the ledger file `var/usage.jsonl` is the source of truth once code exists.
+
 ## User gates (only the user closes these)
 
 - [ ] **U0.1** Create a Token Factory API key at https://tokenfactory.nebius.com/project/api-keys and put it in `.env` as `NEBIUS_API_KEY=...` (copy `.env.example` to `.env` first). Never paste it in chat. Blocks task 0.7.

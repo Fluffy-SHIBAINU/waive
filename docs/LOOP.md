@@ -12,7 +12,9 @@ Or on a fixed interval:
 /loop 15m Continue the Waive build. Follow docs/LOOP.md exactly.
 ```
 
-A fresh session works best: everything the loop needs is in this file, `docs/PROGRESS.md`, the master plan and the spec.
+A fresh session works best: everything the loop needs is in this file, `docs/PROGRESS.md`, the master plan and the spec. Any Claude model can run it (the build may switch between Fable and Opus mid-way); the "Handoff" section of `docs/PROGRESS.md` is written for whoever picks it up next.
+
+When a PreToolUse hook denies a Write, Edit or Bash call with "Fact-Forcing Gate", answer its questions in one short paragraph of reply text (callers, no duplicate file, data shape, the user's instruction) and retry the same call once. It passes on the retry.
 
 ## Each iteration
 
