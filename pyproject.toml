@@ -25,6 +25,7 @@ dev = [
   "respx>=0.21",
   "hypothesis>=6.100",
   "ruff>=0.6",
+  "pytest-socket>=0.8.1",
 ]
 
 [project.scripts]
@@ -39,7 +40,7 @@ packages = ["src/waive"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-addopts = "-q -m 'not live'"
+addopts = "-q -m 'not live' --disable-socket --allow-unix-socket"
 markers = ["live: calls real external APIs and spends credits"]
 
 [tool.ruff]
