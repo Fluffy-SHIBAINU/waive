@@ -24,31 +24,31 @@ Published sheets: 24 (51%)
 | 221302 | FAIRVIEW HOSPITAL | berkshirehealthsystems.org | published | 3 | 0.50 | 10 | 5 |
 | 220135 | FALMOUTH HOSPITAL | capecodhealth.org | held | 4 | 0.00 | 1 | 10 |
 | 220095 | HEYWOOD HOSPITAL - | heywood.org | published | 4 | 0.33 | 6 | 2 |
-| 220024 | HOLYOKE MEDICAL CENTER | holyokehealth.com | held | 2 | 0.33 | 7 | 5 |
-| 220171 | LAHEY HOSPITAL & MEDICAL CENTER, BURLINGTON | lahey.org | held | 2 | 0.17 | 2 | 5 |
-| 220063 | LOWELL GENERAL HOSPITAL | payerprice.com | held | 2 | 0.17 | 2 | 1 |
-| 220049 | MARLBOROUGH HOSPITAL | umassmemorialhealthcare.org | held | 2 | 0.50 | 7 | 4 |
-| 221300 | MARTHA'S VINEYARD HOSPITAL INC | chiamass.gov | held | 2 | 0.00 | 1 | 8 |
+| 220024 | HOLYOKE MEDICAL CENTER | holyokehealth.com | held | 3 | 0.33 | 8 | 6 |
+| 220171 | LAHEY HOSPITAL & MEDICAL CENTER, BURLINGTON | lahey.org | held | 3 | 0.17 | 3 | 6 |
+| 220063 | LOWELL GENERAL HOSPITAL | payerprice.com | held | 3 | 0.17 | 3 | 2 |
+| 220049 | MARLBOROUGH HOSPITAL | umassmemorialhealthcare.org | held | 3 | 0.50 | 8 | 5 |
+| 221300 | MARTHA'S VINEYARD HOSPITAL INC | chiamass.gov | held | 3 | 0.00 | 2 | 9 |
 | 220075 | MASSACHUSETTS EYE AND EAR INFIRMARY - | payerprice.com | none | | | | |
-| 220071 | MASSACHUSETTS GENERAL HOSPITAL | massgeneralbrigham.org | held | 2 | 1.00 | 11 | 5 |
-| 220070 | MELROSEWAKEFIELD HEALTHCARE | tuftsmedicine.org | held | 2 | 0.50 | 8 | 6 |
-| 220066 | MERCY MEDICAL CTR | mercy.net | published | 1 | 0.83 | 11 | 4 |
-| 220010 | MERRIMACK HEALTH LAWRENCE HOSPITAL | mhlawrencehospital.org | published | 1 | 0.67 | 9 | 4 |
-| 220175 | METROWEST MEDICAL CENTER | massgeneralbrigham.org | held | 2 | 1.00 | 11 | 7 |
-| 220090 | MILFORD REGIONAL MEDICAL CENTER | chiamass.gov | held | 1 | 0.00 | 0 | 7 |
-| 220002 | MOUNT AUBURN HOSPITAL | mountauburnhospital.org | held | 2 | 0.17 | 3 | 3 |
-| 220177 | NANTUCKET COTTAGE HOSPITAL | nantuckethospital.org | held | 2 | 0.17 | 1 | 1 |
-| 220088 | NEW ENGLAND BAPTIST HOSPITAL | nebh.org | published | 1 | 0.67 | 7 | 7 |
-| 220101 | NEWTON-WELLESLEY HOSPITAL | massgeneralbrigham.org | held | 2 | 1.00 | 11 | 7 |
-| 220035 | NORTH SHORE MEDICAL CENTER - | northshoremc.org | held | 2 | 0.17 | 1 | 1 |
-| 220033 | NORTHEAST HOSPITAL CORPORATION | beverlyhospital.org | held | 2 | 0.00 | 0 | 5 |
-| 220052 | SIGNATURE HEALTHCARE BROCKTON HOSPITAL | signature-healthcare.org | published | 2 | 0.67 | 10 | 5 |
-| 220100 | SOUTH SHORE HOSPITAL | southshorehealth.org | held | 1 | 0.00 | 0 | 4 |
-| 220074 | SOUTHCOAST HOSPITALS GROUP | southcoast.org | published | 1 | 0.67 | 9 | 4 |
+| 220071 | MASSACHUSETTS GENERAL HOSPITAL | massgeneralbrigham.org | held | 3 | 1.00 | 12 | 6 |
+| 220070 | MELROSEWAKEFIELD HEALTHCARE | tuftsmedicine.org | held | 3 | 0.50 | 9 | 7 |
+| 220066 | MERCY MEDICAL CTR | mercy.net | published | 2 | 0.83 | 12 | 5 |
+| 220010 | MERRIMACK HEALTH LAWRENCE HOSPITAL | mhlawrencehospital.org | published | 2 | 0.67 | 10 | 5 |
+| 220175 | METROWEST MEDICAL CENTER | massgeneralbrigham.org | held | 3 | 1.00 | 12 | 8 |
+| 220090 | MILFORD REGIONAL MEDICAL CENTER | chiamass.gov | held | 2 | 0.00 | 1 | 8 |
+| 220002 | MOUNT AUBURN HOSPITAL | mountauburnhospital.org | held | 3 | 0.17 | 4 | 4 |
+| 220177 | NANTUCKET COTTAGE HOSPITAL | nantuckethospital.org | held | 3 | 0.17 | 2 | 2 |
+| 220088 | NEW ENGLAND BAPTIST HOSPITAL | nebh.org | published | 2 | 0.67 | 8 | 8 |
+| 220101 | NEWTON-WELLESLEY HOSPITAL | massgeneralbrigham.org | held | 3 | 1.00 | 12 | 8 |
+| 220035 | NORTH SHORE MEDICAL CENTER - | northshoremc.org | held | 3 | 0.17 | 2 | 2 |
+| 220033 | NORTHEAST HOSPITAL CORPORATION | beverlyhospital.org | held | 3 | 0.00 | 1 | 6 |
+| 220052 | SIGNATURE HEALTHCARE BROCKTON HOSPITAL | signature-healthcare.org | published | 3 | 0.67 | 11 | 6 |
+| 220100 | SOUTH SHORE HOSPITAL | southshorehealth.org | held | 2 | 0.00 | 1 | 5 |
+| 220074 | SOUTHCOAST HOSPITALS GROUP | southcoast.org | published | 2 | 0.67 | 10 | 5 |
 | 229999 | ST. EXAMPLE MEDICAL CENTER | example.org | published | 2 | 0.83 | 9 | 2 |
-| 220008 | STURDY MEMORIAL HOSPITAL | sturdyhealth.org | held | 2 | 0.00 | 1 | 2 |
-| 220116 | TUFTS MEDICAL CENTER | tuftsmedicine.org | published | 2 | 0.67 | 8 | 7 |
-| 220019 | UMASS MEMORIAL HEALTH - HARRINGTON HOSPITAL | billfairly.com | published | 2 | 0.33 | 3 | 4 |
-| 220001 | UMASS MEMORIAL HEALTHALLIANCE HOSPITALS | ummhealth.org | held | 2 | 0.50 | 6 | 5 |
-| 220163 | UMASS MEMORIAL MEDICAL CENTER/UNIVERSITY CAMPUS | ummhealth.org | published | 2 | 0.67 | 7 | 5 |
-| 220105 | WINCHESTER HOSPITAL | winchesterhospital.org | published | 1 | 0.83 | 11 | 7 |
+| 220008 | STURDY MEMORIAL HOSPITAL | sturdyhealth.org | held | 3 | 0.00 | 2 | 3 |
+| 220116 | TUFTS MEDICAL CENTER | tuftsmedicine.org | published | 3 | 0.67 | 9 | 8 |
+| 220019 | UMASS MEMORIAL HEALTH - HARRINGTON HOSPITAL | billfairly.com | published | 3 | 0.33 | 4 | 5 |
+| 220001 | UMASS MEMORIAL HEALTHALLIANCE HOSPITALS | ummhealth.org | held | 3 | 0.50 | 7 | 6 |
+| 220163 | UMASS MEMORIAL MEDICAL CENTER/UNIVERSITY CAMPUS | ummhealth.org | published | 3 | 0.67 | 8 | 6 |
+| 220105 | WINCHESTER HOSPITAL | winchesterhospital.org | published | 2 | 0.83 | 12 | 8 |
