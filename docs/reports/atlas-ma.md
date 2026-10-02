@@ -1,7 +1,7 @@
 # Atlas coverage — MA
 
 Hospitals in registry: 47
-Published sheets: 6 (13%)
+Published sheets: 7 (15%)
 
 | CCN | Hospital | Domain | Status | Version | Completeness | Fields | Sources |
 |---|---|---|---|---|---|---|---|
@@ -16,13 +16,13 @@ Published sheets: 6 (13%)
 | 220060 | BETH ISRAEL DEACONESS HOSPITAL PLYMOUTH | bidplymouth.org | published | 2 | 0.67 | 9 | 8 |
 | 220086 | BETH ISRAEL DEACONESS MEDICAL CENTER | bidmc.org | published | 2 | 0.67 | 10 | 4 |
 | 220031 | BOSTON MEDICAL CENTER | bmc.org | published | 4 | 0.50 | 9 | 4 |
-| 220119 | BRIGHAM AND WOMEN FAULKNER HOSPITAL | addictions.com | none | | | | |
+| 220119 | BRIGHAM AND WOMEN FAULKNER HOSPITAL | massgeneralbrigham.org | held | 1 | 1.00 | 11 | 8 |
 | 220110 | BRIGHAM AND WOMEN'S HOSPITAL | massgeneralbrigham.org | published | 2 | 0.67 | 7 | 7 |
 | 220012 | CAPE COD HOSPITAL | capecodhealth.org | held | 1 | 0.00 | 0 | 1 |
 | 220015 | COOLEY DICKINSON HOSPITAL INC,THE | cooleydickinson.org | none | | | | |
 | 220084 | EMERSON HOSPITAL - | emersonhealth.org | held | 2 | 0.67 | 9 | 5 |
-| 221302 | FAIRVIEW HOSPITAL | findhelp.org | held | 1 | 0.00 | 0 | 1 |
-| 220135 | FALMOUTH HOSPITAL | networkofcare.org | held | 1 | 0.00 | 0 | 4 |
+| 221302 | FAIRVIEW HOSPITAL | berkshirehealthsystems.org | published | 2 | 0.50 | 9 | 4 |
+| 220135 | FALMOUTH HOSPITAL | capecodhealth.org | held | 1 | 0.00 | 0 | 4 |
 | 220095 | HEYWOOD HOSPITAL - | heywood.org | held | 1 | 0.00 | 0 | 1 |
 | 220024 | HOLYOKE MEDICAL CENTER |  | none | | | | |
 | 220171 | LAHEY HOSPITAL & MEDICAL CENTER, BURLINGTON |  | none | | | | |
