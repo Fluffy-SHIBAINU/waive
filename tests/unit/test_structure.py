@@ -88,6 +88,17 @@ def test_draft_to_sheet_casts_and_skips_bad_fields():
     assert verify_sheet(sheet, {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT}).ok
 
 
+def test_null_values_and_missing_quotes_are_tolerated():
+    draft = SheetDraft(
+        free_care_max_fpl=DraftField(value=None, quote=None, source_id=None),
+        phone=DraftField(value="617-555-0100", quote=None, source_id=SAMPLE_SOURCE_ID),
+        eca_wait_days=field(120, "will not begin extraordinary collection actions before 120 days"),
+    )
+    sheet, skipped = draft_to_sheet(draft, SAMPLE.hospital, [SAMPLE.sources[0]], TODAY)
+    assert [path for path, _ in sheet.field_paths()] == ["collections.eca_wait_days"]
+    assert skipped == ["contacts.phone: missing quote or source_id"]
+
+
 class FakeAI:
     def __init__(self, draft):
         self.draft = draft

@@ -37,9 +37,11 @@ MAX_DOC_CHARS = 40_000
 
 
 class DraftField(BaseModel):
-    value: Any
-    quote: str
-    source_id: str
+    """Models often encode "unknown" as nulls inside the object rather than a null field."""
+
+    value: Any = None
+    quote: str | None = None
+    source_id: str | None = None
 
 
 class SheetDraft(BaseModel):
@@ -222,7 +224,10 @@ def draft_to_sheet(
     for name, (section, field_name, cast) in FIELD_MAP.items():
         draft_field: DraftField | None = getattr(draft, name)
         path = f"{section}.{field_name}"
-        if draft_field is None:
+        if draft_field is None or draft_field.value is None:
+            continue
+        if not draft_field.quote or not draft_field.source_id:
+            skipped.append(f"{path}: missing quote or source_id")
             continue
         if draft_field.source_id not in known:
             skipped.append(f"{path}: unknown source_id {draft_field.source_id}")
