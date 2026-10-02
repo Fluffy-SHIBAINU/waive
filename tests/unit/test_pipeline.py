@@ -4,7 +4,7 @@ from waive.ai.client import AIOutputError
 from waive.atlas import repo
 from waive.atlas.pipeline import build_hospital, build_state, coverage_report
 from waive.atlas.samples import SAMPLE_POLICY_TEXT, SAMPLE_SOURCE_ID
-from waive.atlas.schema import SheetStatus
+from waive.atlas.schema import SheetStatus, SourceDoc, SourceKind
 from waive.atlas.structure import DraftField, SheetDraft
 from waive.atlas.tavily_gateway import ExtractedPage, SearchHit
 from waive.db import init_db, make_engine, session_scope
@@ -139,6 +139,35 @@ def test_build_hospital_survives_a_failed_cross_check():
         assert "cross-check model gave no usable output" in result.notes
         kinds = sorted(item.kind for item in repo.open_review_items(session, "229999"))
         assert kinds == ["crosscheck_failed", "verification"]
+
+
+def test_reuse_sources_leaves_state_overlay_documents_out_of_the_structurer():
+    class RecordingAI(FakeAI):
+        prompts: list[str] = []
+
+        def complete_json(self, role, messages, schema, *, phi, purpose, max_tokens=2000):
+            self.prompts.append(messages[1]["content"])
+            return super().complete_json(role, messages, schema, phi=phi, purpose=purpose)
+
+    engine = make_engine_with_hospital()
+    with session_scope(engine) as session:
+        build_hospital(session, FakeGateway(), FakeAI(), "229999", TODAY)
+        overlay = SourceDoc(
+            id="state-mass-abc123",
+            kind=SourceKind.STATE_REPOSITORY,
+            url="https://www.mass.gov/doc/senior-guide/download",
+            title="download",
+            fetched_on=TODAY,
+            sha256="0" * 64,
+        )
+        repo.save_source(session, overlay, "Senior guide to MassHealth. " * 5000, "229999")
+        result = build_hospital(
+            session, FakeGateway(), RecordingAI(), "229999", TODAY, reuse_sources=True
+        )
+        assert result.outcome == "published"
+        assert RecordingAI.prompts and all("state-mass" not in p for p in RecordingAI.prompts)
+        sheet, _ = repo.latest_sheet(session, "229999")
+        assert [s.kind for s in sheet.sources] == [SourceKind.HOSPITAL_WEB]
 
 
 def test_build_state_skips_hospitals_with_sheets_and_reports():
