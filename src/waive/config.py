@@ -31,3 +31,5 @@ class Settings(BaseSettings):
     token_factory_usd_cap: Decimal = Decimal("15")
     ledger_path: Path = Path("var/usage.jsonl")
     database_url: str = "sqlite:///var/waive.db"
+    vault_key: SecretStr | None = None
+    token_secret: SecretStr | None = None

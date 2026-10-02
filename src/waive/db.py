@@ -112,6 +112,22 @@ class ReviewItemRow(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
 
 
+class CaseRow(Base):
+    __tablename__ = "cases"
+
+    id: Mapped[str] = mapped_column(String(32), primary_key=True)
+    state: Mapped[str] = mapped_column(String(2))
+    ccn: Mapped[str | None] = mapped_column(String(12), nullable=True, index=True)
+    status: Mapped[str] = mapped_column(String(20), default="new")
+    token_generation: Mapped[int] = mapped_column(Integer, default=1)
+    sealed: Mapped[str | None] = mapped_column(Text, nullable=True)
+    prediction: Mapped[dict[str, Any] | None] = mapped_column(JSON, nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=utcnow, onupdate=utcnow
+    )
+
+
 def make_engine(url: str) -> Engine:
     if url.endswith(":memory:"):
         return create_engine(url, connect_args={"check_same_thread": False}, poolclass=StaticPool)

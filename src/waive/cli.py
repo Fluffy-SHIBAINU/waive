@@ -14,6 +14,7 @@ from waive.atlas.publish import export_state
 from waive.atlas.registry import seed_state
 from waive.atlas.tavily_gateway import make_tavily_gateway
 from waive.cases.synth import generate_corpus
+from waive.cases.vault import new_key
 from waive.config import Settings
 from waive.db import init_db, make_engine, session_scope
 from waive.doctor import run_checks
@@ -51,6 +52,13 @@ def doctor(
     _, tf_usd = governor.summary()["token_factory"]
     console.print(f"Spend so far: {tavily_credits} Tavily credits, ${tf_usd:.4f} Token Factory")
     raise typer.Exit(code=1 if any(check.status == "fail" for check in checks) else 0)
+
+
+@app.command()
+def keygen() -> None:
+    """Print fresh secrets for .env (never commit them)."""
+    console.print(f"WAIVE_VAULT_KEY={new_key()}")
+    console.print(f"WAIVE_TOKEN_SECRET={new_key()}{new_key()}")
 
 
 atlas_app = typer.Typer(no_args_is_help=True, help="Build and inspect the hospital atlas.")
