@@ -64,6 +64,40 @@ def value_in_quote(value: Any, quote: str) -> bool:
     return True
 
 
+def matched_span(quote: str, document_text: str) -> str | None:
+    """The quote itself if the source contains it; otherwise its longest sentence that does."""
+    if quote_found(quote, document_text):
+        return quote.strip()
+    sentences = [s.strip() for s in re.split(r"(?<=[.;:])\s+|\n+", quote) if s.strip()]
+    candidates = [
+        s for s in sorted(sentences, key=len, reverse=True) if quote_found(s, document_text)
+    ]
+    return candidates[0] if candidates else None
+
+
+def trim_quotes(sheet: ProcedureSheet, documents: dict[str, str]) -> ProcedureSheet:
+    """Replace each documented quote with the span of it that the source actually contains.
+
+    Models sometimes stitch two passages or paraphrase an edge; keeping the verified sentence
+    preserves grounding and lets verify_sheet apply its exact-quote rule to real text."""
+    updates: dict[str, Any] = {}
+    for path, cited in sheet.field_paths():
+        if cited.layer is Layer.REPORTED or not cited.quote:
+            continue
+        text = documents.get(cited.source_id or "")
+        if text is None:
+            continue
+        span = matched_span(cited.quote, text)
+        if span is None or span == cited.quote:
+            continue
+        section_name, field_name = path.split(".")
+        section = updates.get(section_name, getattr(sheet, section_name))
+        updates[section_name] = section.model_copy(
+            update={field_name: cited.model_copy(update={"quote": span})}
+        )
+    return sheet.model_copy(update=updates) if updates else sheet
+
+
 @dataclass
 class VerificationReport:
     accepted: list[str] = field(default_factory=list)
