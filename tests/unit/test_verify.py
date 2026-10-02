@@ -79,5 +79,12 @@ def test_trim_quotes_keeps_the_sentence_that_is_really_in_the_source():
     assert "invented" not in trimmed.eligibility.free_care_max_fpl.quote
 
 
+def test_markdown_links_and_bold_do_not_break_quotes():
+    document = (
+        "income is below 301% of the**[Federal Poverty Guidelines](https://x.gov/fpl)** per year."
+    )
+    assert quote_found("income is below 301% of the Federal Poverty Guidelines", document)
+
+
 def test_normalize_collapses_whitespace_and_case():
     assert normalize("  Free CARE \n here ") == "free care here"

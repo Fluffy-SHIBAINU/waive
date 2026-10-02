@@ -22,8 +22,12 @@ _REPLACEMENTS = {
 }
 
 
+_MARKDOWN_LINK = re.compile(r"\[([^\]]+)\]\([^)]*\)")
+
+
 def normalize(text: str) -> str:
     text = unicodedata.normalize("NFKC", text)
+    text = _MARKDOWN_LINK.sub(r"\1", text).replace("**", "").replace("__", "")
     for old, new in _REPLACEMENTS.items():
         text = text.replace(old, new)
     return re.sub(r"\s+", " ", text).strip().lower()
