@@ -98,6 +98,7 @@ def test_build_hospital_holds_sheet_on_critical_conflict():
             session, FakeGateway(), FakeAI(free_limit_for_fast="300"), "229999", TODAY
         )
         assert result.outcome == "held"
+        assert "critical fields disagree: eligibility.free_care_max_fpl" in result.notes
         kinds = sorted(item.kind for item in repo.open_review_items(session, "229999"))
         assert kinds == ["conflict", "verification"]
 
@@ -123,6 +124,9 @@ def test_presumptive_only_conflict_publishes_without_that_field():
         assert sheet.programs.presumptive is None
         assert sheet.eligibility.free_care_max_fpl is not None
         assert any(item.kind == "conflict" for item in repo.open_review_items(session, "229999"))
+        # The tolerated conflict is noted as such, not as a critical disagreement (2.8f).
+        assert "presumptive programs disagree; published without them" in result.notes
+        assert not any(note.startswith("critical fields disagree") for note in result.notes)
 
 
 def test_build_hospital_survives_a_failed_cross_check():
