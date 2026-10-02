@@ -34,6 +34,51 @@ Rules:
 10. Reply with only the JSON object, no commentary."""
 
 MAX_DOC_CHARS = 40_000
+PASSAGE_HEAD_CHARS = 6_000
+PASSAGE_RADIUS = 1_500
+PASSAGE_SEPARATOR = "\n[…]\n"
+# Most specific first: a credit and collection policy says "collection" on every page, so the
+# income table near its end would never be reached if windows were added in document order.
+PASSAGE_KEYWORDS = (
+    re.compile(r"poverty|fpl|fpg|free care|sliding|240 days|120 days", re.IGNORECASE),
+    re.compile(r"charity|discount|eligib", re.IGNORECASE),
+    re.compile(r"collection|application|apply", re.IGNORECASE),
+)
+
+
+def _merge_spans(spans: list[tuple[int, int]]) -> list[tuple[int, int]]:
+    merged: list[tuple[int, int]] = []
+    for start, end in sorted(spans):
+        if merged and start <= merged[-1][1]:
+            merged[-1] = (merged[-1][0], max(merged[-1][1], end))
+        else:
+            merged.append((start, end))
+    return merged
+
+
+def select_passages(text: str, limit: int = MAX_DOC_CHARS) -> str:
+    """The parts of a long document worth showing the structurer: its head, then windows around
+    financial-assistance keywords until `limit`, as verbatim slices joined by a marker so the
+    quotes the model copies still verify against the stored full text."""
+    if len(text) <= limit:
+        return text
+    spans = [(0, min(PASSAGE_HEAD_CHARS, len(text)))]
+    budget = limit - spans[0][1]
+    for pattern in PASSAGE_KEYWORDS:
+        for match in pattern.finditer(text):
+            start = max(0, match.start() - PASSAGE_RADIUS)
+            end = min(len(text), match.end() + PASSAGE_RADIUS)
+            covered = sum(max(0, min(end, e) - max(start, s)) for s, e in spans)
+            cost = end - start - covered
+            if cost == 0:
+                continue
+            if not any(start <= e and s <= end for s, e in spans):
+                cost += len(PASSAGE_SEPARATOR)  # a new, separate passage
+            if cost > budget:
+                continue
+            spans = _merge_spans([*spans, (start, end)])
+            budget -= cost
+    return PASSAGE_SEPARATOR.join(text[start:end] for start, end in spans)
 
 
 class DraftField(BaseModel):
@@ -78,7 +123,7 @@ def build_messages(
     parts = [f"Hospital: {hospital.name}, {hospital.city}, {hospital.state}.", ""]
     for doc, text in sources:
         parts.append(f"=== SOURCE id={doc.id} title={doc.title!r} url={doc.url or ''} ===")
-        parts.append(text[:MAX_DOC_CHARS])
+        parts.append(select_passages(text, limit=MAX_DOC_CHARS))
         parts.append("=== END SOURCE ===")
         parts.append("")
     parts.append("Fill the JSON schema from these sources.")

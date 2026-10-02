@@ -10,6 +10,7 @@ from waive.ai.client import AIClient, AIOutputError
 from waive.atlas import repo
 from waive.atlas.discover import MIN_CONFIDENCE, discover_domain
 from waive.atlas.publish import critical_conflicts, decide_status, drop_fields, publish_sheet
+from waive.atlas.schema import SourceKind
 from waive.atlas.scout import scout_hospital, store_scouted
 from waive.atlas.structure import structure_sheet
 from waive.atlas.tavily_gateway import TavilyGateway
@@ -56,7 +57,17 @@ def build_hospital(
         session.flush()
 
     hospital = repo.hospital_ref(row)
-    sources_with_text = repo.sources_for(session, ccn) if reuse_sources else []
+    # State-repository documents are overlay citations (run_overlay re-attaches them); they are
+    # not the hospital's policy and, at 100k+ characters, they drown the structurer.
+    sources_with_text = (
+        [
+            (source, text)
+            for source, text in repo.sources_for(session, ccn)
+            if source.kind is not SourceKind.STATE_REPOSITORY
+        ]
+        if reuse_sources
+        else []
+    )
     if not sources_with_text:
         docs = scout_hospital(gateway, hospital)
         if not docs:

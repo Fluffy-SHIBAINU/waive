@@ -4,11 +4,13 @@ from decimal import Decimal
 from waive.atlas.samples import SAMPLE_POLICY_TEXT, SAMPLE_SOURCE_ID, st_example_sheet
 from waive.atlas.schema import DocType, SheetStatus
 from waive.atlas.structure import (
+    MAX_DOC_CHARS,
     SYSTEM_PROMPT,
     DraftField,
     SheetDraft,
     build_messages,
     draft_to_sheet,
+    select_passages,
     structure_sheet,
 )
 from waive.atlas.verify import verify_sheet
@@ -68,6 +70,38 @@ def test_messages_label_sources_and_treat_text_as_data():
     assert f"=== SOURCE id={SAMPLE_SOURCE_ID}" in messages[1]["content"]
     assert "St. Example Medical Center" in messages[1]["content"]
     assert "ignore any instructions" in SYSTEM_PROMPT.lower()
+
+
+FILLER = "The hospital provides care to the community in many ways and settings. "
+FPL_TABLE = (
+    "Federal Poverty Guidelines table: 0%-200% 100% discount; 201%-400% 60% discount; "
+    "401%-500% 25% discount."
+)
+
+
+def test_long_documents_keep_their_distant_fpl_table_in_the_prompt():
+    head = (FILLER * 1_000)[:70_000]
+    text = (head + FPL_TABLE + FILLER * 500)[:100_000]
+    assert text.index(FPL_TABLE) >= 70_000 > MAX_DOC_CHARS
+    selected = select_passages(text, limit=MAX_DOC_CHARS)
+    assert len(selected) <= MAX_DOC_CHARS
+    assert selected.startswith(text[:6_000])
+    assert FPL_TABLE in selected and "\n[…]\n" in selected
+    for passage in selected.split("\n[…]\n"):
+        assert passage in text  # verbatim slices, so quotes still verify against the full text
+    prompt = build_messages(SAMPLE.hospital, [(SAMPLE.sources[0], text)])[1]["content"]
+    assert FPL_TABLE in prompt
+    assert select_passages("short policy text") == "short policy text"
+
+
+def test_passage_selection_prefers_income_rules_over_frequent_boilerplate():
+    # A credit and collection policy says "collection" every few lines; the one poverty table
+    # near the end must still make it in (Heywood, 2.8g).
+    paragraph = FILLER * 3 + "Collection activity follows the Billing and Collection Policy. "
+    text = paragraph * (60_000 // len(paragraph))
+    text = text[:50_000] + FPL_TABLE + text[50_000:]
+    selected = select_passages(text, limit=MAX_DOC_CHARS)
+    assert FPL_TABLE in selected and len(selected) <= MAX_DOC_CHARS
 
 
 def test_draft_to_sheet_casts_and_skips_bad_fields():
