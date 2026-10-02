@@ -646,7 +646,7 @@
     "website_domain": "berkshirehealthsystems.org",
     "system": null
    },
-   "version": 1,
+   "version": 2,
    "status": "held",
    "eligibility": {
     "free_care_max_fpl": null,
@@ -655,17 +655,17 @@
      "value": false,
      "layer": "documented",
      "quote": "Eligibility for these programs is determined by reviewing, among other items, an individual\u2019s household income, assets, family size, expenses, and medical needs.",
-     "source_id": "fap-e20a42d4dc6dd54b",
+     "source_id": "fap-2f3a6b756ffb2c76",
      "checked_on": "2026-10-02",
      "confidence": 1.0,
      "support_count": 0
     },
     "residency": null,
     "insured_patients_covered": {
-     "value": true,
+     "value": false,
      "layer": "documented",
-     "quote": "Underinsured Patient: A patient with some insurance or other third-party source of payment, whose out-of-pocket expenses exceed his/her ability to pay.",
-     "source_id": "fap-e20a42d4dc6dd54b",
+     "quote": "While BHS assists patients in obtaining health coverage through public programs and financial assistance through other sources whenever appropriate including BHS, BHS may also be required to appropriately bill for and collect specific payments, which may include but not be limited to, applicable co-payments, deductibles, deposits, and other amounts for which the patient agrees to be responsible.",
+     "source_id": "fap-2f3a6b756ffb2c76",
      "checked_on": "2026-10-02",
      "confidence": 1.0,
      "support_count": 0
@@ -677,12 +677,13 @@
     "presumptive": {
      "value": [
       "MassHealth",
-      "Premium Assistance Payment Program Operated by the Health Connector",
-      "Children\u2019s Medical Security Plan"
+      "Children's Medical Security Plan",
+      "Emergency Aid to the Elderly, Disabled, and Children (EAEDC)",
+      "Premium Assistance Payment Program operated by the Health Connector"
      ],
      "layer": "documented",
-     "quote": "Presumptive eligibility may be granted to patients based on their eligibility for other programs or life circumstances, such as being homeless or incarcerated.",
-     "source_id": "fap-e20a42d4dc6dd54b",
+     "quote": "Patients with self-pay obligations may be eligible for assistance through participation in:",
+     "source_id": "fap-2f3a6b756ffb2c76",
      "checked_on": "2026-10-02",
      "confidence": 1.0,
      "support_count": 0
@@ -690,24 +691,20 @@
     "state_programs": null
    },
    "apply": {
-    "form_url": {
-     "value": "https://www.berkshirehealthsystems.org/FinancialAssistance",
-     "layer": "documented",
-     "quote": "More information about this policy and BHS\u2019s financial assistance program, including the application form and a plain language summary of the financial assistance policy, are available on Berkshire Health Systems\u2019 website: https://www.berkshirehealthsystems.org/FinancialAssistance",
-     "source_id": "fap-e20a42d4dc6dd54b",
-     "checked_on": "2026-10-02",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "form_url": null,
     "form_version": null,
     "documents_required": {
      "value": [
       "proof_of_income",
-      "medicaid_denial"
+      "tax_return",
+      "pay_stubs",
+      "other",
+      "bank_statements",
+      "other"
      ],
      "layer": "documented",
-     "quote": "Provide verification of all household income.\n3. Provide verification of application for any state or governmental medical assistance program for which they may qualify (for example, state Medicaid)",
-     "source_id": "fap-e20a42d4dc6dd54b",
+     "quote": "Documentation Required: Please income documentation that verifies this income: pay stubs, federal income tax return, W2 statements, profit & loss statement, payroll report, or other proof. We cannot accept deposit amounts on a bank statement as proof of income.",
+     "source_id": "application-e8c9581d2208756d",
      "checked_on": "2026-10-02",
      "confidence": 1.0,
      "support_count": 0
@@ -720,11 +717,11 @@
       },
       {
        "kind": "mail",
-       "detail": "by postal mail to: Advocacy for Access of BMC Attn: Financial Assistance 510 North St Ste 8 Pittsfield MA 01201"
+       "detail": "Return the completed application and verification documents by ... postal mail to: Advocacy for Access of BMC Attn: Financial Assistance 510 North St Ste 8 Pittsfield MA 01201"
       }
      ],
      "layer": "documented",
-     "quote": "Return the completed application and verification documents by email to fapinfo@bhs1.org or by postal mail to:",
+     "quote": "Return the completed application and verification documents by email to fapinfo@bhs1.org or by postal mail to: Advocacy for Access of BMC Attn: Financial Assistance 510 North St Ste 8 Pittsfield MA 01201",
      "source_id": "application-e8c9581d2208756d",
      "checked_on": "2026-10-02",
      "confidence": 1.0,
@@ -734,7 +731,7 @@
      "value": 240,
      "layer": "documented",
      "quote": "Applications for financial assistance must be received within 240 days from the date of the first post-discharge billing statement for the care provided.",
-     "source_id": "fap-e20a42d4dc6dd54b",
+     "source_id": "fap-2f3a6b756ffb2c76",
      "checked_on": "2026-10-02",
      "confidence": 1.0,
      "support_count": 0
@@ -743,23 +740,15 @@
     "decision_days_reported": null
    },
    "collections": {
-    "eca_wait_days": {
-     "value": 120,
-     "layer": "documented",
-     "quote": "BHS will refrain from initiating any extraordinary collection actions against a patient for a period of at least 120 days from the date BHS provides the first post-discharge billing statement for the care;",
-     "source_id": "billing-51dbe1e7a26a681c",
-     "checked_on": "2026-10-02",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "eca_wait_days": null,
     "collection_agencies": null
    },
    "contacts": {
     "phone": {
      "value": "413-447-3139",
      "layer": "documented",
-     "quote": "information and assistance regarding eligibility for public assistance programs and/or coverage through BHS\u2019s financial assistance program may be obtained by contacting the Supervisor of Advocacy for Access for Berkshire Health Systems at 413-447-3139, Monday-Friday, 8:00 a.m. to 4:00 p.m.",
-     "source_id": "fap-e20a42d4dc6dd54b",
+     "quote": "More information about this policy and BHS\u2019s financial assistance program, including the application form and a plain language summary of the financial assistance policy, are available on Berkshire Health Systems\u2019 website:",
+     "source_id": "fap-2f3a6b756ffb2c76",
      "checked_on": "2026-10-02",
      "confidence": 1.0,
      "support_count": 0
@@ -767,8 +756,8 @@
     "hours": {
      "value": "Monday-Friday, 8:00 a.m. to 4:00 p.m.",
      "layer": "documented",
-     "quote": "information and assistance regarding eligibility for public assistance programs and/or coverage through BHS\u2019s financial assistance program may be obtained by contacting the Supervisor of Advocacy for Access for Berkshire Health Systems at 413-447-3139, Monday-Friday, 8:00 a.m. to 4:00 p.m.",
-     "source_id": "fap-e20a42d4dc6dd54b",
+     "quote": "to 4:00 p.m.",
+     "source_id": "fap-2f3a6b756ffb2c76",
      "checked_on": "2026-10-02",
      "confidence": 1.0,
      "support_count": 0
@@ -784,8 +773,8 @@
       "Berkshire Faculty Services"
      ],
      "layer": "documented",
-     "quote": "All patients who receive services from Berkshire Medical Center (\u201cBMC\u201d), Fairview Hospital (\u201cFVH\u201d), North Adams Regional Hospital (\u201cNARH\u201d), and Berkshire Faculty Services (\u201cBFS\u201d). This policy jointly refers to these facilities as Berkshire Health Systems.",
-     "source_id": "fap-e20a42d4dc6dd54b",
+     "quote": "This policy jointly refers to these facilities as Berkshire Health Systems (\u201cBHS\u201d).",
+     "source_id": "fap-2f3a6b756ffb2c76",
      "checked_on": "2026-10-02",
      "confidence": 1.0,
      "support_count": 0
@@ -793,15 +782,6 @@
     "provider_list_url": null
    },
    "sources": [
-    {
-     "id": "fap-2f3a6b756ffb2c76",
-     "kind": "hospital_web",
-     "url": "https://assets.berkshirehealthsystems.org/wp-content/uploads/2025/04/15133646/2025_BHS_Financial_Assistance_Policy-English_ezdd94.pdf",
-     "title": "Financial Assistance Policy",
-     "fetched_on": "2026-10-02",
-     "sha256": "2f3a6b756ffb2c76d223ee745d7daeba1ed63977adfe45768d00ab8ff5e17883",
-     "effective_date": null
-    },
     {
      "id": "application-e8c9581d2208756d",
      "kind": "hospital_web",
@@ -818,6 +798,15 @@
      "title": "Berkshire Health Systems Credit and Collections Policy",
      "fetched_on": "2026-10-02",
      "sha256": "51dbe1e7a26a681cd52fc013819e274255c4e36b2f0411cd1b3ea497f62c0839",
+     "effective_date": null
+    },
+    {
+     "id": "fap-2f3a6b756ffb2c76",
+     "kind": "hospital_web",
+     "url": "https://assets.berkshirehealthsystems.org/wp-content/uploads/2025/04/15133646/2025_BHS_Financial_Assistance_Policy-English_ezdd94.pdf",
+     "title": "Financial Assistance Policy",
+     "fetched_on": "2026-10-02",
+     "sha256": "2f3a6b756ffb2c76d223ee745d7daeba1ed63977adfe45768d00ab8ff5e17883",
      "effective_date": null
     },
     {
@@ -2010,6 +1999,153 @@
      "fetched_on": "2026-10-02",
      "sha256": "c22db6b00de50e8f643cf82cb5f628e102b8ef05d09721559cc545b7ef3660b0",
      "effective_date": null
+    }
+   ],
+   "accuracy": null
+  },
+  {
+   "hospital": {
+    "ccn": "229999",
+    "name": "St. Example Medical Center",
+    "city": "Boston",
+    "state": "MA",
+    "zip": "02118",
+    "phone": "617-555-0100",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "example.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "published",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "250",
+     "layer": "documented",
+     "quote": "household income at or below 250% of the Federal Poverty Guidelines are eligible for free care",
+     "source_id": "src-st-example-fap",
+     "checked_on": "2026-10-02",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "250",
+       "max_fpl_inclusive": "400",
+       "discount_percent": 60
+      }
+     ],
+     "layer": "documented",
+     "quote": "above 250% and at or below 400% of the Federal Poverty Guidelines receive a 60% discount",
+     "source_id": "src-st-example-fap",
+     "checked_on": "2026-10-02",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "asset_test": null,
+    "residency": null,
+    "insured_patients_covered": null,
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": {
+     "value": [
+      "MassHealth",
+      "SNAP"
+     ],
+     "layer": "documented",
+     "quote": "Patients enrolled in MassHealth or SNAP are presumptively eligible for free care",
+     "source_id": "src-st-example-fap",
+     "checked_on": "2026-10-02",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "photo_id",
+      "proof_of_income"
+     ],
+     "layer": "documented",
+     "quote": "Applicants must provide a photo ID and one proof of income",
+     "source_id": "src-st-example-fap",
+     "checked_on": "2026-10-02",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "Patient Financial Services, 1 Example Way, Boston, MA 02118"
+      },
+      {
+       "kind": "fax",
+       "detail": "617-555-0199"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Applications may be mailed to Patient Financial Services, 1 Example Way, Boston, MA 02118, or faxed to 617-555-0199",
+     "source_id": "src-st-example-fap",
+     "checked_on": "2026-10-02",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": {
+     "value": 240,
+     "layer": "documented",
+     "quote": "Applications are accepted up to 240 days after the first post-discharge billing statement",
+     "source_id": "src-st-example-fap",
+     "checked_on": "2026-10-02",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days": null,
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": {
+     "value": 120,
+     "layer": "documented",
+     "quote": "will not begin extraordinary collection actions before 120 days after the first post-discharge billing statement",
+     "source_id": "src-st-example-fap",
+     "checked_on": "2026-10-02",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "617-555-0100",
+     "layer": "documented",
+     "quote": "Questions: call 617-555-0100",
+     "source_id": "src-st-example-fap",
+     "checked_on": "2026-10-02",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": null,
+    "languages": null
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null
+   },
+   "sources": [
+    {
+     "id": "src-st-example-fap",
+     "kind": "hospital_web",
+     "url": "https://www.example.org/st-example/financial-assistance.pdf",
+     "title": "Financial Assistance Policy",
+     "fetched_on": "2026-10-02",
+     "sha256": "ef3da61910a1887615ca24fc0f9aedcfe28978c4c5e0cee810d3e753a8b19b20",
+     "effective_date": "2026-03-01"
     }
    ],
    "accuracy": null

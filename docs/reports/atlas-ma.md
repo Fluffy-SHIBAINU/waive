@@ -1,7 +1,7 @@
 # Atlas coverage — MA
 
-Hospitals in registry: 46
-Published sheets: 3 (7%)
+Hospitals in registry: 47
+Published sheets: 4 (9%)
 
 | CCN | Hospital | Domain | Status | Version | Completeness | Fields | Sources |
 |---|---|---|---|---|---|---|---|
@@ -11,7 +11,7 @@ Published sheets: 3 (7%)
 | 220077 | BAYSTATE MEDICAL CENTER | baystatehealth.org | held | 1 | 0.00 | 0 | 3 |
 | 220065 | BAYSTATE NOBLE HOSPITAL | baystatehealth.org | held | 1 | 0.00 | 0 | 4 |
 | 220030 | BAYSTATE WING HOSPITAL | baystatehealth.org | held | 2 | 0.00 | 0 | 4 |
-| 220046 | BERKSHIRE MEDICAL CENTER | berkshirehealthsystems.org | held | 1 | 0.67 | 11 | 4 |
+| 220046 | BERKSHIRE MEDICAL CENTER | berkshirehealthsystems.org | held | 2 | 0.50 | 9 | 4 |
 | 220083 | BETH ISRAEL DEACONESS HOSPITAL - NEEDHAM | bidneedham.org | held | 1 | 0.17 | 4 | 4 |
 | 220060 | BETH ISRAEL DEACONESS HOSPITAL PLYMOUTH | bidplymouth.org | held | 1 | 0.00 | 0 | 4 |
 | 220086 | BETH ISRAEL DEACONESS MEDICAL CENTER | bidmc.org | published | 2 | 0.67 | 10 | 4 |
@@ -45,6 +45,7 @@ Published sheets: 3 (7%)
 | 220052 | SIGNATURE HEALTHCARE BROCKTON HOSPITAL |  | none | | | | |
 | 220100 | SOUTH SHORE HOSPITAL |  | none | | | | |
 | 220074 | SOUTHCOAST HOSPITALS GROUP |  | none | | | | |
+| 229999 | ST. EXAMPLE MEDICAL CENTER | example.org | published | 1 | 0.83 | 8 | 1 |
 | 220008 | STURDY MEMORIAL HOSPITAL |  | none | | | | |
 | 220116 | TUFTS MEDICAL CENTER |  | none | | | | |
 | 220019 | UMASS MEMORIAL HEALTH - HARRINGTON HOSPITAL |  | none | | | | |
