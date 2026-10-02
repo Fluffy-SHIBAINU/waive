@@ -30,3 +30,4 @@ class Settings(BaseSettings):
     tavily_credit_cap: int = 1000
     token_factory_usd_cap: Decimal = Decimal("15")
     ledger_path: Path = Path("var/usage.jsonl")
+    database_url: str = "sqlite:///var/waive.db"
