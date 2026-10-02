@@ -113,7 +113,7 @@ class Programs(BaseModel):
 
 
 class SubmitMethod(BaseModel):
-    kind: Literal["mail", "fax", "email", "portal", "in_person"]
+    kind: Literal["mail", "fax", "email", "portal", "in_person", "phone"]
     detail: str
 
 

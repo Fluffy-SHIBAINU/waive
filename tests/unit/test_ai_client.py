@@ -158,6 +158,10 @@ def test_nemotron_requests_disable_thinking_but_other_models_do_not(tmp_path):
     vision_body = json.loads(route.calls[1].request.content)
     assert nemotron_body["chat_template_kwargs"] == {"enable_thinking": False}
     assert "chat_template_kwargs" not in vision_body
+    assert nemotron_body["response_format"] == {"type": "json_object"}
+    system = nemotron_body["messages"][0]
+    assert system["role"] == "system" and '"percent"' in system["content"]
+    assert nemotron_body["messages"][1] == USER[0]
 
 
 @respx.mock

@@ -1,5 +1,6 @@
 """Budget-aware wrapper around Nebius Token Factory (OpenAI-compatible API)."""
 
+import json
 import re
 from decimal import Decimal
 from typing import Any, TypeVar
@@ -41,6 +42,26 @@ class AIOutputError(RuntimeError):
 def estimate_usd(model: str, prompt_tokens: int, completion_tokens: int) -> Decimal:
     price_in, price_out = PRICES_PER_MILLION.get(model, FALLBACK_PRICE)
     return (price_in * prompt_tokens + price_out * completion_tokens) / Decimal(1_000_000)
+
+
+def schema_hint(schema: type[BaseModel]) -> str:
+    compact = json.dumps(schema.model_json_schema(), separators=(",", ":"))
+    return (
+        "Reply with one JSON object that matches this JSON Schema exactly. Use only these "
+        f"property names; use null for anything the input does not state.\n{compact}"
+    )
+
+
+def with_schema_hint(
+    messages: list[dict[str, Any]], schema: type[BaseModel]
+) -> list[dict[str, Any]]:
+    hint = schema_hint(schema)
+    conversation = [dict(message) for message in messages]
+    if conversation and conversation[0].get("role") == "system":
+        conversation[0]["content"] = f"{conversation[0]['content']}\n\n{hint}"
+    else:
+        conversation.insert(0, {"role": "system", "content": hint})
+    return conversation
 
 
 def request_options(model: str) -> dict[str, Any]:
@@ -108,7 +129,7 @@ class AIClient:
                 "Set WAIVE_ZDR_CONFIRMED=true after enabling it for Token Factory."
             )
         model = self.model_for(role)
-        conversation = list(messages)
+        conversation = with_schema_hint(messages, schema)
         last_error: Exception | None = None
         for _attempt in range(2):
             self._governor.ensure_token_factory()
@@ -117,6 +138,7 @@ class AIClient:
                 messages=conversation,
                 temperature=0,
                 max_tokens=max_tokens,
+                response_format={"type": "json_object"},
                 **request_options(model),
             )
             usage = response.usage
