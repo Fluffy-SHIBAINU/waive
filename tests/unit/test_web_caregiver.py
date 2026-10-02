@@ -35,6 +35,9 @@ def test_create_case_shows_both_links_and_review_works():
     approved = client.post(f"{caregiver}/approve", follow_redirects=True)
     assert "Approved" in approved.text and "Download the packet" in approved.text
 
+    pdf = client.get(f"{caregiver}/packet.pdf")
+    assert pdf.status_code == 200 and pdf.content[:5] == b"%PDF-"
+
     senior_token = senior.rsplit("/", 1)[1]
     assert client.post(f"/c/{senior_token}/approve").status_code == 403
 

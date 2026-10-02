@@ -4,9 +4,10 @@ from datetime import date
 from decimal import Decimal, InvalidOperation
 
 from fastapi import APIRouter, Form, Request
-from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi.responses import HTMLResponse, RedirectResponse, Response
 
 from waive.atlas import repo
+from waive.cases.packet import build_packet, packet_data
 from waive.cases.service import (
     approve,
     authorize,
@@ -125,3 +126,21 @@ def caregiver_delete(request: Request, token: str) -> HTMLResponse:
         row = authorize(ctx, token, "caregiver")
         delete_case(ctx, row.id)
     return render(request, "home.html", notice="The case and all its personal data were deleted.")
+
+
+@router.get("/c/{token}/packet.pdf")
+def caregiver_packet(request: Request, token: str) -> Response:
+    deps = deps_of(request)
+    with session_scope(deps.engine) as session:
+        ctx = deps.context(session)
+        row = authorize(ctx, token, "caregiver")
+        shown = view(ctx, row.id)
+        found = repo.latest_sheet(session, row.ccn) if row.ccn else None
+        if found is None or shown.result is None:
+            raise KeyError("packet not ready")
+        pdf = build_packet(packet_data(shown, found[0], ctx.today))
+    return Response(
+        pdf,
+        media_type="application/pdf",
+        headers={"Content-Disposition": 'attachment; filename="waive-application.pdf"'},
+    )
