@@ -1,5 +1,6 @@
 from datetime import date
 
+from waive.ai.client import AIOutputError
 from waive.atlas import repo
 from waive.atlas.pipeline import build_hospital, build_state, coverage_report
 from waive.atlas.samples import SAMPLE_POLICY_TEXT, SAMPLE_SOURCE_ID
@@ -99,6 +100,22 @@ def test_build_hospital_holds_sheet_on_critical_conflict():
         assert result.outcome == "held"
         kinds = sorted(item.kind for item in repo.open_review_items(session, "229999"))
         assert kinds == ["conflict", "verification"]
+
+
+def test_build_hospital_survives_a_failed_cross_check():
+    class FlakyAI(FakeAI):
+        def complete_json(self, role, messages, schema, *, phi, purpose, max_tokens=2000):
+            if role == "fast":
+                raise AIOutputError("model output did not match SheetDraft")
+            return super().complete_json(role, messages, schema, phi=phi, purpose=purpose)
+
+    engine = make_engine_with_hospital()
+    with session_scope(engine) as session:
+        result = build_hospital(session, FakeGateway(), FlakyAI(), "229999", TODAY)
+        assert result.outcome == "published"
+        assert "cross-check model gave no usable output" in result.notes
+        kinds = sorted(item.kind for item in repo.open_review_items(session, "229999"))
+        assert kinds == ["crosscheck_failed", "verification"]
 
 
 def test_build_state_skips_hospitals_with_sheets_and_reports():

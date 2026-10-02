@@ -6,7 +6,7 @@ from typing import Literal
 
 from sqlalchemy.orm import Session
 
-from waive.ai.client import AIClient
+from waive.ai.client import AIClient, AIOutputError
 from waive.atlas import repo
 from waive.atlas.discover import MIN_CONFIDENCE, discover_domain
 from waive.atlas.publish import critical_conflicts, decide_status, drop_fields, publish_sheet
@@ -76,11 +76,17 @@ def build_hospital(
 
     conflicts: list[str] = []
     if dual:
-        secondary, _ = structure_sheet(ai, "fast", hospital, sources_with_text, today)
-        conflicts = critical_conflicts(sheet, secondary)
-        if conflicts:
-            repo.add_review_item(session, ccn, "conflict", {"paths": conflicts})
-            result.notes.append("critical fields disagree: " + ", ".join(conflicts))
+        try:
+            secondary, _ = structure_sheet(ai, "fast", hospital, sources_with_text, today)
+        except AIOutputError as error:
+            # The cross-check is best effort: record the failure, keep the verified primary.
+            repo.add_review_item(session, ccn, "crosscheck_failed", {"error": str(error)[:300]})
+            result.notes.append("cross-check model gave no usable output")
+        else:
+            conflicts = critical_conflicts(sheet, secondary)
+            if conflicts:
+                repo.add_review_item(session, ccn, "conflict", {"paths": conflicts})
+                result.notes.append("critical fields disagree: " + ", ".join(conflicts))
 
     status = decide_status(sheet, conflicts)
     published = publish_sheet(session, sheet.model_copy(update={"status": status}))
