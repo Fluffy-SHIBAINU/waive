@@ -259,45 +259,94 @@
     "website_domain": "atholhospital.org",
     "system": null
    },
-   "version": 2,
-   "status": "held",
+   "version": 3,
+   "status": "published",
    "eligibility": {
-    "free_care_max_fpl": null,
+    "free_care_max_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "CHARITY CARE PROGRAM Income as percentage of Federal Poverty Income Guidelines AH Financial Assistance for Non-covered\" medically necessary service AH Financial Assistance for co-pays or deductibles* 0%-200% 100% 100%",
+     "source_id": "billing-cd090144c3f29785",
+     "checked_on": "2026-10-02",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "discount_tiers": null,
-    "asset_test": null,
+    "asset_test": {
+     "value": false,
+     "layer": "documented",
+     "quote": "Financial assistance will generally reduce an outstanding balance to 15% of annual income absent significant assets.",
+     "source_id": "billing-cd090144c3f29785",
+     "checked_on": "2026-10-02",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "residency": null,
-    "insured_patients_covered": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Patients who qualify for State Programs or Health Safety Net but have received medically necessary services prior to effective coverage date or have received medically necessary services ineligible for coverage;",
+     "source_id": "billing-cd090144c3f29785",
+     "checked_on": "2026-10-02",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "min_balance": null,
     "services_excluded": null
    },
    "programs": {
-    "presumptive": null,
-    "state_programs": {
+    "presumptive": {
      "value": [
-      {
-       "name": "Health Safety Net (Massachusetts)",
-       "how_to_apply": "Apply through the MassHealth application; a hospital financial counselor can file it for you. The hospital's own financial assistance and the Health Safety Net are separate programs."
-      }
+      "MassHealth"
      ],
      "layer": "documented",
-     "quote": "Important information you need to know about applying for MassHealth Limited and the Health Safety Net can be found on page 3.",
-     "source_id": "state-mass-cafb5ebe5d7f",
+     "quote": "Applicants are determined presumptively eligible for Mass Health coverage by qualified hospitals on the basis of self-attested eligibility factors, including but not limited to household income, household size, pregnancy status, parent or caretaker relative status, immigration status, and Massachusetts residency status.",
+     "source_id": "billing-cd090144c3f29785",
      "checked_on": "2026-10-02",
      "confidence": 1.0,
      "support_count": 0
-    }
+    },
+    "state_programs": null
    },
    "apply": {
     "form_url": null,
     "form_version": null,
-    "documents_required": null,
+    "documents_required": {
+     "value": [
+      "proof_of_income",
+      "proof_of_residency",
+      "other"
+     ],
+     "layer": "documented",
+     "quote": "Other verification may still be needed, including proof of income, residency, and citizenship.",
+     "source_id": "billing-cd090144c3f29785",
+     "checked_on": "2026-10-02",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "submit_methods": null,
     "window_days_from_first_bill": null,
-    "decision_days": null,
+    "decision_days": {
+     "value": 5,
+     "layer": "documented",
+     "quote": "The hospital will endeavor to submit the total and completed application within five (5) business days of receiving all necessary information from the patient.",
+     "source_id": "billing-cd090144c3f29785",
+     "checked_on": "2026-10-02",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "decision_days_reported": null
    },
    "collections": {
-    "eca_wait_days": null,
+    "eca_wait_days": {
+     "value": 120,
+     "layer": "documented",
+     "quote": "If not paid at the end of 120 days, the \u201cBad Debt Procedure\u201d will be followed.",
+     "source_id": "billing-cd090144c3f29785",
+     "checked_on": "2026-10-02",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "collection_agencies": null
    },
    "contacts": {
@@ -317,15 +366,6 @@
      "title": "[PDF] Athol Hospital Credit and Collection Policy",
      "fetched_on": "2026-10-02",
      "sha256": "cd090144c3f29785b871a75afa30b1414e80a60d1e086657cfc2521f37eb16d3",
-     "effective_date": null
-    },
-    {
-     "id": "state-mass-cafb5ebe5d7f",
-     "kind": "state_repository",
-     "url": "https://www.mass.gov/doc/senior-guide-to-health-care-coverage-4/download",
-     "title": "download",
-     "fetched_on": "2026-10-02",
-     "sha256": "cafb5ebe5d7fd181e3c87567b6609c3aa6ee7fff9af006d521a3a53700a99472",
      "effective_date": null
     }
    ],
@@ -1299,11 +1339,25 @@
     "website_domain": "berkshirehealthsystems.org",
     "system": null
    },
-   "version": 4,
-   "status": "held",
+   "version": 5,
+   "status": "published",
    "eligibility": {
     "free_care_max_fpl": null,
-    "discount_tiers": null,
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "0",
+       "max_fpl_inclusive": "400",
+       "discount_percent": 46
+      }
+     ],
+     "layer": "documented",
+     "quote": "Family Income as % of FPG\nBerkshire Medical Center\nFairview Hospital\nInpatient\nOutpatient\nInpatient\nOutpatient\n0 \u2013 400\n46.07%\n63.14%\n48.58%\n53.17%",
+     "source_id": "fap-e20a42d4dc6dd54b",
+     "checked_on": "2026-10-02",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "asset_test": {
      "value": false,
      "layer": "documented",
@@ -1329,41 +1383,39 @@
    "programs": {
     "presumptive": {
      "value": [
-      "MassHealth"
+      "MassHealth",
+      "Children's Medical Security Plan",
+      "Emergency Aid to the Elderly, Disabled, and Children (EAEDC)",
+      "Premium Assistance Payment Program operated by the Health Connector"
      ],
      "layer": "documented",
-     "quote": "Presumptive eligibility may be granted to patients based on their eligibility for other programs or life circumstances, such as being homeless or incarcerated.",
+     "quote": "Patients with self-pay obligations may be eligible for assistance through participation in:",
      "source_id": "fap-2f3a6b756ffb2c76",
      "checked_on": "2026-10-02",
      "confidence": 1.0,
      "support_count": 0
     },
-    "state_programs": {
-     "value": [
-      {
-       "name": "Health Safety Net (Massachusetts)",
-       "how_to_apply": "Apply through the MassHealth application; a hospital financial counselor can file it for you. The hospital's own financial assistance and the Health Safety Net are separate programs."
-      }
-     ],
-     "layer": "documented",
-     "quote": "Important information you need to know about applying for MassHealth Limited and the Health Safety Net can be found on page 3.",
-     "source_id": "state-mass-cafb5ebe5d7f",
-     "checked_on": "2026-10-02",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "state_programs": null
    },
    "apply": {
     "form_url": null,
     "form_version": null,
     "documents_required": {
      "value": [
+      "photo_id",
       "proof_of_income",
-      "medicaid_denial"
+      "other",
+      "tax_return",
+      "pay_stubs",
+      "bank_statements",
+      "proof_of_residency",
+      "insurance_card",
+      "medicaid_denial",
+      "other"
      ],
      "layer": "documented",
-     "quote": "Provide verification of all household income.\n\n3. Provide verification of application for any state or governmental medical assistance program for which they may qualify (for example, state Medicaid)",
-     "source_id": "fap-2f3a6b756ffb2c76",
+     "quote": "federal income tax return, 1099 statements, social security benefit letters, veteran award letter, unemployment benefit letter, or other proof.",
+     "source_id": "application-e8c9581d2208756d",
      "checked_on": "2026-10-02",
      "confidence": 1.0,
      "support_count": 0
@@ -1371,12 +1423,12 @@
     "submit_methods": {
      "value": [
       {
-       "kind": "mail",
-       "detail": "Advocacy for Access of BMC Attn: Financial Assistance 510 North St Ste 8 Pittsfield MA 01201"
+       "kind": "email",
+       "detail": "Return the completed application and verification documents by email to fapinfo@bhs1.org"
       },
       {
-       "kind": "email",
-       "detail": "fapinfo@bhs1.org"
+       "kind": "mail",
+       "detail": "Return the completed application and verification documents by ... postal mail to: Advocacy for Access of BMC Attn: Financial Assistance 510 North St Ste 8 Pittsfield MA 01201"
       }
      ],
      "layer": "documented",
@@ -1399,23 +1451,15 @@
     "decision_days_reported": null
    },
    "collections": {
-    "eca_wait_days": {
-     "value": 120,
-     "layer": "documented",
-     "quote": "BHS will refrain from initiating any extraordinary collection actions against a patient for a period of at least 120 days from the date BHS provides the first post-discharge billing statement for the care;",
-     "source_id": "billing-51dbe1e7a26a681c",
-     "checked_on": "2026-10-02",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "eca_wait_days": null,
     "collection_agencies": null
    },
    "contacts": {
     "phone": {
      "value": "413-447-3139",
      "layer": "documented",
-     "quote": "to 4:00 p.m.",
-     "source_id": "fap-2f3a6b756ffb2c76",
+     "quote": "If you have any questions on this application, please contact the Lead Certified Application Counselor of Advocacy for Access at 413-447-3139.",
+     "source_id": "application-e8c9581d2208756d",
      "checked_on": "2026-10-02",
      "confidence": 1.0,
      "support_count": 0
@@ -1440,7 +1484,7 @@
       "Berkshire Faculty Services"
      ],
      "layer": "documented",
-     "quote": "Berkshire Medical Center (\u201cBMC\u201d), Fairview Hospital (\u201cFVH\u201d), North Adams Regional Hospital (\u201cNARH\u201d), and Berkshire Faculty Services (\u201cBFS\u201d). This policy jointly refers to these facilities as Berkshire Health Systems (\u201cBHS\u201d).",
+     "quote": "This policy jointly refers to these facilities as Berkshire Health Systems (\u201cBHS\u201d).",
      "source_id": "fap-2f3a6b756ffb2c76",
      "checked_on": "2026-10-02",
      "confidence": 1.0,
@@ -1449,15 +1493,6 @@
     "provider_list_url": null
    },
    "sources": [
-    {
-     "id": "fap-2f3a6b756ffb2c76",
-     "kind": "hospital_web",
-     "url": "https://assets.berkshirehealthsystems.org/wp-content/uploads/2025/04/15133646/2025_BHS_Financial_Assistance_Policy-English_ezdd94.pdf",
-     "title": "Financial Assistance Policy",
-     "fetched_on": "2026-10-02",
-     "sha256": "2f3a6b756ffb2c76d223ee745d7daeba1ed63977adfe45768d00ab8ff5e17883",
-     "effective_date": null
-    },
     {
      "id": "application-e8c9581d2208756d",
      "kind": "hospital_web",
@@ -1477,21 +1512,21 @@
      "effective_date": null
     },
     {
+     "id": "fap-2f3a6b756ffb2c76",
+     "kind": "hospital_web",
+     "url": "https://assets.berkshirehealthsystems.org/wp-content/uploads/2025/04/15133646/2025_BHS_Financial_Assistance_Policy-English_ezdd94.pdf",
+     "title": "Financial Assistance Policy",
+     "fetched_on": "2026-10-02",
+     "sha256": "2f3a6b756ffb2c76d223ee745d7daeba1ed63977adfe45768d00ab8ff5e17883",
+     "effective_date": null
+    },
+    {
      "id": "fap-e20a42d4dc6dd54b",
      "kind": "hospital_web",
      "url": "https://assets.berkshirehealthsystems.org/wp-content/uploads/2026/03/12095619/2026_BHS_Financial-Assistance-Policy_English_pagyo9.pdf",
      "title": "[PDF] BHS Financial Assistance Policy - Berkshire Health Systems",
      "fetched_on": "2026-10-02",
      "sha256": "e20a42d4dc6dd54b8e272e38aa6f8448bbd60e23d95cbb5b696ba49be3de74c9",
-     "effective_date": null
-    },
-    {
-     "id": "state-mass-cafb5ebe5d7f",
-     "kind": "state_repository",
-     "url": "https://www.mass.gov/doc/senior-guide-to-health-care-coverage-4/download",
-     "title": "download",
-     "fetched_on": "2026-10-02",
-     "sha256": "cafb5ebe5d7fd181e3c87567b6609c3aa6ee7fff9af006d521a3a53700a99472",
      "effective_date": null
     }
    ],
@@ -1509,33 +1544,28 @@
     "website_domain": "bidneedham.org",
     "system": null
    },
-   "version": 3,
+   "version": 4,
    "status": "held",
    "eligibility": {
     "free_care_max_fpl": null,
     "discount_tiers": null,
     "asset_test": null,
     "residency": null,
-    "insured_patients_covered": null,
+    "insured_patients_covered": {
+     "value": false,
+     "layer": "documented",
+     "quote": "debe haber aplicado para Medicaid en los \u00faltimos 6 meses y necesita mostrar la prueba de la denegaci\u00f3n.",
+     "source_id": "fap-378df2d51389930f",
+     "checked_on": "2026-10-02",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "min_balance": null,
     "services_excluded": null
    },
    "programs": {
     "presumptive": null,
-    "state_programs": {
-     "value": [
-      {
-       "name": "Health Safety Net (Massachusetts)",
-       "how_to_apply": "Apply through the MassHealth application; a hospital financial counselor can file it for you. The hospital's own financial assistance and the Health Safety Net are separate programs."
-      }
-     ],
-     "layer": "documented",
-     "quote": "Important information you need to know about applying for MassHealth Limited and the Health Safety Net can be found on page 3.",
-     "source_id": "state-mass-cafb5ebe5d7f",
-     "checked_on": "2026-10-02",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "state_programs": null
    },
    "apply": {
     "form_url": null,
@@ -1547,16 +1577,49 @@
       "other",
       "tax_return",
       "pay_stubs",
-      "bank_statements"
+      "bank_statements",
+      "proof_of_residency",
+      "insurance_card",
+      "medicaid_denial",
+      "other"
      ],
      "layer": "documented",
-     "quote": "\u2022 Declaraci\u00f3n de impuestos estatales o federales actuales \u2022 Formulario W2 y/o 1099 actuales \u2022 Los cuatro talones de pago m\u00e1s recientes \u2022 Los cuatro extractos de cuentas de ahorro y/o corrientes m\u00e1s recientes",
+     "quote": "Adem\u00e1s de la Aplicaci\u00f3n para Asistencia Financiera, tambi\u00e9n necesitamos que adjunte la siguiente documentaci\u00f3n a esta aplicaci\u00f3n: \u2022 Declaraci\u00f3n de impuestos estatales o federales actuales \u2022 Formulario W2 y/o 1099 actuales \u2022 Los cuatro talones de pago m\u00e1s recientes \u2022 Los cuatro extractos de cuentas de ahorro y/o corrientes m\u00e1s recientes \u2022 Cuenta de ahorros para salud \u2022 Arreglos de reembolso de salud \u2022 Cuentas de gastos flexibles \u2022 Copias de todas las facturas m\u00e9dicas",
      "source_id": "fap-378df2d51389930f",
      "checked_on": "2026-10-02",
      "confidence": 1.0,
      "support_count": 0
     },
-    "submit_methods": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": ""
+      },
+      {
+       "kind": "fax",
+       "detail": ""
+      },
+      {
+       "kind": "email",
+       "detail": ""
+      },
+      {
+       "kind": "portal",
+       "detail": ""
+      },
+      {
+       "kind": "in_person",
+       "detail": ""
+      }
+     ],
+     "layer": "documented",
+     "quote": "Al firmar debajo, certifico que he le\u00eddo cuidadosamente la Pol\u00edtica de Asistencia Financiera y la Aplicaci\u00f3n y todo lo que he declarado o cualquier documento adjunto es verdadero seg\u00fan mi conocimiento. Entiendo que es ilegal suministrar informaci\u00f3n falsa para obtener asistencia financiera. Firma del solicitante: _____________________________ _____________________________ Relaci\u00f3n con el paciente: __________________________________________________________ Fecha de terminaci\u00f3n: ______________________ Si su ingreso es suplementado de alguna forma o usted declara ingresos de $0,00 en esta aplicaci\u00f3n, haga que la(s) persona(s) que provee ayuda a usted y su familia, complete la Declaraci\u00f3n de Soporte. Declaraci\u00f3n de Soporte He sido identificado(a) por el paciente/parte responsable como soporte financiero. Esta es la lista de los servicios y apoyo que suministro. _____________________________________________________________________________________________ _____________________________________________________________________________________________ _____________________________________________________________________________________________ _____________________________________________________________________________________________ _____________________________________________________________________________________________ _____________________________________________________________________________________________ _____________________________________________________________________________________________ Certifico y verifico que toda la informaci\u00f3n dada es verdadera y correcta seg\u00fan mi conocimiento. Entiendo que el firmar no me hace responsable de los gastos m\u00e9dicos del paciente. Firma: _________________________________________ Fecha de terminaci\u00f3n: _______________________ Por favor, espere 30 d\u00edas desde la fecha en que la aplicaci\u00f3n lista sea recibida para determinar su elegibilidad. Si es elegible, se otorga asistencia por seis meses desde la fecha de aprobaci\u00f3n y es v\u00e1lida para todos los afiliados del Beth Israel Deaconess Lahey, seg\u00fan se establece en el Ap\u00e9ndice 5 de su respectiva Pol\u00edtica de Asistencia Financiera: \u2022 Anna Jaques Hospital \u2022 Addison Gilbert Hospital \u2022 BayRidge Hospital \u2022 Beth Israel Deaconess Medical Center-Boston \u2022 Beth Israel Deaconess Milton \u2022 Beth Israel Deaconess Needham \u2022 Beth Israel Deaconess Plymouth \u2022 Beverly Hospital \u2022 Lahey Hospital & Medical Center, Burlington \u2022 Lahey Medical Center, Peabody \u2022 Mount Auburn Hospital \u2022 New England Baptist Hospital \u2022 Winchester Hospital Solo para el personal Aplicaci\u00f3n recibida por: AJH \u2610 AGH \u2610 BayRidge \u2610 BIDMC \u2610 BID Milton \u2610 BID Needham \u2610 BID Plymouth \u2610 Beverly \u2610 LHMC \u2610 LMC Peabody \u2610 MAH \u2610 NEBH \u2610 WH \u2610 Fecha de recepci\u00f3n:",
+     "source_id": "fap-378df2d51389930f",
+     "checked_on": "2026-10-02",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "window_days_from_first_bill": {
      "value": 240,
      "layer": "documented",
@@ -1576,22 +1639,49 @@
    "contacts": {
     "phone": null,
     "hours": null,
-    "languages": null
+    "languages": {
+     "value": [
+      "English",
+      "Spanish",
+      "Russian",
+      "Simplified Chinese",
+      "Traditional Chinese"
+     ],
+     "layer": "documented",
+     "quote": "[English](#) \n\n* [Credit & Collection Policy (PDF)](/-/media/files/needham/bid-needham-credit-collections-policy-aug-2020-final.pdf \"Download our Credit & Collection Policy in English\")\n* [Financial Assistance Policy (PDF)](/-/media/files/needham/bid-needham-fap-english.pdf \"Download our Financial Assistance Policy in English\")\n* [Financial Assistance Policy Plain Language Summary (PDF)](/-/media/files/needham/bid-needham-plain-language-summary-aug-2020-final.pdf \"Download our Financial Assistance Policy Plain Language Summary in English\")\n* [Financial Assistance Policy Application (PDF)](/-/media/files/needham/bid-needham-template-application-financial-assistance.pdf \"Download our Financial Assistance Policy Application\")\n* [Medical Hardship Application (PDF)](/-/media/files/needham/bid-needham-medical-hardship-application-aug-2020-final.pdf \"Download our Medical Harship Application\")\n\n[Spanish](#) \n\n* Credit & Collection Policy: [Pol\u00edtica de Cr\u00e9dito y Cobranza (PDF)](/-/media/files/needham/bid-needham-spanish-credit-collection-policy-2020.pdf \"Download our Credit & Collection Policy in Spanish\")\n* Financial Assistance Policy: [Pol\u00edtica de Asistencia Financiera (PDF)](/-/media/files/needham/bid-needham-fap-spanish.pdf \"Download the Financial Assistance Policy in Spanish\")\n* Financial Assistance Policy Plain Language Summary: [Resumen de Lenguaje Sencillo de la Pol\u00edtica de Asistencia Financiera (PDF)](/-/media/files/needham/bid-needham-spanish-plain-language-summary-2020.pdf \"Download the Financial Assistance Policy Plain Language Summary in Spanish\")\n* Financial Assistance Policy Application: [Aplicaci\u00f3n de Asistencia Financiera (PDF)](/-/media/files/needham/bid-needham-spanish-spplication-financial-assistance-2020.pdf \"Download the Financial Assistance Policy Application in Spanish\")\n* Medical Hardship Application: [Aplicaci\u00f3n de Dificultades Financieras (PDF)](/-/media/files/needham/bid-needham-spanish-medical-hardship-application-2020.pdf \"Download the Medical Hardship Application in Spanish\")\n\n[Russian](#) \n\n* [Credit & Collection Policy (PDF) (Russian)](/-/media/files/needham/bid-needham-russian-credit-collection-policy-2020.pdf \"Download the Credit & Collection Policy in Russian\")\n* [Financial Assistance Policy (PDF) (Russian)](/-/media/files/needham/bid-needham-fap-russian.pdf \"Download the Financial Assistance Policy in Russian\")\n* [Financial Assistance Policy Plain Language Summary (PDF) (Russian)](/-/media/files/needham/bid-needham-russian-plain-language-summary-2020.pdf \"Download the Financial Assistance Policy Plain Language Summary in Russian\")\n* [Financial Assistance Policy Application (PDF) (Russian)](/-/media/files/needham/bid-needham-russian-financial-assistance-application-2020.pdf \"Download the Financial Assistance Policy Application in Russian\")\n* [Medical Hardship Application (PDF) (Russian)](/-/media/files/needham/bid-needham-russian-medical-hardship-application-2020.pdf \"Download the Medical Hardship Application in Russian\")\n\n[Simplified Chinese](#) \n\n* [Credit & Collection Policy (PDF) (Simplified Chinese)](/-/media/files/needham/bid-needham-s-chinese-credit-collection-policy-2020.pdf \"Download the Credit & Collection Policy in Simplified Chinese\")\n* [Financial Assistance Policy (PDF) (Simplified Chinese)](/-/media/files/needham/bid-needham-fap-simplified-chinese.pdf \"Download the Financial Assistance Policy in Simplified Chinese\")\n* [Financial Assistance Policy Plain Language Summary (PDF) (Simplified Chinese)](/-/media/files/needham/bid-needham-s-chinese-plain-language-summary-2020.pdf \"Download the Financial Assistance Policy Plain Language Summary in Simplified Chinese\")\n* [Financial Assistance Policy Application (PDF) (Simplified Chinese)](/-/media/files/needham/bid-needham-s-chinese-financial-assistance-application-2020.pdf \"Download the Financial Assistance Policy Application in Simplified Chinese\")\n* [Medical Hardship Application (PDF) (Simplified Chinese)](/-/media/files/needham/bid-needham-s-chinese-medical-hardship-application-2020.pdf \"Download the Medical Hardship Application in Simplified Chinese\")\n\n[Traditional Chinese](#) \n\n* [Credit & Collection Policy (PDF) (Traditional Chinese)](/-/media/files/needham/bid-needham-t-chinese-credit-collection-policy-2020.pdf \"Download the Credit & Collection Policy in Traditional Chinese\")\n* [Financial Assistance Policy (PDF) (Traditional Chinese)](/-/media/files/needham/bid-needham-fap-traditional-chinese.pdf \"Download the Financial Assistance Policy in Traditional Chinese\")\n* [Financial Assistance Policy Plain Language Summary (PDF) (Traditional Chinese)](/-/media/files/needham/bid-needham-t-chinese-plain-language-summary-2020.pdf \"Download the Financial Assistance Policy Plain Language Summary in Traditional Chinese\")\n* [Financial Assistance Policy Application (PDF) (Traditional Chinese)](/-/media/files/needham/bid-needham-t-chinese-financial-assistance-application-2020.pdf \"Download the Financial Assistance Policy Application in Traditional Chinese\")\n* [Medical Hardship Application (PDF) (Traditional Chinese)](/-/media/files/needham/bid-needham-t-chinese-medical-hardship-application-2020.pdf \"Download the Medical Hardship Application in Traditional Chinese\")",
+     "source_id": "billing-d8a004a26881810a",
+     "checked_on": "2026-10-02",
+     "confidence": 1.0,
+     "support_count": 0
+    }
    },
    "coverage": {
-    "facilities": null,
+    "facilities": {
+     "value": [
+      "Addison Gilbert Hospital",
+      "Anna Jaques Hospital",
+      "BayRidge Hospital",
+      "Beth Israel Deaconess Hospital\u2013Milton",
+      "Beth Israel Deaconess Hospital\u2013Needham",
+      "Beth Israel Deaconess Hospital\u2013Plymouth",
+      "Beth Israel Deaconess Medical Center",
+      "Beverly Hospital",
+      "Lahey Hospital & Medical Center",
+      "Lahey Medical Center, Peabody",
+      "Mount Auburn Hospital",
+      "New England Baptist Hospital",
+      "Winchester Hospital"
+     ],
+     "layer": "documented",
+     "quote": "Si es elegible, se otorga asistencia por seis meses desde la fecha de aprobaci\u00f3n y es v\u00e1lida para todos los afiliados del Beth Israel Deaconess Lahey, seg\u00fan se establece en el Ap\u00e9ndice 5 de su respectiva Pol\u00edtica de Asistencia Financiera: \u2022 Anna Jaques Hospital \u2022 Addison Gilbert Hospital \u2022 BayRidge Hospital \u2022 Beth Israel Deaconess Medical Center-Boston \u2022 Beth Israel Deaconess Milton \u2022 Beth Israel Deaconess Needham \u2022 Beth Israel Deaconess Plymouth \u2022 Beverly Hospital \u2022 Lahey Hospital & Medical Center, Burlington \u2022 Lahey Medical Center, Peabody \u2022 Mount Auburn Hospital \u2022 New England Baptist Hospital \u2022 Winchester Hospital",
+     "source_id": "fap-378df2d51389930f",
+     "checked_on": "2026-10-02",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "provider_list_url": null
    },
    "sources": [
-    {
-     "id": "billing-d8a004a26881810a",
-     "kind": "hospital_web",
-     "url": "https://bidneedham.org/patients-visitors/billing-financial-services/financial-assistance",
-     "title": "Financial Assistance | Beth Israel Deaconess Hospital\u2013Needham",
-     "fetched_on": "2026-10-02",
-     "sha256": "d8a004a26881810a499c710be7c382468a6ba42590bd791346c0802cc296abb9",
-     "effective_date": null
-    },
     {
      "id": "billing-23a6850ea3f07c85",
      "kind": "hospital_web",
@@ -1620,6 +1710,15 @@
      "effective_date": null
     },
     {
+     "id": "billing-d8a004a26881810a",
+     "kind": "hospital_web",
+     "url": "https://bidneedham.org/patients-visitors/billing-financial-services/financial-assistance",
+     "title": "Financial Assistance | Beth Israel Deaconess Hospital\u2013Needham",
+     "fetched_on": "2026-10-02",
+     "sha256": "d8a004a26881810a499c710be7c382468a6ba42590bd791346c0802cc296abb9",
+     "effective_date": null
+    },
+    {
      "id": "fap-378df2d51389930f",
      "kind": "hospital_web",
      "url": "https://www.bidneedham.org/-/media/files/needham/bid-needham-spanish-spplication-financial-assistance-2020.pdf",
@@ -1635,15 +1734,6 @@
      "title": "Financial Assistance Policy (PDF) (Simplified Chinese)",
      "fetched_on": "2026-10-02",
      "sha256": "55dd2f98d8f57eadb08d27f4a3c22c8be6f1fb44e91671282d372487b4c80f82",
-     "effective_date": null
-    },
-    {
-     "id": "state-mass-cafb5ebe5d7f",
-     "kind": "state_repository",
-     "url": "https://www.mass.gov/doc/senior-guide-to-health-care-coverage-4/download",
-     "title": "download",
-     "fetched_on": "2026-10-02",
-     "sha256": "cafb5ebe5d7fd181e3c87567b6609c3aa6ee7fff9af006d521a3a53700a99472",
      "effective_date": null
     }
    ],
@@ -2363,7 +2453,7 @@
     "website_domain": "massgeneralbrigham.org",
     "system": null
    },
-   "version": 2,
+   "version": 3,
    "status": "held",
    "eligibility": {
     "free_care_max_fpl": {
@@ -2408,8 +2498,8 @@
     "insured_patients_covered": {
      "value": false,
      "layer": "documented",
-     "quote": "Discounts based solely on income are generally limited to patients with family incomes less than or equal to 300% of the Federal Poverty Guidelines (FPG)",
-     "source_id": "fap-111a492d2aab30fc",
+     "quote": "You may qualify if: * You do not qualify for public insurance programs in your home state, and",
+     "source_id": "application-dc0301e9ce23d133",
      "checked_on": "2026-10-02",
      "confidence": 1.0,
      "support_count": 0
@@ -2425,26 +2515,13 @@
       "Health Safety Net"
      ],
      "layer": "documented",
-     "quote": "Per Section III(F)(2) below, patients with Health Safety Net Full and Health Safety Net Partial will be presumptively eligible for Financial Assistance- patients will be able to seek care for eligible services (per Section III(C)) without a Financial Assistance Application.",
+     "quote": "Patients whose only coverage is MassHealth Limited and/or HSN are generally considered to be Uninsured since those programs do not function per standard insurance coverage rules.",
      "source_id": "fap-111a492d2aab30fc",
      "checked_on": "2026-10-02",
      "confidence": 1.0,
      "support_count": 0
     },
-    "state_programs": {
-     "value": [
-      {
-       "name": "Health Safety Net (Massachusetts)",
-       "how_to_apply": "Apply through the MassHealth application; a hospital financial counselor can file it for you. The hospital's own financial assistance and the Health Safety Net are separate programs."
-      }
-     ],
-     "layer": "documented",
-     "quote": "Important information you need to know about applying for MassHealth Limited and the Health Safety Net can be found on page 3.",
-     "source_id": "state-mass-cafb5ebe5d7f",
-     "checked_on": "2026-10-02",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "state_programs": null
    },
    "apply": {
     "form_url": {
@@ -2460,10 +2537,18 @@
     "documents_required": {
      "value": [
       "photo_id",
-      "proof_of_income"
+      "proof_of_income",
+      "other",
+      "tax_return",
+      "pay_stubs",
+      "bank_statements",
+      "proof_of_residency",
+      "insurance_card",
+      "medicaid_denial",
+      "other"
      ],
      "layer": "documented",
-     "quote": "Complete and submit a paper application (found in the financial application section) along with ID and income verification.",
+     "quote": "* Complete and submit a paper application (found in the financial application section) along with ID and income verification.",
      "source_id": "application-dc0301e9ce23d133",
      "checked_on": "2026-10-02",
      "confidence": 1.0,
@@ -2481,7 +2566,7 @@
       },
       {
        "kind": "email",
-       "detail": ""
+       "detail": "patientbilling@partners.org"
       },
       {
        "kind": "portal",
@@ -2489,11 +2574,11 @@
       },
       {
        "kind": "in_person",
-       "detail": ""
+       "detail": "Visit a patient financial counselor at your hospital or health center"
       }
      ],
      "layer": "documented",
-     "quote": "Please call [617-726-3884](tel:617-726-3884) or e-mail [patientbilling@partners.org](mailto:patientbilling@partners.org) to request information and application forms.",
+     "quote": "Please call [617-726-3884](tel:617-726-3884) or e-mail [patientbilling@partners.org](mailto:patientbilling@partners.org) to request information and application forms.\n\n**In person:** Visit a patient financial counselor at your hospital or health center. For a list of patient financial counselors' contact information, please browse to the contact a financial counselor section of this page.",
      "source_id": "application-dc0301e9ce23d133",
      "checked_on": "2026-10-02",
      "confidence": 1.0,
@@ -2511,7 +2596,7 @@
     "phone": {
      "value": "617-983-7218",
      "layer": "documented",
-     "quote": "[617-983-7218](tel:617-983-7218)",
+     "quote": "**Brigham and Women\u2019s Faulkner Hospital\n\n**Patient Financial Services**\n1153 Centre Street Suite 1106\nBoston, MA 02130\n[617-983-7218](tel:617-983-7218)",
      "source_id": "application-dc0301e9ce23d133",
      "checked_on": "2026-10-02",
      "confidence": 1.0,
@@ -2521,15 +2606,15 @@
     "languages": {
      "value": [
       "English",
-      "Arabic",
-      "Chinese (Traditional)",
-      "Haitian Creole",
-      "Indonesian",
-      "Khmer",
-      "Portuguese (Brazilian)",
-      "Russian",
-      "Spanish",
-      "Vietnamese"
+      "Arabic / \u0639\u0631\u0628\u0649",
+      "Chinese (Traditional) / \u4e2d\u6587",
+      "Haitian Creole / Krey\u00f2l Ayisyen",
+      "Indonesian / Bahasa Indonesia",
+      "Khmer (Cambodian) / \u1781\u17d2\u1798\u17c2\u179a",
+      "Portuguese (Brazilian) / Portugu\u00eas",
+      "Russian / \u0440\u0443\u0441\u0441\u043a\u0438\u0439",
+      "Spanish / Espa\u00f1ol",
+      "Vietnamese / Ti\u1ebfng Vi\u1ec7t"
      ],
      "layer": "documented",
      "quote": "[Financial Assistance Policy - Plain language version / R\u00e8gleman kons\u00e8nan \u00c8d Finansye - v\u00e8syon langaj \u00f2din\u00e8 (PDF)](/content/dam/unified-xwalk/documents/ht/patients-visitors/financial-assistance-summary-haitian-creole.pdf)",
@@ -2573,39 +2658,12 @@
      "effective_date": null
     },
     {
-     "id": "application-dc0301e9ce23d133",
-     "kind": "hospital_web",
-     "url": "https://massgeneralbrigham.org/patient-information/financial-assistance",
-     "title": "Financial Assistance | Mass General Brigham",
-     "fetched_on": "2026-10-02",
-     "sha256": "dc0301e9ce23d133fc7baeb08ba9d788bae7469a098fc239fbb58c1a7fb6a43e",
-     "effective_date": null
-    },
-    {
-     "id": "application-dc0301e9ce23d133",
-     "kind": "hospital_web",
-     "url": "https://massgeneralbrigham.org/en/patient-care/patient-visitor-information/financial-assistance",
-     "title": "Financial Assistance | Mass General Brigham",
-     "fetched_on": "2026-10-02",
-     "sha256": "dc0301e9ce23d133fc7baeb08ba9d788bae7469a098fc239fbb58c1a7fb6a43e",
-     "effective_date": null
-    },
-    {
      "id": "fap-111a492d2aab30fc",
      "kind": "hospital_web",
      "url": "https://www.massgeneralbrigham.org/content/dam/unified-xwalk/documents/en/patients-visitors/financial-assistance-policy-english.pdf",
      "title": "Financial Assistance Policy - Full version (PDF)",
      "fetched_on": "2026-10-02",
      "sha256": "111a492d2aab30fc9f28255a487b3253acfd64dd165f262fa8709ee6414dbf56",
-     "effective_date": null
-    },
-    {
-     "id": "fap-f9ec43a6496017b1",
-     "kind": "hospital_web",
-     "url": "https://www.massgeneralbrigham.org/content/dam/unified-xwalk/documents/ar/patients-visitors/financial-assistance-policy-arabic.pdf",
-     "title": "Financial Assistance Policy - Full version / \u0633\u064a\u0627\u0633\u0629 \u0627\u0644\u0645\u0633\u0627\u0639\u062f\u0629 \u0627\u0644\u0645\u0627\u0644\u064a\u0629 - \u0627\u0644\u0646\u0633\u062e\u0629 \u0627\u0644\u0643\u0627\u0645\u0644\u0629 (PDF)",
-     "fetched_on": "2026-10-02",
-     "sha256": "f9ec43a6496017b1cdffb505387e87451083a13ac7fc83f6322e379ad6e0617f",
      "effective_date": null
     },
     {
@@ -2627,12 +2685,12 @@
      "effective_date": null
     },
     {
-     "id": "state-mass-cafb5ebe5d7f",
-     "kind": "state_repository",
-     "url": "https://www.mass.gov/doc/senior-guide-to-health-care-coverage-4/download",
-     "title": "download",
+     "id": "fap-f9ec43a6496017b1",
+     "kind": "hospital_web",
+     "url": "https://www.massgeneralbrigham.org/content/dam/unified-xwalk/documents/ar/patients-visitors/financial-assistance-policy-arabic.pdf",
+     "title": "Financial Assistance Policy - Full version / \u0633\u064a\u0627\u0633\u0629 \u0627\u0644\u0645\u0633\u0627\u0639\u062f\u0629 \u0627\u0644\u0645\u0627\u0644\u064a\u0629 - \u0627\u0644\u0646\u0633\u062e\u0629 \u0627\u0644\u0643\u0627\u0645\u0644\u0629 (PDF)",
      "fetched_on": "2026-10-02",
-     "sha256": "cafb5ebe5d7fd181e3c87567b6609c3aa6ee7fff9af006d521a3a53700a99472",
+     "sha256": "f9ec43a6496017b1cdffb505387e87451083a13ac7fc83f6322e379ad6e0617f",
      "effective_date": null
     }
    ],
@@ -2877,7 +2935,7 @@
     "website_domain": "capecodhealth.org",
     "system": null
    },
-   "version": 2,
+   "version": 3,
    "status": "held",
    "eligibility": {
     "free_care_max_fpl": null,
@@ -2890,20 +2948,7 @@
    },
    "programs": {
     "presumptive": null,
-    "state_programs": {
-     "value": [
-      {
-       "name": "Health Safety Net (Massachusetts)",
-       "how_to_apply": "Apply through the MassHealth application; a hospital financial counselor can file it for you. The hospital's own financial assistance and the Health Safety Net are separate programs."
-      }
-     ],
-     "layer": "documented",
-     "quote": "Important information you need to know about applying for MassHealth Limited and the Health Safety Net can be found on page 3.",
-     "source_id": "state-mass-cafb5ebe5d7f",
-     "checked_on": "2026-10-02",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "state_programs": null
    },
    "apply": {
     "form_url": null,
@@ -2936,15 +2981,6 @@
      "fetched_on": "2026-10-02",
      "sha256": "4ad1c2a963b24caba00c9b09644770161bd4e58ef09f623ada3b8d856493dcae",
      "effective_date": null
-    },
-    {
-     "id": "state-mass-cafb5ebe5d7f",
-     "kind": "state_repository",
-     "url": "https://www.mass.gov/doc/senior-guide-to-health-care-coverage-4/download",
-     "title": "download",
-     "fetched_on": "2026-10-02",
-     "sha256": "cafb5ebe5d7fd181e3c87567b6609c3aa6ee7fff9af006d521a3a53700a99472",
-     "effective_date": null
     }
    ],
    "accuracy": null
@@ -2961,33 +2997,25 @@
     "website_domain": "emersonhealth.org",
     "system": null
    },
-   "version": 3,
-   "status": "held",
+   "version": 4,
+   "status": "published",
    "eligibility": {
     "free_care_max_fpl": {
      "value": "200",
      "layer": "documented",
-     "quote": "Household MassHealth MAGI as % of FPG Discount \u2013 Charged Service Discount \u2013 Co-payment, Deductible\n0% to 200%\n100%\n100%",
+     "quote": "Household MassHealth MAGI as % of FPG Discount \u2013 Charged Service Discount \u2013 Co-payment, Deductible\n0% to 200% 100% 100%",
      "source_id": "fap-b0ea6e3613f8951d",
      "checked_on": "2026-10-02",
      "confidence": 1.0,
      "support_count": 0
     },
     "discount_tiers": null,
-    "asset_test": {
-     "value": false,
-     "layer": "documented",
-     "quote": "The patient/Guarantor does not have funding from other sources (e.g. charitable foundations, family members, etc.) to pay for Medically Necessary Services;",
-     "source_id": "fap-b0ea6e3613f8951d",
-     "checked_on": "2026-10-02",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "asset_test": null,
     "residency": null,
     "insured_patients_covered": {
      "value": false,
      "layer": "documented",
-     "quote": "Emerson Hospital recognizes that some patients have limited means and may not have access to insurance coverage for all services. This policy has been developed to assist uninsured patients and underinsured patients with limited financial resources.",
+     "quote": "This policy has been developed to assist uninsured patients and underinsured patients with limited financial resources.",
      "source_id": "fap-b0ea6e3613f8951d",
      "checked_on": "2026-10-02",
      "confidence": 1.0,
@@ -3008,20 +3036,7 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "state_programs": {
-     "value": [
-      {
-       "name": "Health Safety Net (Massachusetts)",
-       "how_to_apply": "Apply through the MassHealth application; a hospital financial counselor can file it for you. The hospital's own financial assistance and the Health Safety Net are separate programs."
-      }
-     ],
-     "layer": "documented",
-     "quote": "Important information you need to know about applying for MassHealth Limited and the Health Safety Net can be found on page 3.",
-     "source_id": "state-mass-cafb5ebe5d7f",
-     "checked_on": "2026-10-02",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "state_programs": null
    },
    "apply": {
     "form_url": null,
@@ -3047,7 +3062,7 @@
      "value": [
       {
        "kind": "mail",
-       "detail": "Return completed applications directly to our Financial Assistance Department OR mail to: Emerson Hospital Financial Assistance Department 133 ORNAC, Concord, MA 01742"
+       "detail": "Emerson Hospital Financial Assistance Department 133 ORNAC, Concord, MA 01742"
       },
       {
        "kind": "in_person",
@@ -3055,7 +3070,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Return completed applications directly to our Financial Assistance Department OR mail to: Emerson Hospital Financial Assistance Department 133 ORNAC, Concord, MA 01742",
+     "quote": "\u2751 Return completed applications directly to our Financial Assistance Department OR mail to:\nEmerson Hospital Financial Assistance Department\n133 ORNAC, Concord, MA 01742",
      "source_id": "application-c6b25abbf589bfef",
      "checked_on": "2026-10-02",
      "confidence": 1.0,
@@ -3073,17 +3088,17 @@
     "phone": {
      "value": "978-287-3432",
      "layer": "documented",
-     "quote": "please call our Financial Services office at\u00a0[978-287-3432](tel:978-287-3432)",
-     "source_id": "fap-795b3cda1fdd8a37",
+     "quote": "please contact our Financial Assistance Department at 978-287-3432.",
+     "source_id": "application-c6b25abbf589bfef",
      "checked_on": "2026-10-02",
      "confidence": 1.0,
      "support_count": 0
     },
     "hours": {
-     "value": "8 a.m. to 5:30 p.m., Monday through Friday",
+     "value": "8 a.m. and 5 p.m., Monday through Friday",
      "layer": "documented",
-     "quote": "please call our Financial Services office at\u00a0[978-287-3432](tel:978-287-3432) between 8 a.m. and 5:30 p.m., Monday through Friday.",
-     "source_id": "fap-795b3cda1fdd8a37",
+     "quote": "Please call our financial counselors\u2019 office at\u00a0[978-287-3432](tel:978-287-3432)\u00a0between 8 a.m. and 5 p.m., Monday through Friday.",
+     "source_id": "billing-4f88928e00fe0b87",
      "checked_on": "2026-10-02",
      "confidence": 1.0,
      "support_count": 0
@@ -3106,15 +3121,6 @@
    },
    "sources": [
     {
-     "id": "fap-795b3cda1fdd8a37",
-     "kind": "hospital_web",
-     "url": "https://emersonhealth.org/patients-visitors/insurance-financial/financial-assistance",
-     "title": "Financial Assistance - Emerson Health",
-     "fetched_on": "2026-10-02",
-     "sha256": "795b3cda1fdd8a3714c695fc8259595009acc2d7cf53f2f587b16f445d2d5651",
-     "effective_date": null
-    },
-    {
      "id": "application-c6b25abbf589bfef",
      "kind": "hospital_web",
      "url": "https://emersonhealth.org/wp-content/uploads/2025/03/Financial-Assistance-Application.pdf",
@@ -3133,12 +3139,12 @@
      "effective_date": null
     },
     {
-     "id": "billing-4f88928e00fe0b87",
+     "id": "fap-795b3cda1fdd8a37",
      "kind": "hospital_web",
-     "url": "https://emersonhealth.org?p=4415",
-     "title": "Credit & Collections Policy - Emerson Health",
+     "url": "https://emersonhealth.org/patients-visitors/insurance-financial/financial-assistance",
+     "title": "Financial Assistance - Emerson Health",
      "fetched_on": "2026-10-02",
-     "sha256": "4f88928e00fe0b878d42bb5628cd1fae63a9b89a65b47da453e94e2710a3fe23",
+     "sha256": "795b3cda1fdd8a3714c695fc8259595009acc2d7cf53f2f587b16f445d2d5651",
      "effective_date": null
     },
     {
@@ -3148,15 +3154,6 @@
      "title": "Financial Assistance Policy",
      "fetched_on": "2026-10-02",
      "sha256": "b0ea6e3613f8951d9075331b76e69b01e9cff58a776b97367973dbc424c29f25",
-     "effective_date": null
-    },
-    {
-     "id": "state-mass-cafb5ebe5d7f",
-     "kind": "state_repository",
-     "url": "https://www.mass.gov/doc/senior-guide-to-health-care-coverage-4/download",
-     "title": "download",
-     "fetched_on": "2026-10-02",
-     "sha256": "cafb5ebe5d7fd181e3c87567b6609c3aa6ee7fff9af006d521a3a53700a99472",
      "effective_date": null
     }
    ],
@@ -3367,10 +3364,10 @@
     "zip": "02540",
     "phone": "508-548-5300",
     "ownership": "Voluntary non-profit - Private",
-    "website_domain": "networkofcare.org",
+    "website_domain": "capecodhealth.org",
     "system": null
    },
-   "version": 2,
+   "version": 3,
    "status": "held",
    "eligibility": {
     "free_care_max_fpl": null,
@@ -3383,20 +3380,7 @@
    },
    "programs": {
     "presumptive": null,
-    "state_programs": {
-     "value": [
-      {
-       "name": "Health Safety Net (Massachusetts)",
-       "how_to_apply": "Apply through the MassHealth application; a hospital financial counselor can file it for you. The hospital's own financial assistance and the Health Safety Net are separate programs."
-      }
-     ],
-     "layer": "documented",
-     "quote": "Important information you need to know about applying for MassHealth Limited and the Health Safety Net can be found on page 3.",
-     "source_id": "state-mass-cafb5ebe5d7f",
-     "checked_on": "2026-10-02",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "state_programs": null
    },
    "apply": {
     "form_url": null,
@@ -3431,21 +3415,21 @@
      "effective_date": null
     },
     {
-     "id": "fap-5c64247bb2412a8e",
+     "id": "fap-349c05e12e9b2eb7",
      "kind": "hospital_web",
-     "url": "https://family.networkofcare.org/tarrant-tx/services/agency?pid=PALOPINTOGENERALHOSPITALFINANCIALASSISTANCESERVICES_5_989_0",
-     "title": "PALO PINTO GENERAL HOSPITAL | FINANCIAL ASSISTANCE SERVICES - Network of Care Tarrant Cares TX Service Directory",
+     "url": "https://publichealth.networkofcare.org/solano/Services/Agency/Edit?pid=kaiserpermanentemedicalfinancialassistanceprogrammfap_1_49_1",
+     "title": "Edit Agency: Kaiser Permanente Medical Financial Assistance Program (MFAP)",
      "fetched_on": "2026-10-02",
-     "sha256": "5c64247bb2412a8e8a1d797c95ce4555f4f53c0db741beea7209f064c6062e9a",
+     "sha256": "349c05e12e9b2eb768da22bfd0d360f516a4058b657185687abee440f4831386",
      "effective_date": null
     },
     {
-     "id": "fap-c2081a77d810a0d2",
+     "id": "fap-4ad1c2a963b24cab",
      "kind": "hospital_web",
-     "url": "https://homelessresources.networkofcare.org/Trilogy/services/agency?pid=WestDallasMultipurposeCenterFinancialAssistance_21_1757_0",
-     "title": "West Dallas Multipurpose Center Financial Assistance - Network of Care Texas Resources TX Service Directory",
+     "url": "https://www.capecodhealth.org/patients-visitors/paying-for-care/financial-assistance",
+     "title": "Financial Assistance",
      "fetched_on": "2026-10-02",
-     "sha256": "c2081a77d810a0d200a6eb677f51b0bc6762ab7f4811fe96cd915d38d9c23062",
+     "sha256": "4ad1c2a963b24caba00c9b09644770161bd4e58ef09f623ada3b8d856493dcae",
      "effective_date": null
     },
     {
@@ -3458,12 +3442,48 @@
      "effective_date": null
     },
     {
-     "id": "state-mass-cafb5ebe5d7f",
-     "kind": "state_repository",
-     "url": "https://www.mass.gov/doc/senior-guide-to-health-care-coverage-4/download",
-     "title": "download",
+     "id": "fap-5c64247bb2412a8e",
+     "kind": "hospital_web",
+     "url": "https://family.networkofcare.org/tarrant-tx/services/agency?pid=PALOPINTOGENERALHOSPITALFINANCIALASSISTANCESERVICES_5_989_0",
+     "title": "PALO PINTO GENERAL HOSPITAL | FINANCIAL ASSISTANCE SERVICES - Network of Care Tarrant Cares TX Service Directory",
      "fetched_on": "2026-10-02",
-     "sha256": "cafb5ebe5d7fd181e3c87567b6609c3aa6ee7fff9af006d521a3a53700a99472",
+     "sha256": "5c64247bb2412a8e8a1d797c95ce4555f4f53c0db741beea7209f064c6062e9a",
+     "effective_date": null
+    },
+    {
+     "id": "fap-6bddaa3e17fe8fec",
+     "kind": "hospital_web",
+     "url": "https://homelessresources.networkofcare.org/Trilogy/services/agency?pid=HopkinsCountyCommunityChestElectricServicePaymentFinancialAssistance_21_1757_0",
+     "title": "Hopkins County Community Chest: Electric Service Payment - Financial Assistance - Network of Care Texas Resources TX Service Directory",
+     "fetched_on": "2026-10-02",
+     "sha256": "6bddaa3e17fe8fec9ffb07d84b9eb8084bb0bee6bd747aee80ba60cf7c239e65",
+     "effective_date": null
+    },
+    {
+     "id": "fap-8f35dfe580368f85",
+     "kind": "hospital_web",
+     "url": "https://homelessresources.networkofcare.org/Trilogy/services/agency?pid=WestDallasMultipurposeCenterFinancialAssistance_21_1757_0",
+     "title": "West Dallas Multipurpose Center Financial Assistance - Network of Care Texas Resources TX Service Directory",
+     "fetched_on": "2026-10-02",
+     "sha256": "8f35dfe580368f857b0649dd09f9689a5e7a8f1bd2f6545feabc0ce62d4b5574",
+     "effective_date": null
+    },
+    {
+     "id": "fap-8fb9e8f2af64f6d5",
+     "kind": "hospital_web",
+     "url": "https://family.networkofcare.org/tarrant-tx/services/agency?pid=PALOPINTOGENERALHOSPITALFINANCIALASSISTANCESERVICES_5_989_0",
+     "title": "PALO PINTO GENERAL HOSPITAL | FINANCIAL ASSISTANCE SERVICES - Network of Care Tarrant Cares TX Service Directory",
+     "fetched_on": "2026-10-02",
+     "sha256": "8fb9e8f2af64f6d5b24406d9a8d6911752ec4f2c4474a712b87fa61e06dd7e50",
+     "effective_date": null
+    },
+    {
+     "id": "fap-c2081a77d810a0d2",
+     "kind": "hospital_web",
+     "url": "https://homelessresources.networkofcare.org/Trilogy/services/agency?pid=WestDallasMultipurposeCenterFinancialAssistance_21_1757_0",
+     "title": "West Dallas Multipurpose Center Financial Assistance - Network of Care Texas Resources TX Service Directory",
+     "fetched_on": "2026-10-02",
+     "sha256": "c2081a77d810a0d200a6eb677f51b0bc6762ab7f4811fe96cd915d38d9c23062",
      "effective_date": null
     }
    ],
@@ -3481,38 +3501,70 @@
     "website_domain": "heywood.org",
     "system": null
    },
-   "version": 2,
-   "status": "held",
+   "version": 3,
+   "status": "published",
    "eligibility": {
-    "free_care_max_fpl": null,
+    "free_care_max_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "CHARITY CARE PROGRAM Income as percentage of Federal Poverty Income Guidelines HH Financial Assistance for Non-covered\" medically necessary service HH Financial Assistance for co-pays or deductibles* 0%-200% 100% 100%",
+     "source_id": "billing-c22db6b00de50e8f",
+     "checked_on": "2026-10-02",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "discount_tiers": null,
-    "asset_test": null,
+    "asset_test": {
+     "value": false,
+     "layer": "documented",
+     "quote": "Financial assistance will generally reduce an outstanding balance to 15% of annual income absent significant assets.",
+     "source_id": "billing-c22db6b00de50e8f",
+     "checked_on": "2026-10-02",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "residency": null,
-    "insured_patients_covered": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Patients who qualify for State Programs or Health Safety Net but have received medically necessary services prior to effective coverage date or have received medically necessary services ineligible for coverage",
+     "source_id": "billing-c22db6b00de50e8f",
+     "checked_on": "2026-10-02",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "min_balance": null,
     "services_excluded": null
    },
    "programs": {
-    "presumptive": null,
-    "state_programs": {
+    "presumptive": {
      "value": [
-      {
-       "name": "Health Safety Net (Massachusetts)",
-       "how_to_apply": "Apply through the MassHealth application; a hospital financial counselor can file it for you. The hospital's own financial assistance and the Health Safety Net are separate programs."
-      }
+      "MassHealth"
      ],
      "layer": "documented",
-     "quote": "Important information you need to know about applying for MassHealth Limited and the Health Safety Net can be found on page 3.",
-     "source_id": "state-mass-cafb5ebe5d7f",
+     "quote": "Applicants are determined presumptively eligible for Mass Health coverage by qualified hospitals on the basis of self-attested eligibility factors, including but not limited to household income, household size, pregnancy status, parent or caretaker relative status, immigration status, and Massachusetts residency status.",
+     "source_id": "billing-c22db6b00de50e8f",
      "checked_on": "2026-10-02",
      "confidence": 1.0,
      "support_count": 0
-    }
+    },
+    "state_programs": null
    },
    "apply": {
     "form_url": null,
     "form_version": null,
-    "documents_required": null,
+    "documents_required": {
+     "value": [
+      "proof_of_income",
+      "proof_of_residency"
+     ],
+     "layer": "documented",
+     "quote": "Other verification may still be needed, including proof of income, residency, and citizenship.",
+     "source_id": "billing-c22db6b00de50e8f",
+     "checked_on": "2026-10-02",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "submit_methods": null,
     "window_days_from_first_bill": null,
     "decision_days": null,
@@ -3540,15 +3592,6 @@
      "fetched_on": "2026-10-02",
      "sha256": "c22db6b00de50e8f643cf82cb5f628e102b8ef05d09721559cc545b7ef3660b0",
      "effective_date": null
-    },
-    {
-     "id": "state-mass-cafb5ebe5d7f",
-     "kind": "state_repository",
-     "url": "https://www.mass.gov/doc/senior-guide-to-health-care-coverage-4/download",
-     "title": "download",
-     "fetched_on": "2026-10-02",
-     "sha256": "cafb5ebe5d7fd181e3c87567b6609c3aa6ee7fff9af006d521a3a53700a99472",
-     "effective_date": null
     }
    ],
    "accuracy": null
@@ -3565,26 +3608,18 @@
     "website_domain": "holyokehealth.com",
     "system": null
    },
-   "version": 1,
+   "version": 2,
    "status": "held",
    "eligibility": {
     "free_care_max_fpl": null,
     "discount_tiers": null,
-    "asset_test": {
-     "value": false,
-     "layer": "documented",
-     "quote": "While the hospital assists patients in obtaining health coverage through public programs and financial assistance through other sources whenever appropriate including the hospital, the hospital may also be required to appropriately bill for and collect specific payments, which may include but not be limited to, applicable co-payments, deductibles, deposits, and other amounts for which the patient agrees to be responsible.",
-     "source_id": "fap-db5cb85708e52c43",
-     "checked_on": "2026-10-02",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "asset_test": null,
     "residency": null,
     "insured_patients_covered": {
      "value": false,
      "layer": "documented",
-     "quote": "Does not have any form of insurance to cover services rendered that are medically necessary; and",
-     "source_id": "fap-db5cb85708e52c43",
+     "quote": "Does not have any form of insurance to cover services rendered that are medically necessary",
+     "source_id": "application-afd3dabccced8c8a",
      "checked_on": "2026-10-02",
      "confidence": 1.0,
      "support_count": 0
@@ -3593,17 +3628,7 @@
     "services_excluded": null
    },
    "programs": {
-    "presumptive": {
-     "value": [
-      "MassHealth"
-     ],
-     "layer": "documented",
-     "quote": "Through its participation in the Health Safety Net, low-income patients receiving services at the Hospital may be eligible for financial assistance, including free or partially free care for Health Safety Net eligible services defined in 101 CMR 613:00. (a) Health Safety Net - Primary Uninsured patients who are Massachusetts residents with verified MassHealth MAGI household Income or Medical Hardship Family income, as described in 101 CMR 613.04(1), between 0-300% of the Federal Poverty Level (FPL) may be determined eligible for Health Safety Net Eligible Services.",
-     "source_id": "fap-db5cb85708e52c43",
-     "checked_on": "2026-10-02",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "presumptive": null,
     "state_programs": null
    },
    "apply": {
@@ -3616,8 +3641,8 @@
       "medicaid_denial"
      ],
      "layer": "documented",
-     "quote": "Proof of Income: a. Most recent Income Tax Return with W-2 b. 3 most recent paystubs c. or wage and tax statements b) Government issued picture ID c) Denial from the State Financial Assistance Programs i.e. HSN, MH, Health Connector",
-     "source_id": "fap-db5cb85708e52c43",
+     "quote": "Most recent Income Tax Return with W-2, 3 most recent paystubs, or wage and tax statements.",
+     "source_id": "application-afd3dabccced8c8a",
      "checked_on": "2026-10-02",
      "confidence": 1.0,
      "support_count": 0
@@ -3664,7 +3689,7 @@
       "Spanish"
      ],
      "layer": "documented",
-     "quote": "Our Financial Assistance application is available below in both English and Spanish. For other languages, remote interpretive services are available for over 300+ languages.",
+     "quote": "Our Financial Assistance application is available below in both English and Spanish.",
      "source_id": "fap-cbfdd5213b370dc0",
      "checked_on": "2026-10-02",
      "confidence": 1.0,
@@ -3677,8 +3702,8 @@
       "Holyoke Medical Center, 575 Beech Street, Holyoke, MA 01040"
      ],
      "layer": "documented",
-     "quote": "Holyoke Medical Center, 575 Beech Street, Holyoke, MA 01040, (413) 534-2525 and all affiliated sites.",
-     "source_id": "fap-db5cb85708e52c43",
+     "quote": "Holyoke Medical Center, 575 Beech Street, Holyoke, MA 01040",
+     "source_id": "fap-aab8e74c1fa9363f",
      "checked_on": "2026-10-02",
      "confidence": 1.0,
      "support_count": 0
@@ -3686,6 +3711,33 @@
     "provider_list_url": null
    },
    "sources": [
+    {
+     "id": "application-afd3dabccced8c8a",
+     "kind": "hospital_web",
+     "url": "https://www.holyokehealth.com/wp-content/uploads/2025/07/Holyoke-Medical-Center-Financial-Assistance-Application-2025-ENG.pdf",
+     "title": "Financial Assistance Application \u2013 English",
+     "fetched_on": "2026-10-02",
+     "sha256": "afd3dabccced8c8a395f5fcdac93577afb08605d9ecc9b962a06b78cd149c2de",
+     "effective_date": null
+    },
+    {
+     "id": "fap-a83f4614cd3e5189",
+     "kind": "hospital_web",
+     "url": "https://www.holyokehealth.com/wp-content/uploads/2024/10/Providers-Covered-Under-Financial-Assistance-Rev-05-08-17.pdf",
+     "title": "Providers Covered Under Financial Assistance",
+     "fetched_on": "2026-10-02",
+     "sha256": "a83f4614cd3e5189a682b3ebdc867e5f0a5a3b7df4a5acd8fb26be4338ea6fd2",
+     "effective_date": null
+    },
+    {
+     "id": "fap-aab8e74c1fa9363f",
+     "kind": "hospital_web",
+     "url": "https://www.holyokehealth.com/wp-content/uploads/2024/10/Holyoke-Medical-Center-Spanish-Financial-Assistance-Policy-FY-2016.pdf",
+     "title": "Financial Assistance Policy \u2013 Spanish",
+     "fetched_on": "2026-10-02",
+     "sha256": "aab8e74c1fa9363ff460ac554bce5ccca9a2721b6ef687dc8806fe7b6e50a7da",
+     "effective_date": null
+    },
     {
      "id": "fap-cbfdd5213b370dc0",
      "kind": "hospital_web",
@@ -3703,33 +3755,6 @@
      "fetched_on": "2026-10-02",
      "sha256": "db5cb85708e52c4306b179b65f221283be17e7981e61d6813c37837a02937c3d",
      "effective_date": null
-    },
-    {
-     "id": "fap-aab8e74c1fa9363f",
-     "kind": "hospital_web",
-     "url": "https://www.holyokehealth.com/wp-content/uploads/2024/10/Holyoke-Medical-Center-Spanish-Financial-Assistance-Policy-FY-2016.pdf",
-     "title": "Financial Assistance Policy \u2013 Spanish",
-     "fetched_on": "2026-10-02",
-     "sha256": "aab8e74c1fa9363ff460ac554bce5ccca9a2721b6ef687dc8806fe7b6e50a7da",
-     "effective_date": null
-    },
-    {
-     "id": "fap-a83f4614cd3e5189",
-     "kind": "hospital_web",
-     "url": "https://www.holyokehealth.com/wp-content/uploads/2024/10/Providers-Covered-Under-Financial-Assistance-Rev-05-08-17.pdf",
-     "title": "Providers Covered Under Financial Assistance",
-     "fetched_on": "2026-10-02",
-     "sha256": "a83f4614cd3e5189a682b3ebdc867e5f0a5a3b7df4a5acd8fb26be4338ea6fd2",
-     "effective_date": null
-    },
-    {
-     "id": "application-afd3dabccced8c8a",
-     "kind": "hospital_web",
-     "url": "https://www.holyokehealth.com/wp-content/uploads/2025/07/Holyoke-Medical-Center-Financial-Assistance-Application-2025-ENG.pdf",
-     "title": "Financial Assistance Application \u2013 English",
-     "fetched_on": "2026-10-02",
-     "sha256": "afd3dabccced8c8a395f5fcdac93577afb08605d9ecc9b962a06b78cd149c2de",
-     "effective_date": null
     }
    ],
    "accuracy": null
@@ -3746,7 +3771,7 @@
     "website_domain": "lahey.org",
     "system": null
    },
-   "version": 1,
+   "version": 2,
    "status": "held",
    "eligibility": {
     "free_care_max_fpl": null,
@@ -3758,7 +3783,19 @@
     "services_excluded": null
    },
    "programs": {
-    "presumptive": null,
+    "presumptive": {
+     "value": [
+      "MassHealth",
+      "Commonwealth Care",
+      "Health Safety Net"
+     ],
+     "layer": "documented",
+     "quote": "you may qualify for financial help through MassHealth, Commonwealth Care or Health Safety Net.",
+     "source_id": "billing-139776b215afc5d1",
+     "checked_on": "2026-10-02",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "state_programs": null
    },
    "apply": {
@@ -3778,8 +3815,8 @@
     "phone": {
      "value": "781-744-5554",
      "layer": "documented",
-     "quote": "[781-744-5554](tel:781-744-5554)",
-     "source_id": "billing-8d59f7c88f963ac3",
+     "quote": "[781-744-5554](tel:1-781-744-5554 \"Call 781-744-5554\")",
+     "source_id": "billing-139776b215afc5d1",
      "checked_on": "2026-10-02",
      "confidence": 1.0,
      "support_count": 0
@@ -3793,12 +3830,12 @@
    },
    "sources": [
     {
-     "id": "billing-8d59f7c88f963ac3",
+     "id": "billing-139776b215afc5d1",
      "kind": "hospital_web",
-     "url": "https://www.lahey.org/patients-visitors/billing-financial-services",
-     "title": "Billing & Financial Services | Lahey Clinic",
+     "url": "https://www.lahey.org/patients-visitors/billing-financial-services/price-transparency",
+     "title": "Billing and Collections Policy",
      "fetched_on": "2026-10-02",
-     "sha256": "8d59f7c88f963ac3e5d406b8801c3e53dc7d4ae94c16f304155054d54c7d59da",
+     "sha256": "139776b215afc5d18e6a61deb752d5a23050154beae0587e5ac882aac9f8b1ba",
      "effective_date": null
     },
     {
@@ -3811,12 +3848,12 @@
      "effective_date": null
     },
     {
-     "id": "billing-139776b215afc5d1",
+     "id": "billing-8d59f7c88f963ac3",
      "kind": "hospital_web",
-     "url": "https://www.lahey.org/patients-visitors/billing-financial-services/price-transparency",
-     "title": "Billing and Collections Policy",
+     "url": "https://www.lahey.org/patients-visitors/billing-financial-services",
+     "title": "Billing & Financial Services | Lahey Clinic",
      "fetched_on": "2026-10-02",
-     "sha256": "139776b215afc5d18e6a61deb752d5a23050154beae0587e5ac882aac9f8b1ba",
+     "sha256": "8d59f7c88f963ac3e5d406b8801c3e53dc7d4ae94c16f304155054d54c7d59da",
      "effective_date": null
     },
     {
@@ -3852,7 +3889,7 @@
     "website_domain": "payerprice.com",
     "system": null
    },
-   "version": 1,
+   "version": 2,
    "status": "held",
    "eligibility": {
     "free_care_max_fpl": null,
@@ -3881,12 +3918,30 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": null,
+    "phone": {
+     "value": "(716) 862-1000",
+     "layer": "documented",
+     "quote": "(716) 862-1000",
+     "source_id": "fap-dbfdece04c88ce81",
+     "checked_on": "2026-10-02",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "hours": null,
     "languages": null
    },
    "coverage": {
-    "facilities": null,
+    "facilities": {
+     "value": [
+      "Sisters Of Charity Hospital"
+     ],
+     "layer": "documented",
+     "quote": "Sisters Of Charity Hospital",
+     "source_id": "fap-dbfdece04c88ce81",
+     "checked_on": "2026-10-02",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "provider_list_url": null
    },
    "sources": [
@@ -3914,7 +3969,7 @@
     "website_domain": "umassmemorialhealthcare.org",
     "system": null
    },
-   "version": 1,
+   "version": 2,
    "status": "held",
    "eligibility": {
     "free_care_max_fpl": null,
@@ -3924,8 +3979,8 @@
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "The UMass Memorial Health Care System is committed to provide urgent, emergency and medically necessary care to all patients regardless of their ability to pay.",
-     "source_id": "fap-b09f870a42f035c1",
+     "quote": "If you qualify, you will not be billed more than the amount generally billed to patients with insurance coverage.",
+     "source_id": "application-8bf242a46e292f85",
      "checked_on": "2026-10-02",
      "confidence": 1.0,
      "support_count": 0
@@ -3934,17 +3989,7 @@
     "services_excluded": null
    },
    "programs": {
-    "presumptive": {
-     "value": [
-      "Medicaid"
-     ],
-     "layer": "documented",
-     "quote": "Apply for any state or government medical assistance for which they may be eligible.",
-     "source_id": "fap-b09f870a42f035c1",
-     "checked_on": "2026-10-02",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "presumptive": null,
     "state_programs": null
    },
    "apply": {
@@ -3952,15 +3997,11 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "proof_of_income",
-      "tax_return",
-      "pay_stubs",
-      "bank_statements",
-      "other"
+      "proof_of_income"
      ],
      "layer": "documented",
-     "quote": "Acceptable verifications of income are as follows: \u2022 2 most recent pay stubs. \u2022 A copy of the most recent pension, social security, unemployment or other income benefits statement or check. \u2022 For the self-employed the last 3 months profit and loss statement. \u2022 A copy of the most recent tax returns as long as it is not over 6 months old. \u2022 A statement from an employer indicating gross weekly income. \u2022 For alimony/child support a copy of a court decree or a check of payments received. \u2022 A signed statement of support for an applicant/family member that does not have any income.",
-     "source_id": "fap-b09f870a42f035c1",
+     "quote": "provide verification of all household income.",
+     "source_id": "application-8bf242a46e292f85",
      "checked_on": "2026-10-02",
      "confidence": 1.0,
      "support_count": 0
@@ -3968,28 +4009,16 @@
     "submit_methods": {
      "value": [
       {
-       "kind": "mail",
-       "detail": ""
-      },
-      {
-       "kind": "fax",
-       "detail": ""
-      },
-      {
-       "kind": "email",
-       "detail": ""
-      },
-      {
-       "kind": "portal",
-       "detail": ""
+       "kind": "phone",
+       "detail": "Contact the Patient Financial Counseling Department to request, free of charge, a paper copy of the Financial Assistance Program policy, the Financial Assistance Program application, and the instructions on how to fill it out."
       },
       {
        "kind": "in_person",
-       "detail": ""
+       "detail": "This request may be made by telephone, in person or email."
       }
      ],
      "layer": "documented",
-     "quote": "This request may be made by telephone, in person or email.",
+     "quote": "Contact the Patient Financial Counseling Department to request, free of charge, a paper copy of the Financial Assistance Program policy, the Financial Assistance Program application, and the instructions on how to fill it out. This request may be made by telephone, in person or email.",
      "source_id": "application-8bf242a46e292f85",
      "checked_on": "2026-10-02",
      "confidence": 1.0,
@@ -4013,10 +4042,10 @@
    },
    "contacts": {
     "phone": {
-     "value": "508-486-5864",
+     "value": "508-334-9300",
      "layer": "documented",
-     "quote": "\u2022 Telephone: 508-486-5864",
-     "source_id": "fap-b09f870a42f035c1",
+     "quote": "Telephone: 508-334-9300",
+     "source_id": "application-8bf242a46e292f85",
      "checked_on": "2026-10-02",
      "confidence": 1.0,
      "support_count": 0
@@ -4031,7 +4060,7 @@
       "Arabic"
      ],
      "layer": "documented",
-     "quote": "This summary of the UMMHC Financial Assistance Program policy, the Financial Assistance Program application and the instructions on how to fill it out are available in English, Spanish, Portuguese, Vietnamese and Arabic on the UMass Memorial Health Care website.",
+     "quote": "available in English, Spanish, Portuguese, Vietnamese and Arabic on the UMass Memorial Health Care website.",
      "source_id": "application-8bf242a46e292f85",
      "checked_on": "2026-10-02",
      "confidence": 1.0,
@@ -4047,7 +4076,7 @@
       "UMass Memorial -Marlborough Hospital"
      ],
      "layer": "documented",
-     "quote": "It is the policy of UMass Memorial Health Care (\u201cUMMHC\u201d) to offer free or discounted care to patients with demonstrated financial need for medically necessary, urgent or emergency care at all locations of the following hospitals: UMass Memorial Medical Center, UMass Memorial - Clinton Hospital, UMass Memorial - HealthAlliance Hospital, and UMass Memorial -Marlborough Hospital.",
+     "quote": "offer free or discounted care to patients with demonstrated financial need for medically necessary, urgent or emergency care at all locations of the following hospitals: UMass Memorial Medical Center, UMass Memorial - Clinton Hospital, UMass Memorial - HealthAlliance Hospital, and UMass Memorial -Marlborough Hospital.",
      "source_id": "application-8bf242a46e292f85",
      "checked_on": "2026-10-02",
      "confidence": 1.0,
@@ -4057,21 +4086,21 @@
    },
    "sources": [
     {
-     "id": "fap-b09f870a42f035c1",
-     "kind": "hospital_web",
-     "url": "https://www.umassmemorialhealthcare.org/sites/default/files/Documents/Patients_Visitors/Financial_Assistance_Policy-040116.pdf",
-     "title": "[PDF] UMass Memorial Health Care System-Marlborough Hospital",
-     "fetched_on": "2026-10-02",
-     "sha256": "b09f870a42f035c1f158cca28e942858136e21e4e09a77a1606d9d2cb702611e",
-     "effective_date": null
-    },
-    {
      "id": "application-8bf242a46e292f85",
      "kind": "hospital_web",
      "url": "https://www.umassmemorialhealthcare.org/sites/default/files/Documents/Patients_Visitors/Financial_counseling/NS%20PFC%200037.pdf",
      "title": "Form Template.qxd - UMass Memorial Health",
      "fetched_on": "2026-10-02",
      "sha256": "8bf242a46e292f8536214c5a55c833864c2cb75bb7b30856d52829406a77d7e4",
+     "effective_date": null
+    },
+    {
+     "id": "fap-b09f870a42f035c1",
+     "kind": "hospital_web",
+     "url": "https://www.umassmemorialhealthcare.org/sites/default/files/Documents/Patients_Visitors/Financial_Assistance_Policy-040116.pdf",
+     "title": "[PDF] UMass Memorial Health Care System-Marlborough Hospital",
+     "fetched_on": "2026-10-02",
+     "sha256": "b09f870a42f035c1f158cca28e942858136e21e4e09a77a1606d9d2cb702611e",
      "effective_date": null
     },
     {
@@ -4107,7 +4136,7 @@
     "website_domain": "chiamass.gov",
     "system": null
    },
-   "version": 1,
+   "version": 2,
    "status": "held",
    "eligibility": {
     "free_care_max_fpl": null,
@@ -4141,35 +4170,28 @@
     "languages": null
    },
    "coverage": {
-    "facilities": null,
+    "facilities": {
+     "value": [
+      "Cooley Dickinson Hospital",
+      "Martha's Vineyard Hospital"
+     ],
+     "layer": "documented",
+     "quote": "Cooley Dickinson Hospital Acute Hospital 2.4% $3.7 $59.9 Martha's Vineyard Hospital Acute Hospital 3.1% $2.4 $104.2",
+     "source_id": "application-8ed9980fb52e341d",
+     "checked_on": "2026-10-02",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "provider_list_url": null
    },
    "sources": [
     {
-     "id": "application-27b2162ce1bcc612",
+     "id": "application-0270a2d7d6ed0011",
      "kind": "hospital_web",
-     "url": "https://www.chiamass.gov/requesting-submitting-data/submitting-data/hospital-health-system-financial-performance-data-submissions",
-     "title": "Financial Assistance Application",
+     "url": "https://www.chiamass.gov/wp-content/uploads/2026-annual-hospital-financial-performance-report-hfy-2025.pdf",
+     "title": "HFY25 Financial Performance Report (PDF)",
      "fetched_on": "2026-10-02",
-     "sha256": "27b2162ce1bcc612ecb03c28c38cd90a8270756369947244e24eba882b8ff2cd",
-     "effective_date": null
-    },
-    {
-     "id": "application-f83ff0e9d5dd7360",
-     "kind": "hospital_web",
-     "url": "https://www.chiamass.gov/insights-analysis/provider-financial-data/hospital-and-hospital-health-system-annual-performance",
-     "title": "Financial Assistance Application",
-     "fetched_on": "2026-10-02",
-     "sha256": "f83ff0e9d5dd7360062faec8b978a0be299b707151a055118606823f895309bc",
-     "effective_date": null
-    },
-    {
-     "id": "application-8ed9980fb52e341d",
-     "kind": "hospital_web",
-     "url": "https://www.chiamass.gov/assets/docs/r/hospital-profiles/2015/Hospital-System-Brief.pdf",
-     "title": "[PDF] Financial Performance Summary: Acute Hospital Parent ...",
-     "fetched_on": "2026-10-02",
-     "sha256": "8ed9980fb52e341d6aa996ed01f9b3346e09d7c55ab33406bacc798620aaf11e",
+     "sha256": "0270a2d7d6ed0011deda120a5766e172094c44aae123fa64540355ad0c42db22",
      "effective_date": null
     },
     {
@@ -4182,21 +4204,12 @@
      "effective_date": null
     },
     {
-     "id": "application-0270a2d7d6ed0011",
+     "id": "application-27b2162ce1bcc612",
      "kind": "hospital_web",
-     "url": "https://www.chiamass.gov/wp-content/uploads/2026-annual-hospital-financial-performance-report-hfy-2025.pdf",
-     "title": "HFY25 Financial Performance Report (PDF)",
+     "url": "https://www.chiamass.gov/requesting-submitting-data/submitting-data/hospital-health-system-financial-performance-data-submissions",
+     "title": "Financial Assistance Application",
      "fetched_on": "2026-10-02",
-     "sha256": "0270a2d7d6ed0011deda120a5766e172094c44aae123fa64540355ad0c42db22",
-     "effective_date": null
-    },
-    {
-     "id": "application-7033ff56e546b78c",
-     "kind": "hospital_web",
-     "url": "https://www.chiamass.gov/wp-content/uploads/Uploads/mass-hospital-financials/2024-annual-report/Hospital-Financial-Performance-2024-Report.pdf",
-     "title": "HFY 2024 Annual Financial Performance Report (PDF)",
-     "fetched_on": "2026-10-02",
-     "sha256": "7033ff56e546b78cac63a6f766aa21c2804bc8fe03bd703efda4d4bebf27bddf",
+     "sha256": "27b2162ce1bcc612ecb03c28c38cd90a8270756369947244e24eba882b8ff2cd",
      "effective_date": null
     },
     {
@@ -4209,12 +4222,39 @@
      "effective_date": null
     },
     {
+     "id": "application-7033ff56e546b78c",
+     "kind": "hospital_web",
+     "url": "https://www.chiamass.gov/wp-content/uploads/Uploads/mass-hospital-financials/2024-annual-report/Hospital-Financial-Performance-2024-Report.pdf",
+     "title": "HFY 2024 Annual Financial Performance Report (PDF)",
+     "fetched_on": "2026-10-02",
+     "sha256": "7033ff56e546b78cac63a6f766aa21c2804bc8fe03bd703efda4d4bebf27bddf",
+     "effective_date": null
+    },
+    {
+     "id": "application-8ed9980fb52e341d",
+     "kind": "hospital_web",
+     "url": "https://www.chiamass.gov/assets/docs/r/hospital-profiles/2015/Hospital-System-Brief.pdf",
+     "title": "[PDF] Financial Performance Summary: Acute Hospital Parent ...",
+     "fetched_on": "2026-10-02",
+     "sha256": "8ed9980fb52e341d6aa996ed01f9b3346e09d7c55ab33406bacc798620aaf11e",
+     "effective_date": null
+    },
+    {
      "id": "application-94056416c587da87",
      "kind": "hospital_web",
      "url": "https://www.chiamass.gov/wp-content/uploads/Uploads/mass-hospital-financials/2022-annual-report/Acute-Hospital-Financial-Performance-2022-Report.pdf",
      "title": "HFY 2022 Annual Financial Performance Report (PDF)",
      "fetched_on": "2026-10-02",
      "sha256": "94056416c587da87d99f68f1ea730ef78719581a7caa76443fdf85345addcc1d",
+     "effective_date": null
+    },
+    {
+     "id": "application-f83ff0e9d5dd7360",
+     "kind": "hospital_web",
+     "url": "https://www.chiamass.gov/insights-analysis/provider-financial-data/hospital-and-hospital-health-system-annual-performance",
+     "title": "Financial Assistance Application",
+     "fetched_on": "2026-10-02",
+     "sha256": "f83ff0e9d5dd7360062faec8b978a0be299b707151a055118606823f895309bc",
      "effective_date": null
     }
    ],
@@ -4232,7 +4272,7 @@
     "website_domain": "massgeneralbrigham.org",
     "system": null
    },
-   "version": 1,
+   "version": 2,
    "status": "held",
    "eligibility": {
     "free_care_max_fpl": {
@@ -4267,7 +4307,7 @@
     "asset_test": {
      "value": true,
      "layer": "documented",
-     "quote": "Assets will also be used when: \u2022 Patient\u2019s residency is outside the U.S. or Canada.",
+     "quote": "Assets will also be used when:",
      "source_id": "fap-111a492d2aab30fc",
      "checked_on": "2026-10-02",
      "confidence": 1.0,
@@ -4290,10 +4330,11 @@
     "presumptive": {
      "value": [
       "Medicaid",
-      "Medicare"
+      "MassHealth",
+      "Health Safety Net"
      ],
      "layer": "documented",
-     "quote": "Patients with a family income of more than 300% but less than or equal to 600% of the FPG may still qualify if they can demonstrate that their annual medical expenses exceeded 30% of their income in the most recent 12-month period.",
+     "quote": "Presumptive Discounts HSN Full HSN Partial Physician\u2019s Organizations 100% 70%",
      "source_id": "fap-111a492d2aab30fc",
      "checked_on": "2026-10-02",
      "confidence": 1.0,
@@ -4366,7 +4407,7 @@
     "phone": {
      "value": "617-726-3884",
      "layer": "documented",
-     "quote": "Please call [617-726-3884](tel:617-726-3884) or e-mail [patientbilling@partners.org](mailto:patientbilling@partners.org) to request information and application forms.",
+     "quote": "[617-726-3884](tel:617-726-3884)",
      "source_id": "billing-4de2ce6d32abf574",
      "checked_on": "2026-10-02",
      "confidence": 1.0,
@@ -4428,15 +4469,6 @@
      "effective_date": null
     },
     {
-     "id": "fap-f9ec43a6496017b1",
-     "kind": "hospital_web",
-     "url": "https://www.massgeneralbrigham.org/content/dam/unified-xwalk/documents/ar/patients-visitors/financial-assistance-policy-arabic.pdf",
-     "title": "Financial Assistance Policy - Full version / \u0633\u064a\u0627\u0633\u0629 \u0627\u0644\u0645\u0633\u0627\u0639\u062f\u0629 \u0627\u0644\u0645\u0627\u0644\u064a\u0629 - \u0627\u0644\u0646\u0633\u062e\u0629 \u0627\u0644\u0643\u0627\u0645\u0644\u0629 (PDF)",
-     "fetched_on": "2026-10-02",
-     "sha256": "f9ec43a6496017b1cdffb505387e87451083a13ac7fc83f6322e379ad6e0617f",
-     "effective_date": null
-    },
-    {
      "id": "fap-7196b2d900eb066a",
      "kind": "hospital_web",
      "url": "https://www.massgeneralbrigham.org/content/dam/unified-xwalk/documents/zh/patients-visitors/financial-assistance-policy-chinese.pdf",
@@ -4452,6 +4484,15 @@
      "title": "Financial Assistance Policy - Full version / R\u00e8gleman kons\u00e8nan ed finansye - v\u00e8syon konpl\u00e8 (PDF)",
      "fetched_on": "2026-10-02",
      "sha256": "a324bdea17060ba8eb4acf1efa5f16bf9c3e182b26396ce1efc35f6bc86b6a33",
+     "effective_date": null
+    },
+    {
+     "id": "fap-f9ec43a6496017b1",
+     "kind": "hospital_web",
+     "url": "https://www.massgeneralbrigham.org/content/dam/unified-xwalk/documents/ar/patients-visitors/financial-assistance-policy-arabic.pdf",
+     "title": "Financial Assistance Policy - Full version / \u0633\u064a\u0627\u0633\u0629 \u0627\u0644\u0645\u0633\u0627\u0639\u062f\u0629 \u0627\u0644\u0645\u0627\u0644\u064a\u0629 - \u0627\u0644\u0646\u0633\u062e\u0629 \u0627\u0644\u0643\u0627\u0645\u0644\u0629 (PDF)",
+     "fetched_on": "2026-10-02",
+     "sha256": "f9ec43a6496017b1cdffb505387e87451083a13ac7fc83f6322e379ad6e0617f",
      "effective_date": null
     }
    ],
@@ -4469,7 +4510,7 @@
     "website_domain": "tuftsmedicine.org",
     "system": null
    },
-   "version": 1,
+   "version": 2,
    "status": "held",
    "eligibility": {
     "free_care_max_fpl": null,
@@ -4487,8 +4528,8 @@
     "insured_patients_covered": {
      "value": false,
      "layer": "documented",
-     "quote": "**Important: We do not discount patient co-payments, deductibles or co-insurance.**",
-     "source_id": "fap-73f9924d7f0f705d",
+     "quote": "Tufts Medicine Financial Assistance is not intended to cover non-medically necessary care. It is also not intended to provide discounts on insurance co-payments, co-insurance, or deductibles.",
+     "source_id": "application-da95e38695ec23eb",
      "checked_on": "2026-10-02",
      "confidence": 1.0,
      "support_count": 0
@@ -4499,11 +4540,13 @@
    "programs": {
     "presumptive": {
      "value": [
-      "MassHealth"
+      "MassHealth",
+      "ConnectorCare",
+      "Health Safety Net"
      ],
      "layer": "documented",
-     "quote": "State programs\n\n* If you live in Massachusetts, you may be able to get health insurance or help paying for your healthcare bills through state programs like [MassHealth](https://www.mass.gov/topics/masshealth), the [Health Connector](https://www.mahealthconnector.org/), or the [Health Safety Net](https://www.mass.gov/orgs/health-safety-net). Each program has different rules and income limitations.",
-     "source_id": "fap-73f9924d7f0f705d",
+     "quote": "Patients are strongly encouraged to apply for any available government assistance programs, such as MassHealth, ConnectorCare, or Health Safety Net, before applying for the Tufts Medicine Financial Assistance Program.",
+     "source_id": "application-da95e38695ec23eb",
      "checked_on": "2026-10-02",
      "confidence": 1.0,
      "support_count": 0
@@ -4522,10 +4565,12 @@
       "pay_stubs",
       "bank_statements",
       "proof_of_residency",
-      "insurance_card"
+      "insurance_card",
+      "medicaid_denial",
+      "other"
      ],
      "layer": "documented",
-     "quote": "Include a copy of your driver\u2019s license, other photo identification or documents that verify your current residence. Anything submitted must include your name.\n  Include a copy of your insurance card(s)\n  Include some form of income verification: \n  Include a copy of your most recent W-2(s)\n   If there has been a recent change in your income, \n  include documentation such as recent pay stubs \n   (minimum 4), unemployment statements, bank/\ninvestment statements,  \n   and/or social security statements",
+     "quote": "Include a copy of your driver\u2019s license, other photo identification or documents that verify your current residence. Anything submitted must include your name.\n  Include a copy of your insurance card(s)\n  Include some form of income verification: \n  Include a copy of your most recent W-2(s)\n   If there has been a recent change in your income, \ninclude documentation such as recent pay stubs \n(minimum 4), unemployment statements, bank/\ninvestment statements,  \nand/or social security statements\n   If the patient is deceased, please provide a copy of the death \ncertificate and a letter stating the status of the estate",
      "source_id": "application-da95e38695ec23eb",
      "checked_on": "2026-10-02",
      "confidence": 1.0,
@@ -4539,11 +4584,7 @@
       },
       {
        "kind": "in_person",
-       "detail": "Melrose Wakefield Hospital\n585 Lebanon Street, Suite 101\nMelrose, MA  02176"
-      },
-      {
-       "kind": "in_person",
-       "detail": "Melrose Wakefield Hospital\nGround Floor near Urgent Care\n170 Governors Avenue\nMedford, MA 02155"
+       "detail": "Melrose Wakefield Hospital\n585 Lebanon Street, Suite 101\nMelrose, MA  02176\n\u2022  Melrose Wakefield Hospital\nGround Floor near Urgent Care\n170 Governors Avenue\nMedford, MA 02155"
       }
      ],
      "layer": "documented",
@@ -4563,10 +4604,10 @@
    },
    "contacts": {
     "phone": {
-     "value": "978-937-6700",
+     "value": "978-973-6700",
      "layer": "documented",
-     "quote": "Call financial counseling at [978.937.6700](tel:978.937.6700) option 2 to make an appointment at any of the office locations listed below.",
-     "source_id": "fap-73f9924d7f0f705d",
+     "quote": "978-973-6700",
+     "source_id": "application-da95e38695ec23eb",
      "checked_on": "2026-10-02",
      "confidence": 1.0,
      "support_count": 0
@@ -4575,23 +4616,11 @@
     "languages": {
      "value": [
       "English",
-      "Arabic",
-      "Chinese (Traditional)",
-      "Greek",
-      "Gujarati",
-      "Haitian Creole",
-      "Hindi",
-      "Italian",
-      "Khmer",
-      "Laotian",
-      "Portuguese",
-      "Spanish",
-      "Russian",
-      "Vietnamese"
+      "Arabic"
      ],
      "layer": "documented",
-     "quote": "Materials, including the policy, application form, and plain language summary are available in English, Arabic, Chinese,\nGreek, Gujarati, Haitian Creole, Hindi, Italian, Khmer, Laotian, \nPortuguese, Russian, Spanish, and Vietnamese.",
-     "source_id": "fap-a8eaa8963cad7c43",
+     "quote": "Financial Assistance Application - English",
+     "source_id": "fap-73f9924d7f0f705d",
      "checked_on": "2026-10-02",
      "confidence": 1.0,
      "support_count": 0
@@ -4600,11 +4629,12 @@
    "coverage": {
     "facilities": {
      "value": [
-      "MelroseWakefield Hospital"
+      "Melrose Wakefield Hospital",
+      "Melrose Wakefield Hospital Ground Floor near Urgent Care"
      ],
      "layer": "documented",
-     "quote": "MelroseWakefield Hospital,\n585 Lebanon Street Melrose, MA 02176, Suite 101",
-     "source_id": "fap-73f9924d7f0f705d",
+     "quote": "\u2022  Melrose Wakefield Hospital\n585 Lebanon Street, Suite 101\nMelrose, MA  02176\n\u2022  Melrose Wakefield Hospital\nGround Floor near Urgent Care\n170 Governors Avenue\nMedford, MA 02155",
+     "source_id": "application-da95e38695ec23eb",
      "checked_on": "2026-10-02",
      "confidence": 1.0,
      "support_count": 0
@@ -4612,6 +4642,42 @@
     "provider_list_url": null
    },
    "sources": [
+    {
+     "id": "application-6cf6e2457814febd",
+     "kind": "hospital_web",
+     "url": "https://www.tuftsmedicine.org/sites/default/files/2023-12/13144-Financial-Assistance-Application-AR.pdf",
+     "title": "Financial Assistance Application - Arabic",
+     "fetched_on": "2026-10-02",
+     "sha256": "6cf6e2457814febdba50ce5e97bdcc7e56183416dd4c2e23278b4e4a248ba914",
+     "effective_date": null
+    },
+    {
+     "id": "application-da95e38695ec23eb",
+     "kind": "hospital_web",
+     "url": "https://www.tuftsmedicine.org/sites/default/files/2023-12/13144-EN-Financial-Assistance-Application-TM-FY23.pdf",
+     "title": "Financial Assistance Application - English",
+     "fetched_on": "2026-10-02",
+     "sha256": "da95e38695ec23eb2e559307a3caa947dde47357695295ad3e4659a9b0f2108a",
+     "effective_date": null
+    },
+    {
+     "id": "fap-6b7f9076a46411d9",
+     "kind": "hospital_web",
+     "url": "https://www.tuftsmedicine.org/sites/default/files/2026-02/FAP-AppendixB.pdf",
+     "title": "Provider Affiliate List \u2013 Non- Participating Entities",
+     "fetched_on": "2026-10-02",
+     "sha256": "6b7f9076a46411d9ddc10a3d7e165e51b37f35331fda606a92ba84fa37b9f085",
+     "effective_date": null
+    },
+    {
+     "id": "fap-73c11bcfa33611f1",
+     "kind": "hospital_web",
+     "url": "https://www.tuftsmedicine.org/sites/default/files/2026-02/FAP-AppendixA.pdf",
+     "title": "Locations \u2013 Participating Entities",
+     "fetched_on": "2026-10-02",
+     "sha256": "73c11bcfa33611f197db90166febb1451ee197dce73505010ada8795dd51907e",
+     "effective_date": null
+    },
     {
      "id": "fap-73f9924d7f0f705d",
      "kind": "hospital_web",
@@ -4628,42 +4694,6 @@
      "title": "Financial Assistance Program",
      "fetched_on": "2026-10-02",
      "sha256": "a8eaa8963cad7c43e9b66d64d5f2202e5366f4d9ccb9ac9fd54720ebaac40d8f",
-     "effective_date": null
-    },
-    {
-     "id": "fap-73c11bcfa33611f1",
-     "kind": "hospital_web",
-     "url": "https://www.tuftsmedicine.org/sites/default/files/2026-02/FAP-AppendixA.pdf",
-     "title": "Locations \u2013 Participating Entities",
-     "fetched_on": "2026-10-02",
-     "sha256": "73c11bcfa33611f197db90166febb1451ee197dce73505010ada8795dd51907e",
-     "effective_date": null
-    },
-    {
-     "id": "fap-6b7f9076a46411d9",
-     "kind": "hospital_web",
-     "url": "https://www.tuftsmedicine.org/sites/default/files/2026-02/FAP-AppendixB.pdf",
-     "title": "Provider Affiliate List \u2013 Non- Participating Entities",
-     "fetched_on": "2026-10-02",
-     "sha256": "6b7f9076a46411d9ddc10a3d7e165e51b37f35331fda606a92ba84fa37b9f085",
-     "effective_date": null
-    },
-    {
-     "id": "application-da95e38695ec23eb",
-     "kind": "hospital_web",
-     "url": "https://www.tuftsmedicine.org/sites/default/files/2023-12/13144-EN-Financial-Assistance-Application-TM-FY23.pdf",
-     "title": "Financial Assistance Application - English",
-     "fetched_on": "2026-10-02",
-     "sha256": "da95e38695ec23eb2e559307a3caa947dde47357695295ad3e4659a9b0f2108a",
-     "effective_date": null
-    },
-    {
-     "id": "application-6cf6e2457814febd",
-     "kind": "hospital_web",
-     "url": "https://www.tuftsmedicine.org/sites/default/files/2023-12/13144-Financial-Assistance-Application-AR.pdf",
-     "title": "Financial Assistance Application - Arabic",
-     "fetched_on": "2026-10-02",
-     "sha256": "6cf6e2457814febdba50ce5e97bdcc7e56183416dd4c2e23278b4e4a248ba914",
      "effective_date": null
     }
    ],
@@ -5080,7 +5110,7 @@
     "website_domain": "massgeneralbrigham.org",
     "system": null
    },
-   "version": 1,
+   "version": 2,
    "status": "held",
    "eligibility": {
     "free_care_max_fpl": {
@@ -5125,7 +5155,7 @@
     "insured_patients_covered": {
      "value": false,
      "layer": "documented",
-     "quote": "Patients must meet the following conditions to qualify for financial assistance. Failure to meet these conditions results in the patient being disqualified for consideration. a. Obtain and maintain insurance coverage if affordable coverage is available to the patient either from a government-sponsored insurance program (Medicaid/Medicare), commercial insurance from their employer or from ConnectorCare or similar subsidized programs.",
+     "quote": "Discounts based solely on income are generally limited to patients with family incomes less than or equal to 300% of the Federal Poverty Guidelines (FPG)",
      "source_id": "fap-111a492d2aab30fc",
      "checked_on": "2026-10-02",
      "confidence": 1.0,
@@ -5137,7 +5167,7 @@
    "programs": {
     "presumptive": {
      "value": [
-      "MassHealth Limited",
+      "MassHealth",
       "Health Safety Net"
      ],
      "layer": "documented",
@@ -5150,7 +5180,15 @@
     "state_programs": null
    },
    "apply": {
-    "form_url": null,
+    "form_url": {
+     "value": "https://www.massgeneralbrigham.org/content/dam/mgb-global/en/patient-care/patient-and-visitor-information/financial-assistance/documents/assistance-information/english/financial-assistance-application-english.pdf",
+     "layer": "documented",
+     "quote": "[Financial Assistance Policy - Full version](/content/dam/mgb-global/en/patient-care/patient-and-visitor-information/financial-assistance/documents/assistance-information/financial-assistance-policy-english.pdf) (PDF)\n\n[Financial Assistance Policy - Plain language version](/content/dam/mgb-global/en/patient-care/patient-and-visitor-information/financial-assistance/documents/assistance-information/financial-assistance-summary-english.pdf) (PDF)\n\n[Credit and Collection Policy](/content/dam/mgb-global/en/patient-care/patient-and-visitor-information/financial-assistance/documents/assistance-information/credit-collection-policy-english.pdf) (PDF)\n\n[Application](/content/dam/mgb-global/en/patient-care/patient-and-visitor-information/financial-assistance/documents/assistance-information/financial-assistance-application-english.pdf) (PDF)",
+     "source_id": "application-4a93d4901ba08d88",
+     "checked_on": "2026-10-02",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "form_version": null,
     "documents_required": {
      "value": [
@@ -5158,8 +5196,8 @@
       "proof_of_income"
      ],
      "layer": "documented",
-     "quote": "Complete and submit a paper application (found in the financial application section) along with ID and income verification.",
-     "source_id": "billing-4de2ce6d32abf574",
+     "quote": "* Complete and submit a paper application (found in the financial application section) along with ID and income verification.",
+     "source_id": "application-dc0301e9ce23d133",
      "checked_on": "2026-10-02",
      "confidence": 1.0,
      "support_count": 0
@@ -5167,17 +5205,29 @@
     "submit_methods": {
      "value": [
       {
-       "kind": "phone",
-       "detail": "Call [617-726-3884](tel:617-726-3884)"
+       "kind": "mail",
+       "detail": ""
+      },
+      {
+       "kind": "fax",
+       "detail": ""
+      },
+      {
+       "kind": "email",
+       "detail": ""
+      },
+      {
+       "kind": "portal",
+       "detail": ""
       },
       {
        "kind": "in_person",
-       "detail": "Visit a patient financial counselor at your hospital or health center"
+       "detail": ""
       }
      ],
      "layer": "documented",
-     "quote": "Complete and submit a paper application (found in the financial application section) along with ID and income verification. * Call [617-726-3884](tel:617-726-3884) or use our Financial Assistance Application (found in the section below). * Visit a patient financial counselor at your hospital or health center if you need help (see the contact a financial counselor section for more information).",
-     "source_id": "billing-4de2ce6d32abf574",
+     "quote": "* Visit a patient financial counselor at your hospital or health center (see the contact a financial counselor section for more information).\n* Visit [www.MAhealthconnector.org](https://www.mahealthconnector.org/).",
+     "source_id": "application-dc0301e9ce23d133",
      "checked_on": "2026-10-02",
      "confidence": 1.0,
      "support_count": 0
@@ -5194,17 +5244,61 @@
     "phone": {
      "value": "617-726-3884",
      "layer": "documented",
-     "quote": "[617-726-3884](tel:617-726-3884)",
-     "source_id": "billing-4de2ce6d32abf574",
+     "quote": "Call [617-726-3884](tel:617-726-3884) for details.",
+     "source_id": "application-4a93d4901ba08d88",
      "checked_on": "2026-10-02",
      "confidence": 1.0,
      "support_count": 0
     },
     "hours": null,
-    "languages": null
+    "languages": {
+     "value": [
+      "English",
+      "Arabic",
+      "Chinese (Traditional)",
+      "Haitian Creole",
+      "Indonesian",
+      "Khmer",
+      "Portuguese (Brazilian)",
+      "Russian",
+      "Spanish",
+      "Vietnamese"
+     ],
+     "layer": "documented",
+     "quote": "[Financial Assistance Policy - Plain language version / R\u00e8gleman kons\u00e8nan \u00c8d Finansye - v\u00e8syon langaj \u00f2din\u00e8](/content/dam/mgb-global/ht/patient-care/patient-and-visitor-information/financial-assistance/financial-assistance-summary-haitian-creole.pdf) (PDF)",
+     "source_id": "application-4a93d4901ba08d88",
+     "checked_on": "2026-10-02",
+     "confidence": 1.0,
+     "support_count": 0
+    }
    },
    "coverage": {
-    "facilities": null,
+    "facilities": {
+     "value": [
+      "Brigham and Women's Hospital",
+      "Cooley Dickinson Hospital",
+      "Brigham and Women's Faulkner Hospital",
+      "McLean Hospital",
+      "Mass Eye & Ear",
+      "Massachusetts General Hospital",
+      "Marthas Vineyard Hospital",
+      "Nantucket Cottage Hospital",
+      "Salem Hospital",
+      "Newton Wellesley Hospital",
+      "Healthcare at Home",
+      "Spaulding Rehab Hospital Cape Cod",
+      "Spaulding Hospital Cambridge",
+      "Spaulding Nursing and Therapy Center Brighton",
+      "Spaulding Rehab Hospital Boston",
+      "Wentworth Douglass Hospital"
+     ],
+     "layer": "documented",
+     "quote": "Hospitals: Entity FAP Brigham and Women's Hospital 69.2% Cooley Dickinson Hospital 66.6% Brigham and Women's Faulkner Hospital 67.2% McLean Hospital 45.9% Mass Eye & Ear 56.7% Massachusetts General Hospital 68.9% Marthas Vineyard Hospital 55.4% Nantucket Cottage Hospital 58.6% Salem Hospital 69.1% Newton Wellesley Hospital 65.3% Healthcare at Home 12.2% Spaulding Rehab Hospital Cape Cod 56.4% Spaulding Hospital Cambridge 66.8% Spaulding Nursing and Therapy Center Brighton 58.0% Spaulding Rehab Hospital Boston 62.7% Wentworth Douglass Hospital 69.8%",
+     "source_id": "fap-111a492d2aab30fc",
+     "checked_on": "2026-10-02",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "provider_list_url": null
    },
    "sources": [
@@ -5218,15 +5312,6 @@
      "effective_date": null
     },
     {
-     "id": "billing-4de2ce6d32abf574",
-     "kind": "hospital_web",
-     "url": "https://www.massgeneralbrigham.org/en/patients-visitors/billing-insurance/billing/financial-assistance",
-     "title": "Financial Assistance | Mass General Brigham",
-     "fetched_on": "2026-10-02",
-     "sha256": "4de2ce6d32abf574366e9575dd9a71c190cb8cdbf8cce0dfbd647ecdf3b0902a",
-     "effective_date": null
-    },
-    {
      "id": "application-dc0301e9ce23d133",
      "kind": "hospital_web",
      "url": "https://www.massgeneralbrigham.org/patient-information/financial-assistance",
@@ -5236,12 +5321,12 @@
      "effective_date": null
     },
     {
-     "id": "application-dc0301e9ce23d133",
+     "id": "billing-4de2ce6d32abf574",
      "kind": "hospital_web",
-     "url": "https://massgeneralbrigham.org/patient-information/financial-assistance",
+     "url": "https://www.massgeneralbrigham.org/en/patients-visitors/billing-insurance/billing/financial-assistance",
      "title": "Financial Assistance | Mass General Brigham",
      "fetched_on": "2026-10-02",
-     "sha256": "dc0301e9ce23d133fc7baeb08ba9d788bae7469a098fc239fbb58c1a7fb6a43e",
+     "sha256": "4de2ce6d32abf574366e9575dd9a71c190cb8cdbf8cce0dfbd647ecdf3b0902a",
      "effective_date": null
     },
     {
@@ -5251,15 +5336,6 @@
      "title": "Financial Assistance Policy - Full version (PDF)",
      "fetched_on": "2026-10-02",
      "sha256": "111a492d2aab30fc9f28255a487b3253acfd64dd165f262fa8709ee6414dbf56",
-     "effective_date": null
-    },
-    {
-     "id": "fap-f9ec43a6496017b1",
-     "kind": "hospital_web",
-     "url": "https://www.massgeneralbrigham.org/content/dam/unified-xwalk/documents/ar/patients-visitors/financial-assistance-policy-arabic.pdf",
-     "title": "Financial Assistance Policy - Full version / \u0633\u064a\u0627\u0633\u0629 \u0627\u0644\u0645\u0633\u0627\u0639\u062f\u0629 \u0627\u0644\u0645\u0627\u0644\u064a\u0629 - \u0627\u0644\u0646\u0633\u062e\u0629 \u0627\u0644\u0643\u0627\u0645\u0644\u0629 (PDF)",
-     "fetched_on": "2026-10-02",
-     "sha256": "f9ec43a6496017b1cdffb505387e87451083a13ac7fc83f6322e379ad6e0617f",
      "effective_date": null
     },
     {
@@ -5278,6 +5354,15 @@
      "title": "Financial Assistance Policy - Full version / R\u00e8gleman kons\u00e8nan ed finansye - v\u00e8syon konpl\u00e8 (PDF)",
      "fetched_on": "2026-10-02",
      "sha256": "a324bdea17060ba8eb4acf1efa5f16bf9c3e182b26396ce1efc35f6bc86b6a33",
+     "effective_date": null
+    },
+    {
+     "id": "fap-f9ec43a6496017b1",
+     "kind": "hospital_web",
+     "url": "https://www.massgeneralbrigham.org/content/dam/unified-xwalk/documents/ar/patients-visitors/financial-assistance-policy-arabic.pdf",
+     "title": "Financial Assistance Policy - Full version / \u0633\u064a\u0627\u0633\u0629 \u0627\u0644\u0645\u0633\u0627\u0639\u062f\u0629 \u0627\u0644\u0645\u0627\u0644\u064a\u0629 - \u0627\u0644\u0646\u0633\u062e\u0629 \u0627\u0644\u0643\u0627\u0645\u0644\u0629 (PDF)",
+     "fetched_on": "2026-10-02",
+     "sha256": "f9ec43a6496017b1cdffb505387e87451083a13ac7fc83f6322e379ad6e0617f",
      "effective_date": null
     }
    ],
@@ -5411,7 +5496,7 @@
     "website_domain": "mountauburnhospital.org",
     "system": null
    },
-   "version": 1,
+   "version": 2,
    "status": "held",
    "eligibility": {
     "free_care_max_fpl": null,
@@ -5440,24 +5525,41 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": null,
-    "hours": null,
+    "phone": {
+     "value": "617-499-5560",
+     "layer": "documented",
+     "quote": "call us at [617-499-5560](tel:1-617-499-5560 \"Contact Financial Assistance\")",
+     "source_id": "billing-43f54ffedaae2eac",
+     "checked_on": "2026-10-02",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": {
+     "value": "Monday through Friday from 8:00 am to 4:30 pm",
+     "layer": "documented",
+     "quote": "Our financial counselors are available Monday through Friday from 8:00 am to 4:30 pm.",
+     "source_id": "billing-43f54ffedaae2eac",
+     "checked_on": "2026-10-02",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "languages": null
    },
    "coverage": {
-    "facilities": null,
+    "facilities": {
+     "value": [
+      "Mount Auburn Hospital"
+     ],
+     "layer": "documented",
+     "quote": "If you are approved for financial assistance, it will apply at these locations:",
+     "source_id": "billing-691947cbf1281621",
+     "checked_on": "2026-10-02",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "provider_list_url": null
    },
    "sources": [
-    {
-     "id": "billing-691947cbf1281621",
-     "kind": "hospital_web",
-     "url": "https://mountauburnhospital.org/patients-visitors/billing-financial-services/assistance",
-     "title": "Financial Assistance | Mount Auburn Hospital",
-     "fetched_on": "2026-10-02",
-     "sha256": "691947cbf128162116ed4753386380c11aa00915cb9210de21c04557ee19c73b",
-     "effective_date": null
-    },
     {
      "id": "billing-43f54ffedaae2eac",
      "kind": "hospital_web",
@@ -5468,21 +5570,21 @@
      "effective_date": null
     },
     {
+     "id": "billing-691947cbf1281621",
+     "kind": "hospital_web",
+     "url": "https://mountauburnhospital.org/patients-visitors/billing-financial-services/assistance",
+     "title": "Financial Assistance | Mount Auburn Hospital",
+     "fetched_on": "2026-10-02",
+     "sha256": "691947cbf128162116ed4753386380c11aa00915cb9210de21c04557ee19c73b",
+     "effective_date": null
+    },
+    {
      "id": "billing-d937532a8bb25ffe",
      "kind": "hospital_web",
      "url": "https://www.mountauburnhospital.org/patients-visitors/billing-financial-services",
      "title": "Billing and Collections Policy",
      "fetched_on": "2026-10-02",
      "sha256": "d937532a8bb25ffe6842481dae4bd92e2d88dbdc7b77d5e0f113093b572f0f6a",
-     "effective_date": null
-    },
-    {
-     "id": "billing-691947cbf1281621",
-     "kind": "hospital_web",
-     "url": "https://www.mountauburnhospital.org/patients-visitors/billing-financial-services/assistance",
-     "title": "Billing and Collections Policy",
-     "fetched_on": "2026-10-02",
-     "sha256": "691947cbf128162116ed4753386380c11aa00915cb9210de21c04557ee19c73b",
      "effective_date": null
     }
    ],
@@ -5500,7 +5602,7 @@
     "website_domain": "nantuckethospital.org",
     "system": null
    },
-   "version": 1,
+   "version": 2,
    "status": "held",
    "eligibility": {
     "free_care_max_fpl": null,
@@ -5529,7 +5631,15 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": null,
+    "phone": {
+     "value": "508-825-8100",
+     "layer": "documented",
+     "quote": "508-825-8100",
+     "source_id": "billing-5f4e347d3e3bfee9",
+     "checked_on": "2026-10-02",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "hours": null,
     "languages": null
    },
@@ -5768,7 +5878,7 @@
     "website_domain": "massgeneralbrigham.org",
     "system": null
    },
-   "version": 1,
+   "version": 2,
    "status": "held",
    "eligibility": {
     "free_care_max_fpl": {
@@ -5813,7 +5923,7 @@
     "insured_patients_covered": {
      "value": false,
      "layer": "documented",
-     "quote": "Patients must meet the following conditions to qualify for financial assistance. Failure to meet these conditions results in the patient being disqualified for consideration. a. Obtain and maintain insurance coverage if affordable coverage is available to the patient either from a government-sponsored insurance program (Medicaid/Medicare), commercial insurance from their employer or from ConnectorCare or similar subsidized programs.",
+     "quote": "Discounts based solely on income are generally limited to patients with family incomes less than or equal to 300% of the Federal Poverty Guidelines (FPG)",
      "source_id": "fap-111a492d2aab30fc",
      "checked_on": "2026-10-02",
      "confidence": 1.0,
@@ -5825,11 +5935,10 @@
    "programs": {
     "presumptive": {
      "value": [
-      "MassHealth Limited",
       "Health Safety Net"
      ],
      "layer": "documented",
-     "quote": "Note: For MA residents, this is typically demonstrated by their enrollment in MassHealth Limited and/or the Massachusetts Health Safety Net (HSN)",
+     "quote": "Per Section III(F)(2) below, patients with Health Safety Net Full and Health Safety Net Partial will be presumptively eligible for Financial Assistance- patients will be able to seek care for eligible services (per Section III(C)) without a Financial Assistance Application.",
      "source_id": "fap-111a492d2aab30fc",
      "checked_on": "2026-10-02",
      "confidence": 1.0,
@@ -5839,7 +5948,7 @@
    },
    "apply": {
     "form_url": {
-     "value": "/content/dam/mgb-global/en/patient-care/patient-and-visitor-information/financial-assistance/documents/assistance-information/english/financial-assistance-application-english.pdf",
+     "value": "https://www.massgeneralbrigham.org/content/dam/mgb-global/en/patient-care/patient-and-visitor-information/financial-assistance/documents/assistance-information/english/financial-assistance-application-english.pdf",
      "layer": "documented",
      "quote": "[Financial Assistance Policy - Full version](/content/dam/mgb-global/en/patient-care/patient-and-visitor-information/financial-assistance/documents/assistance-information/financial-assistance-policy-english.pdf) (PDF)\n\n[Financial Assistance Policy - Plain language version](/content/dam/mgb-global/en/patient-care/patient-and-visitor-information/financial-assistance/documents/assistance-information/financial-assistance-summary-english.pdf) (PDF)\n\n[Credit and Collection Policy](/content/dam/mgb-global/en/patient-care/patient-and-visitor-information/financial-assistance/documents/assistance-information/credit-collection-policy-english.pdf) (PDF)\n\n[Application](/content/dam/mgb-global/en/patient-care/patient-and-visitor-information/financial-assistance/documents/assistance-information/financial-assistance-application-english.pdf) (PDF)",
      "source_id": "application-4a93d4901ba08d88",
@@ -5880,7 +5989,7 @@
       },
       {
        "kind": "in_person",
-       "detail": ""
+       "detail": "Visit a patient financial counselor at your hospital or health center."
       }
      ],
      "layer": "documented",
@@ -5900,16 +6009,35 @@
    },
    "contacts": {
     "phone": {
-     "value": "617-243-6824",
+     "value": "(617) 243-6824",
      "layer": "documented",
-     "quote": "**Financial Counseling Department**   2014 Washington Street    Newton, MA 02462    [(617) 243-6824](tel:617-243-6824)",
+     "quote": "**Newton-Wellesley Hospital**\n\n**Financial Counseling Department**\n2014 Washington Street\nNewton, MA 02462\n[(617) 243-6824](tel:617-243-6824)",
      "source_id": "application-4a93d4901ba08d88",
      "checked_on": "2026-10-02",
      "confidence": 1.0,
      "support_count": 0
     },
     "hours": null,
-    "languages": null
+    "languages": {
+     "value": [
+      "English",
+      "Arabic / \u0639\u0631\u0628\u0649",
+      "Chinese (Traditional) / \u4e2d\u6587",
+      "Haitian Creole / Krey\u00f2l Ayisyen",
+      "Indonesian / Bahasa Indonesia",
+      "Khmer (Cambodian) / \u1781\u17d2\u1798\u17c2\u179a",
+      "Portuguese (Brazilian) / Portugu\u00eas",
+      "Russian / \u0440\u0443\u0441\u0441\u043a\u0438\u0439",
+      "Spanish / Espa\u00f1ol",
+      "Vietnamese / Ti\u1ebfng Vi\u1ec7t"
+     ],
+     "layer": "documented",
+     "quote": "[Financial Assistance Policy - Plain language version / R\u00e8gleman kons\u00e8nan \u00c8d Finansye - v\u00e8syon langaj \u00f2din\u00e8](/content/dam/mgb-global/ht/patient-care/patient-and-visitor-information/financial-assistance/financial-assistance-summary-haitian-creole.pdf) (PDF)",
+     "source_id": "application-4a93d4901ba08d88",
+     "checked_on": "2026-10-02",
+     "confidence": 1.0,
+     "support_count": 0
+    }
    },
    "coverage": {
     "facilities": {
@@ -5917,7 +6045,7 @@
       "Newton-Wellesley Hospital"
      ],
      "layer": "documented",
-     "quote": "### Newton-Wellesley Hospital\n\n**Financial Counseling Department**\n2014 Washington Street\nNewton, MA 02462\n[(617) 243-6824](tel:617-243-6824)",
+     "quote": "**Newton-Wellesley Hospital**\n\n**Financial Counseling Department**\n2014 Washington Street\nNewton, MA 02462\n[(617) 243-6824](tel:617-243-6824)",
      "source_id": "application-4a93d4901ba08d88",
      "checked_on": "2026-10-02",
      "confidence": 1.0,
@@ -5936,15 +6064,6 @@
      "effective_date": null
     },
     {
-     "id": "billing-4de2ce6d32abf574",
-     "kind": "hospital_web",
-     "url": "https://www.massgeneralbrigham.org/en/patients-visitors/billing-insurance/billing/financial-assistance",
-     "title": "Financial Assistance | Mass General Brigham",
-     "fetched_on": "2026-10-02",
-     "sha256": "4de2ce6d32abf574366e9575dd9a71c190cb8cdbf8cce0dfbd647ecdf3b0902a",
-     "effective_date": null
-    },
-    {
      "id": "application-dc0301e9ce23d133",
      "kind": "hospital_web",
      "url": "https://www.massgeneralbrigham.org/patient-information/financial-assistance",
@@ -5954,12 +6073,12 @@
      "effective_date": null
     },
     {
-     "id": "application-dc0301e9ce23d133",
+     "id": "billing-4de2ce6d32abf574",
      "kind": "hospital_web",
-     "url": "https://massgeneralbrigham.org/patient-information/financial-assistance",
+     "url": "https://www.massgeneralbrigham.org/en/patients-visitors/billing-insurance/billing/financial-assistance",
      "title": "Financial Assistance | Mass General Brigham",
      "fetched_on": "2026-10-02",
-     "sha256": "dc0301e9ce23d133fc7baeb08ba9d788bae7469a098fc239fbb58c1a7fb6a43e",
+     "sha256": "4de2ce6d32abf574366e9575dd9a71c190cb8cdbf8cce0dfbd647ecdf3b0902a",
      "effective_date": null
     },
     {
@@ -5969,15 +6088,6 @@
      "title": "Financial Assistance Policy - Full version (PDF)",
      "fetched_on": "2026-10-02",
      "sha256": "111a492d2aab30fc9f28255a487b3253acfd64dd165f262fa8709ee6414dbf56",
-     "effective_date": null
-    },
-    {
-     "id": "fap-f9ec43a6496017b1",
-     "kind": "hospital_web",
-     "url": "https://www.massgeneralbrigham.org/content/dam/unified-xwalk/documents/ar/patients-visitors/financial-assistance-policy-arabic.pdf",
-     "title": "Financial Assistance Policy - Full version / \u0633\u064a\u0627\u0633\u0629 \u0627\u0644\u0645\u0633\u0627\u0639\u062f\u0629 \u0627\u0644\u0645\u0627\u0644\u064a\u0629 - \u0627\u0644\u0646\u0633\u062e\u0629 \u0627\u0644\u0643\u0627\u0645\u0644\u0629 (PDF)",
-     "fetched_on": "2026-10-02",
-     "sha256": "f9ec43a6496017b1cdffb505387e87451083a13ac7fc83f6322e379ad6e0617f",
      "effective_date": null
     },
     {
@@ -5997,6 +6107,15 @@
      "fetched_on": "2026-10-02",
      "sha256": "a324bdea17060ba8eb4acf1efa5f16bf9c3e182b26396ce1efc35f6bc86b6a33",
      "effective_date": null
+    },
+    {
+     "id": "fap-f9ec43a6496017b1",
+     "kind": "hospital_web",
+     "url": "https://www.massgeneralbrigham.org/content/dam/unified-xwalk/documents/ar/patients-visitors/financial-assistance-policy-arabic.pdf",
+     "title": "Financial Assistance Policy - Full version / \u0633\u064a\u0627\u0633\u0629 \u0627\u0644\u0645\u0633\u0627\u0639\u062f\u0629 \u0627\u0644\u0645\u0627\u0644\u064a\u0629 - \u0627\u0644\u0646\u0633\u062e\u0629 \u0627\u0644\u0643\u0627\u0645\u0644\u0629 (PDF)",
+     "fetched_on": "2026-10-02",
+     "sha256": "f9ec43a6496017b1cdffb505387e87451083a13ac7fc83f6322e379ad6e0617f",
+     "effective_date": null
     }
    ],
    "accuracy": null
@@ -6013,7 +6132,7 @@
     "website_domain": "northshoremc.org",
     "system": null
    },
-   "version": 1,
+   "version": 2,
    "status": "held",
    "eligibility": {
     "free_care_max_fpl": null,
@@ -6032,7 +6151,20 @@
     "form_url": null,
     "form_version": null,
     "documents_required": null,
-    "submit_methods": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "in_person",
+       "detail": "Payment may be made with the cashier in the Admission Services Department."
+      }
+     ],
+     "layer": "documented",
+     "quote": "Payment may be made with the cashier in the Admission Services Department.",
+     "source_id": "billing-4426f2c5a84aee57",
+     "checked_on": "2026-10-02",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "window_days_from_first_bill": null,
     "decision_days": null,
     "decision_days_reported": null
@@ -6075,7 +6207,7 @@
     "website_domain": "beverlyhospital.org",
     "system": null
    },
-   "version": 1,
+   "version": 2,
    "status": "held",
    "eligibility": {
     "free_care_max_fpl": null,
@@ -6087,37 +6219,14 @@
     "services_excluded": null
    },
    "programs": {
-    "presumptive": {
-     "value": [
-      "Medicaid"
-     ],
-     "layer": "documented",
-     "quote": "State program like MassHealth",
-     "source_id": "billing-3c958868a0f27497",
-     "checked_on": "2026-10-02",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "presumptive": null,
     "state_programs": null
    },
    "apply": {
     "form_url": null,
     "form_version": null,
     "documents_required": null,
-    "submit_methods": {
-     "value": [
-      {
-       "kind": "phone",
-       "detail": "call our Financial Services office at [978-922-3000](tel:1-978-922-3000 \"Call the Financial Service office\"), ext. 2127"
-      }
-     ],
-     "layer": "documented",
-     "quote": "To request financial assistance or ask questions, please call our Financial Services office at [978-922-3000](tel:1-978-922-3000 \"Call the Financial Service office\"), ext.",
-     "source_id": "billing-3c958868a0f27497",
-     "checked_on": "2026-10-02",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "submit_methods": null,
     "window_days_from_first_bill": null,
     "decision_days": null,
     "decision_days_reported": null
@@ -6127,24 +6236,8 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": {
-     "value": "978-922-3000",
-     "layer": "documented",
-     "quote": "[978-922-3000](tel:1-978-922-3000)",
-     "source_id": "billing-3c958868a0f27497",
-     "checked_on": "2026-10-02",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "hours": {
-     "value": "Monday through Friday, 8:00 am to 4:30 pm",
-     "layer": "documented",
-     "quote": "Monday through Friday, 8:00 am to 4:30 pm.",
-     "source_id": "billing-3c958868a0f27497",
-     "checked_on": "2026-10-02",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "phone": null,
+    "hours": null,
     "languages": null
    },
    "coverage": {
@@ -6153,30 +6246,21 @@
    },
    "sources": [
     {
-     "id": "billing-4d69f3ba12d11464",
-     "kind": "hospital_web",
-     "url": "https://www.beverlyhospital.org/patients-visitors/billing-financial-services",
-     "title": "Billing and Collections Policy",
-     "fetched_on": "2026-10-02",
-     "sha256": "4d69f3ba12d11464d5f9de97428ea0d32e56bc1b3d0db562abf806846b15bcce",
-     "effective_date": null
-    },
-    {
-     "id": "billing-fcfe35bbd7b9d816",
-     "kind": "hospital_web",
-     "url": "https://www.beverlyhospital.org/patients-visitors/billing-financial-services/bill-pay",
-     "title": "Billing and Collections Policy",
-     "fetched_on": "2026-10-02",
-     "sha256": "fcfe35bbd7b9d816111886c8ac3a8d51ac4136701ff690b3de983a5ebfb4e294",
-     "effective_date": null
-    },
-    {
      "id": "billing-3c958868a0f27497",
      "kind": "hospital_web",
      "url": "https://www.beverlyhospital.org/patients-visitors/billing-financial-services/assistance",
      "title": "Billing and Collections Policy",
      "fetched_on": "2026-10-02",
      "sha256": "3c958868a0f27497b076e4fe02fc90e4cb9c251716e7bfc40e4e8583551b136f",
+     "effective_date": null
+    },
+    {
+     "id": "billing-4d69f3ba12d11464",
+     "kind": "hospital_web",
+     "url": "https://www.beverlyhospital.org/patients-visitors/billing-financial-services",
+     "title": "Billing and Collections Policy",
+     "fetched_on": "2026-10-02",
+     "sha256": "4d69f3ba12d11464d5f9de97428ea0d32e56bc1b3d0db562abf806846b15bcce",
      "effective_date": null
     },
     {
@@ -6196,6 +6280,15 @@
      "fetched_on": "2026-10-02",
      "sha256": "a1e1ccf1c9774fcf1114c96b8eb76f09cafe3eedca59ff5c6055a885c00a974e",
      "effective_date": null
+    },
+    {
+     "id": "billing-fcfe35bbd7b9d816",
+     "kind": "hospital_web",
+     "url": "https://www.beverlyhospital.org/patients-visitors/billing-financial-services/bill-pay",
+     "title": "Billing and Collections Policy",
+     "fetched_on": "2026-10-02",
+     "sha256": "fcfe35bbd7b9d816111886c8ac3a8d51ac4136701ff690b3de983a5ebfb4e294",
+     "effective_date": null
     }
    ],
    "accuracy": null
@@ -6212,10 +6305,18 @@
     "website_domain": "signature-healthcare.org",
     "system": null
    },
-   "version": 1,
-   "status": "held",
+   "version": 2,
+   "status": "published",
    "eligibility": {
-    "free_care_max_fpl": null,
+    "free_care_max_fpl": {
+     "value": "300",
+     "layer": "documented",
+     "quote": "between 0-300% of the Federal Poverty Level (FPL)",
+     "source_id": "fap-7a73d1a3e23d89dc",
+     "checked_on": "2026-10-02",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "discount_tiers": null,
     "asset_test": {
      "value": false,
@@ -6230,7 +6331,7 @@
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "The hospital will help uninsured and underinsured individuals apply for health coverage or financial assistance through a public assistance program or through the hospital\u2019s financial assistance program (including but not limited to MassHealth, the premium assistance payment program operated by the Health Connector, the Children\u2019s Medical Security Program, the Health Safety Net, and Medical Hardship)",
+     "quote": "The hospital will help uninsured and underinsured individuals apply for health coverage or financial assistance through a public assistance program or through the hospital\u2019s financial assistance program",
      "source_id": "fap-7a73d1a3e23d89dc",
      "checked_on": "2026-10-02",
      "confidence": 1.0,
@@ -6240,7 +6341,17 @@
     "services_excluded": null
    },
    "programs": {
-    "presumptive": null,
+    "presumptive": {
+     "value": [
+      "MassHealth"
+     ],
+     "layer": "documented",
+     "quote": "MassHealth, the premium assistance payment program operated by the Health Connector, the Children\u2019s Medical Security Program, the Health Safety Net, and Medical Hardship",
+     "source_id": "fap-7a73d1a3e23d89dc",
+     "checked_on": "2026-10-02",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "state_programs": null
    },
    "apply": {
@@ -6248,13 +6359,18 @@
     "form_version": null,
     "documents_required": {
      "value": [
+      "photo_id",
       "proof_of_income",
+      "other",
       "tax_return",
       "pay_stubs",
-      "bank_statements"
+      "bank_statements",
+      "proof_of_residency",
+      "insurance_card",
+      "medicaid_denial"
      ],
      "layer": "documented",
-     "quote": "For financial assistance provided through the hospital, an applicant should generally be prepared to provide verifiable income documents for immediate family household members. Documentation examples include pay stubs, income tax filings, unemployment benefit reports, alimony judgments, etc.",
+     "quote": "For Medical Hardship, hospital will work with the patient to determine if a program like Medical Hardship would be appropriate and submit a Medical Hardship application to the Health Safety Net.",
      "source_id": "fap-7a73d1a3e23d89dc",
      "checked_on": "2026-10-02",
      "confidence": 1.0,
@@ -6288,18 +6404,18 @@
    },
    "contacts": {
     "phone": {
-     "value": "(508) 941-7919",
+     "value": "508-941-7919",
      "layer": "documented",
-     "quote": "via telephone at (508) 941-7919, between7:00AM and 11:30PM, Monday through Friday, and 8:00AM through 4:30PM on Saturday and Sunday.",
+     "quote": "calling (508) 941-7919",
      "source_id": "fap-7a73d1a3e23d89dc",
      "checked_on": "2026-10-02",
      "confidence": 1.0,
      "support_count": 0
     },
     "hours": {
-     "value": "Monday through Friday 7:00AM \u2013 4:30PM",
+     "value": "Monday through Friday or via telephone at (508) 941-7919, between7:00AM and 11:30PM, Monday through Friday, and 8:00AM through 4:30PM on Saturday and Sunday.",
      "layer": "documented",
-     "quote": "located at the main hospital campus at 680 Centre Street, Brockton, MA between 7:00AM \u2013 4:30PM, Monday through Friday or via telephone at (508) 941-7919, between7:00AM and 11:30PM, Monday through Friday, and 8:00AM through 4:30PM on Saturday and Sunday.",
+     "quote": "In working with patients to find available public assistance or coverage through the hospital\u2019s financial assistance, the hospital does not discriminate on the basis of race, color, national origin, citizenship, alienage, religion, creed, sex, sexual orientation, gender identity, age, or disability in its policies or in its application of policies, concerning the acquisition and verification of financial information, preadmission or pretreatment deposits, payment plans, deferred or rejected admissions, determination that an individual qualifies for Low Income Patient status as determined by the Massachusetts MassHealth/Connector eligibility system, or attestation of information to determine Low Income patient status. As such, this policy was reviewed and approved by the Brockton Hospital Board of Trustees. While we understand that each individual has a unique financial situation, information and assistance regarding eligibility for public assistance programs and/or coverage through the hospital\u2019s financial assistance program may be obtained by contacting the hospital\u2019s Financial Counseling Department, located at the main hospital campus at 680 Centre Street, Brockton, MA between 7:00AM \u2013 4:30PM, Monday through Friday or via telephone at (508) 941-7919, between7:00AM and 11:30PM, Monday through Friday, and 8:00AM through 4:30PM on Saturday and Sunday.",
      "source_id": "fap-7a73d1a3e23d89dc",
      "checked_on": "2026-10-02",
      "confidence": 1.0,
@@ -6309,8 +6425,8 @@
      "value": [
       "English",
       "Spanish",
-      "Portuguese",
-      "Haitian Creole"
+      "Haitian Creole",
+      "Portuguese"
      ],
      "layer": "documented",
      "quote": "[Normas de asistencia financiera | PDF](https://signature-healthcare.org/pdf/Financial-Assistance-Policy-Rev-9-2019-%28Spanish%29.pdf) [Normas de cr\u00e9dito y cobranza | PDF](https://signature-healthcare.org/pdf/Credit-and-Collection-Policy-Rev-9-2019-%28Spanish%29.pdf) [Resumen simple de las normas de asistencia financiera | PDF](https://signature-healthcare.org/pdf/Plain-Language-Summary_Final_071218-%28Spanish%29.pdf)\n\n[Regleman sou asistans finansye | PDF](https://signature-healthcare.org/pdf/Financial-Assistance-Policy-Rev-9-2019-%28Haitian-Creole%29.pdf) [Regleman sou kredi ak rekouvreman | PDF](https://signature-healthcare.org/pdf/Credit-and-Collection-Policy-Rev-9-2019-%28Haitian-Creole%29.pdf) [Rezime regleman sou asistans finansye a nan yon langaj ki kl\u00e8 | PDF](https://signature-healthcare.org/pdf/Plain-Language-Summary_Final_071218-%28Haitian-Creole%29.pdf)\n\n[Pol\u00edticas de Assist\u00eancia Financeira | PDF](https://signature-healthcare.org/pdf/Financial-Assistance-Policy-Rev-9-2019-%28Portuguese%29.pdf) [Pol\u00edtica de cr\u00e9dito e cobran\u00e7a | PDF](https://signature-healthcare.org/pdf/Credit-and-Collection-Policy-Rev-9-2019-%28Portuguese%29.pdf) [Resumo da pol\u00edtica de assist\u00eancia financeira em linguagem simples | PDF](https://signature-healthcare.org/pdf/Plain-Language-Summary_Final_071218-%28Portuguese%29.pdf)",
@@ -6324,20 +6440,12 @@
     "facilities": {
      "value": [
       "Brockton Hospital",
-      "Brockton Hospital Outpatient Care Center",
-      "Signature Healthcare Brockton Hospital",
-      "Signature Healthcare Brockton Hospital Imaging",
-      "Signature Healthcare Brockton Hospital Rehabilitation Services",
-      "Signature Healthcare Brockton Hospital @430 Liberty Street",
-      "Signature Healthcare Brockton Hospital Rehabilitation Services East Bridgewater",
-      "Signature Healthcare Greene Cancer Treatment Center",
-      "Brockton Radiation Oncology, LLC",
-      "Shields Signature Imaging, LLC",
-      "Signature Healthcare Urgent Care"
+      "Signature Medical Group",
+      "Brockton Hospital School of Nursing"
      ],
      "layer": "documented",
-     "quote": "The hospital\u2019s financial assistance policy covers the following locations where patients can also obtain information on the availability of public assistance programs:",
-     "source_id": "fap-7a73d1a3e23d89dc",
+     "quote": "* [Brockton Hospital](/about/about-brockton-hospital/)\n* [Brockton Hospital School of Nursing](/bhson)",
+     "source_id": "fap-3856fd9b8e5b7f83",
      "checked_on": "2026-10-02",
      "confidence": 1.0,
      "support_count": 0
@@ -6346,30 +6454,30 @@
    },
    "sources": [
     {
-     "id": "fap-5c2985d0a1155a20",
-     "kind": "hospital_web",
-     "url": "https://signature-healthcare.org/patients-visitors/financial-assistance",
-     "title": "Financial Assistance | Signature Healthcare",
-     "fetched_on": "2026-10-02",
-     "sha256": "5c2985d0a1155a20ba4e6c480f798798400d666438fad327e0a183209b5e9e45",
-     "effective_date": null
-    },
-    {
-     "id": "fap-5c2985d0a1155a20",
-     "kind": "hospital_web",
-     "url": "https://www.signature-healthcare.org/Patients-Visitors/Patient-Fonns/Financial-",
-     "title": "Financial Assistance | Signature Healthcare",
-     "fetched_on": "2026-10-02",
-     "sha256": "5c2985d0a1155a20ba4e6c480f798798400d666438fad327e0a183209b5e9e45",
-     "effective_date": null
-    },
-    {
      "id": "fap-3856fd9b8e5b7f83",
      "kind": "hospital_web",
      "url": "https://signature-healthcare.org/Patients-Visitors/Financial-Assistance",
      "title": "Financial Assistance | Signature Healthcare",
      "fetched_on": "2026-10-02",
      "sha256": "3856fd9b8e5b7f8381eeb485bd9510659a3f03a76c56ff0eed267d0b0704dcf8",
+     "effective_date": null
+    },
+    {
+     "id": "fap-5a8db0b98836d245",
+     "kind": "hospital_web",
+     "url": "https://signature-healthcare.org/pdf/Financial-Assistance-Policy-Rev-9-2019-%28Haitian-Creole%29.pdf",
+     "title": "Regleman sou asistans finansye | PDF",
+     "fetched_on": "2026-10-02",
+     "sha256": "5a8db0b98836d24593e6e01d55692f3a378bfc675fa20421ed6f8f307a4ce4f3",
+     "effective_date": null
+    },
+    {
+     "id": "fap-5c2985d0a1155a20",
+     "kind": "hospital_web",
+     "url": "https://signature-healthcare.org/patients-visitors/financial-assistance",
+     "title": "Financial Assistance | Signature Healthcare",
+     "fetched_on": "2026-10-02",
+     "sha256": "5c2985d0a1155a20ba4e6c480f798798400d666438fad327e0a183209b5e9e45",
      "effective_date": null
     },
     {
@@ -6388,15 +6496,6 @@
      "title": "Normas de asistencia financiera | PDF",
      "fetched_on": "2026-10-02",
      "sha256": "f2928bb76aec18c988a0177579f35aac35d373d436d692b21e6e400a14ee254c",
-     "effective_date": null
-    },
-    {
-     "id": "fap-5a8db0b98836d245",
-     "kind": "hospital_web",
-     "url": "https://signature-healthcare.org/pdf/Financial-Assistance-Policy-Rev-9-2019-%28Haitian-Creole%29.pdf",
-     "title": "Regleman sou asistans finansye | PDF",
-     "fetched_on": "2026-10-02",
-     "sha256": "5a8db0b98836d24593e6e01d55692f3a378bfc675fa20421ed6f8f307a4ce4f3",
      "effective_date": null
     }
    ],
@@ -6862,7 +6961,7 @@
     "website_domain": "sturdyhealth.org",
     "system": null
    },
-   "version": 1,
+   "version": 2,
    "status": "held",
    "eligibility": {
     "free_care_max_fpl": null,
@@ -6896,37 +6995,20 @@
     "languages": null
    },
    "coverage": {
-    "facilities": null,
+    "facilities": {
+     "value": [
+      "Sturdy Health Outpatient Lab draw station \u2013 100 O\u2019Neil Blvd, Attleboro, MA 02703"
+     ],
+     "layer": "documented",
+     "quote": "Sturdy Health Outpatient Lab draw station \u2013 100 O\u2019Neil Blvd, Attleboro, MA 02703",
+     "source_id": "billing-08a3c3ee287cd393",
+     "checked_on": "2026-10-02",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "provider_list_url": null
    },
    "sources": [
-    {
-     "id": "billing-fb6a27120423fe26",
-     "kind": "hospital_web",
-     "url": "https://www.sturdyhealth.org/patients-visitors/billing-insurance/financial-assistance",
-     "title": "Financial Assistance | Sturdy Memorial Hospital",
-     "fetched_on": "2026-10-02",
-     "sha256": "fb6a27120423fe266effde14a0c009029ec095538cd7fd5ede82fbe376ec87ad",
-     "effective_date": null
-    },
-    {
-     "id": "billing-fb6a27120423fe26",
-     "kind": "hospital_web",
-     "url": "https://www.sturdyhealth.org/patients-visitors/billing-insurance",
-     "title": "Billing & Insurance | Sturdy Memorial Hospital | Attleboro, MA",
-     "fetched_on": "2026-10-02",
-     "sha256": "fb6a27120423fe266effde14a0c009029ec095538cd7fd5ede82fbe376ec87ad",
-     "effective_date": null
-    },
-    {
-     "id": "billing-fb6a27120423fe26",
-     "kind": "hospital_web",
-     "url": "https://www.sturdyhealth.org/patients-visitors/billing-insurance/your-rights-and-protections-against-surprise-medical-bills",
-     "title": "Billing and Collections Policy",
-     "fetched_on": "2026-10-02",
-     "sha256": "fb6a27120423fe266effde14a0c009029ec095538cd7fd5ede82fbe376ec87ad",
-     "effective_date": null
-    },
     {
      "id": "billing-08a3c3ee287cd393",
      "kind": "hospital_web",
@@ -6934,6 +7016,15 @@
      "title": "Billing and Collections Policy",
      "fetched_on": "2026-10-02",
      "sha256": "08a3c3ee287cd39334b4e6bba19db6a49639e1dd24fb01a9223e8eb8035aefe0",
+     "effective_date": null
+    },
+    {
+     "id": "billing-fb6a27120423fe26",
+     "kind": "hospital_web",
+     "url": "https://www.sturdyhealth.org/patients-visitors/billing-insurance/financial-assistance",
+     "title": "Financial Assistance | Sturdy Memorial Hospital",
+     "fetched_on": "2026-10-02",
+     "sha256": "fb6a27120423fe266effde14a0c009029ec095538cd7fd5ede82fbe376ec87ad",
      "effective_date": null
     }
    ],
@@ -6951,11 +7042,25 @@
     "website_domain": "tuftsmedicine.org",
     "system": null
    },
-   "version": 1,
-   "status": "held",
+   "version": 2,
+   "status": "published",
    "eligibility": {
     "free_care_max_fpl": null,
-    "discount_tiers": null,
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "150",
+       "max_fpl_inclusive": "300",
+       "discount_percent": 30
+      }
+     ],
+     "layer": "documented",
+     "quote": "Family Size\n\n100% FPL\nUp to\n150% FPL\nUp to\n300% FPL\nGreater than\n301% FPL\n1 $13,596 $20,388 $40,776 $40,777\n2 $18,312 $27,468 $54,936 $54,937\n3 $23,040 $34,548 $69,096 $69,097\n4 $27,756 $41,628 $83,256 $83,257\n5 $32,472 $48,708 $97,416 $97,417\n6 $37,200 $55,788 $111,576 $111,577\n7 $41,916 $62,868 $125,736 $125,737\n8 $46,632 $69,948 $139,896 $139,897\nEach Person > 8 $4,728 $7,080 $14,160 $14,161\n\nTM Lowell General Hospital\nInpatient Discount\n100% 63.28% 30%\nTM Lowell General Hospital\nOutpatient Discount \n70.54%\n\nTM Melrose Wakefield Hospital\nInpatient Discount\n100% 36.84% 30%\nTM Melrose Wakefield Hospital\nOutpatient Discount\n65.91%\n\nTM Tufts Medical Center Hospital\nInpatient Discount\n100% 49.50% 30%\nTM Tufts Medical Center Hospital\nOutpatient Discount\n69.50%",
+     "source_id": "fap-a8eaa8963cad7c43",
+     "checked_on": "2026-10-02",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "asset_test": {
      "value": false,
      "layer": "documented",
@@ -6984,10 +7089,10 @@
    },
    "apply": {
     "form_url": {
-     "value": "https://www.tuftsmedicine.org/sites/default/files/2023-12/13144-EN-Financial-Assistance-Application-TM-FY23.pdf",
+     "value": "https://www.tuftsmedicine.org/sites/default/files/2023-04/13144-en-financial-assistance-applicationtm-fy23-01final.pdf",
      "layer": "documented",
-     "quote": "Please send your completed application to: Tufts Medical Center Financial Coordination 800 Washington Street, Box 475 Boston, MA 02111",
-     "source_id": "application-da95e38695ec23eb",
+     "quote": "* Read the [Tufts Medicine Lowell General Hospital Financial Assistance Program (FAP)](/sites/default/files/2023-04/tufts-medicine-financial-assistance-policy-fy22.pdf), or the [Plain Language Summary of the Financial Assistance Policy](/sites/default/files/2023-04/13144_en_fap_plain-language-summary_r2023.pdf), the Verification Requirements Checklist, and fill out the [Application for Financial Assistance](/sites/default/files/2023-04/13144-en-financial-assistance-applicationtm-fy23-01final.pdf).",
+     "source_id": "fap-187023c2731919ee",
      "checked_on": "2026-10-02",
      "confidence": 1.0,
      "support_count": 0
@@ -7001,10 +7106,11 @@
       "tax_return",
       "pay_stubs",
       "bank_statements",
+      "proof_of_residency",
       "insurance_card"
      ],
      "layer": "documented",
-     "quote": "Include a copy of your driver\u2019s license, other photo identification or documents that verify your current residence. Anything submitted must include your name. Include a copy of your insurance card(s) Include some form of income verification: Include a copy of your most recent W-2(s) If there has been a recent change in your income, include documentation such as recent pay stubs (minimum 4), unemployment statements, bank/investment statements, and/or social security statements",
+     "quote": "Please fully complete the Financial Assistance Application and include copies of the following documents for all applicants. Failure to return all necessary documents within 30 days will cause the application to be denied. Please attach copies of any documents submitted as unfortunately they cannot be returned.\n   Complete all applicable sections of the application and be sure to \nsign the affidavit statement on page 4\n   Include a copy of your driver\u2019s license, other photo identification or \ndocuments that verify your current residence. Anything submitted \nmust include your name.\n  Include a copy of your insurance card(s)\n  Include some form of income verification: \n  Include a copy of your most recent W-2(s)\n   If there has been a recent change in your income, include \ndocumentation such as recent pay stubs (minimum 4), \nunemployment statements, bank/investment statements,  \nand/or social security statements",
      "source_id": "application-da95e38695ec23eb",
      "checked_on": "2026-10-02",
      "confidence": 1.0,
@@ -7023,8 +7129,8 @@
     "phone": {
      "value": "978-937-6700",
      "layer": "documented",
-     "quote": "T 978-937-6700",
-     "source_id": "summary-6a6b996a0ae91c93",
+     "quote": "Financial Counselors are available at [978.937.6700](tel:978.937.6700).",
+     "source_id": "fap-187023c2731919ee",
      "checked_on": "2026-10-02",
      "confidence": 1.0,
      "support_count": 0
@@ -7048,7 +7154,7 @@
       "Vietnamese"
      ],
      "layer": "documented",
-     "quote": "Materials, including the policy, application form, and plain language summary are available in English, Arabic, Chinese, Greek, Gujarati, Haitian Creole, Hindi, Italian, Khmer, Laotian, Portuguese, Russian, Spanish, and Vietnamese.",
+     "quote": "Materials, including the policy, application form, and plain language summary are available in English, Arabic, Chinese,\nGreek, Gujarati, Haitian Creole, Hindi, Italian, Khmer, Laotian, \nPortuguese, Russian, Spanish, and Vietnamese.",
      "source_id": "fap-a8eaa8963cad7c43",
      "checked_on": "2026-10-02",
      "confidence": 1.0,
@@ -7060,10 +7166,10 @@
      "value": [
       "Tufts Medical Center",
       "Lowell General Hospital",
-      "Melrose Wakefield Hospital"
+      "MelroseWakefield Healthcare"
      ],
      "layer": "documented",
-     "quote": "Tufts Medicine, which includes Tufts Medical Center, Lowell General Hospital, MelroseWakefield Healthcare, and the network of employed practices, is committed to providing quality healthcare services to the community.",
+     "quote": "Tufts Medicine, which includes Tufts Medical Center, Lowell General Hospital, \nMelroseWakefield Healthcare, and the network of employed practices, is committed \nto providing quality healthcare services to the community.",
      "source_id": "fap-a8eaa8963cad7c43",
      "checked_on": "2026-10-02",
      "confidence": 1.0,
@@ -7073,19 +7179,10 @@
    },
    "sources": [
     {
-     "id": "fap-a8eaa8963cad7c43",
-     "kind": "hospital_web",
-     "url": "https://www.tuftsmedicine.org/sites/default/files/2023-04/tufts-medicine-financial-assistance-policy-fy22.pdf",
-     "title": "Financial Assistance Program",
-     "fetched_on": "2026-10-02",
-     "sha256": "a8eaa8963cad7c43e9b66d64d5f2202e5366f4d9ccb9ac9fd54720ebaac40d8f",
-     "effective_date": null
-    },
-    {
      "id": "application-da95e38695ec23eb",
      "kind": "hospital_web",
      "url": "https://www.tuftsmedicine.org/sites/default/files/2023-12/13144-EN-Financial-Assistance-Application-TM-FY23.pdf",
-     "title": "Financial Assistance Application",
+     "title": "Financial Assistance Application - English",
      "fetched_on": "2026-10-02",
      "sha256": "da95e38695ec23eb2e559307a3caa947dde47357695295ad3e4659a9b0f2108a",
      "effective_date": null
@@ -7106,6 +7203,15 @@
      "title": "Patient Financial Assistance",
      "fetched_on": "2026-10-02",
      "sha256": "187023c2731919eef2a1c3822605ff3a08c71f3465f8d78b8011c0dccde6a687",
+     "effective_date": null
+    },
+    {
+     "id": "fap-a8eaa8963cad7c43",
+     "kind": "hospital_web",
+     "url": "https://www.tuftsmedicine.org/sites/default/files/2023-04/tufts-medicine-financial-assistance-policy-fy22.pdf",
+     "title": "Financial Assistance Program",
+     "fetched_on": "2026-10-02",
+     "sha256": "a8eaa8963cad7c43e9b66d64d5f2202e5366f4d9ccb9ac9fd54720ebaac40d8f",
      "effective_date": null
     },
     {
@@ -7150,10 +7256,18 @@
     "website_domain": "billfairly.com",
     "system": null
    },
-   "version": 1,
-   "status": "held",
+   "version": 2,
+   "status": "published",
    "eligibility": {
-    "free_care_max_fpl": null,
+    "free_care_max_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "Under 200% FPL",
+     "source_id": "fap-11db3d477507c319",
+     "checked_on": "2026-10-02",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "discount_tiers": null,
     "asset_test": null,
     "residency": null,
@@ -7168,10 +7282,30 @@
    "apply": {
     "form_url": null,
     "form_version": null,
-    "documents_required": null,
+    "documents_required": {
+     "value": [
+      "proof_of_income",
+      "tax_return",
+      "bank_statements"
+     ],
+     "layer": "documented",
+     "quote": "Typically: proof of income (pay stubs, tax return), proof of household size, bank statements, and your medical bill.",
+     "source_id": "fap-11db3d477507c319",
+     "checked_on": "2026-10-02",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "submit_methods": null,
     "window_days_from_first_bill": null,
-    "decision_days": null,
+    "decision_days": {
+     "value": 30,
+     "layer": "documented",
+     "quote": "Wait for Decision (Usually 30\u201360 days)",
+     "source_id": "fap-11db3d477507c319",
+     "checked_on": "2026-10-02",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "decision_days_reported": null
    },
    "collections": {
@@ -7189,24 +7323,6 @@
    },
    "sources": [
     {
-     "id": "fap-d3feb09960d0a33f",
-     "kind": "hospital_web",
-     "url": "https://billfairly.com/hospital/memorial-health-umc-savannah-savannah/financial-assistance",
-     "title": "MEMORIAL HEALTH UMC SAVANNAH Financial Assistance & Charity Care | BillFairly",
-     "fetched_on": "2026-10-02",
-     "sha256": "d3feb09960d0a33f38dbe3ec6fc366d215e24c02e37da7c3b1e59c1a7b165f9f",
-     "effective_date": null
-    },
-    {
-     "id": "fap-c6bb2471f46844bc",
-     "kind": "hospital_web",
-     "url": "https://billfairly.com/hospital/memorial-health-umc-savannah-ga/financial-assistance",
-     "title": "MEMORIAL HEALTH UMC SAVANNAH Financial Assistance & Charity Care | BillFairly",
-     "fetched_on": "2026-10-02",
-     "sha256": "c6bb2471f46844bcfaeffe36a46133c268e1922a7f8d5b3fc9f92acb8c72ace0",
-     "effective_date": null
-    },
-    {
      "id": "fap-11db3d477507c319",
      "kind": "hospital_web",
      "url": "https://billfairly.com/hospital/memorial-health-meadows-hospital-vidalia/financial-assistance",
@@ -7222,6 +7338,24 @@
      "title": "CHRISTUS Spohn Hospital Corpus Christi - Memorial Financial Assistance & Charity Care | BillFairly",
      "fetched_on": "2026-10-02",
      "sha256": "49afedae89bc64f87b62491109706fb21251436c94cde4e533a9b3d45ea02e9e",
+     "effective_date": null
+    },
+    {
+     "id": "fap-c6bb2471f46844bc",
+     "kind": "hospital_web",
+     "url": "https://billfairly.com/hospital/memorial-health-umc-savannah-ga/financial-assistance",
+     "title": "MEMORIAL HEALTH UMC SAVANNAH Financial Assistance & Charity Care | BillFairly",
+     "fetched_on": "2026-10-02",
+     "sha256": "c6bb2471f46844bcfaeffe36a46133c268e1922a7f8d5b3fc9f92acb8c72ace0",
+     "effective_date": null
+    },
+    {
+     "id": "fap-d3feb09960d0a33f",
+     "kind": "hospital_web",
+     "url": "https://billfairly.com/hospital/memorial-health-umc-savannah-savannah/financial-assistance",
+     "title": "MEMORIAL HEALTH UMC SAVANNAH Financial Assistance & Charity Care | BillFairly",
+     "fetched_on": "2026-10-02",
+     "sha256": "d3feb09960d0a33f38dbe3ec6fc366d215e24c02e37da7c3b1e59c1a7b165f9f",
      "effective_date": null
     }
    ],
@@ -7239,173 +7373,7 @@
     "website_domain": "ummhealth.org",
     "system": null
    },
-   "version": 1,
-   "status": "held",
-   "eligibility": {
-    "free_care_max_fpl": null,
-    "discount_tiers": null,
-    "asset_test": null,
-    "residency": null,
-    "insured_patients_covered": null,
-    "min_balance": null,
-    "services_excluded": null
-   },
-   "programs": {
-    "presumptive": {
-     "value": [
-      "Medicaid"
-     ],
-     "layer": "documented",
-     "quote": "apply for any state or government medical assistance program for which you may be eligible.",
-     "source_id": "summary-0e9462b207aa049e",
-     "checked_on": "2026-10-02",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "state_programs": null
-   },
-   "apply": {
-    "form_url": null,
-    "form_version": null,
-    "documents_required": null,
-    "submit_methods": {
-     "value": [
-      {
-       "kind": "phone",
-       "detail": ""
-      },
-      {
-       "kind": "in_person",
-       "detail": ""
-      },
-      {
-       "kind": "email",
-       "detail": ""
-      }
-     ],
-     "layer": "documented",
-     "quote": "This request may be made by telephone, in person, or email.",
-     "source_id": "summary-0e9462b207aa049e",
-     "checked_on": "2026-10-02",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "window_days_from_first_bill": null,
-    "decision_days": null,
-    "decision_days_reported": null
-   },
-   "collections": {
-    "eca_wait_days": null,
-    "collection_agencies": null
-   },
-   "contacts": {
-    "phone": {
-     "value": "508-334-9300",
-     "layer": "documented",
-     "quote": "[508-334-9300](tel:508-334-9300)",
-     "source_id": "summary-0e9462b207aa049e",
-     "checked_on": "2026-10-02",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "hours": null,
-    "languages": {
-     "value": [
-      "English",
-      "Spanish",
-      "Portuguese",
-      "Arabic",
-      "Vietnamese",
-      "Haitian Creole",
-      "Albanian"
-     ],
-     "layer": "documented",
-     "quote": "View this page in other languages:\n\n[Espa\u00f1ol](/patients-visitors/financial-counseling/financial-assistance-policy-summary-spanish \"Financial Assistance and Credit and Collection Policy - Plain Language - Spanish\") \u00a0\u00a0| \u00a0\u00a0 [Portugu\u00eas](/patients-visitors/financial-counseling/financial-assistance-policy-summary-portuguese \"Financial Assistance and Credit and Collection Policy - Plain Language - Portuguese\") \u00a0\u00a0| \u00a0\u00a0[\u0627\u0644\u0639\u0631\u0628\u064a\u0629](/node/34984 \"Financial Assistance and Credit and Collection Policy - Plain Language - Arabic\") \u00a0\u00a0| \u00a0\u00a0[Ti\u1ebfng Vi\u1ec7t](/patients-visitors/financial-counseling/financial-assistance-policy-summary-vietnamese \"Financial Assistance and Credit and Collection Policy - Plain Language - Vietnamese\") \u00a0 | \u00a0\u00a0[Krey\u00f2l Ayisyen](/patients-visitors/financial-counseling/financial-assistance-policy-summary-haitian-creole \"Financial Assistance Program Policy Summary - Haitian Creole\") \u00a0 | \u00a0\u00a0[Shqip](/patients-visitors/financial-counseling/financial-assistance-policy-summary-albanian \"Financial Assistance and Credit and Collection Policy - Plain Language - Albanian\")",
-     "source_id": "summary-0e9462b207aa049e",
-     "checked_on": "2026-10-02",
-     "confidence": 1.0,
-     "support_count": 0
-    }
-   },
-   "coverage": {
-    "facilities": {
-     "value": [
-      "UMass Memorial Medical Center",
-      "UMass Memorial Health \u2013 HealthAlliance-Clinton Hospital",
-      "UMass Memorial Health \u2013 Harrington",
-      "UMass Memorial Health \u2013 Milford Regional"
-     ],
-     "layer": "documented",
-     "quote": "It is the policy of UMass Memorial Health (\u201cUMMH\u201d) to offer free or discounted care to patients with demonstrated financial need for medically necessary, urgent or emergency care at all locations of the following hospitals:\n\n* UMass Memorial Medical Center\n* UMass Memorial Health \u2013 HealthAlliance-Clinton Hospital\n* UMass Memorial Health \u2013 Harrington\n* UMass Memorial Health \u2013 Milford Regional",
-     "source_id": "summary-0e9462b207aa049e",
-     "checked_on": "2026-10-02",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "provider_list_url": null
-   },
-   "sources": [
-    {
-     "id": "summary-0e9462b207aa049e",
-     "kind": "hospital_web",
-     "url": "https://www.ummhealth.org/patients-visitors/financial-counseling/financial-assistance-policy-summary-english",
-     "title": "Financial Assistance Program Policy Summary - English | UMass Memorial Health",
-     "fetched_on": "2026-10-02",
-     "sha256": "0e9462b207aa049ebe6e21f5a5eae48c868056f8addc7c617dca87529c316b81",
-     "effective_date": null
-    },
-    {
-     "id": "summary-819a22795a25d4eb",
-     "kind": "hospital_web",
-     "url": "https://www.ummhealth.org/patients-visitors/financial-counseling/financial-assistance-policy-summary-spanish",
-     "title": "Espa\u00f1ol",
-     "fetched_on": "2026-10-02",
-     "sha256": "819a22795a25d4ebc5e4f1d78ac77ff1de072fc4e6bb1e5254e340ffd13456c9",
-     "effective_date": null
-    },
-    {
-     "id": "summary-6bad3066bb8b5c3d",
-     "kind": "hospital_web",
-     "url": "https://www.ummhealth.org/patients-visitors/financial-counseling/financial-assistance-policy-summary-portuguese",
-     "title": "Portugu\u00eas",
-     "fetched_on": "2026-10-02",
-     "sha256": "6bad3066bb8b5c3d246610b8cb1caeea7f570427c58aa2fe478a8ac9c89b06c8",
-     "effective_date": null
-    },
-    {
-     "id": "summary-05310e0a621ca115",
-     "kind": "hospital_web",
-     "url": "https://www.ummhealth.org/patients-visitors/financial-counseling/financial-assistance-policy-summary-vietnamese",
-     "title": "Ti\u1ebfng Vi\u1ec7t",
-     "fetched_on": "2026-10-02",
-     "sha256": "05310e0a621ca1151c0b0e04a7d368492c7ae7346c7ea4557584592d2b029c9c",
-     "effective_date": null
-    },
-    {
-     "id": "summary-b4f3dd01ff84ec8c",
-     "kind": "hospital_web",
-     "url": "https://www.ummhealth.org/patients-visitors/financial-counseling/financial-assistance-policy-summary-haitian-creole",
-     "title": "Krey\u00f2l Ayisyen",
-     "fetched_on": "2026-10-02",
-     "sha256": "b4f3dd01ff84ec8c6376c77fc0a81082c9b28593fee58ebedf2fb8270fccd4dd",
-     "effective_date": null
-    }
-   ],
-   "accuracy": null
-  },
-  {
-   "hospital": {
-    "ccn": "220163",
-    "name": "UMASS MEMORIAL MEDICAL CENTER/UNIVERSITY CAMPUS",
-    "city": "WORCESTER",
-    "state": "MA",
-    "zip": "01655",
-    "phone": "508-334-1000",
-    "ownership": "Voluntary non-profit - Private",
-    "website_domain": "ummhealth.org",
-    "system": null
-   },
-   "version": 1,
+   "version": 2,
    "status": "held",
    "eligibility": {
     "free_care_max_fpl": null,
@@ -7476,7 +7444,7 @@
     "phone": {
      "value": "508-334-9300",
      "layer": "documented",
-     "quote": "[508-334-9300](tel:508-334-9300)",
+     "quote": "Telephone: [508-334-9300](tel:508-334-9300)",
      "source_id": "summary-0e9462b207aa049e",
      "checked_on": "2026-10-02",
      "confidence": 1.0,
@@ -7486,12 +7454,198 @@
     "languages": {
      "value": [
       "English",
-      "Espa\u00f1ol",
-      "Portugu\u00eas",
-      "\u0627\u0644\u0639\u0631\u0628\u064a\u0629",
-      "Ti\u1ebfng Vi\u1ec7t",
-      "Krey\u00f2l Ayisyen",
-      "Shqip"
+      "Spanish",
+      "Portuguese",
+      "Arabic",
+      "Vietnamese",
+      "Haitian Creole",
+      "Albanian"
+     ],
+     "layer": "documented",
+     "quote": "View this page in other languages:\n\n[Espa\u00f1ol](/patients-visitors/financial-counseling/financial-assistance-policy-summary-spanish \"Financial Assistance and Credit and Collection Policy - Plain Language - Spanish\") \u00a0\u00a0| \u00a0\u00a0 [Portugu\u00eas](/patients-visitors/financial-counseling/financial-assistance-policy-summary-portuguese \"Financial Assistance and Credit and Collection Policy - Plain Language - Portuguese\") \u00a0\u00a0| \u00a0\u00a0[\u0627\u0644\u0639\u0631\u0628\u064a\u0629](/node/34984 \"Financial Assistance and Credit and Collection Policy - Plain Language - Arabic\") \u00a0\u00a0| \u00a0\u00a0[Ti\u1ebfng Vi\u1ec7t](/patients-visitors/financial-counseling/financial-assistance-policy-summary-vietnamese \"Financial Assistance and Credit and Collection Policy - Plain Language - Vietnamese\") \u00a0 | \u00a0\u00a0[Krey\u00f2l Ayisyen](/patients-visitors/financial-counseling/financial-assistance-policy-summary-haitian-creole \"Financial Assistance Program Policy Summary - Haitian Creole\") \u00a0 | \u00a0\u00a0[Shqip](/patients-visitors/financial-counseling/financial-assistance-policy-summary-albanian \"Financial Assistance and Credit and Collection Policy - Plain Language - Albanian\")",
+     "source_id": "summary-0e9462b207aa049e",
+     "checked_on": "2026-10-02",
+     "confidence": 1.0,
+     "support_count": 0
+    }
+   },
+   "coverage": {
+    "facilities": {
+     "value": [
+      "UMass Memorial Medical Center",
+      "UMass Memorial Health \u2013 HealthAlliance-Clinton Hospital",
+      "UMass Memorial Health \u2013 Harrington Hospital",
+      "Milford Regional Medical Center"
+     ],
+     "layer": "documented",
+     "quote": "It is the policy of UMass Memorial Health (\u201cUMMH\u201d) to offer free or discounted care to patients with demonstrated financial need for medically necessary, urgent or emergency care at all locations of the following hospitals:\n\n* UMass Memorial Medical Center\n* UMass Memorial Health \u2013 HealthAlliance-Clinton Hospital\n* UMass Memorial Health \u2013 Harrington\n* UMass Memorial Health \u2013 Milford Regional",
+     "source_id": "summary-0e9462b207aa049e",
+     "checked_on": "2026-10-02",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "provider_list_url": null
+   },
+   "sources": [
+    {
+     "id": "summary-05310e0a621ca115",
+     "kind": "hospital_web",
+     "url": "https://www.ummhealth.org/patients-visitors/financial-counseling/financial-assistance-policy-summary-vietnamese",
+     "title": "Ti\u1ebfng Vi\u1ec7t",
+     "fetched_on": "2026-10-02",
+     "sha256": "05310e0a621ca1151c0b0e04a7d368492c7ae7346c7ea4557584592d2b029c9c",
+     "effective_date": null
+    },
+    {
+     "id": "summary-0e9462b207aa049e",
+     "kind": "hospital_web",
+     "url": "https://www.ummhealth.org/patients-visitors/financial-counseling/financial-assistance-policy-summary-english",
+     "title": "Financial Assistance Program Policy Summary - English | UMass Memorial Health",
+     "fetched_on": "2026-10-02",
+     "sha256": "0e9462b207aa049ebe6e21f5a5eae48c868056f8addc7c617dca87529c316b81",
+     "effective_date": null
+    },
+    {
+     "id": "summary-6bad3066bb8b5c3d",
+     "kind": "hospital_web",
+     "url": "https://www.ummhealth.org/patients-visitors/financial-counseling/financial-assistance-policy-summary-portuguese",
+     "title": "Portugu\u00eas",
+     "fetched_on": "2026-10-02",
+     "sha256": "6bad3066bb8b5c3d246610b8cb1caeea7f570427c58aa2fe478a8ac9c89b06c8",
+     "effective_date": null
+    },
+    {
+     "id": "summary-819a22795a25d4eb",
+     "kind": "hospital_web",
+     "url": "https://www.ummhealth.org/patients-visitors/financial-counseling/financial-assistance-policy-summary-spanish",
+     "title": "Espa\u00f1ol",
+     "fetched_on": "2026-10-02",
+     "sha256": "819a22795a25d4ebc5e4f1d78ac77ff1de072fc4e6bb1e5254e340ffd13456c9",
+     "effective_date": null
+    },
+    {
+     "id": "summary-b4f3dd01ff84ec8c",
+     "kind": "hospital_web",
+     "url": "https://www.ummhealth.org/patients-visitors/financial-counseling/financial-assistance-policy-summary-haitian-creole",
+     "title": "Krey\u00f2l Ayisyen",
+     "fetched_on": "2026-10-02",
+     "sha256": "b4f3dd01ff84ec8c6376c77fc0a81082c9b28593fee58ebedf2fb8270fccd4dd",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null
+  },
+  {
+   "hospital": {
+    "ccn": "220163",
+    "name": "UMASS MEMORIAL MEDICAL CENTER/UNIVERSITY CAMPUS",
+    "city": "WORCESTER",
+    "state": "MA",
+    "zip": "01655",
+    "phone": "508-334-1000",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "ummhealth.org",
+    "system": null
+   },
+   "version": 2,
+   "status": "published",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "600",
+     "layer": "documented",
+     "quote": "household income, less than 600% of the federal poverty guidelines.",
+     "source_id": "summary-0e9462b207aa049e",
+     "checked_on": "2026-10-02",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": null,
+    "asset_test": null,
+    "residency": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "you will not be billed more than the amount generally billed to patients with insurance coverage.",
+     "source_id": "summary-0e9462b207aa049e",
+     "checked_on": "2026-10-02",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "proof_of_income"
+     ],
+     "layer": "documented",
+     "quote": "provide verification of all household income.",
+     "source_id": "summary-0e9462b207aa049e",
+     "checked_on": "2026-10-02",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "return your completed application to the Financial Counseling Department."
+      },
+      {
+       "kind": "phone",
+       "detail": "This request may be made by telephone, in person, or email."
+      },
+      {
+       "kind": "in_person",
+       "detail": "This request may be made by telephone, in person, or email."
+      },
+      {
+       "kind": "email",
+       "detail": "This request may be made by telephone, in person, or email."
+      }
+     ],
+     "layer": "documented",
+     "quote": "return your completed application to the Financial Counseling Department.",
+     "source_id": "summary-0e9462b207aa049e",
+     "checked_on": "2026-10-02",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": null,
+    "decision_days": null,
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "508-334-9300",
+     "layer": "documented",
+     "quote": "Telephone: [508-334-9300](tel:508-334-9300)",
+     "source_id": "summary-0e9462b207aa049e",
+     "checked_on": "2026-10-02",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": null,
+    "languages": {
+     "value": [
+      "English",
+      "Spanish",
+      "Portuguese",
+      "Arabic",
+      "Vietnamese",
+      "Haitian Creole",
+      "Albanian"
      ],
      "layer": "documented",
      "quote": "View this page in other languages:\n\n[Espa\u00f1ol](/patients-visitors/financial-counseling/financial-assistance-policy-summary-spanish \"Financial Assistance and Credit and Collection Policy - Plain Language - Spanish\") \u00a0\u00a0| \u00a0\u00a0 [Portugu\u00eas](/patients-visitors/financial-counseling/financial-assistance-policy-summary-portuguese \"Financial Assistance and Credit and Collection Policy - Plain Language - Portuguese\") \u00a0\u00a0| \u00a0\u00a0[\u0627\u0644\u0639\u0631\u0628\u064a\u0629](/node/34984 \"Financial Assistance and Credit and Collection Policy - Plain Language - Arabic\") \u00a0\u00a0| \u00a0\u00a0[Ti\u1ebfng Vi\u1ec7t](/patients-visitors/financial-counseling/financial-assistance-policy-summary-vietnamese \"Financial Assistance and Credit and Collection Policy - Plain Language - Vietnamese\") \u00a0 | \u00a0\u00a0[Krey\u00f2l Ayisyen](/patients-visitors/financial-counseling/financial-assistance-policy-summary-haitian-creole \"Financial Assistance Program Policy Summary - Haitian Creole\") \u00a0 | \u00a0\u00a0[Shqip](/patients-visitors/financial-counseling/financial-assistance-policy-summary-albanian \"Financial Assistance and Credit and Collection Policy - Plain Language - Albanian\")",
@@ -7510,7 +7664,7 @@
       "UMass Memorial Health \u2013 Milford Regional"
      ],
      "layer": "documented",
-     "quote": "It is the policy of UMass Memorial Health (\u201cUMMH\u201d) to offer free or discounted care to patients with demonstrated financial need for medically necessary, urgent or emergency care at all locations of the following hospitals:\n\n* UMass Memorial Medical Center\n* UMass Memorial Health \u2013 HealthAlliance-Clinton Hospital\n* UMass Memorial Health \u2013 Harrington\n* UMass Memorial Health \u2013 Milford Regional",
+     "quote": "at all locations of the following hospitals:\n\n* UMass Memorial Medical Center\n* UMass Memorial Health \u2013 HealthAlliance-Clinton Hospital\n* UMass Memorial Health \u2013 Harrington\n* UMass Memorial Health \u2013 Milford Regional",
      "source_id": "summary-0e9462b207aa049e",
      "checked_on": "2026-10-02",
      "confidence": 1.0,
@@ -7520,21 +7674,21 @@
    },
    "sources": [
     {
+     "id": "summary-05310e0a621ca115",
+     "kind": "hospital_web",
+     "url": "https://www.ummhealth.org/patients-visitors/financial-counseling/financial-assistance-policy-summary-vietnamese",
+     "title": "Ti\u1ebfng Vi\u1ec7t",
+     "fetched_on": "2026-10-02",
+     "sha256": "05310e0a621ca1151c0b0e04a7d368492c7ae7346c7ea4557584592d2b029c9c",
+     "effective_date": null
+    },
+    {
      "id": "summary-0e9462b207aa049e",
      "kind": "hospital_web",
      "url": "https://www.ummhealth.org/patients-visitors/financial-counseling/financial-assistance-policy-summary-english",
      "title": "Financial Assistance Program Policy Summary - English | UMass Memorial Health",
      "fetched_on": "2026-10-02",
      "sha256": "0e9462b207aa049ebe6e21f5a5eae48c868056f8addc7c617dca87529c316b81",
-     "effective_date": null
-    },
-    {
-     "id": "summary-819a22795a25d4eb",
-     "kind": "hospital_web",
-     "url": "https://www.ummhealth.org/patients-visitors/financial-counseling/financial-assistance-policy-summary-spanish",
-     "title": "Espa\u00f1ol",
-     "fetched_on": "2026-10-02",
-     "sha256": "819a22795a25d4ebc5e4f1d78ac77ff1de072fc4e6bb1e5254e340ffd13456c9",
      "effective_date": null
     },
     {
@@ -7547,12 +7701,12 @@
      "effective_date": null
     },
     {
-     "id": "summary-05310e0a621ca115",
+     "id": "summary-819a22795a25d4eb",
      "kind": "hospital_web",
-     "url": "https://www.ummhealth.org/patients-visitors/financial-counseling/financial-assistance-policy-summary-vietnamese",
-     "title": "Ti\u1ebfng Vi\u1ec7t",
+     "url": "https://www.ummhealth.org/patients-visitors/financial-counseling/financial-assistance-policy-summary-spanish",
+     "title": "Espa\u00f1ol",
      "fetched_on": "2026-10-02",
-     "sha256": "05310e0a621ca1151c0b0e04a7d368492c7ae7346c7ea4557584592d2b029c9c",
+     "sha256": "819a22795a25d4ebc5e4f1d78ac77ff1de072fc4e6bb1e5254e340ffd13456c9",
      "effective_date": null
     },
     {
