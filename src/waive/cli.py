@@ -9,6 +9,7 @@ from rich.console import Console
 from rich.table import Table
 
 from waive.ai.client import AIClient
+from waive.atlas.overlays import run_overlay
 from waive.atlas.pipeline import build_hospital, build_state, coverage_report
 from waive.atlas.publish import export_state
 from waive.atlas.registry import seed_state
@@ -138,6 +139,19 @@ def atlas_build(
     tavily_credits, _ = governor.summary()["tavily"]
     _, tf_usd = governor.summary()["token_factory"]
     console.print(f"Spend so far: {tavily_credits} Tavily credits, ${tf_usd:.4f} Token Factory")
+
+
+@atlas_app.command("overlay")
+def atlas_overlay(state: str = typer.Option(..., "--state")) -> None:
+    """Add cited state programs (for example the Massachusetts Health Safety Net) to sheets."""
+    settings = Settings()
+    governor = make_governor(settings)
+    gateway = make_tavily_gateway(settings, governor)
+    with session_scope(_engine(settings)) as session:
+        count = run_overlay(session, gateway, state, datetime.now(UTC).date())
+    console.print(f"Updated {count} sheets with {state.upper()} state programs")
+    tavily_credits, _ = governor.summary()["tavily"]
+    console.print(f"Spend so far: {tavily_credits} Tavily credits")
 
 
 @atlas_app.command("export")
