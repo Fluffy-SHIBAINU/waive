@@ -1,9 +1,9 @@
 # Waive build progress
 
-Last updated: 2026-10-02 21:30 ET (loop iteration 3 done)
+Last updated: 2026-10-02 21:55 ET (loop iteration 4 done)
 Current phase: 2 (finishing the Massachusetts atlas) — Phases 0, 1, 3 and 4 are complete; 10 real MA hospitals published, 8 held, 21 not yet attempted
 Current plan: `docs/superpowers/plans/2026-10-02-waive-phase-2-ma-atlas.md`
-Next task: 2.9 (Massachusetts overlay, ≈3 credits), then 2.10 (build the remaining 21 hospitals in batches of 10, ≈100 credits; then exit checks + gate U2.1), then 4.9, 2.8g–2.8i as time allows, then 5.0 (write the Phase 5 plan).
+Next task: 2.10 (build the remaining 21 hospitals in batches of 10 with `uv run waive atlas build --state MA --limit 10`, ≈100 credits total — Phase 2 cap is 400 and 243 are used, so stop at 390; then exit checks + gate U2.1), then 4.9, 2.8g–2.8i and 2.9b as time allows, then 5.0 (write the Phase 5 plan).
 
 Master plan: `docs/superpowers/plans/2026-10-02-waive-master-plan.md` · Spec: `docs/superpowers/specs/2026-10-02-waive-design.md` · Loop rules: `docs/LOOP.md`
 
@@ -74,7 +74,8 @@ Plan: `docs/superpowers/plans/2026-10-02-waive-phase-2-ma-atlas.md`
   - [ ] 2.8e Berkshire's policy is a percentage-of-charges table by facility, not FPL bands; the schema cannot represent it. Leave held; revisit with a `charge_discount_percent` field if time allows.
   - [ ] 2.8f Cosmetic: the pipeline note "critical fields disagree" is appended even when the only conflict is `programs.presumptive` (which it then tolerates).
 - Original 2.8b notes (kept for context): for 14 held hospitals the fetched pages contain no poverty-level rules at all. Ideas, in order: (1) after extracting an entry page (class `billing`/`fap` HTML), collect links whose text or URL mentions financial assistance / policy / application / PDF and extract those too (Tavily Extract returns markdown with `[text](url)` links — parse them); (2) `search_depth="advanced"` for the two scouting queries; (3) Tavily Map with `max_depth=3`; (4) for hospital systems (Baystate, Mass General Brigham, Beth Israel Lahey, UMass Memorial, Tufts Medicine, Berkshire Health Systems) scout once per system domain and share the documents. Also: Berkshire's sliding-scale tiers do not parse (`discount_tiers: no number`) — inspect the draft and extend `_tiers`. Re-run held hospitals with `--rebuild --reuse-sources` after prompt/parser changes (no Tavily spend) and `--rebuild` after scouting changes (≈4 credits each).
-- [ ] 2.9 Massachusetts overlay (`uv run waive atlas overlay --state MA`, ≈3 credits) — not yet run
+- [x] 2.9 Massachusetts overlay done 2026-10-02 (1d8bbd7, a43d890; 173 tests): `waive atlas overlay --state MA` added a cited Health Safety Net entry to all 19 MA sheets (2 credits; source: mass.gov Senior Guide to Health Care Coverage PDF).
+  - [ ] 2.9b The chosen quote is navigational ("…can be found on page 3"). Prefer non-`/doc/…/download` mass.gov hits or a query like "Health Safety Net eligibility income Massachusetts residents" so the quote states eligibility; then rerun the overlay (≈2 credits).
 - [ ] 2.10 Full MA run and Phase 2 exit (opens U2.1). Status 2026-10-02 19:50: 21 of 46 hospitals attempted; 3 published (Boston Medical Center, BIDMC, Anna Jaques), 14 held, 4 skipped/failed. Spend: 123 Tavily credits, $0.35 Token Factory. Remaining 25 hospitals ≈ 100 credits. Budget left for Phase 2: 277 credits.
 
 ### Phase 3 — Bill reading and cases (done 2026-10-02 19:10 by a subagent; 136 tests pass)
@@ -134,11 +135,13 @@ Plan: `docs/superpowers/plans/2026-10-02-waive-phase-4-phone-app.md`
 | 2026-10-02 | 204 (total) | 0.51 (total) | 0 | Loop iteration 1: link-following scout re-run on 16 hospitals |
 | 2026-10-02 | 215 (total) | 0.55 (total) | 0 | Loop iteration 2: three domain fixes rebuilt |
 | 2026-10-02 | 241 (total) | 0.61 (total) | 0 | Loop iteration 3: PDF download fallback; Baystate ×4, Cape Cod, Heywood, Athol rebuilt |
+| 2026-10-02 | 243 (total) | 0.61 (total) | 0 | Loop iteration 4: Health Safety Net overlay on 19 sheets |
 
 ## Log
 
 - 2026-10-02 15:40 — Spec, master plan, Phase 0 and Phase 1 plans written. Ready for task 0.1.
 - 2026-10-02 16:20 — Phase 0 tasks 0.1–0.6 done by an implementation subagent: 28 tests pass, ruff clean. Deviations: `extend-exclude = ["docs"]` for ruff (it was reformatting code blocks in plan files); `AIClient` now creates an explicit `httpx.Client` when none is given (openai 3.x's default transport bypasses respx). Incident: one early test run reached the real Token Factory endpoint with a fake key (401, no secret leaked, no spend) → task 0.8 added. Spend: 0.
+- 2026-10-02 21:55 — Loop iteration 4: task 2.9 implemented and run by a subagent (173 tests); all MA sheets carry the Health Safety Net entry. Spend 243 credits / $0.61.
 - 2026-10-02 21:30 — Loop iteration 3: task 2.8c done by a subagent (170 tests); Baystate ×4 published; follow-ups 2.8g–2.8i added. Spend 241 credits / $0.61.
 - 2026-10-02 21:00 — Loop iteration 2: task 2.8d done inline (161 tests); Fairview published. Spend 215 credits / $0.55.
 - 2026-10-02 20:45 — Loop iteration 1: task 2.8b done by an implementer subagent (161 tests, ruff clean); 2 more hospitals published; follow-ups 2.8c–2.8f added. Spend 204 credits / $0.51.
