@@ -49,6 +49,13 @@ DIRECTORY_DOMAINS = frozenset(
         "propublica.org",
         "guidestar.org",
         "candid.org",
+        "addictions.com",
+        "findhelp.org",
+        "networkofcare.org",
+        "hospitalstats.org",
+        "healthcare4ppl.com",
+        "medicare-hospital-ratings.com",
+        "211.org",
     }
 )
 GENERIC_WORDS = frozenset(
