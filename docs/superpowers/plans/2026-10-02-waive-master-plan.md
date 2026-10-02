@@ -14,7 +14,7 @@
 
 - Python `>=3.12,<3.13`; managed by `uv`; package `waive` in `src/waive/`.
 - Token Factory base URL `https://api.tokenfactory.nebius.com/v1/`; key in `NEBIUS_API_KEY`; Tavily key in `TAVILY_API_KEY`; AI Cloud project in `NEBIUS_PROJECT_ID`. All in `.env` only (gitignored).
-- Default models (verify in task 0.7): reason `nvidia/Nemotron-3-Super-120B-A12B`, fast `nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B`, vision `nvidia/Nemotron-Nano-V2-12b`.
+- Models (verified live 2026-10-02): reason `nvidia/nemotron-3-super-120b-a12b`, fast `nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B`, vision `openbmb/MiniCPM-V-4_5` (Token Factory offers no NVIDIA vision model; the NVIDIA requirement is met by Nemotron doing structuring, cross-checks and reasoning). Fallback vision: `google/gemma-3-27b-it`.
 - Personal data is processed only after `WAIVE_ZDR_CONFIRMED=true`; before that, synthetic fixtures only.
 - Development caps (spec §15): Tavily 1,000 credits, Token Factory $15, AI Cloud $30 until Phase 7. Raising a cap needs the user's approval.
 - No cloud resource creation, change or deletion, no push to a remote, and nothing made public without the user's explicit approval in chat.
@@ -122,6 +122,8 @@
 ## Phase 4 — Phone web app and packet
 
 **Spec sections:** §9, §11, §13.
+
+**Detailed plan:** `docs/superpowers/plans/2026-10-02-waive-phase-4-phone-app.md` (written 2026-10-02; plain CSS instead of Tailwind, no HTMX, reportlab instead of WeasyPrint; its task list supersedes the sketch below).
 
 **Goal:** The senior and caregiver flows working in a phone browser, plus a printable application packet and reminders.
 
