@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Case created{% endblock %}
+{% block content %}
+<h1>Two links</h1>
+<h2>1. For the person with the bill</h2>
+<p class="big">Share this link with them. It only lets them add photos and see the result.</p>
+<p><a class="btn primary" href="{{ senior_url }}" id="senior-link">Open the bill-photo page</a></p>
+<button type="button" class="btn" id="share" hidden>Share this link</button>
+<h2>2. For you</h2>
+<p class="big">Keep this link. It lets you review, fix, approve and delete.</p>
+<p><a class="btn" href="{{ caregiver_url }}">Open your review page</a></p>
+{% endblock %}
+{% block scripts %}
+<script>
+(function () {
+  var button = document.getElementById("share");
+  var url = new URL(document.getElementById("senior-link").getAttribute("href"), window.location.href).href;
+  button.hidden = false;
+  button.addEventListener("click", function () {
+    if (navigator.share) { navigator.share({ title: "Waive", url: url }); }
+    else if (navigator.clipboard) { navigator.clipboard.writeText(url).then(function () { button.textContent = "Link copied"; }); }
+  });
+})();
+</script>
+{% endblock %}
