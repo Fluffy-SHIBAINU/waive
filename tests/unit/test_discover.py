@@ -20,6 +20,8 @@ def hit(url, title="", content="", score=0.5):
 
 def test_host_and_directory_detection():
     assert host_of("https://www.Example.org/path?x=1") == "example.org"
+    assert host_of("https://jobs.bilh.org/x") == "bilh.org"
+    assert host_of("https://planmygift.baystatehealth.org/") == "baystatehealth.org"
     assert is_directory("en.wikipedia.org")
     assert is_directory("healthgrades.com")
     assert not is_directory("stexample.org")
@@ -43,6 +45,24 @@ def test_pick_domain_prefers_confirmed_official_site():
     ]
     result = pick_domain(HOSPITAL, hits)
     assert result == DomainResult("stexample.org", 0.9, "https://www.stexample.org/")
+
+
+def test_body_mentions_lose_to_title_matches():
+    hits = [
+        hit(
+            "https://seacoastortho.example.com/referrals",
+            "Referral partners",
+            "We work with St. Example Medical Center and others",
+            score=0.9,
+        ),
+        hit(
+            "https://stexample.org/financial-assistance",
+            "Financial Assistance | St. Example Medical Center",
+            score=0.5,
+        ),
+    ]
+    result = pick_domain(HOSPITAL, hits)
+    assert (result.domain, result.confidence) == ("stexample.org", 0.9)
 
 
 def test_pick_domain_without_evidence_has_low_confidence():

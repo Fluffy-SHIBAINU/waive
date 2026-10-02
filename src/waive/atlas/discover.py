@@ -84,8 +84,13 @@ class DomainResult:
 
 
 def host_of(url: str) -> str:
-    host = urlparse(url).netloc.lower().split(":")[0]
-    return host.removeprefix("www.")
+    """The registered domain: jobs.bilh.org and planmygift.baystatehealth.org collapse to their
+    parent, because policy documents live on the system's main site."""
+    host = urlparse(url).netloc.lower().split(":")[0].removeprefix("www.")
+    labels = host.split(".")
+    if len(labels) > 2:
+        host = ".".join(labels[-2:])
+    return host
 
 
 def is_directory(host: str) -> bool:
@@ -97,14 +102,21 @@ def name_tokens(name: str) -> set[str]:
     return {w for w in words if len(w) >= 4 and w not in GENERIC_WORDS}
 
 
-def _has_evidence(hospital: HospitalRef, hit: SearchHit) -> bool:
-    text = f"{hit.title} {hit.content}".lower()
+def _evidence(hospital: HospitalRef, hit: SearchHit) -> float:
+    """1.0 when the page title names the hospital or its phone appears; 0.3 for a mere mention
+    in the page body (a referral or news page), which is not proof of an official site."""
     tokens = name_tokens(hospital.name)
-    matched = sum(1 for token in tokens if token in text)
-    if tokens and matched >= min(2, len(tokens)):
-        return True
+    needed = min(2, len(tokens))
+    title, body = hit.title.lower(), hit.content.lower()
     phone_digits = re.sub(r"\D", "", hospital.phone or "")
-    return bool(phone_digits) and phone_digits in re.sub(r"\D", "", text)
+    has_phone = bool(phone_digits) and phone_digits in re.sub(
+        r"\D", "", f"{hit.title} {hit.content}"
+    )
+    if has_phone or (tokens and sum(t in title for t in tokens) >= needed):
+        return 1.0
+    if tokens and sum(t in body for t in tokens) >= needed:
+        return 0.3
+    return 0.0
 
 
 def pick_domain(hospital: HospitalRef, hits: list[SearchHit]) -> DomainResult | None:
@@ -114,16 +126,16 @@ def pick_domain(hospital: HospitalRef, hits: list[SearchHit]) -> DomainResult | 
         host = host_of(hit.url)
         if not host or is_directory(host):
             continue
-        evidence = _has_evidence(hospital, hit)
-        score = hit.score + (1.0 if evidence else 0.0)
+        evidence = _evidence(hospital, hit)
+        score = hit.score + evidence
         if score > best_score:
             best_score = score
-            best = DomainResult(host, 0.9 if evidence else 0.6, hit.url)
+            best = DomainResult(host, 0.9 if evidence >= 1.0 else 0.6, hit.url)
     return best
 
 
 def discover_domain(gateway: TavilyGateway, hospital: HospitalRef) -> DomainResult | None:
-    query = f"{hospital.name} {hospital.city} {hospital.state} hospital official website"
+    query = f"{hospital.name} {hospital.city} {hospital.state} hospital financial assistance"
     hits = gateway.search(query, purpose="atlas.discover", max_results=5)
     return pick_domain(hospital, hits)
 

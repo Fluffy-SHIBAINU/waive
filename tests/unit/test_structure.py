@@ -119,6 +119,24 @@ def test_bare_values_are_wrapped_then_skipped_for_lack_of_quote():
     ]
 
 
+def test_free_care_band_disguised_as_a_100_percent_tier_is_dropped():
+    tiers = [
+        {"min_fpl_exclusive": 0, "max_fpl_inclusive": 250, "discount_percent": 100},
+        {"min_fpl_exclusive": 250, "max_fpl_inclusive": 400, "discount_percent": 60},
+    ]
+    draft = SheetDraft(
+        discount_tiers=field(tiers, "above 250% and at or below 400% receive a 60% discount")
+    )
+    sheet, skipped = draft_to_sheet(draft, SAMPLE.hospital, [SAMPLE.sources[0]], TODAY)
+    assert skipped == []
+    assert [t.discount_percent for t in sheet.eligibility.discount_tiers.value] == [60]
+    only_free = SheetDraft(
+        discount_tiers=field(tiers[:1], "at or below 250% receive 100% discount")
+    )
+    _, skipped = draft_to_sheet(only_free, SAMPLE.hospital, [SAMPLE.sources[0]], TODAY)
+    assert skipped and skipped[0].startswith("eligibility.discount_tiers: only free-care bands")
+
+
 def test_null_values_and_missing_quotes_are_tolerated():
     draft = SheetDraft(
         free_care_max_fpl=DraftField(value=None, quote=None, source_id=None),

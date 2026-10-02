@@ -19,6 +19,7 @@ QUERIES = (
     "financial assistance policy charity care free discounted care",
     "financial assistance application form plain language summary billing and collections policy",
 )
+MAP_PATHS = [r".*financial.*", r".*charity.*", r".*assistance.*", r".*billing.*", r".*fap.*"]
 TITLES = {
     "fap": "Financial Assistance Policy",
     "application": "Financial Assistance Application",
@@ -34,7 +35,7 @@ def classify_doc(url: str, title: str) -> DocClass | None:
         return "application"
     if financial and any(k in text for k in ("plain", "summary")):
         return "summary"
-    if any(k in text for k in ("billing", "collection")) and "polic" in text:
+    if any(k in text for k in ("billing", "collection", "prices-and-billing", "pay-your-bill")):
         return "billing"
     if any(
         k in text
@@ -97,6 +98,16 @@ def scout_hospital(gateway: TavilyGateway, hospital: HospitalRef) -> list[Scoute
             )
         )
     selected = select_urls(hits)
+    if not any(doc_class == "fap" for _, doc_class in selected):
+        # Search indexes miss many policy pages; map the site and look at the paths.
+        mapped = gateway.map(
+            f"https://www.{hospital.website_domain}",
+            purpose="atlas.scout",
+            select_paths=MAP_PATHS,
+            limit=30,
+        )
+        hits.extend(SearchHit(url=url, title="", content="", score=0.5) for url in mapped)
+        selected = select_urls(hits)
     if not selected:
         return []
     pages = gateway.extract([url for url, _ in selected], purpose="atlas.scout")

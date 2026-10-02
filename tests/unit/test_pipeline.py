@@ -102,6 +102,29 @@ def test_build_hospital_holds_sheet_on_critical_conflict():
         assert kinds == ["conflict", "verification"]
 
 
+def test_presumptive_only_conflict_publishes_without_that_field():
+    class PresumptiveAI(FakeAI):
+        def complete_json(self, role, messages, schema, *, phi, purpose, max_tokens=2000):
+            draft = super().complete_json(role, messages, schema, phi=phi, purpose=purpose)
+            source_id = draft.free_care_max_fpl.source_id
+            programs = ["MassHealth"] if role == "reason" else ["MassHealth", "SNAP"]
+            draft.presumptive = DraftField(
+                value=programs,
+                quote="Patients enrolled in MassHealth or SNAP are presumptively eligible for free care",
+                source_id=source_id,
+            )
+            return draft
+
+    engine = make_engine_with_hospital()
+    with session_scope(engine) as session:
+        result = build_hospital(session, FakeGateway(), PresumptiveAI(), "229999", TODAY)
+        assert result.outcome == "published"
+        sheet, _ = repo.latest_sheet(session, "229999")
+        assert sheet.programs.presumptive is None
+        assert sheet.eligibility.free_care_max_fpl is not None
+        assert any(item.kind == "conflict" for item in repo.open_review_items(session, "229999"))
+
+
 def test_build_hospital_survives_a_failed_cross_check():
     class FlakyAI(FakeAI):
         def complete_json(self, role, messages, schema, *, phi, purpose, max_tokens=2000):
