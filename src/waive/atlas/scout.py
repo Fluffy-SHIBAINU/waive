@@ -36,6 +36,27 @@ LINK_KEYWORDS = (
     ".pdf",
 )
 FAP_TOKEN = re.compile(r"(?<![a-z0-9])fap(?![a-z0-9])")
+# Hospitals often keep their policy PDFs on a document/asset host rather than their own domain
+# (Baystate: baystatehealth.canto.com, no .pdf in the URL). Such links are followed only when the
+# label itself names the policy, so another organisation's documents are never fetched.
+DOCUMENT_HOSTS = (
+    "canto.com",
+    "widen.net",
+    "cloudfront.net",
+    "amazonaws.com",
+    "box.com",
+    "sharepoint.com",
+    "blob.core.windows.net",
+)
+OFFSITE_KEYWORDS = (
+    "financial assistance",
+    "financial-assistance",
+    "financialassistance",
+    "charity",
+    "billing and collection",
+    "billing-and-collection",
+)
+IMAGE_SUFFIXES = (".svg", ".png", ".jpg", ".jpeg", ".gif", ".webp", ".ico")
 QUERIES = (
     "financial assistance policy charity care free discounted care",
     "financial assistance application form plain language summary billing and collections policy",
@@ -101,23 +122,47 @@ def policy_links(text: str, base_domain: str) -> list[tuple[str, str]]:
 
     Keeps markdown links and bare PDF URLs whose label or URL mentions financial assistance,
     charity, policy, application, plain language, FAP or a PDF; resolves relative URLs against
-    the hospital's site; drops other registered domains (subdomains are kept); de-duplicates.
+    the hospital's site; drops other registered domains (subdomains are kept, and so are clearly
+    labelled policies on a DOCUMENT_HOSTS asset host); skips anchors, icons and the site root;
+    de-duplicates.
     """
     base_url = f"https://www.{base_domain}"
     base_host = host_of(base_url)
     found: dict[str, str] = {}
-    candidates = [(label.strip(), url) for label, url in MARKDOWN_LINK.findall(text)]
+    candidates = [(label, url) for label, url in MARKDOWN_LINK.findall(text)]
     candidates.extend(("", url) for url in BARE_PDF_URL.findall(text))
-    for label, raw_url in candidates:
-        url, _fragment = urldefrag(urljoin(base_url, raw_url.strip()))
-        if urlparse(url).scheme not in ("http", "https") or host_of(url) != base_host:
+    for raw_label, raw_url in candidates:
+        raw_url = raw_url.strip()
+        if raw_url.startswith("#"):
+            continue  # an in-page anchor (accordion toggles are rendered this way)
+        url, _fragment = urldefrag(urljoin(base_url, raw_url))
+        parts = urlparse(url)
+        if (
+            parts.scheme not in ("http", "https")
+            or parts.path in ("", "/")
+            or parts.path.lower().endswith(IMAGE_SUFFIXES)
+        ):
             continue
+        label = " ".join(raw_label.replace("#", " ").split())
         haystack = f"{label} {url}".lower().replace("_", "-")
-        if not (any(k in haystack for k in LINK_KEYWORDS) or FAP_TOKEN.search(haystack)):
+        if host_of(url) == base_host:
+            wanted = any(k in haystack for k in LINK_KEYWORDS) or FAP_TOKEN.search(haystack)
+        elif _is_document_host(parts.netloc.lower()):
+            wanted = any(k in label.lower() for k in OFFSITE_KEYWORDS) or FAP_TOKEN.search(
+                label.lower()
+            )
+        else:
+            wanted = False
+        if not wanted:
             continue
         if url not in found or (label and not found[url]):
             found[url] = label
     return list(found.items())
+
+
+def _is_document_host(netloc: str) -> bool:
+    host = netloc.split(":")[0]
+    return any(host == d or host.endswith("." + d) for d in DOCUMENT_HOSTS)
 
 
 def _is_pdf(url: str) -> bool:
