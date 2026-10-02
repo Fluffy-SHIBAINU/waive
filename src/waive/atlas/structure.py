@@ -315,6 +315,6 @@ def structure_sheet(
         SheetDraft,
         phi=False,
         purpose="atlas.structure",
-        max_tokens=3000,
+        max_tokens=6000,
     )
     return draft_to_sheet(draft, hospital, [doc for doc, _ in sources_with_text], today)
