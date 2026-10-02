@@ -6,24 +6,24 @@ Published sheets: 24 (51%)
 | CCN | Hospital | Domain | Status | Version | Completeness | Fields | Sources |
 |---|---|---|---|---|---|---|---|
 | 220029 | ANNA JAQUES HOSPITAL | ajh.org | published | 2 | 0.67 | 12 | 4 |
-| 221303 | ATHOL MEMORIAL HOSPITAL | atholhospital.org | published | 3 | 0.33 | 7 | 1 |
+| 221303 | ATHOL MEMORIAL HOSPITAL | atholhospital.org | published | 4 | 0.33 | 8 | 2 |
 | 220016 | BAYSTATE FRANKLIN MEDICAL CENTER | baystatehealth.org | published | 4 | 0.50 | 7 | 8 |
 | 220077 | BAYSTATE MEDICAL CENTER | baystatehealth.org | published | 4 | 0.67 | 11 | 7 |
 | 220065 | BAYSTATE NOBLE HOSPITAL | baystatehealth.org | published | 3 | 0.67 | 10 | 8 |
 | 220030 | BAYSTATE WING HOSPITAL | baystatehealth.org | published | 5 | 0.67 | 11 | 8 |
-| 220046 | BERKSHIRE MEDICAL CENTER | berkshirehealthsystems.org | published | 5 | 0.67 | 10 | 4 |
-| 220083 | BETH ISRAEL DEACONESS HOSPITAL - NEEDHAM | bidneedham.org | held | 4 | 0.33 | 6 | 6 |
+| 220046 | BERKSHIRE MEDICAL CENTER | berkshirehealthsystems.org | published | 6 | 0.67 | 11 | 5 |
+| 220083 | BETH ISRAEL DEACONESS HOSPITAL - NEEDHAM | bidneedham.org | held | 5 | 0.33 | 7 | 7 |
 | 220060 | BETH ISRAEL DEACONESS HOSPITAL PLYMOUTH | bidplymouth.org | published | 3 | 0.67 | 10 | 9 |
 | 220086 | BETH ISRAEL DEACONESS MEDICAL CENTER | bidmc.org | published | 3 | 0.67 | 11 | 5 |
 | 220031 | BOSTON MEDICAL CENTER | bmc.org | published | 5 | 0.50 | 10 | 5 |
-| 220119 | BRIGHAM AND WOMEN FAULKNER HOSPITAL | massgeneralbrigham.org | held | 3 | 1.00 | 11 | 6 |
+| 220119 | BRIGHAM AND WOMEN FAULKNER HOSPITAL | massgeneralbrigham.org | held | 4 | 1.00 | 12 | 7 |
 | 220110 | BRIGHAM AND WOMEN'S HOSPITAL | massgeneralbrigham.org | published | 3 | 0.67 | 8 | 8 |
-| 220012 | CAPE COD HOSPITAL | capecodhealth.org | held | 3 | 0.00 | 0 | 1 |
+| 220012 | CAPE COD HOSPITAL | capecodhealth.org | held | 4 | 0.00 | 1 | 2 |
 | 220015 | COOLEY DICKINSON HOSPITAL INC,THE | cooleydickinson.org | none | | | | |
-| 220084 | EMERSON HOSPITAL - | emersonhealth.org | published | 4 | 0.67 | 8 | 4 |
+| 220084 | EMERSON HOSPITAL - | emersonhealth.org | published | 5 | 0.67 | 9 | 5 |
 | 221302 | FAIRVIEW HOSPITAL | berkshirehealthsystems.org | published | 3 | 0.50 | 10 | 5 |
-| 220135 | FALMOUTH HOSPITAL | capecodhealth.org | held | 3 | 0.00 | 0 | 9 |
-| 220095 | HEYWOOD HOSPITAL - | heywood.org | published | 3 | 0.33 | 5 | 1 |
+| 220135 | FALMOUTH HOSPITAL | capecodhealth.org | held | 4 | 0.00 | 1 | 10 |
+| 220095 | HEYWOOD HOSPITAL - | heywood.org | published | 4 | 0.33 | 6 | 2 |
 | 220024 | HOLYOKE MEDICAL CENTER | holyokehealth.com | held | 2 | 0.33 | 7 | 5 |
 | 220171 | LAHEY HOSPITAL & MEDICAL CENTER, BURLINGTON | lahey.org | held | 2 | 0.17 | 2 | 5 |
 | 220063 | LOWELL GENERAL HOSPITAL | payerprice.com | held | 2 | 0.17 | 2 | 1 |
