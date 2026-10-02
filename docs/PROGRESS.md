@@ -19,7 +19,7 @@ Master plan: `docs/superpowers/plans/2026-10-02-waive-master-plan.md` · Spec: `
 - [x] **U0.1** Token Factory key is in `.env` (closed 2026-10-02 17:05; the user had put it in `.env.example`, which git tracks — the orchestrator moved all three values to `.env` and blanked the template before anything was committed; git history never contained a key).
 - [x] **U0.2** Tavily key is in `.env` (closed 2026-10-02 17:05).
 - [x] **U0.3** AI Cloud project ID is in `.env` (closed 2026-10-02 17:05).
-- [ ] **U0.4** Turn on zero data retention for Token Factory (console setting if available, otherwise ask Nebius support), then set `WAIVE_ZDR_CONFIRMED=true` in `.env`. Until then the build uses synthetic data only. Blocks real bills.
+- [ ] **U0.4** Turn on zero data retention for Token Factory, then set `WAIVE_ZDR_CONFIRMED=true` in `.env`. Checked 2026-10-02: the Token Factory docs index has no page describing the switch; Nebius's HIPAA page says ZDR "must be enabled for the Token Factory scope" and its terms say users can opt out of input/output storage at any time. Look for a data-retention or "store requests" setting in the Token Factory console (project settings); if there is none, ask Nebius support to enable zero retention for the project. Until then the build uses synthetic data only. Blocks real bills.
 - [ ] **U0.5** Install the Nebius CLI (`curl -sSL https://artifacts.nebius.cloud/cli/install.sh | bash`) and run `nebius profile create` (browser sign-in). Needed in Phase 6.
 - [ ] **U0.6** Optional: exempt this repo from GateGuard first-touch prompts (`GATEGUARD_EXEMPT_GLOBS`) so loop iterations don't stall on every new file.
 - [ ] **U2.1** Spot-check 10 Massachusetts procedure sheets field by field (Phase 2 exit).
@@ -63,7 +63,8 @@ Plan: `docs/superpowers/plans/2026-10-02-waive-phase-2-ma-atlas.md`
 - [ ] 2.5 Structurer
 - [ ] 2.6 Verification, cross-check and publishing
 - [ ] 2.7 Pipeline and CLI
-- [ ] 2.8 First live batch (needs U0.1, U0.2, task 0.7)
+- [x] 2.1–2.7 done by a subagent (a538636…fef7b0f), 46 MA hospitals seeded from CMS
+- [x] 2.8 First live batches (2026-10-02 17:30–19:30). Live runs exposed and fixed: Nemotron thinking starving JSON (`enable_thinking: false`), schema not shown to the model (schema hint + `json_object` mode), null-wrapped draft fields, bare-list fields from Nano, quote variance (quotes trimmed to verified spans), bogus residency/window values (semantic guards), wrong domains (registered-domain + title evidence), search index missing policy pages (Tavily Map fallback), presumptive-only conflicts (publish without that field), 100% "discount" tiers. Published so far: Boston Medical Center (11 fields), BIDMC; held: Baystate ×4, Athol, BID Plymouth, Berkshire (reachable pages state no income limits — needs PDF-link following, see Phase 7 ideas). `--reuse-sources` re-structures without Tavily spend.
 - [ ] 2.9 Massachusetts overlay
 - [ ] 2.10 Full MA run and Phase 2 exit (opens U2.1)
 
