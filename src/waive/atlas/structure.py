@@ -226,18 +226,29 @@ def _submit_methods(value: Any) -> list[SubmitMethod]:
 
 
 def _tiers(value: Any) -> list[DiscountTier]:
+    """Sliding-scale bands. Items the model garbled (missing keys, "sliding scale" instead of a
+    number, null bands) are skipped so one bad band does not cost the whole scale."""
     if not isinstance(value, list) or not value:
         raise ValueError("tiers must be a non-empty list")
-    tiers = [
-        DiscountTier(
-            min_fpl_exclusive=_decimal(item["min_fpl_exclusive"]),
-            max_fpl_inclusive=_decimal(item["max_fpl_inclusive"]),
-            discount_percent=_int(item["discount_percent"]),
-        )
-        for item in value
-        if _int(item["discount_percent"]) < 100  # a 100% "discount" is the free-care band
-    ]
+    tiers: list[DiscountTier] = []
+    failed = 0
+    for item in value:
+        try:
+            discount = _int(item["discount_percent"])
+            if discount >= 100:
+                continue  # a 100% "discount" is the free-care band
+            tiers.append(
+                DiscountTier(
+                    min_fpl_exclusive=_decimal(item["min_fpl_exclusive"]),
+                    max_fpl_inclusive=_decimal(item["max_fpl_inclusive"]),
+                    discount_percent=discount,
+                )
+            )
+        except (KeyError, TypeError, ValueError):
+            failed += 1
     if not tiers:
+        if failed:
+            raise ValueError(f"no usable tier ({failed} of {len(value)} items failed to parse)")
         raise ValueError("only free-care bands were given; see free_care_max_fpl")
     return sorted(tiers, key=lambda tier: tier.min_fpl_exclusive)
 

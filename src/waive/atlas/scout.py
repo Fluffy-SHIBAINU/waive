@@ -1,20 +1,41 @@
 """Find and fetch a hospital's financial assistance documents (spec §8 step 3)."""
 
 import hashlib
+import re
 from dataclasses import dataclass
 from datetime import date
 from typing import Literal
+from urllib.parse import urldefrag, urljoin, urlparse
 
 from sqlalchemy.orm import Session
 
 from waive.atlas import repo
+from waive.atlas.discover import host_of
 from waive.atlas.schema import HospitalRef, SourceDoc, SourceKind
-from waive.atlas.tavily_gateway import SearchHit, TavilyGateway
+from waive.atlas.tavily_gateway import ExtractedPage, SearchHit, TavilyGateway
 
 DocClass = Literal["fap", "application", "summary", "billing"]
 CLASS_ORDER: tuple[DocClass, ...] = ("fap", "application", "summary", "billing")
 MAX_URLS = 4
+MAX_LINKED_URLS = 4
 MAX_CHARS = 60_000
+MIN_CHARS = 200
+# Markdown links as Tavily Extract renders them: [label](url) or [label](url "title"); images are
+# skipped. Bare PDF URLs are picked up separately.
+MARKDOWN_LINK = re.compile(r'(?<!!)\[([^\]]*)\]\(\s*<?([^\s<>()"]+)>?(?:\s+"[^"]*")?\s*\)')
+BARE_PDF_URL = re.compile(r"""https?://[^\s<>()\[\]"']+\.pdf""", re.IGNORECASE)
+LINK_KEYWORDS = (
+    "financial assistance",
+    "financial-assistance",
+    "financialassistance",
+    "charity",
+    "policy",
+    "application",
+    "plain language",
+    "plain-language",
+    ".pdf",
+)
+FAP_TOKEN = re.compile(r"(?<![a-z0-9])fap(?![a-z0-9])")
 QUERIES = (
     "financial assistance policy charity care free discounted care",
     "financial assistance application form plain language summary billing and collections policy",
@@ -75,6 +96,52 @@ def select_urls(hits: list[SearchHit]) -> list[tuple[str, DocClass]]:
     return chosen[:MAX_URLS]
 
 
+def policy_links(text: str, base_domain: str) -> list[tuple[str, str]]:
+    """Links in extracted page text that look like policy documents: (url, label) pairs.
+
+    Keeps markdown links and bare PDF URLs whose label or URL mentions financial assistance,
+    charity, policy, application, plain language, FAP or a PDF; resolves relative URLs against
+    the hospital's site; drops other registered domains (subdomains are kept); de-duplicates.
+    """
+    base_url = f"https://www.{base_domain}"
+    base_host = host_of(base_url)
+    found: dict[str, str] = {}
+    candidates = [(label.strip(), url) for label, url in MARKDOWN_LINK.findall(text)]
+    candidates.extend(("", url) for url in BARE_PDF_URL.findall(text))
+    for label, raw_url in candidates:
+        url, _fragment = urldefrag(urljoin(base_url, raw_url.strip()))
+        if urlparse(url).scheme not in ("http", "https") or host_of(url) != base_host:
+            continue
+        haystack = f"{label} {url}".lower().replace("_", "-")
+        if not (any(k in haystack for k in LINK_KEYWORDS) or FAP_TOKEN.search(haystack)):
+            continue
+        if url not in found or (label and not found[url]):
+            found[url] = label
+    return list(found.items())
+
+
+def _is_pdf(url: str) -> bool:
+    return urlparse(url).path.lower().endswith(".pdf")
+
+
+def _linked_documents(
+    pages: list[ExtractedPage], base_domain: str, fetched: set[str]
+) -> list[tuple[str, DocClass, str]]:
+    """Policy documents one link away from the HTML pages already extracted, best first."""
+    candidates: dict[str, tuple[DocClass, str]] = {}
+    for page in pages:
+        if _is_pdf(page.url):
+            continue
+        for url, label in policy_links(page.text, base_domain):
+            if url in fetched or url in candidates:
+                continue
+            doc_class = classify_doc(url, label)
+            if doc_class is not None:
+                candidates[url] = (doc_class, label)
+    ranked = sorted(candidates.items(), key=lambda item: CLASS_ORDER.index(item[1][0]))
+    return [(url, doc_class, label) for url, (doc_class, label) in ranked[:MAX_LINKED_URLS]]
+
+
 @dataclass(frozen=True)
 class ScoutedDoc:
     url: str
@@ -82,6 +149,13 @@ class ScoutedDoc:
     title: str
     text: str
     sha256: str
+
+
+def _scouted(url: str, doc_class: DocClass, title: str, text: str) -> ScoutedDoc | None:
+    text = text[:MAX_CHARS]
+    if len(text.strip()) < MIN_CHARS:
+        return None
+    return ScoutedDoc(url, doc_class, title, text, hashlib.sha256(text.encode("utf-8")).hexdigest())
 
 
 def scout_hospital(gateway: TavilyGateway, hospital: HospitalRef) -> list[ScoutedDoc]:
@@ -114,15 +188,21 @@ def scout_hospital(gateway: TavilyGateway, hospital: HospitalRef) -> list[Scoute
     by_url = {page.url: page.text for page in pages}
     docs: list[ScoutedDoc] = []
     for url, doc_class in selected:
-        text = (by_url.get(url) or "")[:MAX_CHARS]
-        if len(text.strip()) < 200:
-            continue
         title = next((h.title for h in hits if h.url == url and h.title), TITLES[doc_class])
-        docs.append(
-            ScoutedDoc(
-                url, doc_class, title, text, hashlib.sha256(text.encode("utf-8")).hexdigest()
-            )
-        )
+        if doc := _scouted(url, doc_class, title, by_url.get(url) or ""):
+            docs.append(doc)
+
+    # Entry pages usually only link to the policy; follow those links one step on the same site.
+    linked = _linked_documents(pages, hospital.website_domain, {url for url, _ in selected})
+    if linked:
+        more = gateway.extract([url for url, _, _ in linked], purpose="atlas.scout")
+        by_url = {page.url: page.text for page in more}
+        seen = {doc.sha256 for doc in docs}
+        for url, doc_class, label in linked:
+            doc = _scouted(url, doc_class, label or TITLES[doc_class], by_url.get(url) or "")
+            if doc and doc.sha256 not in seen:
+                docs.append(doc)
+                seen.add(doc.sha256)
     return docs
 
 
