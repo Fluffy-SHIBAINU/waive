@@ -34,6 +34,20 @@ def test_classify_doc():
     assert classify_doc("https://x.org/careers", "Jobs") is None
 
 
+def test_classify_doc_ignores_the_pdf_mime_type_in_asset_host_urls():
+    canto = "https://h.canto.com/direct/document/a/b/original?content-type=application%2Fpdf&name="
+    assert (
+        classify_doc(canto + "FAP+Policy.pdf", "Hospital financial assistance policy (pdf)")
+        == "fap"
+    )
+    assert (
+        classify_doc(
+            canto + "Plain+Language+Summary.pdf", "Financial assistance plain language summary"
+        )
+        == "summary"
+    )
+
+
 def test_select_urls_one_per_class_then_extras_max_four():
     hits = [
         hit("https://x.org/fap-a.pdf", "Financial Assistance Policy", 0.9),

@@ -72,6 +72,8 @@ TITLES = {
 
 def classify_doc(url: str, title: str) -> DocClass | None:
     text = f"{url} {title}".lower().replace("_", "-")
+    # Asset hosts put the MIME type in the query string; "application/pdf" is not an application.
+    text = text.replace("application%2fpdf", " ").replace("application/pdf", " ")
     financial = any(k in text for k in ("financial", "charity", "fap", "assistance"))
     if financial and any(k in text for k in ("applic", "form")):
         return "application"
