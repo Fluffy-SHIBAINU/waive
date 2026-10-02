@@ -112,6 +112,42 @@ def _str_list(value: Any) -> list[str]:
     return cleaned
 
 
+US_STATES = {
+    "AL": "alabama", "AK": "alaska", "AZ": "arizona", "AR": "arkansas", "CA": "california",
+    "CO": "colorado", "CT": "connecticut", "DE": "delaware", "DC": "district of columbia",
+    "FL": "florida", "GA": "georgia", "HI": "hawaii", "ID": "idaho", "IL": "illinois",
+    "IN": "indiana", "IA": "iowa", "KS": "kansas", "KY": "kentucky", "LA": "louisiana",
+    "ME": "maine", "MD": "maryland", "MA": "massachusetts", "MI": "michigan", "MN": "minnesota",
+    "MS": "mississippi", "MO": "missouri", "MT": "montana", "NE": "nebraska", "NV": "nevada",
+    "NH": "new hampshire", "NJ": "new jersey", "NM": "new mexico", "NY": "new york",
+    "NC": "north carolina", "ND": "north dakota", "OH": "ohio", "OK": "oklahoma", "OR": "oregon",
+    "PA": "pennsylvania", "RI": "rhode island", "SC": "south carolina", "SD": "south dakota",
+    "TN": "tennessee", "TX": "texas", "UT": "utah", "VT": "vermont", "VA": "virginia",
+    "WA": "washington", "WV": "west virginia", "WI": "wisconsin", "WY": "wyoming",
+}  # fmt: skip
+MIN_WINDOW_DAYS = 240
+
+
+def _states(value: Any) -> list[str]:
+    """Residency must name real states; anything else (for example 'True') is a model mistake."""
+    codes: list[str] = []
+    for item in _str_list(value):
+        text = item.strip().lower()
+        code = next((c for c, name in US_STATES.items() if text in (c.lower(), name)), None)
+        if code and code not in codes:
+            codes.append(code)
+    if not codes:
+        raise ValueError("no US state recognised")
+    return codes
+
+
+def _window_days(value: Any) -> int:
+    days = _int(value)
+    if days < MIN_WINDOW_DAYS:
+        raise ValueError(f"application window {days} is below the 501(r) minimum of 240 days")
+    return days
+
+
 DOC_SYNONYMS = {
     "photo_id": ("photo id", "photo_id", "identification", "driver", "passport", "government id"),
     "proof_of_income": (
@@ -199,13 +235,13 @@ FIELD_MAP: dict[str, tuple[str, str, Callable[[Any], Any]]] = {
     "free_care_max_fpl": ("eligibility", "free_care_max_fpl", _decimal),
     "discount_tiers": ("eligibility", "discount_tiers", _tiers),
     "asset_test": ("eligibility", "asset_test", _bool),
-    "residency": ("eligibility", "residency", _str_list),
+    "residency": ("eligibility", "residency", _states),
     "insured_patients_covered": ("eligibility", "insured_patients_covered", _bool),
     "presumptive": ("programs", "presumptive", _str_list),
     "form_url": ("apply", "form_url", str),
     "documents_required": ("apply", "documents_required", _doc_types),
     "submit_methods": ("apply", "submit_methods", _submit_methods),
-    "window_days_from_first_bill": ("apply", "window_days_from_first_bill", _int),
+    "window_days_from_first_bill": ("apply", "window_days_from_first_bill", _window_days),
     "decision_days": ("apply", "decision_days", _int),
     "eca_wait_days": ("collections", "eca_wait_days", _int),
     "phone": ("contacts", "phone", str),
