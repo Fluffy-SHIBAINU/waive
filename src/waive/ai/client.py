@@ -13,10 +13,13 @@ from waive.governor import Governor
 
 T = TypeVar("T", bound=BaseModel)
 
-# Dollars per million (input, output) tokens. Update after `waive doctor --live` (task 0.7).
+# Dollars per million (input, output) tokens. Verified with `waive doctor --live` on 2026-10-02.
 PRICES_PER_MILLION: dict[str, tuple[Decimal, Decimal]] = {
-    "nvidia/Nemotron-3-Super-120B-A12B": (Decimal("0.30"), Decimal("0.90")),
+    "nvidia/nemotron-3-super-120b-a12b": (Decimal("0.30"), Decimal("0.90")),
     "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B": (Decimal("0.06"), Decimal("0.24")),
+    "nvidia/Nemotron-3_5-Lightning": (Decimal("0.06"), Decimal("0.24")),
+    "openbmb/MiniCPM-V-4_5": (Decimal("0.658"), Decimal("1.11")),
+    "google/gemma-3-27b-it": (Decimal("0.10"), Decimal("0.30")),
 }
 # Deliberately high so unknown models never under-count spend.
 FALLBACK_PRICE = (Decimal("1.00"), Decimal("3.00"))
