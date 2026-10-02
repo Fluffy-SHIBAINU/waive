@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Your income{% endblock %}
+{% block content %}
+<h1>Do you have your Social Security letter?</h1>
+{% if problem %}<p class="card big">{{ problem }}</p>{% endif %}
+<p class="big">It says how much you get each month. A photo of it is all we need.</p>
+<form method="post" action="{{ links.income }}" enctype="multipart/form-data" class="stack">
+  <label for="photo" class="visually-hidden">Photo of the letter</label>
+  <input id="photo" type="file" name="photo" accept="image/*" capture="environment" onchange="this.form.submit()">
+  <button type="submit" class="btn primary">Take a photo of the letter</button>
+</form>
+<form method="post" action="{{ links.income }}" class="stack">
+  <button type="submit" name="skip" value="1" class="btn quiet">I don't have it. My helper will fill it in.</button>
+</form>
+{% endblock %}

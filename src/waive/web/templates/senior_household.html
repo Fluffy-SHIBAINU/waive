@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Two quick questions{% endblock %}
+{% block content %}
+<h1>How many people live in your home, counting you?</h1>
+<form method="post" action="{{ links.household }}" class="stack">
+  <div class="choices">
+    {% for n in [1, 2, 3, 4] %}
+    <label class="btn"><input type="radio" name="size" value="{{ n }}" {% if n == 1 %}checked{% endif %}> {{ n }}{% if n == 4 %} or more{% endif %}</label>
+    {% endfor %}
+  </div>
+  <h2>Do you have MassHealth or SNAP (food help)?</h2>
+  <div class="choices">
+    <label class="btn"><input type="radio" name="programs" value="MassHealth"> Yes, MassHealth</label>
+    <label class="btn"><input type="radio" name="programs" value="SNAP"> Yes, SNAP</label>
+    <label class="btn"><input type="radio" name="programs" value="MassHealth,SNAP"> Both</label>
+    <label class="btn"><input type="radio" name="programs" value="none" checked> No, or not sure</label>
+  </div>
+  <button type="submit" class="btn primary">Next</button>
+</form>
+{% endblock %}

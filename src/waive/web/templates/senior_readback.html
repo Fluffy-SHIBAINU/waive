@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Is this right?{% endblock %}
+{% block content %}
+<h1>Here is what we read</h1>
+<div class="card big">
+  <p>Hospital: <strong>{{ case.hospital_name or case.bill.hospital_name or "we could not read it" }}</strong></p>
+  <p>Amount due: <strong>{{ money(case.bill.amount_due) or "we could not read it" }}</strong></p>
+  <p>Statement date: <strong>{{ long_date(case.bill.statement_date) or "we could not read it" }}</strong></p>
+</div>
+<form method="post" action="{{ links.confirm }}" class="choices">
+  <button type="submit" name="answer" value="yes" class="btn primary">Yes, that's right</button>
+  <button type="submit" name="answer" value="no" class="btn">Something is wrong</button>
+</form>
+{% endblock %}

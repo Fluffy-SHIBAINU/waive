@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}What we found{% endblock %}
+{% block content %}
+<h1>What we found</h1>
+<div class="card big status-{{ case.tier.value }}" id="result-text">{{ case.senior_text }}</div>
+<button type="button" class="btn" id="speak" hidden>Read this to me</button>
+<h2>What happens next</h2>
+<p class="big">Your helper will check this. Then we print the form for you to sign and mail. You never pay anything to use Waive.</p>
+{% endblock %}
+{% block scripts %}
+<script>
+(function () {
+  var button = document.getElementById("speak");
+  if (!("speechSynthesis" in window)) { return; }
+  button.hidden = false;
+  button.addEventListener("click", function () {
+    var text = document.getElementById("result-text").textContent;
+    var utterance = new SpeechSynthesisUtterance(text);
+    utterance.rate = 0.9;
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(utterance);
+  });
+})();
+</script>
+{% endblock %}
