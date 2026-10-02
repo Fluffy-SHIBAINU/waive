@@ -106,6 +106,19 @@ def test_semantic_guards_reject_bogus_residency_and_short_windows():
     assert sheet.eligibility.residency.value == ["MA", "NH"] and skipped == []
 
 
+def test_bare_values_are_wrapped_then_skipped_for_lack_of_quote():
+    draft = SheetDraft.model_validate(
+        {"languages": ["English", "Spanish"], "phone": "617-555-0100", "hours": None}
+    )
+    assert draft.languages.value == ["English", "Spanish"] and draft.languages.quote is None
+    sheet, skipped = draft_to_sheet(draft, SAMPLE.hospital, [SAMPLE.sources[0]], TODAY)
+    assert sheet.field_paths() == []
+    assert skipped == [
+        "contacts.phone: missing quote or source_id",
+        "contacts.languages: missing quote or source_id",
+    ]
+
+
 def test_null_values_and_missing_quotes_are_tolerated():
     draft = SheetDraft(
         free_care_max_fpl=DraftField(value=None, quote=None, source_id=None),

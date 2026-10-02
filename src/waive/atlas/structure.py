@@ -6,7 +6,7 @@ from datetime import date
 from decimal import Decimal, InvalidOperation
 from typing import Any
 
-from pydantic import BaseModel
+from pydantic import BaseModel, field_validator
 
 from waive.ai.client import AIClient
 from waive.atlas.schema import (
@@ -45,6 +45,15 @@ class DraftField(BaseModel):
 
 
 class SheetDraft(BaseModel):
+    @field_validator("*", mode="before")
+    @classmethod
+    def _wrap_bare_values(cls, value: Any) -> Any:
+        """Smaller models sometimes emit the bare value; keep it, it will be skipped for
+        lacking a quote rather than failing the whole draft."""
+        if value is None or isinstance(value, dict | DraftField):
+            return value
+        return {"value": value}
+
     free_care_max_fpl: DraftField | None = None
     discount_tiers: DraftField | None = None
     asset_test: DraftField | None = None
