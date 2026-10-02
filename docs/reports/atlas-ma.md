@@ -1,16 +1,16 @@
 # Atlas coverage — MA
 
 Hospitals in registry: 47
-Published sheets: 7 (15%)
+Published sheets: 11 (23%)
 
 | CCN | Hospital | Domain | Status | Version | Completeness | Fields | Sources |
 |---|---|---|---|---|---|---|---|
 | 220029 | ANNA JAQUES HOSPITAL | ajh.org | published | 1 | 0.67 | 11 | 3 |
 | 221303 | ATHOL MEMORIAL HOSPITAL | atholhospital.org | held | 1 | 0.00 | 0 | 1 |
-| 220016 | BAYSTATE FRANKLIN MEDICAL CENTER | baystatehealth.org | held | 2 | 0.17 | 1 | 3 |
-| 220077 | BAYSTATE MEDICAL CENTER | baystatehealth.org | held | 2 | 0.17 | 1 | 3 |
-| 220065 | BAYSTATE NOBLE HOSPITAL | baystatehealth.org | held | 1 | 0.00 | 0 | 4 |
-| 220030 | BAYSTATE WING HOSPITAL | baystatehealth.org | held | 3 | 0.17 | 4 | 3 |
+| 220016 | BAYSTATE FRANKLIN MEDICAL CENTER | baystatehealth.org | published | 3 | 0.50 | 6 | 7 |
+| 220077 | BAYSTATE MEDICAL CENTER | baystatehealth.org | published | 3 | 0.67 | 10 | 6 |
+| 220065 | BAYSTATE NOBLE HOSPITAL | baystatehealth.org | published | 2 | 0.67 | 9 | 7 |
+| 220030 | BAYSTATE WING HOSPITAL | baystatehealth.org | published | 4 | 0.67 | 10 | 7 |
 | 220046 | BERKSHIRE MEDICAL CENTER | berkshirehealthsystems.org | held | 3 | 0.50 | 10 | 4 |
 | 220083 | BETH ISRAEL DEACONESS HOSPITAL - NEEDHAM | bidneedham.org | held | 2 | 0.17 | 2 | 6 |
 | 220060 | BETH ISRAEL DEACONESS HOSPITAL PLYMOUTH | bidplymouth.org | published | 2 | 0.67 | 9 | 8 |
