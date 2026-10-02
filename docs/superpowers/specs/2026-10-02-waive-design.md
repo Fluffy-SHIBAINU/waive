@@ -72,7 +72,7 @@ flowchart LR
     SEC[MysteryBox secrets]
   end
   subgraph TF[Nebius Token Factory, zero retention]
-    VL[Nemotron Nano 12B VL: reads photos]
+    VL[MiniCPM-V 4.5: reads photos]
     SUP[Nemotron 3 Super: structures, reasons]
     NANO[Nemotron 3 Nano: classifies]
   end

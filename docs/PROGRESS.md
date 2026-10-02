@@ -16,9 +16,9 @@ Master plan: `docs/superpowers/plans/2026-10-02-waive-master-plan.md` · Spec: `
 
 ## User gates (only the user closes these)
 
-- [ ] **U0.1** Create a Token Factory API key at https://tokenfactory.nebius.com/project/api-keys and put it in `.env` as `NEBIUS_API_KEY=...` (copy `.env.example` to `.env` first). Never paste it in chat. Blocks task 0.7.
-- [ ] **U0.2** Put your Tavily key in `.env` as `TAVILY_API_KEY=...`. Blocks task 0.7.
-- [ ] **U0.3** Put your AI Cloud project ID in `.env` as `NEBIUS_PROJECT_ID=...` (the `project-…` part of your console URL). Needed in Phase 6.
+- [x] **U0.1** Token Factory key is in `.env` (closed 2026-10-02 17:05; the user had put it in `.env.example`, which git tracks — the orchestrator moved all three values to `.env` and blanked the template before anything was committed; git history never contained a key).
+- [x] **U0.2** Tavily key is in `.env` (closed 2026-10-02 17:05).
+- [x] **U0.3** AI Cloud project ID is in `.env` (closed 2026-10-02 17:05).
 - [ ] **U0.4** Turn on zero data retention for Token Factory (console setting if available, otherwise ask Nebius support), then set `WAIVE_ZDR_CONFIRMED=true` in `.env`. Until then the build uses synthetic data only. Blocks real bills.
 - [ ] **U0.5** Install the Nebius CLI (`curl -sSL https://artifacts.nebius.cloud/cli/install.sh | bash`) and run `nebius profile create` (browser sign-in). Needed in Phase 6.
 - [ ] **U0.6** Optional: exempt this repo from GateGuard first-touch prompts (`GATEGUARD_EXEMPT_GLOBS`) so loop iterations don't stall on every new file.
@@ -40,7 +40,8 @@ Master plan: `docs/superpowers/plans/2026-10-02-waive-master-plan.md` · Spec: `
 - [x] 0.4 Token Factory client (d10a4fa)
 - [x] 0.5 Tavily gateway (e23cf58)
 - [x] 0.6 `waive doctor` (d47a952)
-- [ ] 0.7 Live connectivity check (needs U0.1, U0.2)
+- [x] 0.7 Live connectivity check (2026-10-02 17:15): Tavily OK; Token Factory OK after fixing model IDs. Verified catalog: reason `nvidia/nemotron-3-super-120b-a12b` ($0.30/$0.90 per M tokens, 262K ctx), fast `nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B` ($0.06/$0.24), alt fast `nvidia/Nemotron-3_5-Lightning` ($0.06/$0.24, 1M ctx). No NVIDIA vision model is offered; vision = `openbmb/MiniCPM-V-4_5` ($0.658/$1.11, 32K ctx, modality text+image), fallback `google/gemma-3-27b-it` ($0.10/$0.30). Both read a synthetic statement correctly via the standard OpenAI `image_url` data-URL format. `.env` updated. Code defaults (`config.py`, `PRICES_PER_MILLION`, `test_doctor.MODELS`, `.env.example`) still carry the old IDs → task 0.9.
+- [ ] 0.9 Update model defaults in code to the verified IDs above (config.py, ai/client.py prices incl. MiniCPM-V and gemma-3, tests/unit/test_doctor.py MODELS, tests/unit/test_ai_client.py price test, .env.example). Do this when no other agent is editing those files.
 - [x] 0.8 Test hardening with `pytest-socket` (b2e4fc5): unit tests cannot open sockets; live tests use `@pytest.mark.enable_socket`.
 
 ### Phase 1 — Domain core (done 2026-10-02 16:55; coverage of waive.rules + waive.atlas 96.56%)
@@ -79,7 +80,16 @@ Plan: `docs/superpowers/plans/2026-10-02-waive-phase-3-bill-reading.md`
 - [ ] 3.8 Accuracy report `waive eval bills` (live run needs U0.1)
 
 ### Phase 4 — Phone web app and packet
-- [ ] 4.0 Write detailed Phase 4 plan
+Plan: `docs/superpowers/plans/2026-10-02-waive-phase-4-phone-app.md`
+- [x] 4.0 Write detailed Phase 4 plan
+- [ ] 4.1 App skeleton, layout and styles
+- [ ] 4.2 Senior flow
+- [ ] 4.3 Caregiver flow
+- [ ] 4.4 Application packet (PDF, reportlab)
+- [ ] 4.5 Calendar reminders (.ics)
+- [ ] 4.6 Public atlas pages
+- [ ] 4.7 Demo seed and phone test (opens U4.1)
+- [ ] 4.8 Accessibility and E2E checks (optional)
 
 ### Phase 5 — Learning loop
 - [ ] 5.0 Write detailed Phase 5 plan
@@ -96,7 +106,7 @@ Plan: `docs/superpowers/plans/2026-10-02-waive-phase-3-bill-reading.md`
 ## Open items to verify (spec §18)
 
 - [ ] How zero data retention is switched on for Token Factory
-- [ ] Exact Token Factory model IDs (reason, fast, vision); vision image input format; vision price
+- [x] Exact Token Factory model IDs, vision image format and prices — verified 2026-10-02 (see task 0.7)
 - [ ] AI Cloud project region; smallest CPU endpoint preset; smallest PostgreSQL preset and price
 - [x] 2026 poverty guidelines — verified 2026-10-02 (ASPE): 48 states and DC $15,960 + $5,680; AK $19,950 + $7,100; HI $18,360 + $6,530
 - [ ] Massachusetts Health Safety Net rules and how MA hospital FAPs route applications
@@ -108,6 +118,7 @@ Plan: `docs/superpowers/plans/2026-10-02-waive-phase-3-bill-reading.md`
 | Date | Tavily credits | Token Factory $ | AI Cloud $ | Note |
 |---|---|---|---|---|
 | 2026-10-02 | 0 | 0 | 0 | Planning only |
+| 2026-10-02 | 2 | ~0.001 | 0 | Two live doctor runs (1 credit each) + two vision smoke calls |
 
 ## Log
 

@@ -4,7 +4,7 @@
 
 **Goal:** From a photo of a hospital bill to an `EligibilityResult` with citations and deadlines, with personal data encrypted at rest, photos never stored, and nothing personal in logs.
 
-**Architecture:** `waive.cases` owns the case lifecycle: image intake (Pillow) → vision extraction (Nemotron VL via `AIClient`, `phi=True`) → hospital matching (rapidfuzz against the registry) → household inputs → `rules.evaluate_eligibility` + `rules.deadlines_for` → a prediction record. Personal fields live in one encrypted JSON blob per case (AES-GCM); access is by signed capability tokens with `senior` and `caregiver` scopes. A deterministic synthetic bill generator provides test images and an accuracy report, so no real bill is needed until zero data retention is confirmed.
+**Architecture:** `waive.cases` owns the case lifecycle: image intake (Pillow) → vision extraction (the `vision` model role via `AIClient`, `phi=True`; on Token Factory this is `openbmb/MiniCPM-V-4_5`, verified live 2026-10-02 with the standard `image_url` data-URL format — no NVIDIA vision model is offered, Nemotron covers reasoning) → hospital matching (rapidfuzz against the registry) → household inputs → `rules.evaluate_eligibility` + `rules.deadlines_for` → a prediction record. Personal fields live in one encrypted JSON blob per case (AES-GCM); access is by signed capability tokens with `senior` and `caregiver` scopes. A deterministic synthetic bill generator provides test images and an accuracy report, so no real bill is needed until zero data retention is confirmed.
 
 **Tech Stack:** Pillow, rapidfuzz, cryptography, pydantic v2, SQLAlchemy 2, openai SDK via `AIClient`, pytest, hypothesis.
 
