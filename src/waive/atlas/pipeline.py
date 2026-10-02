@@ -13,7 +13,7 @@ from waive.atlas.publish import critical_conflicts, decide_status, drop_fields, 
 from waive.atlas.scout import scout_hospital, store_scouted
 from waive.atlas.structure import structure_sheet
 from waive.atlas.tavily_gateway import TavilyGateway
-from waive.atlas.verify import verify_sheet
+from waive.atlas.verify import trim_quotes, verify_sheet
 
 Outcome = Literal["published", "held", "skipped", "failed"]
 
@@ -34,6 +34,7 @@ def build_hospital(
     ccn: str,
     today: date,
     dual: bool = True,
+    reuse_sources: bool = False,
 ) -> BuildResult:
     row = repo.get_hospital(session, ccn)
     if row is None:
@@ -55,16 +56,19 @@ def build_hospital(
         session.flush()
 
     hospital = repo.hospital_ref(row)
-    docs = scout_hospital(gateway, hospital)
-    if not docs:
-        repo.add_review_item(session, ccn, "no_documents", {"domain": row.website_domain})
-        result.notes.append("no financial assistance documents found")
-        return result
-    sources = store_scouted(session, ccn, docs, today)
-    sources_with_text = [(source, doc.text) for source, doc in zip(sources, docs, strict=True)]
-    texts = {source.id: doc.text for source, doc in zip(sources, docs, strict=True)}
+    sources_with_text = repo.sources_for(session, ccn) if reuse_sources else []
+    if not sources_with_text:
+        docs = scout_hospital(gateway, hospital)
+        if not docs:
+            repo.add_review_item(session, ccn, "no_documents", {"domain": row.website_domain})
+            result.notes.append("no financial assistance documents found")
+            return result
+        sources = store_scouted(session, ccn, docs, today)
+        sources_with_text = [(s, doc.text) for s, doc in zip(sources, docs, strict=True)]
+    texts = {source.id: text for source, text in sources_with_text}
 
     sheet, skipped = structure_sheet(ai, "reason", hospital, sources_with_text, today)
+    sheet = trim_quotes(sheet, texts)
     report = verify_sheet(sheet, texts)
     if skipped or report.rejected:
         repo.add_review_item(
@@ -108,6 +112,7 @@ def build_state(
     limit: int | None = None,
     dual: bool = True,
     only_missing: bool = True,
+    reuse_sources: bool = False,
 ) -> list[BuildResult]:
     results: list[BuildResult] = []
     for row in repo.list_hospitals(session, state=state):
@@ -116,7 +121,11 @@ def build_state(
         if only_missing and repo.latest_sheet(session, row.ccn) is not None:
             continue
         try:
-            results.append(build_hospital(session, gateway, ai, row.ccn, today, dual=dual))
+            results.append(
+                build_hospital(
+                    session, gateway, ai, row.ccn, today, dual=dual, reuse_sources=reuse_sources
+                )
+            )
         except Exception as error:  # keep the batch going; the failure is in the report
             results.append(BuildResult(row.ccn, row.name, "failed", notes=[type(error).__name__]))
         session.commit()

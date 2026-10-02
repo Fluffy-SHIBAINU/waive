@@ -13,6 +13,7 @@ from waive.atlas.pipeline import build_hospital, build_state, coverage_report
 from waive.atlas.publish import export_state
 from waive.atlas.registry import seed_state
 from waive.atlas.tavily_gateway import make_tavily_gateway
+from waive.cases.evaluate import evaluate_corpus, write_report
 from waive.cases.synth import generate_corpus
 from waive.cases.vault import new_key
 from waive.config import Settings
@@ -94,6 +95,9 @@ def atlas_build(
     rebuild: bool = typer.Option(
         False, "--rebuild", help="Also rebuild hospitals that already have a sheet"
     ),
+    reuse_sources: bool = typer.Option(
+        False, "--reuse-sources", help="Re-structure from stored documents; no Tavily spend"
+    ),
 ) -> None:
     """Discover, scout, structure, verify and publish procedure sheets. Spends Tavily credits."""
     settings = Settings()
@@ -103,10 +107,22 @@ def atlas_build(
     today = datetime.now(UTC).date()
     with session_scope(_engine(settings)) as session:
         if ccn:
-            results = [build_hospital(session, gateway, ai, ccn, today, dual=dual)]
+            results = [
+                build_hospital(
+                    session, gateway, ai, ccn, today, dual=dual, reuse_sources=reuse_sources
+                )
+            ]
         else:
             results = build_state(
-                session, gateway, ai, state, today, limit=limit, dual=dual, only_missing=not rebuild
+                session,
+                gateway,
+                ai,
+                state,
+                today,
+                limit=limit,
+                dual=dual,
+                only_missing=not rebuild,
+                reuse_sources=reuse_sources,
             )
     table = Table("CCN", "Hospital", "Outcome", "Version", "Notes")
     for result in results:
@@ -164,3 +180,26 @@ def corpus_generate(
     """Write fictional bill images with ground truth JSON (no real data)."""
     paths = generate_corpus(out, count, seed)
     console.print(f"Wrote {len(paths)} bills to {out}")
+
+
+eval_app = typer.Typer(no_args_is_help=True, help="Accuracy reports.")
+app.add_typer(eval_app, name="eval")
+
+
+@eval_app.command("bills")
+def eval_bills(
+    corpus: Path = typer.Option(Path("var/corpus"), "--corpus"),  # noqa: B008
+    limit: int | None = typer.Option(None, "--limit"),
+    out: Path = typer.Option(Path("docs/reports/bill-eval.md"), "--out"),  # noqa: B008
+) -> None:
+    """Run the vision model over the synthetic corpus and write per-field accuracy. Spends tokens."""
+    settings = Settings()
+    governor = make_governor(settings)
+    ai = AIClient(settings, governor)
+    scores = evaluate_corpus(ai, corpus, limit)
+    write_report(scores, out)
+    console.print(
+        f"Wrote {out}: " + ", ".join(f"{k}={v:.0%}" for k, v in scores.items() if k != "n")
+    )
+    _, tf_usd = governor.summary()["token_factory"]
+    console.print(f"Token Factory spend so far: ${tf_usd:.4f}")

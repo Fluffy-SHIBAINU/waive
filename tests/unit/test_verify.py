@@ -59,5 +59,25 @@ def test_numbers_must_match_whole_tokens():
     assert value_in_quote(1000, "balances over $1,000 qualify")
 
 
+def test_trim_quotes_keeps_the_sentence_that_is_really_in_the_source():
+    from waive.atlas.verify import matched_span, trim_quotes
+
+    stitched = (
+        "Patients with household income at or below 250% of the Federal Poverty Guidelines are "
+        "eligible for free care. This sentence was invented by the model."
+    )
+    assert matched_span(stitched, SAMPLE_POLICY_TEXT).startswith("Patients with household income")
+    assert matched_span("Entirely invented words here.", SAMPLE_POLICY_TEXT) is None
+    sheet = st_example_sheet()
+    cited = sheet.eligibility.free_care_max_fpl.model_copy(update={"quote": stitched})
+    sheet = sheet.model_copy(
+        update={"eligibility": sheet.eligibility.model_copy(update={"free_care_max_fpl": cited})}
+    )
+    assert not verify_sheet(sheet, DOCS).ok
+    trimmed = trim_quotes(sheet, DOCS)
+    assert verify_sheet(trimmed, DOCS).ok
+    assert "invented" not in trimmed.eligibility.free_care_max_fpl.quote
+
+
 def test_normalize_collapses_whitespace_and_case():
     assert normalize("  Free CARE \n here ") == "free care here"
