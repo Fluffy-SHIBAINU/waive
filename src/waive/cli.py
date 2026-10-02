@@ -1,11 +1,16 @@
 """Command-line entry point: `uv run waive ...`."""
 
+from datetime import UTC, datetime
+from pathlib import Path
+
 import httpx
 import typer
 from rich.console import Console
 from rich.table import Table
 
 from waive.ai.client import AIClient
+from waive.atlas.pipeline import build_hospital, build_state, coverage_report
+from waive.atlas.publish import export_state
 from waive.atlas.registry import seed_state
 from waive.atlas.tavily_gateway import make_tavily_gateway
 from waive.config import Settings
@@ -67,3 +72,71 @@ def atlas_seed(state: str = typer.Option(..., "--state", help="Two-letter state 
         f"Fetched {report.fetched} {state.upper()} hospitals; kept {report.kept} nonprofit "
         f"acute-care/critical-access. Snapshot: {report.snapshot}"
     )
+
+
+@atlas_app.command("build")
+def atlas_build(
+    state: str = typer.Option(..., "--state"),
+    limit: int | None = typer.Option(None, "--limit", help="Max hospitals this run"),
+    ccn: str | None = typer.Option(None, "--ccn", help="Build one hospital"),
+    dual: bool = typer.Option(
+        True, "--dual/--no-dual", help="Cross-check critical fields with the fast model"
+    ),
+    rebuild: bool = typer.Option(
+        False, "--rebuild", help="Also rebuild hospitals that already have a sheet"
+    ),
+) -> None:
+    """Discover, scout, structure, verify and publish procedure sheets. Spends Tavily credits."""
+    settings = Settings()
+    governor = make_governor(settings)
+    ai = AIClient(settings, governor)
+    gateway = make_tavily_gateway(settings, governor)
+    today = datetime.now(UTC).date()
+    with session_scope(_engine(settings)) as session:
+        if ccn:
+            results = [build_hospital(session, gateway, ai, ccn, today, dual=dual)]
+        else:
+            results = build_state(
+                session, gateway, ai, state, today, limit=limit, dual=dual, only_missing=not rebuild
+            )
+    table = Table("CCN", "Hospital", "Outcome", "Version", "Notes")
+    for result in results:
+        table.add_row(
+            result.ccn,
+            result.name,
+            result.outcome,
+            str(result.version or ""),
+            "; ".join(result.notes)[:120],
+        )
+    console.print(table)
+    tavily_credits, _ = governor.summary()["tavily"]
+    _, tf_usd = governor.summary()["token_factory"]
+    console.print(f"Spend so far: {tavily_credits} Tavily credits, ${tf_usd:.4f} Token Factory")
+
+
+@atlas_app.command("export")
+def atlas_export(
+    state: str = typer.Option(..., "--state"),
+    out: Path | None = typer.Option(None, "--out"),  # noqa: B008
+) -> None:
+    """Write the latest sheets for a state as open data (CC BY 4.0)."""
+    settings = Settings()
+    path = out or Path("data/atlas") / f"{state.lower()}.json"
+    with session_scope(_engine(settings)) as session:
+        count = export_state(session, state, path)
+    console.print(f"Exported {count} sheets to {path}")
+
+
+@atlas_app.command("report")
+def atlas_report(
+    state: str = typer.Option(..., "--state"),
+    out: Path | None = typer.Option(None, "--out"),  # noqa: B008
+) -> None:
+    """Write a markdown coverage report."""
+    settings = Settings()
+    path = out or Path("docs/reports") / f"atlas-{state.lower()}.md"
+    with session_scope(_engine(settings)) as session:
+        text = coverage_report(session, state)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(text, encoding="utf-8")
+    console.print(f"Wrote {path}")
