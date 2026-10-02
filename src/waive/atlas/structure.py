@@ -225,32 +225,77 @@ def _submit_methods(value: Any) -> list[SubmitMethod]:
     return methods
 
 
-def _tiers(value: Any) -> list[DiscountTier]:
-    """Sliding-scale bands. Items the model garbled (missing keys, "sliding scale" instead of a
-    number, null bands) are skipped so one bad band does not cost the whole scale."""
+# "201%-400%", "0% to 200%", "401 – 500": a whole income band written as one string.
+_RANGE = re.compile(r"(\d+(?:\.\d+)?)\s*%?\s*(?:-|–|—|to)\s*(\d+(?:\.\d+)?)\s*%?", re.IGNORECASE)
+
+
+def _band(item: dict[str, Any], previous_max: Decimal | None) -> tuple[Decimal, Decimal]:
+    """The (lower, upper) FPL bounds of one tier item, accepting the shapes models produce:
+    a range string in either slot, or a missing lower bound (then the previous band's upper
+    bound, or 0 for the first band)."""
+    low, high = item.get("min_fpl_exclusive"), item.get("max_fpl_inclusive")
+    for candidate in (low, high):
+        if isinstance(candidate, str) and (match := _RANGE.search(candidate)):
+            return Decimal(match.group(1)), Decimal(match.group(2))
+    if high is None:
+        raise ValueError("no upper bound")
+    if low is None:
+        return (previous_max if previous_max is not None else Decimal(0)), _decimal(high)
+    return _decimal(low), _decimal(high)
+
+
+def _discount(value: Any) -> int:
+    if isinstance(value, str) and _RANGE.search(value):
+        raise ValueError("discount given as a range")  # never pick or average a number
+    return _int(value)
+
+
+def _parse_tier_items(value: Any) -> tuple[list[DiscountTier], Decimal | None, int]:
+    """(paid bands, upper bound of the free-care band if one was listed, items that failed).
+    Items the model garbled (missing keys, "sliding scale" instead of a number, null bands,
+    discounts given as ranges) are skipped so one bad band does not cost the whole scale."""
     if not isinstance(value, list) or not value:
         raise ValueError("tiers must be a non-empty list")
     tiers: list[DiscountTier] = []
+    free_max: Decimal | None = None
+    previous_max: Decimal | None = None
     failed = 0
     for item in value:
         try:
-            discount = _int(item["discount_percent"])
-            if discount >= 100:
-                continue  # a 100% "discount" is the free-care band
-            tiers.append(
-                DiscountTier(
-                    min_fpl_exclusive=_decimal(item["min_fpl_exclusive"]),
-                    max_fpl_inclusive=_decimal(item["max_fpl_inclusive"]),
-                    discount_percent=discount,
+            if not isinstance(item, dict):
+                raise TypeError("tier must be an object")
+            discount = _discount(item.get("discount_percent"))
+            low, high = _band(item, previous_max)
+            if discount >= 100:  # a 100% "discount" is the free-care band
+                free_max = high if free_max is None else max(free_max, high)
+            else:
+                tiers.append(
+                    DiscountTier(
+                        min_fpl_exclusive=low, max_fpl_inclusive=high, discount_percent=discount
+                    )
                 )
-            )
+            previous_max = high
         except (KeyError, TypeError, ValueError):
             failed += 1
+    return sorted(tiers, key=lambda tier: tier.min_fpl_exclusive), free_max, failed
+
+
+def _tiers(value: Any) -> list[DiscountTier]:
+    """Sliding-scale bands; raises only when no paid band survives."""
+    tiers, _free_max, failed = _parse_tier_items(value)
     if not tiers:
         if failed:
             raise ValueError(f"no usable tier ({failed} of {len(value)} items failed to parse)")
         raise ValueError("only free-care bands were given; see free_care_max_fpl")
-    return sorted(tiers, key=lambda tier: tier.min_fpl_exclusive)
+    return tiers
+
+
+def free_care_limit_from_tiers(value: Any) -> Decimal | None:
+    """The upper bound of a 100% band listed among the tiers, if any."""
+    try:
+        return _parse_tier_items(value)[1]
+    except ValueError:
+        return None
 
 
 # draft field -> (section, field, caster)
@@ -272,6 +317,24 @@ FIELD_MAP: dict[str, tuple[str, str, Callable[[Any], Any]]] = {
     "languages": ("contacts", "languages", _str_list),
     "facilities": ("coverage", "facilities", _str_list),
 }
+
+
+def _derive_free_care_limit(
+    draft: SheetDraft, known: set[str], sections: dict[str, dict[str, Any]], today: date
+) -> None:
+    """Models often list the free-care band as a 100% tier and leave free_care_max_fpl null; the
+    band's upper bound is that limit, cited with the tiers' own quote."""
+    if "free_care_max_fpl" in sections.get("eligibility", {}):
+        return
+    tiers = draft.discount_tiers
+    if tiers is None or tiers.value is None or not tiers.quote or tiers.source_id not in known:
+        return
+    limit = free_care_limit_from_tiers(tiers.value)
+    if limit is None:
+        return
+    sections.setdefault("eligibility", {})["free_care_max_fpl"] = Cited(
+        value=limit, quote=tiers.quote.strip(), source_id=tiers.source_id, checked_on=today
+    )
 
 
 def draft_to_sheet(
@@ -302,6 +365,7 @@ def draft_to_sheet(
             source_id=draft_field.source_id,
             checked_on=today,
         )
+    _derive_free_care_limit(draft, known, sections, today)
     try:
         sheet = ProcedureSheet(hospital=hospital, version=1, sources=sources, **sections)
     except ValueError as error:
