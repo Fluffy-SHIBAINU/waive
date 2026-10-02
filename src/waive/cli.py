@@ -18,6 +18,7 @@ from waive.cases.synth import generate_corpus
 from waive.cases.vault import new_key
 from waive.config import Settings
 from waive.db import init_db, make_engine, session_scope
+from waive.demo import forget_cases, seed_demo
 from waive.doctor import run_checks
 from waive.governor import make_governor
 
@@ -213,3 +214,25 @@ def serve(
     import uvicorn
 
     uvicorn.run("waive.web.app:create_app", host=host, port=port, factory=True)
+
+
+demo_app = typer.Typer(no_args_is_help=True, help="Demo data.")
+app.add_typer(demo_app, name="demo")
+
+
+@demo_app.command("seed")
+def demo_seed() -> None:
+    """Add the fictional St. Example hospital and its policy."""
+    settings = Settings()
+    with session_scope(_engine(settings)) as session:
+        seed_demo(session)
+    console.print("Demo hospital seeded.")
+
+
+@demo_app.command("forget-cases")
+def demo_forget_cases() -> None:
+    """Delete every case (all personal data) from the local database."""
+    settings = Settings()
+    with session_scope(_engine(settings)) as session:
+        count = forget_cases(session)
+    console.print(f"Deleted {count} cases.")
