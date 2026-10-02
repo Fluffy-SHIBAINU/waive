@@ -174,6 +174,38 @@ def test_reuse_sources_leaves_state_overlay_documents_out_of_the_structurer():
         assert [s.kind for s in sheet.sources] == [SourceKind.HOSPITAL_WEB]
 
 
+def test_rebuild_keeps_the_state_overlay_from_the_previous_version():
+    from waive.atlas.overlays import STATE_OVERLAYS, apply_overlay
+    from waive.atlas.publish import publish_sheet
+    from waive.atlas.schema import SourceDoc, SourceKind
+
+    engine = make_engine_with_hospital()
+    with session_scope(engine) as session:
+        build_hospital(session, FakeGateway(), FakeAI(), "229999", TODAY)
+        sheet, _ = repo.latest_sheet(session, "229999")
+        source = SourceDoc(
+            id="state-ma-test",
+            kind=SourceKind.STATE_REPOSITORY,
+            url="https://www.mass.gov/hsn",
+            title="HSN",
+            fetched_on=TODAY,
+            sha256="0" * 64,
+        )
+        text = "The Health Safety Net pays hospitals for care to low-income residents."
+        overlaid = apply_overlay(sheet, source, text, STATE_OVERLAYS["MA"], TODAY)
+        repo.save_source(session, source, text, "229999")
+        assert publish_sheet(session, overlaid).version == 2
+
+        result = build_hospital(
+            session, FakeGateway(), FakeAI(), "229999", TODAY, reuse_sources=True
+        )
+        latest, _ = repo.latest_sheet(session, "229999")
+        assert result.outcome == "published"
+        assert latest.programs.state_programs is not None
+        assert latest.programs.state_programs.source_id == "state-ma-test"
+        assert any(s.id == "state-ma-test" for s in latest.sources)
+
+
 def test_build_state_skips_hospitals_with_sheets_and_reports():
     engine = make_engine_with_hospital()
     with session_scope(engine) as session:
