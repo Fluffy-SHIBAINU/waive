@@ -13,6 +13,7 @@ from waive.atlas.pipeline import build_hospital, build_state, coverage_report
 from waive.atlas.publish import export_state
 from waive.atlas.registry import seed_state
 from waive.atlas.tavily_gateway import make_tavily_gateway
+from waive.cases.synth import generate_corpus
 from waive.config import Settings
 from waive.db import init_db, make_engine, session_scope
 from waive.doctor import run_checks
@@ -140,3 +141,18 @@ def atlas_report(
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(text, encoding="utf-8")
     console.print(f"Wrote {path}")
+
+
+corpus_app = typer.Typer(no_args_is_help=True, help="Synthetic test data.")
+app.add_typer(corpus_app, name="corpus")
+
+
+@corpus_app.command("generate")
+def corpus_generate(
+    count: int = typer.Option(30, "--count"),
+    out: Path = typer.Option(Path("var/corpus"), "--out"),  # noqa: B008
+    seed: int = typer.Option(7, "--seed"),
+) -> None:
+    """Write fictional bill images with ground truth JSON (no real data)."""
+    paths = generate_corpus(out, count, seed)
+    console.print(f"Wrote {len(paths)} bills to {out}")
