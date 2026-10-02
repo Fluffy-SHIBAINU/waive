@@ -24,6 +24,8 @@ def test_host_and_directory_detection():
     assert host_of("https://planmygift.baystatehealth.org/") == "baystatehealth.org"
     assert is_directory("en.wikipedia.org")
     assert is_directory("healthgrades.com")
+    assert is_directory("findhelp.org") and is_directory("www.networkofcare.org")
+    assert is_directory("addictions.com")
     assert not is_directory("stexample.org")
 
 
