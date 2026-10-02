@@ -1,26 +1,26 @@
 # Atlas coverage — MA
 
 Hospitals in registry: 47
-Published sheets: 4 (9%)
+Published sheets: 6 (13%)
 
 | CCN | Hospital | Domain | Status | Version | Completeness | Fields | Sources |
 |---|---|---|---|---|---|---|---|
 | 220029 | ANNA JAQUES HOSPITAL | ajh.org | published | 1 | 0.67 | 11 | 3 |
 | 221303 | ATHOL MEMORIAL HOSPITAL | atholhospital.org | held | 1 | 0.00 | 0 | 1 |
-| 220016 | BAYSTATE FRANKLIN MEDICAL CENTER | baystatehealth.org | held | 1 | 0.00 | 0 | 4 |
-| 220077 | BAYSTATE MEDICAL CENTER | baystatehealth.org | held | 1 | 0.00 | 0 | 3 |
+| 220016 | BAYSTATE FRANKLIN MEDICAL CENTER | baystatehealth.org | held | 2 | 0.17 | 1 | 3 |
+| 220077 | BAYSTATE MEDICAL CENTER | baystatehealth.org | held | 2 | 0.17 | 1 | 3 |
 | 220065 | BAYSTATE NOBLE HOSPITAL | baystatehealth.org | held | 1 | 0.00 | 0 | 4 |
-| 220030 | BAYSTATE WING HOSPITAL | baystatehealth.org | held | 2 | 0.00 | 0 | 4 |
-| 220046 | BERKSHIRE MEDICAL CENTER | berkshirehealthsystems.org | held | 2 | 0.50 | 9 | 4 |
-| 220083 | BETH ISRAEL DEACONESS HOSPITAL - NEEDHAM | bidneedham.org | held | 1 | 0.17 | 4 | 4 |
-| 220060 | BETH ISRAEL DEACONESS HOSPITAL PLYMOUTH | bidplymouth.org | held | 1 | 0.00 | 0 | 4 |
+| 220030 | BAYSTATE WING HOSPITAL | baystatehealth.org | held | 3 | 0.17 | 4 | 3 |
+| 220046 | BERKSHIRE MEDICAL CENTER | berkshirehealthsystems.org | held | 3 | 0.50 | 10 | 4 |
+| 220083 | BETH ISRAEL DEACONESS HOSPITAL - NEEDHAM | bidneedham.org | held | 2 | 0.17 | 2 | 6 |
+| 220060 | BETH ISRAEL DEACONESS HOSPITAL PLYMOUTH | bidplymouth.org | published | 2 | 0.67 | 9 | 8 |
 | 220086 | BETH ISRAEL DEACONESS MEDICAL CENTER | bidmc.org | published | 2 | 0.67 | 10 | 4 |
 | 220031 | BOSTON MEDICAL CENTER | bmc.org | published | 4 | 0.50 | 9 | 4 |
 | 220119 | BRIGHAM AND WOMEN FAULKNER HOSPITAL | addictions.com | none | | | | |
-| 220110 | BRIGHAM AND WOMEN'S HOSPITAL | massgeneralbrigham.org | held | 1 | 0.50 | 7 | 4 |
+| 220110 | BRIGHAM AND WOMEN'S HOSPITAL | massgeneralbrigham.org | published | 2 | 0.67 | 7 | 7 |
 | 220012 | CAPE COD HOSPITAL | capecodhealth.org | held | 1 | 0.00 | 0 | 1 |
 | 220015 | COOLEY DICKINSON HOSPITAL INC,THE | cooleydickinson.org | none | | | | |
-| 220084 | EMERSON HOSPITAL - | emersonhealth.org | held | 1 | 0.00 | 0 | 4 |
+| 220084 | EMERSON HOSPITAL - | emersonhealth.org | held | 2 | 0.67 | 9 | 5 |
 | 221302 | FAIRVIEW HOSPITAL | findhelp.org | held | 1 | 0.00 | 0 | 1 |
 | 220135 | FALMOUTH HOSPITAL | networkofcare.org | held | 1 | 0.00 | 0 | 4 |
 | 220095 | HEYWOOD HOSPITAL - | heywood.org | held | 1 | 0.00 | 0 | 1 |
