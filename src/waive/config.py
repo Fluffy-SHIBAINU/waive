@@ -20,9 +20,9 @@ class Settings(BaseSettings):
     nebius_project_id: str | None = Field(default=None, validation_alias="NEBIUS_PROJECT_ID")
 
     token_factory_base_url: str = "https://api.tokenfactory.nebius.com/v1/"
-    model_reason: str = "nvidia/Nemotron-3-Super-120B-A12B"
+    model_reason: str = "nvidia/nemotron-3-super-120b-a12b"
     model_fast: str = "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B"
-    model_vision: str = "nvidia/Nemotron-Nano-V2-12b"
+    model_vision: str = "openbmb/MiniCPM-V-4_5"
 
     require_zdr: bool = True
     zdr_confirmed: bool = False

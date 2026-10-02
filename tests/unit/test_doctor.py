@@ -9,8 +9,8 @@ from waive.doctor import run_checks
 
 MODELS = [
     "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
-    "nvidia/Nemotron-3-Super-120B-A12B",
-    "nvidia/Nemotron-Nano-V2-12b",
+    "nvidia/nemotron-3-super-120b-a12b",
+    "openbmb/MiniCPM-V-4_5",
 ]
 
 

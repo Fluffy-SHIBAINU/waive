@@ -136,7 +136,7 @@ def test_unknown_role_is_rejected(tmp_path):
 
 
 def test_estimate_usd_uses_price_table():
-    assert estimate_usd("nvidia/Nemotron-3-Super-120B-A12B", 1_000_000, 1_000_000) == Decimal(
+    assert estimate_usd("nvidia/nemotron-3-super-120b-a12b", 1_000_000, 1_000_000) == Decimal(
         "1.20"
     )
 
