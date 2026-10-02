@@ -1,9 +1,9 @@
 # Waive build progress
 
-Last updated: 2026-10-02 20:05 ET
-Current phase: 2 (finishing the Massachusetts atlas) — Phases 0, 1, 3 and 4 are complete; Phase 2 has its code done and 21 of 46 hospitals attempted
+Last updated: 2026-10-02 20:45 ET (loop iteration 1 done)
+Current phase: 2 (finishing the Massachusetts atlas) — Phases 0, 1, 3 and 4 are complete; 5 real MA hospitals published, 11 held
 Current plan: `docs/superpowers/plans/2026-10-02-waive-phase-2-ma-atlas.md`
-Next task: 2.8b Improve document acquisition (see Phase 2 below), then 2.9, 2.10, then 5.0 (write the Phase 5 plan). Task 4.9 (demo hospital in real DB) is small and can be slotted in any time.
+Next task: 2.8d (fix three wrong domains, rebuild), then 2.8c (direct PDF download fallback), 2.9, 2.10, 4.9, then 5.0 (write the Phase 5 plan).
 
 Master plan: `docs/superpowers/plans/2026-10-02-waive-master-plan.md` · Spec: `docs/superpowers/specs/2026-10-02-waive-design.md` · Loop rules: `docs/LOOP.md`
 
@@ -123,11 +123,13 @@ Plan: `docs/superpowers/plans/2026-10-02-waive-phase-4-phone-app.md`
 | 2026-10-02 | 0 | 0 | 0 | Planning only |
 | 2026-10-02 | 2 | ~0.001 | 0 | Two live doctor runs (1 credit each) + two vision smoke calls |
 | 2026-10-02 | 123 (total) | 0.36 (total) | 0 | Atlas batches for 21 MA hospitals incl. debugging reruns; bill-eval 72 vision calls ($0.08). Ledger: `var/usage.jsonl` |
+| 2026-10-02 | 204 (total) | 0.51 (total) | 0 | Loop iteration 1: link-following scout re-run on 16 hospitals |
 
 ## Log
 
 - 2026-10-02 15:40 — Spec, master plan, Phase 0 and Phase 1 plans written. Ready for task 0.1.
 - 2026-10-02 16:20 — Phase 0 tasks 0.1–0.6 done by an implementation subagent: 28 tests pass, ruff clean. Deviations: `extend-exclude = ["docs"]` for ruff (it was reformatting code blocks in plan files); `AIClient` now creates an explicit `httpx.Client` when none is given (openai 3.x's default transport bypasses respx). Incident: one early test run reached the real Token Factory endpoint with a fake key (401, no secret leaked, no spend) → task 0.8 added. Spend: 0.
+- 2026-10-02 20:45 — Loop iteration 1: task 2.8b done by an implementer subagent (161 tests, ruff clean); 2 more hospitals published; follow-ups 2.8c–2.8f added. Spend 204 credits / $0.51.
 - 2026-10-02 20:05 — Build day wrap-up. Phases 0, 1, 3, 4 complete (153 tests, ruff clean). Phase 2 code complete; live atlas runs for 21/46 MA hospitals produced 3 published + 14 held sheets and a long list of robustness fixes (see 2.8). Vision model = MiniCPM-V 4.5 (no NVIDIA vision model on Token Factory); Nemotron Super/Nano do structuring and cross-checks. Keys and vault secrets are in `.env`. Nothing pushed; no remote. Next for the loop: 2.8b, 2.9, 2.10, 4.9, then Phase 5 plan.
 - 2026-10-02 19:10 — Phase 3 done by a subagent (136 tests); 2026-10-02 20:00 — Phase 4 done by a subagent (153 tests).
 - 2026-10-02 16:55 — Phase 1 (1.1–1.7) and 0.8 done by a subagent: 72 tests pass, coverage 96.56%, ruff clean. Extra commit 67bd317 ignores `.hypothesis/`. Spend: 0.
