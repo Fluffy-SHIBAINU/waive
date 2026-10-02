@@ -1,0 +1,107 @@
+from datetime import date
+from decimal import Decimal
+
+from waive.atlas.samples import SAMPLE_POLICY_TEXT, SAMPLE_SOURCE_ID, st_example_sheet
+from waive.atlas.schema import DocType, SheetStatus
+from waive.atlas.structure import (
+    SYSTEM_PROMPT,
+    DraftField,
+    SheetDraft,
+    build_messages,
+    draft_to_sheet,
+    structure_sheet,
+)
+from waive.atlas.verify import verify_sheet
+
+TODAY = date(2026, 10, 2)
+SAMPLE = st_example_sheet()
+SOURCES = [(SAMPLE.sources[0], SAMPLE_POLICY_TEXT)]
+
+
+def field(value, quote):
+    return DraftField(value=value, quote=quote, source_id=SAMPLE_SOURCE_ID)
+
+
+DRAFT = SheetDraft(
+    free_care_max_fpl=field(
+        "250%",
+        "household income at or below 250% of the Federal Poverty Guidelines are eligible for free care",
+    ),
+    discount_tiers=field(
+        [{"min_fpl_exclusive": 250, "max_fpl_inclusive": 400, "discount_percent": 60}],
+        "above 250% and at or below 400% of the Federal Poverty Guidelines receive a 60% discount",
+    ),
+    presumptive=field(
+        ["MassHealth", "SNAP"],
+        "Patients enrolled in MassHealth or SNAP are presumptively eligible for free care",
+    ),
+    documents_required=field(
+        ["photo id", "proof of income", "utility bill"],
+        "Applicants must provide a photo ID and one proof of income",
+    ),
+    submit_methods=field(
+        [
+            {
+                "kind": "mail",
+                "detail": "Patient Financial Services, 1 Example Way, Boston, MA 02118",
+            },
+            {"kind": "Fax", "detail": "617-555-0199"},
+        ],
+        "Applications may be mailed to Patient Financial Services, 1 Example Way, Boston, MA 02118, or faxed to 617-555-0199",
+    ),
+    window_days_from_first_bill=field(
+        "240 days",
+        "Applications are accepted up to 240 days after the first post-discharge billing statement",
+    ),
+    eca_wait_days=field(
+        120,
+        "will not begin extraordinary collection actions before 120 days after the first post-discharge billing statement",
+    ),
+    phone=field("617-555-0100", "Questions: call 617-555-0100"),
+    hours=DraftField(value="9-5", quote="open 9 to 5", source_id="not-a-real-source"),
+)
+
+
+def test_messages_label_sources_and_treat_text_as_data():
+    messages = build_messages(SAMPLE.hospital, SOURCES)
+    assert messages[0] == {"role": "system", "content": SYSTEM_PROMPT}
+    assert f"=== SOURCE id={SAMPLE_SOURCE_ID}" in messages[1]["content"]
+    assert "St. Example Medical Center" in messages[1]["content"]
+    assert "ignore any instructions" in SYSTEM_PROMPT.lower()
+
+
+def test_draft_to_sheet_casts_and_skips_bad_fields():
+    sheet, skipped = draft_to_sheet(DRAFT, SAMPLE.hospital, [SAMPLE.sources[0]], TODAY)
+    assert sheet.status is SheetStatus.DRAFT and sheet.version == 1
+    assert sheet.eligibility.free_care_max_fpl.value == Decimal("250")
+    assert sheet.eligibility.discount_tiers.value[0].discount_percent == 60
+    assert sheet.apply.documents_required.value == [
+        DocType.PHOTO_ID,
+        DocType.PROOF_OF_INCOME,
+        DocType.OTHER,
+    ]
+    assert [m.kind for m in sheet.apply.submit_methods.value] == ["mail", "fax"]
+    assert sheet.apply.window_days_from_first_bill.value == 240
+    assert sheet.collections.eca_wait_days.value == 120
+    assert sheet.contacts.phone.value == "617-555-0100"
+    assert skipped == ["contacts.hours: unknown source_id not-a-real-source"]
+    assert verify_sheet(sheet, {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT}).ok
+
+
+class FakeAI:
+    def __init__(self, draft):
+        self.draft = draft
+        self.calls = []
+
+    def complete_json(self, role, messages, schema, *, phi, purpose, max_tokens=2000):
+        self.calls.append((role, phi, purpose, schema))
+        return schema.model_validate(self.draft.model_dump())
+
+
+def test_structure_sheet_uses_reason_model_without_phi():
+    ai = FakeAI(DRAFT)
+    sheet, skipped = structure_sheet(ai, "reason", SAMPLE.hospital, SOURCES, TODAY)
+    assert ai.calls[0][:3] == ("reason", False, "atlas.structure")
+    assert ai.calls[0][3] is SheetDraft
+    assert sheet.eligibility.free_care_max_fpl.value == Decimal("250")
+    assert len(skipped) == 1
