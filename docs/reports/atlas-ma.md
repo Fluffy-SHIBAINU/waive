@@ -1,7 +1,7 @@
 # Atlas coverage — MA
 
 Hospitals in registry: 47
-Published sheets: 12 (26%)
+Published sheets: 16 (34%)
 
 | CCN | Hospital | Domain | Status | Version | Completeness | Fields | Sources |
 |---|---|---|---|---|---|---|---|
@@ -33,22 +33,22 @@ Published sheets: 12 (26%)
 | 220071 | MASSACHUSETTS GENERAL HOSPITAL | massgeneralbrigham.org | held | 1 | 1.00 | 11 | 5 |
 | 220070 | MELROSEWAKEFIELD HEALTHCARE | tuftsmedicine.org | held | 1 | 0.50 | 8 | 6 |
 | 220066 | MERCY MEDICAL CTR | mercy.net | published | 1 | 0.83 | 11 | 4 |
-| 220010 | MERRIMACK HEALTH LAWRENCE HOSPITAL |  | none | | | | |
-| 220175 | METROWEST MEDICAL CENTER |  | none | | | | |
-| 220090 | MILFORD REGIONAL MEDICAL CENTER |  | none | | | | |
-| 220002 | MOUNT AUBURN HOSPITAL |  | none | | | | |
-| 220177 | NANTUCKET COTTAGE HOSPITAL |  | none | | | | |
-| 220088 | NEW ENGLAND BAPTIST HOSPITAL |  | none | | | | |
-| 220101 | NEWTON-WELLESLEY HOSPITAL |  | none | | | | |
-| 220035 | NORTH SHORE MEDICAL CENTER - |  | none | | | | |
-| 220033 | NORTHEAST HOSPITAL CORPORATION |  | none | | | | |
-| 220052 | SIGNATURE HEALTHCARE BROCKTON HOSPITAL |  | none | | | | |
-| 220100 | SOUTH SHORE HOSPITAL |  | none | | | | |
-| 220074 | SOUTHCOAST HOSPITALS GROUP |  | none | | | | |
+| 220010 | MERRIMACK HEALTH LAWRENCE HOSPITAL | mhlawrencehospital.org | published | 1 | 0.67 | 9 | 4 |
+| 220175 | METROWEST MEDICAL CENTER | massgeneralbrigham.org | held | 1 | 0.83 | 8 | 8 |
+| 220090 | MILFORD REGIONAL MEDICAL CENTER | chiamass.gov | held | 1 | 0.00 | 0 | 7 |
+| 220002 | MOUNT AUBURN HOSPITAL | mountauburnhospital.org | held | 1 | 0.00 | 0 | 4 |
+| 220177 | NANTUCKET COTTAGE HOSPITAL | nantuckethospital.org | held | 1 | 0.00 | 0 | 1 |
+| 220088 | NEW ENGLAND BAPTIST HOSPITAL | nebh.org | published | 1 | 0.67 | 7 | 7 |
+| 220101 | NEWTON-WELLESLEY HOSPITAL | massgeneralbrigham.org | held | 1 | 1.00 | 10 | 8 |
+| 220035 | NORTH SHORE MEDICAL CENTER - | northshoremc.org | held | 1 | 0.00 | 0 | 1 |
+| 220033 | NORTHEAST HOSPITAL CORPORATION | beverlyhospital.org | held | 1 | 0.33 | 4 | 5 |
+| 220052 | SIGNATURE HEALTHCARE BROCKTON HOSPITAL | signature-healthcare.org | held | 1 | 0.50 | 8 | 6 |
+| 220100 | SOUTH SHORE HOSPITAL | southshorehealth.org | held | 1 | 0.00 | 0 | 4 |
+| 220074 | SOUTHCOAST HOSPITALS GROUP | southcoast.org | published | 1 | 0.67 | 9 | 4 |
 | 229999 | ST. EXAMPLE MEDICAL CENTER | example.org | published | 2 | 0.83 | 9 | 2 |
-| 220008 | STURDY MEMORIAL HOSPITAL |  | none | | | | |
-| 220116 | TUFTS MEDICAL CENTER |  | none | | | | |
-| 220019 | UMASS MEMORIAL HEALTH - HARRINGTON HOSPITAL |  | none | | | | |
-| 220001 | UMASS MEMORIAL HEALTHALLIANCE HOSPITALS |  | none | | | | |
-| 220163 | UMASS MEMORIAL MEDICAL CENTER/UNIVERSITY CAMPUS |  | none | | | | |
-| 220105 | WINCHESTER HOSPITAL |  | none | | | | |
+| 220008 | STURDY MEMORIAL HOSPITAL | sturdyhealth.org | held | 1 | 0.00 | 0 | 4 |
+| 220116 | TUFTS MEDICAL CENTER | tuftsmedicine.org | held | 1 | 0.50 | 7 | 7 |
+| 220019 | UMASS MEMORIAL HEALTH - HARRINGTON HOSPITAL | billfairly.com | held | 1 | 0.00 | 0 | 4 |
+| 220001 | UMASS MEMORIAL HEALTHALLIANCE HOSPITALS | ummhealth.org | held | 1 | 0.33 | 5 | 5 |
+| 220163 | UMASS MEMORIAL MEDICAL CENTER/UNIVERSITY CAMPUS | ummhealth.org | held | 1 | 0.50 | 6 | 5 |
+| 220105 | WINCHESTER HOSPITAL | winchesterhospital.org | published | 1 | 0.83 | 11 | 7 |
