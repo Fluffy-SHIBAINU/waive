@@ -1,6 +1,9 @@
 import hashlib
 from datetime import date
 
+import httpx
+import respx
+
 from waive.atlas import repo
 from waive.atlas.samples import SAMPLE_POLICY_TEXT, st_example_sheet
 from waive.atlas.schema import SourceKind
@@ -15,6 +18,8 @@ from waive.atlas.scout import (
 )
 from waive.atlas.tavily_gateway import ExtractedPage, SearchHit
 from waive.db import init_db, make_engine, session_scope
+
+from tests.unit.test_fetch import CANTO_URL, sample_pdf
 
 HOSPITAL = st_example_sheet().hospital
 
@@ -276,6 +281,84 @@ def test_scout_skips_followed_documents_identical_to_ones_already_fetched():
     docs = scout_hospital(gateway, HOSPITAL)
     assert len(gateway.extracted) == 2
     assert [doc.url for doc in docs] == ["https://www.example.org/patients/financial-assistance"]
+
+
+ASSET_ENTRY_PAGE = (
+    "# Healthcare prices and billing\n"
+    "Baystate-style entry page: the policy lives on a document host Tavily cannot fetch.\n"
+    f"[Hospital financial assistance policy (pdf)]({CANTO_URL})\n"
+)
+
+
+class AssetHostGateway(LinkGateway):
+    """Tavily Extract returns no result at all for the asset-host PDF ("Failed to fetch url")."""
+
+    def __init__(self):
+        super().__init__(ASSET_ENTRY_PAGE)
+
+    def extract(self, urls, **kwargs):
+        self.extracted.append(urls)
+        if len(self.extracted) == 1:
+            return [ExtractedPage(url=url, text=self.entry_text) for url in urls]
+        return []
+
+
+def pdf_route(url=CANTO_URL):
+    return respx.get(url).mock(
+        return_value=httpx.Response(
+            200, content=sample_pdf(), headers={"content-type": "application/pdf"}
+        )
+    )
+
+
+@respx.mock
+def test_scout_downloads_linked_pdfs_tavily_cannot_fetch():
+    route = pdf_route()
+    gateway = AssetHostGateway()
+    docs = scout_hospital(gateway, HOSPITAL)
+    assert gateway.extracted[1] == [CANTO_URL]
+    assert route.called
+    assert [(doc.url, doc.doc_class) for doc in docs] == [
+        ("https://www.example.org/patients/financial-assistance", "fap"),
+        (CANTO_URL, "fap"),
+    ]
+    assert docs[1].title == "Hospital financial assistance policy (pdf)"
+    assert "250% of the Federal Poverty" in docs[1].text
+    assert docs[1].sha256 == hashlib.sha256(docs[1].text.encode()).hexdigest()
+
+
+class EmptyExtractGateway(FakeGateway):
+    """Search finds the PDFs directly, but Extract returns them without text."""
+
+    def extract(self, urls, **kwargs):
+        self.extracted.append(urls)
+        return [ExtractedPage(url=url, text="") for url in urls]
+
+
+@respx.mock
+def test_scout_downloads_selected_documents_extracted_without_text():
+    fap = pdf_route("https://www.example.org/financial-assistance-policy.pdf")
+    respx.get("https://www.example.org/application.pdf").mock(return_value=httpx.Response(404))
+    gateway = EmptyExtractGateway()
+    with httpx.Client() as http:
+        docs = scout_hospital(gateway, HOSPITAL, http=http)
+    assert fap.called
+    assert [(doc.url, doc.doc_class, doc.title) for doc in docs] == [
+        (
+            "https://www.example.org/financial-assistance-policy.pdf",
+            "fap",
+            "Financial Assistance Policy",
+        )
+    ]
+    assert "250% of the Federal Poverty" in docs[0].text
+    assert len(gateway.extracted) == 1
+
+
+@respx.mock
+def test_scout_does_not_download_when_tavily_already_has_the_text():
+    route = pdf_route("https://www.example.org/financial-assistance-policy.pdf")
+    scout_hospital(FakeGateway(), HOSPITAL)
+    assert not route.called
 
 
 def test_store_scouted_dedupes_shared_documents():

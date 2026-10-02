@@ -7,10 +7,12 @@ from datetime import date
 from typing import Literal
 from urllib.parse import urldefrag, urljoin, urlparse
 
+import httpx
 from sqlalchemy.orm import Session
 
 from waive.atlas import repo
 from waive.atlas.discover import host_of
+from waive.atlas.fetch import download_text
 from waive.atlas.schema import HospitalRef, SourceDoc, SourceKind
 from waive.atlas.tavily_gateway import ExtractedPage, SearchHit, TavilyGateway
 
@@ -205,7 +207,40 @@ def _scouted(url: str, doc_class: DocClass, title: str, text: str) -> ScoutedDoc
     return ScoutedDoc(url, doc_class, title, text, hashlib.sha256(text.encode("utf-8")).hexdigest())
 
 
-def scout_hospital(gateway: TavilyGateway, hospital: HospitalRef) -> list[ScoutedDoc]:
+class _Downloader:
+    """Direct downloads for documents Tavily Extract returned empty (asset-host PDFs, task 2.8c).
+
+    Opens one HTTP client on first use when none was given, and closes only what it opened.
+    """
+
+    def __init__(self, http: httpx.Client | None) -> None:
+        self._http = http
+        self._owned: httpx.Client | None = None
+
+    def text(self, url: str) -> str | None:
+        if self._http is None:
+            self._http = self._owned = httpx.Client(follow_redirects=True, timeout=30.0)
+        return download_text(url, self._http)
+
+    def close(self) -> None:
+        if self._owned is not None:
+            self._owned.close()
+
+
+def _texts(urls: list[str], pages: list[ExtractedPage], downloads: _Downloader) -> dict[str, str]:
+    """Extracted text by URL; documents Tavily returned missing or nearly empty are downloaded
+    directly (no Tavily spend) and replace the empty result when the download yields text."""
+    by_url = {page.url: page.text for page in pages}
+    for url in urls:
+        if len((by_url.get(url) or "").strip()) < MIN_CHARS:
+            if text := downloads.text(url):
+                by_url[url] = text
+    return by_url
+
+
+def scout_hospital(
+    gateway: TavilyGateway, hospital: HospitalRef, http: httpx.Client | None = None
+) -> list[ScoutedDoc]:
     if not hospital.website_domain:
         return []
     hits: list[SearchHit] = []
@@ -231,8 +266,22 @@ def scout_hospital(gateway: TavilyGateway, hospital: HospitalRef) -> list[Scoute
         selected = select_urls(hits)
     if not selected:
         return []
+    downloads = _Downloader(http)
+    try:
+        return _fetch_documents(gateway, hospital.website_domain, hits, selected, downloads)
+    finally:
+        downloads.close()
+
+
+def _fetch_documents(
+    gateway: TavilyGateway,
+    domain: str,
+    hits: list[SearchHit],
+    selected: list[tuple[str, DocClass]],
+    downloads: _Downloader,
+) -> list[ScoutedDoc]:
     pages = gateway.extract([url for url, _ in selected], purpose="atlas.scout")
-    by_url = {page.url: page.text for page in pages}
+    by_url = _texts([url for url, _ in selected], pages, downloads)
     docs: list[ScoutedDoc] = []
     for url, doc_class in selected:
         title = next((h.title for h in hits if h.url == url and h.title), TITLES[doc_class])
@@ -240,10 +289,10 @@ def scout_hospital(gateway: TavilyGateway, hospital: HospitalRef) -> list[Scoute
             docs.append(doc)
 
     # Entry pages usually only link to the policy; follow those links one step on the same site.
-    linked = _linked_documents(pages, hospital.website_domain, {url for url, _ in selected})
+    linked = _linked_documents(pages, domain, {url for url, _ in selected})
     if linked:
         more = gateway.extract([url for url, _, _ in linked], purpose="atlas.scout")
-        by_url = {page.url: page.text for page in more}
+        by_url = _texts([url for url, _, _ in linked], more, downloads)
         seen = {doc.sha256 for doc in docs}
         for url, doc_class, label in linked:
             doc = _scouted(url, doc_class, label or TITLES[doc_class], by_url.get(url) or "")
