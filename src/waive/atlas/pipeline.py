@@ -101,11 +101,13 @@ def build_hospital(
             conflicts = critical_conflicts(sheet, secondary)
             if conflicts:
                 repo.add_review_item(session, ccn, "conflict", {"paths": conflicts})
-                result.notes.append("critical fields disagree: " + ", ".join(conflicts))
             if conflicts == ["programs.presumptive"]:
                 # Income rules agree; publish them and leave the disputed program list to review.
                 sheet = drop_fields(sheet, conflicts)
                 conflicts = []
+                result.notes.append("presumptive programs disagree; published without them")
+            if conflicts:
+                result.notes.append("critical fields disagree: " + ", ".join(conflicts))
 
     status = decide_status(sheet, conflicts)
     published = publish_sheet(session, sheet.model_copy(update={"status": status}))
