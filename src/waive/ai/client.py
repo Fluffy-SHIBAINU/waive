@@ -113,6 +113,7 @@ class AIClient:
         models = {
             "reason": self._settings.model_reason,
             "fast": self._settings.model_fast,
+            "tiebreak": self._settings.model_tiebreak,
             "vision": self._settings.model_vision,
         }
         if role not in models:

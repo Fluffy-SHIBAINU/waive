@@ -9,6 +9,7 @@ from waive.doctor import run_checks
 
 MODELS = [
     "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
+    "nvidia/Nemotron-3_5-Lightning",
     "nvidia/nemotron-3-super-120b-a12b",
     "openbmb/MiniCPM-V-4_5",
 ]
@@ -96,6 +97,22 @@ def test_live_check_lists_missing_models():
     model_check = checks["Token Factory models"]
     assert model_check.status == "fail"
     assert "nvidia/Some-Other-Nemotron" in model_check.detail
+
+
+def test_live_check_requires_the_tiebreak_model_too():
+    without_tiebreak = [model for model in MODELS if model != "nvidia/Nemotron-3_5-Lightning"]
+    checks = by_name(
+        run_checks(
+            settings(),
+            live=True,
+            ai_factory=lambda: FakeAI(without_tiebreak),
+            tavily_factory=lambda: FakeTavily(),
+            which=no_cli,
+        )
+    )
+    model_check = checks["Token Factory models"]
+    assert model_check.status == "fail"
+    assert "nvidia/Nemotron-3_5-Lightning" in model_check.detail
 
 
 def test_nebius_cli_with_profile_is_ok():

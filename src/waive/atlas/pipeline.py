@@ -9,8 +9,15 @@ from sqlalchemy.orm import Session
 from waive.ai.client import AIClient, AIOutputError
 from waive.atlas import repo
 from waive.atlas.discover import MIN_CONFIDENCE, discover_domain
-from waive.atlas.publish import critical_conflicts, decide_status, drop_fields, publish_sheet
-from waive.atlas.schema import ProcedureSheet, SourceKind
+from waive.atlas.publish import (
+    copy_fields,
+    critical_conflicts,
+    decide_status,
+    drop_fields,
+    publish_sheet,
+    resolve_conflicts,
+)
+from waive.atlas.schema import HospitalRef, ProcedureSheet, SourceDoc, SourceKind
 from waive.atlas.scout import scout_hospital, store_scouted
 from waive.atlas.structure import structure_sheet
 from waive.atlas.tavily_gateway import TavilyGateway
@@ -42,6 +49,55 @@ def carry_over_state_programs(sheet: ProcedureSheet, previous: ProcedureSheet) -
             "sources": sources,
         }
     )
+
+
+def _tiebreak(
+    session: Session,
+    ai: AIClient,
+    hospital: HospitalRef,
+    sources_with_text: list[tuple[SourceDoc, str]],
+    today: date,
+    primary: ProcedureSheet,
+    secondary: ProcedureSheet,
+    conflicts: list[str],
+    result: BuildResult,
+) -> tuple[ProcedureSheet, list[str]]:
+    """A third model settles the critical fields the first two dispute (task 2.8j). Best effort
+    like the cross-check: when its call fails, the conflicts stand and the primary is kept."""
+    ccn = hospital.ccn
+    try:
+        third, _ = structure_sheet(ai, "tiebreak", hospital, sources_with_text, today)
+    except AIOutputError as error:
+        repo.add_review_item(session, ccn, "tiebreak_failed", {"error": str(error)[:300]})
+        result.notes.append("tie-break model gave no usable output")
+        return primary, conflicts
+    merged, remaining, detail = resolve_conflicts(primary, secondary, third, conflicts)
+    texts = {source.id: text for source, text in sources_with_text}
+    merged = trim_quotes(merged, texts)
+    report = verify_sheet(merged, texts)
+    if report.rejected:
+        # The primary was verified before, so a rejection here is a cross-check field whose quote
+        # does not hold up; it settles nothing, the primary's field returns and the conflict stands.
+        restored, dropped = [], []
+        for path, reason in report.rejected:
+            if detail.get(path, {}).get("verdict") == "secondary":
+                detail[path]["verdict"] = "unverified"
+                restored.append(path)
+                result.notes.append(f"{path}: cross-check quote failed verification")
+            else:
+                dropped.append(path)
+                result.notes.append(f"{path}: {reason}")
+        merged = drop_fields(copy_fields(merged, primary, restored), dropped)
+        remaining = [path for path in conflicts if path in remaining or path in restored]
+    repo.add_review_item(session, ccn, "tiebreak", detail)
+    settled = [
+        f"{path} ({entry['verdict']})"
+        for path, entry in detail.items()
+        if entry["verdict"] in ("primary", "secondary")
+    ]
+    if settled:
+        result.notes.append("tie-break settled " + ", ".join(settled))
+    return merged, remaining
 
 
 def build_hospital(
@@ -122,6 +178,18 @@ def build_hospital(
                 sheet = drop_fields(sheet, conflicts)
                 conflicts = []
                 result.notes.append("presumptive programs disagree; published without them")
+            if conflicts:
+                sheet, conflicts = _tiebreak(
+                    session,
+                    ai,
+                    hospital,
+                    sources_with_text,
+                    today,
+                    sheet,
+                    secondary,
+                    conflicts,
+                    result,
+                )
             if conflicts:
                 result.notes.append("critical fields disagree: " + ", ".join(conflicts))
 

@@ -55,11 +55,18 @@ def _models_check(settings: Settings, ai_factory: Callable[[], Any]) -> Check:
         available = ai_factory().list_models()
     except Exception as error:  # report the type only, never the message
         return Check("Token Factory models", "fail", f"call failed: {type(error).__name__}")
-    wanted = [settings.model_reason, settings.model_fast, settings.model_vision]
+    wanted = [
+        settings.model_reason,
+        settings.model_fast,
+        settings.model_tiebreak,
+        settings.model_vision,
+    ]
     missing = [model for model in wanted if model not in available]
     if not missing:
         return Check(
-            "Token Factory models", "ok", f"{len(available)} models; all 3 configured found"
+            "Token Factory models",
+            "ok",
+            f"{len(available)} models; all {len(wanted)} configured found",
         )
     candidates = [model for model in available if "nemotron" in model.lower()][:10]
     return Check(

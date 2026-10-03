@@ -175,6 +175,13 @@ def test_unknown_role_is_rejected(tmp_path):
         client.model_for("poetry")
 
 
+def test_tiebreak_role_maps_to_its_own_setting(tmp_path):
+    client, _ = make_client(tmp_path, model_tiebreak="nvidia/tiebreak-test")
+    assert client.model_for("tiebreak") == "nvidia/tiebreak-test"
+    default_client, _ = make_client(tmp_path)
+    assert default_client.model_for("tiebreak") == "nvidia/Nemotron-3_5-Lightning"
+
+
 def test_estimate_usd_uses_price_table():
     assert estimate_usd("nvidia/nemotron-3-super-120b-a12b", 1_000_000, 1_000_000) == Decimal(
         "1.20"
