@@ -1,5 +1,6 @@
 import base64
 import json
+from datetime import date
 from decimal import Decimal
 
 import pytest
@@ -9,7 +10,15 @@ from sqlalchemy import func, select
 from waive.cases.vault import FieldCipher, TokenSigner, new_key
 from waive.config import Settings
 from waive.db import UsageEventRow, init_db, make_engine, session_scope
-from waive.governor import BudgetExceeded, DbLedger, Governor, Ledger, UsageEvent, make_ledger
+from waive.governor import (
+    BudgetExceeded,
+    DbLedger,
+    Governor,
+    Ledger,
+    UsageEvent,
+    day_start,
+    make_ledger,
+)
 from waive.web.app import create_app
 
 
@@ -102,3 +111,42 @@ def test_create_app_uses_the_database_ledger_when_configured():
     assert app.state.governor.summary()["tavily"] == (Decimal("1"), Decimal("0"))
     with session_scope(engine) as session:
         assert session.scalar(select(func.count()).select_from(UsageEventRow)) == 1
+
+
+def test_events_since_filters_by_timestamp(tmp_path):
+    ledger = Ledger(tmp_path / "usage.jsonl")
+    ledger.record(
+        UsageEvent("tavily", Decimal("3"), Decimal("0"), "atlas.scout", "2026-10-01T23:59:59+00:00")
+    )
+    ledger.record(
+        UsageEvent("tavily", Decimal("4"), Decimal("0"), "atlas.scout", "2026-10-02T08:00:00+00:00")
+    )
+    ledger.record(
+        UsageEvent(
+            "token_factory", Decimal("10"), Decimal("0.01"), "x", "2026-10-02T09:00:00+00:00"
+        )
+    )
+    assert day_start(date(2026, 10, 2)) == "2026-10-02T00:00:00+00:00"
+    assert [e.units for e in ledger.events("tavily")] == [Decimal("3"), Decimal("4")]
+    since = day_start(date(2026, 10, 2))
+    assert [e.units for e in ledger.events("tavily", since=since)] == [Decimal("4")]
+    governor = Governor(ledger, 100, Decimal("1"))
+    assert governor.tavily_used_today(date(2026, 10, 2)) == Decimal("4")
+    assert governor.tavily_used_today(date(2026, 10, 3)) == Decimal("0")
+    assert Ledger(tmp_path / "none.jsonl").events("tavily") == []
+
+
+def test_db_ledger_events_since():
+    ledger = DbLedger(memory_engine())
+    ledger.record(
+        UsageEvent("tavily", Decimal("3"), Decimal("0"), "atlas.scout", "2026-10-01T23:59:59+00:00")
+    )
+    ledger.record(
+        UsageEvent(
+            "tavily", Decimal("4"), Decimal("0"), "atlas.refresh", "2026-10-02T08:00:00+00:00"
+        )
+    )
+    since = day_start(date(2026, 10, 2))
+    events = ledger.events("tavily", since=since)
+    assert [(e.units, e.purpose) for e in events] == [(Decimal("4"), "atlas.refresh")]
+    assert Governor(ledger, 100, Decimal("1")).tavily_used_since(since) == Decimal("4")

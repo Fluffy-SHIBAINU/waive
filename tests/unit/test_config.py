@@ -68,3 +68,13 @@ def test_development_defaults_keep_sqlite_and_the_file_ledger(monkeypatch):
     assert settings.cloud_database_url is None and settings.registry is None
     assert (settings.cloud_platform, settings.cloud_preset) == ("cpu-d3", "2vcpu-8gb")
     assert (settings.cloud_pg_preset, settings.cloud_pg_disk_gib) == ("2vcpu-8gb", 32)
+
+
+def test_scheduler_settings_default_off(monkeypatch):
+    clear_env(monkeypatch)
+    settings = Settings(_env_file=None)
+    assert settings.scheduler == "off"
+    assert (settings.scheduler_interval_minutes, settings.scheduler_states) == (30, "MA")
+    assert settings.scout_daily_credits == 50
+    on = Settings(_env_file=None, scheduler="on", scheduler_states="MA,RI", scout_daily_credits=20)
+    assert (on.scheduler, on.scout_daily_credits) == ("on", 20)

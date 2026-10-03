@@ -14,6 +14,7 @@ from waive.atlas.overlays import run_overlay
 from waive.atlas.pipeline import build_hospital, build_state, coverage_report
 from waive.atlas.publish import export_state
 from waive.atlas.registry import seed_state
+from waive.atlas.schedule import CREDITS_PER_HOSPITAL, build_queue, run_once, scheduler_states
 from waive.atlas.tavily_gateway import make_tavily_gateway
 from waive.cases.evaluate import evaluate_corpus, write_report
 from waive.cases.synth import generate_corpus
@@ -184,6 +185,70 @@ def atlas_report(
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(text, encoding="utf-8")
     console.print(f"Wrote {path}")
+
+
+@atlas_app.command("schedule")
+def atlas_schedule(
+    dry_run: bool = typer.Option(
+        True, "--dry-run/--run", help="List the queue (default) or scout its top within the budget"
+    ),
+    limit: int = typer.Option(1, "--limit", help="Hospitals to scout with --run"),
+    state: str | None = typer.Option(
+        None, "--state", help="One state; default WAIVE_SCHEDULER_STATES"
+    ),
+    top: int = typer.Option(20, "--top", help="Queue rows to print"),
+) -> None:
+    """Show the scouting priority queue and today's Tavily budget; --run spends credits."""
+    settings = Settings()
+    governor = make_governor(settings)
+    today = datetime.now(UTC).date()
+    states = (state.upper(),) if state else scheduler_states(settings)
+    with session_scope(_engine(settings)) as session:
+        queue = build_queue(session, today, states)
+        table = Table("Priority", "CCN", "Hospital", "St", "Stale", "Demand", "Accuracy", "Why")
+        for entry in queue.entries[:top]:
+            table.add_row(
+                f"{entry.priority:.1f}",
+                entry.ccn,
+                entry.name,
+                entry.state,
+                str(entry.staleness_days),
+                str(entry.demand),
+                "" if entry.accuracy is None else f"{entry.accuracy:.0%}",
+                "; ".join(entry.reasons)[:80],
+            )
+        console.print(table)
+        used = governor.tavily_used_today(today)
+        console.print(
+            f"Queue: {len(queue.entries)} hospitals in {', '.join(states) or 'all states'} "
+            f"({queue.without_sheet} without a sheet); skipped {len(queue.skipped)}; "
+            f"unmatched bill requests {len(queue.unmatched_requests)}"
+        )
+        console.print(
+            f"Daily budget: {used} of {settings.scout_daily_credits} credits used today "
+            f"(UTC); about {CREDITS_PER_HOSPITAL} per hospital; "
+            f"estimate for every hospital without a sheet: "
+            f"{CREDITS_PER_HOSPITAL * queue.without_sheet} credits"
+        )
+        if dry_run:
+            return
+        ai = AIClient(settings, governor)
+        gateway = make_tavily_gateway(settings, governor)
+        report = run_once(
+            session,
+            gateway,
+            ai,
+            governor,
+            today,
+            daily_cap=settings.scout_daily_credits,
+            states=states,
+            limit=limit,
+        )
+    for result in report.results:
+        console.print(f"{result.ccn} {result.name}: {result.outcome}; " + "; ".join(result.notes))
+    console.print(
+        f"Stopped: {report.stopped}; credits today {report.used_before} → {report.used_after}"
+    )
 
 
 corpus_app = typer.Typer(no_args_is_help=True, help="Synthetic test data.")
