@@ -1,9 +1,10 @@
 # Waive build progress
 
-Last updated: 2026-10-03 00:45 ET (loop iteration 10 done)
-Current phase: 2 nearly done (Massachusetts atlas: 46 hospitals, 27 published (59%), 17 held, 2 without documents; Tavily cap for Phase 2 reached; exit criterion of 80% needs gate U2.2 for the 11 hospitals whose stored text has no income rules) — Phases 0, 1, 3 and 4 are complete
-Current plan: `docs/superpowers/plans/2026-10-02-waive-phase-7-scale.md`
-Next task: 7.7 `/metrics` page and national report (no spend); then 8.0 (Phase 8 plan), then 8.1–8.5 drafting (README, demo script, Devpost text — no gates until publishing). Blocked until gates close: 6.1b (U6.0), 6.3 (U0.5), 6.4–6.8 (U6.1), 7.4 (U7.1), 7.5/7.6 need a few credits (U2.2/U7.1), Phase 2 finish (U2.2).
+Last updated: 2026-10-03 06:20 ET (loop iteration 19 done)
+Current phase: 8 starting. Phases 0, 1, 3, 4, 5 complete. Phase 2 at 59% published (exit needs U2.2), Phase 6 at 6.2 (rest gated on U6.0/U0.5/U6.1), Phase 7 free work done (7.4–7.6 gated on U7.1/U2.2).
+Current plan: `docs/superpowers/plans/2026-10-02-waive-master-plan.md` (Phase 8 detailed plan is task 8.0)
+Next task: 8.0 (Phase 8 plan), then 8.1–8.5 drafting (README, LICENSE, demo script, Devpost text — no gates until publishing). Blocked until gates close: 6.1b (U6.0), 6.3 (U0.5), 6.4–6.8 (U6.1), 7.4 (U7.1), 7.5/7.6 need a few credits (U2.2/U7.1), Phase 2 finish (U2.2).
+Standing rule (user, 2026-10-03): after every finished phase the loop shows a diagram of all phases with status, gates and what is left (`docs/LOOP.md` step 8).
 
 Master plan: `docs/superpowers/plans/2026-10-02-waive-master-plan.md` · Spec: `docs/superpowers/specs/2026-10-02-waive-design.md` · Loop rules: `docs/LOOP.md`
 
@@ -146,7 +147,7 @@ Plan: `docs/superpowers/plans/2026-10-02-waive-phase-7-scale.md` (601f318; 7 tas
 - [ ] 7.4 Budgeted national scouting (gate U7.1; `WAIVE_NATIONAL_SCOUTING`)
 - [ ] 7.5 State repositories as sources (CA HCAI, WA DOH)
 - [ ] 7.6 IRS Form 990 / ProPublica cross-check (optional)
-- [ ] 7.7 `/metrics` page and `waive atlas report --national`
+- [x] 7.7 `/metrics` page and `waive atlas report --national` (c056339, 590c3fa; 283 tests). `/metrics` and `/metrics.json` read the DB and `var/usage.jsonl` only (no paid calls); `waive atlas report --national [--out]` wrote `docs/reports/atlas-national.md`: 2,703 hospitals, 27 published (1%), 17 held, 2,659 without a sheet, core fields documented 67%, 115 open review items. Phase 7 free work complete; 7.4–7.6 wait for U7.1/U2.2.
 
 ### Phase 8 — Submission
 - [ ] 8.0 Write detailed Phase 8 plan
@@ -179,6 +180,7 @@ Plan: `docs/superpowers/plans/2026-10-02-waive-phase-7-scale.md` (601f318; 7 tas
 
 - 2026-10-02 15:40 — Spec, master plan, Phase 0 and Phase 1 plans written. Ready for task 0.1.
 - 2026-10-02 16:20 — Phase 0 tasks 0.1–0.6 done by an implementation subagent: 28 tests pass, ruff clean. Deviations: `extend-exclude = ["docs"]` for ruff (it was reformatting code blocks in plan files); `AIClient` now creates an explicit `httpx.Client` when none is given (openai 3.x's default transport bypasses respx). Incident: one early test run reached the real Token Factory endpoint with a fake key (401, no secret leaked, no spend) → task 0.8 added. Spend: 0.
+- 2026-10-03 06:20 — Loop iteration 19: task 7.7 done by a subagent (283 tests, no spend); national report generated. User added the standing rule: phase diagram after every finished phase (LOOP.md step 8). Phase diagram shown; next 8.0.
 - 2026-10-03 05:40 — Loop iteration 18: Phase 7 tasks 7.1–7.3 done by a subagent (279 tests); national registry seeded (2,703 hospitals, free).
 - 2026-10-03 04:55 — Loop iteration 17: task 7.0 done by a subagent (Phase 7 plan, 3,732 lines); national cost estimate corrected upward.
 - 2026-10-03 04:15 — Loop iteration 16: Phase 6 tasks 6.1–6.2 done by a subagent (257 tests); Docker build blocked by a stale ghcr.io keychain credential → gate U6.0.
