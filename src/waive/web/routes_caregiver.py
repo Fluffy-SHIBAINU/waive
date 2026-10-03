@@ -21,6 +21,7 @@ from waive.cases.service import (
     view,
 )
 from waive.db import session_scope
+from waive.learning.gaps import pending_gap_ask
 from waive.learning.intake import ingest_paper
 from waive.web.deps import deps_of, render
 from waive.web.routes_senior import long_date, money, senior_links
@@ -74,6 +75,7 @@ def caregiver_review(request: Request, token: str, note: str = "") -> HTMLRespon
             money=money,
             long_date=long_date,
             note=note,
+            ask=pending_gap_ask(ctx, row.id),
         )
 
 

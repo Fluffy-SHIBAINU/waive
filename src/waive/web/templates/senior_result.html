@@ -6,12 +6,19 @@
 <button type="button" class="btn" id="speak" hidden>Read this to me</button>
 <h2>What happens next</h2>
 <p class="big">Your helper will check this. Then we print the form for you to sign and mail. You never pay anything to use Waive.</p>
+{% if ask %}
+<h2>{{ ask.question }}</h2>
+{% else %}
 <h2>Did the hospital send you a letter or give you papers?</h2>
+{% endif %}
 <form method="post" action="{{ links.paper }}" enctype="multipart/form-data" class="stack">
   <label for="paper" class="visually-hidden">Photo of the paper</label>
   <input id="paper" type="file" name="photo" accept="image/*" capture="environment" onchange="this.form.submit()">
   <button type="submit" class="btn">Take a photo of the paper</button>
 </form>
+{% if ask %}
+<form method="post" action="{{ links.skip }}" class="stack"><button type="submit" class="btn quiet">Skip this</button></form>
+{% endif %}
 {% endblock %}
 {% block scripts %}
 <script>
