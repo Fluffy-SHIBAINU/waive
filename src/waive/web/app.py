@@ -65,11 +65,18 @@ def create_app(
     )
     app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
 
-    from waive.web import routes_admin, routes_atlas, routes_caregiver, routes_senior
+    from waive.web import (
+        routes_admin,
+        routes_atlas,
+        routes_caregiver,
+        routes_metrics,
+        routes_senior,
+    )
 
     app.include_router(routes_senior.router)
     app.include_router(routes_caregiver.router)
     app.include_router(routes_atlas.router)
+    app.include_router(routes_metrics.router)
     app.include_router(routes_admin.router)
 
     @app.get("/healthz")
