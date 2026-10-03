@@ -2,11 +2,13 @@
 
 from datetime import date
 from decimal import Decimal, InvalidOperation
+from urllib.parse import quote
 
-from fastapi import APIRouter, Form, Request
+from fastapi import APIRouter, File, Form, Request, UploadFile
 from fastapi.responses import HTMLResponse, RedirectResponse, Response
 
 from waive.atlas import repo
+from waive.cases.images import ImageError
 from waive.cases.packet import build_packet, packet_data
 from waive.cases.reminders import build_ics, reminder_events
 from waive.cases.service import (
@@ -19,6 +21,7 @@ from waive.cases.service import (
     view,
 )
 from waive.db import session_scope
+from waive.learning.intake import ingest_paper
 from waive.web.deps import deps_of, render
 from waive.web.routes_senior import long_date, money, senior_links
 
@@ -34,6 +37,7 @@ def caregiver_links(token: str) -> dict[str, str]:
         "delete": f"{base}/delete",
         "packet": f"{base}/packet.pdf",
         "reminders": f"{base}/reminders.ics",
+        "paper": f"{base}/paper",
     }
 
 
@@ -51,7 +55,7 @@ def create_case(request: Request, state: str = Form("MA")) -> HTMLResponse:
 
 
 @router.get("/c/{token}", response_class=HTMLResponse)
-def caregiver_review(request: Request, token: str) -> HTMLResponse:
+def caregiver_review(request: Request, token: str, note: str = "") -> HTMLResponse:
     deps = deps_of(request)
     with session_scope(deps.engine) as session:
         ctx = deps.context(session)
@@ -69,6 +73,7 @@ def caregiver_review(request: Request, token: str) -> HTMLResponse:
             sources=sources,
             money=money,
             long_date=long_date,
+            note=note,
         )
 
 
@@ -161,4 +166,27 @@ def caregiver_reminders(request: Request, token: str) -> Response:
         ics,
         media_type="text/calendar",
         headers={"Content-Disposition": 'attachment; filename="waive-reminders.ics"'},
+    )
+
+
+@router.post("/c/{token}/paper")
+async def caregiver_paper(
+    request: Request,
+    token: str,
+    photo: UploadFile = File(...),  # noqa: B008
+):
+    deps = deps_of(request)
+    data = await photo.read()
+    with session_scope(deps.engine) as session:
+        ctx = deps.context(session)
+        row = authorize(ctx, token, "caregiver")
+        if deps.ai is None:
+            note = "Reading is switched off right now."
+        else:
+            try:
+                note = ingest_paper(ctx, row.id, data).message
+            except ImageError:
+                note = "We could not read that photo. Try again in good light."
+    return RedirectResponse(
+        f"{caregiver_links(token)['review']}?note={quote(note)}", status_code=303
     )

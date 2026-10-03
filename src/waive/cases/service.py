@@ -270,3 +270,10 @@ def delete_case(ctx: CaseContext, case_id: str) -> None:
     row = _row(ctx, case_id)
     ctx.session.delete(row)
     ctx.session.flush()
+
+
+# Public access to the sealed blob for the learning loop (spec §10). The blob stays encrypted at
+# rest; callers must keep personal values out of clear columns and logs.
+get_row = _row
+load_sealed = _load
+save_sealed = _save
