@@ -14,6 +14,7 @@ from waive.db import init_db, make_engine
 from waive.governor import make_governor
 from waive.logging_setup import configure_logging
 from waive.web.deps import STATIC_DIR, TEMPLATES_DIR, Deps, render, today_utc
+from waive.web.plain import plain_lines
 
 
 def _default_ai(settings: Settings, governor):
@@ -55,13 +56,16 @@ def create_app(
     app = FastAPI(title="Waive", docs_url=None, redoc_url=None, lifespan=lifespan)
     app.state.settings = settings
     app.state.governor = governor
+    templates = Jinja2Templates(directory=str(TEMPLATES_DIR))
+    # `{{ cited.value | plain(path) }}`: cited atlas values in plain language (atlas_sheet.html).
+    templates.env.filters["plain"] = plain_lines
     app.state.deps = Deps(
         engine=engine,
         ai=ai if ai is not None else _default_ai(settings, governor),
         cipher=cipher or cipher_from_settings(settings),
         signer=signer or signer_from_settings(settings),
         today_fn=today_fn or today_utc,
-        templates=Jinja2Templates(directory=str(TEMPLATES_DIR)),
+        templates=templates,
     )
     app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
 
