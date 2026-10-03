@@ -3,7 +3,7 @@
 Last updated: 2026-10-03 00:45 ET (loop iteration 10 done)
 Current phase: 2 nearly done (Massachusetts atlas: 46 hospitals, 27 published (59%), 17 held, 2 without documents; Tavily cap for Phase 2 reached; exit criterion of 80% needs gate U2.2 for the 11 hospitals whose stored text has no income rules) — Phases 0, 1, 3 and 4 are complete
 Current plan: `docs/superpowers/plans/2026-10-02-waive-phase-5-learning-loop.md`
-Next task: 5.1 Photo classifier and paper intake routes; then 5.2–5.9 in order. Phase 2 resumes (2.8k, 2.10 exit) when U2.2 is closed.
+Next task: 5.4 Outcome capture; then 5.5–5.9 in order. Phase 2 resumes (2.8k, 2.10 exit) when U2.2 is closed.
 
 Master plan: `docs/superpowers/plans/2026-10-02-waive-master-plan.md` · Spec: `docs/superpowers/specs/2026-10-02-waive-design.md` · Loop rules: `docs/LOOP.md`
 
@@ -111,9 +111,9 @@ Plan: `docs/superpowers/plans/2026-10-02-waive-phase-4-phone-app.md`
 ### Phase 5 — Learning loop
 Plan: `docs/superpowers/plans/2026-10-02-waive-phase-5-learning-loop.md` (781c6a3; 9 tasks; also adds `service.get_row/load_sealed/save_sealed`, `repo.set_review_status/sheet_versions`, `publish.carry_over_reported`, `Apply.documents_reported`)
 - [x] 5.0 Write detailed Phase 5 plan
-- [ ] 5.1 Photo classifier and paper intake routes
-- [ ] 5.2 Public document contributions (personal-info check, review queue, rebuild from sources)
-- [ ] 5.3 Gap check and one skippable ask
+- [x] 5.1 Photo classifier and paper intake routes (29ac7d1; `/s|/c/{token}/paper`)
+- [x] 5.2 Public document contributions (bbed61a; `contributions` table, `waive learn rebuild --ccn`)
+- [x] 5.3 Gap check and one skippable ask (477f39a; 214 tests at this point)
 - [ ] 5.4 Outcome capture (decision/request letters, check-ins)
 - [ ] 5.5 Compare and triage (case_issue, sheet_missing, sheet_wrong, hospital_slip)
 - [ ] 5.6 Aggregation thresholds (5 cases to publish reported fields; flags at 3/5)
@@ -158,6 +158,7 @@ Plan: `docs/superpowers/plans/2026-10-02-waive-phase-5-learning-loop.md` (781c6a
 
 - 2026-10-02 15:40 — Spec, master plan, Phase 0 and Phase 1 plans written. Ready for task 0.1.
 - 2026-10-02 16:20 — Phase 0 tasks 0.1–0.6 done by an implementation subagent: 28 tests pass, ruff clean. Deviations: `extend-exclude = ["docs"]` for ruff (it was reformatting code blocks in plan files); `AIClient` now creates an explicit `httpx.Client` when none is given (openai 3.x's default transport bypasses respx). Incident: one early test run reached the real Token Factory endpoint with a fake key (401, no secret leaked, no spend) → task 0.8 added. Spend: 0.
+- 2026-10-03 01:50 — Loop iteration 12: Phase 5 tasks 5.1–5.3 done by a subagent (214 tests, no paid calls).
 - 2026-10-03 01:15 — Loop iteration 11: task 5.0 done by a subagent (Phase 5 plan, 3,856 lines).
 - 2026-10-03 00:45 — Loop iteration 10: task 2.8j (tie-break by a subagent, grounded-disagreement rule inline; 198 tests); four MGB hospitals published → 27 of 46. Spend 389 credits / $1.52.
 - 2026-10-03 00:05 — Loop iteration 9: task 4.9 done by a subagent (187 tests); demo hospital hidden from public outputs.
