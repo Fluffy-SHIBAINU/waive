@@ -36,6 +36,17 @@ def drop_fields(sheet: ProcedureSheet, paths: list[str]) -> ProcedureSheet:
     return sheet.model_copy(update=updates)
 
 
+def copy_fields(target: ProcedureSheet, source: ProcedureSheet, paths: list[str]) -> ProcedureSheet:
+    """`target` with the cited fields at `paths` taken from `source` (None copies as None)."""
+    updates: dict[str, Any] = {}
+    for path in paths:
+        section_name, field_name = path.split(".")
+        section = updates.get(section_name, getattr(target, section_name))
+        cited = getattr(getattr(source, section_name), field_name)
+        updates[section_name] = section.model_copy(update={field_name: cited})
+    return target.model_copy(update=updates)
+
+
 def critical_conflicts(primary: ProcedureSheet, secondary: ProcedureSheet) -> list[str]:
     conflicts = []
     for path in CRITICAL_PATHS:
@@ -43,6 +54,43 @@ def critical_conflicts(primary: ProcedureSheet, secondary: ProcedureSheet) -> li
         if first is not None and second is not None and first != second:
             conflicts.append(path)
     return conflicts
+
+
+def resolve_conflicts(
+    primary: ProcedureSheet,
+    secondary: ProcedureSheet,
+    tiebreak: ProcedureSheet,
+    conflicts: list[str],
+) -> tuple[ProcedureSheet, list[str], dict[str, dict[str, Any]]]:
+    """Let a third model's draft settle each disputed path: siding with the primary keeps it,
+    siding with the secondary takes the secondary's cited field (the caller still has to verify
+    its quote), anything else leaves the conflict open.
+
+    Returns the merged sheet, the conflicts still open, and per path the three JSON-normalised
+    values plus the verdict ("primary", "secondary" or "unsettled") for the review item."""
+    detail: dict[str, dict[str, Any]] = {}
+    remaining: list[str] = []
+    from_secondary: list[str] = []
+    for path in conflicts:
+        first, second, third = (
+            _json_value(sheet, path) for sheet in (primary, secondary, tiebreak)
+        )
+        if third is not None and third == first:
+            verdict = "primary"
+        elif third is not None and third == second:
+            verdict = "secondary"
+            from_secondary.append(path)
+        else:
+            verdict = "unsettled"
+            remaining.append(path)
+        detail[path] = {
+            "primary": first,
+            "secondary": second,
+            "tiebreak": third,
+            "verdict": verdict,
+        }
+    merged = copy_fields(primary, secondary, from_secondary) if from_secondary else primary
+    return merged, remaining, detail
 
 
 def decide_status(sheet: ProcedureSheet, conflicts: list[str]) -> SheetStatus:

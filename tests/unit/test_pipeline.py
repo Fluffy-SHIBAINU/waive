@@ -46,19 +46,38 @@ class FakeGateway:
         return [ExtractedPage(url, SAMPLE_POLICY_TEXT) for url in urls]
 
 
+FREE_CARE_QUOTE = (
+    "household income at or below 250% of the Federal Poverty Guidelines are eligible for free care"
+)
+DISCOUNT_QUOTE = (
+    "household income above 250% and at or below 400% of the Federal Poverty Guidelines "
+    "receive a 60% discount"
+)
+
+
 class FakeAI:
-    def __init__(self, free_limit_for_fast="250"):
-        self.free_limit_for_fast = free_limit_for_fast
+    """The same draft for every model role, except `free_care_max_fpl`, which is set per role:
+    a value (cited with the free-care sentence), a (value, quote) pair, None for "not stated",
+    or an exception the call raises."""
+
+    def __init__(self, free_limit_for_fast="250", free_limit_for_tiebreak="250"):
+        self.free_limits = {
+            "reason": "250",
+            "fast": free_limit_for_fast,
+            "tiebreak": free_limit_for_tiebreak,
+        }
 
     def complete_json(self, role, messages, schema, *, phi, purpose, max_tokens=2000):
         source_id = messages[1]["content"].split("=== SOURCE id=")[1].split(" ")[0]
-        value = "250" if role == "reason" else self.free_limit_for_fast
+        limit = self.free_limits[role]
+        if isinstance(limit, Exception):
+            raise limit
+        free_care = None
+        if limit is not None:
+            value, quote = limit if isinstance(limit, tuple) else (limit, FREE_CARE_QUOTE)
+            free_care = DraftField(value=value, quote=quote, source_id=source_id)
         return SheetDraft(
-            free_care_max_fpl=DraftField(
-                value=value,
-                quote="household income at or below 250% of the Federal Poverty Guidelines are eligible for free care",
-                source_id=source_id,
-            ),
+            free_care_max_fpl=free_care,
             phone=DraftField(
                 value="617-555-0100", quote="Questions: call 617-555-0100", source_id=source_id
             ),
@@ -95,16 +114,104 @@ def test_build_hospital_publishes_verified_sheet_and_logs_rejections():
         assert repo.get_hospital(session, "229999").website_domain == "example.org"
 
 
+def review_detail(session, ccn, kind):
+    return next(item.detail for item in repo.open_review_items(session, ccn) if item.kind == kind)
+
+
 def test_build_hospital_holds_sheet_on_critical_conflict():
+    """The tie-break model agrees with neither model: the conflict stands and the sheet is held."""
     engine = make_engine_with_hospital()
     with session_scope(engine) as session:
-        result = build_hospital(
-            session, FakeGateway(), FakeAI(free_limit_for_fast="300"), "229999", TODAY
-        )
+        ai = FakeAI(free_limit_for_fast="300", free_limit_for_tiebreak="999")
+        result = build_hospital(session, FakeGateway(), ai, "229999", TODAY)
         assert result.outcome == "held"
         assert "critical fields disagree: eligibility.free_care_max_fpl" in result.notes
         kinds = sorted(item.kind for item in repo.open_review_items(session, "229999"))
-        assert kinds == ["conflict", "verification"]
+        assert kinds == ["conflict", "tiebreak", "verification"]
+        assert review_detail(session, "229999", "tiebreak")["eligibility.free_care_max_fpl"] == {
+            "primary": "250",
+            "secondary": "300",
+            "tiebreak": "999",
+            "verdict": "unsettled",
+        }
+        sheet, _ = repo.latest_sheet(session, "229999")
+        assert sheet.status is SheetStatus.HELD
+        assert sheet.eligibility.free_care_max_fpl.value == 250  # the held draft keeps the primary
+
+
+def test_tiebreak_siding_with_the_primary_publishes_without_a_conflict():
+    engine = make_engine_with_hospital()
+    with session_scope(engine) as session:
+        ai = FakeAI(free_limit_for_fast="300", free_limit_for_tiebreak="250")
+        result = build_hospital(session, FakeGateway(), ai, "229999", TODAY)
+        assert result.outcome == "published"
+        assert "tie-break settled eligibility.free_care_max_fpl (primary)" in result.notes
+        assert not any(note.startswith("critical fields disagree") for note in result.notes)
+        sheet, _ = repo.latest_sheet(session, "229999")
+        assert sheet.eligibility.free_care_max_fpl.value == 250
+        assert sheet.eligibility.free_care_max_fpl.quote == FREE_CARE_QUOTE
+        kinds = sorted(item.kind for item in repo.open_review_items(session, "229999"))
+        assert kinds == ["conflict", "tiebreak", "verification"]
+        assert review_detail(session, "229999", "tiebreak")["eligibility.free_care_max_fpl"] == {
+            "primary": "250",
+            "secondary": "300",
+            "tiebreak": "250",
+            "verdict": "primary",
+        }
+
+
+def test_tiebreak_siding_with_the_secondary_publishes_its_value_and_quote():
+    engine = make_engine_with_hospital()
+    with session_scope(engine) as session:
+        ai = FakeAI(free_limit_for_fast=("400", DISCOUNT_QUOTE), free_limit_for_tiebreak="400")
+        result = build_hospital(session, FakeGateway(), ai, "229999", TODAY)
+        assert result.outcome == "published"
+        assert "tie-break settled eligibility.free_care_max_fpl (secondary)" in result.notes
+        sheet, _ = repo.latest_sheet(session, "229999")
+        assert sheet.eligibility.free_care_max_fpl.value == 400
+        assert sheet.eligibility.free_care_max_fpl.quote == DISCOUNT_QUOTE
+        assert sheet.contacts.phone.value == "617-555-0100"  # the rest is the primary's
+        detail = review_detail(session, "229999", "tiebreak")["eligibility.free_care_max_fpl"]
+        assert detail == {
+            "primary": "250",
+            "secondary": "400",
+            "tiebreak": "400",
+            "verdict": "secondary",
+        }
+
+
+def test_tiebreak_cannot_hand_the_sheet_an_unverifiable_cross_check_value():
+    """The fast model's quote does not contain its value, so even with the tie-break on its side
+    the primary stays and the conflict stands."""
+    engine = make_engine_with_hospital()
+    with session_scope(engine) as session:
+        ai = FakeAI(free_limit_for_fast="300", free_limit_for_tiebreak="300")
+        result = build_hospital(session, FakeGateway(), ai, "229999", TODAY)
+        assert result.outcome == "held"
+        assert "critical fields disagree: eligibility.free_care_max_fpl" in result.notes
+        assert (
+            "eligibility.free_care_max_fpl: cross-check quote failed verification" in result.notes
+        )
+        sheet, _ = repo.latest_sheet(session, "229999")
+        assert sheet.eligibility.free_care_max_fpl.value == 250
+        detail = review_detail(session, "229999", "tiebreak")["eligibility.free_care_max_fpl"]
+        assert detail["verdict"] == "unverified"
+
+
+def test_failed_tiebreak_call_keeps_the_hold_and_is_recorded():
+    engine = make_engine_with_hospital()
+    with session_scope(engine) as session:
+        ai = FakeAI(
+            free_limit_for_fast="300",
+            free_limit_for_tiebreak=AIOutputError("output was cut off at 6000 tokens"),
+        )
+        result = build_hospital(session, FakeGateway(), ai, "229999", TODAY)
+        assert result.outcome == "held"
+        assert "tie-break model gave no usable output" in result.notes
+        assert "critical fields disagree: eligibility.free_care_max_fpl" in result.notes
+        kinds = sorted(item.kind for item in repo.open_review_items(session, "229999"))
+        assert kinds == ["conflict", "tiebreak_failed", "verification"]
+        assert "cut off" in review_detail(session, "229999", "tiebreak_failed")["error"]
 
 
 def test_presumptive_only_conflict_publishes_without_that_field():

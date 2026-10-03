@@ -22,6 +22,8 @@ class Settings(BaseSettings):
     token_factory_base_url: str = "https://api.tokenfactory.nebius.com/v1/"
     model_reason: str = "nvidia/nemotron-3-super-120b-a12b"
     model_fast: str = "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B"
+    # Third opinion when the reasoning and fast models disagree on a critical field.
+    model_tiebreak: str = "nvidia/Nemotron-3_5-Lightning"
     model_vision: str = "openbmb/MiniCPM-V-4_5"
 
     require_zdr: bool = True
