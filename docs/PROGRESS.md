@@ -2,8 +2,8 @@
 
 Last updated: 2026-10-03 00:45 ET (loop iteration 10 done)
 Current phase: 2 nearly done (Massachusetts atlas: 46 hospitals, 27 published (59%), 17 held, 2 without documents; Tavily cap for Phase 2 reached; exit criterion of 80% needs gate U2.2 for the 11 hospitals whose stored text has no income rules) — Phases 0, 1, 3 and 4 are complete
-Current plan: `docs/superpowers/plans/2026-10-02-waive-master-plan.md` (Phase 6 section) until the Phase 6 plan exists
-Next task: 6.0 — write the detailed Phase 6 plan (deploy on Nebius AI Cloud) with superpowers:writing-plans from the master plan's Phase 6 section and spec §14–§15; 6.1 (Dockerfile, production settings) needs no gate; 6.2 onward needs U0.5 (Nebius CLI login) and 6.3+ needs U6.1. Phase 2 resumes (2.8k, 2.10 exit) when U2.2 is closed.
+Current plan: `docs/superpowers/plans/2026-10-02-waive-phase-6-deploy.md`
+Next task: 6.1 Dockerfile and production settings, then 6.2 DB-backed ledger (both need no gate). 6.3 needs U0.5; 6.4+ need U6.1. If both gates stay open, the loop skips ahead to 7.0 (write the Phase 7 plan) and 8.0 (write the Phase 8 plan) rather than idling. Phase 2 resumes (2.8k, 2.10 exit) when U2.2 is closed.
 
 Master plan: `docs/superpowers/plans/2026-10-02-waive-master-plan.md` · Spec: `docs/superpowers/specs/2026-10-02-waive-design.md` · Loop rules: `docs/LOOP.md`
 
@@ -124,7 +124,16 @@ Plan: `docs/superpowers/plans/2026-10-02-waive-phase-5-learning-loop.md` (781c6a
 - [x] 5.10 `waive db upgrade` / `upgrade_schema` adds missing nullable columns (41c0122). Phase 5 exit: 248 tests pass; `waive learn audit` → "Evidence tables are clean."
 
 ### Phase 6 — Deploy on Nebius AI Cloud
-- [ ] 6.0 Write detailed Phase 6 plan
+Plan: `docs/superpowers/plans/2026-10-02-waive-phase-6-deploy.md` (a0a989a; 8 tasks)
+- [x] 6.0 Write detailed Phase 6 plan
+- [ ] 6.1 Dockerfile, `.dockerignore`, `WAIVE_ENV=production`, local Docker smoke (no gate)
+- [ ] 6.2 DB-backed usage ledger (`UsageEventRow`, `make_ledger`) (no gate)
+- [ ] 6.3 `waive cloud discover` → `docs/reports/cloud-costs.md`; then STOP for gate U6.1 (needs U0.5: Nebius CLI + `nebius profile create`)
+- [ ] 6.4 Container Registry + image push (needs U6.1)
+- [ ] 6.5 Managed PostgreSQL + `waive db copy` (cases excluded) + `waive db upgrade` (needs U6.1)
+- [ ] 6.6 MysteryBox secrets + Serverless AI endpoint (fallback: small VM + Compose + Caddy) (needs U6.1)
+- [ ] 6.7 `waive cloud start|stop|status|cleanup` (waive-* only)
+- [ ] 6.8 Public URL smoke test and phone test
 
 ### Phase 7 — Always-on scouting and national scale
 - [ ] 7.0 Write detailed Phase 7 plan
@@ -160,6 +169,7 @@ Plan: `docs/superpowers/plans/2026-10-02-waive-phase-5-learning-loop.md` (781c6a
 
 - 2026-10-02 15:40 — Spec, master plan, Phase 0 and Phase 1 plans written. Ready for task 0.1.
 - 2026-10-02 16:20 — Phase 0 tasks 0.1–0.6 done by an implementation subagent: 28 tests pass, ruff clean. Deviations: `extend-exclude = ["docs"]` for ruff (it was reformatting code blocks in plan files); `AIClient` now creates an explicit `httpx.Client` when none is given (openai 3.x's default transport bypasses respx). Incident: one early test run reached the real Token Factory endpoint with a fake key (401, no secret leaked, no spend) → task 0.8 added. Spend: 0.
+- 2026-10-03 03:35 — Loop iteration 15: task 6.0 done by a subagent (Phase 6 plan, 2,634 lines, Nebius docs verified 2026-10-02).
 - 2026-10-03 03:00 — Loop iteration 14: Phase 5 tasks 5.7–5.10 done by a subagent; Phase 5 complete (248 tests). Admin token generated into `.env`.
 - 2026-10-03 02:25 — Loop iteration 13: Phase 5 tasks 5.4–5.6 done by a subagent (233 tests); dev DB column added by hand; follow-up 5.10.
 - 2026-10-03 01:50 — Loop iteration 12: Phase 5 tasks 5.1–5.3 done by a subagent (214 tests, no paid calls).
