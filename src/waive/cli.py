@@ -22,6 +22,7 @@ from waive.db import init_db, make_engine, session_scope
 from waive.demo import forget_cases, seed_demo
 from waive.doctor import run_checks
 from waive.governor import make_governor
+from waive.learning.contributions import rebuild_from_sources
 
 app = typer.Typer(no_args_is_help=True, help="Waive operations.")
 console = Console()
@@ -250,3 +251,22 @@ def demo_forget_cases() -> None:
     with session_scope(_engine(settings)) as session:
         count = forget_cases(session)
     console.print(f"Deleted {count} cases.")
+
+
+learn_app = typer.Typer(no_args_is_help=True, help="Learning loop operations.")
+app.add_typer(learn_app, name="learn")
+
+
+@learn_app.command("rebuild")
+def learn_rebuild(ccn: str = typer.Option(..., "--ccn", help="Hospital to re-structure")) -> None:
+    """Re-structure one sheet from stored documents (approved patient photos included). No Tavily."""
+    settings = Settings()
+    governor = make_governor(settings)
+    ai = AIClient(settings, governor)
+    with session_scope(_engine(settings)) as session:
+        result = rebuild_from_sources(session, ai, ccn, datetime.now(UTC).date())
+    console.print(
+        f"{result.name}: {result.outcome}, version {result.version}; " + "; ".join(result.notes)
+    )
+    _, tf_usd = governor.summary()["token_factory"]
+    console.print(f"Token Factory spend so far: ${tf_usd:.4f}")

@@ -7,9 +7,9 @@
 <div class="card">
   <div class="row"><span><code>{{ path }}</code></span><strong>{{ cited.value }}</strong></div>
   {% if cited.quote %}<p class="quote">"{{ cited.quote }}"</p>{% endif %}
-  <p class="muted">{{ cited.layer.value }} · checked {{ cited.checked_on }}{% if source %} · <a href="{{ source.url }}">{{ source.title or source.url }}</a>{% endif %}{% if cited.support_count %} · reported by {{ cited.support_count }} people{% endif %}</p>
+  <p class="muted">{{ cited.layer.value }} · checked {{ cited.checked_on }}{% if source %} · {% if source.url %}<a href="{{ source.url }}">{{ source.title or source.url }}</a>{% else %}{{ source.title }}{% endif %}{% endif %}{% if cited.support_count %} · reported by {{ cited.support_count }} people{% endif %}</p>
 </div>
 {% endfor %}
 <h2>Sources</h2>
-{% for source in sheet.sources %}<p><a href="{{ source.url }}">{{ source.title or source.url }}</a> — fetched {{ source.fetched_on }}</p>{% endfor %}
+{% for source in sheet.sources %}<p>{% if source.url %}<a href="{{ source.url }}">{{ source.title or source.url }}</a>{% else %}{{ source.title }}{% endif %} — fetched {{ source.fetched_on }}</p>{% endfor %}
 {% endblock %}

@@ -12,6 +12,7 @@ from waive.learning.classify import (
     classify_photo,
     route_for,
 )
+from waive.learning.contributions import submit_contribution
 
 MESSAGES: dict[Route, str] = {
     "bill": "That looks like a bill. Use the bill step for it.",
@@ -44,4 +45,14 @@ def ingest_paper(
         {"photo_class": classified.photo_class.value, "route": route, "on": ctx.today.isoformat()}
     )
     save_sealed(ctx, row, sealed)
+    if route == "contribution":
+        submit_contribution(
+            ctx.session,
+            ccn=row.ccn,
+            case_id=row.id,
+            photo_class=classified.photo_class,
+            text=classified.transcription,
+            vision_flag=classified.personal_info,
+            today=ctx.today,
+        )
     return PaperResult(classified.photo_class, route, MESSAGES[route])

@@ -128,6 +128,23 @@ class CaseRow(Base):
     )
 
 
+class ContributionRow(Base):
+    """A patient's photo of a public document, waiting for or past admin review. Holds the
+    transcribed text only while it passed the personal-information check; never a case id."""
+
+    __tablename__ = "contributions"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    ccn: Mapped[str | None] = mapped_column(String(12), nullable=True, index=True)
+    case_hash: Mapped[str] = mapped_column(String(16))
+    photo_class: Mapped[str] = mapped_column(String(40))
+    sha256: Mapped[str] = mapped_column(String(64), index=True)
+    text: Mapped[str] = mapped_column(Text, default="")
+    reject_reasons: Mapped[list[str]] = mapped_column(JSON, default=list)
+    status: Mapped[str] = mapped_column(String(20), default="open")
+    created_on: Mapped[date] = mapped_column(Date)
+
+
 def make_engine(url: str) -> Engine:
     if url.endswith(":memory:"):
         return create_engine(url, connect_args={"check_same_thread": False}, poolclass=StaticPool)
