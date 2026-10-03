@@ -122,6 +122,8 @@ class CaseRow(Base):
     token_generation: Mapped[int] = mapped_column(Integer, default=1)
     sealed: Mapped[str | None] = mapped_column(Text, nullable=True)
     prediction: Mapped[dict[str, Any] | None] = mapped_column(JSON, nullable=True)
+    # De-identified summary for the scoreboard: decision enum, triage class, matched flag, date.
+    outcome: Mapped[dict[str, Any] | None] = mapped_column(JSON, nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
     updated_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), default=utcnow, onupdate=utcnow

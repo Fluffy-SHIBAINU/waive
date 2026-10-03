@@ -9,6 +9,7 @@ from waive.cases.extract import BillExtract, IncomeExtract
 from waive.cases.service import start_case
 from waive.db import session_scope
 from waive.learning.classify import PhotoClass, PhotoClassification
+from waive.learning.outcomes import Decision, DenialReason, OutcomeExtract
 
 from tests.unit.test_web_app import make_client
 from tests.unit.test_web_senior import HOSPITAL, photo
@@ -32,6 +33,8 @@ class PaperAI:
             )
         if schema is IncomeExtract:
             return IncomeExtract(monthly_benefit=Decimal("1900"))
+        if schema is OutcomeExtract:
+            return OutcomeExtract(decision=Decision.DENIED, reasons=[DenialReason.OTHER])
         return PhotoClassification(photo_class=self.photo_class, confidence=0.9)
 
 
@@ -60,6 +63,7 @@ def test_senior_result_offers_a_paper_photo_and_routes_it():
     thanks = client.post(f"/s/{links.senior_token}/paper", files=photo())
     assert thanks.status_code == 200
     assert "We will read the hospital" in thanks.text and "Back to what we found" in thanks.text
+    assert "The hospital said: denied" in client.get(f"/c/{links.caregiver_token}").text
 
 
 def test_caregiver_paper_upload_shows_the_routing_note():
