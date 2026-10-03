@@ -1,9 +1,9 @@
 # Waive build progress
 
-Last updated: 2026-10-03 00:05 ET (loop iteration 9 done)
-Current phase: 2 (Massachusetts atlas: 46 hospitals, 23 published (50%), 21 held, 2 without documents; Tavily cap for Phase 2 reached) — Phases 0, 1, 3 and 4 are complete
-Current plan: `docs/superpowers/plans/2026-10-02-waive-phase-2-ma-atlas.md`
-Next task: 2.8j (cross-model conflicts on Mass General Brigham sheets, free), then 5.0 (write the Phase 5 plan with superpowers:writing-plans from the master plan's Phase 5 section). No more Tavily spend on Phase 2 until gate U2.2 is closed.
+Last updated: 2026-10-03 00:45 ET (loop iteration 10 done)
+Current phase: 2 nearly done (Massachusetts atlas: 46 hospitals, 27 published (59%), 17 held, 2 without documents; Tavily cap for Phase 2 reached; exit criterion of 80% needs gate U2.2 for the 11 hospitals whose stored text has no income rules) — Phases 0, 1, 3 and 4 are complete
+Current plan: `docs/superpowers/plans/2026-10-02-waive-master-plan.md` (Phase 5 section) until the Phase 5 plan exists
+Next task: 5.0 — write the detailed Phase 5 plan (learning loop) with superpowers:writing-plans from the master plan's Phase 5 section and spec §10–§12; then 5.1 onward. Phase 2 resumes (2.8k, 2.10 exit) when U2.2 is closed.
 
 Master plan: `docs/superpowers/plans/2026-10-02-waive-master-plan.md` · Spec: `docs/superpowers/specs/2026-10-02-waive-design.md` · Loop rules: `docs/LOOP.md`
 
@@ -70,7 +70,7 @@ Plan: `docs/superpowers/plans/2026-10-02-waive-phase-2-ma-atlas.md`
   - [x] 2.8c Done 2026-10-02 (34e4a98, ccac292; 170 tests): `atlas/fetch.py` downloads PDFs Tavily cannot fetch (streamed GET, 15 MB cap, pypdf); the scout falls back to it for any selected or linked URL with no usable text. Baystate ×4 published (real published = 10). Spend after: 241 credits, $0.61. New follow-ups:
   - [x] 2.8i/2.8g/2.8f done 2026-10-02 (aca0dab, bea5678, 97352b9, 7a6b552; 182 tests): tier ranges and missing bounds parse, free-care limit derived from a 100% band, long documents get keyword passage selection (head 6k + ±1.5k windows), state-overlay docs are kept out of the structurer, `complete_json` retries a bare `{}` once without `json_object` mode (Nemotron Super sometimes answers `{}` in JSON mode on long prompts), the conflict note is correct. Free re-run of all 29 held hospitals (Token Factory ≈$0.25, no Tavily): Athol, Berkshire, Emerson, Heywood flipped to published (+ others pending in the final tally below).
   - [x] 2.9c Done 2026-10-02 (47c3c00; 183 tests): `build_hospital` carries the previous version's `state_programs` and its source over; the 8 rebuilt sheets were repaired from their history and the 26 later-built sheets received the overlay from the stored mass.gov source (no Tavily spend). All 45 MA sheets carry the Health Safety Net entry.
-  - [ ] 2.8j Cross-model conflicts on `free_care_max_fpl` hold Faulkner, MGH, MetroWest and Newton-Wellesley (shared Mass General Brigham PDFs). Inspect both drafts for one of them with `--reuse-sources`; if the fast model is wrong, consider a third opinion (Nemotron 3.5 Lightning) as a tie-break before holding.
+  - [x] 2.8j Done 2026-10-03 (82d6839, c09db7c, a002c7d, 79f0e3f; 198 tests). Diagnosis: Nemotron Super read the MGB table correctly (free care ≤150% FPL, tiers 85%/70%); Nemotron Nano answered "300" with a 3-character quote that can never verify. Two changes: (1) a third-model tie-break (`model_tiebreak` = Nemotron 3.5 Lightning, role `tiebreak`, `publish.resolve_conflicts`) — useful but Lightning is unreliable on long prompts; (2) the decisive rule: a cross-check disagreement counts only when the cross-check's own quote verifies (trim + verify the secondary like the primary). Faulkner, MGH, MetroWest and Newton-Wellesley are now published; BID Needham stays held (tiers). Report: 46 hospitals, 27 published (59%). Token Factory spend $1.52.
   - [ ] 2.8k Hospitals whose stored text has no income rules (Cape Cod, Falmouth, South Shore, Lowell General, Milford, Mount Auburn, Nantucket, North Shore, Martha's Vineyard) need new scouting — blocked on gate U2.2.
   - [x] 2.8g Heywood (220095) — fixed by passage selection above. Original note: the stored 2016 Credit and Collection Policy contains an FPL table ("0%-200% 100% … 201%-400%") at offset ~49.5k but the structurer returned no fields. Inspect the draft with `--reuse-sources`; likely the table is beyond `MAX_DOC_CHARS` (40,000) — raise it or select the passages around "Federal Poverty" before structuring. Free to iterate (no Tavily).
   - [ ] 2.8h Cape Cod (220012): Tavily Extract returns only 643 chars of navigation for the financial-assistance page. Try `extract_depth="advanced"` for pages under 1,000 chars, or the direct HTML download with a simple tag strip.
@@ -148,6 +148,7 @@ Plan: `docs/superpowers/plans/2026-10-02-waive-phase-4-phone-app.md`
 
 - 2026-10-02 15:40 — Spec, master plan, Phase 0 and Phase 1 plans written. Ready for task 0.1.
 - 2026-10-02 16:20 — Phase 0 tasks 0.1–0.6 done by an implementation subagent: 28 tests pass, ruff clean. Deviations: `extend-exclude = ["docs"]` for ruff (it was reformatting code blocks in plan files); `AIClient` now creates an explicit `httpx.Client` when none is given (openai 3.x's default transport bypasses respx). Incident: one early test run reached the real Token Factory endpoint with a fake key (401, no secret leaked, no spend) → task 0.8 added. Spend: 0.
+- 2026-10-03 00:45 — Loop iteration 10: task 2.8j (tie-break by a subagent, grounded-disagreement rule inline; 198 tests); four MGB hospitals published → 27 of 46. Spend 389 credits / $1.52.
 - 2026-10-03 00:05 — Loop iteration 9: task 4.9 done by a subagent (187 tests); demo hospital hidden from public outputs.
 - 2026-10-02 23:40 — Loop iteration 8: task 2.9c done inline (183 tests); overlay restored/applied on all 45 MA sheets for free. Report: 24 published (23 real + demo), 21 held, 2 none.
 - 2026-10-02 23:15 — Loop iteration 7: tasks 2.8i/2.8g/2.8f done by a subagent (182 tests); free re-run of 29 held hospitals; follow-ups 2.9c, 2.8j, 2.8k added. Spend 389 credits / ≈$1.25.
