@@ -25,7 +25,7 @@ When a PreToolUse hook denies a Write, Edit or Bash call with "Fact-Forcing Gate
 5. Verify: `uv run ruff format . && uv run ruff check . && uv run pytest` must pass.
 6. Tick the task in the phase plan and in `docs/PROGRESS.md`. Add a log line: time (ET), task, result (tests passed/failed counts), spend. If a paid call happened, update the Spend table (the totals print at the end of `uv run waive doctor`).
 7. Commit with a conventional message (`feat:`, `fix:`, `test:`, `docs:`, `chore:`).
-8. If the task finished a phase, run that phase's exit checks from the master plan, record the results in `docs/PROGRESS.md`, and open the phase's user gate if it has one.
+8. If the task finished a phase, run that phase's exit checks from the master plan, record the results in `docs/PROGRESS.md`, open the phase's user gate if it has one, and show the user a diagram of all phases (done / in progress / blocked on a gate / not started, with the gate names and what is left in each) — the user asked for this after every finished phase. In Claude Code use the inline visual widget; otherwise a Mermaid flowchart in the reply.
 
 ## Hard rules
 
