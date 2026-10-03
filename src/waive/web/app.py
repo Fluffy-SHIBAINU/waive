@@ -14,10 +14,10 @@ from waive.logging_setup import configure_logging
 from waive.web.deps import STATIC_DIR, TEMPLATES_DIR, Deps, render, today_utc
 
 
-def _default_ai(settings: Settings):
+def _default_ai(settings: Settings, governor):
     if settings.nebius_api_key is None:
         return None
-    return AIClient(settings, make_governor(settings))
+    return AIClient(settings, governor)
 
 
 def create_app(
@@ -33,11 +33,13 @@ def create_app(
     settings = settings or Settings()
     engine = engine or make_engine(settings.database_url)
     init_db(engine)
+    governor = make_governor(settings, engine)
     app = FastAPI(title="Waive", docs_url=None, redoc_url=None)
     app.state.settings = settings
+    app.state.governor = governor
     app.state.deps = Deps(
         engine=engine,
-        ai=ai if ai is not None else _default_ai(settings),
+        ai=ai if ai is not None else _default_ai(settings, governor),
         cipher=cipher or cipher_from_settings(settings),
         signer=signer or signer_from_settings(settings),
         today_fn=today_fn or today_utc,

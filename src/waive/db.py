@@ -170,6 +170,20 @@ class ReportedEvidenceRow(Base):
     created_on: Mapped[date] = mapped_column(Date)
 
 
+class UsageEventRow(Base):
+    """One paid call for the budget governor: provider, amounts and purpose. Never request or
+    response content (spec §11). Amounts are exact decimal strings, as in var/usage.jsonl."""
+
+    __tablename__ = "usage_events"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    provider: Mapped[str] = mapped_column(String(20), index=True)
+    units: Mapped[str] = mapped_column(String(40))
+    usd: Mapped[str] = mapped_column(String(40))
+    purpose: Mapped[str] = mapped_column(String(80))
+    ts: Mapped[str] = mapped_column(String(40))
+
+
 def make_engine(url: str) -> Engine:
     if url.endswith(":memory:"):
         return create_engine(url, connect_args={"check_same_thread": False}, poolclass=StaticPool)
