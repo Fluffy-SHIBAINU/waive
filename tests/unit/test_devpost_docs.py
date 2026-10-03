@@ -23,7 +23,9 @@ def test_submission_has_every_required_section():
     ):
         assert heading in text, heading
     assert "not an NVIDIA model" in text  # the vision model, stated plainly
-    # Task 8.6 adds the checklist.md gate assertions (U8.1–U8.4) here.
+    checklist = (DEVPOST / "checklist.md").read_text(encoding="utf-8")
+    for gate in ("U8.1", "U8.2", "U8.3", "U8.4"):
+        assert gate in checklist
 
 
 def test_devpost_documents_have_no_tbd():
