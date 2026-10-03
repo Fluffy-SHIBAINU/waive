@@ -2,8 +2,8 @@
 
 Last updated: 2026-10-03 00:45 ET (loop iteration 10 done)
 Current phase: 2 nearly done (Massachusetts atlas: 46 hospitals, 27 published (59%), 17 held, 2 without documents; Tavily cap for Phase 2 reached; exit criterion of 80% needs gate U2.2 for the 11 hospitals whose stored text has no income rules) — Phases 0, 1, 3 and 4 are complete
-Current plan: `docs/superpowers/plans/2026-10-02-waive-phase-5-learning-loop.md`
-Next task: 5.7 Scoreboard; then 5.8, 5.9, 5.10. Phase 2 resumes (2.8k, 2.10 exit) when U2.2 is closed.
+Current plan: `docs/superpowers/plans/2026-10-02-waive-master-plan.md` (Phase 6 section) until the Phase 6 plan exists
+Next task: 6.0 — write the detailed Phase 6 plan (deploy on Nebius AI Cloud) with superpowers:writing-plans from the master plan's Phase 6 section and spec §14–§15; 6.1 (Dockerfile, production settings) needs no gate; 6.2 onward needs U0.5 (Nebius CLI login) and 6.3+ needs U6.1. Phase 2 resumes (2.8k, 2.10 exit) when U2.2 is closed.
 
 Master plan: `docs/superpowers/plans/2026-10-02-waive-master-plan.md` · Spec: `docs/superpowers/specs/2026-10-02-waive-design.md` · Loop rules: `docs/LOOP.md`
 
@@ -117,10 +117,11 @@ Plan: `docs/superpowers/plans/2026-10-02-waive-phase-5-learning-loop.md` (781c6a
 - [x] 5.4 Outcome capture (f370d89; `cases.outcome` column, check-ins at 14/30/45 days)
 - [x] 5.5 Compare and triage (070d70a; `reported_evidence` table, `rescout_request` review items, appeal draft)
 - [x] 5.6 Aggregation thresholds (bb692ce; `Apply.documents_reported`, `publish.carry_over_reported`, flags internal at 3 / public at 5, `waive learn publish-reported|audit`; 233 tests)
-- [ ] 5.10 Schema changes without Alembic: `create_all` does not add columns to existing tables. The dev DB had `cases.outcome` added by hand on 2026-10-03. Before Phase 6 add a tiny `waive db upgrade` that adds missing columns (compare `Base.metadata` with `PRAGMA table_info`), or adopt Alembic then.
-- [ ] 5.7 Scoreboard and priority re-checks
-- [ ] 5.8 Admin console behind `WAIVE_ADMIN_TOKEN`
-- [ ] 5.9 Simulation test of the whole loop
+- (5.10 moved above — done.)
+- [x] 5.7 Scoreboard and priority re-checks (954e55e; `waive learn scoreboard --state MA [--queue]`)
+- [x] 5.8 Admin console behind `WAIVE_ADMIN_TOKEN` (57d06d4; `/admin/login`, review queue, contributions, sheet diffs, scoreboard, budget). A token was generated into `.env` by the orchestrator on 2026-10-03.
+- [x] 5.9 Simulation test of the whole loop (e4c3293; all four exit checks pass)
+- [x] 5.10 `waive db upgrade` / `upgrade_schema` adds missing nullable columns (41c0122). Phase 5 exit: 248 tests pass; `waive learn audit` → "Evidence tables are clean."
 
 ### Phase 6 — Deploy on Nebius AI Cloud
 - [ ] 6.0 Write detailed Phase 6 plan
@@ -159,6 +160,7 @@ Plan: `docs/superpowers/plans/2026-10-02-waive-phase-5-learning-loop.md` (781c6a
 
 - 2026-10-02 15:40 — Spec, master plan, Phase 0 and Phase 1 plans written. Ready for task 0.1.
 - 2026-10-02 16:20 — Phase 0 tasks 0.1–0.6 done by an implementation subagent: 28 tests pass, ruff clean. Deviations: `extend-exclude = ["docs"]` for ruff (it was reformatting code blocks in plan files); `AIClient` now creates an explicit `httpx.Client` when none is given (openai 3.x's default transport bypasses respx). Incident: one early test run reached the real Token Factory endpoint with a fake key (401, no secret leaked, no spend) → task 0.8 added. Spend: 0.
+- 2026-10-03 03:00 — Loop iteration 14: Phase 5 tasks 5.7–5.10 done by a subagent; Phase 5 complete (248 tests). Admin token generated into `.env`.
 - 2026-10-03 02:25 — Loop iteration 13: Phase 5 tasks 5.4–5.6 done by a subagent (233 tests); dev DB column added by hand; follow-up 5.10.
 - 2026-10-03 01:50 — Loop iteration 12: Phase 5 tasks 5.1–5.3 done by a subagent (214 tests, no paid calls).
 - 2026-10-03 01:15 — Loop iteration 11: task 5.0 done by a subagent (Phase 5 plan, 3,856 lines).
