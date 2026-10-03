@@ -9,6 +9,7 @@ from typer.testing import CliRunner
 from waive.atlas import repo
 from waive.atlas.publish import publish_sheet
 from waive.atlas.samples import st_example_sheet
+from waive.atlas.schema import SourceDoc, SourceKind
 from waive.cases.extract import BillExtract
 from waive.cases.match import is_confident, match_hospital
 from waive.cases.synth import render_benefit_letter
@@ -18,6 +19,7 @@ from waive.db import (
     ContributionRow,
     ReportedEvidenceRow,
     SheetRow,
+    SourceDocRow,
     init_db,
     make_engine,
     session_scope,
@@ -86,7 +88,9 @@ def test_write_demo_images_writes_bill_truth_and_letter(tmp_path):
     truth = json.loads((tmp_path / "demo" / "bill.json").read_text())
     assert truth["hospital_name"] == "St. Example Medical Center"
     assert truth["amount_due"] == "1850.00" and truth["collection_notice"] is False
-    assert write_demo_images(tmp_path / "demo") == files  # idempotent
+    before = {path.name: path.read_bytes() for path in files}
+    assert write_demo_images(tmp_path / "demo") == files  # idempotent: the same paths...
+    assert {path.name: path.read_bytes() for path in files} == before  # ...and the same bytes
 
 
 def test_reset_demo_clears_cases_and_demo_rows_but_keeps_real_hospitals(tmp_path):
@@ -127,10 +131,37 @@ def test_reset_demo_clears_cases_and_demo_rows_but_keeps_real_hospitals(tmp_path
                 created_on=date(2026, 10, 1),
             )
         )
+        # Source documents: an approved demo-run patient photo (demo-only, goes), a state overlay
+        # document held only by the demo hospital (shared by design, stays), and the real
+        # hospital's own policy page (untouched).
+        on = date(2026, 10, 1)
+        photo = SourceDoc(
+            id="photo-demo", kind=SourceKind.PATIENT_PHOTO, fetched_on=on, sha256="d" * 64
+        )
+        repo.save_source(session, photo, "screened photo text", "229999")
+        state = SourceDoc(
+            id="state-ma-hsn", kind=SourceKind.STATE_REPOSITORY, fetched_on=on, sha256="e" * 64
+        )
+        repo.save_source(session, state, "state program text", "229999")
+        real = SourceDoc(
+            id="fap-real",
+            kind=SourceKind.HOSPITAL_WEB,
+            url="https://real.example/fap",
+            fetched_on=on,
+            sha256="f" * 64,
+        )
+        repo.save_source(session, real, "policy text", REAL_HOSPITAL["ccn"])
     with session_scope(engine) as session:
         report = reset_demo(session, tmp_path / "demo")
         assert (report.cases_deleted, report.review_items_deleted) == (1, 1)
         assert (report.contributions_deleted, report.evidence_deleted) == (1, 1)
+        assert (report.sources_unlinked, report.documents_deleted) == (2, 1)
+        assert repo.sources_for(session, "229999") == []
+        assert [doc.id for doc, _ in repo.sources_for(session, REAL_HOSPITAL["ccn"])] == [
+            "fap-real"
+        ]
+        assert session.get(SourceDocRow, "photo-demo") is None
+        assert session.get(SourceDocRow, "state-ma-hsn") is not None
         assert report.sheet_versions_deleted == 2
         assert report.sheet_version == 1
         assert [row.version for row in repo.sheet_versions(session, "229999")] == [1]
@@ -141,6 +172,7 @@ def test_reset_demo_clears_cases_and_demo_rows_but_keeps_real_hospitals(tmp_path
     with session_scope(engine) as session:
         again = reset_demo(session, tmp_path / "demo", write_files=False)
         assert (again.cases_deleted, again.sheet_versions_deleted, again.files) == (0, 1, [])
+        assert (again.sources_unlinked, again.documents_deleted) == (0, 0)
 
 
 def test_demo_reset_command_prints_a_summary(monkeypatch, tmp_path):
@@ -148,5 +180,7 @@ def test_demo_reset_command_prints_a_summary(monkeypatch, tmp_path):
     monkeypatch.setenv("WAIVE_DATABASE_URL", f"sqlite:///{tmp_path / 'waive.db'}")
     result = CliRunner().invoke(app, ["demo", "reset", "--out", str(tmp_path / "demo")])
     assert result.exit_code == 0, result.output
-    assert "Deleted 0 case(s)" in result.output and "version 1" in result.output
+    text = " ".join(result.output.split())  # the console wraps at 80 columns
+    assert "Deleted 0 case(s)" in text and "version 1" in text
+    assert "0 source link(s), 0 demo-only document(s)" in text
     assert (tmp_path / "demo" / "letter.jpg").exists()

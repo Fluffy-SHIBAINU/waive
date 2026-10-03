@@ -427,8 +427,9 @@ def demo_reset(
         f"Deleted {report.cases_deleted} case(s); for the demo hospital: "
         f"{report.review_items_deleted} review item(s), {report.contributions_deleted} "
         f"contribution(s), {report.evidence_deleted} evidence row(s), "
-        f"{report.sources_unlinked} source link(s), {report.sheet_versions_deleted} sheet "
-        f"version(s). St. Example is back at version {report.sheet_version}."
+        f"{report.sources_unlinked} source link(s), {report.documents_deleted} demo-only "
+        f"document(s), {report.sheet_versions_deleted} sheet version(s). St. Example is back at "
+        f"version {report.sheet_version}."
     )
     for path in report.files:
         console.print(f"Wrote {path}")

@@ -8,7 +8,7 @@ from datetime import date
 from decimal import Decimal
 from pathlib import Path
 
-from sqlalchemy import delete
+from sqlalchemy import delete, select
 from sqlalchemy.orm import Session
 
 from waive.atlas import repo
@@ -21,6 +21,7 @@ from waive.db import (
     ReportedEvidenceRow,
     ReviewItemRow,
     SheetRow,
+    SourceDocRow,
     hospital_sources,
 )
 
@@ -95,6 +96,7 @@ class ResetReport:
     contributions_deleted: int
     evidence_deleted: int
     sources_unlinked: int
+    documents_deleted: int
     sheet_versions_deleted: int
     sheet_version: int
     files: list[Path] = field(default_factory=list)
@@ -104,9 +106,9 @@ def reset_demo(
     session: Session, out_dir: Path = DEMO_DIR, *, write_files: bool = True
 ) -> ResetReport:
     """Back to the demo script's starting point: every case is deleted (cases are personal
-    data), the demo hospital's learning rows, source links and sheet versions are removed and
-    St. Example is re-seeded at version 1, and the demo images are rewritten. Real hospitals'
-    sheets, documents and review items are untouched."""
+    data), the demo hospital's learning rows, source links, demo-only documents and sheet
+    versions are removed and St. Example is re-seeded at version 1, and the demo images are
+    rewritten. Real hospitals' sheets, documents and review items are untouched."""
     demo = list(repo.DEMO_CCNS)
     cases = forget_cases(session)
     items = session.execute(delete(ReviewItemRow).where(ReviewItemRow.ccn.in_(demo))).rowcount
@@ -116,9 +118,27 @@ def reset_demo(
     evidence = session.execute(
         delete(ReportedEvidenceRow).where(ReportedEvidenceRow.ccn.in_(demo))
     ).rowcount
+    demo_sources = set(
+        session.scalars(
+            select(hospital_sources.c.source_id).where(hospital_sources.c.ccn.in_(demo))
+        )
+    )
     unlinked = session.execute(
         delete(hospital_sources).where(hospital_sources.c.ccn.in_(demo))
     ).rowcount
+    # Documents only the demo hospital held (an approved demo-run patient photo's screened text,
+    # say) would otherwise survive as orphans. Documents still linked to a real hospital stay, and
+    # so do state overlay documents, which are shared across hospitals. Real hospitals' own
+    # unlinked documents are never touched: older sheet versions cite them.
+    documents = 0
+    if demo_sources:
+        documents = session.execute(
+            delete(SourceDocRow).where(
+                SourceDocRow.id.in_(demo_sources),
+                SourceDocRow.id.not_in(select(hospital_sources.c.source_id)),
+                SourceDocRow.id.not_like("state-%"),
+            )
+        ).rowcount
     versions = session.execute(delete(SheetRow).where(SheetRow.ccn.in_(demo))).rowcount
     session.flush()
     seed_demo(session)
@@ -126,4 +146,6 @@ def reset_demo(
     latest = repo.latest_sheet(session, demo[0])
     version = latest[1].version if latest else 0
     files = write_demo_images(out_dir) if write_files else []
-    return ResetReport(cases, items, contributions, evidence, unlinked, versions, version, files)
+    return ResetReport(
+        cases, items, contributions, evidence, unlinked, documents, versions, version, files
+    )
