@@ -5,8 +5,8 @@ extraction output equal to the demo bill's ground truth; nothing paid). Re-run a
 change. The colour scheme is pinned to dark by `chrome_command` in `src/waive/gallery.py`
 (`--blink-settings=preferredColorScheme=0`; `=1` is light), so a re-run on any machine takes the
 same pictures whatever its appearance setting. Upload the PNGs to Devpost in this order with
-these captions. `packet-sample.pdf` is the caregiver's packet for the demo case, kept as a sample
-to link from the README and the Devpost text; it is not uploaded to the gallery.
+these captions. `packet-sample.pdf` is the caregiver's packet for the demo case, kept as a sample;
+the repository README links it under "Screenshots", and it is not uploaded to the gallery.
 
 | File | Caption |
 |---|---|

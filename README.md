@@ -8,6 +8,7 @@ Built for the Nebius x NVIDIA Global AI Hackathon (Personal AI track), October 2
 
 - Demo video (under 3 minutes): [USER FILLS: YouTube URL after gate U8.2]
 - Devpost project: [USER FILLS: Devpost URL after gate U8.3]
+- Screenshots: `docs/devpost/gallery/` holds 12 captures of the senior flow, the caregiver review and the atlas pages, captioned in [`docs/devpost/gallery/README.md`](docs/devpost/gallery/README.md), the two architecture diagrams from this file, and the caregiver's packet for the demo case, [`packet-sample.pdf`](docs/devpost/gallery/packet-sample.pdf).
 - **Deployment status (update this line when Phase 6 task 6.8 closes):** not deployed yet — the Dockerfile and the `WAIVE_ENV=production` settings target a Nebius AI Cloud Serverless AI endpoint with Managed PostgreSQL; until then, run Waive locally with the steps below. *(Replacement text once live: "Live at `https://…` on Nebius AI Cloud (CPU Serverless AI endpoint + Managed PostgreSQL); the endpoint runs during judging windows only.")*
 
 Waive never asks for money, card numbers or bank logins. Results are estimates, not legal advice; the hospital makes the final decision.
@@ -33,7 +34,7 @@ Waive never asks for money, card numbers or bank logins. Results are estimates, 
 | Learning loop | Implemented and exercised end to end by a simulation test (three denials → re-scout → new version after review → open cases re-evaluated; a missing document appears as "reported by patients" after 5 cases; a hospital slip is flagged after 3). No real outcomes yet |
 | Deployment | See the status line at the top |
 | Spend to date | 389 Tavily credits, $1.52 on Token Factory, $0 on AI Cloud |
-| Tests | 280+ unit, contract and simulation tests; none opens a network socket |
+| Tests | 300+ unit, contract and simulation tests; none opens a network socket |
 
 The demo hospital, **St. Example Medical Center** (CCN 229999), is fictional and is excluded from exports, reports and the public atlas list (`/atlas?demo=1` shows it).
 
@@ -156,11 +157,13 @@ uv sync
 cp .env.example .env            # add NEBIUS_API_KEY and TAVILY_API_KEY; never commit .env
 uv run waive keygen             # paste the two printed lines into .env (vault key, link secret)
 uv run waive doctor             # offline checks; add --live to call both APIs (1 Tavily credit)
-uv run waive demo seed          # the fictional St. Example Medical Center and its policy
+uv run waive demo reset         # the fictional St. Example Medical Center, its policy and the demo bill
 uv run waive serve              # http://localhost:8000
 ```
 
-On a phone on the same Wi-Fi, open `http://<your computer's IP>:8000` (`ipconfig getifaddr en0` on a Mac), tap *Start a case*, open the senior link and photograph a synthetic bill (`uv run waive corpus generate --count 1` writes `var/corpus/bill-000.jpg`) shown on the laptop screen. The web flow treats photos as personal data: until zero data retention is confirmed (`WAIVE_ZDR_CONFIRMED=true`), set `WAIVE_REQUIRE_ZDR=false` in `.env` for a synthetic-only session and set it back afterwards.
+`waive demo reset` writes the demo bill `var/demo/bill.jpg` (an $1,850 statement from St. Example to the fictional Rosa Alvarez), its ground truth `var/demo/bill.json` and a Social Security benefit letter `var/demo/letter.jpg`; it also deletes every case in the local database and puts the demo hospital back to version 1, so it is the command to run before each demo. `var/` is not committed. For more bills in other layouts, `uv run waive corpus generate --count 3` writes `var/corpus/bill-000.jpg` and onwards.
+
+On a phone on the same Wi-Fi, open `http://<your computer's IP>:8000` (`ipconfig getifaddr en0` on a Mac), tap *Start a case*, open the senior link and photograph `var/demo/bill.jpg` shown on the laptop screen, then `var/demo/letter.jpg` when asked for the Social Security letter. The web flow treats photos as personal data: until zero data retention is confirmed (`WAIVE_ZDR_CONFIRMED=true`), set `WAIVE_REQUIRE_ZDR=false` in `.env` for a synthetic-only session and set it back afterwards.
 
 Build the atlas for a state (spends credits — about 5 Tavily credits and one cent of Token Factory per hospital):
 
@@ -192,8 +195,8 @@ The admin console (`/admin/login`) switches on when `WAIVE_ADMIN_TOKEN` (16+ cha
 | `waive eval bills [--corpus DIR] [--limit N] [--out PATH]` | Per-field extraction accuracy on the corpus | yes (vision) |
 | `waive db upgrade` | Create missing tables and columns | no |
 | `waive demo seed` | Add the fictional St. Example hospital | no |
-| `waive demo reset [--out DIR] [--keep-files]` | Delete every case, reset the demo hospital, regenerate the demo images | no |
-| `waive demo gallery [--out DIR] [--chrome PATH] [--live] [--port N] [--atlas-ccn X] [--no-diagrams]` | Screenshots and diagrams for the Devpost gallery | only with `--live` |
+| `waive demo reset [--out DIR] [--keep-files]` | Delete every case, put the demo hospital back to version 1 and rewrite `bill.jpg`, `bill.json` and `letter.jpg` in `var/demo/` (`--out` elsewhere; `--keep-files` leaves the images alone) | no |
+| `waive demo gallery [--out DIR] [--chrome PATH] [--live] [--port N] [--atlas-ccn X] [--diagrams/--no-diagrams]` | Photograph the demo flow and the atlas pages with headless Chrome and export this file's diagrams through kroki.io into `docs/devpost/gallery/`; creates one demo case, so run `demo reset` afterwards | only with `--live` (the vision model reads the two demo images, about $0.01) |
 | `waive demo forget-cases` | Delete every case (all personal data) | no |
 | `waive learn rebuild --ccn X` | Re-structure one sheet from stored documents and approved patient photos | yes (Token Factory) |
 | `waive learn publish-reported --state XX` | Publish patient-reported fields that reached the 5-case threshold | no |
@@ -249,9 +252,11 @@ src/waive/
   rules/       fpl, eligibility, deadlines, explain
   web/         app factory, routes, templates, static CSS
   cli.py       the `waive` command
-  demo.py      the fictional demo hospital; deleting every case
+  demo.py      the fictional demo hospital; `demo reset`: delete every case, re-seed it, write the demo images
+  gallery.py   `demo gallery`: scripted demo case, headless Chrome screenshots, README diagrams via kroki.io
 data/atlas/    open-data exports (CC BY 4.0) · data/seed/  dated CMS snapshots
-docs/          design spec, phase plans, reports, Devpost material
+docs/          design spec, phase plans, reports; docs/devpost/  submission text, demo script, checklist, gallery
+var/           not committed: SQLite database, usage ledger, var/demo/ (bill.jpg, bill.json, letter.jpg), var/corpus/
 tests/unit/    everything runs offline
 ```
 
