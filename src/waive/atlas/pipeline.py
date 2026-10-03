@@ -170,6 +170,15 @@ def build_hospital(
             repo.add_review_item(session, ccn, "crosscheck_failed", {"error": str(error)[:300]})
             result.notes.append("cross-check model gave no usable output")
         else:
+            # A disagreement only counts when the cross-check's own quote verifies; an
+            # ungrounded value (for example a bare "300%") cannot veto a verified primary.
+            secondary = trim_quotes(secondary, texts)
+            ungrounded = [path for path, _ in verify_sheet(secondary, texts).rejected]
+            if ungrounded:
+                secondary = drop_fields(secondary, ungrounded)
+                result.notes.append(
+                    "cross-check values ignored (unverified): " + ", ".join(ungrounded)
+                )
             conflicts = critical_conflicts(sheet, secondary)
             if conflicts:
                 repo.add_review_item(session, ccn, "conflict", {"paths": conflicts})

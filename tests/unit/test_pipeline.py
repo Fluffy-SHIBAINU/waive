@@ -43,9 +43,14 @@ class FakeGateway:
         ]
 
     def extract(self, urls, **kwargs):
-        return [ExtractedPage(url, SAMPLE_POLICY_TEXT) for url in urls]
+        return [ExtractedPage(url, POLICY_TEXT) for url in urls]
 
 
+OTHER_SENTENCE = (
+    "Patients with household income at or below 300% of the Federal Poverty Guidelines may "
+    "receive help from the Health Safety Net."
+)
+POLICY_TEXT = SAMPLE_POLICY_TEXT + "\n" + OTHER_SENTENCE + "\n"
 FREE_CARE_QUOTE = (
     "household income at or below 250% of the Federal Poverty Guidelines are eligible for free care"
 )
@@ -74,7 +79,12 @@ class FakeAI:
             raise limit
         free_care = None
         if limit is not None:
-            value, quote = limit if isinstance(limit, tuple) else (limit, FREE_CARE_QUOTE)
+            if isinstance(limit, tuple):
+                value, quote = limit
+            else:
+                # "300" is grounded in the document's extra sentence; anything else quotes the
+                # free-care sentence (which only verifies for 250).
+                value, quote = limit, (OTHER_SENTENCE if limit == "300" else FREE_CARE_QUOTE)
             free_care = DraftField(value=value, quote=quote, source_id=source_id)
         return SheetDraft(
             free_care_max_fpl=free_care,
@@ -112,6 +122,20 @@ def test_build_hospital_publishes_verified_sheet_and_logs_rejections():
         kinds = sorted(item.kind for item in repo.open_review_items(session, "229999"))
         assert kinds == ["verification"]
         assert repo.get_hospital(session, "229999").website_domain == "example.org"
+
+
+def test_ungrounded_cross_check_disagreement_cannot_veto_a_verified_primary():
+    engine = make_engine_with_hospital()
+    with session_scope(engine) as session:
+        # The fast model says 999 but quotes the free-care sentence, which does not contain 999.
+        ai = FakeAI(free_limit_for_fast=("999", FREE_CARE_QUOTE))
+        result = build_hospital(session, FakeGateway(), ai, "229999", TODAY)
+        assert result.outcome == "published"
+        sheet, _ = repo.latest_sheet(session, "229999")
+        assert sheet.eligibility.free_care_max_fpl.value == 250
+        assert any(note.startswith("cross-check values ignored") for note in result.notes)
+        kinds = sorted(item.kind for item in repo.open_review_items(session, "229999"))
+        assert "conflict" not in kinds
 
 
 def review_detail(session, ccn, kind):
@@ -180,22 +204,19 @@ def test_tiebreak_siding_with_the_secondary_publishes_its_value_and_quote():
         }
 
 
-def test_tiebreak_cannot_hand_the_sheet_an_unverifiable_cross_check_value():
-    """The fast model's quote does not contain its value, so even with the tie-break on its side
-    the primary stays and the conflict stands."""
+def test_unverifiable_cross_check_value_never_reaches_the_tiebreak():
+    """The fast model's quote does not contain its value: the disagreement is dropped before any
+    tie-break runs, the primary is published, and no conflict is recorded."""
     engine = make_engine_with_hospital()
     with session_scope(engine) as session:
-        ai = FakeAI(free_limit_for_fast="300", free_limit_for_tiebreak="300")
+        ai = FakeAI(free_limit_for_fast=("300", FREE_CARE_QUOTE), free_limit_for_tiebreak="300")
         result = build_hospital(session, FakeGateway(), ai, "229999", TODAY)
-        assert result.outcome == "held"
-        assert "critical fields disagree: eligibility.free_care_max_fpl" in result.notes
-        assert (
-            "eligibility.free_care_max_fpl: cross-check quote failed verification" in result.notes
-        )
+        assert result.outcome == "published"
+        assert not any(note.startswith("critical fields disagree") for note in result.notes)
         sheet, _ = repo.latest_sheet(session, "229999")
         assert sheet.eligibility.free_care_max_fpl.value == 250
-        detail = review_detail(session, "229999", "tiebreak")["eligibility.free_care_max_fpl"]
-        assert detail["verdict"] == "unverified"
+        kinds = {item.kind for item in repo.open_review_items(session, "229999")}
+        assert "conflict" not in kinds and "tiebreak" not in kinds
 
 
 def test_failed_tiebreak_call_keeps_the_hold_and_is_recorded():
