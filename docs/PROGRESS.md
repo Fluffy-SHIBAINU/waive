@@ -2,8 +2,8 @@
 
 Last updated: 2026-10-03 00:45 ET (loop iteration 10 done)
 Current phase: 2 nearly done (Massachusetts atlas: 46 hospitals, 27 published (59%), 17 held, 2 without documents; Tavily cap for Phase 2 reached; exit criterion of 80% needs gate U2.2 for the 11 hospitals whose stored text has no income rules) — Phases 0, 1, 3 and 4 are complete
-Current plan: `docs/superpowers/plans/2026-10-02-waive-master-plan.md` (Phase 5 section) until the Phase 5 plan exists
-Next task: 5.0 — write the detailed Phase 5 plan (learning loop) with superpowers:writing-plans from the master plan's Phase 5 section and spec §10–§12; then 5.1 onward. Phase 2 resumes (2.8k, 2.10 exit) when U2.2 is closed.
+Current plan: `docs/superpowers/plans/2026-10-02-waive-phase-5-learning-loop.md`
+Next task: 5.1 Photo classifier and paper intake routes; then 5.2–5.9 in order. Phase 2 resumes (2.8k, 2.10 exit) when U2.2 is closed.
 
 Master plan: `docs/superpowers/plans/2026-10-02-waive-master-plan.md` · Spec: `docs/superpowers/specs/2026-10-02-waive-design.md` · Loop rules: `docs/LOOP.md`
 
@@ -109,7 +109,17 @@ Plan: `docs/superpowers/plans/2026-10-02-waive-phase-4-phone-app.md`
 - [x] 4.9 Done 2026-10-03 (5a141e8, a7d6f23; 187 tests): `repo.DEMO_CCNS`/`is_demo`; exports, the coverage report and the `/atlas` list skip the demo hospital (`/atlas?demo=1` shows it; `/atlas/229999` stays reachable for the phone demo; case matching unchanged). Report now: 46 hospitals, 23 published (50%).
 
 ### Phase 5 — Learning loop
-- [ ] 5.0 Write detailed Phase 5 plan
+Plan: `docs/superpowers/plans/2026-10-02-waive-phase-5-learning-loop.md` (781c6a3; 9 tasks; also adds `service.get_row/load_sealed/save_sealed`, `repo.set_review_status/sheet_versions`, `publish.carry_over_reported`, `Apply.documents_reported`)
+- [x] 5.0 Write detailed Phase 5 plan
+- [ ] 5.1 Photo classifier and paper intake routes
+- [ ] 5.2 Public document contributions (personal-info check, review queue, rebuild from sources)
+- [ ] 5.3 Gap check and one skippable ask
+- [ ] 5.4 Outcome capture (decision/request letters, check-ins)
+- [ ] 5.5 Compare and triage (case_issue, sheet_missing, sheet_wrong, hospital_slip)
+- [ ] 5.6 Aggregation thresholds (5 cases to publish reported fields; flags at 3/5)
+- [ ] 5.7 Scoreboard and priority re-checks
+- [ ] 5.8 Admin console behind `WAIVE_ADMIN_TOKEN`
+- [ ] 5.9 Simulation test of the whole loop
 
 ### Phase 6 — Deploy on Nebius AI Cloud
 - [ ] 6.0 Write detailed Phase 6 plan
@@ -148,6 +158,7 @@ Plan: `docs/superpowers/plans/2026-10-02-waive-phase-4-phone-app.md`
 
 - 2026-10-02 15:40 — Spec, master plan, Phase 0 and Phase 1 plans written. Ready for task 0.1.
 - 2026-10-02 16:20 — Phase 0 tasks 0.1–0.6 done by an implementation subagent: 28 tests pass, ruff clean. Deviations: `extend-exclude = ["docs"]` for ruff (it was reformatting code blocks in plan files); `AIClient` now creates an explicit `httpx.Client` when none is given (openai 3.x's default transport bypasses respx). Incident: one early test run reached the real Token Factory endpoint with a fake key (401, no secret leaked, no spend) → task 0.8 added. Spend: 0.
+- 2026-10-03 01:15 — Loop iteration 11: task 5.0 done by a subagent (Phase 5 plan, 3,856 lines).
 - 2026-10-03 00:45 — Loop iteration 10: task 2.8j (tie-break by a subagent, grounded-disagreement rule inline; 198 tests); four MGB hospitals published → 27 of 46. Spend 389 credits / $1.52.
 - 2026-10-03 00:05 — Loop iteration 9: task 4.9 done by a subagent (187 tests); demo hospital hidden from public outputs.
 - 2026-10-02 23:40 — Loop iteration 8: task 2.9c done inline (183 tests); overlay restored/applied on all 45 MA sheets for free. Report: 24 published (23 real + demo), 21 held, 2 none.
