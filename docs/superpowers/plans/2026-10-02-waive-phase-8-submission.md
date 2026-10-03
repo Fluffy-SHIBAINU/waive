@@ -1725,13 +1725,14 @@ git commit -m "feat: waive demo gallery — headless Chrome screenshots and krok
 ### Task 8.6: Pre-submission checklist and user gates U8.1–U8.4
 
 **Files:**
-- Create: `docs/devpost/checklist.md`, `tests/unit/test_devpost_docs.py`
+- Create: `docs/devpost/checklist.md`
+- Modify: `tests/unit/test_devpost_docs.py` (created early in 8.3 and extended in 8.4 under the tests-first rule; it already holds the shot-list test, the two submission tests and a ZDR-gate guard)
 
 **Interfaces:** none in code. The test reads the three Devpost documents from 8.3–8.5.
 
-- [ ] **Step 1: Write the failing tests**
+- [ ] **Step 1: Add the failing assertions**
 
-`tests/unit/test_devpost_docs.py`:
+In `tests/unit/test_devpost_docs.py`, replace the marker comment `# Task 8.6 adds the checklist.md gate assertions (U8.1–U8.4) here.` at the end of `test_submission_has_every_required_section` with the `checklist` lines shown below. The rest of the file already exists as shown (or stronger) and is not touched. For reference, the file as planned:
 
 ```python
 """The Devpost material must be complete, honest and short enough (Phase 8.6)."""
@@ -1765,7 +1766,11 @@ def test_submission_has_every_required_section():
 
 
 def test_devpost_documents_have_no_tbd():
-    for path in sorted(DEVPOST.glob("*.md")):
+    paths = sorted(DEVPOST.glob("*.md"))
+    assert paths, "no Devpost documents found; the glob must not pass vacuously"
+    names = {path.name for path in paths}
+    assert {"submission.md", "demo-script.md"} <= names
+    for path in paths:
         assert "TBD" not in path.read_text(encoding="utf-8"), path.name
 
 
@@ -1787,7 +1792,7 @@ def test_demo_script_shot_list_is_contiguous_and_under_three_minutes():
 - [ ] **Step 2: Run them to make sure they fail**
 
 Run: `uv run pytest tests/unit/test_devpost_docs.py -v`
-Expected: `test_submission_has_every_required_section` FAILS (`checklist.md` missing); the other two PASS already (8.3 and 8.4 were written to these rules).
+Expected: `test_submission_has_every_required_section` FAILS on the new `checklist` assertions (`checklist.md` missing); the other tests in the file PASS already (8.3 and 8.4 were written to these rules).
 
 - [ ] **Step 3: Write the checklist**
 
@@ -1870,7 +1875,7 @@ truth for spend; the PROGRESS Spend table is a copy of it); fix any drift in one
 - [ ] **Step 4: Run the tests, lint, format**
 
 Run: `uv run ruff format . && uv run ruff check . && uv run pytest`
-Expected: about 302 tests pass (299 + 3).
+Expected: about 305 tests pass (298 after 8.4's review fixes, plus 8.5's seven; 8.6 adds assertions to an existing test, not new tests).
 
 Also run the free parts of the dry run now: `grep -rnE "T[B]D" README.md docs/devpost` → nothing; `grep -rn "USER FILLS" README.md data/atlas/LICENSE.md docs/devpost | wc -l` → a handful of lines (the user's fields; they disappear at U8.1–U8.3).
 
@@ -1885,7 +1890,7 @@ git commit -m "docs: pre-submission checklist mapping Devpost requirements to ev
 
 ## Phase 8 exit checks (the orchestrator runs these; record results in `docs/PROGRESS.md`)
 
-- [ ] `uv run ruff format . && uv run ruff check . && uv run pytest` green; test count recorded (expected about 302).
+- [ ] `uv run ruff format . && uv run ruff check . && uv run pytest` green; test count recorded (expected about 305).
 - [ ] `README.md` renders on GitHub with both Mermaid diagrams (check after U8.1); `tests/unit/test_readme.py` passes.
 - [ ] `docs/devpost/gallery/` holds 12 screenshots, 2 diagrams, `packet-sample.pdf` and `README.md`; every PNG under 1 MB.
 - [ ] `docs/devpost/demo-script.md` totals 2:50 (test enforces ≤ 175 s and contiguity).

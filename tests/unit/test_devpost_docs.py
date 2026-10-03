@@ -27,8 +27,21 @@ def test_submission_has_every_required_section():
 
 
 def test_devpost_documents_have_no_tbd():
-    for path in sorted(DEVPOST.glob("*.md")):
+    paths = sorted(DEVPOST.glob("*.md"))
+    assert paths, "no Devpost documents found; the glob must not pass vacuously"
+    names = {path.name for path in paths}
+    assert {"submission.md", "demo-script.md"} <= names
+    for path in paths:
         assert "TBD" not in path.read_text(encoding="utf-8"), path.name
+
+
+def test_submission_names_the_open_zdr_gate():
+    # While U0.4 is open nobody has confirmed zero data retention or checked the Token
+    # Factory console, so the submission must point at the gate rather than assert a result.
+    progress = (DEVPOST.parent / "PROGRESS.md").read_text(encoding="utf-8")
+    text = (DEVPOST / "submission.md").read_text(encoding="utf-8")
+    if "- [ ] **U0.4**" in progress:
+        assert "gate U0.4" in text
 
 
 def test_demo_script_shot_list_is_contiguous_and_under_three_minutes():
