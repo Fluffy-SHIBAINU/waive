@@ -7,10 +7,10 @@ from waive.atlas.schema import DiscountTier, DocType, ProcedureSheet, StateProgr
 from waive.web.plain import plain_lines
 
 PUBLISHED_ATLAS = Path(__file__).resolve().parents[2] / "data" / "atlas" / "ma.json"
-# Published before the structurer refused lists where the schema wants text, so the stored value
-# is a stringified list. Clearing it takes `waive atlas build --ccn 220029 --reuse-sources` (a
-# paid Token Factory call) and a fresh `waive atlas export --state MA`; remove the entry then.
-PENDING_REBUILD = {("220029", "contacts.phone")}
+# Sheets published before the structurer refused lists where the schema wants text held
+# stringified lists (Anna Jaques, contacts.phone). Those were rebuilt with `--reuse-sources` and
+# re-exported; the set stays empty unless a new case slips through.
+PENDING_REBUILD: set[tuple[str, str]] = set()
 
 
 def test_fpl_limit_reads_as_a_share_of_the_poverty_level():

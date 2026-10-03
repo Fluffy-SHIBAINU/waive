@@ -28,12 +28,12 @@ Waive never asks for money, card numbers or bank logins. Results are estimates, 
 | Area | Where it stands |
 |---|---|
 | Massachusetts atlas | 46 nonprofit acute-care and critical-access hospitals in the registry; **27 published sheets (59 %)**, 17 held (no income rules in the reachable text, discount tiers the schema cannot parse, or an unresolved cross-model conflict), 2 with no documents found. Every published documented field passed exact-quote verification. All 44 sheets (published and held) carry a cited Massachusetts Health Safety Net entry from mass.gov. Report: `docs/reports/atlas-ma.md` |
-| National registry | **2,703** nonprofit hospitals seeded from CMS for all 50 states and DC; 27 published nationally (1 %), core fields documented on 67 % of published sheets, 115 open review items. Scouting beyond Massachusetts waits for a credit-budget decision (about 5 Tavily credits per hospital). Report: `docs/reports/atlas-national.md` |
+| National registry | **2,703** nonprofit hospitals seeded from CMS for all 50 states and DC; 27 published nationally (1 %), core fields documented on 67 % of published sheets, 116 open review items. Scouting beyond Massachusetts waits for a credit-budget decision (about 5 Tavily credits per hospital). Report: `docs/reports/atlas-national.md` |
 | Bill reading | 30 synthetic bills (several layouts, rotations, blur): hospital name 100 %, statement date 97 %, amount due 100 %, FAP phone 100 %, FAP web address 100 %, collection notice 100 %. Report: `docs/reports/bill-eval.md` |
 | Real bills | None yet, by design: photos carrying personal data are refused until zero data retention is confirmed for the Token Factory project (`WAIVE_ZDR_CONFIRMED=true`). Everything so far ran on synthetic bills and letters |
 | Learning loop | Implemented and exercised end to end by a simulation test (three denials → re-scout → new version after review → open cases re-evaluated; a missing document appears as "reported by patients" after 5 cases; a hospital slip is flagged after 3). No real outcomes yet |
 | Deployment | See the status line at the top |
-| Spend to date | 389 Tavily credits, $1.52 on Token Factory, $0 on AI Cloud |
+| Spend to date | 389 Tavily credits, $1.53 on Token Factory, $0 on AI Cloud |
 | Tests | 300+ unit, contract and simulation tests; none opens a network socket |
 
 The demo hospital, **St. Example Medical Center** (CCN 229999), is fictional and is excluded from exports, reports and the public atlas list (`/atlas?demo=1` shows it).
@@ -216,7 +216,7 @@ The admin console (`/admin/login`) switches on when `WAIVE_ADMIN_TOKEN` (16+ cha
 
 ## Costs
 
-Actual spend to date (from the usage ledger, `uv run waive doctor` prints the totals): **389 Tavily credits, $1.52 Token Factory, $0 AI Cloud**.
+Actual spend to date (from the usage ledger, `uv run waive doctor` prints the totals): **389 Tavily credits, $1.53 Token Factory, $0 AI Cloud**.
 
 | Model (Token Factory) | Input $/M tokens | Output $/M tokens |
 |---|---|---|

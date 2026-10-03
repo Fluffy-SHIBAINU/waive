@@ -32,7 +32,7 @@ Rosa is 74 and lives on $1,900 a month from Social Security. After an ER visit s
 
 **A learning loop.** Photos of the hospital's decision letters become outcomes. An outcome that contradicts the sheet triggers a re-scout, a new version after review, and, after enough distinct cases, an accountability flag for a hospital that denies people its own policy says qualify. Patients' photos of public documents fill gaps after an automated personal-information check and admin review. Only enums, income bands and one-way hashes are stored.
 
-**Where it stands (2026-10-03, honestly):** 46 Massachusetts nonprofit acute-care and critical-access hospitals in the registry, 27 published sheets (59 %), 17 held, 2 without documents; 2,703 hospitals seeded nationally from CMS; bill reading on 30 synthetic bills: hospital name 100 %, statement date 97 %, amount due 100 %; no real bills processed yet because photos with personal data are refused until zero data retention is confirmed for the Token Factory project. Spend so far: 389 Tavily credits, $1.52 of Token Factory.
+**Where it stands (2026-10-03, honestly):** 46 Massachusetts nonprofit acute-care and critical-access hospitals in the registry, 27 published sheets (59 %), 17 held, 2 without documents; 2,703 hospitals seeded nationally from CMS; bill reading on 30 synthetic bills: hospital name 100 %, statement date 97 %, amount due 100 %; no real bills processed yet because photos with personal data are refused until zero data retention is confirmed for the Token Factory project. Spend so far: 389 Tavily credits, $1.53 of Token Factory.
 
 ## How we built it
 
@@ -51,7 +51,7 @@ One Python service (FastAPI, server-rendered pages, plain CSS sized for older ey
 
 **Privacy by construction**: every model call flagged as personal data raises until zero data retention is confirmed; photos live in memory only; personal fields are AES-GCM encrypted; access is by signed, scoped, revocable links; logs are filtered; the learning tables hold only enums, bands and hashes and an audit command proves it.
 
-**Spend by construction**: every Tavily and Token Factory call passes a governor with hard caps and writes a ledger line; the scheduler adds a daily budget. The whole Massachusetts atlas, including every debugging re-run, cost 389 credits and $1.52.
+**Spend by construction**: every Tavily and Token Factory call passes a governor with hard caps and writes a ledger line; the scheduler adds a daily budget. The whole Massachusetts atlas, including every debugging re-run, cost 389 credits and $1.53.
 
 Built in a single day plus a self-paced build loop with Claude Code: a design spec, a master plan, and one detailed plan per phase, executed one task per iteration with tests first (280+ tests, none opens a network socket).
 
@@ -65,7 +65,7 @@ Built in a single day plus a self-paced build loop with Claude Code: a design sp
 
 ## Accomplishments that we're proud of
 
-- 27 Massachusetts hospitals with published, cited, versioned procedure sheets, every documented field backed by a quote that verifies against the source — for $1.52 and 389 credits.
+- 27 Massachusetts hospitals with published, cited, versioned procedure sheets, every documented field backed by a quote that verifies against the source — for $1.53 and 389 credits.
 - A phone flow a 74-year-old can finish without typing: photo, read-back, two questions, photo, answer read aloud.
 - A learning loop that cannot be poisoned: enums only, five distinct cases before anything patient-reported is published, admin review before a document changes a rule, accountability flags after three and five cases.
 - Honest numbers everywhere, including the ones that are not flattering.
@@ -91,7 +91,7 @@ Python 3.12 · uv · FastAPI · Jinja2 · SQLAlchemy 2 · SQLite / PostgreSQL ·
 
 ## Feedback on Nebius and NVIDIA tools
 
-**Nebius Token Factory — what worked.** The OpenAI-compatible API worked on the first try with the stock `openai` SDK: `/models` for the catalog, `response_format: {"type": "json_object"}`, `image_url` data URLs for vision, usage counts in every response. Pricing is clear and low ($0.30 / $0.90 per million tokens for Nemotron 3 Super, $0.06 / $0.24 for Nano and Lightning): all of our Token Factory use — structuring 46 hospitals many times over with cross-checks and tie-breaks, plus the 30-bill vision evaluation — cost $1.52. Super's 262K context would hold whole policy PDFs; we cap each document at 40,000 characters with keyword passage selection to keep a structuring pass at about a cent per hospital. Lightning's 1M context is tempting for system-wide documents.
+**Nebius Token Factory — what worked.** The OpenAI-compatible API worked on the first try with the stock `openai` SDK: `/models` for the catalog, `response_format: {"type": "json_object"}`, `image_url` data URLs for vision, usage counts in every response. Pricing is clear and low ($0.30 / $0.90 per million tokens for Nemotron 3 Super, $0.06 / $0.24 for Nano and Lightning): all of our Token Factory use — structuring 46 hospitals many times over with cross-checks and tie-breaks, plus the 30-bill vision evaluation — cost $1.53. Super's 262K context would hold whole policy PDFs; we cap each document at 40,000 characters with keyword passage selection to keep a structuring pass at about a cent per hospital. Lightning's 1M context is tempting for system-wide documents.
 
 **Nebius Token Factory — what we would change.**
 1. **Zero data retention needs a visible, documented switch.** The HIPAA page says ZDR "must be enabled for the Token Factory scope" and the terms say users can opt out of storage, but we found no docs page describing it and have not yet located a console setting. A per-project toggle plus a response header (or a `/models`-style endpoint) that confirms the current retention mode would let an app like ours verify it at startup instead of asking an operator to set `WAIVE_ZDR_CONFIRMED=true` by hand.
