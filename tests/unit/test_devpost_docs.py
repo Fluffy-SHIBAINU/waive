@@ -7,6 +7,30 @@ DEVPOST = Path(__file__).resolve().parents[2] / "docs" / "devpost"
 SHOT_ROW = re.compile(r"^\| \d+ \| (\d):(\d\d)–(\d):(\d\d) \| (\d+) \|")
 
 
+def test_submission_has_every_required_section():
+    text = (DEVPOST / "submission.md").read_text(encoding="utf-8")
+    for heading in (
+        "## Inspiration",
+        "## What it does",
+        "## How we built it",
+        "## Challenges we ran into",
+        "## Accomplishments that we're proud of",
+        "## What we learned",
+        "## What's next for Waive",
+        "## Built with",
+        "## Feedback on Nebius and NVIDIA tools",
+        "## Best Use of Tavily",
+    ):
+        assert heading in text, heading
+    assert "not an NVIDIA model" in text  # the vision model, stated plainly
+    # Task 8.6 adds the checklist.md gate assertions (U8.1–U8.4) here.
+
+
+def test_devpost_documents_have_no_tbd():
+    for path in sorted(DEVPOST.glob("*.md")):
+        assert "TBD" not in path.read_text(encoding="utf-8"), path.name
+
+
 def test_demo_script_shot_list_is_contiguous_and_under_three_minutes():
     text = (DEVPOST / "demo-script.md").read_text(encoding="utf-8")
     rows = [m for m in (SHOT_ROW.match(line) for line in text.splitlines()) if m]
