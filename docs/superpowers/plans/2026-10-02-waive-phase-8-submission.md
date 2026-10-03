@@ -1781,7 +1781,7 @@ def test_demo_script_shot_list_is_contiguous_and_under_three_minutes():
         assert end - start == int(row.group(5)), "the Seconds column disagrees with the times"
         clock = end
     assert clock <= 175, f"the video runs {clock}s; the limit is 180 with a margin"
-    assert f"{clock // 60}:{clock % 60:02d}" in text  # the stated total matches the rows
+    assert f"Total: **{clock // 60}:{clock % 60:02d}**" in text  # the stated total matches the rows
 ```
 
 - [ ] **Step 2: Run them to make sure they fail**
