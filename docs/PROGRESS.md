@@ -1,9 +1,9 @@
 # Waive build progress
 
-Last updated: 2026-10-02 23:40 ET (loop iteration 8 done)
-Current phase: 2 (Massachusetts atlas: all 46 hospitals attempted; 23 real hospitals published, 21 held, 2 without documents; Tavily cap for Phase 2 reached) — Phases 0, 1, 3 and 4 are complete
+Last updated: 2026-10-03 00:05 ET (loop iteration 9 done)
+Current phase: 2 (Massachusetts atlas: 46 hospitals, 23 published (50%), 21 held, 2 without documents; Tavily cap for Phase 2 reached) — Phases 0, 1, 3 and 4 are complete
 Current plan: `docs/superpowers/plans/2026-10-02-waive-phase-2-ma-atlas.md`
-Next task: 4.9 (keep the fictional demo hospital out of exports and the public atlas list; small), then 2.8j (cross-model conflicts, free), then 5.0 (write the Phase 5 plan). No more Tavily spend on Phase 2 until gate U2.2 is closed.
+Next task: 2.8j (cross-model conflicts on Mass General Brigham sheets, free), then 5.0 (write the Phase 5 plan with superpowers:writing-plans from the master plan's Phase 5 section). No more Tavily spend on Phase 2 until gate U2.2 is closed.
 
 Master plan: `docs/superpowers/plans/2026-10-02-waive-master-plan.md` · Spec: `docs/superpowers/specs/2026-10-02-waive-design.md` · Loop rules: `docs/LOOP.md`
 
@@ -106,7 +106,7 @@ Plan: `docs/superpowers/plans/2026-10-02-waive-phase-4-phone-app.md`
 - [x] 4.6 Public atlas pages (bd7d3cc)
 - [x] 4.7 Demo seed + `waive demo seed|forget-cases` (80ffcac). `uv run waive serve` verified locally: `/healthz` and `/` return 200. Vault secrets were generated into `.env` by the orchestrator (`waive keygen`). Gate U4.1 (phone test) is open.
 - [ ] 4.8 Accessibility and E2E checks (optional)
-- [ ] 4.9 The fictional demo hospital (CCN 229999, St. Example) now sits in the real `var/waive.db` and appears in `atlas export/report`. Either exclude it from exports and the public atlas list (flag demo rows) or run demos against a separate `WAIVE_DATABASE_URL`.
+- [x] 4.9 Done 2026-10-03 (5a141e8, a7d6f23; 187 tests): `repo.DEMO_CCNS`/`is_demo`; exports, the coverage report and the `/atlas` list skip the demo hospital (`/atlas?demo=1` shows it; `/atlas/229999` stays reachable for the phone demo; case matching unchanged). Report now: 46 hospitals, 23 published (50%).
 
 ### Phase 5 — Learning loop
 - [ ] 5.0 Write detailed Phase 5 plan
@@ -148,6 +148,7 @@ Plan: `docs/superpowers/plans/2026-10-02-waive-phase-4-phone-app.md`
 
 - 2026-10-02 15:40 — Spec, master plan, Phase 0 and Phase 1 plans written. Ready for task 0.1.
 - 2026-10-02 16:20 — Phase 0 tasks 0.1–0.6 done by an implementation subagent: 28 tests pass, ruff clean. Deviations: `extend-exclude = ["docs"]` for ruff (it was reformatting code blocks in plan files); `AIClient` now creates an explicit `httpx.Client` when none is given (openai 3.x's default transport bypasses respx). Incident: one early test run reached the real Token Factory endpoint with a fake key (401, no secret leaked, no spend) → task 0.8 added. Spend: 0.
+- 2026-10-03 00:05 — Loop iteration 9: task 4.9 done by a subagent (187 tests); demo hospital hidden from public outputs.
 - 2026-10-02 23:40 — Loop iteration 8: task 2.9c done inline (183 tests); overlay restored/applied on all 45 MA sheets for free. Report: 24 published (23 real + demo), 21 held, 2 none.
 - 2026-10-02 23:15 — Loop iteration 7: tasks 2.8i/2.8g/2.8f done by a subagent (182 tests); free re-run of 29 held hospitals; follow-ups 2.9c, 2.8j, 2.8k added. Spend 389 credits / ≈$1.25.
 - 2026-10-02 22:30 — Loop iteration 6: task 2.10 live runs finished (all 46 attempted, 15 published); Phase 2 Tavily cap reached (389); gates U2.1 and U2.2 opened; next work is free re-structuring.
