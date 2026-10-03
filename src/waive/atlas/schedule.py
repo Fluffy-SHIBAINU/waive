@@ -20,6 +20,7 @@ from sqlalchemy.orm import Session
 from waive.ai.client import AIClient
 from waive.atlas import repo
 from waive.atlas.pipeline import BuildResult, build_hospital
+from waive.atlas.refresh import refresh_hospital
 from waive.atlas.schema import HospitalRef
 from waive.atlas.tavily_gateway import TavilyGateway, make_tavily_gateway
 from waive.cases.extract import BillExtract
@@ -231,6 +232,20 @@ def _scout(
     entry: QueueEntry,
     today: date,
 ) -> BuildResult:
+    """Refresh by content hash when documents are stored and nobody contradicted the sheet; a
+    full re-scout (search, map, extract) for never-scouted hospitals, for re-scout requests, and
+    when every stored document is unreachable."""
+    if entry.has_sources and not entry.rescout_requested:
+        refreshed = refresh_hospital(session, gateway, ai, entry.ccn, today)
+        if refreshed.outcome == "restructured" and refreshed.build is not None:
+            return refreshed.build
+        if refreshed.outcome == "unchanged" and len(refreshed.unreachable) < refreshed.checked:
+            return BuildResult(
+                entry.ccn,
+                entry.name,
+                "skipped",
+                notes=[f"unchanged ({refreshed.checked} documents checked)"],
+            )
     return build_hospital(session, gateway, ai, entry.ccn, today, reuse_sources=False)
 
 
