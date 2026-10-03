@@ -1,5 +1,7 @@
 """FastAPI application factory."""
 
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
@@ -34,7 +36,23 @@ def create_app(
     engine = engine or make_engine(settings.database_url)
     init_db(engine)
     governor = make_governor(settings, engine)
-    app = FastAPI(title="Waive", docs_url=None, redoc_url=None)
+
+    @asynccontextmanager
+    async def lifespan(app: FastAPI):
+        # Phase 7: the scouting job lives inside the app only when WAIVE_SCHEDULER=on; it is off
+        # by default so a test client or a developer's `waive serve` never spends credits.
+        scheduler = None
+        if settings.scheduler == "on":
+            from waive.atlas.schedule import make_scheduler
+
+            scheduler = make_scheduler(engine, settings, governor, app.state.deps.ai)
+            scheduler.start()
+        app.state.scheduler = scheduler
+        yield
+        if scheduler is not None:
+            scheduler.shutdown(wait=False)
+
+    app = FastAPI(title="Waive", docs_url=None, redoc_url=None, lifespan=lifespan)
     app.state.settings = settings
     app.state.governor = governor
     app.state.deps = Deps(

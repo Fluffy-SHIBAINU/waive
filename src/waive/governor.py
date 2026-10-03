@@ -2,7 +2,7 @@
 
 import json
 from dataclasses import asdict, dataclass
-from datetime import UTC, datetime
+from datetime import UTC, date, datetime, timedelta
 from decimal import Decimal
 from pathlib import Path
 
@@ -51,9 +51,38 @@ class Ledger:
                 usd += Decimal(row["usd"])
         return units, usd
 
+    def events(self, provider: str, since: str | None = None) -> list[UsageEvent]:
+        """Recorded calls for `provider`, oldest first. `since` is an ISO-8601 UTC timestamp in
+        the format `_now()` writes; timestamps are compared as text, which is correct for that
+        format."""
+        found: list[UsageEvent] = []
+        if not self._path.exists():
+            return found
+        for line in self._path.read_text(encoding="utf-8").splitlines():
+            if not line.strip():
+                continue
+            row = json.loads(line)
+            if row["provider"] != provider or (since is not None and row["ts"] < since):
+                continue
+            found.append(
+                UsageEvent(
+                    row["provider"],
+                    Decimal(row["units"]),
+                    Decimal(row["usd"]),
+                    row["purpose"],
+                    row["ts"],
+                )
+            )
+        return found
+
 
 def _now() -> str:
     return datetime.now(UTC).isoformat(timespec="seconds")
+
+
+def day_start(today: date) -> str:
+    """The timestamp `_now()` writes at midnight UTC on `today`; the lower bound of a day."""
+    return f"{today.isoformat()}T00:00:00+00:00"
 
 
 class Governor:
@@ -88,6 +117,25 @@ class Governor:
     def summary(self) -> dict[str, tuple[Decimal, Decimal]]:
         return {provider: self._ledger.totals(provider) for provider in ("tavily", "token_factory")}
 
+    def tavily_used_since(self, since: str) -> Decimal:
+        return sum((event.units for event in self._ledger.events("tavily", since)), Decimal("0"))
+
+    def tavily_used_today(self, today: date) -> Decimal:
+        """Credits spent in the UTC day `today`; the scheduler's daily budget counts these."""
+        return self.tavily_used_since(day_start(today))
+
+    def tavily_by_day(self, since: date, today: date) -> list[tuple[str, Decimal]]:
+        """Credits per UTC day from `since` to `today` inclusive, zero-filled, oldest first."""
+        days = {
+            (since + timedelta(days=n)).isoformat(): Decimal("0")
+            for n in range((today - since).days + 1)
+        }
+        for event in self._ledger.events("tavily", day_start(since)):
+            day = event.ts[:10]
+            if day in days:
+                days[day] += event.units
+        return sorted(days.items())
+
 
 class DbLedger:
     """The `Ledger` interface stored in the `usage_events` table, so a stateless container keeps
@@ -112,6 +160,17 @@ class DbLedger:
             units += Decimal(row_units)
             usd += Decimal(row_usd)
         return units, usd
+
+    def events(self, provider: str, since: str | None = None) -> list[UsageEvent]:
+        query = select(UsageEventRow).where(UsageEventRow.provider == provider)
+        if since is not None:
+            query = query.where(UsageEventRow.ts >= since)
+        with session_scope(self._engine) as session:
+            rows = session.scalars(query.order_by(UsageEventRow.id)).all()
+        return [
+            UsageEvent(row.provider, Decimal(row.units), Decimal(row.usd), row.purpose, row.ts)
+            for row in rows
+        ]
 
 
 def make_ledger(settings: Settings, engine: Engine | None = None) -> Ledger | DbLedger:

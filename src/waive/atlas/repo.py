@@ -172,3 +172,8 @@ def sheet_versions(session: Session, ccn: str) -> list[SheetRow]:
     """Every stored version of a hospital's sheet, newest first, each with its stored diff."""
     query = select(SheetRow).where(SheetRow.ccn == ccn).order_by(SheetRow.version.desc())
     return list(session.scalars(query))
+
+
+def ccns_with_sheets(session: Session) -> set[str]:
+    """Hospitals that have at least one stored sheet version (any status)."""
+    return set(session.scalars(select(SheetRow.ccn).distinct()))

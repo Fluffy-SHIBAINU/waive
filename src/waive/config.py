@@ -55,6 +55,15 @@ class Settings(BaseSettings):
     cloud_pg_preset: str = "2vcpu-8gb"
     cloud_pg_disk_gib: int = 32
 
+    # Phase 7: unattended scouting (spec §8 step 8). Off by default; a long-running `waive serve`
+    # or the production container turns it on. Each tick scouts at most one hospital and stops
+    # once WAIVE_SCOUT_DAILY_CREDITS Tavily credits were spent in the current UTC day.
+    scheduler: Literal["on", "off"] = "off"
+    scheduler_interval_minutes: int = 30
+    # Comma-separated states the scheduler may touch; empty means every seeded state (gate U7.1).
+    scheduler_states: str = "MA"
+    scout_daily_credits: int = 50
+
     @model_validator(mode="after")
     def _production_needs_postgres(self) -> Self:
         if self.env == "production" and self.database_url.startswith("sqlite"):
