@@ -3,7 +3,7 @@
 Last updated: 2026-10-03 00:45 ET (loop iteration 10 done)
 Current phase: 2 nearly done (Massachusetts atlas: 46 hospitals, 27 published (59%), 17 held, 2 without documents; Tavily cap for Phase 2 reached; exit criterion of 80% needs gate U2.2 for the 11 hospitals whose stored text has no income rules) — Phases 0, 1, 3 and 4 are complete
 Current plan: `docs/superpowers/plans/2026-10-02-waive-phase-7-scale.md`
-Next task: 7.1 Scheduler and priority queue; then 7.2, 7.3 (no spend), 7.7 (metrics), then 8.0 (Phase 8 plan). Blocked until gates close: 6.1b (U6.0), 6.3 (U0.5), 6.4–6.8 (U6.1), 7.4 (U7.1), Phase 2 finish (U2.2).
+Next task: 7.7 `/metrics` page and national report (no spend); then 8.0 (Phase 8 plan), then 8.1–8.5 drafting (README, demo script, Devpost text — no gates until publishing). Blocked until gates close: 6.1b (U6.0), 6.3 (U0.5), 6.4–6.8 (U6.1), 7.4 (U7.1), 7.5/7.6 need a few credits (U2.2/U7.1), Phase 2 finish (U2.2).
 
 Master plan: `docs/superpowers/plans/2026-10-02-waive-master-plan.md` · Spec: `docs/superpowers/specs/2026-10-02-waive-design.md` · Loop rules: `docs/LOOP.md`
 
@@ -140,9 +140,9 @@ Plan: `docs/superpowers/plans/2026-10-02-waive-phase-6-deploy.md` (a0a989a; 8 ta
 ### Phase 7 — Always-on scouting and national scale
 Plan: `docs/superpowers/plans/2026-10-02-waive-phase-7-scale.md` (601f318; 7 tasks). Corrected estimate: national scouting ≈ 5 credits × 2,500–3,000 nonprofit hospitals ≈ 12,000–15,000 Tavily credits — more than the ≈8,000 credits the user has; gate U7.1 must choose states/priorities rather than "all".
 - [x] 7.0 Write detailed Phase 7 plan
-- [ ] 7.1 Scheduler and priority queue (`WAIVE_SCOUT_DAILY_CREDITS`, `WAIVE_SCHEDULER=on`, `waive atlas schedule`) — no spend
-- [ ] 7.2 Content-hash refresh (`atlas/refresh.py`) — no spend in tests
-- [ ] 7.3 National registry seed `waive atlas seed --all-states` — free (CMS API)
+- [x] 7.1 Scheduler and priority queue (c57e084; `WAIVE_SCHEDULER` off by default, `WAIVE_SCHEDULER_STATES`, `WAIVE_SCOUT_DAILY_CREDITS=50`, `waive atlas schedule --dry-run`; apscheduler 3.11 added)
+- [x] 7.2 Content-hash refresh (33f666d; `waive atlas refresh`, refresh-first scheduling)
+- [x] 7.3 National registry seed (782cd15, 4f957d1): 51/51 jurisdictions, 5,354 CMS rows, **2,703 nonprofit acute-care/critical-access hospitals** in the registry; snapshots in `data/seed/` (7.9 MB). CA alone ≈ 181 hospitals ≈ 905 credits. 279 tests.
 - [ ] 7.4 Budgeted national scouting (gate U7.1; `WAIVE_NATIONAL_SCOUTING`)
 - [ ] 7.5 State repositories as sources (CA HCAI, WA DOH)
 - [ ] 7.6 IRS Form 990 / ProPublica cross-check (optional)
@@ -179,6 +179,7 @@ Plan: `docs/superpowers/plans/2026-10-02-waive-phase-7-scale.md` (601f318; 7 tas
 
 - 2026-10-02 15:40 — Spec, master plan, Phase 0 and Phase 1 plans written. Ready for task 0.1.
 - 2026-10-02 16:20 — Phase 0 tasks 0.1–0.6 done by an implementation subagent: 28 tests pass, ruff clean. Deviations: `extend-exclude = ["docs"]` for ruff (it was reformatting code blocks in plan files); `AIClient` now creates an explicit `httpx.Client` when none is given (openai 3.x's default transport bypasses respx). Incident: one early test run reached the real Token Factory endpoint with a fake key (401, no secret leaked, no spend) → task 0.8 added. Spend: 0.
+- 2026-10-03 05:40 — Loop iteration 18: Phase 7 tasks 7.1–7.3 done by a subagent (279 tests); national registry seeded (2,703 hospitals, free).
 - 2026-10-03 04:55 — Loop iteration 17: task 7.0 done by a subagent (Phase 7 plan, 3,732 lines); national cost estimate corrected upward.
 - 2026-10-03 04:15 — Loop iteration 16: Phase 6 tasks 6.1–6.2 done by a subagent (257 tests); Docker build blocked by a stale ghcr.io keychain credential → gate U6.0.
 - 2026-10-03 03:35 — Loop iteration 15: task 6.0 done by a subagent (Phase 6 plan, 2,634 lines, Nebius docs verified 2026-10-02).
