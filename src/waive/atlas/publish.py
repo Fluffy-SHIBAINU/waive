@@ -79,7 +79,12 @@ def publish_sheet(session: Session, sheet: ProcedureSheet) -> SheetRow | None:
 
 
 def export_state(session: Session, state: str, path: Path) -> int:
-    sheets = repo.list_latest_sheets(session, state)
+    """Write the public JSON export; the fictional demo hospital stays out of it."""
+    sheets = [
+        sheet
+        for sheet in repo.list_latest_sheets(session, state)
+        if not repo.is_demo(sheet.hospital.ccn)
+    ]
     payload = {
         "generated_on": datetime.now(UTC).date().isoformat(),
         "license": "CC BY 4.0",

@@ -70,6 +70,12 @@ def test_sheet_versions_round_trip(engine):
         assert [s.version for s in repo.list_latest_sheets(session, "MA")] == [2]
 
 
+def test_is_demo_flags_only_the_fictional_hospital():
+    assert repo.DEMO_CCNS == frozenset({"229999"})
+    assert repo.is_demo("229999")
+    assert not repo.is_demo("220031")
+
+
 def test_review_items(engine):
     with session_scope(engine) as session:
         repo.upsert_hospital(session, HOSPITAL)

@@ -22,6 +22,14 @@ HOSPITAL_FIELDS = (
     "system",
 )
 
+# Fictional hospitals seeded by `waive demo seed` (St. Example Medical Center). They stay in the
+# database so the phone demo works, but public exports, reports and the atlas list skip them.
+DEMO_CCNS: frozenset[str] = frozenset({"229999"})
+
+
+def is_demo(ccn: str) -> bool:
+    return ccn in DEMO_CCNS
+
 
 def upsert_hospital(session: Session, data: dict[str, Any]) -> HospitalRow:
     row = session.get(HospitalRow, data["ccn"]) or HospitalRow(ccn=data["ccn"])
