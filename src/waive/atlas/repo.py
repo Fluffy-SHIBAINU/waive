@@ -1,5 +1,6 @@
 """Database access for the atlas: hospitals, sources, sheet versions, review items."""
 
+from datetime import date
 from typing import Any
 
 from sqlalchemy import select
@@ -177,3 +178,21 @@ def sheet_versions(session: Session, ccn: str) -> list[SheetRow]:
 def ccns_with_sheets(session: Session) -> set[str]:
     """Hospitals that have at least one stored sheet version (any status)."""
     return set(session.scalars(select(SheetRow.ccn).distinct()))
+
+
+def touch_source(session: Session, source_id: str, fetched_on: date) -> None:
+    """A re-fetch found the same content: record when, so staleness resets without a new sheet
+    version (sheet versions only change when a value changes)."""
+    row = session.get(SourceDocRow, source_id)
+    if row is not None:
+        row.fetched_on = fetched_on
+        session.flush()
+
+
+def unlink_source(session: Session, ccn: str, source_id: str) -> None:
+    """Detach a superseded document from a hospital. The row stays: older sheet versions cite it."""
+    hospital = session.get(HospitalRow, ccn)
+    row = session.get(SourceDocRow, source_id)
+    if hospital is not None and row is not None and hospital in row.hospitals:
+        row.hospitals.remove(hospital)
+        session.flush()

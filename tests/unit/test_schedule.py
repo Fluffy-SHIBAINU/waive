@@ -244,3 +244,39 @@ def test_create_app_starts_the_scheduler_only_when_switched_on(tmp_path):
         assert app.state.scheduler.running
         assert app.state.scheduler.get_job(JOB_ID).trigger.interval == timedelta(hours=1)
     assert not app.state.scheduler.running
+
+
+def test_run_once_refreshes_hospitals_with_documents_and_rescouts_on_request(tmp_path, monkeypatch):
+    from waive.atlas.tavily_gateway import ExtractedPage
+
+    from tests.unit.test_pipeline import POLICY_TEXT
+
+    class Recording(SpendingGateway):
+        extracted: list[list[str]] = []
+
+        def extract(self, urls, **kwargs):
+            Recording.extracted.append(list(urls))
+            return [ExtractedPage(url, POLICY_TEXT) for url in urls]
+
+    engine = make_engine_with_hospital(REAL, THIRD)
+    governor = make_governor_for(tmp_path)
+    with session_scope(engine) as session:
+        # Build both once so they have a sheet and stored documents; THIRD then gets a request.
+        first = run_once(session, Recording(governor), FakeAI(), governor, TODAY, daily_cap=100)
+        assert sorted(r.ccn for r in first.results) == ["220031", "220045"]
+        Recording.extracted.clear()
+        repo.add_review_item(session, "220045", "rescout_request", {"cases": ["a"], "count": 1})
+        later = TODAY + timedelta(days=5)
+        # The ledger stamps rows with the real clock; move it to `later` so the day's budget
+        # sees this run's own spend, as it does in production where both are the same day.
+        monkeypatch.setattr("waive.governor._now", lambda: f"{later.isoformat()}T12:00:00+00:00")
+        report = run_once(session, Recording(governor), FakeAI(), governor, later, daily_cap=100)
+        by_ccn = {r.ccn: r for r in report.results}
+        # REAL was refreshed: one Extract of its stored URL, no search, nothing changed.
+        assert by_ccn["220031"].outcome == "skipped"
+        assert by_ccn["220031"].notes == ["unchanged (1 documents checked)"]
+        # THIRD was re-scouted in full because of the request (searches spent credits).
+        assert by_ccn["220045"].outcome == "published"
+        assert report.used_after - report.used_before == Decimal("10")
+        [(source, _)] = repo.sources_for(session, "220031")
+        assert source.fetched_on == later

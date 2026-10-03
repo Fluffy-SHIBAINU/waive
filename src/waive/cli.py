@@ -13,6 +13,7 @@ from waive.atlas import repo
 from waive.atlas.overlays import run_overlay
 from waive.atlas.pipeline import build_hospital, build_state, coverage_report
 from waive.atlas.publish import export_state
+from waive.atlas.refresh import refresh_hospital
 from waive.atlas.registry import seed_state
 from waive.atlas.schedule import CREDITS_PER_HOSPITAL, build_queue, run_once, scheduler_states
 from waive.atlas.tavily_gateway import make_tavily_gateway
@@ -249,6 +250,47 @@ def atlas_schedule(
     console.print(
         f"Stopped: {report.stopped}; credits today {report.used_before} → {report.used_after}"
     )
+
+
+@atlas_app.command("refresh")
+def atlas_refresh(
+    state: str | None = typer.Option(None, "--state"),
+    ccn: str | None = typer.Option(None, "--ccn"),
+    limit: int | None = typer.Option(None, "--limit"),
+) -> None:
+    """Re-fetch stored documents and re-structure only the hospitals whose documents changed.
+    Spends about one Tavily credit per five web documents; asset-host PDFs are free."""
+    settings = Settings()
+    governor = make_governor(settings)
+    ai = AIClient(settings, governor)
+    gateway = make_tavily_gateway(settings, governor)
+    today = datetime.now(UTC).date()
+    if not ccn and not state:
+        raise typer.BadParameter("give --ccn or --state")
+    with (
+        session_scope(_engine(settings)) as session,
+        httpx.Client(follow_redirects=True, timeout=30.0) as http,
+    ):
+        ccns = [ccn] if ccn else [row.ccn for row in repo.list_hospitals(session, state=state)]
+        results = []
+        for one in ccns[:limit]:
+            results.append(refresh_hospital(session, gateway, ai, one, today, http))
+            session.commit()
+    table = Table("CCN", "Hospital", "Outcome", "Checked", "Changed", "Unreachable", "Version")
+    for result in results:
+        table.add_row(
+            result.ccn,
+            result.name,
+            result.outcome,
+            str(result.checked),
+            str(len(result.changed)),
+            str(len(result.unreachable)),
+            str(result.build.version if result.build and result.build.version else ""),
+        )
+    console.print(table)
+    tavily_credits, _ = governor.summary()["tavily"]
+    _, tf_usd = governor.summary()["token_factory"]
+    console.print(f"Spend so far: {tavily_credits} Tavily credits, ${tf_usd:.4f} Token Factory")
 
 
 corpus_app = typer.Typer(no_args_is_help=True, help="Synthetic test data.")
