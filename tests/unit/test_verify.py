@@ -1,7 +1,13 @@
 from decimal import Decimal
 
 from waive.atlas.samples import SAMPLE_POLICY_TEXT, SAMPLE_SOURCE_ID, st_example_sheet
-from waive.atlas.verify import normalize, quote_found, value_in_quote, verify_sheet
+from waive.atlas.verify import (
+    looks_serialised,
+    normalize,
+    quote_found,
+    value_in_quote,
+    verify_sheet,
+)
 
 DOCS = {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT}
 
@@ -33,6 +39,24 @@ def test_invented_quote_is_rejected():
     )
     report = verify_sheet(sheet, DOCS)
     assert ("contacts.phone", "quote not found in source") in report.rejected
+
+
+def test_values_written_out_as_a_list_or_object_are_rejected():
+    # Anna Jaques (CCN 220029): the model returned phone as a list of objects, the structurer
+    # stringified it and the quote check let it through, since strings were never inspected.
+    sheet = st_example_sheet()
+    serialised = "[{'kind': 'main', 'number': '617-555-0100'}, {'kind': 'main', 'number': '0101'}]"
+    cited = sheet.contacts.phone.model_copy(update={"value": serialised})
+    sheet = sheet.model_copy(
+        update={"contacts": sheet.contacts.model_copy(update={"phone": cited})}
+    )
+    report = verify_sheet(sheet, DOCS)
+    assert ("contacts.phone", "value is a list or object written as text") in report.rejected
+    assert looks_serialised(serialised) and looks_serialised(" {'name': 'MassHealth'}")
+    # One serialised item spoils a list of strings too.
+    assert looks_serialised(["MassHealth", "{'name': 'SNAP'}"])
+    assert not looks_serialised("617-555-0100") and not looks_serialised(["MassHealth", "SNAP"])
+    assert not looks_serialised(Decimal("250")) and not looks_serialised(True)
 
 
 def test_missing_source_text_is_rejected():

@@ -158,8 +158,18 @@ def _bool(value: Any) -> bool:
     raise ValueError("not a boolean")
 
 
+def _text(value: Any) -> str:
+    """One string. Models sometimes return a list or object where the schema wants text
+    ("phone": [{"kind": "main", "number": ...}]); str() of that would publish a Python repr."""
+    if isinstance(value, list | dict):
+        raise ValueError("expected text, got a list or object")
+    return str(value).strip()
+
+
 def _str_list(value: Any) -> list[str]:
     items = value if isinstance(value, list) else [value]
+    if any(isinstance(item, list | dict) for item in items):
+        raise ValueError("list items must be text, not objects or lists")
     cleaned = [str(item).strip() for item in items if str(item).strip()]
     if not cleaned:
         raise ValueError("empty list")
@@ -351,14 +361,14 @@ FIELD_MAP: dict[str, tuple[str, str, Callable[[Any], Any]]] = {
     "residency": ("eligibility", "residency", _states),
     "insured_patients_covered": ("eligibility", "insured_patients_covered", _bool),
     "presumptive": ("programs", "presumptive", _str_list),
-    "form_url": ("apply", "form_url", str),
+    "form_url": ("apply", "form_url", _text),
     "documents_required": ("apply", "documents_required", _doc_types),
     "submit_methods": ("apply", "submit_methods", _submit_methods),
     "window_days_from_first_bill": ("apply", "window_days_from_first_bill", _window_days),
     "decision_days": ("apply", "decision_days", _int),
     "eca_wait_days": ("collections", "eca_wait_days", _int),
-    "phone": ("contacts", "phone", str),
-    "hours": ("contacts", "hours", str),
+    "phone": ("contacts", "phone", _text),
+    "hours": ("contacts", "hours", _text),
     "languages": ("contacts", "languages", _str_list),
     "facilities": ("coverage", "facilities", _str_list),
 }
