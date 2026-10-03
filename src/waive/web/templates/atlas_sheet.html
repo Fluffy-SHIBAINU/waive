@@ -3,6 +3,7 @@
 {% block content %}
 <h1>{{ sheet.hospital.name }}</h1>
 <p class="muted">{{ sheet.hospital.city }}, {{ sheet.hospital.state }} · version {{ sheet.version }} · {{ sheet.status.value }} · <a href="/atlas/{{ sheet.hospital.ccn }}.json">JSON</a></p>
+{% if flag == "public" %}<p class="card status-unknown">{{ slip_count }} patients report being denied or given less help than this policy promises. The sheet is queued for a re-check; the hospital decides each application.</p>{% endif %}
 {% for path, cited, source in fields %}
 <div class="card">
   <div class="row"><span><code>{{ path }}</code></span><strong>{{ cited.value }}</strong></div>

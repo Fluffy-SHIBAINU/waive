@@ -10,7 +10,7 @@ from waive.atlas import repo
 from waive.atlas.schema import DocType, ProcedureSheet
 from waive.cases.service import CaseContext, get_row
 from waive.db import CaseRow, ReviewItemRow
-from waive.learning.evidence import DOCUMENTS_PATH, SLIP_PATH, add_evidence
+from waive.learning.evidence import DOCUMENTS_PATH, SLIP_PATH, add_evidence, raise_flags
 from waive.learning.hashing import case_hash
 from waive.learning.outcomes import (
     Decision,
@@ -188,6 +188,7 @@ def record_outcome(ctx: CaseContext, case_id: str, outcome: OutcomeExtract) -> T
             add_evidence(ctx.session, row.ccn, DOCUMENTS_PATH, doc.value, row.id, ctx.today)
         if result.slip_value:
             add_evidence(ctx.session, row.ccn, SLIP_PATH, result.slip_value, row.id, ctx.today)
+            raise_flags(ctx.session, row.ccn)
         if result.rescout:
             request_rescout(ctx.session, row.ccn, row.id)
         if result.kind is Triage.HOSPITAL_SLIP and sheet is not None:

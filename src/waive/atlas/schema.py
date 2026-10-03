@@ -121,6 +121,8 @@ class Apply(BaseModel):
     form_url: Cited[str] | None = None
     form_version: Cited[str] | None = None
     documents_required: Cited[list[DocType]] | None = None
+    # Documents hospitals asked patients for that the policy text does not list (layer reported).
+    documents_reported: Cited[list[DocType]] | None = None
     submit_methods: Cited[list[SubmitMethod]] | None = None
     window_days_from_first_bill: Cited[int] | None = None
     decision_days: Cited[int] | None = None

@@ -10,6 +10,7 @@ from waive.ai.client import AIClient, AIOutputError
 from waive.atlas import repo
 from waive.atlas.discover import MIN_CONFIDENCE, discover_domain
 from waive.atlas.publish import (
+    carry_over_reported,
     copy_fields,
     critical_conflicts,
     decide_status,
@@ -205,6 +206,7 @@ def build_hospital(
     previous = repo.latest_sheet(session, ccn)
     if previous is not None:
         sheet = carry_over_state_programs(sheet, previous[0])
+        sheet = carry_over_reported(sheet, previous[0])
     status = decide_status(sheet, conflicts)
     published = publish_sheet(session, sheet.model_copy(update={"status": status}))
     result.outcome = "published" if status.value == "published" else "held"
