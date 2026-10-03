@@ -6,10 +6,12 @@ import respx
 from waive.atlas import repo
 from waive.atlas.registry import (
     CMS_DATASTORE_URL,
+    STATES,
     fetch_cms_rows,
     is_eligible,
     normalize_phone,
     row_to_hospital,
+    seed_all_states,
     seed_state,
 )
 from waive.db import init_db, make_engine, session_scope
@@ -118,3 +120,55 @@ def test_seed_state_keeps_eligible_and_writes_snapshot(tmp_path):
     with session_scope(engine) as session:
         assert [h.ccn for h in repo.list_hospitals(session, "MA")] == ["221300", "220001"]
     assert isinstance(report.snapshot, Path)
+
+
+VT_ROWS = [
+    {
+        "facility_id": "470003",
+        "facility_name": "RUTLAND REGIONAL MEDICAL CENTER",
+        "address": "160 ALLEN STREET",
+        "citytown": "RUTLAND",
+        "state": "VT",
+        "zip_code": "05701",
+        "telephone_number": "(802) 775-7111",
+        "hospital_type": "Acute Care Hospitals",
+        "hospital_ownership": "Voluntary non-profit - Private",
+    }
+]
+
+
+def test_states_cover_fifty_states_and_dc():
+    assert len(STATES) == 51 and len(set(STATES)) == 51
+    assert {"MA", "CA", "WA", "DC", "WY"} <= set(STATES)
+    assert all(len(code) == 2 and code.isupper() for code in STATES)
+
+
+@respx.mock
+def test_seed_all_states_continues_past_a_failing_state(tmp_path):
+    def by_state(request):
+        state = request.url.params["conditions[0][value]"]
+        if state == "RI":
+            return httpx.Response(500)
+        rows = {"MA": ROWS, "VT": VT_ROWS}[state]
+        return httpx.Response(200, json={"results": rows, "count": len(rows)})
+
+    respx.get(CMS_DATASTORE_URL).mock(side_effect=by_state)
+    engine = make_engine("sqlite+pysqlite:///:memory:")
+    init_db(engine)
+    seen = []
+    with session_scope(engine) as session, httpx.Client() as http:
+        reports = seed_all_states(
+            session, http, snapshot_dir=tmp_path, states=("MA", "RI", "VT"), progress=seen.append
+        )
+    assert [(r.state, r.fetched, r.kept) for r in reports] == [
+        ("MA", 4, 2),
+        ("RI", 0, 0),
+        ("VT", 1, 1),
+    ]
+    assert reports[1].error is not None and "500" in reports[1].error
+    assert reports[1].snapshot is None
+    assert reports[0].snapshot.exists() and reports[2].snapshot.exists()
+    assert len(seen) == 3
+    with session_scope(engine) as session:
+        assert [h.ccn for h in repo.list_hospitals(session, "VT")] == ["470003"]
+        assert len(repo.list_hospitals(session)) == 3

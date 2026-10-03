@@ -14,7 +14,7 @@ from waive.atlas.overlays import run_overlay
 from waive.atlas.pipeline import build_hospital, build_state, coverage_report
 from waive.atlas.publish import export_state
 from waive.atlas.refresh import refresh_hospital
-from waive.atlas.registry import seed_state
+from waive.atlas.registry import seed_all_states, seed_state
 from waive.atlas.schedule import CREDITS_PER_HOSPITAL, build_queue, run_once, scheduler_states
 from waive.atlas.tavily_gateway import make_tavily_gateway
 from waive.cases.evaluate import evaluate_corpus, write_report
@@ -81,15 +81,45 @@ def _engine(settings: Settings):
 
 
 @atlas_app.command("seed")
-def atlas_seed(state: str = typer.Option(..., "--state", help="Two-letter state code")) -> None:
-    """Load nonprofit acute-care and critical-access hospitals from CMS into the registry."""
+def atlas_seed(
+    state: str | None = typer.Option(None, "--state", help="Two-letter state code"),
+    all_states: bool = typer.Option(False, "--all-states", help="All 50 states and DC"),
+) -> None:
+    """Load nonprofit acute-care and critical-access hospitals from CMS into the registry.
+    Free: the CMS datastore API needs no key."""
     settings = Settings()
+    if not state and not all_states:
+        raise typer.BadParameter("give --state XX or --all-states")
     with session_scope(_engine(settings)) as session, httpx.Client() as http:
-        report = seed_state(session, state, http)
-    console.print(
-        f"Fetched {report.fetched} {state.upper()} hospitals; kept {report.kept} nonprofit "
-        f"acute-care/critical-access. Snapshot: {report.snapshot}"
+        if state:
+            report = seed_state(session, state, http)
+            console.print(
+                f"Fetched {report.fetched} {state.upper()} hospitals; kept {report.kept} "
+                f"nonprofit acute-care/critical-access. Snapshot: {report.snapshot}"
+            )
+            return
+        reports = seed_all_states(
+            session,
+            http,
+            progress=lambda r: console.print(
+                f"{r.state}: {r.kept}/{r.fetched} kept" + (f" — {r.error}" if r.error else "")
+            ),
+        )
+    table = Table("State", "Fetched", "Kept", "Snapshot")
+    for report in reports:
+        table.add_row(
+            report.state,
+            str(report.fetched),
+            str(report.kept),
+            report.error or (report.snapshot.name if report.snapshot else ""),
+        )
+    table.add_row(
+        "total", str(sum(r.fetched for r in reports)), str(sum(r.kept for r in reports)), ""
     )
+    console.print(table)
+    failed = [r.state for r in reports if r.error]
+    if failed:
+        console.print(f"Re-run with --state for: {', '.join(failed)}")
 
 
 @atlas_app.command("build")

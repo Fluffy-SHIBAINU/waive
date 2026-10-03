@@ -2,6 +2,7 @@
 
 import json
 import re
+from collections.abc import Callable
 from dataclasses import dataclass
 from datetime import UTC, datetime
 from pathlib import Path
@@ -15,6 +16,16 @@ from waive.atlas import repo
 CMS_DATASTORE_URL = "https://data.cms.gov/provider-data/api/1/datastore/query/xubh-q36u/0"
 ELIGIBLE_TYPES = {"Acute Care Hospitals", "Critical Access Hospitals"}
 NONPROFIT_PREFIX = "Voluntary non-profit"
+
+# The 50 states and the District of Columbia, as CMS spells them in the `state` column.
+STATES: tuple[str, ...] = (
+    "AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "DC", "FL",
+    "GA", "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME",
+    "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH",
+    "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI",
+    "SC", "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI",
+    "WY",
+)  # fmt: skip
 
 
 def fetch_cms_rows(state: str, http: httpx.Client, page_size: int = 500) -> list[dict[str, Any]]:
@@ -71,7 +82,9 @@ def row_to_hospital(row: dict[str, Any]) -> dict[str, Any]:
 class SeedReport:
     fetched: int
     kept: int
-    snapshot: Path
+    snapshot: Path | None
+    state: str = ""
+    error: str | None = None
 
 
 def seed_state(
@@ -87,4 +100,33 @@ def seed_state(
         if is_eligible(row):
             repo.upsert_hospital(session, row_to_hospital(row))
             kept += 1
-    return SeedReport(fetched=len(rows), kept=kept, snapshot=snapshot)
+    return SeedReport(fetched=len(rows), kept=kept, snapshot=snapshot, state=state.upper())
+
+
+def seed_all_states(
+    session: Session,
+    http: httpx.Client,
+    snapshot_dir: Path = Path("data/seed"),
+    states: tuple[str, ...] = STATES,
+    progress: Callable[[SeedReport], None] | None = None,
+) -> list[SeedReport]:
+    """Seed every state in turn (free: the CMS datastore needs no key). A state whose request
+    fails is reported with `error` and skipped; the others still land. Commits after each state
+    so a crash mid-way keeps what was seeded."""
+    reports: list[SeedReport] = []
+    for state in states:
+        try:
+            report = seed_state(session, state, http, snapshot_dir)
+        except (httpx.HTTPError, ValueError, KeyError) as error:
+            report = SeedReport(
+                fetched=0,
+                kept=0,
+                snapshot=None,
+                state=state.upper(),
+                error=f"{type(error).__name__}: {error}"[:200],
+            )
+        session.commit()
+        reports.append(report)
+        if progress is not None:
+            progress(report)
+    return reports
