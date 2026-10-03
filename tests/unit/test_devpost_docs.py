@@ -5,6 +5,7 @@ from pathlib import Path
 
 DEVPOST = Path(__file__).resolve().parents[2] / "docs" / "devpost"
 SHOT_ROW = re.compile(r"^\| \d+ \| (\d):(\d\d)–(\d):(\d\d) \| (\d+) \|")
+TAVILY_SCAN = re.compile(r'git grep -lE "(tvly-[^"]+)"')
 
 
 def test_submission_has_every_required_section():
@@ -59,3 +60,16 @@ def test_demo_script_shot_list_is_contiguous_and_under_three_minutes():
         clock = end
     assert clock <= 175, f"the video runs {clock}s; the limit is 180 with a margin"
     assert f"Total: **{clock // 60}:{clock % 60:02d}**" in text  # the stated total matches the rows
+
+
+def test_checklist_tavily_key_scan_catches_prefixed_keys_and_passes_itself():
+    # Tavily issues plain and prefixed keys (`tvly-…`, `tvly-dev-…`, `tvly-prod-…`); the gate
+    # U8.1 scan must catch every shape and must not match the checklist's own text. Synthetic
+    # shapes only: no string here is a key, and none of them matches the scan as source text.
+    checklist = (DEVPOST / "checklist.md").read_text(encoding="utf-8")
+    match = TAVILY_SCAN.search(checklist)
+    assert match, "the checklist must carry the tvly- key scan"
+    scan = re.compile(match.group(1))
+    for shape in ("tvly-" + "a" * 32, "tvly-dev-" + "b" * 32, "tvly-prod-" + "C9_-" * 8):
+        assert scan.search(shape), shape
+    assert not scan.search(checklist), "the checklist must pass its own scan"
