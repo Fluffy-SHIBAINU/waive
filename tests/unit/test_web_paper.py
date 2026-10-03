@@ -3,7 +3,7 @@ from datetime import date
 from decimal import Decimal
 
 from waive.atlas import repo
-from waive.atlas.publish import publish_sheet
+from waive.atlas.publish import drop_fields, publish_sheet
 from waive.atlas.samples import st_example_sheet
 from waive.cases.extract import BillExtract, IncomeExtract
 from waive.cases.service import start_case
@@ -70,3 +70,14 @@ def test_caregiver_paper_upload_shows_the_routing_note():
     assert after.status_code == 200
     assert "reviewer checks it first" in after.text
     assert client.post(f"/c/{links.senior_token}/paper", files=photo()).status_code == 403
+
+
+def test_senior_sees_one_targeted_question_and_can_skip_it():
+    sheet = drop_fields(st_example_sheet(), ["apply.documents_required"])
+    client, _, links = paper_client(PhotoClass.APPLICATION_FORM, sheet=sheet)
+    result = to_result(client, links)
+    assert "form to apply for help" in result.text and "Skip this" in result.text
+    skipped = client.post(f"/s/{links.senior_token}/paper/skip", follow_redirects=True)
+    assert "form to apply" not in skipped.text and "letter or give you papers" in skipped.text
+    caregiver = client.get(f"/c/{links.caregiver_token}")
+    assert "We asked" not in caregiver.text  # answered: nothing left to relay

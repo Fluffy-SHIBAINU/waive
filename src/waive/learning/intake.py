@@ -44,6 +44,8 @@ def ingest_paper(
     sealed.setdefault("papers", []).append(
         {"photo_class": classified.photo_class.value, "route": route, "on": ctx.today.isoformat()}
     )
+    # Any paper answers the case's one gap question; a later photo never re-asks it.
+    sealed.setdefault("gap_ask", {"answer": "photo", "on": ctx.today.isoformat()})
     save_sealed(ctx, row, sealed)
     if route == "contribution":
         submit_contribution(

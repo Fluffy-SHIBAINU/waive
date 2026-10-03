@@ -16,6 +16,7 @@ from waive.cases.service import (
     view,
 )
 from waive.db import session_scope
+from waive.learning.gaps import answer_gap_ask, pending_gap_ask
 from waive.learning.intake import ingest_paper
 from waive.web.deps import deps_of, render
 
@@ -32,6 +33,7 @@ def senior_links(token: str) -> dict[str, str]:
         "income": f"{base}/income",
         "result": f"{base}/result",
         "paper": f"{base}/paper",
+        "skip": f"{base}/paper/skip",
     }
 
 
@@ -63,7 +65,9 @@ def senior_start(request: Request, token: str) -> HTMLResponse:
         row = authorize(ctx, token, "senior")
         shown = view(ctx, row.id)
         if shown.tier is not None and shown.status in {"evaluated", "approved"}:
-            return _page(request, "senior_result.html", token, shown)
+            return _page(
+                request, "senior_result.html", token, shown, ask=pending_gap_ask(ctx, row.id)
+            )
         return _page(request, "senior_start.html", token, shown)
 
 
@@ -198,7 +202,7 @@ def senior_result(request: Request, token: str) -> HTMLResponse:
                 shown,
                 reason="your helper will finish the check",
             )
-        return _page(request, "senior_result.html", token, shown)
+        return _page(request, "senior_result.html", token, shown, ask=pending_gap_ask(ctx, row.id))
 
 
 @router.post("/s/{token}/paper", response_class=HTMLResponse)
@@ -239,3 +243,13 @@ async def senior_paper(
                 reason="your helper needs to finish setting things up",
             )
         return _page(request, "senior_paper.html", token, view(ctx, row.id), message=result.message)
+
+
+@router.post("/s/{token}/paper/skip")
+def senior_paper_skip(request: Request, token: str):
+    deps = deps_of(request)
+    with session_scope(deps.engine) as session:
+        ctx = deps.context(session)
+        row = authorize(ctx, token, "senior")
+        answer_gap_ask(ctx, row.id, "skipped")
+    return RedirectResponse(senior_links(token)["result"], status_code=303)

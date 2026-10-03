@@ -39,6 +39,7 @@
 {% endif %}
 
 <h2>Add a letter or paper from the hospital</h2>
+{% if ask %}<p class="muted">We asked the senior: "{{ ask.question }}"</p>{% endif %}
 <form method="post" action="{{ links.paper }}" enctype="multipart/form-data" class="stack">
   <label for="paper">Decision letter, request for documents, policy or blank form</label>
   <input id="paper" type="file" name="photo" accept="image/*,application/pdf" required>
