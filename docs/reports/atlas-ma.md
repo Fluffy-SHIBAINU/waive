@@ -5,7 +5,7 @@ Published sheets: 27 (59%)
 
 | CCN | Hospital | Domain | Status | Version | Completeness | Fields | Sources |
 |---|---|---|---|---|---|---|---|
-| 220029 | ANNA JAQUES HOSPITAL | ajh.org | published | 2 | 0.67 | 12 | 4 |
+| 220029 | ANNA JAQUES HOSPITAL | ajh.org | published | 3 | 0.67 | 12 | 4 |
 | 221303 | ATHOL MEMORIAL HOSPITAL | atholhospital.org | published | 4 | 0.33 | 8 | 2 |
 | 220016 | BAYSTATE FRANKLIN MEDICAL CENTER | baystatehealth.org | published | 4 | 0.50 | 7 | 8 |
 | 220077 | BAYSTATE MEDICAL CENTER | baystatehealth.org | published | 4 | 0.67 | 11 | 7 |
