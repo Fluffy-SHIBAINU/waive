@@ -153,6 +153,32 @@ def test_bare_values_are_wrapped_then_skipped_for_lack_of_quote():
     ]
 
 
+def test_lists_and_objects_where_the_schema_wants_text_are_skipped_not_stringified():
+    # Anna Jaques (CCN 220029): phone came back as [{"kind": "main", "number": ...}, ...] and
+    # str() of that published a Python repr on the sheet page.
+    draft = SheetDraft(
+        phone=field(
+            [{"kind": "main", "number": "617-555-0100"}, {"kind": "main", "number": "0101"}],
+            "Questions: call 617-555-0100",
+        ),
+        hours=field(["9 to 5"], "Patient Financial Services is open 9 to 5"),
+        presumptive=field(
+            [{"name": "MassHealth"}, "SNAP"],
+            "Patients enrolled in MassHealth or SNAP are presumptively eligible for free care",
+        ),
+        languages=field("English", "Interpreters are available in English"),
+    )
+    sheet, skipped = draft_to_sheet(draft, SAMPLE.hospital, [SAMPLE.sources[0]], TODAY)
+    assert sheet.contacts.phone is None and sheet.contacts.hours is None
+    assert sheet.programs.presumptive is None
+    assert sheet.contacts.languages.value == ["English"]  # a bare string is still a one-item list
+    assert skipped == [
+        "programs.presumptive: list items must be text, not objects or lists",
+        "contacts.phone: expected text, got a list or object",
+        "contacts.hours: expected text, got a list or object",
+    ]
+
+
 def test_free_care_band_disguised_as_a_100_percent_tier_is_dropped():
     tiers = [
         {"min_fpl_exclusive": 0, "max_fpl_inclusive": 250, "discount_percent": 100},

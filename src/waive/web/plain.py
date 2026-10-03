@@ -58,7 +58,9 @@ def _plain(value: Any, field: str) -> str:
         return str(value)
     if isinstance(value, DiscountTier):
         low, high = _number(value.min_fpl_exclusive), _number(value.max_fpl_inclusive)
-        return f"Above {low}% up to {high}% of FPL: {value.discount_percent}% discount"
+        # A band starting at zero income is "Up to 400%", not "Above 0% up to 400%".
+        band = f"Up to {high}%" if value.min_fpl_exclusive == 0 else f"Above {low}% up to {high}%"
+        return f"{band} of FPL: {value.discount_percent}% discount"
     if isinstance(value, StateProgram):
         return f"{value.name} — {value.how_to_apply}"
     if isinstance(value, SubmitMethod):

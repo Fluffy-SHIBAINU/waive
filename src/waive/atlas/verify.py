@@ -53,6 +53,18 @@ def _number_in(number: Decimal, quote: str) -> bool:
     return re.search(rf"(?<![\d.]){re.escape(digits)}(?!\d)", haystack) is not None
 
 
+def looks_serialised(value: Any) -> bool:
+    """True for a text value that is really a list or object written out, such as
+    "[{'kind': 'main', 'number': '978-463-1123'}]", or a list of strings with such an item: a
+    shape the model got wrong and the structurer stringified. Quotes do not catch it (strings are
+    never checked against the quote), and the sheet page would print the brackets."""
+    if isinstance(value, str):
+        return value.lstrip().startswith(("[", "{"))
+    if isinstance(value, list):
+        return any(isinstance(item, str) and looks_serialised(item) for item in value)
+    return False
+
+
 def value_in_quote(value: Any, quote: str) -> bool:
     if isinstance(value, bool):
         return True
@@ -123,6 +135,8 @@ def verify_sheet(sheet: ProcedureSheet, documents: dict[str, str]) -> Verificati
             report.rejected.append((path, "source text missing"))
         elif not quote_found(cited.quote or "", text):
             report.rejected.append((path, "quote not found in source"))
+        elif looks_serialised(cited.value):
+            report.rejected.append((path, "value is a list or object written as text"))
         elif not value_in_quote(cited.value, cited.quote or ""):
             report.rejected.append((path, "value not in quote"))
         else:

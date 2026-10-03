@@ -1,8 +1,16 @@
+import json
 from decimal import Decimal
+from pathlib import Path
 
 from waive.atlas.samples import st_example_sheet
-from waive.atlas.schema import DiscountTier, DocType, StateProgram, SubmitMethod
+from waive.atlas.schema import DiscountTier, DocType, ProcedureSheet, StateProgram, SubmitMethod
 from waive.web.plain import plain_lines
+
+PUBLISHED_ATLAS = Path(__file__).resolve().parents[2] / "data" / "atlas" / "ma.json"
+# Published before the structurer refused lists where the schema wants text, so the stored value
+# is a stringified list. Clearing it takes `waive atlas build --ccn 220029 --reuse-sources` (a
+# paid Token Factory call) and a fresh `waive atlas export --state MA`; remove the entry then.
+PENDING_REBUILD = {("220029", "contacts.phone")}
 
 
 def test_fpl_limit_reads_as_a_share_of_the_poverty_level():
@@ -31,6 +39,15 @@ def test_discount_tiers_one_line_per_tier():
         "Above 200% up to 300% of FPL: 60% discount",
         "Above 300% up to 400% of FPL: 40% discount",
     ]
+
+
+def test_a_tier_starting_at_zero_reads_up_to():
+    # Berkshire Medical Center (CCN 220046): one band, 0 to 400% of FPL. "Above 0%" is accurate
+    # but odd for a senior reader.
+    tier = DiscountTier(
+        min_fpl_exclusive=Decimal("0"), max_fpl_inclusive=Decimal("400"), discount_percent=46
+    )
+    assert plain_lines([tier], "eligibility.discount_tiers") == ["Up to 400% of FPL: 46% discount"]
 
 
 def test_state_programs_name_then_how_to_apply():
@@ -120,3 +137,18 @@ def test_the_sample_sheet_renders_without_repr_markers():
         for line in lines:
             assert "[" not in line and "]" not in line, (path, line)
             assert "=" not in line and "DocType" not in line and "Decimal" not in line, (path, line)
+
+
+def test_the_published_atlas_renders_without_repr_markers():
+    """Every cited value in the open-data export reads as plain text on /atlas/{ccn}. The
+    renderer passes strings through, so a stringified list in the data shows its brackets; the
+    set of such fields must be exactly the ones already waiting for a rebuild."""
+    payload = json.loads(PUBLISHED_ATLAS.read_text(encoding="utf-8"))
+    showing_reprs: set[tuple[str, str]] = set()
+    for data in payload["sheets"]:
+        sheet = ProcedureSheet.model_validate(data)
+        for path, cited in sheet.field_paths():
+            for line in plain_lines(cited.value, path):
+                if any(marker in line for marker in ("[", "]", "{", "}", "Decimal(", "DocType.")):
+                    showing_reprs.add((sheet.hospital.ccn, path))
+    assert showing_reprs == PENDING_REBUILD
