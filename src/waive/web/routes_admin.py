@@ -9,7 +9,6 @@ from sqlalchemy import func, select
 
 from waive.atlas import repo
 from waive.db import CaseRow, session_scope
-from waive.governor import Ledger
 from waive.learning.contributions import (
     approve_contribution,
     list_contributions,
@@ -57,9 +56,9 @@ def admin_home(request: Request) -> HTMLResponse:
     require_admin(request)
     deps = deps_of(request)
     settings = request.app.state.settings
-    ledger = Ledger(settings.ledger_path)
-    tavily_used, _ = ledger.totals("tavily")
-    _, tf_used = ledger.totals("token_factory")
+    governor = request.app.state.governor
+    tavily_used, _ = governor.summary()["tavily"]
+    _, tf_used = governor.summary()["token_factory"]
     with session_scope(deps.engine) as session:
         outcomes = session.scalar(
             select(func.count()).select_from(CaseRow).where(CaseRow.outcome.is_not(None))

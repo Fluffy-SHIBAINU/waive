@@ -1,9 +1,16 @@
+import base64
 import json
 from decimal import Decimal
 
 import pytest
+from pydantic import SecretStr
+from sqlalchemy import func, select
 
-from waive.governor import BudgetExceeded, Governor, Ledger
+from waive.cases.vault import FieldCipher, TokenSigner, new_key
+from waive.config import Settings
+from waive.db import UsageEventRow, init_db, make_engine, session_scope
+from waive.governor import BudgetExceeded, DbLedger, Governor, Ledger, UsageEvent, make_ledger
+from waive.web.app import create_app
 
 
 def make(tmp_path, tavily_cap=10, tf_cap="1.00"):
@@ -36,3 +43,62 @@ def test_ledger_rows_hold_no_content(tmp_path):
     row = json.loads((tmp_path / "usage.jsonl").read_text().splitlines()[0])
     assert set(row) == {"provider", "units", "usd", "purpose", "ts"}
     assert row["units"] == "15"
+
+
+def memory_engine():
+    engine = make_engine("sqlite+pysqlite:///:memory:")
+    init_db(engine)
+    return engine
+
+
+def test_db_ledger_records_and_totals_like_the_file_ledger():
+    engine = memory_engine()
+    governor = Governor(DbLedger(engine), 10, Decimal("1.00"))
+    governor.record_tavily(Decimal("2"), "atlas.scout")
+    governor.record_token_factory(1000, 500, Decimal("0.0123"), "atlas.structure")
+    assert governor.summary() == {
+        "tavily": (Decimal("2"), Decimal("0")),
+        "token_factory": (Decimal("1500"), Decimal("0.0123")),
+    }
+    # A second ledger over the same database sees the same history (that is the point).
+    assert Governor(DbLedger(engine), 10, Decimal("1")).summary()["tavily"][0] == Decimal("2")
+    columns = {column.name for column in UsageEventRow.__table__.columns}
+    assert columns == {"id", "provider", "units", "usd", "purpose", "ts"}  # amounts only
+
+
+def test_db_ledger_cap_check_sees_earlier_rows():
+    governor = Governor(DbLedger(memory_engine()), 3, Decimal("1"))
+    governor.record_tavily(Decimal("2"), "t")
+    with pytest.raises(BudgetExceeded):
+        governor.ensure_tavily(Decimal("2"))
+
+
+def test_make_ledger_picks_the_backend_from_settings(tmp_path):
+    file_settings = Settings(_env_file=None, ledger_path=tmp_path / "usage.jsonl")
+    assert isinstance(make_ledger(file_settings), Ledger)
+    db_settings = Settings(
+        _env_file=None, ledger_backend="db", ledger_path=tmp_path / "usage.jsonl"
+    )
+    engine = make_engine("sqlite+pysqlite:///:memory:")  # no init_db: make_ledger must do it
+    ledger = make_ledger(db_settings, engine=engine)
+    assert isinstance(ledger, DbLedger)
+    ledger.record(
+        UsageEvent("tavily", Decimal("1"), Decimal("0"), "t", "2026-10-02T00:00:00+00:00")
+    )
+    assert ledger.totals("tavily") == (Decimal("1"), Decimal("0"))
+    assert not (tmp_path / "usage.jsonl").exists()
+
+
+def test_create_app_uses_the_database_ledger_when_configured():
+    engine = memory_engine()
+    settings = Settings(_env_file=None, nebius_api_key=SecretStr("k"), ledger_backend="db")
+    app = create_app(
+        settings,
+        engine=engine,
+        cipher=FieldCipher(base64.b64decode(new_key())),
+        signer=TokenSigner("x" * 40),
+    )
+    app.state.governor.record_tavily(Decimal("1"), "t")
+    assert app.state.governor.summary()["tavily"] == (Decimal("1"), Decimal("0"))
+    with session_scope(engine) as session:
+        assert session.scalar(select(func.count()).select_from(UsageEventRow)) == 1
