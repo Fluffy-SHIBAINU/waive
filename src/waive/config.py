@@ -35,3 +35,5 @@ class Settings(BaseSettings):
     database_url: str = "sqlite:///var/waive.db"
     vault_key: SecretStr | None = None
     token_secret: SecretStr | None = None
+    # Admin console sign-in (at least 16 characters); the console is off when unset.
+    admin_token: SecretStr | None = None

@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Scoreboard{% endblock %}
+{% block content %}
+<h1>Prediction accuracy by hospital</h1>
+<p><a href="/admin">Back to the console</a></p>
+<form method="post" action="/admin/scoreboard/prechecks" class="stack"><button type="submit" class="btn">Queue priority re-checks</button></form>
+{% if queued is not none %}<p class="card">Queued re-checks for {{ queued }} hospital(s).</p>{% endif %}
+{% for score in scores %}
+<div class="card{% if score.needs_recheck %} status-unknown{% endif %}">
+  <div class="row"><span><a href="/admin/sheets/{{ score.ccn }}">{{ score.name }}</a></span><strong>{{ "%.0f" % (score.accuracy * 100) }}%</strong></div>
+  <p class="muted">{{ score.matched }} of {{ score.outcomes }} outcomes matched · sheet v{{ score.sheet_version }} · flag {{ score.flag_level }}{% if score.needs_recheck %} · needs re-check{% endif %}</p>
+</div>
+{% else %}<p class="card">No outcomes recorded yet.</p>{% endfor %}
+{% endblock %}

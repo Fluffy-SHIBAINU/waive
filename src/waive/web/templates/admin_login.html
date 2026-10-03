@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Admin sign-in{% endblock %}
+{% block content %}
+<h1>Admin sign-in</h1>
+<form method="post" action="/admin/login" class="stack">
+  <label for="token">Admin token</label>
+  <input id="token" name="token" type="password" autocomplete="off" required>
+  <button type="submit" class="btn primary">Sign in</button>
+</form>
+{% endblock %}

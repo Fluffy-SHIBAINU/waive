@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Contributed documents{% endblock %}
+{% block content %}
+<h1>Contributed documents</h1>
+<p><a href="/admin">Back to the console</a></p>
+{% for row in rows %}
+<div class="card">
+  <div class="row"><span>{{ row.photo_class }}</span><strong>{{ row.ccn or "no hospital" }} · {{ row.created_on }}</strong></div>
+  <pre class="quote" style="white-space: pre-wrap">{{ row.text[:1500] }}</pre>
+  <form method="post" action="/admin/contributions/{{ row.id }}/approve" class="stack"><button type="submit" class="btn primary" {% if not row.ccn %}disabled{% endif %}>Approve as a source</button></form>
+  <form method="post" action="/admin/contributions/{{ row.id }}/reject" class="stack"><button type="submit" class="btn danger">Reject</button></form>
+</div>
+{% else %}<p class="card">No contributions waiting.</p>{% endfor %}
+{% endblock %}
