@@ -26,9 +26,9 @@ Copied from the master plan; every task in this phase obeys them.
 
 Phase-specific:
 
-- **No paid calls in tasks 8.1–8.6 as written.** Nothing in this plan runs `waive atlas build`, `waive atlas overlay`, `waive atlas schedule --run`, `waive atlas refresh` or `waive eval bills`. `waive demo gallery` uses scripted extraction output by default; its optional `--live` flag calls the vision model (about $0.01) and is never run by the loop. The only paid activity in the phase is the user's own video recording (gate U8.2: a handful of vision calls, about $0.01, and `waive doctor --live` if shown, 1 Tavily credit). Phase budget: Token Factory ≤ $0.50, Tavily ≤ 5 credits, AI Cloud: whatever Phase 6 already runs, nothing new.
-- **Honest statements only.** Numbers in the README, the Devpost draft and the demo script come from the committed reports and `docs/PROGRESS.md` as of 2026-10-03: 46 Massachusetts hospitals in the registry, **27 published (59%)**, 17 held, 2 without documents; **2,703** nonprofit hospitals in the national registry, 27 published nationally (1%), core fields documented 67%, 115 open review items; bill reading on 30 synthetic bills: hospital name 100%, statement date 97%, amount due 100%, FAP phone 100%, FAP web address 100%, collection notice 100%; spend 389 Tavily credits, $1.52 Token Factory, $0 AI Cloud; 283 tests. The vision model is not an NVIDIA model and every document says so. Deployment (Phase 6) may still be pending when these documents are written: each document carries one clearly marked status line to update when task 6.8 closes, and reads correctly either way. When a later task changes a number (for example U2.2 approves more credits and more MA hospitals publish), the orchestrator refreshes the numbers in README.md and `docs/devpost/submission.md` in the same iteration.
-- **User-decided fields.** Anything only the user can supply is written as `[USER FILLS: what]` — the GitHub repository URL, the YouTube URL, the Devpost project URL, the copyright holder's name, the live URL if deployed. Nothing is written as "TBD"; everything the plan can decide, it decides (see Decisions below). Task 8.6 verifies with `grep -rn "USER FILLS" README.md docs/devpost` that no field is left before the user submits.
+- **No paid calls in tasks 8.1–8.6 as written.** Nothing the loop runs in this plan calls `waive atlas build`, `waive atlas overlay`, `waive atlas schedule --run`, `waive atlas refresh` or `waive eval bills`. `waive demo gallery` uses scripted extraction output by default; its optional `--live` flag calls the vision model (about $0.01) and is never run by the loop. The only paid activity in the phase is the user's own video recording (gate U8.2: a handful of vision calls, about $0.01; one `waive atlas build --state MA --ccn 220031 --reuse-sources` in shot 7, which runs Nemotron Super and Nano on stored documents for about $0.01 and no Tavily credits; and `waive doctor --live` if shown, 1 Tavily credit). Phase budget: Token Factory ≤ $0.50, Tavily ≤ 5 credits, AI Cloud: whatever Phase 6 already runs, nothing new.
+- **Honest statements only.** Numbers in the README, the Devpost draft and the demo script come from the committed reports, the usage ledger and the `docs/PROGRESS.md` task notes as of 2026-10-03: 46 Massachusetts hospitals in the registry, **27 published (59%)**, 17 held, 2 without documents (44 sheets in `data/atlas/ma.json`, all 44 with the cited Health Safety Net entry; the 45th sheet in the local database is the fictional demo hospital); **2,703** nonprofit hospitals in the national registry including the 46 in Massachusetts, 27 published nationally (1%), core fields documented 67%, 115 open review items; bill reading on 30 synthetic bills: hospital name 100%, statement date 97%, amount due 100%, FAP phone 100%, FAP web address 100%, collection notice 100%; spend 389 Tavily credits, $1.52 Token Factory, $0 AI Cloud; 283 tests. **Source of truth for spend is the ledger** (`var/usage.jsonl`, summed by the `Spend so far` line that `uv run waive doctor` prints offline: 389 credits, $1.5191), which matches the PROGRESS Log line of 2026-10-03 00:45 and note 2.8j; the PROGRESS Spend table's last row still reads `~0.95` and is stale — the orchestrator refreshes it in the 8.1 iteration; subagents never edit PROGRESS and never "correct" $1.52 down to $0.95. The vision model is not an NVIDIA model and every document says so. Deployment (Phase 6) may still be pending when these documents are written: each document carries one clearly marked status line to update when task 6.8 closes, and reads correctly either way. When a later task changes a number (for example U2.2 approves more credits and more MA hospitals publish), the orchestrator refreshes the numbers in README.md and `docs/devpost/submission.md` in the same iteration.
+- **User-decided fields.** Anything only the user can supply is written as `[USER FILLS: what]` — the GitHub repository URL, the YouTube URL, the Devpost project URL, the copyright holder's name, the live URL if deployed. Nothing is written as "TBD"; everything the plan can decide, it decides (see Decisions below). Task 8.6 verifies with `grep -rn "USER FILLS" README.md data/atlas/LICENSE.md docs/devpost` that no field is left before the user submits.
 - **Secrets.** Never print or copy `.env` values. The gallery capture writes HTML files that contain capability tokens of a throwaway demo case; the script deletes them after Chrome has read them, and the PNGs show page content only (headless screenshots have no address bar).
 - **No network in unit tests** (`--disable-socket`): the gallery module is tested with FastAPI's `TestClient`, a fake `subprocess.run` and `respx`; headless Chrome and the threaded server are exercised only by the orchestrator's manual run step.
 - **GateGuard.** A PreToolUse hook may deny the first Write/Edit of a file and the first Bash call with "Fact-Forcing Gate". Answer its questions in one short paragraph (callers, no duplicate file, data shape, the user's instruction) and retry the same call once. Prefer the Write tool over Bash heredocs for multi-line files.
@@ -39,7 +39,7 @@ Phase-specific:
 
 | Path | Today | Task 8.1 |
 |---|---|---|
-| `README.md` | Exists: 405 bytes, 14 lines (title, one-liner, status, link to the spec, four setup steps). Referenced by `pyproject.toml` (`readme = "README.md"`) and copied into the Docker image | **Rewritten in full** (same path, so `pyproject.toml` and the `Dockerfile` keep working) |
+| `README.md` | Exists: 405 bytes, 13 lines (title, one-liner, status, link to the spec, four setup steps). Referenced by `pyproject.toml` (`readme = "README.md"`) and copied into the Docker image | **Rewritten in full** (same path, so `pyproject.toml` and the `Dockerfile` keep working) |
 | `LICENSE` | Exists: the canonical Apache License 2.0 text, 202 lines, 11,358 bytes, including the standard appendix with the literal `Copyright [yyyy] [name of copyright owner]` line — that appendix is part of the canonical text and is normally left as is | **Unchanged**; verified by a test (size and header). The copyright notice goes into the README's Licenses section with a `[USER FILLS: copyright holder]` field |
 | `pyproject.toml` | `license = { text = "Apache-2.0" }` | Unchanged |
 | `data/atlas/LICENSE.md` | Does not exist (`data/atlas/ma.json` is committed and carries `"license": "CC BY 4.0"` inside) | **Created** (the atlas data license note) |
@@ -194,7 +194,7 @@ Waive never asks for money, card numbers or bank logins. Results are estimates, 
 
 | Area | Where it stands |
 |---|---|
-| Massachusetts atlas | 46 nonprofit acute-care and critical-access hospitals in the registry; **27 published sheets (59 %)**, 17 held (no income rules in the reachable text, discount tiers the schema cannot parse, or an unresolved cross-model conflict), 2 with no documents found. Every published documented field passed exact-quote verification. All 45 sheets carry a cited Massachusetts Health Safety Net entry from mass.gov. Report: `docs/reports/atlas-ma.md` |
+| Massachusetts atlas | 46 nonprofit acute-care and critical-access hospitals in the registry; **27 published sheets (59 %)**, 17 held (no income rules in the reachable text, discount tiers the schema cannot parse, or an unresolved cross-model conflict), 2 with no documents found. Every published documented field passed exact-quote verification. All 44 sheets (published and held) carry a cited Massachusetts Health Safety Net entry from mass.gov. Report: `docs/reports/atlas-ma.md` |
 | National registry | **2,703** nonprofit hospitals seeded from CMS for all 50 states and DC; 27 published nationally (1 %), core fields documented on 67 % of published sheets, 115 open review items. Scouting beyond Massachusetts waits for a credit-budget decision (about 5 Tavily credits per hospital). Report: `docs/reports/atlas-national.md` |
 | Bill reading | 30 synthetic bills (several layouts, rotations, blur): hospital name 100 %, statement date 97 %, amount due 100 %, FAP phone 100 %, FAP web address 100 %, collection notice 100 %. Report: `docs/reports/bill-eval.md` |
 | Real bills | None yet, by design: photos carrying personal data are refused until zero data retention is confirmed for the Token Factory project (`WAIVE_ZDR_CONFIRMED=true`). Everything so far ran on synthetic bills and letters |
@@ -298,7 +298,7 @@ flowchart TD
 
 **NVIDIA open models.** The three Nemotron models above run at runtime whenever a sheet is built, cross-checked or tie-broken (`waive atlas build`, `waive atlas refresh`, the scheduler, `waive learn rebuild`). On the vision side there is **no NVIDIA vision model** in the Token Factory catalog (checked live on 2026-10-02 with `waive doctor --live`), so photos are read by `openbmb/MiniCPM-V-4_5` (fallback `google/gemma-3-27b-it`). We would switch to a Nemotron vision model the day Token Factory offers one; the role is one setting (`WAIVE_MODEL_VISION`).
 
-**Nebius AI Cloud.** The `Dockerfile` builds a two-stage, non-root image that runs `uvicorn waive.web.app:create_app --factory` on port 8000; `WAIVE_ENV=production` refuses the SQLite default and `WAIVE_LEDGER_BACKEND=db` keeps the spend ledger in PostgreSQL so a stateless container keeps its budget history. The deployment plan (`docs/superpowers/plans/2026-10-02-waive-phase-6-deploy.md`) uses Container Registry, Managed PostgreSQL, SecretStash for the six secrets and a CPU Serverless AI endpoint, with `waive cloud start|stop` so the endpoint only bills during demo windows. Current state: see the deployment status line at the top.
+**Nebius AI Cloud.** The `Dockerfile` builds a two-stage, non-root image that runs `uvicorn waive.web.app:create_app --factory` on port 8000; `WAIVE_ENV=production` refuses the SQLite default and `WAIVE_LEDGER_BACKEND=db` keeps the spend ledger in PostgreSQL so a stateless container keeps its budget history. The deployment plan (`docs/superpowers/plans/2026-10-02-waive-phase-6-deploy.md`) uses Container Registry, Managed PostgreSQL, SecretStash for the six secrets and a CPU Serverless AI endpoint, and adds a `waive cloud start|stop|status|cleanup` command group (Phase 6 task 6.7, not written yet) so the endpoint only bills during demo windows. Current state: see the deployment status line at the top.
 
 **Tavily** does all of the web work in the atlas (`src/waive/atlas/tavily_gateway.py` wraps `tavily-python`; every call books credits with the governor first):
 
@@ -361,7 +361,7 @@ The admin console (`/admin/login`) switches on when `WAIVE_ADMIN_TOKEN` (16+ cha
 | `waive db upgrade` | Create missing tables and columns | no |
 | `waive demo seed` | Add the fictional St. Example hospital | no |
 | `waive demo reset [--out DIR] [--keep-files]` | Delete every case, reset the demo hospital, regenerate the demo images | no |
-| `waive demo gallery [--out DIR] [--chrome PATH] [--live] [--port N]` | Screenshots and diagrams for the Devpost gallery | only with `--live` |
+| `waive demo gallery [--out DIR] [--chrome PATH] [--live] [--port N] [--atlas-ccn X] [--no-diagrams]` | Screenshots and diagrams for the Devpost gallery | only with `--live` |
 | `waive demo forget-cases` | Delete every case (all personal data) | no |
 | `waive learn rebuild --ccn X` | Re-structure one sheet from stored documents and approved patient photos | yes (Token Factory) |
 | `waive learn publish-reported --state XX` | Publish patient-reported fields that reached the 5-case threshold | no |
@@ -869,7 +869,7 @@ def demo_reset(
 - [ ] **Step 6: Run the tests, lint, format**
 
 Run: `uv run ruff format . && uv run ruff check . && uv run pytest`
-Expected: about 291 tests pass (287 + 4 net: the demo file goes from 1 to 6 tests, minus one existing).
+Expected: about 292 tests pass (287 + 5 net: the demo file goes from 1 to 6 tests).
 
 If `test_reset_demo_…` fails on `sheet_versions_deleted == 2` with `1`, `publish_sheet` refused the hand-made version-2 row because `seed_demo` already wrote version 1 with the same body — that is fine; the hand-made row exists regardless because the test adds a `SheetRow` directly. If it fails on `sheet_version == 1`, `publish_sheet` kept counting from the deleted rows: check that `session.flush()` runs before `seed_demo` and that `publish_sheet` reads `repo.latest_sheet` (it should return `None` after the delete).
 
@@ -901,8 +901,8 @@ git commit -m "feat: demo bill and benefit letter for Rosa; waive demo reset (8.
 ````markdown
 # Waive — demo video script and shot list
 
-Target length **2:47** (hard limit 3:00; Devpost rejects longer videos). Nine shots, narration
-about 440 words at a calm 2.6 words per second. Record the phone shots first, the laptop shots
+Target length **2:50** (hard limit 3:00; Devpost rejects longer videos). Nine shots, narration
+about 450 words at a calm 2.6 words per second. Record the phone shots first, the laptop shots
 second, the two title cards last; cut in iMovie; export 1080p; upload to YouTube as **Public**
 (gate U8.2).
 
@@ -926,7 +926,10 @@ endpoint is live, record the phone shots against the public URL instead and say 
    screen, so the phone can photograph them in shot 3 and shot 4. Good light, no glare.
 6. QuickTime Player → File → New Movie Recording → camera source: the iPhone (USB) → record the
    phone screen. Separately, QuickTime → New Screen Recording for the laptop shots.
-7. Terminal for shot 7: a clean window, font size 18, `cd` into the repo.
+7. Terminal for shot 7: a clean window, font size 18, `cd` into the repo. Shot 7 runs one real
+   Nemotron build (`--reuse-sources`: stored documents only, no Tavily, about one cent of Token
+   Factory); it takes 30–90 seconds, so record the whole run and cut the wait in iMovie, keeping
+   the command line and the result table on screen. Record shot 7 after shot 6.
 
 ## Shot list
 
@@ -937,12 +940,12 @@ endpoint is live, record the phone shots against the public URL instead and say 
 | 3 | 0:32–0:49 | 17 | Phone: "Let's look at your hospital bill" → camera → "Here is what we read" | Tap *Take a photo of the bill*; photograph `bill.jpg` on the laptop screen; the read-back shows ST. EXAMPLE MEDICAL CENTER, $1,850.00, September 3, 2026; tap *Yes, that's right* | "Rosa taps the link on her phone. One button: take a photo of the bill. Waive reads it with a vision model on Nebius Token Factory and reads it back in large print: the hospital, eighteen fifty, September third. Rosa taps 'Yes, that's right'." |
 | 4 | 0:49–1:09 | 20 | Phone: "How many people live in your home, counting you?" → "Do you have your Social Security letter?" → "What we found" | Tap *1*, *No*, *Next*; tap *Take a photo of the letter*; photograph `letter.jpg`; the result reads "Good news. You likely do not have to pay this bill."; tap *Read this to me* and let it speak for two seconds | "Two big-button questions: how many people at home, any MassHealth or SNAP. Then a photo of her Social Security letter instead of typing her income. Waive checks the hospital's own policy: at one hundred forty-three percent of the poverty line, Rosa likely owes nothing. She can have it read aloud." |
 | 5 | 1:09–1:32 | 23 | Laptop: caregiver "Review" page → approved → packet PDF | Open the caregiver link; scroll "What we read from the bill", "Result" ("Likely free care", "Policy says … 250%"), "Dates that matter"; click *Approve*; click *Download the packet*; show page 1 (cover letter) and the checklist page | "Ana's review page shows the same result with the exact quote from the policy — free care up to two hundred fifty percent — the day one-twenty collections protection and the day two-forty application deadline. She approves, and Waive prints the packet: a cover letter citing the policy, the data sheet, the document checklist, and where to mail it." |
-| 6 | 1:32–1:59 | 27 | Laptop: `/atlas` list → `/atlas/220031` (Boston Medical Center) → `/metrics` | Scroll the list; open Boston Medical Center; hover a field to show the quote and the source link; scroll to "Sources"; open `/metrics` and show the MA row and the national total | "Behind the app is an open atlas. For each hospital, Tavily finds the official site and scouts the financial assistance policy, the application and the collections policy. Nemotron 3 Super turns them into a procedure sheet; Nemotron 3 Nano cross-checks it; every field keeps an exact quote that must verify against the source, or it is dropped. Twenty-seven of forty-six Massachusetts hospitals are published; two thousand seven hundred more are seeded nationally." |
-| 7 | 1:59–2:18 | 19 | Terminal: `uv run waive atlas schedule --dry-run` (free) then `uv run waive doctor` (free) | Run the two commands; let the queue table and the "Daily budget" and "Spend so far" lines show | "Scouting runs on a priority queue inside a daily credit budget and re-checks documents by content hash. And the atlas learns: when the hospital's real decision contradicts a sheet, Waive re-scouts, versions the sheet, and after enough cases flags hospitals that deny people their own policy says qualify." |
-| 8 | 2:18–2:37 | 19 | Architecture card: `docs/devpost/gallery/diagram-01.png` | Hold the diagram; a highlight moves from the phone to Token Factory to Tavily | Variant A (deployed): "One Python service: FastAPI on Nebius AI Cloud, NVIDIA Nemotron models and MiniCPM-V on Nebius Token Factory with zero data retention, Tavily for the web. Photos never touch disk, personal fields are encrypted, links are scoped and revocable, and one tap deletes everything. Every budget has a hard cap." — Variant B (not deployed): replace the first clause with "One Python service: FastAPI, built for Nebius AI Cloud, with NVIDIA Nemotron models and MiniCPM-V on Nebius Token Factory …" |
-| 9 | 2:37–2:47 | 10 | Closing card: repository URL, "Code Apache-2.0 · Atlas data CC BY 4.0 · Waive never asks for money" | Hold; end | "Waive never asks for money. The code is Apache-2.0, the atlas is CC BY 4.0. Rosa keeps her eighteen hundred fifty dollars." |
+| 6 | 1:32–1:59 | 27 | Laptop: `/atlas` list → `/atlas/220031` (Boston Medical Center) → `/metrics` | Scroll the list; open Boston Medical Center; scroll a field: the quote sits under each value with its source link and date; scroll to "Sources"; open `/metrics` and show the MA row and the national total | "Behind the app is an open atlas. For each hospital, Tavily finds the official site and scouts the financial assistance policy, the application and the collections policy. Nemotron 3 Super turns them into a procedure sheet; Nemotron 3 Nano cross-checks it; every field keeps an exact quote that must verify against the source, or it is dropped. Twenty-seven of forty-six Massachusetts hospitals are published, out of twenty-seven hundred nonprofit hospitals seeded nationally." |
+| 7 | 1:59–2:21 | 22 | Terminal: `uv run waive atlas build --state MA --ccn 220031 --reuse-sources` (Nemotron Super + Nano on stored documents, about $0.01, no Tavily) then `uv run waive atlas schedule --dry-run` (free) | Run the build; cut the wait so the result table shows `220031 · BOSTON MEDICAL CENTER · published · <version>` and the "Spend so far" line; run the dry run and let the queue table and the "Daily budget" line show | "Here Nemotron 3 Super and Nemotron 3 Nano rebuild Boston Medical Center's sheet live from stored documents — a new version only if a value changed. Scouting runs on a priority queue inside a daily credit budget. And when a hospital's real decision contradicts a sheet, Waive re-scouts, versions it, and after enough cases flags the hospital." |
+| 8 | 2:21–2:40 | 19 | Architecture card: `docs/devpost/gallery/diagram-01.png` | Hold the diagram; a highlight moves from the phone to Token Factory to Tavily | Variant A (deployed): "One Python service: FastAPI on Nebius AI Cloud, NVIDIA Nemotron models and MiniCPM-V on Nebius Token Factory with zero data retention, Tavily for the web. Photos never touch disk, personal fields are encrypted, links are scoped and revocable, and one tap deletes everything. Every budget has a hard cap." — Variant B (not deployed): replace the first clause with "One Python service: FastAPI, built for Nebius AI Cloud, with NVIDIA Nemotron models and MiniCPM-V on Nebius Token Factory …" |
+| 9 | 2:40–2:50 | 10 | Closing card: repository URL, "Code Apache-2.0 · Atlas data CC BY 4.0 · Waive never asks for money" | Hold; end | "Waive never asks for money. The code is Apache-2.0, the atlas is CC BY 4.0. Rosa keeps her eighteen hundred fifty dollars." |
 
-Total: **2:47**.
+Total: **2:50**.
 
 ## Honesty notes for the narration
 
@@ -950,8 +953,14 @@ Total: **2:47**.
   because Token Factory offers no NVIDIA vision model. The NVIDIA models are the three Nemotron
   models in shot 6.
 - Shot 6's numbers (27 of 46; 2,703 seeded) are from `docs/reports/atlas-ma.md` and
-  `docs/reports/atlas-national.md`. If more hospitals publish before recording, update the
+  `docs/reports/atlas-national.md`; the 2,703 includes the 46 Massachusetts hospitals, so the
+  narration says "out of", not "more". If more hospitals publish before recording, update the
   narration and this file in the same commit.
+- Shot 7 is the one live NVIDIA model call in the video: `--reuse-sources` re-structures Boston
+  Medical Center from stored documents with Nemotron 3 Super and Nemotron 3 Nano (no Tavily, about
+  one cent). The Outcome column normally reads `published` with the same or a new version; if it
+  reads `held` (the two models disagreed on a critical field this run), run the command once more
+  — every run is kept in the sheet's version history either way.
 - Shot 8: use variant A only when the public URL exists and the phone shots were recorded against
   it; otherwise variant B.
 - Everything on screen is synthetic: St. Example is fictional, Rosa is fictional, the bill and the
@@ -982,13 +991,13 @@ Total: **2:47**.
 
 - [ ] **Step 2: Check the arithmetic by hand**
 
-Shot seconds: 17 + 15 + 17 + 20 + 23 + 27 + 19 + 19 + 10 = 167 = 2:47. Each row's end time is the next row's start time. (Task 8.6 adds the test that enforces this.)
+Shot seconds: 17 + 15 + 17 + 20 + 23 + 27 + 22 + 19 + 10 = 170 = 2:50. Each row's end time is the next row's start time. (Task 8.6 adds the test that enforces this.)
 
 - [ ] **Step 3: Commit**
 
 ```bash
 git add docs/devpost/demo-script.md
-git commit -m "docs: demo video script and shot list, 2:47 (8.3)"
+git commit -m "docs: demo video script and shot list, 2:50 (8.3)"
 ```
 
 ---
@@ -1034,7 +1043,7 @@ Rosa is 74 and lives on $1,900 a month from Social Security. After an ER visit s
 
 **A caregiver's flow.** A review page with what was read, the result and the exact quote from the hospital's policy that it rests on, the day-120 (collections) and day-240 (application window) dates, corrections for anything misread, *Approve*, and the packet: a cover letter citing the policy section, the data sheet, a document checklist, mailing or fax instructions, and `.ics` reminders. One tap deletes the case and every personal field.
 
-**An open, cited atlas.** One versioned *procedure sheet* per nonprofit hospital: who qualifies (free care up to X % of the poverty line, discount tiers, presumptive programs) and exactly how to apply (documents, where to send them, the window, how long a decision takes). Every documented field carries an exact quote from a dated source document; a field without a verifiable quote is not published. Published as CC BY 4.0 JSON and as web pages with quotes, sources and version history.
+**An open, cited atlas.** One versioned *procedure sheet* per nonprofit hospital: who qualifies (free care up to X % of the poverty line, discount tiers, presumptive programs) and exactly how to apply (documents, where to send them, the window, how long a decision takes). Every documented field carries an exact quote from a dated source document; a field without a verifiable quote is not published. Published as CC BY 4.0 JSON and as web pages with quotes, sources and a version number (the diff between versions is kept and shown in the admin console).
 
 **A learning loop.** Photos of the hospital's decision letters become outcomes. An outcome that contradicts the sheet triggers a re-scout, a new version after review, and, after enough distinct cases, an accountability flag for a hospital that denies people its own policy says qualify. Patients' photos of public documents fill gaps after an automated personal-information check and admin review. Only enums, income bands and one-way hashes are stored.
 
@@ -1053,7 +1062,7 @@ One Python service (FastAPI, server-rendered pages, plain CSS sized for older ey
 
 **Tavily does all of the web work**: Search to find each hospital's official website (directory sites rejected, name and phone confirmed), Search with `include_domains` plus Map as a fallback to find the policy, application, summary and collections pages, Extract for HTML and PDF text (with a direct download fallback when Extract returns only navigation), and Extract again on a schedule to re-hash documents and re-structure only what changed — on a priority queue (staleness × case demand × (1 − accuracy)) inside a daily credit budget.
 
-**Everything that must be right is deterministic**: quote verification (normalised substring check, value must appear in the quote), the 2026 poverty guidelines, eligibility tiers, the 120/240-day deadlines, hospital matching (rapidfuzz on name, phone, ZIP and the policy web address printed on the bill), the packet. The models only propose; the verifier decides.
+**Everything that must be right is deterministic**: quote verification (normalised substring check, value must appear in the quote), the 2026 poverty guidelines, eligibility tiers, the 120/240-day deadlines, hospital matching (rapidfuzz on name, plus phone, the policy web address printed on the bill and the city in the bill's address), the packet. The models only propose; the verifier decides.
 
 **Privacy by construction**: every model call flagged as personal data raises until zero data retention is confirmed; photos live in memory only; personal fields are AES-GCM encrypted; access is by signed, scoped, revocable links; logs are filtered; the learning tables hold only enums, bands and hashes and an audit command proves it.
 
@@ -1066,7 +1075,7 @@ Built in a single day plus a self-paced build loop with Claude Code: a design sp
 - **Reasoning models and JSON.** Nemotron 3 Super's thinking mode consumed the output budget before any JSON appeared; `enable_thinking: false` plus `response_format: json_object` and the JSON schema written into the prompt fixed it. On very long prompts Super sometimes answered a bare `{}` in JSON mode; one retry without JSON mode fixed that.
 - **Cross-checks that hurt.** Nemotron 3 Nano is fast and cheap but sometimes "disagreed" with a three-character quote that could never verify, holding good sheets. The rule that saved the atlas: a cross-check disagreement counts only when the cross-check's own quote verifies. Four Mass General Brigham hospitals published the day we added it.
 - **Policies that hide.** Tavily's search index does not always hold a hospital's financial-assistance PDF; Map found pages the index missed, Extract's Markdown links let us follow "Financial Assistance Policy (PDF)" links from entry pages, and a plain download with `pypdf` handled PDFs on asset hosts. Hospital systems (Baystate, Mass General Brigham, Beth Israel Lahey) share documents across facilities, so we store each document once by SHA-256 and link it to every hospital.
-- **Policies the schema cannot hold.** Berkshire Medical Center discounts by percentage of charges per facility, not by poverty-level bands; eleven other hospitals' reachable text has no income rule at all. Those sheets are held, visibly, rather than guessed.
+- **Policies the schema cannot hold.** Berkshire Medical Center's sliding scale was held until the tier parser learned percentage ranges and missing bounds; Beth Israel Deaconess Needham's discount tiers still do not parse, and nine other hospitals' reachable text has no income rule at all (Cape Cod, Falmouth, South Shore, Lowell General, Milford, Mount Auburn, Nantucket, North Shore, Martha's Vineyard). Those sheets are held, visibly, rather than guessed.
 - **Zero data retention.** We could not find the switch in the Token Factory console or docs; Nebius's HIPAA page says it must be enabled for the Token Factory scope. We built the app to refuse personal photos until an operator confirms it, so the demo runs on synthetic bills and letters and no real bill has touched the model yet.
 
 ## Accomplishments that we're proud of
@@ -1097,26 +1106,26 @@ Python 3.12 · uv · FastAPI · Jinja2 · SQLAlchemy 2 · SQLite / PostgreSQL ·
 
 ## Feedback on Nebius and NVIDIA tools
 
-**Nebius Token Factory — what worked.** The OpenAI-compatible API worked on the first try with the stock `openai` SDK: `/models` for the catalog, `response_format: {"type": "json_object"}`, `image_url` data URLs for vision, usage counts in every response. Pricing is clear and low ($0.30 / $0.90 per million tokens for Nemotron 3 Super, $0.06 / $0.24 for Nano and Lightning): structuring 46 hospitals many times over, with cross-checks and tie-breaks, cost $1.52. The 262K context of Super let us pass whole policy PDFs; Lightning's 1M context is tempting for system-wide documents.
+**Nebius Token Factory — what worked.** The OpenAI-compatible API worked on the first try with the stock `openai` SDK: `/models` for the catalog, `response_format: {"type": "json_object"}`, `image_url` data URLs for vision, usage counts in every response. Pricing is clear and low ($0.30 / $0.90 per million tokens for Nemotron 3 Super, $0.06 / $0.24 for Nano and Lightning): all of our Token Factory use — structuring 46 hospitals many times over with cross-checks and tie-breaks, plus the 30-bill vision evaluation — cost $1.52. The 262K context of Super let us pass whole policy PDFs; Lightning's 1M context is tempting for system-wide documents.
 
 **Nebius Token Factory — what we would change.**
 1. **Zero data retention needs a visible, documented switch.** The HIPAA page says ZDR "must be enabled for the Token Factory scope" and the terms say users can opt out of storage, but we found no console setting and no docs page describing it. A per-project toggle plus a response header (or a `/models`-style endpoint) that confirms the current retention mode would let an app like ours verify it at startup instead of asking an operator to set `WAIVE_ZDR_CONFIRMED=true` by hand.
-2. **An NVIDIA vision model.** There is no NVIDIA vision model in the catalog, so photos go to MiniCPM-V 4.5 (which read every field of our synthetic bills correctly). A Nemotron VL model on Token Factory would let a project meet the "NVIDIA model at runtime" requirement end to end.
+2. **An NVIDIA vision model.** There is no NVIDIA vision model in the catalog, so photos go to MiniCPM-V 4.5 (which read every field of our 30 synthetic bills except one statement date: 97 % on that field, 100 % on the rest). A Nemotron VL model on Token Factory would let a project meet the "NVIDIA model at runtime" requirement end to end.
 3. **Schema-constrained output.** `json_object` mode gives valid JSON but not our schema; we put the JSON Schema in the prompt and repair once. A `json_schema` response format on Nemotron (and a documented `enable_thinking` flag in the request schema — we found it by trial) would remove our repair step.
 4. **Catalog metadata.** `/models` is enough to verify IDs, but modality, context length and price had to be read from the web console; exposing them in the API would let `waive doctor` verify the whole table.
 
 **NVIDIA Nemotron models — notes from live use.** Super (120B, A12B) is a strong structurer: with thinking off and the schema in the prompt it produced correct, quotable fields from long, messy policy PDFs, and it read the Mass General Brigham income table correctly where Nano did not. Nano (30B, A3B) is a good, cheap second opinion but tends to answer with very short quotes (three characters in one case) that cannot be verified; forcing it to prove its answer the same way as the primary made it useful. Lightning answers fast but was unreliable for structured output on long prompts; it serves as a tie-break only. Thinking mode on by default surprised us for a JSON task; a per-model default note in the docs would save others the first hour.
 
-**Nebius AI Cloud.** The CLI docs are good and the pricing pages are precise, which made a cost table possible before creating anything (CPU endpoint `2vcpu-8gb` ≈ $0.066/h; Managed PostgreSQL `2vcpu-8gb` ≈ $0.143/h). Two things would help small, mostly idle apps: a Serverless AI endpoint tier that scales to zero (today an endpoint bills while it exists, so we wrap `start|stop` around demo windows), and a pausable Managed PostgreSQL (today the database is the cost driver and cannot be stopped without deletion). **Deployment status (update when Phase 6 task 6.8 closes):** at the time of writing the deployment itself is pending behind a cost-approval gate, so this feedback is from the documentation and the CLI's read-only commands only.
+**Nebius AI Cloud.** The CLI docs are good and the pricing pages are precise, which made a cost table possible before creating anything (CPU endpoint `2vcpu-8gb` ≈ $0.066/h; Managed PostgreSQL `2vcpu-8gb` ≈ $0.143/h). Two things would help small, mostly idle apps: a Serverless AI endpoint tier that scales to zero (today an endpoint bills while it is running, so we wrap `start|stop` around demo windows), and a pausable Managed PostgreSQL (today the database is the cost driver and cannot be stopped without deletion). At the time of writing the deployment itself is pending behind a cost-approval gate (see the "Try it out" status line above), so this feedback is from the documentation and the CLI's read-only commands only.
 
 ## Best Use of Tavily
 
-Tavily is the atlas's eyes, and the atlas is the product. For each of the 2,703 nonprofit hospitals in our registry the pipeline makes about five Tavily calls: a **Search** to find the official website (directory sites such as Healthgrades and US News are rejected; the registered domain, the page title and the phone number must agree with the CMS record), a **Search with `include_domains`** for the financial assistance policy, the application, the plain-language summary and the billing/collections policy, a **Map** of the domain when the index misses them (it did for several hospital systems), and **Extract** for the text of HTML pages and PDFs. Extract's Markdown output turned out to be a map of its own: we parse its links to follow "Financial Assistance Policy (PDF)" from entry pages, which flipped fourteen held hospitals to published. Where Extract returned only navigation (one hospital's page yielded 643 characters), a direct download with `pypdf` fills in. Documents are stored once by SHA-256, so a system-wide policy fetched for Baystate Medical Center is shared by its three sister hospitals for free. The scheduler re-hashes stored documents with Extract on a priority queue — stale sheets, hospitals that patients are asking about, and sheets whose predictions are failing go first — inside a daily credit budget, so the atlas stays current unattended. 389 credits built the Massachusetts atlas including every debugging re-run; the next states are budgeted at about five credits per hospital. What we would ask Tavily for: an `extract_depth` that reliably reaches PDF text behind asset hosts (canto.com, widen.net), a usage endpoint so our governor could reconcile its ledger with the account, and a `select_paths` for Map that accepts regular expressions (hospital systems bury policies under `/patients-visitors/billing/…`).
+Tavily is the atlas's eyes, and the atlas is the product. For each hospital it scouts (46 so far, of 2,703 nonprofit hospitals in the registry) the pipeline makes about five Tavily calls: a **Search** to find the official website (directory sites such as Healthgrades and US News are rejected; the registered domain, the page title and the phone number must agree with the CMS record), a **Search with `include_domains`** for the financial assistance policy, the application, the plain-language summary and the billing/collections policy, a **Map** of the domain when the index misses them (it did for several hospital systems), and **Extract** for the text of HTML pages and PDFs. Extract's Markdown output turned out to be a map of its own: we parse its links to follow "Financial Assistance Policy (PDF)" from entry pages, which published two more hospitals (BID Plymouth, Brigham and Women's), and four more (the Baystate system) once a direct download with `pypdf` covered the PDFs on asset hosts that Extract could not fetch. One hospital's HTML page still returns 643 characters of navigation and stays held. Documents are stored once by SHA-256 and linked to every hospital whose scout fetches the same file, so a system-wide policy fetched for Baystate Medical Center appears once in the database and on all four Baystate sheets. The scheduler re-hashes stored documents with Extract on a priority queue — stale sheets, hospitals that patients are asking about, and sheets whose predictions are failing go first — inside a daily credit budget, so the atlas stays current unattended. 389 credits built the Massachusetts atlas including every debugging re-run; the next states are budgeted at about five credits per hospital. What we would ask Tavily for: an `extract_depth` that reliably reaches PDF text behind asset hosts (canto.com, widen.net), and a usage or credits endpoint so our governor could reconcile its ledger with the account instead of counting calls on its own.
 ````
 
 - [ ] **Step 2: Read it once against the facts**
 
-Check every number against `docs/reports/atlas-ma.md` (46 / 27 / 59 %), `docs/reports/atlas-national.md` (2,703), `docs/reports/bill-eval.md` (100 / 97 / 100) and the spend line in `docs/PROGRESS.md` (389 credits, $1.52). Check that the Mass General Brigham, Baystate, Berkshire and "643 characters" anecdotes match the 2.8 notes in PROGRESS (2.8j, 2.8c, 2.8e, 2.8h). Check there is no "TBD" (`grep -c TBD docs/devpost/submission.md` → `0`).
+Check every number against `docs/reports/atlas-ma.md` (46 / 27 / 59 %; the Status column: Berkshire `published`, BID Needham `held`, the nine no-income-rule hospitals `held`), `docs/reports/atlas-national.md` (2,703 including the 46 in MA), `docs/reports/bill-eval.md` (100 / 97 / 100) and the `Spend so far` line of `uv run waive doctor` (offline; 389 credits, $1.52 — the PROGRESS Spend table's last row is stale at ~$0.95, the PROGRESS Log line of 2026-10-03 00:45 has the right figure). Check the anecdotes against the PROGRESS notes they come from: Mass General Brigham and the grounded-disagreement rule (2.8j), link-following publishing two hospitals (2.8b), the pypdf download publishing Baystate ×4 (2.8c), Berkshire flipped to published by the tier parser (2.8i/2.8g/2.8f), BID Needham held on tiers (2.8j), the nine no-income-rule hospitals (2.8k), Cape Cod's 643 characters still open (2.8h). Check there is no "TBD" (`grep -c TBD docs/devpost/submission.md` → `0`).
 
 - [ ] **Step 3: Commit**
 
@@ -1218,9 +1227,12 @@ def test_plan_shots_walks_both_flows_and_every_get_page_renders(tmp_path):
     result = client.get(by_name["07-result-phone"].url.removeprefix(BASE))
     assert "likely do not have to pay" in result.text
     review = by_name["08-caregiver-review-laptop"].html
-    assert "Likely free care" in review and "250%" in review and "Approved" not in review
+    # The pre-approval page already contains the word "Approved" (the by-hand outcome form's
+    # "Approved: free care" option), so the assertion is on the approval banner.
+    assert "Likely free care" in review and "250%" in review
+    assert "Approved. Print the packet" not in review
     approved = client.get(by_name["09-caregiver-approved-laptop"].url.removeprefix(BASE))
-    assert "Approved" in approved.text
+    assert "Approved. Print the packet" in approved.text
     assert by_name["01-home-phone"].size == PHONE and by_name["01-home-phone"].scale == 2
     assert by_name["10-atlas-list-laptop"].size == LAPTOP and by_name["10-atlas-list-laptop"].scale == 1
     assert plan.files["packet-sample.pdf"][:5] == b"%PDF-"
@@ -1652,7 +1664,7 @@ def demo_gallery(
 - [ ] **Step 5: Run the tests, lint, format**
 
 Run: `uv run ruff format . && uv run ruff check . && uv run pytest`
-Expected: about 298 tests pass (291 + 7).
+Expected: about 299 tests pass (292 + 7).
 
 If `test_plan_shots_…` fails with `GalleryError: the gallery script does not know how to answer …`, the senior income or result step now calls another schema (for example a photo classifier): add a branch to `ScriptedAI` returning that schema's demo value and note it in the plan's Known simplifications.
 
@@ -1690,7 +1702,7 @@ Devpost in this order with these captions; `packet-sample.pdf` is for the README
 | `08-caregiver-review-laptop.png` | The caregiver's review: what was read, the result with the exact policy quote, the dates that matter |
 | `09-caregiver-approved-laptop.png` | Approved: download the packet and the calendar reminders |
 | `02-two-links-laptop.png` | Two links: one for the person with the bill, one for the helper |
-| `11-atlas-sheet-laptop.png` | A published procedure sheet: every field with its quote, source and date; version history |
+| `11-atlas-sheet-laptop.png` | A published procedure sheet: every field with its quote, source and date; versioned (the version number is on the page, the diffs in the admin console) |
 | `10-atlas-list-laptop.png` | The public atlas |
 | `12-metrics-laptop.png` | Coverage by state and Tavily credits per day |
 | `diagram-02.png` | How a sheet is built: Tavily → Nemotron 3 Super draft → Nemotron 3 Nano cross-check → quote verification → publish → refresh by content hash |
@@ -1792,15 +1804,15 @@ is verifiable from the repository; the four gates are the only steps that need t
 | Requirement | Evidence | Verify with |
 |---|---|---|
 | Runtime use of Nebius Token Factory and/or Nebius AI Cloud | Token Factory is the only model API: `token_factory_base_url` in `src/waive/config.py`, client in `src/waive/ai/client.py`; AI Cloud: `Dockerfile`, `WAIVE_ENV=production`, Phase 6 plan; README "How Nebius, NVIDIA and Tavily are used at runtime" | `grep -n tokenfactory src/waive/config.py` → one line; `uv run waive doctor --live` (1 credit) → Token Factory OK with all four model IDs found |
-| At least one NVIDIA open model used at runtime | `model_reason`, `model_fast`, `model_tiebreak` in `src/waive/config.py` are `nvidia/…`; called in `src/waive/atlas/pipeline.py` and `publish.py` on every build, refresh and rebuild | `grep -n "nvidia/" src/waive/config.py` → three lines; `uv run pytest tests/unit/test_readme.py` |
-| Public demo video under 3 minutes on YouTube | Gate U8.2; the URL in `README.md` and `docs/devpost/submission.md`; script `docs/devpost/demo-script.md` (2:47) | `mdls -name kMDItemDurationSeconds <file>.mp4` → under 180; the YouTube page shows "Public" |
+| At least one NVIDIA open model used at runtime | `model_reason`, `model_fast`, `model_tiebreak` in `src/waive/config.py` are `nvidia/…`; called in `src/waive/atlas/pipeline.py` and `publish.py` on every build, refresh and rebuild; shot 7 of the video shows a live `waive atlas build --reuse-sources` run (Nemotron Super + Nano) ending in the result table | `grep -n "nvidia/" src/waive/config.py` → three lines; `uv run pytest tests/unit/test_readme.py`; the video at 1:59–2:21 |
+| Public demo video under 3 minutes on YouTube | Gate U8.2; the URL in `README.md` and `docs/devpost/submission.md`; script `docs/devpost/demo-script.md` (2:50) | `mdls -name kMDItemDurationSeconds <file>.mp4` → under 180; the YouTube page shows "Public" |
 | Public repository with LICENSE and README | Gate U8.1; `LICENSE` (canonical Apache-2.0, 11,358 bytes); `README.md` with setup, architecture, privacy, costs, licenses | `git ls-files LICENSE README.md` → both; `uv run pytest tests/unit/test_readme.py` |
 | Project text, gallery, track | `docs/devpost/submission.md`; `docs/devpost/gallery/*.png` with captions in `gallery/README.md`; Personal AI track | `uv run pytest tests/unit/test_devpost_docs.py`; `ls docs/devpost/gallery/*.png | wc -l` → 14 |
 | Feedback on Nebius and NVIDIA tools | `docs/devpost/submission.md` → "Feedback on Nebius and NVIDIA tools" | same test |
-| "Best Use of Tavily" side prize | `docs/devpost/submission.md` → "Best Use of Tavily"; `src/waive/atlas/tavily_gateway.py`, `discover.py`, `scout.py`, `overlays.py`, `refresh.py`, `schedule.py` | `grep -ln "gateway\." src/waive/atlas/*.py` lists those files; `/metrics` shows credits per day |
+| "Best Use of Tavily" side prize | `docs/devpost/submission.md` → "Best Use of Tavily"; the gateway `src/waive/atlas/tavily_gateway.py` and its callers `discover.py`, `scout.py`, `overlays.py`, `refresh.py` (the scheduler `schedule.py` reaches Tavily through `build_hospital`) | `grep -ln "gateway\." src/waive/atlas/*.py` → exactly `discover.py`, `overlays.py`, `refresh.py`, `scout.py`; `/metrics` shows credits per day |
 | Honest about what is not done | README "Status, honestly"; the deployment status lines; "not an NVIDIA model" | `grep -n "Deployment status" README.md docs/devpost/submission.md docs/devpost/demo-script.md` → one line each, updated or not |
-| No secrets, ever | `.env` gitignored; keys never committed (see PROGRESS U0.1 note) | `git ls-files | grep -E "^\.env$"` → nothing; `git grep -n -E "tvly-[A-Za-z0-9]{20,}" $(git rev-list --all) | head` → nothing |
-| Licenses | `LICENSE` (Apache-2.0); `data/atlas/LICENSE.md` (CC BY 4.0); `pyproject.toml` `license = "Apache-2.0"`; exports carry `"license": "CC BY 4.0"` | `uv run pytest tests/unit/test_readme.py` |
+| No secrets, ever | `.env` gitignored; keys never committed (see PROGRESS U0.1 note); the six runtime secrets are `NEBIUS_API_KEY`, `TAVILY_API_KEY`, `WAIVE_VAULT_KEY`, `WAIVE_TOKEN_SECRET`, `WAIVE_ADMIN_TOKEN`, `WAIVE_CLOUD_DATABASE_URL` | `git ls-files | grep -E "^\.env$"` → nothing; `git log --all --name-only --pretty=format: | sort -u | grep -Ex '\.env(\..*)?|var/.*'` → only `.env.example`; `git grep -lE "^(NEBIUS_API_KEY|TAVILY_API_KEY|WAIVE_VAULT_KEY|WAIVE_TOKEN_SECRET|WAIVE_ADMIN_TOKEN|WAIVE_CLOUD_DATABASE_URL)=.+" $(git rev-list --all) -- . ':!.env.example'` → nothing; `git grep -lE "tvly-[A-Za-z0-9]{20,}" $(git rev-list --all)` → nothing (`-l` prints file names only, never the matching line). **Any hit stops gate U8.1**: no push; the user rotates the key and the history is rewritten before the repository is created |
+| Licenses | `LICENSE` (Apache-2.0); `data/atlas/LICENSE.md` (CC BY 4.0); `pyproject.toml` `license = { text = "Apache-2.0" }`; exports carry `"license": "CC BY 4.0"` | `uv run pytest tests/unit/test_readme.py` |
 
 ## Final dry run (the loop runs this on 2026-10-27 or the day before submission)
 
@@ -1809,26 +1821,32 @@ uv run ruff format . && uv run ruff check . && uv run pytest     # all green
 uv run waive doctor                                              # offline checks OK; spend line
 uv run waive demo reset && uv run waive demo gallery && uv run waive demo reset   # fresh gallery
 uv run waive atlas report --state MA && uv run waive atlas report --national      # fresh numbers
-grep -rn "USER FILLS" README.md docs/devpost                      # must print nothing (after U8.1–U8.3)
+git status --short && git diff --stat                            # the gallery PNGs and the national report always change
+                                                                 # (headless Chrome is not byte-stable; the report header carries
+                                                                 # the generation date and the median sheet age) — look at the
+                                                                 # changed PNGs; only visual changes and changed numbers matter
+git add docs/reports docs/devpost/gallery && git commit -m "docs: refresh reports and gallery before submission"
+grep -rn "USER FILLS" README.md data/atlas/LICENSE.md docs/devpost   # must print nothing (after U8.1–U8.3)
 grep -rnE "T[B]D" README.md docs/devpost                          # placeholder scan; bracketed so this file passes its own test
 git status --short                                               # must print nothing
 ```
 
 Then compare the numbers in `README.md` "Status, honestly" and `docs/devpost/submission.md` with
-the two reports and `docs/PROGRESS.md`'s spend table; fix any drift in one commit.
+the two reports and the `Spend so far` line of `uv run waive doctor` (the ledger is the source of
+truth for spend; the PROGRESS Spend table is a copy of it); fix any drift in one commit.
 
 ## User gates (exact wording; only the user closes these)
 
 **U8.1 — Approve making the GitHub repository public.** What the user does:
 1. On GitHub, create an empty repository (suggested name `waive`; no README, no license — the repo has both). Keep it **private** for now.
 2. In chat, write: "U8.1 approved. Remote: `git@github.com:<account>/waive.git`" (or the HTTPS URL). Only then does the loop run `git remote add origin <url>` and `git push -u origin main`; the loop never adds a remote or pushes without this sentence.
-3. Before the push the loop runs the secret scans from the table above and reports "no `.env`, no keys in history". The user checks the repository page: `README.md` renders both Mermaid diagrams, `LICENSE` shows "Apache License 2.0", `.env` is absent, `docs/devpost/gallery/` has the images.
+3. Before the push the loop runs all four secret scans from the "No secrets, ever" row above (`git ls-files` for `.env`; `git log --all --name-only` for any `.env*` or `var/` path ever committed → only `.env.example`; `git grep -l` over every revision for `NAME=value` lines of the six secrets outside `.env.example` → nothing; `git grep -l` for `tvly-…` → nothing) and reports "no `.env`, no `var/`, no keys in history". A hit on any scan stops the gate: no remote, no push; the loop tells the user which file and revision (never the value), the user rotates that key, and the history is rewritten before step 2 is retried. The user checks the repository page: `README.md` renders both Mermaid diagrams, `LICENSE` shows "Apache License 2.0", `.env` is absent, `docs/devpost/gallery/` has the images.
 4. The user fills `[USER FILLS: repository URL]` and `[USER FILLS: copyright holder]` in `README.md`, `data/atlas/LICENSE.md` and `docs/devpost/submission.md` (or tells the loop the values and lets it edit), the loop commits and pushes.
 5. The user switches the repository to **Public** (Settings → General → Danger Zone → Change visibility) and tells the loop "U8.1 closed".
 
 **U8.2 — Record and upload the demo video (under 3 minutes, public on YouTube).** What the user does:
 1. Follow `docs/devpost/demo-script.md` "Before recording" (reset, ZDR setting for a synthetic-only session, serve, phone on the same Wi-Fi).
-2. Record the nine shots, cut in iMovie, export 1080p, check `mdls -name kMDItemDurationSeconds` < 180.
+2. Record the nine shots (the only paid steps: the two vision calls in shots 3–4 and the one `--reuse-sources` Nemotron build in shot 7, about two cents in all, no Tavily credits), cut in iMovie, export 1080p, check `mdls -name kMDItemDurationSeconds` < 180.
 3. Upload to YouTube with visibility **Public** (Devpost requires public, not unlisted), title "Waive — free or discounted hospital care from a photo of the bill (Nebius x NVIDIA hackathon)".
 4. Paste the URL into the two `[USER FILLS: YouTube URL …]` fields (`README.md`, `docs/devpost/submission.md`), or tell the loop the URL; set `WAIVE_REQUIRE_ZDR=true` back if it was changed; run `uv run waive demo reset`; commit and push; write "U8.2 closed" in chat.
 
@@ -1852,9 +1870,9 @@ the two reports and `docs/PROGRESS.md`'s spend table; fix any drift in one commi
 - [ ] **Step 4: Run the tests, lint, format**
 
 Run: `uv run ruff format . && uv run ruff check . && uv run pytest`
-Expected: about 301 tests pass (298 + 3).
+Expected: about 302 tests pass (299 + 3).
 
-Also run the free parts of the dry run now: `grep -rnE "T[B]D" README.md docs/devpost` → nothing; `grep -rn "USER FILLS" README.md docs/devpost data/atlas/LICENSE.md | wc -l` → a handful of lines (the user's fields; they disappear at U8.1–U8.3).
+Also run the free parts of the dry run now: `grep -rnE "T[B]D" README.md docs/devpost` → nothing; `grep -rn "USER FILLS" README.md data/atlas/LICENSE.md docs/devpost | wc -l` → a handful of lines (the user's fields; they disappear at U8.1–U8.3).
 
 - [ ] **Step 5: Commit**
 
@@ -1867,13 +1885,13 @@ git commit -m "docs: pre-submission checklist mapping Devpost requirements to ev
 
 ## Phase 8 exit checks (the orchestrator runs these; record results in `docs/PROGRESS.md`)
 
-- [ ] `uv run ruff format . && uv run ruff check . && uv run pytest` green; test count recorded (expected about 301).
+- [ ] `uv run ruff format . && uv run ruff check . && uv run pytest` green; test count recorded (expected about 302).
 - [ ] `README.md` renders on GitHub with both Mermaid diagrams (check after U8.1); `tests/unit/test_readme.py` passes.
 - [ ] `docs/devpost/gallery/` holds 12 screenshots, 2 diagrams, `packet-sample.pdf` and `README.md`; every PNG under 1 MB.
-- [ ] `docs/devpost/demo-script.md` totals 2:47 (test enforces ≤ 175 s and contiguity).
+- [ ] `docs/devpost/demo-script.md` totals 2:50 (test enforces ≤ 175 s and contiguity).
 - [ ] `docs/devpost/submission.md` has every section, the Nebius/NVIDIA feedback and the Tavily paragraph, no "TBD".
 - [ ] `docs/devpost/checklist.md` maps every requirement to evidence; gates U8.1–U8.4 open in PROGRESS with the checklist's wording.
-- [ ] Numbers in README and submission match `docs/reports/atlas-ma.md`, `docs/reports/atlas-national.md`, `docs/reports/bill-eval.md` and the PROGRESS spend table on the day of submission.
+- [ ] Numbers in README and submission match `docs/reports/atlas-ma.md`, `docs/reports/atlas-national.md`, `docs/reports/bill-eval.md` and the `Spend so far` line of `uv run waive doctor` (the ledger) on the day of submission; the orchestrator brings the PROGRESS Spend table up to the same figures.
 - [ ] The three "Deployment status" lines say the same thing (deployed with URL, or not deployed).
 - [ ] Spend during the phase: Token Factory ≤ $0.50, Tavily ≤ 5 credits, no new AI Cloud resources.
 
@@ -1881,8 +1899,8 @@ git commit -m "docs: pre-submission checklist mapping Devpost requirements to ev
 
 ## Self-review
 
-- **Master plan coverage.** 8.1 README (setup, architecture diagram as Mermaid, how Nebius / NVIDIA / Tavily are used at runtime, privacy and ZDR, costs, LICENSE check, atlas data license note) → Task 8.1 with a test tying the README to `Settings`. 8.2 demo data and a reset command → Task 8.2 (`waive demo reset`, Rosa's bill and letter, idempotent, real hospitals untouched, tests through the function and the CLI). 8.3 demo script and shot list under three minutes → Task 8.3 (nine shots, 2:47, narration written, recording steps, ZDR note). 8.4 Devpost draft with feedback on Nebius and NVIDIA tools → Task 8.4 (plus the Tavily side-prize paragraph). 8.5 screenshots and diagrams for the gallery → Task 8.5 (`waive demo gallery`: in-process flow with scripted extraction, headless Chrome, kroki.io diagrams, captions). Added 8.6 → requirement-to-evidence table, dry run, gates U8.1–U8.4 with exact steps. Spec G5 (Token Factory at runtime, AI Cloud, Nemotron, Tavily, public repo with license and README, video under 3 minutes) → the checklist's first table. Spec §18 licenses → decisions 1–2 and `data/atlas/LICENSE.md`.
-- **Honesty scan.** Every number is sourced (reports, PROGRESS); the vision model is called "not an NVIDIA model" in the README, the Devpost text and the demo script; the deployment status is one marked line per document with the replacement text ready; the demo is declared synthetic; held hospitals are explained, not hidden; feedback to Nebius/NVIDIA names real incidents from the build log (thinking mode, `{}` in JSON mode, Nano's short quotes, Lightning on long prompts, no vision model, the ZDR switch).
+- **Master plan coverage.** 8.1 README (setup, architecture diagram as Mermaid, how Nebius / NVIDIA / Tavily are used at runtime, privacy and ZDR, costs, LICENSE check, atlas data license note) → Task 8.1 with a test tying the README to `Settings`. 8.2 demo data and a reset command → Task 8.2 (`waive demo reset`, Rosa's bill and letter, idempotent, real hospitals untouched, tests through the function and the CLI). 8.3 demo script and shot list under three minutes → Task 8.3 (nine shots, 2:50, narration written, recording steps, ZDR note, one live Nemotron build in shot 7 so the video shows an NVIDIA model running). 8.4 Devpost draft with feedback on Nebius and NVIDIA tools → Task 8.4 (plus the Tavily side-prize paragraph). 8.5 screenshots and diagrams for the gallery → Task 8.5 (`waive demo gallery`: in-process flow with scripted extraction, headless Chrome, kroki.io diagrams, captions). Added 8.6 → requirement-to-evidence table, dry run, gates U8.1–U8.4 with exact steps. Spec G5 (Token Factory at runtime, AI Cloud, Nemotron, Tavily, public repo with license and README, video under 3 minutes) → the checklist's first table. Spec §18 licenses → decisions 1–2 and `data/atlas/LICENSE.md`.
+- **Honesty scan.** Every number is sourced (the three reports, the ledger through `waive doctor`, and the PROGRESS notes 2.8b/2.8c/2.8i/2.8j/2.8k for the anecdotes — 44 sheets, nine no-income-rule hospitals, two hospitals published by link-following and four by the PDF download, Berkshire published and BID Needham held, statement date 97 %); the vision model is called "not an NVIDIA model" in the README, the Devpost text and the demo script; the deployment status is one marked line per document with the replacement text ready (the Devpost feedback paragraph refers to that line instead of carrying a second marker); the demo is declared synthetic; held hospitals are explained, not hidden; feedback to Nebius/NVIDIA names real incidents from the build log (thinking mode, `{}` in JSON mode, Nano's short quotes, Lightning on long prompts, no vision model, the ZDR switch).
 - **Placeholder scan.** No "TBD" anywhere (tests enforce it in the Devpost documents and the README). `[USER FILLS: …]` appears only for the repository URL, YouTube URL, Devpost URL and copyright holder; the checklist's dry run greps them out before submission.
 - **Type consistency.** `Shot(name, size, url, html, scale)` is constructed with those keywords in `plan_shots` and read in `capture` and the tests; `ShotPlan(shots, skipped, files)` is built in `plan_shots` and in the capture test; `chrome_command(chrome, target, out, size, scale)` is called the same way from `capture` and the test; `ResetReport` field order `(cases_deleted, review_items_deleted, contributions_deleted, evidence_deleted, sources_unlinked, sheet_versions_deleted, sheet_version, files)` matches its one constructor call and the CLI's message; `write_demo_images` returns `[bill, truth, letter]` in the order the tests assert; `render_benefit_letter(name, monthly, letter_date)` is called identically from `write_demo_images` and the test; `run_gallery` returns `(written, skipped)` as the CLI unpacks it.
 - **No network in tests.** `test_gallery.py` uses the TestClient, a fake runner and `respx`; `serving` and real Chrome run only in step 6 of 8.5. `test_demo.py`'s CLI test uses a file SQLite database in `tmp_path` and no `.env`.
