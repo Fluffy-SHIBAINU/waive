@@ -9,6 +9,7 @@ from rich.console import Console
 from rich.table import Table
 
 from waive.ai.client import AIClient
+from waive.atlas import repo
 from waive.atlas.overlays import run_overlay
 from waive.atlas.pipeline import build_hospital, build_state, coverage_report
 from waive.atlas.publish import export_state
@@ -23,6 +24,7 @@ from waive.demo import forget_cases, seed_demo
 from waive.doctor import run_checks
 from waive.governor import make_governor
 from waive.learning.contributions import rebuild_from_sources
+from waive.learning.evidence import audit_evidence, publish_reported
 
 app = typer.Typer(no_args_is_help=True, help="Waive operations.")
 console = Console()
@@ -270,3 +272,29 @@ def learn_rebuild(ccn: str = typer.Option(..., "--ccn", help="Hospital to re-str
     )
     _, tf_usd = governor.summary()["token_factory"]
     console.print(f"Token Factory spend so far: ${tf_usd:.4f}")
+
+
+@learn_app.command("publish-reported")
+def learn_publish_reported(state: str = typer.Option(..., "--state")) -> None:
+    """Publish patient-reported fields that reached the 5-case threshold. No paid calls."""
+    settings = Settings()
+    today = datetime.now(UTC).date()
+    with session_scope(_engine(settings)) as session:
+        bumped = [
+            row.ccn
+            for row in repo.list_hospitals(session, state=state)
+            if publish_reported(session, row.ccn, today) is not None
+        ]
+    console.print(f"New versions for {len(bumped)} hospital(s): {', '.join(bumped) or 'none'}")
+
+
+@learn_app.command("audit")
+def learn_audit() -> None:
+    """Check the learning tables for anything that is not an enum, a date, a count or a hash."""
+    settings = Settings()
+    with session_scope(_engine(settings)) as session:
+        problems = audit_evidence(session)
+    for problem in problems:
+        console.print(problem)
+    console.print("Evidence tables are clean." if not problems else f"{len(problems)} problem(s).")
+    raise typer.Exit(code=1 if problems else 0)

@@ -8,7 +8,7 @@ from typing import Any
 from sqlalchemy.orm import Session
 
 from waive.atlas import repo
-from waive.atlas.schema import ProcedureSheet, SheetStatus
+from waive.atlas.schema import Layer, ProcedureSheet, SheetStatus
 from waive.db import SheetRow
 
 CRITICAL_PATHS = (
@@ -45,6 +45,20 @@ def copy_fields(target: ProcedureSheet, source: ProcedureSheet, paths: list[str]
         cited = getattr(getattr(source, section_name), field_name)
         updates[section_name] = section.model_copy(update={field_name: cited})
     return target.model_copy(update=updates)
+
+
+def carry_over_reported(sheet: ProcedureSheet, previous: ProcedureSheet) -> ProcedureSheet:
+    """Rebuilds re-read documents only; patient-reported fields have no quote or source and must
+    survive a rebuild. A reported field never replaces a documented one at the same path."""
+    updates: dict[str, Any] = {}
+    for path, cited in previous.field_paths():
+        if cited.layer is not Layer.REPORTED:
+            continue
+        section_name, field_name = path.split(".")
+        section = updates.get(section_name, getattr(sheet, section_name))
+        if getattr(section, field_name) is None:
+            updates[section_name] = section.model_copy(update={field_name: cited})
+    return sheet.model_copy(update=updates) if updates else sheet
 
 
 def critical_conflicts(primary: ProcedureSheet, secondary: ProcedureSheet) -> list[str]:
