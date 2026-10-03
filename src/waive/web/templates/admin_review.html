@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Review queue{% endblock %}
+{% block content %}
+<h1>Review queue</h1>
+<p><a href="/admin">Back to the console</a></p>
+{% for item in items %}
+<div class="card">
+  <div class="row"><span><code>{{ item.kind }}</code></span><strong>{% if item.ccn %}<a href="/admin/sheets/{{ item.ccn }}">{{ item.ccn }}</a>{% else %}no hospital{% endif %}</strong></div>
+  <p class="muted">{{ item.detail }}</p>
+  <form method="post" action="/admin/review/{{ item.id }}" class="stack">
+    {% if item.kind == "rescout_request" %}
+    <label for="verdict-{{ item.id }}">Verdict after re-checking the documents</label>
+    <select id="verdict-{{ item.id }}" name="verdict">
+      <option value="">Not decided</option>
+      <option value="sheet_wrong">The sheet was wrong (a new version is published; withdraw slip evidence)</option>
+      <option value="hospital_slip">The hospital slipped (policy unchanged; keep the flag)</option>
+    </select>
+    {% endif %}
+    <button type="submit" name="status" value="resolved" class="btn">Resolve</button>
+    <button type="submit" name="status" value="dismissed" class="btn quiet">Dismiss</button>
+  </form>
+</div>
+{% else %}<p class="card">Nothing to review.</p>{% endfor %}
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Sheet versions{% endblock %}
+{% block content %}
+<h1>{{ hospital.name }}</h1>
+<p class="muted"><a href="/admin">Back to the console</a> · <a href="/atlas/{{ hospital.ccn }}">public page</a> · flag level: {{ flag }}</p>
+<form method="post" action="/admin/rebuild/{{ hospital.ccn }}" class="stack"><button type="submit" class="btn">Rebuild from stored documents (spends tokens, never Tavily)</button></form>
+{% if note %}<p class="card">{{ note }}</p>{% endif %}
+{% for row in versions %}
+<div class="card">
+  <div class="row"><span>version {{ row.version }}</span><strong>{{ row.status }} · {{ row.created_at.date() }}</strong></div>
+  {% for path, change in (row.diff or {}).items() %}
+  <p><code>{{ path }}</code><br><span class="muted">was:</span> {{ change.old }}<br><span class="muted">now:</span> {{ change.new }}</p>
+  {% else %}<p class="muted">First version.</p>{% endfor %}
+</div>
+{% else %}<p class="card">No sheet yet.</p>{% endfor %}
+{% endblock %}

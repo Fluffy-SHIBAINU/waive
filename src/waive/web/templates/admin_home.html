@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Admin console{% endblock %}
+{% block content %}
+<h1>Admin console</h1>
+<div class="card">
+  <div class="row"><span><a href="/admin/review">Review queue</a></span><strong>{{ counts.review }} open</strong></div>
+  <div class="row"><span><a href="/admin/contributions">Contributed documents</a></span><strong>{{ counts.contributions }} waiting</strong></div>
+  <div class="row"><span><a href="/admin/scoreboard">Scoreboard</a></span><strong>{{ counts.outcomes }} outcomes</strong></div>
+</div>
+<h2>Budget</h2>
+<div class="card">
+  <div class="row"><span>Tavily credits</span><strong>{{ budget.tavily_used }} of {{ budget.tavily_cap }}</strong></div>
+  <div class="row"><span>Token Factory</span><strong>${{ "%.2f" % budget.tf_used }} of ${{ budget.tf_cap }}</strong></div>
+</div>
+<h2>Evidence audit</h2>
+{% if audit %}{% for problem in audit %}<p class="card status-unknown">{{ problem }}</p>{% endfor %}
+{% else %}<p class="card status-free">No personal data found in the evidence tables.</p>{% endif %}
+{% endblock %}

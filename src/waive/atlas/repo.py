@@ -157,3 +157,18 @@ def open_review_items(session: Session, ccn: str | None = None) -> list[ReviewIt
     if ccn:
         query = query.where(ReviewItemRow.ccn == ccn)
     return list(session.scalars(query.order_by(ReviewItemRow.id)))
+
+
+def set_review_status(session: Session, item_id: int, status: str) -> ReviewItemRow:
+    row = session.get(ReviewItemRow, item_id)
+    if row is None:
+        raise KeyError(item_id)
+    row.status = status
+    session.flush()
+    return row
+
+
+def sheet_versions(session: Session, ccn: str) -> list[SheetRow]:
+    """Every stored version of a hospital's sheet, newest first, each with its stored diff."""
+    query = select(SheetRow).where(SheetRow.ccn == ccn).order_by(SheetRow.version.desc())
+    return list(session.scalars(query))
