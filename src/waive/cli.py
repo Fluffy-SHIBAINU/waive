@@ -438,7 +438,11 @@ def demo_reset(
 
 @demo_app.command("gallery")
 def demo_gallery(
-    out: Path = typer.Option(Path("docs/devpost/gallery"), "--out"),  # noqa: B008
+    out: Path = typer.Option(  # noqa: B008
+        Path("docs/devpost/gallery"),
+        "--out",
+        help="Output folder, relative to the current directory (run from the repository root)",
+    ),
     chrome: str | None = typer.Option(None, "--chrome", help="Chrome or Chromium binary"),
     live: bool = typer.Option(False, "--live", help="Use the real vision model (about $0.01)"),
     port: int = typer.Option(DEFAULT_PORT, "--port"),
@@ -446,8 +450,8 @@ def demo_gallery(
     diagrams: bool = typer.Option(True, "--diagrams/--no-diagrams", help="Export README diagrams"),
 ) -> None:
     """Photograph the demo flow and the atlas pages with headless Chrome, and export the README
-    diagrams, for the Devpost gallery. Spends nothing unless --live. Creates one demo case in the
-    local database; run `waive demo reset` afterwards."""
+    diagrams, for the Devpost gallery. Spends nothing unless --live. Run it from the repository
+    root. Creates one demo case in the local database; run `waive demo reset` afterwards."""
     settings = Settings()
     try:
         written, skipped = run_gallery(

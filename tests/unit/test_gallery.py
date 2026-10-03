@@ -14,6 +14,9 @@ from waive.gallery import (
     KROKI_URL,
     LAPTOP,
     PHONE,
+    README_PATH,
+    TALL,
+    GalleryError,
     ScriptedAI,
     Shot,
     ShotPlan,
@@ -84,6 +87,10 @@ def test_plan_shots_walks_both_flows_and_every_get_page_renders(tmp_path):
     assert by_name["01-home-phone"].size == PHONE and by_name["01-home-phone"].scale == 2
     assert by_name["10-atlas-list-laptop"].size == LAPTOP
     assert by_name["10-atlas-list-laptop"].scale == 1
+    # The review page's "Dates that matter" card and the metrics page's coverage table sit below
+    # a laptop fold, and their captions promise them, so those pages are photographed tall.
+    assert by_name["08-caregiver-review-laptop"].size == TALL
+    assert by_name["12-metrics-laptop"].size == TALL
     assert plan.files["packet-sample.pdf"][:5] == b"%PDF-"
 
 
@@ -109,6 +116,10 @@ def test_chrome_command_sets_size_scale_and_output(tmp_path):
     assert "--headless=new" in cmd and "--window-size=390,844" in cmd
     assert "--force-device-scale-factor=2" in cmd
     assert f"--screenshot={out.resolve()}" in cmd
+    # Headless Chrome otherwise follows the machine's light/dark appearance (checked with 154:
+    # no flag follows the Mac, preferredColorScheme=1 forces light, =0 forces dark), so the
+    # scheme is pinned and a re-run on any machine takes the same pictures.
+    assert "--blink-settings=preferredColorScheme=0" in cmd
 
 
 def test_html_target_writes_the_page_with_a_base_href(tmp_path):
@@ -185,3 +196,21 @@ def test_export_mermaid_posts_each_readme_diagram_to_kroki(tmp_path):
     assert route.calls[0].request.content == b"flowchart LR\n  A --> B\n"
     assert route.calls[0].request.headers["content-type"] == "text/plain"
     assert (tmp_path / "out" / "diagram-02.png").read_bytes().startswith(b"\x89PNG")
+
+
+def test_readme_is_found_from_the_package_not_the_working_directory():
+    # `waive demo gallery` run from another directory used to raise FileNotFoundError (a
+    # traceback, not a message) on Path("README.md"); the README is the repository's.
+    assert README_PATH.is_absolute() and README_PATH.name == "README.md"
+    assert README_PATH.is_file()
+    assert len(mermaid_blocks(README_PATH.read_text(encoding="utf-8"))) == 2
+
+
+def test_export_mermaid_reports_a_missing_readme_as_a_gallery_error(tmp_path):
+    with httpx.Client() as http:
+        try:
+            export_mermaid(tmp_path / "missing.md", tmp_path / "out", http)
+        except GalleryError as error:
+            assert "missing.md" in str(error)
+        else:
+            raise AssertionError("a missing README must raise GalleryError")

@@ -6,9 +6,10 @@ machine, no new Python dependency — photographs each page at phone or laptop s
 exist only as POST responses (the "Two links" page, the read-back) or that change as the case
 advances (the senior start page, the review page before approval) are captured from their HTML
 with a <base href> so the stylesheet still loads. Chrome will not open a window narrower than
-500 CSS px, so phone-sized shots are framed in an <iframe> of the phone's exact size. README
-diagrams are exported through kroki.io. Spends nothing unless `live=True` (then the real vision
-model reads the two demo images).
+500 CSS px, so phone-sized shots are framed in an <iframe> of the phone's exact size. The colour
+scheme is pinned to dark on the command line, so a re-run on a light-mode machine takes the same
+pictures. README diagrams are exported through kroki.io. Spends nothing unless `live=True` (then
+the real vision model reads the two demo images).
 """
 
 import html
@@ -40,8 +41,13 @@ TALL = (1280, 1800)  # a whole procedure sheet
 # Headless Chrome (new mode, 154 checked) clamps --window-size to its minimum window width and
 # then crops the screenshot, so anything narrower is laid out inside an iframe of the right size.
 CHROME_MIN_WIDTH = 500
+# Blink's PreferredColorScheme enum: kDark = 0, kLight = 1. Without this Chrome 154 follows the
+# machine's appearance (--force-dark-mode / --force-light-mode do not change what the page sees).
+COLOR_SCHEME_FLAG = "--blink-settings=preferredColorScheme=0"
 DEFAULT_PORT = 8765
 KROKI_URL = "https://kroki.io/mermaid/png"
+# The diagrams come from the repository README, wherever the command is run from.
+README_PATH = Path(__file__).resolve().parents[2] / "README.md"
 CHROME_CANDIDATES = (
     "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
     "/Applications/Chromium.app/Contents/MacOS/Chromium",
@@ -128,9 +134,10 @@ def plan_shots(
     plan.shots.append(Shot("06-income-phone", PHONE, url=f"{base_url}{senior}/income"))
     client.post(f"{senior}/income", files={"photo": ("letter.jpg", letter, "image/jpeg")})
     plan.shots.append(Shot("07-result-phone", PHONE, url=f"{base_url}{senior}/result"))
-    # The review page changes once approved (shot 09), so the pre-approval view is kept as HTML.
+    # The review page changes once approved (shot 09), so the pre-approval view is kept as HTML;
+    # tall, so the "Dates that matter" card below the laptop fold is in the picture.
     plan.shots.append(
-        Shot("08-caregiver-review-laptop", LAPTOP, html=client.get(caregiver).text, scale=1)
+        Shot("08-caregiver-review-laptop", TALL, html=client.get(caregiver).text, scale=1)
     )
     client.post(f"{caregiver}/approve")
     plan.shots.append(
@@ -146,7 +153,9 @@ def plan_shots(
         plan.skipped["11-atlas-sheet-laptop"] = (
             f"no published sheet for CCN {atlas_ccn} in this database (pass --atlas-ccn)"
         )
-    plan.shots.append(Shot("12-metrics-laptop", LAPTOP, url=f"{base_url}/metrics", scale=1))
+    # Tall: the coverage-by-state table (alphabetical, so Massachusetts is about row 20) starts
+    # below a laptop fold.
+    plan.shots.append(Shot("12-metrics-laptop", TALL, url=f"{base_url}/metrics", scale=1))
     return plan
 
 
@@ -173,6 +182,7 @@ def chrome_command(
         "--no-default-browser-check",
         f"--force-device-scale-factor={scale}",
         f"--window-size={width},{height}",
+        COLOR_SCHEME_FLAG,
         "--virtual-time-budget=2000",
         f"--screenshot={out.resolve()}",
         target,
@@ -244,6 +254,8 @@ def mermaid_blocks(markdown: str) -> list[str]:
 def export_mermaid(readme: Path, out_dir: Path, http: httpx.Client) -> list[Path]:
     """PNG for every ```mermaid block in the README, in order, via kroki.io (public diagram text
     is all that leaves the machine). Fallback by hand: paste the block into https://mermaid.live."""
+    if not readme.is_file():
+        raise GalleryError(f"no README to export diagrams from at {readme} (or pass --no-diagrams)")
     out_dir.mkdir(parents=True, exist_ok=True)
     written: list[Path] = []
     for index, block in enumerate(mermaid_blocks(readme.read_text(encoding="utf-8")), start=1):
@@ -311,5 +323,5 @@ def run_gallery(
         written = capture(plan, browser, out_dir, base_url)
     if diagrams:
         with httpx.Client(timeout=60.0) as http:
-            written += export_mermaid(Path("README.md"), out_dir, http)
+            written += export_mermaid(README_PATH, out_dir, http)
     return written, plan.skipped
