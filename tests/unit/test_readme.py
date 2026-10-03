@@ -1,7 +1,11 @@
 """The README must stay honest about models and licenses (Phase 8.1)."""
 
+import re
 from pathlib import Path
 
+import typer
+
+from waive.cli import app
 from waive.config import Settings
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -9,6 +13,43 @@ ROOT = Path(__file__).resolve().parents[2]
 
 def readme() -> str:
     return (ROOT / "README.md").read_text(encoding="utf-8")
+
+
+def section(text: str, heading: str) -> str:
+    """The body of one `## heading`, up to the next `## `."""
+    start = text.index(heading)
+    end = text.find("\n## ", start + len(heading))
+    return text[start : end if end != -1 else len(text)]
+
+
+def resolves(words: list[str]) -> bool:
+    """True when `waive <words>` names a command in the CLI tree (groups have `.commands`)."""
+    cmd = typer.main.get_command(app)
+    for word in words:
+        subcommands = getattr(cmd, "commands", {})
+        if word not in subcommands:
+            return False
+        cmd = subcommands[word]
+    return True
+
+
+def test_setup_section_only_runs_commands_that_exist():
+    # The Commands table may list commands that later tasks of the phase add; the Setup
+    # walkthrough must work on the tree as committed.
+    setup = section(readme(), "## Setup")
+    invocations = re.findall(r"uv run waive ([a-z][a-z-]*(?: [a-z][a-z-]*)?)", setup)
+    assert invocations
+    missing = [words for words in invocations if not resolves(words.split())]
+    assert missing == [], missing
+
+
+def test_project_layout_lists_only_files_that_exist():
+    layout = section(readme(), "## Project layout")
+    block = layout.split("```")[1]
+    entries = re.findall(r"^ {2}([a-z_]+(?:\.py|/))\s", block, flags=re.MULTILINE)
+    assert "cli.py" in entries
+    missing = [e for e in entries if not (ROOT / "src" / "waive" / e).exists()]
+    assert missing == [], missing
 
 
 def test_readme_names_the_configured_models_and_is_honest_about_vision():
