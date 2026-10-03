@@ -13,6 +13,7 @@ from waive.learning.classify import (
     route_for,
 )
 from waive.learning.contributions import submit_contribution
+from waive.learning.outcomes import extract_outcome, save_outcome
 
 MESSAGES: dict[Route, str] = {
     "bill": "That looks like a bill. Use the bill step for it.",
@@ -47,6 +48,7 @@ def ingest_paper(
     # Any paper answers the case's one gap question; a later photo never re-asks it.
     sealed.setdefault("gap_ask", {"answer": "photo", "on": ctx.today.isoformat()})
     save_sealed(ctx, row, sealed)
+    message = MESSAGES[route]
     if route == "contribution":
         submit_contribution(
             ctx.session,
@@ -57,4 +59,11 @@ def ingest_paper(
             vision_flag=classified.personal_info,
             today=ctx.today,
         )
-    return PaperResult(classified.photo_class, route, MESSAGES[route])
+    elif route == "outcome":
+        try:
+            outcome = extract_outcome(ctx.ai, prepared.jpeg, synthetic=synthetic)
+        except AIOutputError:
+            message = "We could not read the hospital's answer. Your helper can enter it by hand."
+        else:
+            save_outcome(ctx, row.id, outcome)
+    return PaperResult(classified.photo_class, route, message)

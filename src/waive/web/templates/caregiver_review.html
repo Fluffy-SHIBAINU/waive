@@ -38,6 +38,39 @@
 </div>
 {% endif %}
 
+{% if outcome %}
+<h2>The hospital's answer</h2>
+<div class="card">
+  <p class="big">The hospital said: {{ outcome.decision.value.replace("_", " ") }}{% if outcome.discount_percent is not none %} ({{ outcome.discount_percent }}% off){% endif %}.</p>
+  {% if outcome.reasons %}<p>Reasons given: {{ outcome.reasons | map(attribute="value") | join(", ") }}</p>{% endif %}
+  {% if outcome.documents_requested %}<p>Documents requested: {{ outcome.documents_requested | map(attribute="value") | join(", ") }}</p>{% endif %}
+</div>
+{% elif check_in %}
+<h2>Check-in</h2>
+<div class="card">
+  <p class="big">{{ check_in.text }}</p>
+  <form method="post" action="{{ links.check_in }}" class="stack">
+    <input type="hidden" name="day" value="{{ check_in.day }}">
+    <button type="submit" class="btn quiet">No answer yet</button>
+  </form>
+</div>
+{% endif %}
+{% if not outcome %}
+<h2>Enter the hospital's decision by hand</h2>
+<form method="post" action="{{ links.outcome }}" class="stack">
+  <label for="decision">Decision</label>
+  <select id="decision" name="decision">
+    <option value="approved">Approved: free care</option>
+    <option value="partial">Partial: a discount</option>
+    <option value="denied">Denied</option>
+    <option value="more_info">Asked for more information</option>
+  </select>
+  <label for="discount_percent">Discount percent, if the letter states it</label>
+  <input id="discount_percent" name="discount_percent" inputmode="numeric" value="">
+  <button type="submit" class="btn">Save the decision</button>
+</form>
+{% endif %}
+
 <h2>Add a letter or paper from the hospital</h2>
 {% if ask %}<p class="muted">We asked the senior: "{{ ask.question }}"</p>{% endif %}
 <form method="post" action="{{ links.paper }}" enctype="multipart/form-data" class="stack">

@@ -12,6 +12,7 @@ from waive.cases.vault import FieldCipher, TokenSigner, new_key
 from waive.db import init_db, make_engine, session_scope
 from waive.learning.classify import PhotoClass, PhotoClassification
 from waive.learning.intake import ingest_paper
+from waive.learning.outcomes import Decision, DenialReason, OutcomeExtract, load_outcome
 
 from tests.unit.test_web_senior import HOSPITAL, photo
 
@@ -28,6 +29,8 @@ class ClassifyAI:
         self.calls.append(purpose)
         if self.fail:
             raise AIOutputError("model output did not match PhotoClassification")
+        if schema is OutcomeExtract:
+            return OutcomeExtract(decision=Decision.DENIED, reasons=[DenialReason.OTHER])
         return PhotoClassification(photo_class=self.photo_class, confidence=0.9)
 
 
@@ -52,7 +55,8 @@ def test_ingest_logs_the_class_in_the_sealed_blob(ctx):
     result = ingest_paper(ctx, links.case_id, photo()["photo"][1])
     assert (result.photo_class, result.route) == (PhotoClass.DECISION_LETTER, "outcome")
     assert "Thank you" in result.message
-    assert ctx.ai.calls == ["learn.classify"]
+    assert ctx.ai.calls == ["learn.classify", "case.outcome"]
+    assert load_outcome(ctx, links.case_id).decision is Decision.DENIED
     row = get_row(ctx, links.case_id)
     assert load_sealed(ctx, row)["papers"] == [
         {"photo_class": "decision_letter", "route": "outcome", "on": "2026-10-02"}

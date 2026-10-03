@@ -23,6 +23,14 @@ from waive.cases.service import (
 from waive.db import session_scope
 from waive.learning.gaps import pending_gap_ask
 from waive.learning.intake import ingest_paper
+from waive.learning.outcomes import (
+    Decision,
+    OutcomeExtract,
+    load_outcome,
+    pending_check_in,
+    record_check_in,
+    save_outcome,
+)
 from waive.web.deps import deps_of, render
 from waive.web.routes_senior import long_date, money, senior_links
 
@@ -39,6 +47,8 @@ def caregiver_links(token: str) -> dict[str, str]:
         "packet": f"{base}/packet.pdf",
         "reminders": f"{base}/reminders.ics",
         "paper": f"{base}/paper",
+        "outcome": f"{base}/outcome",
+        "check_in": f"{base}/check-in",
     }
 
 
@@ -76,6 +86,8 @@ def caregiver_review(request: Request, token: str, note: str = "") -> HTMLRespon
             long_date=long_date,
             note=note,
             ask=pending_gap_ask(ctx, row.id),
+            outcome=load_outcome(ctx, row.id),
+            check_in=pending_check_in(ctx, row.id),
         )
 
 
@@ -192,3 +204,30 @@ async def caregiver_paper(
     return RedirectResponse(
         f"{caregiver_links(token)['review']}?note={quote(note)}", status_code=303
     )
+
+
+@router.post("/c/{token}/outcome")
+def caregiver_outcome(
+    request: Request, token: str, decision: str = Form(...), discount_percent: str = Form("")
+):
+    deps = deps_of(request)
+    try:
+        chosen = Decision(decision)
+    except ValueError as error:
+        raise KeyError(decision) from error
+    percent = int(discount_percent) if discount_percent.strip().isdigit() else None
+    with session_scope(deps.engine) as session:
+        ctx = deps.context(session)
+        row = authorize(ctx, token, "caregiver")
+        save_outcome(ctx, row.id, OutcomeExtract(decision=chosen, discount_percent=percent))
+    return RedirectResponse(caregiver_links(token)["review"], status_code=303)
+
+
+@router.post("/c/{token}/check-in")
+def caregiver_check_in(request: Request, token: str, day: int = Form(...)):
+    deps = deps_of(request)
+    with session_scope(deps.engine) as session:
+        ctx = deps.context(session)
+        row = authorize(ctx, token, "caregiver")
+        record_check_in(ctx, row.id, day, "no_answer")
+    return RedirectResponse(caregiver_links(token)["review"], status_code=303)
