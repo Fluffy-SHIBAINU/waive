@@ -10,6 +10,7 @@ from rich.table import Table
 
 from waive.ai.client import AIClient
 from waive.atlas import repo
+from waive.atlas.metrics import atlas_metrics, national_report, write_national_report
 from waive.atlas.overlays import run_overlay
 from waive.atlas.pipeline import build_hospital, build_state, coverage_report
 from waive.atlas.publish import export_state
@@ -205,11 +206,25 @@ def atlas_export(
 
 @atlas_app.command("report")
 def atlas_report(
-    state: str = typer.Option(..., "--state"),
+    state: str | None = typer.Option(None, "--state"),
+    national: bool = typer.Option(False, "--national", help="All states; keeps the run log"),
     out: Path | None = typer.Option(None, "--out"),  # noqa: B008
 ) -> None:
-    """Write a markdown coverage report."""
+    """Write a markdown coverage report (one state, or national with a preserved run log).
+    No paid calls: counts come from the local database and the usage ledger."""
+    if not state and not national:
+        raise typer.BadParameter("give --state XX or --national")
     settings = Settings()
+    if national:
+        governor = make_governor(settings)
+        path = out or Path("docs/reports/atlas-national.md")
+        with session_scope(_engine(settings)) as session:
+            metrics = atlas_metrics(
+                session, datetime.now(UTC).date(), governor, settings.scout_daily_credits
+            )
+        write_national_report(path, national_report(metrics))
+        console.print(f"Wrote {path}")
+        return
     path = out or Path("docs/reports") / f"atlas-{state.lower()}.md"
     with session_scope(_engine(settings)) as session:
         text = coverage_report(session, state)

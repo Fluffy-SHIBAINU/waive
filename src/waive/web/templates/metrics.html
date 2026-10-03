@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Atlas metrics{% endblock %}
+{% block content %}
+<h1>Atlas metrics</h1>
+<p class="muted">As of {{ m.today.isoformat() }}. Counts only; no personal data. Open data, CC BY 4.0.</p>
+<div class="card">
+  <div class="row"><span>Hospitals in registry</span><strong>{{ m.hospitals }}</strong></div>
+  <div class="row"><span>Published sheets</span><strong>{{ m.published }}{% if m.hospitals %} ({{ "%.0f" % (100 * m.published / m.hospitals) }}%){% endif %}</strong></div>
+  <div class="row"><span>Held sheets</span><strong>{{ m.held }}</strong></div>
+  <div class="row"><span>Median sheet age</span><strong>{% if m.median_sheet_age_days is none %}—{% else %}{{ m.median_sheet_age_days }} days{% endif %}</strong></div>
+  <div class="row"><span>Core fields documented</span><strong>{% if m.documented_share is none %}—{% else %}{{ "%.0f" % (100 * m.documented_share) }}%{% endif %}</strong></div>
+  <div class="row"><span>Prediction accuracy</span><strong>{% if m.accuracy is none %}— ({{ m.scored_outcomes }} outcomes){% else %}{{ "%.0f" % (100 * m.accuracy) }}% of {{ m.scored_outcomes }} outcomes{% endif %}</strong></div>
+  <div class="row"><span>Open review items</span><strong>{{ m.review_open }}</strong></div>
+</div>
+<h2>Coverage by state</h2>
+<table class="coverage">
+  <thead><tr><th>State</th><th>Hospitals</th><th>Published</th><th>Held</th><th>Coverage</th></tr></thead>
+  <tbody>
+  {% for s in m.states %}
+  <tr><td>{{ s.state }}</td><td>{{ s.hospitals }}</td><td>{{ s.published }}</td><td>{{ s.held }}</td>
+      <td><span class="bar" style="width: {{ (60 * s.share) | round }}%" aria-hidden="true"></span>{{ "%.0f" % (100 * s.share) }}%</td></tr>
+  {% else %}
+  <tr><td colspan="5">No hospitals seeded yet.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+<h2>Tavily credits per day</h2>
+<table class="coverage">
+  <thead><tr><th>Day (UTC)</th><th>Credits</th></tr></thead>
+  <tbody>
+  {% for day, credits in m.credits_by_day %}<tr><td>{{ day }}</td><td>{{ credits }}</td></tr>{% endfor %}
+  </tbody>
+</table>
+<p class="muted">Today: {{ m.credits_today }} of {{ m.daily_cap }} scheduled-scouting credits.</p>
+{% endblock %}
