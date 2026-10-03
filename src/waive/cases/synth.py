@@ -121,6 +121,40 @@ def render_bill(
     return buffer.getvalue()
 
 
+def render_benefit_letter(name: str, monthly: Decimal, letter_date: date) -> bytes:
+    """A fictional Social Security benefit-verification letter for demos and tests. Same page
+    size as the bills so the phone flow's intake treats it the same way. Deterministic."""
+    width, height = 1700, 2200
+    image = Image.new("RGB", (width, height), "white")
+    draw = ImageDraw.Draw(image)
+    big, body = _font(52), _font(34)
+    draw.text((100, 90), "Social Security Administration", fill="black", font=big)
+    draw.text((100, 165), "Benefit Verification Letter", fill="black", font=body)
+    draw.text((100, 215), f"Date: {letter_date.strftime('%B %d, %Y')}", fill="black", font=body)
+    draw.text((100, 330), name, fill="black", font=body)
+    paragraphs = [
+        "You asked us for information from your record. The information that",
+        "you requested is shown below. If you want anyone else to have this",
+        "information, you may send them this letter.",
+        "",
+        "Information About Current Social Security Benefits",
+        "",
+        f"Your monthly Social Security benefit is ${monthly:,.2f}.",
+        f"Monthly benefit amount: ${monthly:,.2f}",
+        "",
+        "Your benefit is paid on the third Wednesday of each month.",
+        "",
+        "This letter is for your records. It is not a bill. Do not send money.",
+    ]
+    y = 430
+    for text in paragraphs:
+        draw.text((100, y), text, fill="black", font=body)
+        y += 60
+    buffer = io.BytesIO()
+    image.save(buffer, format="JPEG", quality=88)
+    return buffer.getvalue()
+
+
 def generate_corpus(out_dir: Path, count: int, seed: int = 7) -> list[Path]:
     out_dir.mkdir(parents=True, exist_ok=True)
     rng = random.Random(seed)

@@ -23,7 +23,7 @@ from waive.cases.synth import generate_corpus
 from waive.cases.vault import new_key
 from waive.config import Settings
 from waive.db import init_db, make_engine, session_scope
-from waive.demo import forget_cases, seed_demo
+from waive.demo import DEMO_DIR, forget_cases, reset_demo, seed_demo
 from waive.doctor import run_checks
 from waive.governor import make_governor
 from waive.learning.contributions import rebuild_from_sources
@@ -411,6 +411,27 @@ def demo_seed() -> None:
     with session_scope(_engine(settings)) as session:
         seed_demo(session)
     console.print("Demo hospital seeded.")
+
+
+@demo_app.command("reset")
+def demo_reset(
+    out: Path = typer.Option(DEMO_DIR, "--out", help="Where the demo bill and letter go"),  # noqa: B008
+    keep_files: bool = typer.Option(False, "--keep-files", help="Do not rewrite the demo images"),
+) -> None:
+    """Put the local database and the demo images back to the demo script's starting point.
+    Deletes every case; real hospitals' sheets are untouched. No paid calls."""
+    settings = Settings()
+    with session_scope(_engine(settings)) as session:
+        report = reset_demo(session, out, write_files=not keep_files)
+    console.print(
+        f"Deleted {report.cases_deleted} case(s); for the demo hospital: "
+        f"{report.review_items_deleted} review item(s), {report.contributions_deleted} "
+        f"contribution(s), {report.evidence_deleted} evidence row(s), "
+        f"{report.sources_unlinked} source link(s), {report.sheet_versions_deleted} sheet "
+        f"version(s). St. Example is back at version {report.sheet_version}."
+    )
+    for path in report.files:
+        console.print(f"Wrote {path}")
 
 
 @demo_app.command("forget-cases")
