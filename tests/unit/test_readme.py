@@ -52,6 +52,35 @@ def test_project_layout_lists_only_files_that_exist():
     assert missing == [], missing
 
 
+def test_setup_offers_demo_reset_and_names_the_files_it_writes(tmp_path):
+    # Phase 8.7b: the demo bill comes from `waive demo reset`; the README must name the files the
+    # command really writes (ground truth is `bill.json`, the letter is `letter.jpg`).
+    from waive.demo import write_demo_images
+
+    setup = section(readme(), "## Setup")
+    assert "uv run waive demo reset" in setup
+    for path in write_demo_images(tmp_path / "demo"):
+        assert f"var/demo/{path.name}" in setup, path.name
+
+
+def test_readme_links_the_gallery_readme_and_the_sample_packet():
+    text = readme()
+    for target in ("docs/devpost/gallery/README.md", "docs/devpost/gallery/packet-sample.pdf"):
+        assert f"]({target})" in text, target
+        assert (ROOT / target).exists(), target
+    # The gallery README's own note about the packet must agree: the README links it.
+    gallery = (ROOT / "docs/devpost/gallery/README.md").read_text(encoding="utf-8")
+    assert "packet-sample.pdf" in gallery
+    assert "to link from the README" not in gallery  # the link exists now; no longer a plan
+
+
+def test_project_layout_lists_gallery_and_demo_modules():
+    layout = section(readme(), "## Project layout")
+    assert "gallery.py" in layout
+    assert "demo.py" in layout
+    assert "var/demo" in layout
+
+
 def test_readme_names_the_configured_models_and_is_honest_about_vision():
     text = readme()
     settings = Settings(_env_file=None)
