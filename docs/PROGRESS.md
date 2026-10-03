@@ -2,8 +2,8 @@
 
 Last updated: 2026-10-03 00:45 ET (loop iteration 10 done)
 Current phase: 2 nearly done (Massachusetts atlas: 46 hospitals, 27 published (59%), 17 held, 2 without documents; Tavily cap for Phase 2 reached; exit criterion of 80% needs gate U2.2 for the 11 hospitals whose stored text has no income rules) — Phases 0, 1, 3 and 4 are complete
-Current plan: `docs/superpowers/plans/2026-10-02-waive-phase-6-deploy.md`
-Next task: 6.1 Dockerfile and production settings, then 6.2 DB-backed ledger (both need no gate). 6.3 needs U0.5; 6.4+ need U6.1. If both gates stay open, the loop skips ahead to 7.0 (write the Phase 7 plan) and 8.0 (write the Phase 8 plan) rather than idling. Phase 2 resumes (2.8k, 2.10 exit) when U2.2 is closed.
+Current plan: `docs/superpowers/plans/2026-10-02-waive-master-plan.md` (Phase 7 section) until the Phase 7 plan exists
+Next task: 7.0 — write the detailed Phase 7 plan (always-on scouting, national scale); then 7.1–7.3 (scheduler, hash refresh, national seed — no spend), then 8.0. Blocked until gates close: 6.1b (U6.0), 6.3 (U0.5), 6.4–6.8 (U6.1), 7.4 (U7.1), Phase 2 finish (U2.2).
 
 Master plan: `docs/superpowers/plans/2026-10-02-waive-master-plan.md` · Spec: `docs/superpowers/specs/2026-10-02-waive-design.md` · Loop rules: `docs/LOOP.md`
 
@@ -25,7 +25,8 @@ Master plan: `docs/superpowers/plans/2026-10-02-waive-master-plan.md` · Spec: `
 - [ ] **U2.1** Spot-check 10 Massachusetts procedure sheets field by field (Phase 2 exit). Open since 2026-10-02 22:30: start with `uv run waive serve` → http://localhost:8000/atlas (published sheets show every quote and source link).
 - [ ] **U2.2** Phase 2 Tavily cap (400 credits) is reached at 389. Approve extra credits (suggested 100) before the loop spends more on Massachusetts scouting; free re-structuring continues meanwhile. To approve, raise `WAIVE_TAVILY_CREDIT_CAP` in `.env` (it is the hard governor cap; currently 1000 overall) and write the new Phase 2 allowance here.
 - [ ] **U4.1** Complete the senior flow on your own phone with a synthetic bill (Phase 4 exit). Steps: `uv run waive corpus generate --count 3` (bills in `var/corpus/`), `uv run waive serve`, find the Mac's IP with `ipconfig getifaddr en0`, open `http://<ip>:8000` on a phone on the same Wi-Fi, start a case, open the senior link, photograph `var/corpus/bill-000.jpg` shown on the laptop screen. The web flow sends photos with `phi=True`, so for this synthetic-only test set `WAIVE_REQUIRE_ZDR=false` in `.env` temporarily (or close U0.4 first). The demo hospital is St. Example (`uv run waive demo seed` already ran); real MA sheets exist for Boston Medical Center, BIDMC and Anna Jaques.
-- [ ] **U6.1** Approve the Nebius resources and their costs before anything is created (Phase 6).
+- [ ] **U6.0** Run `docker logout ghcr.io` once (a stale ghcr.io login in your keychain makes every ghcr pull fail), then tell the loop; it will build and smoke-test the image (task 6.1b).
+- [ ] **U6.1** Approve the Nebius resources and their costs before anything is created (Phase 6). The loop writes `docs/reports/cloud-costs.md` in task 6.3 first (needs U0.5).
 - [ ] **U7.1** Approve the national Tavily credit budget (Phase 7).
 - [ ] **U8.1** Approve making the GitHub repo public.
 - [ ] **U8.2** Record and upload the demo video (under 3 minutes, public on YouTube).
@@ -126,8 +127,9 @@ Plan: `docs/superpowers/plans/2026-10-02-waive-phase-5-learning-loop.md` (781c6a
 ### Phase 6 — Deploy on Nebius AI Cloud
 Plan: `docs/superpowers/plans/2026-10-02-waive-phase-6-deploy.md` (a0a989a; 8 tasks)
 - [x] 6.0 Write detailed Phase 6 plan
-- [ ] 6.1 Dockerfile, `.dockerignore`, `WAIVE_ENV=production`, local Docker smoke (no gate)
-- [ ] 6.2 DB-backed usage ledger (`UsageEventRow`, `make_ledger`) (no gate)
+- [x] 6.1 Dockerfile, `.dockerignore`, `WAIVE_ENV=production` (2797bed; 253 tests). Image build NOT yet verified: `docker build` fails pulling `ghcr.io/astral-sh/uv:python3.12-bookworm-slim` with "failed to fetch oauth token: denied" because a stale ghcr.io credential sits in the macOS keychain → gate U6.0.
+- [x] 6.2 DB-backed usage ledger `WAIVE_LEDGER_BACKEND=db` (b44cb7d; 257 tests)
+- [ ] 6.1b After U6.0: `docker build -t waive:dev .` and the plan's step-7 smoke test (`/healthz` from the container with SQLite); record the image size.
 - [ ] 6.3 `waive cloud discover` → `docs/reports/cloud-costs.md`; then STOP for gate U6.1 (needs U0.5: Nebius CLI + `nebius profile create`)
 - [ ] 6.4 Container Registry + image push (needs U6.1)
 - [ ] 6.5 Managed PostgreSQL + `waive db copy` (cases excluded) + `waive db upgrade` (needs U6.1)
@@ -169,6 +171,7 @@ Plan: `docs/superpowers/plans/2026-10-02-waive-phase-6-deploy.md` (a0a989a; 8 ta
 
 - 2026-10-02 15:40 — Spec, master plan, Phase 0 and Phase 1 plans written. Ready for task 0.1.
 - 2026-10-02 16:20 — Phase 0 tasks 0.1–0.6 done by an implementation subagent: 28 tests pass, ruff clean. Deviations: `extend-exclude = ["docs"]` for ruff (it was reformatting code blocks in plan files); `AIClient` now creates an explicit `httpx.Client` when none is given (openai 3.x's default transport bypasses respx). Incident: one early test run reached the real Token Factory endpoint with a fake key (401, no secret leaked, no spend) → task 0.8 added. Spend: 0.
+- 2026-10-03 04:15 — Loop iteration 16: Phase 6 tasks 6.1–6.2 done by a subagent (257 tests); Docker build blocked by a stale ghcr.io keychain credential → gate U6.0.
 - 2026-10-03 03:35 — Loop iteration 15: task 6.0 done by a subagent (Phase 6 plan, 2,634 lines, Nebius docs verified 2026-10-02).
 - 2026-10-03 03:00 — Loop iteration 14: Phase 5 tasks 5.7–5.10 done by a subagent; Phase 5 complete (248 tests). Admin token generated into `.env`.
 - 2026-10-03 02:25 — Loop iteration 13: Phase 5 tasks 5.4–5.6 done by a subagent (233 tests); dev DB column added by hand; follow-up 5.10.
