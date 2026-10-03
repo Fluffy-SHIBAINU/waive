@@ -2,6 +2,7 @@
 {% block title %}Review{% endblock %}
 {% block content %}
 <h1>Review</h1>
+{% if note %}<p class="card">{{ note }}</p>{% endif %}
 {% if case.status == "approved" %}<p class="card status-free big">Approved. Print the packet, have it signed, and send it.</p>{% endif %}
 {% if case.status == "new" %}<p class="big">Waiting for a photo of the bill.</p>{% endif %}
 
@@ -36,6 +37,13 @@
   {% if case.deadlines.collection_notice_too_early %}<p>The collection notice came too early. The packet includes a note about this.</p>{% endif %}
 </div>
 {% endif %}
+
+<h2>Add a letter or paper from the hospital</h2>
+<form method="post" action="{{ links.paper }}" enctype="multipart/form-data" class="stack">
+  <label for="paper">Decision letter, request for documents, policy or blank form</label>
+  <input id="paper" type="file" name="photo" accept="image/*,application/pdf" required>
+  <button type="submit" class="btn">Upload and read it</button>
+</form>
 
 <h2>Fix or add details</h2>
 <form method="post" action="{{ links.correct }}" class="stack">

@@ -16,6 +16,7 @@ from waive.cases.service import (
     view,
 )
 from waive.db import session_scope
+from waive.learning.intake import ingest_paper
 from waive.web.deps import deps_of, render
 
 router = APIRouter()
@@ -30,6 +31,7 @@ def senior_links(token: str) -> dict[str, str]:
         "household": f"{base}/household",
         "income": f"{base}/income",
         "result": f"{base}/result",
+        "paper": f"{base}/paper",
     }
 
 
@@ -197,3 +199,43 @@ def senior_result(request: Request, token: str) -> HTMLResponse:
                 reason="your helper will finish the check",
             )
         return _page(request, "senior_result.html", token, shown)
+
+
+@router.post("/s/{token}/paper", response_class=HTMLResponse)
+async def senior_paper(
+    request: Request,
+    token: str,
+    photo: UploadFile = File(...),  # noqa: B008
+) -> HTMLResponse:
+    deps = deps_of(request)
+    data = await photo.read()
+    with session_scope(deps.engine) as session:
+        ctx = deps.context(session)
+        row = authorize(ctx, token, "senior")
+        if deps.ai is None:
+            return _page(
+                request,
+                "senior_wait.html",
+                token,
+                view(ctx, row.id),
+                reason="reading is switched off right now",
+            )
+        try:
+            result = ingest_paper(ctx, row.id, data)
+        except ImageError:
+            return _page(
+                request,
+                "senior_paper.html",
+                token,
+                view(ctx, row.id),
+                message="We could not read that photo. Please try again in good light.",
+            )
+        except ZDRRequired:
+            return _page(
+                request,
+                "senior_wait.html",
+                token,
+                view(ctx, row.id),
+                reason="your helper needs to finish setting things up",
+            )
+        return _page(request, "senior_paper.html", token, view(ctx, row.id), message=result.message)
