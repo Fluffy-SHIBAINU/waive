@@ -147,6 +147,21 @@ class ContributionRow(Base):
     created_on: Mapped[date] = mapped_column(Date)
 
 
+class ReportedEvidenceRow(Base):
+    """One de-identified report: a hospital, a sheet field, an enum value and a one-way case hash.
+    Free text, amounts and identifiers never belong here (spec §10, §11)."""
+
+    __tablename__ = "reported_evidence"
+    __table_args__ = (UniqueConstraint("ccn", "field_path", "value", "case_hash"),)
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    ccn: Mapped[str] = mapped_column(String(12), index=True)
+    field_path: Mapped[str] = mapped_column(String(60))
+    value: Mapped[str] = mapped_column(String(60))
+    case_hash: Mapped[str] = mapped_column(String(16))
+    created_on: Mapped[date] = mapped_column(Date)
+
+
 def make_engine(url: str) -> Engine:
     if url.endswith(":memory:"):
         return create_engine(url, connect_args={"check_same_thread": False}, poolclass=StaticPool)

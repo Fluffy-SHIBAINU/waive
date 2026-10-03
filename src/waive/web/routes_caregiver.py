@@ -29,8 +29,8 @@ from waive.learning.outcomes import (
     load_outcome,
     pending_check_in,
     record_check_in,
-    save_outcome,
 )
+from waive.learning.triage import record_outcome, triage_for
 from waive.web.deps import deps_of, render
 from waive.web.routes_senior import long_date, money, senior_links
 
@@ -88,6 +88,7 @@ def caregiver_review(request: Request, token: str, note: str = "") -> HTMLRespon
             ask=pending_gap_ask(ctx, row.id),
             outcome=load_outcome(ctx, row.id),
             check_in=pending_check_in(ctx, row.id),
+            triage_note=triage_for(ctx, row.id),
         )
 
 
@@ -219,7 +220,7 @@ def caregiver_outcome(
     with session_scope(deps.engine) as session:
         ctx = deps.context(session)
         row = authorize(ctx, token, "caregiver")
-        save_outcome(ctx, row.id, OutcomeExtract(decision=chosen, discount_percent=percent))
+        record_outcome(ctx, row.id, OutcomeExtract(decision=chosen, discount_percent=percent))
     return RedirectResponse(caregiver_links(token)["review"], status_code=303)
 
 
