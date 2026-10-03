@@ -1,9 +1,9 @@
 # Waive build progress
 
-Last updated: 2026-10-03 07:25 ET (loop iteration 20 in progress)
+Last updated: 2026-10-03 08:30 ET (loop iteration 21 in progress: 8.4–8.6 running)
 Current phase: 8 (submission drafting). Phases 0, 1, 3, 4, 5 complete. Phase 2 at 59% published (exit needs U2.2), Phase 6 at 6.2 (rest gated on U6.0/U0.5/U6.1), Phase 7 free work done (7.4–7.6 gated on U7.1/U2.2).
 Current plan: `docs/superpowers/plans/2026-10-02-waive-phase-8-submission.md`
-Next task: 8.1 README + data license, then 8.2 demo reset, 8.3 demo script, 8.4 Devpost draft, 8.5 gallery, 8.6 checklist (no gates until publishing; the loop never runs the live build in shot 7 — the user does, while recording). Blocked until gates close: 6.1b (U6.0), 6.3 (U0.5), 6.4–6.8 (U6.1), 7.4 (U7.1), 7.5/7.6 need a few credits (U2.2/U7.1), Phase 2 finish (U2.2).
+Next task: 8.4 Devpost draft, 8.5 gallery, 8.6 checklist (no gates until publishing; the loop never runs the live build in shot 7 — the user does, while recording). Then the Phase 8 exit checks and the phase diagram; afterwards only gated work remains. Blocked until gates close: 6.1b (U6.0), 6.3 (U0.5), 6.4–6.8 (U6.1), 7.4 (U7.1), 7.5/7.6 need a few credits (U2.2/U7.1), Phase 2 finish (U2.2).
 Standing rule (user, 2026-10-03): after every finished phase the loop shows a diagram of all phases with status, gates and what is left (`docs/LOOP.md` step 8).
 
 Master plan: `docs/superpowers/plans/2026-10-02-waive-master-plan.md` · Spec: `docs/superpowers/specs/2026-10-02-waive-design.md` · Loop rules: `docs/LOOP.md`
@@ -152,9 +152,9 @@ Plan: `docs/superpowers/plans/2026-10-02-waive-phase-7-scale.md` (601f318; 7 tas
 ### Phase 8 — Submission
 Plan: `docs/superpowers/plans/2026-10-02-waive-phase-8-submission.md` (4c0d6a8 draft, 2aa4abb after two adversarial reviews; 1,907 lines; 6 tasks). Budget: Token Factory ≤ $0.50, Tavily ≤ 5 credits, no new cloud resources. Decisions recorded in the plan: LICENSE stays canonical Apache-2.0 (copyright line in README, `[USER FILLS: copyright holder]`); atlas data CC BY 4.0 via `data/atlas/LICENSE.md`; README/Devpost/demo script state plainly that the vision model (`openbmb/MiniCPM-V-4_5`) is not NVIDIA and that the three Nemotron models meet the NVIDIA requirement; every document is written for "not deployed yet" with a marked line to swap for the live URL; demo video 2:50 (shot 7 is one live Nemotron rebuild of a MA sheet, ≈$0.01, run by the user while recording); gallery via headless Chrome from `/Applications` (no Playwright) and kroki.io for the two README diagrams; repo/YouTube/Devpost URLs are `[USER FILLS]` fields that 8.6's dry run greps out.
 - [x] 8.0 Write detailed Phase 8 plan
-- [ ] 8.1 README rewrite (setup, two Mermaid diagrams, runtime use of Nebius/NVIDIA/Tavily, "Status, honestly" table, privacy/ZDR, costs, licenses), `data/atlas/LICENSE.md`, `tests/unit/test_readme.py`
-- [ ] 8.2 Demo data (Rosa's $1,850 St. Example bill, synthetic SSA letter) and `waive demo reset`
-- [ ] 8.3 `docs/devpost/demo-script.md` (9 shots, 170 s, narration)
+- [x] 8.1 README rewrite (a18bcd2, 526d969; 287 tests). README 13 → ~267 lines; `data/atlas/LICENSE.md` (CC BY 4.0); `tests/unit/test_readme.py` ties the README to `Settings` model IDs and both licenses. Review fixes: no automatic gemma fallback claimed; Hypothesis claim narrowed to the FPL test; "Dollar For … hand-built"; Setup points at `waive corpus generate` (exists today). Orchestrator follow-up after 8.5: re-add `var/demo/bill.jpg` and `gallery.py` to the README layout/setup (the Commands table already lists `demo reset` and `demo gallery`). `[USER FILLS: copyright holder]` and repository URL fields remain for the user.
+- [x] 8.2 Demo data and `waive demo reset [--out DIR] [--keep-files]` (b350b90, 962ae86; 294 tests). `render_benefit_letter` in `cases/synth.py`; `demo.py` gains `write_demo_images`, `reset_demo`, `ResetReport`; reset deletes every case, the demo hospital's learning rows, sheet versions and now-orphaned demo source documents (real hospitals' documents untouched, `state-*` overlay docs kept), re-seeds St. Example at version 1; `var/demo/` is gitignored. Test pins byte-identical regeneration of the demo images.
+- [x] 8.3 `docs/devpost/demo-script.md` (2a16d0c, d8a7fbc; 295 tests): nine shots, 170 s = 2:50, narration, recording/upload steps. Review fixes: read-back shows the registry name in capitals; ZDR wording is "designed for zero data retention" until U0.4 closes (then swap to "with"); Lightning named as the tie-break; `held` causes stated fully. `tests/unit/test_devpost_docs.py` created early (8.6's shot-list test, non-tautological); the 8.6 plan text was adjusted accordingly.
 - [ ] 8.4 `docs/devpost/submission.md` (Devpost text, feedback on Nebius/NVIDIA tools, Best Use of Tavily)
 - [ ] 8.5 `waive demo gallery` → `docs/devpost/gallery/` (12 screenshots, 2 diagrams, packet PDF)
 - [ ] 8.6 `docs/devpost/checklist.md` (requirement → evidence → command; gates U8.1–U8.4 steps) and `tests/unit/test_devpost_docs.py`
@@ -188,6 +188,7 @@ Plan: `docs/superpowers/plans/2026-10-02-waive-phase-8-submission.md` (4c0d6a8 d
 
 - 2026-10-02 15:40 — Spec, master plan, Phase 0 and Phase 1 plans written. Ready for task 0.1.
 - 2026-10-02 16:20 — Phase 0 tasks 0.1–0.6 done by an implementation subagent: 28 tests pass, ruff clean. Deviations: `extend-exclude = ["docs"]` for ruff (it was reformatting code blocks in plan files); `AIClient` now creates an explicit `httpx.Client` when none is given (openai 3.x's default transport bypasses respx). Incident: one early test run reached the real Token Factory endpoint with a fake key (401, no secret leaked, no spend) → task 0.8 added. Spend: 0.
+- 2026-10-03 08:30 — Loop iteration 21: tasks 8.1–8.3 done by an implement → review → fix workflow (6 commits a18bcd2…d8a7fbc; 14 findings, 13 applied, 1 rejected; 295 tests; no spend). 8.4–8.6 dispatched the same way.
 - 2026-10-03 07:25 — Loop iteration 20: task 8.0 done by a draft → review (accuracy + completeness lenses) → fix workflow (4c0d6a8, 2aa4abb; 26 findings applied, none rejected; no spend). Spend table brought up to the ledger. Next: 8.1–8.3.
 - 2026-10-03 06:20 — Loop iteration 19: task 7.7 done by a subagent (283 tests, no spend); national report generated. User added the standing rule: phase diagram after every finished phase (LOOP.md step 8). Phase diagram shown; next 8.0.
 - 2026-10-03 05:40 — Loop iteration 18: Phase 7 tasks 7.1–7.3 done by a subagent (279 tests); national registry seeded (2,703 hospitals, free).
