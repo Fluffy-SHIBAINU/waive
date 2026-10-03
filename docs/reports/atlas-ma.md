@@ -1,7 +1,7 @@
 # Atlas coverage — MA
 
-Hospitals in registry: 47
-Published sheets: 24 (51%)
+Hospitals in registry: 46
+Published sheets: 23 (50%)
 
 | CCN | Hospital | Domain | Status | Version | Completeness | Fields | Sources |
 |---|---|---|---|---|---|---|---|
@@ -45,7 +45,6 @@ Published sheets: 24 (51%)
 | 220052 | SIGNATURE HEALTHCARE BROCKTON HOSPITAL | signature-healthcare.org | published | 3 | 0.67 | 11 | 6 |
 | 220100 | SOUTH SHORE HOSPITAL | southshorehealth.org | held | 2 | 0.00 | 1 | 5 |
 | 220074 | SOUTHCOAST HOSPITALS GROUP | southcoast.org | published | 2 | 0.67 | 10 | 5 |
-| 229999 | ST. EXAMPLE MEDICAL CENTER | example.org | published | 2 | 0.83 | 9 | 2 |
 | 220008 | STURDY MEMORIAL HOSPITAL | sturdyhealth.org | held | 3 | 0.00 | 2 | 3 |
 | 220116 | TUFTS MEDICAL CENTER | tuftsmedicine.org | published | 3 | 0.67 | 9 | 8 |
 | 220019 | UMASS MEMORIAL HEALTH - HARRINGTON HOSPITAL | billfairly.com | published | 3 | 0.33 | 4 | 5 |
