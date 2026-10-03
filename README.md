@@ -128,7 +128,7 @@ flowchart TD
 | Read bill photos and Social Security letters; classify photos of hospital papers; read decision letters | `openbmb/MiniCPM-V-4_5` — **not an NVIDIA model**; see the note below | `model_vision` | `src/waive/cases/extract.py`, `src/waive/learning/classify.py`, `src/waive/learning/outcomes.py` |
 | Quote verification, hospital matching, eligibility, deadlines, packet | no model — deterministic Python | — | `src/waive/atlas/verify.py`, `src/waive/cases/match.py`, `src/waive/rules/` |
 
-**NVIDIA open models.** The three Nemotron models above run at runtime whenever a sheet is built, cross-checked or tie-broken (`waive atlas build`, `waive atlas refresh`, the scheduler, `waive learn rebuild`). On the vision side there is **no NVIDIA vision model** in the Token Factory catalog (checked live on 2026-10-02 with `waive doctor --live`), so photos are read by `openbmb/MiniCPM-V-4_5` (fallback `google/gemma-3-27b-it`). We would switch to a Nemotron vision model the day Token Factory offers one; the role is one setting (`WAIVE_MODEL_VISION`).
+**NVIDIA open models.** The three Nemotron models above run at runtime whenever a sheet is built, cross-checked or tie-broken (`waive atlas build`, `waive atlas refresh`, the scheduler, `waive learn rebuild`). On the vision side there is **no NVIDIA vision model** in the Token Factory catalog (checked live on 2026-10-02 with `waive doctor --live`), so photos are read by `openbmb/MiniCPM-V-4_5`; `google/gemma-3-27b-it` was verified as an alternative on 2026-10-02 and can be selected with the same setting. The role is one setting (`WAIVE_MODEL_VISION`), and we would switch to a Nemotron vision model the day Token Factory offers one.
 
 **Nebius AI Cloud.** The `Dockerfile` builds a two-stage, non-root image that runs `uvicorn waive.web.app:create_app --factory` on port 8000; `WAIVE_ENV=production` refuses the SQLite default and `WAIVE_LEDGER_BACKEND=db` keeps the spend ledger in PostgreSQL so a stateless container keeps its budget history. The deployment plan (`docs/superpowers/plans/2026-10-02-waive-phase-6-deploy.md`) uses Container Registry, Managed PostgreSQL, SecretStash for the six secrets and a CPU Serverless AI endpoint, and adds a `waive cloud start|stop|status|cleanup` command group (Phase 6 task 6.7, not written yet) so the endpoint only bills during demo windows. Current state: see the deployment status line at the top.
 
@@ -160,7 +160,7 @@ uv run waive demo seed          # the fictional St. Example Medical Center and i
 uv run waive serve              # http://localhost:8000
 ```
 
-On a phone on the same Wi-Fi, open `http://<your computer's IP>:8000` (`ipconfig getifaddr en0` on a Mac), tap *Start a case*, open the senior link and photograph a synthetic bill from `uv run waive demo reset` (`var/demo/bill.jpg`) shown on the laptop screen. The web flow treats photos as personal data: until zero data retention is confirmed (`WAIVE_ZDR_CONFIRMED=true`), set `WAIVE_REQUIRE_ZDR=false` in `.env` for a synthetic-only session and set it back afterwards.
+On a phone on the same Wi-Fi, open `http://<your computer's IP>:8000` (`ipconfig getifaddr en0` on a Mac), tap *Start a case*, open the senior link and photograph a synthetic bill (`uv run waive corpus generate --count 1` writes `var/corpus/bill-000.jpg`) shown on the laptop screen. The web flow treats photos as personal data: until zero data retention is confirmed (`WAIVE_ZDR_CONFIRMED=true`), set `WAIVE_REQUIRE_ZDR=false` in `.env` for a synthetic-only session and set it back afterwards.
 
 Build the atlas for a state (spends credits — about 5 Tavily credits and one cent of Token Factory per hospital):
 
@@ -235,7 +235,7 @@ Prices read from the Token Factory catalog on 2026-10-02 and kept in `PRICES_PER
 uv run ruff format . && uv run ruff check . && uv run pytest
 ```
 
-Unit tests for the rules, schema and quote verification (property tests with Hypothesis), contract tests for Token Factory and Tavily against recorded responses (`respx`), a synthetic bill corpus with a per-field accuracy report, a simulation of the whole learning loop, and web tests through FastAPI's test client. `pytest-socket` makes any test that opens a network socket fail. Live tests are marked `live` and excluded by default.
+Unit tests for the rules (including a Hypothesis property test of the poverty-guideline arithmetic), schema and quote verification, contract tests for Token Factory and Tavily against recorded responses (`respx`), a synthetic bill corpus with a per-field accuracy report, a simulation of the whole learning loop, and web tests through FastAPI's test client. `pytest-socket` makes any test that opens a network socket fail. Live tests are marked `live` and excluded by default.
 
 ## Project layout
 
@@ -249,8 +249,7 @@ src/waive/
   rules/       fpl, eligibility, deadlines, explain
   web/         app factory, routes, templates, static CSS
   cli.py       the `waive` command
-  demo.py      demo hospital, reset, demo images
-  gallery.py   screenshots and diagrams for the Devpost gallery
+  demo.py      the fictional demo hospital; deleting every case
 data/atlas/    open-data exports (CC BY 4.0) · data/seed/  dated CMS snapshots
 docs/          design spec, phase plans, reports, Devpost material
 tests/unit/    everything runs offline
@@ -264,4 +263,4 @@ tests/unit/    everything runs offline
 
 ## Acknowledgements and disclaimer
 
-Dollar For keeps the largest known hand-checked database of hospital charity-care rules and helps patients apply with human advocates; Waive is built to hand complex cases to people like them. Waive gives estimates based on each hospital's published policy; it is not legal or financial advice, it never submits anything on anyone's behalf, and the hospital makes every decision.
+Dollar For keeps the largest known hand-built database of hospital charity-care rules and helps patients apply with human advocates; Waive is built to hand complex cases to people like them. Waive gives estimates based on each hospital's published policy; it is not legal or financial advice, it never submits anything on anyone's behalf, and the hospital makes every decision.
