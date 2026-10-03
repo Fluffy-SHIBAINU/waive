@@ -2,7 +2,8 @@ import os
 from decimal import Decimal
 from pathlib import Path
 
-from pydantic import SecretStr
+import pytest
+from pydantic import SecretStr, ValidationError
 
 from waive.config import Settings
 
@@ -44,3 +45,26 @@ def test_accepts_field_names_in_code(monkeypatch):
     settings = Settings(_env_file=None, nebius_api_key=SecretStr("k"), zdr_confirmed=True)
     assert settings.nebius_api_key.get_secret_value() == "k"
     assert settings.zdr_confirmed is True
+
+
+def test_production_rejects_the_sqlite_default(monkeypatch):
+    clear_env(monkeypatch)
+    with pytest.raises(ValidationError, match="WAIVE_DATABASE_URL"):
+        Settings(_env_file=None, env="production")
+    settings = Settings(
+        _env_file=None,
+        env="production",
+        database_url="postgresql+psycopg://waive:pw@db.example.net:5432/waive",
+    )
+    assert settings.env == "production"
+
+
+def test_development_defaults_keep_sqlite_and_the_file_ledger(monkeypatch):
+    clear_env(monkeypatch)
+    settings = Settings(_env_file=None)
+    assert settings.env == "development"
+    assert settings.ledger_backend == "file"
+    assert settings.database_url == "sqlite:///var/waive.db"
+    assert settings.cloud_database_url is None and settings.registry is None
+    assert (settings.cloud_platform, settings.cloud_preset) == ("cpu-d3", "2vcpu-8gb")
+    assert (settings.cloud_pg_preset, settings.cloud_pg_disk_gib) == ("2vcpu-8gb", 32)
