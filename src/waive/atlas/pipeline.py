@@ -169,7 +169,7 @@ def build_state(
 
 
 def coverage_report(session: Session, state: str) -> str:
-    rows = repo.list_hospitals(session, state=state)
+    rows = [r for r in repo.list_hospitals(session, state=state) if not repo.is_demo(r.ccn)]
     lines = [
         f"# Atlas coverage — {state.upper()}",
         "",

@@ -24,6 +24,14 @@ HOSPITAL = {
     "hospital_type": "Acute Care Hospitals",
     "ownership": "Voluntary non-profit - Private",
 }
+REAL_HOSPITAL = {**HOSPITAL, "ccn": "220031", "name": "REAL GENERAL HOSPITAL", "city": "WORCESTER"}
+REAL = SAMPLE.model_copy(
+    update={
+        "hospital": SAMPLE.hospital.model_copy(
+            update={"ccn": "220031", "name": "Real General Hospital", "city": "Worcester"}
+        )
+    }
+)
 
 
 def with_free_limit(sheet, value):
@@ -69,10 +77,10 @@ def test_publish_bumps_version_only_on_change(tmp_path):
     engine = make_engine("sqlite+pysqlite:///:memory:")
     init_db(engine)
     with session_scope(engine) as session:
-        repo.upsert_hospital(session, HOSPITAL)
-        first = publish_sheet(session, SAMPLE)
-        again = publish_sheet(session, SAMPLE)
-        second = publish_sheet(session, with_free_limit(SAMPLE, 300))
+        repo.upsert_hospital(session, REAL_HOSPITAL)
+        first = publish_sheet(session, REAL)
+        again = publish_sheet(session, REAL)
+        second = publish_sheet(session, with_free_limit(REAL, 300))
         assert (first.version, again, second.version) == (1, None, 2)
         assert second.diff == {"eligibility.free_care_max_fpl": {"old": "250", "new": "300"}}
         out = tmp_path / "ma.json"
@@ -80,3 +88,21 @@ def test_publish_bumps_version_only_on_change(tmp_path):
     data = json.loads(out.read_text())
     assert data["license"] == "CC BY 4.0"
     assert data["sheets"][0]["version"] == 2
+
+
+def test_export_leaves_the_fictional_demo_hospital_out(tmp_path):
+    engine = make_engine("sqlite+pysqlite:///:memory:")
+    init_db(engine)
+    with session_scope(engine) as session:
+        repo.upsert_hospital(session, HOSPITAL)
+        repo.upsert_hospital(session, REAL_HOSPITAL)
+        assert publish_sheet(session, SAMPLE).version == 1
+        assert publish_sheet(session, REAL).version == 1
+        # The demo sheet is still in the database for the phone demo ...
+        assert repo.latest_sheet(session, "229999") is not None
+        out = tmp_path / "ma.json"
+        # ... but the public export only carries real hospitals.
+        assert export_state(session, "MA", out) == 1
+    data = json.loads(out.read_text())
+    assert [sheet["hospital"]["ccn"] for sheet in data["sheets"]] == ["220031"]
+    assert "229999" not in out.read_text()

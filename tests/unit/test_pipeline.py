@@ -68,11 +68,15 @@ class FakeAI:
         )
 
 
-def make_engine_with_hospital():
+REAL_HOSPITAL = {**HOSPITAL, "ccn": "220031", "name": "REAL GENERAL HOSPITAL", "city": "WORCESTER"}
+
+
+def make_engine_with_hospital(*hospitals):
     engine = make_engine("sqlite+pysqlite:///:memory:")
     init_db(engine)
     with session_scope(engine) as session:
-        repo.upsert_hospital(session, HOSPITAL)
+        for hospital in hospitals or (HOSPITAL,):
+            repo.upsert_hospital(session, hospital)
     return engine
 
 
@@ -207,11 +211,28 @@ def test_rebuild_keeps_the_state_overlay_from_the_previous_version():
 
 
 def test_build_state_skips_hospitals_with_sheets_and_reports():
-    engine = make_engine_with_hospital()
+    engine = make_engine_with_hospital(REAL_HOSPITAL)
     with session_scope(engine) as session:
         first = build_state(session, FakeGateway(), FakeAI(), "MA", TODAY)
         second = build_state(session, FakeGateway(), FakeAI(), "MA", TODAY)
         assert [r.outcome for r in first] == ["published"]
         assert second == []
         report = coverage_report(session, "MA")
-        assert "| 229999 |" in report and "published" in report
+        assert "| 220031 |" in report and "published" in report
+
+
+def test_coverage_report_leaves_the_fictional_demo_hospital_out():
+    engine = make_engine_with_hospital(HOSPITAL, REAL_HOSPITAL)
+    with session_scope(engine) as session:
+        # Building still works for the demo hospital; it just stays out of the public report.
+        assert (
+            build_hospital(session, FakeGateway(), FakeAI(), "229999", TODAY).outcome == "published"
+        )
+        assert (
+            build_hospital(session, FakeGateway(), FakeAI(), "220031", TODAY).outcome == "published"
+        )
+        report = coverage_report(session, "MA")
+        assert "Hospitals in registry: 1" in report
+        assert "Published sheets: 1 (100%)" in report
+        assert "| 220031 |" in report
+        assert "229999" not in report and "ST. EXAMPLE" not in report

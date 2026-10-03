@@ -11,11 +11,14 @@ router = APIRouter()
 
 
 @router.get("/atlas", response_class=HTMLResponse)
-def atlas_list(request: Request, q: str = "") -> HTMLResponse:
+def atlas_list(request: Request, q: str = "", demo: bool = False) -> HTMLResponse:
+    """List hospitals; the fictional demo hospital only appears with `?demo=1`."""
     deps = deps_of(request)
     with session_scope(deps.engine) as session:
         rows = []
         for hospital in repo.list_hospitals(session):
+            if repo.is_demo(hospital.ccn) and not demo:
+                continue
             if q and q.lower() not in f"{hospital.name} {hospital.city}".lower():
                 continue
             found = repo.latest_sheet(session, hospital.ccn)
