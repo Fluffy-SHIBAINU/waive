@@ -25,6 +25,7 @@ from waive.config import Settings
 from waive.db import init_db, make_engine, session_scope
 from waive.demo import DEMO_DIR, forget_cases, reset_demo, seed_demo
 from waive.doctor import run_checks
+from waive.gallery import DEFAULT_PORT, GalleryError, run_gallery
 from waive.governor import make_governor
 from waive.learning.contributions import rebuild_from_sources
 from waive.learning.evidence import audit_evidence, publish_reported
@@ -433,6 +434,38 @@ def demo_reset(
     )
     for path in report.files:
         console.print(f"Wrote {path}")
+
+
+@demo_app.command("gallery")
+def demo_gallery(
+    out: Path = typer.Option(Path("docs/devpost/gallery"), "--out"),  # noqa: B008
+    chrome: str | None = typer.Option(None, "--chrome", help="Chrome or Chromium binary"),
+    live: bool = typer.Option(False, "--live", help="Use the real vision model (about $0.01)"),
+    port: int = typer.Option(DEFAULT_PORT, "--port"),
+    atlas_ccn: str = typer.Option("220031", "--atlas-ccn", help="Published sheet to photograph"),
+    diagrams: bool = typer.Option(True, "--diagrams/--no-diagrams", help="Export README diagrams"),
+) -> None:
+    """Photograph the demo flow and the atlas pages with headless Chrome, and export the README
+    diagrams, for the Devpost gallery. Spends nothing unless --live. Creates one demo case in the
+    local database; run `waive demo reset` afterwards."""
+    settings = Settings()
+    try:
+        written, skipped = run_gallery(
+            settings,
+            out,
+            chrome=chrome,
+            live=live,
+            port=port,
+            atlas_ccn=atlas_ccn,
+            diagrams=diagrams,
+        )
+    except GalleryError as error:
+        console.print(str(error))
+        raise typer.Exit(code=1) from error
+    for path in written:
+        console.print(f"Wrote {path}")
+    for name, why in skipped.items():
+        console.print(f"Skipped {name}: {why}")
 
 
 @demo_app.command("forget-cases")
