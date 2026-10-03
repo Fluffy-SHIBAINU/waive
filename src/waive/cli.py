@@ -234,6 +234,20 @@ def serve(
     uvicorn.run("waive.web.app:create_app", host=host, port=port, factory=True)
 
 
+db_app = typer.Typer(no_args_is_help=True, help="Database schema maintenance.")
+app.add_typer(db_app, name="db")
+
+
+@db_app.command("upgrade")
+def db_upgrade() -> None:
+    """Create missing tables and add columns the models define but the database lacks."""
+    settings = Settings()
+    added = init_db(make_engine(settings.database_url))
+    for name in added:
+        console.print(f"Added column {name}")
+    console.print(f"Added {len(added)} column(s)." if added else "Schema is up to date.")
+
+
 demo_app = typer.Typer(no_args_is_help=True, help="Demo data.")
 app.add_typer(demo_app, name="demo")
 

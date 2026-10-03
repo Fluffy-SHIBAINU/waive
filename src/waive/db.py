@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import logging
 from collections.abc import Iterator
 from contextlib import contextmanager
 from datetime import UTC, date, datetime
@@ -20,8 +21,12 @@ from sqlalchemy import (
     Text,
     UniqueConstraint,
     create_engine,
+    exc,
+    inspect,
+    literal,
+    text,
 )
-from sqlalchemy.engine import Engine
+from sqlalchemy.engine import Dialect, Engine
 from sqlalchemy.orm import (
     DeclarativeBase,
     Mapped,
@@ -31,6 +36,9 @@ from sqlalchemy.orm import (
     sessionmaker,
 )
 from sqlalchemy.pool import StaticPool
+from sqlalchemy.schema import CreateColumn
+
+log = logging.getLogger(__name__)
 
 
 class Base(DeclarativeBase):
@@ -171,8 +179,58 @@ def make_engine(url: str) -> Engine:
     return create_engine(url, pool_pre_ping=True)
 
 
-def init_db(engine: Engine) -> None:
+def _add_column_ddl(table: Table, column: Column[Any], dialect: Dialect) -> str | None:
+    """`ALTER TABLE ... ADD COLUMN ...` for `column` in the engine's own SQL, or None when existing
+    rows could not satisfy it: NOT NULL with neither a server default nor a constant model default.
+    A constant model default (`status="new"`) is written into the DDL so old rows get it too."""
+    spec = str(CreateColumn(column).compile(dialect=dialect))
+    if not column.nullable and column.server_default is None:
+        default = column.default
+        if default is None or not default.is_scalar:
+            return None
+        try:
+            rendered = literal(default.arg, type_=column.type).compile(
+                dialect=dialect, compile_kwargs={"literal_binds": True}
+            )
+        except exc.CompileError:
+            return None
+        spec += f" DEFAULT {rendered}"
+    return f"ALTER TABLE {dialect.identifier_preparer.format_table(table)} ADD COLUMN {spec}"
+
+
+def upgrade_schema(engine: Engine) -> list[str]:
+    """Add the columns the models define but existing tables lack (`create_all` only creates
+    missing tables, never alters one). Returns the added columns as `table.column`; a required
+    column that cannot be filled for existing rows is left alone and reported in the log."""
+    added: list[str] = []
+    with engine.begin() as connection:
+        inspector = inspect(connection)
+        existing = set(inspector.get_table_names())
+        for table in Base.metadata.sorted_tables:
+            if table.name not in existing:
+                continue
+            present = {info["name"] for info in inspector.get_columns(table.name)}
+            for column in table.columns:
+                if column.name in present:
+                    continue
+                ddl = _add_column_ddl(table, column, engine.dialect)
+                if ddl is None:
+                    log.warning(
+                        "cannot add %s.%s: NOT NULL without a default; add it by hand",
+                        table.name,
+                        column.name,
+                    )
+                    continue
+                connection.execute(text(ddl))
+                added.append(f"{table.name}.{column.name}")
+    return added
+
+
+def init_db(engine: Engine) -> list[str]:
+    """Create missing tables, then add missing columns to the tables that already existed.
+    Returns the columns `upgrade_schema` added."""
     Base.metadata.create_all(engine)
+    return upgrade_schema(engine)
 
 
 @contextmanager
