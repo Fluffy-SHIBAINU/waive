@@ -25,6 +25,7 @@ from waive.doctor import run_checks
 from waive.governor import make_governor
 from waive.learning.contributions import rebuild_from_sources
 from waive.learning.evidence import audit_evidence, publish_reported
+from waive.learning.scoreboard import queue_prechecks, scoreboard
 
 app = typer.Typer(no_args_is_help=True, help="Waive operations.")
 console = Console()
@@ -298,3 +299,30 @@ def learn_audit() -> None:
         console.print(problem)
     console.print("Evidence tables are clean." if not problems else f"{len(problems)} problem(s).")
     raise typer.Exit(code=1 if problems else 0)
+
+
+@learn_app.command("scoreboard")
+def learn_scoreboard(
+    state: str | None = typer.Option(None, "--state"),
+    queue: bool = typer.Option(False, "--queue", help="Open priority re-checks for low accuracy"),
+) -> None:
+    """Per-hospital prediction accuracy from recorded outcomes. No paid calls."""
+    settings = Settings()
+    with session_scope(_engine(settings)) as session:
+        scores = scoreboard(session, state)
+        queued = queue_prechecks(session) if queue else []
+    table = Table("CCN", "Hospital", "Outcomes", "Matched", "Accuracy", "Sheet", "Flag", "Re-check")
+    for score in scores:
+        table.add_row(
+            score.ccn,
+            score.name,
+            str(score.outcomes),
+            str(score.matched),
+            f"{score.accuracy:.0%}",
+            str(score.sheet_version or ""),
+            score.flag_level,
+            "yes" if score.needs_recheck else "",
+        )
+    console.print(table)
+    if queue:
+        console.print(f"Queued priority re-checks: {', '.join(queued) or 'none'}")
