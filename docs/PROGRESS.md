@@ -1,9 +1,9 @@
 # Waive build progress
 
-Last updated: 2026-10-03 06:20 ET (loop iteration 19 done)
-Current phase: 8 starting. Phases 0, 1, 3, 4, 5 complete. Phase 2 at 59% published (exit needs U2.2), Phase 6 at 6.2 (rest gated on U6.0/U0.5/U6.1), Phase 7 free work done (7.4–7.6 gated on U7.1/U2.2).
-Current plan: `docs/superpowers/plans/2026-10-02-waive-master-plan.md` (Phase 8 detailed plan is task 8.0)
-Next task: 8.0 (Phase 8 plan), then 8.1–8.5 drafting (README, LICENSE, demo script, Devpost text — no gates until publishing). Blocked until gates close: 6.1b (U6.0), 6.3 (U0.5), 6.4–6.8 (U6.1), 7.4 (U7.1), 7.5/7.6 need a few credits (U2.2/U7.1), Phase 2 finish (U2.2).
+Last updated: 2026-10-03 07:25 ET (loop iteration 20 in progress)
+Current phase: 8 (submission drafting). Phases 0, 1, 3, 4, 5 complete. Phase 2 at 59% published (exit needs U2.2), Phase 6 at 6.2 (rest gated on U6.0/U0.5/U6.1), Phase 7 free work done (7.4–7.6 gated on U7.1/U2.2).
+Current plan: `docs/superpowers/plans/2026-10-02-waive-phase-8-submission.md`
+Next task: 8.1 README + data license, then 8.2 demo reset, 8.3 demo script, 8.4 Devpost draft, 8.5 gallery, 8.6 checklist (no gates until publishing; the loop never runs the live build in shot 7 — the user does, while recording). Blocked until gates close: 6.1b (U6.0), 6.3 (U0.5), 6.4–6.8 (U6.1), 7.4 (U7.1), 7.5/7.6 need a few credits (U2.2/U7.1), Phase 2 finish (U2.2).
 Standing rule (user, 2026-10-03): after every finished phase the loop shows a diagram of all phases with status, gates and what is left (`docs/LOOP.md` step 8).
 
 Master plan: `docs/superpowers/plans/2026-10-02-waive-master-plan.md` · Spec: `docs/superpowers/specs/2026-10-02-waive-design.md` · Loop rules: `docs/LOOP.md`
@@ -150,7 +150,14 @@ Plan: `docs/superpowers/plans/2026-10-02-waive-phase-7-scale.md` (601f318; 7 tas
 - [x] 7.7 `/metrics` page and `waive atlas report --national` (c056339, 590c3fa; 283 tests). `/metrics` and `/metrics.json` read the DB and `var/usage.jsonl` only (no paid calls); `waive atlas report --national [--out]` wrote `docs/reports/atlas-national.md`: 2,703 hospitals, 27 published (1%), 17 held, 2,659 without a sheet, core fields documented 67%, 115 open review items. Phase 7 free work complete; 7.4–7.6 wait for U7.1/U2.2.
 
 ### Phase 8 — Submission
-- [ ] 8.0 Write detailed Phase 8 plan
+Plan: `docs/superpowers/plans/2026-10-02-waive-phase-8-submission.md` (4c0d6a8 draft, 2aa4abb after two adversarial reviews; 1,907 lines; 6 tasks). Budget: Token Factory ≤ $0.50, Tavily ≤ 5 credits, no new cloud resources. Decisions recorded in the plan: LICENSE stays canonical Apache-2.0 (copyright line in README, `[USER FILLS: copyright holder]`); atlas data CC BY 4.0 via `data/atlas/LICENSE.md`; README/Devpost/demo script state plainly that the vision model (`openbmb/MiniCPM-V-4_5`) is not NVIDIA and that the three Nemotron models meet the NVIDIA requirement; every document is written for "not deployed yet" with a marked line to swap for the live URL; demo video 2:50 (shot 7 is one live Nemotron rebuild of a MA sheet, ≈$0.01, run by the user while recording); gallery via headless Chrome from `/Applications` (no Playwright) and kroki.io for the two README diagrams; repo/YouTube/Devpost URLs are `[USER FILLS]` fields that 8.6's dry run greps out.
+- [x] 8.0 Write detailed Phase 8 plan
+- [ ] 8.1 README rewrite (setup, two Mermaid diagrams, runtime use of Nebius/NVIDIA/Tavily, "Status, honestly" table, privacy/ZDR, costs, licenses), `data/atlas/LICENSE.md`, `tests/unit/test_readme.py`
+- [ ] 8.2 Demo data (Rosa's $1,850 St. Example bill, synthetic SSA letter) and `waive demo reset`
+- [ ] 8.3 `docs/devpost/demo-script.md` (9 shots, 170 s, narration)
+- [ ] 8.4 `docs/devpost/submission.md` (Devpost text, feedback on Nebius/NVIDIA tools, Best Use of Tavily)
+- [ ] 8.5 `waive demo gallery` → `docs/devpost/gallery/` (12 screenshots, 2 diagrams, packet PDF)
+- [ ] 8.6 `docs/devpost/checklist.md` (requirement → evidence → command; gates U8.1–U8.4 steps) and `tests/unit/test_devpost_docs.py`
 
 ## Open items to verify (spec §18)
 
@@ -175,11 +182,13 @@ Plan: `docs/superpowers/plans/2026-10-02-waive-phase-7-scale.md` (601f318; 7 tas
 | 2026-10-02 | 243 (total) | 0.61 (total) | 0 | Loop iteration 4: Health Safety Net overlay on 19 sheets |
 | 2026-10-02 | 289 (total) | 0.69 (total) | 0 | Loop iteration 5: batch 1 (10 hospitals) of the remaining MA hospitals |
 | 2026-10-02 | 389 (total) | ~0.95 (total) | 0 | Loop iteration 6: final 20 hospitals; Phase 2 Tavily cap reached |
+| 2026-10-03 | 389 (total) | 1.52 (total) | 0 | Iterations 7–10: free re-structuring and tie-break reruns of held MA hospitals (Token Factory only). Ledger `var/usage.jsonl` read 2026-10-03 07:00: 389 credits / $1.5191. No spend in iterations 11–20. |
 
 ## Log
 
 - 2026-10-02 15:40 — Spec, master plan, Phase 0 and Phase 1 plans written. Ready for task 0.1.
 - 2026-10-02 16:20 — Phase 0 tasks 0.1–0.6 done by an implementation subagent: 28 tests pass, ruff clean. Deviations: `extend-exclude = ["docs"]` for ruff (it was reformatting code blocks in plan files); `AIClient` now creates an explicit `httpx.Client` when none is given (openai 3.x's default transport bypasses respx). Incident: one early test run reached the real Token Factory endpoint with a fake key (401, no secret leaked, no spend) → task 0.8 added. Spend: 0.
+- 2026-10-03 07:25 — Loop iteration 20: task 8.0 done by a draft → review (accuracy + completeness lenses) → fix workflow (4c0d6a8, 2aa4abb; 26 findings applied, none rejected; no spend). Spend table brought up to the ledger. Next: 8.1–8.3.
 - 2026-10-03 06:20 — Loop iteration 19: task 7.7 done by a subagent (283 tests, no spend); national report generated. User added the standing rule: phase diagram after every finished phase (LOOP.md step 8). Phase diagram shown; next 8.0.
 - 2026-10-03 05:40 — Loop iteration 18: Phase 7 tasks 7.1–7.3 done by a subagent (279 tests); national registry seeded (2,703 hospitals, free).
 - 2026-10-03 04:55 — Loop iteration 17: task 7.0 done by a subagent (Phase 7 plan, 3,732 lines); national cost estimate corrected upward.
