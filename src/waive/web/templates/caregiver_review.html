@@ -44,6 +44,9 @@
   <p class="big">The hospital said: {{ outcome.decision.value.replace("_", " ") }}{% if outcome.discount_percent is not none %} ({{ outcome.discount_percent }}% off){% endif %}.</p>
   {% if outcome.reasons %}<p>Reasons given: {{ outcome.reasons | map(attribute="value") | join(", ") }}</p>{% endif %}
   {% if outcome.documents_requested %}<p>Documents requested: {{ outcome.documents_requested | map(attribute="value") | join(", ") }}</p>{% endif %}
+  {% if triage_note and triage_note.help_text %}<p>{{ triage_note.help_text }}</p>{% endif %}
+  {% if triage_note and triage_note.kind.value == "sheet_missing" %}<p class="muted">The hospital asked for a document its policy page does not list. We recorded that, without any personal details, so the atlas can show it once enough patients report the same.</p>{% endif %}
+  {% if triage_note and triage_note.appeal_text %}<p class="quote">{{ triage_note.appeal_text }}</p><p class="muted">Copy this into a letter, add the application and the denial, and send it to the hospital's financial assistance office.</p>{% endif %}
 </div>
 {% elif check_in %}
 <h2>Check-in</h2>

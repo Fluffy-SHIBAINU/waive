@@ -13,7 +13,8 @@ from waive.learning.classify import (
     route_for,
 )
 from waive.learning.contributions import submit_contribution
-from waive.learning.outcomes import extract_outcome, save_outcome
+from waive.learning.outcomes import extract_outcome
+from waive.learning.triage import record_outcome
 
 MESSAGES: dict[Route, str] = {
     "bill": "That looks like a bill. Use the bill step for it.",
@@ -65,5 +66,5 @@ def ingest_paper(
         except AIOutputError:
             message = "We could not read the hospital's answer. Your helper can enter it by hand."
         else:
-            save_outcome(ctx, row.id, outcome)
+            record_outcome(ctx, row.id, outcome)
     return PaperResult(classified.photo_class, route, message)

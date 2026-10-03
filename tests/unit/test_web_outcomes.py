@@ -61,3 +61,12 @@ def test_check_in_prompt_appears_after_14_days_and_can_be_answered():
     assert "Has the hospital answered" in page.text and 'name="day" value="14"' in page.text
     answered = client.post(f"{caregiver}/check-in", data={"day": "14"}, follow_redirects=True)
     assert "Has the hospital answered" not in answered.text
+
+
+def test_denied_case_shows_the_appeal_draft():
+    client, _, links = client_at(TODAY)
+    to_result(client, links)
+    after = client.post(
+        f"/c/{links.caregiver_token}/outcome", data={"decision": "denied"}, follow_redirects=True
+    )
+    assert "Appeal draft" in after.text and "250%" in after.text
