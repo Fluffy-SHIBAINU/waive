@@ -3,8 +3,10 @@ from urllib.parse import urlparse
 from urllib.request import url2pathname
 
 import httpx
+import pytest
 import respx
 
+from waive.ai.client import ZDRRequired
 from waive.atlas.publish import publish_sheet
 from waive.atlas.samples import st_example_sheet
 from waive.db import session_scope
@@ -99,6 +101,29 @@ def test_plan_shots_skips_the_sheet_shot_when_the_hospital_has_no_sheet(tmp_path
     plan = plan_shots(client, BASE, bill=bill, letter=letter, atlas_ccn="220031")
     assert "11-atlas-sheet-laptop" in plan.skipped
     assert len(plan.shots) == len(EXPECTED_SHOTS) - 1
+
+
+class RefusingAI:
+    """What the real client does on a machine where `WAIVE_ZDR_CONFIRMED` is false: it refuses
+    every call that carries personal data, so a `--live` gallery run never gets a read-back."""
+
+    def complete_json(self, role, messages, schema, *, phi, purpose, max_tokens=2000):
+        raise ZDRRequired("zero data retention is not confirmed")
+
+
+def test_plan_shots_names_the_zdr_setting_when_the_bill_is_refused(tmp_path):
+    # 8.9 review: the hint used to send the operator to a demo-script step that no longer
+    # exists (ZDR is confirmed, the step says "no change needed"); it must name the setting.
+    client, _engine = make_client(ai=RefusingAI())
+    write_demo_images(tmp_path / "demo")
+    bill = (tmp_path / "demo" / "bill.jpg").read_bytes()
+    letter = (tmp_path / "demo" / "letter.jpg").read_bytes()
+    with pytest.raises(GalleryError) as info:
+        plan_shots(client, BASE, bill=bill, letter=letter)
+    message = str(info.value)
+    assert "WAIVE_ZDR_CONFIRMED" in message
+    assert "zero data retention" in message
+    assert "demo script" not in message
 
 
 def test_find_chrome_prefers_the_explicit_path_and_tolerates_none(tmp_path):

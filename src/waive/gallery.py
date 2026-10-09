@@ -125,7 +125,8 @@ def plan_shots(
     if readback.status_code != 200 or "Here is what we read" not in readback.text:
         raise GalleryError(
             "the bill was not read; with --live this usually means the zero-data-retention "
-            "check refused the photo (see the demo script's note on WAIVE_REQUIRE_ZDR)"
+            "check refused the photo because WAIVE_ZDR_CONFIRMED is false on this machine (see "
+            "README, 'Privacy and zero data retention')"
         )
     plan.shots.append(Shot("04-readback-phone", PHONE, html=readback.text))
     client.post(f"{senior}/confirm", data={"answer": "yes"})
