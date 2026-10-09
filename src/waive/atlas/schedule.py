@@ -128,7 +128,9 @@ def _request_matches(
         )
         candidates = match_hospital(extract, refs) if refs else []
         if candidates and is_confident(candidates):
-            matched[candidates[0].ccn] = matched.get(candidates[0].ccn, 0) + 1
+            # One request per hospital name; `count` is the number of distinct cases behind it.
+            bills = int(detail.get("count", 1))
+            matched[candidates[0].ccn] = matched.get(candidates[0].ccn, 0) + bills
         else:
             unmatched.append(
                 {"hospital_name": detail.get("hospital_name"), "state": detail.get("state")}

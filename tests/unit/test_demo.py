@@ -1,9 +1,10 @@
 import json
-from datetime import date
+from datetime import UTC, date, datetime, timedelta
 from decimal import Decimal
 from io import BytesIO
 
 from PIL import Image
+from sqlalchemy import select
 from typer.testing import CliRunner
 
 from waive.atlas import repo
@@ -181,6 +182,23 @@ def test_reset_demo_clears_cases_and_demo_rows_but_keeps_real_hospitals(tmp_path
         again = reset_demo(session, tmp_path / "demo", write_files=False)
         assert (again.cases_deleted, again.sheet_versions_deleted, again.files) == (0, 1, [])
         assert (again.sources_unlinked, again.documents_deleted) == (0, 0)
+
+
+def test_db_purge_command_reports_what_it_removed(monkeypatch, tmp_path):
+    monkeypatch.chdir(tmp_path)
+    monkeypatch.setenv("WAIVE_DATABASE_URL", f"sqlite:///{tmp_path / 'waive.db'}")
+    engine = make_engine(f"sqlite:///{tmp_path / 'waive.db'}")
+    init_db(engine)
+    with session_scope(engine) as session:
+        session.add(CaseRow(id="old-new", state="MA", status="new", token_generation=1))
+        session.add(CaseRow(id="fresh", state="MA", status="new", token_generation=1))
+        session.flush()
+        session.get(CaseRow, "old-new").created_at = datetime.now(UTC) - timedelta(days=3)
+    result = CliRunner().invoke(app, ["db", "purge"])
+    assert result.exit_code == 0, result.output
+    assert "1 abandoned" in result.output and "0 expired" in result.output
+    with session_scope(engine) as session:
+        assert [row.id for row in session.scalars(select(CaseRow))] == ["fresh"]
 
 
 def test_demo_reset_command_prints_a_summary(monkeypatch, tmp_path):

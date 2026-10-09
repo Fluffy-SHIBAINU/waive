@@ -2,7 +2,7 @@
 
 import uuid
 from dataclasses import dataclass, field
-from datetime import date, timedelta
+from datetime import UTC, date, datetime, time, timedelta
 from decimal import Decimal
 from typing import Any
 
@@ -142,18 +142,48 @@ def authorize(ctx: CaseContext, token: str, required: Scope) -> CaseRow:
     return row
 
 
+# Open scout requests the queue holds at most; past it bills still get "needs scouting" and the
+# caregiver's manual pick, but an anonymous loop cannot flood the admin queue (spec §11).
+MAX_OPEN_SCOUT_REQUESTS = 200
+# A case created but never photographed is purged after this long (anonymous POST /cases mints them).
+ABANDONED_AFTER = timedelta(days=1)
+
+
+def _request_key(name: str | None, domain: str | None, state: str | None) -> tuple[str, str]:
+    return (" ".join((name or domain or "").lower().split()), (state or "").upper())
+
+
 def request_scouting(session: Session, row: CaseRow, extract: BillExtract) -> ReviewItemRow | None:
     """Ask the scouts for a hospital the registry did not match. The request keeps only what the
     scheduler's matcher reads (the name as printed, the FAP site's bare domain, the state) plus the
     case's one-way hash, so it is deleted with the case (spec §11) and never holds an account URL.
-    Nothing is filed when the bill named no hospital and no web address: nothing could match."""
+    Bills naming the same hospital in the same state share one request that counts distinct
+    cases. Nothing is filed when the bill named no hospital and no web address."""
     if not extract.hospital_name and not extract.fap_url:
+        return None
+    digest = case_hash(row.id)
+    domain = fap_domain(extract.fap_url) or None
+    key = _request_key(extract.hospital_name, domain, row.state)
+    open_requests = [i for i in repo.open_review_items(session) if i.kind == "scout_request"]
+    for item in open_requests:
+        detail = item.detail or {}
+        if (
+            _request_key(detail.get("hospital_name"), detail.get("fap_url"), detail.get("state"))
+            == key
+        ):
+            cases = list(detail.get("cases", []))
+            if digest not in cases:
+                cases.append(digest)
+                item.detail = {**detail, "cases": cases, "count": len(cases)}
+                session.flush()
+            return item
+    if len(open_requests) >= MAX_OPEN_SCOUT_REQUESTS:
         return None
     detail = {
         "hospital_name": extract.hospital_name,
-        "fap_url": fap_domain(extract.fap_url) or None,
+        "fap_url": domain,
         "state": row.state,
-        "cases": [case_hash(row.id)],
+        "cases": [digest],
         "count": 1,
     }
     return repo.add_review_item(session, None, "scout_request", detail)
@@ -385,6 +415,30 @@ def delete_case(ctx: CaseContext, case_id: str) -> None:
     withdraw_scouting(ctx.session, row.id)
     ctx.session.delete(row)
     ctx.session.flush()
+
+
+def purge_cases(session: Session, today: date) -> dict[str, int]:
+    """Delete cases nobody can reach any more: created but never photographed for over a day
+    ("abandoned") or older than the caregiver link's life ("expired"). Their scout requests go with
+    them, as on one-tap delete. Returns the counts by kind."""
+    abandoned_before = datetime.combine(today - ABANDONED_AFTER, time.min, tzinfo=UTC)
+    expired_before = datetime.combine(today - CAREGIVER_TTL, time.min, tzinfo=UTC)
+    counts = {"abandoned": 0, "expired": 0}
+    for row in list(session.scalars(select(CaseRow))):
+        created = row.created_at
+        if created.tzinfo is None:  # SQLite hands back naive timestamps; they were written in UTC
+            created = created.replace(tzinfo=UTC)
+        if created < expired_before:
+            kind = "expired"
+        elif row.status == "new" and row.sealed is None and created < abandoned_before:
+            kind = "abandoned"
+        else:
+            continue
+        withdraw_scouting(session, row.id)
+        session.delete(row)
+        counts[kind] += 1
+    session.flush()
+    return counts
 
 
 # Public access to the sealed blob for the learning loop (spec §10). The blob stays encrypted at

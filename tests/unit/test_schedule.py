@@ -7,6 +7,7 @@ from pydantic import SecretStr
 
 from waive.atlas import repo
 from waive.atlas.schedule import (
+    DEMAND_WEIGHTS,
     JOB_ID,
     NEVER_SCOUTED_DAYS,
     RETRY_AFTER_DAYS,
@@ -112,6 +113,26 @@ def test_build_queue_orders_by_staleness_demand_and_accuracy():
     }
     assert [r["hospital_name"] for r in report.unmatched_requests] == ["Nowhere Clinic"]
     assert report.without_sheet == 4
+
+
+def test_a_merged_scout_request_counts_each_bill_once():
+    engine = make_engine_with_hospital(REAL)
+    with session_scope(engine) as session:
+        repo.add_review_item(
+            session,
+            None,
+            "scout_request",
+            {
+                "hospital_name": "Real General",
+                "fap_url": "realgeneral.org",  # a bare domain, as the case service stores it
+                "state": "MA",
+                "cases": ["a", "b", "c"],
+                "count": 3,
+            },
+        )
+        [entry] = build_queue(session, TODAY, ("MA",)).entries
+    assert "3 bill(s) named this hospital" in entry.reasons
+    assert entry.demand == 1 + 3 * DEMAND_WEIGHTS["scout_request"]
 
 
 def test_build_queue_filters_by_state_and_skips_the_demo_hospital():
