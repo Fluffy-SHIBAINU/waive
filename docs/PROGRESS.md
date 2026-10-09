@@ -33,7 +33,7 @@ Master plan: `docs/superpowers/plans/2026-10-02-waive-master-plan.md` · Spec: `
 - [ ] **U8.2** Record and upload the demo video (under 3 minutes, public on YouTube).
 - [ ] **U8.3** Submit on Devpost (target 2026-10-28; deadline 2026-10-30 10:00 PT).
 - [ ] **U8.4** Stop cloud resources after judging ends (2026-12-15).
-- [ ] **U8.5** GitHub account settings (opened 2026-10-09): (a) run `gh auth refresh -h github.com -s workflow` so pushes may carry `.github/workflows/ci.yml` (the loop's push of 12 commits is waiting on it); (b) enable private vulnerability reporting on the repository (Settings → Code security and analysis), the channel `SECURITY.md` names.
+- [~] **U8.5** GitHub account settings (opened 2026-10-09): (a) **done 2026-10-09 14:10Z** — `gh auth refresh -h github.com -s workflow`; 26 commits pushed, CI workflow live; (b) still open: enable private vulnerability reporting on the repository (Settings → Code security and analysis), the channel `SECURITY.md` names.
 
 ## Phase checklist
 
