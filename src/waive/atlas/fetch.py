@@ -40,6 +40,10 @@ DOCUMENT_HOSTS = (
     "box.com",
     "sharepoint.com",
     "blob.core.windows.net",
+    # Sutter Health's policy PDFs sit on edge.sitecorecloud.io and Adirondack Health's on
+    # cdn.prod.website-files.com (Webflow); policy_links dropped both (050043, 330079, task 7.9).
+    "sitecorecloud.io",
+    "website-files.com",
 )
 MAX_HOPS = 3
 # Wall-clock bound on parsing one PDF (the worker is killed past it).
