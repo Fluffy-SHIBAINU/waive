@@ -6,11 +6,15 @@ from urllib.request import url2pathname
 import httpx
 import pytest
 import respx
+from fastapi.testclient import TestClient
+from pydantic import SecretStr
 
 from waive.ai.client import ZDRRequired
 from waive.atlas.publish import publish_sheet
 from waive.atlas.samples import st_example_sheet
-from waive.db import session_scope
+from waive.cases.vault import new_key
+from waive.config import Settings
+from waive.db import init_db, make_engine, session_scope
 from waive.demo import seed_demo, write_demo_images
 from waive.gallery import (
     CHROME_CANDIDATES,
@@ -28,6 +32,7 @@ from waive.gallery import (
     export_mermaid,
     find_chrome,
     frame_target,
+    gallery_app,
     html_target,
     mermaid_blocks,
     plan_shots,
@@ -72,7 +77,10 @@ def test_plan_shots_walks_both_flows_and_every_get_page_renders(tmp_path):
         assert (shot.url is None) != (shot.html is None), shot.name
         if shot.url:
             assert shot.url.startswith(BASE + "/")
-            assert client.get(shot.url.removeprefix(BASE)).status_code == 200, shot.name
+            # follow_redirects=False: a URL shot that redirects (how 05/06 came to photograph
+            # the result page) fails here instead of passing on the page it was sent to.
+            page = client.get(shot.url.removeprefix(BASE), follow_redirects=False)
+            assert page.status_code == 200, shot.name
     by_name = {shot.name: shot for shot in plan.shots}
     assert "Two links" in by_name["02-two-links-laptop"].html
     assert "Take a photo of the bill" in by_name["03-senior-start-phone"].html
@@ -116,6 +124,30 @@ def test_household_and_income_shots_are_kept_from_before_the_approval(tmp_path):
     for page in ("household", "income"):
         response = client.get(f"{senior}/{page}", follow_redirects=False)
         assert response.status_code == 303 and response.headers["location"].endswith("/result")
+
+
+def test_gallery_app_never_starts_the_scout_scheduler(tmp_path):
+    # 8.10 review: run_gallery handed the operator's Settings to create_app unchanged, so a
+    # machine with WAIVE_SCHEDULER=on ran the Tavily scouting job under the gallery server while
+    # the README promises the command spends nothing without --live.
+    settings = Settings(
+        _env_file=None,
+        nebius_api_key=SecretStr("k"),
+        vault_key=SecretStr(new_key()),
+        token_secret=SecretStr("x" * 40),
+        ledger_path=tmp_path / "usage.jsonl",
+        scheduler="on",
+        scheduler_interval_minutes=1,
+    )
+    engine = make_engine("sqlite+pysqlite:///:memory:")
+    init_db(engine)
+    app = gallery_app(settings, engine=engine, ai=ScriptedAI())
+    with TestClient(app) as client:
+        assert client.get("/healthz").json() == {"ok": True}
+        assert app.state.scheduler is None
+    assert app.state.settings.scheduler == "off"
+    # The operator's own Settings are not rewritten; only the gallery's copy has it off.
+    assert settings.scheduler == "on"
 
 
 def test_plan_shots_skips_the_sheet_shot_when_the_hospital_has_no_sheet(tmp_path):

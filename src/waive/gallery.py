@@ -296,6 +296,17 @@ def serving(app: FastAPI, port: int) -> Iterator[str]:
         thread.join(timeout=10)
 
 
+def gallery_app(settings: Settings, *, engine, ai) -> FastAPI:
+    """The app the pictures are taken of: the operator's settings with the scout scheduler off.
+
+    `create_app` starts the Tavily scouting job whenever WAIVE_SCHEDULER=on. Its first run is one
+    interval away, so a few-second capture cannot spend, but the README promises the command
+    spends nothing without `--live`, and a hung capture (twelve shots at a 90 s timeout each, then
+    kroki) can outlast a short interval. The operator's own Settings are left as they are.
+    """
+    return create_app(settings.model_copy(update={"scheduler": "off"}), engine=engine, ai=ai)
+
+
 def run_gallery(
     settings: Settings,
     out_dir: Path,
@@ -320,7 +331,7 @@ def run_gallery(
     bill = (DEMO_DIR / "bill.jpg").read_bytes()
     letter = (DEMO_DIR / "letter.jpg").read_bytes()
     ai = AIClient(settings, make_governor(settings, engine)) if live else ScriptedAI()
-    app = create_app(settings, engine=engine, ai=ai)
+    app = gallery_app(settings, engine=engine, ai=ai)
     with (
         serving(app, port) as base_url,
         httpx.Client(base_url=base_url, timeout=120.0) as client,
