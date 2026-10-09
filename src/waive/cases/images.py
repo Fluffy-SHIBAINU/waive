@@ -60,6 +60,9 @@ def prepare_image(data: bytes, max_side: int = 2000) -> PreparedImage:
     sharpness = _sharpness(image)
     if sharpness < MIN_SHARPNESS:
         warnings.append("blurry")
+    # Pillow re-encodes im.info["comment"] as a JPEG COM marker unless the info is cleared; EXIF,
+    # XMP and ICC are dropped because no exif/xmp/icc_profile argument is passed to save().
+    image.info.clear()
     buffer = io.BytesIO()
-    image.save(buffer, format="JPEG", quality=85)  # no exif argument: metadata is dropped
+    image.save(buffer, format="JPEG", quality=85)
     return PreparedImage(buffer.getvalue(), image.width, image.height, sharpness, tuple(warnings))

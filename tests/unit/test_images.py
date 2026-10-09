@@ -22,7 +22,15 @@ def text_image(size=(1600, 2200), blur=0.0, fmt="PNG", exif_rotate=False):
     if exif_rotate:
         exif = Image.Exif()
         exif[0x0112] = 6  # orientation: rotated 90 degrees clockwise
-        image.save(buffer, format="JPEG", exif=exif.tobytes())
+        # Everything a camera app or editor might leave behind, all of it to be stripped.
+        image.save(
+            buffer,
+            format="JPEG",
+            exif=exif.tobytes(),
+            comment=b"secret GPS 42.3601,-71.0589 shot by Rosa Alvarez",
+            xmp=b"<x:xmpmeta>secret</x:xmpmeta>",
+            icc_profile=b"secret-icc" * 8,
+        )
     else:
         image.save(buffer, format=fmt)
     return buffer.getvalue()
@@ -37,9 +45,18 @@ def test_prepare_resizes_to_max_side_and_reencodes_jpeg():
 
 
 def test_prepare_strips_metadata_and_applies_orientation():
-    prepared = prepare_image(text_image(size=(1200, 1600), exif_rotate=True))
+    source = text_image(size=(1200, 1600), exif_rotate=True)
+    assert b"secret" in source and b"Exif" in source
+    prepared = prepare_image(source)
     assert (prepared.width, prepared.height) == (1600, 1200)
     assert b"Exif" not in prepared.jpeg[:64]
+    # Pillow re-encodes a JPEG COM marker from im.info["comment"] unless told otherwise: the
+    # output must carry nothing but the JFIF header (README: "metadata stripped").
+    assert b"secret" not in prepared.jpeg
+    out = Image.open(io.BytesIO(prepared.jpeg))
+    assert set(out.info) <= {"jfif", "jfif_version", "jfif_unit", "jfif_density", "dpi"}, sorted(
+        out.info
+    )
 
 
 def test_blurry_and_small_images_get_warnings():
