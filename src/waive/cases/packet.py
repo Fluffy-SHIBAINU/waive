@@ -12,7 +12,7 @@ from reportlab.platypus import PageBreak, Paragraph, SimpleDocTemplate, Spacer
 
 from waive.atlas.schema import ProcedureSheet
 from waive.cases.service import CaseView
-from waive.rules.deadlines import Deadlines
+from waive.rules.deadlines import ANCHOR_CAVEAT, Deadlines
 from waive.rules.explain import caregiver_summary
 
 DOC_LABELS = {
@@ -165,6 +165,8 @@ def build_packet(data: PacketData) -> bytes:
                 body,
             )
         )
+        if not data.deadlines.anchor_confirmed:
+            flow.append(Paragraph(ANCHOR_CAVEAT, body))
     flow.append(Spacer(1, 12))
     flow.append(
         Paragraph(

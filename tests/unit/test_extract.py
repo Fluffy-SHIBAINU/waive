@@ -3,6 +3,7 @@ from datetime import date
 from decimal import Decimal
 
 from waive.cases.extract import (
+    BILL_PROMPT,
     BillExtract,
     IncomeExtract,
     extract_bill,
@@ -52,6 +53,17 @@ def test_extract_bill_uses_vision_with_phi_flag():
     assert (call["role"], call["phi"], call["purpose"]) == ("vision", True, "case.bill")
     assert call["messages"][0]["role"] == "system"
     assert call["messages"][1]["content"][1]["type"] == "image_url"
+
+
+def test_bill_prompt_asks_whether_this_is_the_first_statement():
+    # 501(r) clocks run from the first post-discharge statement; the model must say which one
+    # it is reading, and the caregiver can supply the first bill's date separately.
+    assert "is_first_statement" in BILL_PROMPT
+    for cue in ("previous balance", "past due", "final notice"):
+        assert cue in BILL_PROMPT.lower()
+    extract = BillExtract(statement_date=date(2026, 9, 3), first_statement_date=date(2026, 7, 5))
+    assert extract.first_statement_date == date(2026, 7, 5)
+    assert BillExtract().first_statement_date is None
 
 
 def test_synthetic_bills_do_not_set_phi():

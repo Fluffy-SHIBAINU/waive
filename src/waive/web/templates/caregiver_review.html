@@ -34,6 +34,7 @@
 <div class="card">
   <div class="row"><span>Apply by</span><strong>{{ long_date(case.deadlines.application_deadline) }}</strong></div>
   <div class="row"><span>No collections before</span><strong>{{ long_date(case.deadlines.collections_allowed_from) }}</strong></div>
+  {% if not case.deadlines.anchor_confirmed %}<p class="muted">Counted from the statement in the photo ({{ long_date(case.bill.statement_date) }}). The law counts from the first bill after discharge, so the real dates may be earlier. Enter the first bill's date below to correct them.</p>{% endif %}
   {% if case.deadlines.collection_notice_too_early %}<p>The collection notice came too early. The packet includes a note about this.</p>{% endif %}
 </div>
 {% endif %}
@@ -93,6 +94,9 @@
   <input id="amount_due" name="amount_due" inputmode="decimal" value="{{ case.bill.amount_due if case.bill and case.bill.amount_due else '' }}">
   <label for="statement_date">Statement date</label>
   <input id="statement_date" name="statement_date" type="date" value="{{ case.bill.statement_date if case.bill and case.bill.statement_date else '' }}">
+  <label for="first_statement_date">Date of the first bill for this visit (the deadlines count from it)</label>
+  <input id="first_statement_date" name="first_statement_date" type="date" value="{{ case.bill.first_statement_date if case.bill and case.bill.first_statement_date else '' }}">
+  <label class="check"><input type="checkbox" name="is_first_statement" value="yes"> This statement is the first bill for this visit</label>
   <label for="size">People in the household</label>
   <input id="size" name="size" type="number" min="1" max="12" value="{{ case.household_size or 1 }}">
   <label for="annual_income">Yearly household income (dollars)</label>

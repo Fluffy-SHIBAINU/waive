@@ -46,6 +46,38 @@ def test_create_case_shows_both_links_and_review_works():
     assert client.get(caregiver).status_code in (403, 404)
 
 
+def test_caregiver_sees_provisional_dates_and_can_enter_the_first_bill():
+    client, links = seeded_client()
+    caregiver = f"/c/{links.caregiver_token}"
+    client.post(f"/s/{links.senior_token}/bill", files=photo())
+    page = client.post(
+        f"{caregiver}/correct",
+        data={"annual_income": "22800", "size": "1"},
+        follow_redirects=True,
+    ).text
+    assert "May 1, 2027" in page and "first bill" in page and 'name="first_statement_date"' in page
+    assert "came too early" not in page
+    page = client.post(
+        f"{caregiver}/correct",
+        data={"annual_income": "22800", "size": "1", "first_statement_date": "2026-07-05"},
+        follow_redirects=True,
+    ).text
+    assert "March 2, 2027" in page and "November 2, 2026" in page
+    assert "may be earlier" not in page and 'value="2026-07-05"' in page
+    assert "September 3, 2026" in page  # the statement date itself is untouched
+    marked = client.post(
+        f"{caregiver}/correct",
+        data={
+            "annual_income": "22800",
+            "size": "1",
+            "statement_date": "2026-08-01",
+            "is_first_statement": "yes",
+        },
+        follow_redirects=True,
+    ).text
+    assert "March 29, 2027" in marked and "may be earlier" not in marked
+
+
 def test_correction_rejects_a_hospital_that_is_not_in_the_registry():
     client, links = seeded_client()
     caregiver = f"/c/{links.caregiver_token}"

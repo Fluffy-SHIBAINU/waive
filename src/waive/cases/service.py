@@ -109,6 +109,17 @@ def _fpl_band(percent: Decimal | None) -> str | None:
     return ">400"
 
 
+def deadline_anchor(bill: BillExtract) -> tuple[date, bool]:
+    """(the date the 501(r) clocks start from, whether it is known to be the first bill's).
+    A first-bill date entered by the caregiver wins; otherwise the photographed statement's date,
+    confirmed only when the reader marked it as the first statement and it carries no collection
+    language (a final notice is almost never the first bill)."""
+    if bill.first_statement_date:
+        return bill.first_statement_date, True
+    assert bill.statement_date is not None
+    return bill.statement_date, bill.is_first_statement is True and not bill.collection_notice
+
+
 def _evaluate(ctx: CaseContext, row: CaseRow, sealed: dict[str, Any]) -> CaseView:
     bill = BillExtract.model_validate(sealed["bill"]) if "bill" in sealed else None
     household = sealed.get("household") or {}
@@ -148,9 +159,10 @@ def _evaluate(ctx: CaseContext, row: CaseRow, sealed: dict[str, Any]) -> CaseVie
     name = shown.hospital_name or sheet.hospital.name
     shown.senior_text = senior_message(result, name)
     shown.caregiver_text = caregiver_summary(result, name)
-    if bill and bill.statement_date:
+    if bill and (bill.first_statement_date or bill.statement_date):
+        anchor, confirmed = deadline_anchor(bill)
         shown.deadlines = deadlines_for(
-            sheet, bill.statement_date, ctx.today, bill.collection_notice_date
+            sheet, anchor, ctx.today, bill.collection_notice_date, anchor_confirmed=confirmed
         )
     if result.tier in {Tier.FREE, Tier.DISCOUNT, Tier.NOT_ELIGIBLE} and row.prediction is None:
         documents = (
@@ -215,6 +227,9 @@ def confirm_bill(
     row = _row(ctx, case_id)
     sealed = _load(ctx, row)
     bill = BillExtract.model_validate({**sealed.get("bill", {}), **corrections})
+    if corrections.get("is_first_statement"):
+        # The caregiver says the photographed statement is the first bill: pin the clocks to it.
+        bill = bill.model_copy(update={"first_statement_date": bill.statement_date})
     sealed["bill"] = bill.model_dump(mode="json")
     if ccn:
         if repo.get_hospital(ctx.session, ccn) is None:
