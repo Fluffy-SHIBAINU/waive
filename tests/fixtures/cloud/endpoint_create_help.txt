@@ -1,0 +1,44 @@
+  NAME
+      nebius ai endpoint create
+        Creates an endpoint.
+        This command is deterministic and non-interactive. Use it for scripts, config-driven workflows, CI, and agents.
+        For human first-time setup, use the guided ai create wizard. Static create commands report validation errors with recovery hints instead of
+  switching into prompt mode.
+        With --async, explicit --format json or yaml returns the full Operation on stdout. Its id identifies the operation; resource_id identifies the
+  created resource. Use --format 'jsonpath={.resource_id}' to extract the ID. Submission does not wait for the resource to become ready or finish.
+        Exposed ports are reachable over managed URLs (no public IP required), surfaced in the endpoint's status.public_endpoints:
+          - an HTTP port (--container-port 8080, or .../http) is served over https://HOST (gRPC works over the same URL);
+          - a TCP port (--container-port 6379/tcp) is served over tls://HOST:443 (connect with a direct-TLS client);
+          - a UDP port gets no managed URL.
+        Example (two HTTP ports plus one TLS-TCP port):
+          nebius ai endpoint create --image IMAGE --parent-id PROJECT_ID \
+            --container-port 8080 --container-port 8081/http --container-port 6379/tcp
+          -> two https:// URLs and one tls://HOST:443 URL in status.public_endpoints.
+  SYNOPSIS
+      nebius ai endpoint create
+        --args
+        --async
+        --auth
+        --container-command
+        --container-port
+        --disk-size
+        --dry-run
+        --env
+        --env-secret
+        --follows-spot-price
+        --image
+        --inject-file
+        --name
+        --on-demand
+        --parent-id
+        --platform
+        --preemptible
+        --preset
+        --public
+        --registry-password
+        --registry-secret
+        --registry-username
+      --platform (string)
+         Platform of compute resources (e.g. gpu-h100-sxm, gpu-l40s-d), default is gpu-h100-sxm in eu-north1 and gpu-h200-sxm elsewhere.
+      --preset (string)
+         Preset for selected platform (e.g. 1gpu-16vcpu-200gb), default is minimum available preset for the platform.

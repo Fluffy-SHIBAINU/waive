@@ -28,6 +28,7 @@ from waive.cases.evaluate import evaluate_corpus, write_report
 from waive.cases.service import purge_cases
 from waive.cases.synth import generate_corpus
 from waive.cases.vault import new_key
+from waive.cloud.cli import cloud_app
 from waive.config import Settings
 from waive.db import init_db, make_engine, session_scope
 from waive.demo import DEMO_DIR, forget_cases, reset_demo, seed_demo
@@ -560,6 +561,7 @@ def demo_forget_cases() -> None:
 
 learn_app = typer.Typer(no_args_is_help=True, help="Learning loop operations.")
 app.add_typer(learn_app, name="learn")
+app.add_typer(cloud_app, name="cloud")
 
 
 @learn_app.command("rebuild")

@@ -1,0 +1,67 @@
+  NAME
+      nebius msp postgresql v1alpha1 cluster create
+        Creates a PostgreSQL cluster in the specified folder.
+  SYNOPSIS
+      nebius msp postgresql v1alpha1 cluster create
+        --backup-backup-window-start
+        --backup-retention-policy
+        --bootstrap-db-name [required]
+        --bootstrap-user-name [required]
+        --bootstrap-user-password
+        --config-pooler-config-max-pool-size
+        --config-pooler-config-pooling-mode
+        --config-postgresql-config-16-autovacuum-analyze-scale-factor
+        --config-postgresql-config-16-autovacuum-naptime
+        --config-postgresql-config-16-autovacuum-vacuum-cost-delay
+        --config-postgresql-config-16-autovacuum-vacuum-cost-limit
+        --config-postgresql-config-16-autovacuum-vacuum-scale-factor
+        --config-postgresql-config-16-autovacuum-work-mem
+        --config-postgresql-config-16-default-transaction-read-only
+        --config-postgresql-config-16-idle-in-transaction-session-timeout
+        --config-postgresql-config-16-max-connections
+        --config-postgresql-config-16-search-path
+        --config-postgresql-config-16-shared-buffers
+        --config-postgresql-config-16-statement-timeout
+        --config-public-access
+        --config-template-disk-size-gibibytes [required]
+        --config-template-disk-type [required]
+        --config-template-hosts-count [required]
+        --config-template-resources-platform [required]
+        --config-template-resources-preset [required]
+        --config-version [required]
+        --description
+        --labels
+        --name
+        --network-id [required]
+        --parent-id [required]
+        --resource-version
+        --async
+        -i, --interactive
+  EXAMPLES
+      Create a PostgreSQL cluster
+        nebius msp postgresql v1alpha1 cluster create \
+          --name $CLUSTER_NAME \
+          --description "My first PostgreSQL cluster" \
+          --network-id $NETWORK_ID \
+          --bootstrap-db-name $BOOTSTRAP_DB_NAME \
+          --bootstrap-user-name $BOOTSTRAP_USER_NAME \
+          --bootstrap-user-password $BOOTSTRAP_USER_PASSWORD \
+          --config-version 16 \
+          --config-template-disk-type network-ssd \
+          --config-template-disk-size-gibibytes 96 \
+          --config-template-resources-platform cpu-e2 \
+          --config-template-resources-preset 2vcpu-8gb \
+          --config-template-hosts-count 1 \
+          --config-public-access
+      Create a PostgreSQL cluster with backup settings
+        nebius msp postgresql v1alpha1 cluster create \
+          --backup-backup-window-start '00:02:00' \
+          --backup-retention-policy '7d' \
+          <other_parameters>
+  OPTIONS
+      --backup-backup-window-start (string)
+         Backup window start in "HH:MM:SS" format (UTC Time).
+      --backup-retention-policy (string)
+      --config-template-disk-size-gibibytes (int64) [required]
+      --config-template-resources-platform (string) [required]
+      --config-template-resources-preset (string) [required]
