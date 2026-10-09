@@ -57,6 +57,25 @@ def list_hospitals(
     return list(session.scalars(query))
 
 
+def siblings_on_domain(session: Session, domain: str, ccn: str) -> list[HospitalRow]:
+    """The other registry hospitals whose website is `domain` (a health system's members), by CCN."""
+    query = (
+        select(HospitalRow)
+        .where(HospitalRow.website_domain == domain, HospitalRow.ccn != ccn)
+        .order_by(HospitalRow.ccn)
+    )
+    return list(session.scalars(query))
+
+
+def link_source(session: Session, ccn: str, source_id: str) -> None:
+    """Attach a stored document to another hospital (a system policy shared by its members)."""
+    hospital = session.get(HospitalRow, ccn)
+    row = session.get(SourceDocRow, source_id)
+    if hospital is not None and row is not None and hospital not in row.hospitals:
+        row.hospitals.append(hospital)
+        session.flush()
+
+
 def hospital_ref(row: HospitalRow) -> HospitalRef:
     return HospitalRef(
         ccn=row.ccn,

@@ -843,3 +843,188 @@ def test_coverage_report_leaves_the_fictional_demo_hospital_out():
         assert "Published sheets: 1 (100%)" in report
         assert "| 220031 |" in report
         assert "229999" not in report and "ST. EXAMPLE" not in report
+
+
+class GroundedAI(FakeAI):
+    """Cites the free-care sentence from whichever source really contains it (none: no income
+    rule), the way a model with the right document in front of it would."""
+
+    def __init__(self):
+        super().__init__()
+        self.prompts: list[str] = []
+
+    def complete_json(self, role, messages, schema, *, phi, purpose, max_tokens=2000):
+        content = messages[1]["content"]
+        self.prompts.append(content)
+        blocks = content.split("=== SOURCE id=")[1:]
+        grounded = next((b.split(" ")[0] for b in blocks if FREE_CARE_QUOTE in b), None)
+        first = blocks[0].split(" ")[0]
+        free = (
+            DraftField(value="250", quote=FREE_CARE_QUOTE, source_id=grounded) if grounded else None
+        )
+        return SheetDraft(
+            free_care_max_fpl=free,
+            phone=DraftField(
+                value="617-555-0100",
+                quote="Questions: call 617-555-0100",
+                source_id=grounded or first,
+            ),
+        )
+
+
+SIBLING = {
+    **HOSPITAL,
+    "ccn": "220031",
+    "name": "REAL GENERAL HOSPITAL",
+    "city": "WORCESTER",
+    "website_domain": "example.org",
+}
+THIN_PAGE = (
+    "Financial assistance at Real General Hospital. We help patients who cannot pay. "
+    "Call us for more information about our programs and how to apply. "
+) * 3
+
+
+def store_thin_page(session, ccn):
+    sha = hashlib.sha256(THIN_PAGE.encode()).hexdigest()
+    source = SourceDoc(
+        id=source_id_for("fap", sha),
+        kind=SourceKind.HOSPITAL_WEB,
+        url="https://www.example.org/real/financial-assistance",
+        title="Financial Assistance | Real General",
+        fetched_on=TODAY,
+        sha256=sha,
+    )
+    repo.save_source(session, source, THIN_PAGE, ccn)
+    return source
+
+
+def test_a_hospital_whose_own_pages_state_no_income_rules_borrows_a_published_siblings_policy():
+    # Adventist Health White Memorial (050350), AdventHealth Riverview (100364), Advocate Christ
+    # and Condell (140208, 140202), 7.9: scouting by hospital name on a system site found one
+    # thin page, while the system's policy was already stored for a sibling on the same domain.
+    engine = make_engine_with_hospital(HOSPITAL, SIBLING)
+    with session_scope(engine) as session:
+        assert (
+            build_hospital(session, FakeGateway(), FakeAI(), "229999", TODAY).outcome == "published"
+        )
+        policy_id = repo.latest_sheet(session, "229999")[0].eligibility.free_care_max_fpl.source_id
+        thin = store_thin_page(session, "220031")
+        ai = GroundedAI()
+        result = build_hospital(session, FakeGateway(), ai, "220031", TODAY, reuse_sources=True)
+        assert result.outcome == "published"
+        assert (
+            "1 policy document shared from ST. EXAMPLE MEDICAL CENTER (229999) on example.org; "
+            "the hospital's own documents state no income rules"
+        ) in result.notes
+        # Structured twice: once from its own page (no income rule), once with the shared policy.
+        assert (
+            len(ai.prompts) >= 2 and policy_id not in ai.prompts[0] and policy_id in ai.prompts[-1]
+        )
+        sheet, _ = repo.latest_sheet(session, "220031")
+        assert sheet.eligibility.free_care_max_fpl.value == 250
+        assert sheet.eligibility.free_care_max_fpl.source_id == policy_id
+        assert {s.id for s in sheet.sources} == {thin.id, policy_id}
+        assert {s.id for s, _ in repo.sources_for(session, "220031")} == {thin.id, policy_id}
+        assert review_detail(session, "220031", "shared_sources") == {
+            "from_ccn": "229999",
+            "domain": "example.org",
+            "sources": [policy_id],
+        }
+
+
+def test_reuse_sources_with_nothing_stored_borrows_a_siblings_documents_before_scouting():
+    # AdventHealth Carrollwood and Zephyrhills (100319, 100363): no documents of their own, seven
+    # siblings on adventhealth.com with the system policy stored. No credits are spent.
+    class NoSpend:
+        def search(self, *args, **kwargs):
+            raise AssertionError("Tavily search would spend credits")
+
+        def extract(self, *args, **kwargs):
+            raise AssertionError("Tavily extract would spend credits")
+
+        def map(self, *args, **kwargs):
+            raise AssertionError("Tavily map would spend credits")
+
+    engine = make_engine_with_hospital(HOSPITAL, SIBLING)
+    with session_scope(engine) as session:
+        build_hospital(session, FakeGateway(), FakeAI(), "229999", TODAY)
+        ai = GroundedAI()
+        result = build_hospital(session, NoSpend(), ai, "220031", TODAY, reuse_sources=True)
+        assert result.outcome == "published"
+        assert len(ai.prompts) == 2  # primary and cross-check, no first pass without documents
+        assert review_detail(session, "220031", "shared_sources")["from_ccn"] == "229999"
+        assert repo.latest_sheet(session, "220031")[0].eligibility.free_care_max_fpl.value == 250
+
+
+def test_a_scout_that_finds_nothing_borrows_a_siblings_documents():
+    class EmptySite(FakeGateway):
+        def search(self, query, **kwargs):
+            return [] if kwargs.get("include_domains") else super().search(query, **kwargs)
+
+        def map(self, url, **kwargs):
+            return []
+
+    engine = make_engine_with_hospital(HOSPITAL, SIBLING)
+    with session_scope(engine) as session:
+        build_hospital(session, FakeGateway(), FakeAI(), "229999", TODAY)
+        result = build_hospital(session, EmptySite(), GroundedAI(), "220031", TODAY)
+        assert result.outcome == "published"
+        assert review_detail(session, "220031", "shared_sources")["from_ccn"] == "229999"
+    # Without a published sibling the outcome is what it was: no documents, a review item.
+    engine = make_engine_with_hospital(HOSPITAL, SIBLING)
+    with session_scope(engine) as session:
+        result = build_hospital(session, EmptySite(), GroundedAI(), "220031", TODAY)
+        assert (result.outcome, result.notes) == (
+            "skipped",
+            ["no financial assistance documents found"],
+        )
+
+
+def test_other_state_versions_of_a_system_policy_are_set_aside():
+    # Adventist Health (050013 and siblings, 7.9): the Hawaii and Oregon versions of the system
+    # policy were stored next to the California one, and the structurer cited the Hawaii table.
+    engine = make_engine_with_hospital()
+    with session_scope(engine) as session:
+        build_hospital(session, FakeGateway(), FakeAI(), "229999", TODAY)
+        hawaii_text = POLICY_TEXT.replace("250%", "300%")
+        hawaii = SourceDoc(
+            id="fap-hawaii",
+            kind=SourceKind.HOSPITAL_WEB,
+            url="https://www.example.org/documents/financial-assistance-policy-hawaii.pdf",
+            title="[PDF] Financial Assistance Policy for Hawaii-Based Hospitals",
+            fetched_on=TODAY,
+            sha256="1" * 64,
+        )
+        repo.save_source(session, hawaii, hawaii_text, "229999")
+        own_state = SourceDoc(
+            id="fap-massachusetts",
+            kind=SourceKind.HOSPITAL_WEB,
+            url="https://www.example.org/documents/financial-assistance-policy-massachusetts.pdf",
+            title="Financial Assistance Policy",
+            fetched_on=TODAY,
+            sha256="2" * 64,
+        )
+        repo.save_source(session, own_state, POLICY_TEXT, "229999")
+        ai = GroundedAI()
+        result = build_hospital(session, FakeGateway(), ai, "229999", TODAY, reuse_sources=True)
+        assert result.outcome == "published"
+        assert (
+            "1 stored document is another state's version of the system policy (fap-hawaii: HI); "
+            "detached and left out of the structurer"
+        ) in result.notes
+        assert ai.prompts and all("hawaii" not in p.lower() for p in ai.prompts)
+        assert all("fap-massachusetts" in p for p in ai.prompts)
+        assert "fap-hawaii" not in {s.id for s, _ in repo.sources_for(session, "229999")}
+        assert review_detail(session, "229999", "other_state_documents") == {
+            "state": "MA",
+            "sources": [{"id": "fap-hawaii", "states": ["HI"]}],
+        }
+    # Without a document for the hospital's own state nothing is set aside.
+    engine = make_engine_with_hospital()
+    with session_scope(engine) as session:
+        build_hospital(session, FakeGateway(), FakeAI(), "229999", TODAY)
+        repo.save_source(session, hawaii, hawaii_text, "229999")
+        ai = GroundedAI()
+        build_hospital(session, FakeGateway(), ai, "229999", TODAY, reuse_sources=True)
+        assert ai.prompts and all("fap-hawaii" in p for p in ai.prompts)

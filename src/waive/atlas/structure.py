@@ -5,6 +5,7 @@ from collections.abc import Callable
 from datetime import date
 from decimal import Decimal, InvalidOperation
 from typing import Any
+from urllib.parse import unquote, urlparse
 
 from pydantic import BaseModel, field_validator
 
@@ -35,7 +36,8 @@ Rules:
 9. "presumptive" lists programs whose members qualify automatically (for example Medicaid, MassHealth, SNAP).
 10. "free_care_max_fpl" is only the upper income bound of a 100% discount (free care) band: fill it when the documents say that care is free, at no charge, or discounted 100% for incomes up to that level. Otherwise leave it null.
 11. "assistance_ceiling_fpl" is the highest household income (as % FPL) at which any financial assistance or discount is available at all, when the documents state one: "assistance is available to incomes less than 600% of the federal poverty guidelines", "discounts are limited to incomes up to 300% FPG", "eligible up to 400% FPL". Such a sentence is an eligibility ceiling on all help, never a free-care band: put its number here and leave free_care_max_fpl null unless another passage grants free care. Leave assistance_ceiling_fpl null when the only income limit stated is the free-care band itself.
-12. Reply with only the JSON object, no commentary."""
+12. When the documents include versions of one policy for different states (a SOURCE header says names_state=XX), use the version for the hospital's state, the state on the "Hospital:" line, and ignore the others.
+13. Reply with only the JSON object, no commentary."""
 
 MAX_DOC_CHARS = 40_000
 PASSAGE_HEAD_CHARS = 6_000
@@ -140,7 +142,10 @@ def build_messages(
 ) -> list[dict[str, str]]:
     parts = [f"Hospital: {hospital.name}, {hospital.city}, {hospital.state}.", ""]
     for doc, text in sources:
-        parts.append(f"=== SOURCE id={doc.id} title={doc.title!r} url={doc.url or ''} ===")
+        header = f"=== SOURCE id={doc.id} title={doc.title!r} url={doc.url or ''}"
+        if states := document_states(doc.title, doc.url or ""):
+            header += f" names_state={','.join(sorted(states))}"
+        parts.append(header + " ===")
         parts.append(select_passages(text, limit=limit, head=head))
         parts.append("=== END SOURCE ===")
         parts.append("")
@@ -280,6 +285,23 @@ def _states(value: Any) -> list[str]:
     if not codes:
         raise ValueError("no US state recognised")
     return codes
+
+
+_PARENTHESISED_CODE = re.compile(r"\((" + "|".join(US_STATES) + r")\)")
+
+
+def document_states(title: str, url: str) -> set[str]:
+    """The states a document's title or URL path names: full names as whole words ("for
+    Hawaii-Based Hospitals", "financial-assistance-policy-california.pdf") and codes in
+    parentheses ("Billing and Collection Policy (OR)"). The host is left out: illinois.gov
+    publishes records, it does not make a document Illinois's. A system that keeps one policy per
+    state publishes them side by side (Adventist Health, task 7.9), and only the hospital's own
+    state's version is its policy."""
+    path = unquote(urlparse(url).path) if url else ""
+    text = re.sub(r"[-_./%+]", " ", f"{title} {path}")
+    found = {_CODE_OF_NAME[match.group(1)] for match in _STATE_NAMES.finditer(text.lower())}
+    found.update(match.group(1) for match in _PARENTHESISED_CODE.finditer(title))
+    return found
 
 
 def _window_days(value: Any) -> int:
