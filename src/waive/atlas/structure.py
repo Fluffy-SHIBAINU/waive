@@ -18,7 +18,7 @@ from waive.atlas.schema import (
     SourceDoc,
     SubmitMethod,
 )
-from waive.atlas.verify import normalize
+from waive.atlas.verify import normalize, quotes_assistance_ceiling
 
 SYSTEM_PROMPT = """You extract facts from a hospital's financial assistance documents into JSON.
 
@@ -424,6 +424,25 @@ def _stated_ceiling(draft: SheetDraft, known: set[str]) -> tuple[Decimal, str] |
         return None
 
 
+def _set_aside_ceiling_wording(
+    ceiling: tuple[Decimal, str] | None, sections: dict[str, dict[str, Any]], skipped: list[str]
+) -> tuple[Decimal, str] | None:
+    """A free-care limit quoted from "full or partial financial assistance ... at or below 400%"
+    (Arnot Ogden, 330090) is the ceiling on any help, not a free band: it leaves the sheet and
+    stands in for the ceiling when the model gave none, so the no-income-rules note says what
+    the documents do state. The returned ceiling is the one the later checks should use."""
+    eligibility = sections.get("eligibility", {})
+    stated = eligibility.get("free_care_max_fpl")
+    if stated is None or not quotes_assistance_ceiling(stated.quote):
+        return ceiling
+    del eligibility["free_care_max_fpl"]
+    skipped.append(
+        f"eligibility.free_care_max_fpl: {stated.value:.0f} is quoted from 'full or partial "
+        "assistance' wording, an eligibility ceiling, not a free-care band"
+    )
+    return ceiling if ceiling is not None else (stated.value, stated.quote)
+
+
 def _same_passage(first: str, second: str) -> bool:
     """Two quotes of one passage: either normalizes to a part of the other."""
     one, other = normalize(first), normalize(second)
@@ -534,7 +553,7 @@ def draft_to_sheet(
             source_id=draft_field.source_id,
             checked_on=today,
         )
-    ceiling = _stated_ceiling(draft, known)
+    ceiling = _set_aside_ceiling_wording(_stated_ceiling(draft, known), sections, skipped)
     _drop_ceiling_read_as_free_care(ceiling, sections, skipped)
     _derive_free_care_limit(draft, known, sections, today, skipped)
     _note_ceiling_without_income_rules(ceiling, sections, skipped)

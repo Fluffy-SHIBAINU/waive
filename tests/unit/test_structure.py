@@ -629,3 +629,36 @@ def test_a_rejection_that_a_smaller_prompt_cannot_change_is_not_retried():
     full = build_messages(SAMPLE.hospital, SOURCES)
     smaller = build_messages(SAMPLE.hospital, SOURCES, limit=RETRY_DOC_CHARS, head=RETRY_HEAD_CHARS)
     assert smaller == full and ai.prompts[0] == full[1]["content"]
+
+
+def test_a_free_limit_quoted_from_full_or_partial_wording_becomes_the_ceiling():
+    # Arnot Ogden (330090, 7.9): the model put the 400% "full or partial financial assistance"
+    # sentence in free_care_max_fpl. The structurer sets it aside as the overall ceiling.
+    arnot = (
+        "you may qualify for full or partial financial assistance if your household income is at "
+        "or below 400% of the Federal Poverty Level"
+    )
+    draft = SheetDraft(free_care_max_fpl=field(400, arnot))
+    sheet, skipped = draft_to_sheet(draft, SAMPLE.hospital, [SAMPLE.sources[0]], TODAY)
+    assert sheet.eligibility.free_care_max_fpl is None
+    assert skipped == [
+        "eligibility.free_care_max_fpl: 400 is quoted from 'full or partial assistance' wording, "
+        "an eligibility ceiling, not a free-care band",
+        "eligibility.free_care_max_fpl: not stated; the documents give only an overall "
+        "assistance ceiling (400% FPL)",
+    ]
+    assert decide_status(sheet, []) is SheetStatus.HELD
+    # A real free-care band elsewhere in the documents still publishes.
+    both = SheetDraft(
+        free_care_max_fpl=field(400, arnot),
+        discount_tiers=field(
+            [{"min_fpl_exclusive": 0, "max_fpl_inclusive": 250, "discount_percent": 100}],
+            "at or below 250% of the Federal Poverty Guidelines are eligible for free care",
+        ),
+    )
+    sheet, skipped = draft_to_sheet(both, SAMPLE.hospital, [SAMPLE.sources[0]], TODAY)
+    assert sheet.eligibility.free_care_max_fpl.value == Decimal(250)
+    assert any(note.startswith("eligibility.free_care_max_fpl: 400 is quoted") for note in skipped)
+    assert any(
+        note.startswith("eligibility.discount_tiers: only free-care bands") for note in skipped
+    )
