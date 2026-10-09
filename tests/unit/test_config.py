@@ -55,8 +55,21 @@ def test_production_rejects_the_sqlite_default(monkeypatch):
         _env_file=None,
         env="production",
         database_url="postgresql+psycopg://waive:pw@db.example.net:5432/waive",
+        ledger_backend="db",
     )
     assert settings.env == "production"
+
+
+def test_production_rejects_the_file_ledger(monkeypatch):
+    """A container's file ledger vanishes on every cold start, and with it the spend history the
+    caps are counted against; production must keep the ledger in the database."""
+    clear_env(monkeypatch)
+    with pytest.raises(ValidationError, match="WAIVE_LEDGER_BACKEND"):
+        Settings(
+            _env_file=None,
+            env="production",
+            database_url="postgresql+psycopg://waive:pw@db.example.net:5432/waive",
+        )
 
 
 def test_development_defaults_keep_sqlite_and_the_file_ledger(monkeypatch):
