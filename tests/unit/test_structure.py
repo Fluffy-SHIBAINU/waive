@@ -179,6 +179,26 @@ def test_lists_and_objects_where_the_schema_wants_text_are_skipped_not_stringifi
     ]
 
 
+def test_markdown_links_from_extracted_pages_are_unwrapped_in_text_fields():
+    # UMass Memorial (CCN 220163): Tavily returns pages as markdown and the model copied
+    # "[508-334-9300](tel:508-334-9300)" into a submit method, so the sheet showed the markup.
+    draft = SheetDraft(
+        phone=field("[508-334-9300](tel:508-334-9300)", "Telephone: [508-334-9300](tel:...)"),
+        submit_methods=field(
+            [{"kind": "email", "detail": "Email: [help@example.org](mailto:help@example.org)"}],
+            "Email: [help@example.org](mailto:help@example.org)",
+        ),
+        form_url=field("[Apply online](https://example.org/apply.pdf)", "Apply online"),
+        languages=field(["**English**", "[Spanish](https://example.org/es)"], "English, Spanish"),
+    )
+    sheet, skipped = draft_to_sheet(draft, SAMPLE.hospital, [SAMPLE.sources[0]], TODAY)
+    assert skipped == []
+    assert sheet.contacts.phone.value == "508-334-9300"
+    assert sheet.apply.submit_methods.value[0].detail == "Email: help@example.org"
+    assert sheet.apply.form_url.value == "https://example.org/apply.pdf"
+    assert sheet.contacts.languages.value == ["English", "Spanish"]
+
+
 def test_free_care_band_disguised_as_a_100_percent_tier_is_dropped():
     tiers = [
         {"min_fpl_exclusive": 0, "max_fpl_inclusive": 250, "discount_percent": 100},
