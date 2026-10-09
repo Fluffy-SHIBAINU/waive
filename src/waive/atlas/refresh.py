@@ -13,24 +13,16 @@ import logging
 from dataclasses import dataclass, field
 from datetime import date
 from typing import Literal, cast
-from urllib.parse import urlparse
 
 import httpx
 from sqlalchemy.orm import Session
 
 from waive.ai.client import AIClient
 from waive.atlas import repo
-from waive.atlas.fetch import download_text
+from waive.atlas.fetch import download_text, host_allowed_for, is_asset_host
 from waive.atlas.pipeline import BuildResult, build_hospital
 from waive.atlas.schema import SourceDoc, SourceKind
-from waive.atlas.scout import (
-    CLASS_ORDER,
-    DOCUMENT_HOSTS,
-    MAX_CHARS,
-    MIN_CHARS,
-    DocClass,
-    source_id_for,
-)
+from waive.atlas.scout import CLASS_ORDER, MAX_CHARS, MIN_CHARS, DocClass, source_id_for
 from waive.atlas.tavily_gateway import TavilyGateway
 
 log = logging.getLogger(__name__)
@@ -56,31 +48,30 @@ def doc_class_of(source_id: str) -> DocClass:
     return cast(DocClass, prefix) if prefix in CLASS_ORDER else "fap"
 
 
-def is_asset_host(url: str) -> bool:
-    host = urlparse(url).netloc.lower().split(":")[0]
-    return any(host == d or host.endswith("." + d) for d in DOCUMENT_HOSTS)
-
-
 def _hash(text: str) -> str:
     return hashlib.sha256(text.encode("utf-8")).hexdigest()
 
 
-def fetch_texts(gateway: TavilyGateway, urls: list[str], http: httpx.Client) -> dict[str, str]:
+def fetch_texts(
+    gateway: TavilyGateway, urls: list[str], http: httpx.Client, domain: str | None = None
+) -> dict[str, str]:
     """Current text per URL, truncated like the scout's. Asset-host URLs are downloaded directly
     (no credits); the rest go through one Tavily Extract call, and any URL that comes back
-    empty is downloaded as a fallback. URLs that yield nothing are absent from the result."""
+    empty is downloaded as a fallback. Downloads stay on the hospital's `domain` and the asset
+    hosts. URLs that yield nothing are absent from the result."""
     texts: dict[str, str] = {}
+    allowed = host_allowed_for(domain)
     direct = [url for url in urls if is_asset_host(url)]
     pages = [url for url in urls if url not in direct]
     for url in direct:
-        if text := download_text(url, http):
+        if text := download_text(url, http, allowed=allowed):
             texts[url] = text
     if pages:
         for page in gateway.extract(pages, purpose=PURPOSE):
             if len(page.text.strip()) >= MIN_CHARS:
                 texts[page.url] = page.text
         for url in pages:
-            if url not in texts and (text := download_text(url, http)):
+            if url not in texts and (text := download_text(url, http, allowed=allowed)):
                 texts[url] = text
     return {url: text[:MAX_CHARS] for url, text in texts.items()}
 
@@ -104,9 +95,11 @@ def refresh_hospital(
     if not current:
         return RefreshResult(ccn, row.name, "skipped")
     owned = http is None
-    client = http or httpx.Client(follow_redirects=True, timeout=30.0)
+    client = http or httpx.Client(timeout=30.0)
     try:
-        texts = fetch_texts(gateway, [source.url for source, _ in current], client)
+        texts = fetch_texts(
+            gateway, [source.url for source, _ in current], client, domain=row.website_domain
+        )
     finally:
         if owned:
             client.close()

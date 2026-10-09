@@ -129,9 +129,44 @@ def test_empty_extract_falls_back_to_a_direct_download():
     respx.get(POLICY_URL).mock(return_value=pdf_response(sample_pdf()))
     gateway = RefreshGateway({POLICY_URL: ""})
     with httpx.Client() as http:
-        texts = fetch_texts(gateway, [POLICY_URL], http)
+        texts = fetch_texts(gateway, [POLICY_URL], http, domain="example.org")
     assert gateway.extracted == [[POLICY_URL]]
     assert "250% of the Federal Poverty" in texts[POLICY_URL]
+
+
+@respx.mock
+def test_a_document_that_redirects_off_the_allowed_hosts_is_unreachable_not_stored():
+    """A stored asset-host link (a bucket somebody else can claim) is re-fetched on every tick;
+    wherever it redirects, nothing off the hospital's domain or the asset hosts is requested."""
+    engine = make_engine_with_hospital()
+    respx.get(CANTO_URL).mock(
+        return_value=httpx.Response(
+            302, headers={"location": "http://169.254.169.254/latest/report.pdf"}
+        )
+    )
+    leaked = respx.get("http://169.254.169.254/latest/report.pdf").mock(
+        return_value=pdf_response(sample_pdf())
+    )
+    gateway = RefreshGateway({})
+    with session_scope(engine) as session, httpx.Client() as http:
+        stored = SourceDoc(
+            id="fap-" + "c" * 16,
+            kind=SourceKind.HOSPITAL_WEB,
+            url=CANTO_URL,
+            title="FAP",
+            fetched_on=TODAY,
+            sha256="c" * 64,
+        )
+        repo.save_source(session, stored, "old text from a previous download", "229999")
+        result = refresh_hospital(session, gateway, FakeAI(), "229999", LATER, http)
+        assert (result.outcome, result.unreachable, result.changed) == (
+            "unchanged",
+            [stored.id],
+            [],
+        )
+        assert not leaked.called
+        [(source, text)] = repo.sources_for(session, "229999")
+        assert source.id == stored.id and text == "old text from a previous download"
 
 
 @respx.mock
