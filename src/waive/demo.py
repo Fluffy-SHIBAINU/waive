@@ -66,7 +66,19 @@ def seed_demo(session: Session) -> None:
     publish_sheet(session, sheet)
 
 
+def forget_scout_requests(session: Session) -> int:
+    """Scout requests are raised by bills: a model's reading of a personal document (hospital name
+    as printed, web domain), with no CCN. They are personal data and go with the cases."""
+    return session.execute(
+        delete(ReviewItemRow).where(
+            ReviewItemRow.kind == "scout_request", ReviewItemRow.ccn.is_(None)
+        )
+    ).rowcount
+
+
 def forget_cases(session: Session) -> int:
+    """Delete every case (all personal data); returns the number of cases."""
+    forget_scout_requests(session)
     return session.execute(delete(CaseRow)).rowcount
 
 
@@ -110,8 +122,11 @@ def reset_demo(
     versions are removed and St. Example is re-seeded at version 1, and the demo images are
     rewritten. Real hospitals' sheets, documents and review items are untouched."""
     demo = list(repo.DEMO_CCNS)
+    requests = forget_scout_requests(session)
     cases = forget_cases(session)
-    items = session.execute(delete(ReviewItemRow).where(ReviewItemRow.ccn.in_(demo))).rowcount
+    items = requests + (
+        session.execute(delete(ReviewItemRow).where(ReviewItemRow.ccn.in_(demo))).rowcount
+    )
     contributions = session.execute(
         delete(ContributionRow).where(ContributionRow.ccn.in_(demo))
     ).rowcount

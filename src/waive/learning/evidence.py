@@ -231,4 +231,15 @@ def audit_evidence(session: Session) -> list[str]:
             problems.append(f"contribution {row.id}: rejected but its text was kept")
         elif row.text and personal_info_hits(row.text):
             problems.append(f"contribution {row.id}: text matches a personal-information pattern")
+    # Scout requests hold a model's reading of a bill: tied to the case by hash (so one-tap delete
+    # reaches them), a bare domain rather than a printed URL, and no personal-looking text.
+    requests = select(ReviewItemRow).where(ReviewItemRow.kind == "scout_request")
+    for row in session.scalars(requests.order_by(ReviewItemRow.id)):
+        detail = row.detail or {}
+        if not detail.get("cases"):
+            problems.append(f"scout request {row.id}: no case hash, so no case deletion reaches it")
+        if any(mark in str(detail.get("fap_url") or "") for mark in "/?#"):
+            problems.append(f"scout request {row.id}: fap_url keeps a path or query")
+        if personal_info_hits(str(detail.get("hospital_name") or "")):
+            problems.append(f"scout request {row.id}: name matches a personal-information pattern")
     return problems

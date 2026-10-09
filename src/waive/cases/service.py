@@ -6,6 +6,7 @@ from datetime import date, timedelta
 from decimal import Decimal
 from typing import Any
 
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from waive.ai.client import AIClient
@@ -13,9 +14,10 @@ from waive.atlas import repo
 from waive.atlas.schema import DocType
 from waive.cases.extract import BillExtract, extract_bill, extract_income
 from waive.cases.images import prepare_image
-from waive.cases.match import MatchCandidate, is_confident, match_hospital
+from waive.cases.match import MatchCandidate, fap_domain, is_confident, match_hospital
 from waive.cases.vault import FieldCipher, Scope, TokenSigner
-from waive.db import CaseRow
+from waive.db import CaseRow, ReviewItemRow
+from waive.learning.hashing import case_hash
 from waive.rules.deadlines import Deadlines, deadlines_for
 from waive.rules.eligibility import EligibilityResult, Household, Tier, evaluate_eligibility
 from waive.rules.explain import caregiver_summary, senior_message
@@ -124,6 +126,42 @@ def authorize(ctx: CaseContext, token: str, required: Scope) -> CaseRow:
     if required == "caregiver" and claims.scope != "caregiver":
         raise PermissionError("this link cannot approve or delete")
     return row
+
+
+def request_scouting(session: Session, row: CaseRow, extract: BillExtract) -> ReviewItemRow | None:
+    """Ask the scouts for a hospital the registry did not match. The request keeps only what the
+    scheduler's matcher reads (the name as printed, the FAP site's bare domain, the state) plus the
+    case's one-way hash, so it is deleted with the case (spec §11) and never holds an account URL.
+    Nothing is filed when the bill named no hospital and no web address: nothing could match."""
+    if not extract.hospital_name and not extract.fap_url:
+        return None
+    detail = {
+        "hospital_name": extract.hospital_name,
+        "fap_url": fap_domain(extract.fap_url) or None,
+        "state": row.state,
+        "cases": [case_hash(row.id)],
+        "count": 1,
+    }
+    return repo.add_review_item(session, None, "scout_request", detail)
+
+
+def withdraw_scouting(session: Session, case_id: str) -> int:
+    """Take the case out of every scout request it raised, whatever the item's status, and drop
+    requests left with no case. Returns the number of requests touched."""
+    digest = case_hash(case_id)
+    touched = 0
+    for item in session.scalars(select(ReviewItemRow).where(ReviewItemRow.kind == "scout_request")):
+        cases = list((item.detail or {}).get("cases", []))
+        if digest not in cases:
+            continue
+        cases.remove(digest)
+        touched += 1
+        if cases:
+            item.detail = {**item.detail, "cases": cases, "count": len(cases)}
+        else:
+            session.delete(item)
+    session.flush()
+    return touched
 
 
 def _fpl_band(percent: Decimal | None) -> str | None:
@@ -240,16 +278,7 @@ def submit_bill(
     else:
         row.ccn = None
         sealed["needs_scouting"] = True
-        repo.add_review_item(
-            ctx.session,
-            None,
-            "scout_request",
-            {
-                "hospital_name": extract.hospital_name,
-                "fap_url": extract.fap_url,
-                "state": row.state,
-            },
-        )
+        request_scouting(ctx.session, row, extract)
     row.status = "bill_read"
     _save(ctx, row, sealed)
     return _evaluate(ctx, row, sealed)
@@ -276,6 +305,7 @@ def confirm_bill(
             raise KeyError(ccn)  # only registry hospitals: a case never points at a made-up CCN
         row.ccn = ccn
         sealed["needs_scouting"] = False
+        withdraw_scouting(ctx.session, row.id)  # the caregiver supplied the hospital
     row.status = "confirmed"
     _save(ctx, row, sealed)
     return _evaluate(ctx, row, sealed)
@@ -335,7 +365,10 @@ def approve(ctx: CaseContext, case_id: str) -> CaseView:
 
 
 def delete_case(ctx: CaseContext, case_id: str) -> None:
+    """One-tap delete: the case and every personal field derived from it, the scout request its
+    bill raised included (README privacy notes)."""
     row = _row(ctx, case_id)
+    withdraw_scouting(ctx.session, row.id)
     ctx.session.delete(row)
     ctx.session.flush()
 

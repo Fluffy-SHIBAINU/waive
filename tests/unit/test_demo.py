@@ -51,8 +51,15 @@ def test_seed_and_forget():
         seed_demo(session)
         assert repo.latest_sheet(session, "229999")[0].version == 1
         session.add(CaseRow(id="x", state="MA", status="new", token_generation=1))
+        # A bill's scout request holds the model's reading of a personal document (no CCN):
+        # "all personal data" includes it. Real hospitals' review items stay.
+        repo.add_review_item(
+            session, None, "scout_request", {"hospital_name": "Rosa A. Clinic", "cases": ["h"]}
+        )
+        repo.add_review_item(session, "220031", "rescout_request", {"cases": ["h"], "count": 1})
     with session_scope(engine) as session:
         assert forget_cases(session) == 1
+        assert [item.kind for item in repo.open_review_items(session)] == ["rescout_request"]
 
 
 def test_demo_bill_is_rosa_and_matches_the_demo_hospital_confidently():
@@ -113,6 +120,7 @@ def test_reset_demo_clears_cases_and_demo_rows_but_keeps_real_hospitals(tmp_path
         )
         repo.add_review_item(session, "229999", "rescout_request", {"count": 1})
         repo.add_review_item(session, REAL_HOSPITAL["ccn"], "rescout_request", {"count": 1})
+        repo.add_review_item(session, None, "scout_request", {"hospital_name": "X", "cases": []})
         session.add(
             ContributionRow(
                 ccn="229999",
@@ -153,7 +161,7 @@ def test_reset_demo_clears_cases_and_demo_rows_but_keeps_real_hospitals(tmp_path
         repo.save_source(session, real, "policy text", REAL_HOSPITAL["ccn"])
     with session_scope(engine) as session:
         report = reset_demo(session, tmp_path / "demo")
-        assert (report.cases_deleted, report.review_items_deleted) == (1, 1)
+        assert (report.cases_deleted, report.review_items_deleted) == (1, 2)  # + scout request
         assert (report.contributions_deleted, report.evidence_deleted) == (1, 1)
         assert (report.sources_unlinked, report.documents_deleted) == (2, 1)
         assert repo.sources_for(session, "229999") == []
