@@ -1,0 +1,149 @@
+{
+  "items": [
+    {
+      "metadata": {
+        "id": "computeplatform-e00fixture01",
+        "parent_id": "project-e04public-images",
+        "name": "gpu-b300-sxm",
+        "resource_version": "6",
+        "created_at": "2026-04-17T11:55:38.098319Z"
+      },
+      "spec": {
+        "presets": [
+          {
+            "name": "1gpu-24vcpu-346gb",
+            "resources": {
+              "vcpu_count": 24,
+              "memory_gibibytes": 346,
+              "gpu_count": 1
+            }
+          },
+          {
+            "name": "8gpu-192vcpu-2768gb",
+            "resources": {
+              "vcpu_count": 192,
+              "memory_gibibytes": 2768,
+              "gpu_count": 8
+            },
+            "allow_gpu_clustering": true
+          }
+        ],
+        "gpu_count_quota_type": "compute.instance.gpu.b300",
+        "human_readable_name": "NVIDIA\u00ae B300 NVLink with Intel Granite Rapids",
+        "short_human_readable_name": "NVIDIA\u00ae B300 NVLink",
+        "gpu_memory_gigabytes": 270
+      },
+      "status": {
+        "allowed_for_preemptibles": true
+      }
+    },
+    {
+      "metadata": {
+        "id": "computeplatform-e00fixture02",
+        "parent_id": "project-e04public-images",
+        "name": "cpu-d3",
+        "resource_version": "20",
+        "created_at": "2026-04-08T10:48:27.369330Z"
+      },
+      "spec": {
+        "presets": [
+          {
+            "name": "2vcpu-8gb",
+            "resources": {
+              "vcpu_count": 2,
+              "memory_gibibytes": 8
+            }
+          },
+          {
+            "name": "4vcpu-16gb",
+            "resources": {
+              "vcpu_count": 4,
+              "memory_gibibytes": 16
+            }
+          },
+          {
+            "name": "8vcpu-32gb",
+            "resources": {
+              "vcpu_count": 8,
+              "memory_gibibytes": 32
+            }
+          },
+          {
+            "name": "16vcpu-64gb",
+            "resources": {
+              "vcpu_count": 16,
+              "memory_gibibytes": 64
+            }
+          },
+          {
+            "name": "32vcpu-128gb",
+            "resources": {
+              "vcpu_count": 32,
+              "memory_gibibytes": 128
+            }
+          },
+          {
+            "name": "48vcpu-192gb",
+            "resources": {
+              "vcpu_count": 48,
+              "memory_gibibytes": 192
+            }
+          },
+          {
+            "name": "64vcpu-256gb",
+            "resources": {
+              "vcpu_count": 64,
+              "memory_gibibytes": 256
+            }
+          },
+          {
+            "name": "96vcpu-384gb",
+            "resources": {
+              "vcpu_count": 96,
+              "memory_gibibytes": 384
+            }
+          },
+          {
+            "name": "128vcpu-512gb",
+            "resources": {
+              "vcpu_count": 128,
+              "memory_gibibytes": 512
+            }
+          },
+          {
+            "name": "160vcpu-640gb",
+            "resources": {
+              "vcpu_count": 160,
+              "memory_gibibytes": 640
+            }
+          },
+          {
+            "name": "192vcpu-768gb",
+            "resources": {
+              "vcpu_count": 192,
+              "memory_gibibytes": 768
+            }
+          },
+          {
+            "name": "224vcpu-896gb",
+            "resources": {
+              "vcpu_count": 224,
+              "memory_gibibytes": 896
+            }
+          },
+          {
+            "name": "256vcpu-1024gb",
+            "resources": {
+              "vcpu_count": 256,
+              "memory_gibibytes": 1024
+            }
+          }
+        ],
+        "human_readable_name": "Non-GPU AMD Epyc Genoa",
+        "allow_preset_change": true,
+        "short_human_readable_name": "Non-GPU AMD Epyc Genoa"
+      },
+      "status": {}
+    }
+  ]
+}

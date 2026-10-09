@@ -1,0 +1,48 @@
+  NAME
+      nebius msp postgresql v1alpha1 cluster
+        A set of methods for managing PostgreSQL Cluster resources.
+  COMMANDS
+      create
+        Creates a PostgreSQL cluster in the specified folder.
+      delete
+        Deletes the specified PostgreSQL cluster.
+      edit
+        Edit resource via external text editor. Uses get command to receive the current state.
+      edit-by-name
+        Edit resource via external text editor. Uses get-by-name command to receive the current state.
+      get
+        Returns the specified PostgreSQL Cluster resource.
+        To get the list of available PostgreSQL Cluster resources, make a [List] request.
+      get-by-name
+        Returns the specified PostgreSQL Cluster resource by name.
+      get-for-backup
+        Returns the specified PostgreSQL Cluster resource for backup.
+        It should be used as a hint of cluster configuration in case of backup restoration.
+      list
+        Retrieves the list of PostgreSQL Cluster resources that belong
+        to the specified folder.
+      operation
+        Manage operations for Cluster service.
+      restore
+        Creates a new PostgreSQL cluster from a previously created backup.
+      start
+        Wakes up suspended PostgreSQL cluster.
+      stop
+        Suspends the PostgreSQL cluster to save resources.
+      update
+        Updates the PostgreSQL cluster.
+  GLOBAL OPTIONS
+      -h, --help (bool)
+         Show this message.
+      -p, --profile (string)
+         Set a profile for interacting with the cloud.
+      --format (string)
+         Output format. Supported values: yaml|json|jsonpath|table|text.
+      -f, --file (string)
+         Input file. For 'update' commands automatically set --full=true.
+      -c, --config (string)
+         Provide path to config file.
+      --debug (bool)
+         Enable debug logs.
+      -I, --impersonate-service-account-id (string)
+         Impersonate into the service account and use its token for a command.
