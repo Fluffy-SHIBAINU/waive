@@ -152,7 +152,16 @@ def build_hospital(
         sources_with_text = [(s, doc.text) for s, doc in zip(sources, docs, strict=True)]
     texts = {source.id: text for source, text in sources_with_text}
 
-    sheet, skipped = structure_sheet(ai, "reason", hospital, sources_with_text, today)
+    try:
+        sheet, skipped = structure_sheet(ai, "reason", hospital, sources_with_text, today)
+    except AIOutputError as error:
+        # No usable primary draft, even from the smaller prompt structure_sheet falls back to
+        # (task 7.8): the documents stay stored, the reason goes to review, and the batch sees
+        # an ordinary failed outcome rather than an exception that would roll the scout back.
+        repo.add_review_item(session, ccn, "structure_failed", {"error": str(error)[:300]})
+        result.outcome = "failed"
+        result.notes.append(f"structurer gave no usable sheet: {error}"[:300])
+        return result
     sheet = trim_quotes(sheet, texts)
     report = verify_sheet(sheet, texts)
     if skipped or report.rejected:

@@ -49,6 +49,13 @@ class AIOutputError(RuntimeError):
     """Raised when model output cannot be parsed into the requested schema."""
 
 
+class AIRequestRejected(AIOutputError):
+    """Token Factory refused the request itself (HTTP 400), most often a prompt beyond the
+    model's context window, so the same call would fail again: callers shrink the prompt or give
+    up, they do not wait. The server's message is kept only for calls without personal data; a
+    400 on a bill photo names the model and the status alone."""
+
+
 class AIUnavailable(RuntimeError):
     """Token Factory could not be reached or answered with an error. Carries only the model and
     the error class or status, never the request or response text."""
@@ -93,6 +100,22 @@ def extract_json(text: str) -> str:
     if start == -1 or end < start:
         raise AIOutputError("no JSON object in model output")
     return cleaned[start : end + 1]
+
+
+MAX_SERVER_MESSAGE_CHARS = 300
+
+
+def server_message(error: openai.APIStatusError) -> str:
+    """The server's own explanation of a refusal, from the OpenAI body shape
+    ({"error": {"message": ...}}) or the vLLM one ({"message": ...}) that Token Factory
+    returns; empty when the body is not JSON or says nothing."""
+    body = error.body if isinstance(error.body, dict) else {}
+    nested = body.get("error")
+    if isinstance(nested, dict):
+        nested = nested.get("message")
+    message = nested if isinstance(nested, str) else None
+    message = message or body.get("message") or body.get("detail") or ""
+    return " ".join(str(message).split())[:MAX_SERVER_MESSAGE_CHARS]
 
 
 class AIClient:
@@ -159,6 +182,13 @@ class AIClient:
                     **options,
                     **request_options(model),
                 )
+            except openai.BadRequestError as error:
+                # The request itself was refused (a prompt beyond the context window, say): a
+                # repair round or a later retry would fail the same way. The server's words are
+                # passed on only when no personal data was sent, as they can echo the request.
+                reason = "" if phi else server_message(error)
+                detail = f"HTTP 400 ({reason})" if reason else "HTTP 400"
+                raise AIRequestRejected(f"{model}: {detail}") from None
             except (openai.APIError, httpx.HTTPError) as error:
                 status = getattr(error, "status_code", None)
                 detail = f"HTTP {status}" if status else type(error).__name__

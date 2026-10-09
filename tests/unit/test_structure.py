@@ -1,10 +1,18 @@
 from datetime import date
 from decimal import Decimal
 
+import pytest
+
+from waive.ai.client import AIRequestRejected
 from waive.atlas.samples import SAMPLE_POLICY_TEXT, SAMPLE_SOURCE_ID, st_example_sheet
 from waive.atlas.schema import DocType, SheetStatus
 from waive.atlas.structure import (
     MAX_DOC_CHARS,
+    PASSAGE_HEAD_CHARS,
+    PASSAGE_SEPARATOR,
+    RETRY_DOC_CHARS,
+    RETRY_HEAD_CHARS,
+    RETRY_MAX_SOURCES,
     SYSTEM_PROMPT,
     DraftField,
     SheetDraft,
@@ -92,6 +100,21 @@ def test_long_documents_keep_their_distant_fpl_table_in_the_prompt():
     prompt = build_messages(SAMPLE.hospital, [(SAMPLE.sources[0], text)])[1]["content"]
     assert FPL_TABLE in prompt
     assert select_passages("short policy text") == "short policy text"
+
+
+def test_a_smaller_passage_budget_shrinks_the_head_and_the_windows():
+    head = (FILLER * 1_000)[:70_000]
+    text = (head + FPL_TABLE + FILLER * 500)[:100_000]
+    smaller = select_passages(text, limit=RETRY_DOC_CHARS, head=RETRY_HEAD_CHARS)
+    assert RETRY_DOC_CHARS == MAX_DOC_CHARS // 2 and RETRY_HEAD_CHARS == PASSAGE_HEAD_CHARS // 2
+    assert len(smaller) <= RETRY_DOC_CHARS
+    assert smaller.startswith(text[:RETRY_HEAD_CHARS] + PASSAGE_SEPARATOR)
+    assert FPL_TABLE in smaller
+    assert len(smaller) < len(select_passages(text, limit=MAX_DOC_CHARS))
+    prompt = build_messages(
+        SAMPLE.hospital, [(SAMPLE.sources[0], text)], limit=RETRY_DOC_CHARS, head=RETRY_HEAD_CHARS
+    )[1]["content"]
+    assert smaller in prompt and text[: RETRY_HEAD_CHARS + 1] not in prompt
 
 
 def test_passage_selection_prefers_income_rules_over_frequent_boilerplate():
@@ -396,3 +419,70 @@ def test_structure_sheet_uses_reason_model_without_phi():
     assert ai.calls[0][3] is SheetDraft
     assert sheet.eligibility.free_care_max_fpl.value == Decimal("250")
     assert len(skipped) == 1
+
+
+REJECTED = AIRequestRejected(
+    "nvidia/nemotron-3-super-120b-a12b: HTTP 400 (This model's maximum context length is "
+    "131072 tokens. However, you requested 150000 tokens.)"
+)
+
+
+class RejectingAI(FakeAI):
+    """Token Factory refuses the first `failures` requests, as it does for a prompt beyond the
+    model's context window; the prompts it saw are kept for inspection."""
+
+    def __init__(self, draft, failures=1):
+        super().__init__(draft)
+        self.failures = failures
+        self.prompts: list[str] = []
+
+    def complete_json(self, role, messages, schema, *, phi, purpose, max_tokens=2000):
+        self.prompts.append(messages[1]["content"])
+        if len(self.prompts) <= self.failures:
+            raise REJECTED
+        return super().complete_json(role, messages, schema, phi=phi, purpose=purpose)
+
+
+# A long policy whose income rules sit far from the head, so the passage budget matters.
+LONG_TEXT = (SAMPLE_POLICY_TEXT + "\n" + (FILLER + "A discount may apply. ") * 2_000)[:50_000]
+
+
+def test_a_rejected_request_is_retried_once_with_a_smaller_passage_budget():
+    ai = RejectingAI(DRAFT)
+    sheet, skipped = structure_sheet(
+        ai, "reason", SAMPLE.hospital, [(SAMPLE.sources[0], LONG_TEXT)], TODAY
+    )
+    assert len(ai.prompts) == 2
+    full = select_passages(LONG_TEXT, limit=MAX_DOC_CHARS)
+    small = select_passages(LONG_TEXT, limit=RETRY_DOC_CHARS, head=RETRY_HEAD_CHARS)
+    assert full in ai.prompts[0] and small in ai.prompts[1]
+    assert len(small) < len(full) and len(ai.prompts[1]) < len(ai.prompts[0])
+    assert sheet.eligibility.free_care_max_fpl.value == Decimal("250")
+    # The operator learns the sheet came from a trimmed prompt, and why.
+    assert skipped[0].startswith("structurer: retried with a smaller passage budget")
+    assert "131072" in skipped[0]
+    assert skipped[1:] == ["contacts.hours: unknown source_id not-a-real-source"]
+
+
+def test_the_retry_shows_the_model_the_leading_sources_only():
+    # Scouting lists the policy, application, summary and billing documents first (CLASS_ORDER),
+    # so the leading four are the ones worth keeping when the whole set does not fit.
+    sources = [(SAMPLE.sources[0], SAMPLE_POLICY_TEXT)] + [
+        (SAMPLE.sources[0].model_copy(update={"id": f"extra-{i}"}), SAMPLE_POLICY_TEXT)
+        for i in range(5)
+    ]
+    ai = RejectingAI(DRAFT)
+    sheet, _ = structure_sheet(ai, "reason", SAMPLE.hospital, sources, TODAY)
+    assert ai.prompts[0].count("=== SOURCE id=") == 6
+    assert ai.prompts[1].count("=== SOURCE id=") == RETRY_MAX_SOURCES == 4
+    assert "extra-4" not in ai.prompts[1] and "extra-3" not in ai.prompts[1]
+    assert f"id={SAMPLE_SOURCE_ID}" in ai.prompts[1]
+    # Every stored document stays on the sheet; the trim is only what the model was shown.
+    assert [s.id for s in sheet.sources] == [SAMPLE_SOURCE_ID, *(f"extra-{i}" for i in range(5))]
+
+
+def test_a_second_rejection_propagates_to_the_caller():
+    ai = RejectingAI(DRAFT, failures=2)
+    with pytest.raises(AIRequestRejected, match="131072"):
+        structure_sheet(ai, "reason", SAMPLE.hospital, SOURCES, TODAY)
+    assert len(ai.prompts) == 2  # once in full, once smaller, never a third time
