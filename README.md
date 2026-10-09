@@ -240,6 +240,8 @@ uv run ruff format . && uv run ruff check . && uv run pytest
 
 Unit tests for the rules (including a Hypothesis property test of the poverty-guideline arithmetic), schema and quote verification, contract tests for Token Factory and Tavily against recorded responses (`respx`), a synthetic bill corpus with a per-field accuracy report, a simulation of the whole learning loop, and web tests through FastAPI's test client. `pytest-socket` makes any test that opens a network socket fail. Live tests are marked `live` and excluded by default.
 
+The same checks run in GitHub Actions (`.github/workflows/ci.yml`) on every push and pull request, with no secrets and no network; Dependabot (`.github/dependabot.yml`) opens weekly update pull requests for `uv.lock` and the workflow's actions. To report a vulnerability, see `SECURITY.md`.
+
 ## Project layout
 
 ```
@@ -258,11 +260,14 @@ data/atlas/    open-data exports (CC BY 4.0) · data/seed/  dated CMS snapshots
 docs/          design spec, phase plans, reports; docs/devpost/  submission text, demo script, checklist, gallery
 var/           not committed: SQLite database, usage ledger, var/demo/ (bill.jpg, bill.json, letter.jpg), var/corpus/
 tests/unit/    everything runs offline
+.github/       CI workflow (ruff + pytest on every push and pull request) and Dependabot
+.claude/skills/ nebius-starter skill vendored from antongisli/nebius-starter-skill (MIT; THIRD_PARTY_NOTICES.md)
 ```
 
 ## Licenses
 
 - **Code:** Apache License 2.0 (SPDX `Apache-2.0`, as declared in `pyproject.toml`) — see `LICENSE`. Copyright 2026 [USER FILLS: copyright holder].
+- **Vendored skill:** `.claude/skills/nebius-starter` comes from [antongisli/nebius-starter-skill](https://github.com/antongisli/nebius-starter-skill) under the MIT License — see `THIRD_PARTY_NOTICES.md` for the full text and attribution.
 - **Atlas data** (`data/atlas/*.json`, `/atlas/{ccn}.json`, the reports under `docs/reports/`): Creative Commons Attribution 4.0 International (CC BY 4.0) — see `data/atlas/LICENSE.md`. Suggested attribution: "Waive atlas, CC BY 4.0, https://github.com/Fluffy-SHIBAINU/waive". The quoted policy text belongs to the hospitals that published it and is reproduced as short citations with source links.
 - Hospital registry rows come from the CMS Hospital General Information dataset (public domain); poverty guidelines from HHS/ASPE (2026); the Massachusetts Health Safety Net entry from mass.gov.
 

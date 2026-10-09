@@ -69,8 +69,10 @@ def doctor(
 @app.command()
 def keygen() -> None:
     """Print fresh secrets for .env (never commit them)."""
-    console.print(f"WAIVE_VAULT_KEY={new_key()}")
-    console.print(f"WAIVE_TOKEN_SECRET={new_key()}{new_key()}")
+    # Plain echo, not the Rich console: Rich wraps at 80 columns when stdout is not a terminal,
+    # which split the 107-character WAIVE_TOKEN_SECRET line in `waive keygen >> .env`.
+    typer.echo(f"WAIVE_VAULT_KEY={new_key()}")
+    typer.echo(f"WAIVE_TOKEN_SECRET={new_key()}{new_key()}")
 
 
 atlas_app = typer.Typer(no_args_is_help=True, help="Build and inspect the hospital atlas.")

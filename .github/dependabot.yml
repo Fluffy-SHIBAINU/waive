@@ -1,0 +1,21 @@
+version: 2
+# Weekly update pull requests for the Python lock file and for the actions used by ci.yml.
+# "uv" is Dependabot's ecosystem for pyproject.toml + uv.lock projects; updates are grouped so a
+# week's bumps arrive as one pull request per ecosystem rather than one per package.
+updates:
+  - package-ecosystem: "uv"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    groups:
+      python-dependencies:
+        patterns:
+          - "*"
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    groups:
+      github-actions:
+        patterns:
+          - "*"

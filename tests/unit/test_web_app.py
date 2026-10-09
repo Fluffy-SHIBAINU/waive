@@ -115,6 +115,16 @@ def test_token_pages_are_never_cached_indexed_or_leaked_as_referrer():
     assert gone.headers["clear-site-data"] == '"cache"'
 
 
+def test_openapi_schema_and_docs_are_not_served():
+    """`docs_url`/`redoc_url` were already off; `openapi_url` left at its default published the
+    whole route map, every `/admin/*` path included (security audit finding secrets-config-8)."""
+    client, _ = make_client()
+    assert client.app.openapi_url is None
+    for path in ("/openapi.json", "/docs", "/redoc"):
+        assert client.get(path).status_code == 404, path
+    assert client.get("/healthz").status_code == 200
+
+
 def test_multipart_uploads_never_spool_to_disk(monkeypatch):
     rollovers = []
     monkeypatch.setattr(
