@@ -96,6 +96,41 @@ def test_admin_pages_need_the_token(tmp_path):
     assert off.post("/admin/login", data={"token": "anything"}).status_code == 403
 
 
+def test_admin_cookie_is_a_session_id_not_the_secret(tmp_path):
+    """Cookie disclosure (a synced profile, a HAR file) must not hand over WAIVE_ADMIN_TOKEN,
+    which can only be rotated by redeploying; a session id can simply be signed out."""
+    client = admin_client(tmp_path)
+    signed_in = client.post("/admin/login", data={"token": TOKEN}, follow_redirects=False)
+    assert signed_in.status_code == 303
+    cookie = signed_in.headers["set-cookie"]
+    assert TOKEN not in cookie and "HttpOnly" in cookie and "samesite=strict" in cookie.lower()
+    assert "secure" not in cookie.lower()  # plain http on the laptop demo
+    session_id = client.cookies["waive_admin"]
+    assert session_id != TOKEN and len(session_id) >= 32
+    assert client.get("/admin").status_code == 200
+    # The cookie value is not a credential: it does not sign anyone else in.
+    assert client.post("/admin/login", data={"token": session_id}).status_code == 403
+    over_https = TestClient(client.app, base_url="https://testserver")
+    secure = over_https.post("/admin/login", data={"token": TOKEN}, follow_redirects=False)
+    assert "secure" in secure.headers["set-cookie"].lower()
+    assert over_https.get("/admin").status_code == 200
+
+
+def test_admin_can_sign_out_and_errors_speak_to_the_admin(tmp_path):
+    client = admin_client(tmp_path)
+    locked_out = client.get("/admin")
+    assert locked_out.status_code == 403
+    assert "Admin sign-in" in locked_out.text and "helper" not in locked_out.text.lower()
+    wrong = client.post("/admin/login", data={"token": "wrong"})
+    assert wrong.status_code == 403 and "not right" in wrong.text and "Admin sign-in" in wrong.text
+    home = login(client)
+    assert "Sign out" in home.text
+    out = client.post("/admin/logout", follow_redirects=False)
+    assert out.status_code == 303 and out.headers["location"] == "/admin/login"
+    assert client.get("/admin").status_code == 403
+    assert client.get("/admin/review").status_code == 403
+
+
 def test_repeated_wrong_tokens_lock_the_sign_in_for_a_while(tmp_path):
     client = admin_client(tmp_path)
     assert client.app.state.settings.admin_login_failures == 10

@@ -1,6 +1,8 @@
 """Admin console: review queue, contributions, sheet versions, scoreboard, budget (spec §10, §16)."""
 
 import hmac
+import secrets
+import time
 from urllib.parse import quote
 
 from fastapi import APIRouter, Form, Request
@@ -25,24 +27,45 @@ COOKIE = "waive_admin"
 MIN_TOKEN_CHARS = 16
 LOGIN_FAILURES = "admin_login_failures"
 LOGIN_WINDOW_SECONDS = 15 * 60
+SESSION_SECONDS = 12 * 3600
+# Signed-in sessions live in process memory (one replica): a restart signs everyone out.
+MAX_SESSIONS = 50
+
+
+class AdminRequired(Exception):
+    """No valid admin session, or a wrong token: the app renders the sign-in page with the
+    message (status 403), never the senior's "ask your helper" page."""
 
 
 def _expected(request: Request) -> str:
     token = request.app.state.settings.admin_token
     if token is None or len(token.get_secret_value()) < MIN_TOKEN_CHARS:
-        raise PermissionError("the admin console is switched off (WAIVE_ADMIN_TOKEN unset)")
+        raise AdminRequired("The admin console is switched off (WAIVE_ADMIN_TOKEN is not set).")
     return token.get_secret_value()
 
 
+def _sessions(request: Request) -> dict[str, float]:
+    return request.app.state.admin_sessions
+
+
 def require_admin(request: Request) -> None:
+    sessions = _sessions(request)
     given = request.cookies.get(COOKIE, "")
-    if not hmac.compare_digest(given.encode("utf-8"), _expected(request).encode("utf-8")):
-        raise PermissionError("admin sign-in required")
+    expires = sessions.get(given)
+    if expires is None or expires < time.time():
+        sessions.pop(given, None)
+        raise AdminRequired("Sign in to use the console.")
 
 
 @router.get("/login", response_class=HTMLResponse)
 def admin_login_form(request: Request) -> HTMLResponse:
     return render(request, "admin_login.html")
+
+
+def _secure(request: Request) -> bool:
+    """Behind the managed HTTPS front end the scheme arrives via X-Forwarded-Proto; the laptop
+    demo runs on plain http and must keep working."""
+    return request.url.scheme == "https" or request.app.state.settings.env == "production"
 
 
 @router.post("/login")
@@ -55,10 +78,34 @@ def admin_login(request: Request, token: str = Form(...)):
         raise TooManyRequests("sign-in attempts")
     if not hmac.compare_digest(token.encode("utf-8"), _expected(request).encode("utf-8")):
         limiter.hit(LOGIN_FAILURES, allowed, LOGIN_WINDOW_SECONDS)
-        raise PermissionError("wrong admin token")
+        raise AdminRequired("That token is not right.")
     limiter.reset(LOGIN_FAILURES)
+    # The cookie is a random session id, never the secret: disclosure costs one sign-out.
+    sessions = _sessions(request)
+    now = time.time()
+    for stale in [sid for sid, expires in sessions.items() if expires < now]:
+        del sessions[stale]
+    while len(sessions) >= MAX_SESSIONS:
+        del sessions[next(iter(sessions))]
+    session_id = secrets.token_urlsafe(32)
+    sessions[session_id] = now + SESSION_SECONDS
     response = RedirectResponse("/admin", status_code=303)
-    response.set_cookie(COOKIE, token, httponly=True, samesite="strict", max_age=12 * 3600)
+    response.set_cookie(
+        COOKIE,
+        session_id,
+        httponly=True,
+        samesite="strict",
+        secure=_secure(request),
+        max_age=SESSION_SECONDS,
+    )
+    return response
+
+
+@router.post("/logout")
+def admin_logout(request: Request):
+    _sessions(request).pop(request.cookies.get(COOKIE, ""), None)
+    response = RedirectResponse("/admin/login", status_code=303)
+    response.delete_cookie(COOKIE, httponly=True, samesite="strict", secure=_secure(request))
     return response
 
 

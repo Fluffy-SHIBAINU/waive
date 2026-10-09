@@ -15,4 +15,5 @@
 <h2>Evidence audit</h2>
 {% if audit %}{% for problem in audit %}<p class="card status-unknown">{{ problem }}</p>{% endfor %}
 {% else %}<p class="card status-free">No personal data found in the evidence tables.</p>{% endif %}
+<form method="post" action="/admin/logout" class="stack"><button type="submit" class="btn quiet">Sign out</button></form>
 {% endblock %}
