@@ -8,7 +8,7 @@ Held sheets: 28; without a sheet: 2610
 Median sheet age: 0 days
 Core fields documented (published sheets): 66%
 Prediction accuracy: — over 0 outcomes
-Open review items: 202
+Open review items: 203
 
 | State | Hospitals | Published | Held | None | Coverage |
 |---|---|---|---|---|---|

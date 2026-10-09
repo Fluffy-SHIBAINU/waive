@@ -1,12 +1,16 @@
+from datetime import date
 from decimal import Decimal
 
 from waive.atlas.samples import SAMPLE_POLICY_TEXT, SAMPLE_SOURCE_ID, st_example_sheet
-from waive.atlas.schema import DiscountTier
+from waive.atlas.schema import Cited, DiscountTier
 from waive.atlas.verify import (
+    AGB_CAP_REASON,
     PATIENT_SHARE_REASON,
     looks_serialised,
+    matched_span,
     normalize,
     quote_found,
+    quotes_only_the_agb_cap,
     quotes_patient_share,
     value_in_quote,
     verify_sheet,
@@ -151,3 +155,59 @@ def test_markdown_links_and_bold_do_not_break_quotes():
 
 def test_normalize_collapses_whitespace_and_case():
     assert normalize("  Free CARE \n here ") == "free care here"
+
+
+def test_a_quote_must_start_at_a_word_boundary():
+    # UMass Memorial (220163): "Phone: [508-334-9300](tel:...)" verified against a page that says
+    # "Telephone:" because the normalized quote is a mid-word substring of the normalized page.
+    document = (
+        "UMass Memorial Health patient financial counseling contact information:\n\n"
+        "* Telephone:\xa0[508-334-9300](tel:508-334-9300)\n* Email: needinsurance@example.org"
+    )
+    assert quote_found("Telephone: 508-334-9300", document)
+    assert not quote_found("Phone: [508-334-9300](tel:508-334-9300)", document)
+    # The hyphen- and space-insensitive fallback applies the same rule.
+    assert quote_found("telephone: 508 334 9300", document)
+    assert not quote_found("phone: 508 334 9300", document)
+    # trim_quotes then falls back to the span the page really has.
+    assert matched_span("Phone: [508-334-9300](tel:508-334-9300)", document) == (
+        "[508-334-9300](tel:508-334-9300)"
+    )
+
+
+AGB_SENTENCE = (
+    "If you qualify, you will not be billed more than the amount generally billed to patients "
+    "with insurance coverage."
+)
+
+
+def with_insured(quote, value=True):
+    sheet = st_example_sheet()
+    cited = Cited(
+        value=value, quote=quote, source_id=SAMPLE_SOURCE_ID, checked_on=date(2026, 10, 2)
+    )
+    return sheet.model_copy(
+        update={
+            "eligibility": sheet.eligibility.model_copy(update={"insured_patients_covered": cited})
+        }
+    )
+
+
+def test_the_amounts_generally_billed_cap_does_not_say_who_may_apply():
+    # UMass Memorial (220163): the 501(r) cap prices care for whoever qualifies; one run read it
+    # as insured patients covered, the next as not covered. Only that clause mentions insurance.
+    docs = {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT + AGB_SENTENCE + "\n"}
+    report = verify_sheet(with_insured(AGB_SENTENCE), docs)
+    assert ("eligibility.insured_patients_covered", AGB_CAP_REASON) in report.rejected
+    assert quotes_only_the_agb_cap(AGB_SENTENCE)
+    # A sentence that says who qualifies passes, even with the cap in the same breath.
+    both = (
+        "Uninsured and underinsured patients who qualify will not be charged more than the "
+        "amounts generally billed to insured patients."
+    )
+    assert not quotes_only_the_agb_cap(both)
+    assert not quotes_only_the_agb_cap(
+        "Whether patients are uninsured or underinsured, they can apply for financial assistance."
+    )
+    docs = {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT + both + "\n"}
+    assert verify_sheet(with_insured(both, value=True), docs).ok

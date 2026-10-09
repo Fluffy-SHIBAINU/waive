@@ -427,6 +427,46 @@ def test_an_overall_assistance_ceiling_read_as_free_care_is_dropped():
     assert "assistance_ceiling_fpl" in SYSTEM_PROMPT
 
 
+def test_a_free_only_limit_at_the_ceiling_is_kept_unless_it_cites_the_same_passage():
+    # Mount Auburn's shape: care is free up to 400% and nothing else is offered, so a model may
+    # also file 400 as the ceiling. Two sentences are two facts: the limit stays and the admin
+    # gets a note. The same sentence in both fields is the UMass misread and still goes.
+    free_quote = "care at 100% discount is available to patients at or below 400% of the federal poverty level"
+    ceiling_quote = (
+        "financial assistance is offered to patients with household incomes up to 400% of the "
+        "federal poverty level"
+    )
+    draft = SheetDraft(
+        free_care_max_fpl=field(400, free_quote), assistance_ceiling_fpl=field(400, ceiling_quote)
+    )
+    sheet, skipped = draft_to_sheet(draft, SAMPLE.hospital, [SAMPLE.sources[0]], TODAY)
+    free = sheet.eligibility.free_care_max_fpl
+    assert free.value == Decimal(400) and free.quote == free_quote
+    assert skipped == [
+        "eligibility.free_care_max_fpl: stated 400 is at or above the overall assistance "
+        "ceiling (400) but cites a different passage; check which is the free band"
+    ]
+    assert decide_status(sheet, []) is SheetStatus.PUBLISHED
+    # A hallucinated low ceiling cannot take a higher, differently cited limit away either.
+    low = draft.model_copy(
+        update={"assistance_ceiling_fpl": field(200, "assistance is offered to incomes up to 200%")}
+    )
+    sheet, skipped = draft_to_sheet(low, SAMPLE.hospital, [SAMPLE.sources[0]], TODAY)
+    assert sheet.eligibility.free_care_max_fpl.value == Decimal(400)
+    assert skipped == [
+        "eligibility.free_care_max_fpl: stated 400 is at or above the overall assistance "
+        "ceiling (200) but cites a different passage; check which is the free band"
+    ]
+    # One field quoting part of the other's sentence is that sentence read twice.
+    part = "household income, less than 600% of the federal poverty guidelines"
+    same = SheetDraft(
+        free_care_max_fpl=field(600, part), assistance_ceiling_fpl=field(600, UMASS_CEILING)
+    )
+    sheet, skipped = draft_to_sheet(same, SAMPLE.hospital, [SAMPLE.sources[0]], TODAY)
+    assert sheet.eligibility.free_care_max_fpl is None
+    assert skipped[0].endswith("assistance ceiling (600); not free care")
+
+
 def test_a_free_care_band_under_the_ceiling_is_kept():
     tiers = [{"min_fpl_exclusive": 250, "max_fpl_inclusive": 400, "discount_percent": 60}]
     draft = SheetDraft(

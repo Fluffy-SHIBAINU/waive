@@ -33,18 +33,44 @@ def normalize(text: str) -> str:
     return re.sub(r"\s+", " ", text).strip().lower()
 
 
-def _squash(text: str) -> str:
-    """Hyphen- and space-insensitive form, for PDFs that split words across lines."""
-    return re.sub(r"[\s\-]+", "", normalize(text))
+_WORD_CHAR = re.compile(r"[^\W_]")  # a letter or digit in any script
+_SQUASHED = re.compile(r"[\s\-]")
+
+
+def _at_word_start(text: str, index: int) -> bool:
+    return index == 0 or _WORD_CHAR.match(text, index - 1) is None
+
+
+def _occurs_at_word_start(
+    needle: str, haystack: str, text: str, offsets: list[int] | None = None
+) -> bool:
+    """Whether `needle` occurs in `haystack` where a word starts in `text`; `offsets` maps each
+    index of a squashed `haystack` back to `text` (without it the two are the same string)."""
+    start = haystack.find(needle)
+    while start != -1:
+        if _at_word_start(text, offsets[start] if offsets else start):
+            return True
+        start = haystack.find(needle, start + 1)
+    return False
 
 
 def quote_found(quote: str, document_text: str) -> bool:
-    normalized_quote = normalize(quote)
-    if len(normalized_quote) < MIN_QUOTE_CHARS:
+    """Whether the document contains the quote, starting at a word boundary: "phone: 508-334-9300"
+    is not in "telephone: 508-334-9300" (UMass Memorial, 220163), although it is a substring."""
+    needle = normalize(quote)
+    if len(needle) < MIN_QUOTE_CHARS:
         return False
-    if normalized_quote in normalize(document_text):
+    haystack = normalize(document_text)
+    if _occurs_at_word_start(needle, haystack, haystack):
         return True
-    return _squash(quote) in _squash(document_text)
+    # Hyphen- and space-insensitive form, for PDFs that split words across lines. Each squashed
+    # character keeps its index in the normalized text, where the word boundary is judged.
+    squashed_needle = _SQUASHED.sub("", needle)
+    squashed_haystack = _SQUASHED.sub("", haystack)
+    if not squashed_needle or squashed_needle not in squashed_haystack:
+        return False
+    offsets = [index for index, char in enumerate(haystack) if _SQUASHED.match(char) is None]
+    return _occurs_at_word_start(squashed_needle, squashed_haystack, haystack, offsets)
 
 
 def _number_in(number: Decimal, quote: str) -> bool:
@@ -80,6 +106,21 @@ def quotes_patient_share(quote: str) -> bool:
     patient's share, so a DiscountTier built from them would be upside down (Mercy, 15% vs 85%)."""
     text = normalize(quote)
     return _PATIENT_SHARE.search(text) is not None and _DISCOUNT_WORDS.search(text) is None
+
+
+AGB_CAP_REASON = "quote states the amounts-generally-billed cap, not who may apply"
+_AGB_CLAUSE = re.compile(r"amounts? generally billed[^.;]*")
+
+
+def quotes_only_the_agb_cap(quote: str) -> bool:
+    """A 501(r) cap sentence ("you will not be billed more than the amount generally billed to
+    patients with insurance coverage") whose only mention of insurance is that clause. It prices
+    care for whoever qualifies and says nothing about whether insured patients do; UMass Memorial
+    (220163) read it as true in one run and false in the next."""
+    text = normalize(quote)
+    if _AGB_CLAUSE.search(text) is None:
+        return False
+    return "insur" not in _AGB_CLAUSE.sub("", text)
 
 
 def value_in_quote(value: Any, quote: str) -> bool:
@@ -158,6 +199,10 @@ def verify_sheet(sheet: ProcedureSheet, documents: dict[str, str]) -> Verificati
             report.rejected.append((path, "value not in quote"))
         elif path == "eligibility.discount_tiers" and quotes_patient_share(cited.quote or ""):
             report.rejected.append((path, PATIENT_SHARE_REASON))
+        elif path == "eligibility.insured_patients_covered" and quotes_only_the_agb_cap(
+            cited.quote or ""
+        ):
+            report.rejected.append((path, AGB_CAP_REASON))
         else:
             report.accepted.append(path)
     return report
