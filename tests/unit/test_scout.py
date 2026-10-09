@@ -713,3 +713,41 @@ def test_the_advanced_re_extraction_is_booked_at_two_credits_per_five_pages(tmp_
     assert [doc.text for doc in docs] == [PAGE_TEXT]
     # Two searches (one credit each), the basic extraction (one) and the advanced one (two).
     assert governor.summary()["tavily"][0] == Decimal("5")
+
+
+def test_media_files_are_not_policy_documents_and_form_is_a_whole_word():
+    # Alton Memorial (140002, 7.9): BJC's "Financial-Assistance-Policy.mp3" was stored as a
+    # 60,000-character "fap" of binary noise; Adventist's /about-us/financial-performance and
+    # Advocate's /hospital-pricing-information were classified "application" because "form" is
+    # inside "performance" and "information".
+    assert (
+        classify_doc(
+            "https://www.bjc.org/files/3259250-Financial-Assistance-Policy.mp3", "Audio File"
+        )
+        is None
+    )
+    assert classify_doc("https://x.org/financial-assistance-policy.mp4?v=2", "") is None
+    assert (
+        classify_doc("https://www.adventisthealth.org/about-us/financial-performance", "") is None
+    )
+    assert (
+        classify_doc(
+            "https://x.org/financial-assistance-for-patients/hospital-pricing-information", ""
+        )
+        == "fap"
+    )
+    assert classify_doc("https://x.org/financial-assistance-form.pdf", "") == "application"
+    assert (
+        classify_doc("https://x.org/fa/forms/apply", "Financial Assistance Forms") == "application"
+    )
+    text = (
+        "[Financial Assistance Policy (audio)](https://www.bjc.org/files/Financial-Assistance-Policy.mp3)\n"
+        "[Financial Assistance Policy (PDF)](https://www.bjc.org/files/Financial-Assistance-Policy.pdf)\n"
+        "https://www.bjc.org/files/Financial-Assistance-Policy-Large.mp3\n"
+    )
+    assert policy_links(text, "bjc.org") == [
+        (
+            "https://www.bjc.org/files/Financial-Assistance-Policy.pdf",
+            "Financial Assistance Policy (PDF)",
+        )
+    ]

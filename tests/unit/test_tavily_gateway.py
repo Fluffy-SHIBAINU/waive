@@ -115,3 +115,18 @@ def test_advanced_extract_is_checked_against_the_cap_at_its_own_price(tmp_path):
         gateway.extract(["https://www.example.org/page"], purpose="test", depth="advanced")
     assert fake.calls == []
     assert len(gateway.extract(["https://www.example.org/page", "x"], purpose="test")) == 1
+
+
+def test_a_map_the_api_refuses_is_an_empty_map_not_a_failed_hospital(tmp_path):
+    # Resurrection Medical Center (140117, 7.9): Tavily Map answered HTTP 400, the error escaped
+    # build_hospital, the session rolled back and the hospital was due for a retry every day.
+    from tavily.errors import BadRequestError
+
+    class RefusingTavily(FakeTavily):
+        def map(self, url, **kwargs):
+            raise BadRequestError("Invalid URL")
+
+    governor = Governor(Ledger(tmp_path / "usage.jsonl"), 10, Decimal("15"))
+    gateway = TavilyGateway(RefusingTavily(), governor)
+    assert gateway.map("https://www.example.org", purpose="test") == []
+    assert governor.summary()["tavily"][0] == Decimal("0")

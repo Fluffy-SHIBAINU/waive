@@ -57,6 +57,12 @@ OFFSITE_KEYWORDS = (
     "billing-and-collection",
 )
 IMAGE_SUFFIXES = (".svg", ".png", ".jpg", ".jpeg", ".gif", ".webp", ".ico")
+# BJC publishes its policy as an audio file too (3259250-Financial-Assistance-Policy.mp3); Tavily
+# Extract returned 60,000 characters of binary noise for it, stored as the "fap" (140002, 7.9).
+MEDIA_SUFFIXES = (".mp3", ".mp4", ".wav", ".m4a", ".mov", ".avi", ".wmv", ".ogg", ".webm")
+NOT_A_DOCUMENT = IMAGE_SUFFIXES + MEDIA_SUFFIXES
+# Word-bounded: "performance" and "information" are not forms (050350, 140208).
+_FORM_OR_APPLICATION = re.compile(r"\bforms?\b|applic")
 QUERIES = (
     "financial assistance policy charity care free discounted care",
     "financial assistance application form plain language summary billing and collections policy",
@@ -71,11 +77,13 @@ TITLES = {
 
 
 def classify_doc(url: str, title: str) -> DocClass | None:
+    if urlparse(url).path.lower().endswith(NOT_A_DOCUMENT):
+        return None
     text = f"{url} {title}".lower().replace("_", "-")
     # Asset hosts put the MIME type in the query string; "application/pdf" is not an application.
     text = text.replace("application%2fpdf", " ").replace("application/pdf", " ")
     financial = any(k in text for k in ("financial", "charity", "fap", "assistance"))
-    if financial and any(k in text for k in ("applic", "form")):
+    if financial and _FORM_OR_APPLICATION.search(text):
         return "application"
     if financial and any(k in text for k in ("plain", "summary")):
         return "summary"
@@ -126,7 +134,7 @@ def policy_links(text: str, base_domain: str) -> list[tuple[str, str]]:
     charity, policy, application, plain language, FAP or a PDF; resolves relative URLs against
     the hospital's site; drops other registered domains (subdomains are kept, and so are clearly
     labelled policies on a DOCUMENT_HOSTS asset host); skips anchors, icons and the site root;
-    de-duplicates.
+    de-duplicates. Image and audio/video files are never documents.
     """
     base_url = f"https://www.{base_domain}"
     base_host = host_of(base_url)
@@ -142,7 +150,7 @@ def policy_links(text: str, base_domain: str) -> list[tuple[str, str]]:
         if (
             parts.scheme not in ("http", "https")
             or parts.path in ("", "/")
-            or parts.path.lower().endswith(IMAGE_SUFFIXES)
+            or parts.path.lower().endswith(NOT_A_DOCUMENT)
         ):
             continue
         label = " ".join(raw_label.replace("#", " ").split())

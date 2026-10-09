@@ -1,5 +1,6 @@
 """Budget-aware wrapper around the Tavily API (spec section 8)."""
 
+import logging
 import math
 from dataclasses import dataclass
 from decimal import Decimal
@@ -9,6 +10,14 @@ from waive.config import Settings
 from waive.governor import Governor
 
 Depth = Literal["basic", "advanced"]
+log = logging.getLogger(__name__)
+
+try:
+    from tavily.errors import BadRequestError
+except ImportError:  # pragma: no cover - the SDK is a dependency; this keeps the module importable
+
+    class BadRequestError(Exception):  # type: ignore[no-redef]
+        """Stand-in when the Tavily SDK is absent."""
 
 
 class TavilyLike(Protocol):
@@ -96,9 +105,18 @@ class TavilyGateway:
         select_paths: list[str] | None = None,
         limit: int = 30,
     ) -> list[str]:
-        """Discover a site's URLs (Tavily Map), optionally limited to matching paths."""
+        """Discover a site's URLs (Tavily Map), optionally limited to matching paths. A map the
+        API refuses (HTTP 400, Resurrection Medical Center 140117, task 7.9) is an empty map:
+        the scout falls back to its search hits, and the hospital ends in an ordinary outcome
+        instead of an exception that rolls the whole build back and is retried daily."""
         self._governor.ensure_tavily(map_cost(limit))
-        raw = self._client.map(url=url, max_depth=2, limit=limit, select_paths=select_paths or [])
+        try:
+            raw = self._client.map(
+                url=url, max_depth=2, limit=limit, select_paths=select_paths or []
+            )
+        except BadRequestError as error:
+            log.info("tavily map of %s refused: %s", url, error)
+            return []
         results = raw.get("results", []) if isinstance(raw, dict) else []
         urls = [item if isinstance(item, str) else str(item.get("url", "")) for item in results]
         urls = [item for item in urls if item]

@@ -384,3 +384,14 @@ def test_html_is_refused_where_a_pdf_was_promised_when_thin_or_off_the_allowed_h
             is None
         )
     assert not leaked.called
+
+
+def test_sitecore_and_webflow_asset_hosts_may_serve_policy_pdfs():
+    # Alta Bates Summit (050043) and Adirondack (330079), 7.9: the policy PDFs sit on
+    # edge.sitecorecloud.io and cdn.prod.website-files.com, so policy_links dropped them.
+    for url in (
+        "https://edge.sitecorecloud.io/sutterhealth/media/fap-application.pdf",
+        "https://cdn.prod.website-files.com/5f3/Financial%20Assistance%20Policy%20Summary.pdf",
+    ):
+        assert is_asset_host(url) and EXAMPLE_ORG(url), url
+    assert not is_asset_host("https://sitecorecloud.io.evil.net/x.pdf")
