@@ -879,3 +879,46 @@ def test_a_phone_copied_from_a_tel_link_is_formatted_and_a_label_without_digits_
     )
     sheet, _ = draft_to_sheet(draft, SAMPLE.hospital, [SAMPLE.sources[0]], TODAY)
     assert sheet.contacts.phone.value == "(607) 271-3827"
+
+
+def test_documents_named_for_a_state_are_tagged_in_the_prompt():
+    # Adventist Health (7.9): the Hawaii and Oregon versions of the system policy were stored next
+    # to the California one, and the structurer cited them for California hospitals.
+    from waive.atlas.structure import document_states
+
+    assert document_states("[PDF] Financial Assistance Policy for Hawaii-Based Hospitals", "") == {
+        "HI"
+    }
+    assert document_states("Self Pay Billing and Collection Policy (OR)", "") == {"OR"}
+    assert document_states(
+        "",
+        "https://www.adventisthealth.org/documents/system/financial-assistance-policy-california.pdf",
+    ) == {"CA"}
+    assert (
+        document_states(
+            "Financial Assistance Policy",
+            "https://www.bjc.org/sites/bjc/files/2026-02/3259250-Financial-Assistance-Policy.pdf",
+        )
+        == set()
+    )
+    assert document_states("[PDF] FINANCIAL ASSISTANCE POLICY - Adventist Health", "") == set()
+    assert (
+        document_states("Policy", "https://dph.illinois.gov/records/policy.pdf") == set()
+    )  # the host is not the document
+    assert document_states("Massachusetts General Hospital Financial Assistance", "") == {"MA"}
+    hawaii = SAMPLE.sources[0].model_copy(
+        update={
+            "id": "fap-hawaii",
+            "title": "Financial Assistance Policy for Hawaii-Based Hospitals",
+            "url": None,
+        }
+    )
+    content = build_messages(
+        SAMPLE.hospital, [(SAMPLE.sources[0], SAMPLE_POLICY_TEXT), (hawaii, SAMPLE_POLICY_TEXT)]
+    )[1]["content"]
+    assert f"=== SOURCE id={SAMPLE_SOURCE_ID} title=" in content
+    assert (
+        "=== SOURCE id=fap-hawaii title='Financial Assistance Policy for Hawaii-Based Hospitals' url= names_state=HI ==="
+        in content
+    )
+    assert "hospital's state" in SYSTEM_PROMPT

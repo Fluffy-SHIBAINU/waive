@@ -1,5 +1,6 @@
 """End-to-end atlas build for one hospital or one state (spec §8)."""
 
+import re
 from dataclasses import dataclass, field
 from datetime import date
 from typing import Literal
@@ -21,11 +22,15 @@ from waive.atlas.publish import (
 )
 from waive.atlas.schema import HospitalRef, ProcedureSheet, SheetStatus, SourceDoc, SourceKind
 from waive.atlas.scout import navigation_shells, scout_hospital, store_scouted
-from waive.atlas.structure import structure_sheet
+from waive.atlas.structure import document_states, structure_sheet
 from waive.atlas.tavily_gateway import TavilyGateway
 from waive.atlas.verify import PATIENT_SHARE_REASON, trim_quotes, verify_sheet
+from waive.db import HospitalRow
 
 Outcome = Literal["published", "held", "skipped", "failed"]
+# A document that states income rules names the poverty level; one that does not cannot supply
+# a free-care band or a discount table, whatever else it says.
+INCOME_RULE_WORDS = re.compile(r"poverty|\bfpl\b|\bfpg\b", re.IGNORECASE)
 # A structurer error is the model name, the status and the server's message (at most
 # MAX_SERVER_MESSAGE_CHARS); the review detail and the note keep the whole of it.
 ERROR_DETAIL_CHARS = MAX_SERVER_MESSAGE_CHARS + 100
@@ -85,6 +90,143 @@ def _drop_navigation_shells(
         "of the structurer"
     )
     return [(source, text) for source, text in sources_with_text if source.url not in shells]
+
+
+def _drop_other_state_documents(
+    session: Session,
+    ccn: str,
+    state: str,
+    sources_with_text: list[tuple[SourceDoc, str]],
+    result: BuildResult,
+) -> list[tuple[SourceDoc, str]]:
+    """A health system that publishes one policy per state (Adventist Health: California,
+    Hawaii, Oregon) has them side by side on one site, and the scout stores whichever the search
+    returns. When a document names another state and one names the hospital's own, the other
+    state's version is detached and kept from the structurer, which cited the Hawaii table on
+    six California sheets (task 7.9). Documents naming no state stay."""
+    named = {
+        source.id: document_states(source.title, source.url or "")
+        for source, _ in sources_with_text
+        if source.kind is SourceKind.HOSPITAL_WEB
+    }
+    if not any(state in states for states in named.values()):
+        return sources_with_text
+    other = [
+        source
+        for source, _ in sources_with_text
+        if named.get(source.id) and state not in named[source.id]
+    ]
+    if not other:
+        return sources_with_text
+    for source in other:
+        repo.unlink_source(session, ccn, source.id)
+    detail = [{"id": source.id, "states": sorted(named[source.id])} for source in other]
+    repo.add_review_item(session, ccn, "other_state_documents", {"state": state, "sources": detail})
+    listed = ", ".join(f"{entry['id']}: {'/'.join(entry['states'])}" for entry in detail)
+    plural = "s are" if len(other) > 1 else " is"
+    result.notes.append(
+        f"{len(other)} stored document{plural} another state's version of the system policy "
+        f"({listed}); detached and left out of the structurer"
+    )
+    gone = {source.id for source in other}
+    return [(source, text) for source, text in sources_with_text if source.id not in gone]
+
+
+def _share_sibling_sources(
+    session: Session,
+    row: HospitalRow,
+    own: list[tuple[SourceDoc, str]],
+    result: BuildResult,
+) -> list[tuple[SourceDoc, str]] | None:
+    """The hospital's documents plus the policy documents of a sibling on the same website that
+    has a published sheet, or None when no sibling can help. Searching a system site by hospital
+    name returns a thin page or nothing while the system's policy is already stored for a
+    sibling (Adventist Health White Memorial, AdventHealth Riverview, Advocate Christ and
+    Condell, task 7.9). Only documents that state income rules (they name the poverty level) are
+    shared, they are linked to this hospital so --reuse-sources finds them next time, and a
+    `shared_sources` item records whose they were: a system may keep per-hospital variants."""
+    domain = row.website_domain
+    if not domain:
+        return None
+    own_ids = {source.id for source, _ in own}
+    for sibling in repo.siblings_on_domain(session, domain, row.ccn):
+        latest = repo.latest_sheet(session, sibling.ccn)
+        if latest is None or latest[0].status is not SheetStatus.PUBLISHED:
+            continue
+        shared = [
+            (source, text)
+            for source, text in repo.sources_for(session, sibling.ccn)
+            if source.kind is SourceKind.HOSPITAL_WEB
+            and source.id not in own_ids
+            and INCOME_RULE_WORDS.search(text)
+        ]
+        if not shared:
+            continue
+        for source, _ in shared:
+            repo.link_source(session, row.ccn, source.id)
+        repo.add_review_item(
+            session,
+            row.ccn,
+            "shared_sources",
+            {"from_ccn": sibling.ccn, "domain": domain, "sources": [s.id for s, _ in shared]},
+        )
+        plural = "s" if len(shared) > 1 else ""
+        result.notes.append(
+            f"{len(shared)} policy document{plural} shared from {sibling.name} ({sibling.ccn}) on "
+            f"{domain}; the hospital's own documents state no income rules"
+        )
+        return [*own, *shared]
+    return None
+
+
+def _lacks_income_rules(sheet: ProcedureSheet) -> bool:
+    return sheet.eligibility.free_care_max_fpl is None and sheet.eligibility.discount_tiers is None
+
+
+def _structure_and_verify(
+    session: Session,
+    ai: AIClient,
+    hospital: HospitalRef,
+    sources_with_text: list[tuple[SourceDoc, str]],
+    today: date,
+    result: BuildResult,
+) -> tuple[ProcedureSheet, list[str]] | None:
+    """The primary draft, trimmed to the spans the sources contain, verified and stripped of
+    rejected fields, with the reasons an admin must look first (holds). None when the structurer
+    gave nothing usable; `result` then carries the failed outcome."""
+    ccn = hospital.ccn
+    texts = {source.id: text for source, text in sources_with_text}
+    try:
+        sheet, skipped = structure_sheet(ai, "reason", hospital, sources_with_text, today)
+    except AIOutputError as error:
+        # No usable primary draft, even from the smaller prompt structure_sheet falls back to
+        # (task 7.8): the documents stay stored, the reason goes to review, and the batch sees
+        # an ordinary failed outcome rather than an exception that would roll the scout back.
+        # The open item also keeps the scheduler off this hospital (schedule.FAILURE_KINDS).
+        repo.add_review_item(
+            session, ccn, "structure_failed", {"error": str(error)[:ERROR_DETAIL_CHARS]}
+        )
+        result.outcome = "failed"
+        result.notes.append(f"structurer gave no usable sheet: {error}"[:ERROR_DETAIL_CHARS])
+        return None
+    sheet = trim_quotes(sheet, texts)
+    report = verify_sheet(sheet, texts)
+    if skipped or report.rejected:
+        repo.add_review_item(
+            session, ccn, "verification", {"skipped": skipped, "rejected": report.rejected}
+        )
+        result.notes.extend(skipped)
+        result.notes.extend(f"{path}: {reason}" for path, reason in report.rejected)
+    holds: list[str] = []
+    if any(reason == PATIENT_SHARE_REASON for _, reason in report.rejected):
+        # The table says what the patient pays (co-pay, X% of charges); the schema cannot express
+        # that band, and publishing the free-care remainder alone would deny the co-pay band.
+        tiers = sheet.eligibility.discount_tiers
+        repo.add_review_item(
+            session, ccn, "patient_share_table", {"quote": tiers.quote if tiers else None}
+        )
+        holds.append(PATIENT_SHARE_REASON)
+    return drop_fields(sheet, [path for path, _ in report.rejected]), holds
 
 
 def _tiebreak(
@@ -189,47 +331,48 @@ def build_hospital(
                 "the hospital's policy is not in the stored documents"
             )
             return result
+    shared = False
+    if not sources_with_text and reuse_sources:
+        # Nothing stored and no credits to spend: a sibling's documents on the same site first.
+        borrowed = _share_sibling_sources(session, row, [], result)
+        if borrowed is not None:
+            sources_with_text, shared = borrowed, True
     if not sources_with_text:
         docs = scout_hospital(gateway, hospital)
-        if not docs:
-            repo.add_review_item(session, ccn, "no_documents", {"domain": row.website_domain})
-            result.notes.append("no financial assistance documents found")
-            return result
-        sources = store_scouted(session, ccn, docs, today)
-        sources_with_text = [(s, doc.text) for s, doc in zip(sources, docs, strict=True)]
-    texts = {source.id: text for source, text in sources_with_text}
+        if docs:
+            sources = store_scouted(session, ccn, docs, today)
+            sources_with_text = [(s, doc.text) for s, doc in zip(sources, docs, strict=True)]
+        else:
+            borrowed = _share_sibling_sources(session, row, [], result)
+            if borrowed is None:
+                repo.add_review_item(session, ccn, "no_documents", {"domain": row.website_domain})
+                result.notes.append("no financial assistance documents found")
+                return result
+            sources_with_text, shared = borrowed, True
+    sources_with_text = _drop_other_state_documents(
+        session, ccn, row.state, sources_with_text, result
+    )
 
-    try:
-        sheet, skipped = structure_sheet(ai, "reason", hospital, sources_with_text, today)
-    except AIOutputError as error:
-        # No usable primary draft, even from the smaller prompt structure_sheet falls back to
-        # (task 7.8): the documents stay stored, the reason goes to review, and the batch sees
-        # an ordinary failed outcome rather than an exception that would roll the scout back.
-        # The open item also keeps the scheduler off this hospital (schedule.FAILURE_KINDS).
-        repo.add_review_item(
-            session, ccn, "structure_failed", {"error": str(error)[:ERROR_DETAIL_CHARS]}
-        )
-        result.outcome = "failed"
-        result.notes.append(f"structurer gave no usable sheet: {error}"[:ERROR_DETAIL_CHARS])
+    first_pass = _structure_and_verify(session, ai, hospital, sources_with_text, today, result)
+    if first_pass is None:
         return result
-    sheet = trim_quotes(sheet, texts)
-    report = verify_sheet(sheet, texts)
-    if skipped or report.rejected:
-        repo.add_review_item(
-            session, ccn, "verification", {"skipped": skipped, "rejected": report.rejected}
-        )
-        result.notes.extend(skipped)
-        result.notes.extend(f"{path}: {reason}" for path, reason in report.rejected)
-    holds: list[str] = []
-    if any(reason == PATIENT_SHARE_REASON for _, reason in report.rejected):
-        # The table says what the patient pays (co-pay, X% of charges); the schema cannot express
-        # that band, and publishing the free-care remainder alone would deny the co-pay band.
-        tiers = sheet.eligibility.discount_tiers
-        repo.add_review_item(
-            session, ccn, "patient_share_table", {"quote": tiers.quote if tiers else None}
-        )
-        holds.append(PATIENT_SHARE_REASON)
-    sheet = drop_fields(sheet, [path for path, _ in report.rejected])
+    sheet, holds = first_pass
+    if not shared and not holds and _lacks_income_rules(sheet):
+        # The hospital's own pages gave no income rule: a sibling's policy on the same site may
+        # (Advocate Christ: a language-menu shell of its own, the enterprise policy on Advocate
+        # Illinois Masonic's sheet). One more structuring pass, Token Factory only.
+        borrowed = _share_sibling_sources(session, row, sources_with_text, result)
+        if borrowed is not None:
+            sources_with_text = _drop_other_state_documents(
+                session, ccn, row.state, borrowed, result
+            )
+            second_pass = _structure_and_verify(
+                session, ai, hospital, sources_with_text, today, result
+            )
+            if second_pass is None:
+                return result
+            sheet, holds = second_pass
+    texts = {source.id: text for source, text in sources_with_text}
 
     conflicts: list[str] = []
     if dual:
