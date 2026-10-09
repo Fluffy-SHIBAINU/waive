@@ -3,6 +3,9 @@ import re
 from datetime import date
 from decimal import Decimal
 
+from fastapi.testclient import TestClient
+
+from waive.ai.client import AIOutputError
 from waive.atlas import repo
 from waive.atlas.publish import publish_sheet
 from waive.atlas.samples import st_example_sheet
@@ -95,3 +98,24 @@ def test_senior_says_not_right_and_waits_for_helper():
 def test_tampered_token_is_rejected():
     client, links = seeded_client()
     assert client.get("/s/" + links.senior_token[:-3] + "abc").status_code == 403
+
+
+class UnreadableAI:
+    """The vision model answered twice with JSON that does not fit the schema."""
+
+    def complete_json(self, role, messages, schema, *, phi, purpose, max_tokens=2000):
+        raise AIOutputError(f"model output did not match {schema.__name__}")
+
+
+def test_unreadable_model_answer_gives_the_senior_a_kind_page_not_a_500():
+    client, engine = make_client(ai=UnreadableAI())
+    with session_scope(engine) as session:
+        repo.upsert_hospital(session, HOSPITAL)
+        publish_sheet(session, st_example_sheet())
+        links = start_case(client.app.state.deps.context(session), "MA")
+    client = TestClient(client.app, raise_server_exceptions=False)
+    base = f"/s/{links.senior_token}"
+    bill = client.post(f"{base}/bill", files=photo())
+    assert bill.status_code == 200 and "helper" in bill.text.lower()
+    letter = client.post(f"{base}/income", files=photo())
+    assert letter.status_code == 200 and "skip this step" in letter.text
