@@ -15,7 +15,7 @@ from waive.atlas.schema import SheetStatus, SourceDoc, SourceKind
 from waive.atlas.scout import source_id_for
 from waive.atlas.structure import DraftField, SheetDraft
 from waive.atlas.tavily_gateway import ExtractedPage, SearchHit
-from waive.atlas.verify import PATIENT_SHARE_REASON
+from waive.atlas.verify import PATIENT_SHARE_REASON, verify_sheet
 from waive.config import Settings
 from waive.db import init_db, make_engine, session_scope
 from waive.governor import Governor, Ledger
@@ -926,11 +926,30 @@ def test_a_hospital_whose_own_pages_state_no_income_rules_borrows_a_published_si
         assert sheet.eligibility.free_care_max_fpl.source_id == policy_id
         assert {s.id for s in sheet.sources} == {thin.id, policy_id}
         assert {s.id for s, _ in repo.sources_for(session, "220031")} == {thin.id, policy_id}
+        # The borrowed policy's phone is the sibling's desk (Condell's sheet sent patients to
+        # Lutheran General's business office, review of 7.9): dropped and recorded.
+        assert sheet.contacts.phone is None
         assert review_detail(session, "220031", "shared_sources") == {
             "from_ccn": "229999",
             "domain": "example.org",
             "sources": [policy_id],
+            "dropped_fields": ["contacts.phone"],
         }
+        assert (
+            "dropped from the shared documents (a sibling's desk, not this hospital's): "
+            "contacts.phone"
+        ) in result.notes
+        # A later --reuse-sources rebuild loads the shared documents as if they were the
+        # hospital's own; the shared_sources item says which they were, and the drop holds.
+        again = GroundedAI()
+        result = build_hospital(session, FakeGateway(), again, "220031", TODAY, reuse_sources=True)
+        assert result.outcome == "published" and len(again.prompts) == 2
+        sheet, _ = repo.latest_sheet(session, "220031")
+        assert sheet.contacts.phone is None and sheet.eligibility.free_care_max_fpl.value == 250
+        assert any("contacts.phone" in note for note in result.notes)
+        assert [i.kind for i in repo.open_review_items(session, "220031")].count(
+            "shared_sources"
+        ) == 1
 
 
 def test_reuse_sources_with_nothing_stored_borrows_a_siblings_documents_before_scouting():
@@ -1020,11 +1039,211 @@ def test_other_state_versions_of_a_system_policy_are_set_aside():
             "state": "MA",
             "sources": [{"id": "fap-hawaii", "states": ["HI"]}],
         }
-    # Without a document for the hospital's own state nothing is set aside.
+    # Beside documents that name no state, another state's version is set aside too (AdventHealth
+    # Wauchula, Florida, took its free-care limit from /legal/financial-assistance-illinois while
+    # the system policy named no state; review of 7.9).
     engine = make_engine_with_hospital()
     with session_scope(engine) as session:
         build_hospital(session, FakeGateway(), FakeAI(), "229999", TODAY)
         repo.save_source(session, hawaii, hawaii_text, "229999")
         ai = GroundedAI()
+        result = build_hospital(session, FakeGateway(), ai, "229999", TODAY, reuse_sources=True)
+        assert ai.prompts and all("fap-hawaii" not in p for p in ai.prompts)
+        assert any("fap-hawaii: HI" in note for note in result.notes)
+    # When every stored document is another state's there is nothing to prefer: all stay.
+    engine = make_engine_with_hospital()
+    with session_scope(engine) as session:
+        repo.get_hospital(session, "229999").website_domain = "example.org"
+        repo.save_source(session, hawaii, hawaii_text, "229999")
+        ai = GroundedAI()
         build_hospital(session, FakeGateway(), ai, "229999", TODAY, reuse_sources=True)
         assert ai.prompts and all("fap-hawaii" in p for p in ai.prompts)
+        assert "fap-hawaii" in {s.id for s, _ in repo.sources_for(session, "229999")}
+
+
+def test_a_state_inside_the_hospitals_own_name_does_not_make_its_policy_another_states():
+    # Sierra Nevada Memorial (050150, California), Washington Hospital (390042, Pennsylvania):
+    # 26 registry hospitals carry another state's name. Their own policy, named after them next
+    # to a California fair-pricing notice, must not be detached as "Nevada's version".
+    sierra = {
+        **HOSPITAL,
+        "ccn": "050150",
+        "name": "SIERRA NEVADA MEMORIAL HOSPITAL",
+        "city": "GRASS VALLEY",
+        "state": "CA",
+        "website_domain": "example.org",
+    }
+    engine = make_engine_with_hospital(sierra)
+    own = SourceDoc(
+        id="fap-sierra",
+        kind=SourceKind.HOSPITAL_WEB,
+        url="https://www.example.org/sierra-nevada-memorial-hospital/financial-assistance-policy.pdf",
+        title="Sierra Nevada Memorial Hospital Financial Assistance Policy",
+        fetched_on=TODAY,
+        sha256="3" * 64,
+    )
+    notice = SourceDoc(
+        id="fap-california-notice",
+        kind=SourceKind.HOSPITAL_WEB,
+        url="https://www.example.org/sierra-nevada-memorial-hospital/california-fair-pricing-notice.pdf",
+        title="Notice",
+        fetched_on=TODAY,
+        sha256="4" * 64,
+    )
+    with session_scope(engine) as session:
+        repo.save_source(session, own, POLICY_TEXT, "050150")
+        repo.save_source(
+            session,
+            notice,
+            "California Fair Pricing Notice. Ask a financial counselor about assistance. " * 3,
+            "050150",
+        )
+        ai = GroundedAI()
+        result = build_hospital(session, FakeGateway(), ai, "050150", TODAY, reuse_sources=True)
+        assert result.outcome == "published"
+        assert ai.prompts and all("fap-sierra" in p for p in ai.prompts)
+        assert {s.id for s, _ in repo.sources_for(session, "050150")} == {own.id, notice.id}
+        assert all(item.kind != "other_state_documents" for item in repo.open_review_items(session))
+
+
+class TwoSentenceAI(FakeAI):
+    """Quotes a list under two sentences, only the second of which the source contains: the
+    model stitched a passage, trim_quotes keeps the real sentence, and the list must follow."""
+
+    def complete_json(self, role, messages, schema, *, phi, purpose, max_tokens=2000):
+        draft = super().complete_json(role, messages, schema, phi=phi, purpose=purpose)
+        draft.documents_required = DraftField(
+            value=["photo_id", "bank_statements", "proof_of_income"],
+            quote=(
+                "Bring your passport and a recent bank statement. "
+                "Applicants must provide a photo ID and one proof of income."
+            ),
+            source_id=draft.phone.source_id,
+        )
+        return draft
+
+
+def test_lists_are_pruned_again_against_the_trimmed_quote():
+    # Review of 7.9: the structurer filtered documents_required against the model's whole quote,
+    # then trim_quotes kept the one sentence the source contains, and 140202 published photo_id
+    # and bank_statements under a sentence naming only W-2s, tax returns and pay stubs.
+    engine = make_engine_with_hospital()
+    with session_scope(engine) as session:
+        result = build_hospital(session, FakeGateway(), TwoSentenceAI(), "229999", TODAY)
+        assert result.outcome == "published"
+        sheet, _ = repo.latest_sheet(session, "229999")
+        cited = sheet.apply.documents_required
+        assert [kind.value for kind in cited.value] == ["photo_id", "proof_of_income"]
+        assert cited.quote == "Applicants must provide a photo ID and one proof of income."
+        assert "apply.documents_required: 1 item not named in the trimmed quote" in result.notes
+        texts = {s.id: t for s, t in repo.sources_for(session, "229999")}
+        assert verify_sheet(sheet, texts).ok
+
+
+def test_two_documents_naming_different_free_care_limits_hold_the_sheet():
+    # AHMC Anaheim (050226, review of 7.9): the web page said 0-250% of FPL is no-cost care, the
+    # newer PDF said 200%, and the sheet published 250 with nothing to trip on.
+    engine = make_engine_with_hospital()
+    newer = SourceDoc(
+        id="fap-newer-pdf",
+        kind=SourceKind.HOSPITAL_WEB,
+        url="https://www.example.org/charity-care-policy-revised.pdf",
+        title="Charity Care and Discount Payment Policy",
+        fetched_on=TODAY,
+        sha256="5" * 64,
+    )
+    newer_text = (
+        "Charity Care and Discount Payment Policy. Revised April 20, 2026.\n"
+        "Patients whose family income is at or below 200 percent of the Federal Poverty Level "
+        "will be eligible for a 100 percent write-off of their balance.\n"
+    )
+    with session_scope(engine) as session:
+        build_hospital(session, FakeGateway(), FakeAI(), "229999", TODAY)
+        repo.save_source(session, newer, newer_text, "229999")
+        result = build_hospital(
+            session, FakeGateway(), GroundedAI(), "229999", TODAY, reuse_sources=True
+        )
+        assert (result.outcome, result.version) == ("held", 2)
+        assert (
+            "the hospital's documents state different free-care limits (fap-newer-pdf: 200%)"
+        ) in result.notes
+        sheet, _ = repo.latest_sheet(session, "229999")
+        assert sheet.status is SheetStatus.HELD
+        assert sheet.eligibility.free_care_max_fpl.value == 250  # kept for the admin to compare
+        detail = review_detail(session, "229999", "document_conflict")
+        assert detail["published"] == "250" and detail["path"] == "eligibility.free_care_max_fpl"
+        assert detail["documents"] == [{"id": "fap-newer-pdf", "limits": ["200"]}]
+    # A patient's photo of a newer policy was approved by an admin: it supersedes, not conflicts.
+    engine = make_engine_with_hospital()
+    with session_scope(engine) as session:
+        build_hospital(session, FakeGateway(), FakeAI(), "229999", TODAY)
+        photo = newer.model_copy(update={"id": "photo-newer", "kind": SourceKind.PATIENT_PHOTO})
+        repo.save_source(session, photo, newer_text, "229999")
+        result = build_hospital(
+            session, FakeGateway(), GroundedAI(), "229999", TODAY, reuse_sources=True
+        )
+        assert result.outcome == "published"
+
+
+def test_recheck_lists_stored_fields_the_current_rules_reject_and_withdraw_republishes_without_them():
+    # Review of 7.9: four national sheets and sixteen Massachusetts fields kept values the new
+    # rules had been written for because nobody re-ran verification over stored sheets.
+    from waive.atlas.pipeline import recheck_sheets, withdraw_rejected
+    from waive.atlas.schema import Cited, DocType
+
+    engine = make_engine_with_hospital(REAL_HOSPITAL)
+    with session_scope(engine) as session:
+        build_hospital(session, FakeGateway(), FakeAI(), "220031", TODAY)
+        sheet, _ = repo.latest_sheet(session, "220031")
+        source_id = sheet.eligibility.free_care_max_fpl.source_id
+        # An older rule set let these through: a boolean under a quote that never mentions
+        # assets, and a document list the quote names only part of.
+        stale = sheet.model_copy(
+            update={
+                "eligibility": sheet.eligibility.model_copy(
+                    update={
+                        "asset_test": Cited(
+                            value=False,
+                            quote=FREE_CARE_QUOTE,
+                            source_id=source_id,
+                            checked_on=TODAY,
+                        )
+                    }
+                ),
+                "apply": sheet.apply.model_copy(
+                    update={
+                        "documents_required": Cited(
+                            value=[DocType.PHOTO_ID, DocType.BANK_STATEMENTS],
+                            quote="Applicants must provide a photo ID and one proof of income.",
+                            source_id=source_id,
+                            checked_on=TODAY,
+                        )
+                    }
+                ),
+                "version": 2,
+            }
+        )
+        repo.add_sheet_version(session, stale, {"eligibility.asset_test": {"old": None}})
+        assert recheck_sheets(session, "XX") == []
+        [entry] = recheck_sheets(session, "MA")
+        assert (entry.ccn, entry.status) == ("220031", SheetStatus.PUBLISHED)
+        assert entry.rejected == [
+            ("eligibility.asset_test", "quote does not support the asset-test value"),
+            ("apply.documents_required", "quote does not name every listed item"),
+        ]
+        [result] = withdraw_rejected(session, "MA")
+        assert (result.outcome, result.version) == ("published", 3)
+        assert result.notes == [
+            "apply.documents_required: 1 item not named in the trimmed quote",
+            "eligibility.asset_test: quote does not support the asset-test value",
+        ]
+        latest, _ = repo.latest_sheet(session, "220031")
+        assert latest.status is SheetStatus.PUBLISHED and latest.version == 3
+        assert latest.eligibility.asset_test is None
+        assert [kind.value for kind in latest.apply.documents_required.value] == ["photo_id"]
+        assert latest.eligibility.free_care_max_fpl.value == 250
+        assert review_detail(session, "220031", "recheck")["rejected"] == [
+            ["eligibility.asset_test", "quote does not support the asset-test value"]
+        ]
+        assert recheck_sheets(session, "MA") == []
+        assert withdraw_rejected(session, "MA") == []  # nothing left to withdraw

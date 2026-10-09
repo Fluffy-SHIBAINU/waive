@@ -568,3 +568,181 @@ def test_a_discount_given_as_a_range_or_a_floor_is_not_one_tier():
     docs = {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT + "\n" + acmh + "\n"}
     report = verify_sheet(with_tiers_quote(acmh, [(200, 400, 40)]), docs)
     assert ("eligibility.discount_tiers", RANGE_REASON) not in report.rejected
+
+
+def test_a_true_asset_test_is_not_supported_by_a_quote_that_rules_assets_out():
+    from waive.atlas.verify import ASSET_REASON
+
+    # Review of 7.9: the True branch only looked for a "tested" word, and "considered" is one, so
+    # "Assets are not considered" verified asset_test=True as well as False.
+    path = "eligibility.asset_test"
+    assert (
+        verdict(path, True, "Assets are not considered in determining eligibility.") == ASSET_REASON
+    )
+    assert (
+        verdict(path, True, "The hospital does not consider assets when deciding eligibility.")
+        == ASSET_REASON
+    )
+    assert (
+        verdict(path, False, "Assets are not considered in determining eligibility.") == "accepted"
+    )
+    # A partial exemption still means the rest of the assets are looked at.
+    assert verdict(path, True, ADVENTIST_ASSETS) == "accepted"
+
+
+WAUCHULA_TABLE = (
+    "Patients with household incomes that exceed two hundred fifty percent (250%) of the current "
+    "Federal Poverty Guidelines but are less than four hundred one percent (401%) shall be granted "
+    "the below discounts: Uninsured patients with household incomes between two hundred fifty-one "
+    "percent (251%) and four hundred percent (400%) of Federal Poverty Guidelines would be granted "
+    "a ninety-eight percent (98%) discount on applicable balances. Patients with household incomes "
+    "that exceed four hundred one percent (401%) of the Federal Poverty Guidelines shall be granted "
+    "the below discounts: For Illinois facilities - Uninsured patients with household incomes "
+    "between four hundred one percent (401%) and six hundred percent (600%) of Federal Poverty "
+    "Guidelines would be granted an eighty-five percent (85%) discount on applicable balances."
+)
+
+
+def test_a_band_stated_for_another_states_facilities_is_not_the_hospitals():
+    from waive.atlas.verify import OTHER_STATE_REASON, bands_under_another_state
+
+    # AdventHealth Wauchula, Florida (101300, review of 7.9): the 400-600% / 85% tier is granted
+    # to Illinois facilities only, inside the system-wide policy.
+    both = [
+        DiscountTier(min_fpl_exclusive=250, max_fpl_inclusive=400, discount_percent=98),
+        DiscountTier(min_fpl_exclusive=400, max_fpl_inclusive=600, discount_percent=85),
+    ]
+    assert bands_under_another_state(WAUCHULA_TABLE, "FL", both)
+    assert not bands_under_another_state(WAUCHULA_TABLE, "IL", both)
+    assert not bands_under_another_state(WAUCHULA_TABLE, "FL", both[:1])
+    # The free-care limit too, and a quote without such a heading never trips.
+    illinois_free = (
+        "For Illinois facilities, patients at or below 300% of the Federal Poverty Guidelines "
+        "receive a 100% reduction."
+    )
+    assert bands_under_another_state(illinois_free, "FL", Decimal(300))
+    assert not bands_under_another_state(illinois_free, "IL", Decimal(300))
+    assert not bands_under_another_state(
+        "household income at or below 250% of the Federal Poverty Guidelines are eligible for free care",
+        "FL",
+        Decimal(250),
+    )
+    docs = {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT + "\n" + WAUCHULA_TABLE + "\n"}
+    sheet = st_example_sheet()  # a Massachusetts hospital
+    cited = sheet.eligibility.discount_tiers.model_copy(
+        update={"value": both, "quote": WAUCHULA_TABLE}
+    )
+    sheet = sheet.model_copy(
+        update={"eligibility": sheet.eligibility.model_copy(update={"discount_tiers": cited})}
+    )
+    assert ("eligibility.discount_tiers", OTHER_STATE_REASON) in verify_sheet(sheet, docs).rejected
+
+
+def with_list(path, value, quote):
+    section_name, field_name = path.split(".")
+    sheet = st_example_sheet()
+    cited = Cited(
+        value=value, quote=quote, source_id=SAMPLE_SOURCE_ID, checked_on=date(2026, 10, 2)
+    )
+    section = getattr(sheet, section_name).model_copy(update={field_name: cited})
+    return sheet.model_copy(update={section_name: section})
+
+
+def test_a_list_field_must_be_named_in_full_by_its_stored_quote():
+    from waive.atlas.schema import DocType, SubmitMethod
+    from waive.atlas.verify import LIST_REASON, prune_lists
+
+    # Review of 7.9: the structurer's list filters ran on the model's untrimmed quote; after
+    # trim_quotes the stored sentence named fewer items and nothing checked again (140202 kept
+    # photo_id and bank_statements under a sentence about W-2s and pay stubs).
+    sentence = "Applicants must provide a photo ID and one proof of income."
+    sheet = with_list(
+        "apply.documents_required",
+        [DocType.PHOTO_ID, DocType.PROOF_OF_INCOME, DocType.BANK_STATEMENTS],
+        sentence,
+    )
+    assert ("apply.documents_required", LIST_REASON) in verify_sheet(sheet, DOCS).rejected
+    pruned, notes = prune_lists(sheet, DOCS)
+    assert [k.value for k in pruned.apply.documents_required.value] == [
+        "photo_id",
+        "proof_of_income",
+    ]
+    assert notes == ["apply.documents_required: 1 item not named in the trimmed quote"]
+    assert verify_sheet(pruned, DOCS).ok
+    # A list the quote names nothing of goes, with the filter's own words.
+    sheet = with_list(
+        "apply.submit_methods",
+        [SubmitMethod(kind="mail", detail=""), SubmitMethod(kind="fax", detail="")],
+        "Questions: call 617-555-0100.",
+    )
+    assert (
+        "apply.submit_methods",
+        "none of the listed channels is named in the quote",
+    ) in verify_sheet(sheet, DOCS).rejected
+    pruned, notes = prune_lists(sheet, DOCS)
+    assert pruned.apply.submit_methods is None
+    assert notes == [
+        "apply.submit_methods: none of the listed channels is named in the quote (after trimming)"
+    ]
+    sheet = with_list(
+        "programs.presumptive",
+        ["Medicaid"],
+        "Applicants must provide a photo ID and one proof of income.",
+    )
+    assert (
+        "programs.presumptive",
+        "quote does not describe presumptive (automatic) eligibility",
+    ) in verify_sheet(sheet, DOCS).rejected
+    # The sample sheet's own lists stand on their quotes.
+    assert verify_sheet(st_example_sheet(), DOCS).ok
+
+
+def test_free_care_wording_next_to_partial_is_not_a_ceiling():
+    from waive.atlas.verify import quotes_assistance_ceiling
+
+    # Review of 7.9: a bare "partial" or "eligible for assistance" classed these as ceilings and
+    # held sheets whose free limit was right.
+    assert not quotes_assistance_ceiling(
+        "Households at or below 200% FPL qualify for full charity care; 201-400% receive partial "
+        "assistance"
+    )
+    assert not quotes_assistance_ceiling(
+        "Patients at or below 250% FPL are eligible for financial assistance covering the full "
+        "cost of care"
+    )
+    assert not quotes_assistance_ceiling(
+        "Free hospital care is available to patients at or below 200 percent of the poverty level"
+    )
+    # The Arnot wording is still a ceiling, and so is a bare promise of some help.
+    assert quotes_assistance_ceiling(ARNOT_SENTENCE)
+    assert quotes_assistance_ceiling(
+        "Patients up to 400% FPL are eligible for financial assistance under this policy."
+    )
+    assert quotes_assistance_ceiling(
+        "Patients up to 400% FPL receive partial financial assistance."
+    )
+
+
+def test_free_care_limits_a_document_states():
+    from waive.atlas.verify import free_care_limits_stated
+
+    # AHMC Anaheim (050226, review of 7.9): the web page and the newer PDF disagree.
+    assert free_care_limits_stated(
+        "Patients whose family income is at or below 200 percent of the Federal Poverty Level "
+        "will be eligible for a 100 percent write-off. Patients between 201 and 400 percent "
+        "receive a discount."
+    ) == {Decimal(200)}
+    assert free_care_limits_stated(
+        "No-Cost (charity care): Uninsured and underinsured patients whose family gross income "
+        "is between 0% and 250% of FPL are eligible for charity care (i.e., free care)."
+    ) == {Decimal(250)}
+    assert free_care_limits_stated(SAMPLE_POLICY_TEXT) == {Decimal(250)}
+    # Sentences about discounts, caps or programs name no free-care limit.
+    assert (
+        free_care_limits_stated(
+            "Patients at or below 400% FPL will not be charged more than 100% of the amounts "
+            "generally billed. Households up to 300% of FPL may receive help from the Health Safety Net."
+        )
+        == set()
+    )
+    assert free_care_limits_stated("Free care is available; ask a financial counselor.") == set()

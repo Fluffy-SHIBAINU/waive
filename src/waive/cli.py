@@ -12,7 +12,13 @@ from waive.ai.client import AIClient
 from waive.atlas import repo
 from waive.atlas.metrics import atlas_metrics, national_report, write_national_report
 from waive.atlas.overlays import run_overlay
-from waive.atlas.pipeline import build_hospital, build_state, coverage_report
+from waive.atlas.pipeline import (
+    build_hospital,
+    build_state,
+    coverage_report,
+    recheck_sheets,
+    withdraw_rejected,
+)
 from waive.atlas.publish import export_state
 from waive.atlas.refresh import refresh_hospital
 from waive.atlas.registry import seed_all_states, seed_state
@@ -206,6 +212,60 @@ def atlas_export(
     with session_scope(_engine(settings)) as session:
         count = export_state(session, state, path)
     console.print(f"Exported {count} sheets to {path}")
+
+
+@atlas_app.command("recheck")
+def atlas_recheck(
+    state: str | None = typer.Option(None, "--state", help="One state, or every state"),
+    published_only: bool = typer.Option(
+        True, "--published-only/--all", help="Only published sheets (the ones that matter)"
+    ),
+    withdraw: bool = typer.Option(
+        False,
+        "--withdraw",
+        help="Publish a new version of each listed sheet without the rejected fields",
+    ),
+) -> None:
+    """List latest sheets whose stored fields the current verification rules reject. No paid
+    calls: run it after a verifier change, then rebuild the listed hospitals with
+    `waive atlas build --state XX --ccn NNNNNN --reuse-sources` before exporting, or pass
+    --withdraw to re-verify them in place (lists cut to what their quotes name, other rejected
+    fields dropped, a new version each) without any model call."""
+    settings = Settings()
+    if withdraw:
+        with session_scope(_engine(settings)) as session:
+            results = withdraw_rejected(session, state, published_only=published_only)
+        table = Table("CCN", "Hospital", "Outcome", "Version", "Notes")
+        for result in results:
+            table.add_row(
+                result.ccn,
+                result.name,
+                result.outcome,
+                str(result.version or ""),
+                "; ".join(result.notes)[:160],
+            )
+        console.print(table)
+        console.print(f"{len(results)} sheets re-verified and republished without rejected fields")
+        return
+    with session_scope(_engine(settings)) as session:
+        found = recheck_sheets(session, state)
+    if published_only:
+        found = [entry for entry in found if entry.status.value == "published"]
+    table = Table("CCN", "Hospital", "State", "Status", "Field", "Reason")
+    for entry in found:
+        for path, reason in entry.rejected:
+            table.add_row(entry.ccn, entry.name, entry.state, entry.status.value, path, reason)
+    console.print(table)
+    sheets = "sheet" if len(found) == 1 else "sheets"
+    console.print(f"{len(found)} {sheets} with fields the current rules reject")
+    if found:
+        console.print(
+            "Rebuild: "
+            + "; ".join(
+                f"uv run waive atlas build --state {e.state} --ccn {e.ccn} --reuse-sources"
+                for e in found
+            )
+        )
 
 
 @atlas_app.command("report")

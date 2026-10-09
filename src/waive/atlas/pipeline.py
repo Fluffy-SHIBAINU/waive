@@ -11,10 +11,12 @@ from waive.ai.client import MAX_SERVER_MESSAGE_CHARS, AIClient, AIOutputError
 from waive.atlas import repo
 from waive.atlas.discover import MIN_CONFIDENCE, discover_domain, host_of
 from waive.atlas.publish import (
+    DOCUMENT_CONFLICT_REASON,
     carry_over_reported,
     copy_fields,
     critical_conflicts,
     decide_status,
+    document_conflicts,
     drop_fields,
     publish_sheet,
     resolve_conflicts,
@@ -24,8 +26,8 @@ from waive.atlas.schema import HospitalRef, ProcedureSheet, SheetStatus, SourceD
 from waive.atlas.scout import navigation_shells, scout_hospital, store_scouted
 from waive.atlas.structure import document_states, structure_sheet
 from waive.atlas.tavily_gateway import TavilyGateway
-from waive.atlas.verify import PATIENT_SHARE_REASON, trim_quotes, verify_sheet
-from waive.db import HospitalRow
+from waive.atlas.verify import PATIENT_SHARE_REASON, prune_lists, trim_quotes, verify_sheet
+from waive.db import HospitalRow, ReviewItemRow
 
 Outcome = Literal["published", "held", "skipped", "failed"]
 # A document that states income rules names the poverty level; one that does not cannot supply
@@ -34,6 +36,17 @@ INCOME_RULE_WORDS = re.compile(r"poverty|\bfpl\b|\bfpg\b", re.IGNORECASE)
 # A structurer error is the model name, the status and the server's message (at most
 # MAX_SERVER_MESSAGE_CHARS); the review detail and the note keep the whole of it.
 ERROR_DETAIL_CHARS = MAX_SERVER_MESSAGE_CHARS + 100
+# Fields that describe one hospital's own desk, never a system's policy: a sibling's borrowed
+# documents cannot supply them (Condell's sheet told patients to return the application to
+# Lutheran General's business office, review of 7.9).
+BORROWED_SPECIFIC_PATHS = (
+    "apply.submit_methods",
+    "contacts.phone",
+    "contacts.hours",
+    "contacts.languages",
+    "coverage.facilities",
+    "coverage.provider_list_url",
+)
 
 
 @dataclass
@@ -94,29 +107,29 @@ def _drop_navigation_shells(
 
 def _drop_other_state_documents(
     session: Session,
-    ccn: str,
-    state: str,
+    hospital: HospitalRef,
     sources_with_text: list[tuple[SourceDoc, str]],
     result: BuildResult,
 ) -> list[tuple[SourceDoc, str]]:
     """A health system that publishes one policy per state (Adventist Health: California,
     Hawaii, Oregon) has them side by side on one site, and the scout stores whichever the search
-    returns. When a document names another state and one names the hospital's own, the other
-    state's version is detached and kept from the structurer, which cited the Hawaii table on
-    six California sheets (task 7.9). Documents naming no state stay."""
+    returns. A document that names only other states is detached and kept from the structurer,
+    which cited the Hawaii table on six California sheets (task 7.9) and AdventHealth's Illinois
+    page on a Florida sheet (review of 7.9), as long as some document names the hospital's own
+    state or none at all. Documents naming no state stay, and when every document is another
+    state's nothing is set aside: there is nothing to prefer."""
+    ccn, state = hospital.ccn, hospital.state
     named = {
-        source.id: document_states(source.title, source.url or "")
+        source.id: document_states(source.title, source.url or "", hospital)
         for source, _ in sources_with_text
         if source.kind is SourceKind.HOSPITAL_WEB
     }
-    if not any(state in states for states in named.values()):
-        return sources_with_text
     other = [
         source
         for source, _ in sources_with_text
         if named.get(source.id) and state not in named[source.id]
     ]
-    if not other:
+    if not other or len(other) == len(sources_with_text):
         return sources_with_text
     for source in other:
         repo.unlink_source(session, ccn, source.id)
@@ -132,12 +145,21 @@ def _drop_other_state_documents(
     return [(source, text) for source, text in sources_with_text if source.id not in gone]
 
 
+@dataclass
+class Borrowed:
+    """A sibling's documents added to the hospital's own, and the review item that records it."""
+
+    sources: list[tuple[SourceDoc, str]]
+    shared_ids: set[str]
+    item: ReviewItemRow
+
+
 def _share_sibling_sources(
     session: Session,
     row: HospitalRow,
     own: list[tuple[SourceDoc, str]],
     result: BuildResult,
-) -> list[tuple[SourceDoc, str]] | None:
+) -> Borrowed | None:
     """The hospital's documents plus the policy documents of a sibling on the same website that
     has a published sheet, or None when no sibling can help. Searching a system site by hospital
     name returns a thin page or nothing while the system's policy is already stored for a
@@ -164,7 +186,7 @@ def _share_sibling_sources(
             continue
         for source, _ in shared:
             repo.link_source(session, row.ccn, source.id)
-        repo.add_review_item(
+        item = repo.add_review_item(
             session,
             row.ccn,
             "shared_sources",
@@ -175,12 +197,56 @@ def _share_sibling_sources(
             f"{len(shared)} policy document{plural} shared from {sibling.name} ({sibling.ccn}) on "
             f"{domain}; the hospital's own documents state no income rules"
         )
-        return [*own, *shared]
+        return Borrowed([*own, *shared], {s.id for s, _ in shared}, item)
     return None
+
+
+def _previously_borrowed(
+    session: Session, ccn: str, sources_with_text: list[tuple[SourceDoc, str]]
+) -> Borrowed | None:
+    """Documents an earlier build shared from a sibling, now linked to this hospital and loaded
+    by --reuse-sources as if its own. The `shared_sources` items say which they were, so a
+    rebuild treats them the same way the first build did."""
+    items = repo.review_items_of_kind(session, ccn, "shared_sources")
+    if not items:
+        return None
+    shared_ids = {source_id for item in items for source_id in item.detail.get("sources", [])}
+    present = shared_ids & {source.id for source, _ in sources_with_text}
+    if not present:
+        return None
+    return Borrowed(sources_with_text, present, items[-1])
+
+
+def _drop_borrowed_specifics(
+    sheet: ProcedureSheet, borrowed: Borrowed, result: BuildResult
+) -> ProcedureSheet:
+    """A borrowed document's addresses, phones, hours, languages and facility lists are the
+    sibling's (or the system's; nothing in the text tells which), so the hospital-specific fields
+    it backs are dropped and listed in the `shared_sources` item for an admin to restore."""
+    dropped = [
+        path
+        for path, cited in sheet.field_paths()
+        if path in BORROWED_SPECIFIC_PATHS and cited.source_id in borrowed.shared_ids
+    ]
+    if not dropped:
+        return sheet
+    borrowed.item.detail = {**borrowed.item.detail, "dropped_fields": dropped}
+    result.notes.append(
+        "dropped from the shared documents (a sibling's desk, not this hospital's): "
+        + ", ".join(dropped)
+    )
+    return drop_fields(sheet, dropped)
 
 
 def _lacks_income_rules(sheet: ProcedureSheet) -> bool:
     return sheet.eligibility.free_care_max_fpl is None and sheet.eligibility.discount_tiers is None
+
+
+def _ground(sheet: ProcedureSheet, texts: dict[str, str]) -> tuple[ProcedureSheet, list[str]]:
+    """Each quote cut to the span its source contains, then each list cut to the items that span
+    names. The structurer filtered lists against the model's whole quote; the kept sentence may
+    name fewer (review of 7.9), so the pruning runs again here, where verify_sheet checks it."""
+    return prune_lists(trim_quotes(sheet, texts), texts)
 
 
 def _structure_and_verify(
@@ -209,7 +275,8 @@ def _structure_and_verify(
         result.outcome = "failed"
         result.notes.append(f"structurer gave no usable sheet: {error}"[:ERROR_DETAIL_CHARS])
         return None
-    sheet = trim_quotes(sheet, texts)
+    sheet, pruned = _ground(sheet, texts)
+    skipped = [*skipped, *pruned]
     report = verify_sheet(sheet, texts)
     if skipped or report.rejected:
         repo.add_review_item(
@@ -251,7 +318,7 @@ def _tiebreak(
         return primary, conflicts
     merged, remaining, detail = resolve_conflicts(primary, secondary, third, conflicts)
     texts = {source.id: text for source, text in sources_with_text}
-    merged = trim_quotes(merged, texts)
+    merged, _pruned = _ground(merged, texts)
     report = verify_sheet(merged, texts)
     if report.rejected:
         # The primary was verified before, so a rejection here is a cross-check field whose quote
@@ -331,12 +398,14 @@ def build_hospital(
                 "the hospital's policy is not in the stored documents"
             )
             return result
-    shared = False
+    borrowed: Borrowed | None = None
+    if sources_with_text and reuse_sources:
+        borrowed = _previously_borrowed(session, ccn, sources_with_text)
     if not sources_with_text and reuse_sources:
         # Nothing stored and no credits to spend: a sibling's documents on the same site first.
         borrowed = _share_sibling_sources(session, row, [], result)
         if borrowed is not None:
-            sources_with_text, shared = borrowed, True
+            sources_with_text = borrowed.sources
     if not sources_with_text:
         docs = scout_hospital(gateway, hospital)
         if docs:
@@ -348,23 +417,21 @@ def build_hospital(
                 repo.add_review_item(session, ccn, "no_documents", {"domain": row.website_domain})
                 result.notes.append("no financial assistance documents found")
                 return result
-            sources_with_text, shared = borrowed, True
-    sources_with_text = _drop_other_state_documents(
-        session, ccn, row.state, sources_with_text, result
-    )
+            sources_with_text = borrowed.sources
+    sources_with_text = _drop_other_state_documents(session, hospital, sources_with_text, result)
 
     first_pass = _structure_and_verify(session, ai, hospital, sources_with_text, today, result)
     if first_pass is None:
         return result
     sheet, holds = first_pass
-    if not shared and not holds and _lacks_income_rules(sheet):
+    if borrowed is None and not holds and _lacks_income_rules(sheet):
         # The hospital's own pages gave no income rule: a sibling's policy on the same site may
         # (Advocate Christ: a language-menu shell of its own, the enterprise policy on Advocate
         # Illinois Masonic's sheet). One more structuring pass, Token Factory only.
         borrowed = _share_sibling_sources(session, row, sources_with_text, result)
         if borrowed is not None:
             sources_with_text = _drop_other_state_documents(
-                session, ccn, row.state, borrowed, result
+                session, hospital, borrowed.sources, result
             )
             second_pass = _structure_and_verify(
                 session, ai, hospital, sources_with_text, today, result
@@ -372,6 +439,8 @@ def build_hospital(
             if second_pass is None:
                 return result
             sheet, holds = second_pass
+    if borrowed is not None:
+        sheet = _drop_borrowed_specifics(sheet, borrowed, result)
     texts = {source.id: text for source, text in sources_with_text}
 
     conflicts: list[str] = []
@@ -387,7 +456,7 @@ def build_hospital(
         else:
             # A disagreement only counts when the cross-check's own quote verifies; an
             # ungrounded value (for example a bare "300%") cannot veto a verified primary.
-            secondary = trim_quotes(secondary, texts)
+            secondary, _pruned = _ground(secondary, texts)
             ungrounded = [path for path, _ in verify_sheet(secondary, texts).rejected]
             if ungrounded:
                 secondary = drop_fields(secondary, ungrounded)
@@ -427,6 +496,25 @@ def build_hospital(
         # never sees it; the sheet is held and an admin decides.
         repo.add_review_item(session, ccn, "inconsistent", {"problems": inconsistent})
         result.notes.extend(inconsistent)
+    disagreeing = document_conflicts(sheet, texts)
+    if disagreeing:
+        # Two of the hospital's own documents name different free-care limits (AHMC Anaheim: a
+        # web page at 250%, the newer PDF at 200%); which one is current is an admin's call.
+        free = sheet.eligibility.free_care_max_fpl
+        repo.add_review_item(
+            session,
+            ccn,
+            "document_conflict",
+            {
+                "path": "eligibility.free_care_max_fpl",
+                "published": str(free.value) if free else None,
+                "source_id": free.source_id if free else None,
+                "documents": disagreeing,
+            },
+        )
+        holds.append(DOCUMENT_CONFLICT_REASON)
+        listed = ", ".join(f"{entry['id']}: {'/'.join(entry['limits'])}%" for entry in disagreeing)
+        result.notes.append(f"{DOCUMENT_CONFLICT_REASON} ({listed})")
     status = decide_status(sheet, conflicts, holds)
     published = publish_sheet(session, sheet.model_copy(update={"status": status}))
     result.outcome = "published" if status.value == "published" else "held"
@@ -518,6 +606,81 @@ def clear_wrong_domain(session: Session, ccn: str, reason: str) -> BuildResult:
             f"{len(dropped)} fields quoted from them dropped: " + ", ".join(dropped)
         )
     return result
+
+
+@dataclass
+class Recheck:
+    ccn: str
+    name: str
+    state: str
+    status: SheetStatus
+    rejected: list[tuple[str, str]]
+
+
+def recheck_sheets(session: Session, state: str | None = None) -> list[Recheck]:
+    """Every latest sheet whose stored fields the current verification rules reject, with the
+    paths and reasons. No model call and no credits: a what-if over stored quotes and texts, run
+    after a verifier change to find the published sheets to rebuild before exporting (four
+    national sheets and sixteen Massachusetts fields kept fields the 7.9 rules had been written
+    for, because they were not rebuilt; review of 7.9)."""
+    found: list[Recheck] = []
+    for row in repo.list_hospitals(session, state=state):
+        if repo.is_demo(row.ccn):
+            continue
+        latest = repo.latest_sheet(session, row.ccn)
+        if latest is None:
+            continue
+        sheet = latest[0]
+        texts = {source.id: text for source, text in repo.sources_for(session, row.ccn)}
+        report = verify_sheet(sheet, texts)
+        if report.rejected:
+            found.append(Recheck(row.ccn, row.name, row.state, sheet.status, report.rejected))
+    return found
+
+
+def withdraw_rejected(
+    session: Session, state: str | None = None, published_only: bool = True
+) -> list[BuildResult]:
+    """Re-verify each latest sheet under the current rules and publish a new version without the
+    fields they reject: lists cut to the items their quotes name, everything else dropped. No
+    model call: it is the pipeline's grounding and verification steps run again over stored
+    quotes and texts, so a verifier fix reaches published sheets the same day without spending
+    on a rebuild (the Massachusetts batch predates the 7.9 asset, insured and list rules; review
+    of 7.9). A held sheet stays held; a published one keeps its status unless it loses its income
+    rules. A `recheck` review item records what went."""
+    results: list[BuildResult] = []
+    for row in repo.list_hospitals(session, state=state):
+        if repo.is_demo(row.ccn):
+            continue
+        latest = repo.latest_sheet(session, row.ccn)
+        if latest is None:
+            continue
+        sheet = latest[0]
+        if published_only and sheet.status is not SheetStatus.PUBLISHED:
+            continue
+        texts = {source.id: text for source, text in repo.sources_for(session, row.ccn)}
+        grounded, pruned = _ground(sheet, texts)
+        report = verify_sheet(grounded, texts)
+        if not pruned and not report.rejected:
+            continue
+        result = BuildResult(row.ccn, row.name, "skipped")
+        result.notes.extend(pruned)
+        result.notes.extend(f"{path}: {reason}" for path, reason in report.rejected)
+        withdrawn = drop_fields(grounded, [path for path, _ in report.rejected])
+        status = (
+            decide_status(withdrawn, [], [])
+            if sheet.status is SheetStatus.PUBLISHED
+            else SheetStatus.HELD
+        )
+        repo.add_review_item(
+            session, row.ccn, "recheck", {"pruned": pruned, "rejected": report.rejected}
+        )
+        published = publish_sheet(session, withdrawn.model_copy(update={"status": status}))
+        result.outcome = "published" if status is SheetStatus.PUBLISHED else "held"
+        result.version = published.version if published else sheet.version
+        results.append(result)
+        session.commit()
+    return results
 
 
 def coverage_report(session: Session, state: str) -> str:

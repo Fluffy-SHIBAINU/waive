@@ -27,13 +27,13 @@ Waive never asks for money, card numbers or bank logins. Results are estimates, 
 
 | Area | Where it stands |
 |---|---|
-| Massachusetts atlas | 46 nonprofit acute-care and critical-access hospitals in the registry; **28 published sheets (61 %)**, 16 held (no income rules in the reachable text, discount tiers the schema cannot parse, an unresolved cross-model conflict, or stored pages that turned out not to be the hospital's policy: a moved site's navigation menu, a billing directory's pages about other hospitals), 2 with no documents found. Every published documented field passed exact-quote verification. All 44 sheets (published and held) carry a cited Massachusetts Health Safety Net entry from mass.gov. Report: `docs/reports/atlas-ma.md` |
-| National registry | **2,703** nonprofit hospitals seeded from CMS for all 50 states and DC; 64 published nationally (2 %), core fields documented on 67 % of published sheets, 274 open review items. Scouting of CA, NY, TX, FL, PA, IL, OH and NJ started 2026-10-09 on a 300-credit daily budget (about 5 Tavily credits per hospital; 981 hospitals queued); the first batch was rebuilt the same day from its stored documents after the yield fixes (6 hospitals published through a sibling's system policy, 7 withdrawn to held: four wrong sites, a misread ceiling, two tables the schema cannot hold). State exports: `data/atlas/`. Report: `docs/reports/atlas-national.md` |
+| Massachusetts atlas | 46 nonprofit acute-care and critical-access hospitals in the registry; **28 published sheets (61 %)**, 16 held (no income rules in the reachable text, discount tiers the schema cannot parse, an unresolved cross-model conflict, or stored pages that turned out not to be the hospital's policy: a moved site's navigation menu, a billing directory's pages about other hospitals), 2 with no documents found. Every published documented field passed exact-quote verification, re-run under the current rules on 2026-10-09: `waive atlas recheck --withdraw` cut 27 sheets' document, channel and program lists to the items their quotes name and withdrew asset-test and insured-patient values whose quotes said nothing of the kind (no model call). All 44 sheets (published and held) carry a cited Massachusetts Health Safety Net entry from mass.gov. Report: `docs/reports/atlas-ma.md` |
+| National registry | **2,703** nonprofit hospitals seeded from CMS for all 50 states and DC; 59 published nationally (2 %), core fields documented on 60 % of published sheets, 339 open review items. Scouting of CA, NY, TX, FL, PA, IL, OH and NJ started 2026-10-09 on a 300-credit daily budget (about 5 Tavily credits per hospital; 981 hospitals queued); the first batch was rebuilt the same day from its stored documents after the yield fixes (6 hospitals published through a sibling's system policy, 7 withdrawn to held: four wrong sites, a misread ceiling, two tables the schema cannot hold); the review of that rebuild cost $0.21 more: 13 hospitals rebuilt again from stored documents, 18 re-verified in place, and 5 moved to held (four where two of the hospital's own documents name different free-care limits, three of them against a 2021 AdventHealth flyer that still says 200 %; one whose only discount table was quoted as a range). State exports: `data/atlas/`. Report: `docs/reports/atlas-national.md` |
 | Bill reading | 30 synthetic bills (several layouts, rotations, blur): hospital name 100 %, statement date 97 %, amount due 100 %, FAP phone 100 %, FAP web address 100 %, collection notice 100 %. Report: `docs/reports/bill-eval.md` |
 | Real bills | Accepted since 2026-10-09: the Token Factory project runs with zero data retention, confirmed that day by the project owner (`WAIVE_ZDR_CONFIRMED=true`). None processed yet; everything so far ran on synthetic bills and letters. Waive still refuses photos carrying personal data whenever `WAIVE_ZDR_CONFIRMED` is false |
 | Learning loop | Implemented and exercised end to end by a simulation test (three denials → re-scout → new version after review → open cases re-evaluated; a missing document appears as "reported by patients" after 5 cases; a hospital slip is flagged after 3). No real outcomes yet |
 | Deployment | See the status line at the top |
-| Spend to date | 699 Tavily credits, $2.81 on Token Factory, $0 on AI Cloud (2026-10-09) |
+| Spend to date | 699 Tavily credits, $3.02 on Token Factory, $0 on AI Cloud (2026-10-09) |
 | Tests | 300+ unit, contract and simulation tests; none opens a network socket |
 
 The demo hospital, **St. Example Medical Center** (CCN 229999), is fictional and is excluded from exports, reports and the public atlas list (`/atlas?demo=1` shows it).
@@ -191,6 +191,7 @@ The admin console (`/admin/login`) switches on when `WAIVE_ADMIN_TOKEN` (16+ cha
 | `waive atlas schedule [--dry-run\|--run] [--limit N] [--state XX] [--top N]` | Show the scouting priority queue and today's budget; `--run` spends credits | with `--run` |
 | `waive atlas export --state XX [--out PATH]` | Write the latest sheets as open data | no |
 | `waive atlas report --state XX \| --national [--out PATH]` | Coverage report in Markdown | no |
+| `waive atlas recheck [--state XX] [--all] [--withdraw]` | List latest sheets whose stored fields the current verification rules reject (run after a rule change); `--withdraw` republishes them without those fields, no model call | no |
 | `waive corpus generate [--count N] [--out DIR] [--seed N]` | Fictional bill images with ground truth | no |
 | `waive eval bills [--corpus DIR] [--limit N] [--out PATH]` | Per-field extraction accuracy on the corpus | yes (vision) |
 | `waive db upgrade` | Create missing tables and columns | no |
@@ -216,7 +217,7 @@ The admin console (`/admin/login`) switches on when `WAIVE_ADMIN_TOKEN` (16+ cha
 
 ## Costs
 
-Actual spend to date (from the usage ledger, `uv run waive doctor` prints the totals): **699 Tavily credits, $2.81 Token Factory, $0 AI Cloud** as of 2026-10-09.
+Actual spend to date (from the usage ledger, `uv run waive doctor` prints the totals): **699 Tavily credits, $3.02 Token Factory, $0 AI Cloud** as of 2026-10-09.
 
 | Model (Token Factory) | Input $/M tokens | Output $/M tokens |
 |---|---|---|
