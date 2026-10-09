@@ -110,6 +110,36 @@ def quotes_patient_share(quote: str) -> bool:
     return _PATIENT_SHARE.search(text) is not None and _DISCOUNT_WORDS.search(text) is None
 
 
+RANGE_REASON = "quote gives the discount as a range or a floor, not a fixed percentage"
+_PERCENT = r"(\d+(?:\.\d+)?)\s*%"
+# "a reduction of 55% to 75%", "a discount of at least 25%" (discount word first) ...
+_RANGE_BEFORE = re.compile(
+    rf"\b(?:discounts?|reductions?|reduc\w+|write[- ]?offs?)\s+(?:of\s+)?"
+    rf"(?:(at least|up to|between)\s+)?{_PERCENT}(?:\s*(?:to|-|and)\s*{_PERCENT})?"
+)
+# ... and "a 30% to 50% discount", "up to 75% off" (discount word last).
+_RANGE_AFTER = re.compile(
+    rf"(?:(at least|up to)\s+)?{_PERCENT}(?:\s*(?:to|-)\s*{_PERCENT})?"
+    r"\s*(?:discount|reduction|off\b|write)"
+)
+
+
+def discount_range_in_quote(quote: str) -> set[Decimal]:
+    """The endpoints of a discount the quote gives as a range ("55% to 75%") or a bound ("at
+    least 25%", "up to 75%"). A fixed "60% discount" contributes nothing. Alliance (360131) and
+    ACMH (390163) published one endpoint as the whole band's discount (task 7.9)."""
+    text = normalize(quote)
+    found: set[Decimal] = set()
+    for pattern in (_RANGE_BEFORE, _RANGE_AFTER):
+        for match in pattern.finditer(text):
+            bound, first, second = match.group(1), match.group(2), match.group(3)
+            if second is not None:
+                found |= {Decimal(first), Decimal(second)}
+            elif bound is not None:
+                found.add(Decimal(first))
+    return found
+
+
 def tiers_rise_with_income(tiers: list[DiscountTier]) -> bool:
     """A later (richer) band with a larger discount than an earlier one. No sliding scale works
     that way: such a table is the patient's share read as a discount (Adventist Health's
@@ -312,6 +342,10 @@ def verify_sheet(sheet: ProcedureSheet, documents: dict[str, str]) -> Verificati
             quotes_patient_share(cited.quote or "") or tiers_rise_with_income(cited.value)
         ):
             report.rejected.append((path, PATIENT_SHARE_REASON))
+        elif path == "eligibility.discount_tiers" and discount_range_in_quote(cited.quote or "") & {
+            Decimal(tier.discount_percent) for tier in cited.value
+        }:
+            report.rejected.append((path, RANGE_REASON))
         elif path == "eligibility.insured_patients_covered" and quotes_only_the_agb_cap(
             cited.quote or ""
         ):

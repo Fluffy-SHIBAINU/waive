@@ -814,3 +814,68 @@ def test_presumptive_programs_must_be_named_in_a_quote_about_automatic_eligibili
         ["MassHealth", "Health Safety Net"],
         "patients with Health Safety Net Full and Health Safety Net Partial will be presumptively eligible for Financial Assistance",
     )[0] == ["Health Safety Net"]
+
+
+def test_residency_recognises_states_named_inside_a_sentence():
+    # 7.9: nineteen sheets lost residency because "New Jersey residents", "Ohio resident" and
+    # "Kansas, Missouri, and Illinois" were compared whole against the state list.
+    from waive.atlas.structure import _states
+
+    assert _states(["New Jersey residents"]) == ["NJ"]
+    assert _states(["Ohio resident"]) == ["OH"]
+    assert _states(["Kansas, Missouri, and Illinois"]) == ["KS", "MO", "IL"]
+    assert _states(["West Virginia"]) == ["WV"]
+    assert _states(["Massachusetts", "nh", "residents of MA"]) == ["MA", "NH"]
+    assert _states(["Residents of KS, MO or IL"]) == ["KS", "MO", "IL"]
+    for bogus in (["True"], ["service area"], ["Indianapolis residents"], ["in or me"]):
+        with pytest.raises(ValueError, match="no US state recognised"):
+            _states(bogus)
+
+
+def test_an_eca_wait_below_the_501r_floor_is_a_notice_period_not_the_wait():
+    # 7.9: "at least 30 days after Adventist Health provides the individual with a written
+    # notice" was stored as eca_wait_days=30 on six sheets; the law's floor is 120 days.
+    draft = SheetDraft(
+        eca_wait_days=field(30, "at least thirty (30) days before initiating any ECAs")
+    )
+    sheet, skipped = draft_to_sheet(draft, SAMPLE.hospital, [SAMPLE.sources[0]], TODAY)
+    assert sheet.collections.eca_wait_days is None
+    assert skipped == [
+        "collections.eca_wait_days: 30 is below the 501(r) minimum of 120 days; a notice period, "
+        "not the collections wait"
+    ]
+    draft = SheetDraft(
+        eca_wait_days=field("180 days", "only after at least 180 days with no response")
+    )
+    sheet, skipped = draft_to_sheet(draft, SAMPLE.hospital, [SAMPLE.sources[0]], TODAY)
+    assert sheet.collections.eca_wait_days.value == 180 and skipped == []
+
+
+def test_a_phone_copied_from_a_tel_link_is_formatted_and_a_label_without_digits_is_skipped():
+    # Arnot Ogden (330090, 7.9): "[Call Arnot Health's Financial Assistance](tel:+16072713827)"
+    # was published as "+16072713827".
+    from waive.atlas.structure import _phone
+
+    assert _phone("+16072713827") == "(607) 271-3827"
+    assert _phone("6072713827") == "(607) 271-3827"
+    assert _phone("[Call us](tel:+16072713827)") == "(607) 271-3827"
+    # Human-readable numbers keep the hospital's own formatting (no churn on the MA sheets).
+    for readable in (
+        "978.937.6700",
+        "(617) 243-6824",
+        "1-833-899-0028",
+        "617-754-5974 or 617-754-5979",
+    ):
+        assert _phone(readable) == readable
+    assert _phone("[508-334-9300](tel:508-334-9300)") == "508-334-9300"
+    for bogus in ("Call Arnot Health's Financial Assistance", "+1607", "12345678901234"):
+        with pytest.raises(ValueError):
+            _phone(bogus)
+    draft = SheetDraft(
+        phone=field(
+            "[Call Arnot Health's Financial Assistance](tel:+16072713827)",
+            "Questions: call 617-555-0100",
+        )
+    )
+    sheet, _ = draft_to_sheet(draft, SAMPLE.hospital, [SAMPLE.sources[0]], TODAY)
+    assert sheet.contacts.phone.value == "(607) 271-3827"
