@@ -319,6 +319,51 @@ def test_a_free_limit_above_the_discount_table_is_held_with_a_review_item():
         assert len(sheet.eligibility.discount_tiers.value) == 2
 
 
+UMASS_CEILING = (
+    "Financial assistance is available to patients and their family members with household "
+    "income, less than 600% of the federal poverty guidelines."
+)
+
+
+class UMassGateway(FakeGateway):
+    def extract(self, urls, **kwargs):
+        return [ExtractedPage(url, POLICY_TEXT + UMASS_CEILING + "\n") for url in urls]
+
+
+class UMassAI(FakeAI):
+    """Both models read the summary's 600% ceiling on all assistance as free care, and both also
+    report it as the ceiling; the summary names no free-care band and no table."""
+
+    def __init__(self):
+        super().__init__(free_limit_for_fast=("600", UMASS_CEILING))
+        self.free_limits["reason"] = ("600", UMASS_CEILING)
+
+    def complete_json(self, role, messages, schema, *, phi, purpose, max_tokens=2000):
+        draft = super().complete_json(role, messages, schema, phi=phi, purpose=purpose)
+        draft.assistance_ceiling_fpl = DraftField(
+            value="600%", quote=UMASS_CEILING, source_id=draft.free_care_max_fpl.source_id
+        )
+        return draft
+
+
+def test_a_ceiling_on_all_assistance_is_not_published_as_free_care():
+    engine = make_engine_with_hospital()
+    with session_scope(engine) as session:
+        result = build_hospital(session, UMassGateway(), UMassAI(), "229999", TODAY)
+        assert result.outcome == "held"
+        assert (
+            "eligibility.free_care_max_fpl: stated 600 is at or above the overall assistance "
+            "ceiling (600); not free care" in result.notes
+        )
+        sheet, _ = repo.latest_sheet(session, "229999")
+        assert sheet.status is SheetStatus.HELD
+        assert sheet.eligibility.free_care_max_fpl is None
+        assert sheet.eligibility.discount_tiers is None
+        assert sheet.contacts.phone.value == "617-555-0100"  # the rest of the sheet survives
+        kinds = sorted(item.kind for item in repo.open_review_items(session, "229999"))
+        assert kinds == ["verification"]  # no misread reaches the inconsistency check
+
+
 MERCY_FREE = "Patients with household income less than 100% FPL have no patient responsibility."
 MERCY_TABLE = (
     "Qualifying Criterion Less than 100% FPL 101 - 200% FPL 201 - 250% FPL "
