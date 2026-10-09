@@ -14,6 +14,7 @@ from waive.atlas.scout import (
     THIN_CHARS,
     ScoutedDoc,
     classify_doc,
+    navigation_shells,
     policy_links,
     scout_hospital,
     select_urls,
@@ -560,6 +561,79 @@ def test_a_navigation_shell_downloaded_for_a_page_tavily_could_not_fetch_is_not_
     assert page.called
     assert docs == []
     assert gateway.calls == [([ENTRY_URL], "basic")]  # nothing to follow, nothing re-extracted
+
+
+# What every old milfordregional.org path returned after the site moved to UMass Memorial Health
+# (2026-10-09): the new site's menu, 10,760 characters of locations, services and news, HTTP 200,
+# no policy. Long enough to pass THIN_CHARS, so neither 2.8h fallback saw anything to fix.
+SHELL_PAGE = (
+    "![Logo](/sites/default/files/logo.png)\n\nThe Clinical Partner of Example Medical School\n\n"
+    "## All Locations\n\n[View all Locations](/locations)\n\n"
+    "Find a location by type, service, treatment or distance to you.\n\n"
+    "## Services and Treatments\n\nYour trusted resource for all types of health conditions, "
+    "providing you the knowledge to make informed decisions about your health.\n\n"
+    "Content to help you live healthy and well. Enhancing your lifestyle is part of our "
+    "relentless pursuit of helping you live a healthy life.\n\n"
+    "# Example Regional Medical Center\n\nWe offer you convenient access to high-quality care "
+    "close to home.\n\n14 Prospect Street  \nMilford, MA 01757\n\n"
+    "[Directions and Parking](/locations/example-regional)\n\n## Discover More\n\n"
+    "### [Take Advantage of Center for Mindfulness Upcoming Offerings](/services/mindfulness)\n\n"
+    "Reduce stress, support your health and wellness or simply enjoy being more present in your "
+    "daily life. Registration now being accepted for Fall 2026.\n\n"
+    "### [Example Regional Earns Primary Stroke Center Certification](/newsroom/stroke)\n\n"
+    "The medical center has earned Primary Stroke Center Certification, recognizing its "
+    "commitment to delivering high-quality, evidence-based stroke care.\n\n"
+    "## Find Convenient and Complete Care For All Your Health Needs\n\n### Orthopedics\n\n"
+    "### Rehabilitation Therapy Services\n\n### Neurology\n\n### Cancer Care\n\n"
+    "### Pregnancy and Childbirth\n\n### General Surgery\n\n## Special Services\n\n"
+    "### Emergency Care\n\nWe provide emergency care for adults and children.\n\n"
+    "### Urgent Care\n\nWe offer urgent care for nonemergency medical and recovery-related "
+    "concerns that require timely attention.\n\n[Pay a bill](/patients-visitors/pay-a-bill)\n\n"
+    "## Urgent Care Locations\n\n### Example Regional Urgent Care\n\n129 South Main Street, "
+    "Milford, MA 01757\n\n### Example Regional Urgent Care in Franklin\n\n1280 West Central "
+    "Street, Franklin, MA 02038\n\n## Footer Menu\n\n## Legal Menu\n\n"
+    "Copyright 2026 Example Health. All rights reserved.\n"
+)
+assert len(SHELL_PAGE) >= THIN_CHARS
+SHELL_URLS = [
+    "https://www.example.org/patient-financial-services/financial-assistance-policy",
+    "https://www.example.org/patient-financial-services/financial-assistance-application",
+    "https://www.example.org/patient-financial-services/financial-assistance-summary",
+]
+
+
+SHELL_TITLES = [
+    "Financial Assistance Policy",
+    "Financial Assistance Application",
+    "Plain Language Summary",
+]
+
+
+class ShellGateway(DepthGateway):
+    def search(self, query, **kwargs):
+        return [hit(url, t, 0.9) for url, t in zip(SHELL_URLS, SHELL_TITLES, strict=True)]
+
+
+def test_one_menu_page_returned_for_several_policy_urls_is_a_navigation_shell_and_not_stored():
+    gateway = ShellGateway(basic=dict.fromkeys(SHELL_URLS, SHELL_PAGE), advanced={})
+    docs = scout_hospital(gateway, HOSPITAL)
+    assert docs == []
+    assert gateway.calls == [(SHELL_URLS, "basic")]  # not thin: nothing re-extracted
+
+
+def test_navigation_shells_spare_pdfs_single_pages_and_identical_policy_pages():
+    policy, summary = SHELL_URLS[0], SHELL_URLS[2]
+    assert navigation_shells([(policy, SHELL_PAGE), (summary, SHELL_PAGE)]) == {policy, summary}
+    assert navigation_shells([(policy, SHELL_PAGE), (summary, SHELL_PAGE + "\n")]) == {
+        policy,
+        summary,
+    }
+    # One shell cannot be told from a page by its text alone; a PDF is what it is, even hosted
+    # twice; and the same policy text at two URLs names assistance in its prose.
+    assert navigation_shells([(policy, SHELL_PAGE), (summary, PAGE_TEXT)]) == set()
+    assert navigation_shells([(FAP_PDF, SHELL_PAGE), (FAP_PDF + "?v=2", SHELL_PAGE)]) == set()
+    assert navigation_shells([(policy, PAGE_TEXT), (summary, PAGE_TEXT)]) == set()
+    assert navigation_shells([(policy, SHELL_PAGE), (policy, SHELL_PAGE)]) == set()
 
 
 @respx.mock

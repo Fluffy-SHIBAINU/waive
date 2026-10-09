@@ -588,6 +588,106 @@ def test_reuse_sources_leaves_state_overlay_documents_out_of_the_structurer():
         assert [s.kind for s in sheet.sources] == [SourceKind.HOSPITAL_WEB]
 
 
+SHELL_TEXT = (
+    "![Logo](/logo.png)\n\n## All Locations\n\n[View all Locations](/locations)\n\n"
+    "Find a location by type, service, treatment or distance to you.\n\n"
+    "## Services and Treatments\n\nYour trusted resource for all types of health conditions.\n\n"
+    "### Emergency Care\n\nWe provide emergency care for adults and children.\n\n"
+    "[Pay a bill](/patients-visitors/pay-a-bill)\n\n## Footer Menu\n\n## Legal Menu\n"
+)
+SHELL_URLS = {
+    "fap": "https://www.example.org/patient-financial-services/financial-assistance-policy",
+    "application": "https://www.example.org/patient-financial-services/financial-assistance-apply",
+    "summary": "https://www.example.org/patient-financial-services/financial-assistance-summary",
+}
+
+
+def store_shells(session, ccn):
+    """What the scout stored for Milford Regional (220090) on 2026-10-09: the site had moved, and
+    its policy, application and summary URLs all answered with the same 10,760-character menu."""
+    sha = hashlib.sha256(SHELL_TEXT.encode()).hexdigest()
+    for doc_class, url in SHELL_URLS.items():
+        source = SourceDoc(
+            id=source_id_for(doc_class, sha),
+            kind=SourceKind.HOSPITAL_WEB,
+            url=url,
+            title=f"Financial Assistance {doc_class.title()} - Example Regional",
+            fetched_on=TODAY,
+            sha256=sha,
+        )
+        repo.save_source(session, source, SHELL_TEXT, ccn)
+
+
+class RecordingAI(FakeAI):
+    def __init__(self):
+        super().__init__()
+        self.prompts: list[str] = []
+
+    def complete_json(self, role, messages, schema, *, phi, purpose, max_tokens=2000):
+        self.prompts.append(messages[1]["content"])
+        return super().complete_json(role, messages, schema, phi=phi, purpose=purpose)
+
+
+def test_reuse_sources_detaches_stored_navigation_shells_and_says_so():
+    engine = make_engine_with_hospital()
+    with session_scope(engine) as session:
+        build_hospital(session, FakeGateway(), FakeAI(), "229999", TODAY)
+        store_shells(session, "229999")
+        assert len(repo.sources_for(session, "229999")) == 4
+        ai = RecordingAI()
+        result = build_hospital(session, FakeGateway(), ai, "229999", TODAY, reuse_sources=True)
+        assert result.outcome == "published"
+        assert result.notes[0] == (
+            "3 stored pages are the site's navigation shell, not policy documents (the same "
+            f"{len(SHELL_TEXT)}-character menu page at 3 URLs); detached and left out of the "
+            "structurer"
+        )
+        assert ai.prompts and all("patient-financial-services" not in p for p in ai.prompts)
+        assert all("Find a location" not in p for p in ai.prompts)
+        sheet, _ = repo.latest_sheet(session, "229999")
+        assert [s.url for s in sheet.sources] == [
+            "https://www.example.org/financial-assistance-policy.pdf"
+        ]
+        assert [s.url for s, _ in repo.sources_for(session, "229999")] == [
+            "https://www.example.org/financial-assistance-policy.pdf"
+        ]
+        assert review_detail(session, "229999", "navigation_shell") == {
+            "urls": sorted(SHELL_URLS.values()),
+            "chars": len(SHELL_TEXT),
+        }
+
+
+def test_reuse_sources_with_only_navigation_shells_stored_spends_nothing():
+    class NoSpend:
+        def search(self, *args, **kwargs):
+            raise AssertionError("Tavily search would spend credits")
+
+        def extract(self, *args, **kwargs):
+            raise AssertionError("Tavily extract would spend credits")
+
+    class NoModel(FakeAI):
+        def complete_json(self, *args, **kwargs):
+            raise AssertionError("the structurer would be shown a menu")
+
+    engine = make_engine_with_hospital({**HOSPITAL, "website_domain": "example.org"})
+    with session_scope(engine) as session:
+        store_shells(session, "229999")
+        result = build_hospital(session, NoSpend(), NoModel(), "229999", TODAY, reuse_sources=True)
+        assert result.outcome == "skipped"
+        assert result.notes[1] == (
+            "no financial assistance documents left once the navigation shell is set aside; "
+            "the hospital's policy is not in the stored documents"
+        )
+        assert repo.latest_sheet(session, "229999") is None
+        assert repo.sources_for(session, "229999") == []
+        kinds = sorted(item.kind for item in repo.open_review_items(session, "229999"))
+        assert kinds == ["navigation_shell", "no_documents"]
+        assert review_detail(session, "229999", "no_documents") == {
+            "domain": "example.org",
+            "shells_only": True,
+        }
+
+
 def test_rebuild_keeps_the_state_overlay_from_the_previous_version():
     from waive.atlas.overlays import STATE_OVERLAYS, apply_overlay
     from waive.atlas.publish import publish_sheet
