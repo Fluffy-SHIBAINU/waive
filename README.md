@@ -240,7 +240,7 @@ uv run ruff format . && uv run ruff check . && uv run pytest
 
 Unit tests for the rules (including a Hypothesis property test of the poverty-guideline arithmetic), schema and quote verification, contract tests for Token Factory and Tavily against recorded responses (`respx`), a synthetic bill corpus with a per-field accuracy report, a simulation of the whole learning loop, and web tests through FastAPI's test client. `pytest-socket` makes any test that opens a network socket fail. Live tests are marked `live` and excluded by default.
 
-The same checks run in GitHub Actions (`.github/workflows/ci.yml`) on every push and pull request, with no secrets and no network; Dependabot (`.github/dependabot.yml`) opens weekly update pull requests for `uv.lock` and the workflow's actions. To report a vulnerability, see `SECURITY.md`.
+The same checks run in GitHub Actions (`.github/workflows/ci.yml`) on every push and pull request, with no secrets; the tests themselves cannot open a network socket. Dependabot (`.github/dependabot.yml`) opens weekly update pull requests for `uv.lock` and the workflow's actions. To report a vulnerability, see `SECURITY.md`.
 
 ## Project layout
 
