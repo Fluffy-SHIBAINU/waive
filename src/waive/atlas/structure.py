@@ -26,7 +26,7 @@ Rules:
 2. For every field you fill, copy "quote" EXACTLY, character for character, as one contiguous passage (at least 12 characters) from the document that states the fact, and set "source_id" to that document's id.
 3. If the documents do not state a fact, set the field to null. Never guess, infer or use outside knowledge.
 4. Percentages of the Federal Poverty Level (FPL/FPG) are plain numbers: 250, not "250%".
-5. "discount_tiers" is a list of {"min_fpl_exclusive", "max_fpl_inclusive", "discount_percent"}; a sliding scale becomes one entry per income band, ascending.
+5. "discount_tiers" is a list of {"min_fpl_exclusive", "max_fpl_inclusive", "discount_percent"}; a sliding scale becomes one entry per income band, ascending. "discount_percent" is the percentage of the bill the hospital writes off, never the share the patient pays. If a document gives the patient's share (patient responsibility, patient pays X% of charges, co-pay), set discount_tiers to null.
 6. "documents_required" uses these labels: photo_id, proof_of_income, social_security_letter, tax_return, pay_stubs, bank_statements, proof_of_residency, insurance_card, medicaid_denial, other.
 7. "submit_methods" entries are {"kind": "mail" | "fax" | "email" | "portal" | "in_person", "detail": "..."}.
 8. "window_days_from_first_bill", "decision_days" and "eca_wait_days" are whole numbers of days.

@@ -65,6 +65,23 @@ def looks_serialised(value: Any) -> bool:
     return False
 
 
+PATIENT_SHARE_REASON = "quote states the patient's share, not a discount"
+# Word-bounded on purpose: "Lowell" contains "owe" and "Inpatient Discount" contains "patient".
+_PATIENT_SHARE = re.compile(
+    r"\b(?:patient )?responsib\w*|\bpatients? (?:pays?|portion|share)\b|\bco-?pay\w*"
+    r"|\bof (?:total )?charges\b|\bbalance due\b"
+)
+_DISCOUNT_WORDS = re.compile(r"\b(?:discount\w*|write[- ]?offs?|reduc\w*|free|waiv\w*|adjust\w*)\b")
+
+
+def quotes_patient_share(quote: str) -> bool:
+    """A sliding-scale quote that describes what the patient pays (co-pay, X% of charges,
+    patient responsibility) and never mentions a discount or write-off. Its numbers are the
+    patient's share, so a DiscountTier built from them would be upside down (Mercy, 15% vs 85%)."""
+    text = normalize(quote)
+    return _PATIENT_SHARE.search(text) is not None and _DISCOUNT_WORDS.search(text) is None
+
+
 def value_in_quote(value: Any, quote: str) -> bool:
     if isinstance(value, bool):
         return True
@@ -139,6 +156,8 @@ def verify_sheet(sheet: ProcedureSheet, documents: dict[str, str]) -> Verificati
             report.rejected.append((path, "value is a list or object written as text"))
         elif not value_in_quote(cited.value, cited.quote or ""):
             report.rejected.append((path, "value not in quote"))
+        elif path == "eligibility.discount_tiers" and quotes_patient_share(cited.quote or ""):
+            report.rejected.append((path, PATIENT_SHARE_REASON))
         else:
             report.accepted.append(path)
     return report
