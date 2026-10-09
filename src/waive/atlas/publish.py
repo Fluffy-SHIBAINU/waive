@@ -2,6 +2,7 @@
 
 import json
 from datetime import UTC, datetime
+from decimal import Decimal
 from pathlib import Path
 from typing import Any
 
@@ -107,10 +108,41 @@ def resolve_conflicts(
     return merged, remaining, detail
 
 
+# A free-care limit this far above the poverty line with no discount table has, in practice, been
+# the policy's overall eligibility ceiling misread as free care (UMass Memorial: "less than 600%").
+FREE_CARE_REVIEW_FPL = Decimal(400)
+
+
+def sheet_inconsistencies(sheet: ProcedureSheet) -> list[str]:
+    """Income rules that contradict each other or read like a misread ceiling. Checked at publish
+    time rather than as a schema rule, so stored versions stay loadable and the structurer's
+    fallback never drops a correct table to satisfy a wrong limit."""
+    free = sheet.eligibility.free_care_max_fpl
+    if free is None:
+        return []
+    tiers = sheet.eligibility.discount_tiers
+    if tiers is not None and tiers.value:
+        lowest = min(tier.min_fpl_exclusive for tier in tiers.value)
+        if free.value > lowest:
+            return [
+                f"eligibility.free_care_max_fpl: {free.value:.0f}% is above the first discount "
+                f"band, which starts at {lowest:.0f}%; every band under the limit would be dead"
+            ]
+        return []
+    if free.value > FREE_CARE_REVIEW_FPL:
+        return [
+            f"eligibility.free_care_max_fpl: {free.value:.0f}% with no discount table reads like "
+            "an eligibility ceiling, not free care"
+        ]
+    return []
+
+
 def decide_status(sheet: ProcedureSheet, conflicts: list[str]) -> SheetStatus:
     if conflicts:
         return SheetStatus.HELD
     if sheet.eligibility.free_care_max_fpl is None and sheet.eligibility.discount_tiers is None:
+        return SheetStatus.HELD
+    if sheet_inconsistencies(sheet):
         return SheetStatus.HELD
     return SheetStatus.PUBLISHED
 

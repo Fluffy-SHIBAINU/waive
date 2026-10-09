@@ -17,6 +17,7 @@ from waive.atlas.publish import (
     drop_fields,
     publish_sheet,
     resolve_conflicts,
+    sheet_inconsistencies,
 )
 from waive.atlas.schema import HospitalRef, ProcedureSheet, SourceDoc, SourceKind
 from waive.atlas.scout import scout_hospital, store_scouted
@@ -207,6 +208,12 @@ def build_hospital(
     if previous is not None:
         sheet = carry_over_state_programs(sheet, previous[0])
         sheet = carry_over_reported(sheet, previous[0])
+    inconsistent = sheet_inconsistencies(sheet)
+    if inconsistent:
+        # Both models can make the same misread (a ceiling as free care), so the cross-check
+        # never sees it; the sheet is held and an admin decides.
+        repo.add_review_item(session, ccn, "inconsistent", {"problems": inconsistent})
+        result.notes.extend(inconsistent)
     status = decide_status(sheet, conflicts)
     published = publish_sheet(session, sheet.model_copy(update={"status": status}))
     result.outcome = "published" if status.value == "published" else "held"
