@@ -65,6 +65,9 @@ class Settings(BaseSettings):
     cloud_preset: str = "2vcpu-8gb"
     cloud_pg_preset: str = "2vcpu-8gb"
     cloud_pg_disk_gib: int = 32
+    # The endpoint's container disk, passed as `ai endpoint create --disk-size <n>Gi` (task 6.6).
+    # The CLI default is 250Gi, which bills ≈ $0.024/h (+37% on the endpoint) while it runs.
+    cloud_endpoint_disk_gib: int = 32
 
     # Phase 7: unattended scouting (spec §8 step 8). Off by default; a long-running `waive serve`
     # or the production container turns it on. Each tick scouts at most one hospital and stops

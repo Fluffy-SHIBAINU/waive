@@ -20,7 +20,7 @@ from waive.cloud.discover import (
     smallest_cpu_preset,
     write_discovery,
 )
-from waive.cloud.nebius import SAFE_FLAGS, Nebius, NebiusError, NebiusMissing, items
+from waive.cloud.nebius import SAFE_FLAGS, Nebius, NebiusError, NebiusMissing, items, mask_ids
 from waive.config import Settings
 
 FIXTURES = Path(__file__).resolve().parents[1] / "fixtures" / "cloud"
@@ -83,7 +83,7 @@ ANSWERS = {
     "ai endpoint create --help": fixture("endpoint_create_help.txt"),
     "ai endpoint --help": "  NAME\n      nebius ai endpoint\n",
 }
-FOOTPRINT = Footprint("cpu-d3", "2vcpu-8gb", "2vcpu-8gb", 32)
+FOOTPRINT = Footprint("cpu-d3", "2vcpu-8gb", "2vcpu-8gb", 32, endpoint_disk_gib=32)
 
 
 def settings(**overrides) -> Settings:
@@ -127,6 +127,67 @@ def test_wrapper_refuses_mutating_verbs_unless_opted_out():
     Nebius("project-test", runner=runner).text("registry", "create", "--help")  # help is fine
     writable = Nebius("project-test", runner=runner, read_only=False)
     assert writable.run("registry", "create", "--name", "waive-registry")["metadata"]["id"]
+
+
+def test_wrapper_read_only_is_an_allowlist_not_a_denylist():
+    """CLI 0.12.287 has verbs the old denylist never named: `purge` (storage bucket, permanent),
+    `revoke` (iam static-key), `deactivate` (iam access-key), `ssh`/`logs` (ai endpoint),
+    `docker-credential` (registry), `get-secret-once` (iam access-key). Only reads run."""
+    refused = [
+        ("storage", "bucket", "purge", "--id", "x"),
+        ("iam", "static-key", "revoke", "--id", "x"),
+        ("iam", "access-key", "deactivate", "--id", "x"),
+        ("ai", "endpoint", "ssh", "--id", "x"),
+        ("ai", "endpoint", "logs", "--id", "x"),
+        ("registry", "docker-credential"),
+        ("iam", "access-key", "get-secret-once", "--id", "x"),
+        ("iam", "v2", "access-key", "get-secret", "--id", "x"),
+        ("profile", "activate", "other"),
+        ("compute", "instance", "delete", "list"),  # a read verb never excuses a mutating one
+    ]
+    for args in refused:
+        runner = FakeRunner({" ".join(args): {}})
+        with pytest.raises(NebiusError, match="read-only"):
+            Nebius("project-test", runner=runner).run(*args)
+        assert runner.calls == [], args
+    allowed = [
+        ("version",),
+        ("config", "get", "parent-id"),
+        ("compute", "platform", "list"),
+        ("iam", "v2", "project", "get", "project-test"),
+        ("ai", "endpoint", "get-by-name", "--name", "waive-web"),
+        ("compute", "instance", "batch-get", "--ids", "x"),
+        ("storage", "bucket", "list-with-filter"),
+        ("billing", "v1alpha1", "calculator", "estimate", "--resource-spec-x", "y"),
+        ("storage", "bucket", "purge", "--help"),
+    ]
+    for args in allowed:
+        runner = FakeRunner({" ".join(args): {}})
+        Nebius("project-test", runner=runner).run(*args)
+        assert len(runner.calls) == 1, args
+
+
+def test_wrapper_masks_resource_ids_in_error_text():
+    """The real CLI's errors embed the full project id ("… not found in container 'project-…'")
+    and echo the argv; the message must never carry one, because it ends up in the report."""
+    stderr = (
+        "Error: rpc error: code = NotFound desc = get preset spec: platform 'cpu-e2' not found in "
+        "container 'project-test'; parent vpcnetwork-e00abcdef12345678 tenantuseraccount-e00zz "
+        "mbsec-e00secret1234 (argv: --parent-id project-test)"
+    )
+    runner = FakeRunner({"compute platform list": RuntimeError(stderr)})
+    with pytest.raises(NebiusError) as error:
+        Nebius("project-test", runner=runner).run("compute", "platform", "list")
+    message = str(error.value)
+    assert "project-test" not in message and "project-…test" in message
+    assert "vpcnetwork-e00abcdef12345678" not in message and "vpcnetwork-…5678" in message
+    assert "tenantuseraccount-e00zz" not in message and "mbsec-e00secret1234" not in message
+    assert "platform 'cpu-e2' not found" in message  # the useful part survives
+    assert mask_ids("waive-secrets and cpu-d3 2vcpu-8gb stay") == (
+        "waive-secrets and cpu-d3 2vcpu-8gb stay"
+    )
+    # A kind the list does not name is still caught by the `e0…` shape of real ids.
+    assert mask_ids("unknown kind mspcluster-e00abcdefgh") == "unknown kind mspcluster-…efgh"
 
 
 def test_wrapper_failures_name_the_command_and_can_withhold_stderr():
@@ -274,16 +335,29 @@ def test_report_prices_both_windows_and_keeps_ids_out(tmp_path):
     # Endpoint: 0.066/h → 1.58/day → 22.18 for 336 h → 1.85 for 28 demo hours (calculator).
     assert "`waive-web`" in text and "0.0660" in text and "1.58" in text
     assert "22.18" in text and "1.85" in text and "calculator" in text
+    # The endpoint's container disk (CLI default 250Gi; 6.6 passes --disk-size 32Gi) bills only
+    # while the endpoint runs: 32 GiB → 0.0031/h → 1.05 always on, 0.09 for 28 demo hours.
+    disk_row = next(line for line in text.splitlines() if "`waive-web`, container disk" in line)
+    assert "32 GiB" in disk_row and "| 0.0031 |" in disk_row and "| 1.05 |" in disk_row
+    assert "| 0.09 (" in disk_row and "type unverified" in disk_row
+    assert "default is 250Gi" in text and "--disk-size" in text and "$0.0243/h" in text
     # PostgreSQL compute is docs-only: 0.14/h → 3.36/day → 47.04 for 336 h; disk 32 GiB 0.0031/h.
     assert "`waive-db`" in text and "0.1400" in text and "3.36" in text and "47.04" in text
     assert "docs only" in text and "unverified" in text.lower()
     assert "0.0031" in text and "32 GiB" in text
-    # Totals are rounded once from the unrounded sum (0.20911232/h), not summed from cells.
-    assert "| **0.2091** | **5.02** | **70.26** | **49.93** |" in text
-    assert "≈ $5.86" in text  # database deleted between windows: 1.85 + 4.01 + free
+    # Totals are rounded once from the unrounded sum (0.21222464/h), not summed from cells.
+    assert "| **0.2122** | **5.09** | **71.31** | **50.02** |" in text
+    assert "≈ $5.94" in text  # database deleted between windows: 1.85 + 0.09 + 4.01 + free
     # Free services, the budget line and the running schedule.
-    assert "Container Registry" in text and "SecretStash" in text and "143 hours" in text
+    assert "Container Registry" in text and "SecretStash" in text and "141 hours" in text
     assert "28 demo hours" in text and "14 days" in text
+    # Only the Compute page carries the 1 October 2026 change; the other four pages have no
+    # effective date, so they are stamped with the read date only.
+    sources = text.split("## Price sources")[1].split("## Unverified")[0]
+    assert "compute/resources/pricing.md (read 2026-10-09; prices effective 2026-10-01)" in sources
+    assert sources.count("prices effective 2026-10-01") == 1
+    assert sources.count("no effective date on the page") == 4
+    assert "Compute list prices effective 2026-10-01" in text
     # The fallback host: cpu-d3 VM 0.066/h + 20 GiB boot disk; stopped VM pays the disk only.
     assert "`waive-vm`" in text and "20 GiB" in text and "0.0019" in text
     # The plan assumed no stop for PostgreSQL; the CLI has one and its billing is unverified.
@@ -302,6 +376,11 @@ def test_report_shows_existing_counts_only_and_lists_failures(tmp_path):
         ]
     }
     answers["registry list"] = RuntimeError("PermissionDenied: unknown subject")
+    # The recorded shape of a calculator failure: the CLI's stderr carries the full project id.
+    answers[f"{VM}2vcpu-8gb"] = RuntimeError(
+        "Error: rpc error: code = NotFound desc = get preset spec: platform 'cpu-d3' not found "
+        "in container 'project-test' (parent vpcnetwork-e00abcdef12345678)"
+    )
     runner = FakeRunner(answers)
     found = discover(Nebius("project-test", runner=runner), FOOTPRINT)
     assert found.existing["secret"] == ["waive-secrets"]
@@ -312,6 +391,11 @@ def test_report_shows_existing_counts_only_and_lists_failures(tmp_path):
     assert "mbsec-e00xyz" not in text  # and never an id
     assert "## CLI calls that failed" in text and "`registries`" in text
     assert "PermissionDenied" in text
+    failures = text.split("## CLI calls that failed")[1]
+    assert "`estimate:cpu-d3/2vcpu-8gb`" in failures and "platform 'cpu-d3' not found" in failures
+    assert "project-test" not in text and "project-…test" in failures
+    assert "vpcnetwork-e00abcdef12345678" not in text and "vpcnetwork-…5678" in failures
+    assert "project-test" in (tmp_path / "raw.json").read_text(encoding="utf-8")  # gitignored
 
 
 def test_gate_message_has_the_numbers_the_user_must_approve():
@@ -321,8 +405,12 @@ def test_gate_message_has_the_numbers_the_user_must_approve():
     assert message.startswith("**Gate U6.1 — approve Nebius resources and costs.**")
     assert "*default-project-eu-west2*" in message and "*eu-west2*" in message
     assert "`waive-*`" in message and "$0.066/h" in message and "$0.143/h" in message
-    assert "$3.43/day" in message and "$0.21/h" in message and "143 hours" in message
+    assert "$3.43/day" in message and "$0.21/h" in message and "141 hours" in message
     assert "cpu-d3 2vcpu-8gb" in message and "(1)" in message and "(3)" in message
+    # The endpoint's 32 GiB container disk (≈ $0.003/h) is part of what the user approves.
+    assert "32 GiB container disk" in message and "$0.003/h" in message
+    # The fallback sentence quotes the fallback total (compute + 20 GiB boot disk), not compute.
+    assert "$0.068/h running" in message and "$0.05/day stopped" in message
     assert "docs/reports/cloud-costs.md" in message
     assert "project-test" not in message
 
@@ -339,7 +427,7 @@ def test_cli_discover_writes_the_report_and_prints_the_gate(monkeypatch, tmp_pat
     assert result.exit_code == 0, result.output
     assert out.exists() and raw.exists()
     assert "Nothing was created" in result.output and "Gate U6.1" in result.output
-    assert "143 hours" in result.output
+    assert "141 hours" in result.output and "32 GiB container disk" in result.output
     assert "project-test" not in result.output
     for call in runner.calls:
         assert not (set(call) & MUTATING_VERBS) or "--help" in call, call

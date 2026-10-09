@@ -1,8 +1,10 @@
-"""Published Nebius list prices (USD, effective 2026-10-01) and the arithmetic for Waive's
-footprint (spec §15). Every price is a Decimal. Sources, re-read 2026-10-09:
+"""Published Nebius list prices (USD) and the arithmetic for Waive's footprint (spec §15). Every
+price is a Decimal. Sources, re-read 2026-10-09 (only the Compute page announces an effective
+date, 2026-10-01; the other pages carry none):
 
-- Compute (Serverless AI endpoints bill at Compute prices; "while an endpoint is stopped, you are
-  not billed for computing resources or storage"):
+- Compute (Serverless AI endpoints bill at Compute prices for "computing resources and storage"
+  while running; "while an endpoint is stopped, you are not billed for computing resources or
+  storage"; `ai endpoint create --disk-size` defaults to 250Gi):
   https://docs.nebius.com/compute/resources/pricing.md and
   https://docs.nebius.com/serverless/pricing-quotas.md
 - Managed PostgreSQL ("public access to clusters is free of charge"; no stop/pause billing rule):
@@ -31,10 +33,22 @@ SOURCES = {
     "registry": "https://docs.nebius.com/container-registry/resources/pricing.md",
     "secretstash": "https://docs.nebius.com/mysterybox/resources/pricing.md",
 }
+# Only the Compute pricing page announces an effective date ("Price changes in October 2026",
+# re-read 2026-10-09); the other four pages carry none, so the report stamps them with the read
+# date only.
+EFFECTIVE = {"compute": PRICES_EFFECTIVE}
 CENT = Decimal("0.01")
 # Calculator and docs agree when they are within a hundredth of a cent per hour (the docs
 # round the disk rate per 730 h; the calculator does not).
 MATCH_TOLERANCE = Decimal("0.0001")
+
+
+def source_note(key: str) -> str:
+    """`read 2026-10-09; prices effective 2026-10-01` for Compute, `read …; no effective date on
+    the page` for the rest."""
+    effective = EFFECTIVE.get(key)
+    detail = f"prices effective {effective}" if effective else "no effective date on the page"
+    return f"read {PRICES_DATE}; {detail}"
 
 
 @dataclass(frozen=True)
@@ -144,10 +158,19 @@ class Footprint:
     postgres_preset: str
     disk_gib: int
     budget_usd: Decimal = Decimal("30")
+    # The endpoint's container disk (`ai endpoint create --disk-size`; the CLI default is 250Gi,
+    # ≈ $0.024/h). Billed at the Compute disk rate while the endpoint runs, not while stopped.
+    # 0 leaves it out of the totals.
+    endpoint_disk_gib: int = 0
 
     @property
     def endpoint(self) -> Decimal:
+        """Compute only (vCPU + RAM); the container disk is `endpoint_disk`."""
         return endpoint_hourly(self.platform, self.endpoint_preset)
+
+    @property
+    def endpoint_disk(self) -> Decimal:
+        return disk_hourly(self.endpoint_disk_gib)
 
     @property
     def postgres(self) -> Decimal:
@@ -155,7 +178,7 @@ class Footprint:
 
     @property
     def total(self) -> Decimal:
-        return self.endpoint + self.postgres
+        return self.endpoint + self.endpoint_disk + self.postgres
 
     def hours_in_budget(self) -> int:
         return int(self.budget_usd / self.total)

@@ -30,6 +30,7 @@ from waive.cloud.costs import (
     parse_preset,
     postgres_hourly,
     reconcile,
+    source_note,
     window_cost,
 )
 from waive.cloud.nebius import (
@@ -39,6 +40,7 @@ from waive.cloud.nebius import (
     id_of,
     items,
     mask_id,
+    mask_ids,
     name_of,
 )
 
@@ -217,7 +219,9 @@ def discover(nebius: Nebius, footprint: Footprint, *, vm_disk_gib: int = VM_DISK
         )
         estimates[key] = _estimate(raw, f"estimate:{key}", payload)
     spec = "--resource-spec-compute-disk-spec-"
-    for gib in dict.fromkeys((footprint.disk_gib, vm_disk_gib)):
+    for gib in dict.fromkeys((footprint.disk_gib, footprint.endpoint_disk_gib, vm_disk_gib)):
+        if gib <= 0:
+            continue
         key = f"{DISK_TYPE}/{gib}"
         payload = attempt(
             f"estimate:{key}",
@@ -311,6 +315,7 @@ class Row:
     always_hours: Decimal
     stopped_hours: Decimal
     stopped_note: str = ""
+    kind: str = ""  # "endpoint", "database", "free" or "vm": the totals group rows by it
 
 
 def _docs(fn: Callable[..., Decimal], *args: Any) -> Decimal | None:
@@ -353,7 +358,32 @@ def cost_rows(d: Discovery, fp: Footprint, sc: Scenario) -> tuple[list[Row], lis
             sc.hours,
             sc.demo_hours,
             "runs only for demos",
-        ),
+            kind="endpoint",
+        )
+    ]
+    if fp.endpoint_disk_gib > 0:
+        # Verified 2026-10-09: `ai endpoint create --disk-size` defaults to 250Gi, and a running
+        # endpoint is billed for "computing resources and storage" at Compute prices; a stopped
+        # one for neither. The CLI's disk type for endpoints is unverified (the docs' API example
+        # uses NETWORK_SSD), so the network-ssd rate is assumed.
+        endpoint_disk = reconcile(
+            disk_hourly(fp.endpoint_disk_gib),
+            d.estimates.get(f"{DISK_TYPE}/{fp.endpoint_disk_gib}"),
+            docs_url=SOURCES["serverless"],
+        )
+        main.append(
+            Row(
+                "Serverless AI endpoint `waive-web`, container disk",
+                f"{fp.endpoint_disk_gib} GiB (`--disk-size {fp.endpoint_disk_gib}Gi`; "
+                "network-ssd rate, type unverified)",
+                endpoint_disk,
+                sc.hours,
+                sc.demo_hours,
+                "billed only while the endpoint runs",
+                kind="endpoint",
+            )
+        )
+    main += [
         Row(
             "Managed PostgreSQL `waive-db`, host",
             f"`{fp.postgres_preset}`, 1 host, PostgreSQL 16",
@@ -361,6 +391,7 @@ def cost_rows(d: Discovery, fp: Footprint, sc: Scenario) -> tuple[list[Row], lis
             sc.hours,
             sc.hours,
             "kept running: bills until deleted",
+            kind="database",
         ),
         Row(
             "Managed PostgreSQL `waive-db`, disk",
@@ -369,9 +400,10 @@ def cost_rows(d: Discovery, fp: Footprint, sc: Scenario) -> tuple[list[Row], lis
             sc.hours,
             sc.hours,
             "kept with the cluster",
+            kind="database",
         ),
-        Row("Container Registry `waive-registry`", "—", free, sc.hours, sc.hours),
-        Row("SecretStash secret `waive-secrets`", "—", free, sc.hours, sc.hours),
+        Row("Container Registry `waive-registry`", "—", free, sc.hours, sc.hours, kind="free"),
+        Row("SecretStash secret `waive-secrets`", "—", free, sc.hours, sc.hours, kind="free"),
     ]
     fallback = [
         Row(
@@ -381,6 +413,7 @@ def cost_rows(d: Discovery, fp: Footprint, sc: Scenario) -> tuple[list[Row], lis
             sc.hours,
             sc.demo_hours,
             "stopped between demos: compute not charged",
+            kind="vm",
         ),
         Row(
             "Fallback VM boot disk",
@@ -389,9 +422,15 @@ def cost_rows(d: Discovery, fp: Footprint, sc: Scenario) -> tuple[list[Row], lis
             sc.hours,
             sc.hours,
             "charged while the VM is stopped",
+            kind="vm",
         ),
     ]
     return main, fallback
+
+
+def _hourly(rows: list[Row], kind: str | None = None) -> Decimal | None:
+    """Unrounded $/hour of the rows of one kind (all rows when kind is None)."""
+    return _sum([row.price.hourly for row in rows if kind is None or row.kind == kind])
 
 
 def _sum(values: list[Decimal | None]) -> Decimal | None:
@@ -472,9 +511,9 @@ def render_report(d: Discovery, fp: Footprint, sc: Scenario, generated: str) -> 
     cpu = {k: v for k, v in d.platforms.items() if k.startswith("cpu-")}
     gpu = sorted(k for k in d.platforms if not k.startswith("cpu-"))
     main, fallback = cost_rows(d, fp, sc)
-    main_hourly = _sum([row.price.hourly for row in main])
+    main_hourly = _hourly(main)
     main_stopped = _total(main, lambda row: row.stopped_hours)
-    db_hourly = _sum([row.price.hourly for row in main[1:3]])
+    db_hourly = _hourly(main, "database")
     db_recreated = None if db_hourly is None else db_hourly * sc.demo_hours
     recreated_total = (
         None
@@ -518,7 +557,9 @@ def render_report(d: Discovery, fp: Footprint, sc: Scenario, generated: str) -> 
         "",
         "## Cost table",
         "",
-        f"USD. List prices effective {PRICES_EFFECTIVE}, docs re-read {PRICES_DATE}; "
+        f"USD. Compute list prices effective {PRICES_EFFECTIVE} (the Managed PostgreSQL, "
+        "Serverless AI, Container Registry and SecretStash pages carry no effective date), docs "
+        f"re-read {PRICES_DATE}; "
         '"calculator" means `nebius billing v1alpha1 calculator estimate` returned the same '
         f"figure on {generated} (read-only). Window: {sc.window_days} days = {sc.hours} hours; "
         f'"stopped between demos" runs the endpoint {sc.demo_hours_per_day} h/day = '
@@ -571,15 +612,25 @@ def render_report(d: Discovery, fp: Footprint, sc: Scenario, generated: str) -> 
         "",
         f"- `nebius billing v1alpha1 calculator estimate` (Compute instances and disks; no "
         f"Managed PostgreSQL spec), run {generated}",
-        *[
-            f"- {url} (read {PRICES_DATE}; prices effective {PRICES_EFFECTIVE})"
-            for url in SOURCES.values()
-        ],
+        *[f"- {url} ({source_note(key)})" for key, url in SOURCES.items()],
         "",
         "## Unverified — to confirm on the day",
         "",
         "- Managed PostgreSQL prices come from the docs only (the calculator cannot price a "
         "cluster): $0.034 per vCPU-hour + $0.009 per GiB-hour, network-ssd $0.071 per GiB per 730 h.",
+        "- The endpoint's container disk: `ai endpoint create --help` says `--disk-size` "
+        f'"default is 250Gi", which would bill ≈ ${_money(disk_hourly(250), "0.0001")}/h '
+        f"(≈ ${_money(daily(disk_hourly(250)))}/day, +37% on the endpoint's compute) while the "
+        "endpoint runs; "
+        + (
+            f"task 6.6 passes `--disk-size {fp.endpoint_disk_gib}Gi` "
+            "(`WAIVE_CLOUD_ENDPOINT_DISK_GIB`), priced in the table above"
+            if fp.endpoint_disk_gib > 0
+            else "task 6.6 must pass `--disk-size` explicitly (`WAIVE_CLOUD_ENDPOINT_DISK_GIB`)"
+        )
+        + ". The disk type the CLI uses for endpoints is unverified (the docs' API example uses "
+        "`NETWORK_SSD`, so the network-ssd rate is assumed); a stopped endpoint is not billed "
+        "for storage (docs).",
         "- The endpoint accepts `2vcpu-8gb`: `ai endpoint create --help` says the default preset is "
         '"minimum available preset for the platform" and `/dev/shm` defaults to 0 for CPU '
         f"platforms, so CPU endpoints exist; if `2vcpu-8gb` is refused, `{ALT_PRESET}` costs "
@@ -598,27 +649,36 @@ def render_report(d: Discovery, fp: Footprint, sc: Scenario, generated: str) -> 
     ]
     if d.raw.get("errors"):
         lines += ["", "## CLI calls that failed during discovery", ""]
-        lines += [f"- `{key}`: {error}" for key, error in d.raw["errors"].items()]
+        # The wrapper masks ids already; mask again here because this text is committed.
+        lines += [f"- `{key}`: {mask_ids(error)}" for key, error in d.raw["errors"].items()]
     return "\n".join(lines) + "\n"
 
 
 def render_gate_message(d: Discovery, fp: Footprint, sc: Scenario) -> str:
     main, fallback = cost_rows(d, fp, sc)
     pg_hourly = fp.postgres
-    main_hourly = _sum([row.price.hourly for row in main])
+    main_hourly = _hourly(main)
     always = _total(main, lambda row: row.always_hours)
     stopped = _total(main, lambda row: row.stopped_hours)
-    db_hourly = _sum([row.price.hourly for row in main[1:3]])
+    db_hourly = _hourly(main, "database")
     recreated = (
         None
         if stopped is None or db_hourly is None
         else stopped - db_hourly * sc.hours + db_hourly * sc.demo_hours
     )
+    # The fallback VM's running cost is compute plus its boot disk, not compute alone.
+    fallback_hourly = _hourly(fallback)
     vm_disk_day = daily(fallback[1].price.hourly)
     suspend = (
         "; the CLI also has a `cluster stop` that suspends it, billing while suspended unverified"
         if d.postgres_can_stop
         else ""
+    )
+    endpoint_disk = (
+        f"≈ ${fp.endpoint:.3f}/h compute + ≈ ${fp.endpoint_disk:.3f}/h for its "
+        f"{fp.endpoint_disk_gib} GiB container disk while running"
+        if fp.endpoint_disk_gib > 0
+        else f"≈ ${fp.endpoint:.3f}/h while running"
     )
     return (
         "**Gate U6.1 — approve Nebius resources and costs.** The plan creates four things in "
@@ -627,15 +687,16 @@ def render_gate_message(d: Discovery, fp: Footprint, sc: Scenario) -> str:
         f"`{fp.postgres_preset}` + {fp.disk_gib} GiB (≈ ${pg_hourly:.3f}/h, ≈ "
         f"${daily(pg_hourly)}/day, billed until deleted{suspend}), a SecretStash secret with the "
         "six runtime secrets (free), and a CPU Serverless AI endpoint "
-        f"`{fp.platform} {fp.endpoint_preset}` on port 8000 with no endpoint auth (≈ "
-        f"${fp.endpoint:.3f}/h while running, $0 stopped; the public HTTPS URL is managed by "
+        f"`{fp.platform} {fp.endpoint_preset}` on port 8000 with no endpoint auth ("
+        f"{endpoint_disk}, $0 stopped; the public HTTPS URL is managed by "
         f"Nebius). Both running ≈ ${_money(main_hourly)}/h; the ${fp.budget_usd} Phase 6 budget "
         f"covers ≈ {fp.hours_in_budget()} hours. Over a {sc.window_days}-day judging window: ≈ "
         f"${_money(always)} always on; ≈ ${_money(stopped)} with the endpoint run only for "
         f"{sc.demo_hours} demo hours and the database kept; ≈ ${_money(recreated)} if the "
         "database is also deleted between windows. Fallback (one `cpu-d3 "
         f"{fp.endpoint_preset}` VM `waive-vm` with Compose + Caddy instead of the endpoint and "
-        f"the cluster): ≈ ${fp.endpoint:.3f}/h running, ≈ ${_money(vm_disk_day)}/day stopped. "
+        f"the cluster): ≈ ${_money(fallback_hourly, '0.001')}/h running (compute + "
+        f"{VM_DISK_GIB} GiB boot disk), ≈ ${_money(vm_disk_day)}/day stopped. "
         "Please answer: (1) approve these resources; (2) keep the database between demo windows "
         f"(≈ ${daily(pg_hourly)}/day) or delete and recreate it per window; (3) confirm the "
         "endpoint runs only when you say so (`waive cloud start|stop`). Details: "
@@ -652,6 +713,7 @@ def write_discovery(
         "endpoint_preset": fp.endpoint_preset,
         "postgres_preset": fp.postgres_preset,
         "disk_gib": fp.disk_gib,
+        "endpoint_disk_gib": fp.endpoint_disk_gib,
         "budget_usd": str(fp.budget_usd),
         "window_days": sc.window_days,
         "demo_hours_per_day": str(sc.demo_hours_per_day),

@@ -69,6 +69,7 @@ def cloud_discover(
         settings.cloud_pg_preset,
         settings.cloud_pg_disk_gib,
         _decimal(budget, "--budget"),
+        endpoint_disk_gib=settings.cloud_endpoint_disk_gib,
     )
     scenario = Scenario(window_days, _decimal(demo_hours_per_day, "--demo-hours-per-day"))
     try:
