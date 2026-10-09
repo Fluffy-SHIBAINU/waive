@@ -210,7 +210,7 @@ The admin console (`/admin/login`) switches on when `WAIVE_ADMIN_TOKEN` (16+ cha
 - **Personal fields are encrypted at rest** with AES-GCM (`WAIVE_VAULT_KEY`); the database holds a sealed blob per case plus de-identified prediction and outcome summaries.
 - **Links, not logins.** Signed, expiring, revocable capability links with separate scopes: the senior's link can add photos and see the result; the caregiver's link can review, correct, approve and delete. A tampered token gets a plain "This link is not valid" page.
 - **One-tap delete** removes the case and every personal field derived from it. De-identified evidence (enums, income bands, one-way case hashes) remains; `waive learn audit` checks that nothing else is there.
-- **Logs never carry personal content**: a redacting filter drops records that look like amounts, account numbers or e-mail addresses, and the production container runs uvicorn with `--no-access-log` because tokens travel in URLs.
+- **Logs never carry personal content**: a redacting filter drops records that look like amounts, account numbers or e-mail addresses (and strips tracebacks that do), and uvicorn runs with the access log off, both under `waive serve` and in the production container (`--no-access-log`), because tokens travel in URLs.
 - **Web pages, PDFs and model output are data, never instructions.** The structurer has no tools, its output is schema-validated, and quote verification rejects any value that is not in the source.
 - **No money ever.** Every page says: Waive never asks for money, card numbers or bank logins. Results are estimates; the hospital decides.
 

@@ -384,7 +384,9 @@ def serve(
     """Run the web app (phones on the same Wi-Fi can open http://<this-computer-ip>:8000)."""
     import uvicorn
 
-    uvicorn.run("waive.web.app:create_app", host=host, port=port, factory=True)
+    # access_log=False: request paths carry capability links (/s/<token>, /c/<token>), so the
+    # access log would keep live credentials in the terminal; the container does the same.
+    uvicorn.run("waive.web.app:create_app", host=host, port=port, factory=True, access_log=False)
 
 
 db_app = typer.Typer(no_args_is_help=True, help="Database schema maintenance.")
