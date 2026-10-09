@@ -217,3 +217,14 @@ def test_export_leaves_the_fictional_demo_hospital_out(tmp_path):
     data = json.loads(out.read_text())
     assert [sheet["hospital"]["ccn"] for sheet in data["sheets"]] == ["220031"]
     assert "229999" not in out.read_text()
+
+
+def test_a_discount_that_rises_with_income_holds_the_sheet():
+    # Adventist Health (050013, 7.9): tiers 50/75/75 published from a patient-responsibility
+    # table. The publish-time check is the safety net behind verify's patient-share rule.
+    upside_down = with_tiers(SAMPLE, [(250, 300, 50), (300, 400, 75)])
+    problems = sheet_inconsistencies(upside_down)
+    assert len(problems) == 1 and problems[0].startswith("eligibility.discount_tiers:")
+    assert "75%" in problems[0] and "50%" in problems[0]
+    assert decide_status(upside_down, []) is SheetStatus.HELD
+    assert sheet_inconsistencies(with_tiers(SAMPLE, [(250, 300, 75), (300, 400, 50)])) == []
