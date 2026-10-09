@@ -9,6 +9,7 @@ from pydantic import BaseModel, SecretStr
 from waive.ai.client import (
     AIClient,
     AIOutputError,
+    AIRequestRejected,
     AIUnavailable,
     ZDRRequired,
     estimate_usd,
@@ -171,6 +172,64 @@ def test_transport_and_server_failures_become_ai_unavailable(tmp_path):
     with pytest.raises(AIUnavailable, match="503"):
         client.complete_json("fast", USER, Answer, phi=False, purpose="test")
     assert issubclass(AIUnavailable, RuntimeError)
+
+
+TOO_LONG = (
+    "This model's maximum context length is 131072 tokens. However, you requested 150000 tokens."
+)
+
+
+@respx.mock
+@pytest.mark.parametrize(
+    "body",
+    [
+        {"error": {"message": TOO_LONG, "type": "invalid_request_error", "code": 400}},
+        {"object": "error", "message": TOO_LONG, "type": "BadRequestError", "code": 400},
+    ],
+    ids=["openai-shape", "vllm-shape"],
+)
+def test_a_400_is_a_rejected_request_carrying_the_server_message_and_is_not_retried(tmp_path, body):
+    """Token Factory refused the request itself (7.8): the same call would fail again, so there
+    is no repair round, nothing is recorded as spend, and the caller learns why from the
+    server's own words. It is an output-side error for callers, never an outage."""
+    route = respx.post(f"{BASE}/chat/completions").mock(return_value=httpx.Response(400, json=body))
+    client, governor = make_client(tmp_path)
+    with pytest.raises(AIRequestRejected) as caught:
+        client.complete_json("reason", USER, Answer, phi=False, purpose="atlas.structure")
+    error = caught.value
+    assert isinstance(error, AIOutputError) and not isinstance(error, AIUnavailable)
+    assert "HTTP 400" in str(error) and "131072" in str(error)
+    assert "nvidia/nemotron-3-super-120b-a12b" in str(error)
+    assert error.__cause__ is None and error.__suppress_context__  # no chained SDK error text
+    assert route.call_count == 1
+    units, usd = governor.summary()["token_factory"]
+    assert units == 0 and usd == 0
+
+
+@respx.mock
+def test_a_400_on_a_personal_data_call_keeps_the_server_text_out(tmp_path):
+    """A 400 on a bill photo may echo the request; only the model and the status are kept."""
+    respx.post(f"{BASE}/chat/completions").mock(
+        return_value=httpx.Response(
+            400, json={"error": {"message": "invalid image for rosa@example.org $1,850.00"}}
+        )
+    )
+    client, _ = make_client(tmp_path, zdr_confirmed=True)
+    with pytest.raises(AIRequestRejected) as caught:
+        client.complete_json("vision", USER, Answer, phi=True, purpose="bill")
+    text = str(caught.value)
+    assert "HTTP 400" in text and "openbmb/MiniCPM-V-4_5" in text
+    assert "@" not in text and "$" not in text and "image" not in text
+
+
+@respx.mock
+def test_a_400_without_a_json_body_still_names_the_status(tmp_path):
+    respx.post(f"{BASE}/chat/completions").mock(
+        return_value=httpx.Response(400, text="<html>Bad Request</html>")
+    )
+    client, _ = make_client(tmp_path)
+    with pytest.raises(AIRequestRejected, match="HTTP 400"):
+        client.complete_json("fast", USER, Answer, phi=False, purpose="test")
 
 
 @respx.mock

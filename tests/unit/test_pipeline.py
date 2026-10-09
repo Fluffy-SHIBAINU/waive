@@ -1,14 +1,24 @@
+import hashlib
+import json
 from datetime import date
 
-from waive.ai.client import AIOutputError
+import httpx
+import pytest
+import respx
+from pydantic import SecretStr
+
+from waive.ai.client import AIClient, AIOutputError, AIRequestRejected
 from waive.atlas import repo
 from waive.atlas.pipeline import build_hospital, build_state, coverage_report
 from waive.atlas.samples import SAMPLE_POLICY_TEXT, SAMPLE_SOURCE_ID
 from waive.atlas.schema import SheetStatus, SourceDoc, SourceKind
+from waive.atlas.scout import source_id_for
 from waive.atlas.structure import DraftField, SheetDraft
 from waive.atlas.tavily_gateway import ExtractedPage, SearchHit
 from waive.atlas.verify import PATIENT_SHARE_REASON
+from waive.config import Settings
 from waive.db import init_db, make_engine, session_scope
+from waive.governor import Governor, Ledger
 
 TODAY = date(2026, 10, 2)
 HOSPITAL = {
@@ -372,6 +382,174 @@ def test_build_hospital_survives_a_failed_cross_check():
         assert "cross-check model gave no usable output" in result.notes
         kinds = sorted(item.kind for item in repo.open_review_items(session, "229999"))
         assert kinds == ["crosscheck_failed", "verification"]
+
+
+TOO_LONG = (
+    "nvidia/nemotron-3-super-120b-a12b: HTTP 400 (This model's maximum context length is "
+    "131072 tokens. However, you requested 150000 tokens.)"
+)
+
+
+@pytest.mark.parametrize(
+    ("error", "calls"),
+    [
+        (AIRequestRejected(TOO_LONG), 2),  # the full prompt, then the smaller one
+        (AIOutputError("model output did not match SheetDraft (free_care_max_fpl: dict_type)"), 1),
+    ],
+    ids=["rejected-request", "unusable-output"],
+)
+def test_a_primary_structurer_failure_is_filed_for_review_not_raised(error, calls):
+    """7.8: the hospital ends "failed" with the reason, its scouted documents stay stored, and
+    nothing is published; the batch does not see an exception (which would roll them back)."""
+
+    class FailingPrimary(FakeAI):
+        def __init__(self):
+            super().__init__()
+            self.calls = 0
+
+        def complete_json(self, role, messages, schema, *, phi, purpose, max_tokens=2000):
+            self.calls += 1
+            assert role == "reason"  # no cross-check without a primary sheet
+            raise error
+
+    engine = make_engine_with_hospital()
+    with session_scope(engine) as session:
+        ai = FailingPrimary()
+        result = build_hospital(session, FakeGateway(), ai, "229999", TODAY)
+        assert (result.outcome, result.version) == ("failed", None)
+        assert ai.calls == calls
+        assert result.notes == [f"structurer gave no usable sheet: {error}"]
+        assert repo.latest_sheet(session, "229999") is None
+        kinds = sorted(item.kind for item in repo.open_review_items(session, "229999"))
+        assert kinds == ["structure_failed"]
+        assert review_detail(session, "229999", "structure_failed") == {"error": str(error)}
+        assert len(repo.sources_for(session, "229999")) == 1
+        assert repo.get_hospital(session, "229999").website_domain == "example.org"
+        # The batch sees an ordinary outcome, and a hospital without a sheet stays in line.
+        batch = build_state(session, FakeGateway(), ai, "MA", TODAY)
+        assert [r.outcome for r in batch] == ["failed"] and batch[0].notes == result.notes
+
+
+BASE = "https://api.tokenfactory.nebius.com/v1"
+# One long policy: the income rules at the head, then pages that mention discounts, so the
+# structurer's passage budget (not the document length) decides the prompt size.
+LONG_POLICY = (
+    POLICY_TEXT
+    + ("The hospital provides care to the community in many ways. A discount may apply. " * 2_000)
+)[:50_000]
+LONG_SOURCE_ID = source_id_for("fap", hashlib.sha256(LONG_POLICY.encode("utf-8")).hexdigest())
+TOO_LONG_BODY = {
+    "object": "error",
+    "message": (
+        "This model's maximum context length is 131072 tokens. However, you requested 150000 "
+        "tokens."
+    ),
+    "type": "BadRequestError",
+    "code": 400,
+}
+
+
+class LongGateway(FakeGateway):
+    def extract(self, urls, **kwargs):
+        return [ExtractedPage(url, LONG_POLICY) for url in urls]
+
+
+def make_ai(tmp_path):
+    settings = Settings(
+        _env_file=None,
+        nebius_api_key=SecretStr("test-key"),
+        ledger_path=tmp_path / "usage.jsonl",
+    )
+    governor = Governor(
+        Ledger(settings.ledger_path), settings.tavily_credit_cap, settings.token_factory_usd_cap
+    )
+    return AIClient(settings, governor)
+
+
+def chat_payload(content):
+    return {
+        "id": "chatcmpl-test",
+        "object": "chat.completion",
+        "created": 0,
+        "model": "test-model",
+        "choices": [
+            {
+                "index": 0,
+                "finish_reason": "stop",
+                "message": {"role": "assistant", "content": content},
+            }
+        ],
+        "usage": {"prompt_tokens": 100, "completion_tokens": 20, "total_tokens": 120},
+    }
+
+
+def prompt_sizes(route):
+    return [len(json.loads(call.request.content)["messages"][1]["content"]) for call in route.calls]
+
+
+@respx.mock
+def test_a_token_factory_400_is_retried_smaller_then_filed_for_review(tmp_path):
+    """The 140117 shape end to end: Token Factory answers 400 to the full prompt and to the
+    smaller one; the hospital is reported failed with the server's reason and a review item."""
+    route = respx.post(f"{BASE}/chat/completions").mock(
+        return_value=httpx.Response(400, json=TOO_LONG_BODY)
+    )
+    engine = make_engine_with_hospital()
+    with session_scope(engine) as session:
+        result = build_hospital(session, LongGateway(), make_ai(tmp_path), "229999", TODAY)
+        assert result.outcome == "failed"
+        assert route.call_count == 2
+        first, second = prompt_sizes(route)
+        assert second < first
+        assert result.notes == [
+            "structurer gave no usable sheet: nvidia/nemotron-3-super-120b-a12b: HTTP 400 "
+            "(This model's maximum context length is 131072 tokens. However, you requested "
+            "150000 tokens.)"
+        ]
+        kinds = sorted(item.kind for item in repo.open_review_items(session, "229999"))
+        assert kinds == ["structure_failed"]
+        assert "131072" in review_detail(session, "229999", "structure_failed")["error"]
+        assert repo.latest_sheet(session, "229999") is None
+        assert [s.id for s, _ in repo.sources_for(session, "229999")] == [LONG_SOURCE_ID]
+
+
+@respx.mock
+def test_a_token_factory_400_recovers_on_the_smaller_prompt(tmp_path):
+    draft = {
+        "free_care_max_fpl": {
+            "value": "250",
+            "quote": FREE_CARE_QUOTE,
+            "source_id": LONG_SOURCE_ID,
+        },
+        "phone": {
+            "value": "617-555-0100",
+            "quote": "Questions: call 617-555-0100",
+            "source_id": LONG_SOURCE_ID,
+        },
+    }
+    route = respx.post(f"{BASE}/chat/completions").mock(
+        side_effect=[
+            httpx.Response(400, json=TOO_LONG_BODY),
+            httpx.Response(200, json=chat_payload(json.dumps(draft))),
+        ]
+    )
+    engine = make_engine_with_hospital()
+    with session_scope(engine) as session:
+        result = build_hospital(
+            session, LongGateway(), make_ai(tmp_path), "229999", TODAY, dual=False
+        )
+        assert (result.outcome, result.version) == ("published", 1)
+        assert route.call_count == 2
+        first, second = prompt_sizes(route)
+        assert second < first
+        sheet, _ = repo.latest_sheet(session, "229999")
+        assert sheet.eligibility.free_care_max_fpl.value == 250
+        assert sheet.contacts.phone.value == "617-555-0100"
+        kinds = sorted(item.kind for item in repo.open_review_items(session, "229999"))
+        assert kinds == ["verification"]
+        note = review_detail(session, "229999", "verification")["skipped"][0]
+        assert note.startswith("structurer: retried with a smaller passage budget")
+        assert "131072" in note and note in result.notes
 
 
 def test_reuse_sources_leaves_state_overlay_documents_out_of_the_structurer():

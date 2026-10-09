@@ -8,7 +8,7 @@ from typing import Any
 
 from pydantic import BaseModel, field_validator
 
-from waive.ai.client import AIClient
+from waive.ai.client import AIClient, AIRequestRejected
 from waive.atlas.schema import (
     Cited,
     DiscountTier,
@@ -38,6 +38,12 @@ MAX_DOC_CHARS = 40_000
 PASSAGE_HEAD_CHARS = 6_000
 PASSAGE_RADIUS = 1_500
 PASSAGE_SEPARATOR = "\n[…]\n"
+# When Token Factory refuses the full prompt (HTTP 400, task 7.8) the structurer tries once more
+# with half the budget per document and only the leading documents: scouting lists the policy,
+# application, summary and billing documents first, so those are the ones worth keeping.
+RETRY_DOC_CHARS = MAX_DOC_CHARS // 2
+RETRY_HEAD_CHARS = PASSAGE_HEAD_CHARS // 2
+RETRY_MAX_SOURCES = 4
 # Most specific first: a credit and collection policy says "collection" on every page, so the
 # income table near its end would never be reached if windows were added in document order.
 PASSAGE_KEYWORDS = (
@@ -57,13 +63,13 @@ def _merge_spans(spans: list[tuple[int, int]]) -> list[tuple[int, int]]:
     return merged
 
 
-def select_passages(text: str, limit: int = MAX_DOC_CHARS) -> str:
-    """The parts of a long document worth showing the structurer: its head, then windows around
-    financial-assistance keywords until `limit`, as verbatim slices joined by a marker so the
-    quotes the model copies still verify against the stored full text."""
+def select_passages(text: str, limit: int = MAX_DOC_CHARS, head: int = PASSAGE_HEAD_CHARS) -> str:
+    """The parts of a long document worth showing the structurer: its first `head` characters,
+    then windows around financial-assistance keywords until `limit`, as verbatim slices joined by
+    a marker so the quotes the model copies still verify against the stored full text."""
     if len(text) <= limit:
         return text
-    spans = [(0, min(PASSAGE_HEAD_CHARS, len(text)))]
+    spans = [(0, min(head, len(text)))]
     budget = limit - spans[0][1]
     for pattern in PASSAGE_KEYWORDS:
         for match in pattern.finditer(text):
@@ -119,12 +125,16 @@ class SheetDraft(BaseModel):
 
 
 def build_messages(
-    hospital: HospitalRef, sources: list[tuple[SourceDoc, str]]
+    hospital: HospitalRef,
+    sources: list[tuple[SourceDoc, str]],
+    *,
+    limit: int = MAX_DOC_CHARS,
+    head: int = PASSAGE_HEAD_CHARS,
 ) -> list[dict[str, str]]:
     parts = [f"Hospital: {hospital.name}, {hospital.city}, {hospital.state}.", ""]
     for doc, text in sources:
         parts.append(f"=== SOURCE id={doc.id} title={doc.title!r} url={doc.url or ''} ===")
-        parts.append(select_passages(text, limit=MAX_DOC_CHARS))
+        parts.append(select_passages(text, limit=limit, head=head))
         parts.append("=== END SOURCE ===")
         parts.append("")
     parts.append("Fill the JSON schema from these sources.")
@@ -465,6 +475,12 @@ def draft_to_sheet(
     return sheet, skipped
 
 
+def _draft(ai: AIClient, role: str, messages: list[dict[str, str]]) -> SheetDraft:
+    return ai.complete_json(
+        role, messages, SheetDraft, phi=False, purpose="atlas.structure", max_tokens=6000
+    )
+
+
 def structure_sheet(
     ai: AIClient,
     role: str,
@@ -472,12 +488,24 @@ def structure_sheet(
     sources_with_text: list[tuple[SourceDoc, str]],
     today: date,
 ) -> tuple[ProcedureSheet, list[str]]:
-    draft = ai.complete_json(
-        role,
-        build_messages(hospital, sources_with_text),
-        SheetDraft,
-        phi=False,
-        purpose="atlas.structure",
-        max_tokens=6000,
-    )
-    return draft_to_sheet(draft, hospital, [doc for doc, _ in sources_with_text], today)
+    """The sheet drafted from every document, or, when Token Factory refuses that prompt, from a
+    smaller one (RETRY_*); the skipped list then opens with a note saying so. A second refusal
+    propagates for the caller to record. The sheet lists every document either way: the trim is
+    only what the model was shown, and quotes verify against the stored full texts."""
+    notes: list[str] = []
+    try:
+        draft = _draft(ai, role, build_messages(hospital, sources_with_text))
+    except AIRequestRejected as error:
+        shown = sources_with_text[:RETRY_MAX_SOURCES]
+        draft = _draft(
+            ai,
+            role,
+            build_messages(hospital, shown, limit=RETRY_DOC_CHARS, head=RETRY_HEAD_CHARS),
+        )
+        notes.append(
+            f"structurer: retried with a smaller passage budget ({len(shown)} of "
+            f"{len(sources_with_text)} documents, {RETRY_DOC_CHARS} characters each) after "
+            f"Token Factory refused the full prompt: {error}"
+        )
+    sheet, skipped = draft_to_sheet(draft, hospital, [doc for doc, _ in sources_with_text], today)
+    return sheet, [*notes, *skipped]
