@@ -26,6 +26,8 @@ def test_host_and_directory_detection():
     assert is_directory("healthgrades.com")
     assert is_directory("findhelp.org") and is_directory("www.networkofcare.org")
     assert is_directory("addictions.com")
+    # Picked as Harrington Hospital's (220019) official site; its pages describe other hospitals.
+    assert is_directory("billfairly.com") and is_directory("www.billfairly.com")
     assert not is_directory("stexample.org")
 
 

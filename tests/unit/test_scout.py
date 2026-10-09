@@ -621,6 +621,27 @@ def test_one_menu_page_returned_for_several_policy_urls_is_a_navigation_shell_an
     assert gateway.calls == [(SHELL_URLS, "basic")]  # not thin: nothing re-extracted
 
 
+# The same shell with the menu's own links to the policy pages, so the scout follows them.
+SHELL_MENU = SHELL_PAGE + (
+    "* [Financial Assistance Policy](/patient-financial-services/financial-assistance-policy)\n"
+    "* [Financial Assistance Application]"
+    "(/patient-financial-services/financial-assistance-application)\n"
+)
+
+
+def test_a_shell_at_the_entry_url_and_the_pages_it_links_to_is_not_stored_once_either():
+    # Linked pages are de-duplicated by hash against the entry page, so three fetches of one menu
+    # leave one document, and a shell cannot be told from a page by its text alone. The shell has
+    # to be recognised across every URL fetched, not among the documents kept (Milford review).
+    gateway = DepthGateway(
+        basic={ENTRY_URL: SHELL_MENU, SHELL_URLS[0]: SHELL_MENU, SHELL_URLS[1]: SHELL_MENU},
+        advanced={},
+    )
+    docs = scout_hospital(gateway, HOSPITAL)
+    assert docs == []
+    assert gateway.calls == [([ENTRY_URL], "basic"), (SHELL_URLS[:2], "basic")]
+
+
 def test_navigation_shells_spare_pdfs_single_pages_and_identical_policy_pages():
     policy, summary = SHELL_URLS[0], SHELL_URLS[2]
     assert navigation_shells([(policy, SHELL_PAGE), (summary, SHELL_PAGE)]) == {policy, summary}

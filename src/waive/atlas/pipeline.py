@@ -8,7 +8,7 @@ from sqlalchemy.orm import Session
 
 from waive.ai.client import MAX_SERVER_MESSAGE_CHARS, AIClient, AIOutputError
 from waive.atlas import repo
-from waive.atlas.discover import MIN_CONFIDENCE, discover_domain
+from waive.atlas.discover import MIN_CONFIDENCE, discover_domain, host_of
 from waive.atlas.publish import (
     carry_over_reported,
     copy_fields,
@@ -19,7 +19,7 @@ from waive.atlas.publish import (
     resolve_conflicts,
     sheet_inconsistencies,
 )
-from waive.atlas.schema import HospitalRef, ProcedureSheet, SourceDoc, SourceKind
+from waive.atlas.schema import HospitalRef, ProcedureSheet, SheetStatus, SourceDoc, SourceKind
 from waive.atlas.scout import navigation_shells, scout_hospital, store_scouted
 from waive.atlas.structure import structure_sheet
 from waive.atlas.tavily_gateway import TavilyGateway
@@ -322,6 +322,59 @@ def build_state(
             results.append(BuildResult(row.ccn, row.name, "failed", notes=[type(error).__name__]))
         session.commit()
     return results
+
+
+def clear_wrong_domain(session: Session, ccn: str, reason: str) -> BuildResult:
+    """An admin found that the discovered domain is not the hospital's site, so nothing scouted
+    from it is the hospital's policy: its web documents are detached, every field they backed is
+    dropped and the sheet is held in a new version (the state overlay and its source stay); the
+    domain is cleared so the next build discovers it again, and a `domain` review item records
+    why (and keeps the scheduler off this hospital meanwhile, schedule.FAILURE_KINDS). Harrington
+    Hospital (220019): discovery picked billfairly.com, a billing directory, and the published
+    free-care limit was quoted from that directory's page about a hospital in Vidalia, Georgia."""
+    row = repo.get_hospital(session, ccn)
+    if row is None:
+        return BuildResult(ccn, "?", "failed", notes=["hospital not in registry"])
+    result = BuildResult(ccn, row.name, "skipped")
+    domain = row.website_domain
+    if not domain:
+        result.notes.append("no domain set")
+        return result
+    row.website_domain, row.domain_confidence = None, None
+    detached = [
+        source
+        for source, _ in repo.sources_for(session, ccn)
+        if source.kind is SourceKind.HOSPITAL_WEB and host_of(source.url or "") == domain
+    ]
+    for source in detached:
+        repo.unlink_source(session, ccn, source.id)
+    gone = {source.id for source in detached}
+    repo.add_review_item(
+        session,
+        ccn,
+        "domain",
+        {"found": None, "cleared": domain, "reason": reason, "sources": sorted(gone)},
+    )
+    result.notes.append(f"domain {domain} cleared ({reason}); {len(detached)} documents detached")
+    latest = repo.latest_sheet(session, ccn)
+    if latest is None:
+        return result
+    dropped = [path for path, cited in latest[0].field_paths() if cited.source_id in gone]
+    sheet = drop_fields(latest[0], dropped).model_copy(
+        update={
+            "hospital": repo.hospital_ref(row),
+            "status": SheetStatus.HELD,
+            "sources": [source for source in latest[0].sources if source.id not in gone],
+        }
+    )
+    published = publish_sheet(session, sheet)
+    result.outcome = "held"
+    result.version = published.version if published else latest[0].version
+    if dropped:
+        result.notes.append(
+            f"{len(dropped)} fields quoted from them dropped: " + ", ".join(dropped)
+        )
+    return result
 
 
 def coverage_report(session: Session, state: str) -> str:

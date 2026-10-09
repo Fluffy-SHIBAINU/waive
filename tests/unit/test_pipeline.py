@@ -9,7 +9,7 @@ from pydantic import SecretStr
 
 from waive.ai.client import AIClient, AIOutputError, AIRequestRejected
 from waive.atlas import repo
-from waive.atlas.pipeline import build_hospital, build_state, coverage_report
+from waive.atlas.pipeline import build_hospital, build_state, clear_wrong_domain, coverage_report
 from waive.atlas.samples import SAMPLE_POLICY_TEXT, SAMPLE_SOURCE_ID
 from waive.atlas.schema import SheetStatus, SourceDoc, SourceKind
 from waive.atlas.scout import source_id_for
@@ -718,6 +718,58 @@ def test_rebuild_keeps_the_state_overlay_from_the_previous_version():
         assert latest.programs.state_programs is not None
         assert latest.programs.state_programs.source_id == "state-ma-test"
         assert any(s.id == "state-ma-test" for s in latest.sources)
+
+
+def test_clearing_a_wrong_domain_detaches_its_documents_and_holds_the_sheet():
+    # Harrington Hospital (220019): discovery picked billfairly.com, a billing directory, and
+    # the sheet was published from that site's pages about hospitals in Georgia and Texas.
+    from waive.atlas.overlays import STATE_OVERLAYS, apply_overlay
+    from waive.atlas.publish import publish_sheet
+
+    engine = make_engine_with_hospital()
+    with session_scope(engine) as session:
+        build_hospital(session, FakeGateway(), FakeAI(), "229999", TODAY)
+        sheet, _ = repo.latest_sheet(session, "229999")
+        source = SourceDoc(
+            id="state-ma-test",
+            kind=SourceKind.STATE_REPOSITORY,
+            url="https://www.mass.gov/hsn",
+            title="HSN",
+            fetched_on=TODAY,
+            sha256="0" * 64,
+        )
+        text = "The Health Safety Net pays hospitals for care to low-income residents."
+        repo.save_source(session, source, text, "229999")
+        publish_sheet(session, apply_overlay(sheet, source, text, STATE_OVERLAYS["MA"], TODAY))
+        policy_id = sheet.eligibility.free_care_max_fpl.source_id
+
+        result = clear_wrong_domain(session, "229999", "billing directory, not the hospital")
+        assert (result.outcome, result.version) == ("held", 3)
+        assert result.notes == [
+            "domain example.org cleared (billing directory, not the hospital); 1 documents "
+            "detached",
+            "2 fields quoted from them dropped: eligibility.free_care_max_fpl, contacts.phone",
+        ]
+        held, row = repo.latest_sheet(session, "229999")
+        assert held.status is SheetStatus.HELD
+        assert held.hospital.website_domain is None
+        assert held.eligibility.free_care_max_fpl is None and held.contacts.phone is None
+        # The state overlay is not the hospital's claim about itself: it and its source stay.
+        assert held.programs.state_programs.source_id == "state-ma-test"
+        assert [s.id for s in held.sources] == ["state-ma-test"]
+        assert row.diff["status"] == {"old": "published", "new": "held"}
+        assert repo.get_hospital(session, "229999").website_domain is None
+        assert [s.id for s, _ in repo.sources_for(session, "229999")] == ["state-ma-test"]
+        assert review_detail(session, "229999", "domain") == {
+            "found": None,
+            "cleared": "example.org",
+            "reason": "billing directory, not the hospital",
+            "sources": [policy_id],
+        }
+        # Nothing to do twice: no domain, no second version, no second item.
+        again = clear_wrong_domain(session, "229999", "again")
+        assert (again.outcome, again.notes) == ("skipped", ["no domain set"])
+        assert repo.latest_sheet(session, "229999")[0].version == 3
 
 
 def test_build_state_skips_hospitals_with_sheets_and_reports():

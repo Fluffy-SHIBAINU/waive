@@ -257,7 +257,7 @@ def navigation_shells(pages: Iterable[tuple[str, str]]) -> set[str]:
     summary URLs all returned the same 10,760-character page), long enough to pass THIN_CHARS,
     so the structurer was shown three copies of a menu and no policy. Two URLs that genuinely
     carry the same policy text are left alone: that text names assistance, and `store_scouted`
-    de-duplicates it by hash."""
+    stores it once per document class (same hash, same class → one row)."""
     by_text: dict[str, list[str]] = {}
     for url, text in pages:
         if not _is_pdf(url):
@@ -352,6 +352,8 @@ def _fetch_documents(
     urls = [url for url, _ in selected]
     pages = gateway.extract(urls, purpose="atlas.scout")
     by_url = fill_texts(gateway, urls, pages, downloads, purpose="atlas.scout")
+    # Every page fetched, before de-duplication: the shell is looked for among these.
+    fetched = [(url, text) for url in urls if (text := by_url.get(url))]
     docs: list[ScoutedDoc] = []
     for url, doc_class in selected:
         title = next((h.title for h in hits if h.url == url and h.title), TITLES[doc_class])
@@ -364,13 +366,17 @@ def _fetch_documents(
         linked_urls = [url for url, _, _ in linked]
         more = gateway.extract(linked_urls, purpose="atlas.scout")
         by_url = fill_texts(gateway, linked_urls, more, downloads, purpose="atlas.scout")
+        fetched.extend((url, text) for url in linked_urls if (text := by_url.get(url)))
         seen = {doc.sha256 for doc in docs}
         for url, doc_class, label in linked:
             doc = _scouted(url, doc_class, label or TITLES[doc_class], by_url.get(url) or "")
             if doc and doc.sha256 not in seen:
                 docs.append(doc)
                 seen.add(doc.sha256)
-    shells = navigation_shells((doc.url, doc.text) for doc in docs)
+    # An entry page and the policy pages it links to may all answer with the same menu; the hash
+    # de-duplication above then keeps one copy, which no later check can tell from a real page.
+    # So the shell is recognised across every URL fetched, not among the documents kept.
+    shells = navigation_shells(fetched)
     if shells:
         log.info("%s: one navigation shell at %d URLs, not stored", domain, len(shells))
         docs = [doc for doc in docs if doc.url not in shells]
