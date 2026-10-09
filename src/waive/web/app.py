@@ -60,6 +60,7 @@ def create_app(
     app.state.settings = settings
     app.state.governor = governor
     app.state.limiter = RateLimiter()
+    app.state.admin_sessions = {}
     app.add_middleware(BodyLimit, max_body=settings.max_upload_bytes)
     # Starlette spools multipart files over 1 MiB to a plaintext temp file. With the cap in front
     # nothing admitted needs to leave memory, which keeps "photos are never written to disk" true.
@@ -108,6 +109,10 @@ def create_app(
             title="This link is not valid",
             message="The link is not valid or has expired. Ask your helper for a new one.",
         )
+
+    @app.exception_handler(routes_admin.AdminRequired)
+    def admin_required(request: Request, exc: routes_admin.AdminRequired) -> HTMLResponse:
+        return render(request, "admin_login.html", status_code=403, error=str(exc))
 
     @app.exception_handler(KeyError)
     def not_found(request: Request, exc: KeyError) -> HTMLResponse:
