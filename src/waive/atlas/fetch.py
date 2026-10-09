@@ -19,7 +19,7 @@ import sys
 import time
 from collections.abc import Callable
 from html.parser import HTMLParser
-from urllib.parse import urlparse
+from urllib.parse import urljoin, urlparse
 
 import httpx
 
@@ -169,7 +169,7 @@ def download_text(
                         return None
                 charset = response.charset_encoding
             if is_html:
-                text = html_text(_decode(bytes(body), charset))
+                text = html_text(_decode(bytes(body), charset), base_url=final_url)
                 return text if len(text) >= MIN_TEXT_CHARS else None
             return pdf_text(bytes(body))
     except Exception as error:  # network, URL and stream errors alike: the caller has no recourse
@@ -190,7 +190,10 @@ def _decode(body: bytes, charset: str | None) -> str:
 class _TextCollector(HTMLParser):
     """Collects a page's visible text: script, style and the like are dropped, block elements
     start a new line, and links keep their target as markdown (`[label](href)`), the shape Tavily
-    Extract renders them in, so the scout's link following works on downloaded pages too."""
+    Extract renders them in, so the scout's link following works on downloaded pages too. Given
+    the page's URL, targets are made absolute the way a browser would (the first `<base href>`
+    counts; in-page anchors stay as written), since Tavily renders them absolute and the scout
+    resolves whatever is left against the site root, not the page."""
 
     SKIPPED = frozenset({"script", "style", "noscript", "template", "svg"})
     BLOCKS = frozenset(
@@ -202,20 +205,27 @@ class _TextCollector(HTMLParser):
         }
     )  # fmt: skip
 
-    def __init__(self) -> None:
+    def __init__(self, base_url: str | None = None) -> None:
         super().__init__(convert_charrefs=True)
         self.parts: list[str] = []
         self._skipping = 0
         self._links: list[str | None] = []
+        self._base = base_url
+        self._base_element_seen = False
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
         if tag in self.SKIPPED:
             self._skipping += 1
         elif tag in self.BLOCKS:
             self.parts.append("\n")
+        elif tag == "base" and self._base is not None and not self._base_element_seen:
+            href = _href(attrs)
+            if href is not None:
+                self._base = self._resolve(href)
+                self._base_element_seen = True
         elif tag == "a" and not self._skipping:
-            href = next((value for name, value in attrs if name == "href" and value), None)
-            self._links.append(href)
+            href = _href(attrs)
+            self._links.append(None if href is None else self._resolve(href))
             if href is not None:
                 self.parts.append("[")
 
@@ -227,7 +237,15 @@ class _TextCollector(HTMLParser):
         elif tag == "a" and self._links:
             href = self._links.pop()
             if href is not None:
-                self.parts.append(f"]({' '.join(href.split())})")
+                self.parts.append(f"]({href})")
+
+    def _resolve(self, href: str) -> str:
+        if self._base is None or href.startswith("#"):
+            return href
+        try:
+            return urljoin(self._base, href)
+        except ValueError:  # a malformed target (a bad IPv6 literal); kept as written
+            return href
 
     def handle_data(self, data: str) -> None:
         if self._skipping:
@@ -237,10 +255,17 @@ class _TextCollector(HTMLParser):
         self.parts.append(data)
 
 
-def html_text(markup: str) -> str:
+def _href(attrs: list[tuple[str, str | None]]) -> str | None:
+    """A tag's non-empty href with its whitespace collapsed, or None."""
+    value = next((value for name, value in attrs if name == "href" and value), None)
+    return " ".join(value.split()) if value else None
+
+
+def html_text(markup: str, base_url: str | None = None) -> str:
     """The visible text of an HTML page, one line per block, whitespace collapsed, links as
-    markdown, at most MAX_TEXT_CHARS characters (the PDF cap)."""
-    collector = _TextCollector()
+    markdown (absolute when `base_url`, the page's own URL, is given), at most MAX_TEXT_CHARS
+    characters (the PDF cap)."""
+    collector = _TextCollector(base_url)
     collector.feed(markup)
     collector.close()
     lines = (" ".join(line.split()) for line in "".join(collector.parts).splitlines())

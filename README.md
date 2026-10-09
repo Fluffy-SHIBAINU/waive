@@ -33,7 +33,7 @@ Waive never asks for money, card numbers or bank logins. Results are estimates, 
 | Real bills | Accepted since 2026-10-09: the Token Factory project runs with zero data retention, confirmed that day by the project owner (`WAIVE_ZDR_CONFIRMED=true`). None processed yet; everything so far ran on synthetic bills and letters. Waive still refuses photos carrying personal data whenever `WAIVE_ZDR_CONFIRMED` is false |
 | Learning loop | Implemented and exercised end to end by a simulation test (three denials → re-scout → new version after review → open cases re-evaluated; a missing document appears as "reported by patients" after 5 cases; a hospital slip is flagged after 3). No real outcomes yet |
 | Deployment | See the status line at the top |
-| Spend to date | 685 Tavily credits, $2.32 on Token Factory, $0 on AI Cloud (2026-10-09) |
+| Spend to date | 699 Tavily credits, $2.33 on Token Factory, $0 on AI Cloud (2026-10-09) |
 | Tests | 300+ unit, contract and simulation tests; none opens a network socket |
 
 The demo hospital, **St. Example Medical Center** (CCN 229999), is fictional and is excluded from exports, reports and the public atlas list (`/atlas?demo=1` shows it).
@@ -139,12 +139,12 @@ flowchart TD
 |---|---|---|
 | Find the hospital's official website; reject directory sites; confirm by name tokens, phone and page title | Search | `src/waive/atlas/discover.py` |
 | Find the policy, application, plain-language summary and billing/collections pages on that domain; follow labelled policy links; fall back to Map when the search index misses them | Search with `include_domains`, Map | `src/waive/atlas/scout.py` |
-| Fetch page and PDF text; store it once by SHA-256 and share it across a hospital system; download PDFs directly when Extract returns nothing usable | Extract (+ `httpx` + `pypdf` fallback) | `src/waive/atlas/scout.py`, `src/waive/atlas/fetch.py` |
+| Fetch page and PDF text; store it once by SHA-256 and share it across a hospital system; re-extract pages that render as navigation only at the advanced depth; download PDFs and pages directly when Extract returns nothing usable | Extract (+ `httpx` + `pypdf` fallback) | `src/waive/atlas/scout.py`, `src/waive/atlas/fetch.py` |
 | Add a cited state program (Massachusetts Health Safety Net) from mass.gov to every sheet in the state | Search, Extract | `src/waive/atlas/overlays.py` |
 | Re-check stored documents by content hash and re-structure only what changed | Extract | `src/waive/atlas/refresh.py` |
 | Scout unattended on a priority queue inside a daily credit budget (`WAIVE_SCOUT_DAILY_CREDITS`) | the calls above | `src/waive/atlas/schedule.py` |
 
-Measured cost: about 5 credits per hospital (two searches, often a Map, one or two Extracts). The Massachusetts atlas took 424 credits including every debugging re-run and the 2026-10-09 re-scouts; the national batches run on a 300-credit daily budget.
+Measured cost: about 5 credits per hospital (two searches, often a Map, one or two Extracts), two more when a page renders as navigation only and needs the advanced extraction depth; the scheduler starts a hospital only with 7 credits left in the day. The Massachusetts atlas took 438 credits including every debugging re-run and the 2026-10-09 re-scouts; the national batches run on a 300-credit daily budget.
 
 ## Setup
 
@@ -216,7 +216,7 @@ The admin console (`/admin/login`) switches on when `WAIVE_ADMIN_TOKEN` (16+ cha
 
 ## Costs
 
-Actual spend to date (from the usage ledger, `uv run waive doctor` prints the totals): **685 Tavily credits, $2.32 Token Factory, $0 AI Cloud** as of 2026-10-09.
+Actual spend to date (from the usage ledger, `uv run waive doctor` prints the totals): **699 Tavily credits, $2.33 Token Factory, $0 AI Cloud** as of 2026-10-09.
 
 | Model (Token Factory) | Input $/M tokens | Output $/M tokens |
 |---|---|---|

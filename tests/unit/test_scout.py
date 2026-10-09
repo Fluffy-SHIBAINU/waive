@@ -6,6 +6,7 @@ import httpx
 import respx
 
 from waive.atlas import repo
+from waive.atlas.fetch import html_text
 from waive.atlas.samples import SAMPLE_POLICY_TEXT, st_example_sheet
 from waive.atlas.schema import SourceKind
 from waive.atlas.scout import (
@@ -21,7 +22,7 @@ from waive.atlas.scout import (
 )
 from waive.atlas.tavily_gateway import ExtractedPage, SearchHit, TavilyGateway
 from waive.db import init_db, make_engine, session_scope
-from waive.governor import Governor, Ledger
+from waive.governor import BudgetExceeded, Governor, Ledger
 
 from tests.unit.test_fetch import CANTO_URL, HTML_PAGE, sample_pdf
 
@@ -490,7 +491,7 @@ def test_pages_still_thin_after_advanced_extraction_are_downloaded_and_tag_strip
     ]
     assert [(doc.url, doc.doc_class) for doc in docs] == [(ENTRY_URL, "fap"), (FAP_PDF, "fap")]
     assert "250% of the Federal Poverty" in docs[0].text
-    assert "[Financial Assistance Policy (PDF)](/docs/fap.pdf)" in docs[0].text
+    assert f"[Financial Assistance Policy (PDF)]({FAP_PDF})" in docs[0].text
     assert "dataLayer" not in docs[0].text
 
 
@@ -522,6 +523,82 @@ def test_short_pdfs_and_pages_tavily_could_not_fetch_are_not_re_extracted():
     gateway = DepthGateway(basic={}, advanced={ENTRY_URL: ENTRY_PAGE})
     assert scout_hospital(gateway, HOSPITAL) == []
     assert gateway.calls == [([ENTRY_URL], "basic")] and page.called
+
+
+# What a hospital CMS serves, with HTTP 200, for a policy URL that does not exist or a page that
+# needs JavaScript: the menu (which names financial assistance), a footer (which names a policy and
+# an application) and not a word about the policy itself (2.8h review).
+SHELL_HTML = (
+    "<html><head><title>Page not found</title></head><body><nav><ul><li><a href='/'>Home</a></li>"
+    "<li><a href='/our-providers/'>Find a doctor</a></li>"
+    "<li><a href='/locations-and-directions/'>Find a location</a></li>"
+    "<li><a href='/patients-visitors/financial-assistance/'>Financial Assistance</a></li>"
+    "<li><a href='/patients-visitors/paying-for-care/'>Pay a bill</a></li></ul></nav>"
+    "<main><h1>Page not found</h1><p>Please enable JavaScript to continue.</p></main>"
+    "<footer><a href='/privacy-policy/'>Privacy policy</a> "
+    "<a href='/careers/application.pdf'>Employment application (PDF)</a></footer></body></html>"
+)
+# A short entry page that does talk about the policy and links to it relative to its own URL.
+RELATIVE_PDF = "https://www.example.org/patients/docs/fap.pdf"
+SHORT_ENTRY_HTML = (
+    "<html><body><nav><a href='/our-providers/'>Find a doctor</a></nav>"
+    "<main><h1>Financial Assistance</h1><p>The hospital offers free and discounted care to "
+    "patients who cannot pay under its financial assistance policy, whatever their insurance. "
+    "Read the <a href='docs/fap.pdf'>Financial Assistance Policy (PDF)</a> or call "
+    "508-555-0100 to ask for an application by mail.</p></main></body></html>"
+)
+
+
+@respx.mock
+def test_a_navigation_shell_downloaded_for_a_page_tavily_could_not_fetch_is_not_stored():
+    page = html_route(body=SHELL_HTML)
+    shell = html_text(SHELL_HTML, base_url=ENTRY_URL)
+    assert MIN_CHARS <= len(shell) < THIN_CHARS  # long enough to pass as a document before
+    gateway = DepthGateway(basic={}, advanced={})
+    with httpx.Client() as http:
+        docs = scout_hospital(gateway, HOSPITAL, http=http)
+    assert page.called
+    assert docs == []
+    assert gateway.calls == [([ENTRY_URL], "basic")]  # nothing to follow, nothing re-extracted
+
+
+@respx.mock
+def test_a_short_downloaded_page_about_the_policy_is_kept_and_its_relative_links_followed():
+    page = html_route(body=SHORT_ENTRY_HTML)
+    gateway = DepthGateway(basic={RELATIVE_PDF: SAMPLE_POLICY_TEXT}, advanced={})
+    with httpx.Client() as http:
+        docs = scout_hospital(gateway, HOSPITAL, http=http)
+    assert page.called
+    assert gateway.calls == [([ENTRY_URL], "basic"), ([RELATIVE_PDF], "basic")]
+    assert [(doc.url, doc.doc_class) for doc in docs] == [(ENTRY_URL, "fap"), (RELATIVE_PDF, "fap")]
+    assert MIN_CHARS <= len(docs[0].text) < THIN_CHARS
+    assert f"[Financial Assistance Policy (PDF)]({RELATIVE_PDF})" in docs[0].text
+
+
+class CappedGateway(DepthGateway):
+    """The advanced extraction would pass the hard credit cap."""
+
+    def extract(self, urls, **kwargs):
+        if kwargs.get("depth") == "advanced":
+            self.calls.append((list(urls), "advanced"))
+            raise BudgetExceeded("Tavily cap of 1000 credits would be exceeded (used 999).")
+        return super().extract(urls, **kwargs)
+
+
+@respx.mock
+def test_a_credit_cap_at_the_advanced_pass_leaves_the_free_download_to_run():
+    page = html_route()
+    gateway = CappedGateway(basic={ENTRY_URL: NAV_ONLY, FAP_PDF: SAMPLE_POLICY_TEXT}, advanced={})
+    with httpx.Client() as http:
+        docs = scout_hospital(gateway, HOSPITAL, http=http)
+    assert page.called
+    assert gateway.calls == [
+        ([ENTRY_URL], "basic"),
+        ([ENTRY_URL], "advanced"),
+        ([FAP_PDF], "basic"),
+    ]
+    assert [(doc.url, doc.doc_class) for doc in docs] == [(ENTRY_URL, "fap"), (FAP_PDF, "fap")]
+    assert "250% of the Federal Poverty" in docs[0].text
 
 
 class ThinTavily:

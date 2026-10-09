@@ -313,6 +313,33 @@ def test_html_text_keeps_visible_text_and_links_and_drops_scripts_and_styles():
     assert html_text("<p>unclosed <a href='/x'>anchor") == "unclosed [anchor"
 
 
+def test_html_text_resolves_links_against_the_page_and_its_base_element():
+    # Tavily renders links absolute; a downloaded page has them as written, and the scout resolves
+    # links against the site root, so page-relative targets must be made absolute here (2.8h review).
+    page = "https://patients.example.org/paying-for-care/financial-assistance/"
+    markup = (
+        '<p><a href="docs/fap.pdf">Policy</a> <a href="../apply.pdf">Apply</a> '
+        '<a href="/summary.pdf">Summary</a> <a href="#top">Top</a> <a href="tel:1">Call</a></p>'
+    )
+    assert html_text(markup, base_url=page) == (
+        "[Policy](https://patients.example.org/paying-for-care/financial-assistance/docs/fap.pdf) "
+        "[Apply](https://patients.example.org/paying-for-care/apply.pdf) "
+        "[Summary](https://patients.example.org/summary.pdf) [Top](#top) [Call](tel:1)"
+    )
+    based = '<head><base href="https://cdn.example.org/files/"></head><body>' + markup
+    text = html_text(based, base_url=page)
+    assert "[Policy](https://cdn.example.org/files/docs/fap.pdf)" in text
+    assert "[Summary](https://cdn.example.org/summary.pdf)" in text
+    relative_base = '<base href="/files/">' + markup
+    assert "[Policy](https://patients.example.org/files/docs/fap.pdf)" in html_text(
+        relative_base, base_url=page
+    )
+    # Without a page URL the targets stay as written.
+    assert html_text(markup) == (
+        "[Policy](docs/fap.pdf) [Apply](../apply.pdf) [Summary](/summary.pdf) [Top](#top) [Call](tel:1)"
+    )
+
+
 @respx.mock
 def test_download_text_strips_html_only_when_asked():
     url = "https://www.example.org/patients/financial-assistance"
@@ -329,7 +356,8 @@ def test_download_text_strips_html_only_when_asked():
     assert text is not None
     assert "250% of the Federal Poverty" in text and "Se habla español." in text
     assert "dataLayer" not in text
-    assert "[Financial Assistance Policy (PDF)](/docs/fap.pdf)" in text
+    # Link targets are resolved against the page's URL, as Tavily renders them.
+    assert "[Financial Assistance Policy (PDF)](https://www.example.org/docs/fap.pdf)" in text
 
 
 @respx.mock

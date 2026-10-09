@@ -7,6 +7,7 @@ from pydantic import SecretStr
 
 from waive.atlas import repo
 from waive.atlas.schedule import (
+    CREDITS_PER_HOSPITAL,
     DEMAND_WEIGHTS,
     JOB_ID,
     NEVER_SCOUTED_DAYS,
@@ -198,6 +199,24 @@ def test_run_once_stops_at_the_daily_budget(tmp_path):
         assert report.stopped == "daily budget"
         assert (report.used_before, report.used_after) == (Decimal("0"), Decimal("15"))
         assert repo.latest_sheet(session, "220031") is None
+
+
+def test_run_once_reserves_seven_credits_per_hospital(tmp_path):
+    # A scout can cost up to seven credits (two searches, a Map, the basic extraction and the
+    # advanced re-extraction of a thin page, task 2.8h); a day with fewer left does not start one.
+    assert CREDITS_PER_HOSPITAL == Decimal("7")
+    engine = make_engine_with_hospital(REAL, NEW)
+    governor = make_governor_for(tmp_path)
+    with session_scope(engine) as session:
+        report = run_once(
+            session, SpendingGateway(governor), FakeAI(), governor, TODAY, daily_cap=6
+        )
+        assert report.results == [] and report.stopped == "daily budget"
+        assert report.used_before == report.used_after == Decimal("0")
+        report = run_once(
+            session, SpendingGateway(governor), FakeAI(), governor, TODAY, daily_cap=7, limit=1
+        )
+        assert [r.outcome for r in report.results] == ["published"]
 
 
 def test_run_once_builds_the_queue_notes_rescouts_and_stops_when_empty(tmp_path):
