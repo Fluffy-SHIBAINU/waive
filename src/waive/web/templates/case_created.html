@@ -2,6 +2,7 @@
 {% block title %}Case created{% endblock %}
 {% block content %}
 <h1>Two links</h1>
+{% if notice %}<p class="card status-unknown big">{{ notice }}</p>{% endif %}
 <h2>1. For the person with the bill</h2>
 <p class="big">Share this link with them. It only lets them add photos and see the result.</p>
 <p><a class="btn primary" href="{{ senior_url }}" id="senior-link">Open the bill-photo page</a></p>

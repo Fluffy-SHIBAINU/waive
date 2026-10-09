@@ -16,6 +16,7 @@ from waive.cases.service import (
     authorize,
     confirm_bill,
     delete_case,
+    relink,
     set_household,
     start_case,
     view,
@@ -50,6 +51,7 @@ def caregiver_links(token: str) -> dict[str, str]:
         "paper": f"{base}/paper",
         "outcome": f"{base}/outcome",
         "check_in": f"{base}/check-in",
+        "relink": f"{base}/relink",
     }
 
 
@@ -155,6 +157,24 @@ def caregiver_approve(request: Request, token: str):
         row = authorize(ctx, token, "caregiver")
         approve(ctx, row.id)
     return RedirectResponse(caregiver_links(token)["review"], status_code=303)
+
+
+@router.post("/c/{token}/relink", response_class=HTMLResponse)
+def caregiver_relink(request: Request, token: str) -> HTMLResponse:
+    """New links for both people; the old ones, this one included, stop working at once, so the
+    page is rendered here rather than redirected to."""
+    deps = deps_of(request)
+    with session_scope(deps.engine) as session:
+        ctx = deps.context(session)
+        row = authorize(ctx, token, "caregiver")
+        links = relink(ctx, row.id)
+    return render(
+        request,
+        "case_created.html",
+        senior_url=senior_links(links.senior_token)["start"],
+        caregiver_url=caregiver_links(links.caregiver_token)["review"],
+        notice="Your old links stopped working. Save this new one.",
+    )
 
 
 @router.post("/c/{token}/delete", response_class=HTMLResponse)

@@ -87,6 +87,25 @@ def test_caregiver_sees_provisional_dates_and_can_enter_the_first_bill():
     assert "March 29, 2027" in marked and "may be earlier" not in marked
 
 
+def test_caregiver_can_make_new_links_and_the_old_ones_stop_working():
+    client, links = seeded_client()
+    senior, caregiver = f"/s/{links.senior_token}", f"/c/{links.caregiver_token}"
+    client.post(f"{senior}/bill", files=photo())
+    review = client.get(caregiver).text
+    assert "Make new links" in review and f"{caregiver}/relink" in review
+    assert client.post(f"/c/{links.senior_token}/relink").status_code == 403  # senior scope
+    page = client.post(f"{caregiver}/relink")
+    assert page.status_code == 200
+    new_senior = re.search(r'href="(/s/[^"]+)"', page.text).group(1)
+    new_caregiver = re.search(r'href="(/c/[^"]+)"', page.text).group(1)
+    assert new_senior != senior and new_caregiver != caregiver
+    assert "old links" in page.text.lower()
+    assert client.get(senior).status_code == 403 and client.get(caregiver).status_code == 403
+    assert client.get(new_senior).status_code == 200
+    fresh = client.get(new_caregiver)
+    assert fresh.status_code == 200 and "$1,850.00" in fresh.text  # the case itself survived
+
+
 class UnknownHospitalAI:
     def complete_json(self, role, messages, schema, *, phi, purpose, max_tokens=2000):
         return BillExtract(

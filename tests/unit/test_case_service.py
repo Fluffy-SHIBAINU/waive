@@ -17,6 +17,7 @@ from waive.cases.service import (
     authorize,
     confirm_bill,
     delete_case,
+    relink,
     set_household,
     start_case,
     submit_bill,
@@ -263,6 +264,38 @@ def test_a_hospital_outside_the_registry_cannot_be_chosen(ctx):
     with pytest.raises(KeyError):
         confirm_bill(ctx, links.case_id, {}, ccn="999999")
     assert ctx.session.get(CaseRow, links.case_id).ccn == "229999"
+
+
+def test_relink_revokes_both_old_links_and_keeps_the_case(ctx):
+    """README: links are revocable. A senior link forwarded over SMS stays valid for 90 days
+    unless the caregiver can cut it off without deleting the case."""
+    links = start_case(ctx, "MA")
+    submit_bill(ctx, links.case_id, bill_image())
+    before = set_household(ctx, links.case_id, 1, Decimal("22800"), ())
+    fresh = relink(ctx, links.case_id)
+    assert fresh.case_id == links.case_id
+    assert fresh.senior_token != links.senior_token
+    for old in (links.senior_token, links.caregiver_token):
+        with pytest.raises(PermissionError, match="revoked"):
+            authorize(ctx, old, "senior")
+    assert authorize(ctx, fresh.senior_token, "senior").id == links.case_id
+    assert authorize(ctx, fresh.caregiver_token, "caregiver").id == links.case_id
+    with pytest.raises(PermissionError):
+        authorize(ctx, fresh.senior_token, "caregiver")
+    row = ctx.session.get(CaseRow, links.case_id)
+    assert row.token_generation == 2
+    after = view(ctx, links.case_id)
+    assert (after.status, after.tier, after.annual_income) == (
+        before.status,
+        before.tier,
+        before.annual_income,
+    )
+    assert row.prediction == ctx.session.get(CaseRow, links.case_id).prediction
+    again = relink(ctx, links.case_id)
+    assert row.token_generation == 3
+    with pytest.raises(PermissionError):
+        authorize(ctx, fresh.caregiver_token, "caregiver")
+    assert authorize(ctx, again.caregiver_token, "caregiver").id == links.case_id
 
 
 def test_corrections_override_extraction(ctx):
