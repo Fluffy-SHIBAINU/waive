@@ -55,10 +55,10 @@ truth for spend; the PROGRESS Spend table is a copy of it); fix any drift in one
 5. The user switches the repository to **Public** (Settings → General → Danger Zone → Change visibility) and tells the loop "U8.1 closed".
 
 **U8.2 — Record and upload the demo video (under 3 minutes, public on YouTube).** What the user does:
-1. Follow `docs/devpost/demo-script.md` "Before recording" (reset, ZDR setting for a synthetic-only session, serve, phone on the same Wi-Fi).
+1. Follow `docs/devpost/demo-script.md` "Before recording" (reset, serve, phone on the same Wi-Fi; no ZDR change: zero data retention is confirmed).
 2. Record the nine shots (the only paid steps: the two vision calls in shots 3–4 and the one `--reuse-sources` Nemotron build in shot 7, about two cents in all, no Tavily credits), cut in iMovie, export 1080p, check `mdls -name kMDItemDurationSeconds` < 180.
 3. Upload to YouTube with visibility **Public** (Devpost requires public, not unlisted), title "Waive — free or discounted hospital care from a photo of the bill (Nebius x NVIDIA hackathon)".
-4. Paste the URL into the two `[USER FILLS: YouTube URL …]` fields (`README.md`, `docs/devpost/submission.md`), or tell the loop the URL; set `WAIVE_REQUIRE_ZDR=true` back if it was changed; run `uv run waive demo reset`; commit and push; write "U8.2 closed" in chat.
+4. Paste the URL into the two `[USER FILLS: YouTube URL …]` fields (`README.md`, `docs/devpost/submission.md`), or tell the loop the URL; run `uv run waive demo reset`; commit and push; write "U8.2 closed" in chat.
 
 **U8.3 — Submit on Devpost (target 2026-10-28; deadline 2026-10-30 10:00 PT).** What the user does:
 1. On the hackathon's Devpost page, "Join hackathon" if not yet joined, then "Submit a project" → "Create a project".

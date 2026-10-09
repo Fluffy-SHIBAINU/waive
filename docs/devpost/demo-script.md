@@ -13,12 +13,11 @@ endpoint is live, record the phone shots against the public URL instead and say 
 
 1. `uv run waive demo reset` — deletes every case, resets St. Example, writes `var/demo/bill.jpg`,
    `var/demo/bill.json`, `var/demo/letter.jpg`.
-2. Zero data retention: the web flow sends photos with `phi=True`. If gate U0.4 is still open, set
-   `WAIVE_REQUIRE_ZDR=false` in `.env` **for this session only** (synthetic images only, as in the
-   U4.1 phone test) and set it back to `true` right after recording. If U0.4 is closed
-   (`WAIVE_ZDR_CONFIRMED=true`), change nothing. The shot 8 narration follows the same gate:
-   "designed for zero data retention" while U0.4 is open, "with zero data retention" once it is
-   closed.
+2. Zero data retention: no change needed; ZDR is confirmed. The Token Factory project runs with
+   zero data retention (confirmed 2026-10-09 by the project owner, gate U0.4 closed) and `.env`
+   carries `WAIVE_ZDR_CONFIRMED=true` with `WAIVE_REQUIRE_ZDR=true`, so the web flow's photos
+   (`phi=True`) go through exactly as they would for a real bill. The shot 8 narration says "with
+   zero data retention".
 3. `uv run waive serve`. On the laptop open http://localhost:8000 and http://localhost:8000/atlas
    in two browser tabs; find the laptop's IP with `ipconfig getifaddr en0`.
 4. Phone: open `http://<ip>:8000` once to warm the connection; Settings → Display → text size at
@@ -43,7 +42,7 @@ endpoint is live, record the phone shots against the public URL instead and say 
 | 5 | 1:09–1:32 | 23 | Laptop: caregiver "Review" page → approved → packet PDF | Open the caregiver link; scroll "What we read from the bill", "Result" ("Likely free care", "Policy says … 250%"), "Dates that matter"; click *Approve: prepare the packet*; click *Download the packet (PDF)*; show page 1 (cover letter) and the checklist page | "Ana's review page shows the same result with the exact quote from the policy — free care up to two hundred fifty percent — the day one-twenty collections protection and the day two-forty application deadline. She approves, and Waive prints the packet: a cover letter citing the policy, the data sheet, the document checklist, and where to mail it." |
 | 6 | 1:32–1:59 | 27 | Laptop: `/atlas` list → `/atlas/220031` (Boston Medical Center) → `/metrics` | Scroll the list; open Boston Medical Center; scroll a field: the quote sits under each value with its source link and date; scroll to "Sources"; open `/metrics` and show the MA row and the national total | "Behind the app is an open atlas. For each hospital, Tavily finds the official site and scouts the financial assistance policy, the application and the collections policy. Nemotron 3 Super turns them into a procedure sheet; Nemotron 3 Nano cross-checks it; every field keeps an exact quote that must verify against the source, or it is dropped. Twenty-seven of forty-six Massachusetts hospitals are published, out of twenty-seven hundred nonprofit hospitals seeded nationally." |
 | 7 | 1:59–2:21 | 22 | Terminal: `uv run waive atlas build --state MA --ccn 220031 --reuse-sources` (Nemotron Super + Nano on stored documents, about $0.01, no Tavily) then `uv run waive atlas schedule --dry-run` (free) | Run the build; cut the wait so the result table shows `220031 · BOSTON MEDICAL CENTER · published · <version>` and the "Spend so far" line; run the dry run and let the queue table and the "Daily budget" line show | "Here Nemotron 3 Super and Nemotron 3 Nano rebuild Boston Medical Center's sheet live from stored documents — a new version only if a value changed. Scouting runs on a priority queue inside a daily credit budget. And when a hospital's real decision contradicts a sheet, Waive re-scouts, versions it, and after enough cases flags the hospital." |
-| 8 | 2:21–2:40 | 19 | Architecture card: `docs/devpost/gallery/diagram-01.png` | Hold the diagram; a highlight moves from the phone to Token Factory to Tavily | Variant A (deployed): "One Python service: FastAPI on Nebius AI Cloud; NVIDIA Nemotron models and MiniCPM-V on Nebius Token Factory, designed for zero data retention; Tavily for the web. Photos never touch disk, personal fields are encrypted, links are scoped and revocable, and one tap deletes everything. Every budget has a hard cap." — Variant B (not deployed): replace the first clause with "One Python service: FastAPI, built for Nebius AI Cloud, with NVIDIA Nemotron models and MiniCPM-V on Nebius Token Factory, designed for zero data retention; …" — Both variants: say "with zero data retention" in place of "designed for zero data retention" only once gate U0.4 is closed (`WAIVE_ZDR_CONFIRMED=true`). |
+| 8 | 2:21–2:40 | 19 | Architecture card: `docs/devpost/gallery/diagram-01.png` | Hold the diagram; a highlight moves from the phone to Token Factory to Tavily | Variant A (deployed): "One Python service: FastAPI on Nebius AI Cloud; NVIDIA Nemotron models and MiniCPM-V on Nebius Token Factory, with zero data retention; Tavily for the web. Photos never touch disk, personal fields are encrypted, links are scoped and revocable, and one tap deletes everything. Every budget has a hard cap." — Variant B (not deployed): replace the first clause with "One Python service: FastAPI, built for Nebius AI Cloud; NVIDIA Nemotron models and MiniCPM-V on Nebius Token Factory, with zero data retention; …" — Both variants say "with zero data retention": gate U0.4 is closed (zero data retention confirmed 2026-10-09 by the project owner, `WAIVE_ZDR_CONFIRMED=true`). |
 | 9 | 2:40–2:50 | 10 | Closing card: repository URL, "Code Apache-2.0 · Atlas data CC BY 4.0 · Waive never asks for money" | Hold; end | "Waive never asks for money. The code is Apache-2.0, the atlas is CC BY 4.0. Rosa keeps her eighteen hundred fifty dollars." |
 
 Total: **2:50**.
@@ -66,11 +65,11 @@ Total: **2:50**.
   — every run is kept in the sheet's version history either way.
 - Shot 8: use variant A only when the public URL exists and the phone shots were recorded against
   it; otherwise variant B.
-- Shot 8 says "designed for zero data retention", not "with": gate U0.4 is open (`zdr_confirmed`
-  defaults to false, and the recording itself runs with `WAIVE_REQUIRE_ZDR=false` on synthetic
-  images, step 2 above). Waive refuses to send personal data to Token Factory until
-  `WAIVE_ZDR_CONFIRMED=true`; only once that is set may the narration say "with zero data
-  retention".
+- Shot 8 says "with zero data retention", not "designed for": gate U0.4 closed on 2026-10-09 when
+  the project owner confirmed zero data retention for the Token Factory project and set
+  `WAIVE_ZDR_CONFIRMED=true` (step 2 above). Waive still refuses to send personal data to Token
+  Factory whenever `WAIVE_ZDR_CONFIRMED` is false, so on a machine without that setting the photo
+  in shot 3 would be refused rather than sent.
 - Everything on screen is synthetic: St. Example is fictional, Rosa is fictional, the bill and the
   letter are generated images. Real hospitals appear only through their published policies.
 
@@ -93,5 +92,5 @@ Total: **2:50**.
    (Nebius x NVIDIA hackathon)", visibility **Public**, description = the first paragraph of
    README.md plus the repository URL. Copy the URL into `README.md` and
    `docs/devpost/submission.md` (the `[USER FILLS: YouTube URL …]` fields).
-6. Set `WAIVE_REQUIRE_ZDR=true` back in `.env` if it was changed, and run
-   `uv run waive demo reset` so the recording's case is gone.
+6. Run `uv run waive demo reset` so the recording's case is gone (no `.env` change to undo: ZDR is
+   confirmed and nothing was switched off for the recording).

@@ -47,6 +47,20 @@ def test_submission_names_the_open_zdr_gate():
         assert "gate U0.4" in text
 
 
+def test_submission_says_zero_data_retention_is_confirmed_once_the_gate_closed():
+    # Once U0.4 is ticked the project owner has confirmed zero data retention for the Token
+    # Factory project (2026-10-09), so the submission must say so, with the date, and must drop
+    # the open-gate caveats; the refusal while `WAIVE_ZDR_CONFIRMED` is false stays described.
+    progress = (DEVPOST.parent / "PROGRESS.md").read_text(encoding="utf-8")
+    text = (DEVPOST / "submission.md").read_text(encoding="utf-8")
+    if "- [x] **U0.4**" in progress:
+        assert "runs with zero data retention, confirmed 2026-10-09 by the project owner" in text
+        assert "real bills are now accepted" in text
+        assert "WAIVE_ZDR_CONFIRMED" in text
+        assert "until zero data retention is confirmed" not in text
+        assert "still open (gate U0.4)" not in text
+
+
 def test_demo_script_shot_list_is_contiguous_and_under_three_minutes():
     text = (DEVPOST / "demo-script.md").read_text(encoding="utf-8")
     rows = [m for m in (SHOT_ROW.match(line) for line in text.splitlines()) if m]
