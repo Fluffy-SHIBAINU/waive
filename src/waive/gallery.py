@@ -4,8 +4,9 @@ One demo case is driven through both flows in-process with scripted extraction o
 bill's ground truth), the app is served on a local port, and headless Chrome — already on the
 machine, no new Python dependency — photographs each page at phone or laptop size. Pages that
 exist only as POST responses (the "Two links" page, the read-back) or that change as the case
-advances (the senior start page, the review page before approval) are captured from their HTML
-with a <base href> so the stylesheet still loads. Chrome will not open a window narrower than
+advances (the senior start page, the household and income pages, which redirect to the result
+once the caregiver has approved, and the review page before approval) are captured from their
+HTML with a <base href> so the stylesheet still loads. Chrome will not open a window narrower than
 500 CSS px, so phone-sized shots are framed in an <iframe> of the phone's exact size. The colour
 scheme is pinned to dark on the command line, so a re-run on a light-mode machine takes the same
 pictures. README diagrams are exported through kroki.io. Spends nothing unless `live=True` (then
@@ -130,9 +131,13 @@ def plan_shots(
         )
     plan.shots.append(Shot("04-readback-phone", PHONE, html=readback.text))
     client.post(f"{senior}/confirm", data={"answer": "yes"})
-    plan.shots.append(Shot("05-household-phone", PHONE, url=f"{base_url}{senior}/household"))
+    # Once the caregiver has approved (shot 09), the senior link only shows the result: GET
+    # household/income redirect there. Chrome runs after the whole flow, so these two pages are
+    # kept as HTML at the moment the senior sees them.
+    household = client.get(f"{senior}/household").text
+    plan.shots.append(Shot("05-household-phone", PHONE, html=household))
     client.post(f"{senior}/household", data={"size": "1", "programs": "none"})
-    plan.shots.append(Shot("06-income-phone", PHONE, url=f"{base_url}{senior}/income"))
+    plan.shots.append(Shot("06-income-phone", PHONE, html=client.get(f"{senior}/income").text))
     client.post(f"{senior}/income", files={"photo": ("letter.jpg", letter, "image/jpeg")})
     plan.shots.append(Shot("07-result-phone", PHONE, url=f"{base_url}{senior}/result"))
     # The review page changes once approved (shot 09), so the pre-approval view is kept as HTML;

@@ -1,3 +1,4 @@
+import re
 from pathlib import Path
 from urllib.parse import urlparse
 from urllib.request import url2pathname
@@ -94,6 +95,27 @@ def test_plan_shots_walks_both_flows_and_every_get_page_renders(tmp_path):
     assert by_name["08-caregiver-review-laptop"].size == TALL
     assert by_name["12-metrics-laptop"].size == TALL
     assert plan.files["packet-sample.pdf"][:5] == b"%PDF-"
+
+
+def test_household_and_income_shots_are_kept_from_before_the_approval(tmp_path):
+    # 8.10: the security audit locked the senior link once the caregiver approved (GET
+    # household/income redirect to the result), and Chrome only runs after the whole flow,
+    # approval included, has been driven — so a URL shot of those pages photographed the
+    # result page. They are kept as HTML from the moment the senior would see them.
+    client, bill, letter = demo_client(tmp_path)
+    plan = plan_shots(client, BASE, bill=bill, letter=letter, atlas_ccn="229999")
+    by_name = {shot.name: shot for shot in plan.shots}
+    household, income = by_name["05-household-phone"], by_name["06-income-phone"]
+    assert household.url is None and household.html is not None
+    assert "How many people live in your home" in household.html
+    assert income.url is None and income.html is not None
+    assert "Do you have your Social Security letter?" in income.html
+    assert "What we found" not in household.html and "What we found" not in income.html
+    # The reason, stated: after the approval the senior link only shows the result.
+    senior = re.search(r'href="(/s/[^"]+)"', by_name["02-two-links-laptop"].html).group(1)
+    for page in ("household", "income"):
+        response = client.get(f"{senior}/{page}", follow_redirects=False)
+        assert response.status_code == 303 and response.headers["location"].endswith("/result")
 
 
 def test_plan_shots_skips_the_sheet_shot_when_the_hospital_has_no_sheet(tmp_path):
