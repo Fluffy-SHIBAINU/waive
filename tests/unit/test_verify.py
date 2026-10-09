@@ -1,10 +1,13 @@
 from decimal import Decimal
 
 from waive.atlas.samples import SAMPLE_POLICY_TEXT, SAMPLE_SOURCE_ID, st_example_sheet
+from waive.atlas.schema import DiscountTier
 from waive.atlas.verify import (
+    PATIENT_SHARE_REASON,
     looks_serialised,
     normalize,
     quote_found,
+    quotes_patient_share,
     value_in_quote,
     verify_sheet,
 )
@@ -81,6 +84,42 @@ def test_numbers_must_match_whole_tokens():
     assert value_in_quote(Decimal("250"), "at or below 250% of the guidelines")
     assert not value_in_quote(Decimal("250"), "at or below 2500 dollars")
     assert value_in_quote(1000, "balances over $1,000 qualify")
+
+
+MERCY_TABLE = (
+    "Level 1 Level 2 Level 3 Qualifying Criterion Less than 100% FPL 101 - 200% FPL "
+    "201 - 250% FPL Patient Responsibility None Co-Pay Co-Pay + 15% of total charges"
+)
+
+
+def with_tier_quote(quote, low=201, high=250, percent=15):
+    sheet = st_example_sheet()
+    tier = DiscountTier(
+        min_fpl_exclusive=Decimal(low), max_fpl_inclusive=Decimal(high), discount_percent=percent
+    )
+    cited = sheet.eligibility.discount_tiers.model_copy(update={"value": [tier], "quote": quote})
+    return sheet.model_copy(
+        update={"eligibility": sheet.eligibility.model_copy(update={"discount_tiers": cited})}
+    )
+
+
+def test_a_table_of_the_patients_share_is_not_a_discount_table():
+    # Mercy Medical Center (220066): "Co-Pay + 15% of total charges" is what the patient pays,
+    # yet 15 passed as a discount because every number appears in the quote.
+    docs = {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT + "\n" + MERCY_TABLE + "\n"}
+    report = verify_sheet(with_tier_quote(MERCY_TABLE), docs)
+    assert ("eligibility.discount_tiers", PATIENT_SHARE_REASON) in report.rejected
+    assert quotes_patient_share(MERCY_TABLE)
+    assert quotes_patient_share("patients pay 15% of charges between 201 and 250")
+    # Real discount wording passes, even when the patient's share is mentioned alongside it.
+    assert not quotes_patient_share("between 201% and 250% patients receive a 15% discount")
+    assert not quotes_patient_share("patient responsibility is 15% after an 85% discount")
+    assert not quotes_patient_share("Lowell General: Inpatient Discount 100% 63.28% 30%")
+    discount = (
+        "between 201% and 250% of the Federal Poverty Guidelines patients receive a 15% discount"
+    )
+    docs = {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT + "\n" + discount + "\n"}
+    assert verify_sheet(with_tier_quote(discount), docs).ok
 
 
 def test_trim_quotes_keeps_the_sentence_that_is_really_in_the_source():

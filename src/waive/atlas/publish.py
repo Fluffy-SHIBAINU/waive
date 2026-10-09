@@ -137,8 +137,12 @@ def sheet_inconsistencies(sheet: ProcedureSheet) -> list[str]:
     return []
 
 
-def decide_status(sheet: ProcedureSheet, conflicts: list[str]) -> SheetStatus:
-    if conflicts:
+def decide_status(
+    sheet: ProcedureSheet, conflicts: list[str], holds: list[str] | None = None
+) -> SheetStatus:
+    """`holds` are reasons an admin must look first that are not model disagreements, such as
+    a discount table that turned out to describe the patient's share."""
+    if conflicts or holds:
         return SheetStatus.HELD
     if sheet.eligibility.free_care_max_fpl is None and sheet.eligibility.discount_tiers is None:
         return SheetStatus.HELD

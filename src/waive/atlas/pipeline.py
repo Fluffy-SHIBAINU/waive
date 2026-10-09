@@ -23,7 +23,7 @@ from waive.atlas.schema import HospitalRef, ProcedureSheet, SourceDoc, SourceKin
 from waive.atlas.scout import scout_hospital, store_scouted
 from waive.atlas.structure import structure_sheet
 from waive.atlas.tavily_gateway import TavilyGateway
-from waive.atlas.verify import trim_quotes, verify_sheet
+from waive.atlas.verify import PATIENT_SHARE_REASON, trim_quotes, verify_sheet
 
 Outcome = Literal["published", "held", "skipped", "failed"]
 
@@ -161,6 +161,15 @@ def build_hospital(
         )
         result.notes.extend(skipped)
         result.notes.extend(f"{path}: {reason}" for path, reason in report.rejected)
+    holds: list[str] = []
+    if any(reason == PATIENT_SHARE_REASON for _, reason in report.rejected):
+        # The table says what the patient pays (co-pay, X% of charges); the schema cannot express
+        # that band, and publishing the free-care remainder alone would deny the co-pay band.
+        tiers = sheet.eligibility.discount_tiers
+        repo.add_review_item(
+            session, ccn, "patient_share_table", {"quote": tiers.quote if tiers else None}
+        )
+        holds.append(PATIENT_SHARE_REASON)
     sheet = drop_fields(sheet, [path for path, _ in report.rejected])
 
     conflicts: list[str] = []
@@ -214,7 +223,7 @@ def build_hospital(
         # never sees it; the sheet is held and an admin decides.
         repo.add_review_item(session, ccn, "inconsistent", {"problems": inconsistent})
         result.notes.extend(inconsistent)
-    status = decide_status(sheet, conflicts)
+    status = decide_status(sheet, conflicts, holds)
     published = publish_sheet(session, sheet.model_copy(update={"status": status}))
     result.outcome = "published" if status.value == "published" else "held"
     result.version = (

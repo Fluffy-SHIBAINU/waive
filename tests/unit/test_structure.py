@@ -259,6 +259,20 @@ def test_tier_missing_lower_bound_uses_previous_max_or_zero():
     assert skipped == [] and tiers_of(sheet) == [(Decimal(0), Decimal(300), 50)]
 
 
+def test_patient_share_guard_lives_in_verify_not_in_the_caster():
+    # The caster cannot see the quote, so it still parses 15; verify_sheet rejects the tier when
+    # the quote describes the patient's share. The prompt tells the model the difference too.
+    quote = "201 - 250% FPL Patient Responsibility Co-Pay + 15% of total charges"
+    draft = SheetDraft(
+        discount_tiers=field(
+            [{"min_fpl_exclusive": "201 - 250% FPL", "discount_percent": 15}], quote
+        )
+    )
+    sheet, skipped = draft_to_sheet(draft, SAMPLE.hospital, [SAMPLE.sources[0]], TODAY)
+    assert skipped == [] and tiers_of(sheet) == [(Decimal(201), Decimal(250), 15)]
+    assert "never the share the patient pays" in SYSTEM_PROMPT
+
+
 def test_tier_with_a_discount_range_is_skipped_never_averaged():
     tiers = [
         {"min_fpl_exclusive": 150, "max_fpl_inclusive": 300, "discount_percent": "30%-50%"},

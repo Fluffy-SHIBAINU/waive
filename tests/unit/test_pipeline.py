@@ -7,6 +7,7 @@ from waive.atlas.samples import SAMPLE_POLICY_TEXT, SAMPLE_SOURCE_ID
 from waive.atlas.schema import SheetStatus, SourceDoc, SourceKind
 from waive.atlas.structure import DraftField, SheetDraft
 from waive.atlas.tavily_gateway import ExtractedPage, SearchHit
+from waive.atlas.verify import PATIENT_SHARE_REASON
 from waive.db import init_db, make_engine, session_scope
 
 TODAY = date(2026, 10, 2)
@@ -306,6 +307,55 @@ def test_a_free_limit_above_the_discount_table_is_held_with_a_review_item():
         assert sheet.status is SheetStatus.HELD
         assert sheet.eligibility.free_care_max_fpl.value == 300  # the held draft keeps both
         assert len(sheet.eligibility.discount_tiers.value) == 2
+
+
+MERCY_FREE = "Patients with household income less than 100% FPL have no patient responsibility."
+MERCY_TABLE = (
+    "Qualifying Criterion Less than 100% FPL 101 - 200% FPL 201 - 250% FPL "
+    "Patient Responsibility None Co-Pay Co-Pay + 15% of total charges"
+)
+
+
+class MercyGateway(FakeGateway):
+    def extract(self, urls, **kwargs):
+        return [
+            ExtractedPage(url, POLICY_TEXT + MERCY_FREE + "\n" + MERCY_TABLE + "\n") for url in urls
+        ]
+
+
+class PatientShareAI(FakeAI):
+    """Both models turn a table of what the patient pays into a 15% "discount" band."""
+
+    def __init__(self):
+        super().__init__(free_limit_for_fast=("100", MERCY_FREE))
+        self.free_limits["reason"] = ("100", MERCY_FREE)
+
+    def complete_json(self, role, messages, schema, *, phi, purpose, max_tokens=2000):
+        draft = super().complete_json(role, messages, schema, phi=phi, purpose=purpose)
+        draft.discount_tiers = DraftField(
+            value=[{"min_fpl_exclusive": "201 - 250% FPL", "discount_percent": 15}],
+            quote=MERCY_TABLE,
+            source_id=draft.free_care_max_fpl.source_id,
+        )
+        return draft
+
+
+def test_a_patient_share_table_holds_the_sheet_instead_of_publishing_a_15_percent_discount():
+    engine = make_engine_with_hospital()
+    with session_scope(engine) as session:
+        result = build_hospital(session, MercyGateway(), PatientShareAI(), "229999", TODAY)
+        assert result.outcome == "held"
+        assert f"eligibility.discount_tiers: {PATIENT_SHARE_REASON}" in result.notes
+        kinds = sorted(item.kind for item in repo.open_review_items(session, "229999"))
+        assert kinds == ["patient_share_table", "verification"]
+        assert (
+            "15% of total charges"
+            in review_detail(session, "229999", "patient_share_table")["quote"]
+        )
+        sheet, _ = repo.latest_sheet(session, "229999")
+        assert sheet.status is SheetStatus.HELD
+        assert sheet.eligibility.discount_tiers is None  # never published as a discount
+        assert sheet.eligibility.free_care_max_fpl.value == 100  # the co-pay band stays unexpressed
 
 
 def test_build_hospital_survives_a_failed_cross_check():
