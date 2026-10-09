@@ -347,7 +347,7 @@ docker rm -f waive-smoke
 docker run --rm -e WAIVE_ENV=production waive:dev; echo "exit code: $?"
 ```
 
-Expected: the build finishes (first run downloads the base images, ~2–4 minutes; the image is roughly 250–350 MB); `{"ok":true}` then `home: 200`; `id -u` prints a non-zero uid; `msp-ca.pem` exists and `/app/var` contains `waive.db`; the logs show uvicorn started and no access-log lines; the last command prints a pydantic `ValidationError` mentioning `WAIVE_DATABASE_URL` and a non-zero exit code. If the `ADD https://…ca.pem` line fails with a 4xx/5xx, re-check the URL on https://docs.nebius.com/postgresql/databases/connect.md and update the Dockerfile; do not switch to `sslmode=require`.
+Expected: the build finishes (first run downloads the base images, ~2–4 minutes). Measured in 6.1b (2026-10-08, arm64 build): `docker image ls` shows **507 MB** uncompressed; `docker image inspect` `.Size` is 106,208,315 bytes (content/compressed); the runtime `.venv` alone is 216 MB (sqlalchemy, openai, uvloop, psycopg binary, pillow, cryptography, pygments, reportlab) — the production dependency set with no dev packages, pip or uv in the runtime stage, so the earlier 250–350 MB estimate was low, not a build mistake. Then `{"ok":true}` then `home: 200`; `id -u` prints a non-zero uid; `msp-ca.pem` exists and `/app/var` contains `waive.db`; the logs show uvicorn started and no access-log lines; the last command prints a pydantic `ValidationError` mentioning `WAIVE_DATABASE_URL` and a non-zero exit code. If the `ADD https://…ca.pem` line fails with a 4xx/5xx, re-check the URL on https://docs.nebius.com/postgresql/databases/connect.md and update the Dockerfile; do not switch to `sslmode=require`.
 
 - [ ] **Step 8: Lint, format, commit**
 
@@ -1366,9 +1366,21 @@ Expected: `cr.<region>.nebius.cloud/<path>`; a count ≥ 1 (the credential helpe
 
 - [ ] **Step 4: Build for amd64 and push**
 
+The Mac builds arm64 by default (6.1b's local `waive:dev` is arm64: `docker image inspect waive:dev --format '{{.Architecture}}'`), and the endpoint platform `cpu-d3` is x86_64, so an image pushed without `--platform linux/amd64` would fail at exec time. Build the amd64 image once and smoke-test it under emulation before pushing; the script's own `--platform linux/amd64` build then hits the cache:
+
 ```bash
+docker build --platform linux/amd64 -t waive:amd64 .
+docker image inspect waive:amd64 --format '{{.Architecture}}'   # must print amd64
+docker run --rm -d --name waive-smoke-amd64 --platform linux/amd64 -p 8000:8000 \
+  -e WAIVE_VAULT_KEY="$(uv run python -c 'import base64, os; print(base64.b64encode(os.urandom(32)).decode())')" \
+  -e WAIVE_TOKEN_SECRET="$(uv run python -c 'import secrets; print(secrets.token_hex(32))')" \
+  waive:amd64
+for _ in $(seq 1 20); do curl -fsS http://127.0.0.1:8000/healthz && break; sleep 2; done
+docker rm -f waive-smoke-amd64
 deploy/push.sh
 ```
+
+Expected: `amd64`; `{"ok":true}` (emulated startup is slower than native, hence the longer wait). If the emulated container never answers, do not push; check `docker logs waive-smoke-amd64` first.
 
 Verify (the script already runs `docker manifest inspect`):
 
