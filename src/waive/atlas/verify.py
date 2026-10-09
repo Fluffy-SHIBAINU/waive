@@ -122,6 +122,28 @@ def tiers_rise_with_income(tiers: list[DiscountTier]) -> bool:
     )
 
 
+CEILING_REASON = "quote states an eligibility ceiling for any assistance, not a free-care band"
+# "you may qualify for full or partial financial assistance if your household income is at or
+# below 400%" (Arnot Ogden, 330090, task 7.9) bounds every kind of help; it is free care only
+# when the same passage says so.
+_CEILING_WORDING = re.compile(
+    r"\bfull or partial\b|\bpartial(?:ly)?\b|\bfree or (?:discounted|reduced|low[- ]?cost)\b"
+    r"|\bmay qualify for (?:financial )?assistance\b|\beligible for (?:financial )?assistance\b"
+)
+_FREE_MARKERS = re.compile(
+    r"\b100 ?(?:%|percent)|\bone hundred percent\b|\bfree care\b|\bfree of charge\b"
+    r"|\bno charge\b|\bat no cost\b|\bzero\b|\bwaiv\w*|\bfull(?:y)? (?:write[- ]?off|covered|discounted)"
+)
+
+
+def quotes_assistance_ceiling(quote: str) -> bool:
+    """A free-care quote that only promises some help ("full or partial", "may qualify for
+    financial assistance") up to an income, without saying that care is free there. Its number
+    is the ceiling on all assistance, which the draft keeps in assistance_ceiling_fpl."""
+    text = normalize(quote)
+    return _CEILING_WORDING.search(text) is not None and _FREE_MARKERS.search(text) is None
+
+
 AGB_CAP_REASON = "quote states the amounts-generally-billed cap, not who may apply"
 _AGB_CLAUSE = re.compile(r"amounts? generally billed[^.;]*")
 
@@ -211,6 +233,10 @@ def verify_sheet(sheet: ProcedureSheet, documents: dict[str, str]) -> Verificati
             report.rejected.append((path, "value is a list or object written as text"))
         elif not value_in_quote(cited.value, cited.quote or ""):
             report.rejected.append((path, "value not in quote"))
+        elif path == "eligibility.free_care_max_fpl" and quotes_assistance_ceiling(
+            cited.quote or ""
+        ):
+            report.rejected.append((path, CEILING_REASON))
         elif path == "eligibility.discount_tiers" and (
             quotes_patient_share(cited.quote or "") or tiers_rise_with_income(cited.value)
         ):

@@ -267,3 +267,43 @@ def test_a_discount_that_rises_with_income_is_upside_down():
     assert verify_sheet(sheet, docs).ok
     flat = with_tiers_quote(falling, [(200, 300, 50), (300, 400, 50)])
     assert not tiers_rise_with_income(flat.eligibility.discount_tiers.value)
+
+
+ARNOT_SENTENCE = (
+    "Whether you are uninsured or insured, you may qualify for full or partial financial "
+    "assistance if your household income is at or below 400% of the Federal Poverty Level for "
+    "the 48 Contiguous States & D.C."
+)
+
+
+def test_full_or_partial_assistance_wording_is_a_ceiling_not_a_free_care_band():
+    from waive.atlas.verify import CEILING_REASON, quotes_assistance_ceiling
+
+    # Arnot Ogden (330090, 7.9): published free care up to 400% from a sentence that promises
+    # "full or partial" help up to that income; sheet_inconsistencies only fires above 400%.
+    assert quotes_assistance_ceiling(ARNOT_SENTENCE)
+    assert quotes_assistance_ceiling(
+        "Patients with income up to 300% FPL may qualify for financial assistance."
+    )
+    # Free-care wording passes, even next to the word "partial".
+    assert not quotes_assistance_ceiling(
+        "covers (i) 100% of charges for patients with family gross income less than or equal to "
+        "200% of the federal poverty level; and (ii) a portion of charges above that"
+    )
+    assert not quotes_assistance_ceiling(
+        "If your household income is 150% of the federal poverty guidelines or below, you may be "
+        "eligible for free care"
+    )
+    assert not quotes_assistance_ceiling(
+        "patients with family income of 200% of the Federal Poverty Level or less may be eligible "
+        "for a discount of 100%"
+    )
+    docs = {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT + "\n" + ARNOT_SENTENCE + "\n"}
+    sheet = st_example_sheet()
+    cited = sheet.eligibility.free_care_max_fpl.model_copy(
+        update={"value": Decimal(400), "quote": ARNOT_SENTENCE}
+    )
+    sheet = sheet.model_copy(
+        update={"eligibility": sheet.eligibility.model_copy(update={"free_care_max_fpl": cited})}
+    )
+    assert ("eligibility.free_care_max_fpl", CEILING_REASON) in verify_sheet(sheet, docs).rejected
