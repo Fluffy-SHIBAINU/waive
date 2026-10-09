@@ -87,11 +87,16 @@ def day_start(today: date) -> str:
 
 class Governor:
     def __init__(
-        self, ledger: "Ledger | DbLedger", tavily_credit_cap: int, token_factory_usd_cap: Decimal
+        self,
+        ledger: "Ledger | DbLedger",
+        tavily_credit_cap: int,
+        token_factory_usd_cap: Decimal,
+        token_factory_daily_usd_cap: Decimal | None = None,
     ) -> None:
         self._ledger = ledger
         self._tavily_cap = Decimal(tavily_credit_cap)
         self._tf_cap = token_factory_usd_cap
+        self._tf_daily_cap = token_factory_daily_usd_cap
 
     def ensure_tavily(self, credits: Decimal) -> None:
         used, _ = self._ledger.totals("tavily")
@@ -103,10 +108,22 @@ class Governor:
     def record_tavily(self, credits: Decimal, purpose: str) -> None:
         self._ledger.record(UsageEvent("tavily", credits, Decimal("0"), purpose, _now()))
 
-    def ensure_token_factory(self) -> None:
+    def ensure_token_factory(self, today: date | None = None) -> None:
         _, usd = self._ledger.totals("token_factory")
         if usd >= self._tf_cap:
             raise BudgetExceeded(f"Token Factory cap of ${self._tf_cap} reached (used ${usd}).")
+        if self._tf_daily_cap is not None:
+            used_today = self.token_factory_used_today(today or datetime.now(UTC).date())
+            if used_today >= self._tf_daily_cap:
+                raise BudgetExceeded(
+                    f"Token Factory daily cap of ${self._tf_daily_cap} reached today "
+                    f"(used ${used_today}); reading resumes at midnight UTC."
+                )
+
+    def token_factory_used_today(self, today: date) -> Decimal:
+        """Dollars spent on Token Factory in the UTC day `today`."""
+        events = self._ledger.events("token_factory", day_start(today))
+        return sum((event.usd for event in events), Decimal("0"))
 
     def record_token_factory(
         self, prompt_tokens: int, completion_tokens: int, usd: Decimal, purpose: str
@@ -185,5 +202,8 @@ def make_ledger(settings: Settings, engine: Engine | None = None) -> Ledger | Db
 
 def make_governor(settings: Settings, engine: Engine | None = None) -> Governor:
     return Governor(
-        make_ledger(settings, engine), settings.tavily_credit_cap, settings.token_factory_usd_cap
+        make_ledger(settings, engine),
+        settings.tavily_credit_cap,
+        settings.token_factory_usd_cap,
+        settings.token_factory_daily_usd_cap,
     )

@@ -17,6 +17,7 @@ from waive.governor import (
     Ledger,
     UsageEvent,
     day_start,
+    make_governor,
     make_ledger,
 )
 from waive.web.app import create_app
@@ -45,6 +46,29 @@ def test_token_factory_cap_blocks_once_reached(tmp_path):
     governor.record_token_factory(1000, 500, Decimal("0.50"), "test")
     with pytest.raises(BudgetExceeded):
         governor.ensure_token_factory()
+
+
+def test_optional_daily_token_factory_cap_makes_an_exhaustion_self_heal(tmp_path):
+    """The lifetime cap has no reset, so one bad hour would switch photo reading off for good.
+    A daily sub-cap bounds the drain and lifts at midnight UTC; unset, nothing changes."""
+    ledger = Ledger(tmp_path / "usage.jsonl")
+    ledger.record(
+        UsageEvent(
+            "token_factory", Decimal("10"), Decimal("0.60"), "x", "2026-10-02T09:00:00+00:00"
+        )
+    )
+    governor = Governor(ledger, 10, Decimal("15"), token_factory_daily_usd_cap=Decimal("0.50"))
+    assert governor.token_factory_used_today(date(2026, 10, 2)) == Decimal("0.60")
+    with pytest.raises(BudgetExceeded, match="today"):
+        governor.ensure_token_factory(date(2026, 10, 2))
+    governor.ensure_token_factory(date(2026, 10, 3))  # a new day
+    Governor(ledger, 10, Decimal("15")).ensure_token_factory(date(2026, 10, 2))  # no daily cap
+    settings = Settings(
+        _env_file=None, ledger_path=tmp_path / "usage.jsonl", token_factory_daily_usd_cap="0.50"
+    )
+    with pytest.raises(BudgetExceeded):
+        make_governor(settings).ensure_token_factory(date(2026, 10, 2))
+    assert Settings(_env_file=None).token_factory_daily_usd_cap is None
 
 
 def test_ledger_rows_hold_no_content(tmp_path):

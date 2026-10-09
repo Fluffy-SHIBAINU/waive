@@ -10,10 +10,10 @@ from waive.db import init_db, make_engine
 from waive.web.app import create_app
 
 
-def make_client(ai=None):
+def make_client(ai=None, **overrides):
     engine = make_engine("sqlite+pysqlite:///:memory:")
     init_db(engine)
-    settings = Settings(_env_file=None, nebius_api_key=SecretStr("k"))
+    settings = Settings(_env_file=None, nebius_api_key=SecretStr("k"), **overrides)
     app = create_app(
         settings,
         engine=engine,
@@ -70,6 +70,22 @@ def test_oversized_uploads_get_a_413_page_before_any_work():
     assert client.post("/s/not-a-real-token/bill", files=upload(2 * MIB)).status_code == 403
     assert client.post("/c/not-a-real-token/paper", files=upload(cap + 1)).status_code == 413
     assert client.get("/healthz").status_code == 200
+
+
+def test_case_creation_is_rate_limited():
+    """POST /cases needs no sign-in and mints two capability links per call (spec §11: requests
+    are rate-limited). The window is per process: one replica, in memory."""
+    client, _ = make_client(cases_per_minute=3)
+    assert client.app.state.settings.cases_per_minute == 3
+    assert client.app.state.settings.cases_per_client_per_minute == 10
+    statuses = [client.post("/cases", data={"state": "MA"}).status_code for _ in range(4)]
+    assert statuses == [200, 200, 200, 429]
+    refused = client.post("/cases", data={"state": "MA"})
+    assert "too many" in refused.text.lower() and refused.status_code == 429
+    assert client.get("/healthz").status_code == 200  # only case creation is counted
+    limiter = client.app.state.limiter
+    limiter.advance(61)  # the window passes
+    assert client.post("/cases", data={"state": "MA"}).status_code == 200
 
 
 def test_multipart_uploads_never_spool_to_disk(monkeypatch):

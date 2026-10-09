@@ -13,6 +13,7 @@ from waive.cases.extract import BillExtract, IncomeExtract
 from waive.cases.service import start_case
 from waive.cases.synth import make_truth, render_bill
 from waive.db import CaseRow, session_scope
+from waive.governor import BudgetExceeded
 
 from tests.unit.test_web_app import make_client
 
@@ -140,6 +141,28 @@ def test_the_senior_link_cannot_change_an_approved_case():
         review = client.get(caregiver).text
         assert "Approved" in review and "Download the packet" in review
     assert client.get(f"{caregiver}/packet.pdf").status_code == 200
+
+
+class ExhaustedAI:
+    """The governor's Token Factory cap was reached: every paid read raises BudgetExceeded."""
+
+    def complete_json(self, role, messages, schema, *, phi, purpose, max_tokens=2000):
+        raise BudgetExceeded("Token Factory cap of $15 reached (used $15.0)")
+
+
+def test_a_reached_budget_is_a_kind_503_page_on_every_photo_route_not_a_500():
+    client, engine = make_client(ai=ExhaustedAI())
+    with session_scope(engine) as session:
+        repo.upsert_hospital(session, HOSPITAL)
+        publish_sheet(session, st_example_sheet())
+        links = start_case(client.app.state.deps.context(session), "MA")
+    client = TestClient(client.app, raise_server_exceptions=False)
+    senior, caregiver = f"/s/{links.senior_token}", f"/c/{links.caregiver_token}"
+    for path in (f"{senior}/bill", f"{senior}/income", f"{senior}/paper", f"{caregiver}/paper"):
+        response = client.post(path, files=photo())
+        assert response.status_code == 503, path
+        assert "paused" in response.text.lower() and "helper" in response.text.lower()
+    assert client.get("/healthz").status_code == 200
 
 
 class UnreadableAI:

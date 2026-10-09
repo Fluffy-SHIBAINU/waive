@@ -18,10 +18,13 @@ from waive.learning.contributions import (
 from waive.learning.evidence import audit_evidence, confirm_flag, slip_flag_level, withdraw_slips
 from waive.learning.scoreboard import queue_prechecks, scoreboard
 from waive.web.deps import deps_of, render
+from waive.web.limits import TooManyRequests
 
 router = APIRouter(prefix="/admin")
 COOKIE = "waive_admin"
 MIN_TOKEN_CHARS = 16
+LOGIN_FAILURES = "admin_login_failures"
+LOGIN_WINDOW_SECONDS = 15 * 60
 
 
 def _expected(request: Request) -> str:
@@ -44,8 +47,16 @@ def admin_login_form(request: Request) -> HTMLResponse:
 
 @router.post("/login")
 def admin_login(request: Request, token: str = Form(...)):
+    # Wrong tokens are counted process-wide (the client address behind the front end is not
+    # trustworthy); past the limit nobody signs in until the window passes.
+    limiter = request.app.state.limiter
+    allowed = request.app.state.settings.admin_login_failures
+    if limiter.exceeded(LOGIN_FAILURES, allowed, LOGIN_WINDOW_SECONDS):
+        raise TooManyRequests("sign-in attempts")
     if not hmac.compare_digest(token.encode("utf-8"), _expected(request).encode("utf-8")):
+        limiter.hit(LOGIN_FAILURES, allowed, LOGIN_WINDOW_SECONDS)
         raise PermissionError("wrong admin token")
+    limiter.reset(LOGIN_FAILURES)
     response = RedirectResponse("/admin", status_code=303)
     response.set_cookie(COOKIE, token, httponly=True, samesite="strict", max_age=12 * 3600)
     return response

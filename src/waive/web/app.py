@@ -9,13 +9,14 @@ from fastapi.templating import Jinja2Templates
 from starlette.formparsers import MultiPartParser
 
 from waive.ai.client import AIClient
+from waive.cases.service import TooManyReads
 from waive.cases.vault import cipher_from_settings, signer_from_settings
 from waive.config import Settings
 from waive.db import init_db, make_engine
-from waive.governor import make_governor
+from waive.governor import BudgetExceeded, make_governor
 from waive.logging_setup import configure_logging
 from waive.web.deps import STATIC_DIR, TEMPLATES_DIR, Deps, render, today_utc
-from waive.web.limits import BodyLimit, UploadTooLarge
+from waive.web.limits import BodyLimit, RateLimiter, TooManyRequests, UploadTooLarge
 from waive.web.plain import plain_lines
 
 
@@ -58,6 +59,7 @@ def create_app(
     app = FastAPI(title="Waive", docs_url=None, redoc_url=None, lifespan=lifespan)
     app.state.settings = settings
     app.state.governor = governor
+    app.state.limiter = RateLimiter()
     app.add_middleware(BodyLimit, max_body=settings.max_upload_bytes)
     # Starlette spools multipart files over 1 MiB to a plaintext temp file. With the cap in front
     # nothing admitted needs to leave memory, which keeps "photos are never written to disk" true.
@@ -125,6 +127,40 @@ def create_app(
             status_code=413,
             title="That photo is too large",
             message="Please take a smaller photo and try again.",
+        )
+
+    @app.exception_handler(TooManyRequests)
+    def too_many_requests(request: Request, exc: TooManyRequests) -> HTMLResponse:
+        return render(
+            request,
+            "error.html",
+            status_code=429,
+            title="Too many requests",
+            message="Too many attempts in a short time. Please wait a few minutes and try again.",
+        )
+
+    @app.exception_handler(TooManyReads)
+    def too_many_reads(request: Request, exc: TooManyReads) -> HTMLResponse:
+        return render(
+            request,
+            "error.html",
+            status_code=429,
+            title="That is enough photos for today",
+            message="This case has sent many photos today. Your helper can finish the check.",
+        )
+
+    @app.exception_handler(BudgetExceeded)
+    def budget_exceeded(request: Request, exc: BudgetExceeded) -> HTMLResponse:
+        # The governor stopped a paid read: the case is saved, nothing was lost, no traceback.
+        return render(
+            request,
+            "error.html",
+            status_code=503,
+            title="Reading is paused",
+            message=(
+                "Reading photos is paused for now because the budget for today is used up. "
+                "Your helper can finish the check later."
+            ),
         )
 
     return app

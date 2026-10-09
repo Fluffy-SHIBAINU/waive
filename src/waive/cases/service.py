@@ -23,6 +23,24 @@ from waive.rules.explain import caregiver_summary, senior_message
 SENIOR_TTL = timedelta(days=90)
 CAREGIVER_TTL = timedelta(days=365)
 DEFAULT_DOCUMENTS = [DocType.PHOTO_ID, DocType.PROOF_OF_INCOME]
+# Paid reads one case may ask for per UTC day, by photo kind. A real household never needs more,
+# and one senior link must not be a free meter on the vision model (spec §11).
+READ_LIMITS = {"bill": 5, "income": 5, "paper": 10}
+
+
+class TooManyReads(RuntimeError):
+    """A case asked the paid reader more often today than READ_LIMITS allows."""
+
+
+def count_read(sealed: dict[str, Any], kind: str, today: date) -> None:
+    """Record one paid read of `kind` for today in the sealed blob, or refuse it. Callers do this
+    before the model is asked and save the blob at once, so a failed read still counts."""
+    reads = sealed.setdefault("reads", {})
+    day = today.isoformat()
+    today_reads = [stamp for stamp in reads.get(kind, []) if stamp == day]
+    if len(today_reads) >= READ_LIMITS[kind]:
+        raise TooManyReads(f"{READ_LIMITS[kind]} {kind} photos were already read today")
+    reads[kind] = [*today_reads, day]
 
 
 @dataclass
@@ -207,10 +225,12 @@ def submit_bill(
     row = _row(ctx, case_id)
     _unlocked(row, allow_approved)
     prepared = prepare_image(image_bytes)
+    sealed = _load(ctx, row)
+    count_read(sealed, "bill", ctx.today)
+    _save(ctx, row, sealed)
     extract = extract_bill(ctx.ai, prepared.jpeg, synthetic=synthetic)
     hospitals = [repo.hospital_ref(h) for h in repo.list_hospitals(ctx.session)]
     candidates = match_hospital(extract, hospitals)
-    sealed = _load(ctx, row)
     sealed["bill"] = extract.model_dump(mode="json")
     sealed["candidates"] = [c.__dict__ for c in candidates]
     sealed["image_warnings"] = list(prepared.warnings)
@@ -295,8 +315,10 @@ def submit_income_letter(
     row = _row(ctx, case_id)
     _unlocked(row, allow_approved)
     prepared = prepare_image(image_bytes)
-    income = extract_income(ctx.ai, prepared.jpeg, synthetic=synthetic)
     sealed = _load(ctx, row)
+    count_read(sealed, "income", ctx.today)
+    _save(ctx, row, sealed)
+    income = extract_income(ctx.ai, prepared.jpeg, synthetic=synthetic)
     household = sealed.get("household") or {"size": 1, "programs": []}
     annual = income.annual()
     household["annual_income"] = None if annual is None else str(annual)
