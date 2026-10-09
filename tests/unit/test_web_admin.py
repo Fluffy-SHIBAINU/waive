@@ -96,6 +96,22 @@ def test_admin_pages_need_the_token(tmp_path):
     assert off.post("/admin/login", data={"token": "anything"}).status_code == 403
 
 
+def test_repeated_wrong_tokens_lock_the_sign_in_for_a_while(tmp_path):
+    client = admin_client(tmp_path)
+    assert client.app.state.settings.admin_login_failures == 10
+    for _ in range(10):
+        assert client.post("/admin/login", data={"token": "wrong"}).status_code == 403
+    locked = client.post("/admin/login", data={"token": "wrong"})
+    assert locked.status_code == 429 and "too many" in locked.text.lower()
+    # Locked for everyone, right token included: the limiter is global because the client
+    # address behind the front end is whatever X-Forwarded-For says.
+    assert client.post("/admin/login", data={"token": TOKEN}).status_code == 429
+    client.app.state.limiter.advance(15 * 60 + 1)
+    signed_in = client.post("/admin/login", data={"token": TOKEN}, follow_redirects=False)
+    assert signed_in.status_code == 303
+    assert client.get("/admin").status_code == 200
+
+
 def test_home_shows_counts_budget_and_a_clean_audit(tmp_path):
     client = admin_client(tmp_path)
     home = login(client)

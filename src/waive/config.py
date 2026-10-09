@@ -32,6 +32,9 @@ class Settings(BaseSettings):
 
     tavily_credit_cap: int = 1000
     token_factory_usd_cap: Decimal = Decimal("15")
+    # Optional spend ceiling per UTC day for Token Factory. The lifetime cap above never resets,
+    # so without this one burst of anonymous uploads would switch photo reading off for good.
+    token_factory_daily_usd_cap: Decimal | None = None
     ledger_path: Path = Path("var/usage.jsonl")
     database_url: str = "sqlite:///var/waive.db"
     vault_key: SecretStr | None = None
@@ -40,6 +43,12 @@ class Settings(BaseSettings):
     admin_token: SecretStr | None = None
     # Largest request body the web app accepts (phone photos are 2-6 MB); bigger gets a 413 page.
     max_upload_bytes: int = 10 * 1024 * 1024
+    # Spec §11 "requests are rate-limited": fixed one-minute windows for case creation (which
+    # needs no sign-in and mints two capability links), one process-wide and one per client; and
+    # wrong admin tokens per 15 minutes before sign-in locks for everyone.
+    cases_per_minute: int = 60
+    cases_per_client_per_minute: int = 10
+    admin_login_failures: int = 10
 
     # Deployment (spec §14). `production` is set on the endpoint, never in a developer's .env:
     # it refuses the SQLite default so a misconfigured container cannot silently start empty.

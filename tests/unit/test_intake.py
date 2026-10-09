@@ -7,7 +7,14 @@ from waive.ai.client import AIOutputError
 from waive.atlas import repo
 from waive.atlas.publish import publish_sheet
 from waive.atlas.samples import st_example_sheet
-from waive.cases.service import CaseContext, get_row, load_sealed, start_case
+from waive.cases.service import (
+    READ_LIMITS,
+    CaseContext,
+    TooManyReads,
+    get_row,
+    load_sealed,
+    start_case,
+)
 from waive.cases.vault import FieldCipher, TokenSigner, new_key
 from waive.db import init_db, make_engine, session_scope
 from waive.learning.classify import PhotoClass, PhotoClassification
@@ -62,6 +69,16 @@ def test_ingest_logs_the_class_in_the_sealed_blob(ctx):
         {"photo_class": "decision_letter", "route": "outcome", "on": "2026-10-02"}
     ]
     assert "decision_letter" not in (row.sealed or "")
+
+
+def test_papers_count_against_the_daily_read_limit(ctx):
+    links = start_case(ctx, "MA")
+    for _ in range(READ_LIMITS["paper"]):
+        ingest_paper(ctx, links.case_id, photo()["photo"][1])
+    calls = len(ctx.ai.calls)
+    with pytest.raises(TooManyReads):
+        ingest_paper(ctx, links.case_id, photo()["photo"][1])
+    assert len(ctx.ai.calls) == calls
 
 
 def test_unreadable_classification_falls_back_to_other(ctx):

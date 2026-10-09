@@ -32,6 +32,7 @@ from waive.learning.outcomes import (
 )
 from waive.learning.triage import record_outcome, triage_for
 from waive.web.deps import deps_of, render
+from waive.web.limits import client_key
 from waive.web.routes_senior import long_date, money, senior_links
 
 router = APIRouter()
@@ -55,6 +56,14 @@ def caregiver_links(token: str) -> dict[str, str]:
 @router.post("/cases", response_class=HTMLResponse)
 def create_case(request: Request, state: str = Form("MA")) -> HTMLResponse:
     deps = deps_of(request)
+    # No sign-in here and two capability links per call: a process-wide ceiling first (no header
+    # can dodge it), then a best-effort one per client.
+    settings = request.app.state.settings
+    limiter = request.app.state.limiter
+    limiter.check("cases", settings.cases_per_minute, 60, "new cases")
+    limiter.check(
+        f"cases:{client_key(request)}", settings.cases_per_client_per_minute, 60, "new cases"
+    )
     with session_scope(deps.engine) as session:
         links = start_case(deps.context(session), state)
     return render(

@@ -4,7 +4,7 @@ from dataclasses import dataclass
 
 from waive.ai.client import AIOutputError
 from waive.cases.images import prepare_image
-from waive.cases.service import CaseContext, get_row, load_sealed, save_sealed
+from waive.cases.service import CaseContext, count_read, get_row, load_sealed, save_sealed
 from waive.learning.classify import (
     PhotoClass,
     PhotoClassification,
@@ -37,12 +37,14 @@ def ingest_paper(
 ) -> PaperResult:
     row = get_row(ctx, case_id)
     prepared = prepare_image(image_bytes)
+    sealed = load_sealed(ctx, row)
+    count_read(sealed, "paper", ctx.today)
+    save_sealed(ctx, row, sealed)
     try:
         classified = classify_photo(ctx.ai, prepared.jpeg, synthetic=synthetic)
     except AIOutputError:
         classified = PhotoClassification()
     route = route_for(classified.photo_class)
-    sealed = load_sealed(ctx, row)
     sealed.setdefault("papers", []).append(
         {"photo_class": classified.photo_class.value, "route": route, "on": ctx.today.isoformat()}
     )

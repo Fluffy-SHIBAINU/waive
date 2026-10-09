@@ -1,5 +1,6 @@
 import random
-from datetime import date
+from dataclasses import replace
+from datetime import date, timedelta
 from decimal import Decimal
 
 import pytest
@@ -9,7 +10,9 @@ from waive.atlas.publish import publish_sheet
 from waive.atlas.samples import st_example_sheet
 from waive.cases.extract import BillExtract, IncomeExtract
 from waive.cases.service import (
+    READ_LIMITS,
     CaseContext,
+    TooManyReads,
     approve,
     authorize,
     confirm_bill,
@@ -149,6 +152,20 @@ def test_an_approved_case_only_changes_when_the_caregiver_allows_it(ctx):
     shown = confirm_bill(ctx, links.case_id, {"amount_due": "900"}, allow_approved=True)
     shown = set_household(ctx, links.case_id, 2, Decimal("22800"), (), allow_approved=True)
     assert shown.household_size == 2 and shown.bill.amount_due == Decimal("900")
+
+
+def test_a_case_may_only_ask_the_paid_reader_a_few_times_a_day(ctx):
+    """One senior link must not be a free meter on the vision model (spec §11)."""
+    assert READ_LIMITS == {"bill": 5, "income": 5, "paper": 10}
+    links = start_case(ctx, "MA")
+    for _ in range(5):
+        submit_bill(ctx, links.case_id, bill_image())
+    with pytest.raises(TooManyReads):
+        submit_bill(ctx, links.case_id, bill_image())
+    assert len(ctx.ai.calls) == 5  # the refused read never reached the model
+    submit_income_letter(ctx, links.case_id, bill_image())  # letters have their own count
+    tomorrow = replace(ctx, today=TODAY + timedelta(days=1))
+    assert submit_bill(tomorrow, links.case_id, bill_image()).status == "bill_read"
 
 
 def test_unknown_hospital_requests_scouting(ctx):
