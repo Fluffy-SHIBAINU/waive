@@ -38,6 +38,8 @@ class Settings(BaseSettings):
     token_secret: SecretStr | None = None
     # Admin console sign-in (at least 16 characters); the console is off when unset.
     admin_token: SecretStr | None = None
+    # Largest request body the web app accepts (phone photos are 2-6 MB); bigger gets a 413 page.
+    max_upload_bytes: int = 10 * 1024 * 1024
 
     # Deployment (spec §14). `production` is set on the endpoint, never in a developer's .env:
     # it refuses the SQLite default so a misconfigured container cannot silently start empty.
