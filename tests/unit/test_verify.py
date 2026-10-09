@@ -211,3 +211,59 @@ def test_the_amounts_generally_billed_cap_does_not_say_who_may_apply():
     )
     docs = {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT + both + "\n"}
     assert verify_sheet(with_insured(both, value=True), docs).ok
+
+
+ADVENTIST_TABLE = (
+    "> 200% to 300% of the Federal Poverty Level 50% of the Amount Generally Billed > 300% to 350% "
+    "of the Federal Poverty Level 75% of the Amount Generally Billed > 350% to 400% of the Federal "
+    "Poverty Level 75% of the Amount Generally Billed"
+)
+
+
+def with_tiers_quote(quote, bands):
+    sheet = st_example_sheet()
+    tiers = [
+        DiscountTier(
+            min_fpl_exclusive=Decimal(low), max_fpl_inclusive=Decimal(high), discount_percent=pct
+        )
+        for low, high, pct in bands
+    ]
+    cited = sheet.eligibility.discount_tiers.model_copy(update={"value": tiers, "quote": quote})
+    return sheet.model_copy(
+        update={"eligibility": sheet.eligibility.model_copy(update={"discount_tiers": cited})}
+    )
+
+
+def test_a_fraction_of_the_amount_generally_billed_is_the_patients_share():
+    # Adventist Health (050013 and five siblings, 7.9): the "Patient Responsibility" column of
+    # the Hawaii policy's table was published as discount tiers 50/75/75, because the quote
+    # dropped the header and "of the Amount Generally Billed" was not a patient-share phrase.
+    assert quotes_patient_share(ADVENTIST_TABLE)
+    assert quotes_patient_share("patients pay 50% of the AGB between 201% and 300%")
+    assert not quotes_patient_share("a 50% discount off the amount generally billed")
+    docs = {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT + "\n" + ADVENTIST_TABLE + "\n"}
+    sheet = with_tiers_quote(ADVENTIST_TABLE, [(200, 300, 50), (300, 350, 75), (350, 400, 75)])
+    assert ("eligibility.discount_tiers", PATIENT_SHARE_REASON) in verify_sheet(
+        sheet, docs
+    ).rejected
+
+
+def test_a_discount_that_rises_with_income_is_upside_down():
+    from waive.atlas.verify import tiers_rise_with_income
+
+    # No sliding scale gives a bigger discount to a richer household: a rising table is the
+    # patient's share read as a discount, whatever words surround it.
+    rising = "above 200% to 300% 50% discount; above 300% to 400% 75% discount"
+    docs = {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT + "\n" + rising + "\n"}
+    sheet = with_tiers_quote(rising, [(200, 300, 50), (300, 400, 75)])
+    assert tiers_rise_with_income(sheet.eligibility.discount_tiers.value)
+    assert ("eligibility.discount_tiers", PATIENT_SHARE_REASON) in verify_sheet(
+        sheet, docs
+    ).rejected
+    falling = "above 200% to 300% 75% discount; above 300% to 400% 50% discount"
+    docs = {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT + "\n" + falling + "\n"}
+    sheet = with_tiers_quote(falling, [(200, 300, 75), (300, 400, 50)])
+    assert not tiers_rise_with_income(sheet.eligibility.discount_tiers.value)
+    assert verify_sheet(sheet, docs).ok
+    flat = with_tiers_quote(falling, [(200, 300, 50), (300, 400, 50)])
+    assert not tiers_rise_with_income(flat.eligibility.discount_tiers.value)

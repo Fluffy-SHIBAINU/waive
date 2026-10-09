@@ -93,9 +93,11 @@ def looks_serialised(value: Any) -> bool:
 
 PATIENT_SHARE_REASON = "quote states the patient's share, not a discount"
 # Word-bounded on purpose: "Lowell" contains "owe" and "Inpatient Discount" contains "patient".
+# "50% of the Amount Generally Billed" is what the patient pays under a 501(r) cap (Adventist
+# Health's "Patient Responsibility" column, 050013 and five siblings, task 7.9).
 _PATIENT_SHARE = re.compile(
     r"\b(?:patient )?responsib\w*|\bpatients? (?:pays?|portion|share)\b|\bco-?pay\w*"
-    r"|\bof (?:total )?charges\b|\bbalance due\b"
+    r"|\bof (?:total )?charges\b|\bbalance due\b|\bof (?:the )?(?:agb|amounts? generally billed)\b"
 )
 _DISCOUNT_WORDS = re.compile(r"\b(?:discount\w*|write[- ]?offs?|reduc\w*|free|waiv\w*|adjust\w*)\b")
 
@@ -106,6 +108,18 @@ def quotes_patient_share(quote: str) -> bool:
     patient's share, so a DiscountTier built from them would be upside down (Mercy, 15% vs 85%)."""
     text = normalize(quote)
     return _PATIENT_SHARE.search(text) is not None and _DISCOUNT_WORDS.search(text) is None
+
+
+def tiers_rise_with_income(tiers: list[DiscountTier]) -> bool:
+    """A later (richer) band with a larger discount than an earlier one. No sliding scale works
+    that way: such a table is the patient's share read as a discount (Adventist Health's
+    50/75/75, which gave a 75% "discount" to a household paying 75% of the amount generally
+    billed), whatever words the quote happens to carry."""
+    ordered = sorted(tiers, key=lambda tier: tier.min_fpl_exclusive)
+    return any(
+        later.discount_percent > earlier.discount_percent
+        for earlier, later in zip(ordered, ordered[1:], strict=False)
+    )
 
 
 AGB_CAP_REASON = "quote states the amounts-generally-billed cap, not who may apply"
@@ -197,7 +211,9 @@ def verify_sheet(sheet: ProcedureSheet, documents: dict[str, str]) -> Verificati
             report.rejected.append((path, "value is a list or object written as text"))
         elif not value_in_quote(cited.value, cited.quote or ""):
             report.rejected.append((path, "value not in quote"))
-        elif path == "eligibility.discount_tiers" and quotes_patient_share(cited.quote or ""):
+        elif path == "eligibility.discount_tiers" and (
+            quotes_patient_share(cited.quote or "") or tiers_rise_with_income(cited.value)
+        ):
             report.rejected.append((path, PATIENT_SHARE_REASON))
         elif path == "eligibility.insured_patients_covered" and quotes_only_the_agb_cap(
             cited.quote or ""

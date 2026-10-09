@@ -10,6 +10,7 @@ from sqlalchemy.orm import Session
 
 from waive.atlas import repo
 from waive.atlas.schema import Layer, ProcedureSheet, SheetStatus
+from waive.atlas.verify import tiers_rise_with_income
 from waive.db import SheetRow
 
 CRITICAL_PATHS = (
@@ -117,24 +118,34 @@ def sheet_inconsistencies(sheet: ProcedureSheet) -> list[str]:
     """Income rules that contradict each other or read like a misread ceiling. Checked at publish
     time rather than as a schema rule, so stored versions stay loadable and the structurer's
     fallback never drops a correct table to satisfy a wrong limit."""
+    problems: list[str] = []
+    tiers = sheet.eligibility.discount_tiers
+    if tiers is not None and tiers.value and tiers_rise_with_income(tiers.value):
+        # The safety net behind verify's patient-share rule (Adventist Health, 50/75/75): a table
+        # that gives richer households a larger discount is the patient's share, not a discount.
+        ordered = sorted(tiers.value, key=lambda tier: tier.min_fpl_exclusive)
+        percents = ", ".join(f"{tier.discount_percent}%" for tier in ordered)
+        problems.append(
+            f"eligibility.discount_tiers: the discount rises with income ({percents}), which "
+            "reads as the patient's share, not a sliding scale"
+        )
     free = sheet.eligibility.free_care_max_fpl
     if free is None:
-        return []
-    tiers = sheet.eligibility.discount_tiers
+        return problems
     if tiers is not None and tiers.value:
         lowest = min(tier.min_fpl_exclusive for tier in tiers.value)
         if free.value > lowest:
-            return [
+            problems.append(
                 f"eligibility.free_care_max_fpl: {free.value:.0f}% is above the first discount "
                 f"band, which starts at {lowest:.0f}%; every band under the limit would be dead"
-            ]
-        return []
+            )
+        return problems
     if free.value > FREE_CARE_REVIEW_FPL:
-        return [
+        problems.append(
             f"eligibility.free_care_max_fpl: {free.value:.0f}% with no discount table reads like "
             "an eligibility ceiling, not free care"
-        ]
-    return []
+        )
+    return problems
 
 
 def decide_status(
