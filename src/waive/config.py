@@ -77,9 +77,17 @@ class Settings(BaseSettings):
 
     @model_validator(mode="after")
     def _production_needs_postgres(self) -> Self:
-        if self.env == "production" and self.database_url.startswith("sqlite"):
-            raise ValueError(
-                "WAIVE_ENV=production needs WAIVE_DATABASE_URL pointing at PostgreSQL; "
-                "the SQLite default is for development only"
-            )
+        if self.env == "production":
+            if self.database_url.startswith("sqlite"):
+                raise ValueError(
+                    "WAIVE_ENV=production needs WAIVE_DATABASE_URL pointing at PostgreSQL; "
+                    "the SQLite default is for development only"
+                )
+            if self.ledger_backend != "db":
+                # A container's file ledger is lost on every cold start, and with it the spend
+                # history the caps are counted against.
+                raise ValueError(
+                    "WAIVE_ENV=production needs WAIVE_LEDGER_BACKEND=db so the spend ledger "
+                    "survives container restarts"
+                )
         return self
