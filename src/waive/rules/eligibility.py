@@ -90,6 +90,27 @@ def evaluate_eligibility(sheet: ProcedureSheet, household: Household) -> Eligibi
         return EligibilityResult(Tier.NEEDS_INFO, missing=("household income",), warnings=warnings)
 
     percent = fpl_percent(household.annual_income, household.size, household.state)
+    # Paid bands first: a documented band is the specific answer for the incomes it names, so a
+    # free-care limit misread from an eligibility ceiling can never turn "85% off" into "free".
+    if tiers is not None and has_tiers:
+        for tier in tiers.value:
+            lower = tier.min_fpl_exclusive
+            # A band written "0 – 400%" starts at no income at all; "0" is inclusive there.
+            above_lower = percent >= lower if lower == 0 else percent > lower
+            if above_lower and percent <= tier.max_fpl_inclusive:
+                text = (
+                    f"Income is {percent:.0f}% of the poverty line; the policy gives a "
+                    f"{tier.discount_percent}% discount between {tier.min_fpl_exclusive:.0f}% "
+                    f"and {tier.max_fpl_inclusive:.0f}%."
+                )
+                return EligibilityResult(
+                    Tier.DISCOUNT,
+                    percent,
+                    tier.discount_percent,
+                    (_reason(text, "eligibility.discount_tiers", tiers),),
+                    warnings=warnings,
+                )
+
     if free_limit is not None and percent <= free_limit.value:
         text = (
             f"Income is {percent:.0f}% of the poverty line; "
@@ -104,20 +125,6 @@ def evaluate_eligibility(sheet: ProcedureSheet, household: Household) -> Eligibi
         )
 
     if tiers is not None and has_tiers:
-        for tier in tiers.value:
-            if tier.min_fpl_exclusive < percent <= tier.max_fpl_inclusive:
-                text = (
-                    f"Income is {percent:.0f}% of the poverty line; the policy gives a "
-                    f"{tier.discount_percent}% discount between {tier.min_fpl_exclusive:.0f}% "
-                    f"and {tier.max_fpl_inclusive:.0f}%."
-                )
-                return EligibilityResult(
-                    Tier.DISCOUNT,
-                    percent,
-                    tier.discount_percent,
-                    (_reason(text, "eligibility.discount_tiers", tiers),),
-                    warnings=warnings,
-                )
         top = max(tier.max_fpl_inclusive for tier in tiers.value)
         cited: Cited[Any] = tiers
         path = "eligibility.discount_tiers"
@@ -126,6 +133,22 @@ def evaluate_eligibility(sheet: ProcedureSheet, household: Household) -> Eligibi
         top = free_limit.value
         cited = free_limit
         path = "eligibility.free_care_max_fpl"
+    if percent <= top:
+        # Below the lowest documented band, or in a gap between bands: the sheet is silent here
+        # (often an extraction that kept only the paid bands), so the answer is "not yet known",
+        # never a confident denial for the poorest households.
+        text = (
+            f"Income is {percent:.0f}% of the poverty line; the policy text we have does not "
+            f"say what happens at {percent:.0f}%."
+        )
+        return EligibilityResult(
+            Tier.UNKNOWN,
+            percent,
+            None,
+            (_reason(text, path, cited),),
+            missing=(f"hospital rules for incomes around {percent:.0f}% of the poverty line",),
+            warnings=warnings,
+        )
     text = f"Income is {percent:.0f}% of the poverty line; this policy helps up to {top:.0f}%."
     return EligibilityResult(
         Tier.NOT_ELIGIBLE, percent, None, (_reason(text, path, cited),), warnings=warnings
