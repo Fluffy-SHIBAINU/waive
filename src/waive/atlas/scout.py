@@ -12,7 +12,7 @@ from sqlalchemy.orm import Session
 
 from waive.atlas import repo
 from waive.atlas.discover import host_of
-from waive.atlas.fetch import download_text
+from waive.atlas.fetch import DOCUMENT_HOSTS, download_text, host_allowed_for
 from waive.atlas.schema import HospitalRef, SourceDoc, SourceKind
 from waive.atlas.tavily_gateway import ExtractedPage, SearchHit, TavilyGateway
 
@@ -38,18 +38,7 @@ LINK_KEYWORDS = (
     ".pdf",
 )
 FAP_TOKEN = re.compile(r"(?<![a-z0-9])fap(?![a-z0-9])")
-# Hospitals often keep their policy PDFs on a document/asset host rather than their own domain
-# (Baystate: baystatehealth.canto.com, no .pdf in the URL). Such links are followed only when the
-# label itself names the policy, so another organisation's documents are never fetched.
-DOCUMENT_HOSTS = (
-    "canto.com",
-    "widen.net",
-    "cloudfront.net",
-    "amazonaws.com",
-    "box.com",
-    "sharepoint.com",
-    "blob.core.windows.net",
-)
+# Asset-host links (fetch.DOCUMENT_HOSTS) are followed only when the label names the policy.
 OFFSITE_KEYWORDS = (
     "financial assistance",
     "financial-assistance",
@@ -208,19 +197,21 @@ def _scouted(url: str, doc_class: DocClass, title: str, text: str) -> ScoutedDoc
 
 
 class _Downloader:
-    """Direct downloads for documents Tavily Extract returned empty (asset-host PDFs, task 2.8c).
+    """Direct downloads for documents Tavily Extract returned empty (asset-host PDFs, task 2.8c),
+    kept to the hospital's own domain and the asset hosts.
 
     Opens one HTTP client on first use when none was given, and closes only what it opened.
     """
 
-    def __init__(self, http: httpx.Client | None) -> None:
+    def __init__(self, http: httpx.Client | None, domain: str | None) -> None:
         self._http = http
         self._owned: httpx.Client | None = None
+        self._allowed = host_allowed_for(domain)
 
     def text(self, url: str) -> str | None:
         if self._http is None:
-            self._http = self._owned = httpx.Client(follow_redirects=True, timeout=30.0)
-        return download_text(url, self._http)
+            self._http = self._owned = httpx.Client(timeout=30.0)
+        return download_text(url, self._http, allowed=self._allowed)
 
     def close(self) -> None:
         if self._owned is not None:
@@ -266,7 +257,7 @@ def scout_hospital(
         selected = select_urls(hits)
     if not selected:
         return []
-    downloads = _Downloader(http)
+    downloads = _Downloader(http, hospital.website_domain)
     try:
         return _fetch_documents(gateway, hospital.website_domain, hits, selected, downloads)
     finally:
