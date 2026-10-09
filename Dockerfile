@@ -4,7 +4,10 @@
 # ghcr.io pulls are blocked on the build machine (stale registry credential; gate U6.0), so the
 # image depends on Docker Hub only. uv is installed with pip, pinned to the version used locally.
 FROM python:3.12-slim-bookworm AS builder
-ENV UV_COMPILE_BYTECODE=1 UV_LINK_MODE=copy UV_PYTHON_DOWNLOADS=0
+# PIP_*: pip runs once, as root, only to install uv; silence its root-user and version-check
+# notices (cosmetic build noise; this stage is discarded).
+ENV UV_COMPILE_BYTECODE=1 UV_LINK_MODE=copy UV_PYTHON_DOWNLOADS=0 \
+    PIP_ROOT_USER_ACTION=ignore PIP_DISABLE_PIP_VERSION_CHECK=1
 RUN pip install --no-cache-dir uv==0.12.22
 WORKDIR /app
 COPY pyproject.toml uv.lock ./
