@@ -15,7 +15,7 @@
     "website_domain": "acmh.org",
     "system": null
    },
-   "version": 1,
+   "version": 2,
    "status": "published",
    "eligibility": {
     "free_care_max_fpl": {
@@ -27,30 +27,8 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "discount_tiers": {
-     "value": [
-      {
-       "min_fpl_exclusive": "200",
-       "max_fpl_inclusive": "400",
-       "discount_percent": 25
-      }
-     ],
-     "layer": "documented",
-     "quote": "Generally, patients with family income of 200% of the Federal Poverty Level or less may be eligible for a discount of 100%. Patients with family income up to 400% of the Federal Poverty Level may be eligible for a discount of at least 25%.",
-     "source_id": "summary-dd622ebb0a418e19",
-     "checked_on": "2026-10-09",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "asset_test": {
-     "value": false,
-     "layer": "documented",
-     "quote": "o Proof of Assets does not apply to applicants at or below 200% of the current Federal Poverty Level.",
-     "source_id": "fap-adcf05911e27db5c",
-     "checked_on": "2026-10-09",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "discount_tiers": null,
+    "asset_test": null,
     "residency": null,
     "insured_patients_covered": {
      "value": true,
@@ -65,17 +43,7 @@
     "services_excluded": null
    },
    "programs": {
-    "presumptive": {
-     "value": [
-      "Medicare"
-     ],
-     "layer": "documented",
-     "quote": "i. Accounts with Medicare - all valid amounts are to be posted using the Medicare Bad Debt\u2013score transaction code as indigent cases. Remaining account balances not eligible for Medicare bad debt are to be posted to the charity \u2013score transaction.",
-     "source_id": "fap-adcf05911e27db5c",
-     "checked_on": "2026-10-09",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "presumptive": null,
     "state_programs": null
    },
    "apply": {
@@ -83,15 +51,10 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "photo_id",
-      "proof_of_income",
-      "other",
-      "tax_return",
-      "pay_stubs",
-      "bank_statements"
+      "proof_of_income"
      ],
      "layer": "documented",
-     "quote": "Proof of Income: \uf0a7 Household income, defined as all income for individuals in the household who have a tax/taxable relationship to the patient. (File joint return or is a dependent not on another individual\u2019s return) This follows the same definition guidelines as PA Medicaid. \uf0a7 IF EMPLOYED: pay stubs for most recent three months. \uf0a7 IF SELF EMPLOYED: Most recent Income Tax return (for applications January through June). Most recent three months of bank statements \u2013 checking and savings accounts. \uf0a7 IF UNEMPLOYED: Pay Stubs and/or Unemployment Compensation Income statements for the most recent three months, most recent three months of bank statements \u2013 checking and savings accounts. If no income and living with someone else, Attestation of Provided Support required. (See Form included) \uf0a7 Social Security income verification (plus most recent three months bank statements) \uf0a7 Pension \uf0a7 Workers\u2019 Compensation \uf0a7 Sick Benefits \uf0a7 Rental Income \uf0a7 Child Support \uf0a7 Interest or Dividends \uf0a7 Any other income into the household \uf0a7 MA162 with income information \uf0a7 Payments from personal insurance policies that provide additional income or payment to defray medical related incident costs. \uf0a7 Current Photo ID (Driver\u2019s license, State issued ID, Work Visa)",
+     "quote": "All supporting documentation is required with the application form, including proof of income; and if applicant is over 200% of the Federal Poverty Guidelines, proof of assets",
      "source_id": "fap-adcf05911e27db5c",
      "checked_on": "2026-10-09",
      "confidence": 1.0,
@@ -100,14 +63,6 @@
     "documents_reported": null,
     "submit_methods": {
      "value": [
-      {
-       "kind": "phone",
-       "detail": "Phone a Financial Counselor at 724-543-8525 or 724-543-8521 between the hours of 7:30 a.m. and 4:30 p.m. Monday through Friday."
-      },
-      {
-       "kind": "portal",
-       "detail": "Download and print the application from the Hospital\u2019 website at www.acmh.org."
-      },
       {
        "kind": "mail",
        "detail": "Write to the Financial Counselor at ACMH Hospital, One Nolte Drive, Kittanning, PA 16201"
@@ -119,24 +74,20 @@
       {
        "kind": "in_person",
        "detail": "Stop at any registration area of the Hospital and request information on our Financial Assistance Program."
+      },
+      {
+       "kind": "portal",
+       "detail": "Download and print the application from the Hospital\u2019 website at www.acmh.org."
       }
      ],
      "layer": "documented",
-     "quote": "You can obtain an application and additional information from any of the sources below: 1. Phone a Financial Counselor at 724-543-8525 or 724-543-8521 between the hours of 7:30 a.m. and 4:30 p.m. Monday through Friday. 2. Download and print the application from the Hospital\u2019 website at www.acmh.org. 3. Write to the Financial Counselor at ACMH Hospital, One Nolte Drive, Kittanning, PA 16201 4. Visit ourFinancial Counseling office atACMH Hospital, One Nolte Drive, Kittanning, PA 16201 5. Stop at any registration area of the Hospital and request information on our Financial Assistance Program.",
+     "quote": "You can obtain an application and additional information from any of the sources below:\n1. Phone a Financial Counselor at 724-543-8525 or 724-543-8521 between the hours of 7:30 a.m. and 4:30 p.m. Monday through Friday.\n2. Download and print the application from the Hospital\u2019 website at www.acmh.org.\n3. Write to the Financial Counselor at ACMH Hospital, One Nolte Drive, Kittanning, PA 16201\n4. Visit ourFinancial Counseling office atACMH Hospital, One Nolte Drive, Kittanning, PA 16201\n5. Stop at any registration area of the Hospital and request information on our Financial Assistance Program.",
      "source_id": "summary-09c03dbaad731839",
      "checked_on": "2026-10-09",
      "confidence": 1.0,
      "support_count": 0
     },
-    "window_days_from_first_bill": {
-     "value": 240,
-     "layer": "documented",
-     "quote": "You must apply for Financial Assistance within 240 days from date on which your balance became self-pay.",
-     "source_id": "billing-2c941ef28d3fa267",
-     "checked_on": "2026-10-09",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "window_days_from_first_bill": null,
     "decision_days": null,
     "decision_days_reported": null
    },
@@ -158,10 +109,29 @@
     "languages": null
    },
    "coverage": {
-    "facilities": null,
+    "facilities": {
+     "value": [
+      "ACMH Hospital, One Nolte Drive, Kittanning, PA 16201"
+     ],
+     "layer": "documented",
+     "quote": "Visit ourFinancial Counseling office atACMH Hospital, One Nolte Drive, Kittanning, PA 16201",
+     "source_id": "summary-09c03dbaad731839",
+     "checked_on": "2026-10-09",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "provider_list_url": null
    },
    "sources": [
+    {
+     "id": "billing-2c941ef28d3fa267",
+     "kind": "hospital_web",
+     "url": "http://www.acmh.org/Files/Admin/Billing%20%26%20Insurance/Financial-Assistance-Policy.pdf",
+     "title": "ACMH FINANCIAL ASSISTANCE POLICY PURPOSE",
+     "fetched_on": "2026-10-09",
+     "sha256": "2c941ef28d3fa2673fcaca4426f9cb605c33020f3d93cc3937dcd3ebef9c6fb4",
+     "effective_date": null
+    },
     {
      "id": "fap-adcf05911e27db5c",
      "kind": "hospital_web",
@@ -178,15 +148,6 @@
      "title": "[PDF] FINANCIAL-ASSISTANCE-PROGRAM-plain-language-summary ...",
      "fetched_on": "2026-10-09",
      "sha256": "09c03dbaad731839d904391d92f28261c873e0706f62f2dd34e1edbca74b8791",
-     "effective_date": null
-    },
-    {
-     "id": "billing-2c941ef28d3fa267",
-     "kind": "hospital_web",
-     "url": "http://www.acmh.org/Files/Admin/Billing%20%26%20Insurance/Financial-Assistance-Policy.pdf",
-     "title": "ACMH FINANCIAL ASSISTANCE POLICY PURPOSE",
-     "fetched_on": "2026-10-09",
-     "sha256": "2c941ef28d3fa2673fcaca4426f9cb605c33020f3d93cc3937dcd3ebef9c6fb4",
      "effective_date": null
     },
     {

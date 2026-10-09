@@ -179,6 +179,12 @@ def open_review_items(session: Session, ccn: str | None = None) -> list[ReviewIt
     return list(session.scalars(query.order_by(ReviewItemRow.id)))
 
 
+def review_items_of_kind(session: Session, ccn: str, kind: str) -> list[ReviewItemRow]:
+    """A hospital's review items of one kind, open or not, oldest first."""
+    query = select(ReviewItemRow).where(ReviewItemRow.ccn == ccn, ReviewItemRow.kind == kind)
+    return list(session.scalars(query.order_by(ReviewItemRow.id)))
+
+
 def set_review_status(session: Session, item_id: int, status: str) -> ReviewItemRow:
     row = session.get(ReviewItemRow, item_id)
     if row is None:

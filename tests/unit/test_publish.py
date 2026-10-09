@@ -228,3 +228,30 @@ def test_a_discount_that_rises_with_income_holds_the_sheet():
     assert "75%" in problems[0] and "50%" in problems[0]
     assert decide_status(upside_down, []) is SheetStatus.HELD
     assert sheet_inconsistencies(with_tiers(SAMPLE, [(250, 300, 75), (300, 400, 50)])) == []
+
+
+def test_documents_that_name_a_different_free_care_limit_are_a_conflict():
+    from waive.atlas.publish import document_conflicts
+    from waive.atlas.samples import SAMPLE_POLICY_TEXT, SAMPLE_SOURCE_ID
+    from waive.atlas.schema import SourceKind
+
+    # AHMC Anaheim (050226, review of 7.9): the web page said 250%, the newer PDF 200%.
+    newer = SAMPLE.sources[0].model_copy(update={"id": "fap-newer", "url": None})
+    sheet = SAMPLE.model_copy(update={"sources": [*SAMPLE.sources, newer]})
+    newer_text = (
+        "Patients whose family income is at or below 200 percent of the Federal Poverty Level "
+        "will be eligible for a 100 percent write-off."
+    )
+    docs = {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT, "fap-newer": newer_text}
+    assert document_conflicts(sheet, docs) == [{"id": "fap-newer", "limits": ["200"]}]
+    # The same limit, a document naming none, or a missing text: no conflict.
+    assert document_conflicts(sheet, {**docs, "fap-newer": SAMPLE_POLICY_TEXT}) == []
+    assert document_conflicts(sheet, {**docs, "fap-newer": "Call us about financial help."}) == []
+    assert document_conflicts(sheet, {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT}) == []
+    # Only the hospital's web documents count: an admin-approved patient photo supersedes.
+    photo = newer.model_copy(update={"kind": SourceKind.PATIENT_PHOTO})
+    assert (
+        document_conflicts(sheet.model_copy(update={"sources": [*SAMPLE.sources, photo]}), docs)
+        == []
+    )
+    assert document_conflicts(drop_fields(sheet, ["eligibility.free_care_max_fpl"]), docs) == []

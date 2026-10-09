@@ -9,8 +9,8 @@ from typing import Any
 from sqlalchemy.orm import Session
 
 from waive.atlas import repo
-from waive.atlas.schema import Layer, ProcedureSheet, SheetStatus
-from waive.atlas.verify import tiers_rise_with_income
+from waive.atlas.schema import Layer, ProcedureSheet, SheetStatus, SourceKind
+from waive.atlas.verify import free_care_limits_stated, tiers_rise_with_income
 from waive.db import SheetRow
 
 CRITICAL_PATHS = (
@@ -146,6 +146,35 @@ def sheet_inconsistencies(sheet: ProcedureSheet) -> list[str]:
             "an eligibility ceiling, not free care"
         )
     return problems
+
+
+DOCUMENT_CONFLICT_REASON = "the hospital's documents state different free-care limits"
+
+
+def document_conflicts(sheet: ProcedureSheet, documents: dict[str, str]) -> list[dict[str, Any]]:
+    """The hospital's other documents whose free-care sentences name a limit, none of which is
+    the one the sheet publishes: one entry per document, with the limits it states. AHMC Anaheim
+    (050226, review of 7.9): the web page said 0-250% is no-cost care, the newer PDF 200%, and
+    the sheet published 250 because no discount table tripped sheet_inconsistencies. The model's
+    pick between two documents is an admin's decision, so the sheet is held. Only the hospital's
+    web documents count: a patient's photo of a newer policy was approved by an admin and is
+    meant to supersede the stored page (the learning loop), not to be held against it."""
+    free = sheet.eligibility.free_care_max_fpl
+    if free is None or free.layer is Layer.REPORTED:
+        return []
+    kinds = {source.id: source.kind for source in sheet.sources}
+    if kinds.get(free.source_id or "") is not SourceKind.HOSPITAL_WEB:
+        return []
+    conflicts: list[dict[str, Any]] = []
+    for source in sheet.sources:
+        if source.kind is not SourceKind.HOSPITAL_WEB:
+            continue
+        if source.id == free.source_id or source.id not in documents:
+            continue
+        limits = free_care_limits_stated(documents[source.id])
+        if limits and Decimal(free.value) not in limits:
+            conflicts.append({"id": source.id, "limits": [str(limit) for limit in sorted(limits)]})
+    return conflicts
 
 
 def decide_status(

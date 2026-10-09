@@ -68,7 +68,7 @@
     "website_domain": "advocatehealth.com",
     "system": null
    },
-   "version": 2,
+   "version": 3,
    "status": "published",
    "eligibility": {
     "free_care_max_fpl": {
@@ -86,7 +86,7 @@
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "Insured Patients Financial assistance for insured patients is available once a patient receives a bill.",
+     "quote": "Insured patients meeting all the above criteria with a household income between 0% and 300% of the Federal Poverty Guidelines (FPG) will receive 100% \ufb01nancial assistance on the self-pay balance under review.",
      "source_id": "fap-454030ad4d85fe3d",
      "checked_on": "2026-10-09",
      "confidence": 1.0,
@@ -102,10 +102,16 @@
       "Supplemental Nutrition Assistance Program (SNAP)",
       "Illinois Free Lunch and Breakfast Program",
       "Low Income Home Energy Assistance Program (LIHEAP)",
-      "Temporary Assistance for Needy Families (TANF)"
+      "Temporary Assistance for Needy Families (TANF)",
+      "Receipt of grant assistance for medical services",
+      "Homelessness",
+      "Deceased with no estate",
+      "Mental incapacitation with no one to act on patient\u2019s behalf",
+      "Incarceration in a penal institution",
+      "Affiliation with a religious order and vow of poverty"
      ],
      "layer": "documented",
-     "quote": "Presumptive Eligibility Criteria is demonstrated by enrollment in one of the following programs:\no Women, Infants and Children Nutrition Program (WIC).\no Supplemental Nutrition Assistance Program (SNAP).\no Illinois Free Lunch and Breakfast Program.\no Low Income Home Energy Assistance Program (LIHEAP).\no Temporary Assistance for Needy Families (TANF).\no Illinois Housing Development Authority\u2019s Rental Housing Support Program.\no Organized community-based program or charitable health program providing medical care that assesses and documents low-income \ufb01nancial status as criteria.\no Medicaid eligibility, but not eligible on date of service or for non-covered service (IL patients only).",
+     "quote": "Presumptive Eligibility Criteria is demonstrated by enrollment in one of the following programs:\n o Women, Infants and Children Nutrition Program (WIC).\n o Supplemental Nutrition Assistance Program (SNAP).\n o Illinois Free Lunch and Breakfast Program.\n o Low Income Home Energy Assistance Program (LIHEAP).\n o Temporary Assistance for Needy Families (TANF).\n o Illinois Housing Development Authority\u2019s Rental Housing Support Program.\n o Organized community-based program or charitable health program providing medical care that assesses and documents low-income \ufb01nancial status as criteria.\n o Medicaid eligibility, but not eligible on date of service or for non-covered service (IL patients only).\n\u2022 Presumptive Eligibility Criteria can also be demonstrated by the following life circumstances:\n o Receipt of grant assistance for medical services.\n o Homelessness.\n o Deceased with no estate.\n o Mental incapacitation with no one to act on patient\u2019s behalf.\n o Incarceration in a penal institution.\n o Affiliation with a religious order and vow of poverty.\n o Evidence from an independent third-party reporting agency indicating family income is less than two times FPL.",
      "source_id": "fap-454030ad4d85fe3d",
      "checked_on": "2026-10-09",
      "confidence": 1.0,
@@ -116,53 +122,14 @@
    "apply": {
     "form_url": null,
     "form_version": null,
-    "documents_required": {
-     "value": [
-      "photo_id",
-      "proof_of_income",
-      "tax_return",
-      "pay_stubs",
-      "bank_statements"
-     ],
-     "layer": "documented",
-     "quote": "State issued driver\u2019s license (or other photo identi\ufb01cation card such as a Student or Military ID), utility bills (gas, electric, water) bank statements, car registrations, or any other mail received from a government entity with the current date and address.",
-     "source_id": "fap-454030ad4d85fe3d",
-     "checked_on": "2026-10-09",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "documents_required": null,
     "documents_reported": null,
-    "submit_methods": {
-     "value": [
-      {
-       "kind": "mail",
-       "detail": "Mail to: Advocate Health Care\nP.O. Box 3039\nOak Brook, IL 60522"
-      },
-      {
-       "kind": "fax",
-       "detail": "Fax to: 630-645-4691"
-      },
-      {
-       "kind": "email",
-       "detail": "Email to: SRCO-Financialassistance@aah.org"
-      },
-      {
-       "kind": "in_person",
-       "detail": "bring to a patient financial advocate."
-      }
-     ],
-     "layer": "documented",
-     "quote": "or bring to a patient financial advocate.",
-     "source_id": "fap-759672bbe4182641",
-     "checked_on": "2026-10-09",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "submit_methods": null,
     "window_days_from_first_bill": {
      "value": 240,
      "layer": "documented",
-     "quote": "Patients have 240 days from the \ufb01rst post-discharge bill date to apply for \ufb01nancial assistance.",
-     "source_id": "fap-454030ad4d85fe3d",
+     "quote": "Please note: You must apply for financial assistance within 240 days of your first billing statement.",
+     "source_id": "fap-759672bbe4182641",
      "checked_on": "2026-10-09",
      "confidence": 1.0,
      "support_count": 0
@@ -175,15 +142,7 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": {
-     "value": "847-795-2300",
-     "layer": "documented",
-     "quote": "Call 847-795-2300",
-     "source_id": "fap-454030ad4d85fe3d",
-     "checked_on": "2026-10-09",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "phone": null,
     "hours": null,
     "languages": null
    },
@@ -199,15 +158,6 @@
      "title": "Hospital Pricing Information | Advocate Health Care",
      "fetched_on": "2026-10-09",
      "sha256": "9c142f2d3a55479b3312e263a319d3a8cddf15ae0f4a98431afef42109a58e45",
-     "effective_date": null
-    },
-    {
-     "id": "fap-e569755cd73d7e9f",
-     "kind": "hospital_web",
-     "url": "https://www.advocatehealth.com/about-us/financial-assistance-for-patients/financial-assistance-policy-documents",
-     "title": "Financial Assistance Policy Documents | Advocate Health Care",
-     "fetched_on": "2026-10-09",
-     "sha256": "e569755cd73d7e9f8c95c82b766127259194441c4605ea49e6f7ca33294c7b1d",
      "effective_date": null
     },
     {
@@ -254,6 +204,15 @@
      "fetched_on": "2026-10-09",
      "sha256": "759672bbe41826411e6652c936d63ceca991369d6c49f12714ad0d56bad2a23f",
      "effective_date": null
+    },
+    {
+     "id": "fap-e569755cd73d7e9f",
+     "kind": "hospital_web",
+     "url": "https://www.advocatehealth.com/about-us/financial-assistance-for-patients/financial-assistance-policy-documents",
+     "title": "Financial Assistance Policy Documents | Advocate Health Care",
+     "fetched_on": "2026-10-09",
+     "sha256": "e569755cd73d7e9f8c95c82b766127259194441c4605ea49e6f7ca33294c7b1d",
+     "effective_date": null
     }
    ],
    "accuracy": null
@@ -270,7 +229,7 @@
     "website_domain": "advocatehealth.com",
     "system": null
    },
-   "version": 2,
+   "version": 3,
    "status": "published",
    "eligibility": {
     "free_care_max_fpl": {
@@ -288,7 +247,7 @@
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "Insured Patients Financial assistance for insured patients is available once a patient receives a bill.",
+     "quote": "Insured patients meeting all the above criteria with a household income between 0% and 300% of the Federal Poverty Guidelines (FPG) will receive 100% \ufb01nancial assistance on the self-pay balance under review.",
      "source_id": "fap-454030ad4d85fe3d",
      "checked_on": "2026-10-09",
      "confidence": 1.0,
@@ -307,7 +266,7 @@
       "Temporary Assistance for Needy Families (TANF)"
      ],
      "layer": "documented",
-     "quote": "Presumptive Eligibility Criteria is demonstrated by enrollment in one of the following programs:\n\no Women, Infants and Children Nutrition Program (WIC).\n\no Supplemental Nutrition Assistance Program (SNAP).\n\no Illinois Free Lunch and Breakfast Program.\n\no Low Income Home Energy Assistance Program (LIHEAP).\n\no Temporary Assistance for Needy Families (TANF).\n\no Illinois Housing Development Authority\u2019s Rental Housing Support Program.\n\no Organized community-based program or charitable health program providing medical care that assesses and documents low-income \ufb01nancial status as criteria.",
+     "quote": "Presumptive Eligibility Criteria is demonstrated by enrollment in one of the following programs: o Women, Infants and Children Nutrition Program (WIC). o Supplemental Nutrition Assistance Program (SNAP). o Illinois Free Lunch and Breakfast Program. o Low Income Home Energy Assistance Program (LIHEAP). o Temporary Assistance for Needy Families (TANF). o Illinois Housing Development Authority\u2019s Rental Housing Support Program. o Organized community-based program or charitable health program providing medical care that assesses and documents low-income \ufb01nancial status as criteria.",
      "source_id": "fap-454030ad4d85fe3d",
      "checked_on": "2026-10-09",
      "confidence": 1.0,
@@ -321,37 +280,18 @@
     "documents_required": {
      "value": [
       "photo_id",
-      "proof_of_income",
-      "tax_return",
-      "pay_stubs",
-      "bank_statements"
+      "bank_statements",
+      "proof_of_residency"
      ],
      "layer": "documented",
-     "quote": "The application requires you to certify your family\u2019s current monthly income, and provide proof in the form of W-2 forms, tax return or pay stubs if available.",
-     "source_id": "application-be3c428846792c32",
+     "quote": "Proof of state residency can be veri\ufb01ed by the patient presenting any two (2) of the following valid forms of identi\ufb01cation that indicate the same address: State issued driver\u2019s license (or other photo identi\ufb01cation card such as a Student or Military ID), utility bills (gas, electric, water) bank statements, car registrations, or any other mail received from a government entity with the current date and address.",
+     "source_id": "fap-454030ad4d85fe3d",
      "checked_on": "2026-10-09",
      "confidence": 1.0,
      "support_count": 0
     },
     "documents_reported": null,
-    "submit_methods": {
-     "value": [
-      {
-       "kind": "mail",
-       "detail": "Return your completed application and documents to the hospital at the following address: Advocate Lutheran General Hospital ATTN: Business Office/Financial Counselor 1775 Dempster Street Park Ridge, IL 60068"
-      },
-      {
-       "kind": "in_person",
-       "detail": "Return your completed application and documents to the hospital at the following address: Advocate Lutheran General Hospital ATTN: Business Office/Financial Counselor 1775 Dempster Street Park Ridge, IL 60068"
-      }
-     ],
-     "layer": "documented",
-     "quote": "To qualify for Charity Care, you must complete the attached application form and mail or deliver it to the Advocate Hospital where you were treated.",
-     "source_id": "application-be3c428846792c32",
-     "checked_on": "2026-10-09",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "submit_methods": null,
     "window_days_from_first_bill": {
      "value": 240,
      "layer": "documented",
@@ -379,6 +319,15 @@
    },
    "sources": [
     {
+     "id": "application-be3c428846792c32",
+     "kind": "hospital_web",
+     "url": "https://www.advocatehealth.com/-/media/Project/Health-System-Enterprise/AdvocateHealthCom/advocatehealth/documents/health-services/bone-marrow-transplant-program/lgh_charity_policy.pdf?rev=f8fd482d473540cd9f15e186c16ef3dd&hash=210C36CEAA83FBE8682FADD7D1BAEFC3",
+     "title": "Charity Assistance Application",
+     "fetched_on": "2026-10-09",
+     "sha256": "be3c428846792c32800d8cca5f774ae2ef19e7876f2bb29a7955458a0c2f1467",
+     "effective_date": null
+    },
+    {
      "id": "billing-5174695565dc9bad",
      "kind": "hospital_web",
      "url": "https://www.advocatehealth.com/-/media/Project/Health-System-Enterprise/AdvocateHealthCom/condell/documents/patients-visitors/for-patients/1041-understandingbilling_cond_eng_d1.pdf",
@@ -397,24 +346,6 @@
      "effective_date": null
     },
     {
-     "id": "fap-59634e4e802d4719",
-     "kind": "hospital_web",
-     "url": "https://www.advocatehealth.com/condell/patients-visitors/for-patients/financial-assistance",
-     "title": "Financial Assistance | Advocate Condell Medical Center | Libertyville, IL",
-     "fetched_on": "2026-10-09",
-     "sha256": "59634e4e802d47191d01c59c546f5a5b324d3a6ec916bf63038cdc14ac9597fc",
-     "effective_date": null
-    },
-    {
-     "id": "application-be3c428846792c32",
-     "kind": "hospital_web",
-     "url": "https://www.advocatehealth.com/-/media/Project/Health-System-Enterprise/AdvocateHealthCom/advocatehealth/documents/health-services/bone-marrow-transplant-program/lgh_charity_policy.pdf?rev=f8fd482d473540cd9f15e186c16ef3dd&hash=210C36CEAA83FBE8682FADD7D1BAEFC3",
-     "title": "Charity Assistance Application",
-     "fetched_on": "2026-10-09",
-     "sha256": "be3c428846792c32800d8cca5f774ae2ef19e7876f2bb29a7955458a0c2f1467",
-     "effective_date": null
-    },
-    {
      "id": "fap-110239e82d952023",
      "kind": "hospital_web",
      "url": "https://www.advocatehealth.com/-/media/Project/Health-System-Enterprise/AdvocateHealthCom/advocatehealth/documents/about-us/financial-assistance-for-patients/advocate-enterprise-financial-assistance-policy-spanish.pdf?rev=585972628fa848e580b4e82e24339164&hash=69B85351ECE0A5AA1B38CB10404F73CC",
@@ -430,6 +361,15 @@
      "title": "(English)",
      "fetched_on": "2026-10-09",
      "sha256": "454030ad4d85fe3d23e45c7f4934b28a7217878835f89b3a82432d434d44c26f",
+     "effective_date": null
+    },
+    {
+     "id": "fap-59634e4e802d4719",
+     "kind": "hospital_web",
+     "url": "https://www.advocatehealth.com/condell/patients-visitors/for-patients/financial-assistance",
+     "title": "Financial Assistance | Advocate Condell Medical Center | Libertyville, IL",
+     "fetched_on": "2026-10-09",
+     "sha256": "59634e4e802d47191d01c59c546f5a5b324d3a6ec916bf63038cdc14ac9597fc",
      "effective_date": null
     },
     {
@@ -518,7 +458,7 @@
     "website_domain": "advocatehealth.com",
     "system": null
    },
-   "version": 2,
+   "version": 3,
    "status": "published",
    "eligibility": {
     "free_care_max_fpl": {
@@ -546,17 +486,7 @@
     "services_excluded": null
    },
    "programs": {
-    "presumptive": {
-     "value": [
-      "Medicaid"
-     ],
-     "layer": "documented",
-     "quote": "o Medicaid eligibility, but not eligible on date of service or for non-covered service (IL patients only).",
-     "source_id": "fap-454030ad4d85fe3d",
-     "checked_on": "2026-10-09",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "presumptive": null,
     "state_programs": null
    },
    "apply": {
@@ -581,18 +511,6 @@
       {
        "kind": "mail",
        "detail": "Mail to: Advocate Health Care P.O. Box 3039 Oak Brook, IL 60522"
-      },
-      {
-       "kind": "fax",
-       "detail": "Fax to: 630-645-4691"
-      },
-      {
-       "kind": "email",
-       "detail": "Email to: SRCO-Financialassistance@aah.org"
-      },
-      {
-       "kind": "in_person",
-       "detail": "bring to a patient financial advocate."
       }
      ],
      "layer": "documented",
@@ -732,7 +650,7 @@
     "website_domain": "advocatehealth.com",
     "system": null
    },
-   "version": 2,
+   "version": 3,
    "status": "published",
    "eligibility": {
     "free_care_max_fpl": {
@@ -783,9 +701,6 @@
     "documents_required": {
      "value": [
       "photo_id",
-      "proof_of_income",
-      "tax_return",
-      "pay_stubs",
       "bank_statements",
       "proof_of_residency"
      ],
@@ -802,18 +717,6 @@
       {
        "kind": "mail",
        "detail": "Advocate Health Care Financial Advocates P.O. Box 3039 Oak Brook, IL 60522-9908"
-      },
-      {
-       "kind": "fax",
-       "detail": "630-645-4691"
-      },
-      {
-       "kind": "email",
-       "detail": "SRCO-Financialassistance@aah.org"
-      },
-      {
-       "kind": "portal",
-       "detail": "https://ola.veritysource.com/atrium"
       },
       {
        "kind": "in_person",
@@ -1073,7 +976,7 @@
     "website_domain": "ascension.org",
     "system": null
    },
-   "version": 1,
+   "version": 2,
    "status": "published",
    "eligibility": {
     "free_care_max_fpl": {
@@ -1122,14 +1025,10 @@
       "homelessness",
       "deceased with no estate",
       "mental incapacitation with no one to act on patient's behalf",
-      "Medicaid eligibility, but not on date of service or for non-covered service",
-      "Medicaid enrollment in a different state where Organization is not and does not intend to become a participating provider",
-      "Medicaid participation but exhaustion of any length of stay limits",
       "Women, Infants and Children Nutrition Program (WIC)",
       "Supplemental Nutrition Assistance Program (SNAP)",
       "Illinois Free Lunch and Breakfast Program",
       "Low Income Home Energy Assistance Program (LIHEAP)",
-      "Enrollment in an organized community-based program providing access to medical care that assesses and documents limited low-income financial status as criteria",
       "Receipt of grant assistance for medical services"
      ],
      "layer": "documented",
@@ -1154,15 +1053,10 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "photo_id",
       "proof_of_income",
-      "other",
       "tax_return",
       "pay_stubs",
       "bank_statements",
-      "proof_of_residency",
-      "insurance_card",
-      "medicaid_denial",
       "other"
      ],
      "layer": "documented",
@@ -1186,10 +1080,6 @@
       {
        "kind": "email",
        "detail": "Please complete this form and submit it to Alexian Brothers Health System, d/b/a Ascension Illinois affiliates in person, by mail, by electronic mail, or by fax to apply for free or discounted care as soon as possible after the date of service."
-      },
-      {
-       "kind": "portal",
-       "detail": "The FAP Application and FAP Application Instructions are available on the Organization's website or by calling 833-272-7585, by email at amitafinancialassistance@ascension.org, or in writing at: Alexian Brothers Health System Attention: Financial Assistance Department PO Box 74008855 Chicago, IL 60674-8855"
       },
       {
        "kind": "in_person",
@@ -1517,7 +1407,7 @@
     "website_domain": "andersonhospital.org",
     "system": null
    },
-   "version": 1,
+   "version": 2,
    "status": "published",
    "eligibility": {
     "free_care_max_fpl": {
@@ -1563,7 +1453,6 @@
    "programs": {
     "presumptive": {
      "value": [
-      "Medicaid",
       "Women, Infants and Children Nutrition Program (WIC)",
       "Supplemental Nutrition Assistance Program (SNAP)",
       "Illinois Free Lunch and Breakfast Program",

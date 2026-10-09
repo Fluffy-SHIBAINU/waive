@@ -922,3 +922,66 @@ def test_documents_named_for_a_state_are_tagged_in_the_prompt():
         in content
     )
     assert "hospital's state" in SYSTEM_PROMPT
+
+
+def test_a_state_in_the_hospitals_own_name_is_not_one_its_documents_name():
+    from waive.atlas.schema import HospitalRef
+    from waive.atlas.structure import document_states
+
+    # Review of 7.9: Sierra Nevada Memorial (CA), Washington Hospital (PA), Indiana Regional (PA),
+    # Virginia Mason (WA): a document named after the hospital must not read as another state's.
+    sierra = HospitalRef(
+        ccn="050150",
+        name="SIERRA NEVADA MEMORIAL HOSPITAL",
+        city="GRASS VALLEY",
+        state="CA",
+        zip="95945",
+        ownership="Voluntary non-profit - Private",
+    )
+    url = (
+        "https://www.example.org/sierra-nevada-memorial/financial-assistance-policy-california.pdf"
+    )
+    assert document_states("Financial Assistance Policy", url, sierra) == {"CA"}
+    assert document_states("Financial Assistance Policy", url) == {"CA", "NV"}
+    assert (
+        document_states("Sierra Nevada Memorial Hospital Financial Assistance", "", sierra) == set()
+    )
+    washington = sierra.model_copy(
+        update={"ccn": "390042", "name": "WASHINGTON HOSPITAL", "city": "WASHINGTON", "state": "PA"}
+    )
+    assert (
+        document_states("", "https://www.example.org/washington-hospital-fap.pdf", washington)
+        == set()
+    )
+    # A state the document really names still counts, own or other.
+    assert document_states("Policy for Oregon Hospitals", "", washington) == {"OR"}
+    assert document_states("Pennsylvania Fair Pricing Notice", "", washington) == {"PA"}
+
+
+def test_two_letter_codes_that_are_english_words_count_only_inside_a_list_of_codes():
+    from waive.atlas.structure import _states
+
+    # Review of 7.9: "Residents of Indiana OR Illinois" yielded Oregon.
+    assert _states(["Residents of Indiana OR Illinois"]) == ["IN", "IL"]
+    assert _states(["Residents of KS, IN or IL"]) == ["KS", "IN", "IL"]
+    assert _states(["MA and NH residents"]) == ["MA", "NH"]
+    assert _states(["OR"]) == ["OR"]  # the whole item is the code
+    assert _states(["residents of MA"]) == ["MA"]
+    for bogus in (["Patients IN the service area"], ["Call ME for help"], ["OK to apply"]):
+        with pytest.raises(ValueError, match="no US state recognised"):
+            _states(bogus)
+
+
+def test_medicaid_is_not_named_by_the_word_medical():
+    from waive.atlas.verify import program_named
+
+    # Review of 7.9: "medi-?cal" matched "medical", so any presumptive quote with "unpaid medical
+    # bills" named Medicaid.
+    assert not program_named("Medicaid", "patients with unpaid medical bills are deemed eligible")
+    assert program_named("Medicaid", "enrolled in medi-cal or calfresh")
+    assert program_named("Medicaid", "active medicaid coverage")
+    assert program_named("Medicaid", "receives medical assistance from the state")
+    assert programs(
+        ["Medicaid"],
+        "Patients with unpaid medical bills over 25% of income are deemed presumptively eligible.",
+    ) == (None, ["programs.presumptive: none of the listed programs is named in the quote"])
