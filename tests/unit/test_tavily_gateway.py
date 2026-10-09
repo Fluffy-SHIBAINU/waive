@@ -98,3 +98,20 @@ def test_cost_helpers():
     assert extract_cost(6, "basic") == Decimal("2")
     assert extract_cost(5, "advanced") == Decimal("2")
     assert extract_cost(0, "basic") == Decimal("0")
+
+
+def test_advanced_extract_charges_two_credits_per_five_pages(tmp_path):
+    gateway, fake, governor = make(tmp_path)
+    urls = [f"https://www.example.org/page{i}" for i in range(6)]
+    pages = gateway.extract(urls, purpose="test", depth="advanced")
+    assert len(pages) == 5  # the fake fails the last URL; failures are not billed
+    assert fake.calls[-1][2]["extract_depth"] == "advanced"
+    assert governor.summary()["tavily"][0] == Decimal("2")
+
+
+def test_advanced_extract_is_checked_against_the_cap_at_its_own_price(tmp_path):
+    gateway, fake, _ = make(tmp_path, cap=1)
+    with pytest.raises(BudgetExceeded):
+        gateway.extract(["https://www.example.org/page"], purpose="test", depth="advanced")
+    assert fake.calls == []
+    assert len(gateway.extract(["https://www.example.org/page", "x"], purpose="test")) == 1

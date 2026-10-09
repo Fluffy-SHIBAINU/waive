@@ -19,10 +19,18 @@ from sqlalchemy.orm import Session
 
 from waive.ai.client import AIClient
 from waive.atlas import repo
-from waive.atlas.fetch import download_text, host_allowed_for, is_asset_host
+from waive.atlas.fetch import is_asset_host
 from waive.atlas.pipeline import BuildResult, build_hospital
 from waive.atlas.schema import SourceDoc, SourceKind
-from waive.atlas.scout import CLASS_ORDER, MAX_CHARS, MIN_CHARS, DocClass, source_id_for
+from waive.atlas.scout import (
+    CLASS_ORDER,
+    MAX_CHARS,
+    MIN_CHARS,
+    DocClass,
+    Downloader,
+    fill_texts,
+    source_id_for,
+)
 from waive.atlas.tavily_gateway import TavilyGateway
 
 log = logging.getLogger(__name__)
@@ -56,22 +64,21 @@ def fetch_texts(
     gateway: TavilyGateway, urls: list[str], http: httpx.Client, domain: str | None = None
 ) -> dict[str, str]:
     """Current text per URL, truncated like the scout's. Asset-host URLs are downloaded directly
-    (no credits); the rest go through one Tavily Extract call, and any URL that comes back
-    empty is downloaded as a fallback. Downloads stay on the hospital's `domain` and the asset
-    hosts. URLs that yield nothing are absent from the result."""
+    (no credits); the rest go through one Tavily Extract call with the scout's fallbacks (thin
+    pages re-extracted at the advanced depth, then downloaded: task 2.8h), so a page the scout
+    could only read that way does not read as changed on every tick. Downloads stay on the
+    hospital's `domain` and the asset hosts. URLs that yield nothing are absent from the result."""
     texts: dict[str, str] = {}
-    allowed = host_allowed_for(domain)
+    downloads = Downloader(http, domain)
     direct = [url for url in urls if is_asset_host(url)]
     pages = [url for url in urls if url not in direct]
     for url in direct:
-        if text := download_text(url, http, allowed=allowed):
+        if text := downloads.text(url):
             texts[url] = text
     if pages:
-        for page in gateway.extract(pages, purpose=PURPOSE):
-            if len(page.text.strip()) >= MIN_CHARS:
-                texts[page.url] = page.text
-        for url in pages:
-            if url not in texts and (text := download_text(url, http, allowed=allowed)):
+        extracted = gateway.extract(pages, purpose=PURPOSE)
+        for url, text in fill_texts(gateway, pages, extracted, downloads, purpose=PURPOSE).items():
+            if len(text.strip()) >= MIN_CHARS:
                 texts[url] = text
     return {url: text[:MAX_CHARS] for url, text in texts.items()}
 

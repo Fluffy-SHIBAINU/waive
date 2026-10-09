@@ -1,7 +1,9 @@
-"""Direct downloads of policy PDFs that Tavily Extract cannot fetch (task 2.8c).
+"""Direct downloads of policy documents that Tavily Extract cannot fetch or render (tasks 2.8c, 2.8h).
 
 Hospitals often keep their policies on asset hosts (Baystate: baystatehealth.canto.com) where
-Tavily Extract answers "Failed to fetch url". Fetching the file ourselves costs no credits.
+Tavily Extract answers "Failed to fetch url", and some sites render as navigation only (Cape Cod
+Hospital: 643 characters of menu). Fetching the file ourselves costs no credits; a PDF is parsed,
+an HTML page (when the caller asks for pages) is reduced to its visible text and links.
 
 The fetcher works for one hospital at a time and only ever requests that hospital's registered
 domain or a known asset host (spec §11): redirects are followed by hand, each hop re-checked, a
@@ -16,6 +18,7 @@ import subprocess
 import sys
 import time
 from collections.abc import Callable
+from html.parser import HTMLParser
 from urllib.parse import urlparse
 
 import httpx
@@ -43,7 +46,7 @@ MAX_HOPS = 3
 PDF_TIMEOUT_SECONDS = 20.0
 
 log = logging.getLogger(__name__)
-__all__ = ["MAX_PAGES", "MAX_TEXT_CHARS", "download_text", "pdf_text"]
+__all__ = ["MAX_PAGES", "MAX_TEXT_CHARS", "download_text", "html_text", "pdf_text"]
 # Name resolution, replaceable so unit tests never touch DNS (tests/conftest.py).
 resolve = socket.getaddrinfo
 
@@ -112,6 +115,7 @@ def download_text(
     http: httpx.Client,
     *,
     allowed: Callable[[str], bool] | None = None,
+    allow_html: bool = False,
     max_bytes: int = 15_000_000,
     timeout: float = 10.0,
     total_timeout: float = 60.0,
@@ -119,11 +123,13 @@ def download_text(
     resolver=None,
     clock: Callable[[], float] = time.monotonic,
 ) -> str | None:
-    """The text of the PDF at `url`, or None.
+    """The text of the PDF at `url`, or with `allow_html` of the PDF or web page there, or None.
 
-    None when any hop leaves the allowed hosts, when the body is HTML (Tavily handles pages), is
-    not a PDF (judged on the final URL), exceeds `max_bytes`, outlasts `total_timeout`, yields
-    fewer than MIN_TEXT_CHARS characters, cannot be parsed, or when the request fails. Never raises.
+    None when any hop leaves the allowed hosts, when the body is HTML and the caller did not ask
+    for pages (Tavily handles them) or the URL promised a PDF (an error page, whatever its status),
+    when a non-HTML body is not a PDF (judged on the final URL), exceeds `max_bytes`, outlasts
+    `total_timeout`, yields fewer than MIN_TEXT_CHARS characters, cannot be parsed, or when the
+    request fails. Never raises.
     """
     allowed = allowed or host_allowed_for(None)
     resolver = resolver or resolve
@@ -146,9 +152,12 @@ def download_text(
                 if response.status_code != 200:
                     return None
                 content_type = response.headers.get("content-type", "")
-                if "html" in content_type.lower() or not looks_like_pdf(
-                    str(response.url), content_type
-                ):
+                final_url = str(response.url)
+                is_html = "html" in content_type.lower()
+                if is_html:
+                    if not allow_html or looks_like_pdf(final_url, ""):
+                        return None
+                elif not looks_like_pdf(final_url, content_type):
                     return None
                 declared = response.headers.get("content-length")
                 if declared and declared.isdigit() and int(declared) > max_bytes:
@@ -158,11 +167,84 @@ def download_text(
                     body.extend(chunk)
                     if len(body) > max_bytes or clock() > deadline:
                         return None
+                charset = response.charset_encoding
+            if is_html:
+                text = html_text(_decode(bytes(body), charset))
+                return text if len(text) >= MIN_TEXT_CHARS else None
             return pdf_text(bytes(body))
     except Exception as error:  # network, URL and stream errors alike: the caller has no recourse
         log.debug("download of %s failed: %s", url, type(error).__name__)
         return None
     return None  # too many hops
+
+
+def _decode(body: bytes, charset: str | None) -> str:
+    """The body as text: the declared charset when it is one Python knows, else UTF-8; a stray
+    byte never fails the page."""
+    try:
+        return body.decode(charset or "utf-8", errors="replace")
+    except LookupError:
+        return body.decode("utf-8", errors="replace")
+
+
+class _TextCollector(HTMLParser):
+    """Collects a page's visible text: script, style and the like are dropped, block elements
+    start a new line, and links keep their target as markdown (`[label](href)`), the shape Tavily
+    Extract renders them in, so the scout's link following works on downloaded pages too."""
+
+    SKIPPED = frozenset({"script", "style", "noscript", "template", "svg"})
+    BLOCKS = frozenset(
+        {
+            "address", "article", "aside", "blockquote", "br", "dd", "details", "div", "dl",
+            "dt", "fieldset", "figcaption", "figure", "footer", "form", "h1", "h2", "h3", "h4",
+            "h5", "h6", "header", "hr", "li", "main", "nav", "ol", "p", "pre", "section",
+            "summary", "table", "tbody", "td", "tfoot", "th", "thead", "title", "tr", "ul",
+        }
+    )  # fmt: skip
+
+    def __init__(self) -> None:
+        super().__init__(convert_charrefs=True)
+        self.parts: list[str] = []
+        self._skipping = 0
+        self._links: list[str | None] = []
+
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        if tag in self.SKIPPED:
+            self._skipping += 1
+        elif tag in self.BLOCKS:
+            self.parts.append("\n")
+        elif tag == "a" and not self._skipping:
+            href = next((value for name, value in attrs if name == "href" and value), None)
+            self._links.append(href)
+            if href is not None:
+                self.parts.append("[")
+
+    def handle_endtag(self, tag: str) -> None:
+        if tag in self.SKIPPED:
+            self._skipping = max(0, self._skipping - 1)
+        elif tag in self.BLOCKS:
+            self.parts.append("\n")
+        elif tag == "a" and self._links:
+            href = self._links.pop()
+            if href is not None:
+                self.parts.append(f"]({' '.join(href.split())})")
+
+    def handle_data(self, data: str) -> None:
+        if self._skipping:
+            return
+        if self._links and self._links[-1] is not None:
+            data = data.replace("\r", " ").replace("\n", " ")  # a label stays on its line
+        self.parts.append(data)
+
+
+def html_text(markup: str) -> str:
+    """The visible text of an HTML page, one line per block, whitespace collapsed, links as
+    markdown, at most MAX_TEXT_CHARS characters (the PDF cap)."""
+    collector = _TextCollector()
+    collector.feed(markup)
+    collector.close()
+    lines = (" ".join(line.split()) for line in "".join(collector.parts).splitlines())
+    return "\n".join(line for line in lines if line)[:MAX_TEXT_CHARS]
 
 
 def pdf_text(body: bytes) -> str | None:

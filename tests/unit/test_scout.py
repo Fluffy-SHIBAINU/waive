@@ -1,5 +1,6 @@
 import hashlib
 from datetime import date
+from decimal import Decimal
 
 import httpx
 import respx
@@ -8,6 +9,8 @@ from waive.atlas import repo
 from waive.atlas.samples import SAMPLE_POLICY_TEXT, st_example_sheet
 from waive.atlas.schema import SourceKind
 from waive.atlas.scout import (
+    MIN_CHARS,
+    THIN_CHARS,
     ScoutedDoc,
     classify_doc,
     policy_links,
@@ -16,12 +19,31 @@ from waive.atlas.scout import (
     source_id_for,
     store_scouted,
 )
-from waive.atlas.tavily_gateway import ExtractedPage, SearchHit
+from waive.atlas.tavily_gateway import ExtractedPage, SearchHit, TavilyGateway
 from waive.db import init_db, make_engine, session_scope
+from waive.governor import Governor, Ledger
 
-from tests.unit.test_fetch import CANTO_URL, sample_pdf
+from tests.unit.test_fetch import CANTO_URL, HTML_PAGE, sample_pdf
 
 HOSPITAL = st_example_sheet().hospital
+# Tavily renders most hospital pages at well over THIN_CHARS characters; shorter pages are
+# re-extracted at the advanced depth (task 2.8h). The fakes' web pages carry this paragraph so
+# the tests of link following and de-duplication stay about links and duplicates.
+BODY_TEXT = (
+    "Financial counselors are available Monday through Friday from 8 a.m. to 5 p.m. in the "
+    "admitting office on the first floor of the main building and by phone. They help patients "
+    "apply for MassHealth, the Health Safety Net and the hospital's own financial assistance "
+    "program, explain the documents an application needs (a recent tax return, two pay stubs or "
+    "a letter from an employer, and proof of address), and arrange interest-free payment plans "
+    "for balances that remain after assistance. Applications are accepted at any time, "
+    "including after a bill has been sent to a collection agency, and a decision is mailed "
+    "within thirty days of a complete application. Patients who disagree with a decision may "
+    "ask for a review by the director of patient financial services. Assistance covers "
+    "emergency and medically necessary care at every hospital location, but not cosmetic "
+    "procedures or services a physician has not ordered.\n"
+)
+PAGE_TEXT = SAMPLE_POLICY_TEXT + "\n" + BODY_TEXT
+assert len(PAGE_TEXT) >= 1_000 and len(BODY_TEXT) >= 800
 
 
 def hit(url, title="", score=0.5):
@@ -128,7 +150,7 @@ class MapGateway:
 
     def extract(self, urls, **kwargs):
         self.extracted.append(urls)
-        return [ExtractedPage(url=url, text=SAMPLE_POLICY_TEXT) for url in urls]
+        return [ExtractedPage(url=url, text=PAGE_TEXT) for url in urls]
 
 
 def test_scout_falls_back_to_site_map_when_search_finds_no_policy():
@@ -206,7 +228,8 @@ ENTRY_PAGE = (
     "St. Example helps patients who cannot afford their care. Read the full policy and the "
     "application form below, or call 617-555-0100 for help in any language. Interpreters are "
     "available at no cost. Our partner hospital publishes its own charity care policy.\n"
-    "[Financial Assistance Policy (PDF)](https://www.example.org/docs/fap.pdf)\n"
+    + BODY_TEXT
+    + "[Financial Assistance Policy (PDF)](https://www.example.org/docs/fap.pdf)\n"
     "[Partner charity care policy](https://www.otherhospital.org/charity-care-policy.pdf)\n"
 )
 
@@ -275,9 +298,7 @@ class SamePageGateway(LinkGateway):
 
 
 def test_scout_skips_followed_documents_identical_to_ones_already_fetched():
-    gateway = SamePageGateway(
-        SAMPLE_POLICY_TEXT + "\n[Policy (PDF)](https://www.example.org/fap.pdf)\n"
-    )
+    gateway = SamePageGateway(PAGE_TEXT + "[Policy (PDF)](https://www.example.org/fap.pdf)\n")
     docs = scout_hospital(gateway, HOSPITAL)
     assert len(gateway.extracted) == 2
     assert [doc.url for doc in docs] == ["https://www.example.org/patients/financial-assistance"]
@@ -286,7 +307,8 @@ def test_scout_skips_followed_documents_identical_to_ones_already_fetched():
 ASSET_ENTRY_PAGE = (
     "# Healthcare prices and billing\n"
     "Baystate-style entry page: the policy lives on a document host Tavily cannot fetch.\n"
-    f"[Hospital financial assistance policy (pdf)]({CANTO_URL})\n"
+    + BODY_TEXT
+    + f"[Hospital financial assistance policy (pdf)]({CANTO_URL})\n"
 )
 
 
@@ -390,3 +412,132 @@ def test_store_scouted_dedupes_shared_documents():
     with session_scope(engine) as session:
         assert len(repo.sources_for(session, "1")) == 1
         assert len(repo.sources_for(session, "2")) == 1
+
+
+ENTRY_URL = "https://www.example.org/patients/financial-assistance"
+FAP_PDF = "https://www.example.org/docs/fap.pdf"
+# What Tavily's basic extraction returns for Cape Cod Hospital's financial-assistance page: the
+# site menu, 643 characters, and not a word of the policy (task 2.8h).
+NAV_ONLY = (
+    "[Skip to Content](#Content)\n\n[Set Your Location](#SetLocation)\n\n"
+    "Your location is...  [Change Your Location](#SetLocation)\n\n"
+    "Set Your Location to See Relevant Information\n\n"
+    "*Setting your location helps us to show you nearby providers and locations based on your "
+    "healthcare needs.*\n\n[MyChart](https://mychart.example.org/MyChart/Authentication/Login)\n\n"
+    "What can we help you find?\n\n* [Find a doctor](/our-providers/)\n"
+    "* [Find a location](/locations-and-directions/)\n* [Browse our services](/medical-services/)\n"
+    "* [Pay a bill](/patients-visitors/paying-for-care/)\n"
+)
+assert MIN_CHARS <= len(NAV_ONLY) < THIN_CHARS
+
+
+class DepthGateway:
+    """Extract answers from one table per depth and records (urls, depth) for every call."""
+
+    def __init__(self, basic, advanced):
+        self.basic, self.advanced = basic, advanced
+        self.calls = []
+
+    def search(self, query, **kwargs):
+        return [hit(ENTRY_URL, "Financial Assistance", 0.9)]
+
+    def extract(self, urls, **kwargs):
+        depth = kwargs.get("depth", "basic")
+        self.calls.append((list(urls), depth))
+        table = self.advanced if depth == "advanced" else self.basic
+        return [ExtractedPage(url=url, text=table[url]) for url in urls if url in table]
+
+
+def html_route(url=ENTRY_URL, body=HTML_PAGE):
+    return respx.get(url).mock(
+        return_value=httpx.Response(200, text=body, headers={"content-type": "text/html"})
+    )
+
+
+@respx.mock
+def test_thin_pages_are_re_extracted_once_at_advanced_depth():
+    page = html_route()
+    gateway = DepthGateway(
+        basic={ENTRY_URL: NAV_ONLY, FAP_PDF: SAMPLE_POLICY_TEXT}, advanced={ENTRY_URL: ENTRY_PAGE}
+    )
+    docs = scout_hospital(gateway, HOSPITAL)
+    # The advanced rendering is long enough, so no download; its links are the ones followed.
+    assert gateway.calls == [
+        ([ENTRY_URL], "basic"),
+        ([ENTRY_URL], "advanced"),
+        ([FAP_PDF], "basic"),
+    ]
+    assert not page.called
+    assert [(doc.url, doc.doc_class, doc.text) for doc in docs] == [
+        (ENTRY_URL, "fap", ENTRY_PAGE),
+        (FAP_PDF, "fap", SAMPLE_POLICY_TEXT),
+    ]
+
+
+@respx.mock
+def test_pages_still_thin_after_advanced_extraction_are_downloaded_and_tag_stripped():
+    page = html_route()
+    gateway = DepthGateway(
+        basic={ENTRY_URL: NAV_ONLY, FAP_PDF: SAMPLE_POLICY_TEXT}, advanced={ENTRY_URL: NAV_ONLY}
+    )
+    with httpx.Client() as http:
+        docs = scout_hospital(gateway, HOSPITAL, http=http)
+    assert page.called
+    assert gateway.calls == [
+        ([ENTRY_URL], "basic"),
+        ([ENTRY_URL], "advanced"),
+        ([FAP_PDF], "basic"),  # the link to the PDF came from the downloaded page
+    ]
+    assert [(doc.url, doc.doc_class) for doc in docs] == [(ENTRY_URL, "fap"), (FAP_PDF, "fap")]
+    assert "250% of the Federal Poverty" in docs[0].text
+    assert "[Financial Assistance Policy (PDF)](/docs/fap.pdf)" in docs[0].text
+    assert "dataLayer" not in docs[0].text
+
+
+@respx.mock
+def test_thin_pages_keep_their_text_when_neither_fallback_improves_on_it():
+    respx.get(ENTRY_URL).mock(return_value=httpx.Response(404))
+    # Advanced extraction fails for the page (no result) ...
+    gateway = DepthGateway(basic={ENTRY_URL: NAV_ONLY}, advanced={})
+    docs = scout_hospital(gateway, HOSPITAL)
+    assert gateway.calls == [([ENTRY_URL], "basic"), ([ENTRY_URL], "advanced")]
+    assert [doc.text for doc in docs] == [NAV_ONLY]
+    # ... or renders even less: whatever is longest stays, and it is tried only once.
+    gateway = DepthGateway(
+        basic={ENTRY_URL: NAV_ONLY}, advanced={ENTRY_URL: "Financial Assistance"}
+    )
+    assert [doc.text for doc in scout_hospital(gateway, HOSPITAL)] == [NAV_ONLY]
+    assert len(gateway.calls) == 2
+
+
+@respx.mock
+def test_short_pdfs_and_pages_tavily_could_not_fetch_are_not_re_extracted():
+    """The advanced depth renders web pages; a short PDF is just short, and a page Tavily could
+    not fetch at all goes straight to the download (task 2.8c)."""
+    gateway = DepthGateway(basic={FAP_PDF: SAMPLE_POLICY_TEXT}, advanced={FAP_PDF: PAGE_TEXT})
+    gateway.search = lambda query, **kwargs: [hit(FAP_PDF, "Financial Assistance Policy", 0.9)]
+    assert [doc.text for doc in scout_hospital(gateway, HOSPITAL)] == [SAMPLE_POLICY_TEXT]
+    assert gateway.calls == [([FAP_PDF], "basic")]
+    page = respx.get(ENTRY_URL).mock(return_value=httpx.Response(404))
+    gateway = DepthGateway(basic={}, advanced={ENTRY_URL: ENTRY_PAGE})
+    assert scout_hospital(gateway, HOSPITAL) == []
+    assert gateway.calls == [([ENTRY_URL], "basic")] and page.called
+
+
+class ThinTavily:
+    """A Tavily client whose basic extraction of the policy page is navigation only."""
+
+    def search(self, query, **kwargs):
+        return {"results": [{"url": ENTRY_URL, "title": "Financial Assistance", "score": 0.9}]}
+
+    def extract(self, urls, **kwargs):
+        text = PAGE_TEXT if kwargs["extract_depth"] == "advanced" else NAV_ONLY
+        return {"results": [{"url": url, "raw_content": text} for url in urls]}
+
+
+def test_the_advanced_re_extraction_is_booked_at_two_credits_per_five_pages(tmp_path):
+    governor = Governor(Ledger(tmp_path / "usage.jsonl"), 100, Decimal("1"))
+    docs = scout_hospital(TavilyGateway(ThinTavily(), governor), HOSPITAL)
+    assert [doc.text for doc in docs] == [PAGE_TEXT]
+    # Two searches (one credit each), the basic extraction (one) and the advanced one (two).
+    assert governor.summary()["tavily"][0] == Decimal("5")

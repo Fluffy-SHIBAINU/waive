@@ -8,6 +8,7 @@ from waive.atlas import repo
 from waive.atlas.pipeline import build_hospital
 from waive.atlas.refresh import doc_class_of, fetch_texts, is_asset_host, refresh_hospital
 from waive.atlas.schema import SourceDoc, SourceKind
+from waive.atlas.scout import source_id_for
 from waive.atlas.tavily_gateway import ExtractedPage
 from waive.db import SourceDocRow, session_scope
 
@@ -20,9 +21,11 @@ from tests.unit.test_pipeline import (
     FakeGateway,
     make_engine_with_hospital,
 )
+from tests.unit.test_scout import NAV_ONLY
 
 LATER = TODAY + timedelta(days=20)
 POLICY_URL = "https://www.example.org/financial-assistance-policy.pdf"
+PAGE_URL = "https://www.example.org/patients/financial-assistance"
 REVISED_TEXT = POLICY_TEXT + "Revised October 2026.\n"
 CANTO_URL = "https://h.canto.com/direct/document/abc/def/original?content-type=application%2Fpdf"
 
@@ -193,3 +196,42 @@ def test_hospital_without_web_documents_is_skipped():
         assert (result.outcome, result.checked) == ("skipped", 0)
         missing = refresh_hospital(session, RefreshGateway({}), FakeAI(), "000000", LATER)
         assert missing.outcome == "failed"
+
+
+class DepthRefreshGateway(RefreshGateway):
+    """Basic extraction renders the policy page as navigation only; the advanced depth gets the
+    page (task 2.8h). Records (urls, depth) for every call."""
+
+    def __init__(self, texts, advanced):
+        super().__init__(texts)
+        self.advanced = advanced
+        self.calls = []
+
+    def extract(self, urls, **kwargs):
+        depth = kwargs.get("depth", "basic")
+        self.calls.append((list(urls), depth))
+        table = self.advanced if depth == "advanced" else self.texts
+        return [ExtractedPage(url, table.get(url, "")) for url in urls]
+
+
+def test_thin_pages_are_re_extracted_at_advanced_depth_before_the_hash_is_compared():
+    """A page the scout only got at the advanced depth must not read as "changed" (and be
+    re-structured from its menu) every time the refresh extracts it at the basic depth."""
+    engine = make_engine_with_hospital()
+    page_text = POLICY_TEXT + "Financial counselors are available Monday through Friday.\n"
+    stored = SourceDoc(
+        id=source_id_for("fap", hashlib.sha256(page_text.encode("utf-8")).hexdigest()),
+        kind=SourceKind.HOSPITAL_WEB,
+        url=PAGE_URL,
+        title="Financial Assistance",
+        fetched_on=TODAY,
+        sha256=hashlib.sha256(page_text.encode("utf-8")).hexdigest(),
+    )
+    gateway = DepthRefreshGateway({PAGE_URL: NAV_ONLY}, {PAGE_URL: page_text})
+    with session_scope(engine) as session, httpx.Client() as http:
+        repo.save_source(session, stored, page_text, "229999")
+        result = refresh_hospital(session, gateway, FakeAI(), "229999", LATER, http)
+        assert (result.outcome, result.checked, result.changed) == ("unchanged", 1, [])
+        assert gateway.calls == [([PAGE_URL], "basic"), ([PAGE_URL], "advanced")]
+        [(source, _)] = repo.sources_for(session, "229999")
+        assert source.id == stored.id and source.fetched_on == LATER
