@@ -31,8 +31,9 @@ Rules:
 7. "submit_methods" entries are {"kind": "mail" | "fax" | "email" | "portal" | "in_person", "detail": "..."}.
 8. "window_days_from_first_bill", "decision_days" and "eca_wait_days" are whole numbers of days.
 9. "presumptive" lists programs whose members qualify automatically (for example Medicaid, MassHealth, SNAP).
-10. "free_care_max_fpl" is only the upper income bound of a 100% discount (free care) band. A sentence that limits assistance or discounts overall to incomes up to X% FPL is an eligibility ceiling, not free care: leave free_care_max_fpl null unless the documents name a free-care band.
-11. Reply with only the JSON object, no commentary."""
+10. "free_care_max_fpl" is only the upper income bound of a 100% discount (free care) band: fill it when the documents say that care is free, at no charge, or discounted 100% for incomes up to that level. Otherwise leave it null.
+11. "assistance_ceiling_fpl" is the highest household income (as % FPL) at which any financial assistance or discount is available at all, when the documents state one: "assistance is available to incomes less than 600% of the federal poverty guidelines", "discounts are limited to incomes up to 300% FPG", "eligible up to 400% FPL". Such a sentence is an eligibility ceiling on all help, never a free-care band: put its number here and leave free_care_max_fpl null unless another passage grants free care. Leave assistance_ceiling_fpl null when the only income limit stated is the free-care band itself.
+12. Reply with only the JSON object, no commentary."""
 
 MAX_DOC_CHARS = 40_000
 PASSAGE_HEAD_CHARS = 6_000
@@ -107,6 +108,10 @@ class SheetDraft(BaseModel):
         return {"value": value}
 
     free_care_max_fpl: DraftField | None = None
+    # Draft only, never a sheet field: the overall ceiling on any assistance ("less than 600% of
+    # the federal poverty guidelines", UMass Memorial). Giving the model somewhere to put that
+    # number keeps it out of free_care_max_fpl; draft_to_sheet checks the two against each other.
+    assistance_ceiling_fpl: DraftField | None = None
     discount_tiers: DraftField | None = None
     asset_test: DraftField | None = None
     residency: DraftField | None = None
@@ -404,6 +409,56 @@ FIELD_MAP: dict[str, tuple[str, str, Callable[[Any], Any]]] = {
 }
 
 
+def _stated_ceiling(draft: SheetDraft, known: set[str]) -> Decimal | None:
+    """The overall assistance ceiling the model read, when it is cited and numeric."""
+    ceiling = draft.assistance_ceiling_fpl
+    if ceiling is None or ceiling.value is None or not ceiling.quote:
+        return None
+    if ceiling.source_id not in known:
+        return None
+    try:
+        return _decimal(ceiling.value)
+    except ValueError:
+        return None
+
+
+def _drop_ceiling_read_as_free_care(
+    ceiling: Decimal | None, sections: dict[str, dict[str, Any]], skipped: list[str]
+) -> None:
+    """UMass Memorial's "Financial assistance is available to ... household income, less than 600%
+    of the federal poverty guidelines" bounds every kind of help; a free-care limit stated at or
+    above that ceiling is the same sentence read twice. The draft's own ceiling settles it: the
+    stated limit goes and the swap is recorded. A 100% band in the table may still supply the
+    real limit (_derive_free_care_limit runs next)."""
+    if ceiling is None:
+        return
+    eligibility = sections.get("eligibility", {})
+    stated = eligibility.get("free_care_max_fpl")
+    if stated is None or stated.value < ceiling:
+        return
+    del eligibility["free_care_max_fpl"]
+    skipped.append(
+        f"eligibility.free_care_max_fpl: stated {stated.value:.0f} is at or above the overall "
+        f"assistance ceiling ({ceiling:.0f}); not free care"
+    )
+
+
+def _note_ceiling_without_income_rules(
+    ceiling: Decimal | None, sections: dict[str, dict[str, Any]], skipped: list[str]
+) -> None:
+    """A sheet with a ceiling but no free-care band and no table is held for lacking income
+    rules; the note tells the reviewer that the documents, not the model, left the gap."""
+    if ceiling is None:
+        return
+    eligibility = sections.get("eligibility", {})
+    if "free_care_max_fpl" in eligibility or "discount_tiers" in eligibility:
+        return
+    skipped.append(
+        "eligibility.free_care_max_fpl: not stated; the documents give only an overall "
+        f"assistance ceiling ({ceiling:.0f}% FPL)"
+    )
+
+
 def _derive_free_care_limit(
     draft: SheetDraft,
     known: set[str],
@@ -463,7 +518,10 @@ def draft_to_sheet(
             source_id=draft_field.source_id,
             checked_on=today,
         )
+    ceiling = _stated_ceiling(draft, known)
+    _drop_ceiling_read_as_free_care(ceiling, sections, skipped)
     _derive_free_care_limit(draft, known, sections, today, skipped)
+    _note_ceiling_without_income_rules(ceiling, sections, skipped)
     try:
         sheet = ProcedureSheet(hospital=hospital, version=1, sources=sources, **sections)
     except ValueError as error:
