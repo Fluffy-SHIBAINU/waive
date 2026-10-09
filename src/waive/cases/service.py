@@ -105,15 +105,29 @@ def _unlocked(row: CaseRow, allow_approved: bool) -> None:
         raise PermissionError("this case is approved; only the caregiver can change it")
 
 
+def _mint_links(ctx: CaseContext, row: CaseRow) -> CaseLinks:
+    return CaseLinks(
+        row.id,
+        ctx.signer.mint(row.id, "senior", row.token_generation, SENIOR_TTL),
+        ctx.signer.mint(row.id, "caregiver", row.token_generation, CAREGIVER_TTL),
+    )
+
+
 def start_case(ctx: CaseContext, state: str) -> CaseLinks:
     row = CaseRow(id=uuid.uuid4().hex, state=state.upper(), status="new", token_generation=1)
     ctx.session.add(row)
     ctx.session.flush()
-    return CaseLinks(
-        row.id,
-        ctx.signer.mint(row.id, "senior", 1, SENIOR_TTL),
-        ctx.signer.mint(row.id, "caregiver", 1, CAREGIVER_TTL),
-    )
+    return _mint_links(ctx, row)
+
+
+def relink(ctx: CaseContext, case_id: str) -> CaseLinks:
+    """Revoke both links and mint fresh ones (spec §11: capability links are revocable). The
+    generation moves, so every token minted before stops working at `authorize`; the case and
+    its sealed data are untouched."""
+    row = _row(ctx, case_id)
+    row.token_generation += 1
+    ctx.session.flush()
+    return _mint_links(ctx, row)
 
 
 def authorize(ctx: CaseContext, token: str, required: Scope) -> CaseRow:

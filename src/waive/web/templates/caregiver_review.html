@@ -113,6 +113,9 @@
 <p><a class="btn primary" href="{{ links.packet }}">Download the packet (PDF)</a></p>
 <p><a class="btn" href="{{ links.reminders }}">Add reminders to my calendar</a></p>
 {% endif %}
+<form method="post" action="{{ links.relink }}" class="stack" onsubmit="return confirm('Make new links? Both old links stop working, including the one you are using now. You will need to save the new one.')">
+  <button type="submit" class="btn">Make new links (old ones stop working)</button>
+</form>
 <form method="post" action="{{ links.delete }}" class="stack" onsubmit="return confirm('Delete this case and all its personal data?')">
   <button type="submit" class="btn danger">Delete this case</button>
 </form>
