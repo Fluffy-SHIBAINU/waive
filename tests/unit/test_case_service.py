@@ -1,15 +1,17 @@
 import random
 from dataclasses import replace
-from datetime import date, timedelta
+from datetime import UTC, date, datetime, timedelta
 from decimal import Decimal
 
 import pytest
+from sqlalchemy import select
 
 from waive.atlas import repo
 from waive.atlas.publish import publish_sheet
 from waive.atlas.samples import st_example_sheet
 from waive.cases.extract import BillExtract, IncomeExtract
 from waive.cases.service import (
+    MAX_OPEN_SCOUT_REQUESTS,
     READ_LIMITS,
     CaseContext,
     TooManyReads,
@@ -17,6 +19,7 @@ from waive.cases.service import (
     authorize,
     confirm_bill,
     delete_case,
+    purge_cases,
     relink,
     set_household,
     start_case,
@@ -201,6 +204,57 @@ def test_unknown_hospital_requests_scouting(ctx):
     assert view(ctx, links.case_id).tier is None
     delete_case(ctx, links.case_id)
     assert scout_requests(ctx.session) == []
+
+
+def test_bills_naming_the_same_unknown_hospital_share_one_scout_request(ctx):
+    """An anonymous loop must not flood the review queue (spec §11): bills for one hospital
+    merge into one request that counts distinct cases, and open requests are capped."""
+    first, second = start_case(ctx, "MA"), start_case(ctx, "MA")
+    ctx.ai.complete_json = unknown_hospital
+    submit_bill(ctx, first.case_id, bill_image())
+    submit_bill(ctx, second.case_id, bill_image())
+    submit_bill(ctx, second.case_id, bill_image())  # the same case again does not count twice
+    [request] = scout_requests(ctx.session)
+    assert request.detail["count"] == 2
+    assert sorted(request.detail["cases"]) == sorted(
+        case_hash(c) for c in (first.case_id, second.case_id)
+    )
+    delete_case(ctx, first.case_id)
+    [request] = scout_requests(ctx.session)
+    assert request.detail == {**request.detail, "cases": [case_hash(second.case_id)], "count": 1}
+    assert MAX_OPEN_SCOUT_REQUESTS == 200
+
+
+def test_open_scout_requests_are_capped(ctx, monkeypatch):
+    monkeypatch.setattr("waive.cases.service.MAX_OPEN_SCOUT_REQUESTS", 1)
+    ctx.ai.complete_json = unknown_hospital
+    submit_bill(ctx, start_case(ctx, "MA").case_id, bill_image())
+    ctx.ai.complete_json = lambda role, messages, schema, *, phi, purpose, max_tokens=2000: (
+        BillExtract(hospital_name="Yet Another Hospital", amount_due=Decimal("100"))
+    )
+    shown = submit_bill(ctx, start_case(ctx, "MA").case_id, bill_image())
+    assert shown.needs_scouting  # the caregiver can still pick the hospital by hand
+    assert len(scout_requests(ctx.session)) == 1
+
+
+def test_purge_removes_abandoned_and_expired_cases_only(ctx):
+    abandoned = start_case(ctx, "MA")  # created, never photographed
+    expired = start_case(ctx, "MA")
+    ctx.ai.complete_json = unknown_hospital
+    submit_bill(ctx, expired.case_id, bill_image())
+    live_new = start_case(ctx, "MA")
+    live = start_case(ctx, "MA")
+    submit_bill(ctx, live.case_id, bill_image())
+    ctx.session.get(CaseRow, abandoned.case_id).created_at = datetime(2026, 9, 29, tzinfo=UTC)
+    ctx.session.get(CaseRow, expired.case_id).created_at = datetime(2025, 1, 1, tzinfo=UTC)
+    ctx.session.get(CaseRow, live.case_id).created_at = datetime(2026, 9, 1, tzinfo=UTC)
+    ctx.session.flush()
+    assert purge_cases(ctx.session, TODAY) == {"abandoned": 1, "expired": 1}
+    remaining = {row.id for row in ctx.session.scalars(select(CaseRow))}
+    assert remaining == {live_new.case_id, live.case_id}
+    [request] = scout_requests(ctx.session)  # the expired case left its scout request too
+    assert request.detail["cases"] == [case_hash(live.case_id)]
+    assert purge_cases(ctx.session, TODAY) == {"abandoned": 0, "expired": 0}
 
 
 def test_choosing_a_hospital_or_reading_nothing_leaves_no_scout_request(ctx):

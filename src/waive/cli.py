@@ -19,6 +19,7 @@ from waive.atlas.registry import seed_all_states, seed_state
 from waive.atlas.schedule import CREDITS_PER_HOSPITAL, build_queue, run_once, scheduler_states
 from waive.atlas.tavily_gateway import make_tavily_gateway
 from waive.cases.evaluate import evaluate_corpus, write_report
+from waive.cases.service import purge_cases
 from waive.cases.synth import generate_corpus
 from waive.cases.vault import new_key
 from waive.config import Settings
@@ -391,6 +392,18 @@ def serve(
 
 db_app = typer.Typer(no_args_is_help=True, help="Database schema maintenance.")
 app.add_typer(db_app, name="db")
+
+
+@db_app.command("purge")
+def db_purge() -> None:
+    """Delete cases nobody can reach any more: created over a day ago without a photo, or older
+    than the caregiver link's life. Their scout requests go too. Free."""
+    settings = Settings()
+    with session_scope(_engine(settings)) as session:
+        counts = purge_cases(session, datetime.now(UTC).date())
+    console.print(
+        f"Deleted {counts['abandoned']} abandoned and {counts['expired']} expired case(s)."
+    )
 
 
 @db_app.command("upgrade")
