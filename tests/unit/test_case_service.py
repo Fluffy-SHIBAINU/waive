@@ -108,6 +108,7 @@ def test_full_flow_to_free_care(ctx):
     assert "likely do not have to pay" in shown.senior_text
     assert "Policy says" in shown.caregiver_text
     assert shown.deadlines.application_deadline == date(2027, 5, 1)
+    assert not shown.deadlines.anchor_confirmed  # the reader did not say it was the first bill
 
     row = ctx.session.get(CaseRow, links.case_id)
     assert row.prediction == {
@@ -135,6 +136,46 @@ def test_unknown_hospital_requests_scouting(ctx):
     assert shown.ccn is None and shown.needs_scouting
     assert any(item.kind == "scout_request" for item in repo.open_review_items(ctx.session))
     assert view(ctx, links.case_id).tier is None
+
+
+def later_statement(role, messages, schema, *, phi, purpose, max_tokens=2000):
+    """A third statement, already a final notice: the first bill was months earlier."""
+    return BillExtract(
+        hospital_name="St. Example Medical Center",
+        hospital_phone="617-555-0100",
+        statement_date=date(2026, 9, 3),
+        amount_due=Decimal("1850.00"),
+        is_first_statement=False,
+        collection_notice=True,
+        collection_notice_date=date(2026, 11, 15),
+    )
+
+
+def test_a_later_statement_keeps_the_dates_provisional_until_the_first_bill_is_known(ctx):
+    links = start_case(ctx, "MA")
+    ctx.ai.complete_json = later_statement
+    submit_bill(ctx, links.case_id, bill_image())
+    shown = set_household(ctx, links.case_id, 1, Decimal("22800"), ())
+    assert shown.deadlines.application_deadline == date(2027, 5, 1)
+    assert shown.deadlines.anchor_confirmed is False
+    assert shown.deadlines.collection_notice_too_early is None  # not asserted from a guess
+    # The caregiver enters the first bill's date: the clocks move and the notice is judged.
+    shown = confirm_bill(ctx, links.case_id, {"first_statement_date": "2026-07-05"})
+    assert shown.deadlines.application_deadline == date(2027, 3, 2)
+    assert shown.deadlines.collections_allowed_from == date(2026, 11, 2)
+    assert shown.deadlines.anchor_confirmed is True
+    assert shown.deadlines.collection_notice_too_early is False
+    assert shown.bill.statement_date == date(2026, 9, 3)  # the cover letter still cites this one
+
+
+def test_the_caregiver_can_mark_the_photographed_statement_as_the_first(ctx):
+    links = start_case(ctx, "MA")
+    submit_bill(ctx, links.case_id, bill_image())
+    shown = confirm_bill(ctx, links.case_id, {"is_first_statement": True})
+    shown = set_household(ctx, links.case_id, 1, Decimal("22800"), ())
+    assert shown.bill.first_statement_date == date(2026, 9, 3)
+    assert shown.deadlines.anchor_confirmed is True
+    assert shown.deadlines.application_deadline == date(2027, 5, 1)
 
 
 def test_a_hospital_outside_the_registry_cannot_be_chosen(ctx):

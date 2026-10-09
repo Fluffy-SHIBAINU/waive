@@ -3,7 +3,7 @@
 import uuid
 from datetime import date, timedelta
 
-from waive.rules.deadlines import Deadlines
+from waive.rules.deadlines import ANCHOR_CAVEAT, Deadlines
 
 
 def reminder_events(
@@ -27,18 +27,20 @@ def reminder_events(
         ),
     ]
     if deadlines:
+        caveat = "" if deadlines.anchor_confirmed else f" {ANCHOR_CAVEAT}"
         events.append(
             (
                 deadlines.collections_allowed_from - timedelta(days=7),
                 f"Collections protection ends soon: {hospital_name}",
-                "If the application is not decided, send a written reminder that it is pending.",
+                "If the application is not decided, send a written reminder that it is pending."
+                + caveat,
             )
         )
         events.append(
             (
                 deadlines.application_deadline - timedelta(days=14),
                 f"Last chance to apply: {hospital_name}",
-                "The 240-day application window closes in two weeks.",
+                "The 240-day application window closes in two weeks." + caveat,
             )
         )
     return events

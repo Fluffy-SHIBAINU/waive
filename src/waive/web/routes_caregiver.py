@@ -109,6 +109,8 @@ def caregiver_correct(
     hospital_ccn: str = Form(""),
     amount_due: str = Form(""),
     statement_date: str = Form(""),
+    first_statement_date: str = Form(""),
+    is_first_statement: str = Form(""),
     size: int = Form(1),
     annual_income: str = Form(""),
     programs: str = Form(""),
@@ -123,6 +125,12 @@ def caregiver_correct(
             corrections["amount_due"] = str(amount)
         if statement_date:
             corrections["statement_date"] = date.fromisoformat(statement_date).isoformat()
+        if first_statement_date:
+            corrections["first_statement_date"] = date.fromisoformat(
+                first_statement_date
+            ).isoformat()
+        if is_first_statement:
+            corrections["is_first_statement"] = True
         confirm_bill(ctx, row.id, corrections, ccn=hospital_ccn or None)
         chosen = tuple(p.strip() for p in programs.split(",") if p.strip())
         set_household(ctx, row.id, size, _decimal(annual_income), chosen)

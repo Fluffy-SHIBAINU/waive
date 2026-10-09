@@ -4,7 +4,7 @@ import pytest
 
 from waive.atlas.samples import SAMPLE_SOURCE_ID, st_example_sheet
 from waive.atlas.schema import Cited
-from waive.rules.deadlines import compute_deadlines, deadlines_for
+from waive.rules.deadlines import ANCHOR_CAVEAT, compute_deadlines, deadlines_for
 
 FIRST = date(2026, 9, 3)
 TODAY = date(2026, 10, 2)
@@ -36,6 +36,20 @@ def test_flags_collection_notice_before_day_120():
     on_time = compute_deadlines(FIRST, TODAY, collection_notice=date(2027, 1, 2))
     assert early.collection_notice_too_early is True
     assert on_time.collection_notice_too_early is False
+    assert early.anchor_confirmed is True
+
+
+def test_an_unconfirmed_anchor_never_asserts_a_too_early_notice():
+    """The clocks run from the first post-discharge statement (26 CFR 1.501(r)-6). When the only
+    date known is a later statement's, the dates are provisional and the packet must not claim
+    a 501(r) violation the data cannot support."""
+    provisional = compute_deadlines(
+        FIRST, TODAY, collection_notice=date(2026, 11, 15), anchor_confirmed=False
+    )
+    assert provisional.anchor_confirmed is False
+    assert provisional.collection_notice_too_early is None
+    assert provisional.application_deadline == date(2027, 5, 1)
+    assert "first bill" in ANCHOR_CAVEAT
 
 
 def test_rejects_windows_shorter_than_the_law():
