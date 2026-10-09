@@ -184,7 +184,12 @@ def caregiver_delete(request: Request, token: str) -> HTMLResponse:
         ctx = deps.context(session)
         row = authorize(ctx, token, "caregiver")
         delete_case(ctx, row.id)
-    return render(request, "home.html", notice="The case and all its personal data were deleted.")
+    response = render(
+        request, "home.html", notice="The case and all its personal data were deleted."
+    )
+    # One-tap delete reaches the browser too: cached copies of the review pages go with the case.
+    response.headers["Clear-Site-Data"] = '"cache"'
+    return response
 
 
 @router.get("/c/{token}/packet.pdf")

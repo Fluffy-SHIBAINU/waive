@@ -24,7 +24,7 @@
     {% if line.startswith("Policy says") %}<p class="quote">{{ line }}</p>{% else %}<p>{{ line }}</p>{% endif %}
   {% endfor %}
   {% for reason in case.result.reasons %}{% if reason.source_id and reason.source_id in sources %}
-    <p class="muted">Source: <a href="{{ sources[reason.source_id].url }}">{{ sources[reason.source_id].title or "policy document" }}</a> (checked {{ sources[reason.source_id].fetched_on }})</p>
+    <p class="muted">Source: <a href="{{ sources[reason.source_id].url }}" rel="noopener noreferrer">{{ sources[reason.source_id].title or "policy document" }}</a> (checked {{ sources[reason.source_id].fetched_on }})</p>
   {% endif %}{% endfor %}
 </div>
 {% endif %}
