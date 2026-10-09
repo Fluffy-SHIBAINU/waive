@@ -115,6 +115,32 @@ def test_build_queue_orders_by_staleness_demand_and_accuracy():
     assert report.without_sheet == 4
 
 
+def test_a_hospital_whose_structurer_failed_waits_like_the_other_failures():
+    """7.8: the documents stay stored but there is no sheet. Without the pause the queue would
+    send it to the content-hash refresh every day (one Tavily credit each) and, the documents
+    being unchanged, never run the structurer again; the admin decides what happens next."""
+    engine = make_engine_with_hospital(REAL, NEW)
+    with session_scope(engine) as session:
+        repo.save_source(session, source("fap-real", TODAY - timedelta(days=10)), "text", "220031")
+        repo.add_review_item(
+            session, "220031", "structure_failed", {"error": "nvidia/...: HTTP 400"}
+        )
+        session.flush()
+        report = build_queue(session, TODAY, ("MA",))
+        assert [entry.ccn for entry in report.entries] == ["220010"]
+        assert report.skipped == {
+            "220031": f"recent failure; retried after {RETRY_AFTER_DAYS} days"
+        }
+        assert report.without_sheet == 2
+        # Once the item is resolved the hospital is back in line, as a refresh candidate.
+        for item in repo.open_review_items(session, "220031"):
+            item.status = "resolved"
+        session.flush()
+        entries = build_queue(session, TODAY, ("MA",)).entries
+        assert [entry.ccn for entry in entries] == ["220010", "220031"]
+        assert entries[1].has_sources
+
+
 def test_a_merged_scout_request_counts_each_bill_once():
     engine = make_engine_with_hospital(REAL)
     with session_scope(engine) as session:

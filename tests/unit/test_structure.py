@@ -484,5 +484,18 @@ def test_the_retry_shows_the_model_the_leading_sources_only():
 def test_a_second_rejection_propagates_to_the_caller():
     ai = RejectingAI(DRAFT, failures=2)
     with pytest.raises(AIRequestRejected, match="131072"):
-        structure_sheet(ai, "reason", SAMPLE.hospital, SOURCES, TODAY)
+        structure_sheet(ai, "reason", SAMPLE.hospital, [(SAMPLE.sources[0], LONG_TEXT)], TODAY)
     assert len(ai.prompts) == 2  # once in full, once smaller, never a third time
+
+
+def test_a_rejection_that_a_smaller_prompt_cannot_change_is_not_retried():
+    """One short document already fits the retry budget, so the smaller prompt would be the
+    same bytes: the refusal was not about length (an unsupported field, say) and the same
+    request would be refused again. The first error propagates and no second call is made."""
+    ai = RejectingAI(DRAFT, failures=1)
+    with pytest.raises(AIRequestRejected, match="131072"):
+        structure_sheet(ai, "reason", SAMPLE.hospital, SOURCES, TODAY)
+    assert len(ai.prompts) == 1
+    full = build_messages(SAMPLE.hospital, SOURCES)
+    smaller = build_messages(SAMPLE.hospital, SOURCES, limit=RETRY_DOC_CHARS, head=RETRY_HEAD_CHARS)
+    assert smaller == full and ai.prompts[0] == full[1]["content"]
