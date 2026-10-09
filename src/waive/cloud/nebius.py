@@ -29,7 +29,18 @@ INSTALL_HINT = (
 # Appended to every call that is not `--help`. `--no-browser` stops the CLI from opening a
 # sign-in page on an expired session; the timeouts stop it from waiting for one.
 SAFE_FLAGS = ("--no-browser", "--auth-timeout", "30s", "--timeout", "90s")
+# The only verbs a read-only wrapper lets through (an allowlist; CLI 0.12.287). Everything else is
+# refused before the CLI runs — the mutating verbs below and the ones a denylist would miss:
+# `purge` (storage bucket, permanent), `revoke` (iam static-key), `deactivate`/`activate` (iam
+# access-key), `ssh`/`logs` (ai endpoint), `docker-credential` (registry), `get-secret-once` and
+# `get-secret` (access keys), `find`, `edit`, …
+READ_ONLY_VERBS = frozenset(
+    {"version", "list", "get", "get-by-name", "get-by-id", "get-by-aws-id", "batch-get"}
+)
+READ_ONLY_PREFIXES = ("list-",)  # list-with-filter, list-by-account, list-operations-by-parent, …
+READ_ONLY_PAIRS = frozenset({("calculator", "estimate"), ("calculator", "estimate-batch")})
 # Verbs that create, change or delete something, as the CLI names them (nebius <service> --help).
+# Never excused by a read verb in the same command; named in the refusal message.
 MUTATING_VERBS = frozenset(
     {
         "activate",
@@ -85,10 +96,44 @@ def mask_id(resource_id: str) -> str:
     return f"{prefix}-…{rest[-4:]}" if dash else resource_id
 
 
+# A Nebius resource id is `<kind>-<opaque>`: project-e00…, vpcnetwork-e00…, mbsec-e00…. The
+# known kinds are matched whatever follows the dash (the tests use `project-test`); any other
+# kind is caught by the `e0…` shape of real ids. Names like `waive-secrets` or `cpu-d3` stay.
+_RESOURCE_ID = re.compile(
+    r"\b(?:project|tenant|tenantuseraccount|serviceaccount|vpcnetwork|vpcsubnet|computeplatform"
+    r"|computeinstance|computedisk|mbsec|mbsecver|registry|aiendpoint|cluster|staticaccesskey"
+    r"|accesskey)-[a-z0-9]+\b"
+    r"|\b[a-z]+-e0[0-9a-z]{6,}\b"
+)
+
+
+def mask_ids(text: str) -> str:
+    """Mask every resource id in free text. The CLI's error text embeds the full project id
+    ("… not found in container 'project-…'") and echoes the argv, and error text ends up in the
+    committed report."""
+    return _RESOURCE_ID.sub(lambda match: mask_id(match.group(0)), text)
+
+
+def _positional(args: Sequence[str]) -> list[str]:
+    return list(takewhile(lambda word: not word.startswith("-"), args))
+
+
 def _shown(args: Sequence[str]) -> str:
     """The subcommand words before the first flag, with ids masked — never a flag value."""
-    words = list(takewhile(lambda word: not word.startswith("-"), args))[:5]
-    return " ".join(mask_id(word) if word.startswith(PROJECT_PREFIX) else word for word in words)
+    return mask_ids(" ".join(_positional(args)[:5]))
+
+
+def is_read_only(args: Sequence[str]) -> bool:
+    """True when the subcommand names a read (`list*`, `get`, `get-by-*`, `batch-get`,
+    `version`, `calculator estimate`) and no mutating verb; `--help` is always a read."""
+    if "--help" in args:
+        return True
+    words = _positional(args)
+    if set(words) & MUTATING_VERBS:
+        return False
+    if any(word in READ_ONLY_VERBS or word.startswith(READ_ONLY_PREFIXES) for word in words):
+        return True
+    return any(pair in READ_ONLY_PAIRS for pair in zip(words, words[1:], strict=False))
 
 
 @dataclass
@@ -149,9 +194,10 @@ class Nebius:
     ) -> Any:
         is_help = "--help" in args
         shown = _shown(args)
-        if self.read_only and not is_help and set(args) & MUTATING_VERBS:
+        if self.read_only and not is_read_only(args):
             raise NebiusError(
-                f"refusing `nebius {shown}`: this wrapper is read-only (gate U6.1 approves "
+                f"refusing `nebius {shown}`: this wrapper is read-only — only list*, get*, "
+                "batch-get, version, `calculator estimate` and --help run (gate U6.1 approves "
                 "resources before anything is created)"
             )
         argv = [self.binary, *args]
@@ -171,7 +217,7 @@ class Nebius:
             detail = (
                 "stderr withheld because the command carried secret values"
                 if redact
-                else result.stderr.strip()[:500]
+                else mask_ids(result.stderr.strip()[:500])
             )
             raise NebiusError(
                 f"`nebius {shown}` failed with exit code {result.returncode}: {detail}"

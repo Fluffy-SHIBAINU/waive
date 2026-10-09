@@ -8,8 +8,12 @@ from decimal import Decimal
 import pytest
 
 from waive.cloud.costs import (
+    EFFECTIVE,
     HOURS_PER_MONTH,
     MATCH_TOLERANCE,
+    PRICES_DATE,
+    PRICES_EFFECTIVE,
+    SOURCES,
     Footprint,
     Price,
     Scenario,
@@ -20,6 +24,7 @@ from waive.cloud.costs import (
     parse_preset,
     postgres_hourly,
     reconcile,
+    source_note,
     window_cost,
 )
 
@@ -65,6 +70,25 @@ def test_footprint_totals_and_hours_within_budget():
     assert footprint.hours_in_budget() == 143
     assert monthly(footprint.endpoint) == Decimal("48.18")
     assert Footprint("cpu-d3", "2vcpu-8gb", "2vcpu-8gb", 32, Decimal("10")).hours_in_budget() == 47
+    # The endpoint's container disk (`ai endpoint create --disk-size`, CLI default 250Gi) bills
+    # at the Compute disk rate while the endpoint runs: 32 GiB adds 0.0031/h to the total.
+    with_disk = Footprint("cpu-d3", "2vcpu-8gb", "2vcpu-8gb", 32, endpoint_disk_gib=32)
+    assert with_disk.endpoint == Decimal("0.066")  # compute only, unchanged
+    assert with_disk.endpoint_disk == disk_hourly(32)
+    assert with_disk.total.quantize(Decimal("0.0001")) == Decimal("0.2122")
+    assert with_disk.hours_in_budget() == 141
+    assert footprint.endpoint_disk == Decimal("0")
+    # The CLI default would cost 250 × 0.071 / 730 ≈ 0.0243/h, +37% on the endpoint's compute.
+    assert disk_hourly(250).quantize(Decimal("0.0001")) == Decimal("0.0243")
+
+
+def test_effective_date_is_scoped_to_the_compute_page():
+    """Re-read 2026-10-09: only the Compute pricing page announces the 1 October 2026 change;
+    the PostgreSQL, Serverless, Container Registry and SecretStash pages carry no effective date."""
+    assert set(SOURCES) == {"compute", "serverless", "postgresql", "registry", "secretstash"}
+    assert EFFECTIVE == {"compute": PRICES_EFFECTIVE}
+    assert source_note("compute") == f"read {PRICES_DATE}; prices effective {PRICES_EFFECTIVE}"
+    assert source_note("postgresql") == f"read {PRICES_DATE}; no effective date on the page"
 
 
 def test_scenario_hours():

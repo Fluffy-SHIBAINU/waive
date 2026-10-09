@@ -81,6 +81,8 @@ def test_development_defaults_keep_sqlite_and_the_file_ledger(monkeypatch):
     assert settings.cloud_database_url is None and settings.registry is None
     assert (settings.cloud_platform, settings.cloud_preset) == ("cpu-d3", "2vcpu-8gb")
     assert (settings.cloud_pg_preset, settings.cloud_pg_disk_gib) == ("2vcpu-8gb", 32)
+    # Passed to `ai endpoint create --disk-size` (6.6); the CLI default is 250Gi, +37% on cost.
+    assert settings.cloud_endpoint_disk_gib == 32
 
 
 def test_scheduler_settings_default_off(monkeypatch):
