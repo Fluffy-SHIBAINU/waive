@@ -133,6 +133,23 @@ def test_gives_up_after_second_bad_answer(tmp_path):
 
 
 @respx.mock
+def test_schema_failure_never_quotes_the_model_answer(tmp_path):
+    """The answer may hold bill values; the error (and its chain) must describe the shape only."""
+    respx.post(f"{BASE}/chat/completions").mock(
+        return_value=httpx.Response(
+            200, json=chat_payload('{"tier": "free", "percent": "$1,850.00 rosa@example.org"}')
+        )
+    )
+    client, _ = make_client(tmp_path)
+    with pytest.raises(AIOutputError) as caught:
+        client.complete_json("fast", USER, Answer, phi=False, purpose="test")
+    error = caught.value
+    assert "Answer" in str(error) and "percent" in str(error)
+    assert "$" not in str(error) and "@" not in str(error) and "input_value" not in str(error)
+    assert error.__cause__ is None and error.__context__ is None
+
+
+@respx.mock
 def test_personal_data_blocked_until_zdr_confirmed(tmp_path):
     route = respx.post(f"{BASE}/chat/completions")
     client, _ = make_client(tmp_path)

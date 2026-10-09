@@ -182,4 +182,13 @@ class AIClient:
                 {"role": "assistant", "content": text},
                 {"role": "user", "content": repair},
             ]
-        raise AIOutputError(f"model output did not match {schema.__name__}") from last_error
+        # The answer may carry personal values (a bill amount, a name), so the error names the
+        # fields and error types only and drops the chain: pydantic's text quotes input values.
+        if isinstance(last_error, ValidationError):
+            detail = "; ".join(
+                f"{'.'.join(str(p) for p in e['loc']) or '<root>'}: {e['type']}"
+                for e in last_error.errors(include_input=False, include_url=False)
+            )
+        else:
+            detail = str(last_error) if last_error is not None else "no answer"
+        raise AIOutputError(f"model output did not match {schema.__name__} ({detail})") from None

@@ -5,7 +5,7 @@ from decimal import Decimal
 from fastapi import APIRouter, File, Form, Request, UploadFile
 from fastapi.responses import HTMLResponse, RedirectResponse
 
-from waive.ai.client import ZDRRequired
+from waive.ai.client import AIOutputError, ZDRRequired
 from waive.cases.images import ImageError
 from waive.cases.service import (
     authorize,
@@ -108,6 +108,15 @@ async def senior_bill(
                 view(ctx, row.id),
                 reason="your helper needs to finish setting things up",
             )
+        except AIOutputError:
+            # A traceback here would reach uvicorn's log with the model's answer in it.
+            return _page(
+                request,
+                "senior_wait.html",
+                token,
+                view(ctx, row.id),
+                reason="your helper will read the bill",
+            )
         return _page(request, "senior_readback.html", token, shown)
 
 
@@ -176,7 +185,7 @@ async def senior_income(
         if data and deps.ai is not None:
             try:
                 submit_income_letter(ctx, row.id, data)
-            except (ImageError, ZDRRequired):
+            except (ImageError, ZDRRequired, AIOutputError):
                 return _page(
                     request,
                     "senior_income.html",
