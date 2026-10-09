@@ -15,6 +15,7 @@ from waive.config import Settings
 from waive.db import init_db, make_engine, session_scope
 from waive.learning.classify import PhotoClass
 from waive.learning.contributions import submit_contribution
+from waive.learning.evidence import SLIP_PATH, add_evidence, flag_confirmed, slip_flag_level
 from waive.learning.outcomes import Decision, DenialReason, OutcomeExtract
 from waive.learning.triage import record_outcome
 from waive.web.app import create_app
@@ -117,6 +118,29 @@ def test_review_queue_resolves_a_rescout_as_sheet_wrong_and_withdraws_slips(tmp_
     )
     assert "rescout_request" not in after.text and "accountability_flag" not in after.text
     assert "Nothing to review" in after.text
+
+
+def test_review_queue_resolves_a_rescout_as_hospital_slip_and_confirms_the_public_flag(tmp_path):
+    client = admin_client(tmp_path)
+    login(client)
+    with session_scope(client.app.state.deps.engine) as session:
+        for index in range(2):  # three real denials plus two more: the public threshold
+            add_evidence(
+                session, "229999", SLIP_PATH, "denied_despite_policy", f"extra-{index}", TODAY
+            )
+        assert slip_flag_level(session, "229999") == "public"
+    assert "report being denied" not in client.get("/atlas/229999").text
+    queue = client.get("/admin/review").text
+    item_id = int(re.search(r'action="/admin/review/(\d+)"', queue).group(1))
+    after = client.post(
+        f"/admin/review/{item_id}",
+        data={"status": "resolved", "verdict": "hospital_slip"},
+        follow_redirects=True,
+    )
+    assert "rescout_request" not in after.text and "accountability_flag" not in after.text
+    assert "5 patients report being denied" in client.get("/atlas/229999").text
+    with session_scope(client.app.state.deps.engine) as session:
+        assert flag_confirmed(session, "229999")
 
 
 def test_contribution_approval_rebuild_and_sheet_diffs(tmp_path):

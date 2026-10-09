@@ -131,6 +131,7 @@ def slip_cases(session: Session, ccn: str) -> int:
 
 
 def slip_flag_level(session: Session, ccn: str) -> FlagLevel:
+    """The level the case count alone supports (what the admin console shows)."""
     cases = slip_cases(session, ccn)
     if cases >= FLAG_PUBLIC:
         return "public"
@@ -139,19 +140,61 @@ def slip_flag_level(session: Session, ccn: str) -> FlagLevel:
     return "none"
 
 
+# A flag stays live while it is waiting for an admin ("open") or after one confirmed it.
+FLAG_LIVE_STATUSES = ("open", "confirmed")
+
+
+def _flag_items(session: Session, ccn: str) -> list[ReviewItemRow]:
+    return list(
+        session.scalars(
+            select(ReviewItemRow)
+            .where(
+                ReviewItemRow.ccn == ccn,
+                ReviewItemRow.kind == "accountability_flag",
+                ReviewItemRow.status.in_(FLAG_LIVE_STATUSES),
+            )
+            .order_by(ReviewItemRow.id)
+        )
+    )
+
+
+def flag_confirmed(session: Session, ccn: str) -> bool:
+    """An admin re-checked the documents and confirmed the hospital slipped."""
+    return any(item.status == "confirmed" for item in _flag_items(session, ccn))
+
+
+def public_flag_level(session: Session, ccn: str) -> FlagLevel:
+    """What the open atlas page may say. Case hashes are cheap to mint (POST /cases needs no
+    sign-in), so "public" needs the count AND an admin's confirmation (spec §10); until then the
+    flag stays internal."""
+    level = slip_flag_level(session, ccn)
+    if level == "public" and not flag_confirmed(session, ccn):
+        return "internal"
+    return level
+
+
 def raise_flags(session: Session, ccn: str) -> ReviewItemRow | None:
-    """One open accountability flag per hospital, kept at the current level and count."""
+    """One live accountability flag per hospital, kept at the current level and count."""
     level = slip_flag_level(session, ccn)
     if level == "none":
         return None
     detail = {"level": level, "cases": slip_cases(session, ccn)}
-    for item in repo.open_review_items(session, ccn):
-        if item.kind == "accountability_flag":
-            if item.detail != detail:
-                item.detail = detail
-                session.flush()
-            return item
+    for item in _flag_items(session, ccn):
+        if item.detail != detail:
+            item.detail = detail
+            session.flush()
+        return item
     return repo.add_review_item(session, ccn, "accountability_flag", detail)
+
+
+def confirm_flag(session: Session, ccn: str) -> ReviewItemRow | None:
+    """An admin settled a re-scout as "the hospital slipped": the flag leaves the queue and may
+    go public once enough cases report it. None when no slip evidence supports a flag."""
+    item = raise_flags(session, ccn)
+    if item is not None and item.status != "confirmed":
+        item.status = "confirmed"
+        session.flush()
+    return item
 
 
 def withdraw_slips(session: Session, ccn: str) -> int:
@@ -162,9 +205,8 @@ def withdraw_slips(session: Session, ccn: str) -> int:
             ReportedEvidenceRow.ccn == ccn, ReportedEvidenceRow.field_path == SLIP_PATH
         )
     )
-    for item in repo.open_review_items(session, ccn):
-        if item.kind == "accountability_flag":
-            item.status = "withdrawn"
+    for item in _flag_items(session, ccn):
+        item.status = "withdrawn"
     session.flush()
     return int(result.rowcount or 0)
 
