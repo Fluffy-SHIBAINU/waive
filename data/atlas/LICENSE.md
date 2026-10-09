@@ -9,7 +9,7 @@ https://creativecommons.org/licenses/by/4.0/
 You may copy, share and adapt the data for any purpose, including commercially, as long as you
 give credit. Suggested attribution:
 
-> Waive atlas, CC BY 4.0, [USER FILLS: repository URL]
+> Waive atlas, CC BY 4.0, https://github.com/Fluffy-SHIBAINU/waive
 
 What the data is: for every hospital, each documented field carries the value, an exact quote
 from the hospital's own document, the source document's URL, its SHA-256 and the date it was

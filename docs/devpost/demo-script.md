@@ -78,7 +78,7 @@ Total: **2:50**.
 
 - Card 1: "Waive" (large) — "Free or discounted hospital care you're owed, from a photo of the
   bill." — "Nebius x NVIDIA Global AI Hackathon · Personal AI track".
-- Card 9: repository URL `[USER FILLS: repository URL]` — "Code: Apache-2.0 · Atlas data: CC BY 4.0"
+- Card 9: repository URL `https://github.com/Fluffy-SHIBAINU/waive` — "Code: Apache-2.0 · Atlas data: CC BY 4.0"
   — "Waive never asks for money, card numbers or bank logins."
 
 ## Recording, cutting and uploading
