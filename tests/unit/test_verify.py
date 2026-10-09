@@ -307,3 +307,229 @@ def test_full_or_partial_assistance_wording_is_a_ceiling_not_a_free_care_band():
         update={"eligibility": sheet.eligibility.model_copy(update={"free_care_max_fpl": cited})}
     )
     assert ("eligibility.free_care_max_fpl", CEILING_REASON) in verify_sheet(sheet, docs).rejected
+
+
+def with_bool(path, value, quote):
+    section_name, field_name = path.split(".")
+    sheet = st_example_sheet()
+    cited = Cited(
+        value=value, quote=quote, source_id=SAMPLE_SOURCE_ID, checked_on=date(2026, 10, 2)
+    )
+    section = getattr(sheet, section_name).model_copy(update={field_name: cited})
+    return sheet.model_copy(update={section_name: section})
+
+
+def verdict(path, value, quote):
+    docs = {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT + "\n" + quote + "\n"}
+    report = verify_sheet(with_bool(path, value, quote), docs)
+    return next((reason for p, reason in report.rejected if p == path), "accepted")
+
+
+ADVENTIST_ASSETS = (
+    "Furthermore, the first ten thousand dollars ($10,000) of a patient's monetary assets shall "
+    "not be counted in determining eligibility, nor shall 50 percent of patient's monetary assets "
+    "over the first ten thousand dollars ($10,000) be counted in determining eligibility."
+)
+
+
+def test_an_asset_test_value_must_be_supported_by_its_quote():
+    from waive.atlas.verify import ASSET_REASON, quote_supports_asset_test
+
+    path = "eligibility.asset_test"
+    # 7.9: value_in_quote accepted any boolean, so 21 sheets carried asset_test values whose
+    # quotes said the opposite or nothing at all.
+    assert verdict(path, False, ADVENTIST_ASSETS) == ASSET_REASON  # a partial exemption
+    assert (
+        verdict(path, False, "an asset means test may also be applied to Medicare recipients only.")
+        == ASSET_REASON
+    )
+    assert (
+        verdict(
+            path, False, "Proof of Assets does not apply to applicants at or below 200% of the FPL."
+        )
+        == ASSET_REASON
+    )
+    assert (
+        verdict(path, False, "Eligibility is determined on the patient's family household income.")
+        == ASSET_REASON
+    )
+    assert (
+        verdict(
+            path,
+            False,
+            "will never charge patients eligible for financial assistance more than AGB.",
+        )
+        == ASSET_REASON
+    )
+    assert (
+        verdict(
+            path,
+            False,
+            "Asset determinations will never include the primary residence or the primary automobile.",
+        )
+        == ASSET_REASON
+    )
+    assert (
+        verdict(
+            path,
+            True,
+            "Patients enrolled in MassHealth or SNAP are presumptively eligible for free care",
+        )
+        == ASSET_REASON
+    )
+    # Quotes that say what the value says pass.
+    assert (
+        verdict(
+            path,
+            False,
+            "Assets and employment status are not considered in qualifying for this program.",
+        )
+        == "accepted"
+    )
+    assert (
+        verdict(
+            path,
+            False,
+            "AHMC does NOT consider your monetary assets in determining your eligibility for Charity Care.",
+        )
+        == "accepted"
+    )
+    assert (
+        verdict(
+            path,
+            False,
+            "Asset testing is not required for financial assistance for NHSC facilities.",
+        )
+        == "accepted"
+    )
+    assert (
+        verdict(
+            path,
+            False,
+            "There are no income or asset criteria requirements associated with this discount.",
+        )
+        == "accepted"
+    )
+    assert (
+        verdict(path, True, "an asset means test may also be applied to Medicare recipients only.")
+        == "accepted"
+    )
+    assert (
+        verdict(
+            path,
+            True,
+            "Asset limits for eligibility may not exceed $3,000 for applicant and $3,000 for spouse.",
+        )
+        == "accepted"
+    )
+    assert (
+        verdict(
+            path,
+            True,
+            "such individual is not eligible for assistance under this policy until such assets are exhausted.",
+        )
+        == "accepted"
+    )
+    assert quote_supports_asset_test(
+        "Assets will also be used when: residency is outside the U.S.", True
+    )
+    assert not quote_supports_asset_test(
+        "Assets will also be used when: residency is outside the U.S.", False
+    )
+
+
+def test_an_insured_patients_value_needs_a_quote_about_insured_patients():
+    from waive.atlas.verify import INSURED_REASON, quote_addresses_insured
+
+    path = "eligibility.insured_patients_covered"
+    # 7.9: eight sheets took the value from sentences about uninsured patients only, EMTALA or
+    # physician fees; the AGB-cap rule caught just one shape of that.
+    assert (
+        verdict(
+            path,
+            True,
+            "This Policy also provides guidelines for discounted amounts that may be charged to all uninsured patients.",
+        )
+        == INSURED_REASON
+    )
+    assert (
+        verdict(
+            path,
+            True,
+            "Financial assistance is available for emergency care or medically necessary care.",
+        )
+        == INSURED_REASON
+    )
+    assert (
+        verdict(
+            path,
+            False,
+            "Financial assistance and discounts are available only for necessary hospital care.",
+        )
+        == INSURED_REASON
+    )
+    assert (
+        verdict(
+            path,
+            False,
+            "In order to receive CCP financial assistance, the patient must apply for Medicaid and be denied.",
+        )
+        == INSURED_REASON
+    )
+    # A false value needs the quote to exclude insured patients, not merely to mention them.
+    assert (
+        verdict(
+            path,
+            False,
+            "Financial Assistance is offered to patients who are uninsured and underinsured.",
+        )
+        == INSURED_REASON
+    )
+    assert (
+        verdict(
+            path,
+            False,
+            "Does not have any form of insurance to cover services rendered that are medically necessary",
+        )
+        == "accepted"
+    )
+    assert (
+        verdict(
+            path,
+            False,
+            "It is also not intended to provide discounts on insurance co-payments, co-insurance, or deductibles.",
+        )
+        == "accepted"
+    )
+    assert (
+        verdict(
+            path, True, "Both insured and uninsured patients are eligible for financial assistance."
+        )
+        == "accepted"
+    )
+    assert (
+        verdict(
+            path,
+            True,
+            "Financial assistance for insured patients is available once a patient receives a bill.",
+        )
+        == "accepted"
+    )
+    assert (
+        verdict(
+            path,
+            True,
+            "Whether patients are uninsured or underinsured, they can apply for financial assistance.",
+        )
+        == "accepted"
+    )
+    assert (
+        verdict(
+            path,
+            True,
+            "For patients that have insurance coverage, assistance is limited to deductible, coinsurance, co-pay.",
+        )
+        == "accepted"
+    )
+    assert not quote_addresses_insured("care for all uninsured patients", True)
+    assert quote_addresses_insured("even if you have some insurance", True)
