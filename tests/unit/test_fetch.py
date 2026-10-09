@@ -1,11 +1,22 @@
 import io
+import time
+import zlib
 
 import httpx
 import respx
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 
-from waive.atlas.fetch import USER_AGENT, download_text, host_allowed_for, is_asset_host
+from waive.atlas import fetch
+from waive.atlas.fetch import (
+    MAX_PAGES,
+    MAX_TEXT_CHARS,
+    USER_AGENT,
+    download_text,
+    host_allowed_for,
+    is_asset_host,
+    pdf_text,
+)
 from waive.atlas.samples import SAMPLE_POLICY_TEXT
 
 CANTO_URL = (
@@ -30,6 +41,65 @@ def sample_pdf(text: str = SAMPLE_POLICY_TEXT) -> bytes:
 
 def pdf_response(body: bytes, content_type: str = "application/pdf") -> httpx.Response:
     return httpx.Response(200, content=body, headers={"content-type": content_type})
+
+
+def pdf_with_shared_stream(pages: int, content: bytes) -> bytes:
+    """`pages` pages that all draw the same FlateDecode stream: pypdf re-inflates it for every
+    page, so a few kilobytes cost minutes and megabytes unless pages and text are capped."""
+    stream = zlib.compress(content)
+    kids = " ".join(f"{5 + i} 0 R" for i in range(pages))
+    objects = [
+        b"<< /Type /Catalog /Pages 2 0 R >>",
+        f"<< /Type /Pages /Kids [{kids}] /Count {pages} >>".encode(),
+        b"<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>",
+        f"<< /Length {len(stream)} /Filter /FlateDecode >>\nstream\n".encode()
+        + stream
+        + b"\nendstream",
+    ]
+    objects += [
+        b"<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] "
+        b"/Resources << /Font << /F1 3 0 R >> >> /Contents 4 0 R >>"
+    ] * pages
+    out = bytearray(b"%PDF-1.4\n")
+    offsets = []
+    for number, obj in enumerate(objects, start=1):
+        offsets.append(len(out))
+        out += f"{number} 0 obj\n".encode() + obj + b"\nendobj\n"
+    xref = len(out)
+    out += f"xref\n0 {len(objects) + 1}\n".encode() + b"0000000000 65535 f \n"
+    for offset in offsets:
+        out += f"{offset:010d} 00000 n \n".encode()
+    out += (
+        f"trailer\n<< /Size {len(objects) + 1} /Root 1 0 R >>\nstartxref\n{xref}\n%%EOF\n".encode()
+    )
+    return bytes(out)
+
+
+def text_lines(count: int) -> bytes:
+    return "".join(
+        f"BT /F1 12 Tf 36 {700 - (i % 40) * 16} Td (financial assistance policy line {i}) Tj ET\n"
+        for i in range(count)
+    ).encode()
+
+
+def test_pdf_text_caps_pages_and_characters_so_a_shared_stream_bomb_stays_cheap():
+    bomb = pdf_with_shared_stream(400, text_lines(600))  # 400 pages x ~27k characters each
+    assert len(bomb) < 100_000
+    started = time.monotonic()
+    text = pdf_text(bomb)
+    assert time.monotonic() - started < 10
+    assert text is not None and "policy line 0" in text
+    assert len(text) <= MAX_TEXT_CHARS == 60_000
+    blank = pdf_with_shared_stream(2000, b"")
+    assert pdf_text(blank) is None
+    assert MAX_PAGES == 60
+
+
+def test_pdf_parsing_runs_in_a_child_process_with_a_deadline(monkeypatch):
+    pdf = sample_pdf()
+    assert pdf_text(pdf) is not None
+    monkeypatch.setattr(fetch, "PDF_TIMEOUT_SECONDS", 0.001)
+    assert pdf_text(pdf) is None
 
 
 @respx.mock
