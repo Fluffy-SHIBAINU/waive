@@ -10,9 +10,10 @@ from waive.atlas.publish import (
     export_state,
     publish_sheet,
     resolve_conflicts,
+    sheet_inconsistencies,
 )
 from waive.atlas.samples import st_example_sheet
-from waive.atlas.schema import SheetStatus
+from waive.atlas.schema import DiscountTier, SheetStatus
 from waive.db import init_db, make_engine, session_scope
 
 SAMPLE = st_example_sheet()
@@ -131,6 +132,47 @@ def test_decide_status():
     assert decide_status(SAMPLE, ["eligibility.free_care_max_fpl"]) is SheetStatus.HELD
     no_limits = drop_fields(SAMPLE, ["eligibility.free_care_max_fpl", "eligibility.discount_tiers"])
     assert decide_status(no_limits, []) is SheetStatus.HELD
+
+
+def with_tiers(sheet, bands):
+    tiers = [
+        DiscountTier(
+            min_fpl_exclusive=Decimal(low), max_fpl_inclusive=Decimal(high), discount_percent=pct
+        )
+        for low, high, pct in bands
+    ]
+    cited = sheet.eligibility.discount_tiers.model_copy(update={"value": tiers})
+    return sheet.model_copy(
+        update={"eligibility": sheet.eligibility.model_copy(update={"discount_tiers": cited})}
+    )
+
+
+def test_a_free_limit_that_swallows_the_discount_table_holds_the_sheet():
+    # Brigham (220110): "discounts are limited to incomes up to 300% FPG" was read as free care
+    # while the same document's table gives 100% only to 150%, then 85% and 70% up to 300%.
+    swallowed = with_tiers(with_free_limit(SAMPLE, 300), [(150, 250, 85), (250, 300, 70)])
+    problems = sheet_inconsistencies(swallowed)
+    assert len(problems) == 1 and problems[0].startswith("eligibility.free_care_max_fpl: 300%")
+    assert "150%" in problems[0]
+    assert decide_status(swallowed, []) is SheetStatus.HELD
+    assert (
+        sheet_inconsistencies(SAMPLE) == []
+        and sheet_inconsistencies(with_free_limit(SAMPLE, 250)) == []
+    )
+    # A limit at the first band's lower bound is the normal shape (free to 250, then 60% off).
+    assert decide_status(with_tiers(with_free_limit(SAMPLE, 250), [(250, 400, 60)]), []) is (
+        SheetStatus.PUBLISHED
+    )
+
+
+def test_a_very_high_free_limit_with_no_table_is_held_for_review():
+    # UMass Memorial (220163): "less than 600% of the federal poverty guidelines" is the program's
+    # ceiling (with an AGB cap), not a free-care band.
+    tall = drop_fields(with_free_limit(SAMPLE, 600), ["eligibility.discount_tiers"])
+    assert decide_status(tall, []) is SheetStatus.HELD
+    assert "600%" in sheet_inconsistencies(tall)[0]
+    usual = drop_fields(with_free_limit(SAMPLE, 400), ["eligibility.discount_tiers"])
+    assert decide_status(usual, []) is SheetStatus.PUBLISHED
 
 
 def test_diff_sheets():

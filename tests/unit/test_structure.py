@@ -288,17 +288,50 @@ def test_free_care_limit_is_derived_from_a_100_percent_band_when_missing():
     assert free.value == Decimal(150)
     assert free.quote == quote and free.source_id == SAMPLE_SOURCE_ID
     assert sheet.eligibility.discount_tiers is None
-    # A model-stated limit wins over the derived one.
+    # A model-stated limit wins over the derived one only while it fits under the 100% band.
     stated = SheetDraft(
-        free_care_max_fpl=field(200, "at or below 200% of the Federal Poverty Guidelines"),
+        free_care_max_fpl=field(120, "at or below 120% of the Federal Poverty Guidelines"),
         discount_tiers=field(tiers, quote),
     )
     sheet, _ = draft_to_sheet(stated, SAMPLE.hospital, [SAMPLE.sources[0]], TODAY)
-    assert sheet.eligibility.free_care_max_fpl.value == Decimal(200)
+    assert sheet.eligibility.free_care_max_fpl.value == Decimal(120)
+    # Above the band it is a misread ceiling: the table wins and the swap is recorded.
+    ceiling = SheetDraft(
+        free_care_max_fpl=field(200, "at or below 200% of the Federal Poverty Guidelines"),
+        discount_tiers=field(tiers, quote),
+    )
+    sheet, skipped = draft_to_sheet(ceiling, SAMPLE.hospital, [SAMPLE.sources[0]], TODAY)
+    assert sheet.eligibility.free_care_max_fpl.value == Decimal(150)
+    assert "eligibility.free_care_max_fpl: stated 200 exceeds the 100% band (150)" in skipped[-1]
     # No 100% band, nothing to derive.
     paid_only = SheetDraft(discount_tiers=field(tiers[1:], quote))
     sheet, _ = draft_to_sheet(paid_only, SAMPLE.hospital, [SAMPLE.sources[0]], TODAY)
     assert sheet.eligibility.free_care_max_fpl is None
+
+
+def test_eligibility_ceiling_read_as_free_care_is_replaced_by_the_table():
+    # Brigham (220110): the model stated 300 ("discounts ... limited to ... 300% FPG") while the
+    # table it quoted gives 100% to 150%, 85% to 250% and 70% to 300%.
+    tiers = [
+        {"min_fpl_exclusive": 0, "max_fpl_inclusive": 150, "discount_percent": 100},
+        {"min_fpl_exclusive": 150, "max_fpl_inclusive": 250, "discount_percent": 85},
+        {"min_fpl_exclusive": 250, "max_fpl_inclusive": 300, "discount_percent": 70},
+    ]
+    quote = "0 to 150% 100% | 150.1 to 250% 85% | 251 to 300% 70%"
+    draft = SheetDraft(
+        free_care_max_fpl=field(
+            300, "generally limited to patients with family incomes at or below 300%"
+        ),
+        discount_tiers=field(tiers, quote),
+    )
+    sheet, skipped = draft_to_sheet(draft, SAMPLE.hospital, [SAMPLE.sources[0]], TODAY)
+    free = sheet.eligibility.free_care_max_fpl
+    assert free.value == Decimal(150) and free.quote == quote
+    assert tiers_of(sheet) == [(Decimal(150), Decimal(250), 85), (Decimal(250), Decimal(300), 70)]
+    assert skipped == [
+        "eligibility.free_care_max_fpl: stated 300 exceeds the 100% band (150); table used"
+    ]
+    assert "eligibility ceiling" in SYSTEM_PROMPT and "free_care_max_fpl" in SYSTEM_PROMPT
 
 
 def test_null_values_and_missing_quotes_are_tolerated():

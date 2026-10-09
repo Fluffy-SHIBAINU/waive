@@ -261,6 +261,53 @@ def test_presumptive_only_conflict_publishes_without_that_field():
         assert not any(note.startswith("critical fields disagree") for note in result.notes)
 
 
+TABLE_SENTENCE = (
+    "Household income from 150% to 250% of the Federal Poverty Guidelines receives an 85% "
+    "discount and from 250% to 300% a 70% discount."
+)
+
+
+class TableGateway(FakeGateway):
+    def extract(self, urls, **kwargs):
+        return [ExtractedPage(url, POLICY_TEXT + TABLE_SENTENCE + "\n") for url in urls]
+
+
+class CeilingAI(FakeAI):
+    """Both models read the policy's 300% eligibility ceiling as the free-care limit, while the
+    table's paid bands end at 300% too: every band would be dead and 225% would read as free."""
+
+    def __init__(self):
+        super().__init__(free_limit_for_fast="300")
+        self.free_limits["reason"] = "300"
+
+    def complete_json(self, role, messages, schema, *, phi, purpose, max_tokens=2000):
+        draft = super().complete_json(role, messages, schema, phi=phi, purpose=purpose)
+        draft.discount_tiers = DraftField(
+            value=[
+                {"min_fpl_exclusive": 150, "max_fpl_inclusive": 250, "discount_percent": 85},
+                {"min_fpl_exclusive": 250, "max_fpl_inclusive": 300, "discount_percent": 70},
+            ],
+            quote=TABLE_SENTENCE,
+            source_id=draft.free_care_max_fpl.source_id,
+        )
+        return draft
+
+
+def test_a_free_limit_above_the_discount_table_is_held_with_a_review_item():
+    engine = make_engine_with_hospital()
+    with session_scope(engine) as session:
+        result = build_hospital(session, TableGateway(), CeilingAI(), "229999", TODAY)
+        assert result.outcome == "held"
+        assert any(note.startswith("eligibility.free_care_max_fpl: 300%") for note in result.notes)
+        kinds = sorted(item.kind for item in repo.open_review_items(session, "229999"))
+        assert kinds == ["inconsistent", "verification"]
+        assert "150%" in review_detail(session, "229999", "inconsistent")["problems"][0]
+        sheet, _ = repo.latest_sheet(session, "229999")
+        assert sheet.status is SheetStatus.HELD
+        assert sheet.eligibility.free_care_max_fpl.value == 300  # the held draft keeps both
+        assert len(sheet.eligibility.discount_tiers.value) == 2
+
+
 def test_build_hospital_survives_a_failed_cross_check():
     class FlakyAI(FakeAI):
         def complete_json(self, role, messages, schema, *, phi, purpose, max_tokens=2000):

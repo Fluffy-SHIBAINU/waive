@@ -31,7 +31,8 @@ Rules:
 7. "submit_methods" entries are {"kind": "mail" | "fax" | "email" | "portal" | "in_person", "detail": "..."}.
 8. "window_days_from_first_bill", "decision_days" and "eca_wait_days" are whole numbers of days.
 9. "presumptive" lists programs whose members qualify automatically (for example Medicaid, MassHealth, SNAP).
-10. Reply with only the JSON object, no commentary."""
+10. "free_care_max_fpl" is only the upper income bound of a 100% discount (free care) band. A sentence that limits assistance or discounts overall to incomes up to X% FPL is an eligibility ceiling, not free care: leave free_care_max_fpl null unless the documents name a free-care band.
+11. Reply with only the JSON object, no commentary."""
 
 MAX_DOC_CHARS = 40_000
 PASSAGE_HEAD_CHARS = 6_000
@@ -375,19 +376,32 @@ FIELD_MAP: dict[str, tuple[str, str, Callable[[Any], Any]]] = {
 
 
 def _derive_free_care_limit(
-    draft: SheetDraft, known: set[str], sections: dict[str, dict[str, Any]], today: date
+    draft: SheetDraft,
+    known: set[str],
+    sections: dict[str, dict[str, Any]],
+    today: date,
+    skipped: list[str],
 ) -> None:
     """Models often list the free-care band as a 100% tier and leave free_care_max_fpl null; the
-    band's upper bound is that limit, cited with the tiers' own quote."""
-    if "free_care_max_fpl" in sections.get("eligibility", {}):
-        return
+    band's upper bound is that limit, cited with the tiers' own quote. A stated limit above that
+    band is a misread eligibility ceiling ("discounts are limited to incomes up to 300% FPG",
+    Brigham and Women's): the table wins and the swap is recorded for review."""
     tiers = draft.discount_tiers
     if tiers is None or tiers.value is None or not tiers.quote or tiers.source_id not in known:
         return
     limit = free_care_limit_from_tiers(tiers.value)
     if limit is None:
         return
-    sections.setdefault("eligibility", {})["free_care_max_fpl"] = Cited(
+    eligibility = sections.setdefault("eligibility", {})
+    stated = eligibility.get("free_care_max_fpl")
+    if stated is not None:
+        if stated.value <= limit:
+            return
+        skipped.append(
+            f"eligibility.free_care_max_fpl: stated {stated.value:.0f} exceeds the 100% band "
+            f"({limit:.0f}); table used"
+        )
+    eligibility["free_care_max_fpl"] = Cited(
         value=limit, quote=tiers.quote.strip(), source_id=tiers.source_id, checked_on=today
     )
 
@@ -420,7 +434,7 @@ def draft_to_sheet(
             source_id=draft_field.source_id,
             checked_on=today,
         )
-    _derive_free_care_limit(draft, known, sections, today)
+    _derive_free_care_limit(draft, known, sections, today, skipped)
     try:
         sheet = ProcedureSheet(hospital=hospital, version=1, sources=sources, **sections)
     except ValueError as error:
