@@ -44,3 +44,16 @@ def test_create_case_shows_both_links_and_review_works():
     gone = client.post(f"{caregiver}/delete", follow_redirects=True)
     assert "deleted" in gone.text.lower()
     assert client.get(caregiver).status_code in (403, 404)
+
+
+def test_correction_rejects_a_hospital_that_is_not_in_the_registry():
+    client, links = seeded_client()
+    caregiver = f"/c/{links.caregiver_token}"
+    bad = client.post(
+        f"{caregiver}/correct",
+        data={"hospital_ccn": "999999", "annual_income": "22800", "size": "1"},
+        follow_redirects=True,
+    )
+    assert bad.status_code == 404
+    review = client.get(caregiver)
+    assert review.status_code == 200 and "999999" not in review.text

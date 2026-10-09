@@ -15,7 +15,7 @@ from waive.learning.contributions import (
     rebuild_from_sources,
     reject_contribution,
 )
-from waive.learning.evidence import audit_evidence, slip_flag_level, withdraw_slips
+from waive.learning.evidence import audit_evidence, confirm_flag, slip_flag_level, withdraw_slips
 from waive.learning.scoreboard import queue_prechecks, scoreboard
 from waive.web.deps import deps_of, render
 
@@ -96,6 +96,8 @@ def admin_resolve(request: Request, item_id: int, status: str = Form(...), verdi
         item = repo.set_review_status(session, item_id, final)
         if item.kind == "rescout_request" and verdict == "sheet_wrong" and item.ccn:
             withdraw_slips(session, item.ccn)
+        elif item.kind == "rescout_request" and verdict == "hospital_slip" and item.ccn:
+            confirm_flag(session, item.ccn)
     return RedirectResponse("/admin/review", status_code=303)
 
 

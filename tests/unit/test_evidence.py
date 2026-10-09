@@ -20,6 +20,9 @@ from waive.learning.evidence import (
     SLIP_PATH,
     add_evidence,
     audit_evidence,
+    confirm_flag,
+    flag_confirmed,
+    public_flag_level,
     publish_reported,
     raise_flags,
     slip_flag_level,
@@ -125,7 +128,9 @@ def test_slip_flags_internal_at_three_and_public_at_five(session):
     assert repo.open_review_items(session, "229999") == []
 
 
-def test_public_atlas_page_shows_only_public_flags():
+def test_public_atlas_page_shows_only_admin_confirmed_public_flags():
+    """Five distinct case hashes are cheap to mint (POST /cases needs no login), so the public
+    sentence about a real hospital waits for an admin's confirmation (spec §10)."""
     client, engine = make_client()
     with session_scope(engine) as session:
         repo.upsert_hospital(session, HOSPITAL)
@@ -134,7 +139,31 @@ def test_public_atlas_page_shows_only_public_flags():
     assert "report being denied" not in client.get("/atlas/229999").text
     with session_scope(engine) as session:
         report(session, "denied_despite_policy", 5, path=SLIP_PATH)
+        raise_flags(session, "229999")
+        assert slip_flag_level(session, "229999") == "public"
+        assert public_flag_level(session, "229999") == "internal"
+    assert "report being denied" not in client.get("/atlas/229999").text
+    with session_scope(engine) as session:
+        assert confirm_flag(session, "229999").status == "confirmed"
+        assert public_flag_level(session, "229999") == "public"
     assert "5 patients report being denied" in client.get("/atlas/229999").text
+
+
+def test_confirmed_flag_is_kept_by_raise_flags_and_withdrawn_with_the_slips(session):
+    report(session, "denied_despite_policy", 5, path=SLIP_PATH)
+    item = confirm_flag(session, "229999")
+    assert item.kind == "accountability_flag" and item.status == "confirmed"
+    assert flag_confirmed(session, "229999")
+    assert repo.open_review_items(session, "229999") == []  # confirmed: out of the queue
+    report(session, "partial_despite_free", 6, path=SLIP_PATH)
+    assert raise_flags(session, "229999").id == item.id  # no duplicate open flag
+    assert item.detail == {"level": "public", "cases": 6}
+    assert repo.open_review_items(session, "229999") == []
+    assert withdraw_slips(session, "229999") == 11
+    assert item.status == "withdrawn"
+    assert not flag_confirmed(session, "229999")
+    assert public_flag_level(session, "229999") == "none"
+    assert confirm_flag(session, "229999") is None  # nothing left to confirm
 
 
 def test_audit_evidence_is_clean_after_real_outcomes_and_catches_bad_rows(session):

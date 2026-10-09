@@ -5,7 +5,7 @@ from fastapi.responses import HTMLResponse, JSONResponse
 
 from waive.atlas import repo
 from waive.db import session_scope
-from waive.learning.evidence import slip_cases, slip_flag_level
+from waive.learning.evidence import public_flag_level, slip_cases
 from waive.web.deps import deps_of, render
 
 router = APIRouter()
@@ -64,6 +64,6 @@ def atlas_sheet(request: Request, ccn: str) -> HTMLResponse:
             sheet=sheet,
             fields=fields,
             created=row.created_at,
-            flag=slip_flag_level(session, ccn),
+            flag=public_flag_level(session, ccn),
             slip_count=slip_cases(session, ccn),
         )

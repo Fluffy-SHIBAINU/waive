@@ -217,6 +217,8 @@ def confirm_bill(
     bill = BillExtract.model_validate({**sealed.get("bill", {}), **corrections})
     sealed["bill"] = bill.model_dump(mode="json")
     if ccn:
+        if repo.get_hospital(ctx.session, ccn) is None:
+            raise KeyError(ccn)  # only registry hospitals: a case never points at a made-up CCN
         row.ccn = ccn
         sealed["needs_scouting"] = False
     row.status = "confirmed"

@@ -137,6 +137,14 @@ def test_unknown_hospital_requests_scouting(ctx):
     assert view(ctx, links.case_id).tier is None
 
 
+def test_a_hospital_outside_the_registry_cannot_be_chosen(ctx):
+    links = start_case(ctx, "MA")
+    submit_bill(ctx, links.case_id, bill_image())
+    with pytest.raises(KeyError):
+        confirm_bill(ctx, links.case_id, {}, ccn="999999")
+    assert ctx.session.get(CaseRow, links.case_id).ccn == "229999"
+
+
 def test_corrections_override_extraction(ctx):
     links = start_case(ctx, "MA")
     submit_bill(ctx, links.case_id, bill_image())
