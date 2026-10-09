@@ -10,7 +10,7 @@ honestly"); refresh them on submission day from `docs/reports/`.
 - **Track:** Personal AI
 - **Side prize opt-in:** Best Use of Tavily
 - **Team:** solo
-- **Repository (public):** [USER FILLS: repository URL after gate U8.1]
+- **Repository (public):** https://github.com/Fluffy-SHIBAINU/waive (private until the user flips it public at the end of gate U8.1)
 - **Demo video (YouTube, public, under 3 minutes):** [USER FILLS: YouTube URL after gate U8.2]
 - **Devpost project (fill in after submitting):** [USER FILLS: Devpost URL after gate U8.3]
 - **Try it out:** **Deployment status (update when Phase 6 task 6.8 closes):** not deployed yet — the repository runs locally in eight commands (README → Setup). *(Once live: the public URL on Nebius AI Cloud, running during judging windows.)*

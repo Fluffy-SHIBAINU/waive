@@ -12,7 +12,7 @@ Master plan: `docs/superpowers/plans/2026-10-02-waive-master-plan.md` · Spec: `
 
 - The user approved: build the whole project phase by phase, with user gates for keys, cloud resources, publishing and spending. Build day 2026-10-02 runs until 21:00 ET; afterwards the user runs `/loop` (see `docs/LOOP.md`), possibly on a different Claude model.
 - Working method: one task per iteration, tests first, commit per task, PROGRESS.md updated every time. Implementation subagents must not edit PROGRESS.md; the orchestrator (or the loop) does.
-- Nothing is pushed to a remote yet. There is no remote. Ask the user before adding one.
+- Remote: `origin` = https://github.com/Fluffy-SHIBAINU/waive (created **private** 2026-10-09 at the user's request under gate U8.1; flip to public is a separate user decision). Push with `git -c credential.helper= -c credential.helper='!gh auth git-credential' push` — the account has no SSH key for GitHub and `gh` holds the token; run `gh auth setup-git` once to make plain `git push` work. The four secret scans from `docs/devpost/checklist.md` were run clean before the first push.
 - Spend so far is in the table below; the ledger file `var/usage.jsonl` is the source of truth once code exists.
 
 ## User gates (only the user closes these)
@@ -29,7 +29,7 @@ Master plan: `docs/superpowers/plans/2026-10-02-waive-master-plan.md` · Spec: `
 - [ ] **U6.0** Run `docker logout ghcr.io` once (a stale ghcr.io login in your keychain makes every ghcr pull fail), then tell the loop; it will build and smoke-test the image (task 6.1b).
 - [ ] **U6.1** Approve the Nebius resources and their costs before anything is created (Phase 6). The loop writes `docs/reports/cloud-costs.md` in task 6.3 first (needs U0.5).
 - [ ] **U7.1** Approve the national Tavily credit budget (Phase 7). Realistic cost is ≈5 credits per hospital; with ≈8,000 credits total and 389 used, "all states" is out of reach — pick states (suggested: CA, NY, TX, FL, PA, IL, OH ≈ 1,000 hospitals ≈ 5,000 credits) or a daily cap, and set `WAIVE_NATIONAL_SCOUTING=on` plus the state list when approving.
-- [ ] **U8.1** Approve making the GitHub repository public (steps in `docs/devpost/checklist.md`; also fill the `[USER FILLS]` fields it lists).
+- [~] **U8.1** Approve making the GitHub repository public (steps in `docs/devpost/checklist.md`; also fill the `[USER FILLS]` fields it lists). 2026-10-09: user approved; repository created **private** (`gh repo create Fluffy-SHIBAINU/waive --private`) after all four secret scans came back clean; `main` pushed. Still open: the public flip (`gh repo edit Fluffy-SHIBAINU/waive --visibility public --accept-visibility-change-consequences`) and the copyright-holder field.
 - [ ] **U8.2** Record and upload the demo video (under 3 minutes, public on YouTube).
 - [ ] **U8.3** Submit on Devpost (target 2026-10-28; deadline 2026-10-30 10:00 PT).
 - [ ] **U8.4** Stop cloud resources after judging ends (2026-12-15).
@@ -192,6 +192,7 @@ Plan: `docs/superpowers/plans/2026-10-02-waive-phase-8-submission.md` (4c0d6a8 d
 
 - 2026-10-02 15:40 — Spec, master plan, Phase 0 and Phase 1 plans written. Ready for task 0.1.
 - 2026-10-02 16:20 — Phase 0 tasks 0.1–0.6 done by an implementation subagent: 28 tests pass, ruff clean. Deviations: `extend-exclude = ["docs"]` for ruff (it was reformatting code blocks in plan files); `AIClient` now creates an explicit `httpx.Client` when none is given (openai 3.x's default transport bypasses respx). Incident: one early test run reached the real Token Factory endpoint with a fake key (401, no secret leaked, no spend) → task 0.8 added. Spend: 0.
+- 2026-10-09 — U8.1 approved by the user: four secret scans clean over all 141 revisions; `gh repo create Fluffy-SHIBAINU/waive --private`; SSH push failed (no key on the account), pushed over HTTPS with `gh auth git-credential`; repository-URL fields filled in README, atlas LICENSE, submission and demo script. Public flip and copyright holder still the user's. Loop iteration 24 (6.1b: Docker Hub base image, commit e0c7bed) was running in the background meanwhile.
 - 2026-10-03 10:50 — Loop iteration 23: follow-ups 8.7a/b done by an implement → review → fix workflow (e6bb57a, 4be6187, fa9469d); 8.8 rebuild of 220029 run inline ($0.0072); Phase 8 exit checks pass (331 tests). Phase diagram shown. Loop stopped: every remaining task waits on a user gate (see "Next task").
 - 2026-10-03 09:40 — Loop iteration 22: tasks 8.4–8.6 done by an implement → review → fix workflow (6 commits 825c9a5…453df60; 16 findings, 15 applied, 1 deferred to 8.7a; 309 tests; no spend). Follow-ups 8.7a/b dispatched the same way.
 - 2026-10-03 08:30 — Loop iteration 21: tasks 8.1–8.3 done by an implement → review → fix workflow (6 commits a18bcd2…d8a7fbc; 14 findings, 13 applied, 1 rejected; 295 tests; no spend). 8.4–8.6 dispatched the same way.

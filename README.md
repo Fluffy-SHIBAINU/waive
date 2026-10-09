@@ -263,7 +263,7 @@ tests/unit/    everything runs offline
 ## Licenses
 
 - **Code:** Apache License 2.0 (SPDX `Apache-2.0`, as declared in `pyproject.toml`) — see `LICENSE`. Copyright 2026 [USER FILLS: copyright holder].
-- **Atlas data** (`data/atlas/*.json`, `/atlas/{ccn}.json`, the reports under `docs/reports/`): Creative Commons Attribution 4.0 International (CC BY 4.0) — see `data/atlas/LICENSE.md`. Suggested attribution: "Waive atlas, CC BY 4.0, [USER FILLS: repository URL]". The quoted policy text belongs to the hospitals that published it and is reproduced as short citations with source links.
+- **Atlas data** (`data/atlas/*.json`, `/atlas/{ccn}.json`, the reports under `docs/reports/`): Creative Commons Attribution 4.0 International (CC BY 4.0) — see `data/atlas/LICENSE.md`. Suggested attribution: "Waive atlas, CC BY 4.0, https://github.com/Fluffy-SHIBAINU/waive". The quoted policy text belongs to the hospitals that published it and is reproduced as short citations with source links.
 - Hospital registry rows come from the CMS Hospital General Information dataset (public domain); poverty guidelines from HHS/ASPE (2026); the Massachusetts Health Safety Net entry from mass.gov.
 
 ## Acknowledgements and disclaimer
