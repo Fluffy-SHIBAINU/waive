@@ -66,6 +66,19 @@ def test_senior_result_offers_a_paper_photo_and_routes_it():
     assert "The hospital said: denied" in client.get(f"/c/{links.caregiver_token}").text
 
 
+def test_papers_are_still_welcome_after_the_caregiver_approved():
+    # Decision letters arrive after approval; the learning loop depends on them, so the lock on
+    # approved cases leaves the paper step (and the gap question) open.
+    client, _, links = paper_client(PhotoClass.DECISION_LETTER)
+    to_result(client, links)
+    caregiver = f"/c/{links.caregiver_token}"
+    client.post(f"{caregiver}/approve")
+    thanks = client.post(f"/s/{links.senior_token}/paper", files=photo())
+    assert thanks.status_code == 200 and "We will read the hospital" in thanks.text
+    review = client.get(caregiver).text
+    assert "The hospital said: denied" in review and "Download the packet" in review
+
+
 def test_caregiver_paper_upload_shows_the_routing_note():
     client, _, links = paper_client(PhotoClass.FAP)
     review = client.get(f"/c/{links.caregiver_token}")

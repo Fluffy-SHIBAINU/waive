@@ -45,6 +45,19 @@ def long_date(value) -> str:
     return "" if value is None else f"{value:%B} {value.day}, {value:%Y}"
 
 
+# Once the caregiver approved, the senior link only shows the result (and still takes papers from
+# the hospital): a forwarded link or a cached, auto-submitting form must not rewrite the packet.
+LOCKED_STATUSES = frozenset({"approved"})
+
+
+def _locked(shown) -> bool:
+    return shown.status in LOCKED_STATUSES
+
+
+def _to_result(token: str) -> RedirectResponse:
+    return RedirectResponse(senior_links(token)["result"], status_code=303)
+
+
 def _page(request: Request, name: str, token: str, shown, **extra) -> HTMLResponse:
     return render(
         request,
@@ -82,6 +95,8 @@ async def senior_bill(
     with session_scope(deps.engine) as session:
         ctx = deps.context(session)
         row = authorize(ctx, token, "senior")
+        if _locked(view(ctx, row.id)):
+            return _to_result(token)
         if deps.ai is None:
             return _page(
                 request,
@@ -126,6 +141,8 @@ def senior_confirm(request: Request, token: str, answer: str = Form(...)):
     with session_scope(deps.engine) as session:
         ctx = deps.context(session)
         row = authorize(ctx, token, "senior")
+        if _locked(view(ctx, row.id)):
+            return _to_result(token)
         if answer == "yes":
             confirm_bill(ctx, row.id, {})
             return RedirectResponse(senior_links(token)["household"], status_code=303)
@@ -144,7 +161,10 @@ def senior_household_form(request: Request, token: str) -> HTMLResponse:
     with session_scope(deps.engine) as session:
         ctx = deps.context(session)
         row = authorize(ctx, token, "senior")
-        return _page(request, "senior_household.html", token, view(ctx, row.id))
+        shown = view(ctx, row.id)
+        if _locked(shown):
+            return _to_result(token)
+        return _page(request, "senior_household.html", token, shown)
 
 
 @router.post("/s/{token}/household")
@@ -156,6 +176,8 @@ def senior_household(
         ctx = deps.context(session)
         row = authorize(ctx, token, "senior")
         shown = view(ctx, row.id)
+        if _locked(shown):
+            return _to_result(token)
         chosen = () if programs == "none" else tuple(programs.split(","))
         set_household(ctx, row.id, size, shown.annual_income, chosen)
     return RedirectResponse(senior_links(token)["income"], status_code=303)
@@ -167,7 +189,10 @@ def senior_income_form(request: Request, token: str) -> HTMLResponse:
     with session_scope(deps.engine) as session:
         ctx = deps.context(session)
         row = authorize(ctx, token, "senior")
-        return _page(request, "senior_income.html", token, view(ctx, row.id))
+        shown = view(ctx, row.id)
+        if _locked(shown):
+            return _to_result(token)
+        return _page(request, "senior_income.html", token, shown)
 
 
 @router.post("/s/{token}/income")
@@ -182,6 +207,8 @@ async def senior_income(
     with session_scope(deps.engine) as session:
         ctx = deps.context(session)
         row = authorize(ctx, token, "senior")
+        if _locked(view(ctx, row.id)):
+            return _to_result(token)
         if data and deps.ai is not None:
             try:
                 submit_income_letter(ctx, row.id, data)
