@@ -6,7 +6,7 @@ from typing import Literal
 
 from sqlalchemy.orm import Session
 
-from waive.ai.client import AIClient, AIOutputError
+from waive.ai.client import MAX_SERVER_MESSAGE_CHARS, AIClient, AIOutputError
 from waive.atlas import repo
 from waive.atlas.discover import MIN_CONFIDENCE, discover_domain
 from waive.atlas.publish import (
@@ -26,6 +26,9 @@ from waive.atlas.tavily_gateway import TavilyGateway
 from waive.atlas.verify import PATIENT_SHARE_REASON, trim_quotes, verify_sheet
 
 Outcome = Literal["published", "held", "skipped", "failed"]
+# A structurer error is the model name, the status and the server's message (at most
+# MAX_SERVER_MESSAGE_CHARS); the review detail and the note keep the whole of it.
+ERROR_DETAIL_CHARS = MAX_SERVER_MESSAGE_CHARS + 100
 
 
 @dataclass
@@ -158,9 +161,12 @@ def build_hospital(
         # No usable primary draft, even from the smaller prompt structure_sheet falls back to
         # (task 7.8): the documents stay stored, the reason goes to review, and the batch sees
         # an ordinary failed outcome rather than an exception that would roll the scout back.
-        repo.add_review_item(session, ccn, "structure_failed", {"error": str(error)[:300]})
+        # The open item also keeps the scheduler off this hospital (schedule.FAILURE_KINDS).
+        repo.add_review_item(
+            session, ccn, "structure_failed", {"error": str(error)[:ERROR_DETAIL_CHARS]}
+        )
         result.outcome = "failed"
-        result.notes.append(f"structurer gave no usable sheet: {error}"[:300])
+        result.notes.append(f"structurer gave no usable sheet: {error}"[:ERROR_DETAIL_CHARS])
         return result
     sheet = trim_quotes(sheet, texts)
     report = verify_sheet(sheet, texts)
@@ -187,7 +193,9 @@ def build_hospital(
             secondary, _ = structure_sheet(ai, "fast", hospital, sources_with_text, today)
         except AIOutputError as error:
             # The cross-check is best effort: record the failure, keep the verified primary.
-            repo.add_review_item(session, ccn, "crosscheck_failed", {"error": str(error)[:300]})
+            repo.add_review_item(
+                session, ccn, "crosscheck_failed", {"error": str(error)[:ERROR_DETAIL_CHARS]}
+            )
             result.notes.append("cross-check model gave no usable output")
         else:
             # A disagreement only counts when the cross-check's own quote verifies; an

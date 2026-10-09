@@ -388,15 +388,22 @@ TOO_LONG = (
     "nvidia/nemotron-3-super-120b-a12b: HTTP 400 (This model's maximum context length is "
     "131072 tokens. However, you requested 150000 tokens.)"
 )
+# The longest server message the client keeps (MAX_SERVER_MESSAGE_CHARS), behind the longest
+# default model name: the review detail and the note must still carry every character of it.
+LONG_REASON = ("The request is not valid for this model because " + "x" * 300)[:300]
+LONG_REJECTION = f"nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B: HTTP 400 ({LONG_REASON})"
 
 
 @pytest.mark.parametrize(
     ("error", "calls"),
     [
-        (AIRequestRejected(TOO_LONG), 2),  # the full prompt, then the smaller one
+        # One short document: a smaller prompt would be identical, so there is no retry (the
+        # respx test below shows the retry on a long one).
+        (AIRequestRejected(TOO_LONG), 1),
+        (AIRequestRejected(LONG_REJECTION), 1),
         (AIOutputError("model output did not match SheetDraft (free_care_max_fpl: dict_type)"), 1),
     ],
-    ids=["rejected-request", "unusable-output"],
+    ids=["rejected-request", "rejected-long-message", "unusable-output"],
 )
 def test_a_primary_structurer_failure_is_filed_for_review_not_raised(error, calls):
     """7.8: the hospital ends "failed" with the reason, its scouted documents stay stored, and

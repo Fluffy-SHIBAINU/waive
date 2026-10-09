@@ -490,18 +490,20 @@ def structure_sheet(
 ) -> tuple[ProcedureSheet, list[str]]:
     """The sheet drafted from every document, or, when Token Factory refuses that prompt, from a
     smaller one (RETRY_*); the skipped list then opens with a note saying so. A second refusal
-    propagates for the caller to record. The sheet lists every document either way: the trim is
+    propagates for the caller to record, and so does the first when the smaller prompt would be
+    the same bytes (few short documents): that refusal was not about length, and repeating the
+    request would only be refused again. The sheet lists every document either way: the trim is
     only what the model was shown, and quotes verify against the stored full texts."""
     notes: list[str] = []
+    full = build_messages(hospital, sources_with_text)
     try:
-        draft = _draft(ai, role, build_messages(hospital, sources_with_text))
+        draft = _draft(ai, role, full)
     except AIRequestRejected as error:
         shown = sources_with_text[:RETRY_MAX_SOURCES]
-        draft = _draft(
-            ai,
-            role,
-            build_messages(hospital, shown, limit=RETRY_DOC_CHARS, head=RETRY_HEAD_CHARS),
-        )
+        smaller = build_messages(hospital, shown, limit=RETRY_DOC_CHARS, head=RETRY_HEAD_CHARS)
+        if smaller == full:
+            raise
+        draft = _draft(ai, role, smaller)
         notes.append(
             f"structurer: retried with a smaller passage budget ({len(shown)} of "
             f"{len(sources_with_text)} documents, {RETRY_DOC_CHARS} characters each) after "

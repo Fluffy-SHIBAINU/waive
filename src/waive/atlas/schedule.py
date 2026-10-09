@@ -41,9 +41,12 @@ DEFAULT_ACCURACY = 0.5
 ACCURACY_TERM_FLOOR = 0.2
 # Phase 2 measured 4–5 Tavily credits per hospital (two searches, a Map, one or two Extracts).
 CREDITS_PER_HOSPITAL = Decimal("5")
-# Failed discoveries and empty scouts are not retried for a month.
+# Failed discoveries, empty scouts and structurer refusals (task 7.8: documents stored, no sheet)
+# are not retried for a month. Without the pause a hospital with documents but no sheet would be
+# sent to the content-hash refresh daily, spending a Tavily credit each time and, the documents
+# being unchanged, never reaching the structurer again.
 RETRY_AFTER_DAYS = 30
-FAILURE_KINDS = ("domain", "no_documents")
+FAILURE_KINDS = ("domain", "no_documents", "structure_failed")
 DEMAND_WEIGHTS = {"open_case": 1, "rescout_request": 2, "priority_recheck": 2, "scout_request": 2}
 # Overlay sources (ids `state-…`, the shared mass.gov page) say nothing about a hospital's own
 # documents; repository copies (ids `repo-…`, task 7.5) do.
