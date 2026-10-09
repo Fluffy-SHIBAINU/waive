@@ -1,7 +1,7 @@
 # Atlas coverage — MA
 
 Hospitals in registry: 46
-Published sheets: 27 (59%)
+Published sheets: 31 (67%)
 
 | CCN | Hospital | Domain | Status | Version | Completeness | Fields | Sources |
 |---|---|---|---|---|---|---|---|
@@ -26,21 +26,21 @@ Published sheets: 27 (59%)
 | 220095 | HEYWOOD HOSPITAL - | heywood.org | published | 4 | 0.33 | 6 | 2 |
 | 220024 | HOLYOKE MEDICAL CENTER | holyokehealth.com | held | 3 | 0.33 | 8 | 6 |
 | 220171 | LAHEY HOSPITAL & MEDICAL CENTER, BURLINGTON | lahey.org | held | 4 | 0.17 | 2 | 6 |
-| 220063 | LOWELL GENERAL HOSPITAL | payerprice.com | held | 3 | 0.17 | 3 | 2 |
+| 220063 | LOWELL GENERAL HOSPITAL | tuftsmedicine.org | published | 4 | 0.50 | 9 | 9 |
 | 220049 | MARLBOROUGH HOSPITAL | umassmemorialhealthcare.org | held | 3 | 0.50 | 8 | 5 |
-| 221300 | MARTHA'S VINEYARD HOSPITAL INC | chiamass.gov | held | 3 | 0.00 | 2 | 9 |
+| 221300 | MARTHA'S VINEYARD HOSPITAL INC | massgeneralbrigham.org | published | 4 | 1.00 | 12 | 9 |
 | 220075 | MASSACHUSETTS EYE AND EAR INFIRMARY - | payerprice.com | none | | | | |
 | 220071 | MASSACHUSETTS GENERAL HOSPITAL | massgeneralbrigham.org | published | 5 | 1.00 | 12 | 6 |
 | 220070 | MELROSEWAKEFIELD HEALTHCARE | tuftsmedicine.org | held | 3 | 0.50 | 9 | 7 |
 | 220066 | MERCY MEDICAL CTR | mercy.net | published | 2 | 0.83 | 12 | 5 |
 | 220010 | MERRIMACK HEALTH LAWRENCE HOSPITAL | mhlawrencehospital.org | published | 2 | 0.67 | 10 | 5 |
 | 220175 | METROWEST MEDICAL CENTER | massgeneralbrigham.org | published | 5 | 0.83 | 9 | 8 |
-| 220090 | MILFORD REGIONAL MEDICAL CENTER | chiamass.gov | held | 2 | 0.00 | 1 | 8 |
-| 220002 | MOUNT AUBURN HOSPITAL | mountauburnhospital.org | held | 3 | 0.17 | 4 | 4 |
+| 220090 | MILFORD REGIONAL MEDICAL CENTER | milfordregional.org | held | 2 | 0.00 | 1 | 8 |
+| 220002 | MOUNT AUBURN HOSPITAL | mountauburnhospital.org | published | 4 | 0.83 | 11 | 9 |
 | 220177 | NANTUCKET COTTAGE HOSPITAL | nantuckethospital.org | held | 3 | 0.17 | 2 | 2 |
 | 220088 | NEW ENGLAND BAPTIST HOSPITAL | nebh.org | published | 2 | 0.67 | 8 | 8 |
 | 220101 | NEWTON-WELLESLEY HOSPITAL | massgeneralbrigham.org | published | 5 | 1.00 | 12 | 8 |
-| 220035 | NORTH SHORE MEDICAL CENTER - | northshoremc.org | held | 3 | 0.17 | 2 | 2 |
+| 220035 | NORTH SHORE MEDICAL CENTER - | massgeneralbrigham.org | published | 4 | 0.83 | 10 | 9 |
 | 220033 | NORTHEAST HOSPITAL CORPORATION | beverlyhospital.org | held | 3 | 0.00 | 1 | 6 |
 | 220052 | SIGNATURE HEALTHCARE BROCKTON HOSPITAL | signature-healthcare.org | published | 4 | 0.67 | 11 | 6 |
 | 220100 | SOUTH SHORE HOSPITAL | southshorehealth.org | held | 2 | 0.00 | 1 | 5 |
