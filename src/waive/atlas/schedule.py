@@ -39,8 +39,11 @@ NEVER_SCOUTED_DAYS = 90
 DEFAULT_ACCURACY = 0.5
 # A perfectly accurate sheet still goes stale: keep a fifth of the staleness pressure.
 ACCURACY_TERM_FLOOR = 0.2
-# Phase 2 measured 4–5 Tavily credits per hospital (two searches, a Map, one or two Extracts).
-CREDITS_PER_HOSPITAL = Decimal("5")
+# Phase 2 measured 4–5 Tavily credits per hospital (two searches, a Map, one or two Extracts); the
+# advanced re-extraction of a page that rendered as navigation only (task 2.8h) adds two, so a
+# hospital is started only with seven credits left in the day. A refresh (one Extract, at most one
+# advanced pass) fits inside the same reservation.
+CREDITS_PER_HOSPITAL = Decimal("7")
 # Failed discoveries, empty scouts and structurer refusals (task 7.8: documents stored, no sheet)
 # are not retried for a month. Without the pause a hospital with documents but no sheet would be
 # sent to the content-hash refresh daily, spending a Tavily credit each time and, the documents

@@ -1,6 +1,7 @@
 """Find and fetch a hospital's financial assistance documents (spec §8 step 3)."""
 
 import hashlib
+import logging
 import re
 from dataclasses import dataclass
 from datetime import date
@@ -12,9 +13,12 @@ from sqlalchemy.orm import Session
 
 from waive.atlas import repo
 from waive.atlas.discover import host_of
-from waive.atlas.fetch import DOCUMENT_HOSTS, download_text, host_allowed_for
+from waive.atlas.fetch import DOCUMENT_HOSTS, download_text, host_allowed_for, looks_like_pdf
 from waive.atlas.schema import HospitalRef, SourceDoc, SourceKind
 from waive.atlas.tavily_gateway import ExtractedPage, SearchHit, TavilyGateway
+from waive.governor import BudgetExceeded
+
+log = logging.getLogger(__name__)
 
 DocClass = Literal["fap", "application", "summary", "billing"]
 CLASS_ORDER: tuple[DocClass, ...] = ("fap", "application", "summary", "billing")
@@ -229,6 +233,18 @@ def _is_thin(url: str, text: str | None) -> bool:
     return 0 < len((text or "").strip()) < THIN_CHARS and not _is_pdf(url)
 
 
+def _usable_download(url: str, text: str) -> bool:
+    """A downloaded document the scout may keep: a PDF, a web page of THIN_CHARS or more, or a
+    shorter page whose prose (the text outside its links) names financial assistance. Hospital
+    sites answer HTTP 200 with a navigation shell for pages that do not exist or need JavaScript,
+    and a menu that merely links to "Financial Assistance" or a "Privacy policy" is not a document
+    (2.8h review); before the shell would have been stored and structured."""
+    if looks_like_pdf(url, "") or len(text.strip()) >= THIN_CHARS:
+        return True
+    prose = MARKDOWN_LINK.sub(" ", text).lower().replace("_", "-")
+    return any(k in prose for k in OFFSITE_KEYWORDS) or FAP_TOKEN.search(prose) is not None
+
+
 def fill_texts(
     gateway: TavilyGateway,
     urls: list[str],
@@ -240,18 +256,29 @@ def fill_texts(
     """Text by URL for `urls`, starting from Tavily's basic extraction `pages`: web pages that came
     back thin are re-extracted once at the advanced depth (two credits per five pages), and
     documents still thin, missing or nearly empty are downloaded directly (no Tavily spend). A
-    longer text replaces a shorter one; nothing already fetched is thrown away."""
+    longer text replaces a shorter one, except that a downloaded navigation shell is never kept;
+    nothing already fetched is thrown away, not even when the advanced pass hits the credit cap."""
     by_url = {page.url: page.text for page in pages}
     thin = [url for url in urls if _is_thin(url, by_url.get(url))]
     if thin:
-        for page in gateway.extract(thin, purpose=purpose, depth="advanced"):
+        try:
+            deeper = gateway.extract(thin, purpose=purpose, depth="advanced")
+        except BudgetExceeded as error:
+            # The advanced pass is optional: the basic results are paid for, the download is free.
+            log.info("advanced extraction skipped for %d page(s): %s", len(thin), error)
+            deeper = []
+        for page in deeper:
             if len(page.text.strip()) > len((by_url.get(page.url) or "").strip()):
                 by_url[page.url] = page.text
     for url in urls:
         text = by_url.get(url) or ""
         if len(text.strip()) < MIN_CHARS or _is_thin(url, text):
             downloaded = downloads.text(url)
-            if downloaded and len(downloaded.strip()) > len(text.strip()):
+            if (
+                downloaded
+                and len(downloaded.strip()) > len(text.strip())
+                and _usable_download(url, downloaded)
+            ):
                 by_url[url] = downloaded
     return by_url
 
