@@ -14,6 +14,7 @@ from waive.atlas.fetch import (
     USER_AGENT,
     download_text,
     host_allowed_for,
+    html_text,
     is_asset_host,
     pdf_text,
 )
@@ -277,3 +278,81 @@ def test_download_text_returns_none_for_errors_and_broken_pdfs():
         assert download_text("https://www.example.org/stub.pdf", http) is None
         assert download_text("https://www.example.org/page", http) is None
         assert download_text("not a url", http) is None
+
+
+# A server-rendered policy page as a browser would receive it: navigation, inline script and
+# style (dropped), the policy prose and a link to the PDF (kept as a markdown link).
+HTML_PAGE = (
+    "<!doctype html><html><head><title>Financial Assistance</title>"
+    "<style>.nav{display:none}</style>"
+    '<script type="application/ld+json">{"@type": "Hospital", "name": "ignored"}</script></head>'
+    "<body><nav><ul><li><a href='/our-providers/'>Find a doctor</a></li>"
+    '<li><a href="#SetLocation">Set   Your\n Location</a></li></ul></nav>'
+    "<main><h1>Financial   Assistance</h1>"
+    f"<p>{SAMPLE_POLICY_TEXT}</p>"
+    '<p>Read the <a href="/docs/fap.pdf">Financial Assistance Policy (PDF)</a> or '
+    "<a href='tel:6175550100'>call us</a>.<br/>Se habla espa&ntilde;ol.</p>"
+    "<svg><title>decorative</title></svg><noscript>Enable JavaScript</noscript>"
+    "<script>window.dataLayer = [];</script></main></body></html>"
+)
+
+
+def test_html_text_keeps_visible_text_and_links_and_drops_scripts_and_styles():
+    text = html_text(HTML_PAGE)
+    assert text.startswith("Financial Assistance\n")
+    assert "[Find a doctor](/our-providers/)" in text
+    assert "[Set Your Location](#SetLocation)" in text
+    assert "[Financial Assistance Policy (PDF)](/docs/fap.pdf)" in text
+    assert "[call us](tel:6175550100)" in text
+    assert "250% of the Federal Poverty" in text
+    assert "Se habla español." in text
+    for dropped in ("dataLayer", "display:none", "ignored", "decorative", "Enable JavaScript"):
+        assert dropped not in text
+    assert "  " not in text and "\n\n" not in text
+    assert len(html_text("<p>" + "x" * 70_000 + "</p>")) == MAX_TEXT_CHARS
+    assert html_text("<p>unclosed <a href='/x'>anchor") == "unclosed [anchor"
+
+
+@respx.mock
+def test_download_text_strips_html_only_when_asked():
+    url = "https://www.example.org/patients/financial-assistance"
+    respx.get(url).mock(
+        return_value=httpx.Response(
+            200,
+            content=HTML_PAGE.replace("espa&ntilde;ol", "español").encode("latin-1"),
+            headers={"content-type": "text/html; charset=iso-8859-1"},
+        )
+    )
+    with httpx.Client() as http:
+        assert download_text(url, http, allowed=EXAMPLE_ORG) is None  # pages are Tavily's job
+        text = download_text(url, http, allowed=EXAMPLE_ORG, allow_html=True)
+    assert text is not None
+    assert "250% of the Federal Poverty" in text and "Se habla español." in text
+    assert "dataLayer" not in text
+    assert "[Financial Assistance Policy (PDF)](/docs/fap.pdf)" in text
+
+
+@respx.mock
+def test_html_is_refused_where_a_pdf_was_promised_when_thin_or_off_the_allowed_hosts():
+    page = httpx.Response(200, text=HTML_PAGE, headers={"content-type": "text/html"})
+    respx.get("https://www.example.org/fap.pdf").mock(return_value=page)
+    respx.get(CANTO_URL).mock(return_value=page)
+    respx.get("https://www.example.org/thin").mock(
+        return_value=httpx.Response(
+            200, text="<html><body><p>Page not found</p></body></html>", headers=page.headers
+        )
+    )
+    leaked = respx.get("https://www.otherhospital.org/financial-assistance").mock(return_value=page)
+    with httpx.Client() as http:
+        for url in ("https://www.example.org/fap.pdf", CANTO_URL, "https://www.example.org/thin"):
+            assert download_text(url, http, allowed=EXAMPLE_ORG, allow_html=True) is None, url
+        assert (
+            download_text(
+                "https://www.otherhospital.org/financial-assistance",
+                http,
+                allowed=EXAMPLE_ORG,
+                allow_html=True,
+            )
+            is None
+        )
+    assert not leaked.called

@@ -18,11 +18,11 @@ Published sheets: 29 (63%)
 | 220031 | BOSTON MEDICAL CENTER | bmc.org | published | 5 | 0.50 | 10 | 5 |
 | 220119 | BRIGHAM AND WOMEN FAULKNER HOSPITAL | massgeneralbrigham.org | published | 6 | 1.00 | 12 | 7 |
 | 220110 | BRIGHAM AND WOMEN'S HOSPITAL | massgeneralbrigham.org | published | 4 | 0.50 | 6 | 8 |
-| 220012 | CAPE COD HOSPITAL | capecodhealth.org | held | 4 | 0.00 | 1 | 2 |
+| 220012 | CAPE COD HOSPITAL | capecodhealth.org | held | 5 | 0.50 | 7 | 6 |
 | 220015 | COOLEY DICKINSON HOSPITAL INC,THE | cooleydickinson.org | none | | | | |
 | 220084 | EMERSON HOSPITAL - | emersonhealth.org | published | 5 | 0.67 | 9 | 5 |
 | 221302 | FAIRVIEW HOSPITAL | berkshirehealthsystems.org | published | 3 | 0.50 | 10 | 5 |
-| 220135 | FALMOUTH HOSPITAL | capecodhealth.org | held | 4 | 0.00 | 1 | 10 |
+| 220135 | FALMOUTH HOSPITAL | capecodhealth.org | held | 5 | 0.33 | 7 | 6 |
 | 220095 | HEYWOOD HOSPITAL - | heywood.org | published | 4 | 0.33 | 6 | 2 |
 | 220024 | HOLYOKE MEDICAL CENTER | holyokehealth.com | held | 3 | 0.33 | 8 | 6 |
 | 220171 | LAHEY HOSPITAL & MEDICAL CENTER, BURLINGTON | lahey.org | held | 4 | 0.17 | 2 | 6 |

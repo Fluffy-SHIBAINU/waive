@@ -22,6 +22,10 @@ MAX_URLS = 4
 MAX_LINKED_URLS = 4
 MAX_CHARS = 60_000
 MIN_CHARS = 200
+# A web page Tavily's basic extraction rendered shorter than this is tried once more at the
+# advanced depth, then downloaded directly (task 2.8h; Cape Cod Hospital's page: 643 characters
+# of menu). Two credits per five pages for the advanced pass, none for the download.
+THIN_CHARS = 1_000
 # Markdown links as Tavily Extract renders them: [label](url) or [label](url "title"); images are
 # skipped. Bare PDF URLs are picked up separately.
 MARKDOWN_LINK = re.compile(r'(?<!!)\[([^\]]*)\]\(\s*<?([^\s<>()"]+)>?(?:\s+"[^"]*")?\s*\)')
@@ -163,14 +167,14 @@ def _is_pdf(url: str) -> bool:
 
 
 def _linked_documents(
-    pages: list[ExtractedPage], base_domain: str, fetched: set[str]
+    texts: dict[str, str], base_domain: str, fetched: set[str]
 ) -> list[tuple[str, DocClass, str]]:
-    """Policy documents one link away from the HTML pages already extracted, best first."""
+    """Policy documents one link away from the web pages already fetched, best first."""
     candidates: dict[str, tuple[DocClass, str]] = {}
-    for page in pages:
-        if _is_pdf(page.url):
+    for page_url, text in texts.items():
+        if _is_pdf(page_url):
             continue
-        for url, label in policy_links(page.text, base_domain):
+        for url, label in policy_links(text, base_domain):
             if url in fetched or url in candidates:
                 continue
             doc_class = classify_doc(url, label)
@@ -196,9 +200,10 @@ def _scouted(url: str, doc_class: DocClass, title: str, text: str) -> ScoutedDoc
     return ScoutedDoc(url, doc_class, title, text, hashlib.sha256(text.encode("utf-8")).hexdigest())
 
 
-class _Downloader:
-    """Direct downloads for documents Tavily Extract returned empty (asset-host PDFs, task 2.8c),
-    kept to the hospital's own domain and the asset hosts.
+class Downloader:
+    """Direct downloads for documents Tavily Extract returned empty (asset-host PDFs, task 2.8c)
+    or rendered as navigation only (web pages, task 2.8h), kept to the hospital's own domain and
+    the asset hosts.
 
     Opens one HTTP client on first use when none was given, and closes only what it opened.
     """
@@ -211,21 +216,43 @@ class _Downloader:
     def text(self, url: str) -> str | None:
         if self._http is None:
             self._http = self._owned = httpx.Client(timeout=30.0)
-        return download_text(url, self._http, allowed=self._allowed)
+        return download_text(url, self._http, allowed=self._allowed, allow_html=True)
 
     def close(self) -> None:
         if self._owned is not None:
             self._owned.close()
 
 
-def _texts(urls: list[str], pages: list[ExtractedPage], downloads: _Downloader) -> dict[str, str]:
-    """Extracted text by URL; documents Tavily returned missing or nearly empty are downloaded
-    directly (no Tavily spend) and replace the empty result when the download yields text."""
+def _is_thin(url: str, text: str | None) -> bool:
+    """A web page Tavily rendered, but mostly as its menu. A PDF's text is what it is, and no text
+    at all is a fetch failure, which the download handles without another extraction."""
+    return 0 < len((text or "").strip()) < THIN_CHARS and not _is_pdf(url)
+
+
+def fill_texts(
+    gateway: TavilyGateway,
+    urls: list[str],
+    pages: list[ExtractedPage],
+    downloads: Downloader,
+    *,
+    purpose: str,
+) -> dict[str, str]:
+    """Text by URL for `urls`, starting from Tavily's basic extraction `pages`: web pages that came
+    back thin are re-extracted once at the advanced depth (two credits per five pages), and
+    documents still thin, missing or nearly empty are downloaded directly (no Tavily spend). A
+    longer text replaces a shorter one; nothing already fetched is thrown away."""
     by_url = {page.url: page.text for page in pages}
+    thin = [url for url in urls if _is_thin(url, by_url.get(url))]
+    if thin:
+        for page in gateway.extract(thin, purpose=purpose, depth="advanced"):
+            if len(page.text.strip()) > len((by_url.get(page.url) or "").strip()):
+                by_url[page.url] = page.text
     for url in urls:
-        if len((by_url.get(url) or "").strip()) < MIN_CHARS:
-            if text := downloads.text(url):
-                by_url[url] = text
+        text = by_url.get(url) or ""
+        if len(text.strip()) < MIN_CHARS or _is_thin(url, text):
+            downloaded = downloads.text(url)
+            if downloaded and len(downloaded.strip()) > len(text.strip()):
+                by_url[url] = downloaded
     return by_url
 
 
@@ -257,7 +284,7 @@ def scout_hospital(
         selected = select_urls(hits)
     if not selected:
         return []
-    downloads = _Downloader(http, hospital.website_domain)
+    downloads = Downloader(http, hospital.website_domain)
     try:
         return _fetch_documents(gateway, hospital.website_domain, hits, selected, downloads)
     finally:
@@ -269,10 +296,11 @@ def _fetch_documents(
     domain: str,
     hits: list[SearchHit],
     selected: list[tuple[str, DocClass]],
-    downloads: _Downloader,
+    downloads: Downloader,
 ) -> list[ScoutedDoc]:
-    pages = gateway.extract([url for url, _ in selected], purpose="atlas.scout")
-    by_url = _texts([url for url, _ in selected], pages, downloads)
+    urls = [url for url, _ in selected]
+    pages = gateway.extract(urls, purpose="atlas.scout")
+    by_url = fill_texts(gateway, urls, pages, downloads, purpose="atlas.scout")
     docs: list[ScoutedDoc] = []
     for url, doc_class in selected:
         title = next((h.title for h in hits if h.url == url and h.title), TITLES[doc_class])
@@ -280,10 +308,11 @@ def _fetch_documents(
             docs.append(doc)
 
     # Entry pages usually only link to the policy; follow those links one step on the same site.
-    linked = _linked_documents(pages, domain, {url for url, _ in selected})
+    linked = _linked_documents(by_url, domain, set(urls))
     if linked:
-        more = gateway.extract([url for url, _, _ in linked], purpose="atlas.scout")
-        by_url = _texts([url for url, _, _ in linked], more, downloads)
+        linked_urls = [url for url, _, _ in linked]
+        more = gateway.extract(linked_urls, purpose="atlas.scout")
+        by_url = fill_texts(gateway, linked_urls, more, downloads, purpose="atlas.scout")
         seen = {doc.sha256 for doc in docs}
         for url, doc_class, label in linked:
             doc = _scouted(url, doc_class, label or TITLES[doc_class], by_url.get(url) or "")

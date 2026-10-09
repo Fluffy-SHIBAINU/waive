@@ -2944,19 +2944,37 @@
     "website_domain": "capecodhealth.org",
     "system": null
    },
-   "version": 4,
+   "version": 5,
    "status": "held",
    "eligibility": {
     "free_care_max_fpl": null,
     "discount_tiers": null,
     "asset_test": null,
     "residency": null,
-    "insured_patients_covered": null,
+    "insured_patients_covered": {
+     "value": false,
+     "layer": "documented",
+     "quote": "Financial Assistance is offered to patients who are uninsured and underinsured.",
+     "source_id": "fap-bc14dbb17a2140b1",
+     "checked_on": "2026-10-09",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "min_balance": null,
     "services_excluded": null
    },
    "programs": {
-    "presumptive": null,
+    "presumptive": {
+     "value": [
+      "Medicaid"
+     ],
+     "layer": "documented",
+     "quote": "Patients must fully comply with the application process, including submitting tax returns, bank statements and pay stubs, as well as completing the application process for all available sources of assistance, including Medicaid or Medical Assistance.",
+     "source_id": "fap-bc14dbb17a2140b1",
+     "checked_on": "2026-10-09",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "state_programs": {
      "value": [
       {
@@ -2975,9 +2993,42 @@
    "apply": {
     "form_url": null,
     "form_version": null,
-    "documents_required": null,
+    "documents_required": {
+     "value": [
+      "tax_return",
+      "bank_statements",
+      "pay_stubs"
+     ],
+     "layer": "documented",
+     "quote": "Patients must fully comply with the application process, including submitting tax returns, bank statements and pay stubs, as well as completing the application process for all available sources of assistance, including Medicaid or Medical Assistance.",
+     "source_id": "fap-bc14dbb17a2140b1",
+     "checked_on": "2026-10-09",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "documents_reported": null,
-    "submit_methods": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "Requesting a copy by mail or email"
+      },
+      {
+       "kind": "email",
+       "detail": "Requesting a copy by mail or email"
+      },
+      {
+       "kind": "in_person",
+       "detail": "Requesting a copy at our Admissions and Emergency Department locations"
+      }
+     ],
+     "layer": "documented",
+     "quote": "The Hospital Financial Assistance Policy and Application are available free of charge by:\n\n*   Calling the Financial Counselors at Cape Cod Hospital (508-862-7019) or Falmouth Hospital (508-495-7157)\n*   Requesting a copy by mail or email\n*   Requesting a copy at our Admissions and Emergency Department locations",
+     "source_id": "fap-bc14dbb17a2140b1",
+     "checked_on": "2026-10-09",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "window_days_from_first_bill": null,
     "decision_days": null,
     "decision_days_reported": null
@@ -2987,22 +3038,77 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": null,
+    "phone": {
+     "value": "508-862-7019",
+     "layer": "documented",
+     "quote": "Call Our Financial Counselors\n\nAdvice is available by calling financial counselors at Cape Cod Hospital at 508-862-7019 or Falmouth Hospital at 508-495-7157.",
+     "source_id": "fap-bc14dbb17a2140b1",
+     "checked_on": "2026-10-09",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "hours": null,
     "languages": null
    },
    "coverage": {
-    "facilities": null,
+    "facilities": {
+     "value": [
+      "Cape Cod Hospital",
+      "Falmouth Hospital"
+     ],
+     "layer": "documented",
+     "quote": "Cape Cod Hospital and Falmouth Hospital Financial Assistance Policy (FAP) exists to provide eligible patients, partially or fully discounted emergent or medically necessary hospital care.",
+     "source_id": "fap-bc14dbb17a2140b1",
+     "checked_on": "2026-10-09",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "provider_list_url": null
    },
    "sources": [
     {
-     "id": "fap-4ad1c2a963b24cab",
+     "id": "fap-bc14dbb17a2140b1",
      "kind": "hospital_web",
      "url": "https://www.capecodhealth.org/patients-visitors/paying-for-care/financial-assistance",
      "title": "Financial Assistance",
-     "fetched_on": "2026-10-02",
-     "sha256": "4ad1c2a963b24caba00c9b09644770161bd4e58ef09f623ada3b8d856493dcae",
+     "fetched_on": "2026-10-09",
+     "sha256": "bc14dbb17a2140b1680489567d4b2061aa2df7fac231ec4fa5b1611b6904f6ac",
+     "effective_date": null
+    },
+    {
+     "id": "fap-c62e26efc4215da3",
+     "kind": "hospital_web",
+     "url": "https://www.capecodhealth.org/patients-visitors/paying-for-care/financial-assistance/ayuda-economica/",
+     "title": "Traducci\u00f3n al espa\u00f1ol",
+     "fetched_on": "2026-10-09",
+     "sha256": "c62e26efc4215da3c58da0e2811438eaed1a70cf1362848b79a12e821a1a3863",
+     "effective_date": null
+    },
+    {
+     "id": "fap-1c6eb314926eb64f",
+     "kind": "hospital_web",
+     "url": "https://www.capecodhealth.org/patients-visitors/paying-for-care/financial-assistance/assistencia-financeira/",
+     "title": "Tradu\u00e7\u00e3o em portugu\u00eas",
+     "fetched_on": "2026-10-09",
+     "sha256": "1c6eb314926eb64f10a6812d2c352f7702f3ee889b0d7243d13e635a7353ab01",
+     "effective_date": null
+    },
+    {
+     "id": "fap-8460e22614b47c84",
+     "kind": "hospital_web",
+     "url": "https://www.capecodhealth.org/patients-visitors/paying-for-care/financial-assistance/ed-finansye/",
+     "title": "tradiksyon krey\u00f2l ayisyen",
+     "fetched_on": "2026-10-09",
+     "sha256": "8460e22614b47c84a93b17dfeacb6327ed4b836348e248f6eb3e78d37799a20f",
+     "effective_date": null
+    },
+    {
+     "id": "fap-054622690f5db13f",
+     "kind": "hospital_web",
+     "url": "https://www.capecodhealth.org/app/files/public/c6b6f858-73ef-445c-bfb0-86ff23f2f68d/financial-assistance-policy-english-may25.pdf",
+     "title": "Financial Assistance Policy",
+     "fetched_on": "2026-10-09",
+     "sha256": "054622690f5db13f84dd0c0490b8ceb0c9e78961bfeab0661ed96a8f56480d68",
      "effective_date": null
     },
     {
@@ -3423,19 +3529,46 @@
     "website_domain": "capecodhealth.org",
     "system": null
    },
-   "version": 4,
+   "version": 5,
    "status": "held",
    "eligibility": {
     "free_care_max_fpl": null,
     "discount_tiers": null,
-    "asset_test": null,
+    "asset_test": {
+     "value": false,
+     "layer": "documented",
+     "quote": "assets, family size, expenses, and medical needs.",
+     "source_id": "fap-054622690f5db13f",
+     "checked_on": "2026-10-09",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "residency": null,
-    "insured_patients_covered": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Financial Assistance is offered to patients who are uninsured and underinsured.",
+     "source_id": "fap-bc14dbb17a2140b1",
+     "checked_on": "2026-10-09",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "min_balance": null,
     "services_excluded": null
    },
    "programs": {
-    "presumptive": null,
+    "presumptive": {
+     "value": [
+      "Medicaid",
+      "MassHealth"
+     ],
+     "layer": "documented",
+     "quote": "MassHealth, the premium assistance payment program operated by the Health Connector, the Children\u2019s Medical Security Program, the Health Safety Net, and Medical Hardship",
+     "source_id": "fap-054622690f5db13f",
+     "checked_on": "2026-10-09",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "state_programs": {
      "value": [
       {
@@ -3454,9 +3587,42 @@
    "apply": {
     "form_url": null,
     "form_version": null,
-    "documents_required": null,
+    "documents_required": {
+     "value": [
+      "tax_return",
+      "bank_statements",
+      "pay_stubs"
+     ],
+     "layer": "documented",
+     "quote": "Patients must fully comply with the application process, including submitting tax returns, bank statements and pay stubs, as well as completing the application process for all available sources of assistance, including Medicaid or Medical Assistance.",
+     "source_id": "fap-bc14dbb17a2140b1",
+     "checked_on": "2026-10-09",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "documents_reported": null,
-    "submit_methods": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "Requesting a copy by mail or email"
+      },
+      {
+       "kind": "email",
+       "detail": "Requesting a copy by mail or email"
+      },
+      {
+       "kind": "in_person",
+       "detail": "Requesting a copy at our Admissions and Emergency Department locations"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Calling the Financial Counselors at Cape Cod Hospital (508-862-7019) or Falmouth Hospital (508-495-7157)\n*   Requesting a copy by mail or email\n*   Requesting a copy at our Admissions and Emergency Department locations",
+     "source_id": "fap-bc14dbb17a2140b1",
+     "checked_on": "2026-10-09",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "window_days_from_first_bill": null,
     "decision_days": null,
     "decision_days_reported": null
@@ -3471,89 +3637,64 @@
     "languages": null
    },
    "coverage": {
-    "facilities": null,
+    "facilities": {
+     "value": [
+      "Cape Cod Hospital",
+      "Falmouth Hospital"
+     ],
+     "layer": "documented",
+     "quote": "Cape Cod Hospital and Falmouth Hospital Financial Assistance Policy (FAP) exists to provide eligible patients, partially or fully discounted emergent or medically necessary hospital care.",
+     "source_id": "fap-bc14dbb17a2140b1",
+     "checked_on": "2026-10-09",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "provider_list_url": null
    },
    "sources": [
     {
-     "id": "fap-1e5b98c196060d58",
-     "kind": "hospital_web",
-     "url": "https://homelessresources.networkofcare.org/Trilogy/services/agency?pid=HelpingHandsMinistryofBeltonIncElectricServicePaymentFinancialAssistanceUtilities_21_1757_0",
-     "title": "Helping Hands Ministry of Belton Inc: Electric Service Payment - Financial Assistance-Utilities - Network of Care Texas Resources TX Service Directory",
-     "fetched_on": "2026-10-02",
-     "sha256": "1e5b98c196060d58ef9eab260008f43c482fd4004341d029132c200745610429",
-     "effective_date": null
-    },
-    {
-     "id": "fap-349c05e12e9b2eb7",
-     "kind": "hospital_web",
-     "url": "https://publichealth.networkofcare.org/solano/Services/Agency/Edit?pid=kaiserpermanentemedicalfinancialassistanceprogrammfap_1_49_1",
-     "title": "Edit Agency: Kaiser Permanente Medical Financial Assistance Program (MFAP)",
-     "fetched_on": "2026-10-02",
-     "sha256": "349c05e12e9b2eb768da22bfd0d360f516a4058b657185687abee440f4831386",
-     "effective_date": null
-    },
-    {
-     "id": "fap-4ad1c2a963b24cab",
+     "id": "fap-bc14dbb17a2140b1",
      "kind": "hospital_web",
      "url": "https://www.capecodhealth.org/patients-visitors/paying-for-care/financial-assistance",
-     "title": "Financial Assistance",
-     "fetched_on": "2026-10-02",
-     "sha256": "4ad1c2a963b24caba00c9b09644770161bd4e58ef09f623ada3b8d856493dcae",
+     "title": "Financial Assistance | Cape Cod Healthcare",
+     "fetched_on": "2026-10-09",
+     "sha256": "bc14dbb17a2140b1680489567d4b2061aa2df7fac231ec4fa5b1611b6904f6ac",
      "effective_date": null
     },
     {
-     "id": "fap-50bd76f26c365c03",
+     "id": "fap-a9e825e6a2baeef7",
      "kind": "hospital_web",
-     "url": "https://publichealth.networkofcare.org/barnstable-ma/MyAccount/Favorites/SaveFavorite?favChannel=Services&favTitle=Wings+for+Falmouth+Families&favDesc=Wings+for+Falmouth+Families+is+a+community+based+charity+providing+local+families+financial+assistance+when+they+are+experiencing+a+medical+crisis+or+tragic+event.&favUrl=https%3A%2F%2Fpublichealth.networkofcare.org%2Fbarnstable-ma%2FServices%2FAgency%2F%3Fpid%3DWingsforFalmouthFamilies_1190_11_0",
-     "title": "My Account - Log in",
-     "fetched_on": "2026-10-02",
-     "sha256": "50bd76f26c365c03ff34692ca265c9e15d9daa0862a7f19572c7bbb8be011e3f",
+     "url": "https://www.capecodhealth.org/patients-visitors/paying-for-care/financial-assistance/ayuda-economica/",
+     "title": "Traducci\u00f3n al espa\u00f1ol",
+     "fetched_on": "2026-10-09",
+     "sha256": "a9e825e6a2baeef705a562596fdb549dbf8984a92e38040c017ef7f7691057ac",
      "effective_date": null
     },
     {
-     "id": "fap-5c64247bb2412a8e",
+     "id": "fap-1c6eb314926eb64f",
      "kind": "hospital_web",
-     "url": "https://family.networkofcare.org/tarrant-tx/services/agency?pid=PALOPINTOGENERALHOSPITALFINANCIALASSISTANCESERVICES_5_989_0",
-     "title": "PALO PINTO GENERAL HOSPITAL | FINANCIAL ASSISTANCE SERVICES - Network of Care Tarrant Cares TX Service Directory",
-     "fetched_on": "2026-10-02",
-     "sha256": "5c64247bb2412a8e8a1d797c95ce4555f4f53c0db741beea7209f064c6062e9a",
+     "url": "https://www.capecodhealth.org/patients-visitors/paying-for-care/financial-assistance/assistencia-financeira/",
+     "title": "Tradu\u00e7\u00e3o em portugu\u00eas",
+     "fetched_on": "2026-10-09",
+     "sha256": "1c6eb314926eb64f10a6812d2c352f7702f3ee889b0d7243d13e635a7353ab01",
      "effective_date": null
     },
     {
-     "id": "fap-6bddaa3e17fe8fec",
+     "id": "fap-8460e22614b47c84",
      "kind": "hospital_web",
-     "url": "https://homelessresources.networkofcare.org/Trilogy/services/agency?pid=HopkinsCountyCommunityChestElectricServicePaymentFinancialAssistance_21_1757_0",
-     "title": "Hopkins County Community Chest: Electric Service Payment - Financial Assistance - Network of Care Texas Resources TX Service Directory",
-     "fetched_on": "2026-10-02",
-     "sha256": "6bddaa3e17fe8fec9ffb07d84b9eb8084bb0bee6bd747aee80ba60cf7c239e65",
+     "url": "https://www.capecodhealth.org/patients-visitors/paying-for-care/financial-assistance/ed-finansye/",
+     "title": "tradiksyon krey\u00f2l ayisyen",
+     "fetched_on": "2026-10-09",
+     "sha256": "8460e22614b47c84a93b17dfeacb6327ed4b836348e248f6eb3e78d37799a20f",
      "effective_date": null
     },
     {
-     "id": "fap-8f35dfe580368f85",
+     "id": "fap-054622690f5db13f",
      "kind": "hospital_web",
-     "url": "https://homelessresources.networkofcare.org/Trilogy/services/agency?pid=WestDallasMultipurposeCenterFinancialAssistance_21_1757_0",
-     "title": "West Dallas Multipurpose Center Financial Assistance - Network of Care Texas Resources TX Service Directory",
-     "fetched_on": "2026-10-02",
-     "sha256": "8f35dfe580368f857b0649dd09f9689a5e7a8f1bd2f6545feabc0ce62d4b5574",
-     "effective_date": null
-    },
-    {
-     "id": "fap-8fb9e8f2af64f6d5",
-     "kind": "hospital_web",
-     "url": "https://family.networkofcare.org/tarrant-tx/services/agency?pid=PALOPINTOGENERALHOSPITALFINANCIALASSISTANCESERVICES_5_989_0",
-     "title": "PALO PINTO GENERAL HOSPITAL | FINANCIAL ASSISTANCE SERVICES - Network of Care Tarrant Cares TX Service Directory",
-     "fetched_on": "2026-10-02",
-     "sha256": "8fb9e8f2af64f6d5b24406d9a8d6911752ec4f2c4474a712b87fa61e06dd7e50",
-     "effective_date": null
-    },
-    {
-     "id": "fap-c2081a77d810a0d2",
-     "kind": "hospital_web",
-     "url": "https://homelessresources.networkofcare.org/Trilogy/services/agency?pid=WestDallasMultipurposeCenterFinancialAssistance_21_1757_0",
-     "title": "West Dallas Multipurpose Center Financial Assistance - Network of Care Texas Resources TX Service Directory",
-     "fetched_on": "2026-10-02",
-     "sha256": "c2081a77d810a0d200a6eb677f51b0bc6762ab7f4811fe96cd915d38d9c23062",
+     "url": "https://www.capecodhealth.org/app/files/public/c6b6f858-73ef-445c-bfb0-86ff23f2f68d/financial-assistance-policy-english-may25.pdf",
+     "title": "Financial Assistance Policy",
+     "fetched_on": "2026-10-09",
+     "sha256": "054622690f5db13f84dd0c0490b8ceb0c9e78961bfeab0661ed96a8f56480d68",
      "effective_date": null
     },
     {
