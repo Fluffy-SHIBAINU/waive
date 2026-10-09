@@ -1,9 +1,11 @@
 import io
+import struct
+import zlib
 
 import pytest
 from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
-from waive.cases.images import MIN_SHARPNESS, ImageError, prepare_image
+from waive.cases.images import MAX_PIXELS, MIN_SHARPNESS, ImageError, prepare_image
 
 
 def text_image(size=(1600, 2200), blur=0.0, fmt="PNG", exif_rotate=False):
@@ -50,3 +52,39 @@ def test_blurry_and_small_images_get_warnings():
 def test_garbage_raises_image_error():
     with pytest.raises(ImageError):
         prepare_image(b"not an image")
+
+
+def png_header_only(width: int, height: int) -> bytes:
+    """A valid PNG whose header claims any size: Pillow learns the size without decoding."""
+
+    def chunk(kind: bytes, data: bytes) -> bytes:
+        body = kind + data
+        return struct.pack(">I", len(data)) + body + struct.pack(">I", zlib.crc32(body))
+
+    ihdr = struct.pack(">IIBBBBB", width, height, 1, 0, 0, 0, 0)  # 1-bit grayscale
+    return (
+        b"\x89PNG\r\n\x1a\n"
+        + chunk(b"IHDR", ihdr)
+        + chunk(b"IDAT", zlib.compress(b"\x00"))
+        + chunk(b"IEND", b"")
+    )
+
+
+def test_decompression_bombs_are_refused_as_image_errors():
+    assert MAX_PIXELS == 40_000_000
+    with pytest.raises(ImageError):  # over Pillow's hard limit: DecompressionBombError
+        prepare_image(png_header_only(20000, 20000))
+    with pytest.raises(ImageError, match="too large"):  # under Pillow's limit, over ours
+        prepare_image(png_header_only(9000, 9000))
+    buffer = io.BytesIO()
+    Image.new("1", (7000, 7000), 1).save(buffer, format="PNG")  # a few KB that inflate to 49 MP
+    assert len(buffer.getvalue()) < 100_000
+    with pytest.raises(ImageError, match="too large"):
+        prepare_image(buffer.getvalue())
+
+
+def test_large_jpeg_is_downsampled_by_the_decoder_and_still_fits_max_side():
+    buffer = io.BytesIO()
+    Image.new("RGB", (4800, 4000), "white").save(buffer, format="JPEG")
+    prepared = prepare_image(buffer.getvalue())
+    assert (prepared.width, prepared.height) == (2000, 1667)
