@@ -8,7 +8,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from starlette.formparsers import MultiPartParser
 
-from waive.ai.client import AIClient
+from waive.ai.client import AIClient, AIUnavailable
 from waive.cases.service import TooManyReads
 from waive.cases.vault import cipher_from_settings, signer_from_settings
 from waive.config import Settings
@@ -160,6 +160,19 @@ def create_app(
             message=(
                 "Reading photos is paused for now because the budget for today is used up. "
                 "Your helper can finish the check later."
+            ),
+        )
+
+    @app.exception_handler(AIUnavailable)
+    def ai_unavailable(request: Request, exc: AIUnavailable) -> HTMLResponse:
+        return render(
+            request,
+            "error.html",
+            status_code=503,
+            title="Reading is paused",
+            message=(
+                "The reading service is not answering right now. The case is saved; "
+                "your helper can try again later."
             ),
         )
 

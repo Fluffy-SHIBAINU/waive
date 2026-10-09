@@ -3,9 +3,10 @@ import re
 from datetime import date
 from decimal import Decimal
 
+import pytest
 from fastapi.testclient import TestClient
 
-from waive.ai.client import AIOutputError
+from waive.ai.client import AIOutputError, AIUnavailable
 from waive.atlas import repo
 from waive.atlas.publish import publish_sheet
 from waive.atlas.samples import st_example_sheet
@@ -143,15 +144,25 @@ def test_the_senior_link_cannot_change_an_approved_case():
     assert client.get(f"{caregiver}/packet.pdf").status_code == 200
 
 
-class ExhaustedAI:
-    """The governor's Token Factory cap was reached: every paid read raises BudgetExceeded."""
+class FailingAI:
+    """Every paid read raises `error`: the governor's cap was reached, or Token Factory is down."""
+
+    def __init__(self, error):
+        self.error = error
 
     def complete_json(self, role, messages, schema, *, phi, purpose, max_tokens=2000):
-        raise BudgetExceeded("Token Factory cap of $15 reached (used $15.0)")
+        raise self.error
 
 
-def test_a_reached_budget_is_a_kind_503_page_on_every_photo_route_not_a_500():
-    client, engine = make_client(ai=ExhaustedAI())
+@pytest.mark.parametrize(
+    "error",
+    [
+        BudgetExceeded("Token Factory cap of $15 reached (used $15.0)"),
+        AIUnavailable("openbmb/MiniCPM-V-4_5: APIConnectionError"),
+    ],
+)
+def test_an_unavailable_reader_is_a_kind_503_page_on_every_photo_route_not_a_500(error):
+    client, engine = make_client(ai=FailingAI(error))
     with session_scope(engine) as session:
         repo.upsert_hospital(session, HOSPITAL)
         publish_sheet(session, st_example_sheet())
