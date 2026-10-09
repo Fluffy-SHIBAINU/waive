@@ -1,5 +1,6 @@
 """The production image: two stages, uv-built, non-root, app factory on port 8000 (spec §14)."""
 
+import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -13,8 +14,13 @@ def test_two_stages_built_with_uv_without_dev_dependencies():
     lines = dockerfile_lines()
     froms = [line for line in lines if line.startswith("FROM ")]
     assert len(froms) == 2
-    assert "astral-sh/uv" in froms[0] and "python:3.12-slim" in froms[1]
+    # Both stages come from Docker Hub: ghcr.io pulls are blocked on the build machine (gate U6.0),
+    # so the builder installs a pinned uv with pip instead of using the astral-sh/uv image.
+    assert all("python:3.12-slim-bookworm" in line for line in froms)
+    instructions = [line for line in lines if not line.startswith("#")]
+    assert not any("ghcr.io" in line for line in instructions)
     text = "\n".join(lines)
+    assert re.search(r"pip install [^\n]*\buv==\d+\.\d+\.\d+\b", text)
     assert "uv sync --frozen --no-dev --no-install-project" in text
     assert "uv sync --frozen --no-dev --no-editable" in text
     assert "COPY . " not in text and "COPY ./ " not in text  # the context is copied selectively
