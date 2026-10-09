@@ -57,7 +57,9 @@ def create_app(
         if scheduler is not None:
             scheduler.shutdown(wait=False)
 
-    app = FastAPI(title="Waive", docs_url=None, redoc_url=None, lifespan=lifespan)
+    # No OpenAPI schema or docs pages: /openapi.json would publish the whole route map, every
+    # /admin/* path included (security audit secrets-config-8).
+    app = FastAPI(title="Waive", openapi_url=None, docs_url=None, redoc_url=None, lifespan=lifespan)
     app.state.settings = settings
     app.state.governor = governor
     app.state.limiter = RateLimiter()
