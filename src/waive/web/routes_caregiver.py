@@ -131,9 +131,10 @@ def caregiver_correct(
             ).isoformat()
         if is_first_statement:
             corrections["is_first_statement"] = True
-        confirm_bill(ctx, row.id, corrections, ccn=hospital_ccn or None)
+        # The caregiver may re-correct and re-approve; the senior link may not (see _unlocked).
+        confirm_bill(ctx, row.id, corrections, ccn=hospital_ccn or None, allow_approved=True)
         chosen = tuple(p.strip() for p in programs.split(",") if p.strip())
-        set_household(ctx, row.id, size, _decimal(annual_income), chosen)
+        set_household(ctx, row.id, size, _decimal(annual_income), chosen, allow_approved=True)
     return RedirectResponse(caregiver_links(token)["review"], status_code=303)
 
 

@@ -12,7 +12,7 @@ from waive.atlas.samples import st_example_sheet
 from waive.cases.extract import BillExtract, IncomeExtract
 from waive.cases.service import start_case
 from waive.cases.synth import make_truth, render_bill
-from waive.db import session_scope
+from waive.db import CaseRow, session_scope
 
 from tests.unit.test_web_app import make_client
 
@@ -98,6 +98,48 @@ def test_senior_says_not_right_and_waits_for_helper():
 def test_tampered_token_is_rejected():
     client, links = seeded_client()
     assert client.get("/s/" + links.senior_token[:-3] + "abc").status_code == 403
+
+
+def approved_case():
+    """A case the caregiver corrected and approved; the packet is ready."""
+    client, links = seeded_client()
+    caregiver = f"/c/{links.caregiver_token}"
+    client.post(f"/s/{links.senior_token}/bill", files=photo())
+    client.post(
+        f"{caregiver}/correct",
+        data={"hospital_ccn": "229999", "annual_income": "22800", "size": "1"},
+    )
+    client.post(f"{caregiver}/approve")
+    assert client.get(f"{caregiver}/packet.pdf").status_code == 200
+    return client, links, caregiver
+
+
+def test_the_senior_link_cannot_change_an_approved_case():
+    """The senior scope is "add photos and see the result" (case_created.html, spec §11); a
+    forwarded link, or a cached form auto-submitting, must not un-approve or alter the packet."""
+    client, links, caregiver = approved_case()
+    senior = f"/s/{links.senior_token}"
+    deps = client.app.state.deps
+    attempts = (
+        lambda: client.post(f"{senior}/bill", files=photo()),
+        lambda: client.post(f"{senior}/confirm", data={"answer": "yes"}),
+        lambda: client.post(f"{senior}/household", data={"size": "4", "programs": "none"}),
+        lambda: client.post(f"{senior}/income", files=photo()),
+        lambda: client.get(f"{senior}/household"),
+        lambda: client.get(f"{senior}/income"),
+    )
+    for attempt in attempts:
+        response = attempt()
+        assert response.status_code == 200 and str(response.url).endswith("/result")
+        assert "likely do not have to pay" in response.text
+        with session_scope(deps.engine) as session:
+            row = session.get(CaseRow, links.case_id)
+            assert row.status == "approved"
+            sealed = deps.cipher.decrypt(row.sealed)
+            assert sealed["household"] == {"size": 1, "annual_income": "22800", "programs": []}
+        review = client.get(caregiver).text
+        assert "Approved" in review and "Download the packet" in review
+    assert client.get(f"{caregiver}/packet.pdf").status_code == 200
 
 
 class UnreadableAI:

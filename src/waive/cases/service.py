@@ -77,6 +77,14 @@ def _row(ctx: CaseContext, case_id: str) -> CaseRow:
     return row
 
 
+def _unlocked(row: CaseRow, allow_approved: bool) -> None:
+    """An approved case is the caregiver's signed deliverable (spec §9 step 9). The senior link
+    only adds photos and sees the result, so a change after approval needs the caregiver's own
+    correction form (`allow_approved`); papers from the hospital are not affected."""
+    if row.status == "approved" and not allow_approved:
+        raise PermissionError("this case is approved; only the caregiver can change it")
+
+
 def start_case(ctx: CaseContext, state: str) -> CaseLinks:
     row = CaseRow(id=uuid.uuid4().hex, state=state.upper(), status="new", token_generation=1)
     ctx.session.add(row)
@@ -189,9 +197,15 @@ def view(ctx: CaseContext, case_id: str) -> CaseView:
 
 
 def submit_bill(
-    ctx: CaseContext, case_id: str, image_bytes: bytes, *, synthetic: bool = False
+    ctx: CaseContext,
+    case_id: str,
+    image_bytes: bytes,
+    *,
+    synthetic: bool = False,
+    allow_approved: bool = False,
 ) -> CaseView:
     row = _row(ctx, case_id)
+    _unlocked(row, allow_approved)
     prepared = prepare_image(image_bytes)
     extract = extract_bill(ctx.ai, prepared.jpeg, synthetic=synthetic)
     hospitals = [repo.hospital_ref(h) for h in repo.list_hospitals(ctx.session)]
@@ -222,9 +236,15 @@ def submit_bill(
 
 
 def confirm_bill(
-    ctx: CaseContext, case_id: str, corrections: dict[str, Any], ccn: str | None = None
+    ctx: CaseContext,
+    case_id: str,
+    corrections: dict[str, Any],
+    ccn: str | None = None,
+    *,
+    allow_approved: bool = False,
 ) -> CaseView:
     row = _row(ctx, case_id)
+    _unlocked(row, allow_approved)
     sealed = _load(ctx, row)
     bill = BillExtract.model_validate({**sealed.get("bill", {}), **corrections})
     if corrections.get("is_first_statement"):
@@ -247,8 +267,11 @@ def set_household(
     size: int,
     annual_income: Decimal | None,
     programs: tuple[str, ...],
+    *,
+    allow_approved: bool = False,
 ) -> CaseView:
     row = _row(ctx, case_id)
+    _unlocked(row, allow_approved)
     sealed = _load(ctx, row)
     sealed["household"] = {
         "size": size,
@@ -262,9 +285,15 @@ def set_household(
 
 
 def submit_income_letter(
-    ctx: CaseContext, case_id: str, image_bytes: bytes, *, synthetic: bool = False
+    ctx: CaseContext,
+    case_id: str,
+    image_bytes: bytes,
+    *,
+    synthetic: bool = False,
+    allow_approved: bool = False,
 ) -> CaseView:
     row = _row(ctx, case_id)
+    _unlocked(row, allow_approved)
     prepared = prepare_image(image_bytes)
     income = extract_income(ctx.ai, prepared.jpeg, synthetic=synthetic)
     sealed = _load(ctx, row)

@@ -125,6 +125,32 @@ def test_full_flow_to_free_care(ctx):
     assert ctx.session.get(CaseRow, links.case_id) is None
 
 
+def test_an_approved_case_only_changes_when_the_caregiver_allows_it(ctx):
+    links = start_case(ctx, "MA")
+    submit_bill(ctx, links.case_id, bill_image())
+    set_household(ctx, links.case_id, 1, Decimal("22800"), ())
+    assert approve(ctx, links.case_id).status == "approved"
+    attempts = (
+        lambda: submit_bill(ctx, links.case_id, bill_image()),
+        lambda: confirm_bill(ctx, links.case_id, {}),
+        lambda: set_household(ctx, links.case_id, 4, Decimal("1"), ()),
+        lambda: submit_income_letter(ctx, links.case_id, bill_image()),
+    )
+    for attempt in attempts:
+        with pytest.raises(PermissionError):
+            attempt()
+    shown = view(ctx, links.case_id)
+    assert (shown.status, shown.household_size, shown.annual_income) == (
+        "approved",
+        1,
+        Decimal("22800"),
+    )
+    # The caregiver's own correction form may still re-correct an approved case.
+    shown = confirm_bill(ctx, links.case_id, {"amount_due": "900"}, allow_approved=True)
+    shown = set_household(ctx, links.case_id, 2, Decimal("22800"), (), allow_approved=True)
+    assert shown.household_size == 2 and shown.bill.amount_due == Decimal("900")
+
+
 def test_unknown_hospital_requests_scouting(ctx):
     links = start_case(ctx, "MA")
     ctx.ai.complete_json = lambda role, messages, schema, *, phi, purpose, max_tokens=2000: (
