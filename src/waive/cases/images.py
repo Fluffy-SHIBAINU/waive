@@ -9,6 +9,9 @@ MIN_SIDE = 600
 # Edge variance of the downscaled grayscale. Measured on test images: a 6 px Gaussian blur scores
 # about 310, while crisp synthetic bills score 1200 or more; 600 sits between them.
 MIN_SHARPNESS = 600.0
+# Above any phone camera and well under Pillow's 89.5 MP warning line. Checked from the header
+# before decoding, so a kilobyte-sized PNG cannot inflate into hundreds of megabytes.
+MAX_PIXELS = 40_000_000
 
 
 class ImageError(ValueError):
@@ -36,9 +39,16 @@ def _sharpness(image: Image.Image) -> float:
 
 def prepare_image(data: bytes, max_side: int = 2000) -> PreparedImage:
     try:
-        image = Image.open(io.BytesIO(data))
+        image = Image.open(io.BytesIO(data))  # lazy: the header only, nothing decoded yet
+    except (UnidentifiedImageError, Image.DecompressionBombError, OSError, ValueError) as error:
+        raise ImageError("could not read the photo") from error
+    if image.width * image.height > MAX_PIXELS:
+        raise ImageError("the photo is too large")
+    if image.format == "JPEG":
+        image.draft("RGB", (max_side, max_side))  # the decoder downsamples before load()
+    try:
         image.load()
-    except (UnidentifiedImageError, OSError, ValueError) as error:
+    except (OSError, ValueError) as error:
         raise ImageError("could not read the photo") from error
     image = ImageOps.exif_transpose(image).convert("RGB")
     if max(image.size) > max_side:
