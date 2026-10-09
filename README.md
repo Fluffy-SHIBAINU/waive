@@ -33,7 +33,7 @@ Waive never asks for money, card numbers or bank logins. Results are estimates, 
 | Real bills | Accepted since 2026-10-09: the Token Factory project runs with zero data retention, confirmed that day by the project owner (`WAIVE_ZDR_CONFIRMED=true`). None processed yet; everything so far ran on synthetic bills and letters. Waive still refuses photos carrying personal data whenever `WAIVE_ZDR_CONFIRMED` is false |
 | Learning loop | Implemented and exercised end to end by a simulation test (three denials → re-scout → new version after review → open cases re-evaluated; a missing document appears as "reported by patients" after 5 cases; a hospital slip is flagged after 3). No real outcomes yet |
 | Deployment | See the status line at the top |
-| Spend to date | 699 Tavily credits, $2.33 on Token Factory, $0 on AI Cloud (2026-10-09) |
+| Spend to date | 699 Tavily credits, $2.35 on Token Factory, $0 on AI Cloud (2026-10-09) |
 | Tests | 300+ unit, contract and simulation tests; none opens a network socket |
 
 The demo hospital, **St. Example Medical Center** (CCN 229999), is fictional and is excluded from exports, reports and the public atlas list (`/atlas?demo=1` shows it).
@@ -216,7 +216,7 @@ The admin console (`/admin/login`) switches on when `WAIVE_ADMIN_TOKEN` (16+ cha
 
 ## Costs
 
-Actual spend to date (from the usage ledger, `uv run waive doctor` prints the totals): **699 Tavily credits, $2.33 Token Factory, $0 AI Cloud** as of 2026-10-09.
+Actual spend to date (from the usage ledger, `uv run waive doctor` prints the totals): **699 Tavily credits, $2.35 Token Factory, $0 AI Cloud** as of 2026-10-09.
 
 | Model (Token Factory) | Input $/M tokens | Output $/M tokens |
 |---|---|---|
