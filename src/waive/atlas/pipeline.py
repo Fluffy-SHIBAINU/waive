@@ -20,7 +20,7 @@ from waive.atlas.publish import (
     sheet_inconsistencies,
 )
 from waive.atlas.schema import HospitalRef, ProcedureSheet, SourceDoc, SourceKind
-from waive.atlas.scout import scout_hospital, store_scouted
+from waive.atlas.scout import navigation_shells, scout_hospital, store_scouted
 from waive.atlas.structure import structure_sheet
 from waive.atlas.tavily_gateway import TavilyGateway
 from waive.atlas.verify import PATIENT_SHARE_REASON, trim_quotes, verify_sheet
@@ -54,6 +54,37 @@ def carry_over_state_programs(sheet: ProcedureSheet, previous: ProcedureSheet) -
             "sources": sources,
         }
     )
+
+
+def _drop_navigation_shells(
+    session: Session,
+    ccn: str,
+    sources_with_text: list[tuple[SourceDoc, str]],
+    result: BuildResult,
+) -> list[tuple[SourceDoc, str]]:
+    """Stored pages that are the site's navigation shell (one identical menu page at several
+    URLs, see scout.navigation_shells) are detached from the hospital and kept away from the
+    structurer, which otherwise fills the schema from outside knowledge and loses every field to
+    verification (Milford Regional: three "policy" URLs, one menu). The note says so plainly
+    instead of listing fifteen "quote not found" rejections."""
+    shells = navigation_shells(
+        (source.url or "", text)
+        for source, text in sources_with_text
+        if source.kind is SourceKind.HOSPITAL_WEB
+    )
+    if not shells:
+        return sources_with_text
+    dropped = [source for source, _ in sources_with_text if source.url in shells]
+    for source in dropped:
+        repo.unlink_source(session, ccn, source.id)
+    chars = next(len(text) for source, text in sources_with_text if source.url in shells)
+    repo.add_review_item(session, ccn, "navigation_shell", {"urls": sorted(shells), "chars": chars})
+    result.notes.append(
+        f"{len(dropped)} stored pages are the site's navigation shell, not policy documents "
+        f"(the same {chars}-character menu page at {len(shells)} URLs); detached and left out "
+        "of the structurer"
+    )
+    return [(source, text) for source, text in sources_with_text if source.url not in shells]
 
 
 def _tiebreak(
@@ -145,6 +176,19 @@ def build_hospital(
         if reuse_sources
         else []
     )
+    if sources_with_text:
+        sources_with_text = _drop_navigation_shells(session, ccn, sources_with_text, result)
+        if not sources_with_text:
+            # Scouting again would fetch the same shell; the site needs a new domain or a
+            # hand-set policy URL first, and the open item keeps the scheduler off (FAILURE_KINDS).
+            repo.add_review_item(
+                session, ccn, "no_documents", {"domain": row.website_domain, "shells_only": True}
+            )
+            result.notes.append(
+                "no financial assistance documents left once the navigation shell is set aside; "
+                "the hospital's policy is not in the stored documents"
+            )
+            return result
     if not sources_with_text:
         docs = scout_hospital(gateway, hospital)
         if not docs:

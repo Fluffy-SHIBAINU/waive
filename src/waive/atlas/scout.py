@@ -3,6 +3,7 @@
 import hashlib
 import logging
 import re
+from collections.abc import Iterable
 from dataclasses import dataclass
 from datetime import date
 from typing import Literal
@@ -233,16 +234,39 @@ def _is_thin(url: str, text: str | None) -> bool:
     return 0 < len((text or "").strip()) < THIN_CHARS and not _is_pdf(url)
 
 
-def _usable_download(url: str, text: str) -> bool:
-    """A downloaded document the scout may keep: a PDF, a web page of THIN_CHARS or more, or a
-    shorter page whose prose (the text outside its links) names financial assistance. Hospital
-    sites answer HTTP 200 with a navigation shell for pages that do not exist or need JavaScript,
-    and a menu that merely links to "Financial Assistance" or a "Privacy policy" is not a document
-    (2.8h review); before the shell would have been stored and structured."""
-    if looks_like_pdf(url, "") or len(text.strip()) >= THIN_CHARS:
-        return True
+def _names_assistance(text: str) -> bool:
+    """The prose of a page (its text outside the links) names financial assistance. A menu that
+    merely links to "Financial Assistance" or a "Privacy policy" does not."""
     prose = MARKDOWN_LINK.sub(" ", text).lower().replace("_", "-")
     return any(k in prose for k in OFFSITE_KEYWORDS) or FAP_TOKEN.search(prose) is not None
+
+
+def _usable_download(url: str, text: str) -> bool:
+    """A downloaded document the scout may keep: a PDF, a web page of THIN_CHARS or more, or a
+    shorter page whose prose names financial assistance. Hospital sites answer HTTP 200 with a
+    navigation shell for pages that do not exist or need JavaScript, and that shell is not a
+    document (2.8h review); before it would have been stored and structured."""
+    return looks_like_pdf(url, "") or len(text.strip()) >= THIN_CHARS or _names_assistance(text)
+
+
+def navigation_shells(pages: Iterable[tuple[str, str]]) -> set[str]:
+    """The URLs among `pages` ((url, text) pairs) that returned the site's navigation shell: a
+    web page (not a PDF) whose text is identical to another URL's and whose prose never names
+    financial assistance. A site that has moved answers every old path with one menu page and
+    HTTP 200 (Milford Regional after joining UMass Memorial Health: its policy, application and
+    summary URLs all returned the same 10,760-character page), long enough to pass THIN_CHARS,
+    so the structurer was shown three copies of a menu and no policy. Two URLs that genuinely
+    carry the same policy text are left alone: that text names assistance, and `store_scouted`
+    de-duplicates it by hash."""
+    by_text: dict[str, list[str]] = {}
+    for url, text in pages:
+        if not _is_pdf(url):
+            by_text.setdefault(text.strip(), []).append(url)
+    shells: set[str] = set()
+    for text, urls in by_text.items():
+        if len(set(urls)) > 1 and not _names_assistance(text):
+            shells.update(urls)
+    return shells
 
 
 def fill_texts(
@@ -346,6 +370,10 @@ def _fetch_documents(
             if doc and doc.sha256 not in seen:
                 docs.append(doc)
                 seen.add(doc.sha256)
+    shells = navigation_shells((doc.url, doc.text) for doc in docs)
+    if shells:
+        log.info("%s: one navigation shell at %d URLs, not stored", domain, len(shells))
+        docs = [doc for doc in docs if doc.url not in shells]
     return docs
 
 
