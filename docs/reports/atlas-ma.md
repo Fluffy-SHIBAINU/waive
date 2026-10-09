@@ -1,7 +1,7 @@
 # Atlas coverage — MA
 
 Hospitals in registry: 46
-Published sheets: 29 (63%)
+Published sheets: 28 (61%)
 
 | CCN | Hospital | Domain | Status | Version | Completeness | Fields | Sources |
 |---|---|---|---|---|---|---|---|
@@ -47,7 +47,7 @@ Published sheets: 29 (63%)
 | 220074 | SOUTHCOAST HOSPITALS GROUP | southcoast.org | published | 2 | 0.67 | 10 | 5 |
 | 220008 | STURDY MEMORIAL HOSPITAL | sturdyhealth.org | held | 3 | 0.00 | 2 | 3 |
 | 220116 | TUFTS MEDICAL CENTER | tuftsmedicine.org | published | 3 | 0.67 | 9 | 8 |
-| 220019 | UMASS MEMORIAL HEALTH - HARRINGTON HOSPITAL | billfairly.com | published | 3 | 0.33 | 4 | 5 |
+| 220019 | UMASS MEMORIAL HEALTH - HARRINGTON HOSPITAL |  | held | 4 | 0.00 | 1 | 1 |
 | 220001 | UMASS MEMORIAL HEALTHALLIANCE HOSPITALS | ummhealth.org | held | 3 | 0.50 | 7 | 6 |
 | 220163 | UMASS MEMORIAL MEDICAL CENTER/UNIVERSITY CAMPUS | ummhealth.org | held | 5 | 0.50 | 7 | 6 |
 | 220105 | WINCHESTER HOSPITAL | winchesterhospital.org | published | 2 | 0.83 | 12 | 8 |

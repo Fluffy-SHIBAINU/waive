@@ -56,6 +56,10 @@ DIRECTORY_DOMAINS = frozenset(
         "healthcare4ppl.com",
         "medicare-hospital-ratings.com",
         "211.org",
+        # A billing directory with one "financial assistance" page per hospital; discovery took
+        # it for Harrington Hospital's site (220019), and the four pages scouted there described
+        # hospitals in Georgia and Texas (Milford review).
+        "billfairly.com",
     }
 )
 GENERIC_WORDS = frozenset(
