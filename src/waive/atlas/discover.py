@@ -60,8 +60,19 @@ DIRECTORY_DOMAINS = frozenset(
         # it for Harrington Hospital's site (220019), and the four pages scouted there described
         # hospitals in Georgia and Texas (Milford review).
         "billfairly.com",
+        # Third-party guides and directories the first national batch mistook for hospital sites
+        # (task 7.9): careroute.ai's "financial assistance" summaries were published as three
+        # Advocate and AdventHealth sheets; fairvisithealth.com's pages described eight other
+        # hospitals; carelistings.com and seniorhealthdatabase.com are listings.
+        "careroute.ai",
+        "fairvisithealth.com",
+        "carelistings.com",
+        "seniorhealthdatabase.com",
     }
 )
+# Government hosts (illinois.gov, paauditor.gov, mass.gov, medicare.gov) publish records about
+# hospitals, never a hospital's own policy.
+DIRECTORY_SUFFIXES = (".gov",)
 GENERIC_WORDS = frozenset(
     {
         "hospital",
@@ -105,7 +116,9 @@ def host_of(url: str) -> str:
 
 
 def is_directory(host: str) -> bool:
-    return any(host == d or host.endswith("." + d) for d in DIRECTORY_DOMAINS)
+    return host.endswith(DIRECTORY_SUFFIXES) or any(
+        host == d or host.endswith("." + d) for d in DIRECTORY_DOMAINS
+    )
 
 
 def name_tokens(name: str) -> set[str]:
@@ -113,10 +126,21 @@ def name_tokens(name: str) -> set[str]:
     return {w for w in words if len(w) >= 4 and w not in GENERIC_WORDS}
 
 
+def evidence_tokens(name: str) -> set[str]:
+    """The words a page must carry to name the hospital: its distinctive tokens, or, when fewer
+    than two are left ("Akron General Medical Center" keeps only "akron"), every word of four
+    letters or more, so a children's hospital in the same town does not pass on the town's name
+    alone (360027, task 7.9)."""
+    tokens = name_tokens(name)
+    if len(tokens) >= 2:
+        return tokens
+    return {w for w in re.findall(r"[a-z0-9]+", name.lower()) if len(w) >= 4}
+
+
 def _evidence(hospital: HospitalRef, hit: SearchHit) -> float:
     """1.0 when the page title names the hospital or its phone appears; 0.3 for a mere mention
     in the page body (a referral or news page), which is not proof of an official site."""
-    tokens = name_tokens(hospital.name)
+    tokens = evidence_tokens(hospital.name)
     needed = min(2, len(tokens))
     title, body = hit.title.lower(), hit.content.lower()
     phone_digits = re.sub(r"\D", "", hospital.phone or "")

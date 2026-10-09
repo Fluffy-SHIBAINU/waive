@@ -117,3 +117,71 @@ def test_run_discovery_updates_rows_and_flags_low_confidence():
         assert (row.website_domain, row.domain_confidence) == ("somewhere.com", 0.6)
         [item] = repo.open_review_items(session, "229999")
         assert item.kind == "domain"
+
+
+def test_guide_sites_directories_and_government_hosts_are_never_the_hospital():
+    # 7.9: ten of 57 hospitals in the first national batch landed on another site: careroute.ai
+    # and fairvisithealth.com (third-party guides about many hospitals), carelistings.com and
+    # seniorhealthdatabase.com (directories), illinois.gov and paauditor.gov (state records).
+    for host in (
+        "careroute.ai",
+        "www.careroute.ai",
+        "fairvisithealth.com",
+        "carelistings.com",
+        "seniorhealthdatabase.com",
+        "illinois.gov",
+        "www.paauditor.gov",
+        "dph.illinois.gov",
+    ):
+        assert is_directory(host), host
+    assert not is_directory("akrongeneral.org") and not is_directory("gov.example.org")
+    assert (
+        pick_domain(
+            HOSPITAL,
+            [
+                hit(
+                    "https://www.careroute.ai/hospital-financial-assistance/x",
+                    "St. Example Medical Center Financial Assistance",
+                    score=0.9,
+                )
+            ],
+        )
+        is None
+    )
+
+
+def test_a_single_distinctive_name_token_in_a_title_is_not_proof_of_the_official_site():
+    # Akron General (360027, 7.9): name_tokens drops "general", "medical" and "center", so the
+    # one token left, "akron", matched Akron Children's Hospital's page title at confidence 0.9.
+    akron = HOSPITAL.model_copy(
+        update={
+            "name": "AKRON GENERAL MEDICAL CENTER",
+            "city": "AKRON",
+            "state": "OH",
+            "phone": None,
+        }
+    )
+    childrens = hit(
+        "https://www.akronchildrens.org/pages/Financial-Assistance.html",
+        "Financial Assistance | Akron Children's",
+        "Akron Children's Hospital helps families in Akron pay for medical care at the center.",
+        score=0.9,
+    )
+    result = pick_domain(akron, [childrens])
+    assert (result.domain, result.confidence) == ("akronchildrens.org", 0.6)
+    official = hit(
+        "https://my.clevelandclinic.org/locations/akron-general",
+        "Cleveland Clinic Akron General | Akron, Ohio",
+        score=0.7,
+    )
+    result = pick_domain(akron, [childrens, official])
+    assert (result.domain, result.confidence) == ("clevelandclinic.org", 0.9)
+    # The CMS phone number on the page is still proof on its own.
+    with_phone = akron.model_copy(update={"phone": "330-344-6000"})
+    assert (
+        pick_domain(
+            with_phone,
+            [hit("https://www.akrongeneral.org/", "Home", "Call 330-344-6000", score=0.5)],
+        ).confidence
+        == 0.9
+    )
