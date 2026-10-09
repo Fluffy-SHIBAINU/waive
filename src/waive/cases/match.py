@@ -24,12 +24,17 @@ def _digits(value: str | None) -> str:
     return re.sub(r"\D", "", value or "")
 
 
-def _domain(url: str | None) -> str:
+def fap_domain(url: str | None) -> str:
+    """The bare host of a financial-assistance web address ("" when there is none): all the
+    matcher uses, and all a scout request keeps (a printed URL may carry an account number)."""
     if not url:
         return ""
     if "//" not in url:
         url = "https://" + url
     return urlparse(url).netloc.lower().removeprefix("www.")
+
+
+_domain = fap_domain
 
 
 def _normalize_name(name: str) -> str:

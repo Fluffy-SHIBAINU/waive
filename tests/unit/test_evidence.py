@@ -201,3 +201,22 @@ def test_audit_evidence_is_clean_after_real_outcomes_and_catches_bad_rows(sessio
     problems = audit_evidence(session)
     assert len(problems) == 2
     assert "not an allowed" in problems[0] and "hash" in problems[1]
+
+
+def test_audit_flags_scout_requests_that_outlive_their_case_or_keep_a_full_url(session):
+    repo.add_review_item(
+        session,
+        None,
+        "scout_request",
+        {"hospital_name": "Fine Hospital", "fap_url": "fine.org", "state": "MA", "cases": ["a"]},
+    )
+    assert audit_evidence(session) == []
+    repo.add_review_item(
+        session,
+        None,
+        "scout_request",
+        {"hospital_name": "Legacy", "fap_url": "https://pay.x.org/acct/ACCT-1", "state": "MA"},
+    )
+    problems = audit_evidence(session)
+    assert len(problems) == 2
+    assert "case hash" in problems[0] and "path or query" in problems[1]

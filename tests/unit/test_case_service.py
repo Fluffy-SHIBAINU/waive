@@ -26,6 +26,7 @@ from waive.cases.service import (
 from waive.cases.synth import make_truth, render_bill
 from waive.cases.vault import FieldCipher, TokenSigner, new_key
 from waive.db import CaseRow, init_db, make_engine, session_scope
+from waive.learning.hashing import case_hash
 from waive.rules.eligibility import Tier
 
 TODAY = date(2026, 10, 2)
@@ -168,17 +169,52 @@ def test_a_case_may_only_ask_the_paid_reader_a_few_times_a_day(ctx):
     assert submit_bill(tomorrow, links.case_id, bill_image()).status == "bill_read"
 
 
+def unknown_hospital(role, messages, schema, *, phi, purpose, max_tokens=2000):
+    return BillExtract(
+        hospital_name="Somewhere Else Hospital",
+        fap_url="https://pay.somewhere-else.org/acct/ACCT-20260903?patient=rosa",
+        amount_due=Decimal("100"),
+        statement_date=TODAY,
+    )
+
+
+def scout_requests(session):
+    return [item for item in repo.open_review_items(session) if item.kind == "scout_request"]
+
+
 def test_unknown_hospital_requests_scouting(ctx):
     links = start_case(ctx, "MA")
-    ctx.ai.complete_json = lambda role, messages, schema, *, phi, purpose, max_tokens=2000: (
-        BillExtract(
-            hospital_name="Somewhere Else Hospital", amount_due=Decimal("100"), statement_date=TODAY
-        )
-    )
+    ctx.ai.complete_json = unknown_hospital
     shown = submit_bill(ctx, links.case_id, bill_image())
     assert shown.ccn is None and shown.needs_scouting
-    assert any(item.kind == "scout_request" for item in repo.open_review_items(ctx.session))
+    [request] = scout_requests(ctx.session)
+    # Only what the scheduler's matcher reads, tied to the case by its one-way hash: the model's
+    # reading of a personal document must be deletable with the case and carry no account URL.
+    assert request.detail == {
+        "hospital_name": "Somewhere Else Hospital",
+        "fap_url": "pay.somewhere-else.org",
+        "state": "MA",
+        "cases": [case_hash(links.case_id)],
+        "count": 1,
+    }
     assert view(ctx, links.case_id).tier is None
+    delete_case(ctx, links.case_id)
+    assert scout_requests(ctx.session) == []
+
+
+def test_choosing_a_hospital_or_reading_nothing_leaves_no_scout_request(ctx):
+    links = start_case(ctx, "MA")
+    ctx.ai.complete_json = unknown_hospital
+    submit_bill(ctx, links.case_id, bill_image())
+    assert len(scout_requests(ctx.session)) == 1
+    confirm_bill(ctx, links.case_id, {}, ccn="229999")  # the caregiver knew the hospital
+    assert scout_requests(ctx.session) == []
+    blank = start_case(ctx, "MA")
+    ctx.ai.complete_json = lambda role, messages, schema, *, phi, purpose, max_tokens=2000: (
+        BillExtract(amount_due=Decimal("100"))
+    )
+    submit_bill(ctx, blank.case_id, bill_image())
+    assert scout_requests(ctx.session) == []  # nothing a scout could match later
 
 
 def later_statement(role, messages, schema, *, phi, purpose, max_tokens=2000):

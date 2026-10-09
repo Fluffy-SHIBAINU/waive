@@ -1,6 +1,15 @@
 import re
+from decimal import Decimal
 
-from tests.unit.test_web_senior import photo, seeded_client
+from waive.atlas import repo
+from waive.atlas.publish import publish_sheet
+from waive.atlas.samples import st_example_sheet
+from waive.cases.extract import BillExtract
+from waive.cases.service import start_case
+from waive.db import session_scope
+
+from tests.unit.test_web_app import make_client
+from tests.unit.test_web_senior import HOSPITAL, photo, seeded_client
 
 
 def test_create_case_shows_both_links_and_review_works():
@@ -76,6 +85,32 @@ def test_caregiver_sees_provisional_dates_and_can_enter_the_first_bill():
         follow_redirects=True,
     ).text
     assert "March 29, 2027" in marked and "may be earlier" not in marked
+
+
+class UnknownHospitalAI:
+    def complete_json(self, role, messages, schema, *, phi, purpose, max_tokens=2000):
+        return BillExtract(
+            hospital_name="Rosa Alvarez Memorial Clinic",  # a misread: the patient's name
+            fap_url="https://pay.unknownhospital.org/acct/ACCT-20260903",
+            amount_due=Decimal("100"),
+        )
+
+
+def test_one_tap_delete_also_removes_the_scout_request_the_bill_raised():
+    client, engine = make_client(ai=UnknownHospitalAI())
+    with session_scope(engine) as session:
+        repo.upsert_hospital(session, HOSPITAL)
+        publish_sheet(session, st_example_sheet())
+        links = start_case(client.app.state.deps.context(session), "MA")
+    client.post(f"/s/{links.senior_token}/bill", files=photo())
+    with session_scope(engine) as session:
+        [request] = repo.open_review_items(session)
+        assert request.kind == "scout_request" and request.ccn is None
+        assert "ACCT" not in str(request.detail) and request.detail["cases"]
+    gone = client.post(f"/c/{links.caregiver_token}/delete", follow_redirects=True)
+    assert "deleted" in gone.text.lower()
+    with session_scope(engine) as session:
+        assert repo.open_review_items(session) == []
 
 
 def test_correction_rejects_a_hospital_that_is_not_in_the_registry():
