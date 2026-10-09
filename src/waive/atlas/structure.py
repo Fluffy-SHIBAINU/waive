@@ -18,6 +18,7 @@ from waive.atlas.schema import (
     SourceDoc,
     SubmitMethod,
 )
+from waive.atlas.verify import normalize
 
 SYSTEM_PROMPT = """You extract facts from a hospital's financial assistance documents into JSON.
 
@@ -409,42 +410,56 @@ FIELD_MAP: dict[str, tuple[str, str, Callable[[Any], Any]]] = {
 }
 
 
-def _stated_ceiling(draft: SheetDraft, known: set[str]) -> Decimal | None:
-    """The overall assistance ceiling the model read, when it is cited and numeric."""
+def _stated_ceiling(draft: SheetDraft, known: set[str]) -> tuple[Decimal, str] | None:
+    """The overall assistance ceiling the model read and the passage it cites, when it is cited
+    and numeric."""
     ceiling = draft.assistance_ceiling_fpl
     if ceiling is None or ceiling.value is None or not ceiling.quote:
         return None
     if ceiling.source_id not in known:
         return None
     try:
-        return _decimal(ceiling.value)
+        return _decimal(ceiling.value), ceiling.quote
     except ValueError:
         return None
 
 
+def _same_passage(first: str, second: str) -> bool:
+    """Two quotes of one passage: either normalizes to a part of the other."""
+    one, other = normalize(first), normalize(second)
+    return one in other or other in one
+
+
 def _drop_ceiling_read_as_free_care(
-    ceiling: Decimal | None, sections: dict[str, dict[str, Any]], skipped: list[str]
+    ceiling: tuple[Decimal, str] | None, sections: dict[str, dict[str, Any]], skipped: list[str]
 ) -> None:
     """UMass Memorial's "Financial assistance is available to ... household income, less than 600%
     of the federal poverty guidelines" bounds every kind of help; a free-care limit stated at or
-    above that ceiling is the same sentence read twice. The draft's own ceiling settles it: the
-    stated limit goes and the swap is recorded. A 100% band in the table may still supply the
-    real limit (_derive_free_care_limit runs next)."""
+    above that ceiling from the same sentence is that sentence read twice, and goes (a 100% band
+    in the table may still supply the real limit: _derive_free_care_limit runs next). Cited from a
+    different passage it stays: at a free-only hospital the limit and the ceiling coincide (Mount
+    Auburn, "care at 100% discount ... at or below 400%"), so a note leaves the call to the admin
+    rather than dropping a limit the documents may well state."""
     if ceiling is None:
         return
+    limit, ceiling_quote = ceiling
     eligibility = sections.get("eligibility", {})
     stated = eligibility.get("free_care_max_fpl")
-    if stated is None or stated.value < ceiling:
+    if stated is None or stated.value < limit:
+        return
+    note = (
+        f"eligibility.free_care_max_fpl: stated {stated.value:.0f} is at or above the overall "
+        f"assistance ceiling ({limit:.0f})"
+    )
+    if not _same_passage(stated.quote, ceiling_quote):
+        skipped.append(f"{note} but cites a different passage; check which is the free band")
         return
     del eligibility["free_care_max_fpl"]
-    skipped.append(
-        f"eligibility.free_care_max_fpl: stated {stated.value:.0f} is at or above the overall "
-        f"assistance ceiling ({ceiling:.0f}); not free care"
-    )
+    skipped.append(f"{note}; not free care")
 
 
 def _note_ceiling_without_income_rules(
-    ceiling: Decimal | None, sections: dict[str, dict[str, Any]], skipped: list[str]
+    ceiling: tuple[Decimal, str] | None, sections: dict[str, dict[str, Any]], skipped: list[str]
 ) -> None:
     """A sheet with a ceiling but no free-care band and no table is held for lacking income
     rules; the note tells the reviewer that the documents, not the model, left the gap."""
@@ -453,9 +468,10 @@ def _note_ceiling_without_income_rules(
     eligibility = sections.get("eligibility", {})
     if "free_care_max_fpl" in eligibility or "discount_tiers" in eligibility:
         return
+    limit, _quote = ceiling
     skipped.append(
         "eligibility.free_care_max_fpl: not stated; the documents give only an overall "
-        f"assistance ceiling ({ceiling:.0f}% FPL)"
+        f"assistance ceiling ({limit:.0f}% FPL)"
     )
 
 
