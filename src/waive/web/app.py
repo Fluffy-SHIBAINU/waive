@@ -6,6 +6,7 @@ from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+from starlette.formparsers import MultiPartParser
 
 from waive.ai.client import AIClient
 from waive.cases.vault import cipher_from_settings, signer_from_settings
@@ -14,6 +15,7 @@ from waive.db import init_db, make_engine
 from waive.governor import make_governor
 from waive.logging_setup import configure_logging
 from waive.web.deps import STATIC_DIR, TEMPLATES_DIR, Deps, render, today_utc
+from waive.web.limits import BodyLimit, UploadTooLarge
 from waive.web.plain import plain_lines
 
 
@@ -56,6 +58,10 @@ def create_app(
     app = FastAPI(title="Waive", docs_url=None, redoc_url=None, lifespan=lifespan)
     app.state.settings = settings
     app.state.governor = governor
+    app.add_middleware(BodyLimit, max_body=settings.max_upload_bytes)
+    # Starlette spools multipart files over 1 MiB to a plaintext temp file. With the cap in front
+    # nothing admitted needs to leave memory, which keeps "photos are never written to disk" true.
+    MultiPartParser.spool_max_size = settings.max_upload_bytes + 1
     templates = Jinja2Templates(directory=str(TEMPLATES_DIR))
     # `{{ cited.value | plain(path) }}`: cited atlas values in plain language (atlas_sheet.html).
     templates.env.filters["plain"] = plain_lines
@@ -109,6 +115,16 @@ def create_app(
             status_code=404,
             title="Not found",
             message="We could not find that page.",
+        )
+
+    @app.exception_handler(UploadTooLarge)
+    def too_large(request: Request, exc: UploadTooLarge) -> HTMLResponse:
+        return render(
+            request,
+            "error.html",
+            status_code=413,
+            title="That photo is too large",
+            message="Please take a smaller photo and try again.",
         )
 
     return app
