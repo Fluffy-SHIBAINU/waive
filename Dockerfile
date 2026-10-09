@@ -1,7 +1,11 @@
 # syntax=docker/dockerfile:1
 # Stage 1: resolve uv.lock into a virtual environment, then install the project itself.
-FROM ghcr.io/astral-sh/uv:python3.12-bookworm-slim AS builder
+# Based on the same Docker Hub image as the runtime stage rather than ghcr.io/astral-sh/uv:
+# ghcr.io pulls are blocked on the build machine (stale registry credential; gate U6.0), so the
+# image depends on Docker Hub only. uv is installed with pip, pinned to the version used locally.
+FROM python:3.12-slim-bookworm AS builder
 ENV UV_COMPILE_BYTECODE=1 UV_LINK_MODE=copy UV_PYTHON_DOWNLOADS=0
+RUN pip install --no-cache-dir uv==0.12.22
 WORKDIR /app
 COPY pyproject.toml uv.lock ./
 RUN --mount=type=cache,target=/root/.cache/uv \
