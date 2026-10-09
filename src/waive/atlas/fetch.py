@@ -9,18 +9,19 @@ literal or non-public address is never contacted, and a slow server cannot hold 
 a total deadline.
 """
 
-import io
 import ipaddress
 import logging
 import socket
+import subprocess
+import sys
 import time
 from collections.abc import Callable
 from urllib.parse import urlparse
 
 import httpx
-from pypdf import PdfReader
 
 from waive.atlas.discover import host_of
+from waive.atlas.pdf_worker import MAX_PAGES, MAX_TEXT_CHARS
 
 USER_AGENT = "Waive/0.1 (hospital financial assistance atlas)"
 MIN_TEXT_CHARS = 200
@@ -38,8 +39,11 @@ DOCUMENT_HOSTS = (
     "blob.core.windows.net",
 )
 MAX_HOPS = 3
+# Wall-clock bound on parsing one PDF (the worker is killed past it).
+PDF_TIMEOUT_SECONDS = 20.0
 
 log = logging.getLogger(__name__)
+__all__ = ["MAX_PAGES", "MAX_TEXT_CHARS", "download_text", "pdf_text"]
 # Name resolution, replaceable so unit tests never touch DNS (tests/conftest.py).
 resolve = socket.getaddrinfo
 
@@ -162,12 +166,23 @@ def download_text(
 
 
 def pdf_text(body: bytes) -> str | None:
-    """Page texts joined by blank lines; None when pypdf fails or the text is too short to use."""
+    """Page texts joined by blank lines (at most MAX_PAGES pages and MAX_TEXT_CHARS characters);
+    None when the file fails to parse, takes longer than PDF_TIMEOUT_SECONDS, or yields too little
+    text to use. Parsed in a child process (waive.atlas.pdf_worker): a crafted or merely huge PDF
+    must not stall the scheduler thread or exhaust the web process's memory."""
     try:
-        reader = PdfReader(io.BytesIO(body))
-        pages = [(page.extract_text() or "").strip() for page in reader.pages]
-    except Exception as error:
-        log.debug("pdf parse failed: %s", type(error).__name__)
+        done = subprocess.run(
+            [sys.executable, "-m", "waive.atlas.pdf_worker"],
+            input=body,
+            capture_output=True,
+            timeout=PDF_TIMEOUT_SECONDS,
+            check=False,
+        )
+    except subprocess.TimeoutExpired:
+        log.debug("pdf parse gave up after %s seconds", PDF_TIMEOUT_SECONDS)
         return None
-    text = "\n\n".join(page for page in pages if page)
+    if done.returncode != 0:
+        log.debug("pdf parse failed in the worker")
+        return None
+    text = done.stdout.decode("utf-8", errors="replace")
     return text if len(text) >= MIN_TEXT_CHARS else None
