@@ -19,6 +19,7 @@ from waive.atlas.schema import (
     SubmitMethod,
 )
 from waive.atlas.verify import normalize, quotes_assistance_ceiling
+from waive.rules.deadlines import MIN_ECA_WAIT_DAYS
 
 SYSTEM_PROMPT = """You extract facts from a hospital's financial assistance documents into JSON.
 
@@ -192,6 +193,33 @@ def _text(value: Any) -> str:
     return _plain_text(value)
 
 
+_BARE_DIGITS = re.compile(r"\+?\d+")
+
+
+def _phone(value: Any) -> str:
+    """A phone number as the hospital writes it. A tel: link whose label has no digits ("[Call
+    Arnot Health's Financial Assistance](tel:+16072713827)", 330090) yields its target, and a
+    bare digit string is formatted as (NNN) NNN-NNNN; text with fewer than ten digits is not a
+    phone number. Readable numbers keep their own punctuation, so rebuilds do not churn."""
+    if isinstance(value, list | dict):
+        raise ValueError("expected text, got a list or object")
+    raw = str(value).strip()
+    if match := _MARKDOWN_LINK.fullmatch(raw):
+        label, target = match.group(1).strip(), match.group(2).strip()
+        raw = label if len(re.sub(r"\D", "", label)) >= 10 else target.removeprefix("tel:")
+    text = _plain_text(raw)
+    digits = re.sub(r"\D", "", text)
+    if len(digits) < 10:
+        raise ValueError("no phone number")
+    if _BARE_DIGITS.fullmatch(text):
+        if len(digits) == 11 and digits.startswith("1"):
+            digits = digits[1:]
+        if len(digits) != 10:
+            raise ValueError("not a US phone number")
+        return f"({digits[:3]}) {digits[3:6]}-{digits[6:]}"
+    return text
+
+
 def _url(value: Any) -> str:
     """A link written as markdown keeps its address, not its label."""
     if isinstance(value, list | dict):
@@ -226,16 +254,29 @@ US_STATES = {
     "WA": "washington", "WV": "west virginia", "WI": "wisconsin", "WY": "wyoming",
 }  # fmt: skip
 MIN_WINDOW_DAYS = 240
+_CODE_OF_NAME = {name: code for code, name in US_STATES.items()}
+# Longest names first, so "west virginia" is one state, not two.
+_STATE_NAMES = re.compile(
+    r"\b(" + "|".join(sorted(map(re.escape, US_STATES.values()), key=len, reverse=True)) + r")\b"
+)
+# Codes count only as upper-case tokens inside mixed-case text ("KS, MO or IL"): "in", "or" and
+# "me" are English words.
+_STATE_CODES = re.compile(r"\b(" + "|".join(US_STATES) + r")\b")
 
 
 def _states(value: Any) -> list[str]:
-    """Residency must name real states; anything else (for example 'True') is a model mistake."""
+    """Residency must name real states; anything else (for example 'True') is a model mistake.
+    States are found as whole words inside each item ("New Jersey residents", "Kansas, Missouri,
+    and Illinois"), since models copy the sentence rather than the list (task 7.9)."""
     codes: list[str] = []
     for item in _str_list(value):
-        text = item.strip().lower()
-        code = next((c for c, name in US_STATES.items() if text in (c.lower(), name)), None)
-        if code and code not in codes:
-            codes.append(code)
+        text = item.strip()
+        found = [text.upper()] if text.upper() in US_STATES else []
+        if not found:
+            found = [_CODE_OF_NAME[match.group(1)] for match in _STATE_NAMES.finditer(text.lower())]
+            if text != text.upper():
+                found.extend(match.group(1) for match in _STATE_CODES.finditer(text))
+        codes.extend(code for code in found if code not in codes)
     if not codes:
         raise ValueError("no US state recognised")
     return codes
@@ -245,6 +286,19 @@ def _window_days(value: Any) -> int:
     days = _int(value)
     if days < MIN_WINDOW_DAYS:
         raise ValueError(f"application window {days} is below the 501(r) minimum of 240 days")
+    return days
+
+
+def _eca_wait_days(value: Any) -> int:
+    """501(r) forbids extraordinary collection actions for 120 days after the first bill, so a
+    smaller number is the written-notice period ("at least 30 days after ... written notice",
+    Adventist Health) that models read as the wait (task 7.9)."""
+    days = _int(value)
+    if days < MIN_ECA_WAIT_DAYS:
+        raise ValueError(
+            f"{days} is below the 501(r) minimum of {MIN_ECA_WAIT_DAYS} days; a notice period, "
+            "not the collections wait"
+        )
     return days
 
 
@@ -555,8 +609,8 @@ FIELD_MAP: dict[str, tuple[str, str, Callable[[Any], Any]]] = {
     "submit_methods": ("apply", "submit_methods", _submit_methods),
     "window_days_from_first_bill": ("apply", "window_days_from_first_bill", _window_days),
     "decision_days": ("apply", "decision_days", _int),
-    "eca_wait_days": ("collections", "eca_wait_days", _int),
-    "phone": ("contacts", "phone", _text),
+    "eca_wait_days": ("collections", "eca_wait_days", _eca_wait_days),
+    "phone": ("contacts", "phone", _phone),
     "hours": ("contacts", "hours", _text),
     "languages": ("contacts", "languages", _str_list),
     "facilities": ("coverage", "facilities", _str_list),

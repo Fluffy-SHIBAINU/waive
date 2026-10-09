@@ -533,3 +533,38 @@ def test_an_insured_patients_value_needs_a_quote_about_insured_patients():
     )
     assert not quote_addresses_insured("care for all uninsured patients", True)
     assert quote_addresses_insured("even if you have some insurance", True)
+
+
+def test_a_discount_given_as_a_range_or_a_floor_is_not_one_tier():
+    from waive.atlas.verify import RANGE_REASON, discount_range_in_quote
+
+    # Alliance (360131) and ACMH (390163), 7.9: "a reduction of 55% to 75%" became a 55% tier and
+    # "a discount of at least 25%" a 25% tier. The caster rejects a range in the value; the quote
+    # had the range all along.
+    alliance = (
+        "Patients that have a household income between 100% and 400% of the Federal Poverty "
+        "Guidelines may qualify for a reduction of 55% to 75% of total charges."
+    )
+    acmh = (
+        "Generally, patients with family income of 200% of the Federal Poverty Level or less may "
+        "be eligible for a discount of 100%. Patients with family income up to 400% of the Federal "
+        "Poverty Level may be eligible for a discount of at least 25%."
+    )
+    assert discount_range_in_quote(alliance) == {Decimal(55), Decimal(75)}
+    assert discount_range_in_quote(acmh) == {Decimal(25)}
+    assert discount_range_in_quote("receive a 60% discount") == set()
+    assert (
+        discount_range_in_quote("Up to 200% of the Federal Poverty Guidelines 100% (free care)")
+        == set()
+    )
+    assert discount_range_in_quote("a 30% to 50% discount off charges") == {
+        Decimal(30),
+        Decimal(50),
+    }
+    for quote, bands in ((alliance, [(100, 400, 55)]), (acmh, [(200, 400, 25)])):
+        docs = {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT + "\n" + quote + "\n"}
+        report = verify_sheet(with_tiers_quote(quote, bands), docs)
+        assert ("eligibility.discount_tiers", RANGE_REASON) in report.rejected
+    docs = {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT + "\n" + acmh + "\n"}
+    report = verify_sheet(with_tiers_quote(acmh, [(200, 400, 40)]), docs)
+    assert ("eligibility.discount_tiers", RANGE_REASON) not in report.rejected
