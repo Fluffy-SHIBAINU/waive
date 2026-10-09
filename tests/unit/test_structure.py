@@ -662,3 +662,155 @@ def test_a_free_limit_quoted_from_full_or_partial_wording_becomes_the_ceiling():
     assert any(
         note.startswith("eligibility.discount_tiers: only free-care bands") for note in skipped
     )
+
+
+# The prompt's label list, echoed back whole by the model (rule 6 of SYSTEM_PROMPT).
+ALL_DOC_LABELS = [
+    "photo_id", "proof_of_income", "social_security_letter", "tax_return", "pay_stubs",
+    "bank_statements", "proof_of_residency", "insurance_card", "medicaid_denial", "other",
+]  # fmt: skip
+
+
+def documents(labels, quote):
+    draft = SheetDraft(documents_required=field(labels, quote))
+    sheet, skipped = draft_to_sheet(draft, SAMPLE.hospital, [SAMPLE.sources[0]], TODAY)
+    cited = sheet.apply.documents_required
+    return (None if cited is None else [d.value for d in cited.value]), skipped
+
+
+def test_documents_required_keeps_only_the_kinds_the_quote_names():
+    # 7.9: nineteen sheets listed eight to ten document kinds (the prompt's label list echoed
+    # back) under quotes naming one item or none; the packet then asked seniors for a Medicaid
+    # denial letter and bank statements the hospital never mentioned.
+    assert documents(ALL_DOC_LABELS, "Individual Income Tax Return.") == (
+        ["proof_of_income", "tax_return"],
+        [],
+    )
+    kinds, skipped = documents(ALL_DOC_LABELS, "Confidential Financial Assistance Application")
+    assert kinds is None
+    assert skipped == [
+        "apply.documents_required: none of the listed documents is named in the quote"
+    ]
+    kinds, _ = documents(
+        [
+            "photo_id",
+            "proof_of_income",
+            "other",
+            "tax_return",
+            "pay_stubs",
+            "bank_statements",
+            "other",
+        ],
+        "Current state or federal income tax returns • Current Forms W2 and/or Forms 1099 • Four "
+        "most recent payroll stubs • Four most recent checking and/or savings account statements",
+    )
+    assert kinds == ["proof_of_income", "tax_return", "pay_stubs", "bank_statements", "other"]
+    # The sample draft's "utility bill" still counts as another document the quote implies.
+    assert documents(
+        ["photo id", "proof of income", "utility bill"],
+        "Applicants must provide a photo ID and one proof of income",
+    )[0] == [
+        "photo_id",
+        "proof_of_income",
+        "other",
+    ]
+
+
+def submit(kinds, quote):
+    draft = SheetDraft(
+        submit_methods=field([{"kind": kind, "detail": ""} for kind in kinds], quote)
+    )
+    sheet, skipped = draft_to_sheet(draft, SAMPLE.hospital, [SAMPLE.sources[0]], TODAY)
+    cited = sheet.apply.submit_methods
+    return (None if cited is None else [m.kind for m in cited.value]), skipped
+
+
+def test_submit_methods_keep_only_the_channels_the_quote_names():
+    # 7.9: ten Adventist sheets listed mail, fax, email, portal and in person (all with empty
+    # detail) under a sentence that offers paper copies at the registration desk or by phone.
+    five = ["mail", "fax", "email", "portal", "in_person"]
+    assert submit(
+        five,
+        "More information about Financial Assistance and paper copies of this Policy and "
+        "Application are available from any hospital registration area or by phone at (844) 827-5047.",
+    ) == (["in_person"], [])
+    assert submit(
+        ["mail", "fax", "in_person"],
+        "You can apply for help with your bill in person, by mail or over the phone.",
+    ) == (
+        ["mail", "in_person"],
+        [],
+    )
+    kinds, skipped = submit(five, "How to Submit ![](/images/bullet.gif?last_modified=1492021518)")
+    assert kinds is None
+    assert skipped == ["apply.submit_methods: none of the listed channels is named in the quote"]
+    assert submit(
+        ["mail", "email"],
+        "by email to fapinfo@bhs1.org or by postal mail to: 510 North St Ste 8 Pittsfield MA 01201",
+    )[0] == ["mail", "email"]
+    assert submit(
+        ["mail", "in_person"],
+        "send the completed application to the address listed below or bring them to a financial advocate at any hospital",
+    )[0] == ["mail", "in_person"]
+
+
+def programs(names, quote):
+    draft = SheetDraft(presumptive=field(names, quote))
+    sheet, skipped = draft_to_sheet(draft, SAMPLE.hospital, [SAMPLE.sources[0]], TODAY)
+    cited = sheet.programs.presumptive
+    return (None if cited is None else cited.value), skipped
+
+
+def test_presumptive_programs_must_be_named_in_a_quote_about_automatic_eligibility():
+    # 7.9: ACMH (390163) listed Medicare from a bad-debt posting rule, Advocate sheets listed
+    # Medicaid from a screening sentence, and AdventHealth sheets listed whole criteria sentences.
+    assert programs(
+        ["Medicare"],
+        "Accounts with Medicare - all valid amounts are to be posted using the Medicare Bad Debt-score transaction code as indigent cases.",
+    ) == (
+        None,
+        ["programs.presumptive: quote does not describe presumptive (automatic) eligibility"],
+    )
+    assert (
+        programs(
+            ["Medicaid"],
+            "Patients may be asked to cooperate with screening for Medicaid or other government programs before eligibility is determined.",
+        )[0]
+        is None
+    )
+    assert programs(
+        [
+            "Medicaid",
+            "Supplemental Nutrition Assistance Program (SNAP)",
+            "Women, Infants and Children Nutrition Program (WIC)",
+        ],
+        "Presumptive Eligibility Criteria is demonstrated by enrollment in one of the following programs: o Women, Infants and Children Nutrition Program (WIC). o Supplemental Nutrition Assistance Program (SNAP).",
+    ) == (
+        [
+            "Supplemental Nutrition Assistance Program (SNAP)",
+            "Women, Infants and Children Nutrition Program (WIC)",
+        ],
+        [],
+    )
+    names, skipped = programs(
+        [
+            "Individual is self-identified as homeless.",
+            "Individual is deceased and has no known estate or spouse able to pay hospital balance or debt.",
+        ],
+        "Individuals who are uninsured and demonstrate one or more of the following will be deemed eligible for the most generous financial assistance",
+    )
+    assert names is None
+    assert skipped == ["programs.presumptive: none of the listed programs is named in the quote"]
+    # Synonyms count: MassHealth is Medicaid, CalFresh is SNAP; the sample draft still passes.
+    assert programs(
+        ["Medicaid", "SNAP"],
+        "If you are enrolled in any of the following, you qualify for free care: CalFresh, Medi-Cal for Adults, WIC",
+    )[0] == ["Medicaid", "SNAP"]
+    assert programs(
+        ["MassHealth", "SNAP"],
+        "Patients enrolled in MassHealth or SNAP are presumptively eligible for free care",
+    )[0] == ["MassHealth", "SNAP"]
+    assert programs(
+        ["MassHealth", "Health Safety Net"],
+        "patients with Health Safety Net Full and Health Safety Net Partial will be presumptively eligible for Financial Assistance",
+    )[0] == ["Health Safety Net"]

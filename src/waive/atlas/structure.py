@@ -259,7 +259,13 @@ DOC_SYNONYMS = {
         "w2",
         "1099",
     ),
-    "social_security_letter": ("social security", "ssa", "benefit letter", "award letter"),
+    "social_security_letter": (
+        "social security",
+        "social_security",
+        "ssa",
+        "benefit letter",
+        "award letter",
+    ),
     "tax_return": ("tax return", "tax_return", "1040"),
     "pay_stubs": ("pay stub", "paystub", "pay_stubs", "paycheck"),
     "bank_statements": ("bank statement", "bank_statements"),
@@ -279,6 +285,51 @@ def _doc_type(label: str) -> DocType:
 
 def _doc_types(value: Any) -> list[DocType]:
     return [_doc_type(label) for label in _str_list(value)]
+
+
+# What a quote must say for each document kind to stay on the list (task 7.9: nineteen sheets
+# echoed the prompt's whole label list under a quote naming one item or none).
+DOC_MARKERS: dict[DocType, re.Pattern[str]] = {
+    DocType.PHOTO_ID: re.compile(
+        r"photo[- _]?id|\bid\b|identification|identity|driver|passport|government[- ]issued"
+        r"|military id|state[- ]issued"
+    ),
+    DocType.PROOF_OF_INCOME: re.compile(
+        r"income|\bw-?2\b|\b1099\b|\bwages?\b|earnings|salary|pay ?check"
+    ),
+    DocType.SOCIAL_SECURITY_LETTER: re.compile(
+        r"social security|\bssa\b|benefit (?:letter|statement|award)|award letter"
+    ),
+    DocType.TAX_RETURN: re.compile(
+        r"tax (?:return|form|transcript|filing)|\b1040\b|income tax|tax_return|\btaxes\b"
+    ),
+    DocType.PAY_STUBS: re.compile(
+        r"pay ?stubs?|paystubs?|check stubs?|payroll|pay_stubs|wage statement"
+    ),
+    DocType.BANK_STATEMENTS: re.compile(
+        r"\bbank\b|checking|savings account|investment (?:account|statement)"
+    ),
+    DocType.PROOF_OF_RESIDENCY: re.compile(r"residen\w*|proof of address|\blease\b|utility"),
+    DocType.INSURANCE_CARD: re.compile(r"insurance"),
+    DocType.MEDICAID_DENIAL: re.compile(r"denial|denied|turned down"),
+}
+
+
+def _supported_doc_types(value: list[DocType], quote: str) -> list[DocType]:
+    """The listed kinds the quote names, de-duplicated; "other" survives once as long as the
+    quote names something and the list is not the whole enum echoed back."""
+    text = normalize(quote)
+    kept = [
+        doc_type
+        for doc_type in dict.fromkeys(value)
+        if doc_type is not DocType.OTHER and DOC_MARKERS[doc_type].search(text)
+    ]
+    if not kept:
+        raise ValueError("none of the listed documents is named in the quote")
+    echoed = set(value) >= set(DocType) - {DocType.OTHER}
+    if DocType.OTHER in value and not echoed:
+        kept.append(DocType.OTHER)
+    return kept
 
 
 SUBMIT_KINDS = {
@@ -314,6 +365,108 @@ def _submit_methods(value: Any) -> list[SubmitMethod]:
     if not methods:
         raise ValueError("no recognised submit methods")
     return methods
+
+
+# What a quote must say for each channel to stay on the list (task 7.9: Adventist sheets listed
+# mail, fax, email, portal and in person under "paper copies ... from any hospital registration
+# area or by phone"; the packet then told seniors to fax a number that does not exist).
+CHANNEL_MARKERS: dict[str, re.Pattern[str]] = {
+    "mail": re.compile(
+        r"(?<![e-])\bmail\w*|\baddress\b|p\.? ?o\.? box|\bbox \d|\bwrite to\b|\bpostal\b|\bsend\b"
+        r"|\breturn\b|\bstreet\b|\bst\.|\bsuite\b|\bste\b|\bave\b|avenue|\broad\b|\brd\b|\bblvd\b"
+        r"|\bdrive\b|\b[a-z]{2} \d{5}(?:-\d{4})?\b"
+    ),
+    "fax": re.compile(r"\bfax"),
+    "email": re.compile(r"e-?mail|@|electronic mail"),
+    "portal": re.compile(
+        r"online|portal|website|\bweb\b|\bapp\b|www\.|https?://|download|\.org\b|\.com\b"
+        r"|electronically|mychart"
+    ),
+    "in_person": re.compile(
+        r"in[- ]person|\bvisit|registration|\boffice|stop (?:at|by|in)|lobby|counsel|\bbring\b"
+        r"|department|\blocation|campus|\bdesk\b|\bwindow\b|admitting|admissions|\bat any\b"
+    ),
+    "phone": re.compile(
+        r"\bphone|\bcall|\btel\b|telephone|\(\d{3}\) ?\d{3}|\b\d{3}[-. ]\d{3}[-. ]\d{4}\b"
+    ),
+}
+
+
+def _supported_submit_methods(value: list[SubmitMethod], quote: str) -> list[SubmitMethod]:
+    text = normalize(quote)
+    kept = [method for method in value if CHANNEL_MARKERS[method.kind].search(text)]
+    if not kept:
+        raise ValueError("none of the listed channels is named in the quote")
+    return kept
+
+
+# A quote about presumptive (automatic) eligibility, as distinct from a screening requirement
+# ("may be asked to cooperate with screening for Medicaid") or an accounting rule.
+_PRESUMPTIVE_MARKERS = re.compile(
+    r"presumptiv|automatic|\bdeem|qualify for (?:free|100)|enrolled in|enrollment in"
+    r"|eligibility in|means[- ]tested|without further|participat\w+ in|active (?:medicaid|medi-cal"
+    r"|masshealth)|\bhsn (?:full|partial)\b"
+)
+PROGRAM_SYNONYMS: dict[str, re.Pattern[str]] = {
+    "medicaid": re.compile(
+        r"medicaid|medi-?cal\b|masshealth|mass health|medical assistance|apple health"
+    ),
+    "snap": re.compile(r"\bsnap\b|calfresh|food stamps?|supplemental nutrition"),
+    "wic": re.compile(r"\bwic\b|women,? infants"),
+    "liheap": re.compile(r"liheap|low[- ]income home energy"),
+    "tanf": re.compile(r"\btanf\b|temporary assistance"),
+    "ssi": re.compile(r"\bssi\b|supplemental security"),
+    "health safety net": re.compile(r"health safety net|\bhsn\b"),
+    "medicare": re.compile(r"medicare"),
+    "chip": re.compile(r"\bchip\b|children's health insurance"),
+    "section 8": re.compile(r"section 8|housing choice voucher"),
+    "head start": re.compile(r"head start"),
+    "connector": re.compile(r"connector"),
+}
+PROGRAM_GENERIC_WORDS = frozenset(
+    {
+        "program", "programs", "plan", "the", "and", "for", "of", "with", "assistance", "health",
+        "care", "medical", "state", "patients", "patient", "eligible", "eligibility", "coverage",
+        "services", "county", "local", "other",
+    }
+)  # fmt: skip
+MAX_PROGRAM_CHARS = 60
+# A criterion copied as a program ("Individual is self-identified as homeless.").
+_SENTENCE_SHAPED = re.compile(r"\b(?:is|are|was|were|has|have|will|may|must)\b|\.$")
+
+
+def _program_named(item: str, text: str) -> bool:
+    name = normalize(item)
+    key = next((key for key, pattern in PROGRAM_SYNONYMS.items() if pattern.search(name)), None)
+    if key is not None and PROGRAM_SYNONYMS[key].search(text):
+        return True
+    if name in text:
+        return True
+    words = [
+        word
+        for word in re.findall(r"[a-z0-9]+", name)
+        if len(word) >= 4 and word not in PROGRAM_GENERIC_WORDS
+    ]
+    return bool(words) and all(word in text for word in words)
+
+
+def _supported_programs(value: list[str], quote: str) -> list[str]:
+    """The listed programs the quote names, from a quote that is about automatic eligibility.
+    Task 7.9: ACMH listed Medicare from a bad-debt posting rule, Advocate sheets Medicaid from a
+    screening sentence, and AdventHealth sheets whole criteria sentences."""
+    text = normalize(quote)
+    if _PRESUMPTIVE_MARKERS.search(text) is None:
+        raise ValueError("quote does not describe presumptive (automatic) eligibility")
+    kept = [
+        item
+        for item in dict.fromkeys(value)
+        if len(item) <= MAX_PROGRAM_CHARS
+        and _SENTENCE_SHAPED.search(item.lower()) is None
+        and _program_named(item, text)
+    ]
+    if not kept:
+        raise ValueError("none of the listed programs is named in the quote")
+    return kept
 
 
 # "201%-400%", "0% to 200%", "401 – 500": a whole income band written as one string.
@@ -407,6 +560,12 @@ FIELD_MAP: dict[str, tuple[str, str, Callable[[Any], Any]]] = {
     "hours": ("contacts", "hours", _text),
     "languages": ("contacts", "languages", _str_list),
     "facilities": ("coverage", "facilities", _str_list),
+}
+# Lists whose items must each be named by the quote; the caster above shapes them, these prune.
+QUOTE_FILTERS: dict[str, Callable[[Any, str], Any]] = {
+    "apply.documents_required": _supported_doc_types,
+    "apply.submit_methods": _supported_submit_methods,
+    "programs.presumptive": _supported_programs,
 }
 
 
@@ -544,6 +703,8 @@ def draft_to_sheet(
             continue
         try:
             value = cast(draft_field.value)
+            if path in QUOTE_FILTERS:
+                value = QUOTE_FILTERS[path](value, draft_field.quote)
         except (ValueError, KeyError, TypeError) as error:
             skipped.append(f"{path}: {error}")
             continue

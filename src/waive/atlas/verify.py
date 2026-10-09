@@ -159,6 +159,77 @@ def quotes_only_the_agb_cap(quote: str) -> bool:
     return "insur" not in _AGB_CLAUSE.sub("", text)
 
 
+ASSET_REASON = "quote does not support the asset-test value"
+_ASSET_WORDS = re.compile(r"\bassets?\b|\bresources\b|\bsavings\b|\bnet worth\b|\bmeans[- ]test")
+# The quote says assets are left out of the eligibility decision.
+_ASSET_NEGATED = re.compile(
+    r"(?:assets?|resources|savings|net worth|employment status)\b[^.;]{0,40}\b(?:are |is |will be )?"
+    r"not (?:considered|required|counted|used|reviewed|evaluated|a factor|part of|taken into "
+    r"account|included)"
+    r"|\bno (?:income or )?(?:asset|resource)s? (?:criteria|test|limit|requirement|review)"
+    r"|\bdoes not (?:consider|count|use|review|evaluate|require)\b[^.;]{0,30}"
+    r"\b(?:assets?|resources|savings)"
+    r"|\bwithout regard to\b[^.;]{0,30}\bassets?\b"
+    r"|\basset test(?:ing)? is not (?:required|performed|used|part)"
+    r"|\bregardless of (?:their )?assets?\b"
+    r"|\bbased (?:solely|only) on (?:household |family )?income\b"
+)
+# A partial exemption ("the first $10,000 ... shall not be counted", "will never include the
+# primary residence", "may also be applied to Medicare recipients") means assets ARE tested.
+_ASSET_PARTIAL = re.compile(
+    r"\bshall not be counted\b|\bnot be counted\b|\bnor shall\b|\bwill never include\b"
+    r"|\bdoes not include\b|\bthe first (?:ten thousand|\$)|\bover the first\b"
+    r"|\bmay (?:also )?be applied\b|\bprimary residence\b|\bexempt\w*|\bdoes not apply to\b"
+    r"|\bprotected assets?\b"
+)
+# The quote says assets are looked at.
+_ASSET_TESTED = re.compile(
+    r"\blimits?\b|\bmeans[- ]test|\bconsidered\b|\bcounted\b|\bverif\w+|\bavailable for payment\b"
+    r"|\bused\b|\breview\w*|\bexhausted\b|\bevaluat\w+|\bproof of assets\b|\basset test\w*"
+    r"|\bbe applied\b|\btaken into account\b|\bconsists? of\b|\binclud\w+|\bdocument\w*"
+    r"|\bvalidate\b"
+)
+
+
+def quote_supports_asset_test(quote: str, value: bool) -> bool:
+    """Whether the quote is about assets and says what the boolean says. Twenty-one sheets in
+    the first national batch (task 7.9) carried asset_test under quotes that said the opposite
+    (Adventist Health's $10,000 exemption read as "no asset test") or nothing about assets at
+    all (a Colorado screening paragraph, an AGB sentence), because any boolean passed."""
+    text = normalize(quote)
+    if _ASSET_WORDS.search(text) is None:
+        return False
+    if value:
+        return _ASSET_TESTED.search(text) is not None
+    return _ASSET_NEGATED.search(text) is not None and _ASSET_PARTIAL.search(text) is None
+
+
+INSURED_REASON = "quote does not say whether insured patients are covered"
+# "insured" as its own word (never the "insured" inside "uninsured"), or words only an insured
+# patient has: a deductible, a co-pay, coinsurance.
+_INSURED_WORDS = re.compile(
+    r"(?<!un-)\binsured\b|\bunder-?insured\b|\binsurance\b|\bdeductibles?\b|\bco-?pay\w*"
+    r"|\bco-?insurance\b|\bout-of-pocket\b"
+)
+_INSURED_EXCLUDED = re.compile(
+    r"\bonly (?:to |for )?(?:the )?uninsured\b|\buninsured (?:patients |individuals )?only\b"
+    r"|\bnot (?:available|offered|open) to\b|\bexclud\w+|\bineligible\b|\b(?:do|does) not qualify\b"
+    r"|\bnot (?:be )?eligible\b|\b(?:do|does) not have (?:any (?:form of )?)?(?:health )?insurance\b"
+    r"|\bwithout (?:health )?insurance\b|\bno (?:health )?insurance\b|\bmust be uninsured\b"
+    r"|\bnot intended to\b|\bnot (?:cover|apply to|provide)\b"
+)
+
+
+def quote_addresses_insured(quote: str, value: bool) -> bool:
+    """Whether the quote speaks of insured patients at all, and, for a False value, says they
+    are left out. Sentences about "all uninsured patients", emergency care for everyone or
+    physician fees were read both ways in the first national batch (task 7.9)."""
+    text = normalize(quote)
+    if _INSURED_WORDS.search(text) is None:
+        return False
+    return value or _INSURED_EXCLUDED.search(text) is not None
+
+
 def value_in_quote(value: Any, quote: str) -> bool:
     if isinstance(value, bool):
         return True
@@ -245,6 +316,14 @@ def verify_sheet(sheet: ProcedureSheet, documents: dict[str, str]) -> Verificati
             cited.quote or ""
         ):
             report.rejected.append((path, AGB_CAP_REASON))
+        elif path == "eligibility.insured_patients_covered" and not quote_addresses_insured(
+            cited.quote or "", bool(cited.value)
+        ):
+            report.rejected.append((path, INSURED_REASON))
+        elif path == "eligibility.asset_test" and not quote_supports_asset_test(
+            cited.quote or "", bool(cited.value)
+        ):
+            report.rejected.append((path, ASSET_REASON))
         else:
             report.accepted.append(path)
     return report
