@@ -6,7 +6,14 @@ import pytest
 import respx
 from pydantic import BaseModel, SecretStr
 
-from waive.ai.client import AIClient, AIOutputError, ZDRRequired, estimate_usd, extract_json
+from waive.ai.client import (
+    AIClient,
+    AIOutputError,
+    AIUnavailable,
+    ZDRRequired,
+    estimate_usd,
+    extract_json,
+)
 from waive.config import Settings
 from waive.governor import Governor, Ledger
 
@@ -147,6 +154,23 @@ def test_schema_failure_never_quotes_the_model_answer(tmp_path):
     assert "Answer" in str(error) and "percent" in str(error)
     assert "$" not in str(error) and "@" not in str(error) and "input_value" not in str(error)
     assert error.__cause__ is None and error.__context__ is None
+
+
+@respx.mock
+def test_transport_and_server_failures_become_ai_unavailable(tmp_path):
+    """Routes catch the project's own exception; openai/httpx errors are translated, with no
+    chain, because their text can quote the response."""
+    route = respx.post(f"{BASE}/chat/completions").mock(side_effect=httpx.ConnectError("refused"))
+    client, _ = make_client(tmp_path)
+    client._client = client._client.with_options(max_retries=0)  # no retry back-off in tests
+    with pytest.raises(AIUnavailable) as caught:
+        client.complete_json("fast", USER, Answer, phi=False, purpose="test")
+    assert caught.value.__cause__ is None and "ConnectionError" in str(caught.value)
+    assert "refused" not in str(caught.value)
+    route.mock(return_value=httpx.Response(503, json={"error": {"message": "down"}}))
+    with pytest.raises(AIUnavailable, match="503"):
+        client.complete_json("fast", USER, Answer, phi=False, purpose="test")
+    assert issubclass(AIUnavailable, RuntimeError)
 
 
 @respx.mock

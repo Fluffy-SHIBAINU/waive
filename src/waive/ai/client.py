@@ -6,6 +6,7 @@ from decimal import Decimal
 from typing import Any, TypeVar
 
 import httpx
+import openai
 from openai import OpenAI
 from pydantic import BaseModel, ValidationError
 
@@ -46,6 +47,11 @@ class ZDRRequired(RuntimeError):
 
 class AIOutputError(RuntimeError):
     """Raised when model output cannot be parsed into the requested schema."""
+
+
+class AIUnavailable(RuntimeError):
+    """Token Factory could not be reached or answered with an error. Carries only the model and
+    the error class or status, never the request or response text."""
 
 
 def estimate_usd(model: str, prompt_tokens: int, completion_tokens: int) -> Decimal:
@@ -144,14 +150,19 @@ class AIClient:
         options: dict[str, Any] = {"response_format": {"type": "json_object"}}
         for attempt in range(2):
             self._governor.ensure_token_factory()
-            response = self._client.chat.completions.create(
-                model=model,
-                messages=conversation,
-                temperature=0,
-                max_tokens=max_tokens,
-                **options,
-                **request_options(model),
-            )
+            try:
+                response = self._client.chat.completions.create(
+                    model=model,
+                    messages=conversation,
+                    temperature=0,
+                    max_tokens=max_tokens,
+                    **options,
+                    **request_options(model),
+                )
+            except (openai.APIError, httpx.HTTPError) as error:
+                status = getattr(error, "status_code", None)
+                detail = f"HTTP {status}" if status else type(error).__name__
+                raise AIUnavailable(f"{model}: {detail}") from None
             usage = response.usage
             if usage is not None:
                 self._governor.record_token_factory(
