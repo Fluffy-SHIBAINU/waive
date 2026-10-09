@@ -1,7 +1,7 @@
 # Atlas coverage — MA
 
 Hospitals in registry: 46
-Published sheets: 31 (67%)
+Published sheets: 29 (63%)
 
 | CCN | Hospital | Domain | Status | Version | Completeness | Fields | Sources |
 |---|---|---|---|---|---|---|---|
@@ -17,7 +17,7 @@ Published sheets: 31 (67%)
 | 220086 | BETH ISRAEL DEACONESS MEDICAL CENTER | bidmc.org | published | 3 | 0.67 | 11 | 5 |
 | 220031 | BOSTON MEDICAL CENTER | bmc.org | published | 5 | 0.50 | 10 | 5 |
 | 220119 | BRIGHAM AND WOMEN FAULKNER HOSPITAL | massgeneralbrigham.org | published | 6 | 1.00 | 12 | 7 |
-| 220110 | BRIGHAM AND WOMEN'S HOSPITAL | massgeneralbrigham.org | published | 3 | 0.67 | 8 | 8 |
+| 220110 | BRIGHAM AND WOMEN'S HOSPITAL | massgeneralbrigham.org | published | 4 | 0.50 | 6 | 8 |
 | 220012 | CAPE COD HOSPITAL | capecodhealth.org | held | 4 | 0.00 | 1 | 2 |
 | 220015 | COOLEY DICKINSON HOSPITAL INC,THE | cooleydickinson.org | none | | | | |
 | 220084 | EMERSON HOSPITAL - | emersonhealth.org | published | 5 | 0.67 | 9 | 5 |
@@ -32,7 +32,7 @@ Published sheets: 31 (67%)
 | 220075 | MASSACHUSETTS EYE AND EAR INFIRMARY - | payerprice.com | none | | | | |
 | 220071 | MASSACHUSETTS GENERAL HOSPITAL | massgeneralbrigham.org | published | 5 | 1.00 | 12 | 6 |
 | 220070 | MELROSEWAKEFIELD HEALTHCARE | tuftsmedicine.org | held | 3 | 0.50 | 9 | 7 |
-| 220066 | MERCY MEDICAL CTR | mercy.net | published | 2 | 0.83 | 12 | 5 |
+| 220066 | MERCY MEDICAL CTR | mercy.net | held | 3 | 0.50 | 10 | 5 |
 | 220010 | MERRIMACK HEALTH LAWRENCE HOSPITAL | mhlawrencehospital.org | published | 2 | 0.67 | 10 | 5 |
 | 220175 | METROWEST MEDICAL CENTER | massgeneralbrigham.org | published | 5 | 0.83 | 9 | 8 |
 | 220090 | MILFORD REGIONAL MEDICAL CENTER | milfordregional.org | held | 2 | 0.00 | 1 | 8 |
@@ -49,5 +49,5 @@ Published sheets: 31 (67%)
 | 220116 | TUFTS MEDICAL CENTER | tuftsmedicine.org | published | 3 | 0.67 | 9 | 8 |
 | 220019 | UMASS MEMORIAL HEALTH - HARRINGTON HOSPITAL | billfairly.com | published | 3 | 0.33 | 4 | 5 |
 | 220001 | UMASS MEMORIAL HEALTHALLIANCE HOSPITALS | ummhealth.org | held | 3 | 0.50 | 7 | 6 |
-| 220163 | UMASS MEMORIAL MEDICAL CENTER/UNIVERSITY CAMPUS | ummhealth.org | published | 3 | 0.67 | 8 | 6 |
+| 220163 | UMASS MEMORIAL MEDICAL CENTER/UNIVERSITY CAMPUS | ummhealth.org | held | 4 | 0.50 | 7 | 6 |
 | 220105 | WINCHESTER HOSPITAL | winchesterhospital.org | published | 2 | 0.83 | 12 | 8 |
