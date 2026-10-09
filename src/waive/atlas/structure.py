@@ -159,19 +159,38 @@ def _bool(value: Any) -> bool:
     raise ValueError("not a boolean")
 
 
+# Tavily returns pages as markdown, so models copy "[508-334-9300](tel:508-334-9300)" into
+# text fields; the sheet wants the label (or, for form_url, the address), never the markup.
+_MARKDOWN_LINK = re.compile(r"\[([^\]]+)\]\(([^)]*)\)")
+
+
+def _plain_text(value: Any) -> str:
+    return _MARKDOWN_LINK.sub(r"\1", str(value)).replace("**", "").strip()
+
+
 def _text(value: Any) -> str:
     """One string. Models sometimes return a list or object where the schema wants text
     ("phone": [{"kind": "main", "number": ...}]); str() of that would publish a Python repr."""
     if isinstance(value, list | dict):
         raise ValueError("expected text, got a list or object")
-    return str(value).strip()
+    return _plain_text(value)
+
+
+def _url(value: Any) -> str:
+    """A link written as markdown keeps its address, not its label."""
+    if isinstance(value, list | dict):
+        raise ValueError("expected text, got a list or object")
+    text = str(value).strip()
+    if match := _MARKDOWN_LINK.fullmatch(text):
+        return match.group(2).strip() or match.group(1).strip()
+    return text
 
 
 def _str_list(value: Any) -> list[str]:
     items = value if isinstance(value, list) else [value]
     if any(isinstance(item, list | dict) for item in items):
         raise ValueError("list items must be text, not objects or lists")
-    cleaned = [str(item).strip() for item in items if str(item).strip()]
+    cleaned = [_plain_text(item) for item in items if _plain_text(item)]
     if not cleaned:
         raise ValueError("empty list")
     return cleaned
@@ -275,7 +294,7 @@ def _submit_methods(value: Any) -> list[SubmitMethod]:
         kind = SUBMIT_KINDS.get(str(item.get("kind", "")).strip().lower())
         if kind is None:
             continue  # an unknown channel is dropped; the known ones are still useful
-        methods.append(SubmitMethod(kind=kind, detail=str(item.get("detail", "")).strip()))
+        methods.append(SubmitMethod(kind=kind, detail=_plain_text(item.get("detail", ""))))
     if not methods:
         raise ValueError("no recognised submit methods")
     return methods
@@ -362,7 +381,7 @@ FIELD_MAP: dict[str, tuple[str, str, Callable[[Any], Any]]] = {
     "residency": ("eligibility", "residency", _states),
     "insured_patients_covered": ("eligibility", "insured_patients_covered", _bool),
     "presumptive": ("programs", "presumptive", _str_list),
-    "form_url": ("apply", "form_url", _text),
+    "form_url": ("apply", "form_url", _url),
     "documents_required": ("apply", "documents_required", _doc_types),
     "submit_methods": ("apply", "submit_methods", _submit_methods),
     "window_days_from_first_bill": ("apply", "window_days_from_first_bill", _window_days),
