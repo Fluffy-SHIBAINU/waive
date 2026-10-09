@@ -32,7 +32,7 @@ Rosa is 74 and lives on $1,900 a month from Social Security. After an ER visit s
 
 **A learning loop.** Photos of the hospital's decision letters become outcomes. An outcome that contradicts the sheet triggers a re-scout, a new version after review, and, after enough distinct cases, an accountability flag for a hospital that denies people its own policy says qualify. Patients' photos of public documents fill gaps after an automated personal-information check and admin review. Only enums, income bands and one-way hashes are stored.
 
-**Where it stands (2026-10-09, honestly):** 46 Massachusetts nonprofit acute-care and critical-access hospitals in the registry, 31 published sheets (67 %), 13 held, 2 without documents; 2,703 hospitals seeded nationally from CMS, 68 published so far after the first national batch across CA, NY, TX, FL, PA, IL, OH and NJ (300 Tavily credits a day); bill reading on 30 synthetic bills: hospital name 100 %, statement date 97 %, amount due 100 %; no real bills processed yet — photos with personal data were refused until zero data retention was confirmed for the Token Factory project (confirmed 2026-10-09). Spend so far: 685 Tavily credits, $2.28 of Token Factory.
+**Where it stands (2026-10-09, honestly):** 46 Massachusetts nonprofit acute-care and critical-access hospitals in the registry, 29 published sheets (63 %), 15 held, 2 without documents; 2,703 hospitals seeded nationally from CMS, 66 published so far after the first national batch across CA, NY, TX, FL, PA, IL, OH and NJ (300 Tavily credits a day); bill reading on 30 synthetic bills: hospital name 100 %, statement date 97 %, amount due 100 %; no real bills processed yet — photos with personal data were refused until zero data retention was confirmed for the Token Factory project (confirmed 2026-10-09). Spend so far: 685 Tavily credits, $2.31 of Token Factory.
 
 ## How we built it
 
@@ -65,7 +65,7 @@ Built in a single day plus a self-paced build loop with Claude Code: a design sp
 
 ## Accomplishments that we're proud of
 
-- 31 Massachusetts hospitals with published, cited, versioned procedure sheets, every documented field backed by a quote that verifies against the source — for $1.64 and 424 credits; the first national batch added 37 more hospitals in eight states for 261 credits.
+- 29 Massachusetts hospitals with published, cited, versioned procedure sheets, every documented field backed by a quote that verifies against the source — for $1.64 and 424 credits; the first national batch added 37 more hospitals in eight states for 261 credits.
 - A phone flow a 74-year-old can finish without typing: photo, read-back, two questions, photo, answer read aloud.
 - A learning loop that cannot be poisoned: enums only, five distinct cases before anything patient-reported is published, admin review before a document changes a rule, accountability flags after three and five cases.
 - Honest numbers everywhere, including the ones that are not flattering.
