@@ -88,6 +88,33 @@ def test_case_creation_is_rate_limited():
     assert client.post("/cases", data={"state": "MA"}).status_code == 200
 
 
+def test_token_pages_are_never_cached_indexed_or_leaked_as_referrer():
+    """Pages and files under a capability link carry personal data; the public atlas and the
+    home page stay cacheable and indexable."""
+    from tests.unit.test_web_senior import seeded_client
+
+    client, links = seeded_client()
+    private = (
+        f"/s/{links.senior_token}",
+        f"/c/{links.caregiver_token}",
+        f"/c/{links.caregiver_token}/reminders.ics",
+        "/admin/login",
+        "/s/not-a-real-token",  # the 403 page too
+    )
+    for path in private:
+        headers = client.get(path).headers
+        assert headers["cache-control"] == "no-store", path
+        assert headers["referrer-policy"] == "no-referrer", path
+        assert "noindex" in headers["x-robots-tag"], path
+    created = client.post("/cases", data={"state": "MA"})
+    assert created.headers["cache-control"] == "no-store"
+    for path in ("/", "/healthz", "/static/waive.css", "/atlas", "/atlas/229999"):
+        headers = client.get(path).headers
+        assert "x-robots-tag" not in headers and headers.get("cache-control") != "no-store", path
+    gone = client.post(f"/c/{links.caregiver_token}/delete")
+    assert gone.headers["clear-site-data"] == '"cache"'
+
+
 def test_multipart_uploads_never_spool_to_disk(monkeypatch):
     rollovers = []
     monkeypatch.setattr(

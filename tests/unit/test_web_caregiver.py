@@ -40,6 +40,10 @@ def test_create_case_shows_both_links_and_review_works():
     assert "Likely free care" in corrected.text
     assert "Policy says" in corrected.text and "250%" in corrected.text
     assert "May 1, 2027" in corrected.text
+    # The hospital's site must not learn the capability link from the Referer header.
+    assert re.search(
+        r'<a href="https://www\.example\.org[^"]*" rel="noopener noreferrer"', corrected.text
+    )
 
     approved = client.post(f"{caregiver}/approve", follow_redirects=True)
     assert "Approved" in approved.text and "Download the packet" in approved.text
