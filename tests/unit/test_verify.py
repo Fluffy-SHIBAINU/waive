@@ -885,3 +885,20 @@ def test_free_care_at_or_below_the_poverty_guidelines_is_a_limit_of_100_percent(
     assert not states_the_poverty_line(
         "Care is provided at a reduced cost if income does not exceed the Federal Poverty Level."
     )
+
+
+def test_a_discount_percentage_is_not_a_free_care_limit_of_the_poverty_level():
+    # Adirondack Health (330079): its FAQ held the sheet as a "conflict" with the real 200% limit.
+    from waive.atlas.verify import free_care_limits_stated
+
+    faq = (
+        "This program is based on Federal Poverty Guidelines, and allows from 80% to 100% "
+        "discounting on services billed by Adirondack Health."
+    )
+    assert free_care_limits_stated(faq) == set()
+    assert free_care_limits_stated(
+        "Patients at or below 200 percent of the Federal Poverty Level receive free care."
+    ) == {Decimal(200)}
+    assert free_care_limits_stated(
+        "Free care for household income between 0 - 250% FPL; a 100% discount applies."
+    ) == {Decimal(250)}

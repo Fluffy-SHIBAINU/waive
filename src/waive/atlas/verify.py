@@ -521,6 +521,15 @@ _FREE_SENTENCE = re.compile(
 )
 _FPL_WORDS = re.compile(r"federal poverty|\bfpl\b|\bfpg\b|poverty (?:level|guideline|income)")
 _FPL_PERCENT = re.compile(r"(?<![\d.])(\d{2,3})(?:\.\d+)? ?(?:%|percent)")
+# The same, tied to the poverty level by its own words ("200% of the Federal Poverty Level",
+# "250% FPL"): in "allows from 80% to 100% discounting" the 80 is a discount, not an income limit
+# (Adirondack Health, 330079, held on a conflict that was not one).
+_FPL_TIED_PERCENT = re.compile(
+    r"(?<![\d.])(\d{2,3})(?:\.\d+)? ?(?:%|percent)"
+    r"(?= ?(?:or (?:less|below|under) )?(?:of |above |below |at |under |x |times )?"
+    r"(?:the |current |latest |applicable |annual |published )*(?:federal )?"
+    r"(?:poverty|fpl|fpg|fpig))"
+)
 
 
 def free_care_limits_stated(document_text: str) -> set[Decimal]:
@@ -534,7 +543,7 @@ def free_care_limits_stated(document_text: str) -> set[Decimal]:
             continue
         found.update(
             Decimal(match.group(1))
-            for match in _FPL_PERCENT.finditer(sentence)
+            for match in _FPL_TIED_PERCENT.finditer(sentence)
             if match.group(1) != "100"
         )
     return found

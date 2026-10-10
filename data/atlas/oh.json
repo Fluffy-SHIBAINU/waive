@@ -1501,52 +1501,99 @@
     "website_domain": "bvhealthsystem.org",
     "system": null
    },
-   "version": 3,
-   "status": "held",
+   "version": 4,
+   "status": "published",
    "eligibility": {
-    "free_care_max_fpl": null,
-    "discount_tiers": null,
-    "asset_test": null,
-    "residency": null,
-    "insured_patients_covered": {
-     "value": true,
+    "free_care_max_fpl": {
+     "value": "150",
      "layer": "documented",
-     "quote": "options for both insured and uninsured patients",
-     "source_id": "billing-b600e9745f4d6e90",
+     "quote": "iv. 100% discount for those between 0-150% of the poverty guidelines",
+     "source_id": "fap-64b7ee0e58224a47",
      "checked_on": "2026-10-10",
      "confidence": 1.0,
      "support_count": 0
     },
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "150",
+       "max_fpl_inclusive": "200",
+       "discount_percent": 75
+      },
+      {
+       "min_fpl_exclusive": "200",
+       "max_fpl_inclusive": "225",
+       "discount_percent": 50
+      },
+      {
+       "min_fpl_exclusive": "225",
+       "max_fpl_inclusive": "250",
+       "discount_percent": 25
+      }
+     ],
+     "layer": "documented",
+     "quote": "i. 25% discount for those between 226-250% of the poverty guidelines\n        ii. 50% discount for those between 201-225% of the poverty guidelines\n        iii. 75% discount for those between 151-200% of the poverty guidelines\n        iv. 100% discount for those between 0-150% of the poverty guidelines",
+     "source_id": "fap-64b7ee0e58224a47",
+     "checked_on": "2026-10-10",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "asset_test": null,
+    "residency": null,
+    "insured_patients_covered": null,
     "min_balance": null,
     "services_excluded": null
    },
    "programs": {
-    "presumptive": null,
-    "state_programs": null
-   },
-   "apply": {
-    "form_url": {
-     "value": "https://bvhealthsystem.myfa.app/",
+    "presumptive": {
+     "value": [
+      "Medicaid"
+     ],
      "layer": "documented",
-     "quote": "[Financial Assistance Application](https://bvhealthsystem.myfa.app/)",
-     "source_id": "billing-b600e9745f4d6e90",
+     "quote": "Presumptive assistance will be provided to those uninsured patients who are not able to provide complete financial information. Examples include:\n1. Patients who are pending Medicaid approval",
+     "source_id": "fap-64b7ee0e58224a47",
      "checked_on": "2026-10-10",
      "confidence": 1.0,
      "support_count": 0
     },
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": null,
     "form_version": null,
-    "documents_required": null,
+    "documents_required": {
+     "value": [
+      "proof_of_income",
+      "tax_return",
+      "pay_stubs",
+      "bank_statements"
+     ],
+     "layer": "documented",
+     "quote": "Supporting documents related to the above income may include: pay stubs for a minimum of the immediate 3 months prior to date of service, W2, payroll history printout, copy of checks, bank statement showing direct deposits, tax return, a written statement of income and expenses for self-employed individuals, unemployment payments, child support (only if child is the patient), pension, alimony, annuity statements, etc.",
+     "source_id": "fap-64b7ee0e58224a47",
+     "checked_on": "2026-10-10",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "documents_reported": null,
     "submit_methods": {
      "value": [
       {
-       "kind": "email",
-       "detail": "PFSfinancialassistance@bvhealthsystem.org"
+       "kind": "in_person",
+       "detail": "Paper copies can be obtained from a financial advocate, in the Registration Department, the Emergency Room Discharge Office, or from the Cashier\u2019s Office."
+      },
+      {
+       "kind": "portal",
+       "detail": "You may obtain an application or copy of our policy by visiting our website at bvhealthsystem.org/financialassistance."
+      },
+      {
+       "kind": "phone",
+       "detail": "You may also obtain a copy by contacting Patient Financial Services at 419-423-5310."
       }
      ],
      "layer": "documented",
-     "quote": "by contacting the financial assistance staff at [419.423.5311](tel:419.423.5311) or email at [PFSfinancialassistance@bvhealthsystem.org](mailto:PFSfinancialassistance@bvhealthsystem.org)",
-     "source_id": "billing-b600e9745f4d6e90",
+     "quote": "How to Obtain an Application or Copy of our Policy You may obtain an application or copy of our policy by visiting our website at bvhealthsystem.org/financialassistance. Paper copies can be obtained from a financial advocate, in the Registration Department, the Emergency Room Discharge Office, or from the Cashier\u2019s Office. You may also obtain a copy by contacting Patient Financial Services at 419-423-5310.",
+     "source_id": "summary-aa56808e8f43d2c0",
      "checked_on": "2026-10-10",
      "confidence": 1.0,
      "support_count": 0
@@ -1556,39 +1603,36 @@
     "decision_days_reported": null
    },
    "collections": {
-    "eca_wait_days": null,
+    "eca_wait_days": {
+     "value": 120,
+     "layer": "documented",
+     "quote": "BVRHC will not initiate any ECA against an individual whose FAP eligibility has not been determined before 120 days after the first post-discharge billing statement is issued.",
+     "source_id": "fap-64b7ee0e58224a47",
+     "checked_on": "2026-10-10",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "collection_agencies": null
    },
    "contacts": {
     "phone": {
-     "value": "419.423.5311",
+     "value": "419-423-5310",
      "layer": "documented",
-     "quote": "[419.423.5311](tel:419.423.5311)",
-     "source_id": "billing-b600e9745f4d6e90",
+     "quote": "Inquires can be made directly to any of the staff members involved in the above processes, by contacting the financial assistance staff at 419-423-5310, or by completing an application for financial assistance.",
+     "source_id": "fap-64b7ee0e58224a47",
      "checked_on": "2026-10-10",
      "confidence": 1.0,
      "support_count": 0
     },
-    "hours": {
-     "value": "Monday, 8 a.m. - 6 p.m., and Tuesday through Friday, 8 a.m. - 4 p.m.",
-     "layer": "documented",
-     "quote": "The financial office is open Monday, 8 a.m. - 6 p.m., and Tuesday through Friday, 8 a.m. - 4 p.m.",
-     "source_id": "application-0ce6f817b2c84b87",
-     "checked_on": "2026-10-10",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "hours": null,
     "languages": {
      "value": [
       "English",
-      "Espa\u00f1ol",
-      "Ayiti",
-      "Japanese",
-      "Haitian"
+      "Spanish"
      ],
      "layer": "documented",
-     "quote": "[Application in English](https://edge.sitecorecloud.io/blanchardva40a9-bvhssitecoradd7-prodd901-d889/media/files/financial-forms/2026-application.docx)\n [Aplicaci\u00f3n en Espa\u00f1ol](https://edge.sitecorecloud.io/blanchardva40a9-bvhssitecoradd7-prodd901-d889/media/files/financial-forms/fa-application-in-spanish-2026.docx)\n [Aplikasyon an Ayiti](https://edge.sitecorecloud.io/blanchardva40a9-bvhssitecoradd7-prodd901-d889/media/project/bvhs/bvhs/file/financial/fa-application-in-haitian.docx \"Aplikasyon an Ayiti\")\n [Application in Japanese](https://edge.sitecorecloud.io/blanchardva40a9-bvhssitecoradd7-prodd901-d889/media/project/bvhs/bvhs/file/financial/fa-application-in-japanese.docx \"Application in Japanese\")\n\n[Application in Haitian](https://edge.sitecorecloud.io/blanchardva40a9-bvhssitecoradd7-prodd901-d889/media/files/financial-forms/fa-application-in-haitian-2026.docx)",
-     "source_id": "billing-b600e9745f4d6e90",
+     "quote": "Documents are available in both English and Spanish.",
+     "source_id": "fap-64b7ee0e58224a47",
      "checked_on": "2026-10-10",
      "confidence": 1.0,
      "support_count": 0
@@ -1601,8 +1645,8 @@
       "Bluffton Hospital"
      ],
      "layer": "documented",
-     "quote": "Blanchard Valley Hospital and Bluffton Hospital offer financial assistance for emergency or medically necessary care.",
-     "source_id": "application-0ce6f817b2c84b87",
+     "quote": "Blanchard Valley Hospital and Bluffton Hospital provide, without discrimination, care for emergency medical conditions to individuals regardless of whether they are eligible for financial assistance under this policy.",
+     "source_id": "fap-64b7ee0e58224a47",
      "checked_on": "2026-10-10",
      "confidence": 1.0,
      "support_count": 0
@@ -1611,12 +1655,12 @@
    },
    "sources": [
     {
-     "id": "fap-55ae1fd799c3e6b3",
+     "id": "fap-64b7ee0e58224a47",
      "kind": "hospital_web",
-     "url": "https://bvhealthsystem.org/support-the-foundation/events-campaigns/charity-care-fund",
-     "title": "charity-care-fund",
+     "url": "https://edge.sitecorecloud.io/blanchardva40a9-bvhssitecoradd7-prodd901-d889/media/project/bvhs/bvhs/file/financial/110_77-bvrhc-financial-assistance-policy_updated.pdf",
+     "title": "Financial Assistance Policy",
      "fetched_on": "2026-10-10",
-     "sha256": "55ae1fd799c3e6b3847c7e8b2daab7f913f1092bea139bc0e013b4a3792113be",
+     "sha256": "64b7ee0e58224a474028bb6e6fe53a6b6048e2332d4dca5884d8b6544f3c7cc8",
      "effective_date": null
     },
     {
@@ -1629,6 +1673,15 @@
      "effective_date": null
     },
     {
+     "id": "summary-aa56808e8f43d2c0",
+     "kind": "hospital_web",
+     "url": "https://edge.sitecorecloud.io/blanchardva40a9-bvhssitecoradd7-prodd901-d889/media/project/bvhs/bvhs/file/financial/plain-language-summary-english.pdf",
+     "title": "Plain Language Summary",
+     "fetched_on": "2026-10-10",
+     "sha256": "aa56808e8f43d2c022e402ca33bacae367958a1d5a07c34cae346f46d9069961",
+     "effective_date": null
+    },
+    {
      "id": "billing-b600e9745f4d6e90",
      "kind": "hospital_web",
      "url": "https://bvhealthsystem.org/patient-and-visitor-information/im-a-patient/billing-and-insurance/financial-assistance",
@@ -1638,30 +1691,12 @@
      "effective_date": null
     },
     {
-     "id": "billing-b600e9745f4d6e90",
+     "id": "application-e8428fd44211b759",
      "kind": "hospital_web",
-     "url": "https://www.bvhealthsystem.org/patient-and-visitor-information/im-a-patient/billing-and-insurance/financial-assistance",
-     "title": "Financial Assistance",
+     "url": "https://edge.sitecorecloud.io/blanchardva40a9-bvhssitecoradd7-prodd901-d889/media/files/financial-forms/2026-2022-income-guidelines.xlsx",
+     "title": "Blanchard Valley Health System Sliding Fee Scale",
      "fetched_on": "2026-10-10",
-     "sha256": "b600e9745f4d6e90f123364dea2e5c4913542d053f03e0c09a025becf43eb652",
-     "effective_date": null
-    },
-    {
-     "id": "fap-c81f53bdec03a00a",
-     "kind": "hospital_web",
-     "url": "https://bvhealthsystem.org/support-the-foundation/events-campaigns/julie-cole-classic",
-     "title": "Julie Cole Charity Golf Classic",
-     "fetched_on": "2026-10-10",
-     "sha256": "c81f53bdec03a00ac6807285c5d9eeba0ed64ce1b07e9eeaa6acad9374e9959a",
-     "effective_date": null
-    },
-    {
-     "id": "fap-f2e778766d6eeba9",
-     "kind": "hospital_web",
-     "url": "https://bvhealthsystem.org/support-the-foundation/events-campaigns/julie-cole-classic/julie-cole-charity-golf-ball-drop",
-     "title": "Golf Ball Drop",
-     "fetched_on": "2026-10-10",
-     "sha256": "f2e778766d6eeba99fb9c8194cb0d3fb869935bc7792cc78fc60a261318e6eb0",
+     "sha256": "e8428fd44211b759f6eb773d7ce01c4d8e4cf77564e8dc7965cc5d0a9ab0ed70",
      "effective_date": null
     }
    ],
@@ -1679,50 +1714,104 @@
     "website_domain": "bvhealthsystem.org",
     "system": null
    },
-   "version": 3,
-   "status": "held",
+   "version": 4,
+   "status": "published",
    "eligibility": {
-    "free_care_max_fpl": null,
-    "discount_tiers": null,
-    "asset_test": null,
-    "residency": null,
-    "insured_patients_covered": null,
-    "min_balance": null,
-    "services_excluded": null
-   },
-   "programs": {
-    "presumptive": null,
-    "state_programs": null
-   },
-   "apply": {
-    "form_url": null,
-    "form_version": null,
-    "documents_required": null,
-    "documents_reported": null,
-    "submit_methods": {
+    "free_care_max_fpl": {
+     "value": "150",
+     "layer": "documented",
+     "quote": "iv. 100% discount for those between 0-150% of the poverty guidelines",
+     "source_id": "fap-64b7ee0e58224a47",
+     "checked_on": "2026-10-10",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": {
      "value": [
       {
-       "kind": "email",
-       "detail": "PFSfinancialassistance@bvhealthsystem.org"
+       "min_fpl_exclusive": "150",
+       "max_fpl_inclusive": "200",
+       "discount_percent": 75
       },
       {
-       "kind": "phone",
-       "detail": "419.423.5311"
+       "min_fpl_exclusive": "200",
+       "max_fpl_inclusive": "225",
+       "discount_percent": 50
+      },
+      {
+       "min_fpl_exclusive": "225",
+       "max_fpl_inclusive": "250",
+       "discount_percent": 25
       }
      ],
      "layer": "documented",
-     "quote": "Inquires can be made directly to any of the staff members involved in the above processes, by contacting the financial assistance staff at [419.423.5311](tel:419.423.5311) or email at [PFSfinancialassistance@bvhealthsystem.org](mailto:PFSfinancialassistance@bvhealthsystem.org), or by completing an application for financial assistance which are located on the back of patient statements or can be downloaded below.",
+     "quote": "Write off percentages for uninsured patients include: a. 50% AGB discount will be applied to all uninsured patient accounts b. Uninsured individuals who apply for financial assistance by completing an assistance application and providing supporting documentation may receive a charity discount of 50, 75, or 100% based on federal poverty guidelines. i. 25% discount for those between 226-250% of the poverty guidelines ii. 50% discount for those between 201-225% of the poverty guidelines iii. 75% discount for those between 151-200% of the poverty guidelines iv. 100% discount for those between 0-150% of the poverty guidelines",
+     "source_id": "fap-64b7ee0e58224a47",
+     "checked_on": "2026-10-10",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "asset_test": null,
+    "residency": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "As part of our mission of \"Caring for a lifetime,\" Blanchard Valley Health System provides options for both insured and uninsured patients who require emergency or medically necessary services at Blanchard Valley Hospital or Bluffton Hospital.",
      "source_id": "billing-b600e9745f4d6e90",
      "checked_on": "2026-10-10",
      "confidence": 1.0,
      "support_count": 0
     },
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": {
+     "value": [
+      "Medicaid"
+     ],
+     "layer": "documented",
+     "quote": "Presumptive assistance will be provided to those uninsured patients who are not able to provide complete financial information. Examples include: 1. Patients who are pending Medicaid approval",
+     "source_id": "fap-64b7ee0e58224a47",
+     "checked_on": "2026-10-10",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "proof_of_income",
+      "tax_return",
+      "pay_stubs",
+      "bank_statements"
+     ],
+     "layer": "documented",
+     "quote": "Supporting documents related to the above income may include: pay stubs for a minimum of the immediate 3 months prior to date of service, W2, payroll history printout, copy of checks, bank statement showing direct deposits, tax return, a written statement of income and expenses for self-employed individuals, unemployment payments, child support (only if child is the patient), pension, alimony, annuity statements, etc.",
+     "source_id": "fap-64b7ee0e58224a47",
+     "checked_on": "2026-10-10",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": null,
     "window_days_from_first_bill": null,
     "decision_days": null,
     "decision_days_reported": null
    },
    "collections": {
-    "eca_wait_days": null,
+    "eca_wait_days": {
+     "value": 120,
+     "layer": "documented",
+     "quote": "BVRHC will not initiate any ECA against an individual whose FAP eligibility has not been determined before 120 days after the first post-discharge billing statement is issued.",
+     "source_id": "fap-64b7ee0e58224a47",
+     "checked_on": "2026-10-10",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "collection_agencies": null
    },
    "contacts": {
@@ -1735,15 +1824,6 @@
     "provider_list_url": null
    },
    "sources": [
-    {
-     "id": "fap-55ae1fd799c3e6b3",
-     "kind": "hospital_web",
-     "url": "https://bvhealthsystem.org/support-the-foundation/events-campaigns/charity-care-fund",
-     "title": "charity-care-fund",
-     "fetched_on": "2026-10-10",
-     "sha256": "55ae1fd799c3e6b3847c7e8b2daab7f913f1092bea139bc0e013b4a3792113be",
-     "effective_date": null
-    },
     {
      "id": "application-0ce6f817b2c84b87",
      "kind": "hospital_web",
@@ -1763,30 +1843,21 @@
      "effective_date": null
     },
     {
-     "id": "application-0ce6f817b2c84b87",
+     "id": "fap-64b7ee0e58224a47",
      "kind": "hospital_web",
-     "url": "https://www.bvhealthsystem.org/patient-and-visitor-information/financial-assistance-application",
-     "title": "Financial Assistance Application",
+     "url": "https://edge.sitecorecloud.io/blanchardva40a9-bvhssitecoradd7-prodd901-d889/media/project/bvhs/bvhs/file/financial/110_77-bvrhc-financial-assistance-policy_updated.pdf",
+     "title": "Financial Assistance Policy",
      "fetched_on": "2026-10-10",
-     "sha256": "0ce6f817b2c84b87dc8c01a3ccebf11fd1b2f14db568fa3f46bbd3eb71b62fc0",
+     "sha256": "64b7ee0e58224a474028bb6e6fe53a6b6048e2332d4dca5884d8b6544f3c7cc8",
      "effective_date": null
     },
     {
-     "id": "fap-c81f53bdec03a00a",
+     "id": "summary-aa56808e8f43d2c0",
      "kind": "hospital_web",
-     "url": "https://bvhealthsystem.org/support-the-foundation/events-campaigns/julie-cole-classic",
-     "title": "Julie Cole Charity Golf Classic",
+     "url": "https://edge.sitecorecloud.io/blanchardva40a9-bvhssitecoradd7-prodd901-d889/media/project/bvhs/bvhs/file/financial/plain-language-summary-english.pdf",
+     "title": "Plain Language Summary",
      "fetched_on": "2026-10-10",
-     "sha256": "c81f53bdec03a00ac6807285c5d9eeba0ed64ce1b07e9eeaa6acad9374e9959a",
-     "effective_date": null
-    },
-    {
-     "id": "fap-f2e778766d6eeba9",
-     "kind": "hospital_web",
-     "url": "https://bvhealthsystem.org/support-the-foundation/events-campaigns/julie-cole-classic/julie-cole-charity-golf-ball-drop",
-     "title": "Golf Ball Drop",
-     "fetched_on": "2026-10-10",
-     "sha256": "f2e778766d6eeba99fb9c8194cb0d3fb869935bc7792cc78fc60a261318e6eb0",
+     "sha256": "aa56808e8f43d2c022e402ca33bacae367958a1d5a07c34cae346f46d9069961",
      "effective_date": null
     }
    ],

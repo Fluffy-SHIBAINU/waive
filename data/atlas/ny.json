@@ -15,10 +15,18 @@
     "website_domain": "adirondackhealth.org",
     "system": null
    },
-   "version": 4,
-   "status": "held",
+   "version": 6,
+   "status": "published",
    "eligibility": {
-    "free_care_max_fpl": null,
+    "free_care_max_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "Below 200% FPL Waive all charges",
+     "source_id": "application-30766527b6ee3f9d",
+     "checked_on": "2026-10-10",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "discount_tiers": null,
     "asset_test": null,
     "residency": null,
@@ -39,24 +47,15 @@
     "state_programs": null
    },
    "apply": {
-    "form_url": {
-     "value": "https://cdn.prod.website-files.com/5e2ae9f8cd88a742af86f25f/697915bac13a7423b933545b_NYS_Uniform%20Hospital%20Financial%20Assistance%20Application%202026.pdf",
-     "layer": "documented",
-     "quote": "[> Financial assistance application](https://cdn.prod.website-files.com/5e2ae9f8cd88a742af86f25f/697915bac13a7423b933545b_NYS_Uniform%20Hospital%20Financial%20Assistance%20Application%202026.pdf)",
-     "source_id": "fap-a714e3c03ddcd69a",
-     "checked_on": "2026-10-10",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "form_url": null,
     "form_version": null,
     "documents_required": {
      "value": [
-      "proof_of_income",
-      "proof_of_residency"
+      "social_security_letter"
      ],
      "layer": "documented",
-     "quote": "1. A completed application with income verification, as described in the universal financial assistance application.\n2. A copy of a determination notice regarding medical coverage. If you cannot provide any of these, you may still be able to apply for financial assistance.\n3. Proof of New York state residency.",
-     "source_id": "summary-91d18b2d4697a160",
+     "quote": "Unemployment Compensation Copy of award letter/certificate, or monthly benefit statement from NYS Department of Labor, or copy of Direct Payment Card with printout, or correspondence from the NYS Department of Labor, or printout of recipient's account information from the NYS Department of Labor's website (www.labor.state.ny.us).",
+     "source_id": "application-30766527b6ee3f9d",
      "checked_on": "2026-10-10",
      "confidence": 1.0,
      "support_count": 0
@@ -74,7 +73,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Send the completed form to Adirondack Medical Center or bring it to the financial counselor\u2019s office.",
+     "quote": "Send the completed form to Adirondack Medical Center or bring it to the financial counselor\u2019s office. You have up to 240 days after receiving services to request, complete and return your application.",
      "source_id": "summary-91d18b2d4697a160",
      "checked_on": "2026-10-10",
      "confidence": 1.0,
@@ -101,46 +100,21 @@
     "decision_days_reported": null
    },
    "collections": {
-    "eca_wait_days": null,
-    "collection_agencies": null
-   },
-   "contacts": {
-    "phone": {
-     "value": "518-897-2217",
+    "eca_wait_days": {
+     "value": 180,
      "layer": "documented",
-     "quote": "Call our financial counselor at [518-897-2217](tel:+1-518-897-2217)",
-     "source_id": "summary-91d18b2d4697a160",
+     "quote": "Hospitals cannot send unpaid bills to a collection agency for at least 180 days after your first bill.",
+     "source_id": "application-30766527b6ee3f9d",
      "checked_on": "2026-10-10",
      "confidence": 1.0,
      "support_count": 0
     },
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": null,
     "hours": null,
-    "languages": {
-     "value": [
-      "English",
-      "Spanish",
-      "Chinese",
-      "Russian",
-      "French",
-      "Creole",
-      "Korean",
-      "Italian",
-      "Yiddish",
-      "Bengali",
-      "Polish",
-      "Arabic",
-      "Urdu",
-      "Tagalog",
-      "Greek",
-      "Albanian"
-     ],
-     "layer": "documented",
-     "quote": "Language Assistance Available\n\n[Espa\u00f1ol](/patients-and-visitors/language-assistance)[\u7e41\u9ad4\u4e2d\u6587](/patients-and-visitors/language-assistance)[\u0420\u0443\u0441\u0441\u043a\u0438\u0439](/patients-and-visitors/language-assistance)[Krey\u00f2l Ayisyen](/patients-and-visitors/language-assistance)\n\n[\ud55c\uad6d\uc5b4](/patients-and-visitors/language-assistance)[Italiano](/patients-and-visitors/language-assistance)[Yiddish](/patients-and-visitors/language-assistance)[Bengali](/patients-and-visitors/language-assistance)\n\n[Polski](/patients-and-visitors/language-assistance)[\u0644\u0639\u0631\u0628\u064a\u0629](/patients-and-visitors/language-assistance)[Fran\u00e7ais](/patients-and-visitors/language-assistance)[Urdu](/patients-and-visitors/language-assistance)\n\n[Tagalog](/patients-and-visitors/language-assistance)[Greek](/patients-and-visitors/language-assistance)[Albanian](/patients-and-visitors/language-assistance)",
-     "source_id": "summary-91d18b2d4697a160",
-     "checked_on": "2026-10-10",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "languages": null
    },
    "coverage": {
     "facilities": null,
@@ -148,11 +122,38 @@
    },
    "sources": [
     {
+     "id": "application-30766527b6ee3f9d",
+     "kind": "hospital_web",
+     "url": "https://cdn.prod.website-files.com/5e2ae9f8cd88a742af86f25f/697915bac13a7423b933545b_NYS_Uniform%20Hospital%20Financial%20Assistance%20Application%202026.pdf",
+     "title": "> Financial assistance application",
+     "fetched_on": "2026-10-10",
+     "sha256": "30766527b6ee3f9dce2ed4c10959044ec1d7f4f7a5090afde995e2aa36630cab",
+     "effective_date": null
+    },
+    {
+     "id": "billing-0f37357097624f14",
+     "kind": "hospital_web",
+     "url": "https://www.adirondackhealth.org/billing/frequently-asked-questions",
+     "title": "Adirondack Health - Frequently Asked Questions",
+     "fetched_on": "2026-10-09",
+     "sha256": "0f37357097624f14a1e64ad80b5d67a4d915c0003b8b1f360010215e8985dc95",
+     "effective_date": null
+    },
+    {
+     "id": "fap-7c746cc8f0b17728",
+     "kind": "hospital_web",
+     "url": "https://cdn.prod.website-files.com/5e2ae9f8cd88a742af86f25f/697916c08d5d967b01c2608b_2026%20Federal%20Poverty%20Guidelines.pdf",
+     "title": "Eligibility requirements",
+     "fetched_on": "2026-10-10",
+     "sha256": "7c746cc8f0b17728e4923ee7f166b5a46d568f4e2ef3c6fbd9c49f490c7a53ed",
+     "effective_date": null
+    },
+    {
      "id": "fap-a714e3c03ddcd69a",
      "kind": "hospital_web",
-     "url": "http://adirondackhealth.org/financial-assistance-policies",
+     "url": "https://www.adirondackhealth.org/financial-assistance-policies",
      "title": "Adirondack Health - Financial Assistance policies",
-     "fetched_on": "2026-10-10",
+     "fetched_on": "2026-10-09",
      "sha256": "a714e3c03ddcd69a87dfc32d3f171ee03851b6142d591537a9ae392ddb489ad5",
      "effective_date": null
     },
@@ -161,35 +162,8 @@
      "kind": "hospital_web",
      "url": "https://www.adirondackhealth.org/billing/financial-assistance-summary",
      "title": "Adirondack Health - Financial Assistance Summary",
-     "fetched_on": "2026-10-10",
+     "fetched_on": "2026-10-09",
      "sha256": "91d18b2d4697a1605e436c64b7570db4a629bf36c2d48a5e7834243104522f01",
-     "effective_date": null
-    },
-    {
-     "id": "billing-0f37357097624f14",
-     "kind": "hospital_web",
-     "url": "https://www.adirondackhealth.org/billing/frequently-asked-questions",
-     "title": "Adirondack Health - Frequently Asked Questions",
-     "fetched_on": "2026-10-10",
-     "sha256": "0f37357097624f14a1e64ad80b5d67a4d915c0003b8b1f360010215e8985dc95",
-     "effective_date": null
-    },
-    {
-     "id": "summary-91d18b2d4697a160",
-     "kind": "hospital_web",
-     "url": "http://adirondackhealth.org/billing/financial-assistance-summary",
-     "title": "Adirondack Health - Financial Assistance Summary",
-     "fetched_on": "2026-10-10",
-     "sha256": "91d18b2d4697a1605e436c64b7570db4a629bf36c2d48a5e7834243104522f01",
-     "effective_date": null
-    },
-    {
-     "id": "application-fe9f569414f4f902",
-     "kind": "hospital_web",
-     "url": "https://cdn.prod.website-files.com/5e2ae9f8cd88a742af86f25f/697915bac13a7423b933545b_NYS_Uniform%20Hospital%20Financial%20Assistance%20Application%202026.pdf",
-     "title": "> Financial assistance application",
-     "fetched_on": "2026-10-10",
-     "sha256": "fe9f569414f4f90223544823d2389582995c3e81a76f929d6980328a45bb1de0",
      "effective_date": null
     },
     {

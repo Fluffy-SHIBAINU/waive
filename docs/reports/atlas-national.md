@@ -3,12 +3,12 @@
 Generated 2026-10-10 by `waive atlas report --national`. Counts only; open data, CC BY 4.0.
 
 Hospitals in registry: 2703
-Published sheets: 139 (5%)
-Held sheets: 80; without a sheet: 2484
+Published sheets: 142 (5%)
+Held sheets: 77; without a sheet: 2484
 Median sheet age: 0 days
 Core fields documented (published sheets): 59%
 Prediction accuracy: — over 0 outcomes
-Open review items: 581
+Open review items: 589
 
 | State | Hospitals | Published | Held | None | Coverage |
 |---|---|---|---|---|---|
@@ -46,8 +46,8 @@ Open review items: 581
 | NJ | 53 | 2 | 7 | 44 | 4% |
 | NM | 16 | 0 | 0 | 16 | 0% |
 | NV | 14 | 0 | 0 | 14 | 0% |
-| NY | 133 | 11 | 6 | 116 | 8% |
-| OH | 129 | 7 | 9 | 113 | 5% |
+| NY | 133 | 12 | 5 | 116 | 9% |
+| OH | 129 | 9 | 7 | 113 | 7% |
 | OK | 44 | 0 | 0 | 44 | 0% |
 | OR | 44 | 0 | 0 | 44 | 0% |
 | PA | 130 | 3 | 4 | 123 | 2% |
@@ -72,7 +72,7 @@ Open review items: 581
 | 2026-10-07 | 0 |
 | 2026-10-08 | 0 |
 | 2026-10-09 | 310 |
-| 2026-10-10 | 968 |
+| 2026-10-10 | 989 |
 
 ## Run log
 
