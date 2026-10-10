@@ -5381,67 +5381,22 @@
     "zip": "01701",
     "phone": "508-383-1000",
     "ownership": "Voluntary non-profit - Private",
-    "website_domain": "massgeneralbrigham.org",
+    "website_domain": null,
     "system": null
    },
-   "version": 6,
-   "status": "published",
+   "version": 7,
+   "status": "held",
    "eligibility": {
-    "free_care_max_fpl": {
-     "value": "150",
-     "layer": "documented",
-     "quote": "Family Income % FPG Discount 0 to 150% 100%",
-     "source_id": "fap-111a492d2aab30fc",
-     "checked_on": "2026-10-03",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "discount_tiers": {
-     "value": [
-      {
-       "min_fpl_exclusive": "150",
-       "max_fpl_inclusive": "250",
-       "discount_percent": 85
-      },
-      {
-       "min_fpl_exclusive": "250",
-       "max_fpl_inclusive": "300",
-       "discount_percent": 70
-      }
-     ],
-     "layer": "documented",
-     "quote": "Family Income % FPG Acute Care Hospitals listed in Appendix 1 EXCEPT WDH Wentworth-Douglass Hospital (WDH) 0 to 150% 100%1 100% 150.1 to 250% 85%2 100% 251 to 300% 70%3 0%",
-     "source_id": "fap-111a492d2aab30fc",
-     "checked_on": "2026-10-03",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "asset_test": {
-     "value": true,
-     "layer": "documented",
-     "quote": "Assets will also be used when: \u2022 Patient\u2019s residency is outside the U.S. or Canada.",
-     "source_id": "fap-111a492d2aab30fc",
-     "checked_on": "2026-10-03",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "free_care_max_fpl": null,
+    "discount_tiers": null,
+    "asset_test": null,
     "residency": null,
     "insured_patients_covered": null,
     "min_balance": null,
     "services_excluded": null
    },
    "programs": {
-    "presumptive": {
-     "value": [
-      "Health Safety Net"
-     ],
-     "layer": "documented",
-     "quote": "All Massachusetts-based Mass General Brigham Acute Care Hospitals (see Appendix A), including hospital licensed health centers and designated hospital-based physician practices, participate in this coverage and comply with all aspects of the HSN regulations.",
-     "source_id": "fap-111a492d2aab30fc",
-     "checked_on": "2026-10-03",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "presumptive": null,
     "state_programs": {
      "value": [
       {
@@ -5460,33 +5415,9 @@
    "apply": {
     "form_url": null,
     "form_version": null,
-    "documents_required": {
-     "value": [
-      "photo_id",
-      "proof_of_income"
-     ],
-     "layer": "documented",
-     "quote": "Complete and submit a paper application along with ID and income verification.",
-     "source_id": "application-4a93d4901ba08d88",
-     "checked_on": "2026-10-03",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "documents_required": null,
     "documents_reported": null,
-    "submit_methods": {
-     "value": [
-      {
-       "kind": "in_person",
-       "detail": ""
-      }
-     ],
-     "layer": "documented",
-     "quote": "* Complete and submit a paper application (found in the financial application section) along with ID and income verification. * Call [617-726-3884](tel:617-726-3884) or use our Financial Assistance Application (found in the section below). * Visit a patient financial counselor at your hospital or health center if you need help (see the contact a financial counselor section for more information).",
-     "source_id": "application-dc0301e9ce23d133",
-     "checked_on": "2026-10-03",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "submit_methods": null,
     "window_days_from_first_bill": null,
     "decision_days": null,
     "decision_days_reported": null
@@ -5496,15 +5427,7 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": {
-     "value": "617-726-3884",
-     "layer": "documented",
-     "quote": "[617-726-3884](tel:617-726-3884)",
-     "source_id": "application-4a93d4901ba08d88",
-     "checked_on": "2026-10-03",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "phone": null,
     "hours": null,
     "languages": null
    },
@@ -5513,69 +5436,6 @@
     "provider_list_url": null
    },
    "sources": [
-    {
-     "id": "application-4a93d4901ba08d88",
-     "kind": "hospital_web",
-     "url": "https://www.massgeneralbrigham.org/content/dam/mgb-global/en/patient-care/patient-and-visitor-information/financial-assistance/documents/assistance-information/english/financial-assistance-application-english.pdf",
-     "title": "Financial Assistance | Mass General Brigham",
-     "fetched_on": "2026-10-02",
-     "sha256": "4a93d4901ba08d88cc7faa3bfd5b6218eddf013f69dec6f01f20ce3ee417f3cf",
-     "effective_date": null
-    },
-    {
-     "id": "application-dc0301e9ce23d133",
-     "kind": "hospital_web",
-     "url": "https://www.massgeneralbrigham.org/patient-information/financial-assistance",
-     "title": "Financial Assistance | Mass General Brigham",
-     "fetched_on": "2026-10-02",
-     "sha256": "dc0301e9ce23d133fc7baeb08ba9d788bae7469a098fc239fbb58c1a7fb6a43e",
-     "effective_date": null
-    },
-    {
-     "id": "billing-4de2ce6d32abf574",
-     "kind": "hospital_web",
-     "url": "https://www.massgeneralbrigham.org/en/patients-visitors/billing-insurance/billing/financial-assistance",
-     "title": "Financial Assistance | Mass General Brigham",
-     "fetched_on": "2026-10-02",
-     "sha256": "4de2ce6d32abf574366e9575dd9a71c190cb8cdbf8cce0dfbd647ecdf3b0902a",
-     "effective_date": null
-    },
-    {
-     "id": "fap-111a492d2aab30fc",
-     "kind": "hospital_web",
-     "url": "https://www.massgeneralbrigham.org/content/dam/unified-xwalk/documents/en/patients-visitors/financial-assistance-policy-english.pdf",
-     "title": "Financial Assistance Policy - Full version (PDF)",
-     "fetched_on": "2026-10-02",
-     "sha256": "111a492d2aab30fc9f28255a487b3253acfd64dd165f262fa8709ee6414dbf56",
-     "effective_date": null
-    },
-    {
-     "id": "fap-7196b2d900eb066a",
-     "kind": "hospital_web",
-     "url": "https://www.massgeneralbrigham.org/content/dam/unified-xwalk/documents/zh/patients-visitors/financial-assistance-policy-chinese.pdf",
-     "title": "Financial Assistance Policy - Full version / \u8ca1\u52d9\u63f4\u52a9\u653f\u7b56 \u5b8c\u6574\u7248 (PDF)",
-     "fetched_on": "2026-10-02",
-     "sha256": "7196b2d900eb066a5cd9a7245ce621f300bb088e6ee3198f645d5786e88ec022",
-     "effective_date": null
-    },
-    {
-     "id": "fap-a324bdea17060ba8",
-     "kind": "hospital_web",
-     "url": "https://www.massgeneralbrigham.org/content/dam/unified-xwalk/documents/ht/patients-visitors/financial-assistance-policy-haitian-creole.pdf",
-     "title": "Financial Assistance Policy - Full version / R\u00e8gleman kons\u00e8nan ed finansye - v\u00e8syon konpl\u00e8 (PDF)",
-     "fetched_on": "2026-10-02",
-     "sha256": "a324bdea17060ba8eb4acf1efa5f16bf9c3e182b26396ce1efc35f6bc86b6a33",
-     "effective_date": null
-    },
-    {
-     "id": "fap-f9ec43a6496017b1",
-     "kind": "hospital_web",
-     "url": "https://www.massgeneralbrigham.org/content/dam/unified-xwalk/documents/ar/patients-visitors/financial-assistance-policy-arabic.pdf",
-     "title": "Financial Assistance Policy - Full version / \u0633\u064a\u0627\u0633\u0629 \u0627\u0644\u0645\u0633\u0627\u0639\u062f\u0629 \u0627\u0644\u0645\u0627\u0644\u064a\u0629 - \u0627\u0644\u0646\u0633\u062e\u0629 \u0627\u0644\u0643\u0627\u0645\u0644\u0629 (PDF)",
-     "fetched_on": "2026-10-02",
-     "sha256": "f9ec43a6496017b1cdffb505387e87451083a13ac7fc83f6322e379ad6e0617f",
-     "effective_date": null
-    },
     {
      "id": "state-mass-cafb5ebe5d7f",
      "kind": "state_repository",

@@ -1,7 +1,7 @@
 # Atlas coverage — MA
 
 Hospitals in registry: 46
-Published sheets: 28 (61%)
+Published sheets: 27 (59%)
 
 | CCN | Hospital | Domain | Status | Version | Completeness | Fields | Sources |
 |---|---|---|---|---|---|---|---|
@@ -34,7 +34,7 @@ Published sheets: 28 (61%)
 | 220070 | MELROSEWAKEFIELD HEALTHCARE | tuftsmedicine.org | held | 3 | 0.50 | 9 | 7 |
 | 220066 | MERCY MEDICAL CTR | mercy.net | held | 3 | 0.50 | 10 | 5 |
 | 220010 | MERRIMACK HEALTH LAWRENCE HOSPITAL | mhlawrencehospital.org | published | 3 | 0.67 | 8 | 5 |
-| 220175 | METROWEST MEDICAL CENTER | massgeneralbrigham.org | published | 6 | 0.83 | 8 | 8 |
+| 220175 | METROWEST MEDICAL CENTER | mwmc.com | held | 7 | 0.00 | 1 | 1 |
 | 220090 | MILFORD REGIONAL MEDICAL CENTER | milfordregional.org | held | 2 | 0.00 | 1 | 8 |
 | 220002 | MOUNT AUBURN HOSPITAL | mountauburnhospital.org | published | 5 | 0.83 | 10 | 9 |
 | 220177 | NANTUCKET COTTAGE HOSPITAL | nantuckethospital.org | held | 3 | 0.17 | 2 | 2 |

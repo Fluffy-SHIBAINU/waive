@@ -190,3 +190,44 @@ def test_a_single_distinctive_name_token_in_a_title_is_not_proof_of_the_official
         ).confidence
         == 0.9
     )
+
+
+def test_documents_must_name_the_hospitals_state_and_the_hospital_or_its_town():
+    # National batch 2: Bellevue Hospital (Ohio) was published from Overlake Medical Center in
+    # Bellevue, Washington, and Chilton Medical Center from another New Jersey hospital's site.
+    from waive.atlas.discover import place_unconfirmed
+
+    bellevue = HOSPITAL.model_copy(
+        update={"name": "BELLEVUE HOSPITAL", "city": "BELLEVUE", "state": "OH", "zip": "44811"}
+    )
+    overlake = (
+        "Overlake Medical Center & Clinics, 1035 116th Ave NE, Bellevue, WA 98004. Patients at or "
+        "below 300% of the federal poverty level receive free care."
+    )
+    assert place_unconfirmed(bellevue, [overlake]) == "the documents never name Ohio"
+    assert (
+        place_unconfirmed(
+            bellevue, ["The Bellevue Hospital, 1400 West Main Street, Bellevue, OH 44811"]
+        )
+        is None
+    )
+    assert place_unconfirmed(bellevue, ["Financial help for Ohio residents at Bellevue"]) is None
+    # "Oh" as an exclamation, or the letters inside another word, are not the state.
+    assert place_unconfirmed(bellevue, ["Oh, and Bellevue patients in JOHANNESBURG"]) is not None
+    chilton = HOSPITAL.model_copy(
+        update={"name": "CHILTON MEDICAL CENTER", "city": "POMPTON PLAINS", "state": "NJ"}
+    )
+    mountainside = "Mountainside Medical Center, 1 Bay Avenue, Montclair, NJ 07042. Charity care."
+    assert (
+        place_unconfirmed(chilton, [mountainside])
+        == "the documents name neither Pompton Plains nor the hospital"
+    )
+    system_policy = (
+        "Atlantic Health System, New Jersey. Covered facilities: Chilton Medical Center."
+    )
+    assert place_unconfirmed(chilton, [system_policy]) is None
+    assert (
+        place_unconfirmed(chilton, ["Billing office: 97 West Parkway, Pompton Plains, NJ"]) is None
+    )
+    # Nothing to judge (no web documents): not this check's call.
+    assert place_unconfirmed(chilton, []) is None

@@ -40,9 +40,10 @@ from tests.unit.test_pipeline import (
 
 # 229999 is the demo hospital and stays out of every queue, so the tests use real-looking CCNs.
 REAL = {**REAL_HOSPITAL, "website_domain": "realgeneral.org"}
-NEW = {**HOSPITAL, "ccn": "220010", "name": "NEW HOSPITAL", "city": "QUINCY"}
-THIRD = {**HOSPITAL, "ccn": "220045", "name": "THIRD COMMUNITY HOSPITAL", "city": "SALEM"}
-FOURTH = {**HOSPITAL, "ccn": "220050", "name": "FOURTH HOSPITAL", "city": "LYNN"}
+# In the sample policy's town (Boston): documents that never name a hospital's place hold its sheet.
+NEW = {**HOSPITAL, "ccn": "220010", "name": "NEW HOSPITAL", "city": "BOSTON"}
+THIRD = {**HOSPITAL, "ccn": "220045", "name": "THIRD COMMUNITY HOSPITAL", "city": "BOSTON"}
+FOURTH = {**HOSPITAL, "ccn": "220050", "name": "FOURTH HOSPITAL", "city": "BOSTON"}
 
 
 def source(source_id, fetched_on, sha="a" * 64):
