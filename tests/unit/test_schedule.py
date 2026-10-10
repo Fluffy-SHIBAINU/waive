@@ -7,12 +7,15 @@ from pydantic import SecretStr
 
 from waive.atlas import repo
 from waive.atlas.schedule import (
+    ADVANCED_CREDITS_PER_HOSPITAL,
     CREDITS_PER_HOSPITAL,
     DEMAND_WEIGHTS,
     JOB_ID,
     NEVER_SCOUTED_DAYS,
     RETRY_AFTER_DAYS,
+    RunReport,
     build_queue,
+    credits_per_hospital,
     make_scheduler,
     priority_score,
     run_once,
@@ -346,3 +349,83 @@ def test_run_once_refreshes_hospitals_with_documents_and_rescouts_on_request(tmp
         assert report.used_after - report.used_before == Decimal("10")
         [(source, _)] = repo.sources_for(session, "220031")
         assert source.fetched_on == later
+
+
+class DepthRecording(SpendingGateway):
+    """The spending fake, recording the depth of every Extract call."""
+
+    def __init__(self, governor):
+        super().__init__(governor)
+        self.depths = []
+
+    def extract(self, urls, **kwargs):
+        self.depths.append(kwargs.get("depth", "basic"))
+        return super().extract(urls, **kwargs)
+
+
+def test_advanced_extraction_reserves_nine_credits_per_hospital_and_reaches_the_scout(tmp_path):
+    # 7.10: at the advanced depth every Extract costs two credits per five URLs, so the day's
+    # reservation grows from seven to the nine per hospital that gate U7.1's budget math counts.
+    assert credits_per_hospital("basic") == CREDITS_PER_HOSPITAL == Decimal("7")
+    assert credits_per_hospital("advanced") == ADVANCED_CREDITS_PER_HOSPITAL == Decimal("9")
+    engine = make_engine_with_hospital(REAL, NEW)
+    governor = make_governor_for(tmp_path)
+    with session_scope(engine) as session:
+        gateway = DepthRecording(governor)
+        report = run_once(
+            session, gateway, FakeAI(), governor, TODAY, daily_cap=8, extract_depth="advanced"
+        )
+        assert report.results == [] and report.stopped == "daily budget"
+        assert gateway.depths == []
+        report = run_once(
+            session,
+            gateway,
+            FakeAI(),
+            governor,
+            TODAY,
+            daily_cap=9,
+            limit=1,
+            extract_depth="advanced",
+        )
+        assert [r.outcome for r in report.results] == ["published"]
+        assert gateway.depths == ["advanced"]
+
+
+def test_scout_tick_passes_the_configured_depth_to_the_run(tmp_path, monkeypatch):
+    from waive.atlas import schedule
+
+    seen = {}
+
+    def fake_run_once(session, gateway, ai, governor, today, **kwargs):
+        seen.update(kwargs)
+        return RunReport(today, kwargs["daily_cap"], Decimal("0"), Decimal("0"))
+
+    monkeypatch.setattr(schedule, "run_once", fake_run_once)
+    monkeypatch.setattr(schedule, "make_tavily_gateway", lambda settings, governor: object())
+    engine = make_engine("sqlite+pysqlite:///:memory:")
+    init_db(engine)
+    settings = Settings(
+        _env_file=None, tavily_api_key=SecretStr("t"), scout_extract_depth="advanced"
+    )
+    report = scout_tick(engine, settings, make_governor_for(tmp_path), FakeAI())
+    assert report is not None
+    assert (seen["extract_depth"], seen["daily_cap"], seen["limit"]) == ("advanced", 50, 1)
+
+
+def test_schedule_dry_run_names_the_extract_depth_in_the_budget_line(monkeypatch, tmp_path):
+    from typer.testing import CliRunner
+
+    from waive.cli import app
+
+    monkeypatch.chdir(tmp_path)  # no .env here; settings come from the environment
+    monkeypatch.setenv("WAIVE_DATABASE_URL", f"sqlite:///{tmp_path / 'waive.db'}")
+    monkeypatch.setenv("WAIVE_LEDGER_PATH", str(tmp_path / "usage.jsonl"))
+    monkeypatch.setenv("WAIVE_SCOUT_EXTRACT_DEPTH", "advanced")
+    result = CliRunner().invoke(app, ["atlas", "schedule", "--dry-run"])
+    assert result.exit_code == 0, result.output
+    text = " ".join(result.output.split())  # the console wraps at 80 columns
+    assert "about 9 per hospital (advanced extraction)" in text
+    monkeypatch.setenv("WAIVE_SCOUT_EXTRACT_DEPTH", "basic")
+    result = CliRunner().invoke(app, ["atlas", "schedule", "--dry-run"])
+    assert result.exit_code == 0, result.output
+    assert "about 7 per hospital (basic extraction)" in " ".join(result.output.split())

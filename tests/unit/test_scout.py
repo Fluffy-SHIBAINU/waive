@@ -715,6 +715,92 @@ def test_the_advanced_re_extraction_is_booked_at_two_credits_per_five_pages(tmp_
     assert governor.summary()["tavily"][0] == Decimal("5")
 
 
+# Task 7.10: WAIVE_SCOUT_EXTRACT_DEPTH=advanced renders every page at the advanced depth on the
+# first pass (two credits per five URLs). The 2.8h re-extraction of thin pages is then skipped (the
+# depth is paid for once), and the free download still runs for pages that stayed thin.
+BILLING_URL = "https://www.example.org/patients/healthcare-prices-and-billing"
+MAPPED_PDF = "https://www.example.org/patients/financial-assistance-policy.pdf"
+
+
+def test_the_configured_depth_is_used_for_selected_and_linked_pages():
+    gateway = DepthGateway(basic={}, advanced={ENTRY_URL: ENTRY_PAGE, FAP_PDF: SAMPLE_POLICY_TEXT})
+    docs = scout_hospital(gateway, HOSPITAL, extract_depth="advanced")
+    assert gateway.calls == [([ENTRY_URL], "advanced"), ([FAP_PDF], "advanced")]
+    assert [(doc.url, doc.text) for doc in docs] == [
+        (ENTRY_URL, ENTRY_PAGE),
+        (FAP_PDF, SAMPLE_POLICY_TEXT),
+    ]
+    # The default stays the basic depth, as before.
+    gateway = DepthGateway(basic={ENTRY_URL: ENTRY_PAGE, FAP_PDF: SAMPLE_POLICY_TEXT}, advanced={})
+    scout_hospital(gateway, HOSPITAL)
+    assert gateway.calls == [([ENTRY_URL], "basic"), ([FAP_PDF], "basic")]
+
+
+class DepthMapGateway(DepthGateway):
+    """Search finds only the billing page; Map adds the policy PDF (the fallback of 2.3)."""
+
+    def __init__(self, basic, advanced):
+        super().__init__(basic, advanced)
+        self.mapped = []
+
+    def search(self, query, **kwargs):
+        return [hit(BILLING_URL, "Healthcare Prices & Billing", 0.6)]
+
+    def map(self, url, **kwargs):
+        self.mapped.append(url)
+        return [MAPPED_PDF, "https://www.example.org/careers"]
+
+
+def test_map_fallback_pages_are_extracted_at_the_configured_depth():
+    gateway = DepthMapGateway(basic={}, advanced={MAPPED_PDF: PAGE_TEXT, BILLING_URL: PAGE_TEXT})
+    docs = scout_hospital(gateway, HOSPITAL, extract_depth="advanced")
+    assert gateway.mapped == ["https://www.example.org"]
+    assert gateway.calls == [([MAPPED_PDF, BILLING_URL], "advanced")]
+    assert [doc.doc_class for doc in docs] == ["fap", "billing"]
+
+
+@respx.mock
+def test_thin_pages_are_not_re_extracted_when_the_first_pass_was_advanced_but_still_downloaded():
+    page = html_route()
+    gateway = DepthGateway(basic={}, advanced={ENTRY_URL: NAV_ONLY, FAP_PDF: SAMPLE_POLICY_TEXT})
+    with httpx.Client() as http:
+        docs = scout_hospital(gateway, HOSPITAL, http=http, extract_depth="advanced")
+    assert page.called
+    # No second advanced pass (the depth is never paid for twice); the link to the PDF came from
+    # the downloaded page.
+    assert gateway.calls == [([ENTRY_URL], "advanced"), ([FAP_PDF], "advanced")]
+    assert [(doc.url, doc.doc_class) for doc in docs] == [(ENTRY_URL, "fap"), (FAP_PDF, "fap")]
+    assert "250% of the Federal Poverty" in docs[0].text
+    assert f"[Financial Assistance Policy (PDF)]({FAP_PDF})" in docs[0].text
+
+
+class RecordingTavily(ThinTavily):
+    """A Tavily client that records the depth of every extract call."""
+
+    def __init__(self):
+        self.depths = []
+
+    def extract(self, urls, **kwargs):
+        self.depths.append(kwargs["extract_depth"])
+        return super().extract(urls, **kwargs)
+
+
+def test_advanced_extraction_of_every_page_is_booked_at_two_credits_per_five_pages(tmp_path):
+    ledger = Ledger(tmp_path / "usage.jsonl")
+    governor = Governor(ledger, 100, Decimal("1"))
+    client = RecordingTavily()
+    docs = scout_hospital(TavilyGateway(client, governor), HOSPITAL, extract_depth="advanced")
+    assert [doc.text for doc in docs] == [PAGE_TEXT]
+    assert client.depths == ["advanced"]
+    # Two searches (one credit each) and the one advanced extraction (two): nothing re-extracted.
+    assert [event.units for event in ledger.events("tavily")] == [
+        Decimal("1"),
+        Decimal("1"),
+        Decimal("2"),
+    ]
+    assert governor.summary()["tavily"][0] == Decimal("4")
+
+
 def test_media_files_are_not_policy_documents_and_form_is_a_whole_word():
     # Alton Memorial (140002, 7.9): BJC's "Financial-Assistance-Policy.mp3" was stored as a
     # 60,000-character "fap" of binary noise; Adventist's /about-us/financial-performance and

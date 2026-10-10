@@ -31,7 +31,7 @@ from waive.atlas.scout import (
     fill_texts,
     source_id_for,
 )
-from waive.atlas.tavily_gateway import TavilyGateway
+from waive.atlas.tavily_gateway import Depth, TavilyGateway
 
 log = logging.getLogger(__name__)
 
@@ -61,7 +61,12 @@ def _hash(text: str) -> str:
 
 
 def fetch_texts(
-    gateway: TavilyGateway, urls: list[str], http: httpx.Client, domain: str | None = None
+    gateway: TavilyGateway,
+    urls: list[str],
+    http: httpx.Client,
+    domain: str | None = None,
+    *,
+    extract_depth: Depth = "basic",
 ) -> dict[str, str]:
     """Current text per URL, truncated like the scout's. Asset-host URLs are downloaded directly
     (no credits); the rest go through one Tavily Extract call with the scout's fallbacks (thin
@@ -76,8 +81,13 @@ def fetch_texts(
         if text := downloads.text(url):
             texts[url] = text
     if pages:
-        extracted = gateway.extract(pages, purpose=PURPOSE)
-        for url, text in fill_texts(gateway, pages, extracted, downloads, purpose=PURPOSE).items():
+        # The same depth as the scout's (task 7.10), so an unchanged page hashes the same.
+        depth: dict[str, Depth] = {} if extract_depth == "basic" else {"depth": extract_depth}
+        extracted = gateway.extract(pages, purpose=PURPOSE, **depth)
+        filled = fill_texts(
+            gateway, pages, extracted, downloads, purpose=PURPOSE, first_depth=extract_depth
+        )
+        for url, text in filled.items():
             if len(text.strip()) >= MIN_CHARS:
                 texts[url] = text
     return {url: text[:MAX_CHARS] for url, text in texts.items()}
@@ -90,6 +100,8 @@ def refresh_hospital(
     ccn: str,
     today: date,
     http: httpx.Client | None = None,
+    *,
+    extract_depth: Depth = "basic",
 ) -> RefreshResult:
     row = repo.get_hospital(session, ccn)
     if row is None:
@@ -105,7 +117,11 @@ def refresh_hospital(
     client = http or httpx.Client(timeout=30.0)
     try:
         texts = fetch_texts(
-            gateway, [source.url for source, _ in current], client, domain=row.website_domain
+            gateway,
+            [source.url for source, _ in current],
+            client,
+            domain=row.website_domain,
+            extract_depth=extract_depth,
         )
     finally:
         if owned:
@@ -134,6 +150,8 @@ def refresh_hospital(
         result.changed.append(source.id)
         log.info("document changed for %s: %s", ccn, source.url)
     if result.changed:
-        result.build = build_hospital(session, gateway, ai, ccn, today, reuse_sources=True)
+        result.build = build_hospital(
+            session, gateway, ai, ccn, today, reuse_sources=True, extract_depth=extract_depth
+        )
         result.outcome = "restructured"
     return result

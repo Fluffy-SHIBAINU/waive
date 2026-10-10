@@ -22,7 +22,12 @@ from waive.atlas.pipeline import (
 from waive.atlas.publish import export_state
 from waive.atlas.refresh import refresh_hospital
 from waive.atlas.registry import seed_all_states, seed_state
-from waive.atlas.schedule import CREDITS_PER_HOSPITAL, build_queue, run_once, scheduler_states
+from waive.atlas.schedule import (
+    build_queue,
+    credits_per_hospital,
+    run_once,
+    scheduler_states,
+)
 from waive.atlas.tavily_gateway import make_tavily_gateway
 from waive.cases.evaluate import evaluate_corpus, write_report
 from waive.cases.service import purge_cases
@@ -159,7 +164,14 @@ def atlas_build(
         if ccn:
             results = [
                 build_hospital(
-                    session, gateway, ai, ccn, today, dual=dual, reuse_sources=reuse_sources
+                    session,
+                    gateway,
+                    ai,
+                    ccn,
+                    today,
+                    dual=dual,
+                    reuse_sources=reuse_sources,
+                    extract_depth=settings.scout_extract_depth,
                 )
             ]
         else:
@@ -173,6 +185,7 @@ def atlas_build(
                 dual=dual,
                 only_missing=not rebuild,
                 reuse_sources=reuse_sources,
+                extract_depth=settings.scout_extract_depth,
             )
     table = Table("CCN", "Hospital", "Outcome", "Version", "Notes")
     for result in results:
@@ -330,6 +343,7 @@ def atlas_schedule(
             )
         console.print(table)
         used = governor.tavily_used_today(today)
+        per_hospital = credits_per_hospital(settings.scout_extract_depth)
         console.print(
             f"Queue: {len(queue.entries)} hospitals in {', '.join(states) or 'all states'} "
             f"({queue.without_sheet} without a sheet); skipped {len(queue.skipped)}; "
@@ -337,9 +351,10 @@ def atlas_schedule(
         )
         console.print(
             f"Daily budget: {used} of {settings.scout_daily_credits} credits used today "
-            f"(UTC); about {CREDITS_PER_HOSPITAL} per hospital; "
+            f"(UTC); about {per_hospital} per hospital "
+            f"({settings.scout_extract_depth} extraction); "
             f"estimate for every hospital without a sheet: "
-            f"{CREDITS_PER_HOSPITAL * queue.without_sheet} credits"
+            f"{per_hospital * queue.without_sheet} credits"
         )
         if dry_run:
             return
@@ -354,6 +369,7 @@ def atlas_schedule(
             daily_cap=settings.scout_daily_credits,
             states=states,
             limit=limit,
+            extract_depth=settings.scout_extract_depth,
         )
     for result in report.results:
         console.print(f"{result.ccn} {result.name}: {result.outcome}; " + "; ".join(result.notes))
@@ -384,7 +400,17 @@ def atlas_refresh(
         ccns = [ccn] if ccn else [row.ccn for row in repo.list_hospitals(session, state=state)]
         results = []
         for one in ccns[:limit]:
-            results.append(refresh_hospital(session, gateway, ai, one, today, http))
+            results.append(
+                refresh_hospital(
+                    session,
+                    gateway,
+                    ai,
+                    one,
+                    today,
+                    http,
+                    extract_depth=settings.scout_extract_depth,
+                )
+            )
             session.commit()
     table = Table("CCN", "Hospital", "Outcome", "Checked", "Changed", "Unreachable", "Version")
     for result in results:
