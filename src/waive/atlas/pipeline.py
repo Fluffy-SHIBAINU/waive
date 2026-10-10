@@ -9,7 +9,13 @@ from sqlalchemy.orm import Session
 
 from waive.ai.client import MAX_SERVER_MESSAGE_CHARS, AIClient, AIOutputError
 from waive.atlas import repo
-from waive.atlas.discover import MIN_CONFIDENCE, discover_domain, host_of
+from waive.atlas.discover import (
+    MIN_CONFIDENCE,
+    PLACE_UNCONFIRMED_REASON,
+    discover_domain,
+    host_of,
+    place_unconfirmed,
+)
 from waive.atlas.publish import (
     DOCUMENT_CONFLICT_REASON,
     carry_over_reported,
@@ -345,6 +351,17 @@ def _tiebreak(
     return merged, remaining
 
 
+def _unplaced(row: HospitalRow, sources_with_text: list[tuple[SourceDoc, str]]) -> str | None:
+    """Why the hospital's web documents cannot be tied to its place, or None. A domain an admin
+    confirmed (confidence 1.0) is trusted; a discovered or hand-entered one is checked."""
+    if row.domain_confidence == 1.0:
+        return None
+    web_texts = [
+        text for source, text in sources_with_text if source.kind is SourceKind.HOSPITAL_WEB
+    ]
+    return place_unconfirmed(repo.hospital_ref(row), web_texts)
+
+
 def build_hospital(
     session: Session,
     gateway: TavilyGateway,
@@ -516,6 +533,16 @@ def build_hospital(
         holds.append(DOCUMENT_CONFLICT_REASON)
         listed = ", ".join(f"{entry['id']}: {'/'.join(entry['limits'])}%" for entry in disagreeing)
         result.notes.append(f"{DOCUMENT_CONFLICT_REASON} ({listed})")
+    unplaced = _unplaced(row, sources_with_text)
+    if unplaced:
+        repo.add_review_item(
+            session,
+            ccn,
+            "place_unconfirmed",
+            {"domain": row.website_domain, "reason": unplaced},
+        )
+        holds.append(PLACE_UNCONFIRMED_REASON)
+        result.notes.append(f"{PLACE_UNCONFIRMED_REASON}: {unplaced}")
     status = decide_status(sheet, conflicts, holds)
     published = publish_sheet(session, sheet.model_copy(update={"status": status}))
     result.outcome = "published" if status.value == "published" else "held"
@@ -641,9 +668,13 @@ def recheck_sheets(session: Session, state: str | None = None) -> list[Recheck]:
             continue
         sheet = latest[0]
         texts = {source.id: text for source, text in repo.sources_for(session, row.ccn)}
-        report = verify_sheet(sheet, texts)
-        if report.rejected:
-            found.append(Recheck(row.ccn, row.name, row.state, sheet.status, report.rejected))
+        rejected = list(verify_sheet(sheet, texts).rejected)
+        if sheet.status is SheetStatus.PUBLISHED and (
+            unplaced := _unplaced(row, repo.sources_for(session, row.ccn))
+        ):
+            rejected.append(("sheet", f"{PLACE_UNCONFIRMED_REASON}: {unplaced}"))
+        if rejected:
+            found.append(Recheck(row.ccn, row.name, row.state, sheet.status, rejected))
     return found
 
 
@@ -670,14 +701,30 @@ def withdraw_rejected(
         texts = {source.id: text for source, text in repo.sources_for(session, row.ccn)}
         grounded, pruned = _ground(sheet, texts)
         report = verify_sheet(grounded, texts)
-        if not pruned and not report.rejected:
+        unplaced = (
+            _unplaced(row, repo.sources_for(session, row.ccn))
+            if sheet.status is SheetStatus.PUBLISHED
+            else None
+        )
+        if not pruned and not report.rejected and not unplaced:
             continue
         result = BuildResult(row.ccn, row.name, "skipped")
         result.notes.extend(pruned)
         result.notes.extend(f"{path}: {reason}" for path, reason in report.rejected)
         withdrawn = drop_fields(grounded, [path for path, _ in report.rejected])
+        holds: list[str] = []
+        if unplaced:
+            # The fields stay for the admin to compare; the sheet leaves the public atlas.
+            repo.add_review_item(
+                session,
+                row.ccn,
+                "place_unconfirmed",
+                {"domain": row.website_domain, "reason": unplaced},
+            )
+            holds.append(PLACE_UNCONFIRMED_REASON)
+            result.notes.append(f"{PLACE_UNCONFIRMED_REASON}: {unplaced}")
         status = (
-            decide_status(withdrawn, [], [])
+            decide_status(withdrawn, [], holds)
             if sheet.status is SheetStatus.PUBLISHED
             else SheetStatus.HELD
         )

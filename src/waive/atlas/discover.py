@@ -1,6 +1,7 @@
 """Find each hospital's official website domain with Tavily Search (spec §8 step 2)."""
 
 import re
+from collections.abc import Iterable
 from dataclasses import dataclass
 from urllib.parse import urlparse
 
@@ -8,6 +9,7 @@ from sqlalchemy.orm import Session
 
 from waive.atlas import repo
 from waive.atlas.schema import HospitalRef
+from waive.atlas.states import US_STATES, states_named
 from waive.atlas.tavily_gateway import SearchHit, TavilyGateway
 
 DIRECTORY_DOMAINS = frozenset(
@@ -158,6 +160,34 @@ def _evidence(hospital: HospitalRef, hit: SearchHit) -> float:
     if tokens and sum(t in body for t in tokens) >= needed:
         return 0.3
     return 0.0
+
+
+# Discovery can land on a same-named hospital somewhere else: Bellevue Hospital in Ohio was
+# published from Overlake Medical Center in Bellevue, Washington; Barnesville Hospital in Ohio from
+# providence.org; Chilton Medical Center from another New Jersey hospital's site (national batch
+# 2). A hospital's own policy names its state in an address or a notice, and names the hospital
+# or its town somewhere; measured on the 112 national sheets published on 2026-10-10, five fail
+# this and at least three of those five were the wrong site.
+PLACE_UNCONFIRMED_REASON = "the documents cannot be tied to this hospital's place"
+
+
+def place_unconfirmed(hospital: HospitalRef, texts: Iterable[str]) -> str | None:
+    """Why the scouted documents cannot be tied to where the hospital is, or None when they can
+    (or when there is nothing to judge). The state counts as named when it is written out, or as
+    its code after a comma or before a ZIP ("Boston, MA", "MA 02118"); the hospital counts as
+    named when its town or any distinctive word of its name appears."""
+    blob = " ".join(texts)
+    state = hospital.state.upper()
+    if not blob.strip() or state not in US_STATES:
+        return None
+    code = re.search(rf",\s*{state}\b|\b{state}\s+\d{{5}}\b", blob)
+    if state not in states_named(blob) and not code:
+        return f"the documents never name {US_STATES[state].title()}"
+    lowered = blob.lower()
+    words = set(re.findall(r"[a-z0-9]+", lowered))
+    if hospital.city.lower() not in lowered and not (name_tokens(hospital.name) & words):
+        return f"the documents name neither {hospital.city.title()} nor the hospital"
+    return None
 
 
 def pick_domain(hospital: HospitalRef, hits: list[SearchHit]) -> DomainResult | None:

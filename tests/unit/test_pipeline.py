@@ -108,7 +108,8 @@ class FakeAI:
         )
 
 
-REAL_HOSPITAL = {**HOSPITAL, "ccn": "220031", "name": "REAL GENERAL HOSPITAL", "city": "WORCESTER"}
+# In the sample policy's town: a sheet is held when its documents never name the hospital's place.
+REAL_HOSPITAL = {**HOSPITAL, "ccn": "220031", "name": "REAL GENERAL HOSPITAL", "city": "BOSTON"}
 
 
 def make_engine_with_hospital(*hospitals):
@@ -876,7 +877,7 @@ SIBLING = {
     **HOSPITAL,
     "ccn": "220031",
     "name": "REAL GENERAL HOSPITAL",
-    "city": "WORCESTER",
+    "city": "BOSTON",
     "website_domain": "example.org",
 }
 THIN_PAGE = (
@@ -1095,7 +1096,8 @@ def test_a_state_inside_the_hospitals_own_name_does_not_make_its_policy_another_
         repo.save_source(
             session,
             notice,
-            "California Fair Pricing Notice. Ask a financial counselor about assistance. " * 3,
+            "California Fair Pricing Notice, Sierra Nevada Memorial Hospital. Ask a counselor. "
+            * 3,
             "050150",
         )
         ai = GroundedAI()
@@ -1247,3 +1249,66 @@ def test_recheck_lists_stored_fields_the_current_rules_reject_and_withdraw_repub
         ]
         assert recheck_sheets(session, "MA") == []
         assert withdraw_rejected(session, "MA") == []  # nothing left to withdraw
+
+
+def test_documents_that_never_name_the_hospitals_state_hold_the_sheet_until_the_domain_is_set():
+    # National batch 2: Bellevue Hospital (Ohio) was published from Overlake Medical Center's
+    # policy (Bellevue, Washington). The scouted policy here is St. Example's, of Boston, MA.
+    ohio = {**HOSPITAL, "ccn": "360107", "name": "BELLEVUE HOSPITAL", "city": "BELLEVUE"}
+    ohio.update(state="OH", zip="44811")
+    engine = make_engine_with_hospital(ohio)
+    with session_scope(engine) as session:
+        result = build_hospital(session, FakeGateway(), FakeAI(), "360107", TODAY)
+        assert result.outcome == "held"
+        assert (
+            "the documents cannot be tied to this hospital's place: the documents never name Ohio"
+        ) in result.notes
+        sheet, _ = repo.latest_sheet(session, "360107")
+        assert sheet.status is SheetStatus.HELD
+        assert review_detail(session, "360107", "place_unconfirmed") == {
+            "domain": "example.org",
+            "reason": "the documents never name Ohio",
+        }
+        # An admin confirms the site by setting the domain by hand: the check stands down.
+        row = repo.get_hospital(session, "360107")
+        row.domain_confidence = 1.0
+        session.flush()
+        result = build_hospital(
+            session, FakeGateway(), FakeAI(), "360107", TODAY, reuse_sources=True
+        )
+        assert result.outcome == "published"
+
+
+def test_recheck_holds_a_published_sheet_whose_documents_cannot_be_tied_to_its_place():
+    # MetroWest Medical Center (220175) stood published from Mass General Brigham's policy for a
+    # week before the place check existed; `recheck --withdraw` must reach such sheets without a
+    # model call.
+    from waive.atlas.pipeline import recheck_sheets, withdraw_rejected
+
+    engine = make_engine_with_hospital(REAL_HOSPITAL)
+    with session_scope(engine) as session:
+        assert build_hospital(session, FakeGateway(), FakeAI(), "220031", TODAY).outcome == (
+            "published"
+        )
+        assert recheck_sheets(session, "MA") == []
+        # The same sheet, had the hospital been in Ohio: its Boston policy never names Ohio.
+        row = repo.get_hospital(session, "220031")
+        row.state = "OH"
+        session.flush()
+        [entry] = recheck_sheets(session, "OH")
+        assert entry.rejected == [
+            (
+                "sheet",
+                "the documents cannot be tied to this hospital's place: "
+                "the documents never name Ohio",
+            )
+        ]
+        [result] = withdraw_rejected(session, "OH")
+        assert result.outcome == "held"
+        sheet, _ = repo.latest_sheet(session, "220031")
+        assert sheet.status is SheetStatus.HELD
+        assert sheet.eligibility.free_care_max_fpl is not None  # kept for the admin to compare
+        assert review_detail(session, "220031", "place_unconfirmed")["reason"] == (
+            "the documents never name Ohio"
+        )
+        assert recheck_sheets(session, "OH") == []  # held sheets are not listed again
