@@ -1,14 +1,14 @@
 # Atlas coverage — national
 
-Generated 2026-10-09 by `waive atlas report --national`. Counts only; open data, CC BY 4.0.
+Generated 2026-10-10 by `waive atlas report --national`. Counts only; open data, CC BY 4.0.
 
 Hospitals in registry: 2703
-Published sheets: 59 (2%)
-Held sheets: 36; without a sheet: 2608
+Published sheets: 143 (5%)
+Held sheets: 76; without a sheet: 2484
 Median sheet age: 0 days
-Core fields documented (published sheets): 60%
+Core fields documented (published sheets): 59%
 Prediction accuracy: — over 0 outcomes
-Open review items: 339
+Open review items: 551
 
 | State | Hospitals | Published | Held | None | Coverage |
 |---|---|---|---|---|---|
@@ -16,17 +16,17 @@ Open review items: 339
 | AL | 20 | 0 | 0 | 20 | 0% |
 | AR | 51 | 0 | 0 | 51 | 0% |
 | AZ | 44 | 0 | 0 | 44 | 0% |
-| CA | 181 | 15 | 2 | 164 | 8% |
+| CA | 181 | 19 | 9 | 153 | 10% |
 | CO | 49 | 0 | 0 | 49 | 0% |
 | CT | 22 | 0 | 0 | 22 | 0% |
 | DC | 3 | 0 | 0 | 3 | 0% |
 | DE | 6 | 0 | 0 | 6 | 0% |
-| FL | 84 | 6 | 5 | 73 | 7% |
+| FL | 84 | 14 | 12 | 58 | 17% |
 | GA | 52 | 0 | 0 | 52 | 0% |
 | HI | 9 | 0 | 0 | 9 | 0% |
 | IA | 66 | 0 | 0 | 66 | 0% |
 | ID | 21 | 0 | 0 | 21 | 0% |
-| IL | 134 | 6 | 5 | 123 | 4% |
+| IL | 134 | 12 | 9 | 113 | 9% |
 | IN | 73 | 0 | 0 | 73 | 0% |
 | KS | 50 | 0 | 0 | 50 | 0% |
 | KY | 60 | 0 | 0 | 60 | 0% |
@@ -43,19 +43,19 @@ Open review items: 339
 | ND | 40 | 0 | 0 | 40 | 0% |
 | NE | 48 | 0 | 0 | 48 | 0% |
 | NH | 23 | 0 | 0 | 23 | 0% |
-| NJ | 53 | 0 | 1 | 52 | 0% |
+| NJ | 53 | 3 | 6 | 44 | 6% |
 | NM | 16 | 0 | 0 | 16 | 0% |
 | NV | 14 | 0 | 0 | 14 | 0% |
-| NY | 133 | 0 | 3 | 130 | 0% |
-| OH | 129 | 2 | 2 | 125 | 2% |
+| NY | 133 | 12 | 5 | 116 | 9% |
+| OH | 129 | 9 | 7 | 113 | 7% |
 | OK | 44 | 0 | 0 | 44 | 0% |
 | OR | 44 | 0 | 0 | 44 | 0% |
-| PA | 130 | 1 | 2 | 127 | 1% |
+| PA | 130 | 4 | 3 | 123 | 3% |
 | RI | 7 | 0 | 0 | 7 | 0% |
 | SC | 35 | 0 | 0 | 35 | 0% |
 | SD | 43 | 0 | 0 | 43 | 0% |
 | TN | 40 | 0 | 0 | 40 | 0% |
-| TX | 135 | 1 | 0 | 134 | 1% |
+| TX | 135 | 42 | 9 | 84 | 31% |
 | UT | 30 | 0 | 0 | 30 | 0% |
 | VA | 60 | 0 | 0 | 60 | 0% |
 | VT | 14 | 0 | 0 | 14 | 0% |
@@ -66,13 +66,13 @@ Open review items: 339
 
 | Day (UTC) | Tavily credits |
 |---|---|
-| 2026-10-03 | 0 |
 | 2026-10-04 | 0 |
 | 2026-10-05 | 0 |
 | 2026-10-06 | 0 |
 | 2026-10-07 | 0 |
 | 2026-10-08 | 0 |
 | 2026-10-09 | 310 |
+| 2026-10-10 | 943 |
 
 ## Run log
 
