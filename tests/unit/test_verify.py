@@ -815,3 +815,73 @@ def test_a_stitched_quote_keeps_the_sentence_that_carries_the_value():
     assert matched_span(stitched, source, Decimal(275)) == limit
     # No sentence carries the value: the longest real one is kept, and verification rejects it.
     assert matched_span(stitched, source, Decimal(400)) == pharmacy
+
+
+# Blessing Hospital (140015): the model gave the right limit and quoted the definition of
+# "financially indigent"; the limit stands two paragraphs on, under a heading.
+BLESSING = (
+    "Financially indigent patients are eligible for a 100% discount unless they qualify for "
+    "catastrophic assistance. Payment plans are available.\n"
+    "1. Full Financial Assistance a. Patient has reported income below 275% of the Federal "
+    "Poverty Income Guidelines at any Blessing location. b. Patients may receive medication "
+    "assistance.\n"
+    "2. Catastrophic assistance: income greater than 275% of the Federal Poverty Guidelines and "
+    "medical bills above 20% of income."
+)
+INDIGENT = (
+    "Financially indigent patients are eligible for a 100% discount unless they qualify for "
+    "catastrophic assistance."
+)
+
+
+def test_a_free_care_limit_is_re_anchored_on_the_one_passage_that_states_it():
+    from waive.atlas.verify import anchored_span, trim_quotes
+
+    docs = {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT + "\n" + BLESSING}
+    free = "eligibility.free_care_max_fpl"
+    sheet = with_free_limit(275, INDIGENT)
+    assert (free, "value not in quote") in verify_sheet(sheet, docs).rejected
+    trimmed = trim_quotes(sheet, docs)
+    assert trimmed.eligibility.free_care_max_fpl.quote == (
+        "Full Financial Assistance a. Patient has reported income below 275% of the Federal "
+        "Poverty Income Guidelines at any Blessing location."
+    )
+    assert all(path != free for path, _ in verify_sheet(trimmed, docs).rejected)
+    # A limit the document does not state is not anchored anywhere.
+    assert anchored_span(docs[SAMPLE_SOURCE_ID], Decimal(300)) is None
+    unchanged = trim_quotes(with_free_limit(300, INDIGENT), docs)
+    assert unchanged.eligibility.free_care_max_fpl.quote == INDIGENT
+    # A flattened table row names several percentages: which one is free care is not ours to say.
+    row = (
+        "CFAP Program Guidelines Federal Poverty Level 200% 201 - 300% 400% Carle Financial "
+        "Assistance Program 100% Discount 50% Discount."
+    )
+    assert anchored_span(row, Decimal(200)) is None
+    # A paid band is not free care, even next to the words "100% and".
+    band = "Patients between 100% and 275% of the Federal Poverty Level receive a 60% discount."
+    assert anchored_span(band, Decimal(275)) is None
+    # An invented quote is replaced too when the document states exactly this limit.
+    invented = trim_quotes(with_free_limit(275, "Entirely invented words here."), docs)
+    assert invented.eligibility.free_care_max_fpl.quote.startswith("Full Financial Assistance a.")
+
+
+def test_free_care_at_or_below_the_poverty_guidelines_is_a_limit_of_100_percent():
+    # Alliance Community Hospital (360131): Ohio's HCAP band, written without its number.
+    from waive.atlas.verify import states_the_poverty_line
+
+    quote = (
+        "Individuals are eligible for medically necessary health care at no cost if their family "
+        "does not exceed the Federal Poverty Income Guidelines."
+    )
+    docs = {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT + "\n" + quote}
+    free = "eligibility.free_care_max_fpl"
+    assert states_the_poverty_line(quote)
+    assert all(path != free for path, _ in verify_sheet(with_free_limit(100, quote), docs).rejected)
+    assert (free, "value not in quote") in verify_sheet(with_free_limit(200, quote), docs).rejected
+    # A percentage of the guidelines is not the poverty line itself, and "reduced cost" is not free.
+    assert not states_the_poverty_line(
+        "Care is provided at no cost if income does not exceed 250% of the Federal Poverty Level."
+    )
+    assert not states_the_poverty_line(
+        "Care is provided at a reduced cost if income does not exceed the Federal Poverty Level."
+    )
