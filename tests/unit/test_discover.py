@@ -132,6 +132,11 @@ def test_guide_sites_directories_and_government_hosts_are_never_the_hospital():
         "illinois.gov",
         "www.paauditor.gov",
         "dph.illinois.gov",
+        # Batch 2 (2026-10-10): price and nonprofit directories whose page titles name the
+        # hospital (seven hospitals at confidence 0.9), and a dictionary entry for "Christus".
+        "payerprice.com",
+        "www.causeiq.com",
+        "merriam-webster.com",
     ):
         assert is_directory(host), host
     assert not is_directory("akrongeneral.org") and not is_directory("gov.example.org")

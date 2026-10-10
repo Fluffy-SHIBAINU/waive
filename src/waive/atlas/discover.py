@@ -68,6 +68,12 @@ DIRECTORY_DOMAINS = frozenset(
         "fairvisithealth.com",
         "carelistings.com",
         "seniorhealthdatabase.com",
+        # Second national batch: payerprice.com (price transparency listings) and causeiq.com
+        # (nonprofit profiles) name the hospital in every page title and were taken for seven
+        # hospitals' own sites; merriam-webster.com answered for "Christus".
+        "payerprice.com",
+        "causeiq.com",
+        "merriam-webster.com",
     }
 )
 # Government hosts (illinois.gov, paauditor.gov, mass.gov, medicare.gov) publish records about
