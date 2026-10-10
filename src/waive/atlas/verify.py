@@ -555,15 +555,60 @@ def value_in_quote(value: Any, quote: str) -> bool:
     return True
 
 
-def matched_span(quote: str, document_text: str) -> str | None:
-    """The quote itself if the source contains it; otherwise its longest sentence that does."""
+_SENTENCE_SPLIT = re.compile(r"(?<=[.;:])\s+|\n+")
+# A widened quote stays a quote: two or three source sentences, not a page.
+MAX_WIDENED_CHARS = 700
+
+
+def matched_span(quote: str, document_text: str, value: Any = None) -> str | None:
+    """The quote itself if the source contains it; otherwise the sentence of it that does. Among
+    several, the longest that carries `value` is preferred (a stitched quote whose longer sentence
+    is about something else must not cost the field its number), then simply the longest."""
     if quote_found(quote, document_text):
         return quote.strip()
-    sentences = [s.strip() for s in re.split(r"(?<=[.;:])\s+|\n+", quote) if s.strip()]
+    sentences = [s.strip() for s in _SENTENCE_SPLIT.split(quote) if s.strip()]
     candidates = [
         s for s in sorted(sentences, key=len, reverse=True) if quote_found(s, document_text)
     ]
+    if isinstance(value, int | Decimal | list) and not isinstance(value, bool):
+        carrying = [s for s in candidates if value_in_quote(value, s)]
+        if carrying:
+            return carrying[0]
     return candidates[0] if candidates else None
+
+
+def _states_percent_of_poverty_level(text: str, value: Decimal) -> bool:
+    plain = normalize(text)
+    return _FPL_WORDS.search(plain) is not None and any(
+        Decimal(found) == value for found in _FPL_PERCENT.findall(plain)
+    )
+
+
+def widened_span(span: str, document_text: str, value: Decimal) -> str | None:
+    """`span` together with the source sentence before or after it (or both), when the wider
+    passage states `value` as a percentage of the poverty level; None otherwise. Models often
+    quote the sentence that grants the discount and leave the limit in its neighbour ("... who
+    fall between 0 - 200% of the Federal Poverty Level. [They] will have a 100% Charity discount
+    processed.", CHRISTUS Spohn). The result is verbatim source text, so the exact-quote rule
+    still applies to it; a bare number in the neighbour (a street address) is not enough."""
+    needle = normalize(span)
+    if not needle:
+        return None
+    sentences = [s.strip() for s in _SENTENCE_SPLIT.split(document_text) if s.strip()]
+    for index, sentence in enumerate(sentences):
+        if needle not in normalize(sentence):
+            continue
+        for low, high in ((index - 1, index), (index, index + 1), (index - 1, index + 1)):
+            if low < 0 or high >= len(sentences):
+                continue
+            candidate = " ".join(sentences[low : high + 1])
+            if len(candidate) > MAX_WIDENED_CHARS:
+                continue
+            if _states_percent_of_poverty_level(candidate, value) and quote_found(
+                candidate, document_text
+            ):
+                return candidate
+    return None
 
 
 def trim_quotes(sheet: ProcedureSheet, documents: dict[str, str]) -> ProcedureSheet:
@@ -578,7 +623,13 @@ def trim_quotes(sheet: ProcedureSheet, documents: dict[str, str]) -> ProcedureSh
         text = documents.get(cited.source_id or "")
         if text is None:
             continue
-        span = matched_span(cited.quote, text)
+        span = matched_span(cited.quote, text, cited.value)
+        if (
+            span is not None
+            and path == "eligibility.free_care_max_fpl"
+            and not value_in_quote(cited.value, span)
+        ):
+            span = widened_span(span, text, Decimal(cited.value)) or span
         if span is None or span == cited.quote:
             continue
         section_name, field_name = path.split(".")

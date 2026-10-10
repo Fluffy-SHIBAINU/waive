@@ -746,3 +746,72 @@ def test_free_care_limits_a_document_states():
         == set()
     )
     assert free_care_limits_stated("Free care is available; ask a financial counselor.") == set()
+
+
+# CHRISTUS Spohn (450046, national batch 2): the limit sits in the sentence before the one that
+# grants the discount, and the model quoted only the second.
+SPOHN = (
+    "Charity care is for patients who do not qualify for state or federal assistance. In most "
+    "cases, this will apply to patients who fall between 0 - 200% of the Federal Poverty Level. "
+    "Federal Poverty Levels based on total household income, with sufficient supporting "
+    "documentation provided by the patient, will have a 100% Charity discount processed. "
+    "Our billing office is at 300 Main Street."
+)
+SPOHN_GRANT = (
+    "Federal Poverty Levels based on total household income, with sufficient supporting "
+    "documentation provided by the patient, will have a 100% Charity discount processed."
+)
+
+
+def with_free_limit(value, quote):
+    sheet = st_example_sheet()
+    cited = sheet.eligibility.free_care_max_fpl.model_copy(
+        update={"value": Decimal(value), "quote": quote}
+    )
+    return sheet.model_copy(
+        update={"eligibility": sheet.eligibility.model_copy(update={"free_care_max_fpl": cited})}
+    )
+
+
+def test_a_free_care_quote_is_widened_to_the_neighbouring_sentence_that_states_the_limit():
+    from waive.atlas.verify import trim_quotes, widened_span
+
+    docs = {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT + "\n" + SPOHN}
+    free = "eligibility.free_care_max_fpl"
+    sheet = with_free_limit(200, SPOHN_GRANT)
+    assert (free, "value not in quote") in verify_sheet(sheet, docs).rejected
+    trimmed = trim_quotes(sheet, docs)
+    quote = trimmed.eligibility.free_care_max_fpl.quote
+    assert quote.startswith("In most cases, this will apply to patients who fall between 0 - 200%")
+    assert quote.endswith("will have a 100% Charity discount processed.")
+    assert quote_found(quote, docs[SAMPLE_SOURCE_ID])  # verbatim source text
+    assert all(path != free for path, _ in verify_sheet(trimmed, docs).rejected)
+    # A bare number next door is not the limit: 300 is a street address here.
+    assert widened_span(SPOHN_GRANT, docs[SAMPLE_SOURCE_ID], Decimal(300)) is None
+    held = trim_quotes(with_free_limit(300, SPOHN_GRANT), docs)
+    assert held.eligibility.free_care_max_fpl.quote == SPOHN_GRANT
+    assert (free, "value not in quote") in verify_sheet(held, docs).rejected
+    # Nothing to widen when the quote is not the source's.
+    assert (
+        widened_span("Entirely invented words here.", docs[SAMPLE_SOURCE_ID], Decimal(200)) is None
+    )
+
+
+def test_a_stitched_quote_keeps_the_sentence_that_carries_the_value():
+    # Blessing Hospital (140015): the model stitched two real sentences in the wrong order; the
+    # longer one is about prescriptions, the shorter one states the 275% limit.
+    limit = (
+        "Full financial assistance is granted when the patient has reported income below 275% "
+        "of the Federal Poverty Income Guidelines."
+    )
+    pharmacy = (
+        "Patients may receive 340b medication assistance resulting in no cost prescriptions at "
+        "owned retail pharmacies after presenting an approved card."
+    )
+    source = f"{pharmacy} {limit}"
+    stitched = f"{limit} {pharmacy}"
+    assert not quote_found(stitched, source)
+    assert matched_span(stitched, source) == pharmacy  # the longest, as before
+    assert matched_span(stitched, source, Decimal(275)) == limit
+    # No sentence carries the value: the longest real one is kept, and verification rejects it.
+    assert matched_span(stitched, source, Decimal(400)) == pharmacy
