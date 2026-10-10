@@ -3276,17 +3276,25 @@
     "website_domain": "sutterhealth.org",
     "system": null
    },
-   "version": 1,
+   "version": 2,
    "status": "held",
    "eligibility": {
-    "free_care_max_fpl": null,
+    "free_care_max_fpl": {
+     "value": "400",
+     "layer": "documented",
+     "quote": "Full charity care to uninsured patients earning 400% or less of the Federal Poverty Income Guideline (FPIG).",
+     "source_id": "billing-e43ea01319174ab6",
+     "checked_on": "2026-10-10",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "discount_tiers": null,
     "asset_test": null,
     "residency": null,
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "Sutter Health is committed to providing financial assistance to qualified low-income patients and patients who have insurance that requires the patient to pay a significant portion of their care.",
+     "quote": "Sutter hospitals offer financial assistance to help low-income patients, insured patients with high medical costs and uninsured patients.",
      "source_id": "billing-e43ea01319174ab6",
      "checked_on": "2026-10-10",
      "confidence": 1.0,
@@ -3305,13 +3313,15 @@
     "documents_required": {
      "value": [
       "proof_of_income",
-      "tax_return",
       "social_security_letter",
-      "other"
+      "tax_return",
+      "pay_stubs",
+      "insurance_card",
+      "medicaid_denial"
      ],
      "layer": "documented",
-     "quote": "*   Copy of last pay check stub\n*   Copy of W-2 from last year\u2019s income tax\n*   Copies of documentation of Social Security benefits\n*   Copies of documentation from local welfare agencies representing your financialsituation\n*   Copies of documentation related to healthcare insurance applied for or denied such as Medicare, MediCal or employer insurance program",
-     "source_id": "fap-d2568f6afbafd400",
+     "quote": "Please attach copies of the following documentation:\n\n*   Copy of last pay check stub\n*   Copy of W-2 from last year\u2019s income tax\n*   Copies of documentation of Social Security benefits\n*   Copies of documentation from local welfare agencies representing your financialsituation\n*   Copies of documentation related to healthcare insurance applied for or denied such as Medicare, MediCal or employer insurance program",
+     "source_id": "fap-48d5b20cffac040b",
      "checked_on": "2026-10-10",
      "confidence": 1.0,
      "support_count": 0
@@ -3321,16 +3331,20 @@
      "value": [
       {
        "kind": "mail",
-       "detail": "Please request a copy of the application form from your surgery center and return the completed application and documentation to the surgery center billing department."
+       "detail": "Sutter Shared Services\nCentral Billing Office\nAttn: Charity Care Team Member\nP.O. Box 619010\nRoseville, CA 95661"
+      },
+      {
+       "kind": "fax",
+       "detail": "Fax the information to 801-575-1255 or mail to:\n\nSutter Shared Services\nCentral Billing Office\nAttn: Charity Care Team Member\nP.O. Box 619010\nRoseville, CA 95661"
       },
       {
        "kind": "in_person",
-       "detail": "Please request a copy of the application form from your surgery center and return the completed application and documentation to the surgery center billing department."
+       "detail": "You may apply for Financial Assistance using the application form that is available from Patient Financial Services, which is located at the Patient Access/Registration Departments at the Hospital, or by calling Patient Financial Services at 855-398-1633, or on the Sutter Health or Hospital website below."
       }
      ],
      "layer": "documented",
-     "quote": "Please request a copy of the application form from your surgery center and return the completed application and documentation to the surgery center billing department.",
-     "source_id": "fap-d2568f6afbafd400",
+     "quote": "How to Apply for Medical Group Financial Assistance\n\n1.   Complete the confidential [Statement of Financial Condition (PDF)(opens in a new tab)](https://edge.sitecorecloud.io/sutterhealt962c-sutterhealt8fce-production57cc-4860/media/Project/SutterHealth/SutterHealth/Files/billing-insurance/financial-assistance/foundation-financial-assistance-application.pdf).\n2.   Provide the following:\n    1.   Two most recent pay stubs.\n    2.   Most recent tax return.\n\n3.   Fax the information to 801-575-1255 or mail to:\n\n**Sutter Shared Services**\nCentral Billing Office\nAttn: Charity Care Team Member\nP.O. Box 619010\nRoseville, CA 95661",
+     "source_id": "billing-e43ea01319174ab6",
      "checked_on": "2026-10-10",
      "confidence": 1.0,
      "support_count": 0
@@ -3344,9 +3358,59 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": null,
-    "hours": null,
-    "languages": null
+    "phone": {
+     "value": "855-398-1633",
+     "layer": "documented",
+     "quote": "You may apply for Financial Assistance using the application form that is available from Patient Financial Services, which is located at the Patient Access/Registration Departments at the Hospital, or by calling Patient Financial Services at [855-398-1633](tel:+18553981633), or on the Sutter Health or Hospital website below.",
+     "source_id": "billing-e43ea01319174ab6",
+     "checked_on": "2026-10-10",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": {
+     "value": "8:00 am to 5:00 pm, Monday through Friday",
+     "layer": "documented",
+     "quote": "Our telephone hours are 8:00 am to 5:00 pm, Monday through Friday.",
+     "source_id": "billing-e43ea01319174ab6",
+     "checked_on": "2026-10-10",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "languages": {
+     "value": [
+      "Arabic",
+      "Armenian",
+      "Chinese (Simplified)",
+      "Chinese (Traditional)",
+      "French (Europe)",
+      "German",
+      "Greek",
+      "Gujarati",
+      "Hebrew",
+      "Hindi",
+      "Hmong",
+      "Italian",
+      "Japanese",
+      "Korean",
+      "Laotian",
+      "Mon-Khmer/Cambodian",
+      "Persian (Farsi)",
+      "Portuguese (Brazil)",
+      "Russian",
+      "Serbo-Croatian",
+      "Spanish",
+      "Tagalog/Filipino",
+      "Thai",
+      "Urdu",
+      "Vietnamese"
+     ],
+     "layer": "documented",
+     "quote": "[Chinese (Traditional)](https://edge.sitecorecloud.io/sutterhealt962c-sutterhealt8fce-production57cc-4860/media/Project/SutterHealth/SutterHealth/Files/billing-insurance/financial-assistance/billing-and-collection-policy-chinese-traditional.pdf)",
+     "source_id": "billing-e43ea01319174ab6",
+     "checked_on": "2026-10-10",
+     "confidence": 1.0,
+     "support_count": 0
+    }
    },
    "coverage": {
     "facilities": null,
@@ -3354,12 +3418,21 @@
    },
    "sources": [
     {
-     "id": "fap-d2568f6afbafd400",
+     "id": "billing-35999893f55b454c",
      "kind": "hospital_web",
-     "url": "https://www.sutterhealth.org/about-us/business-programs/surgery-center-division/financial-assistance",
-     "title": "Financial Assistance | Sutter Health",
+     "url": "https://www.sutterhealth.org/billing-insurance/financial-assistance",
+     "title": "Help Paying Your Bill (Financial Assistance, Billing and Collections) at Sutter Health",
+     "fetched_on": "2026-10-09",
+     "sha256": "35999893f55b454cb8ec720a2d2e84f9e6cf1c0c54b155cfd4b1293518d5756f",
+     "effective_date": null
+    },
+    {
+     "id": "billing-e43ea01319174ab6",
+     "kind": "hospital_web",
+     "url": "https://sutterhealth.org/billing-insurance/financial-assistance",
+     "title": "Help paying your bill (financial assistance)",
      "fetched_on": "2026-10-10",
-     "sha256": "d2568f6afbafd4000cb6e1892105032c2a9d56ec999a47caed66e1c9db717c24",
+     "sha256": "e43ea01319174ab61b168f8960b28163ec8a3264b5f2f66355f2c0f66238ca69",
      "effective_date": null
     },
     {
@@ -3372,21 +3445,12 @@
      "effective_date": null
     },
     {
-     "id": "billing-35999893f55b454c",
+     "id": "fap-d2568f6afbafd400",
      "kind": "hospital_web",
-     "url": "https://www.sutterhealth.org/billing-insurance/financial-assistance",
-     "title": "Help paying your bill (financial assistance)",
+     "url": "https://www.sutterhealth.org/about-us/business-programs/surgery-center-division/financial-assistance",
+     "title": "Financial Assistance | Sutter Health",
      "fetched_on": "2026-10-10",
-     "sha256": "35999893f55b454cb8ec720a2d2e84f9e6cf1c0c54b155cfd4b1293518d5756f",
-     "effective_date": null
-    },
-    {
-     "id": "billing-e43ea01319174ab6",
-     "kind": "hospital_web",
-     "url": "https://sutterhealth.org/billing-insurance/financial-assistance",
-     "title": "Help paying your bill (financial assistance)",
-     "fetched_on": "2026-10-10",
-     "sha256": "e43ea01319174ab61b168f8960b28163ec8a3264b5f2f66355f2c0f66238ca69",
+     "sha256": "d2568f6afbafd4000cb6e1892105032c2a9d56ec999a47caed66e1c9db717c24",
      "effective_date": null
     }
    ],
@@ -3467,7 +3531,7 @@
     "website_domain": "sutterhealth.org",
     "system": null
    },
-   "version": 1,
+   "version": 2,
    "status": "held",
    "eligibility": {
     "free_care_max_fpl": null,
@@ -3477,8 +3541,8 @@
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "Sutter Health is committed to providing financial assistance to qualified low-income patients and patients who have insurance that requires the patient to pay a significant portion of their care.",
-     "source_id": "billing-e43ea01319174ab6",
+     "quote": "\u25aa Out-of-Pocket Medical expenses for themselves or their family (incurred at the hospital or paid to other providers in the past twelve (12) months) that exceed 10% of the patient\u2019s family income.",
+     "source_id": "application-908909ece1bbc366",
      "checked_on": "2026-10-10",
      "confidence": 1.0,
      "support_count": 0
@@ -3494,8 +3558,8 @@
     "form_url": {
      "value": "https://edge.sitecorecloud.io/sutterhealt962c-sutterhealt8fce-production57cc-4860/media/Project/SutterHealth/SutterHealth/Files/billing-insurance/financial-assistance/charity-discount-policy-application.pdf",
      "layer": "documented",
-     "quote": "[Financial Assistance and Discount Policy Application - English (PDF)(opens in a new tab)](https://edge.sitecorecloud.io/sutterhealt962c-sutterhealt8fce-production57cc-4860/media/Project/SutterHealth/SutterHealth/Files/billing-insurance/financial-assistance/charity-discount-policy-application.pdf)",
-     "source_id": "billing-e43ea01319174ab6",
+     "quote": "[Financial Assistance and Discount Policy Application - English (PDF)](https://edge.sitecorecloud.io/sutterhealt962c-sutterhealt8fce-production57cc-4860/media/Project/SutterHealth/SutterHealth/Files/billing-insurance/financial-assistance/charity-discount-policy-application.pdf)",
+     "source_id": "billing-35999893f55b454c",
      "checked_on": "2026-10-10",
      "confidence": 1.0,
      "support_count": 0
@@ -3504,42 +3568,17 @@
     "documents_required": {
      "value": [
       "proof_of_income",
-      "social_security_letter",
-      "tax_return",
-      "pay_stubs",
-      "insurance_card",
-      "medicaid_denial"
+      "tax_return"
      ],
      "layer": "documented",
-     "quote": "Please attach copies of the following documentation:\n\n*   Copy of last pay check stub\n*   Copy of W-2 from last year\u2019s income tax\n*   Copies of documentation of Social Security benefits\n*   Copies of documentation from local welfare agencies representing your financialsituation\n*   Copies of documentation related to healthcare insurance applied for or denied such as Medicare, MediCal or employer insurance program",
-     "source_id": "fap-48d5b20cffac040b",
+     "quote": "A patient shall only be required to provide recent pay stubs or tax returns as proof of income when submitting an application for Financial Assistance.",
+     "source_id": "application-908909ece1bbc366",
      "checked_on": "2026-10-10",
      "confidence": 1.0,
      "support_count": 0
     },
     "documents_reported": null,
-    "submit_methods": {
-     "value": [
-      {
-       "kind": "mail",
-       "detail": "Please request a copy of the application form from your surgery center and return the completed application and documentation to the surgery center billing department."
-      },
-      {
-       "kind": "in_person",
-       "detail": "Please request a copy of the application form from your surgery center and return the completed application and documentation to the surgery center billing department."
-      },
-      {
-       "kind": "portal",
-       "detail": "You may also submit an application for financial assistance by speaking with a representative from Patient Financial Services, who will assist you with completing the application."
-      }
-     ],
-     "layer": "documented",
-     "quote": "Please request a copy of the application form from your surgery center and return the completed application and documentation to the surgery center billing department. If you have any questions regarding this policy, please contact your surgery center.\n\n##### Powered by our not-for-profit mission. Focused on you.\n\n[800-4SUTTER](tel:+18004788837)\n\n[Contact us](https://sutterhealth.org/contact-us)\n\n##### Powered by our not-for-profit mission. Focused on you.\n\n### For Patients\n\n*   [Get care now](https://sutterhealth.org/schedule-appointment) \n*   [Find a doctor](https://sutterhealth.org/find-provider) \n*   [Our locations](https://sutterhealth.org/find-location) \n*   [My Health Online](https://sutterhealth.org/patient-resources/my-health-online) \n*   [Billing & insurance](https://sutterhealth.org/billing-insurance) \n*   [Request medical records](https://sutterhealth.org/patient-resources/records-planning/request-medical-records) \n*   [Help paying your bill](https://sutterhealth.org/billing-insurance/financial-assistance) \n\n### About us\n\n*   [About Sutter Health](https://sutterhealth.org/about-us) \n*   [Annual report(opens in a new tab)](https://reports.sutterhealth.org/annualreport-2025/?utm_source=footer&utm_medium=website) \n*   [Awards](https://sutterhealth.org/about-us/awards) \n*   [Careers](https://sutterhealth.org/about-us/careers) \n*   [Leadership](https://sutterhealth.org/about-us/leadership) \n*   [Our values](https://sutterhealth.org/about-us/mission) \n\n### Information for\n\n*   [Employees](https://sutterhealth.org/employees) \n*   [Healthcare professionals](https://sutterhealth.org/healthcare-professionals) \n*   [News and media(opens in a new tab)](https://vitals.sutterhealth.org/) \n*   [Vendors](https://sutterhealth.org/vendors) \n*   [Volunteers](https://sutterhealth.org/volunteering) \n\n[Donate today](https://sutterhealth.org/giving)\n\n[facebook](https://www.facebook.com/SutterHealth)\n\n[instagram](https://www.instagram.com/sutterhealth/)\n\n[x-twitter](https://twitter.com/SutterHealth)\n\n[youtube](https://www.youtube.com/sutterhealth)\n\n[linkedin-in](https://www.linkedin.com/company/sutter-health/)\n\n*   [ADA accessibility](https://sutterhealth.org/about-us/accessibility) \n*   [Price transparency](https://sutterhealth.org/billing-insurance/costs-and-charges/cost-transparency) \n*   [Privacy statement](https://sutterhealth.org/patient-resources/privacy/privacy-policy) \n\n[Tracking technologies opt-out](https://sutterhealth.org/about-us/business-programs/surgery-center-division/financial-assistance#)\n\n\u00a9 2026 Sutter Health. All rights reserved. Sutter Health is a registered trademark of Sutter Health \u00ae, Reg. U.S. Patent & Trademark office.\n\n[content for Yext indexing](https://sutterhealth.org/yext-sitemap.html)\n\nCancel and return to Sutter Health\n## You're leaving our site\n\nThe website you have selected is an external one located on another server. This website may contain links to third party sites. These links are provided for convenience purposes and are not under the control of Sutter Health. Do you wish to continue?\n\nContinue to link Cancel and return to Sutter Health",
-     "source_id": "fap-48d5b20cffac040b",
-     "checked_on": "2026-10-10",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "submit_methods": null,
     "window_days_from_first_bill": null,
     "decision_days": null,
     "decision_days_reported": null
@@ -3552,89 +3591,20 @@
     "phone": {
      "value": "855-398-1633",
      "layer": "documented",
-     "quote": "You may apply for Financial Assistance using the application form that is available from Patient Financial Services, which is located at the Patient Access/Registration Departments at the Hospital, or by calling Patient Financial Services at [855-398-1633](tel:+18553981633), or on the Sutter Health or Hospital website below.",
-     "source_id": "billing-e43ea01319174ab6",
+     "quote": "over the phone at 855-398-1633",
+     "source_id": "application-908909ece1bbc366",
      "checked_on": "2026-10-10",
      "confidence": 1.0,
      "support_count": 0
     },
     "hours": null,
-    "languages": {
-     "value": [
-      "English",
-      "Spanish",
-      "Chinese (Simplified)",
-      "Chinese (Traditional)",
-      "Vietnamese",
-      "Tagalog/Filipino",
-      "Arabic",
-      "Armenian",
-      "French (Europe)",
-      "German",
-      "Greek",
-      "Hindi",
-      "Hmong",
-      "Italian",
-      "Japanese",
-      "Korean",
-      "Laotian",
-      "Mon-Khmer/Cambodian",
-      "Persian (Farsi)",
-      "Portuguese (Brazil)",
-      "Russian",
-      "Serbo-Croatian",
-      "Thai",
-      "Urdu"
-     ],
-     "layer": "documented",
-     "quote": "Additional Languages\n\nFinancial Assistance Policy and Application\n\n*   [Arabic(opens in a new tab)](https://sutterhealth.org/-/media/Project/SutterHealth/SutterHealth/files/billing-insurance/financial-assistance/hospital-financial-assistance-policy-arabic.pdf \"Arabic\")\n*   [Armenian(opens in a new tab)](https://sutterhealth.org/-/media/Project/SutterHealth/SutterHealth/files/billing-insurance/financial-assistance/hospital-financial-assistance-policy-armenian.pdf \"Armenian\")\n*   [Chinese (Simplified)(opens in a new tab)](https://sutterhealth.org/-/media/Project/SutterHealth/SutterHealth/files/billing-insurance/financial-assistance/hospital-financial-assistance-policy-chinese-simplified.pdf \"Chinese (Simplified)\")\n*   [Chinese (Traditional)(opens in a new tab)](https://sutterhealth.org/-/media/Project/SutterHealth/SutterHealth/files/billing-insurance/financial-assistance/hospital-financial-assistance-policy-chinese-traditional.pdf \"Chinese (Traditional)\")\n*   [French (Europe)(opens in a new tab)](https://sutterhealth.org/-/media/Project/SutterHealth/SutterHealth/files/billing-insurance/financial-assistance/hospital-financial-assistance-policy-french.pdf \"French (Europe)\")\n*   [German(opens in a new tab)](https://sutterhealth.org/-/media/Project/SutterHealth/SutterHealth/files/billing-insurance/financial-assistance/hospital-financial-assistance-policy-german.pdf \"German\")\n*   [Greek(opens in a new tab)](https://sutterhealth.org/-/media/Project/SutterHealth/SutterHealth/files/billing-insurance/financial-assistance/hospital-financial-assistance-policy-greek.pdf \"Greek\")\n*   [Gujarati(opens in a new tab)](https://edge.sitecorecloud.io/sutterhealt962c-sutterhealt8fce-production57cc-4860/media/Project/SutterHealth/SutterHealth/Files/billing-insurance/financial-assistance/billing-and-collection-policy-gujarati.pdf)\n*   [Hebrew(opens in a new tab)](https://edge.sitecorecloud.io/sutterhealt962c-sutterhealt8fce-production57cc-4860/media/Project/SutterHealth/SutterHealth/Files/billing-insurance/financial-assistance/billing-and-collection-policy-hebrew.pdf)\n*   [Hindi(opens in a new tab)](https://edge.sitecorecloud.io/sutterhealt962c-sutterhealt8fce-production57cc-4860/media/Project/SutterHealth/SutterHealth/Files/billing-insurance/financial-assistance/billing-and-collection-policy-hindi.pdf)\n*   [Hmong(opens in a new tab)](https://edge.sitecorecloud.io/sutterhealt962c-sutterhealt8fce-production57cc-4860/media/Project/SutterHealth/SutterHealth/Files/billing-insurance/financial-assistance/billing-and-collection-policy-hmong.pdf)\n*   [Italian(opens in a new tab)](https://edge.sitecorecloud.io/sutterhealt962c-sutterhealt8fce-production57cc-4860/media/Project/SutterHealth/SutterHealth/Files/billing-insurance/financial-assistance/billing-and-collection-policy-italian.pdf)\n*   [Japanese(opens in a new tab)](https://edge.sitecorecloud.io/sutterhealt962c-sutterhealt8fce-production57cc-4860/media/Project/SutterHealth/SutterHealth/Files/billing-insurance/financial-assistance/billing-and-collection-policy-japanese.pdf)\n*   [Korean(opens in a new tab)](https://edge.sitecorecloud.io/sutterhealt962c-sutterhealt8fce-production57cc-4860/media/Project/SutterHealth/SutterHealth/Files/billing-insurance/financial-assistance/billing-and-collection-policy-korean.pdf)\n*   [Laotian(opens in a new tab)](https://edge.sitecorecloud.io/sutterhealt962c-sutterhealt8fce-production57cc-4860/media/Project/SutterHealth/SutterHealth/Files/billing-insurance/financial-assistance/billing-and-collection-policy-lao.pdf)\n*   [Mon-Khmer/Cambodian(opens in a new tab)](https://edge.sitecorecloud.io/sutterhealt962c-sutterhealt8fce-production57cc-4860/media/Project/SutterHealth/SutterHealth/Files/billing-insurance/financial-assistance/billing-and-collection-policy-khmer.pdf)\n*   [Persian (Farsi)(opens in a new tab)](https://sutterhealth.org/-/media/Project/SutterHealth/SutterHealth/files/billing-insurance/financial-assistance/hospital-financial-assistance-policy-farsi.pdf \"Persian (Farsi)\")\n*   [Portuguese (Brazil)(opens in a new tab)](https://sutterhealth.org/-/media/Project/SutterHealth/SutterHealth/files/billing-insurance/financial-assistance/hospital-financial-assistance-policy-portuguese.pdf \"Portuguese (Brazil)\")\n*   [Russian(opens in a new tab)](https://sutterhealth.org/-/media/Project/SutterHealth/SutterHealth/files/billing-insurance/financial-assistance/hospital-financial-assistance-policy-russian.pdf \"Russian\")\n*   [Serbo-Croatian(opens in a new tab)](https://sutterhealth.org/-/media/Project/SutterHealth/SutterHealth/files/billing-insurance/financial-assistance/billing-and-collection-policy-serbian.pdf \"Serbo-Croatian\")\n*   [Spanish(opens in a new tab)](https://sutterhealth.org/-/media/Project/SutterHealth/SutterHealth/files/billing-insurance/financial-assistance/hospital-financial-assistance-policy-spanish.pdf \"Spanish\")\n*   [Tagalog/Filipino(opens in a new tab)](https://sutterhealth.org/-/media/Project/SutterHealth/SutterHealth/files/billing-insurance/financial-assistance/hospital-financial-assistance-policy-tagalog.pdf \"Tagalog/Filipino\")\n*   [Thai(opens in a new tab)](https://sutterhealth.org/-/media/Project/SutterHealth/SutterHealth/files/billing-insurance/financial-assistance/hospital-financial-assistance-policy-thai.pdf \"Thai\")\n*   [Urdu(opens in a new tab)](https://sutterhealth.org/-/media/Project/SutterHealth/SutterHealth/files/billing-insurance/financial-assistance/hospital-financial-assistance-policy-urdu.pdf \"Urdu\")\n*   [Vietnamese(opens in a new tab)](https://sutterhealth.org/-/media/Project/SutterHealth/SutterHealth/files/billing-insurance/financial-assistance/hospital-financial-assistance-policy-vietnamese.pdf \"Vietnamese\")",
-     "source_id": "billing-e43ea01319174ab6",
-     "checked_on": "2026-10-10",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "languages": null
    },
    "coverage": {
     "facilities": null,
     "provider_list_url": null
    },
    "sources": [
-    {
-     "id": "fap-48d5b20cffac040b",
-     "kind": "hospital_web",
-     "url": "https://sutterhealth.org/about-us/business-programs/surgery-center-division/financial-assistance",
-     "title": "Financial assistance | Sutter Health",
-     "fetched_on": "2026-10-10",
-     "sha256": "48d5b20cffac040bea7dc1b69a115a3c85aff3b0b967fca29d5268da01df2a78",
-     "effective_date": null
-    },
-    {
-     "id": "billing-e43ea01319174ab6",
-     "kind": "hospital_web",
-     "url": "https://sutterhealth.org/billing-insurance/financial-assistance",
-     "title": "Help Paying Your Bill (Financial Assistance, Billing and Collections) at Sutter Health",
-     "fetched_on": "2026-10-10",
-     "sha256": "e43ea01319174ab61b168f8960b28163ec8a3264b5f2f66355f2c0f66238ca69",
-     "effective_date": null
-    },
-    {
-     "id": "billing-35999893f55b454c",
-     "kind": "hospital_web",
-     "url": "https://www.sutterhealth.org/billing-insurance/financial-assistance",
-     "title": "Help Paying Your Bill (Financial Assistance, Billing and Collections) at Sutter Health",
-     "fetched_on": "2026-10-10",
-     "sha256": "35999893f55b454cb8ec720a2d2e84f9e6cf1c0c54b155cfd4b1293518d5756f",
-     "effective_date": null
-    },
-    {
-     "id": "fap-d2568f6afbafd400",
-     "kind": "hospital_web",
-     "url": "https://www.sutterhealth.org/about-us/business-programs/surgery-center-division/financial-assistance",
-     "title": "Financial assistance | Sutter Health",
-     "fetched_on": "2026-10-10",
-     "sha256": "d2568f6afbafd4000cb6e1892105032c2a9d56ec999a47caed66e1c9db717c24",
-     "effective_date": null
-    },
     {
      "id": "application-18638879abe703f2",
      "kind": "hospital_web",
@@ -3654,6 +3624,15 @@
      "effective_date": null
     },
     {
+     "id": "billing-35999893f55b454c",
+     "kind": "hospital_web",
+     "url": "https://www.sutterhealth.org/billing-insurance/financial-assistance",
+     "title": "Help Paying Your Bill (Financial Assistance, Billing and Collections) at Sutter Health",
+     "fetched_on": "2026-10-09",
+     "sha256": "35999893f55b454cb8ec720a2d2e84f9e6cf1c0c54b155cfd4b1293518d5756f",
+     "effective_date": null
+    },
+    {
      "id": "billing-a5ffde17cb8fae3a",
      "kind": "hospital_web",
      "url": "https://sutterhealth.org/-/media/Project/SutterHealth/SutterHealth/files/billing-insurance/financial-assistance/hospital-financial-assistance-policy-arabic.pdf",
@@ -3669,6 +3648,33 @@
      "title": "Armenian(opens in a new tab)",
      "fetched_on": "2026-10-10",
      "sha256": "c7a02057a83827f97069197a46d581731529d6f378f1d080b87a6a9c4ff24d31",
+     "effective_date": null
+    },
+    {
+     "id": "billing-e43ea01319174ab6",
+     "kind": "hospital_web",
+     "url": "https://sutterhealth.org/billing-insurance/financial-assistance",
+     "title": "Help paying your bill (financial assistance)",
+     "fetched_on": "2026-10-10",
+     "sha256": "e43ea01319174ab61b168f8960b28163ec8a3264b5f2f66355f2c0f66238ca69",
+     "effective_date": null
+    },
+    {
+     "id": "fap-48d5b20cffac040b",
+     "kind": "hospital_web",
+     "url": "https://sutterhealth.org/about-us/business-programs/surgery-center-division/financial-assistance",
+     "title": "Financial Assistance | Sutter Health",
+     "fetched_on": "2026-10-10",
+     "sha256": "48d5b20cffac040bea7dc1b69a115a3c85aff3b0b967fca29d5268da01df2a78",
+     "effective_date": null
+    },
+    {
+     "id": "fap-d2568f6afbafd400",
+     "kind": "hospital_web",
+     "url": "https://www.sutterhealth.org/about-us/business-programs/surgery-center-division/financial-assistance",
+     "title": "Financial Assistance | Sutter Health",
+     "fetched_on": "2026-10-10",
+     "sha256": "d2568f6afbafd4000cb6e1892105032c2a9d56ec999a47caed66e1c9db717c24",
      "effective_date": null
     }
    ],
@@ -4123,29 +4129,43 @@
     "website_domain": "chinesehospital-sf.org",
     "system": null
    },
-   "version": 1,
-   "status": "held",
+   "version": 2,
+   "status": "published",
    "eligibility": {
-    "free_care_max_fpl": null,
-    "discount_tiers": null,
-    "asset_test": null,
-    "residency": null,
-    "insured_patients_covered": null,
-    "min_balance": null,
-    "services_excluded": null
-   },
-   "programs": {
-    "presumptive": {
-     "value": [
-      "Medicaid"
-     ],
+    "free_care_max_fpl": {
+     "value": "200",
      "layer": "documented",
-     "quote": "Patients who are identified as homeless, or who are currently covered under another state Medicaid program may be deemed eligible for Charity Care.",
-     "source_id": "fap-0221240ade0a95b4",
+     "quote": "Self-Pay Patients with family income: 200% or less of the Federal Poverty Level Zero",
+     "source_id": "summary-b031699fd977dac3",
      "checked_on": "2026-10-10",
      "confidence": 1.0,
      "support_count": 0
     },
+    "discount_tiers": null,
+    "asset_test": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Additionally, SB 1276 stipulates that only 50% of monetary assets after the first $10,000 may be counted toward eligibility.",
+     "source_id": "summary-b031699fd977dac3",
+     "checked_on": "2026-10-10",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "residency": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "An insured patient with non-covered charges.",
+     "source_id": "billing-49e0df01865182ff",
+     "checked_on": "2026-10-10",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
     "state_programs": null
    },
    "apply": {
@@ -4153,9 +4173,8 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "proof_of_income",
-      "tax_return",
-      "pay_stubs"
+      "pay_stubs",
+      "tax_return"
      ],
      "layer": "documented",
      "quote": "For purposes of determining eligibility for Charity Care and/or Discount Payment, documentation of income shall be limited to recent paystubs or recent income tax returns.",
@@ -4169,11 +4188,11 @@
      "value": [
       {
        "kind": "mail",
-       "detail": ""
+       "detail": "Your appeal must be made in writing, addressed to the Patient Financial Services Director and mailed to the address on this letter."
       }
      ],
      "layer": "documented",
-     "quote": "Your appeal must be made in writing, addressed to the Patient Financial Services Director and mailed to the address on this letter.",
+     "quote": "If you believe this decision is an error, you have the right to submit an appeal. Your appeal must be made in writing, addressed to the Patient Financial Services Director and mailed to the address on this letter.\n\nIf you have any questions, please feel free to contact us at (415) 677-2314 during normal business hours.",
      "source_id": "application-70fec38392abbb3e",
      "checked_on": "2026-10-10",
      "confidence": 1.0,
@@ -4191,7 +4210,7 @@
     "phone": {
      "value": "(415) 677-2314",
      "layer": "documented",
-     "quote": "Please call (415) 677-2314 to make your payment and for additional information on reasonable payment plans, if applicable.",
+     "quote": "If you have any questions, please feel free to contact us at (415) 677-2314 during normal business hours.",
      "source_id": "application-70fec38392abbb3e",
      "checked_on": "2026-10-10",
      "confidence": 1.0,
@@ -4206,15 +4225,6 @@
    },
    "sources": [
     {
-     "id": "fap-0221240ade0a95b4",
-     "kind": "hospital_web",
-     "url": "https://chinesehospital-sf.org/wp-content/uploads/2021/03/CHA_FAP_08132020_EN.pdf",
-     "title": "Chinese Hospital Financial Assistance Program Policy",
-     "fetched_on": "2026-10-10",
-     "sha256": "0221240ade0a95b4509041cbc52d6a5d53a771b7fe2193db7cee6646e7a94d26",
-     "effective_date": null
-    },
-    {
      "id": "application-70fec38392abbb3e",
      "kind": "hospital_web",
      "url": "https://chinesehospital-sf.org/wp-content/uploads/2026/04/Financial_Assistance_Application_EN_4-10-26.pdf",
@@ -4224,21 +4234,30 @@
      "effective_date": null
     },
     {
-     "id": "summary-b031699fd977dac3",
-     "kind": "hospital_web",
-     "url": "https://chinesehospital-sf.org/wp-content/uploads/2021/03/CHA_Charity_Care_020819_EN.pdf",
-     "title": "policy summary/intent",
-     "fetched_on": "2026-10-10",
-     "sha256": "b031699fd977dac3a9731c32ac1e09f3260d4108adc0af18771f9ec852754453",
-     "effective_date": null
-    },
-    {
      "id": "billing-49e0df01865182ff",
      "kind": "hospital_web",
      "url": "https://chinesehospital-sf.org/wp-content/uploads/2026/04/Debt_Collection_Policy_022026v2_EN_Tag.pdf",
      "title": "DEBT COLLECTION POLICY",
      "fetched_on": "2026-10-10",
      "sha256": "49e0df01865182ff8421e66d6ac1d12ea28c4582bfc8f9f3118c414741c63bdc",
+     "effective_date": null
+    },
+    {
+     "id": "fap-0221240ade0a95b4",
+     "kind": "hospital_web",
+     "url": "https://chinesehospital-sf.org/wp-content/uploads/2021/03/CHA_FAP_08132020_EN.pdf",
+     "title": "Chinese Hospital Financial Assistance Program Policy",
+     "fetched_on": "2026-10-10",
+     "sha256": "0221240ade0a95b4509041cbc52d6a5d53a771b7fe2193db7cee6646e7a94d26",
+     "effective_date": null
+    },
+    {
+     "id": "summary-b031699fd977dac3",
+     "kind": "hospital_web",
+     "url": "https://chinesehospital-sf.org/wp-content/uploads/2021/03/CHA_Charity_Care_020819_EN.pdf",
+     "title": "policy summary/intent",
+     "fetched_on": "2026-10-10",
+     "sha256": "b031699fd977dac3a9731c32ac1e09f3260d4108adc0af18771f9ec852754453",
      "effective_date": null
     }
    ],

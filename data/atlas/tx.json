@@ -7472,7 +7472,7 @@
     "website_domain": "communityplatform.us",
     "system": null
    },
-   "version": 1,
+   "version": 2,
    "status": "held",
    "eligibility": {
     "free_care_max_fpl": null,
@@ -7490,32 +7490,9 @@
    "apply": {
     "form_url": null,
     "form_version": null,
-    "documents_required": {
-     "value": [
-      "proof_of_income"
-     ],
-     "layer": "documented",
-     "quote": "Required: income documentation for all household members as applicable, to include Earned Income, Interest/Dividend Income, Pension/ Retirement, Unemployment, Disability, TANF etc.",
-     "source_id": "fap-4058d328b8bf91b9",
-     "checked_on": "2026-10-10",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "documents_required": null,
     "documents_reported": null,
-    "submit_methods": {
-     "value": [
-      {
-       "kind": "email",
-       "detail": "we accept the documentation in e-mail and/or fax format"
-      }
-     ],
-     "layer": "documented",
-     "quote": "Currently, intakes is being held over the phone and we accept the documentation in e-mail and/or fax format since our buildings are closed to the public.",
-     "source_id": "fap-4058d328b8bf91b9",
-     "checked_on": "2026-10-10",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "submit_methods": null,
     "window_days_from_first_bill": null,
     "decision_days": null,
     "decision_days_reported": null
@@ -7525,15 +7502,7 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": {
-     "value": "770-528-5364",
-     "layer": "documented",
-     "quote": "Interested applicants can call Cobb Senior Services Information & Referral line at 770-528-5364 to complete pre-screening to determine eligibility.",
-     "source_id": "fap-4058d328b8bf91b9",
-     "checked_on": "2026-10-10",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "phone": null,
     "hours": null,
     "languages": null
    },
@@ -7552,21 +7521,21 @@
      "effective_date": null
     },
     {
-     "id": "fap-d00d3e42142edac2",
-     "kind": "hospital_web",
-     "url": "https://cobb-county.communityplatform.us/search/program/367346",
-     "title": "Cobb County | Financial Assistance for Housing, Utilities & Transportation",
-     "fetched_on": "2026-10-10",
-     "sha256": "d00d3e42142edac273a14e839be676455003d55003aaf5fa3de270936470059f",
-     "effective_date": null
-    },
-    {
      "id": "fap-4058d328b8bf91b9",
      "kind": "hospital_web",
      "url": "https://cobb-county.communityplatform.us/search/program/366925",
      "title": "Cobb County | Financial Assistance",
      "fetched_on": "2026-10-10",
      "sha256": "4058d328b8bf91b9c6a6bf42727f71eb4d12c2d086f09b56a97497912f858db8",
+     "effective_date": null
+    },
+    {
+     "id": "fap-d00d3e42142edac2",
+     "kind": "hospital_web",
+     "url": "https://cobb-county.communityplatform.us/search/program/367346",
+     "title": "Cobb County | Financial Assistance for Housing, Utilities & Transportation",
+     "fetched_on": "2026-10-10",
+     "sha256": "d00d3e42142edac273a14e839be676455003d55003aaf5fa3de270936470059f",
      "effective_date": null
     },
     {
@@ -8095,10 +8064,18 @@
     "website_domain": "ccmedicalcenter.com",
     "system": null
    },
-   "version": 1,
+   "version": 2,
    "status": "held",
    "eligibility": {
-    "free_care_max_fpl": null,
+    "free_care_max_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "In most cases, this will apply to patients who fall between 0 - 200% of the [Federal Poverty Level](https://aspe.hhs.gov/topics/poverty-economic-mobility/poverty-guidelines). Federal Poverty Levels based on total household income, with sufficient supporting documentation provided by the patient, will have a 100% Charity discount processed.",
+     "source_id": "fap-9a30a5f7d7151fb1",
+     "checked_on": "2026-10-10",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "discount_tiers": null,
     "asset_test": null,
     "residency": null,

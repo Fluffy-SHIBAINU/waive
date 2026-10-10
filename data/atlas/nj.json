@@ -262,37 +262,19 @@
     "website_domain": "atlanticare.org",
     "system": null
    },
-   "version": 1,
+   "version": 2,
    "status": "held",
    "eligibility": {
     "free_care_max_fpl": null,
     "discount_tiers": null,
     "asset_test": null,
     "residency": null,
-    "insured_patients_covered": {
-     "value": true,
-     "layer": "documented",
-     "quote": "Discounted Charges are available to: (i) insured patients whose insurance does not pay for services at 100% of cost; and (ii) uninsured patients who are unable to satisfy the residency requirements of the Uninsured Discount; provided those patients:",
-     "source_id": "fap-6cf3c07aaa58bfdd",
-     "checked_on": "2026-10-10",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "insured_patients_covered": null,
     "min_balance": null,
     "services_excluded": null
    },
    "programs": {
-    "presumptive": {
-     "value": [
-      "Medicaid"
-     ],
-     "layer": "documented",
-     "quote": "ARMC staff will screen patients for Health Insurance Marketplace, Medicaid, Medicaid Presumptive Eligibility, New Jersey Property- Liability Insurance Guaranty Association (PLIGA), Catastrophic Illness in Children Relief Fund and Violent Crimes Fund.",
-     "source_id": "fap-6cf3c07aaa58bfdd",
-     "checked_on": "2026-10-10",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "presumptive": null,
     "state_programs": null
    },
    "apply": {
@@ -300,17 +282,43 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "proof_of_income"
+      "photo_id",
+      "proof_of_income",
+      "social_security_letter",
+      "pay_stubs",
+      "bank_statements",
+      "proof_of_residency"
      ],
      "layer": "documented",
-     "quote": "Proof of income for at least one month prior to date of service;",
-     "source_id": "fap-6cf3c07aaa58bfdd",
+     "quote": "* **Identification:** For example, Driver\u2019s License or Passport or Birth Certificate or Social Security Card for each member of the family.\n* **Proof of NJ Residency (prior to date of service)**: NJ Driver\u2019s License or utility bill or copy of lease or deed or support letter.\n* **Documentation of income**: Pay stubs or letter from the employer on letterhead that provides a breakdown of your gross salary either 4 weeks 13 weeks or 52 weeks prior to the date of service. Social Security benefit letter or Welfare (Package \u201cG\u201d) benefit letter (covering the date of service). If no income was earned then a support letter should be included with the application.\n* **Documentation of Assets**: Checking and Savings accounts, IRA\u2019s, 401k's, Stocks, Bonds and certificate of deposits are all examples of the type of balances that are to be provided as of the date of service on your Charity Care application.",
+     "source_id": "billing-74796b96404b73e2",
      "checked_on": "2026-10-10",
      "confidence": 1.0,
      "support_count": 0
     },
     "documents_reported": null,
-    "submit_methods": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "in_person",
+       "detail": "Go to 1st Floor \u2013 Outpatient registration and ask for the Financial Assistance Dept."
+      },
+      {
+       "kind": "in_person",
+       "detail": "Go to Hospital Lobby Information Desk and ask for Financial Assistance Dept."
+      },
+      {
+       "kind": "in_person",
+       "detail": "Go to Emergency Room Registration Desk and ask for Financial Assistance Dept."
+      }
+     ],
+     "layer": "documented",
+     "quote": "a. ARMC Health Plex, 1401 Atlantic Ave, Atlantic City, NJ, 08401. Monday through Friday, 7:30am to 4:00pm. Go to 1st Floor \u2013 Outpatient registration and ask for the Financial Assistance Dept. b. ARMC Mainland Campus, 65 W. Jimmie Leeds Rd., Pomona, NJ, 08240. Monday through Friday, 8:00am to 5:00pm. Go to Hospital Lobby Information Desk and ask for Financial Assistance Dept. c. ARMC Health Park at Hammonton, 219 N. White Horse Pike, Hammonton, NJ, 08037. Monday through Friday, 11:00am \u2013 7:00pm. Go to Emergency Room Registration Desk and ask for Financial Assistance Dept.",
+     "source_id": "fap-6cf3c07aaa58bfdd",
+     "checked_on": "2026-10-10",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "window_days_from_first_bill": null,
     "decision_days": null,
     "decision_days_reported": null
@@ -328,15 +336,7 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": {
-     "value": "609-272-2500",
-     "layer": "documented",
-     "quote": "calling the Business Office Customer Service office at 609-272-2500",
-     "source_id": "fap-6cf3c07aaa58bfdd",
-     "checked_on": "2026-10-10",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "phone": null,
     "hours": null,
     "languages": null
    },
@@ -346,12 +346,12 @@
    },
    "sources": [
     {
-     "id": "fap-6cf3c07aaa58bfdd",
+     "id": "billing-14af367a63317139",
      "kind": "hospital_web",
-     "url": "https://www.atlanticare.org/sites/default/files/pdf/2025-Financials/2025-Financial-Assistance.pdf",
-     "title": "Policy & Procedure",
+     "url": "https://www.atlanticare.org/patients-and-visitors/for-patients/billing-and-insurance/financial-assistance/bengali",
+     "title": "Bengali",
      "fetched_on": "2026-10-10",
-     "sha256": "6cf3c07aaa58bfddabae7d155dbcda18c3507cfdf88240aa632adc61d3c3d46e",
+     "sha256": "14af367a63317139c248c2357201a8a2889f9e0b5aed69df1acdf75fef1eae04",
      "effective_date": null
     },
     {
@@ -382,6 +382,24 @@
      "effective_date": null
     },
     {
+     "id": "billing-b1fc88cbab322de5",
+     "kind": "hospital_web",
+     "url": "https://www.atlanticare.org/patients-and-visitors/for-patients/billing-and-insurance/financial-assistance/gujarati",
+     "title": "Gujarati",
+     "fetched_on": "2026-10-10",
+     "sha256": "b1fc88cbab322de572c80c34a8426fd80db3d024ba1e5ba5e2ea364734bbf9ce",
+     "effective_date": null
+    },
+    {
+     "id": "fap-6cf3c07aaa58bfdd",
+     "kind": "hospital_web",
+     "url": "https://www.atlanticare.org/sites/default/files/pdf/2025-Financials/2025-Financial-Assistance.pdf",
+     "title": "Policy & Procedure",
+     "fetched_on": "2026-10-10",
+     "sha256": "6cf3c07aaa58bfddabae7d155dbcda18c3507cfdf88240aa632adc61d3c3d46e",
+     "effective_date": null
+    },
+    {
      "id": "fap-91c6cd9d7fc0623b",
      "kind": "hospital_web",
      "url": "https://www.atlanticare.org/sites/default/files/pdf/patient-visitors/insurance/fap-appendix-a-provider-listing.pdf",
@@ -397,24 +415,6 @@
      "title": "Financial Assistance Policy",
      "fetched_on": "2026-10-10",
      "sha256": "c175d49b81cca0ce4c68bb1f483a51a861807954f917651fad20578f6e72cccb",
-     "effective_date": null
-    },
-    {
-     "id": "billing-14af367a63317139",
-     "kind": "hospital_web",
-     "url": "https://www.atlanticare.org/patients-and-visitors/for-patients/billing-and-insurance/financial-assistance/bengali",
-     "title": "Bengali",
-     "fetched_on": "2026-10-10",
-     "sha256": "14af367a63317139c248c2357201a8a2889f9e0b5aed69df1acdf75fef1eae04",
-     "effective_date": null
-    },
-    {
-     "id": "billing-b1fc88cbab322de5",
-     "kind": "hospital_web",
-     "url": "https://www.atlanticare.org/patients-and-visitors/for-patients/billing-and-insurance/financial-assistance/gujarati",
-     "title": "Gujarati",
-     "fetched_on": "2026-10-10",
-     "sha256": "b1fc88cbab322de572c80c34a8426fd80db3d024ba1e5ba5e2ea364734bbf9ce",
      "effective_date": null
     }
    ],

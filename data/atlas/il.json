@@ -1226,14 +1226,22 @@
     "website_domain": "bjc.org",
     "system": null
    },
-   "version": 3,
+   "version": 4,
    "status": "held",
    "eligibility": {
     "free_care_max_fpl": null,
     "discount_tiers": null,
     "asset_test": null,
     "residency": null,
-    "insured_patients_covered": null,
+    "insured_patients_covered": {
+     "value": false,
+     "layer": "documented",
+     "quote": "Patients without insurance will automatically receive a 40 percent discount on the billed charges and will be considered for assistance.",
+     "source_id": "fap-5be1905329a98ac9",
+     "checked_on": "2026-10-10",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "min_balance": null,
     "services_excluded": null
    },
@@ -1245,7 +1253,7 @@
      "layer": "documented",
      "quote": "Patients who have been enrolled in Medicaid in the last six months automatically qualify for financial assistance for medical services that are not covered by Medicaid.",
      "source_id": "fap-f6caf8e60dcb0757",
-     "checked_on": "2026-10-09",
+     "checked_on": "2026-10-10",
      "confidence": 1.0,
      "support_count": 0
     },
@@ -1262,8 +1270,8 @@
      ],
      "layer": "documented",
      "quote": "The application requires proof of income such as an income tax return or paycheck stub.",
-     "source_id": "fap-f6caf8e60dcb0757",
-     "checked_on": "2026-10-09",
+     "source_id": "fap-5be1905329a98ac9",
+     "checked_on": "2026-10-10",
      "confidence": 1.0,
      "support_count": 0
     },
@@ -1272,15 +1280,15 @@
      "value": [
       {
        "kind": "mail",
-       "detail": "Mail to P .O. Box 790024, St. Louis, MO 63179-0024"
+       "detail": "P .O. Box 790024, St. Louis, MO 63179-0024"
       },
       {
        "kind": "email",
-       "detail": "email to patacct@bjc.org"
+       "detail": "patacct@bjc.org"
       },
       {
        "kind": "fax",
-       "detail": "fax to 314-747-6977"
+       "detail": "314-747-6977"
       },
       {
        "kind": "in_person",
@@ -1290,16 +1298,16 @@
      "layer": "documented",
      "quote": "Please complete this form and submit it to the hospital in person, by mail at P .O. Box 790024, St. Louis, MO 63179-0024, by electronic mail to patacct@bjc.org, or by fax 314-747-6977 to apply for free or discounted care within 240 days following the date of initial billing.",
      "source_id": "application-0e08ae1e7c1e7a44",
-     "checked_on": "2026-10-09",
+     "checked_on": "2026-10-10",
      "confidence": 1.0,
      "support_count": 0
     },
     "window_days_from_first_bill": {
      "value": 240,
      "layer": "documented",
-     "quote": "to apply for free or discounted care within 240 days following the date of initial billing.",
+     "quote": "Please complete this form and submit it to the hospital in person, by mail at P .O. Box 790024, St. Louis, MO 63179-0024, by electronic mail to patacct@bjc.org, or by fax 314-747-6977 to apply for free or discounted care within 240 days following the date of initial billing.",
      "source_id": "application-0e08ae1e7c1e7a44",
-     "checked_on": "2026-10-09",
+     "checked_on": "2026-10-10",
      "confidence": 1.0,
      "support_count": 0
     },
@@ -1314,9 +1322,9 @@
     "phone": {
      "value": "314-362-8400 or 855-362-8400",
      "layer": "documented",
-     "quote": "Talk to us about help with your bill If you do not have insurance coverage, we will reduce your hospital bill. You also may qualify for other financial assistance. All information is strictly confidential. Visit us or call us at 314-362-8400 or 855-362-8400.",
+     "quote": "Visit us or call us at 314-362-8400 or 855-362-8400.",
      "source_id": "fap-5be1905329a98ac9",
-     "checked_on": "2026-10-09",
+     "checked_on": "2026-10-10",
      "confidence": 1.0,
      "support_count": 0
     },
@@ -1329,9 +1337,9 @@
       "Alton Memorial Hospital"
      ],
      "layer": "documented",
-     "quote": "Uninsured Illinois residents receiving services at Alton Memorial Hospital, Memorial Hospital in Belleville, and Memorial Hospital in Shiloh may be eligible for additional discounts under the Illinois Hospital Uninsured Patient Discount Act.",
-     "source_id": "fap-f6caf8e60dcb0757",
-     "checked_on": "2026-10-09",
+     "quote": "Uninsured Illinois residents receiving services at Alton Memorial Hospital, Memorial Hospital Belleville and Memorial Hospital East may be eligible for additional discounts under the Illinois Hospital Uninsured Patient Discount Act.",
+     "source_id": "fap-5be1905329a98ac9",
+     "checked_on": "2026-10-10",
      "confidence": 1.0,
      "support_count": 0
     },
@@ -1692,10 +1700,18 @@
     "website_domain": "blessinghealth.org",
     "system": null
    },
-   "version": 1,
-   "status": "held",
+   "version": 3,
+   "status": "published",
    "eligibility": {
-    "free_care_max_fpl": null,
+    "free_care_max_fpl": {
+     "value": "275",
+     "layer": "documented",
+     "quote": "Full Financial Assistance a. Patient has reported income below 275% of the Federal Poverty Income Guidelines at any Blessing location.",
+     "source_id": "fap-a914a6ce8e02e39f",
+     "checked_on": "2026-10-10",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "discount_tiers": null,
     "asset_test": null,
     "residency": null,
@@ -1704,7 +1720,17 @@
     "services_excluded": null
    },
    "programs": {
-    "presumptive": null,
+    "presumptive": {
+     "value": [
+      "Medicaid"
+     ],
+     "layer": "documented",
+     "quote": "Presumptive eligibility may be determined on the basis of individual life circumstances that may include, but not limited to: 1. Full Medicaid benefits (non premium or spenddown programs or programs that exceed Blessing full financial assistance income guidelines)",
+     "source_id": "fap-a914a6ce8e02e39f",
+     "checked_on": "2026-10-10",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "state_programs": null
    },
    "apply": {
@@ -1718,7 +1744,7 @@
       "pay_stubs"
      ],
      "layer": "documented",
-     "quote": "Verification of Income To enable Blessing to determine the patient's eligibility for financial assistance, the patient may be required to provide certain information, including, but not limited to, the following: \u2022 Copy of your most recent filed Federal 1040 Income Tax Return including all schedules, W-2 Statements, and 1099 forms. If you did not file a Return for the most recent filing period, your application must include an explanation of the reason why no Return was filed. \u2022 Forms advising status of unemployment, worker's compensation, or Medicaid \u2022 Copy of most recent paycheck stubs from all jobs held in the current year showing year to date earnings in the absence of income, a letter of support and/or a declaration of no income from the patient and/or responsible party detailing how the individual's current living needs are being met \u2022 Proof of all income such as Social Security, unemployment, disability, pensions, child support, alimony or foster care.",
+     "quote": "Copy of your most recent filed Federal 1040 Income Tax Return including all schedules, W-2 Statements, and 1099 forms. If you did not file a Return for the most recent filing period, your application must include an explanation of the reason why no Return was filed. \u2022 Forms advising status of unemployment, worker's compensation, or Medicaid \u2022 Copy of most recent paycheck stubs from all jobs held in the current year showing year to date earnings in the absence of income, a letter of support and/or a declaration of no income from the patient and/or responsible party detailing how the individual's current living needs are being met \u2022 Proof of all income such as Social Security, unemployment, disability, pensions, child support, alimony or foster care.",
      "source_id": "fap-a914a6ce8e02e39f",
      "checked_on": "2026-10-10",
      "confidence": 1.0,
@@ -1728,13 +1754,17 @@
     "submit_methods": {
      "value": [
       {
-       "kind": "fax",
-       "detail": ""
+       "kind": "in_person",
+       "detail": "Visit the billing office at the hospital or clinic."
+      },
+      {
+       "kind": "portal",
+       "detail": "Download the form at blessinghealth.org."
       }
      ],
      "layer": "documented",
-     "quote": "Applications may also be faxed to 217.214.5846.",
-     "source_id": "application-cf74bd0dcae21461",
+     "quote": "To receive the financial assistance form: \u2022 Call or write Patient Financial Services. \u2022 Visit the billing office at the hospital or clinic. \u2022 Download the form at blessinghealth.org.",
+     "source_id": "summary-f7350e58edf8103a",
      "checked_on": "2026-10-10",
      "confidence": 1.0,
      "support_count": 0
@@ -1748,15 +1778,7 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": {
-     "value": "(855) 354-5896 or (217) 277-3512",
-     "layer": "documented",
-     "quote": "Questions or Concerns If you have questions or concerns, you may contact Blessing Health System Patient Financial Services by calling (855) 354-5896 or (217) 277-3512.",
-     "source_id": "application-cf74bd0dcae21461",
-     "checked_on": "2026-10-10",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "phone": null,
     "hours": null,
     "languages": null
    },
@@ -1765,15 +1787,6 @@
     "provider_list_url": null
    },
    "sources": [
-    {
-     "id": "fap-a914a6ce8e02e39f",
-     "kind": "hospital_web",
-     "url": "https://www.blessinghealth.org/sites/default/files/users/user168356/FINANCIAL_ASSISTANCE_Policy_09-2025.pdf",
-     "title": "Financial Assistance",
-     "fetched_on": "2026-10-10",
-     "sha256": "a914a6ce8e02e39f8e8bb662570a6c0248d1f55cbb3588821039c8a60b732449",
-     "effective_date": null
-    },
     {
      "id": "application-cf74bd0dcae21461",
      "kind": "hospital_web",
@@ -1784,39 +1797,12 @@
      "effective_date": null
     },
     {
-     "id": "summary-f7350e58edf8103a",
+     "id": "billing-1ce6652c8e0adf13",
      "kind": "hospital_web",
-     "url": "https://www.blessinghealth.org/sites/default/files/users/user15/FINANCIAL_ASSISTANCE_Plain_Language_Summary_9_23.pdf",
-     "title": "[PDF] ASKING FOR HELP TO PAY A BLESSING HEALTH SYSTEM ...",
+     "url": "https://www.blessinghealth.org/sites/default/files/users/user15/BILLING_Non_Covered_Hospital_Providers_3-2026.pdf",
+     "title": "Non-Covered Hospital Providers",
      "fetched_on": "2026-10-10",
-     "sha256": "f7350e58edf8103a4b69f0f223e2ba0ba58ddbc8c9e489ffaac3bc12ec435fa5",
-     "effective_date": null
-    },
-    {
-     "id": "billing-f7b5d8a9cd5c24fa",
-     "kind": "hospital_web",
-     "url": "https://www.blessinghealth.org/patients/billing-insurance/financial-assistance",
-     "title": "Financial Assistance | Blessing Health System",
-     "fetched_on": "2026-10-10",
-     "sha256": "f7b5d8a9cd5c24fa7d5fb43bd690236a6516a1c72d4e4153dfbc229fdd7f5cdf",
-     "effective_date": null
-    },
-    {
-     "id": "fap-ac74be589b1d80d8",
-     "kind": "hospital_web",
-     "url": "https://www.blessinghealth.org/sites/default/files/users/user168356/FINANCIAL_ASSISTANCE_Guidelines_2026_03-2026.pdf",
-     "title": "Financial Assistance Guidelines",
-     "fetched_on": "2026-10-10",
-     "sha256": "ac74be589b1d80d804c74b11b19f46e660f5f230d393ca02fd40ce689057eaef",
-     "effective_date": null
-    },
-    {
-     "id": "billing-f47bc48a1c8b5d53",
-     "kind": "hospital_web",
-     "url": "https://www.blessinghealth.org/sites/default/files/users/user15/BILLING_Partners_In_Care_Financial_Brochure_04-2026.pdf",
-     "title": "Read more in our Partners In Care pamphlet.",
-     "fetched_on": "2026-10-10",
-     "sha256": "f47bc48a1c8b5d5318afcaac85b963eba51496d1dcfaec5c3fe4782f29eaf7c1",
+     "sha256": "1ce6652c8e0adf136db67c6d6240bcdc25782aacb937e29606595a088d9e303d",
      "effective_date": null
     },
     {
@@ -1829,12 +1815,48 @@
      "effective_date": null
     },
     {
-     "id": "billing-1ce6652c8e0adf13",
+     "id": "billing-f47bc48a1c8b5d53",
      "kind": "hospital_web",
-     "url": "https://www.blessinghealth.org/sites/default/files/users/user15/BILLING_Non_Covered_Hospital_Providers_3-2026.pdf",
-     "title": "Non-Covered Hospital Providers",
+     "url": "https://www.blessinghealth.org/sites/default/files/users/user15/BILLING_Partners_In_Care_Financial_Brochure_04-2026.pdf",
+     "title": "Read more in our Partners In Care pamphlet.",
      "fetched_on": "2026-10-10",
-     "sha256": "1ce6652c8e0adf136db67c6d6240bcdc25782aacb937e29606595a088d9e303d",
+     "sha256": "f47bc48a1c8b5d5318afcaac85b963eba51496d1dcfaec5c3fe4782f29eaf7c1",
+     "effective_date": null
+    },
+    {
+     "id": "billing-f7b5d8a9cd5c24fa",
+     "kind": "hospital_web",
+     "url": "https://www.blessinghealth.org/patients/billing-insurance/financial-assistance",
+     "title": "Financial Assistance | Blessing Health System",
+     "fetched_on": "2026-10-10",
+     "sha256": "f7b5d8a9cd5c24fa7d5fb43bd690236a6516a1c72d4e4153dfbc229fdd7f5cdf",
+     "effective_date": null
+    },
+    {
+     "id": "fap-a914a6ce8e02e39f",
+     "kind": "hospital_web",
+     "url": "https://www.blessinghealth.org/sites/default/files/users/user168356/FINANCIAL_ASSISTANCE_Policy_09-2025.pdf",
+     "title": "Financial Assistance",
+     "fetched_on": "2026-10-10",
+     "sha256": "a914a6ce8e02e39f8e8bb662570a6c0248d1f55cbb3588821039c8a60b732449",
+     "effective_date": null
+    },
+    {
+     "id": "fap-ac74be589b1d80d8",
+     "kind": "hospital_web",
+     "url": "https://www.blessinghealth.org/sites/default/files/users/user168356/FINANCIAL_ASSISTANCE_Guidelines_2026_03-2026.pdf",
+     "title": "Financial Assistance Guidelines",
+     "fetched_on": "2026-10-10",
+     "sha256": "ac74be589b1d80d804c74b11b19f46e660f5f230d393ca02fd40ce689057eaef",
+     "effective_date": null
+    },
+    {
+     "id": "summary-f7350e58edf8103a",
+     "kind": "hospital_web",
+     "url": "https://www.blessinghealth.org/sites/default/files/users/user15/FINANCIAL_ASSISTANCE_Plain_Language_Summary_9_23.pdf",
+     "title": "[PDF] ASKING FOR HELP TO PAY A BLESSING HEALTH SYSTEM ...",
+     "fetched_on": "2026-10-10",
+     "sha256": "f7350e58edf8103a4b69f0f223e2ba0ba58ddbc8c9e489ffaac3bc12ec435fa5",
      "effective_date": null
     }
    ],
@@ -2214,181 +2236,33 @@
     "website_domain": "carle.org",
     "system": null
    },
-   "version": 1,
+   "version": 3,
    "status": "held",
    "eligibility": {
     "free_care_max_fpl": null,
     "discount_tiers": null,
     "asset_test": null,
     "residency": null,
-    "insured_patients_covered": {
-     "value": true,
-     "layer": "documented",
-     "quote": "Any patient or responsible party may apply for the Carle Financial Assistance Program, regardless of insurance coverage.",
-     "source_id": "fap-cdf397d82c5a98cf",
-     "checked_on": "2026-10-10",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "insured_patients_covered": null,
     "min_balance": null,
     "services_excluded": null
    },
    "programs": {
-    "presumptive": null,
-    "state_programs": null
-   },
-   "apply": {
-    "form_url": {
-     "value": "https://carle.org/financialassistance",
-     "layer": "documented",
-     "quote": "Additional information such as the Carle Financial Assistance Program application, participating providers, plain language summary and policies are available at carle.org/financialassistance.",
-     "source_id": "summary-4a3fb2912699b9da",
-     "checked_on": "2026-10-10",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "form_version": null,
-    "documents_required": {
+    "presumptive": {
      "value": [
-      "bank_statements",
-      "other"
+      "Homelessness",
+      "Illinois Medicaid",
+      "SNAP or WIC",
+      "Low Income Home Energy Assistance Program (LIHEAP)",
+      "Township Assistance"
      ],
      "layer": "documented",
-     "quote": "Medicare Part A or Part B beneficiaries must also provide current bank statements from any checking, savings or investment accounts.",
+     "quote": "PRESUMPTIVE ELIGIBILITY SCREENING Please indicate if any of these categories apply to you. Current participation within the program is required for certification purposes. You may need to supply required documents listed below.\n\u00a8 Homelessness \u00a8 Illinois Medicaid \u00a8 SNAP or WIC \u00a8 Low Income Home Energy Assistance Program (LIHEAP) or Township Assistance",
      "source_id": "application-3bc29028e379df90",
      "checked_on": "2026-10-10",
      "confidence": 1.0,
      "support_count": 0
     },
-    "documents_reported": null,
-    "submit_methods": null,
-    "window_days_from_first_bill": null,
-    "decision_days": null,
-    "decision_days_reported": null
-   },
-   "collections": {
-    "eca_wait_days": null,
-    "collection_agencies": null
-   },
-   "contacts": {
-    "phone": {
-     "value": "(888) 712-2753",
-     "layer": "documented",
-     "quote": "Phone: (888) 712-2753",
-     "source_id": "application-3bc29028e379df90",
-     "checked_on": "2026-10-10",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "hours": null,
-    "languages": {
-     "value": [
-      "English",
-      "Spanish"
-     ],
-     "layer": "documented",
-     "quote": "Carle Financial Assistance Program application, plain language summary, web materials and policies are available in Spanish.",
-     "source_id": "application-3bc29028e379df90",
-     "checked_on": "2026-10-10",
-     "confidence": 1.0,
-     "support_count": 0
-    }
-   },
-   "coverage": {
-    "facilities": null,
-    "provider_list_url": null
-   },
-   "sources": [
-    {
-     "id": "fap-c5e1dfba069f29b2",
-     "kind": "hospital_web",
-     "url": "https://carle.org/getmedia/2c8cc53a-7bf4-4205-bcac-8e2056cc34ab/HMKT012126-CFAP-Brochures-2026-r1.pdf",
-     "title": "[PDF] Financial Assistance Programs - Carle Health",
-     "fetched_on": "2026-10-10",
-     "sha256": "c5e1dfba069f29b28105fbce178ed72b5e715b0961679c13f47402f2f598bdde",
-     "effective_date": null
-    },
-    {
-     "id": "application-3bc29028e379df90",
-     "kind": "hospital_web",
-     "url": "https://carle.org/getmedia/61308d9a-9998-4742-a484-6f4fc05e043c/cfap-application-english.pdf",
-     "title": "Financial Assistance Programs - Carle Foundation Hospital",
-     "fetched_on": "2026-10-10",
-     "sha256": "3bc29028e379df908566d4a953b84ff9f09cb29da504601c48fcaa0e22d07fe5",
-     "effective_date": null
-    },
-    {
-     "id": "summary-4a3fb2912699b9da",
-     "kind": "hospital_web",
-     "url": "https://carle.org/getmedia/f7608f63-cb1c-4eb5-8f0b-02f00eafec74/x0873-0223-cfap-plain-language-summary.pdf",
-     "title": "Carle Financial Assistance Programs",
-     "fetched_on": "2026-10-10",
-     "sha256": "4a3fb2912699b9daa6b1973e68d2b63a06ec50029f37aeed6ee9fea79e586f11",
-     "effective_date": null
-    },
-    {
-     "id": "summary-4a3fb2912699b9da",
-     "kind": "hospital_web",
-     "url": "https://carle.org/getmedia/f7608f63-cb1c-4eb5-8f0b-02f00eafec74/X0873-0223-CFAP-Plain-Language-Summary.pdf",
-     "title": "Carle Financial Assistance Programs",
-     "fetched_on": "2026-10-10",
-     "sha256": "4a3fb2912699b9daa6b1973e68d2b63a06ec50029f37aeed6ee9fea79e586f11",
-     "effective_date": null
-    },
-    {
-     "id": "fap-4cbf7040e46e78f2",
-     "kind": "hospital_web",
-     "url": "https://dev.carle.org/X0873-eng",
-     "title": "Carle Financial Assistance Programs",
-     "fetched_on": "2026-10-10",
-     "sha256": "4cbf7040e46e78f2f2c649e3924596500277a247ce65e51202835a8da0eba52e",
-     "effective_date": null
-    },
-    {
-     "id": "fap-cdf397d82c5a98cf",
-     "kind": "hospital_web",
-     "url": "https://carle.org/getmedia/39d776c5-008f-4aa2-abfe-df0c5e358c0b/AD300-new.pdf",
-     "title": "Carle Financial Assistance Program - AD300",
-     "fetched_on": "2026-10-10",
-     "sha256": "cdf397d82c5a98cf8b25409b253531da87519349dae3d7d942a38c7a304cfe2d",
-     "effective_date": null
-    }
-   ],
-   "accuracy": null
-  },
-  {
-   "hospital": {
-    "ccn": "140209",
-    "name": "CARLE HEALTH METHODIST HOSPITAL",
-    "city": "PEORIA",
-    "state": "IL",
-    "zip": "61636",
-    "phone": "309-672-5522",
-    "ownership": "Voluntary non-profit - Private",
-    "website_domain": "carle.org",
-    "system": null
-   },
-   "version": 1,
-   "status": "held",
-   "eligibility": {
-    "free_care_max_fpl": null,
-    "discount_tiers": null,
-    "asset_test": null,
-    "residency": null,
-    "insured_patients_covered": {
-     "value": true,
-     "layer": "documented",
-     "quote": "Any patient or responsible party may apply for the Carle Financial Assistance Program, regardless of insurance coverage.",
-     "source_id": "fap-cdf397d82c5a98cf",
-     "checked_on": "2026-10-10",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "min_balance": null,
-    "services_excluded": null
-   },
-   "programs": {
-    "presumptive": null,
     "state_programs": null
    },
    "apply": {
@@ -2404,8 +2278,8 @@
       "other"
      ],
      "layer": "documented",
-     "quote": "Required 1. Copy of your most recent Federal Tax Return that you filed or were claimed as a dependent on.\n2. Copy of most recent pay stubs for all employed family members for current and prior year, showing Year-to-Date Gross Income.\n3. Copy of self-employment income and expenses for the current and prior year.\n4. Copy of Social Security or Social Security Disability award letter for the current and prior year.\n5. Copy of Unemployment statement, Disability award or Workers' Compensation award.\n6. Copy of Medical Flexible Spending Account or Health Spending Account funds available.\n7. Other income source documentation (i.e. child support, alimony, retirement income and/or letter from employer-if paid in cash).\n8. Medicare Part A or Part B beneficiaries must also provide current bank statements from any checking, savings or investment accounts.\n9. Written statement if cannot supply the above required documents.",
-     "source_id": "fap-c5e1dfba069f29b2",
+     "quote": "Required 1. Copy of your most recent Federal Tax Return that you filed or were claimed as a dependent on. 2. Copy of most recent pay stubs for all employed family members for current and prior year, showing year-to-date gross income.\n3. Copy of self-employment income and expenses for the current and prior year.\n4. Copy of Social Security or Social Security Disability award letter for the current and prior year.\n5. Copy of Unemployment statement, Disability award, or Workers Compensation award.\n6. Copy of Medical Flexible Spending Account or Health Spending Account funds available.\n7. Other income source documentation (i.e. child support, alimony, retirement income and/or letter from employer - if paid in cash)\n8. Medicare Part A or Part B beneficiaries must also provide current bank statements from any checking, savings or investment accounts.\n9. Written statement if cannot supply the above required documents.\nASSET VERIFICATION Documentation and proof of assets: - Checking and savings accounts statements - Investments: certificate of deposit (CD), mutual funds, stocks and bonds statements",
+     "source_id": "application-3bc29028e379df90",
      "checked_on": "2026-10-10",
      "confidence": 1.0,
      "support_count": 0
@@ -2433,7 +2307,7 @@
      "value": "(888) 712-2753",
      "layer": "documented",
      "quote": "Phone: (888) 712-2753",
-     "source_id": "fap-c5e1dfba069f29b2",
+     "source_id": "application-3bc29028e379df90",
      "checked_on": "2026-10-10",
      "confidence": 1.0,
      "support_count": 0
@@ -2445,8 +2319,8 @@
       "Spanish"
      ],
      "layer": "documented",
-     "quote": "Carle Health Financial Assistance Program application, plain language summary, web materials and policies are available in Spanish.\nLa solicitud del Programa de asistencia Financiera de Carle Health, resumen en t\u00e9rminos sencillos, contenido web y pol\u00edticas est\u00e1n dispon ibles en espa\u00f1ol.",
-     "source_id": "fap-c5e1dfba069f29b2",
+     "quote": "Carle Financial Assistance Program application, plain language summary, web materials and policies are available in Spanish.\nLa solicitud del Programa de asistencia Financiera de Carle, resumen en t\u00e9rminos sencillos, contenido web y pol\u00edticas est\u00e1n dispon ibles en espa\u00f1ol.",
+     "source_id": "application-3bc29028e379df90",
      "checked_on": "2026-10-10",
      "confidence": 1.0,
      "support_count": 0
@@ -2458,39 +2332,12 @@
    },
    "sources": [
     {
-     "id": "fap-c5e1dfba069f29b2",
-     "kind": "hospital_web",
-     "url": "https://carle.org/getmedia/2c8cc53a-7bf4-4205-bcac-8e2056cc34ab/HMKT012126-CFAP-Brochures-2026-r1.pdf",
-     "title": "[PDF] Financial Assistance Programs - Carle Health",
-     "fetched_on": "2026-10-10",
-     "sha256": "c5e1dfba069f29b28105fbce178ed72b5e715b0961679c13f47402f2f598bdde",
-     "effective_date": null
-    },
-    {
      "id": "application-3bc29028e379df90",
      "kind": "hospital_web",
      "url": "https://carle.org/getmedia/61308d9a-9998-4742-a484-6f4fc05e043c/cfap-application-english.pdf",
      "title": "Financial Assistance Programs - Carle Foundation Hospital",
      "fetched_on": "2026-10-10",
      "sha256": "3bc29028e379df908566d4a953b84ff9f09cb29da504601c48fcaa0e22d07fe5",
-     "effective_date": null
-    },
-    {
-     "id": "summary-4a3fb2912699b9da",
-     "kind": "hospital_web",
-     "url": "https://carle.org/getmedia/f7608f63-cb1c-4eb5-8f0b-02f00eafec74/x0873-0223-cfap-plain-language-summary.pdf",
-     "title": "Carle Financial Assistance Programs",
-     "fetched_on": "2026-10-10",
-     "sha256": "4a3fb2912699b9daa6b1973e68d2b63a06ec50029f37aeed6ee9fea79e586f11",
-     "effective_date": null
-    },
-    {
-     "id": "summary-4a3fb2912699b9da",
-     "kind": "hospital_web",
-     "url": "https://carle.org/getmedia/f7608f63-cb1c-4eb5-8f0b-02f00eafec74/X0873-0223-CFAP-Plain-Language-Summary.pdf",
-     "title": "Carle Financial Assistance Programs",
-     "fetched_on": "2026-10-10",
-     "sha256": "4a3fb2912699b9daa6b1973e68d2b63a06ec50029f37aeed6ee9fea79e586f11",
      "effective_date": null
     },
     {
@@ -2503,12 +2350,190 @@
      "effective_date": null
     },
     {
+     "id": "fap-c5e1dfba069f29b2",
+     "kind": "hospital_web",
+     "url": "https://carle.org/getmedia/2c8cc53a-7bf4-4205-bcac-8e2056cc34ab/HMKT012126-CFAP-Brochures-2026-r1.pdf",
+     "title": "[PDF] Financial Assistance Programs - Carle Health",
+     "fetched_on": "2026-10-10",
+     "sha256": "c5e1dfba069f29b28105fbce178ed72b5e715b0961679c13f47402f2f598bdde",
+     "effective_date": null
+    },
+    {
      "id": "fap-cdf397d82c5a98cf",
      "kind": "hospital_web",
      "url": "https://carle.org/getmedia/39d776c5-008f-4aa2-abfe-df0c5e358c0b/AD300-new.pdf",
      "title": "Carle Financial Assistance Program - AD300",
      "fetched_on": "2026-10-10",
      "sha256": "cdf397d82c5a98cf8b25409b253531da87519349dae3d7d942a38c7a304cfe2d",
+     "effective_date": null
+    },
+    {
+     "id": "summary-4a3fb2912699b9da",
+     "kind": "hospital_web",
+     "url": "https://carle.org/getmedia/f7608f63-cb1c-4eb5-8f0b-02f00eafec74/x0873-0223-cfap-plain-language-summary.pdf",
+     "title": "Carle Financial Assistance Programs",
+     "fetched_on": "2026-10-10",
+     "sha256": "4a3fb2912699b9daa6b1973e68d2b63a06ec50029f37aeed6ee9fea79e586f11",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null
+  },
+  {
+   "hospital": {
+    "ccn": "140209",
+    "name": "CARLE HEALTH METHODIST HOSPITAL",
+    "city": "PEORIA",
+    "state": "IL",
+    "zip": "61636",
+    "phone": "309-672-5522",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "carle.org",
+    "system": null
+   },
+   "version": 2,
+   "status": "held",
+   "eligibility": {
+    "free_care_max_fpl": null,
+    "discount_tiers": null,
+    "asset_test": null,
+    "residency": null,
+    "insured_patients_covered": null,
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": {
+     "value": [
+      "Medicaid",
+      "SNAP"
+     ],
+     "layer": "documented",
+     "quote": "Presumptive Eligibility Screening Please indicate if any of these categories apply to you. Current participation within the program is required for certification purposes. You may need to supply required documents listed below.\n\u00a8 Homelessness\n\u00a8 Illinois Medicaid\n\u00a8 SNAP or WIC\n\u00a8 Low Income Home Energy Assistance Program (LIHEAP) or Township Assistance",
+     "source_id": "application-3bc29028e379df90",
+     "checked_on": "2026-10-10",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": {
+     "value": "https://carle.org/financialassistance",
+     "layer": "documented",
+     "quote": "Additional information such as the Carle Financial Assistance Program application, participating providers, plain language summary and policies are available at carle.org/financialassistance.",
+     "source_id": "fap-4cbf7040e46e78f2",
+     "checked_on": "2026-10-10",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "proof_of_income",
+      "social_security_letter",
+      "tax_return",
+      "pay_stubs",
+      "bank_statements",
+      "other"
+     ],
+     "layer": "documented",
+     "quote": "REQUIRED DOCUMENTS If none of the presumptive eligibility categories apply, please review and attach the appropriate documentation for each wage earner in the family with this complete application.\nRequired 1. Copy of your most recent Federal Tax Return that you filed or were claimed as a dependent on. 2. Copy of most recent pay stubs for all employed family members for current and prior year, showing year-to-date gross income.\n3. Copy of self-employment income and expenses for the current and prior year.\n4. Copy of Social Security or Social Security Disability award letter for the current and prior year.\n5. Copy of Unemployment statement, Disability award, or Workers Compensation award.\n6. Copy of Medical Flexible Spending Account or Health Spending Account funds available.\n7. Other income source documentation (i.e. child support, alimony, retirement income and/or letter from employer - if paid in cash)\n8. Medicare Part A or Part B beneficiaries must also provide current bank statements from any checking, savings or investment accounts.\n9. Written statement if cannot supply the above required documents.\nASSET VERIFICATION Documentation and proof of assets: - Checking and savings accounts statements - Investments: certificate of deposit (CD), mutual funds, stocks and bonds statements",
+     "source_id": "application-3bc29028e379df90",
+     "checked_on": "2026-10-10",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": null,
+    "window_days_from_first_bill": null,
+    "decision_days": {
+     "value": 30,
+     "layer": "documented",
+     "quote": "All efforts will be made to send written determination to the applicant within 30 working days of receipt of the completed application.",
+     "source_id": "fap-cdf397d82c5a98cf",
+     "checked_on": "2026-10-10",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "(888) 712-2753",
+     "layer": "documented",
+     "quote": "Phone: (888) 712-2753",
+     "source_id": "application-3bc29028e379df90",
+     "checked_on": "2026-10-10",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": null,
+    "languages": {
+     "value": [
+      "English",
+      "Spanish"
+     ],
+     "layer": "documented",
+     "quote": "Carle Financial Assistance Program application, plain language summary, web materials and policies are available in Spanish.\nLa solicitud del Programa de asistencia Financiera de Carle, resumen en t\u00e9rminos sencillos, contenido web y pol\u00edticas est\u00e1n dispon ibles en espa\u00f1ol.",
+     "source_id": "application-3bc29028e379df90",
+     "checked_on": "2026-10-10",
+     "confidence": 1.0,
+     "support_count": 0
+    }
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null
+   },
+   "sources": [
+    {
+     "id": "application-3bc29028e379df90",
+     "kind": "hospital_web",
+     "url": "https://carle.org/getmedia/61308d9a-9998-4742-a484-6f4fc05e043c/cfap-application-english.pdf",
+     "title": "Financial Assistance Programs - Carle Foundation Hospital",
+     "fetched_on": "2026-10-10",
+     "sha256": "3bc29028e379df908566d4a953b84ff9f09cb29da504601c48fcaa0e22d07fe5",
+     "effective_date": null
+    },
+    {
+     "id": "fap-4cbf7040e46e78f2",
+     "kind": "hospital_web",
+     "url": "https://dev.carle.org/X0873-eng",
+     "title": "Carle Financial Assistance Programs",
+     "fetched_on": "2026-10-10",
+     "sha256": "4cbf7040e46e78f2f2c649e3924596500277a247ce65e51202835a8da0eba52e",
+     "effective_date": null
+    },
+    {
+     "id": "fap-c5e1dfba069f29b2",
+     "kind": "hospital_web",
+     "url": "https://carle.org/getmedia/2c8cc53a-7bf4-4205-bcac-8e2056cc34ab/HMKT012126-CFAP-Brochures-2026-r1.pdf",
+     "title": "[PDF] Financial Assistance Programs - Carle Health",
+     "fetched_on": "2026-10-10",
+     "sha256": "c5e1dfba069f29b28105fbce178ed72b5e715b0961679c13f47402f2f598bdde",
+     "effective_date": null
+    },
+    {
+     "id": "fap-cdf397d82c5a98cf",
+     "kind": "hospital_web",
+     "url": "https://carle.org/getmedia/39d776c5-008f-4aa2-abfe-df0c5e358c0b/AD300-new.pdf",
+     "title": "Carle Financial Assistance Program - AD300",
+     "fetched_on": "2026-10-10",
+     "sha256": "cdf397d82c5a98cf8b25409b253531da87519349dae3d7d942a38c7a304cfe2d",
+     "effective_date": null
+    },
+    {
+     "id": "summary-4a3fb2912699b9da",
+     "kind": "hospital_web",
+     "url": "https://carle.org/getmedia/f7608f63-cb1c-4eb5-8f0b-02f00eafec74/x0873-0223-cfap-plain-language-summary.pdf",
+     "title": "Carle Financial Assistance Programs",
+     "fetched_on": "2026-10-10",
+     "sha256": "4a3fb2912699b9daa6b1973e68d2b63a06ec50029f37aeed6ee9fea79e586f11",
      "effective_date": null
     }
    ],
@@ -2883,11 +2908,48 @@
     "website_domain": "carle.org",
     "system": null
    },
-   "version": 1,
-   "status": "held",
+   "version": 2,
+   "status": "published",
    "eligibility": {
-    "free_care_max_fpl": null,
-    "discount_tiers": null,
+    "free_care_max_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "0-200% of FPIG: 100% discount off AGB",
+     "source_id": "fap-b10d2e17617aa892",
+     "checked_on": "2026-10-10",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "200",
+       "max_fpl_inclusive": "225",
+       "discount_percent": 65
+      },
+      {
+       "min_fpl_exclusive": "225",
+       "max_fpl_inclusive": "250",
+       "discount_percent": 45
+      },
+      {
+       "min_fpl_exclusive": "250",
+       "max_fpl_inclusive": "300",
+       "discount_percent": 25
+      },
+      {
+       "min_fpl_exclusive": "300",
+       "max_fpl_inclusive": "400",
+       "discount_percent": 5
+      }
+     ],
+     "layer": "documented",
+     "quote": "0-200% of FPIG: 100% discount off AGB\n201-225% of FPIG: 65% discount off AGB\n226-250% of FPIG: 45% discount off AGB\n251-300% of FPIG: 25% discount off AGB\n301-400% of FPIG: 5% discount off AGB",
+     "source_id": "fap-b10d2e17617aa892",
+     "checked_on": "2026-10-10",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "asset_test": null,
     "residency": null,
     "insured_patients_covered": {
@@ -2921,24 +2983,41 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": null,
-    "hours": null,
+    "phone": {
+     "value": "(888) 71-CARLE, (888) 712-2753",
+     "layer": "documented",
+     "quote": "(888) 71-CARLE, (888) 712-2753",
+     "source_id": "billing-e502db8b7f6fc3b3",
+     "checked_on": "2026-10-10",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": {
+     "value": "Monday through Friday from 8 a.m. to 5 p.m.",
+     "layer": "documented",
+     "quote": "Our Patient Financial Services representatives are available Monday through Friday from 8 a.m. to 5 p.m. at",
+     "source_id": "billing-e502db8b7f6fc3b3",
+     "checked_on": "2026-10-10",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "languages": null
    },
    "coverage": {
-    "facilities": null,
+    "facilities": {
+     "value": [
+      "Carle Hoopeston Regional Health Center"
+     ],
+     "layer": "documented",
+     "quote": "Carle Hoopeston Regional Health Center and Clinic Locations:",
+     "source_id": "fap-16b0ca0c5a731aa0",
+     "checked_on": "2026-10-10",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "provider_list_url": null
    },
    "sources": [
-    {
-     "id": "fap-4cbf7040e46e78f2",
-     "kind": "hospital_web",
-     "url": "https://dev.carle.org/X0873-eng",
-     "title": "Carle Financial Assistance Programs",
-     "fetched_on": "2026-10-10",
-     "sha256": "4cbf7040e46e78f2f2c649e3924596500277a247ce65e51202835a8da0eba52e",
-     "effective_date": null
-    },
     {
      "id": "billing-e502db8b7f6fc3b3",
      "kind": "hospital_web",
@@ -2949,21 +3028,30 @@
      "effective_date": null
     },
     {
-     "id": "fap-bfcbef51a9f3799b",
-     "kind": "hospital_web",
-     "url": "https://carle.org/patients-visitors/financial-assistance",
-     "title": "Financial Assistance - Apply Today | Carle Health",
-     "fetched_on": "2026-10-10",
-     "sha256": "bfcbef51a9f3799b93bdc0d2e0cfdf6cbc7c3acea23cb2a71fe80de2e8813f37",
-     "effective_date": null
-    },
-    {
      "id": "billing-f262414b4d065a8a",
      "kind": "hospital_web",
      "url": "https://carle.org/patients-visitors/billing-and-financial-support",
      "title": "Bill Pay & Financial Assistance | Carle Health",
      "fetched_on": "2026-10-10",
      "sha256": "f262414b4d065a8a1f7e9ddbcf053b40a0e8ff63540cda66f699a7d29702f7f7",
+     "effective_date": null
+    },
+    {
+     "id": "fap-16b0ca0c5a731aa0",
+     "kind": "hospital_web",
+     "url": "https://www.carle.org/Patients-Visitors/Financial-Assistance",
+     "title": "Learn more about financial assistance programs",
+     "fetched_on": "2026-10-10",
+     "sha256": "16b0ca0c5a731aa04b8fba5e1dbd7222de6135018d5381401b4f53c8738742ec",
+     "effective_date": null
+    },
+    {
+     "id": "fap-4cbf7040e46e78f2",
+     "kind": "hospital_web",
+     "url": "https://dev.carle.org/X0873-eng",
+     "title": "Carle Financial Assistance Programs",
+     "fetched_on": "2026-10-10",
+     "sha256": "4cbf7040e46e78f2f2c649e3924596500277a247ce65e51202835a8da0eba52e",
      "effective_date": null
     },
     {
@@ -2985,21 +3073,21 @@
      "effective_date": null
     },
     {
-     "id": "fap-16b0ca0c5a731aa0",
-     "kind": "hospital_web",
-     "url": "https://www.carle.org/Patients-Visitors/Financial-Assistance",
-     "title": "Learn more about financial assistance programs",
-     "fetched_on": "2026-10-10",
-     "sha256": "16b0ca0c5a731aa04b8fba5e1dbd7222de6135018d5381401b4f53c8738742ec",
-     "effective_date": null
-    },
-    {
      "id": "fap-b10d2e17617aa892",
      "kind": "hospital_web",
      "url": "https://carle.org/getmedia/9e26c950-72c2-4b1f-9c81-433c1c9144c6/PeoriaFinancialAssistancePolicyEnglish-FINAL.pdf",
      "title": "Title: Financial Assistance \u2013 Hospital Facilities 1.BR.34",
      "fetched_on": "2026-10-10",
      "sha256": "b10d2e17617aa8921dc19cbb76eaf81c2b20223f03b7aecf4cb71140370fd480",
+     "effective_date": null
+    },
+    {
+     "id": "fap-bfcbef51a9f3799b",
+     "kind": "hospital_web",
+     "url": "https://carle.org/patients-visitors/financial-assistance",
+     "title": "Financial Assistance - Apply Today | Carle Health",
+     "fetched_on": "2026-10-10",
+     "sha256": "bfcbef51a9f3799b93bdc0d2e0cfdf6cbc7c3acea23cb2a71fe80de2e8813f37",
      "effective_date": null
     }
    ],

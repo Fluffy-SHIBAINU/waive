@@ -611,6 +611,62 @@ def widened_span(span: str, document_text: str, value: Decimal) -> str | None:
     return None
 
 
+# What makes a passage a free-care statement when a quote is re-anchored on it: the strict
+# free-care wording of `_FREE_SENTENCE`, or a "Full Financial Assistance" heading.
+_FULL_ASSISTANCE = re.compile(r"\bfull (?:financial )?assistance\b|\bfull charity care\b")
+
+
+def anchored_span(document_text: str, value: Decimal) -> str | None:
+    """The one passage of the source (a sentence, or two adjacent ones: a heading and its line)
+    that promises free care, mentions the poverty level and names `value` as its only percentage
+    of it; None when there is none. For a model that gives the right limit but quotes a sentence
+    elsewhere in the document (Blessing Hospital, 140015: the definition of "financially
+    indigent" quoted, the 275% limit under "Full Financial Assistance" two paragraphs on). A
+    passage naming several percentages (a flattened table row: 200%, 300%, 400%) is ambiguous
+    and never chosen; the shortest qualifying passage wins."""
+    sentences = [s.strip() for s in _SENTENCE_SPLIT.split(document_text) if s.strip()]
+    best: str | None = None
+    for index in range(len(sentences)):
+        for width in (1, 2):
+            window = sentences[index : index + width]
+            candidate = " ".join(window)
+            if len(window) < width or len(candidate) > MAX_WIDENED_CHARS:
+                continue
+            plain = normalize(candidate)
+            if _FPL_WORDS.search(plain) is None:
+                continue
+            if _FREE_SENTENCE.search(plain) is None and _FULL_ASSISTANCE.search(plain) is None:
+                continue
+            named = {Decimal(found) for found in _FPL_PERCENT.findall(plain)} - {Decimal(100)}
+            if named != {value}:
+                continue
+            if (best is None or len(candidate) < len(best)) and quote_found(
+                candidate, document_text
+            ):
+                best = candidate
+    return best
+
+
+_POVERTY_LINE = re.compile(
+    r"(?:at or below|at or under|not exceed|no more than|up to|within|less than or equal to"
+    r"|equal to or less than)\s+(?:100 ?(?:%|percent) of )?(?:the\s+)?"
+    r"(?:current\s+|applicable\s+)?(?:federal\s+)?poverty\s+(?:income\s+)?"
+    r"(?:level|guidelines?|line|limits?)"
+)
+
+
+def _is_poverty_line(value: Any, quote: str) -> bool:
+    return value == 100 and states_the_poverty_line(quote)
+
+
+def states_the_poverty_line(quote: str) -> bool:
+    """Free care for incomes "at or below the poverty guidelines" is a 100% limit written without
+    its number (Alliance Community Hospital, 360131: "at no cost if their family does not exceed
+    the Federal Poverty Income Guidelines"). The quote must promise free care in so many words."""
+    plain = normalize(quote)
+    return _POVERTY_LINE.search(plain) is not None and _FREE_SENTENCE.search(plain) is not None
+
+
 def trim_quotes(sheet: ProcedureSheet, documents: dict[str, str]) -> ProcedureSheet:
     """Replace each documented quote with the span of it that the source actually contains.
 
@@ -624,12 +680,18 @@ def trim_quotes(sheet: ProcedureSheet, documents: dict[str, str]) -> ProcedureSh
         if text is None:
             continue
         span = matched_span(cited.quote, text, cited.value)
-        if (
+        if path == "eligibility.free_care_max_fpl" and not (
             span is not None
-            and path == "eligibility.free_care_max_fpl"
-            and not value_in_quote(cited.value, span)
+            and (value_in_quote(cited.value, span) or _is_poverty_line(cited.value, span))
         ):
-            span = widened_span(span, text, Decimal(cited.value)) or span
+            # The limit is right more often than the quote: first the neighbouring sentence,
+            # then the one passage of this document that states exactly this limit.
+            limit = Decimal(cited.value)
+            span = (
+                (widened_span(span, text, limit) if span is not None else None)
+                or anchored_span(text, limit)
+                or span
+            )
         if span is None or span == cited.quote:
             continue
         section_name, field_name = path.split(".")
@@ -663,7 +725,10 @@ def verify_sheet(sheet: ProcedureSheet, documents: dict[str, str]) -> Verificati
             report.rejected.append((path, "quote not found in source"))
         elif looks_serialised(cited.value):
             report.rejected.append((path, "value is a list or object written as text"))
-        elif not value_in_quote(cited.value, cited.quote or ""):
+        elif not value_in_quote(cited.value, cited.quote or "") and not (
+            path == "eligibility.free_care_max_fpl"
+            and _is_poverty_line(cited.value, cited.quote or "")
+        ):
             report.rejected.append((path, "value not in quote"))
         elif path in LIST_SUPPORT and (
             reason := unsupported_list_reason(path, cited.value, cited.quote or "")

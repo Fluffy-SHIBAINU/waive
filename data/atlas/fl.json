@@ -3181,37 +3181,19 @@
     "website_domain": "ebaptisthealthcare.org",
     "system": null
    },
-   "version": 1,
+   "version": 2,
    "status": "held",
    "eligibility": {
     "free_care_max_fpl": null,
     "discount_tiers": null,
     "asset_test": null,
     "residency": null,
-    "insured_patients_covered": {
-     "value": true,
-     "layer": "documented",
-     "quote": "Patient is either uninsured or underinsured",
-     "source_id": "fap-c7b7f5376de64c71",
-     "checked_on": "2026-10-10",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "insured_patients_covered": null,
     "min_balance": null,
     "services_excluded": null
    },
    "programs": {
-    "presumptive": {
-     "value": [
-      "Patient declared to be homeless"
-     ],
-     "layer": "documented",
-     "quote": "Presumptive eligibility may be determined on the basis of individual life circumstances that may include qualification through: i. Participation with a free clinic or indigent health access programs, including Escambia County Clinic, Good Samaritan, We Care, Health and Hope; reserving the right to expand to additional free clinics. ii. Eligibility for other state or local governmental assistance programs that are unfunded (such as food stamps, welfare, WIC). iii. Patient declared to be homeless. iv. Patient having awarded bankruptcy within the previous 12 months.",
-     "source_id": "fap-c7b7f5376de64c71",
-     "checked_on": "2026-10-10",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "presumptive": null,
     "state_programs": null
    },
    "apply": {
@@ -3219,12 +3201,15 @@
     "form_version": null,
     "documents_required": {
      "value": [
+      "photo_id",
       "proof_of_income",
-      "bank_statements"
+      "tax_return",
+      "bank_statements",
+      "medicaid_denial"
      ],
      "layer": "documented",
-     "quote": "Documentation of income may include most recent paycheck statement showing the current YTD earnings, or written verification of annual wages from employer, proof of public governmental assistance, unemployment benefits award document, unearned monthly income deposit evidence (bank statement), or other governmental agencies written statement.",
-     "source_id": "fap-c7b7f5376de64c71",
+     "quote": "Documents requested may include any of the following: i. Documentation of income may include most recent paycheck statement showing the current YTD earnings, or written verification of annual wages from employer, proof of public governmental assistance, unemployment benefits award document, unearned monthly income deposit evidence (bank statement), or other governmental agencies written statement. Individual income tax form 1040 from the most recent calendar year may be requested. ii. Proof of identification. iii. Patient credit report may be used to determine ability to pay in the event other documentation cannot be provided. iv. Determination of denial by Medicaid or governmental assistance (i.e. food stamps). v. Proof of pending disability claim.",
+     "source_id": "fap-911f9fb3801141ba",
      "checked_on": "2026-10-10",
      "confidence": 1.0,
      "support_count": 0
@@ -3233,26 +3218,26 @@
     "submit_methods": {
      "value": [
       {
+       "kind": "mail",
+       "detail": "Forms and supporting documents are returned to Baptist Health Care, 100 West Garden St. Suite 200, Pensacola, FL 32502."
+      },
+      {
        "kind": "email",
-       "detail": "Please mail, email or fax completed form to: Baptist Health Care Financial Assistance Email: financialassistance@bhcpns.org"
+       "detail": "Baptist Health Care Financial Assistance Email: financialassistance@bhcpns.org"
+      },
+      {
+       "kind": "fax",
+       "detail": "Fax: 850.908.6938"
       }
      ],
      "layer": "documented",
-     "quote": "Baptist Health Care Financial Assistance Email:",
+     "quote": "Please mail, email or fax completed form to: Baptist Health Care Financial Assistance Email: financialassistance@bhcpns.org P.O. Box 17106 Fax: 850.908.6938 Pensacola, FL 32522 Phone: 448.227.3600",
      "source_id": "application-8b6556e9c7fce0ca",
      "checked_on": "2026-10-10",
      "confidence": 1.0,
      "support_count": 0
     },
-    "window_days_from_first_bill": {
-     "value": 240,
-     "layer": "documented",
-     "quote": "The determination of financial need may occur at any point in the collection cycle up to 240 days from the first post discharge billing statement.",
-     "source_id": "fap-c7b7f5376de64c71",
-     "checked_on": "2026-10-10",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "window_days_from_first_bill": null,
     "decision_days": null,
     "decision_days_reported": null
    },
@@ -3262,10 +3247,10 @@
    },
    "contacts": {
     "phone": {
-     "value": "850-908-2000",
+     "value": "448.227.3600",
      "layer": "documented",
-     "quote": "If additional information relevant to the eligibility of the patient becomes known, it is the patient\u2019s responsibility to immediately notify Customer Service of the updated information at 850-908-2000.",
-     "source_id": "fap-c7b7f5376de64c71",
+     "quote": "Phone: 448.227.3600",
+     "source_id": "application-8b6556e9c7fce0ca",
      "checked_on": "2026-10-10",
      "confidence": 1.0,
      "support_count": 0
@@ -3276,13 +3261,13 @@
    "coverage": {
     "facilities": {
      "value": [
-      "Baptist Hospital 1000 West Moreno St, Pensacola, FL 32501",
-      "Jay Hospital 14114 Alabama St., Jay, FL 32565",
-      "Gulf Breeze Hospital 1110 Gulf Breeze Parkway, Gulf Breeze, FL 32561"
+      "Baptist Hospital 123 Baptist Way, Pensacola, FL 32503",
+      "Gulf Breeze Hospital 1110 Gulf Breeze Parkway, Gulf Breeze, FL 32561",
+      "Jay Hospital 14114 Alabama St., Jay, FL 32565"
      ],
      "layer": "documented",
-     "quote": "Patient Access areas at our Hospital Facilities: \u2022 Baptist Hospital 1000 West Moreno St, Pensacola, FL 32501 \u2022 Jay Hospital 14114 Alabama St., Jay, FL 32565 \u2022 Gulf Breeze Hospital 1110 Gulf Breeze Parkway, Gulf Breeze, FL 32561",
-     "source_id": "fap-c7b7f5376de64c71",
+     "quote": "i. Patient Access areas at our Hospital Facilities: \u2022 Baptist Hospital 123 Baptist Way, Pensacola, FL 32503 \u2022 Gulf Breeze Hospital 1110 Gulf Breeze Parkway, Gulf Breeze, FL 32561 \u2022 Jay Hospital 14114 Alabama St., Jay, FL 32565",
+     "source_id": "fap-911f9fb3801141ba",
      "checked_on": "2026-10-10",
      "confidence": 1.0,
      "support_count": 0
@@ -3290,15 +3275,6 @@
     "provider_list_url": null
    },
    "sources": [
-    {
-     "id": "fap-c7b7f5376de64c71",
-     "kind": "hospital_web",
-     "url": "https://www.ebaptisthealthcare.org/documents/financialassistance/bhc_financial_assistance_policy.pdf",
-     "title": "TITLE: Financial Assistance for Baptist Health Care",
-     "fetched_on": "2026-10-10",
-     "sha256": "c7b7f5376de64c71e51d094f6eb22eb7dbb601494b66676148669fe24ae903db",
-     "effective_date": null
-    },
     {
      "id": "application-8b6556e9c7fce0ca",
      "kind": "hospital_web",
@@ -3324,6 +3300,15 @@
      "title": "TITLE: Financial Assistance for Baptist Health Care",
      "fetched_on": "2026-10-10",
      "sha256": "911f9fb3801141ba15624823402b840890a6e17237310da3dca0b00ea956c26b",
+     "effective_date": null
+    },
+    {
+     "id": "fap-c7b7f5376de64c71",
+     "kind": "hospital_web",
+     "url": "https://www.ebaptisthealthcare.org/documents/financialassistance/bhc_financial_assistance_policy.pdf",
+     "title": "TITLE: Financial Assistance for Baptist Health Care",
+     "fetched_on": "2026-10-10",
+     "sha256": "c7b7f5376de64c71e51d094f6eb22eb7dbb601494b66676148669fe24ae903db",
      "effective_date": null
     }
    ],
@@ -3866,7 +3851,7 @@
     "website_domain": "baptisthealth.net",
     "system": null
    },
-   "version": 1,
+   "version": 2,
    "status": "held",
    "eligibility": {
     "free_care_max_fpl": null,
@@ -3882,145 +3867,29 @@
     "state_programs": null
    },
    "apply": {
-    "form_url": {
-     "value": "https://baptisthealth.net/patient-resources/billing-and-financial-assistance/financial-assistance-program",
-     "layer": "documented",
-     "quote": "Visit our website at https://baptisthealth.net/patient\u2010resources/billing\u2010and\u2010financial\u2010 assistance",
-     "source_id": "summary-fa4d3b48efbb0652",
-     "checked_on": "2026-10-10",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "form_url": null,
     "form_version": null,
-    "documents_required": {
-     "value": [
-      "photo_id"
-     ],
-     "layer": "documented",
-     "quote": "In order to process your application, photocopies of one of the following documents are required for every member of your household. Your application will not be reviewed until this documentation is submitted.\n\nAlso required are photocopies of the following proof of identification and address.",
-     "source_id": "billing-502b17c5b87b621f",
-     "checked_on": "2026-10-10",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "documents_required": null,
     "documents_reported": null,
     "submit_methods": null,
-    "window_days_from_first_bill": {
-     "value": 240,
-     "layer": "documented",
-     "quote": "The Application Period begins on the date the care is provided and ends on the later of the 240th day after the date that the first post-discharge billing statement for the care is provided or at least 30 days after BHI provides the individual with a written notice that sets a deadline after which extraordinary collection actions may be initiated.",
-     "source_id": "fap-10005dad8667f228",
-     "checked_on": "2026-10-10",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "decision_days": {
-     "value": 30,
-     "layer": "documented",
-     "quote": "A prompt turnaround and a written decision, which provides a reason for denial will be provided, generally within 30 days of receipt of a completed application.",
-     "source_id": "fap-10005dad8667f228",
-     "checked_on": "2026-10-10",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "window_days_from_first_bill": null,
+    "decision_days": null,
     "decision_days_reported": null
    },
    "collections": {
-    "eca_wait_days": {
-     "value": 120,
-     "layer": "documented",
-     "quote": "BHI shall take the following steps to demonstrate reasonable efforts to determine whether a patient is eligible for financial assistance: 1. Notify the patient about the financial assistance program before initiating any ECAs to obtain payment for the care and refrain from initiating such ECAs for at least 120 days from the date of the first post-discharge billing statement for the care.",
-     "source_id": "fap-10005dad8667f228",
-     "checked_on": "2026-10-10",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "eca_wait_days": null,
     "collection_agencies": null
    },
    "contacts": {
-    "phone": {
-     "value": "561-737-7733, Ext. 84671",
-     "layer": "documented",
-     "quote": "Telephone Speak with a Financial Counselor by calling 561-737-7733, Ext. 84671 (Monday through Friday \u2013 9:00AM \u2013 4:30PM)",
-     "source_id": "fap-10005dad8667f228",
-     "checked_on": "2026-10-10",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "hours": {
-     "value": "Monday through Friday \u2013 9:00AM \u2013 4:30PM",
-     "layer": "documented",
-     "quote": "Telephone Speak with a Financial Counselor by calling 561-737-7733, Ext. 84671 (Monday through Friday \u2013 9:00AM \u2013 4:30PM)",
-     "source_id": "fap-10005dad8667f228",
-     "checked_on": "2026-10-10",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "languages": {
-     "value": [
-      "English",
-      "Spanish"
-     ],
-     "layer": "documented",
-     "quote": "This summary, the Financial Assistance Application, and the Financial Assistance Policy are also available in Spanish, and will be furnished upon request, free of charge through the same sources and locations noted above.",
-     "source_id": "summary-fa4d3b48efbb0652",
-     "checked_on": "2026-10-10",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "phone": null,
+    "hours": null,
+    "languages": null
    },
    "coverage": {
-    "facilities": {
-     "value": [
-      "Bethesda Hospital East",
-      "Bethesda Hospital West"
-     ],
-     "layer": "documented",
-     "quote": "This policy applies to Bethesda Hospital, Inc., including Bethesda Hospital East and Bethesda Hospital West.",
-     "source_id": "fap-10005dad8667f228",
-     "checked_on": "2026-10-10",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "facilities": null,
     "provider_list_url": null
    },
    "sources": [
-    {
-     "id": "fap-10005dad8667f228",
-     "kind": "hospital_web",
-     "url": "https://baptisthealth.net/-/media/documents/pdfs/bethesda-east-financial-assistance/english-policy.ashx",
-     "title": "Financial Assistance Policy",
-     "fetched_on": "2026-10-10",
-     "sha256": "10005dad8667f2286b1d7e717e28510a8adf4924878f2a970485d4e08b9b9850",
-     "effective_date": null
-    },
-    {
-     "id": "summary-fa4d3b48efbb0652",
-     "kind": "hospital_web",
-     "url": "https://baptisthealth.net/patient-resources/billing-and-financial-assistance/financial-assistance-program/-/media/Documents/Patient-Resources/Financial-Assistance/04BHSF-Plain-Language-Summary-of-FAP091222.pdf",
-     "title": "[PDF] Plain Language Summary of Financial Assistance Policy",
-     "fetched_on": "2026-10-10",
-     "sha256": "fa4d3b48efbb0652fe43b7aa85f7021ca78b5ccabe319410fa1415780e8d9eef",
-     "effective_date": null
-    },
-    {
-     "id": "billing-dd206ddcbe5618a8",
-     "kind": "hospital_web",
-     "url": "https://baptisthealth.net/es/patient-resources/billing-and-financial-assistance/financial-assistance-program/-/media/Documents/Patient-Resources/Financial-Assistance/BHSF35514--Financial-Assistance-Policy-ENG-9262024-FINAL.pdf",
-     "title": "POLICY NO.: BHSF-355.14 TYPE: Administrative",
-     "fetched_on": "2026-10-10",
-     "sha256": "dd206ddcbe5618a83b8759ffeebc9301cc93b5488e4e30c7f9d206ad5b191aa8",
-     "effective_date": null
-    },
-    {
-     "id": "billing-502b17c5b87b621f",
-     "kind": "hospital_web",
-     "url": "https://baptisthealth.net/patient-resources/billing-and-financial-assistance/financial-assistance-program/bethesda-hospital-east",
-     "title": "Financial Assistance at Bethesda Hospital East | Baptist Health South Florida",
-     "fetched_on": "2026-10-10",
-     "sha256": "502b17c5b87b621fbf7bff97fa9657c8d9b793ab09b08c8098ba6a23e9edb7b9",
-     "effective_date": null
-    },
     {
      "id": "application-24ae1d0d9ec1825c",
      "kind": "hospital_web",
@@ -4040,12 +3909,30 @@
      "effective_date": null
     },
     {
-     "id": "summary-add64663d154186f",
+     "id": "billing-502b17c5b87b621f",
      "kind": "hospital_web",
-     "url": "https://www.baptisthealth.net/-/media/Documents/Patient-Resources/Financial-Assistance/04BHSF-Plain-Language-Summary-of-FAP091222.pdf",
-     "title": "Download English Summary",
+     "url": "https://baptisthealth.net/patient-resources/billing-and-financial-assistance/financial-assistance-program/bethesda-hospital-east",
+     "title": "Financial Assistance at Bethesda Hospital East | Baptist Health South Florida",
      "fetched_on": "2026-10-10",
-     "sha256": "add64663d154186fc9a08123b0ba7cafc2c5210d271d4fc236d200f691f74277",
+     "sha256": "502b17c5b87b621fbf7bff97fa9657c8d9b793ab09b08c8098ba6a23e9edb7b9",
+     "effective_date": null
+    },
+    {
+     "id": "billing-dd206ddcbe5618a8",
+     "kind": "hospital_web",
+     "url": "https://baptisthealth.net/es/patient-resources/billing-and-financial-assistance/financial-assistance-program/-/media/Documents/Patient-Resources/Financial-Assistance/BHSF35514--Financial-Assistance-Policy-ENG-9262024-FINAL.pdf",
+     "title": "POLICY NO.: BHSF-355.14 TYPE: Administrative",
+     "fetched_on": "2026-10-10",
+     "sha256": "dd206ddcbe5618a83b8759ffeebc9301cc93b5488e4e30c7f9d206ad5b191aa8",
+     "effective_date": null
+    },
+    {
+     "id": "fap-10005dad8667f228",
+     "kind": "hospital_web",
+     "url": "https://baptisthealth.net/-/media/documents/pdfs/bethesda-east-financial-assistance/english-policy.ashx",
+     "title": "Financial Assistance Policy",
+     "fetched_on": "2026-10-10",
+     "sha256": "10005dad8667f2286b1d7e717e28510a8adf4924878f2a970485d4e08b9b9850",
      "effective_date": null
     },
     {
@@ -4058,12 +3945,30 @@
      "effective_date": null
     },
     {
+     "id": "summary-add64663d154186f",
+     "kind": "hospital_web",
+     "url": "https://www.baptisthealth.net/-/media/Documents/Patient-Resources/Financial-Assistance/04BHSF-Plain-Language-Summary-of-FAP091222.pdf",
+     "title": "Download English Summary",
+     "fetched_on": "2026-10-10",
+     "sha256": "add64663d154186fc9a08123b0ba7cafc2c5210d271d4fc236d200f691f74277",
+     "effective_date": null
+    },
+    {
      "id": "summary-f180daad159cb064",
      "kind": "hospital_web",
      "url": "https://baptisthealth.net/-/media/documents/patient-resources/financial-assistance/baptist-health-south-florida--plain-language-summary-of-fap-wkbh-1002201.ashx",
      "title": "Baptist Health South Florida",
      "fetched_on": "2026-10-10",
      "sha256": "f180daad159cb064c6d0ed39485b6580f4fd4cc0f5a2cbd05a1c273b04e997ec",
+     "effective_date": null
+    },
+    {
+     "id": "summary-fa4d3b48efbb0652",
+     "kind": "hospital_web",
+     "url": "https://baptisthealth.net/patient-resources/billing-and-financial-assistance/financial-assistance-program/-/media/Documents/Patient-Resources/Financial-Assistance/04BHSF-Plain-Language-Summary-of-FAP091222.pdf",
+     "title": "[PDF] Plain Language Summary of Financial Assistance Policy",
+     "fetched_on": "2026-10-10",
+     "sha256": "fa4d3b48efbb0652fe43b7aa85f7021ca78b5ccabe319410fa1415780e8d9eef",
      "effective_date": null
     }
    ],
