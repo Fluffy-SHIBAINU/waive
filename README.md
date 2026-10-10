@@ -144,7 +144,7 @@ flowchart TD
 | Re-check stored documents by content hash and re-structure only what changed | Extract | `src/waive/atlas/refresh.py` |
 | Scout unattended on a priority queue inside a daily credit budget (`WAIVE_SCOUT_DAILY_CREDITS`) | the calls above | `src/waive/atlas/schedule.py` |
 
-Measured cost: about 5 credits per hospital (two searches, often a Map, one or two Extracts), two more when a page renders as navigation only and needs the advanced extraction depth; the scheduler starts a hospital only with 7 credits left in the day. The Massachusetts atlas took 438 credits including every debugging re-run and the 2026-10-09 re-scouts; the national batches run on a 300-credit daily budget.
+Measured cost: about 5 credits per hospital (two searches, often a Map, one or two Extracts), two more when a page renders as navigation only and needs the advanced extraction depth; the scheduler starts a hospital only with 7 credits left in the day. With `WAIVE_SCOUT_EXTRACT_DEPTH=advanced` every page is rendered at the advanced depth on the first pass (never twice): about 9 credits per hospital, in exchange for fuller policy text to quote from. The Massachusetts atlas took 438 credits including every debugging re-run and the 2026-10-09 re-scouts; the national batches run at the advanced depth on a 1,000-credit daily budget since 2026-10-10.
 
 ## Setup
 

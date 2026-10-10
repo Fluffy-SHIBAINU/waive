@@ -22,7 +22,7 @@ from waive.atlas import repo
 from waive.atlas.pipeline import BuildResult, build_hospital
 from waive.atlas.refresh import refresh_hospital
 from waive.atlas.schema import HospitalRef
-from waive.atlas.tavily_gateway import TavilyGateway, make_tavily_gateway
+from waive.atlas.tavily_gateway import Depth, TavilyGateway, make_tavily_gateway
 from waive.cases.extract import BillExtract
 from waive.cases.match import is_confident, match_hospital
 from waive.config import Settings
@@ -44,6 +44,18 @@ ACCURACY_TERM_FLOOR = 0.2
 # hospital is started only with seven credits left in the day. A refresh (one Extract, at most one
 # advanced pass) fits inside the same reservation.
 CREDITS_PER_HOSPITAL = Decimal("7")
+# With WAIVE_SCOUT_EXTRACT_DEPTH=advanced (task 7.10) every Extract costs two credits per five
+# URLs on the first pass: the selected pages and the linked documents, one credit more each.
+ADVANCED_CREDITS_PER_HOSPITAL = Decimal("9")
+
+
+def credits_per_hospital(extract_depth: Depth) -> Decimal:
+    """Credits that must be left in the day before a hospital is started."""
+    if extract_depth == "advanced":
+        return ADVANCED_CREDITS_PER_HOSPITAL
+    return CREDITS_PER_HOSPITAL
+
+
 # Failed discoveries, empty scouts and structurer refusals (task 7.8: documents stored, no sheet)
 # are not retried for a month. Without the pause a hospital with documents but no sheet would be
 # sent to the content-hash refresh daily, spending a Tavily credit each time and, the documents
@@ -239,12 +251,15 @@ def _scout(
     ai: AIClient,
     entry: QueueEntry,
     today: date,
+    extract_depth: Depth = "basic",
 ) -> BuildResult:
     """Refresh by content hash when documents are stored and nobody contradicted the sheet; a
     full re-scout (search, map, extract) for never-scouted hospitals, for re-scout requests, and
     when every stored document is unreachable."""
     if entry.has_sources and not entry.rescout_requested:
-        refreshed = refresh_hospital(session, gateway, ai, entry.ccn, today)
+        refreshed = refresh_hospital(
+            session, gateway, ai, entry.ccn, today, extract_depth=extract_depth
+        )
         if refreshed.outcome == "restructured" and refreshed.build is not None:
             return refreshed.build
         if refreshed.outcome == "unchanged" and len(refreshed.unreachable) < refreshed.checked:
@@ -254,7 +269,9 @@ def _scout(
                 "skipped",
                 notes=[f"unchanged ({refreshed.checked} documents checked)"],
             )
-    return build_hospital(session, gateway, ai, entry.ccn, today, reuse_sources=False)
+    return build_hospital(
+        session, gateway, ai, entry.ccn, today, reuse_sources=False, extract_depth=extract_depth
+    )
 
 
 def run_entries(
@@ -267,6 +284,7 @@ def run_entries(
     *,
     daily_cap: int,
     limit: int | None = None,
+    extract_depth: Depth = "basic",
 ) -> RunReport:
     """Scout `entries` in order until the list, the limit or the day's credits run out. The hard
     cap still applies inside the gateway (`BudgetExceeded` stops the run)."""
@@ -276,11 +294,11 @@ def run_entries(
         if limit is not None and len(report.results) >= limit:
             report.stopped = "limit reached"
             break
-        if Decimal(daily_cap) - report.used_after < CREDITS_PER_HOSPITAL:
+        if Decimal(daily_cap) - report.used_after < credits_per_hospital(extract_depth):
             report.stopped = "daily budget"
             break
         try:
-            result = _scout(session, gateway, ai, entry, today)
+            result = _scout(session, gateway, ai, entry, today, extract_depth)
         except BudgetExceeded as error:
             session.rollback()
             report.results.append(BuildResult(entry.ccn, entry.name, "failed", notes=[str(error)]))
@@ -308,10 +326,19 @@ def run_once(
     daily_cap: int,
     states: tuple[str, ...] = (),
     limit: int | None = None,
+    extract_depth: Depth = "basic",
 ) -> RunReport:
     queue = build_queue(session, today, states)
     return run_entries(
-        session, gateway, ai, governor, today, queue.entries, daily_cap=daily_cap, limit=limit
+        session,
+        gateway,
+        ai,
+        governor,
+        today,
+        queue.entries,
+        daily_cap=daily_cap,
+        limit=limit,
+        extract_depth=extract_depth,
     )
 
 
@@ -339,6 +366,7 @@ def scout_tick(
             daily_cap=settings.scout_daily_credits,
             states=scheduler_states(settings),
             limit=1,
+            extract_depth=settings.scout_extract_depth,
         )
     log.info(
         "scout tick: %d built, %s credits used today, stopped: %s",

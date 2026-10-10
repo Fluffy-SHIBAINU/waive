@@ -25,7 +25,7 @@ from waive.atlas.publish import (
 from waive.atlas.schema import HospitalRef, ProcedureSheet, SheetStatus, SourceDoc, SourceKind
 from waive.atlas.scout import navigation_shells, scout_hospital, store_scouted
 from waive.atlas.structure import document_states, structure_sheet
-from waive.atlas.tavily_gateway import TavilyGateway
+from waive.atlas.tavily_gateway import Depth, TavilyGateway
 from waive.atlas.verify import PATIENT_SHARE_REASON, prune_lists, trim_quotes, verify_sheet
 from waive.db import HospitalRow, ReviewItemRow
 
@@ -353,6 +353,7 @@ def build_hospital(
     today: date,
     dual: bool = True,
     reuse_sources: bool = False,
+    extract_depth: Depth = "basic",
 ) -> BuildResult:
     row = repo.get_hospital(session, ccn)
     if row is None:
@@ -407,7 +408,7 @@ def build_hospital(
         if borrowed is not None:
             sources_with_text = borrowed.sources
     if not sources_with_text:
-        docs = scout_hospital(gateway, hospital)
+        docs = scout_hospital(gateway, hospital, extract_depth=extract_depth)
         if docs:
             sources = store_scouted(session, ccn, docs, today)
             sources_with_text = [(s, doc.text) for s, doc in zip(sources, docs, strict=True)]
@@ -536,6 +537,7 @@ def build_state(
     dual: bool = True,
     only_missing: bool = True,
     reuse_sources: bool = False,
+    extract_depth: Depth = "basic",
 ) -> list[BuildResult]:
     results: list[BuildResult] = []
     for row in repo.list_hospitals(session, state=state):
@@ -546,7 +548,14 @@ def build_state(
         try:
             results.append(
                 build_hospital(
-                    session, gateway, ai, row.ccn, today, dual=dual, reuse_sources=reuse_sources
+                    session,
+                    gateway,
+                    ai,
+                    row.ccn,
+                    today,
+                    dual=dual,
+                    reuse_sources=reuse_sources,
+                    extract_depth=extract_depth,
                 )
             )
         except Exception as error:  # keep the batch going; the failure is in the report

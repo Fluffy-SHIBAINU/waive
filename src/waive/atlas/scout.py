@@ -16,7 +16,7 @@ from waive.atlas import repo
 from waive.atlas.discover import host_of
 from waive.atlas.fetch import DOCUMENT_HOSTS, download_text, host_allowed_for, looks_like_pdf
 from waive.atlas.schema import HospitalRef, SourceDoc, SourceKind
-from waive.atlas.tavily_gateway import ExtractedPage, SearchHit, TavilyGateway
+from waive.atlas.tavily_gateway import Depth, ExtractedPage, SearchHit, TavilyGateway
 from waive.governor import BudgetExceeded
 
 log = logging.getLogger(__name__)
@@ -284,15 +284,18 @@ def fill_texts(
     downloads: Downloader,
     *,
     purpose: str,
+    first_depth: Depth = "basic",
 ) -> dict[str, str]:
-    """Text by URL for `urls`, starting from Tavily's basic extraction `pages`: web pages that came
-    back thin are re-extracted once at the advanced depth (two credits per five pages), and
-    documents still thin, missing or nearly empty are downloaded directly (no Tavily spend). A
-    longer text replaces a shorter one, except that a downloaded navigation shell is never kept;
-    nothing already fetched is thrown away, not even when the advanced pass hits the credit cap."""
+    """Text by URL for `urls`, starting from Tavily's first extraction `pages` (made at
+    `first_depth`): web pages that came back thin from a basic pass are re-extracted once at the
+    advanced depth (two credits per five pages), and documents still thin, missing or nearly
+    empty are downloaded directly (no Tavily spend). When the first pass already was advanced
+    (task 7.10) there is no second one: the depth is never paid for twice. A longer text
+    replaces a shorter one, except that a downloaded navigation shell is never kept; nothing
+    already fetched is thrown away, not even when the advanced pass hits the credit cap."""
     by_url = {page.url: page.text for page in pages}
     thin = [url for url in urls if _is_thin(url, by_url.get(url))]
-    if thin:
+    if thin and first_depth != "advanced":
         try:
             deeper = gateway.extract(thin, purpose=purpose, depth="advanced")
         except BudgetExceeded as error:
@@ -315,8 +318,17 @@ def fill_texts(
     return by_url
 
 
+def _depth(extract_depth: Depth) -> dict[str, Depth]:
+    """Keyword for `gateway.extract`: the default depth is left implicit."""
+    return {} if extract_depth == "basic" else {"depth": extract_depth}
+
+
 def scout_hospital(
-    gateway: TavilyGateway, hospital: HospitalRef, http: httpx.Client | None = None
+    gateway: TavilyGateway,
+    hospital: HospitalRef,
+    http: httpx.Client | None = None,
+    *,
+    extract_depth: Depth = "basic",
 ) -> list[ScoutedDoc]:
     if not hospital.website_domain:
         return []
@@ -345,7 +357,9 @@ def scout_hospital(
         return []
     downloads = Downloader(http, hospital.website_domain)
     try:
-        return _fetch_documents(gateway, hospital.website_domain, hits, selected, downloads)
+        return _fetch_documents(
+            gateway, hospital.website_domain, hits, selected, downloads, extract_depth
+        )
     finally:
         downloads.close()
 
@@ -356,10 +370,13 @@ def _fetch_documents(
     hits: list[SearchHit],
     selected: list[tuple[str, DocClass]],
     downloads: Downloader,
+    extract_depth: Depth = "basic",
 ) -> list[ScoutedDoc]:
     urls = [url for url, _ in selected]
-    pages = gateway.extract(urls, purpose="atlas.scout")
-    by_url = fill_texts(gateway, urls, pages, downloads, purpose="atlas.scout")
+    pages = gateway.extract(urls, purpose="atlas.scout", **_depth(extract_depth))
+    by_url = fill_texts(
+        gateway, urls, pages, downloads, purpose="atlas.scout", first_depth=extract_depth
+    )
     # Every page fetched, before de-duplication: the shell is looked for among these.
     fetched = [(url, text) for url in urls if (text := by_url.get(url))]
     docs: list[ScoutedDoc] = []
@@ -372,8 +389,15 @@ def _fetch_documents(
     linked = _linked_documents(by_url, domain, set(urls))
     if linked:
         linked_urls = [url for url, _, _ in linked]
-        more = gateway.extract(linked_urls, purpose="atlas.scout")
-        by_url = fill_texts(gateway, linked_urls, more, downloads, purpose="atlas.scout")
+        more = gateway.extract(linked_urls, purpose="atlas.scout", **_depth(extract_depth))
+        by_url = fill_texts(
+            gateway,
+            linked_urls,
+            more,
+            downloads,
+            purpose="atlas.scout",
+            first_depth=extract_depth,
+        )
         fetched.extend((url, text) for url in linked_urls if (text := by_url.get(url)))
         seen = {doc.sha256 for doc in docs}
         for url, doc_class, label in linked:

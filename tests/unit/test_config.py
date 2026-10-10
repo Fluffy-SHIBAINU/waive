@@ -93,3 +93,15 @@ def test_scheduler_settings_default_off(monkeypatch):
     assert settings.scout_daily_credits == 50
     on = Settings(_env_file=None, scheduler="on", scheduler_states="MA,RI", scout_daily_credits=20)
     assert (on.scheduler, on.scout_daily_credits) == ("on", 20)
+
+
+def test_scout_extract_depth_defaults_to_basic_and_rejects_other_values(monkeypatch):
+    # 7.10: WAIVE_SCOUT_EXTRACT_DEPTH=advanced renders every hospital page at Tavily's advanced
+    # depth on the first pass (two credits per five URLs instead of one).
+    clear_env(monkeypatch)
+    assert Settings(_env_file=None).scout_extract_depth == "basic"
+    monkeypatch.setenv("WAIVE_SCOUT_EXTRACT_DEPTH", "advanced")
+    assert Settings(_env_file=None).scout_extract_depth == "advanced"
+    monkeypatch.setenv("WAIVE_SCOUT_EXTRACT_DEPTH", "deep")
+    with pytest.raises(ValidationError, match="scout_extract_depth"):
+        Settings(_env_file=None)

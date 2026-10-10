@@ -77,6 +77,10 @@ class Settings(BaseSettings):
     # Comma-separated states the scheduler may touch; empty means every seeded state (gate U7.1).
     scheduler_states: str = "MA"
     scout_daily_credits: int = 50
+    # Tavily Extract depth for the first pass over every hospital page (task 7.10). "advanced"
+    # renders pages more fully at two credits per five URLs instead of one; about nine
+    # credits per hospital instead of seven.
+    scout_extract_depth: Literal["basic", "advanced"] = "basic"
 
     @model_validator(mode="after")
     def _production_needs_postgres(self) -> Self:

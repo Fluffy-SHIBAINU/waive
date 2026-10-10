@@ -12,7 +12,7 @@ from waive.atlas.scout import source_id_for
 from waive.atlas.tavily_gateway import ExtractedPage
 from waive.db import SourceDocRow, session_scope
 
-from tests.unit.test_fetch import pdf_response, sample_pdf
+from tests.unit.test_fetch import HTML_PAGE, pdf_response, sample_pdf
 from tests.unit.test_pipeline import (
     OTHER_SENTENCE,
     POLICY_TEXT,
@@ -235,3 +235,41 @@ def test_thin_pages_are_re_extracted_at_advanced_depth_before_the_hash_is_compar
         assert gateway.calls == [([PAGE_URL], "basic"), ([PAGE_URL], "advanced")]
         [(source, _)] = repo.sources_for(session, "229999")
         assert source.id == stored.id and source.fetched_on == LATER
+
+
+@respx.mock
+def test_the_refresh_re_fetches_at_the_configured_depth_with_no_second_pass():
+    """7.10: with WAIVE_SCOUT_EXTRACT_DEPTH=advanced the refresh extracts at that depth once, like
+    the scout did; a page that stays thin is downloaded, never re-extracted (no double spend)."""
+    engine = make_engine_with_hospital()
+    page_text = POLICY_TEXT + "Financial counselors are available Monday through Friday.\n"
+    sha = hashlib.sha256(page_text.encode("utf-8")).hexdigest()
+    stored = SourceDoc(
+        id=source_id_for("fap", sha),
+        kind=SourceKind.HOSPITAL_WEB,
+        url=PAGE_URL,
+        title="Financial Assistance",
+        fetched_on=TODAY,
+        sha256=sha,
+    )
+    gateway = DepthRefreshGateway({}, {PAGE_URL: page_text})
+    with session_scope(engine) as session, httpx.Client() as http:
+        repo.save_source(session, stored, page_text, "229999")
+        result = refresh_hospital(
+            session, gateway, FakeAI(), "229999", LATER, http, extract_depth="advanced"
+        )
+        assert (result.outcome, result.checked, result.changed) == ("unchanged", 1, [])
+        assert gateway.calls == [([PAGE_URL], "advanced")]
+        [(source, _)] = repo.sources_for(session, "229999")
+        assert source.fetched_on == LATER
+    page = respx.get(PAGE_URL).mock(
+        return_value=httpx.Response(200, text=HTML_PAGE, headers={"content-type": "text/html"})
+    )
+    gateway = DepthRefreshGateway({}, {PAGE_URL: NAV_ONLY})
+    with httpx.Client() as http:
+        texts = fetch_texts(
+            gateway, [PAGE_URL], http, domain="example.org", extract_depth="advanced"
+        )
+    assert page.called
+    assert gateway.calls == [([PAGE_URL], "advanced")]
+    assert "250% of the Federal Poverty" in texts[PAGE_URL]
