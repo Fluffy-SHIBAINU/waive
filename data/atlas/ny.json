@@ -15,14 +15,22 @@
     "website_domain": "adirondackhealth.org",
     "system": null
    },
-   "version": 3,
+   "version": 4,
    "status": "held",
    "eligibility": {
     "free_care_max_fpl": null,
     "discount_tiers": null,
     "asset_test": null,
     "residency": null,
-    "insured_patients_covered": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Adirondack Health provides financial aid to uninsured and underinsured patients based on their income and needs.",
+     "source_id": "fap-a714e3c03ddcd69a",
+     "checked_on": "2026-10-10",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "min_balance": null,
     "services_excluded": null
    },
@@ -31,7 +39,15 @@
     "state_programs": null
    },
    "apply": {
-    "form_url": null,
+    "form_url": {
+     "value": "https://cdn.prod.website-files.com/5e2ae9f8cd88a742af86f25f/697915bac13a7423b933545b_NYS_Uniform%20Hospital%20Financial%20Assistance%20Application%202026.pdf",
+     "layer": "documented",
+     "quote": "[> Financial assistance application](https://cdn.prod.website-files.com/5e2ae9f8cd88a742af86f25f/697915bac13a7423b933545b_NYS_Uniform%20Hospital%20Financial%20Assistance%20Application%202026.pdf)",
+     "source_id": "fap-a714e3c03ddcd69a",
+     "checked_on": "2026-10-10",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "form_version": null,
     "documents_required": {
      "value": [
@@ -64,7 +80,15 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "window_days_from_first_bill": null,
+    "window_days_from_first_bill": {
+     "value": 240,
+     "layer": "documented",
+     "quote": "You have up to 240 days after receiving services to request, complete and return your application.",
+     "source_id": "summary-91d18b2d4697a160",
+     "checked_on": "2026-10-10",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "decision_days": {
      "value": 30,
      "layer": "documented",
@@ -82,7 +106,7 @@
    },
    "contacts": {
     "phone": {
-     "value": "(518) 897-2217",
+     "value": "518-897-2217",
      "layer": "documented",
      "quote": "Call our financial counselor at [518-897-2217](tel:+1-518-897-2217)",
      "source_id": "summary-91d18b2d4697a160",
@@ -97,14 +121,14 @@
       "Spanish",
       "Chinese",
       "Russian",
-      "Haitian Creole",
+      "French",
+      "Creole",
       "Korean",
       "Italian",
       "Yiddish",
       "Bengali",
       "Polish",
       "Arabic",
-      "French",
       "Urdu",
       "Tagalog",
       "Greek",
@@ -124,20 +148,11 @@
    },
    "sources": [
     {
-     "id": "billing-0f37357097624f14",
-     "kind": "hospital_web",
-     "url": "https://www.adirondackhealth.org/billing/frequently-asked-questions",
-     "title": "Adirondack Health - Frequently Asked Questions",
-     "fetched_on": "2026-10-09",
-     "sha256": "0f37357097624f14a1e64ad80b5d67a4d915c0003b8b1f360010215e8985dc95",
-     "effective_date": null
-    },
-    {
      "id": "fap-a714e3c03ddcd69a",
      "kind": "hospital_web",
-     "url": "https://www.adirondackhealth.org/financial-assistance-policies",
+     "url": "http://adirondackhealth.org/financial-assistance-policies",
      "title": "Adirondack Health - Financial Assistance policies",
-     "fetched_on": "2026-10-09",
+     "fetched_on": "2026-10-10",
      "sha256": "a714e3c03ddcd69a87dfc32d3f171ee03851b6142d591537a9ae392ddb489ad5",
      "effective_date": null
     },
@@ -146,8 +161,44 @@
      "kind": "hospital_web",
      "url": "https://www.adirondackhealth.org/billing/financial-assistance-summary",
      "title": "Adirondack Health - Financial Assistance Summary",
-     "fetched_on": "2026-10-09",
+     "fetched_on": "2026-10-10",
      "sha256": "91d18b2d4697a1605e436c64b7570db4a629bf36c2d48a5e7834243104522f01",
+     "effective_date": null
+    },
+    {
+     "id": "billing-0f37357097624f14",
+     "kind": "hospital_web",
+     "url": "https://www.adirondackhealth.org/billing/frequently-asked-questions",
+     "title": "Adirondack Health - Frequently Asked Questions",
+     "fetched_on": "2026-10-10",
+     "sha256": "0f37357097624f14a1e64ad80b5d67a4d915c0003b8b1f360010215e8985dc95",
+     "effective_date": null
+    },
+    {
+     "id": "summary-91d18b2d4697a160",
+     "kind": "hospital_web",
+     "url": "http://adirondackhealth.org/billing/financial-assistance-summary",
+     "title": "Adirondack Health - Financial Assistance Summary",
+     "fetched_on": "2026-10-10",
+     "sha256": "91d18b2d4697a1605e436c64b7570db4a629bf36c2d48a5e7834243104522f01",
+     "effective_date": null
+    },
+    {
+     "id": "application-fe9f569414f4f902",
+     "kind": "hospital_web",
+     "url": "https://cdn.prod.website-files.com/5e2ae9f8cd88a742af86f25f/697915bac13a7423b933545b_NYS_Uniform%20Hospital%20Financial%20Assistance%20Application%202026.pdf",
+     "title": "> Financial assistance application",
+     "fetched_on": "2026-10-10",
+     "sha256": "fe9f569414f4f90223544823d2389582995c3e81a76f929d6980328a45bb1de0",
+     "effective_date": null
+    },
+    {
+     "id": "summary-9e42a9a34d3b1167",
+     "kind": "hospital_web",
+     "url": "https://cdn.prod.website-files.com/5e2ae9f8cd88a7755386f262/672268eba8d299382ad145b1_PFS%20-%20Financial%20Assistance%20Policy%20Summary%20-%2010.20.24.pdf",
+     "title": "**Financial Assistance Policy Summary**",
+     "fetched_on": "2026-10-10",
+     "sha256": "9e42a9a34d3b1167938e361c3c0013f360948008aec7361fd46c4b6623f7f23a",
      "effective_date": null
     }
    ],

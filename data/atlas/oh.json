@@ -1501,14 +1501,22 @@
     "website_domain": "bvhealthsystem.org",
     "system": null
    },
-   "version": 2,
+   "version": 3,
    "status": "held",
    "eligibility": {
     "free_care_max_fpl": null,
     "discount_tiers": null,
     "asset_test": null,
     "residency": null,
-    "insured_patients_covered": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "options for both insured and uninsured patients",
+     "source_id": "billing-b600e9745f4d6e90",
+     "checked_on": "2026-10-10",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "min_balance": null,
     "services_excluded": null
    },
@@ -1517,7 +1525,15 @@
     "state_programs": null
    },
    "apply": {
-    "form_url": null,
+    "form_url": {
+     "value": "https://bvhealthsystem.myfa.app/",
+     "layer": "documented",
+     "quote": "[Financial Assistance Application](https://bvhealthsystem.myfa.app/)",
+     "source_id": "billing-b600e9745f4d6e90",
+     "checked_on": "2026-10-10",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "form_version": null,
     "documents_required": null,
     "documents_reported": null,
@@ -1529,7 +1545,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Inquires can be made directly to any of the staff members involved in the above processes, by contacting the financial assistance staff at [419.423.5311](tel:419.423.5311) or email at [PFSfinancialassistance@bvhealthsystem.org](mailto:PFSfinancialassistance@bvhealthsystem.org), or by completing an application for financial assistance which are located on the back of patient statements or can be downloaded below.",
+     "quote": "by contacting the financial assistance staff at [419.423.5311](tel:419.423.5311) or email at [PFSfinancialassistance@bvhealthsystem.org](mailto:PFSfinancialassistance@bvhealthsystem.org)",
      "source_id": "billing-b600e9745f4d6e90",
      "checked_on": "2026-10-10",
      "confidence": 1.0,
@@ -1544,17 +1560,39 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": null,
-    "hours": {
-     "value": "The financial office is open Monday, 8 a.m. - 6 p.m., and Tuesday through Friday, 8 a.m. - 4 p.m.",
+    "phone": {
+     "value": "419.423.5311",
      "layer": "documented",
-     "quote": "The financial office is open Monday, 8 a.m. - 6 p.m., and Tuesday through Friday, 8 a.m. - 4 p.m.",
-     "source_id": "application-92440670659dacde",
+     "quote": "[419.423.5311](tel:419.423.5311)",
+     "source_id": "billing-b600e9745f4d6e90",
      "checked_on": "2026-10-10",
      "confidence": 1.0,
      "support_count": 0
     },
-    "languages": null
+    "hours": {
+     "value": "Monday, 8 a.m. - 6 p.m., and Tuesday through Friday, 8 a.m. - 4 p.m.",
+     "layer": "documented",
+     "quote": "The financial office is open Monday, 8 a.m. - 6 p.m., and Tuesday through Friday, 8 a.m. - 4 p.m.",
+     "source_id": "application-0ce6f817b2c84b87",
+     "checked_on": "2026-10-10",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "languages": {
+     "value": [
+      "English",
+      "Espa\u00f1ol",
+      "Ayiti",
+      "Japanese",
+      "Haitian"
+     ],
+     "layer": "documented",
+     "quote": "[Application in English](https://edge.sitecorecloud.io/blanchardva40a9-bvhssitecoradd7-prodd901-d889/media/files/financial-forms/2026-application.docx)\n [Aplicaci\u00f3n en Espa\u00f1ol](https://edge.sitecorecloud.io/blanchardva40a9-bvhssitecoradd7-prodd901-d889/media/files/financial-forms/fa-application-in-spanish-2026.docx)\n [Aplikasyon an Ayiti](https://edge.sitecorecloud.io/blanchardva40a9-bvhssitecoradd7-prodd901-d889/media/project/bvhs/bvhs/file/financial/fa-application-in-haitian.docx \"Aplikasyon an Ayiti\")\n [Application in Japanese](https://edge.sitecorecloud.io/blanchardva40a9-bvhssitecoradd7-prodd901-d889/media/project/bvhs/bvhs/file/financial/fa-application-in-japanese.docx \"Application in Japanese\")\n\n[Application in Haitian](https://edge.sitecorecloud.io/blanchardva40a9-bvhssitecoradd7-prodd901-d889/media/files/financial-forms/fa-application-in-haitian-2026.docx)",
+     "source_id": "billing-b600e9745f4d6e90",
+     "checked_on": "2026-10-10",
+     "confidence": 1.0,
+     "support_count": 0
+    }
    },
    "coverage": {
     "facilities": {
@@ -1563,8 +1601,8 @@
       "Bluffton Hospital"
      ],
      "layer": "documented",
-     "quote": "Blanchard Valley Hospital and Bluffton Hospital offer financial assistance for emergency or medically necessary care. This financial assistance, ranging from a reduction in the outstanding balance to complete forgiveness, is provided to patients demonstrating financial need and is billed through our centralized Patient Financial Services department.",
-     "source_id": "application-92440670659dacde",
+     "quote": "Blanchard Valley Hospital and Bluffton Hospital offer financial assistance for emergency or medically necessary care.",
+     "source_id": "application-0ce6f817b2c84b87",
      "checked_on": "2026-10-10",
      "confidence": 1.0,
      "support_count": 0
@@ -1573,21 +1611,21 @@
    },
    "sources": [
     {
-     "id": "application-92440670659dacde",
+     "id": "fap-55ae1fd799c3e6b3",
      "kind": "hospital_web",
-     "url": "https://www.bvhealthsystem.org/patient-and-visitor-information/financial-assistance-application",
-     "title": "Financial Assistance Application",
+     "url": "https://bvhealthsystem.org/support-the-foundation/events-campaigns/charity-care-fund",
+     "title": "charity-care-fund",
      "fetched_on": "2026-10-10",
-     "sha256": "92440670659dacde8f422363ad75ffe2809ee019e3e8232c3c2ea118ff8165f6",
+     "sha256": "55ae1fd799c3e6b3847c7e8b2daab7f913f1092bea139bc0e013b4a3792113be",
      "effective_date": null
     },
     {
-     "id": "application-cc5fc02e709e85b2",
+     "id": "application-0ce6f817b2c84b87",
      "kind": "hospital_web",
      "url": "https://bvhealthsystem.org/patient-and-visitor-information/financial-assistance-application",
      "title": "Financial Assistance Application",
      "fetched_on": "2026-10-10",
-     "sha256": "cc5fc02e709e85b2d5f5c5176f275d633cca080470a7b729678fa9e0a35b2889",
+     "sha256": "0ce6f817b2c84b87dc8c01a3ccebf11fd1b2f14db568fa3f46bbd3eb71b62fc0",
      "effective_date": null
     },
     {
@@ -1600,12 +1638,12 @@
      "effective_date": null
     },
     {
-     "id": "fap-55ae1fd799c3e6b3",
+     "id": "billing-b600e9745f4d6e90",
      "kind": "hospital_web",
-     "url": "https://bvhealthsystem.org/support-the-foundation/events-campaigns/charity-care-fund",
-     "title": "Charity Care Fund",
+     "url": "https://www.bvhealthsystem.org/patient-and-visitor-information/im-a-patient/billing-and-insurance/financial-assistance",
+     "title": "Financial Assistance",
      "fetched_on": "2026-10-10",
-     "sha256": "55ae1fd799c3e6b3847c7e8b2daab7f913f1092bea139bc0e013b4a3792113be",
+     "sha256": "b600e9745f4d6e90f123364dea2e5c4913542d053f03e0c09a025becf43eb652",
      "effective_date": null
     },
     {
@@ -1641,7 +1679,7 @@
     "website_domain": "bvhealthsystem.org",
     "system": null
    },
-   "version": 2,
+   "version": 3,
    "status": "held",
    "eligibility": {
     "free_care_max_fpl": null,
@@ -1661,7 +1699,24 @@
     "form_version": null,
     "documents_required": null,
     "documents_reported": null,
-    "submit_methods": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "email",
+       "detail": "PFSfinancialassistance@bvhealthsystem.org"
+      },
+      {
+       "kind": "phone",
+       "detail": "419.423.5311"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Inquires can be made directly to any of the staff members involved in the above processes, by contacting the financial assistance staff at [419.423.5311](tel:419.423.5311) or email at [PFSfinancialassistance@bvhealthsystem.org](mailto:PFSfinancialassistance@bvhealthsystem.org), or by completing an application for financial assistance which are located on the back of patient statements or can be downloaded below.",
+     "source_id": "billing-b600e9745f4d6e90",
+     "checked_on": "2026-10-10",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "window_days_from_first_bill": null,
     "decision_days": null,
     "decision_days_reported": null
@@ -1681,6 +1736,15 @@
    },
    "sources": [
     {
+     "id": "fap-55ae1fd799c3e6b3",
+     "kind": "hospital_web",
+     "url": "https://bvhealthsystem.org/support-the-foundation/events-campaigns/charity-care-fund",
+     "title": "charity-care-fund",
+     "fetched_on": "2026-10-10",
+     "sha256": "55ae1fd799c3e6b3847c7e8b2daab7f913f1092bea139bc0e013b4a3792113be",
+     "effective_date": null
+    },
+    {
      "id": "application-0ce6f817b2c84b87",
      "kind": "hospital_web",
      "url": "https://bvhealthsystem.org/patient-and-visitor-information/financial-assistance-application",
@@ -1699,12 +1763,12 @@
      "effective_date": null
     },
     {
-     "id": "fap-55ae1fd799c3e6b3",
+     "id": "application-0ce6f817b2c84b87",
      "kind": "hospital_web",
-     "url": "https://bvhealthsystem.org/support-the-foundation/events-campaigns/charity-care-fund",
-     "title": "Charity Care Fund",
+     "url": "https://www.bvhealthsystem.org/patient-and-visitor-information/financial-assistance-application",
+     "title": "Financial Assistance Application",
      "fetched_on": "2026-10-10",
-     "sha256": "55ae1fd799c3e6b3847c7e8b2daab7f913f1092bea139bc0e013b4a3792113be",
+     "sha256": "0ce6f817b2c84b87dc8c01a3ccebf11fd1b2f14db568fa3f46bbd3eb71b62fc0",
      "effective_date": null
     },
     {
