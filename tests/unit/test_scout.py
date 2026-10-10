@@ -858,3 +858,88 @@ def test_media_files_are_not_policy_documents_and_form_is_a_whole_word():
             "Financial Assistance Policy (PDF)",
         )
     ]
+
+
+# Task 7.12: the links that lead to the income rules themselves.
+POVERTY_PDF = "https://cdn.prod.website-files.com/5e2a/2026%20Federal%20Poverty%20Guidelines.pdf"
+
+
+def test_eligibility_tables_linked_from_the_assistance_page_are_policy_links():
+    # Adirondack Health (330079) and Blanchard Valley (360095): the sliding scale is a PDF on an
+    # asset host, linked as "Eligibility requirements" / "Federal Poverty Guidelines".
+    sitecore = "https://edge.sitecorecloud.io/x/media/files/poverty-guidelines-2026.pdf"
+    text = (
+        "# Financial Assistance\n"
+        f"[> Eligibility requirements]({POVERTY_PDF})\n"
+        f"[Federal Poverty Guidelines]({sitecore})\n"
+        "[Sliding fee scale](/billing/sliding-fee-scale)\n"
+        "[Annual report](https://cdn.prod.website-files.com/5e2a/annual-report.pdf)\n"
+        "[Foundation golf classic](/support-the-foundation/events-campaigns/golf)\n"
+    )
+    assert policy_links(text, "example.org") == [
+        (POVERTY_PDF, "> Eligibility requirements"),
+        (sitecore, "Federal Poverty Guidelines"),
+        ("https://www.example.org/billing/sliding-fee-scale", "Sliding fee scale"),
+    ]
+
+
+def test_scout_follows_two_eligibility_tables_beyond_the_four_policy_links():
+    # On the hospital's own site here, so the scout extracts it instead of downloading it.
+    table = "https://www.example.org/media/2026%20Federal%20Poverty%20Guidelines.pdf"
+    entry = ENTRY_PAGE + (
+        "[Billing and collections policy](/billing-policy)\n"
+        "[Financial assistance plain language summary](/fa/summary)\n"
+        "[Financial assistance application (English)](/fa/application-en.pdf)\n"
+        "[Financial assistance application (Spanish)](/fa/application-es.pdf)\n"
+        "[Charity care policy](/fa/charity-care-policy.pdf)\n"
+        "[Income guidelines](/fa/income-guidelines)\n"
+        "[Sliding fee scale](/fa/sliding-scale.pdf)\n"
+        f"[Eligibility requirements]({table})\n"
+    )
+    gateway = LinkGateway(entry)
+    docs = scout_hospital(gateway, HOSPITAL)
+    assert gateway.extracted[1] == [
+        "https://www.example.org/docs/fap.pdf",
+        "https://www.example.org/fa/charity-care-policy.pdf",
+        "https://www.example.org/fa/application-en.pdf",
+        "https://www.example.org/fa/application-es.pdf",
+        # Two tables at most, PDFs before pages: the income-guidelines page is not fetched.
+        "https://www.example.org/fa/sliding-scale.pdf",
+        table,
+    ]
+    assert {doc.doc_class for doc in docs} <= {"fap", "application"}
+
+
+def test_a_named_policy_under_a_billing_path_is_the_policy():
+    # Sutter Health (050043): the hospital charity care policy is filed under /billing-insurance/.
+    base = "https://www.x.org/billing-insurance/financial-assistance/"
+    assert classify_doc(base + "hospitals-charity-care-policy.pdf", "") == "fap"
+    assert classify_doc("https://www.x.org/billing/doc-123.pdf", "Financial Assistance Policy") == (
+        "fap"
+    )
+    assert classify_doc("https://www.x.org/billing-and-collections-policy.pdf", "") == "billing"
+    assert classify_doc("https://www.x.org/billing-insurance/costs-and-charges", "Costs") == (
+        "billing"
+    )
+    # The application for the policy is still the application.
+    assert classify_doc(base + "charity-care-policy-application.pdf", "") == "application"
+
+
+def test_exclusion_lists_rank_after_the_policies_they_belong_to():
+    # Sutter Health again: a 60,000-character list of excluded providers took one of the four
+    # slots while the hospital policy was never fetched.
+    entry = ENTRY_PAGE + (
+        "[Providers excluded from the charity care policy]"
+        "(/fa/charity-care-policy-provider-exclusion-list.pdf)\n"
+        "[Charity care policy](/fa/charity-care-policy.pdf)\n"
+        "[Charity care policy (Spanish)](/fa/charity-care-policy-es.pdf)\n"
+        "[Charity care policy (Chinese)](/fa/charity-care-policy-zh.pdf)\n"
+    )
+    gateway = LinkGateway(entry)
+    scout_hospital(gateway, HOSPITAL)
+    assert gateway.extracted[1] == [
+        "https://www.example.org/docs/fap.pdf",
+        "https://www.example.org/fa/charity-care-policy.pdf",
+        "https://www.example.org/fa/charity-care-policy-es.pdf",
+        "https://www.example.org/fa/charity-care-policy-zh.pdf",
+    ]
