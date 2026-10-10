@@ -76,10 +76,20 @@ TITLES = {
 }
 
 
+# A hospital foundation's appeals say "charity" too: Blanchard Valley's "Charity Care Fund" page and
+# its charity golf classic were stored as the financial assistance policy (360095, batch 2).
+_FUNDRAISING = re.compile(
+    r"\bgolf\b|\bgala\b|fundrais|\bdonat|/giving\b|ways-to-give|support-the-foundation"
+    r"|events-campaigns|charity care fund|charity-care-fund"
+)
+
+
 def classify_doc(url: str, title: str) -> DocClass | None:
     if urlparse(url).path.lower().endswith(NOT_A_DOCUMENT):
         return None
     text = f"{url} {title}".lower().replace("_", "-")
+    if _FUNDRAISING.search(text):
+        return None
     # Asset hosts put the MIME type in the query string; "application/pdf" is not an application.
     text = text.replace("application%2fpdf", " ").replace("application/pdf", " ")
     financial = any(k in text for k in ("financial", "charity", "fap", "assistance"))

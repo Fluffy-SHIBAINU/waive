@@ -63,6 +63,27 @@ def test_classify_doc():
     assert classify_doc("https://x.org/careers", "Jobs") is None
 
 
+def test_fundraising_pages_are_not_the_charity_care_policy():
+    # Blanchard Valley (360095): the foundation's "Charity Care Fund" appeal and two golf events
+    # were stored as the hospital's financial assistance policy because their URLs say "charity".
+    foundation = "https://www.x.org/support-the-foundation/events-campaigns/"
+    assert classify_doc(foundation + "charity-care-fund", "Charity Care Fund") is None
+    assert (
+        classify_doc(foundation + "julie-cole-classic", "Julie Cole Charity Golf Classic") is None
+    )
+    assert classify_doc("https://www.x.org/giving/donate", "Donate to charity care") is None
+    assert classify_doc("https://www.x.org/charity-gala-2026", "Annual Charity Gala") is None
+    # A policy that belongs to a medical foundation, and an ordinary policy page, are documents.
+    assert (
+        classify_doc(
+            "https://www.x.org/medical-foundation-charity-care-policy.pdf",
+            "Medical Foundation Charity Care and Low Income Uninsured Policy",
+        )
+        == "fap"
+    )
+    assert classify_doc("https://www.x.org/patients/charity-care", "Charity Care") == "fap"
+
+
 def test_classify_doc_ignores_the_pdf_mime_type_in_asset_host_urls():
     canto = "https://h.canto.com/direct/document/a/b/original?content-type=application%2Fpdf&name="
     assert (
