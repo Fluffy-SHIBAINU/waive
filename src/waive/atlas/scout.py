@@ -7,7 +7,7 @@ from collections.abc import Iterable
 from dataclasses import dataclass
 from datetime import date
 from typing import Literal
-from urllib.parse import urldefrag, urljoin, urlparse
+from urllib.parse import unquote, urldefrag, urljoin, urlparse
 
 import httpx
 from sqlalchemy.orm import Session
@@ -25,6 +25,8 @@ DocClass = Literal["fap", "application", "summary", "billing"]
 CLASS_ORDER: tuple[DocClass, ...] = ("fap", "application", "summary", "billing")
 MAX_URLS = 4
 MAX_LINKED_URLS = 4
+# Beyond those: the income table itself, when the assistance page links it (task 7.12).
+MAX_ELIGIBILITY_URLS = 2
 MAX_CHARS = 60_000
 MIN_CHARS = 200
 # A web page Tavily's basic extraction rendered shorter than this is tried once more at the
@@ -56,6 +58,18 @@ OFFSITE_KEYWORDS = (
     "billing and collection",
     "billing-and-collection",
 )
+# The sliding scale is often its own document, linked from the assistance page under a label
+# that never says "policy": "Eligibility requirements" (Adirondack Health, 330079), "Federal
+# Poverty Guidelines" (Blanchard Valley, 360095). Without it the sheet has no income rule.
+ELIGIBILITY_LINK = re.compile(
+    r"eligibilit|poverty[- ](?:guidelines?|levels?)|sliding[- ](?:fee[- ])?scale"
+    r"|income[- ](?:guidelines?|limits?|table)|discount[- ](?:schedule|table)"
+)
+# The policy by name: it is the policy wherever it is filed (Sutter Health keeps its hospital
+# charity care policy under /billing-insurance/).
+_NAMED_POLICY = re.compile(r"charity[- ]care[- ]polic|financial[- ]assistance[- ]polic")
+# Attachments that share the policy's name but not its rules rank after it.
+_LESSER_DOCUMENT = re.compile(r"exclu|provider[- ]list")
 IMAGE_SUFFIXES = (".svg", ".png", ".jpg", ".jpeg", ".gif", ".webp", ".ico")
 # BJC publishes its policy as an audio file too (3259250-Financial-Assistance-Policy.mp3); Tavily
 # Extract returned 60,000 characters of binary noise for it, stored as the "fap" (140002, 7.9).
@@ -97,6 +111,8 @@ def classify_doc(url: str, title: str) -> DocClass | None:
         return "application"
     if financial and any(k in text for k in ("plain", "summary")):
         return "summary"
+    if _NAMED_POLICY.search(text):
+        return "fap"
     if any(k in text for k in ("billing", "collection", "prices-and-billing", "pay-your-bill")):
         return "billing"
     if any(
@@ -164,12 +180,19 @@ def policy_links(text: str, base_domain: str) -> list[tuple[str, str]]:
         ):
             continue
         label = " ".join(raw_label.replace("#", " ").split())
-        haystack = f"{label} {url}".lower().replace("_", "-")
+        haystack = f"{label} {unquote(url)}".lower().replace("_", "-")
         if host_of(url) == base_host:
-            wanted = any(k in haystack for k in LINK_KEYWORDS) or FAP_TOKEN.search(haystack)
+            wanted = (
+                any(k in haystack for k in LINK_KEYWORDS)
+                or FAP_TOKEN.search(haystack)
+                or ELIGIBILITY_LINK.search(haystack)
+            )
         elif _is_document_host(parts.netloc.lower()):
-            wanted = any(k in label.lower() for k in OFFSITE_KEYWORDS) or FAP_TOKEN.search(
-                label.lower()
+            # An asset host serves many organisations: only the hospital's own label counts.
+            wanted = (
+                any(k in label.lower() for k in OFFSITE_KEYWORDS)
+                or FAP_TOKEN.search(label.lower())
+                or ELIGIBILITY_LINK.search(label.lower())
             )
         else:
             wanted = False
@@ -189,22 +212,47 @@ def _is_pdf(url: str) -> bool:
     return urlparse(url).path.lower().endswith(".pdf")
 
 
+def _link_text(url: str, label: str) -> str:
+    return f"{label} {unquote(url)}".lower().replace("_", "-")
+
+
+def _is_eligibility_link(url: str, label: str) -> bool:
+    text = _link_text(url, label)
+    return ELIGIBILITY_LINK.search(text) is not None and _FUNDRAISING.search(text) is None
+
+
+def _is_lesser(url: str, label: str) -> bool:
+    return _LESSER_DOCUMENT.search(_link_text(url, label)) is not None
+
+
 def _linked_documents(
     texts: dict[str, str], base_domain: str, fetched: set[str]
 ) -> list[tuple[str, DocClass, str]]:
     """Policy documents one link away from the web pages already fetched, best first."""
     candidates: dict[str, tuple[DocClass, str]] = {}
+    tables: dict[str, str] = {}
     for page_url, text in texts.items():
         if _is_pdf(page_url):
             continue
         for url, label in policy_links(text, base_domain):
-            if url in fetched or url in candidates:
+            if url in fetched or url in candidates or url in tables:
                 continue
             doc_class = classify_doc(url, label)
             if doc_class is not None:
                 candidates[url] = (doc_class, label)
-    ranked = sorted(candidates.items(), key=lambda item: CLASS_ORDER.index(item[1][0]))
-    return [(url, doc_class, label) for url, (doc_class, label) in ranked[:MAX_LINKED_URLS]]
+            elif _is_eligibility_link(url, label):
+                tables[url] = label
+    ranked = sorted(
+        candidates.items(),
+        key=lambda item: (CLASS_ORDER.index(item[1][0]), _is_lesser(item[0], item[1][1])),
+    )
+    chosen: list[tuple[str, DocClass, str]] = [
+        (url, doc_class, label) for url, (doc_class, label) in ranked[:MAX_LINKED_URLS]
+    ]
+    # The income table is part of the policy; PDFs before pages, then page order.
+    extra = sorted(tables.items(), key=lambda item: not _is_pdf(item[0]))
+    chosen.extend((url, "fap", label) for url, label in extra[:MAX_ELIGIBILITY_URLS])
+    return chosen
 
 
 @dataclass(frozen=True)
