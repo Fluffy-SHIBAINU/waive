@@ -50,6 +50,15 @@ class Settings(BaseSettings):
     cases_per_client_per_minute: int = 10
     admin_login_failures: int = 10
 
+    # Sign-in with Google (Phase 9). Optional: while either value is empty, sign-in is hidden and
+    # the app works as before. The values come from an OAuth client of type "Web application"
+    # in the Google Cloud console, whose redirect URI is <this site>/auth/google/callback.
+    google_client_id: str | None = None
+    google_client_secret: SecretStr | None = None
+    # Sign-in starts and returns per minute: process-wide, and per client (best effort).
+    sign_ins_per_minute: int = 60
+    sign_ins_per_client_per_minute: int = 10
+
     # Deployment (spec §14). `production` is set on the endpoint, never in a developer's .env:
     # it refuses the SQLite default so a misconfigured container cannot silently start empty.
     env: Literal["development", "production"] = "development"
@@ -81,6 +90,12 @@ class Settings(BaseSettings):
     # renders pages more fully at two credits per five URLs instead of one; about nine
     # credits per hospital instead of seven.
     scout_extract_depth: Literal["basic", "advanced"] = "basic"
+
+    @property
+    def sign_in_configured(self) -> bool:
+        """Whether sign-in with Google is on: both the client id and its secret are set."""
+        secret = self.google_client_secret
+        return bool(self.google_client_id and secret and secret.get_secret_value())
 
     @model_validator(mode="after")
     def _production_needs_postgres(self) -> Self:
