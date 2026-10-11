@@ -247,3 +247,131 @@ def test_a_typed_amount_must_be_a_plain_number():
         refused = client.post(f"{base}/income", data={"monthly": text})
         assert refused.status_code == 200 and "as a number" in refused.text, text
     assert "household" not in sealed_of(client, links.case_id)
+
+
+def to_full_result(client, links):
+    base = f"/c/{links.caregiver_token}"
+    client.post(f"{base}/bill", files=photo())
+    client.post(f"{base}/confirm", data={"answer": "yes"})
+    client.post(f"{base}/household", data={"size": "1", "programs": "none"})
+    return base, client.post(f"{base}/income", files=photo(), follow_redirects=True)
+
+
+def test_result_then_check_then_approve_then_the_form_in_that_order():
+    client, links = seeded_client()
+    base, result = to_full_result(client, links)
+    # Screen 6 to 7: one big button, and the hospital's own rule quoted under the answer.
+    assert f'<a href="{base}" class="btn primary">Check what we read</a>' in result.text
+    assert result.text.count('class="btn primary"') == 1
+    assert "at or below 250% of the Federal Poverty Guidelines" in result.text
+    assert "helper" not in result.text.lower()
+
+    check = client.get(base)
+    assert check.status_code == 200 and "<h1>Check what we read</h1>" in check.text
+    for read in (
+        "ST. EXAMPLE MEDICAL CENTER",
+        "$1,850.00",
+        "September 3, 2026",
+        "People in your home",
+        "$22,800.00",
+        "Likely free care",
+        "May 1, 2027",  # the date that matters: apply by
+    ):
+        assert read in check.text, read
+    assert "Fix something" in check.text
+    assert f'<form method="post" action="{base}/approve"' in check.text
+    assert "Looks right, make my form" in check.text
+
+    # Screen 7 to 8.
+    approved = client.post(f"{base}/approve", follow_redirects=False)
+    assert approved.status_code == 303 and approved.headers["location"] == f"{base}/form"
+    form = client.get(f"{base}/form")
+    assert form.status_code == 200 and "<h1>Your form and reminders</h1>" in form.text
+    assert f'href="{base}/packet.pdf"' in form.text
+    assert f'href="{base}/reminders.ics"' in form.text
+    assert "Mail: Patient Financial Services, 1 Example Way, Boston, MA 02118" in form.text
+    assert "Fax: 617-555-0199" in form.text
+    assert "Photo ID" in form.text and "Proof of income" in form.text
+    assert "May 1, 2027" in form.text
+    assert form.headers["cache-control"] == "no-store"
+    assert client.get(f"{base}/packet.pdf").content[:5] == b"%PDF-"
+    assert "BEGIN:VCALENDAR" in client.get(f"{base}/reminders.ics").text
+
+
+def test_fix_something_returns_to_the_check_page_with_the_new_values():
+    client, links = seeded_client()
+    base, _ = to_full_result(client, links)
+    assert '<details id="fix">' in client.get(base).text
+    assert '<details id="fix" open>' in client.get(f"{base}?fix=1").text
+    fixed = client.post(
+        f"{base}/correct",
+        data={"amount_due": "900", "size": "3", "annual_income": "90000"},
+        follow_redirects=False,
+    )
+    assert fixed.status_code == 303 and fixed.headers["location"] == base
+    check = client.get(base).text
+    assert "<h1>Check what we read</h1>" in check
+    assert "$900.00" in check and "$1,850.00" not in check
+    assert "$90,000.00" in check and "Likely free care" not in check
+    assert "Looks right, make my form" in check
+
+
+def test_approving_too_early_or_twice_changes_nothing():
+    client, links = seeded_client()
+    base = f"/c/{links.caregiver_token}"
+    # Too early: nothing was read, so there is no form to make.
+    early = client.post(f"{base}/approve", follow_redirects=False)
+    assert early.status_code == 303 and early.headers["location"] == base
+    assert status_of(client, links.case_id) == "new"
+    no_form = client.get(f"{base}/form", follow_redirects=False)
+    assert no_form.status_code == 303 and no_form.headers["location"] == base
+    new = client.get(base).text
+    assert "Looks right, make my form" not in new
+    assert f'<a href="{base}/bill" class="btn primary">Take a photo of the bill</a>' in new
+
+    to_full_result(client, links)
+    for _ in range(2):
+        again = client.post(f"{base}/approve", follow_redirects=False)
+        assert again.status_code == 303 and again.headers["location"] == f"{base}/form"
+        assert status_of(client, links.case_id) == "approved"
+    # Once approved, the check page and the result both lead to the form instead.
+    check = client.get(base).text
+    assert "Looks right, make my form" not in check and f'action="{base}/approve"' not in check
+    assert f'<a href="{base}/form" class="btn primary">Your form and reminders</a>' in check
+    result = client.get(f"{base}/result").text
+    assert f'<a href="{base}/form" class="btn primary">Your form and reminders</a>' in result
+    assert "Check what we read" not in result
+
+
+def test_the_check_page_asks_for_what_is_still_missing_before_the_form():
+    client, links = seeded_client()
+    base = f"/c/{links.caregiver_token}"
+    client.post(f"{base}/bill", files=photo())
+    client.post(f"{base}/confirm", data={"answer": "yes"})
+    # Bill confirmed, the two questions not answered yet.
+    check = client.get(base).text
+    assert "More information needed" in check and "household income" in check
+    assert f'<a href="{base}/household" class="btn primary">' in check
+    assert "Looks right, make my form" not in check
+    client.post(f"{base}/household", data={"size": "1", "programs": "none"})
+    client.post(f"{base}/income", data={"skip": "1"})
+    # Household answered, income skipped: straight to the income step.
+    result = client.get(f"{base}/result").text
+    assert "helper" not in result.lower() and "next page" in result
+    check = client.get(base).text
+    assert f'<a href="{base}/income" class="btn primary">' in check
+    assert "Looks right, make my form" not in check
+
+
+def test_the_limited_link_never_sees_the_check_or_form_steps():
+    client, links = seeded_client()
+    base, _ = to_full_result(client, links)
+    limited = f"/s/{links.senior_token}"
+    before = client.get(f"{limited}/result").text
+    client.post(f"{base}/approve")
+    after = client.get(f"{limited}/result").text
+    for page in (before, after):
+        assert "likely do not have to pay" in page and "Your helper will check this" in page
+        assert "Check what we read" not in page and "Your form and reminders" not in page
+        assert "/c/" not in page and "Federal Poverty Guidelines" not in page
+    assert client.get(f"/c/{links.senior_token}/form").status_code == 403

@@ -35,7 +35,7 @@ from waive.learning.outcomes import (
 from waive.learning.triage import record_outcome, triage_for
 from waive.web.deps import deps_of, render
 from waive.web.limits import client_key
-from waive.web.routes_senior import flow_links, long_date, money, to_decimal
+from waive.web.routes_senior import flow_links, opened, to_decimal
 
 router = APIRouter()
 
@@ -66,30 +66,25 @@ def create_case(request: Request, state: str = Form("MA")) -> HTMLResponse:
 
 
 @router.get("/c/{token}", response_class=HTMLResponse)
-def caregiver_review(request: Request, token: str, note: str = "") -> HTMLResponse:
-    deps = deps_of(request)
-    with session_scope(deps.engine) as session:
-        ctx = deps.context(session)
-        row = authorize(ctx, token, "caregiver")
-        shown = view(ctx, row.id)
-        found = repo.latest_sheet(session, row.ccn) if row.ccn else None
+def caregiver_review(request: Request, token: str, note: str = "", fix: str = "") -> HTMLResponse:
+    """The "Check what we read" page: the step after the result, and what the full link itself
+    opens. `fix` opens the correction form (the read-back's "No, fix it" lands here)."""
+    with opened(request, token) as case:
+        shown = case.view()
+        found = repo.latest_sheet(case.ctx.session, shown.ccn) if shown.ccn else None
         sheet = found[0] if found else None
         sources = {source.id: source for source in sheet.sources} if sheet else {}
-        return render(
-            request,
+        return case.page(
             "caregiver_review.html",
-            links=caregiver_links(token),
-            full=True,
-            case=shown,
+            shown,
             sheet=sheet,
             sources=sources,
-            money=money,
-            long_date=long_date,
             note=note,
-            ask=pending_gap_ask(ctx, row.id),
-            outcome=load_outcome(ctx, row.id),
-            check_in=pending_check_in(ctx, row.id),
-            triage_note=triage_for(ctx, row.id),
+            fix=bool(fix),
+            ask=pending_gap_ask(case.ctx, case.case_id),
+            outcome=load_outcome(case.ctx, case.case_id),
+            check_in=pending_check_in(case.ctx, case.case_id),
+            triage_note=triage_for(case.ctx, case.case_id),
         )
 
 
@@ -131,12 +126,26 @@ def caregiver_correct(
 
 @router.post("/c/{token}/approve")
 def caregiver_approve(request: Request, token: str):
-    deps = deps_of(request)
-    with session_scope(deps.engine) as session:
-        ctx = deps.context(session)
-        row = authorize(ctx, token, "caregiver")
-        approve(ctx, row.id)
-    return RedirectResponse(caregiver_links(token)["review"], status_code=303)
+    """The "Looks right, make my form" button. Approving again changes nothing, and a case with
+    nothing checked yet has no form to make: both land on the page that fits."""
+    with opened(request, token) as case:
+        if case.view().result is None:
+            return case.to("review")
+        approve(case.ctx, case.case_id)
+        return case.to("form")
+
+
+@router.get("/c/{token}/form", response_class=HTMLResponse)
+def case_form(request: Request, token: str):
+    """The "Your form and reminders" page: the packet, the calendar file, where to send it."""
+    with opened(request, token) as case:
+        shown = case.view()
+        found = repo.latest_sheet(case.ctx.session, shown.ccn) if shown.ccn else None
+        if shown.status != "approved" or found is None or shown.result is None:
+            return case.to("review")
+        return case.page(
+            "case_form.html", shown, packet=packet_data(shown, found[0], case.ctx.today)
+        )
 
 
 @router.post("/c/{token}/relink", response_class=HTMLResponse)

@@ -73,6 +73,8 @@ class CaseView:
     annual_income: Decimal | None = None
     tier: Tier | None = None
     senior_text: str = ""
+    # The same answer for someone who holds the full link and works without a helper.
+    own_text: str = ""
     caregiver_text: str = ""
     deadlines: Deadlines | None = None
     missing: tuple[str, ...] = ()
@@ -266,6 +268,7 @@ def _evaluate(ctx: CaseContext, row: CaseRow, sealed: dict[str, Any]) -> CaseVie
     shown.result, shown.tier, shown.missing = result, result.tier, result.missing
     name = shown.hospital_name or sheet.hospital.name
     shown.senior_text = senior_message(result, name)
+    shown.own_text = senior_message(result, name, alone=True)
     shown.caregiver_text = caregiver_summary(result, name)
     if bill and (bill.first_statement_date or bill.statement_date):
         anchor, confirmed = deadline_anchor(bill)

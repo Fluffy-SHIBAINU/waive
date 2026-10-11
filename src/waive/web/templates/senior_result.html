@@ -2,10 +2,24 @@
 {% block title %}What we found{% endblock %}
 {% block content %}
 <h1>What we found</h1>
-<div class="card big status-{{ case.tier.value }}" id="result-text">{{ case.senior_text }}</div>
+<div class="card big status-{{ case.tier.value }}" id="result-text">{{ case.own_text if full else case.senior_text }}</div>
 <button type="button" class="btn" id="speak" hidden>Read this to me</button>
+{% if full %}
+{% for line in case.caregiver_text.split("\n") %}{% if line.startswith("Policy says") %}<p class="quote">{{ line }}</p>{% endif %}{% endfor %}
+<h2>What happens next</h2>
+{% if case.status == "approved" %}
+<p class="big">Your form is ready. Print it, sign it and send it to the hospital.</p>
+<p><a href="{{ links.form }}" class="btn primary">Your form and reminders</a></p>
+{% else %}
+<p class="big">Check what we read. Then we make the form for you to sign and send. You never pay anything to use Waive.</p>
+<p><a href="{{ links.review }}" class="btn primary">Check what we read</a></p>
+{% endif %}
+{% else %}
 <h2>What happens next</h2>
 <p class="big">Your helper will check this. Then we print the form for you to sign and mail. You never pay anything to use Waive.</p>
+{% endif %}
+{# The full link asks for a paper here only when the hospital's sheet has a gap; its letter step comes after the form. #}
+{% if ask or not full %}
 {% if ask %}
 <h2>{{ ask.question }}</h2>
 {% else %}
@@ -19,6 +33,7 @@
 </form>
 {% if ask %}
 <form method="post" action="{{ links.skip }}" class="stack"><button type="submit" class="btn quiet">Skip this</button></form>
+{% endif %}
 {% endif %}
 {% endblock %}
 {% block scripts %}

@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Your form and reminders{% endblock %}
+{% block content %}
+<h1>Your form and reminders</h1>
+<p class="big">Your form is ready. Print it, sign it, and send it to the hospital.</p>
+<p><a href="{{ links.packet }}" class="btn primary">Download the packet (PDF)</a></p>
+<p class="muted">The packet has a letter to the hospital, your details and a list of what to put with it.</p>
+
+<h2>Where to send it</h2>
+{% if packet.submit_lines %}
+<div class="card big">
+  <p><strong>{{ packet.hospital_name }}</strong></p>
+  {% for line in packet.submit_lines %}<p>{{ line }}</p>{% endfor %}
+</div>
+{% else %}
+<p class="big">We do not know where {{ packet.hospital_name }} takes applications. Call the number on your bill and ask for financial assistance.</p>
+{% endif %}
+{% if packet.documents %}
+<h2>Put these with it</h2>
+<ul class="big">
+  {% for document in packet.documents %}<li>{{ document }}</li>{% endfor %}
+</ul>
+{% endif %}
+
+<h2>Reminders</h2>
+{% if case.deadlines %}
+<div class="card">
+  <div class="row"><span>Send it by</span><strong>{{ long_date(case.deadlines.application_deadline) }}</strong></div>
+  {% if not case.deadlines.anchor_confirmed %}<p class="muted">Counted from the bill in your photo. If an earlier bill came for this visit, the real date is earlier.</p>{% endif %}
+</div>
+{% endif %}
+<p><a href="{{ links.reminders }}" class="btn">Add reminders to my calendar</a></p>
+<p><a href="{{ links.review }}" class="btn quiet">Check what we read again</a></p>
+{% endblock %}

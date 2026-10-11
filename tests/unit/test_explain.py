@@ -37,3 +37,20 @@ def test_caregiver_summary_lists_missing_information():
         EligibilityResult(Tier.NEEDS_INFO, missing=("household income",)), "St. Example"
     )
     assert "Still needed: household income." in summary
+
+
+def test_messages_for_someone_working_alone_never_send_them_to_a_helper():
+    # Phase 9: whoever holds the full link has no helper to be sent to; the next page is theirs.
+    for result in ALL_TIERS:
+        message = senior_message(result, "St. Example", alone=True)
+        assert "helper" not in message.lower(), message
+        sentences = [part for part in re.split(r"[.!?]\s*", message) if part]
+        assert all(len(sentence.split()) <= 14 for sentence in sentences), message
+    for result in ALL_TIERS[:2] + ALL_TIERS[4:]:
+        assert senior_message(result, "St. Example", alone=True) == senior_message(
+            result, "St. Example"
+        )
+    assert "next page" in senior_message(ALL_TIERS[2], "St. Example", alone=True)
+    assert "next page" in senior_message(ALL_TIERS[3], "St. Example", alone=True)
+    # The limited link's words are unchanged.
+    assert "Your helper will ask you" in senior_message(ALL_TIERS[3], "St. Example")
