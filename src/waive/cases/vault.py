@@ -55,11 +55,25 @@ class TokenClaims:
     expires_at: datetime
 
 
+def keyed_hash(secret: bytes, message: bytes) -> str:
+    """HMAC-SHA256 of `message` under `secret`, as hex: a one-way identifier that cannot be
+    recomputed, or matched against a guess, without the secret."""
+    return hmac.new(secret, message, hashlib.sha256).hexdigest()
+
+
 class TokenSigner:
     def __init__(self, secret: str) -> None:
         if len(secret) < 32:
             raise ValueError("token secret must be at least 32 characters")
         self._secret = secret.encode("utf-8")
+
+    def keyed_hash(self, message: bytes) -> str:
+        """`keyed_hash` under the token secret, which stays in here (auth/accounts.py hashes a
+        provider's subject id this way). A link's signed part is URL-safe base64 and never holds
+        a zero byte, so a message must hold one: this can never be made to sign a link."""
+        if b"\x00" not in message:
+            raise ValueError("a keyed hash message must be set apart with a zero byte")
+        return keyed_hash(self._secret, message)
 
     def _sign(self, payload: bytes) -> str:
         return (

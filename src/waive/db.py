@@ -140,6 +140,49 @@ class CaseRow(Base):
     )
 
 
+class AccountRow(Base):
+    """Someone who signed in (Phase 9). Known only by the provider's name and a keyed one-way
+    hash of the provider's subject id (auth/accounts.py): no email, name or picture is asked
+    for, and there is no column to keep one in."""
+
+    __tablename__ = "accounts"
+    __table_args__ = (UniqueConstraint("provider", "subject_hash"),)
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    provider: Mapped[str] = mapped_column(String(20))
+    subject_hash: Mapped[str] = mapped_column(String(64))
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+
+
+class SessionRow(Base):
+    """A signed-in browser. `id` is the SHA-256 of the random id the cookie holds
+    (auth/sessions.py), so a copy of this table is not a set of live sessions."""
+
+    __tablename__ = "sessions"
+
+    id: Mapped[str] = mapped_column(String(64), primary_key=True)
+    account_id: Mapped[int] = mapped_column(
+        ForeignKey("accounts.id", ondelete="CASCADE"), index=True
+    )
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+    expires_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), index=True)
+
+
+class AccountCaseRow(Base):
+    """A case its account keeps in its history. The case's links are not stored: opening a case
+    from the history mints a fresh one. Deleting the case deletes this row (cases/service.py)."""
+
+    __tablename__ = "account_cases"
+
+    account_id: Mapped[int] = mapped_column(
+        ForeignKey("accounts.id", ondelete="CASCADE"), primary_key=True
+    )
+    case_id: Mapped[str] = mapped_column(
+        ForeignKey("cases.id", ondelete="CASCADE"), primary_key=True, index=True
+    )
+    added_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+
+
 class ContributionRow(Base):
     """A patient's photo of a public document, waiting for or past admin review. Holds the
     transcribed text only while it passed the personal-information check; never a case id."""
