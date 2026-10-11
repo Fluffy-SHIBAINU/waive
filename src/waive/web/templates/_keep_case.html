@@ -1,0 +1,15 @@
+{# Keeping the case in an account (Phase 9): on the result and check pages under the full link,
+   and only when sign-in is configured (`keep` is not set otherwise). #}
+{% if keep %}
+{% if keep.state == "saved" %}
+<p class="card">Saved to your account. <a href="/account">See your cases</a></p>
+{% elif keep.state == "save" %}
+<form method="post" action="{{ links.save }}" class="stack">
+  <input type="hidden" name="back" value="{{ keep.back }}">
+  <button type="submit" class="btn">Save this case to my account</button>
+</form>
+{% else %}
+<p><a href="{{ keep.start }}" class="btn">Sign in with Google to keep this case</a></p>
+<p class="muted">Signing in keeps your cases together, on any phone or computer. We do not get your name or your email.</p>
+{% endif %}
+{% endif %}

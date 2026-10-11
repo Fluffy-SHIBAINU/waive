@@ -156,8 +156,13 @@ def google_start(request: Request, case: str = "") -> RedirectResponse:
     google = _google(request)
     _limit(request, "start")
     deps = deps_of(request)
-    with session_scope(deps.engine) as session:
-        kept = case if _case(deps.context(session), case) is not None else ""
+    # The case must be named by one of this site's own pages. A link from anywhere else (another
+    # site, a message) could put a stranger's case into the account of whoever follows it; such
+    # a link still signs the person in, with nothing kept.
+    kept = ""
+    if case and request.headers.get("sec-fetch-site", "same-origin") == "same-origin":
+        with session_scope(deps.engine) as session:
+            kept = case if _case(deps.context(session), case) is not None else ""
     attempt = new_attempt()
     response = RedirectResponse(
         google.authorization_url(attempt, redirect_uri(request)), status_code=302

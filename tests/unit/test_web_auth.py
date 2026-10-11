@@ -236,6 +236,42 @@ def test_only_a_full_link_to_a_case_that_still_exists_is_kept():
 
 
 @respx.mock
+def test_a_case_named_by_a_link_from_somewhere_else_is_not_kept():
+    """Someone could send a link to the start with their own case in it. Followed from another
+    site or from a message, it signs the person in and keeps nothing; only this site's own
+    pages (the result and check pages) can name the case to keep."""
+    client, engine = signin_client()
+    links = new_case(client, engine)
+    for site in ("cross-site", "same-site", "none"):
+        browser = TestClient(client.app)
+        response = browser.get(
+            "/auth/google/start",
+            params={"case": links.caregiver_token},
+            headers={"sec-fetch-site": site},
+            follow_redirects=False,
+        )
+        assert response.status_code == 302
+        query = parse_qs(urlsplit(response.headers["location"]).query)
+        mock_google(id_token(query["nonce"][0]))
+        back = come_back(browser, {"state": query["state"][0]})
+        assert back.status_code == 303 and back.headers["location"] == "/account", site
+        assert rows(engine, AccountCaseRow) == []
+    # From this site's own page it is kept (a browser too old to say where it came from, too).
+    own = TestClient(client.app)
+    response = own.get(
+        "/auth/google/start",
+        params={"case": links.caregiver_token},
+        headers={"sec-fetch-site": "same-origin"},
+        follow_redirects=False,
+    )
+    query = parse_qs(urlsplit(response.headers["location"]).query)
+    mock_google(id_token(query["nonce"][0]))
+    back = come_back(own, {"state": query["state"][0]})
+    assert back.headers["location"] == f"/c/{links.caregiver_token}"
+    assert len(rows(engine, AccountCaseRow)) == 1
+
+
+@respx.mock
 def test_a_wrong_state_is_refused(caplog):
     caplog.set_level(logging.INFO)
     client, engine = signin_client()

@@ -22,6 +22,7 @@ from waive.web.deps import STATIC_DIR, TEMPLATES_DIR, Deps, render, today_utc
 from waive.web.headers import PrivateHeaders
 from waive.web.limits import BodyLimit, RateLimiter, TooManyRequests, UploadTooLarge
 from waive.web.plain import plain_lines
+from waive.web.signin import home_page
 
 
 def _default_ai(settings: Settings, governor):
@@ -101,6 +102,7 @@ def create_app(
     app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
 
     from waive.web import (
+        routes_account,
         routes_admin,
         routes_atlas,
         routes_auth,
@@ -115,6 +117,7 @@ def create_app(
     app.include_router(routes_metrics.router)
     app.include_router(routes_admin.router)
     app.include_router(routes_auth.router)
+    app.include_router(routes_account.router)
 
     @app.get("/healthz")
     def healthz() -> dict[str, bool]:
@@ -122,7 +125,7 @@ def create_app(
 
     @app.get("/", response_class=HTMLResponse)
     def home(request: Request) -> HTMLResponse:
-        return render(request, "home.html")
+        return home_page(request)
 
     @app.exception_handler(PermissionError)
     def forbidden(request: Request, exc: PermissionError) -> HTMLResponse:

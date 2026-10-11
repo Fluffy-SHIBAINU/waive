@@ -83,6 +83,18 @@ class CaseView:
     result: EligibilityResult | None = None
 
 
+@dataclass(frozen=True)
+class CaseSummary:
+    """What an account's history shows for one case."""
+
+    case_id: str
+    started: date
+    hospital_name: str | None
+    status: str
+    # The hospital's decision once its answer was read ("approved", "denied", ...), else None.
+    decision: str | None
+
+
 def _load(ctx: CaseContext, row: CaseRow) -> dict[str, Any]:
     return ctx.cipher.decrypt(row.sealed) if row.sealed else {}
 
@@ -121,6 +133,14 @@ def limited_token(ctx: CaseContext, case_id: str) -> str:
     its own and stops working when `relink` moves the generation."""
     row = _row(ctx, case_id)
     return ctx.signer.mint(row.id, "senior", row.token_generation, SENIOR_TTL)
+
+
+def full_token(ctx: CaseContext, case_id: str) -> str:
+    """A full link for the case, minted when its account opens it from the history (Phase 9):
+    an account keeps which cases are its own, never their links. Like every link it lives as
+    long as any full link and stops working when `relink` moves the generation."""
+    row = _row(ctx, case_id)
+    return ctx.signer.mint(row.id, "caregiver", row.token_generation, CAREGIVER_TTL)
 
 
 def start_case(ctx: CaseContext, state: str) -> CaseLinks:
@@ -305,6 +325,25 @@ def _evaluate(ctx: CaseContext, row: CaseRow, sealed: dict[str, Any]) -> CaseVie
 def view(ctx: CaseContext, case_id: str) -> CaseView:
     row = _row(ctx, case_id)
     return _evaluate(ctx, row, _load(ctx, row))
+
+
+def summarize(ctx: CaseContext, row: CaseRow) -> CaseSummary:
+    """One line of an account's history: the day the case started, the hospital once a bill was
+    read, how far it got. Nothing is evaluated, and the sealed data is opened for one thing
+    only: the hospital's name as the bill printed it, when the registry did not match it."""
+    name = None
+    if row.ccn:
+        hospital = repo.get_hospital(ctx.session, row.ccn)
+        name = hospital.name if hospital else None
+    if name is None and row.sealed:
+        name = (_load(ctx, row).get("bill") or {}).get("hospital_name")
+    return CaseSummary(
+        case_id=row.id,
+        started=row.created_at.date(),
+        hospital_name=name,
+        status=row.status,
+        decision=(row.outcome or {}).get("decision"),
+    )
 
 
 def submit_bill(

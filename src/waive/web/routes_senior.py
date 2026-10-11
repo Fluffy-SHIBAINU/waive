@@ -37,6 +37,7 @@ from waive.learning.intake import ingest_paper
 from waive.learning.outcomes import OutcomeExtract, load_outcome, outcome_text
 from waive.learning.triage import TriageResult, triage_for
 from waive.web.deps import deps_of, render
+from waive.web.signin import keep_offer
 
 router = APIRouter()
 
@@ -68,6 +69,7 @@ def flow_links(token: str, *, full: bool) -> dict[str, str]:
             outcome=f"{base}/outcome",
             check_in=f"{base}/check-in",
             relink=f"{base}/relink",
+            save=f"{base}/save",
         )
     return links
 
@@ -164,6 +166,14 @@ class Step:
             long_date=long_date,
             **extra,
         )
+
+    def keep(self, back: str) -> dict[str, str] | None:
+        """What the result and check pages offer about keeping this case in an account, when
+        sign-in is configured. Only the full link gets the offer: the photo-only link cannot
+        put a case into anyone's account."""
+        if not self.flow.full:
+            return None
+        return keep_offer(self.request, self.ctx.session, self.case_id, self.flow.token, back)
 
     def wait(self, why: str, shown: CaseView | None = None) -> HTMLResponse:
         return self.page("senior_wait.html", shown, reason=WAIT[why][1 if self.flow.full else 0])
@@ -341,7 +351,12 @@ def senior_result(request: Request, token: str) -> HTMLResponse:
         shown = case.view()
         if shown.tier is None:
             return case.wait("unfinished", shown)
-        return case.page("senior_result.html", shown, ask=pending_gap_ask(case.ctx, case.case_id))
+        return case.page(
+            "senior_result.html",
+            shown,
+            ask=pending_gap_ask(case.ctx, case.case_id),
+            keep=case.keep("result"),
+        )
 
 
 def _letter(
