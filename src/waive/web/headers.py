@@ -3,8 +3,9 @@
 Everything under a capability link (/s/, /c/), the start that redirects to a freshly minted link
 (/cases), the sign-in routes (/auth/), the account pages (/account) and the admin console must
 not land in a browser or proxy cache, must not be indexed, and must not hand the link to another
-site as a Referer. The home page and the public atlas are left alone: they are meant to be cached
-and found."""
+site as a Referer. The public atlas is left alone: it is meant to be cached and found. So is the
+home page, except when it shows a signed-in person's cases (web/signin.py puts the same headers
+on that response)."""
 
 from starlette.types import ASGIApp, Message, Receive, Scope, Send
 

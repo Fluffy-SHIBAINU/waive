@@ -8,6 +8,7 @@ from fastapi import APIRouter, Form, Request
 from fastapi.responses import HTMLResponse, RedirectResponse, Response
 
 from waive.atlas import repo
+from waive.auth.accounts import link_case
 from waive.cases.packet import build_packet, packet_data
 from waive.cases.reminders import build_ics, reminder_events
 from waive.cases.service import (
@@ -33,6 +34,7 @@ from waive.learning.triage import record_outcome, triage_for
 from waive.web.deps import deps_of, render
 from waive.web.limits import client_key
 from waive.web.routes_senior import flow_links, opened, shown_links, to_decimal
+from waive.web.signin import from_this_site, home_page, provider, signed_in, start_link
 
 router = APIRouter()
 
@@ -58,6 +60,10 @@ def create_case(request: Request, state: str = Form("MA")) -> RedirectResponse:
     )
     with session_scope(deps.engine) as session:
         links = start_case(deps.context(session), state)
+        # Started while signed in: the case goes into that account's history without asking.
+        account_id = signed_in(request, session) if from_this_site(request) else None
+        if account_id is not None:
+            link_case(session, account_id, links.case_id)
     return RedirectResponse(caregiver_links(links.caregiver_token)["start"], status_code=303)
 
 
@@ -80,6 +86,7 @@ def caregiver_review(request: Request, token: str, fix: str = "") -> HTMLRespons
             outcome=load_outcome(case.ctx, case.case_id),
             check_in=pending_check_in(case.ctx, case.case_id),
             triage_note=triage_for(case.ctx, case.case_id),
+            keep=case.keep("review"),
         )
 
 
@@ -143,6 +150,21 @@ def case_form(request: Request, token: str):
         )
 
 
+@router.post("/c/{token}/save")
+def caregiver_save(request: Request, token: str, back: str = Form("review")):
+    """The "Save this case to my account" button. The full link shows the case may be opened;
+    the session says whose account. When the session ran out since the page was shown, sign-in
+    comes first and keeps the case on its way back."""
+    with opened(request, token) as case:
+        if provider(request) is None:
+            raise KeyError("sign-in is not configured")
+        account_id = signed_in(request, case.ctx.session)
+        if account_id is None:
+            return RedirectResponse(start_link(token), status_code=303)
+        link_case(case.ctx.session, account_id, case.case_id)
+        return case.to("result" if back == "result" else "review")
+
+
 @router.post("/c/{token}/relink", response_class=HTMLResponse)
 def caregiver_relink(request: Request, token: str) -> HTMLResponse:
     """The "Make new links" button: the old links, this one and any photo-only link that was
@@ -167,9 +189,7 @@ def caregiver_delete(request: Request, token: str) -> HTMLResponse:
         ctx = deps.context(session)
         row = authorize(ctx, token, "caregiver")
         delete_case(ctx, row.id)
-    response = render(
-        request, "home.html", notice="The case and all its personal data were deleted."
-    )
+    response = home_page(request, notice="The case and all its personal data were deleted.")
     # One-tap delete reaches the browser too: cached copies of the review pages go with the case.
     response.headers["Clear-Site-Data"] = '"cache"'
     return response

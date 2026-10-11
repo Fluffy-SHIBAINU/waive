@@ -1,0 +1,16 @@
+{# "Your cases": the home page and the account page of someone signed in. Opening a case goes
+   through /account/cases/{id}, which mints a fresh link; no link to a case is on this page. #}
+{% if history %}
+<ul class="cases">
+{% for entry in history %}
+  <li class="card">
+    <p class="big"><strong>{{ entry.hospital }}</strong></p>
+    <p>Started {{ entry.started }}</p>
+    <p>{{ entry.status }}</p>
+    <a href="/account/cases/{{ entry.case_id }}" class="btn">Open this case</a>
+  </li>
+{% endfor %}
+</ul>
+{% else %}
+<p class="big">You have no saved cases yet. Start a case and it is saved here.</p>
+{% endif %}

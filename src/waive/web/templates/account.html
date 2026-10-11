@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Your cases{% endblock %}
+{% block content %}
+<h1>Your cases</h1>
+<p class="big">You are signed in with Google. We keep no name and no email, only a code that tells us it is you.</p>
+{% include "_history.html" %}
+<p><a href="/" class="btn primary">Start a new case</a></p>
+<form method="post" action="/auth/signout" class="stack"><button type="submit" class="btn quiet">Sign out</button></form>
+<details>
+  <summary class="btn danger">Delete my account and all my cases</summary>
+  <form method="post" action="/account/delete" class="stack">
+    <p>This deletes your account and every case in this list, with all their personal data. It cannot be undone.</p>
+    <button type="submit" class="btn danger">Yes, delete everything</button>
+  </form>
+</details>
+{% endblock %}

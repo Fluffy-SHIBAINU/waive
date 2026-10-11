@@ -100,6 +100,10 @@ def test_token_pages_are_never_cached_indexed_or_leaked_as_referrer():
         f"/c/{links.caregiver_token}/reminders.ics",
         "/admin/login",
         "/s/not-a-real-token",  # the 403 page too
+        "/auth/google/start",  # sign-in and account addresses, also while they answer 404
+        "/auth/google/callback",
+        "/account",
+        "/account/cases/0123456789abcdef0123456789abcdef",
     )
     for path in private:
         headers = client.get(path).headers

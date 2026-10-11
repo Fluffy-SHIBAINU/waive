@@ -15,11 +15,13 @@ from waive.cases.service import (
     READ_LIMITS,
     SENIOR_TTL,
     CaseContext,
+    CaseSummary,
     TooManyReads,
     approve,
     authorize,
     confirm_bill,
     delete_case,
+    full_token,
     limited_token,
     purge_cases,
     relink,
@@ -28,6 +30,7 @@ from waive.cases.service import (
     start_case,
     submit_bill,
     submit_income_letter,
+    summarize,
     view,
 )
 from waive.cases.synth import make_truth, render_bill
@@ -405,3 +408,36 @@ def test_a_photo_only_link_can_be_minted_later_and_is_revoked_with_the_others(ct
     assert authorize(ctx, limited_token(ctx, links.case_id), "senior").id == links.case_id
     with pytest.raises(KeyError):
         limited_token(ctx, "no-such-case")
+
+
+def test_a_full_link_minted_later_follows_the_case_generation(ctx):
+    """Phase 9: an account opens its own case from the history with a link minted on the spot."""
+    links = start_case(ctx, "MA")
+    token = full_token(ctx, links.case_id)
+    assert authorize(ctx, token, "caregiver").id == links.case_id
+    claims = ctx.signer.verify(token)
+    assert (claims.scope, claims.generation) == ("caregiver", 1)
+    relink(ctx, links.case_id)
+    with pytest.raises(PermissionError):
+        authorize(ctx, token, "caregiver")
+    assert ctx.signer.verify(full_token(ctx, links.case_id)).generation == 2
+    with pytest.raises(KeyError):
+        full_token(ctx, "no-such-case")
+
+
+def test_a_case_summary_opens_the_sealed_data_only_for_an_unmatched_hospital_name(ctx):
+    links = start_case(ctx, "MA")
+    row = ctx.session.get(CaseRow, links.case_id)
+    row.created_at = datetime(2026, 9, 3, 15, 0, tzinfo=UTC)
+    assert summarize(ctx, row) == CaseSummary(links.case_id, date(2026, 9, 3), None, "new", None)
+    submit_bill(ctx, links.case_id, bill_image())
+    matched = summarize(ctx, row)
+    assert (matched.hospital_name, matched.status) == ("ST. EXAMPLE MEDICAL CENTER", "bill_read")
+    # A matched hospital is named from the registry: the vault is not opened at all.
+    sealed, row.sealed = row.sealed, "not-a-sealed-blob"
+    assert summarize(ctx, row).hospital_name == "ST. EXAMPLE MEDICAL CENTER"
+    row.sealed = sealed
+    row.ccn = None
+    assert summarize(ctx, row).hospital_name == "St. Example Medical Center"  # as printed
+    row.outcome = {"decision": "denied", "recorded_on": "2026-10-02"}
+    assert summarize(ctx, row).decision == "denied"
