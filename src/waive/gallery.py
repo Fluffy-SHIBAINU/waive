@@ -1,16 +1,18 @@
 """Repeatable pictures for the Devpost gallery (Phase 8.5).
 
-One demo case is driven through both flows in-process with scripted extraction output (the demo
-bill's ground truth), the app is served on a local port, and headless Chrome — already on the
-machine, no new Python dependency — photographs each page at phone or laptop size. Pages that
-exist only as POST responses (the "Two links" page, the read-back) or that change as the case
-advances (the senior start page, the household and income pages, which redirect to the result
-once the caregiver has approved, and the review page before approval) are captured from their
-HTML with a <base href> so the stylesheet still loads. Chrome will not open a window narrower than
-500 CSS px, so phone-sized shots are framed in an <iframe> of the phone's exact size. The colour
-scheme is pinned to dark on the command line, so a re-run on a light-mode machine takes the same
-pictures. README diagrams are exported through kroki.io. Spends nothing unless `live=True` (then
-the real vision model reads the two demo images).
+One demo case is driven through the one-link flow (Phase 9) in-process with scripted extraction
+output (the demo bill's ground truth), the app is served on a local port, and headless Chrome —
+already on the machine, no new Python dependency — photographs each page at phone or laptop
+size. Shots 01 to 09 are the flow's nine screens in order. Pages that exist only as POST
+responses (the read-back) or that change as the case advances (the photo, household and income
+steps, which lead to the result once the case is approved, and the result and check pages before
+approval) are captured from their HTML with a <base href> so the stylesheet still loads. Chrome
+will not open a window narrower than 500 CSS px, so phone-sized shots are framed in an <iframe>
+of the phone's exact size. The colour scheme is pinned to dark on the command line, so a re-run
+on a light-mode machine takes the same pictures. Every case page shows its own link as text, so
+the demo case is deleted once the pictures are taken: the link in them opens nothing. README
+diagrams are exported through kroki.io. Spends nothing unless `live=True` (then the real vision
+model reads the two demo images).
 """
 
 import html
@@ -99,57 +101,50 @@ class ShotPlan:
     shots: list[Shot]
     skipped: dict[str, str] = field(default_factory=dict)
     files: dict[str, bytes] = field(default_factory=dict)
-
-
-def _link(text: str, prefix: str) -> str:
-    match = re.search(rf'href="({re.escape(prefix)}[^"]+)"', text)
-    if match is None:
-        raise GalleryError(f"no {prefix} link on the page")
-    return match.group(1)
+    case: str | None = None  # the demo case's link (/c/{token}), once it was started
 
 
 def plan_shots(
     client, base_url: str, *, bill: bytes, letter: bytes, atlas_ccn: str = "220031"
 ) -> ShotPlan:
-    """Drive one case through the senior and caregiver flows with `client` (FastAPI's TestClient
-    or an httpx.Client with base_url — same methods) and return the pages to photograph."""
+    """Drive one case through the one-link flow with `client` (FastAPI's TestClient or an
+    httpx.Client with base_url — same methods) and return the pages to photograph."""
     plan = ShotPlan(shots=[])
     plan.shots.append(Shot("01-home-phone", PHONE, url=f"{base_url}/"))
-    created = client.post("/cases", data={"state": "MA"})
-    senior = _link(created.text, "/s/")
-    caregiver = _link(created.text, "/c/")
-    plan.shots.append(Shot("02-two-links-laptop", LAPTOP, html=created.text, scale=1))
-    # GET /s/{token} shows the result once the case is evaluated, so the start page is kept as
-    # it looks now; Chrome only runs after the whole flow has been driven.
-    plan.shots.append(Shot("03-senior-start-phone", PHONE, html=client.get(senior).text))
-    readback = client.post(f"{senior}/bill", files={"photo": ("bill.jpg", bill, "image/jpeg")})
+    # The start answers 303 to the photo step under the case's one link. httpx leaves a redirect
+    # alone unless asked and the TestClient follows it, so neither is left to its default.
+    created = client.post("/cases", data={"state": "MA"}, follow_redirects=False)
+    start = created.headers.get("location", "")
+    if created.status_code != 303 or not start.startswith("/c/"):
+        raise GalleryError("starting a case did not lead to the photo step under its link")
+    case = plan.case = start.removesuffix("/bill")
+    # Once the case is approved (shot 08) the photo, household and income steps only lead to the
+    # result. Chrome runs after the whole flow, so these pages are kept as HTML at the moment
+    # the person sees them.
+    plan.shots.append(Shot("02-bill-photo-phone", PHONE, html=client.get(start).text))
+    readback = client.post(f"{case}/bill", files={"photo": ("bill.jpg", bill, "image/jpeg")})
     if readback.status_code != 200 or "Here is what we read" not in readback.text:
         raise GalleryError(
             "the bill was not read; with --live this usually means the zero-data-retention "
             "check refused the photo because WAIVE_ZDR_CONFIRMED is false on this machine (see "
             "README, 'Privacy and zero data retention')"
         )
-    plan.shots.append(Shot("04-readback-phone", PHONE, html=readback.text))
-    client.post(f"{senior}/confirm", data={"answer": "yes"})
-    # Once the caregiver has approved (shot 09), the senior link only shows the result: GET
-    # household/income redirect there. Chrome runs after the whole flow, so these two pages are
-    # kept as HTML at the moment the senior sees them.
-    household = client.get(f"{senior}/household").text
-    plan.shots.append(Shot("05-household-phone", PHONE, html=household))
-    client.post(f"{senior}/household", data={"size": "1", "programs": "none"})
-    plan.shots.append(Shot("06-income-phone", PHONE, html=client.get(f"{senior}/income").text))
-    client.post(f"{senior}/income", files={"photo": ("letter.jpg", letter, "image/jpeg")})
-    plan.shots.append(Shot("07-result-phone", PHONE, url=f"{base_url}{senior}/result"))
-    # The review page changes once approved (shot 09), so the pre-approval view is kept as HTML;
-    # tall, so the "Dates that matter" card below the laptop fold is in the picture.
-    plan.shots.append(
-        Shot("08-caregiver-review-laptop", TALL, html=client.get(caregiver).text, scale=1)
-    )
-    client.post(f"{caregiver}/approve")
-    plan.shots.append(
-        Shot("09-caregiver-approved-laptop", LAPTOP, url=f"{base_url}{caregiver}", scale=1)
-    )
-    plan.files["packet-sample.pdf"] = client.get(f"{caregiver}/packet.pdf").content
+    plan.shots.append(Shot("03-readback-phone", PHONE, html=readback.text))
+    client.post(f"{case}/confirm", data={"answer": "yes"})
+    household = client.get(f"{case}/household").text
+    plan.shots.append(Shot("04-household-phone", PHONE, html=household))
+    client.post(f"{case}/household", data={"size": "1", "programs": "none"})
+    plan.shots.append(Shot("05-income-phone", PHONE, html=client.get(f"{case}/income").text))
+    client.post(f"{case}/income", files={"photo": ("letter.jpg", letter, "image/jpeg")})
+    # The result and the check page both change once approved (their button then leads to the
+    # form), so the views from before are kept as HTML. The check page is tall, so the "Dates
+    # that matter" card below the laptop fold is in the picture.
+    plan.shots.append(Shot("06-result-phone", PHONE, html=client.get(f"{case}/result").text))
+    plan.shots.append(Shot("07-check-laptop", TALL, html=client.get(case).text, scale=1))
+    client.post(f"{case}/approve")
+    plan.shots.append(Shot("08-form-phone", PHONE, url=f"{base_url}{case}/form"))
+    plan.shots.append(Shot("09-letter-phone", PHONE, url=f"{base_url}{case}/paper"))
+    plan.files["packet-sample.pdf"] = client.get(f"{case}/packet.pdf").content
     plan.shots.append(Shot("10-atlas-list-laptop", LAPTOP, url=f"{base_url}/atlas", scale=1))
     if client.get(f"/atlas/{atlas_ccn}").status_code == 200:
         plan.shots.append(
@@ -163,6 +158,13 @@ def plan_shots(
     # below a laptop fold.
     plan.shots.append(Shot("12-metrics-laptop", TALL, url=f"{base_url}/metrics", scale=1))
     return plan
+
+
+def discard_case(client, plan: ShotPlan) -> None:
+    """Delete the demo case once its pictures are taken. Every case page shows its own link as
+    text ("Copy my link"), so the pictures carry it; after this it opens nothing."""
+    if plan.case is not None:
+        client.post(f"{plan.case}/delete")
 
 
 def find_chrome(explicit: str | None = None) -> str | None:
@@ -337,7 +339,10 @@ def run_gallery(
         httpx.Client(base_url=base_url, timeout=120.0) as client,
     ):
         plan = plan_shots(client, base_url, bill=bill, letter=letter, atlas_ccn=atlas_ccn)
-        written = capture(plan, browser, out_dir, base_url)
+        try:
+            written = capture(plan, browser, out_dir, base_url)
+        finally:
+            discard_case(client, plan)
     if diagrams:
         with httpx.Client(timeout=60.0) as http:
             written += export_mermaid(README_PATH, out_dir, http)

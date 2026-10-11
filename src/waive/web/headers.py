@@ -1,8 +1,8 @@
 """Response headers for pages that carry personal data (spec §11).
 
-Everything under a capability link (/s/, /c/), the page that shows freshly minted links (/cases)
-and the admin console must not land in a browser or proxy cache, must not be indexed, and must
-not hand the link to another site as a Referer. The home page and the public atlas are left alone:
+Everything under a capability link (/s/, /c/), the start that redirects to a freshly minted link
+(/cases) and the admin console must not land in a browser or proxy cache, must not be indexed,
+and must not hand the link to another site as a Referer. The home page and the public atlas are left alone:
 they are meant to be cached and found."""
 
 from starlette.types import ASGIApp, Message, Receive, Scope, Send

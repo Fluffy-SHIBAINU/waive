@@ -29,6 +29,7 @@ from waive.gallery import (
     ShotPlan,
     capture,
     chrome_command,
+    discard_case,
     export_mermaid,
     find_chrome,
     frame_target,
@@ -41,16 +42,17 @@ from waive.gallery import (
 from tests.unit.test_web_app import make_client
 
 BASE = "http://testserver"
+# Phase 9: shots 01 to 09 are the nine screens of the one-link flow, in order.
 EXPECTED_SHOTS = [
     "01-home-phone",
-    "02-two-links-laptop",
-    "03-senior-start-phone",
-    "04-readback-phone",
-    "05-household-phone",
-    "06-income-phone",
-    "07-result-phone",
-    "08-caregiver-review-laptop",
-    "09-caregiver-approved-laptop",
+    "02-bill-photo-phone",
+    "03-readback-phone",
+    "04-household-phone",
+    "05-income-phone",
+    "06-result-phone",
+    "07-check-laptop",
+    "08-form-phone",
+    "09-letter-phone",
     "10-atlas-list-laptop",
     "11-atlas-sheet-laptop",
     "12-metrics-laptop",
@@ -68,11 +70,16 @@ def demo_client(tmp_path):
     return client, bill, letter
 
 
-def test_plan_shots_walks_both_flows_and_every_get_page_renders(tmp_path):
+def test_plan_shots_walks_the_one_link_flow_and_every_get_page_renders(tmp_path):
     client, bill, letter = demo_client(tmp_path)
     plan = plan_shots(client, BASE, bill=bill, letter=letter, atlas_ccn="229999")
     assert [shot.name for shot in plan.shots] == EXPECTED_SHOTS
-    assert plan.skipped == {}
+    assert len(plan.shots) == 12 and plan.skipped == {}
+    # One case, one link: every case page in the pictures is under it.
+    assert plan.case is not None and re.fullmatch(r"/c/[^/]+", plan.case)
+    for shot in plan.shots[1:9]:
+        assert (shot.url or "").startswith(BASE + plan.case) or plan.case in (shot.html or "")
+        assert 'href="/s/' not in (shot.html or "") and "/s/" not in (shot.url or ""), shot.name
     for shot in plan.shots:
         assert (shot.url is None) != (shot.html is None), shot.name
         if shot.url:
@@ -82,48 +89,66 @@ def test_plan_shots_walks_both_flows_and_every_get_page_renders(tmp_path):
             page = client.get(shot.url.removeprefix(BASE), follow_redirects=False)
             assert page.status_code == 200, shot.name
     by_name = {shot.name: shot for shot in plan.shots}
-    assert "Two links" in by_name["02-two-links-laptop"].html
-    assert "Take a photo of the bill" in by_name["03-senior-start-phone"].html
-    assert "$1,850.00" in by_name["04-readback-phone"].html
-    assert "ST. EXAMPLE MEDICAL CENTER" in by_name["04-readback-phone"].html
-    result = client.get(by_name["07-result-phone"].url.removeprefix(BASE))
-    assert "likely do not have to pay" in result.text
-    review = by_name["08-caregiver-review-laptop"].html
+    assert all("Two links" not in (shot.html or "") for shot in plan.shots)
+    assert "Take a photo of the bill" in by_name["02-bill-photo-phone"].html
+    assert "Copy my link" in by_name["02-bill-photo-phone"].html
+    assert "$1,850.00" in by_name["03-readback-phone"].html
+    assert "ST. EXAMPLE MEDICAL CENTER" in by_name["03-readback-phone"].html
+    # The result changes once the case is approved (its button then leads to the form), so it
+    # is kept as it looks when the person first sees it.
+    result = by_name["06-result-phone"].html
+    assert "likely do not have to pay" in result and "Check what we read" in result
+    check = by_name["07-check-laptop"].html
     # The pre-approval page already contains the word "Approved" (the by-hand outcome form's
     # "Approved: free care" option), so the assertion is on the approval banner.
-    assert "Likely free care" in review and "250%" in review
-    assert "Approved. Print the packet" not in review
-    approved = client.get(by_name["09-caregiver-approved-laptop"].url.removeprefix(BASE))
-    assert "Approved. Print the packet" in approved.text
+    assert "<h1>Check what we read</h1>" in check
+    assert "Likely free care" in check and "250%" in check
+    assert "Looks right, make my form" in check and "Approved. Print the packet" not in check
+    form = client.get(by_name["08-form-phone"].url.removeprefix(BASE))
+    assert "<h1>Your form and reminders</h1>" in form.text and "Download the packet" in form.text
+    letter_step = client.get(by_name["09-letter-phone"].url.removeprefix(BASE))
+    assert "<h1>Did the hospital answer?</h1>" in letter_step.text
     assert by_name["01-home-phone"].size == PHONE and by_name["01-home-phone"].scale == 2
     assert by_name["10-atlas-list-laptop"].size == LAPTOP
     assert by_name["10-atlas-list-laptop"].scale == 1
-    # The review page's "Dates that matter" card and the metrics page's coverage table sit below
+    # The check page's "Dates that matter" card and the metrics page's coverage table sit below
     # a laptop fold, and their captions promise them, so those pages are photographed tall.
-    assert by_name["08-caregiver-review-laptop"].size == TALL
+    assert by_name["07-check-laptop"].size == TALL
     assert by_name["12-metrics-laptop"].size == TALL
     assert plan.files["packet-sample.pdf"][:5] == b"%PDF-"
 
 
 def test_household_and_income_shots_are_kept_from_before_the_approval(tmp_path):
-    # 8.10: the security audit locked the senior link once the caregiver approved (GET
-    # household/income redirect to the result), and Chrome only runs after the whole flow,
-    # approval included, has been driven — so a URL shot of those pages photographed the
-    # result page. They are kept as HTML from the moment the senior would see them.
+    # 8.10: the security audit locked the steps once the case is approved (GET household/income
+    # redirect to the result), and Chrome only runs after the whole flow, approval included,
+    # has been driven — so a URL shot of those pages photographed the result page. They are
+    # kept as HTML from the moment the person would see them.
     client, bill, letter = demo_client(tmp_path)
     plan = plan_shots(client, BASE, bill=bill, letter=letter, atlas_ccn="229999")
     by_name = {shot.name: shot for shot in plan.shots}
-    household, income = by_name["05-household-phone"], by_name["06-income-phone"]
+    household, income = by_name["04-household-phone"], by_name["05-income-phone"]
     assert household.url is None and household.html is not None
     assert "How many people live in your home" in household.html
     assert income.url is None and income.html is not None
     assert "Do you have your Social Security letter?" in income.html
     assert "What we found" not in household.html and "What we found" not in income.html
-    # The reason, stated: after the approval the senior link only shows the result.
-    senior = re.search(r'href="(/s/[^"]+)"', by_name["02-two-links-laptop"].html).group(1)
+    # The reason, stated: after the approval these steps only lead to the result.
     for page in ("household", "income"):
-        response = client.get(f"{senior}/{page}", follow_redirects=False)
+        response = client.get(f"{plan.case}/{page}", follow_redirects=False)
         assert response.status_code == 303 and response.headers["location"].endswith("/result")
+
+
+def test_the_demo_case_is_deleted_once_the_pictures_are_taken(tmp_path):
+    # Phase 9: every case page now shows its own link as text ("Copy my link"), so the pictures
+    # carry the demo case's link. The case is deleted after the capture: that link opens nothing.
+    client, bill, letter = demo_client(tmp_path)
+    plan = plan_shots(client, BASE, bill=bill, letter=letter, atlas_ccn="229999")
+    assert client.get(plan.case).status_code == 200
+    discard_case(client, plan)
+    assert client.get(plan.case).status_code == 403
+    assert client.get(f"{plan.case}/packet.pdf").status_code == 403
+    discard_case(client, plan)  # nothing left to delete: no error
+    discard_case(client, ShotPlan(shots=[]))  # a plan that never started a case
 
 
 def test_gallery_app_never_starts_the_scout_scheduler(tmp_path):
