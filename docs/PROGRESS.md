@@ -36,7 +36,7 @@ Master plan: `docs/superpowers/plans/2026-10-02-waive-master-plan.md` · Spec: `
 - [x] **U7.2** Moot (2026-10-10): `.env` already holds `WAIVE_TOKEN_FACTORY_USD_CAP=40` (the loop had assumed the default of 15); $4.98 used. Original note: Token Factory cap: spend is $4.61 of `WAIVE_TOKEN_FACTORY_USD_CAP=15`; each 140-hospital batch costs ≈ $1.60 and each yield rebuild pass ≈ $0.50, so the remaining ≈ 6 batches plus rebuilds need ≈ $13 more (≈ $18 total). Approve a new cap (suggested **25**) or the loop stops scouting when the governor refuses at $15 (≈ 2026-10-16).
 - [ ] **U8.4** Stop cloud resources after judging ends (2026-12-15).
 - [ ] **U9.1** (opened 2026-10-11) Google sign-in: in Google Cloud Console create an OAuth 2.0 Client ID of type "Web application" with the redirect URI `http://localhost:8000/auth/google/callback` (add the deployed URL's `/auth/google/callback` later), and put the values in `.env` as `WAIVE_GOOGLE_CLIENT_ID` and `WAIVE_GOOGLE_CLIENT_SECRET` (never in chat). The consent screen needs only the `openid` scope. The code and its tests do not wait for this; a live sign-in does.
-- [ ] **U9.2** (opened 2026-10-11) Apple sign-in needs an Apple Developer Program membership (paid), a Services ID, a key and a public HTTPS domain; Apple refuses localhost. Decide after deployment whether it is worth it for the submission.
+- [x] **U9.2** Dropped 2026-10-11: no Apple sign-in.
 - [~] **U8.5** GitHub account settings (opened 2026-10-09): (a) **done 2026-10-09 14:10Z** — `gh auth refresh -h github.com -s workflow`; 26 commits pushed, CI workflow live; (b) still open: enable private vulnerability reporting on the repository (Settings → Code security and analysis), the channel `SECURITY.md` names.
 
 ## Phase checklist
@@ -187,7 +187,7 @@ Plan: `docs/superpowers/plans/2026-10-02-waive-phase-8-submission.md` (4c0d6a8 d
 - [x] Phase 8 exit checks (2026-10-03 10:45): `ruff format --check` 127 files, `ruff check` clean, **331 tests pass**; gallery holds 12 screenshots + 2 diagrams + `packet-sample.pdf` + README, every PNG under 1 MB (largest 275 KB); demo script totals 2:50 (test enforces ≤ 175 s, contiguous); submission has every section, the Nebius/NVIDIA feedback and the Tavily paragraph, no "TBD"; checklist maps every requirement to evidence and U8.1–U8.4 match its wording; README and submission figures match `atlas-ma.md` (46/27/59%), `atlas-national.md` (2,703/27/67%/116) and the ledger (389 credits, $1.5263 → "$1.53"); the three "Deployment status" lines all say not deployed; phase spend $0.0072 Token Factory, 0 Tavily, no cloud resources. README Mermaid rendering checked on GitHub 2026-10-09 after the public flip: both diagrams render (two viewscreen frames, no render errors) — all Phase 8 exit checks pass.
 
 ### Phase 9 — One-link case flow and optional sign-in
-Plan: `docs/superpowers/plans/2026-10-11-waive-phase-9-single-link-accounts.md`. From the user's own test on 2026-10-11 (two links confusing, review link lost with no way back, wrong letter message). User decisions: one link by default; review as a screen in the same flow; optional limited photo link for a second person; **sign-in with Google / Apple instead of a remember-me cookie, optional, offered at the result**; history of cases per account.
+Plan: `docs/superpowers/plans/2026-10-11-waive-phase-9-single-link-accounts.md`. From the user's own test on 2026-10-11 (two links confusing, review link lost with no way back, wrong letter message). User decisions: one link by default; review as a screen in the same flow; optional limited photo link for a second person; **sign-in with Google (Apple dropped) instead of a remember-me cookie, optional, offered at the result**; history of cases per account.
 - [x] 9.0 Plan written, screens and trade-offs shown to the user (2026-10-11)
 - [ ] 9.1 One link from the start (no "Two links" page)
 - [ ] 9.2 The whole flow under the full link
@@ -197,7 +197,7 @@ Plan: `docs/superpowers/plans/2026-10-11-waive-phase-9-single-link-accounts.md`.
 - [ ] 9.6 Accounts and sessions (provider, HMAC of the subject id, dates; nothing else stored)
 - [ ] 9.7 Google sign-in (OIDC code flow with PKCE, scope `openid` only); live test needs U9.1
 - [ ] 9.8 Home and history ("Your cases", save a case after sign-in, delete account)
-- [ ] 9.9 Apple sign-in (needs U9.2 and a deployed HTTPS domain)
+- [x] 9.9 Apple sign-in — dropped by the user 2026-10-11 ("just do google. drop apple auth.")
 - [ ] 9.10 Documents, demo script, Devpost text, gallery, audit addendum; sample letters in `waive demo reset`
 
 ## Open items to verify (spec §18)
