@@ -195,3 +195,28 @@ def test_unreadable_model_answer_gives_the_senior_a_kind_page_not_a_500():
     assert bill.status_code == 200 and "helper" in bill.text.lower()
     letter = client.post(f"{base}/income", files=photo())
     assert letter.status_code == 200 and "skip this step" in letter.text
+
+
+def test_a_database_that_stays_locked_is_a_kind_503_page_not_a_500(monkeypatch):
+    # 2026-10-11: "Internal Server Error" after confirming a bill while a scouting batch held
+    # SQLite's write lock.
+    import sqlite3
+
+    from sqlalchemy.exc import OperationalError
+
+    from waive.web import routes_senior
+
+    def locked(ctx, case_id, changes):
+        raise OperationalError(
+            "UPDATE cases SET status=?", {}, sqlite3.OperationalError("database is locked")
+        )
+
+    client, links = seeded_client()
+    client = TestClient(client.app, raise_server_exceptions=False)
+    senior = f"/s/{links.senior_token}"
+    client.post(f"{senior}/bill", files=photo())
+    monkeypatch.setattr(routes_senior, "confirm_bill", locked)
+    response = client.post(f"{senior}/confirm", data={"answer": "yes"})
+    assert response.status_code == 503
+    assert "nothing was lost" in response.text.lower() and "try again" in response.text.lower()
+    assert "Traceback" not in response.text and "UPDATE cases" not in response.text
