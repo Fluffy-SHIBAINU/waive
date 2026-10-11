@@ -393,10 +393,26 @@ def submit_income_letter(
     count_read(sealed, "income", ctx.today)
     _save(ctx, row, sealed)
     income = extract_income(ctx.ai, prepared.jpeg, synthetic=synthetic)
+    _store_income(sealed, income.annual())
+    _save(ctx, row, sealed)
+    return _evaluate(ctx, row, sealed)
+
+
+def _store_income(sealed: dict[str, Any], annual: Decimal | None) -> None:
+    """Replace the yearly income only; the household size and programs already answered stay."""
     household = sealed.get("household") or {"size": 1, "programs": []}
-    annual = income.annual()
     household["annual_income"] = None if annual is None else str(annual)
     sealed["household"] = household
+
+
+def set_income(
+    ctx: CaseContext, case_id: str, annual_income: Decimal, *, allow_approved: bool = False
+) -> CaseView:
+    """A yearly income the person typed at the income step instead of photographing a letter."""
+    row = _row(ctx, case_id)
+    _unlocked(row, allow_approved)
+    sealed = _load(ctx, row)
+    _store_income(sealed, annual_income)
     _save(ctx, row, sealed)
     return _evaluate(ctx, row, sealed)
 
