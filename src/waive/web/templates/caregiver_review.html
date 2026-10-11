@@ -2,7 +2,6 @@
 {% block title %}Check what we read{% endblock %}
 {% block content %}
 <h1>Check what we read</h1>
-{% if note %}<p class="card">{{ note }}</p>{% endif %}
 {% if case.status == "approved" %}
 <p class="card status-free big">Approved. Print the packet, have it signed, and send it.</p>
 <p><a href="{{ links.form }}" class="btn primary">Your form and reminders</a></p>
@@ -105,8 +104,18 @@
   </form>
 </div>
 {% endif %}
+
+<h2>Add a letter or paper from the hospital</h2>
+{% if ask %}<p class="muted">We asked the senior: "{{ ask.question }}"</p>{% endif %}
+<p><a href="{{ links.paper }}" class="btn">Take a photo of the hospital's letter</a></p>
+<form method="post" action="{{ links.paper }}" enctype="multipart/form-data" class="stack">
+  <label for="paper">Or choose a file: decision letter, request for documents, policy or blank form</label>
+  <input id="paper" type="file" name="photo" accept="image/*,application/pdf" required>
+  <button type="submit" class="btn">Upload and read it</button>
+</form>
 {% if not outcome %}
-<h2>Enter the hospital's decision by hand</h2>
+<details>
+<summary class="btn quiet">Enter the hospital's decision by hand</summary>
 <form method="post" action="{{ links.outcome }}" class="stack">
   <label for="decision">Decision</label>
   <select id="decision" name="decision">
@@ -119,15 +128,8 @@
   <input id="discount_percent" name="discount_percent" inputmode="numeric" value="">
   <button type="submit" class="btn">Save the decision</button>
 </form>
+</details>
 {% endif %}
-
-<h2>Add a letter or paper from the hospital</h2>
-{% if ask %}<p class="muted">We asked the senior: "{{ ask.question }}"</p>{% endif %}
-<form method="post" action="{{ links.paper }}" enctype="multipart/form-data" class="stack">
-  <label for="paper">Decision letter, request for documents, policy or blank form</label>
-  <input id="paper" type="file" name="photo" accept="image/*,application/pdf" required>
-  <button type="submit" class="btn">Upload and read it</button>
-</form>
 
 {% if case.status == "approved" %}
 <p><a class="btn primary" href="{{ links.packet }}">Download the packet (PDF)</a></p>
