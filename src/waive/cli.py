@@ -555,7 +555,8 @@ def demo_gallery(
 ) -> None:
     """Photograph the demo flow and the atlas pages with headless Chrome, and export the README
     diagrams, for the Devpost gallery. Spends nothing unless --live. Run it from the repository
-    root. Creates one demo case in the local database; run `waive demo reset` afterwards."""
+    root. Creates one demo case in the local database and deletes it once the pictures are taken
+    (they show its link); run `waive demo reset` afterwards."""
     settings = Settings()
     try:
         written, skipped = run_gallery(

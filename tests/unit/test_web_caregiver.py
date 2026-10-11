@@ -12,13 +12,16 @@ from tests.unit.test_web_app import make_client
 from tests.unit.test_web_senior import HOSPITAL, photo, seeded_client
 
 
-def test_create_case_shows_both_links_and_review_works():
+def test_create_case_gives_one_link_and_review_works():
     client, _ = seeded_client()
+    # Phase 9.1: no "Two links" page. The start leads to the full link's photo step; the
+    # photo-only link for a second person is offered there, in the case bar.
     created = client.post("/cases", data={"state": "MA"})
-    assert created.status_code == 200
-    senior = re.search(r'href="(/s/[^"]+)"', created.text).group(1)
-    caregiver = re.search(r'href="(/c/[^"]+)"', created.text).group(1)
-    assert "Share this link" in created.text
+    assert created.status_code == 200 and "Two links" not in created.text
+    caregiver = created.url.path.removesuffix("/bill")
+    assert caregiver.startswith("/c/") and created.url.path.endswith("/bill")
+    senior = re.search(r'id="share-link" data-link="(/s/[^"]+)"', created.text).group(1)
+    assert "Send the photo step to someone else" in created.text
 
     client.post(f"{senior}/bill", files=photo())
     review = client.get(caregiver)

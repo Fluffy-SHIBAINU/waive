@@ -5,6 +5,7 @@ import re
 from decimal import Decimal
 
 from fastapi.testclient import TestClient
+from sqlalchemy import func, select
 
 from waive.atlas import repo
 from waive.atlas.publish import publish_sheet
@@ -522,3 +523,62 @@ def test_delete_my_case_from_the_bar_asks_first_and_then_removes_everything():
     assert client.get(base).status_code == 403
     with session_scope(client.app.state.deps.engine) as session:
         assert session.get(CaseRow, links.case_id) is None
+
+
+def test_start_answers_with_a_redirect_to_the_photo_step_under_the_one_link():
+    client, _ = seeded_client()
+    created = client.post("/cases", data={"state": "MA"}, follow_redirects=False)
+    assert created.status_code == 303 and created.text == ""
+    location = created.headers["location"]
+    assert re.fullmatch(r"/c/[^/]+/bill", location)
+    # The redirect names the link, so it is as private as the pages behind it.
+    assert created.headers["cache-control"] == "no-store"
+    assert created.headers["referrer-policy"] == "no-referrer"
+    token = location.split("/")[2]
+    assert client.app.state.deps.signer.verify(token).scope == "caregiver"
+
+    photo_step = client.get(location)
+    assert photo_step.status_code == 200 and "Take a photo of the bill" in photo_step.text
+    assert "Two links" not in photo_step.text
+    # The one link to keep is on the page from the first step on.
+    assert f'id="my-link" data-link="/c/{token}">http://testserver/c/{token}</p>' in photo_step.text
+    assert "Copy my link" in photo_step.text
+    # No second link is handed out at the start; the limited one sits folded in the case bar.
+    assert 'href="/s/' not in photo_step.text and 'action="/s/' not in photo_step.text
+    readback = client.post(location, files=photo())
+    assert readback.status_code == 200 and "$1,850.00" in readback.text
+
+
+def test_going_back_or_reloading_after_the_start_does_not_create_a_second_case():
+    client, engine = make_client()
+
+    def cases():
+        with session_scope(engine) as session:
+            return session.scalar(select(func.count()).select_from(CaseRow))
+
+    home = client.get("/")
+    assert home.status_code == 200 and cases() == 0  # looking at the home page starts nothing
+    created = client.post("/cases", data={"state": "MA"}, follow_redirects=False)
+    location = created.headers["location"]
+    assert created.status_code == 303 and cases() == 1
+    # The browser's history holds the page the redirect led to, never the POST: Back, Forward
+    # and reload only repeat GETs.
+    for path in (location, "/", location, location):
+        assert client.get(path).status_code == 200
+    assert cases() == 1
+    assert client.get("/cases").status_code == 405  # the start itself cannot be revisited
+
+
+def test_links_from_before_the_change_keep_working_and_the_two_links_page_is_gone():
+    # `start_case` still mints both links; a case started before Phase 9 holds one of each.
+    client, links = seeded_client()
+    limited, full = f"/s/{links.senior_token}", f"/c/{links.caregiver_token}"
+    start = client.get(limited)
+    assert start.status_code == 200 and "Take a photo of the bill" in start.text
+    readback = client.post(f"{limited}/bill", files=photo())
+    assert readback.status_code == 200 and "$1,850.00" in readback.text
+    check = client.get(full)
+    assert check.status_code == 200 and "$1,850.00" in check.text
+    assert not (TEMPLATES_DIR / "case_created.html").exists()
+    for page in (client.get("/"), start, readback, check):
+        assert "Two links" not in page.text

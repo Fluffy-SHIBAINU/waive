@@ -106,7 +106,7 @@
 {% endif %}
 
 <h2>Add a letter or paper from the hospital</h2>
-{% if ask %}<p class="muted">We asked the senior: "{{ ask.question }}"</p>{% endif %}
+{% if ask %}<p class="muted">We asked on the result page: "{{ ask.question }}"</p>{% endif %}
 <p><a href="{{ links.paper }}" class="btn">Take a photo of the hospital's letter</a></p>
 <form method="post" action="{{ links.paper }}" enctype="multipart/form-data" class="stack">
   <label for="paper">Or choose a file: decision letter, request for documents, policy or blank form</label>

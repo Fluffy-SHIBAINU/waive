@@ -41,11 +41,15 @@ def caregiver_links(token: str) -> dict[str, str]:
     return flow_links(token, full=True)
 
 
-@router.post("/cases", response_class=HTMLResponse)
-def create_case(request: Request, state: str = Form("MA")) -> HTMLResponse:
+@router.post("/cases")
+def create_case(request: Request, state: str = Form("MA")) -> RedirectResponse:
+    """One link from the start (Phase 9): the new case opens at the photo step under its full
+    link. A 303, so the browser's history holds that page's GET and never this POST: Back or a
+    reload cannot start a second case. Nothing else is shown; the photo-only link for a second
+    person is minted when the case bar is asked for it."""
     deps = deps_of(request)
-    # No sign-in here and two capability links per call: a process-wide ceiling first (no header
-    # can dodge it), then a best-effort one per client.
+    # No sign-in here and a new case with its capability link per call: a process-wide ceiling
+    # first (no header can dodge it), then a best-effort one per client.
     settings = request.app.state.settings
     limiter = request.app.state.limiter
     limiter.check("cases", settings.cases_per_minute, 60, "new cases")
@@ -54,12 +58,7 @@ def create_case(request: Request, state: str = Form("MA")) -> HTMLResponse:
     )
     with session_scope(deps.engine) as session:
         links = start_case(deps.context(session), state)
-    return render(
-        request,
-        "case_created.html",
-        senior_url=flow_links(links.senior_token, full=False)["start"],
-        caregiver_url=caregiver_links(links.caregiver_token)["review"],
-    )
+    return RedirectResponse(caregiver_links(links.caregiver_token)["start"], status_code=303)
 
 
 @router.get("/c/{token}", response_class=HTMLResponse)

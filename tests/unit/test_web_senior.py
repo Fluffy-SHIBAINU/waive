@@ -117,7 +117,7 @@ def approved_case():
 
 
 def test_the_senior_link_cannot_change_an_approved_case():
-    """The senior scope is "add photos and see the result" (case_created.html, spec §11); a
+    """The senior scope is "add photos and see the result" (the case bar's words, spec §11); a
     forwarded link, or a cached form auto-submitting, must not un-approve or alter the packet."""
     client, links, caregiver = approved_case()
     senior = f"/s/{links.senior_token}"
