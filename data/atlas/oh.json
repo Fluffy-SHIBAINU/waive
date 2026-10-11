@@ -1,5 +1,5 @@
 {
- "generated_on": "2026-10-10",
+ "generated_on": "2026-10-11",
  "license": "CC BY 4.0",
  "state": "OH",
  "sheets": [
@@ -747,14 +747,36 @@
     "zip": "45005",
     "phone": "513-420-5102",
     "ownership": "Voluntary non-profit - Private",
-    "website_domain": null,
+    "website_domain": "premierhealth.com",
     "system": null
    },
-   "version": 2,
-   "status": "held",
+   "version": 3,
+   "status": "published",
    "eligibility": {
-    "free_care_max_fpl": null,
-    "discount_tiers": null,
+    "free_care_max_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "100% \u2013 200%  100%  100%",
+     "source_id": "fap-b84d42b3390521f4",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "200",
+       "max_fpl_inclusive": "300",
+       "discount_percent": 80
+      }
+     ],
+     "layer": "documented",
+     "quote": "Income (of FPG) % of Poverty Level\n\nUninsured Charity Discount\n\nInsured Charity Discount\n\n0 \u2013 100%  100%  100%\n\n100% \u2013 200%  100%  100%\n\n200% - 300%  80%/AGB  80%/AGB",
+     "source_id": "fap-b84d42b3390521f4",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "asset_test": null,
     "residency": null,
     "insured_patients_covered": null,
@@ -768,27 +790,164 @@
    "apply": {
     "form_url": null,
     "form_version": null,
-    "documents_required": null,
+    "documents_required": {
+     "value": [
+      "proof_of_income",
+      "social_security_letter",
+      "tax_return",
+      "pay_stubs",
+      "bank_statements"
+     ],
+     "layer": "documented",
+     "quote": "Proof of income for applicant (and spouse if applicable) such as a pay stub, unemployment insurance payment stubs, or sufficient information on how patients are currently financially supporting themselves.\nb. Bank Statement\nc. Social Security Statement\nd. Tax Return \u2013 Schedule C for self-employment income\ne. Documentation of the family\u2019s assets.",
+     "source_id": "fap-27791e6a031acdbf",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "documents_reported": null,
-    "submit_methods": null,
-    "window_days_from_first_bill": null,
-    "decision_days": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "PO Box 932715, Cleveland, OH 44193"
+      },
+      {
+       "kind": "email",
+       "detail": "via email"
+      },
+      {
+       "kind": "portal",
+       "detail": "through MyChart"
+      },
+      {
+       "kind": "in_person",
+       "detail": "in person"
+      }
+     ],
+     "layer": "documented",
+     "quote": "To apply for financial assistance, patients must submit a complete application including supporting documents upon request, in person, by mail, via email, or through MyChart.",
+     "source_id": "fap-27791e6a031acdbf",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": {
+     "value": 240,
+     "layer": "documented",
+     "quote": "up to 240 days after the first post discharge statement.",
+     "source_id": "fap-27791e6a031acdbf",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days": {
+     "value": 30,
+     "layer": "documented",
+     "quote": "Notify the patient in writing regarding the decision within 30 days from the date of the decision.",
+     "source_id": "fap-27791e6a031acdbf",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "decision_days_reported": null
    },
    "collections": {
-    "eca_wait_days": null,
+    "eca_wait_days": {
+     "value": 120,
+     "layer": "documented",
+     "quote": "Premier Health Hospitals will not initiate any ECAs for at least one hundred and twenty (120) days from the date the hospital facility provides the first post-discharge billing statement for the care.",
+     "source_id": "fap-27791e6a031acdbf",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "collection_agencies": null
    },
    "contacts": {
-    "phone": null,
-    "hours": null,
-    "languages": null
+    "phone": {
+     "value": "937-499-7364",
+     "layer": "documented",
+     "quote": "Financial counseling office hours are generally 8 am to 7 pm weekdays and can be reached by calling 937-499-7364.",
+     "source_id": "fap-27791e6a031acdbf",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": {
+     "value": "8 am to 7 pm weekdays",
+     "layer": "documented",
+     "quote": "Financial counseling office hours are generally 8 am to 7 pm weekdays and can be reached by calling 937-499-7364.",
+     "source_id": "fap-27791e6a031acdbf",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "languages": {
+     "value": [
+      "English",
+      "Spanish"
+     ],
+     "layer": "documented",
+     "quote": "Applications are available in English and in Spanish.",
+     "source_id": "fap-27791e6a031acdbf",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    }
    },
    "coverage": {
-    "facilities": null,
+    "facilities": {
+     "value": [
+      "Atrium Medical Center"
+     ],
+     "layer": "documented",
+     "quote": "All hospitals are referred to collectively in this policy as \u201cPremier Health Hospitals.\u201d All Premier Physician Network providers are referred to collectively in this policy as \u201cPPN.\u201d",
+     "source_id": "fap-27791e6a031acdbf",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "provider_list_url": null
    },
-   "sources": [],
+   "sources": [
+    {
+     "id": "fap-27791e6a031acdbf",
+     "kind": "hospital_web",
+     "url": "https://www.premierhealth.com/docs/default-source/default-document-library/financial-assistance-policy.pdf?sfvrsn=8b77b8df_14",
+     "title": "Tier 2 Financial Assistance Policy Template",
+     "fetched_on": "2026-10-11",
+     "sha256": "27791e6a031acdbf6d68c8ee445f3ef425f84da274f8fe141ac3ff585fe3ddb4",
+     "effective_date": null
+    },
+    {
+     "id": "billing-76eedf79a424e1ed",
+     "kind": "hospital_web",
+     "url": "https://www.premierhealth.com/patient-and-visitor-guide/patient-guide/costs-and-insurance/billing/financial-assistance",
+     "title": "Financial Assistance| Billing | Premier Health",
+     "fetched_on": "2026-10-11",
+     "sha256": "76eedf79a424e1ed2c922d07624c310902c8a4649d54926f914f2e92a1095844",
+     "effective_date": null
+    },
+    {
+     "id": "fap-b84d42b3390521f4",
+     "kind": "hospital_web",
+     "url": "https://www.premierhealth.com/docs/default-source/default-document-library/fap-handout-(2).pdf?sfvrsn=a68b8c22_0",
+     "title": "Ohio Hospital Care Assurance Program (HCAP)",
+     "fetched_on": "2026-10-11",
+     "sha256": "b84d42b3390521f43f71dfe346a418c28613b7e3c186e9bb08274aab75ddfd2f",
+     "effective_date": null
+    },
+    {
+     "id": "fap-ed64527eecfc5fc7",
+     "kind": "hospital_web",
+     "url": "https://www.premierhealth.com/docs/default-source/default-document-library/financial-assistance-english-version.pdf?sfvrsn=6a042e28_7",
+     "title": "financial-assistance-english-version.pdf",
+     "fetched_on": "2026-10-11",
+     "sha256": "ed64527eecfc5fc752cac73d5c20ea9f3893519cab66ae08e0b97a412b9dc1cb",
+     "effective_date": null
+    }
+   ],
    "accuracy": null
   },
   {
@@ -1224,10 +1383,197 @@
     "zip": "43713",
     "phone": "740-425-3941",
     "ownership": "Voluntary non-profit - Private",
-    "website_domain": null,
+    "website_domain": "wvumedicine.org",
     "system": null
    },
-   "version": 2,
+   "version": 3,
+   "status": "held",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "Full financial assistance will be provided to those patients where the adjusted gross household income from the patient\u2019s federal tax return or income documentation is at or below 200% of the federal poverty guidelines as published annually by the Community Services Administration in the Federal Register (Attachment II)",
+     "source_id": "application-98f57a51491fbcf6",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": null,
+    "asset_test": null,
+    "residency": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "This discount may be extended to insured patients whose out of pocket expenses exceed the AGB discount.",
+     "source_id": "application-98f57a51491fbcf6",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": {
+     "value": [
+      "Supplemental Nutritional Assistance Program (SNAP)",
+      "State\u2019s Energy Assistance Program"
+     ],
+     "layer": "documented",
+     "quote": "Financially Indigent: Those who are eligible for the following programs will be eligible for WVU Cares, unless otherwise eligible for Medicaid or CHIP. Proof of participation in one of the below programs is required. i. Supplemental Nutritional Assistance Program SNAP) ii. State\u2019s Energy Assistance Program iii. Federal Special Supplemental Food Program for Women, Infants, and Children (WIC) iv. Any other social service as determined by state Department of Health or Health Services",
+     "source_id": "application-98f57a51491fbcf6",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": {
+     "value": "https://wvumedicine.org/wp-content/uploads/System_Pages/Forms/BRN_FAP_Attachment-1_Financial-Application.2024-4282025.pdf",
+     "layer": "documented",
+     "quote": "[Financial Assistance Application Form](https://wvumedicine.org/wp-content/uploads/System_Pages/Forms/BRN_FAP_Attachment-1_Financial-Application.2024-4282025.pdf)",
+     "source_id": "application-af66811ddafe43e8",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "bank_statements"
+     ],
+     "layer": "documented",
+     "quote": "Current Bank Statement for all Checking and/or Savings Accounts",
+     "source_id": "application-0cb0978f9b47559e",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "WVU Medicine \u2013 West Virginia University Hospital Financial Counseling PO Box 8000 Morgantown, WV 26505"
+      },
+      {
+       "kind": "in_person",
+       "detail": "return it to your financial counselor at the address listed on the application."
+      }
+     ],
+     "layer": "documented",
+     "quote": "Attach the requested documentation and return it to your financial counselor at the address listed on the application.",
+     "source_id": "application-0cb0978f9b47559e",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": null,
+    "decision_days": null,
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "304-598-6260",
+     "layer": "documented",
+     "quote": "By calling our financial counselors at 304-598-6260",
+     "source_id": "application-98f57a51491fbcf6",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": null,
+    "languages": null
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null
+   },
+   "sources": [
+    {
+     "id": "application-af66811ddafe43e8",
+     "kind": "hospital_web",
+     "url": "https://wvumedicine.org/billing-and-insurance/financial-assistance/policies-and-financial-applications",
+     "title": "Policies and Financial Applications | WVU Medicine",
+     "fetched_on": "2026-10-11",
+     "sha256": "af66811ddafe43e8d2c3a9101f8e0a0ef03f9e6a12b250f02b9b61b8e1b5ce4f",
+     "effective_date": null
+    },
+    {
+     "id": "summary-07064a8ec4bf3a33",
+     "kind": "hospital_web",
+     "url": "http://wvumedicine.org/weirton/wp-content/uploads/sites/82/2024/12/2024-fap-plain-lang-summary-revised.pdf",
+     "title": "FAP Plain Language Summary",
+     "fetched_on": "2026-10-11",
+     "sha256": "07064a8ec4bf3a33f22f5ff10eb2b22cf66250966b84d5d1e8abf12b17796c19",
+     "effective_date": null
+    },
+    {
+     "id": "billing-4dd639ccd698fd34",
+     "kind": "hospital_web",
+     "url": "https://www.wvumedicine.org/billing-and-insurance",
+     "title": "Billing and Collections Policy",
+     "fetched_on": "2026-10-11",
+     "sha256": "4dd639ccd698fd340ffb6c6b8bfaa84bb977b8d5f807fef62bb958fe03f2e83a",
+     "effective_date": null
+    },
+    {
+     "id": "billing-be664f7c33a47b1f",
+     "kind": "hospital_web",
+     "url": "https://www.wvumedicine.org/billing-and-insurance/financial-assistance",
+     "title": "Billing and Collections Policy",
+     "fetched_on": "2026-10-11",
+     "sha256": "be664f7c33a47b1ff4e852587a2f3ec8c751053bb706956385a342d827b5f168",
+     "effective_date": null
+    },
+    {
+     "id": "application-0cb0978f9b47559e",
+     "kind": "hospital_web",
+     "url": "https://wvumedicine.org/wp-content/uploads/System_Pages/Forms/WVUH_FAP_Attachment-1_Financial-Application.2024-252025.pdf",
+     "title": "Financial Assistance Application Checklist",
+     "fetched_on": "2026-10-11",
+     "sha256": "0cb0978f9b47559e9690b42d986ccee5046e82fc60e69a390255b71536bc7fb4",
+     "effective_date": null
+    },
+    {
+     "id": "application-98f57a51491fbcf6",
+     "kind": "hospital_web",
+     "url": "https://wvumedicine.org/wp-content/uploads/System_Pages/Forms/WVUH-FA-Policy-4282025.pdf",
+     "title": "Financial Assistance Policy",
+     "fetched_on": "2026-10-11",
+     "sha256": "98f57a51491fbcf6404cba24f023a3a2105e70dde76d13d32735ee9680c60587",
+     "effective_date": null
+    },
+    {
+     "id": "application-6e331d708715b543",
+     "kind": "hospital_web",
+     "url": "https://wvumedicine.org/wp-content/uploads/System_Pages/Forms/WVUH_FAP_Attachment-1_Financial-Application.2024-4282025.pdf",
+     "title": "Financial Assistance Application Form",
+     "fetched_on": "2026-10-11",
+     "sha256": "6e331d708715b5433617fb4b9c6e495a1ce4011aeaa50e930f80003a99faeb6d",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null
+  },
+  {
+   "hospital": {
+    "ccn": "360259",
+    "name": "BAY PARK COMMUNITY HOSPITAL",
+    "city": "OREGON",
+    "state": "OH",
+    "zip": "43616",
+    "phone": "419-690-7706",
+    "ownership": "Voluntary non-profit - Other",
+    "website_domain": "promedica.org",
+    "system": null
+   },
+   "version": 1,
    "status": "held",
    "eligibility": {
     "free_care_max_fpl": null,
@@ -1243,11 +1589,57 @@
     "state_programs": null
    },
    "apply": {
-    "form_url": null,
+    "form_url": {
+     "value": "https://www.promedica.org/_media/documents/patient-resources2/financial_assistance_application.pdf",
+     "layer": "documented",
+     "quote": "[Download Financial Assistance Application](https://www.promedica.org/_media/documents/patient-resources2/financial_assistance_application.pdf \"Opens in a new tab or window\")",
+     "source_id": "fap-c593dadf1ba3b509",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "form_version": null,
-    "documents_required": null,
+    "documents_required": {
+     "value": [
+      "proof_of_income",
+      "social_security_letter",
+      "tax_return",
+      "pay_stubs"
+     ],
+     "layer": "documented",
+     "quote": "Proof of your income should also be provided. Types of proof include wage verification (pay stubs 1 year prior to the date of service you are requesting assistance for), unemployment information, Social Security award letters, self-employment records, disability or worker\u2019s compensation, alimony, child support, pensions, income tax returns (if self-employed), etc.",
+     "source_id": "application-b0f6c057e89a3251",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "documents_reported": null,
-    "submit_methods": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "mail it to: ProMedica Financial Services MSC-J28968 300 N. Summit Street Toledo, OH 43604"
+      },
+      {
+       "kind": "email",
+       "detail": "email it to us at financial.assist@promedica.org"
+      },
+      {
+       "kind": "portal",
+       "detail": "apply for financial assistance online via MyChart"
+      },
+      {
+       "kind": "in_person",
+       "detail": "Get an application form at the registration desk at any ProMedica location."
+      }
+     ],
+     "layer": "documented",
+     "quote": "*   **In Person:** Get an application form at the registration desk at any ProMedica location. For inpatient services, a Patient Financial Advocate can help you complete and submit an application.\n\n*   **Request by Phone:** Contact Customer Service at [844-373-0871](tel: 844-373-0871 \"Click to Call\") (Monday through Thursday, 8 a.m. \u2013 7 p.m. and Friday, 8 a.m. \u2013 6 p.m.) to have an application mailed to you.\n\n*   **Online:**[Download a financial assistance application](https://www.promedica.org/_media/documents/patient-resources2/financial_assistance_application.pdf \"Opens in a new tab or window\") or [apply for financial assistance online](https://mychart.promedica.org/ \"Opens in a new tab or window\")\n\n[Download Financial Assistance Application](https://www.promedica.org/_media/documents/patient-resources2/financial_assistance_application.pdf \"Opens in a new tab or window\")\n\n[Descargar Solicitud (En Espa\u00f1ol)](https://www.promedica.org/_media/documents/patient-resources2/financial_assistance_application_spanish.pdf \"Opens in a new tab or window\")\n\n[Apply for financial assistance online via MyChart](https://mychart.promedica.org/ \"Opens in a new tab or window\")\n\n**Step 2**\n\n### Submit Your Application\n\n*   Submit online.\n*    Fill out your financial assistance application and email it to us at [financial.assist@promedica.org](mailto:financial.assist@promedica.org \"Opens email application\") or mail it to:    \n   ProMedica Financial Services\n   MSC-J28968\n 300 N. Summit Street\n Toledo, OH 43604",
+     "source_id": "fap-c593dadf1ba3b509",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "window_days_from_first_bill": null,
     "decision_days": null,
     "decision_days_reported": null
@@ -1257,15 +1649,98 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": null,
-    "hours": null,
-    "languages": null
+    "phone": {
+     "value": "844-373-0871",
+     "layer": "documented",
+     "quote": "Contact Customer Service at [844-373-0871](tel: 844-373-0871 \"Click to Call\") (Monday through Thursday, 8 a.m. \u2013 7 p.m. and Friday, 8 a.m. \u2013 6 p.m.) to have an application mailed to you.",
+     "source_id": "fap-c593dadf1ba3b509",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": {
+     "value": "Monday through Thursday, 8 a.m. \u2013 7 p.m. and Friday, 8 a.m. \u2013 6 p.m.",
+     "layer": "documented",
+     "quote": "Contact Customer Service at [844-373-0871](tel: 844-373-0871 \"Click to Call\") (Monday through Thursday, 8 a.m. \u2013 7 p.m. and Friday, 8 a.m. \u2013 6 p.m.) to have an application mailed to you.",
+     "source_id": "fap-c593dadf1ba3b509",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "languages": {
+     "value": [
+      "English",
+      "Spanish"
+     ],
+     "layer": "documented",
+     "quote": "Learn more about [eligibility requirements for financial assistance](https://www.promedica.org/_media/documents/patient-resources2/plain_language_financial_assistance.pdf \"Opens in a new tab or window\") ([En Espa\u00f1ol](https://www.promedica.org/_media/documents/patient-resources2/plain_language_financial_assistance_spanish.pdf \"Opens in a new tab or window\"))",
+     "source_id": "fap-c593dadf1ba3b509",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    }
    },
    "coverage": {
-    "facilities": null,
+    "facilities": {
+     "value": [
+      "ProMedica Bay Park Hospital"
+     ],
+     "layer": "documented",
+     "quote": "ProMedica Bay Park Hospital 2801 Bay Park Drive Oregon OH 43616",
+     "source_id": "summary-c2614e54a74d285c",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "provider_list_url": null
    },
-   "sources": [],
+   "sources": [
+    {
+     "id": "fap-c593dadf1ba3b509",
+     "kind": "hospital_web",
+     "url": "https://www.promedica.org/pay-my-bill/financial-assistance",
+     "title": "Apply for Financial Assistance | ProMedica",
+     "fetched_on": "2026-10-11",
+     "sha256": "c593dadf1ba3b5097f0ed76039789a6ee66c58e80fb7478b36d3c5aa211c365e",
+     "effective_date": null
+    },
+    {
+     "id": "fap-a47b54a1c615f372",
+     "kind": "hospital_web",
+     "url": "https://gateway-ext.promedica.org/financial-assistance-qualification/v0/app/",
+     "title": "See if You Qualify",
+     "fetched_on": "2026-10-11",
+     "sha256": "a47b54a1c615f372dbad57a0fca934140511b29f0b8a043c7bff803349de3722",
+     "effective_date": null
+    },
+    {
+     "id": "application-b0f6c057e89a3251",
+     "kind": "hospital_web",
+     "url": "https://www.promedica.org/_media/documents/patient-resources2/financial_assistance_application.pdf",
+     "title": "Download a financial assistance application",
+     "fetched_on": "2026-10-11",
+     "sha256": "b0f6c057e89a32519de9ed240fad2bf085032535ddf893f3a0cc799c3f17fa63",
+     "effective_date": null
+    },
+    {
+     "id": "application-345cbef640ab114b",
+     "kind": "hospital_web",
+     "url": "https://www.promedica.org/_media/documents/patient-resources2/financial_assistance_application_spanish.pdf",
+     "title": "Descargar Solicitud (En Espa\u00f1ol)",
+     "fetched_on": "2026-10-11",
+     "sha256": "345cbef640ab114b097c6c6244e74f7c2d80ad07e2a812937c6eb0d3dbd1617c",
+     "effective_date": null
+    },
+    {
+     "id": "summary-c2614e54a74d285c",
+     "kind": "hospital_web",
+     "url": "https://www.promedica.org/_media/documents/patient-resources2/plain_language_financial_assistance.pdf",
+     "title": "eligibility requirements for financial assistance",
+     "fetched_on": "2026-10-11",
+     "sha256": "c2614e54a74d285cec7fc959998f01c0c65a1a687642f7cc7a9d6cc4608df261",
+     "effective_date": null
+    }
+   ],
    "accuracy": null
   },
   {
@@ -2161,6 +2636,501 @@
      "title": "Financial Assistance",
      "fetched_on": "2026-10-10",
      "sha256": "b861df76a5ba18dd4afd2c3f861e2d2f91ebfb7630b1e6ca966ee555689e9a2c",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null
+  },
+  {
+   "hospital": {
+    "ccn": "360364",
+    "name": "CLEVELAND CLINIC AVON HOSPITAL",
+    "city": "AVON",
+    "state": "OH",
+    "zip": "44011",
+    "phone": "440-695-5000",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "clevelandclinic.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "published",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "250",
+     "layer": "documented",
+     "quote": "At or below 100% of poverty level 100% discount\n101% to 250%of poverty level 100% discount",
+     "source_id": "fap-b72c94bf17ed5d13",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": null,
+    "asset_test": null,
+    "residency": null,
+    "insured_patients_covered": {
+     "value": false,
+     "layer": "documented",
+     "quote": "Uninsured Qualified Patients \u2013 Those individuals with income at100% of the Federal Poverty Guidelines that do not qualify for any third-party payment program.\nUnder-Insured Qualified Patients \u2013 Those individuals with income above 100% of the Federal Poverty Guidelines that do qualify for a third-party payment program but whose medically necessary/emergency services are not covered by their insurer, or whose coverage is limited to such an extent that the patient\u2019s liability exceeds their ability to pay for such services.",
+     "source_id": "fap-b72c94bf17ed5d13",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "proof_of_income"
+     ],
+     "layer": "documented",
+     "quote": "A financial statement (maintained in Patient Accounts) will be sent to the legally responsible person to be completed and returned with proof of income and expenses.",
+     "source_id": "fap-b72c94bf17ed5d13",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": null,
+    "window_days_from_first_bill": null,
+    "decision_days": null,
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": null,
+    "hours": null,
+    "languages": null
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null
+   },
+   "sources": [
+    {
+     "id": "fap-b72c94bf17ed5d13",
+     "kind": "hospital_web",
+     "url": "https://my.clevelandclinic.org/-/scassets/files/org/patients-visitors/billing/financial-assistance/mercy-hospital/63-financial-assistance-program-policy-english.pdf?la=en",
+     "title": "CHARITY CARE PLAN - FINANCIAL ASSISTANCE POLICY",
+     "fetched_on": "2026-10-11",
+     "sha256": "b72c94bf17ed5d1374ddf08a16673022a9509cadc67ceedd512d84d1aebe4ebb",
+     "effective_date": null
+    },
+    {
+     "id": "billing-a13a416593d6cc8a",
+     "kind": "hospital_web",
+     "url": "https://my.clevelandclinic.org/patients/billing-insurance/financial-assistance",
+     "title": "Financial Assistance | Cleveland Clinic",
+     "fetched_on": "2026-10-11",
+     "sha256": "a13a416593d6cc8a8165fdcd98c5d856954be233b90dc82af91b218fcac2e036",
+     "effective_date": null
+    },
+    {
+     "id": "billing-a13a416593d6cc8a",
+     "kind": "hospital_web",
+     "url": "http://my.clevelandclinic.org/patients/billing-finance/financial-assistance",
+     "title": "Financial Assistance | Cleveland Clinic",
+     "fetched_on": "2026-10-11",
+     "sha256": "a13a416593d6cc8a8165fdcd98c5d856954be233b90dc82af91b218fcac2e036",
+     "effective_date": null
+    },
+    {
+     "id": "billing-fa5b7606b4c2d354",
+     "kind": "hospital_web",
+     "url": "https://my.clevelandclinic.org/locations/rehabilitation-hospital/guest-services/billing",
+     "title": "Billing & Financial Assistance | Cleveland Clinic Rehabilitation Hospitals",
+     "fetched_on": "2026-10-11",
+     "sha256": "fa5b7606b4c2d354ffe1d3675ac1ac37652627b40b8a04afa26b6455c89b2bcc",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null
+  },
+  {
+   "hospital": {
+    "ccn": "360121",
+    "name": "COMMUNITY HOSPITALS AND WELLNESS CENTERS",
+    "city": "BRYAN",
+    "state": "OH",
+    "zip": "43506",
+    "phone": "419-636-1131",
+    "ownership": "Voluntary non-profit - Other",
+    "website_domain": "parkview.com",
+    "system": null
+   },
+   "version": 1,
+   "status": "held",
+   "eligibility": {
+    "free_care_max_fpl": null,
+    "discount_tiers": null,
+    "asset_test": null,
+    "residency": null,
+    "insured_patients_covered": null,
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": null,
+    "documents_reported": null,
+    "submit_methods": null,
+    "window_days_from_first_bill": {
+     "value": 240,
+     "layer": "documented",
+     "quote": "Patients must apply for financial assistance within 240 days of the date marked on their first statement for services rendered.",
+     "source_id": "billing-b587b37b2b3635a5",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days": {
+     "value": 45,
+     "layer": "documented",
+     "quote": "It can take up to 45 days to review your completed Financial Assistance application once it\u2019s been received.",
+     "source_id": "billing-b587b37b2b3635a5",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": null,
+    "hours": null,
+    "languages": null
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null
+   },
+   "sources": [
+    {
+     "id": "billing-ec685e14d76f15ee",
+     "kind": "hospital_web",
+     "url": "https://www.parkview.com/patients-and-visitors/billing-and-insurance",
+     "title": "Billing & Insurance | Parkview Health",
+     "fetched_on": "2026-10-11",
+     "sha256": "ec685e14d76f15eebb592a24e36dd9a0306b7011654f3831a06ffa6d31ebc1da",
+     "effective_date": null
+    },
+    {
+     "id": "billing-b587b37b2b3635a5",
+     "kind": "hospital_web",
+     "url": "https://www.parkview.com/patients-and-visitors/billing-and-insurance/financial-assistance",
+     "title": "Learn more",
+     "fetched_on": "2026-10-11",
+     "sha256": "b587b37b2b3635a55cce35580ce2c3cc069df4d30e424a28849d028444f62e6c",
+     "effective_date": null
+    },
+    {
+     "id": "billing-f9fa2d1f0e3561bb",
+     "kind": "hospital_web",
+     "url": "https://www.parkview.com/legal/notice-of-privacy-practices",
+     "title": "Privacy Policy, Surprise Billing Notice, and Legal Disclosures",
+     "fetched_on": "2026-10-11",
+     "sha256": "f9fa2d1f0e3561bb9d9251c4d5f3d082d953d97e942a51304e9e0e369c9f29c2",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null
+  },
+  {
+   "hospital": {
+    "ccn": "361327",
+    "name": "COMMUNITY HOSPITALS AND WELLNESS CENTERS",
+    "city": "MONTPELIER",
+    "state": "OH",
+    "zip": "43543",
+    "phone": "419-636-1131",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "nursa.com",
+    "system": null
+   },
+   "version": 1,
+   "status": "held",
+   "eligibility": {
+    "free_care_max_fpl": null,
+    "discount_tiers": null,
+    "asset_test": null,
+    "residency": null,
+    "insured_patients_covered": null,
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": null,
+    "documents_reported": null,
+    "submit_methods": null,
+    "window_days_from_first_bill": null,
+    "decision_days": null,
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": null,
+    "hours": {
+     "value": "Monday: 9:00 am \u2013 5:00 pm    Tuesday: 9:00 am \u2013 5:00 pm    Wednesday: 9:00 am \u2013 5:00 pm    Thursday: 9:00 am \u2013 5:00 pm    Friday: 9:00 am \u2013 5:00 pm    Saturday: Closed    Sunday: Closed",
+     "layer": "documented",
+     "quote": "Monday: 9:00 am \u2013 5:00 pm    Tuesday: 9:00 am \u2013 5:00 pm    Wednesday: 9:00 am \u2013 5:00 pm    Thursday: 9:00 am \u2013 5:00 pm    Friday: 9:00 am \u2013 5:00 pm    Saturday: Closed    Sunday: Closed",
+     "source_id": "fap-2898d0a911e8ca50",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "languages": null
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null
+   },
+   "sources": [
+    {
+     "id": "fap-2898d0a911e8ca50",
+     "kind": "hospital_web",
+     "url": "https://nursa.com/facilities/lg-charity-home-health-care-services-inc",
+     "title": "Lg Charity Home Health Care Services Inc",
+     "fetched_on": "2026-10-11",
+     "sha256": "2898d0a911e8ca50d15a1a497f6fd5d0e35b565c3f059a8f461f490b9f250bf7",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null
+  },
+  {
+   "hospital": {
+    "ccn": "360109",
+    "name": "COSHOCTON REGIONAL MEDICAL CENTER",
+    "city": "COSHOCTON",
+    "state": "OH",
+    "zip": "43812",
+    "phone": "740-622-6411",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "coshoctonhospital.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "held",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "350",
+     "layer": "documented",
+     "quote": "(1) The patient (a) is an Ohio resident, (b) is not a Medicaid recipient; and (c) has a Family Income that does not exceed 350% of current Federal Poverty Level; or (2) The patient (a) does not have third party coverage from a health insurer, health care service plan, union trust plan, Medicare, or Medicaid as determined and documented by the hospital; (b) has an injury that is not a compensable injury for purposes of workers\u2019 compensation, automobile insurance, or other insurance as determined and documented by the hospital; and (c) has a Family Income that does not exceed 350% of the current Federal Poverty Level.",
+     "source_id": "fap-980c7e3200ac3f99",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": null,
+    "asset_test": null,
+    "residency": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Insured Patients A patient who has third party coverage or whose injury is a compensable injury for purposes of workers\u2019 compensation, automobile insurance, or other insurance as determined and documented by the hospital may qualify for the Financial Assistance Discount Payment Program if (i) he or she has a Family Income at or below 450% of the Federal Poverty Level and (ii) has out-of-pocket medical expenses that exceed the lesser of: (a) ten percent (10%) of the patient\u2019s Family Income in the prior twelve (12) months (whether incurred or paid in or out of any hospital) or (b) the annual out-of-pocket costs incurred by the individual at the hospital that exceed 10% of the patient\u2019s current Family Income.",
+     "source_id": "fap-980c7e3200ac3f99",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": {
+     "value": [
+      "State-funded prescription programs",
+      "Participation in Women, Infants and Children programs (WIC)",
+      "Food stamp eligibility",
+      "Subsidized school lunch program eligibility"
+     ],
+     "layer": "documented",
+     "quote": "(vi) The patient is eligible for programs including, but not limited to: \u2022 State-funded prescription programs; \u2022 Participation in Women, Infants and Children programs (WIC); \u2022 Food stamp eligibility; \u2022 Subsidized school lunch program eligibility; \u2022 Eligibility for other state or local assistance programs that are unfunded (e.g., Medicaid spend-down); \u2022 Low income/subsidized housing is provided as a valid address; and \u2022 Historical significance of non-payment that establishes a justification of future non-payment and lack of ability to pay.",
+     "source_id": "fap-980c7e3200ac3f99",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "proof_of_income",
+      "social_security_letter",
+      "tax_return",
+      "pay_stubs"
+     ],
+     "layer": "documented",
+     "quote": "Proof of income is requested at the time of application for the 3 and/or 12 months prior to the date of service. Proof of income can include the following: paystubs, unemployment benefits, SSI, SSD, DA, VA benefit letter, pension letter or a letter from employer verifying gross income. A child support letter may be provided if the child is the patient. An income tax return or W-2 may be considered only when the patient cannot produce another form of documentation. Gross income will be considered 12 months of income for both tax returns and W-2s. If zero income is reported on the application the patient will be requested to produce a statement explaining how living expenses are being met. If all requested documentation is not received the hospital may consider a completed and signed application as verification of income.",
+     "source_id": "fap-980c7e3200ac3f99",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "Mail completed application and supporting documents to: Coshocton Regional Medical Center, Attention: Patient Financial Services 1460 Orange Street, Coshocton, OH 43812"
+      },
+      {
+       "kind": "in_person",
+       "detail": "You may also submit the application and supporting documents in person at the same address."
+      }
+     ],
+     "layer": "documented",
+     "quote": "Patient Financial Services 1460 Orange Street, Coshocton, OH 43812 You may also submit the application and supporting documents in person at the same address.",
+     "source_id": "application-8995b0b1df37dabd",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": null,
+    "decision_days": {
+     "value": 30,
+     "layer": "documented",
+     "quote": "We will notify you of the final determination of eligibility and appeal rights, if applicable, within 30 days of receiving a complete application and supporting documents.",
+     "source_id": "application-8995b0b1df37dabd",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": {
+     "value": 150,
+     "layer": "documented",
+     "quote": "Neither the Hospital nor any collection agency utilized by the Hospital shall (i) use wage garnishments or liens on primary residences to collect unpaid medical bills or (ii) report adverse information to a consumer credit reporting agency or commence civil action against a patient for nonpayment at any time prior to 150 days after the initial billing.",
+     "source_id": "fap-980c7e3200ac3f99",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "740-623-4244",
+     "layer": "documented",
+     "quote": "For further information or a financial assistance application, please contact us: 740-623-4244",
+     "source_id": "summary-34c9ea978d879a12",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": null,
+    "languages": {
+     "value": [
+      "non-English languages spoken by a substantial number of the patients served by the Hospital"
+     ],
+     "layer": "documented",
+     "quote": "The Financial Assistance Policy documents are available in non-English languages spoken by a substantial number of the patients served by the Hospital.",
+     "source_id": "summary-34c9ea978d879a12",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    }
+   },
+   "coverage": {
+    "facilities": {
+     "value": [
+      "Coshocton Regional Medical Center"
+     ],
+     "layer": "documented",
+     "quote": "Coshocton Regional Medical Center 1460 Orange Street Coshocton, Ohio 43812",
+     "source_id": "summary-34c9ea978d879a12",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "provider_list_url": null
+   },
+   "sources": [
+    {
+     "id": "fap-980c7e3200ac3f99",
+     "kind": "hospital_web",
+     "url": "https://coshoctonhospital.org/wp-content/uploads/2025/12/PRIME-OH_NFP-CROH-Patient-FAP_10-2025-FINAL.pdf",
+     "title": "Patient Financial Assistance Policy Formulated: 01/20",
+     "fetched_on": "2026-10-11",
+     "sha256": "980c7e3200ac3f99ad32a23b427b711a525c040b57f7da62935dc00c197d90a8",
+     "effective_date": null
+    },
+    {
+     "id": "application-6b75229514f9777d",
+     "kind": "hospital_web",
+     "url": "https://coshoctonhospital.org/wp-content/uploads/2025/01/CROH_FAP-Application-Instructions-Form_ENGLISH.pdf",
+     "title": "[PDF] Financial Assistance Application Form Instructions",
+     "fetched_on": "2026-10-11",
+     "sha256": "6b75229514f9777dfd90c493f6d272ec6e506c196e5691988673e2c07821e973",
+     "effective_date": null
+    },
+    {
+     "id": "summary-34c9ea978d879a12",
+     "kind": "hospital_web",
+     "url": "https://coshoctonhospital.org/wp-content/uploads/2025/12/PRIME-OH_NFP-CROH-Patient-FAP-PLS_10-2025-FINAL.pdf",
+     "title": "Plain Language Summary of Financial Assistance",
+     "fetched_on": "2026-10-11",
+     "sha256": "34c9ea978d879a12a06dda7643c779cf6d563f2f45514d30e9ca29007957f1f8",
+     "effective_date": null
+    },
+    {
+     "id": "fap-6e9d71414699f1c4",
+     "kind": "hospital_web",
+     "url": "https://coshoctonhospital.org/for-patients-visitors/financial-assistance",
+     "title": "Financial Assistance Coshocton Regional Medical Center",
+     "fetched_on": "2026-10-11",
+     "sha256": "6e9d71414699f1c42b252395c7d576684da88a04c3e80ccb387b2df3bc87b269",
+     "effective_date": null
+    },
+    {
+     "id": "application-8995b0b1df37dabd",
+     "kind": "hospital_web",
+     "url": "https://coshoctonhospital.org/wp-content/uploads/2025/12/CROH_FAP-Application-Instructions-Form.pdf",
+     "title": "Financial Assistance Program \u2013 Application",
+     "fetched_on": "2026-10-11",
+     "sha256": "8995b0b1df37dabd2416b8f3b897dd12aed80031b0a935ac9d86364ff11e9bd9",
+     "effective_date": null
+    },
+    {
+     "id": "billing-eaac82624181947e",
+     "kind": "hospital_web",
+     "url": "https://www.coshoctonhospital.org/wp-content/uploads/2022/12/Notice-Re-Patient-Protections-Against-Surprise-Billing.Ohio-12-27-21_CROH.pdf",
+     "title": "read our notice",
+     "fetched_on": "2026-10-11",
+     "sha256": "eaac82624181947e05d5505ee2e7020554f586515b8ce7dcce607e7309c9dfd9",
      "effective_date": null
     }
    ],

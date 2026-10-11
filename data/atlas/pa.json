@@ -1,5 +1,5 @@
 {
- "generated_on": "2026-10-10",
+ "generated_on": "2026-10-11",
  "license": "CC BY 4.0",
  "state": "PA",
  "sheets": [
@@ -465,17 +465,17 @@
   },
   {
    "hospital": {
-    "ccn": "390139",
-    "name": "BRYN MAWR HOSPITAL",
-    "city": "BRYN MAWR",
+    "ccn": "391309",
+    "name": "BARNES-KASSON COUNTY HOSPITAL",
+    "city": "SUSQUEHANNA",
     "state": "PA",
-    "zip": "19010",
-    "phone": "610-526-3000",
+    "zip": "18847",
+    "phone": "570-853-3135",
     "ownership": "Voluntary non-profit - Private",
-    "website_domain": null,
+    "website_domain": "doxo.com",
     "system": null
    },
-   "version": 2,
+   "version": 1,
    "status": "held",
    "eligibility": {
     "free_care_max_fpl": null,
@@ -513,7 +513,244 @@
     "facilities": null,
     "provider_list_url": null
    },
-   "sources": [],
+   "sources": [
+    {
+     "id": "billing-d1a8b8dce4f552b1",
+     "kind": "hospital_web",
+     "url": "https://www.bbb.org/alaskaoregonwesternwashington/business-reviews/billing-service/doxo-inc-in-seattle-wa-22661311",
+     "title": "Billing and Collections Policy",
+     "fetched_on": "2026-10-11",
+     "sha256": "d1a8b8dce4f552b13741d397e3103d966a7f224c541c4716ba2f8ab2ba10ced3",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null
+  },
+  {
+   "hospital": {
+    "ccn": "390139",
+    "name": "BRYN MAWR HOSPITAL",
+    "city": "BRYN MAWR",
+    "state": "PA",
+    "zip": "19010",
+    "phone": "610-526-3000",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "mainlinehealth.org",
+    "system": null
+   },
+   "version": 3,
+   "status": "published",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "300",
+     "layer": "documented",
+     "quote": "Full Financial Assistance: Full Financial Assistance means the ability to receive \u201cfree care\u201d. Patients who are uninsured for the relevant, medically necessary service, who are ineligible for governmental or other insurance coverage, and who have family incomes not in excess of 300% of the Federal Poverty Level will be eligible to receive \u201cfree care\u201d.",
+     "source_id": "fap-cdf0afdb1a1ff900",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "300",
+       "max_fpl_inclusive": "500",
+       "discount_percent": 86
+      }
+     ],
+     "layer": "documented",
+     "quote": "Partial Financial Assistance: Partial Financial Assistance is provided to patients who have family incomes in excess of 300%, but not exceeding 500%, of the Federal Poverty Level. These patients will be eligible to receive Financial Assistance in the form of an 86% discount off gross charges for an uninsured patient, or an 86% discount off of the remaining balance after insurance for an insured patient.",
+     "source_id": "fap-cdf0afdb1a1ff900",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "asset_test": null,
+    "residency": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "These patients will be eligible to receive Financial Assistance in the form of an 86% discount off gross charges for an uninsured patient, or an 86% discount off of the remaining balance after insurance for an insured patient.",
+     "source_id": "fap-cdf0afdb1a1ff900",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": {
+     "value": [
+      "Enrolled in a state-funded prescription programs",
+      "Being homeless or receiving care from a homeless clinic",
+      "Being eligible for food stamps",
+      "Receiving subsidized school lunches"
+     ],
+     "layer": "documented",
+     "quote": "Presumptive eligibility may be determined on the basis of individual life circumstances that may include: 1. Enrolled in a state-funded prescription programs; 2. Being homeless or receiving care from a homeless clinic; 3. Participating in the Pennsylvania Department of Welfare\u2019s Women, Infants and Children programs (WIC); 4. Being eligible for food stamps; 5. Receiving subsidized school lunches; 6. Being eligible for other state or local assistance programs that are unfunded (e.g., Medicaid spend-down); 7. Residing in low income/subsidized housing, providing the address supplied by the patient is a valid address; and 8. Patient is deceased with no known estate or no funds remaining in estate.",
+     "source_id": "fap-cdf0afdb1a1ff900",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "proof_of_income",
+      "social_security_letter",
+      "tax_return",
+      "pay_stubs",
+      "bank_statements",
+      "medicaid_denial"
+     ],
+     "layer": "documented",
+     "quote": "Documentation that may be requested: \uf0b7 Medical Assistance eligibility/denial notice from the State of Pennsylvania and/or County Services (Form PA 162); \uf0b7 Current year IRS Form 1040 Tax Return and appropriate schedules, if applicable; \uf0b7 Proof of income and Adjusted Gross Income such as: \u2022 Pay stubs from the past six (6) pay periods \u2022 W-2 withholding statement \u2022 Current year Social Security Benefit Verification letter \u2022 Social Security checks, receipts or deposits \u2022 Bank statements from the last twelve (12) months - checking and savings \u2022 Any other documentation or notarized letters that may serve as proof of eligibility",
+     "source_id": "fap-cdf0afdb1a1ff900",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "Main Line Health - 3803 West Chester Pike, Suite 160, Newtown Square, PA 19073"
+      },
+      {
+       "kind": "fax",
+       "detail": "484-227-9005"
+      },
+      {
+       "kind": "in_person",
+       "detail": "dropped off directly to one of our Financial Counseling or Cashiers Offices located at any one of our hospitals"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Applications may also be Faxed to 484-227-9005 OR dropped off directly to one of our Financial Counseling or Cashiers Offices located at any one of our hospitals. If you have questions, please contact the MLH Customer Service Team at: 484-337-1970. If directed to a Financial Assistance representative, please allow up to three (3) Business Days for a return call.",
+     "source_id": "fap-cdf0afdb1a1ff900",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": {
+     "value": 240,
+     "layer": "documented",
+     "quote": "Approvals are valid for one (1) year and may only cover services within the previous two hundred forty (240) days from first statement date.",
+     "source_id": "fap-cdf0afdb1a1ff900",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days": {
+     "value": 30,
+     "layer": "documented",
+     "quote": "Individuals will be notified of the determination within thirty (30) days.",
+     "source_id": "fap-cdf0afdb1a1ff900",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "484-337-1970",
+     "layer": "documented",
+     "quote": "Questions regarding this Policy: Individuals may contact the MLH Customer Service Team at 484-337-1970 or request to speak to a representative in the MLH Financial Counseling office at each respective MLH Hospital.",
+     "source_id": "fap-cdf0afdb1a1ff900",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": null,
+    "languages": null
+   },
+   "coverage": {
+    "facilities": {
+     "value": [
+      "Lankenau Medical Center",
+      "Bryn Mawr Hospital",
+      "Paoli Hospital",
+      "Riddle Hospital",
+      "Bryn Mawr Rehabilitation Hospital",
+      "Mirmont Treatment Center",
+      "Paoli Surgery Center"
+     ],
+     "layer": "documented",
+     "quote": "Participating Hospitals: Lankenau Medical Center Bryn Mawr Hospital Paoli Hospital Riddle Hospital Bryn Mawr Rehabilitation Hospital Mirmont Treatment Center Paoli Surgery Center",
+     "source_id": "fap-cdf0afdb1a1ff900",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "provider_list_url": null
+   },
+   "sources": [
+    {
+     "id": "fap-cdf0afdb1a1ff900",
+     "kind": "hospital_web",
+     "url": "https://www.mainlinehealth.org/-/media/files/pdf/basic-content/about/policies/financial-assistance/mlh-financial-assistance-policy-english.pdf",
+     "title": "Patient Financial Assistance Policy",
+     "fetched_on": "2026-10-11",
+     "sha256": "cdf0afdb1a1ff90069b6addf2ebc20a2e8be8e516601cccb8a5e1f5cc48f93b3",
+     "effective_date": null
+    },
+    {
+     "id": "summary-12ea49a919325f6d",
+     "kind": "hospital_web",
+     "url": "https://www.mainlinehealth.org/patient-services/patient-billing/financial-assistance/program-summary",
+     "title": "Summary of Financial Assistance Policy | Patient Billing | Patient Services | Main Line Health",
+     "fetched_on": "2026-10-11",
+     "sha256": "12ea49a919325f6d69e80da543ef948105101e3ca05394e2f7621f54943003f1",
+     "effective_date": null
+    },
+    {
+     "id": "billing-6abcccf595109076",
+     "kind": "hospital_web",
+     "url": "https://www.mainlinehealth.org/patient-services/patient-billing/financial-assistance",
+     "title": "Financial Assistance | Patient Billing | Patient Services | Main Line Health",
+     "fetched_on": "2026-10-11",
+     "sha256": "6abcccf5951090763538be20127be5a380ca256db34431467a9be07660b546ac",
+     "effective_date": null
+    },
+    {
+     "id": "billing-c2f452ee60b92ccf",
+     "kind": "hospital_web",
+     "url": "https://www.mainlinehealth.org/-/media/files/pdf/basic-content/about/policies/billing-and-collection-policy.pdf",
+     "title": "Billing and Collections Policy (PDF)",
+     "fetched_on": "2026-10-11",
+     "sha256": "c2f452ee60b92ccf2eae3610fa764e53e885d1a6d1094d7fb02c7e6fc6ee7502",
+     "effective_date": null
+    },
+    {
+     "id": "fap-c48a59ff3d1077ee",
+     "kind": "hospital_web",
+     "url": "https://my.mainlinehealth.org/MyChart/Authentication/Login?postloginurl=FinancialAssistance",
+     "title": "Sign in to MyChart",
+     "fetched_on": "2026-10-11",
+     "sha256": "c48a59ff3d1077eeccce284c6d06cec8381846bcad41680fd9ab3a3299b3ae0f",
+     "effective_date": null
+    },
+    {
+     "id": "fap-fcb4b1c73f5850b1",
+     "kind": "hospital_web",
+     "url": "https://www.mainlinehealth.org/-/media/files/pdf/basic-content/about/policies/financial-assistance/mlh-financial-assistance-policy-spanish.pdf",
+     "title": "Pol\u00edtica de Asistencia Financiera \u2014 Espa\u00f1ol (PDF)",
+     "fetched_on": "2026-10-11",
+     "sha256": "fcb4b1c73f5850b1f42e18ce4f23730091a2d9cdfb5138aeeeb2191d7a1a4e05",
+     "effective_date": null
+    }
+   ],
    "accuracy": null
   },
   {
@@ -945,6 +1182,371 @@
      "title": "Cac b\u1ea3n d\u1ecbch thu\u1eadt tai li\u1ec7u v\u1ec1 H\u1ed7 tr\u1ee3 Tai chinh co s\u1eb5n b\u1eb1ng Ti\u1ebfng Vi\u1ec7t.",
      "fetched_on": "2026-10-10",
      "sha256": "a0c8759943efde0f5e7d2a4cff484544a9faddc092084a31bd157c2dd4cf0bad",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null
+  },
+  {
+   "hospital": {
+    "ccn": "390062",
+    "name": "CONEMAUGH NASON MEDICAL CENTER",
+    "city": "ROARING SPRING",
+    "state": "PA",
+    "zip": "16673",
+    "phone": "814-224-2141",
+    "ownership": "Voluntary non-profit - Other",
+    "website_domain": "conemaugh.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "published",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "Uninsured patients whose family income is equal to or less than 200% of the Federal Poverty Guidelines are generally eligible for free emergency and medically necessary care.",
+     "source_id": "application-92e1515c566ef4e5",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "200",
+       "max_fpl_inclusive": "225",
+       "discount_percent": 90
+      },
+      {
+       "min_fpl_exclusive": "225",
+       "max_fpl_inclusive": "250",
+       "discount_percent": 80
+      },
+      {
+       "min_fpl_exclusive": "250",
+       "max_fpl_inclusive": "275",
+       "discount_percent": 70
+      },
+      {
+       "min_fpl_exclusive": "275",
+       "max_fpl_inclusive": "300",
+       "discount_percent": 60
+      }
+     ],
+     "layer": "documented",
+     "quote": "Less than or equal to 200%  201% - 225%  226% - 250%  251% - 275%  276% - 300% \n\nFamily Income as a Percent of 2024 Federal Poverty Guidelines \n\nDiscount Applied  100% Discount \n\n[90%] \n\nDiscount \n\n[80%] \n\nDiscount \n\n[70%] \n\nDiscount \n\n[60%] \n\nDiscount",
+     "source_id": "fap-890c5d67abe9052e",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "asset_test": null,
+    "residency": null,
+    "insured_patients_covered": null,
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "proof_of_income",
+      "social_security_letter",
+      "tax_return",
+      "pay_stubs",
+      "bank_statements"
+     ],
+     "layer": "documented",
+     "quote": "Attach copies of the documents listed below for both the patient/guarantor and spouse (please submit only copies; no original documents): \n\n\uf0b7 Most recent tax return, including W-2 forms and supporting schedules \n\n\uf0b7 Last 2 pay stubs or a letter from an employer verifying income (include employer\u2019s phone number and address) \n\n\uf0b7 Bank statements for the past 2 months \n\n\uf0b7 Written verification of any other income received (e.g. child support, social security, alimony) OR \n\n\uf0b7 If you have no income, a letter or a comment below from you stating your source for paying living expenses",
+     "source_id": "application-6ba0a7790bee32d2",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "Submit your application to:\n\nDLP CONEMAUGH MEMORIAL MEDICAL CENTER\n\nPatient Financial Services 1086 Franklin Street Johnstown PA 15905 Attention: Billing Office\n\nDLP CONEMAUGH MINERS HOSPITAL\n\nP o Box 689 290 Haida Avenue Hastings PA 16646 Attention: Billing Office\n\nDLP CONEMAUGH MEYERSDALE MEDICAL CENTER\n\nPatient Financial Services 200 Hospital Drive Meyersdale PA 15552 Attention: Billing Office\n\nDLP CONEMAUGH PHYSICIAN PRACTICES\n\n1086 Franklin Street Johnstown PA 15905 Attention: Billing Office\n\nNASON HOSPITAL\n\n105 Nason Drive Roaring Spring, PA 16673 Attention: Billing Office"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Submit your application to: \n\nDLP CONEMAUGH MEMORIAL MEDICAL CENTER \n\nPatient Financial Services 1086 Franklin Street Johnstown PA 15905 Attention: Billing Office \n\nDLP CONEMAUGH MINERS HOSPITAL \n\nP o Box 689 290 Haida Avenue Hastings PA 16646 Attention: Billing Office \n\nDLP CONEMAUGH MEYERSDALE MEDICAL CENTER \n\nPatient Financial Services 200 Hospital Drive Meyersdale PA 15552 Attention: Billing Office \n\nDLP CONEMAUGH PHYSICIAN PRACTICES \n\n1086 Franklin Street Johnstown PA 15905 Attention: Billing Office \n\nNASON HOSPITAL \n\n105 Nason Drive Roaring Spring, PA 16673 Attention: Billing Office",
+     "source_id": "application-6ba0a7790bee32d2",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": null,
+    "decision_days": null,
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": null,
+    "hours": null,
+    "languages": null
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null
+   },
+   "sources": [
+    {
+     "id": "fap-7f5d63d3e03cb83e",
+     "kind": "hospital_web",
+     "url": "https://www.conemaugh.org/charity-care",
+     "title": "Charity Care | Financial Assistance",
+     "fetched_on": "2026-10-11",
+     "sha256": "7f5d63d3e03cb83ee5965b90a3a3d6ee25bc85f83d89cf82dfea4c1a7632bc61",
+     "effective_date": null
+    },
+    {
+     "id": "billing-286259b83c90e09c",
+     "kind": "hospital_web",
+     "url": "https://www.conemaugh.org/docs/ahconemaughhealthsystemlibraries/default-document-library/chs-lpnt-501r-billing-collection-policy-032624_2.pdf",
+     "title": "BILLING AND COLLECTIONS POLICY",
+     "fetched_on": "2026-10-11",
+     "sha256": "286259b83c90e09c25f45e054189d2d5bd7537d457a4f34a941027b32b1c2bad",
+     "effective_date": null
+    },
+    {
+     "id": "billing-d3f86e6ce21d4f7d",
+     "kind": "hospital_web",
+     "url": "https://conemaugh.org/financial-services-billing",
+     "title": "Financial Services & Billing | Conemaugh Health System",
+     "fetched_on": "2026-10-11",
+     "sha256": "d3f86e6ce21d4f7d11189a90f98488e0a974683f0f634ff09d519116eec80a6d",
+     "effective_date": null
+    },
+    {
+     "id": "billing-d3f86e6ce21d4f7d",
+     "kind": "hospital_web",
+     "url": "https://www.conemaugh.org/financial-services-billing",
+     "title": "Financial Services & Billing | Conemaugh Health System",
+     "fetched_on": "2026-10-11",
+     "sha256": "d3f86e6ce21d4f7d11189a90f98488e0a974683f0f634ff09d519116eec80a6d",
+     "effective_date": null
+    },
+    {
+     "id": "fap-890c5d67abe9052e",
+     "kind": "hospital_web",
+     "url": "https://www.conemaugh.org/docs/ahconemaughhealthsystemlibraries/default-document-library/lpnt-501r-billing-collection-policy-website.pdf",
+     "title": "Financial Assistance Policy",
+     "fetched_on": "2026-10-11",
+     "sha256": "890c5d67abe9052ee0abe52c14482d74a2a2ea5a61379cb07ee7d675affae14d",
+     "effective_date": null
+    },
+    {
+     "id": "application-92e1515c566ef4e5",
+     "kind": "hospital_web",
+     "url": "https://www.conemaugh.org/docs/ahconemaughhealthsystemlibraries/default-document-library/lpnt-pls-form-conemaugh-health-system-03-26-24_1.pdf",
+     "title": "Financial Assistance Policy Plain Language Summary",
+     "fetched_on": "2026-10-11",
+     "sha256": "92e1515c566ef4e54de9650e7e2995331e5ba3649ec4617574c19e1f098aa2d0",
+     "effective_date": null
+    },
+    {
+     "id": "application-6ba0a7790bee32d2",
+     "kind": "hospital_web",
+     "url": "https://www.conemaugh.org/docs/ahconemaughhealthsystemlibraries/default-document-library/lpnt-faa-form-conemaugh-health-system-03-26-24_1.pdf",
+     "title": "Financial Assistance Downloadable Application",
+     "fetched_on": "2026-10-11",
+     "sha256": "6ba0a7790bee32d2173f3284331ac16a88cf0705a6c926eaea1fb17b92008a42",
+     "effective_date": null
+    },
+    {
+     "id": "billing-cd9e380478b55e9f",
+     "kind": "hospital_web",
+     "url": "https://www.conemaugh.org/docs/ahconemaughhealthsystemlibraries/default-document-library/guide-to-healthcare-billing-2012.pdf",
+     "title": "Guide to Healthcare Billing",
+     "fetched_on": "2026-10-11",
+     "sha256": "cd9e380478b55e9fbe71f8ab62e96dc2645d0e3d59ee2263ebac9ebefe17afde",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null
+  },
+  {
+   "hospital": {
+    "ccn": "390180",
+    "name": "CROZER CHESTER MEDICAL CENTER",
+    "city": "UPLAND",
+    "state": "PA",
+    "zip": "19013",
+    "phone": "610-447-2000",
+    "ownership": "Voluntary non-profit - Other",
+    "website_domain": "crozerhealth.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "published",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "Eligibility for full Financial Assistance shall be granted for patients who fall between 0 - 200% of the Federal Poverty Income Guidelines as published annually in the Federal Register.",
+     "source_id": "fap-03e0680cb18d9548",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": null,
+    "asset_test": null,
+    "residency": null,
+    "insured_patients_covered": null,
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": {
+     "value": [
+      "Homeless",
+      "PA or other state Medicaid Assistance Programs",
+      "Deceased patients with no known estate",
+      "Inmates"
+     ],
+     "layer": "documented",
+     "quote": "Presumptive eligibility may be determined on the basis of individual life circumstances that may include:\n1) Homeless - A homeless person is an individual who has no home or place of residence and depends on charity or public assistance;\n2) Eligibility for PA or other state Medicaid Assistance Programs (spend down or patient pay amounts);\n3) Patient is deceased with no known estate; and\n4) Inmates - Patients who are incarcerated may be considered eligible in the event the State or County has made a determination that the State or County is not responsible for charges incurred prior to arraignment.",
+     "source_id": "fap-03e0680cb18d9548",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "photo_id",
+      "proof_of_income",
+      "social_security_letter",
+      "tax_return",
+      "pay_stubs",
+      "medicaid_denial"
+     ],
+     "layer": "documented",
+     "quote": "1. If you have income: \uf0f0 Attach a copy of your most recent Federal Income Tax Return (1040, 1040A, 1040EZ If you filed taxes you must supply a copy of the return)\n2. If you did not file a federal tax return, you must: \uf0f0 State in writing why you did no file a Federal Income Tax Return on a separate sheet of paper \uf0f0 Send us a copy of the most recent Federal Income Tax Return of anyone who claimed you as a dependent\n3. Attach additional proof of household income, if applicable: \uf0f0 1099 forms or award letters: Social Security, Pension/Retirement, Disability, etc\u2026. \uf0f0 Unemployment Notice of Final Determination or Workers Compensation \uf0f0 Pay stubs for the last 30 days \uf0f0 If you are self-employed, you must include a schedule C and/or statement of income and expenses\n4. If you have no income: \uf0f0 A notarized letter of no income will be required (A CKHS Notary can notarize a letter stating the patient or financially responsible individual has no income)\n5. Letter of Denial for Medical Assistance: \uf0f0 Based on initial financial screening, you may need to apply for Medical Assistance and provide a copy of your Letter of Denial before CKHS can approve your application\n6. Completed and signed Financial Assistance Program application: \uf0f0 Make sure to complete and include all information that applies to you \uf0f0 Provide a photo ID ie. driver\u2019s license, passport, state ID \uf0f0 Provide additional documents Requested _________________________ \uf0f0 __________________________________________________________",
+     "source_id": "fap-03e0680cb18d9548",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": null,
+    "window_days_from_first_bill": {
+     "value": 240,
+     "layer": "documented",
+     "quote": "Application Period - The Application Period provides an individual 240 days from the date the individual is provided with the first post-discharge billing statements to complete the Financial Assistance Application ( FAP Application)",
+     "source_id": "fap-03e0680cb18d9548",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days": {
+     "value": 10,
+     "layer": "documented",
+     "quote": "Approval/rejection of an application will be made within 10 working days of receiving a completed application with all requested information and will be notified via mail.",
+     "source_id": "fap-03e0680cb18d9548",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": {
+     "value": 120,
+     "layer": "documented",
+     "quote": "Notification Period- CKHS must notify the individual about the Financial Assistance Policy (FAP) before initiating any extraordinary collection actions (\u201cECAs\u201d) to obtain payment and refrain from initiating any ECA for at least 120 days from the date the patient is provided the first post-discharge billing statement for care.",
+     "source_id": "fap-03e0680cb18d9548",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "610-447-2336",
+     "layer": "documented",
+     "quote": "Call [610-447-2336](tel:6104472336) for assistance.",
+     "source_id": "billing-cf75f0c0f66fe29f",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": {
+     "value": "8 a.m. - 4:30 p.m.",
+     "layer": "documented",
+     "quote": "* **Crozer-Chester Medical Center**Phone: [(610) 447-2336](tel:6104472336) \u00a0|\u00a0 Hours: 8 a.m. - 4:30 p.m.",
+     "source_id": "fap-b78f1b318e15ff54",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "languages": null
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null
+   },
+   "sources": [
+    {
+     "id": "fap-03e0680cb18d9548",
+     "kind": "hospital_web",
+     "url": "https://www.crozerhealth.org/globalassets/2017financial-assistance-final-edit-ag-10-16-2017-2.pdf",
+     "title": "[PDF] ADMINISTRATIVE POLICY & PROCEDURE ... - Crozer Health",
+     "fetched_on": "2026-10-11",
+     "sha256": "03e0680cb18d9548cde6b1f4235696916a4c35f33cd67a20cd31171dd33d2b92",
+     "effective_date": null
+    },
+    {
+     "id": "billing-cf75f0c0f66fe29f",
+     "kind": "hospital_web",
+     "url": "https://crozerhealth.org/financial-resources",
+     "title": "Billing & Payment",
+     "fetched_on": "2026-10-11",
+     "sha256": "cf75f0c0f66fe29f61435844a47556c93acd7a14fa0dafef6a54fde28d8a25c3",
+     "effective_date": null
+    },
+    {
+     "id": "fap-189bbc5366ca10d5",
+     "kind": "hospital_web",
+     "url": "https://www.crozerhealth.org/globalassets/crozerkeystone.org/patients--visitors/documents/financial-assistance-final-with-fpl-fy17.pdf",
+     "title": "administrative policy & procedure manual",
+     "fetched_on": "2026-10-11",
+     "sha256": "189bbc5366ca10d51f3b6c106199181a982270272b590fada46523132c763e2b",
+     "effective_date": null
+    },
+    {
+     "id": "fap-b78f1b318e15ff54",
+     "kind": "hospital_web",
+     "url": "https://crozerhealth.org/financial-resources/financial-assistance",
+     "title": "Financial Assistance",
+     "fetched_on": "2026-10-11",
+     "sha256": "b78f1b318e15ff54ce0bbbe918fad014834603a48668237fb9f9f5998ba40ade",
+     "effective_date": null
+    },
+    {
+     "id": "fap-b4d361eb97e50c6e",
+     "kind": "hospital_web",
+     "url": "https://www.crozerhealth.org/financial-resources/financial-assistance/",
+     "title": "Learn More",
+     "fetched_on": "2026-10-11",
+     "sha256": "b4d361eb97e50c6ebb9c37b8c2251b6b60ec6ed9969d18bd8090177f6692696c",
      "effective_date": null
     }
    ],

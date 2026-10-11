@@ -220,3 +220,25 @@ def test_a_database_that_stays_locked_is_a_kind_503_page_not_a_500(monkeypatch):
     assert response.status_code == 503
     assert "nothing was lost" in response.text.lower() and "try again" in response.text.lower()
     assert "Traceback" not in response.text and "UPDATE cases" not in response.text
+
+
+def test_the_photo_button_opens_the_camera_and_the_page_says_it_is_reading():
+    # 2026-10-11, the first test by the user: the page showed a bare file field and a submit
+    # button labelled "Take a photo of the bill"; after choosing a photo nothing seemed to
+    # happen while the server read it.
+    client, links = seeded_client()
+    start = client.get(f"/s/{links.senior_token}").text
+    assert (
+        '<label for="photo" class="btn primary" data-photo-button>Take a photo of the bill</label>'
+    ) in start
+    assert '<input id="photo" class="visually-hidden" type="file" name="photo"' in start
+    assert 'capture="environment"' in start
+    assert "data-photo-wait hidden>Reading your bill." in start
+    assert '<script src="/static/photo.js"></script>' in start
+    script = client.get("/static/photo.js").text
+    assert "form[data-photo-form]" in script and "form.submit()" in script
+    # No submit button that looks like the camera button, and no bare inline handler.
+    assert '<button type="submit" class="btn primary">Take a photo' not in start
+    assert "onchange=" not in start
+    css = client.get("/static/waive.css").text
+    assert "[hidden] { display: none !important; }" in css

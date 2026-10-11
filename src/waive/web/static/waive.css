@@ -29,6 +29,11 @@ input, select, textarea { font: inherit; width: 100%; min-height: 56px; padding:
 .row:last-child { border-bottom: 0; }
 a { color: var(--accent); }
 .visually-hidden { position: absolute; left: -9999px; }
+/* The hidden attribute must win over .btn and .card, which set display themselves. */
+[hidden] { display: none !important; }
+/* A label styled as the big button: it opens the camera for the file input before it. */
+label.btn { cursor: pointer; box-sizing: border-box; }
+.visually-hidden:focus + label.btn { outline: 3px solid var(--accent); outline-offset: 3px; }
 /* Metrics page (task 7.7) */
 .coverage { width: 100%; border-collapse: collapse; font-size: 18px; margin-bottom: 24px; }
 .coverage th, .coverage td { text-align: left; padding: 10px 6px; border-bottom: 1px solid var(--line); }

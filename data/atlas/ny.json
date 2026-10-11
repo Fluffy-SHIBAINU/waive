@@ -1,5 +1,5 @@
 {
- "generated_on": "2026-10-10",
+ "generated_on": "2026-10-11",
  "license": "CC BY 4.0",
  "state": "NY",
  "sheets": [
@@ -1907,6 +1907,176 @@
   },
   {
    "hospital": {
+    "ccn": "330229",
+    "name": "BROOKS-TLC HOSPITAL SYSTEM, INC",
+    "city": "DUNKIRK",
+    "state": "NY",
+    "zip": "14048",
+    "phone": "716-366-1111",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "brookshospital.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "published",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "Household income less than or equal to 200% of the FPL is awarded 100% discount.",
+     "source_id": "fap-fb0b48f6f068c204",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": null,
+    "asset_test": null,
+    "residency": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Underinsured: patients whose paid medical expenses have exceeded 10% of their income in the last 12 months.",
+     "source_id": "fap-fb0b48f6f068c204",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "proof_of_income",
+      "tax_return",
+      "pay_stubs",
+      "medicaid_denial"
+     ],
+     "layer": "documented",
+     "quote": "Brooks-TLC Hospital System, Inc. will require a completed Financial Assistance application and proof of income such as a tax return or pay stubs. We may also request a Medicaid denial letter but not required.",
+     "source_id": "summary-2dccf3d993a2202f",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "Send a completed form to Brooks-TLC Hospital System, Inc."
+      },
+      {
+       "kind": "in_person",
+       "detail": "leave it with the cashier located in the main registration area."
+      }
+     ],
+     "layer": "documented",
+     "quote": "Send a completed form to Brooks-TLC Hospital System, Inc. or leave it with the cashier located in the main registration area.",
+     "source_id": "summary-2dccf3d993a2202f",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": null,
+    "decision_days": {
+     "value": 30,
+     "layer": "documented",
+     "quote": "Decisions regarding financial assistance are rendered within 30 days from the receipt date of the completed application.",
+     "source_id": "fap-fb0b48f6f068c204",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "716-363-7221",
+     "layer": "documented",
+     "quote": "Please contact our Facilitated Enroller at 716-363-7221 for free confidential assistance.",
+     "source_id": "summary-2dccf3d993a2202f",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": null,
+    "languages": null
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null
+   },
+   "sources": [
+    {
+     "id": "fap-328b555c65576987",
+     "kind": "hospital_web",
+     "url": "https://brookshospital.org/patient-information/patient-financial-services/financial-information",
+     "title": "Financial Assistance Program - Brooks-TLC Hospital System, Inc.",
+     "fetched_on": "2026-10-11",
+     "sha256": "328b555c65576987f9d3e08fa8caef0b41022588315a37fc4db4f7831599732f",
+     "effective_date": null
+    },
+    {
+     "id": "summary-2dccf3d993a2202f",
+     "kind": "hospital_web",
+     "url": "https://brookshospital.org/wp-content/uploads/2025/10/1121463-K-BMH-Financial-Assistance-Summary-2024.pdf",
+     "title": "[PDF] 1121463 K BMH Financial Assistance Summary",
+     "fetched_on": "2026-10-11",
+     "sha256": "2dccf3d993a2202fbc8ffb6af24925dfcb2c33a13a799d5e8c1ba24184f01faf",
+     "effective_date": null
+    },
+    {
+     "id": "fap-38fd11db77be936b",
+     "kind": "hospital_web",
+     "url": "https://brookshospital.org/wp-content/uploads/2026/08/TT-2026-FAP-Income-Guidelines-BTLC.pdf",
+     "title": "Financial Assistance Program Income Guidelines",
+     "fetched_on": "2026-10-11",
+     "sha256": "38fd11db77be936b12fc156c5674915dfadb9bddd426e74835d2c9ce0b02fa4b",
+     "effective_date": null
+    },
+    {
+     "id": "fap-fb0b48f6f068c204",
+     "kind": "hospital_web",
+     "url": "https://brookshospital.org/wp-content/uploads/2026/08/BMH-LTC-Financial-Assistance-Policy_.pdf",
+     "title": "Financial Assistance Policy (English)",
+     "fetched_on": "2026-10-11",
+     "sha256": "fb0b48f6f068c2042200756e325cfd3661a6add416daf2672492fcc2ee632a0f",
+     "effective_date": null
+    },
+    {
+     "id": "fap-a56f54e08ada3411",
+     "kind": "hospital_web",
+     "url": "https://brookshospital.org/wp-content/uploads/2026/08/BMH-LTC-Financial-Assistance-Policy_Final-Copy-Spanish.pdf",
+     "title": "Financial Assistance Policy (Spanish)",
+     "fetched_on": "2026-10-11",
+     "sha256": "a56f54e08ada3411fe3e1cf2b927d8761a4a70154ce0a18d485ddc4dbe4936cb",
+     "effective_date": null
+    },
+    {
+     "id": "fap-01eca1acd3173a1e",
+     "kind": "hospital_web",
+     "url": "https://brookshospital.org/wp-content/uploads/2026/08/BMH-LTC-Financial-Assistance-Policy-Arabic.pdf",
+     "title": "Financial Assistance Policy (Arabic)",
+     "fetched_on": "2026-10-11",
+     "sha256": "01eca1acd3173a1e93c057c33faecc54eabf237af826db86abdb27bc5017e642",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null
+  },
+  {
+   "hospital": {
     "ccn": "330197",
     "name": "CANTON-POTSDAM HOSPITAL",
     "city": "POTSDAM",
@@ -2868,6 +3038,1302 @@
     "provider_list_url": null
    },
    "sources": [],
+   "accuracy": null
+  },
+  {
+   "hospital": {
+    "ccn": "330265",
+    "name": "CLIFTON SPRINGS HOSPITAL AND CLINIC",
+    "city": "CLIFTON SPRINGS",
+    "state": "NY",
+    "zip": "14432",
+    "phone": "315-462-9561",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "rochesterregional.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "held",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "A patient whose household income, as determined by the application income worksheet, is equal to or less than 200% of the most recent Federal Poverty Guidelines qualifies for 100% coverage at all Rochester Regional Health locations.",
+     "source_id": "fap-f08fd37073815a45",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": null,
+    "asset_test": {
+     "value": false,
+     "layer": "documented",
+     "quote": "(assets are not considered in determining eligibility)",
+     "source_id": "fap-f08fd37073815a45",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "residency": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "We offer financial assistance for insured patients who need help paying deductibles, co-pays, and coinsurance.",
+     "source_id": "billing-c751ae443d704121",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "tax_return",
+      "pay_stubs"
+     ],
+     "layer": "documented",
+     "quote": "(c) the patient / family requirement to provide full and accurate financial information as a basis for Financial Assistance determinations, including pay stubs and/or tax returns (assets are not considered in determining eligibility);",
+     "source_id": "fap-f08fd37073815a45",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": null,
+    "window_days_from_first_bill": null,
+    "decision_days": {
+     "value": 30,
+     "layer": "documented",
+     "quote": "Once a completed application is received, the patient will be notified of approval determination within 30 days.",
+     "source_id": "fap-f08fd37073815a45",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "(585) 922-1900",
+     "layer": "documented",
+     "quote": "**Phone:**(585) 922-1900   **Toll-free:**(866) 209-0949   **Hours:** Monday - Friday, 8:30am - 5:00pm",
+     "source_id": "billing-c751ae443d704121",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": {
+     "value": "Monday - Friday, 8:30am - 5:00pm",
+     "layer": "documented",
+     "quote": "**Phone:**(585) 922-1900   **Toll-free:**(866) 209-0949   **Hours:** Monday - Friday, 8:30am - 5:00pm",
+     "source_id": "billing-c751ae443d704121",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "languages": {
+     "value": [
+      "English",
+      "Spanish"
+     ],
+     "layer": "documented",
+     "quote": "In addition, material is available in Spanish, and patients who speak other languages are offered the opportunity to have the material translated utilizing the 24 hour multi-lingual telephone translation service.",
+     "source_id": "fap-f08fd37073815a45",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    }
+   },
+   "coverage": {
+    "facilities": {
+     "value": [
+      "Clifton Springs Hospitals & Clinic"
+     ],
+     "layer": "documented",
+     "quote": "[Clifton Springs Hospitals & Clinic](/locations/hospitals/clifton)",
+     "source_id": "billing-c751ae443d704121",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "provider_list_url": null
+   },
+   "sources": [
+    {
+     "id": "application-4d491907924021c3",
+     "kind": "hospital_web",
+     "url": "https://www.rochesterregional.org/billing-and-insurance/financial-assistance/form",
+     "title": "Financial Assistance Program Application | Rochester Regional Health",
+     "fetched_on": "2026-10-11",
+     "sha256": "4d491907924021c331cbced57ee9d3277fcf3e38d6bcb5050cd98b74566d54d5",
+     "effective_date": null
+    },
+    {
+     "id": "billing-c751ae443d704121",
+     "kind": "hospital_web",
+     "url": "https://www.rochesterregional.org/billing-and-insurance/financial-assistance",
+     "title": "Financial Assistance | Rochester Regional Health",
+     "fetched_on": "2026-10-11",
+     "sha256": "c751ae443d7041217d501121dbcb8a4c8ba7f2f3173abb2fc9b06f290c599660",
+     "effective_date": null
+    },
+    {
+     "id": "billing-4dab44de912d6b4e",
+     "kind": "hospital_web",
+     "url": "https://www.rochesterregional.org/billing-and-insurance",
+     "title": "Billing & Insurance | Rochester Regional Health",
+     "fetched_on": "2026-10-11",
+     "sha256": "4dab44de912d6b4e94a9a6a31bb580dd68ea57e8bf55f6cf1ce9421c0845ee5a",
+     "effective_date": null
+    },
+    {
+     "id": "billing-a4217ca400ba033f",
+     "kind": "hospital_web",
+     "url": "https://www.rochesterregional.org/billing-and-insurance/participating-health-plans",
+     "title": "Billing and Collections Policy",
+     "fetched_on": "2026-10-11",
+     "sha256": "a4217ca400ba033ff76e6094fafa8eb93c5d5a8f62d8f2f699683bf2f1ca8891",
+     "effective_date": null
+    },
+    {
+     "id": "fap-536ddb57f687203b",
+     "kind": "hospital_web",
+     "url": "https://edge.sitecorecloud.io/rochesterred189-rrh4822-prodb67b-4284/media/project/rrh/rrh/files/billing-and-insurance/financial-assistance-policies/rochester-general-hospital-july-2026-rrh-financial-assistance-policy.pdf",
+     "title": "Rochester General Hospital Financial Assistance Policy",
+     "fetched_on": "2026-10-11",
+     "sha256": "536ddb57f687203be5b9ebd25e4fb01fe99183477b98527b7343946f40ed8876",
+     "effective_date": null
+    },
+    {
+     "id": "fap-e02aa3b4eb4b5832",
+     "kind": "hospital_web",
+     "url": "https://edge.sitecorecloud.io/rochesterred189-rrh4822-prodb67b-4284/media/project/rrh/rrh/files/billing-and-insurance/financial-assistance-policies/unity-hospital-july-2026-rrh-financial-assistance-policy.pdf",
+     "title": "Unity Hospital Financial Assistance Policy",
+     "fetched_on": "2026-10-11",
+     "sha256": "e02aa3b4eb4b583206582e0c11a4642e2b12ec66f7da8b51a625d0629405f946",
+     "effective_date": null
+    },
+    {
+     "id": "fap-25b29f82e98d204d",
+     "kind": "hospital_web",
+     "url": "https://edge.sitecorecloud.io/rochesterred189-rrh4822-prodb67b-4284/media/project/rrh/rrh/files/billing-and-insurance/financial-assistance-policies/newark-wayne-hospital-july-2026-rrh-financial-assistance-policy.pdf",
+     "title": "Newark-Wayne Community Hospital Financial Assistance Policy",
+     "fetched_on": "2026-10-11",
+     "sha256": "25b29f82e98d204d733f554432995cbbc0ce6e672e7674695f265c1ccb2d1250",
+     "effective_date": null
+    },
+    {
+     "id": "fap-f08fd37073815a45",
+     "kind": "hospital_web",
+     "url": "https://edge.sitecorecloud.io/rochesterred189-rrh4822-prodb67b-4284/media/project/rrh/rrh/files/billing-and-insurance/financial-assistance-policies/clifton-springs-hospital-july-2026-rrh-financial-assistance-policy.pdf",
+     "title": "Clifton Springs Hospital & Clinic Financial Assistance Policy",
+     "fetched_on": "2026-10-11",
+     "sha256": "f08fd37073815a4569c9bd54cb5c5284a319be6111960a11c4789f5c0bf495b5",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null
+  },
+  {
+   "hospital": {
+    "ccn": "331320",
+    "name": "COBLESKILL REGIONAL HOSPITAL",
+    "city": "COBLESKILL",
+    "state": "NY",
+    "zip": "12043",
+    "phone": "518-254-3456",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "bassett.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "published",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "Below 200% FPL Waive all charges",
+     "source_id": "fap-01316164d46a2453",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": null,
+    "asset_test": null,
+    "residency": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Underinsured individuals within federal poverty levels of 201-400% and with paid out-of-pocket medical expenses that are greater than ten (10) percent of their annual gross income for the prior twelve months.",
+     "source_id": "fap-01316164d46a2453",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "social_security_letter"
+     ],
+     "layer": "documented",
+     "quote": "Unemployment Compensation$Copy of award letter/certificate, or monthly benefit statement from NYS Department of Labor, or Copy of Direct Payment Card with printout, or Correspondence from the NYS Department of Labor, or Printout of recipient\u2019s account information from the NYS Department of Labor\u2019s website (www.labor.state.ny.us).",
+     "source_id": "application-52e90e43f5750581",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "Completed applications with all required documentation should be mailed to: Community Services Program Bassett Medical Center One Atwell Road Cooperstown, NY 13326"
+      },
+      {
+       "kind": "mail",
+       "detail": "Completed applications with all required documentation should be mailed to: A.O. Fox Memorial Hospital Financial Assistance Representative Business Office 1 Norton Avenue Oneonta, NY 13820"
+      },
+      {
+       "kind": "mail",
+       "detail": "Completed applications with all required documentation should be mailed to: Community Services Program Little Falls Hospital Business Office 140 Burwell Street Little Falls, NY 13365"
+      },
+      {
+       "kind": "mail",
+       "detail": "Completed applications with all required documentation should be mailed to: Cobleskill Regional Hospital Business Office \u2013 CSP 178 Grandview Drive Cobleskill, NY 12043"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Fox Memorial Hospital Financial Assistance Representative Business Office 1 Norton Avenue Oneonta, NY 13820",
+     "source_id": "fap-c460411e059ee92b",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": null,
+    "decision_days": null,
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": {
+     "value": 180,
+     "layer": "documented",
+     "quote": "Hospitals cannot send unpaid bills to a collection agency for at least 180 days after your first bill.",
+     "source_id": "application-52e90e43f5750581",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "607-547-3093",
+     "layer": "documented",
+     "quote": "If you need assistance with this application, please contact Bassett Healthcare Network\u2019s financial assistance office at (607-547-3093).",
+     "source_id": "application-52e90e43f5750581",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": null,
+    "languages": null
+   },
+   "coverage": {
+    "facilities": {
+     "value": [
+      "Cobleskill Regional Hospital"
+     ],
+     "layer": "documented",
+     "quote": "\u2612 Cobleskill Regional Hospital",
+     "source_id": "fap-01316164d46a2453",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "provider_list_url": null
+   },
+   "sources": [
+    {
+     "id": "fap-c23c1d3b678bda29",
+     "kind": "hospital_web",
+     "url": "https://www.bassett.org/sites/default/files/2026-03/Charity-Care-and-Financial-Assistance-Spanish.pdf",
+     "title": "Hoja informativa de pol\u00edticas de BHN",
+     "fetched_on": "2026-10-11",
+     "sha256": "c23c1d3b678bda2908e3c7ed19b1b2699f8bf1b3c5fe8831704005fb43ae6640",
+     "effective_date": null
+    },
+    {
+     "id": "summary-e2ba5e05a2d2c3ef",
+     "kind": "hospital_web",
+     "url": "https://bassett.org/patients-visitors/billing-insurance/financial-assistance/financial-assistance-plain-language",
+     "title": "Financial Assistance - Plain Language Summary (PLS)",
+     "fetched_on": "2026-10-11",
+     "sha256": "e2ba5e05a2d2c3efa301e41554e7f998fa1021cb12a79e9e2bae70ab45bb2205",
+     "effective_date": null
+    },
+    {
+     "id": "billing-334ebbaa41060d6e",
+     "kind": "hospital_web",
+     "url": "https://www.bassett.org/patients-visitors/billing-insurance/financial-assistance",
+     "title": "Bassett's Financial Assistance Program | Community Service Program",
+     "fetched_on": "2026-10-11",
+     "sha256": "334ebbaa41060d6e6267578c7a864151838cd0ae3823455421bcaa6875c7514b",
+     "effective_date": null
+    },
+    {
+     "id": "summary-a3b8377266568b0d",
+     "kind": "hospital_web",
+     "url": "https://www.bassett.org/patients-visitors/billing-insurance/financial-assistance/financial-assistance-plain-language",
+     "title": "Financial Assistance - Plain Language Summary (PLS) | Bassett Healthcare Network",
+     "fetched_on": "2026-10-11",
+     "sha256": "a3b8377266568b0db096c7224b7bf45126b63d3c0953b67f644f2e726e10908c",
+     "effective_date": null
+    },
+    {
+     "id": "fap-01316164d46a2453",
+     "kind": "hospital_web",
+     "url": "https://www.bassett.org/sites/default/files/2026-07/Bassett-Healthcare-Network-Charity-Care-and-Financial-Assistance-07-09-2026.pdf",
+     "title": "Charity Care & Financial Assistance (English)",
+     "fetched_on": "2026-10-11",
+     "sha256": "01316164d46a2453568e3653c7a0a3e8666640cf8dcf41f8992114053e58a02d",
+     "effective_date": null
+    },
+    {
+     "id": "fap-b095463318643111",
+     "kind": "hospital_web",
+     "url": "https://www.bassett.org/sites/default/files/2026-08/Charity-Care-and-Financial-Assistance-Spanish.pdf",
+     "title": "Charity Care & Financial Assistance (Spanish)",
+     "fetched_on": "2026-10-11",
+     "sha256": "b095463318643111e458265715e4db0784c667a6669856aaca09afa4d3810241",
+     "effective_date": null
+    },
+    {
+     "id": "fap-c460411e059ee92b",
+     "kind": "hospital_web",
+     "url": "https://www.bassett.org/sites/default/files/hg_features/mercury_standard_layout/46607191876acfcc504a7cc8048608fc.pdf",
+     "title": "Financial Assistance Resource Guide",
+     "fetched_on": "2026-10-11",
+     "sha256": "c460411e059ee92ba5f9d1885a44b69a705d4ee78b1e454806419d5274033015",
+     "effective_date": null
+    },
+    {
+     "id": "application-52e90e43f5750581",
+     "kind": "hospital_web",
+     "url": "https://www.bassett.org/sites/default/files/2026-01/2026-NYS-Bassett-FA-Form-English.docx",
+     "title": "Bassett NYS Uniform Hospital Financial Assistance Application (English)",
+     "fetched_on": "2026-10-11",
+     "sha256": "52e90e43f57505813264638a3bb8939734fe05f1003664dc23a21b0439672b0e",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null
+  },
+  {
+   "hospital": {
+    "ccn": "330094",
+    "name": "COLUMBIA MEMORIAL HOSPITAL",
+    "city": "HUDSON",
+    "state": "NY",
+    "zip": "12534",
+    "phone": "518-828-7601",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "columbiamemorial.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "held",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "300",
+     "layer": "documented",
+     "quote": "Patients/guarantors whose household income is at or below 300% of the Federal Poverty Guidelines will receive full financial assistance.",
+     "source_id": "fap-ac0e30ddb45a6e0a",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "300",
+       "max_fpl_inclusive": "400",
+       "discount_percent": 65
+      }
+     ],
+     "layer": "documented",
+     "quote": "Income % of the Federal Poverty Level Discount % 0% - 300% 100% 301% - 400% 65%",
+     "source_id": "fap-ac0e30ddb45a6e0a",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "asset_test": null,
+    "residency": {
+     "value": [
+      "OR",
+      "WA"
+     ],
+     "layer": "documented",
+     "quote": "Financial assistance is offered to eligible residents of Oregon or Washington.",
+     "source_id": "fap-ac0e30ddb45a6e0a",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "insured_patients_covered": null,
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": {
+     "value": [
+      "Medicaid",
+      "Supplemental Nutrition Assistance Program (SNAP)",
+      "Temporary Assistance for Needy Families (TANF)",
+      "Women, Infants and Children (WIC)"
+     ],
+     "layer": "documented",
+     "quote": "Patients may be considered presumptively eligible if the patient is covered under Medicaid, Supplemental Nutrition Assistance Program (SNAP), Temporary Assistance for Needy Families (TANF), Women, Infants and Children (WIC), has verified financial hardship program, is homeless, deceased without spouse and has no estate, or approved by the court for bankruptcy.",
+     "source_id": "fap-ac0e30ddb45a6e0a",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": {
+     "value": "https://columbiamemorial.org/billing-insurance/financial-assistance/",
+     "layer": "documented",
+     "quote": "Download from CMH website (https://columbiamemorial.org/billing-insurance/financial-assistance/)",
+     "source_id": "fap-ac0e30ddb45a6e0a",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "proof_of_income"
+     ],
+     "layer": "documented",
+     "quote": "Provide proof of income.",
+     "source_id": "billing-e6a93cc0206e8561",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "phone",
+       "detail": "Requests may be made via phone: 503-338-7530"
+      },
+      {
+       "kind": "portal",
+       "detail": "Download from CMH website (https://columbiamemorial.org/billing-insurance/financial-assistance/)"
+      },
+      {
+       "kind": "in_person",
+       "detail": "In-person request from CMH Patient Financial Services offices, CMH Medical Group practices, or CMH Emergency Department"
+      }
+     ],
+     "layer": "documented",
+     "quote": "II. Method for Application: Patient Financial Services Financial Assistance - Patient Financial Services Reference No: 8530-553 | Version No: 9 PAGE 4 of 6 ORIGINATING DEPARTMENT: Patient Financial Services | POLICY OWNER: Reanna Thomasson (Manager) OPS APPROVAL: 08/21/2025 A. Patients/guarantors wishing to make application for financial assistance with CMH will be given a Financial Assistance Application, which includes instructions on how to apply. 1. Requests may be made via phone: 503-338-7530 2. Download from CMH website (https://columbiamemorial.org/billing-insurance/financial-assistance/) 3. In-person request from CMH Patient Financial Services offices, CMH Medical Group practices, or CMH Emergency Department 4. Included in patient statement 5. Any other methods specified in CMH Credit and Collections policy",
+     "source_id": "fap-ac0e30ddb45a6e0a",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": null,
+    "decision_days": {
+     "value": 21,
+     "layer": "documented",
+     "quote": "Within 21 calendar days after we receive your completed application and documentation, we will notify you if you qualify for assistance.",
+     "source_id": "application-e4427bc73dba7f1c",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": {
+     "value": 120,
+     "layer": "documented",
+     "quote": "Any unpaid balances owed by patients or guarantors after application of available discounts, and after an elapsed time-period of 120 days from the post-discharge statement, and four statements have been mailed or attempt to contact made, are referred to a collection agency in accordance with the Credit and Collections Policy.",
+     "source_id": "fap-ac0e30ddb45a6e0a",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "503.338.7530 or 800.962.2407",
+     "layer": "documented",
+     "quote": "Please call us Monday \u2014 Friday, from 8 a.m. to 4:30 p.m., at **[503.338.7530](tel:+15033387530)** or **[800.962.2407](tel:+18009622407)**.",
+     "source_id": "billing-c24d3e0180df1967",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": {
+     "value": "Monday \u2014 Friday, from 8 a.m. to 4:30 p.m.",
+     "layer": "documented",
+     "quote": "Please call us Monday \u2014 Friday, from 8 a.m. to 4:30 p.m., at **[503.338.7530](tel:+15033387530)** or **[800.962.2407](tel:+18009622407)**.",
+     "source_id": "billing-c24d3e0180df1967",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "languages": {
+     "value": [
+      "English",
+      "Spanish"
+     ],
+     "layer": "documented",
+     "quote": "Fill out a financial assistance application in [English](https://www.columbiamemorial.org/media/fbbcb5af50324c0188b0faee63ae3dc0/240917_oahhs-financial-assistance-application-english.pdf \"240917 OAHHS Financial Assistance Application English\") or [Spanish](https://www.columbiamemorial.org/media/1ed9c72912424bf0babbe22326d17392/240917_oahhs-financial-assistance-application_spanish.pdf \"240917 OAHHS Financial Assistance Application Spanish\")",
+     "source_id": "billing-e6a93cc0206e8561",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    }
+   },
+   "coverage": {
+    "facilities": {
+     "value": [
+      "CMH Health and Wellness Pavilion"
+     ],
+     "layer": "documented",
+     "quote": "contacting Patient Financial Services: CMH Health and Wellness Pavilion 2265 Exchange St. Astoria, OR 97103 Phone (503) 338-7530",
+     "source_id": "fap-ac0e30ddb45a6e0a",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "provider_list_url": null
+   },
+   "sources": [
+    {
+     "id": "fap-ac0e30ddb45a6e0a",
+     "kind": "hospital_web",
+     "url": "https://www.columbiamemorial.org/media/58434ffb24ee43f2996d3d44f878b43e/financial-assistance-patient-financial-services-10644_0.pdf",
+     "title": "Financial Assistance Policy",
+     "fetched_on": "2026-10-11",
+     "sha256": "ac0e30ddb45a6e0a4e63eabe5bd01cc7089496ba395a39d4c48309632f8a620c",
+     "effective_date": null
+    },
+    {
+     "id": "application-e4427bc73dba7f1c",
+     "kind": "hospital_web",
+     "url": "https://www.columbiamemorial.org/media/fbbcb5af50324c0188b0faee63ae3dc0/240917_oahhs-financial-assistance-application-english.pdf",
+     "title": "Financial Assistance Application",
+     "fetched_on": "2026-10-11",
+     "sha256": "e4427bc73dba7f1cd8977377b523552fe74cad13946086df73afe2b27da234b0",
+     "effective_date": null
+    },
+    {
+     "id": "billing-e6a93cc0206e8561",
+     "kind": "hospital_web",
+     "url": "https://www.columbiamemorial.org/patients-and-visitors/billing-information/financial-assistance",
+     "title": "Financial Assistance",
+     "fetched_on": "2026-10-11",
+     "sha256": "e6a93cc0206e856151ab038a037ffa86b592ea41c067d2afd4cbbb348f8c3102",
+     "effective_date": null
+    },
+    {
+     "id": "billing-c24d3e0180df1967",
+     "kind": "hospital_web",
+     "url": "https://www.columbiamemorial.org/patients-and-visitors/billing-information",
+     "title": "Billing Information | Columbia Memorial Hospital",
+     "fetched_on": "2026-10-11",
+     "sha256": "c24d3e0180df1967f4e78394df7f4c4d8358f098dcd1fa2d5c97247c9d970743",
+     "effective_date": null
+    },
+    {
+     "id": "fap-abe597d044dcc7fe",
+     "kind": "hospital_web",
+     "url": "https://www.columbiamemorial.org/media/be09fc8e2d4e405f8cf5f3efa18a6404/2026-financial-assistance-discount-table-with-income-limits.pdf",
+     "title": "Click here to see the 2026 CMH Financial Assistance Discount Table",
+     "fetched_on": "2026-10-11",
+     "sha256": "abe597d044dcc7fe179d80379b1b720722b3a4bd335c15f100032fbc18c7aeb2",
+     "effective_date": null
+    },
+    {
+     "id": "application-23f0267d24dfb401",
+     "kind": "hospital_web",
+     "url": "https://www.columbiamemorial.org/media/1ed9c72912424bf0babbe22326d17392/240917_oahhs-financial-assistance-application_spanish.pdf",
+     "title": "Spanish",
+     "fetched_on": "2026-10-11",
+     "sha256": "23f0267d24dfb401ca7066011097b5c3a3f9c1c9ef6fd69ea4911ff215e6970d",
+     "effective_date": null
+    },
+    {
+     "id": "billing-851d62183a0a9cb6",
+     "kind": "hospital_web",
+     "url": "https://www.columbiamemorial.org/media/7817195c10774481aaa5dbabe0372af1/glossaryofbillingterms.pdf",
+     "title": "quick guide",
+     "fetched_on": "2026-10-11",
+     "sha256": "851d62183a0a9cb6ec16ce6a2c4acdec14745a31bf5911e9df568893b5cf514f",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null
+  },
+  {
+   "hospital": {
+    "ccn": "331316",
+    "name": "COMMUNITY MEMORIAL HOSPITAL, INC",
+    "city": "HAMILTON",
+    "state": "NY",
+    "zip": "13346",
+    "phone": "315-824-1100",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "communitymemorial.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "published",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "Individuals or families with income up to 200% of the federal poverty level are eligible at an 100% write off the gross charges.",
+     "source_id": "fap-836274a806b67653",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": null,
+    "asset_test": null,
+    "residency": null,
+    "insured_patients_covered": null,
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": {
+     "value": [
+      "State-funded prescription programs",
+      "Homeless or received care from a homeless clinic",
+      "Participation in Women, Infants and Children programs (WIC)",
+      "Food stamp eligibility",
+      "Subsidized school lunch program eligibility"
+     ],
+     "layer": "documented",
+     "quote": "Presumptive eligibility may be determined on the basis of individual life circumstances that may include: 1. State-funded prescription programs; 2. Homeless or received care from a homeless clinic; 3. Participation in Women, Infants and Children programs (WIC); 4. Food stamp eligibility; 5. Subsidized school lunch program eligibility; 6. Eligibility for other state or local assistance programs that are unfunded (e.g., Medicaid spend- down); 7. Low income/subsidized housing is provided as a valid address; and 8, Patient is deceased with no known estate.",
+     "source_id": "fap-836274a806b67653",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "tax_return"
+     ],
+     "layer": "documented",
+     "quote": "For self-employed persons, a (3) month business ledger or self-attestation form (a tax return is optional).",
+     "source_id": "fap-836274a806b67653",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "request by mail by calling 315 824 6552 or send request in writing to Community Memorial Hospital, 150 Broad Street, Hamilton NY 13346."
+      },
+      {
+       "kind": "in_person",
+       "detail": "Obtain an application in person at Community Memorial Hospital Registration or Financial Counseling Office"
+      },
+      {
+       "kind": "portal",
+       "detail": "online at http://www.communitymemorial.org/financial-assistance/"
+      }
+     ],
+     "layer": "documented",
+     "quote": "How to Apply: Applications for Financial Assistance may be obtained as follows: \u2022 Obtain an application in person at Community Memorial Hospital Registration or Financial Counseling Office, online at http://www.communitymemorial.org/financial-assistance/, request by mail by calling 315 824 6552 or send request in writing to Community Memorial Hospital, 150 Broad Street, Hamilton NY 13346.",
+     "source_id": "fap-836274a806b67653",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": null,
+    "decision_days": {
+     "value": 30,
+     "layer": "documented",
+     "quote": "Requests for charity shall be processed promptly and the organization shall notify the patient or applicant in writing within 30 days of receipt of a completed application.",
+     "source_id": "fap-836274a806b67653",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": {
+     "value": 240,
+     "layer": "documented",
+     "quote": "Patients are encouraged to submit their application for our Financial Assistance Program within 240 days from the date of the first billing statement after discharge; however, patients may apply at any time, even after an account has gone into collection status.",
+     "source_id": "fap-836274a806b67653",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": null,
+    "hours": null,
+    "languages": null
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null
+   },
+   "sources": [
+    {
+     "id": "fap-498081561b6cb300",
+     "kind": "hospital_web",
+     "url": "https://communitymemorial.org?p=12615",
+     "title": "Medical Financial Assistance Info - Community Memorial Hospital",
+     "fetched_on": "2026-10-11",
+     "sha256": "498081561b6cb300c56dba47a9a7155f80ca67da7fd30bf0aa96085c23a9f5e4",
+     "effective_date": null
+    },
+    {
+     "id": "billing-767db64acfc9956f",
+     "kind": "hospital_web",
+     "url": "https://communitymemorial.org?p=1131",
+     "title": "Medical Billing Information | Community Memorial Hospital",
+     "fetched_on": "2026-10-11",
+     "sha256": "767db64acfc9956f6021a95ad7fa266910c03e0d6b4dd6c97f95e38b896d9b23",
+     "effective_date": null
+    },
+    {
+     "id": "fap-ec2d70e33465eced",
+     "kind": "hospital_web",
+     "url": "https://communitymemorial.org/patient-visitor-info/financial-assistance",
+     "title": "Medical Financial Assistance Info - Community Memorial Hospital",
+     "fetched_on": "2026-10-11",
+     "sha256": "ec2d70e33465ecedb1b510def53483bde6bc5e87f15e82cb67dfd24ce2286785",
+     "effective_date": null
+    },
+    {
+     "id": "billing-d70fc474261318ff",
+     "kind": "hospital_web",
+     "url": "https://communitymemorial.org/about/billing",
+     "title": "Medical Billing Information | Community Memorial Hospital",
+     "fetched_on": "2026-10-11",
+     "sha256": "d70fc474261318ff4f8c5326804eed50d89b59f88837b8ae1f2108c49cbd3eb7",
+     "effective_date": null
+    },
+    {
+     "id": "fap-836274a806b67653",
+     "kind": "hospital_web",
+     "url": "https://communitymemorial.org/wp-content/uploads/2025/09/2025-Financial-Assistance-Policy_83925435_1.pdf",
+     "title": "Financial Assistance Policy",
+     "fetched_on": "2026-10-11",
+     "sha256": "836274a806b67653d794b759d820b30044dffbf9e5a296baa025fea8dbed7216",
+     "effective_date": null
+    },
+    {
+     "id": "fap-c252bfa5565831a2",
+     "kind": "hospital_web",
+     "url": "https://communitymemorial.org/wp-content/uploads/2023/03/SPANISH-Financial-Assistance-Policy-7.5.22.pdf",
+     "title": "Billing and Insurance FAQ",
+     "fetched_on": "2026-10-11",
+     "sha256": "c252bfa5565831a2c3aaf317238561dca150e03eaf1e97a8c12d005700267530",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null
+  },
+  {
+   "hospital": {
+    "ccn": "330277",
+    "name": "CORNING HOSPITAL",
+    "city": "CORNING",
+    "state": "NY",
+    "zip": "14830",
+    "phone": "607-937-7200",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "guthrie.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "held",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "Patients with household income less than or equal to 200% of the Federal Poverty Level (\"FPL\") are eligible for 100% financial assistance coverage.",
+     "source_id": "fap-623dd7ed3bf75702",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": null,
+    "asset_test": null,
+    "residency": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Patients who have access to other medical care coverage (e.g., primary and secondary insurance coverage) must utilize and exhaust their benefits. The financial assistance program is available to assist these patients with co-insurance, deductibles and co-payments (except for co-payments required by Medicaid, CHIP, or other similar need-based programs) for services received as long as providing such assistance complies with third party payor contracts, applicable laws, and eligibility requirements.",
+     "source_id": "fap-623dd7ed3bf75702",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": {
+     "value": [
+      "Medicaid"
+     ],
+     "layer": "documented",
+     "quote": "Patients may also be considered presumptively eligible for 100% financial assistance if they have current eligibility under a Medicaid type program and have outstanding balances prior to that coverage.",
+     "source_id": "fap-623dd7ed3bf75702",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "proof_of_income",
+      "social_security_letter",
+      "pay_stubs",
+      "bank_statements"
+     ],
+     "layer": "documented",
+     "quote": "19. OTHER SUPPORTING DOCUMENTS REQUIRED: ___________Bank Statement (Most Recent) ___________Investment Account Statements (All Accounts) ________________Income Verification (current month\u2019s paycheck stubs, Social Security statement, letter from employer\u2026etc.) ___________Receipts (medical expenses paid including pharmacy costs) ___________Proof of Medicaid Application if applicable for incomes less than 150% of Federal Poverty Level. ___________Employer Health Plan Description (If applicable) ___________Health Savings Account (HSA) Statement showing current balance. (If applicable)",
+     "source_id": "application-9e6c1457bf2b8777",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "Attention: Financial Counselors The Guthrie Clinic Patient Financial Services Department One Guthrie Square Sayre, PA 18840"
+      },
+      {
+       "kind": "in_person",
+       "detail": "Paper copies of the Application are also available at the Financial Counseling Office located at: The Guthrie Clinic Patient Financial Services Department One Guthrie Square Sayre, PA 18840 Financial Representatives are on-site to assist you Monday - Friday from 8:00 AM \u2013 5:00 PM."
+      }
+     ],
+     "layer": "documented",
+     "quote": "Financial Counselors The Guthrie Clinic Patient Financial Services Department One Guthrie Square Sayre, PA 18840 Financial Assistance Applications shall be reviewed by a Patient Financial Services representative within ten (10) working days of receipt to determine if additional documentation is required.",
+     "source_id": "fap-7423df15b2741504",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": null,
+    "decision_days": {
+     "value": 30,
+     "layer": "documented",
+     "quote": "Notification of Eligibility Determination The Guthrie Clinic will accept and process all Applications for financial assistance. The applicant should be provided a written decision within thirty (30) days of receipt of a completed application.",
+     "source_id": "fap-7423df15b2741504",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "570-887-2051",
+     "layer": "documented",
+     "quote": "If you have any questions or need assistance, please contact a financial counselor at (570) 887-2051.",
+     "source_id": "application-9e6c1457bf2b8777",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": null,
+    "languages": null
+   },
+   "coverage": {
+    "facilities": {
+     "value": [
+      "Corning Hospital"
+     ],
+     "layer": "documented",
+     "quote": "As part of its mission as a nonprofit charitable health organization described in Section 501c(3) of the Internal Revenue Code, The Guthrie Clinic, which includes Guthrie Medical Group, Robert Packer Hospital, Corning Hospital, Cortland Medical Center, Troy Community Hospital, Robert Packer Hospital at Towanda Campus, Guthrie Home Health, Guthrie Lourdes Hospital, Guthrie Lourdes Retail Pharmacy, Guthrie Lourdes Medical Group and Guthrie Hospice (collectively \"The Guthrie Clinic\") is committed to serving the medical needs in their service area, regardless of race, religion, color, sex, national origin, immigration status, sexual orientation or gender identity, disability, or age.",
+     "source_id": "fap-7423df15b2741504",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "provider_list_url": null
+   },
+   "sources": [
+    {
+     "id": "fap-7423df15b2741504",
+     "kind": "hospital_web",
+     "url": "https://www.guthrie.org/sites/default/files/Financial%20Assistance%20FY25-History.pdf",
+     "title": "Financial Assistance FY25",
+     "fetched_on": "2026-10-11",
+     "sha256": "7423df15b2741504bfe3f4634157c5eca7d8541f11bc66db07756bf1f76a107d",
+     "effective_date": null
+    },
+    {
+     "id": "application-9e6c1457bf2b8777",
+     "kind": "hospital_web",
+     "url": "https://www.guthrie.org/sites/default/files/The%20Guthrie%20Clinic%20FAP%20Application%20%20Attachment%20I_Final_.pdf",
+     "title": "Financial Assistance Application",
+     "fetched_on": "2026-10-11",
+     "sha256": "9e6c1457bf2b87778f47220beb6f6d90a0c7596dc6be0b07603075c1b08288d2",
+     "effective_date": null
+    },
+    {
+     "id": "summary-5d91cf000bb960ea",
+     "kind": "hospital_web",
+     "url": "https://www.guthrie.org/sites/default/files/The%20Guthrie%20Clinic%20Plain%20Language%20Summary%2010.18.24.pdf",
+     "title": "Plain Language Summary The Financial Assistance ...",
+     "fetched_on": "2026-10-11",
+     "sha256": "5d91cf000bb960eafd3decbf50b6f06e7ebc5ee47f5dd3e8a0897405fb575ef5",
+     "effective_date": null
+    },
+    {
+     "id": "billing-aa4867f4eb7ee24b",
+     "kind": "hospital_web",
+     "url": "https://guthrie.org/patients-visitors/pay-my-bill/balance-billing",
+     "title": "Balance Billing | Guthrie",
+     "fetched_on": "2026-10-11",
+     "sha256": "aa4867f4eb7ee24b767e62bff557fce9029f8dac44d79dae1ffc4e392e808bfa",
+     "effective_date": null
+    },
+    {
+     "id": "fap-d1473201a03e79d8",
+     "kind": "hospital_web",
+     "url": "https://www.guthrie.org/patients-visitors/pay-my-bill/financial-assistance",
+     "title": "Financial Assistance",
+     "fetched_on": "2026-10-11",
+     "sha256": "d1473201a03e79d89abb1873f268dd3b1dda605e52f67ed042d4f9c627876f55",
+     "effective_date": null
+    },
+    {
+     "id": "fap-623dd7ed3bf75702",
+     "kind": "hospital_web",
+     "url": "https://www.guthrie.org/sites/default/files/TGC%20FY22%20Financial%20Assistance%20Policy%207.1.21_1.pdf",
+     "title": "Financial Assistance policy",
+     "fetched_on": "2026-10-11",
+     "sha256": "623dd7ed3bf757025131280a92cc283c4c69f83644f2f6680149156ad241f119",
+     "effective_date": null
+    },
+    {
+     "id": "billing-45e335cf8e89cf91",
+     "kind": "hospital_web",
+     "url": "https://www.guthrie.org/sites/default/files/Model%20Disclosure%20Notice%20Regarding%20Patient%20Protections%20Against%20Surprise%20Billing.pdf",
+     "title": "Learn more",
+     "fetched_on": "2026-10-11",
+     "sha256": "45e335cf8e89cf915545d444bb5799e2b9104850809ccfa780dea15afe3d730a",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null
+  },
+  {
+   "hospital": {
+    "ccn": "330203",
+    "name": "CROUSE HOSPITAL",
+    "city": "SYRACUSE",
+    "state": "NY",
+    "zip": "13210",
+    "phone": "315-470-7449",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "crouse.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "held",
+   "eligibility": {
+    "free_care_max_fpl": null,
+    "discount_tiers": null,
+    "asset_test": null,
+    "residency": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Yes. If approval is made any discount awarded will be applied to coinsurances, co-payments and deductibles.",
+     "source_id": "fap-2bff0fb8a0a9efe6",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "proof_of_income"
+     ],
+     "layer": "documented",
+     "quote": "Charity Care applications must be completed with proof of income or self-attestation if no documented proof of income is available.",
+     "source_id": "fap-2bff0fb8a0a9efe6",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "Crouse Hospital\nAttn: Financial Counseling\n736 Irving Avenue\nSyracuse, NY 13210"
+      }
+     ],
+     "layer": "documented",
+     "quote": "To apply for charity care, please fill out an application and send to: \n Crouse Hospital \n Attn: Financial Counseling \n 736 Irving Avenue \n Syracuse, NY 13210",
+     "source_id": "fap-2bff0fb8a0a9efe6",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": null,
+    "decision_days": null,
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "315-470-7030",
+     "layer": "documented",
+     "quote": "If you have questions about Crouse Hospital\u2019s Financial Assistance Program please call 315-470-7030.",
+     "source_id": "fap-2bff0fb8a0a9efe6",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": null,
+    "languages": null
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null
+   },
+   "sources": [
+    {
+     "id": "fap-2bff0fb8a0a9efe6",
+     "kind": "hospital_web",
+     "url": "https://www.crouse.org/visit/patients/financial-assistance",
+     "title": "Financial Assistance Program | Crouse Health, Syracuse, New York",
+     "fetched_on": "2026-10-11",
+     "sha256": "2bff0fb8a0a9efe64a4fbfd4db6dc070f710476dd7617d319464ac2bc5d0e3a9",
+     "effective_date": null
+    },
+    {
+     "id": "summary-b630222b31a86a3b",
+     "kind": "hospital_web",
+     "url": "https://www.crouse.org/about/community/financial-summary",
+     "title": "Financial Summary of Community Benefits/Charity Care | Crouse Health, Syracuse, New York",
+     "fetched_on": "2026-10-11",
+     "sha256": "b630222b31a86a3b42f0ce8b0f3a1b1cf625840624233453b4d3e84ac44a9bb7",
+     "effective_date": null
+    },
+    {
+     "id": "billing-ff1b7aa2fb275b50",
+     "kind": "hospital_web",
+     "url": "https://www.crouse.org/visit/patients/billing",
+     "title": "Billing and Insurance | Crouse Health, Syracuse, New York",
+     "fetched_on": "2026-10-11",
+     "sha256": "ff1b7aa2fb275b50d02559c4db32029bca58b01a1d9842afd0f7801b2b046a1f",
+     "effective_date": null
+    },
+    {
+     "id": "fap-7a1b144b9a3c9290",
+     "kind": "hospital_web",
+     "url": "https://www.crouse.org/services/chemical-dependency-treatment-services/financial-assistance-ats",
+     "title": "Financial Assistance for Addiction Treatment Services | Crouse Health, Syracuse, New York",
+     "fetched_on": "2026-10-11",
+     "sha256": "7a1b144b9a3c92905ed8b324f57282d74b6ab29a6bd1dc4010d0db8fc375292d",
+     "effective_date": null
+    },
+    {
+     "id": "fap-c1cac350b16c10e9",
+     "kind": "hospital_web",
+     "url": "https://www.crouse.org/crouse-hospital-official-financial-assistance-policy/",
+     "title": "Crouse Hospital Official Financial Assistance Policy",
+     "fetched_on": "2026-10-11",
+     "sha256": "c1cac350b16c10e9bc029ed62db374bdb1cc5088de036c9a004d20446e20cdb0",
+     "effective_date": null
+    },
+    {
+     "id": "fap-e822484f639244b4",
+     "kind": "hospital_web",
+     "url": "https://www.crouse.org/charity-care-discount-guidelines/",
+     "title": "Charity Care Discount Guidelines",
+     "fetched_on": "2026-10-11",
+     "sha256": "e822484f639244b4992f72e78a99e3a84bd0168c561e34e15735eded8b6fc22f",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null
+  },
+  {
+   "hospital": {
+    "ccn": "331301",
+    "name": "CUBA MEMORIAL HOSPITAL, INC",
+    "city": "CUBA",
+    "state": "NY",
+    "zip": "14727",
+    "phone": "585-961-2000",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "cubamemorialhospital.com",
+    "system": null
+   },
+   "version": 1,
+   "status": "published",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "FPL LEVEL 200% 300% 400% 1 $30,120 $45,180 $60,240 2 $40,880 $61,320 $81,760 3 $51,640 $77,460 $103,280 4 $62,400 $93,600 $124,800 5 $73,160 $109,740 $149,320 6 $83,920 $125,880 $167,840 7 $94,680 $142,020 $189,360 8 $105,440 $158,160 $210,880 Each add\u2019l person add: $10,760 $16,140 $21,520 Discount on Charges 100% 90% 80% Patient Share 0% 10% 20% Form #:",
+     "source_id": "summary-9991da80844a93f0",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": null,
+    "asset_test": null,
+    "residency": null,
+    "insured_patients_covered": null,
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "proof_of_income",
+      "tax_return",
+      "pay_stubs",
+      "medicaid_denial"
+     ],
+     "layer": "documented",
+     "quote": "Cuba Memorial Hospital will require a completed Financial Assistance application and proof of income such as a tax return or pay stubs. We may also request a Medicaid denial letter but not required.",
+     "source_id": "summary-9991da80844a93f0",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": null,
+    "window_days_from_first_bill": null,
+    "decision_days": {
+     "value": 30,
+     "layer": "documented",
+     "quote": "You will receive a letter from Cuba Memorial Hospital (usually within 30 days after completion and submission of documentation) telling you if you have been approved and the level of discount received",
+     "source_id": "summary-9991da80844a93f0",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "716-375-6080",
+     "layer": "documented",
+     "quote": "Please contact our Facilitated Enroller at 716-375-6080 for free confidential assistance.",
+     "source_id": "summary-9991da80844a93f0",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": null,
+    "languages": null
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null
+   },
+   "sources": [
+    {
+     "id": "summary-9991da80844a93f0",
+     "kind": "hospital_web",
+     "url": "https://www.cubamemorialhospital.com/docs/CMH_FA_Summary.pdf",
+     "title": "[PDF] Financial Assistance Summary - Cuba Memorial Hospital",
+     "fetched_on": "2026-10-11",
+     "sha256": "9991da80844a93f055182f2b9869b53a8759bbfbc6ceabc53e4a07a24b966e8c",
+     "effective_date": null
+    },
+    {
+     "id": "billing-e6adacb5f81c33d6",
+     "kind": "hospital_web",
+     "url": "https://cubamemorialhospital.com/billpay.html",
+     "title": "Pay Your Bill Online \u2013 Cuba Memorial Hospital Billing & Financial Assistance",
+     "fetched_on": "2026-10-11",
+     "sha256": "e6adacb5f81c33d6ed98450e2b7d32346622f595f782e7a06392732f5f9db1b8",
+     "effective_date": null
+    }
+   ],
    "accuracy": null
   }
  ]

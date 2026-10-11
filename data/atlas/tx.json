@@ -1,5 +1,5 @@
 {
- "generated_on": "2026-10-10",
+ "generated_on": "2026-10-11",
  "license": "CC BY 4.0",
  "state": "TX",
  "sheets": [
@@ -5151,31 +5151,97 @@
     "zip": "75246",
     "phone": "214-820-8082",
     "ownership": "Voluntary non-profit - Private",
-    "website_domain": null,
+    "website_domain": "bswhealth.com",
     "system": null
    },
-   "version": 2,
-   "status": "held",
+   "version": 3,
+   "status": "published",
    "eligibility": {
-    "free_care_max_fpl": null,
+    "free_care_max_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "\"Financially Indigent\" means a patient whose Yearly Household Income is less than or equal to 200 percent of the Federal Poverty Guidelines (\"FPG\"). These Financially Indigent patients are eligible for a 100% discount on outstanding patient account balances based on Schedule A (see below) of the Financial Assistance Eligibility Discount Guidelines (Attachment B) of Baylor Scott & White's Financial Assistance policy.",
+     "source_id": "billing-5750eb0d19370981",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "discount_tiers": null,
     "asset_test": null,
     "residency": null,
-    "insured_patients_covered": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "This includes patients who don't have health insurance and can't pay their bill as well as patients who have coverage with an insurance carrier but are unable to pay their portion of the bill after insurance pays.",
+     "source_id": "billing-5750eb0d19370981",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "min_balance": null,
     "services_excluded": null
    },
    "programs": {
-    "presumptive": null,
+    "presumptive": {
+     "value": [
+      "Medicaid",
+      "County Indigent Health Program (CDIC)",
+      "Aids to Families with Dependent Children (AFDC)",
+      "Women, Infants, and Children (WIC)",
+      "Temporary Assistance for Needy Families (TANF)",
+      "TexCare Partnership"
+     ],
+     "layer": "documented",
+     "quote": "* Proof of participation in governmental assistance programs such as food stamps, County Indigent Health Program (CDIC), Aids to Families with Dependent Children (AFDC), Medicaid, Women, Infants, and Children (WIC), or Temporary Assistance for Needy Families (TANF), TexCare Partnership",
+     "source_id": "billing-5750eb0d19370981",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "state_programs": null
    },
    "apply": {
     "form_url": null,
     "form_version": null,
-    "documents_required": null,
+    "documents_required": {
+     "value": [
+      "proof_of_income",
+      "social_security_letter",
+      "tax_return",
+      "bank_statements",
+      "insurance_card"
+     ],
+     "layer": "documented",
+     "quote": "* Household Size1\n* Yearly Household Income2, which must be verified by one or more of the following financial documentation (listed in order of preference):\n* Pay check remittance\n* W-2\n* Wage and Tax Statement\n* Individual tax return\n* Telephone verification by employer of Patient\u2019s Reported Income\n* Social Security payment remittance\n* Worker\u2019s compensation payment remittance\n* Unemployment insurance payment notice\n* Unemployment compensation determination letters\n* Proof of participation in governmental assistance programs such as food stamps, County Indigent Health Program (CDIC), Aids to Families with Dependent Children (AFDC), Medicaid, Women, Infants, and Children (WIC), or Temporary Assistance for Needy Families (TANF), TexCare Partnership\n* Bank statements\n* Response from a credit inquiry\n* Or other appropriate indicators of patient's reported income",
+     "source_id": "billing-5750eb0d19370981",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "documents_reported": null,
-    "submit_methods": null,
-    "window_days_from_first_bill": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "in_person",
+       "detail": "Visit your financial counselor and learn more about your financial assistance options."
+      }
+     ],
+     "layer": "documented",
+     "quote": "If you believe you qualify for financial assistance and have not spoken with a financial counselor or received a discount, then you should complete Baylor Scott & White's Financial Assistance Application through any of the following options:",
+     "source_id": "billing-5750eb0d19370981",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": {
+     "value": 365,
+     "layer": "documented",
+     "quote": "Patients may apply for financial assistance from the date a patient is scheduled for service through the 365th day after the first billing statement is provided.",
+     "source_id": "billing-5750eb0d19370981",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "decision_days": null,
     "decision_days_reported": null
    },
@@ -5192,7 +5258,80 @@
     "facilities": null,
     "provider_list_url": null
    },
-   "sources": [],
+   "sources": [
+    {
+     "id": "billing-5750eb0d19370981",
+     "kind": "hospital_web",
+     "url": "https://www.bswhealth.com/patient-tools/registration-and-billing/financial-assistance/program",
+     "title": "Financial Assistance Program | Baylor Scott & White Health",
+     "fetched_on": "2026-10-11",
+     "sha256": "5750eb0d19370981df5d1662389d08e7ff5c0b68eae7060e7211a1d584e8cbcf",
+     "effective_date": null
+    },
+    {
+     "id": "billing-e682083db8413b32",
+     "kind": "hospital_web",
+     "url": "https://www.bswhealth.com/patient-tools/registration-and-billing",
+     "title": "Billing and Collections Policy",
+     "fetched_on": "2026-10-11",
+     "sha256": "e682083db8413b3276dd4eec63d0ed48400a086f1b39b0767e047da7bef993be",
+     "effective_date": null
+    },
+    {
+     "id": "billing-8bf57d8f2702bc96",
+     "kind": "hospital_web",
+     "url": "https://www.bswhealth.com/patient-tools/registration-and-billing/surprise-billing-protection",
+     "title": "Billing and Collections Policy",
+     "fetched_on": "2026-10-11",
+     "sha256": "8bf57d8f2702bc96e5e85afcf84df1e742636deb004169ab54984d35ed269a13",
+     "effective_date": null
+    },
+    {
+     "id": "billing-f4ca298f0dc0c7f0",
+     "kind": "hospital_web",
+     "url": "https://www.bswhealth.com/patient-tools/registration-and-billing/insurance-plans-accepted",
+     "title": "Billing and Collections Policy",
+     "fetched_on": "2026-10-11",
+     "sha256": "f4ca298f0dc0c7f06f9a4f1b31ff69f181fa34aa2694b68026f1c1eb9ee810cd",
+     "effective_date": null
+    },
+    {
+     "id": "fap-82218c2d205852e3",
+     "kind": "hospital_web",
+     "url": "https://www.bswhealth.com/Patient-Tools/Registration-and-Billing/Financial-Assistance/Documents",
+     "title": "Baylor Scott & White's Financial Assistance policy",
+     "fetched_on": "2026-10-11",
+     "sha256": "82218c2d205852e375f57a36e8bf9f30ce1fc7a8bd46992ad1f7ae77eb009f29",
+     "effective_date": null
+    },
+    {
+     "id": "fap-c20bc50251566b46",
+     "kind": "hospital_web",
+     "url": "https://edge.sitecorecloud.io/baylorscott7127-bswhealth416c-prodb8d1-6471/media/Project/BSW/Sites/BSWHealth/Documents/Patient-Tools/patient-registration-and-billing/financial-assistance-policy-non-hospital.pdf",
+     "title": "Financial Assistance policy (non-hospital)",
+     "fetched_on": "2026-10-11",
+     "sha256": "c20bc50251566b462acdfeade179b48dff6a9601817b0b9515a9d1d2270efa39",
+     "effective_date": null
+    },
+    {
+     "id": "billing-90213176adedeaf1",
+     "kind": "hospital_web",
+     "url": "https://www.bswhealth.com/patient-tools/registration-and-billing/financial-assistance",
+     "title": "Financial assistance",
+     "fetched_on": "2026-10-11",
+     "sha256": "90213176adedeaf15844db649c0ab5bb904cc659edd26514079c76db49d6c816",
+     "effective_date": null
+    },
+    {
+     "id": "billing-cb25384818a7c914",
+     "kind": "hospital_web",
+     "url": "https://www.bswhealth.com/Patient-Tools/Registration-and-Billing/Financial-Assistance/Contact-Us",
+     "title": "Visit a financial counselor",
+     "fetched_on": "2026-10-11",
+     "sha256": "cb25384818a7c9145a0d688856e5b4e892b47ba9f8346e87d3328c0ac60ee78f",
+     "effective_date": null
+    }
+   ],
    "accuracy": null
   },
   {
@@ -8338,13 +8477,21 @@
     "zip": "75503",
     "phone": "903-614-1000",
     "ownership": "Voluntary non-profit - Private",
-    "website_domain": "merriam-webster.com",
+    "website_domain": "christushealth.org",
     "system": null
    },
-   "version": 1,
-   "status": "held",
+   "version": 2,
+   "status": "published",
    "eligibility": {
-    "free_care_max_fpl": null,
+    "free_care_max_fpl": {
+     "value": "300",
+     "layer": "documented",
+     "quote": "You may even get free care if your family income is less than 300% of the Federal Poverty Level.",
+     "source_id": "summary-31155357c793f917",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "discount_tiers": null,
     "asset_test": null,
     "residency": null,
@@ -8381,21 +8528,777 @@
    },
    "sources": [
     {
-     "id": "billing-bcd8d22796db0c50",
+     "id": "fap-77badaaee12a6356",
      "kind": "hospital_web",
-     "url": "https://www.merriam-webster.com/thesaurus/BILLING?pronunciation=&lang=en_us&dir=f&file=flout001",
-     "title": "BILLING Synonyms: 122 Similar and Opposite Words | Merriam-Webster Thesaurus",
-     "fetched_on": "2026-10-10",
-     "sha256": "bcd8d22796db0c506cda5eff66b4ceedbe6e2246df9f1b7b0b01639dc4c9a9fc",
+     "url": "https://www.christushealth.org/plan-care/bill-pay/financial-assistance",
+     "title": "Financial Assistance",
+     "fetched_on": "2026-10-11",
+     "sha256": "77badaaee12a635602f87efd0e6999d9544d0ff3da28bd8b833c3b03695310b4",
      "effective_date": null
     },
     {
-     "id": "billing-c1bfb07d95cda358",
+     "id": "application-6ee205a8f6c645e2",
      "kind": "hospital_web",
-     "url": "https://www.merriam-webster.com/dictionary/billing?pronunciation=&amp%3Blang=en_us&amp%3Bdir=i&amp%3Bfile=impute01",
-     "title": "billing",
-     "fetched_on": "2026-10-10",
-     "sha256": "c1bfb07d95cda358e487158ba51b4d6d491fddf3fc177b3c1f70817386b1924f",
+     "url": "https://www.christushealth.org/-/media/christus-health/plan-care/files/bill-pay/financial-assistance/financial-language-documents/2026/financial-assistance-application.ashx",
+     "title": "[PDF] Financial Assistance Application - CHRISTUS Health",
+     "fetched_on": "2026-10-11",
+     "sha256": "6ee205a8f6c645e2ff4a6a9c8fd6b8cf76b6a600c7f23a153806cc3fef89ef6c",
+     "effective_date": null
+    },
+    {
+     "id": "summary-31155357c793f917",
+     "kind": "hospital_web",
+     "url": "https://www.christushealth.org/-/media/christus-health/plan-care/files/bill-pay/financial-assistance/financial-language-documents/2021plainlanguagesummaryhospitalenglish.ashx",
+     "title": "2021PlainLanguageSummaryHospitalEnglish.pdf",
+     "fetched_on": "2026-10-11",
+     "sha256": "31155357c793f91762f9201842de2a38ce733a0882e545604ab433d99193c0bc",
+     "effective_date": null
+    },
+    {
+     "id": "billing-3fe3b8db024c48b3",
+     "kind": "hospital_web",
+     "url": "https://careers.christushealth.org/opportunity/job-apply/patient-financial-specialist-senior-billing-202908-2",
+     "title": "Patient Financial Specialist Senior - Billing at CHRISTUS Trinity Mother Frances Health System (202908) | CHRISTUS Health Careers",
+     "fetched_on": "2026-10-11",
+     "sha256": "3fe3b8db024c48b3baab93ebd87628e84d0535ebd02252b3e1992bc5bbefb105",
+     "effective_date": null
+    },
+    {
+     "id": "fap-e54c3caf2321087a",
+     "kind": "hospital_web",
+     "url": "https://www.christushealth.org/-/media/christus-health/plan-care/files/bill-pay/financial-assistance/providers-accepting-and-not-accepting/use/501rchristusstfrancescabrini.ashx",
+     "title": "List of Providers Accepting and Not Accepting Charity Care",
+     "fetched_on": "2026-10-11",
+     "sha256": "e54c3caf2321087a2a1f938092781996b2345e469c21fc34af448efb8ebbda15",
+     "effective_date": null
+    },
+    {
+     "id": "fap-70ff4bb54a382ed1",
+     "kind": "hospital_web",
+     "url": "https://www.christushealth.org/-/media/christus-health/plan-care/files/bill-pay/financial-assistance/providers-accepting-and-not-accepting/use/501r-christuschildrens.ashx",
+     "title": "List of Providers Accepting and Not Accepting Charity Care",
+     "fetched_on": "2026-10-11",
+     "sha256": "70ff4bb54a382ed1758693a4a7213c69c6784d0717e72f5fa3e54fa4147aba53",
+     "effective_date": null
+    },
+    {
+     "id": "fap-20c93a0efcfa0448",
+     "kind": "hospital_web",
+     "url": "https://www.christushealth.org/-/media/christus-health/plan-care/files/bill-pay/financial-assistance/providers-accepting-and-not-accepting/use/501rchristuscoushatta.ashx",
+     "title": "List of Providers Accepting and Not Accepting Charity Care",
+     "fetched_on": "2026-10-11",
+     "sha256": "20c93a0efcfa04481515843113203b696d90f577ad8c86286811894d796347de",
+     "effective_date": null
+    },
+    {
+     "id": "fap-eb6cd7c7fd6e7f56",
+     "kind": "hospital_web",
+     "url": "https://www.christushealth.org/-/media/christus-health/plan-care/files/bill-pay/financial-assistance/providers-accepting-and-not-accepting/use/501rchristusgoodshepherdlongview.ashx",
+     "title": "List of Providers Accepting and Not Accepting Charity Care",
+     "fetched_on": "2026-10-11",
+     "sha256": "eb6cd7c7fd6e7f56172f37277912f2f004ed79950603ad40d935d8cec6f2d111",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null
+  },
+  {
+   "hospital": {
+    "ccn": "450370",
+    "name": "COLUMBUS COMMUNITY HOSPITAL",
+    "city": "COLUMBUS",
+    "state": "TX",
+    "zip": "78934",
+    "phone": "979-732-2371",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "columbusch.com",
+    "system": null
+   },
+   "version": 1,
+   "status": "published",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "300",
+     "layer": "documented",
+     "quote": "Patients who are uninsured and whose family income is at or below 300% of the FPG are eligible to receive care at a fully discounted rate.",
+     "source_id": "fap-b30366d70a71ed87",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": null,
+    "asset_test": null,
+    "residency": null,
+    "insured_patients_covered": null,
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": null,
+    "documents_reported": null,
+    "submit_methods": null,
+    "window_days_from_first_bill": null,
+    "decision_days": null,
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "979-732-2371",
+     "layer": "documented",
+     "quote": "You may also call 979-732-2371 and request the eligibility department",
+     "source_id": "fap-b30366d70a71ed87",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": null,
+    "languages": null
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null
+   },
+   "sources": [
+    {
+     "id": "fap-b30366d70a71ed87",
+     "kind": "hospital_web",
+     "url": "https://columbusch.com/wp-content/uploads/2023/12/Charity-and-Financial-Assistance-Policy.pdf",
+     "title": "[PDF] Charity Care and Financial Assistance Policy",
+     "fetched_on": "2026-10-11",
+     "sha256": "b30366d70a71ed87e94e1a64e4a65ae0aa0a4ec5a8f50b8ade63ab78cb1ae80f",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null
+  },
+  {
+   "hospital": {
+    "ccn": "450788",
+    "name": "CORPUS CHRISTI MEDICAL CENTER,THE",
+    "city": "CORPUS CHRISTI",
+    "state": "TX",
+    "zip": "78411",
+    "phone": "361-761-1501",
+    "ownership": "Voluntary non-profit - Other",
+    "website_domain": "ccmedicalcenter.com",
+    "system": null
+   },
+   "version": 1,
+   "status": "held",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "In most cases, this will apply to patients who fall between 0 - 200% of the [Federal Poverty Level](https://aspe.hhs.gov/topics/poverty-economic-mobility/poverty-guidelines). Federal Poverty Levels based on total household income, with sufficient supporting documentation provided by the patient, will have a 100% Charity discount processed.",
+     "source_id": "fap-9a30a5f7d7151fb1",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": null,
+    "asset_test": null,
+    "residency": null,
+    "insured_patients_covered": null,
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "proof_of_income",
+      "tax_return"
+     ],
+     "layer": "documented",
+     "quote": "the preferred income documentation will be the most current year's Federal Tax Return. Any patient/responsible party unable to provide his/her most recent Federal Tax Return may provide two pieces of supporting documentation from the following list to meet this income verification requirement:",
+     "source_id": "fap-9a30a5f7d7151fb1",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": null,
+    "window_days_from_first_bill": null,
+    "decision_days": null,
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": null,
+    "hours": null,
+    "languages": null
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null
+   },
+   "sources": [
+    {
+     "id": "fap-9a30a5f7d7151fb1",
+     "kind": "hospital_web",
+     "url": "https://www.ccmedicalcenter.com/patient-resources/patient-financial-resources/financial-assistance",
+     "title": "Financial Assistance | Corpus Christi Medical Center",
+     "fetched_on": "2026-10-11",
+     "sha256": "9a30a5f7d7151fb1bbbb21dc89203d88dc41c5a2c638418841f6ada0370d9eaa",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null
+  },
+  {
+   "hospital": {
+    "ccn": "450755",
+    "name": "COVENANT HOSPITAL LEVELLAND",
+    "city": "LEVELLAND",
+    "state": "TX",
+    "zip": "79336",
+    "phone": "806-894-4963",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "providence.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "published",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "If... Then ... Annual family income, adjusted for family size, is at or below 200% of the current FPL guidelines, The patient is determined to be financially indigent and qualifies for financial assistance 100% write-off on patient responsibility amounts for Eligible Services.",
+     "source_id": "fap-e187f4f7be7672f4",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": null,
+    "asset_test": null,
+    "residency": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Financial assistance is available to both uninsured and insured patients if they meet the requirements of this policy.",
+     "source_id": "fap-e187f4f7be7672f4",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": {
+     "value": [
+      "Supplemental Nutrition Assistance Program (SNAP)"
+     ],
+     "layer": "documented",
+     "quote": "\u2022 Denied inpatient stays \u2022 Denied inpatient days of care \u2022 Non-covered services \u2022 Prior Authorization Request Denials \u2022 Denials due to restricted coverage For patients who participate in state funded FPL-qualified public assistance programs (e.g., Supplemental Nutrition Assistance Program (SNAP);",
+     "source_id": "fap-e187f4f7be7672f4",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": null,
+    "documents_reported": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": ""
+      },
+      {
+       "kind": "in_person",
+       "detail": ""
+      },
+      {
+       "kind": "portal",
+       "detail": "www.providence.org/financialhelp"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Patients may request and submit a Financial Assistance Application, which is free of charge and available at the SJH facility, or by the following means: advising patient financial services staff at or prior to the time of discharge that assistance is requested, by mail, or by visiting www.providence.org/financialhelp",
+     "source_id": "fap-e187f4f7be7672f4",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": {
+     "value": 240,
+     "layer": "documented",
+     "quote": "The FAP-Eligible Time Period for (i) hospital services is the 240-day period of time; and (ii) clinic services is the 90-day period, in each case that a patient has to submit a Financial Assistance Application to SJH. The timing begins on the date the first post-discharge billing statement is provided to the patient.",
+     "source_id": "fap-e187f4f7be7672f4",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days": {
+     "value": 30,
+     "layer": "documented",
+     "quote": "Patients will receive notification of FAP eligibility determination within 30 days of submission of the completed Financial Assistance Application and necessary documentation.",
+     "source_id": "fap-e187f4f7be7672f4",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": null,
+    "hours": null,
+    "languages": null
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null
+   },
+   "sources": [
+    {
+     "id": "fap-e187f4f7be7672f4",
+     "kind": "hospital_web",
+     "url": "https://www.providence.org/-/media/project/psjh/shared/files/financial-assistance/policy/covenant/tx/fa-policy-english.pdf?rev=47cb071f6cf4468091f26f4c1cd92501",
+     "title": "SJH Texas Financial Assistance (Charity Care) Policy",
+     "fetched_on": "2026-10-11",
+     "sha256": "e187f4f7be7672f4644f0f27db03ce9408d81f520a1682cf832f76e773468143",
+     "effective_date": null
+    },
+    {
+     "id": "summary-3ff5132e9bf794a7",
+     "kind": "hospital_web",
+     "url": "https://www.providence.org/-/media/project/psjh/shared/files/financial-assistance/pls/tx/plain-language-summary-texas-english.pdf?rev=c28913a94c9c4f4993f53026d195638f",
+     "title": "Financial Assistance Policy \u2013 Plain Language Summary",
+     "fetched_on": "2026-10-11",
+     "sha256": "3ff5132e9bf794a76831e0336ddea4ac3b0befd08810b08022ffc26168900e3b",
+     "effective_date": null
+    },
+    {
+     "id": "summary-3ff5132e9bf794a7",
+     "kind": "hospital_web",
+     "url": "https://www.providence.org/-/media/project/psjh/shared/files/financial-assistance/pls/tx/plain-language-summary-texas-english.pdf?rev=230236cd813d4b49a7b717784695709f",
+     "title": "[PDF] Financial Assistance Policy \u2013 Plain Language Summary - Texas",
+     "fetched_on": "2026-10-11",
+     "sha256": "3ff5132e9bf794a76831e0336ddea4ac3b0befd08810b08022ffc26168900e3b",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null
+  },
+  {
+   "hospital": {
+    "ccn": "450539",
+    "name": "COVENANT HOSPITAL PLAINVIEW",
+    "city": "PLAINVIEW",
+    "state": "TX",
+    "zip": "79072",
+    "phone": "806-296-5531",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "covenanthealth.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "published",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "175",
+     "layer": "documented",
+     "quote": "If... Then ... Annual gross income is 175% or less of the current FPL guidelines, The patient is determined to be financially indigent, and qualifies for Financial Assistance 100% write-off.",
+     "source_id": "fap-7d7a00595db1dc62",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": null,
+    "asset_test": null,
+    "residency": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "This includes people who do not have health insurance and are unable to pay their hospital bill, as well as patients who do have insurance but are unable to pay the portion of their bill that insurance does not cover.",
+     "source_id": "fap-5d206c16541252e9",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": {
+     "value": [
+      "Medicaid"
+     ],
+     "layer": "documented",
+     "quote": "Other Special Circumstances: Patients who are eligible for FPL-qualified programs such as Medicaid, Medi-Cal, and other government-sponsored low-income assistance programs, are deemed to be indigent.",
+     "source_id": "fap-7d7a00595db1dc62",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "proof_of_income",
+      "tax_return",
+      "pay_stubs",
+      "social_security_letter"
+     ],
+     "layer": "documented",
+     "quote": "\u25a1 Provide us information about your family\u2019s gross monthly income (income before taxes and deductions) to include pay stubs, W-2 forms, tax returns, social security awards letters, etc (see financial assistance application Income Section for more examples)",
+     "source_id": "application-9ef47672c7568ffa",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "Mail completed application with all documentation to: Covenant Health, Attn: Financial Assistance, P.O. Box 1201, Lubbock, TX 79408."
+      },
+      {
+       "kind": "in_person",
+       "detail": "To submit your completed application in person: Provide to a representative in the hospital admitting department."
+      }
+     ],
+     "layer": "documented",
+     "quote": "Mail completed application with all documentation to: Covenant Health, Attn: Financial Assistance, P.O. Box 1201, Lubbock, TX 79408. Be sure to keep a copy for yourself. To submit your completed application in person: Provide to a representative in the hospital admitting department.",
+     "source_id": "application-9ef47672c7568ffa",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": null,
+    "decision_days": {
+     "value": 30,
+     "layer": "documented",
+     "quote": "Within 30 days after we receive your completed application and documentation, we will notify you if you qualify for assistance.",
+     "source_id": "application-9ef47672c7568ffa",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "(806) 725-5773",
+     "layer": "documented",
+     "quote": "By Mail: Call a financial counselor at (806) 725-5773 to request an application be mailed to you.",
+     "source_id": "fap-5d206c16541252e9",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": null,
+    "languages": {
+     "value": [
+      "English",
+      "Spanish"
+     ],
+     "layer": "documented",
+     "quote": "In addition to English, this brochure, the Financial Assistance Policy and the Covenant Health Financial Assistance Application form are available in other languages, including Spanish.",
+     "source_id": "fap-5d206c16541252e9",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    }
+   },
+   "coverage": {
+    "facilities": {
+     "value": [
+      "Covenant Hospital Plainview"
+     ],
+     "layer": "documented",
+     "quote": "Covenant Hospital Plainview 2601 Dimmit Rd., Plainview, TX 79072 covenanthealth.org",
+     "source_id": "fap-5d206c16541252e9",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "provider_list_url": null
+   },
+   "sources": [
+    {
+     "id": "fap-5d206c16541252e9",
+     "kind": "hospital_web",
+     "url": "https://grace.covenanthealth.org/-/media/project/psjh/covenant/for-patients/pdfs/financial-assistance-brochure-sjh-texas-english-.pdf?rev=354f714cdd8d42f88a02bb6a7f71b0e7&hash=669488BAF5FC250DE90B88A41EA75E55",
+     "title": "Financial Assistance Program - Covenant Health",
+     "fetched_on": "2026-10-11",
+     "sha256": "5d206c16541252e91c67356191a27279fe5ef13eecddaa9b512d262545984819",
+     "effective_date": null
+    },
+    {
+     "id": "application-9ef47672c7568ffa",
+     "kind": "hospital_web",
+     "url": "https://grace.covenanthealth.org/-/media/project/psjh/covenant/for-patients/pdfs/financial-assistance-application-sjh-txenglish.pdf?rev=f9c5996a18fd4347a01996553fc2f5ce&hash=B99972C263343AF2031C6ED8A0A67A1B",
+     "title": "Charity Care/Financial Assistance Application Form Instructions",
+     "fetched_on": "2026-10-11",
+     "sha256": "9ef47672c7568ffabbef4ae800e5a39c811929ca828b5f5430b19be8bf8eba66",
+     "effective_date": null
+    },
+    {
+     "id": "billing-ff6d82d1de2a6ff4",
+     "kind": "hospital_web",
+     "url": "https://www.covenanthealth.org/patients-and-visitors/for-patients/billing-and-payments/pricing/pricing-transparency-hobbs-hospital",
+     "title": "Get a Price Estimate | Providence",
+     "fetched_on": "2026-10-11",
+     "sha256": "ff6d82d1de2a6ff43637fcd6c3d53fb93303669308a2be79684bf228f5801971",
+     "effective_date": null
+    },
+    {
+     "id": "fap-7d7a00595db1dc62",
+     "kind": "hospital_web",
+     "url": "https://grace.covenanthealth.org/-/media/project/psjh/covenant/for-patients/pdfs/financialassistancepolicysjhtxenglish1252020.pdf?rev=d7657f332a5142e084df981f66631529&hash=FB36FDD07EEE435BFFCDE7D86FBB848B",
+     "title": "SJH Financial Assistance (Charity Care) Policy - Grace Clinic",
+     "fetched_on": "2026-10-11",
+     "sha256": "7d7a00595db1dc620a9078c2cadc0dcf7d7b9e7311276d9feee42626ea9e9d7f",
+     "effective_date": null
+    },
+    {
+     "id": "billing-9a2fb58c0479ee47",
+     "kind": "hospital_web",
+     "url": "https://www.covenanthealth.org/billing-support/help-paying-your-bill",
+     "title": "Learn More About Financial Assistance",
+     "fetched_on": "2026-10-11",
+     "sha256": "9a2fb58c0479ee47a923c6bc0010f79db47292b82d3250f1be51b8428e2ca0d9",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null
+  },
+  {
+   "hospital": {
+    "ccn": "450040",
+    "name": "COVENANT MEDICAL CENTER",
+    "city": "LUBBOCK",
+    "state": "TX",
+    "zip": "79410",
+    "phone": "806-725-4431",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "covenanthealth.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "published",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "175",
+     "layer": "documented",
+     "quote": "If... Then ... Annual gross income is 175% or less of the current FPL guidelines, The patient is determined to be financially indigent, and qualifies for Financial Assistance 100% write-off.",
+     "source_id": "fap-7d7a00595db1dc62",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": null,
+    "asset_test": null,
+    "residency": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "This includes people who do not have health insurance and are unable to pay their hospital bill, as well as patients who do have insurance but are unable to pay the portion of their bill that insurance does not cover.",
+     "source_id": "fap-5d206c16541252e9",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": {
+     "value": [
+      "Medicaid"
+     ],
+     "layer": "documented",
+     "quote": "Other Special Circumstances: Patients who are eligible for FPL-qualified programs such as Medicaid, Medi-Cal, and other government-sponsored low-income assistance programs, are deemed to be indigent.",
+     "source_id": "fap-7d7a00595db1dc62",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "proof_of_income",
+      "tax_return",
+      "pay_stubs",
+      "social_security_letter"
+     ],
+     "layer": "documented",
+     "quote": "\u25a1 Provide us information about your family\u2019s gross monthly income (income before taxes and deductions) to include pay stubs, W-2 forms, tax returns, social security awards letters, etc (see financial assistance application Income Section for more examples)",
+     "source_id": "application-9ef47672c7568ffa",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "Mail completed application with all documentation to: Covenant Health, Attn: Financial Assistance, P.O. Box 1201, Lubbock, TX 79408."
+      },
+      {
+       "kind": "in_person",
+       "detail": "To submit your completed application in person: Provide to a representative in the hospital admitting department."
+      }
+     ],
+     "layer": "documented",
+     "quote": "Mail completed application with all documentation to: Covenant Health, Attn: Financial Assistance, P.O. Box 1201, Lubbock, TX 79408. Be sure to keep a copy for yourself. To submit your completed application in person: Provide to a representative in the hospital admitting department.",
+     "source_id": "application-9ef47672c7568ffa",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": null,
+    "decision_days": {
+     "value": 30,
+     "layer": "documented",
+     "quote": "We will notify you of the final determination of eligibility and appeal rights, if applicable, within 30 days of receiving a complete financial assistance application, including documentation of income.",
+     "source_id": "application-9ef47672c7568ffa",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "(806) 725-5773",
+     "layer": "documented",
+     "quote": "By Mail: Call a financial counselor at (806) 725-5773 to request an application be mailed to you.",
+     "source_id": "fap-5d206c16541252e9",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": null,
+    "languages": {
+     "value": [
+      "English",
+      "Spanish"
+     ],
+     "layer": "documented",
+     "quote": "In addition to English, this brochure, the Financial Assistance Policy and the Covenant Health Financial Assistance Application form are available in other languages, including Spanish.",
+     "source_id": "fap-5d206c16541252e9",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    }
+   },
+   "coverage": {
+    "facilities": {
+     "value": [
+      "Covenant Medical Center",
+      "Covenant Hospital Levelland",
+      "Covenant Hospital Plainview",
+      "Covenant Children\u2019s Hospital",
+      "Covenant Specialty Hospital"
+     ],
+     "layer": "documented",
+     "quote": "Covenant Medical Center 3615 19th St., Lubbock, TX 79410 covenanthealth.org Covenant Hospital Levelland 1900 College Ave., Levelland, TX 79336 covenanthealth.org Covenant Hospital Plainview 2601 Dimmit Rd., Plainview, TX 79072 covenanthealth.org Covenant Children\u2019s Hospital 4015 22nd Pl., Lubbock, TX 79410 covenantchildrens.org Covenant Specialty Hospital 3815 20th St. Lubbock, TX 79410 covenanthealth.org",
+     "source_id": "fap-5d206c16541252e9",
+     "checked_on": "2026-10-11",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "provider_list_url": null
+   },
+   "sources": [
+    {
+     "id": "fap-5d206c16541252e9",
+     "kind": "hospital_web",
+     "url": "https://grace.covenanthealth.org/-/media/project/psjh/covenant/for-patients/pdfs/financial-assistance-brochure-sjh-texas-english-.pdf?rev=354f714cdd8d42f88a02bb6a7f71b0e7&hash=669488BAF5FC250DE90B88A41EA75E55",
+     "title": "Financial Assistance Program - Covenant Health",
+     "fetched_on": "2026-10-11",
+     "sha256": "5d206c16541252e91c67356191a27279fe5ef13eecddaa9b512d262545984819",
+     "effective_date": null
+    },
+    {
+     "id": "application-9ef47672c7568ffa",
+     "kind": "hospital_web",
+     "url": "https://grace.covenanthealth.org/-/media/project/psjh/covenant/for-patients/pdfs/financial-assistance-application-sjh-txenglish.pdf?rev=f9c5996a18fd4347a01996553fc2f5ce&hash=B99972C263343AF2031C6ED8A0A67A1B",
+     "title": "Charity Care/Financial Assistance Application Form Instructions",
+     "fetched_on": "2026-10-11",
+     "sha256": "9ef47672c7568ffabbef4ae800e5a39c811929ca828b5f5430b19be8bf8eba66",
+     "effective_date": null
+    },
+    {
+     "id": "billing-e917ff286afa24b8",
+     "kind": "hospital_web",
+     "url": "https://www.covenanthealth.org/patients-and-visitors/for-patients/billing-and-payments/online-bill-pay",
+     "title": "Find Billing Support That's Right for You",
+     "fetched_on": "2026-10-11",
+     "sha256": "e917ff286afa24b8e54ada716f70403c5c1cfa034fec5797fde58e917e232c8c",
+     "effective_date": null
+    },
+    {
+     "id": "fap-7d7a00595db1dc62",
+     "kind": "hospital_web",
+     "url": "https://grace.covenanthealth.org/-/media/project/psjh/covenant/for-patients/pdfs/financialassistancepolicysjhtxenglish1252020.pdf?rev=d7657f332a5142e084df981f66631529&hash=FB36FDD07EEE435BFFCDE7D86FBB848B",
+     "title": "SJH Financial Assistance (Charity Care) Policy - Grace Clinic",
+     "fetched_on": "2026-10-11",
+     "sha256": "7d7a00595db1dc620a9078c2cadc0dcf7d7b9e7311276d9feee42626ea9e9d7f",
+     "effective_date": null
+    },
+    {
+     "id": "billing-9a2fb58c0479ee47",
+     "kind": "hospital_web",
+     "url": "https://www.covenanthealth.org/billing-support/help-paying-your-bill",
+     "title": "Financial Assistance",
+     "fetched_on": "2026-10-11",
+     "sha256": "9a2fb58c0479ee47a923c6bc0010f79db47292b82d3250f1be51b8428e2ca0d9",
+     "effective_date": null
+    },
+    {
+     "id": "billing-bc23a3669c6f0c73",
+     "kind": "hospital_web",
+     "url": "https://www.covenanthealth.org/billing-support",
+     "title": "Online Bill Pay & Financial Assistance",
+     "fetched_on": "2026-10-11",
+     "sha256": "bc23a3669c6f0c73af3bb619a3d3074bed802a93d22e7be813927900f05acf30",
      "effective_date": null
     }
    ],
