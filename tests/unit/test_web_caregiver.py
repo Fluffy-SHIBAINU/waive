@@ -45,8 +45,12 @@ def test_create_case_shows_both_links_and_review_works():
         r'<a href="https://www\.example\.org[^"]*" rel="noopener noreferrer"', corrected.text
     )
 
+    # Phase 9.3: approving leads to the "Your form and reminders" step, not back to the review.
     approved = client.post(f"{caregiver}/approve", follow_redirects=True)
-    assert "Approved" in approved.text and "Download the packet" in approved.text
+    assert str(approved.url).endswith(f"{caregiver}/form")
+    assert "Your form and reminders" in approved.text and "Download the packet" in approved.text
+    review = client.get(caregiver).text
+    assert "Approved" in review and "Download the packet" in review
 
     pdf = client.get(f"{caregiver}/packet.pdf")
     assert pdf.status_code == 200 and pdf.content[:5] == b"%PDF-"

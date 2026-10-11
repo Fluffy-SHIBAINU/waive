@@ -57,6 +57,7 @@ def flow_links(token: str, *, full: bool) -> dict[str, str]:
             review=base,
             correct=f"{base}/correct",
             approve=f"{base}/approve",
+            form=f"{base}/form",
             delete=f"{base}/delete",
             packet=f"{base}/packet.pdf",
             reminders=f"{base}/reminders.ics",

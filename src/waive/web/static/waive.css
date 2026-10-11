@@ -34,6 +34,11 @@ a { color: var(--accent); }
 /* A label styled as the big button: it opens the camera for the file input before it. */
 label.btn { cursor: pointer; box-sizing: border-box; }
 .visually-hidden:focus + label.btn { outline: 3px solid var(--accent); outline-offset: 3px; }
+/* A button that opens what is folded under it ("Fix something"); no script needed. */
+summary.btn { list-style: none; }
+summary.btn::-webkit-details-marker { display: none; }
+details { margin: 16px 0; }
+details[open] > summary.btn { margin-bottom: 16px; }
 /* Metrics page (task 7.7) */
 .coverage { width: 100%; border-collapse: collapse; font-size: 18px; margin-bottom: 24px; }
 .coverage th, .coverage td { text-align: left; padding: 10px 6px; border-bottom: 1px solid var(--line); }
