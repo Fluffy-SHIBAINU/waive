@@ -1,5 +1,15 @@
-"""Senior flow: camera → read-back → two questions → result (spec §9, §11)."""
+"""The steps both links share: camera → read-back → two questions → result (spec §9, §11).
 
+Phase 9: every step has one handler, registered under both links. The limited link (/s/{token})
+only adds photos and sees the result; the full link (/c/{token}) runs the same steps and, in
+routes_caregiver, the check, approve and delete pages. `Flow` says which link a request came in
+on, and a token is always checked against that link's scope, so a limited token is refused
+everywhere under /c/."""
+
+import re
+from collections.abc import Iterator
+from contextlib import contextmanager
+from dataclasses import dataclass
 from decimal import Decimal
 
 from fastapi import APIRouter, File, Form, Request, UploadFile
@@ -8,13 +18,17 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 from waive.ai.client import AIOutputError, ZDRRequired
 from waive.cases.images import ImageError
 from waive.cases.service import (
+    CaseContext,
+    CaseView,
     authorize,
     confirm_bill,
     set_household,
+    set_income,
     submit_bill,
     submit_income_letter,
     view,
 )
+from waive.cases.vault import Scope
 from waive.db import session_scope
 from waive.learning.gaps import answer_gap_ask, pending_gap_ask
 from waive.learning.intake import ingest_paper
@@ -23,10 +37,13 @@ from waive.web.deps import deps_of, render
 router = APIRouter()
 
 
-def senior_links(token: str) -> dict[str, str]:
-    base = f"/s/{token}"
-    return {
-        "start": base,
+def flow_links(token: str, *, full: bool) -> dict[str, str]:
+    """Where each step lives for one link. Only the full link has the pages after the result."""
+    base = f"/c/{token}" if full else f"/s/{token}"
+    links = {
+        # The photo step. The limited link's own address is its photo step (and its result page
+        # once there is a result); the full link's own address is the check page.
+        "start": f"{base}/bill" if full else base,
         "bill": f"{base}/bill",
         "confirm": f"{base}/confirm",
         "household": f"{base}/household",
@@ -35,6 +52,35 @@ def senior_links(token: str) -> dict[str, str]:
         "paper": f"{base}/paper",
         "skip": f"{base}/paper/skip",
     }
+    if full:
+        links.update(
+            review=base,
+            correct=f"{base}/correct",
+            approve=f"{base}/approve",
+            delete=f"{base}/delete",
+            packet=f"{base}/packet.pdf",
+            reminders=f"{base}/reminders.ics",
+            outcome=f"{base}/outcome",
+            check_in=f"{base}/check-in",
+            relink=f"{base}/relink",
+        )
+    return links
+
+
+@dataclass(frozen=True)
+class Flow:
+    """The link a request came in on."""
+
+    token: str
+    full: bool
+
+    @property
+    def scope(self) -> Scope:
+        return "caregiver" if self.full else "senior"
+
+    @property
+    def links(self) -> dict[str, str]:
+        return flow_links(self.token, full=self.full)
 
 
 def money(value: Decimal | None) -> str:
@@ -45,200 +91,232 @@ def long_date(value) -> str:
     return "" if value is None else f"{value:%B} {value.day}, {value:%Y}"
 
 
-# Once the caregiver approved, the senior link only shows the result (and still takes papers from
-# the hospital): a forwarded link or a cached, auto-submitting form must not rewrite the packet.
+# Digits with an optional decimal part. Decimal() alone also accepts "NaN", "Infinity" and
+# exponents ("1e9999999"), none of which may reach the sealed case or the percent-of-poverty sums.
+_PLAIN_NUMBER = re.compile(r"-?\d{1,12}(\.\d*)?")
+
+
+def to_decimal(value: str) -> Decimal | None:
+    """A typed dollar amount ("$1,900.50"), or None when it is empty or not a plain number."""
+    text = value.replace("$", "").replace(",", "").strip()
+    if not _PLAIN_NUMBER.fullmatch(text):
+        return None
+    return Decimal(text)
+
+
+# Why a step stopped short: (what the limited link hears before "Your helper will take it from
+# here", what the full link hears). Whoever holds the full link is the helper, so that page
+# points at the check page, where every detail can be typed in.
+WAIT: dict[str, tuple[str, str]] = {
+    "off": ("reading is switched off right now", "Reading photos is switched off right now."),
+    "setup": ("your helper needs to finish setting things up", "Reading photos is not set up yet."),
+    "unread": ("your helper will read the bill", "We could not read that photo."),
+    "fix": ("your helper will fix the details", "You can fix the details yourself."),
+    "unfinished": ("your helper will finish the check", "We cannot finish the check yet."),
+}
+
+
+@dataclass
+class Step:
+    """One request on one case: the link it came in on and the case that link opens."""
+
+    request: Request
+    flow: Flow
+    ctx: CaseContext
+    case_id: str
+
+    def view(self) -> CaseView:
+        return view(self.ctx, self.case_id)
+
+    def page(self, name: str, shown: CaseView | None = None, **extra) -> HTMLResponse:
+        return render(
+            self.request,
+            name,
+            links=self.flow.links,
+            full=self.flow.full,
+            case=shown or self.view(),
+            money=money,
+            long_date=long_date,
+            **extra,
+        )
+
+    def wait(self, why: str, shown: CaseView | None = None) -> HTMLResponse:
+        return self.page("senior_wait.html", shown, reason=WAIT[why][1 if self.flow.full else 0])
+
+    def to(self, link: str, suffix: str = "") -> RedirectResponse:
+        return RedirectResponse(self.flow.links[link] + suffix, status_code=303)
+
+
+@contextmanager
+def opened(request: Request, token: str) -> Iterator[Step]:
+    """Check the token against the scope of the link it was used on and open the case's
+    session; a token that is invalid, revoked or too weak for this link raises PermissionError
+    (the 403 page) before any handler code runs."""
+    deps = deps_of(request)
+    flow = Flow(token, full=request.url.path.startswith("/c/"))
+    with session_scope(deps.engine) as session:
+        ctx = deps.context(session)
+        row = authorize(ctx, token, flow.scope)
+        yield Step(request, flow, ctx, row.id)
+
+
+def both(method: str, path: str, **options):
+    """Register one handler under both links: /s/{token}{path} and /c/{token}{path}."""
+
+    def register(handler):
+        for prefix in ("/s", "/c"):
+            router.add_api_route(f"{prefix}/{{token}}{path}", handler, methods=[method], **options)
+        return handler
+
+    return register
+
+
+# Once the case is approved, the steps only show the result (and still take papers from the
+# hospital): a forwarded link or a cached, auto-submitting form must not rewrite the packet. The
+# full link changes an approved case through the correction form on its check page.
 LOCKED_STATUSES = frozenset({"approved"})
 
 
-def _locked(shown) -> bool:
+def _locked(shown: CaseView) -> bool:
     return shown.status in LOCKED_STATUSES
-
-
-def _to_result(token: str) -> RedirectResponse:
-    return RedirectResponse(senior_links(token)["result"], status_code=303)
-
-
-def _page(request: Request, name: str, token: str, shown, **extra) -> HTMLResponse:
-    return render(
-        request,
-        name,
-        links=senior_links(token),
-        case=shown,
-        money=money,
-        long_date=long_date,
-        **extra,
-    )
 
 
 @router.get("/s/{token}", response_class=HTMLResponse)
 def senior_start(request: Request, token: str) -> HTMLResponse:
-    deps = deps_of(request)
-    with session_scope(deps.engine) as session:
-        ctx = deps.context(session)
-        row = authorize(ctx, token, "senior")
-        shown = view(ctx, row.id)
+    """The limited link's own address: the photo step, or the result once there is one."""
+    with opened(request, token) as case:
+        shown = case.view()
         if shown.tier is not None and shown.status in {"evaluated", "approved"}:
-            return _page(
-                request, "senior_result.html", token, shown, ask=pending_gap_ask(ctx, row.id)
+            return case.page(
+                "senior_result.html", shown, ask=pending_gap_ask(case.ctx, case.case_id)
             )
-        return _page(request, "senior_start.html", token, shown)
+        return case.page("senior_start.html", shown)
 
 
-@router.post("/s/{token}/bill", response_class=HTMLResponse)
+@both("GET", "/bill", response_class=HTMLResponse)
+def senior_bill_form(request: Request, token: str):
+    """The photo step by its own address (where a new case starts under the full link)."""
+    with opened(request, token) as case:
+        shown = case.view()
+        if _locked(shown):
+            return case.to("result")
+        return case.page("senior_start.html", shown)
+
+
+@both("POST", "/bill", response_class=HTMLResponse)
 async def senior_bill(
     request: Request,
     token: str,
     photo: UploadFile = File(...),  # noqa: B008
-) -> HTMLResponse:
-    deps = deps_of(request)
+):
     data = await photo.read()
-    with session_scope(deps.engine) as session:
-        ctx = deps.context(session)
-        row = authorize(ctx, token, "senior")
-        if _locked(view(ctx, row.id)):
-            return _to_result(token)
-        if deps.ai is None:
-            return _page(
-                request,
-                "senior_wait.html",
-                token,
-                view(ctx, row.id),
-                reason="reading is switched off right now",
-            )
+    with opened(request, token) as case:
+        if _locked(case.view()):
+            return case.to("result")
+        if case.ctx.ai is None:
+            return case.wait("off")
         try:
-            shown = submit_bill(ctx, row.id, data)
+            shown = submit_bill(case.ctx, case.case_id, data)
         except ImageError:
-            return _page(
-                request,
+            return case.page(
                 "senior_start.html",
-                token,
-                view(ctx, row.id),
                 problem="We could not read that photo. Please try again in good light.",
             )
         except ZDRRequired:
-            return _page(
-                request,
-                "senior_wait.html",
-                token,
-                view(ctx, row.id),
-                reason="your helper needs to finish setting things up",
-            )
+            return case.wait("setup")
         except AIOutputError:
             # A traceback here would reach uvicorn's log with the model's answer in it.
-            return _page(
-                request,
-                "senior_wait.html",
-                token,
-                view(ctx, row.id),
-                reason="your helper will read the bill",
-            )
-        return _page(request, "senior_readback.html", token, shown)
+            return case.wait("unread")
+        return case.page("senior_readback.html", shown)
 
 
-@router.post("/s/{token}/confirm")
+@both("POST", "/confirm")
 def senior_confirm(request: Request, token: str, answer: str = Form(...)):
-    deps = deps_of(request)
-    with session_scope(deps.engine) as session:
-        ctx = deps.context(session)
-        row = authorize(ctx, token, "senior")
-        if _locked(view(ctx, row.id)):
-            return _to_result(token)
+    with opened(request, token) as case:
+        if _locked(case.view()):
+            return case.to("result")
         if answer == "yes":
-            confirm_bill(ctx, row.id, {})
-            return RedirectResponse(senior_links(token)["household"], status_code=303)
-        return _page(
-            request,
-            "senior_wait.html",
-            token,
-            view(ctx, row.id),
-            reason="your helper will fix the details",
-        )
+            confirm_bill(case.ctx, case.case_id, {})
+            return case.to("household")
+        if case.flow.full:
+            # Whoever holds the full link fixes it on the check page, with the form open.
+            return case.to("review", "?fix=1#fix")
+        return case.wait("fix")
 
 
-@router.get("/s/{token}/household", response_class=HTMLResponse)
-def senior_household_form(request: Request, token: str) -> HTMLResponse:
-    deps = deps_of(request)
-    with session_scope(deps.engine) as session:
-        ctx = deps.context(session)
-        row = authorize(ctx, token, "senior")
-        shown = view(ctx, row.id)
+@both("GET", "/household", response_class=HTMLResponse)
+def senior_household_form(request: Request, token: str):
+    with opened(request, token) as case:
+        shown = case.view()
         if _locked(shown):
-            return _to_result(token)
-        return _page(request, "senior_household.html", token, shown)
+            return case.to("result")
+        return case.page("senior_household.html", shown)
 
 
-@router.post("/s/{token}/household")
+@both("POST", "/household")
 def senior_household(
     request: Request, token: str, size: int = Form(...), programs: str = Form("none")
 ):
-    deps = deps_of(request)
-    with session_scope(deps.engine) as session:
-        ctx = deps.context(session)
-        row = authorize(ctx, token, "senior")
-        shown = view(ctx, row.id)
+    with opened(request, token) as case:
+        shown = case.view()
         if _locked(shown):
-            return _to_result(token)
+            return case.to("result")
         chosen = () if programs == "none" else tuple(programs.split(","))
-        set_household(ctx, row.id, size, shown.annual_income, chosen)
-    return RedirectResponse(senior_links(token)["income"], status_code=303)
+        set_household(case.ctx, case.case_id, size, shown.annual_income, chosen)
+        return case.to("income")
 
 
-@router.get("/s/{token}/income", response_class=HTMLResponse)
-def senior_income_form(request: Request, token: str) -> HTMLResponse:
-    deps = deps_of(request)
-    with session_scope(deps.engine) as session:
-        ctx = deps.context(session)
-        row = authorize(ctx, token, "senior")
-        shown = view(ctx, row.id)
+@both("GET", "/income", response_class=HTMLResponse)
+def senior_income_form(request: Request, token: str):
+    with opened(request, token) as case:
+        shown = case.view()
         if _locked(shown):
-            return _to_result(token)
-        return _page(request, "senior_income.html", token, shown)
+            return case.to("result")
+        return case.page("senior_income.html", shown)
 
 
-@router.post("/s/{token}/income")
+@both("POST", "/income")
 async def senior_income(
     request: Request,
     token: str,
     photo: UploadFile | None = File(None),  # noqa: B008
     skip: str | None = Form(None),
+    monthly: str = Form(""),
 ):
-    deps = deps_of(request)
     data = await photo.read() if photo is not None and photo.filename else b""
-    with session_scope(deps.engine) as session:
-        ctx = deps.context(session)
-        row = authorize(ctx, token, "senior")
-        if _locked(view(ctx, row.id)):
-            return _to_result(token)
-        if data and deps.ai is not None:
-            try:
-                submit_income_letter(ctx, row.id, data)
-            except (ImageError, ZDRRequired, AIOutputError):
-                return _page(
-                    request,
+    with opened(request, token) as case:
+        if _locked(case.view()):
+            return case.to("result")
+        if case.flow.full and monthly.strip():
+            # One link, no helper to fill the income in later: the amount can be typed here.
+            amount = to_decimal(monthly)
+            if amount is None or amount < 0:
+                return case.page(
                     "senior_income.html",
-                    token,
-                    view(ctx, row.id),
-                    problem="We could not read that letter. You can skip this step.",
+                    problem="Please type the amount as a number, like 1900.",
                 )
-    return RedirectResponse(senior_links(token)["result"], status_code=303)
+            set_income(case.ctx, case.case_id, amount * 12)
+        elif data and case.ctx.ai is not None:
+            try:
+                submit_income_letter(case.ctx, case.case_id, data)
+            except (ImageError, ZDRRequired, AIOutputError):
+                problem = "We could not read that letter. You can skip this step."
+                if case.flow.full:
+                    problem = (
+                        "We could not read that letter. You can type the amount below, "
+                        "or skip this step."
+                    )
+                return case.page("senior_income.html", problem=problem)
+        return case.to("result")
 
 
-@router.get("/s/{token}/result", response_class=HTMLResponse)
+@both("GET", "/result", response_class=HTMLResponse)
 def senior_result(request: Request, token: str) -> HTMLResponse:
-    deps = deps_of(request)
-    with session_scope(deps.engine) as session:
-        ctx = deps.context(session)
-        row = authorize(ctx, token, "senior")
-        shown = view(ctx, row.id)
+    with opened(request, token) as case:
+        shown = case.view()
         if shown.tier is None:
-            return _page(
-                request,
-                "senior_wait.html",
-                token,
-                shown,
-                reason="your helper will finish the check",
-            )
-        return _page(request, "senior_result.html", token, shown, ask=pending_gap_ask(ctx, row.id))
+            return case.wait("unfinished", shown)
+        return case.page("senior_result.html", shown, ask=pending_gap_ask(case.ctx, case.case_id))
 
 
 @router.post("/s/{token}/paper", response_class=HTMLResponse)
@@ -247,45 +325,24 @@ async def senior_paper(
     token: str,
     photo: UploadFile = File(...),  # noqa: B008
 ) -> HTMLResponse:
-    deps = deps_of(request)
     data = await photo.read()
-    with session_scope(deps.engine) as session:
-        ctx = deps.context(session)
-        row = authorize(ctx, token, "senior")
-        if deps.ai is None:
-            return _page(
-                request,
-                "senior_wait.html",
-                token,
-                view(ctx, row.id),
-                reason="reading is switched off right now",
-            )
+    with opened(request, token) as case:
+        if case.ctx.ai is None:
+            return case.wait("off")
         try:
-            result = ingest_paper(ctx, row.id, data)
+            result = ingest_paper(case.ctx, case.case_id, data)
         except ImageError:
-            return _page(
-                request,
+            return case.page(
                 "senior_paper.html",
-                token,
-                view(ctx, row.id),
                 message="We could not read that photo. Please try again in good light.",
             )
         except ZDRRequired:
-            return _page(
-                request,
-                "senior_wait.html",
-                token,
-                view(ctx, row.id),
-                reason="your helper needs to finish setting things up",
-            )
-        return _page(request, "senior_paper.html", token, view(ctx, row.id), message=result.message)
+            return case.wait("setup")
+        return case.page("senior_paper.html", message=result.message)
 
 
-@router.post("/s/{token}/paper/skip")
+@both("POST", "/paper/skip")
 def senior_paper_skip(request: Request, token: str):
-    deps = deps_of(request)
-    with session_scope(deps.engine) as session:
-        ctx = deps.context(session)
-        row = authorize(ctx, token, "senior")
-        answer_gap_ask(ctx, row.id, "skipped")
-    return RedirectResponse(senior_links(token)["result"], status_code=303)
+    with opened(request, token) as case:
+        answer_gap_ask(case.ctx, case.case_id, "skipped")
+        return case.to("result")

@@ -1,7 +1,8 @@
-"""Caregiver flow: create a case, review, correct, approve, delete (spec §9 steps 3 and 9)."""
+"""What only the full link may do: check what was read, correct, approve, download, delete
+(spec §9 steps 3 and 9), and where a case starts. The steps it shares with the limited link live
+in routes_senior."""
 
 from datetime import date
-from decimal import Decimal, InvalidOperation
 from urllib.parse import quote
 
 from fastapi import APIRouter, File, Form, Request, UploadFile
@@ -34,25 +35,13 @@ from waive.learning.outcomes import (
 from waive.learning.triage import record_outcome, triage_for
 from waive.web.deps import deps_of, render
 from waive.web.limits import client_key
-from waive.web.routes_senior import long_date, money, senior_links
+from waive.web.routes_senior import flow_links, long_date, money, to_decimal
 
 router = APIRouter()
 
 
 def caregiver_links(token: str) -> dict[str, str]:
-    base = f"/c/{token}"
-    return {
-        "review": base,
-        "correct": f"{base}/correct",
-        "approve": f"{base}/approve",
-        "delete": f"{base}/delete",
-        "packet": f"{base}/packet.pdf",
-        "reminders": f"{base}/reminders.ics",
-        "paper": f"{base}/paper",
-        "outcome": f"{base}/outcome",
-        "check_in": f"{base}/check-in",
-        "relink": f"{base}/relink",
-    }
+    return flow_links(token, full=True)
 
 
 @router.post("/cases", response_class=HTMLResponse)
@@ -71,7 +60,7 @@ def create_case(request: Request, state: str = Form("MA")) -> HTMLResponse:
     return render(
         request,
         "case_created.html",
-        senior_url=senior_links(links.senior_token)["start"],
+        senior_url=flow_links(links.senior_token, full=False)["start"],
         caregiver_url=caregiver_links(links.caregiver_token)["review"],
     )
 
@@ -90,6 +79,7 @@ def caregiver_review(request: Request, token: str, note: str = "") -> HTMLRespon
             request,
             "caregiver_review.html",
             links=caregiver_links(token),
+            full=True,
             case=shown,
             sheet=sheet,
             sources=sources,
@@ -101,16 +91,6 @@ def caregiver_review(request: Request, token: str, note: str = "") -> HTMLRespon
             check_in=pending_check_in(ctx, row.id),
             triage_note=triage_for(ctx, row.id),
         )
-
-
-def _decimal(value: str) -> Decimal | None:
-    text = value.replace("$", "").replace(",", "").strip()
-    if not text:
-        return None
-    try:
-        return Decimal(text)
-    except InvalidOperation:
-        return None
 
 
 @router.post("/c/{token}/correct")
@@ -131,7 +111,7 @@ def caregiver_correct(
         ctx = deps.context(session)
         row = authorize(ctx, token, "caregiver")
         corrections: dict = {}
-        amount = _decimal(amount_due)
+        amount = to_decimal(amount_due)
         if amount is not None:
             corrections["amount_due"] = str(amount)
         if statement_date:
@@ -145,7 +125,7 @@ def caregiver_correct(
         # The caregiver may re-correct and re-approve; the senior link may not (see _unlocked).
         confirm_bill(ctx, row.id, corrections, ccn=hospital_ccn or None, allow_approved=True)
         chosen = tuple(p.strip() for p in programs.split(",") if p.strip())
-        set_household(ctx, row.id, size, _decimal(annual_income), chosen, allow_approved=True)
+        set_household(ctx, row.id, size, to_decimal(annual_income), chosen, allow_approved=True)
     return RedirectResponse(caregiver_links(token)["review"], status_code=303)
 
 
@@ -171,7 +151,7 @@ def caregiver_relink(request: Request, token: str) -> HTMLResponse:
     return render(
         request,
         "case_created.html",
-        senior_url=senior_links(links.senior_token)["start"],
+        senior_url=flow_links(links.senior_token, full=False)["start"],
         caregiver_url=caregiver_links(links.caregiver_token)["review"],
         notice="Your old links stopped working. Save this new one.",
     )

@@ -22,6 +22,7 @@ from waive.cases.service import (
     purge_cases,
     relink,
     set_household,
+    set_income,
     start_case,
     submit_bill,
     submit_income_letter,
@@ -359,3 +360,27 @@ def test_corrections_override_extraction(ctx):
         ctx, links.case_id, {"statement_date": "2026-08-01", "amount_due": "900"}, ccn="229999"
     )
     assert shown.bill.statement_date == date(2026, 8, 1) and shown.bill.amount_due == Decimal("900")
+
+
+def test_a_typed_income_keeps_the_household_answers_and_respects_the_approval_lock(ctx):
+    # Phase 9: with one link there may be no helper to fill the income in, so the income step
+    # takes a typed amount. It replaces the income only.
+    links = start_case(ctx, "MA")
+    submit_bill(ctx, links.case_id, bill_image())
+    confirm_bill(ctx, links.case_id, {})
+    set_household(ctx, links.case_id, 2, None, ("SNAP",))
+    shown = set_income(ctx, links.case_id, Decimal("22800"))
+    assert (shown.household_size, shown.annual_income) == (2, Decimal("22800"))
+    sealed = ctx.cipher.decrypt(ctx.session.get(CaseRow, links.case_id).sealed)
+    assert sealed["household"] == {"size": 2, "annual_income": "22800", "programs": ["SNAP"]}
+    approve(ctx, links.case_id)
+    with pytest.raises(PermissionError):
+        set_income(ctx, links.case_id, Decimal("1"))
+    assert view(ctx, links.case_id).annual_income == Decimal("22800")
+
+
+def test_a_typed_income_before_the_household_question_assumes_one_person(ctx):
+    links = start_case(ctx, "MA")
+    submit_bill(ctx, links.case_id, bill_image())
+    shown = set_income(ctx, links.case_id, Decimal("22800"))
+    assert (shown.household_size, shown.annual_income) == (1, Decimal("22800"))

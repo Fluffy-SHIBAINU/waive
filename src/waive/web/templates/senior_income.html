@@ -10,9 +10,20 @@
   <p class="card big" data-photo-wait hidden>Reading your letter. This can take up to a minute. Please wait.</p>
   <noscript><button type="submit" class="btn">Send the photo</button></noscript>
 </form>
+{% if full %}
+<form method="post" action="{{ links.income }}" class="stack">
+  <label for="monthly">Or type how much you get each month, in dollars</label>
+  <input id="monthly" name="monthly" inputmode="decimal" autocomplete="off">
+  <button type="submit" class="btn">Use this amount</button>
+</form>
+<form method="post" action="{{ links.income }}" class="stack">
+  <button type="submit" name="skip" value="1" class="btn quiet">Skip this for now</button>
+</form>
+{% else %}
 <form method="post" action="{{ links.income }}" class="stack">
   <button type="submit" name="skip" value="1" class="btn quiet">I don't have it. My helper will fill it in.</button>
 </form>
+{% endif %}
 {% endblock %}
 {% block scripts %}
 <script src="/static/photo.js"></script>

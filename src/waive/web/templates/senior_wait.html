@@ -1,7 +1,14 @@
 {% extends "base.html" %}
-{% block title %}Thank you{% endblock %}
+{% block title %}{% if full %}One more step{% else %}Thank you{% endif %}{% endblock %}
 {% block content %}
+{% if full %}
+<h1>We need your help with this</h1>
+<p class="big">{{ reason }} You can check what we read and type in what is missing.</p>
+<p><a href="{{ links.review }}" class="btn primary">Check what we read</a></p>
+<p><a href="{{ links.start }}" class="btn quiet">Start again with a new photo</a></p>
+{% else %}
 <h1>Thank you</h1>
 <p class="big">You are done for now: {{ reason }}. Your helper will take it from here.</p>
 <p><a href="{{ links.start }}" class="btn quiet">Start again with a new photo</a></p>
+{% endif %}
 {% endblock %}

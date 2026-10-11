@@ -9,6 +9,6 @@
 </div>
 <form method="post" action="{{ links.confirm }}" class="choices">
   <button type="submit" name="answer" value="yes" class="btn primary">Yes, that's right</button>
-  <button type="submit" name="answer" value="no" class="btn">Something is wrong</button>
+  <button type="submit" name="answer" value="no" class="btn">{% if full %}No, fix it{% else %}Something is wrong{% endif %}</button>
 </form>
 {% endblock %}
