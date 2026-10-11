@@ -3,12 +3,12 @@
 Generated 2026-10-11 by `waive atlas report --national`. Counts only; open data, CC BY 4.0.
 
 Hospitals in registry: 2703
-Published sheets: 166 (6%)
-Held sheets: 92; without a sheet: 2445
+Published sheets: 212 (8%)
+Held sheets: 139; without a sheet: 2352
 Median sheet age: 1 days
-Core fields documented (published sheets): 59%
-Prediction accuracy: — over 0 outcomes
-Open review items: 664
+Core fields documented (published sheets): 58%
+Prediction accuracy: 100% over 1 outcomes
+Open review items: 841
 
 | State | Hospitals | Published | Held | None | Coverage |
 |---|---|---|---|---|---|
@@ -16,17 +16,17 @@ Open review items: 664
 | AL | 20 | 0 | 0 | 20 | 0% |
 | AR | 51 | 0 | 0 | 51 | 0% |
 | AZ | 44 | 0 | 0 | 44 | 0% |
-| CA | 181 | 25 | 10 | 146 | 14% |
+| CA | 181 | 30 | 16 | 135 | 17% |
 | CO | 49 | 0 | 0 | 49 | 0% |
 | CT | 22 | 0 | 0 | 22 | 0% |
 | DC | 3 | 0 | 0 | 3 | 0% |
 | DE | 6 | 0 | 0 | 6 | 0% |
-| FL | 84 | 15 | 14 | 55 | 18% |
+| FL | 84 | 22 | 18 | 44 | 26% |
 | GA | 52 | 0 | 0 | 52 | 0% |
 | HI | 9 | 0 | 0 | 9 | 0% |
 | IA | 66 | 0 | 0 | 66 | 0% |
 | ID | 21 | 0 | 0 | 21 | 0% |
-| IL | 134 | 14 | 10 | 110 | 10% |
+| IL | 134 | 21 | 13 | 100 | 16% |
 | IN | 73 | 0 | 0 | 73 | 0% |
 | KS | 50 | 0 | 0 | 50 | 0% |
 | KY | 60 | 0 | 0 | 60 | 0% |
@@ -43,19 +43,19 @@ Open review items: 664
 | ND | 40 | 0 | 0 | 40 | 0% |
 | NE | 48 | 0 | 0 | 48 | 0% |
 | NH | 23 | 0 | 0 | 23 | 0% |
-| NJ | 53 | 5 | 9 | 39 | 9% |
+| NJ | 53 | 6 | 12 | 35 | 11% |
 | NM | 16 | 0 | 0 | 16 | 0% |
 | NV | 14 | 0 | 0 | 14 | 0% |
-| NY | 133 | 16 | 9 | 108 | 12% |
-| OH | 129 | 11 | 10 | 108 | 9% |
+| NY | 133 | 19 | 21 | 93 | 14% |
+| OH | 129 | 18 | 24 | 87 | 14% |
 | OK | 44 | 0 | 0 | 44 | 0% |
 | OR | 44 | 0 | 0 | 44 | 0% |
-| PA | 130 | 6 | 4 | 120 | 5% |
+| PA | 130 | 17 | 8 | 105 | 13% |
 | RI | 7 | 0 | 0 | 7 | 0% |
 | SC | 35 | 0 | 0 | 35 | 0% |
 | SD | 43 | 0 | 0 | 43 | 0% |
 | TN | 40 | 0 | 0 | 40 | 0% |
-| TX | 135 | 47 | 9 | 79 | 35% |
+| TX | 135 | 52 | 10 | 73 | 39% |
 | UT | 30 | 0 | 0 | 30 | 0% |
 | VA | 60 | 0 | 0 | 60 | 0% |
 | VT | 14 | 0 | 0 | 14 | 0% |
@@ -72,7 +72,7 @@ Open review items: 664
 | 2026-10-08 | 0 |
 | 2026-10-09 | 310 |
 | 2026-10-10 | 989 |
-| 2026-10-11 | 311 |
+| 2026-10-11 | 996 |
 
 ## Run log
 
