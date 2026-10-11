@@ -1,0 +1,27 @@
+{# The case bar: on every page reached with the full link (Step.page passes `bar`). #}
+<nav class="casebar" aria-label="Your case">
+  <h2>Your case</h2>
+  <p>Keep your link. It opens this case again, on any phone or computer.</p>
+  <p class="link" id="my-link" data-link="{{ bar.mine.path }}">{{ bar.mine.url }}</p>
+  <button type="button" class="btn" data-copy="my-link" data-copied="Link copied">Copy my link</button>
+  <details>
+    <summary class="btn">Send the photo step to someone else</summary>
+    <div class="stack">
+      <p>This link only lets someone add photos and see the result; it cannot check, approve, open the form or delete.</p>
+      <p class="link" id="share-link" data-link="{{ bar.share.path }}">{{ bar.share.url }}</p>
+      <button type="button" class="btn" data-share="share-link" hidden>Share this link</button>
+      <button type="button" class="btn" data-copy="share-link" data-copied="Link copied">Copy this link</button>
+      <form method="post" action="{{ links.relink }}" class="stack">
+        <p>Sent it to the wrong person? Make new links. The old ones stop working at once, yours too.</p>
+        <button type="submit" class="btn quiet">Make new links (old ones stop working)</button>
+      </form>
+    </div>
+  </details>
+  <details>
+    <summary class="btn danger">Delete my case</summary>
+    <form method="post" action="{{ links.delete }}" class="stack">
+      <p>This deletes the case and all its personal data. It cannot be undone.</p>
+      <button type="submit" class="btn danger">Yes, delete everything</button>
+    </form>
+  </details>
+</nav>

@@ -10,11 +10,13 @@
 <header class="top"><a href="/" class="brand">Waive</a></header>
 <main class="page">
 {% block content %}{% endblock %}
+{% if bar %}{% include "_case_bar.html" %}{% endif %}
 </main>
 <footer class="foot">
 <p>Waive never asks for money, card numbers or bank logins.</p>
 <p>Results are estimates. The hospital makes the final decision.</p>
 </footer>
 {% block scripts %}{% endblock %}
+{% if bar %}<script src="/static/case.js"></script>{% endif %}
 </body>
 </html>

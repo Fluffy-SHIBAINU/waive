@@ -35,7 +35,7 @@ from waive.learning.outcomes import (
 from waive.learning.triage import record_outcome, triage_for
 from waive.web.deps import deps_of, render
 from waive.web.limits import client_key
-from waive.web.routes_senior import flow_links, opened, to_decimal
+from waive.web.routes_senior import flow_links, opened, shown_links, to_decimal
 
 router = APIRouter()
 
@@ -150,8 +150,9 @@ def case_form(request: Request, token: str):
 
 @router.post("/c/{token}/relink", response_class=HTMLResponse)
 def caregiver_relink(request: Request, token: str) -> HTMLResponse:
-    """New links for both people; the old ones, this one included, stop working at once, so the
-    page is rendered here rather than redirected to."""
+    """The "Make new links" button: the old links, this one and any photo-only link that was
+    sent included, stop working at once, so the page with the new ones is rendered here rather
+    than redirected to."""
     deps = deps_of(request)
     with session_scope(deps.engine) as session:
         ctx = deps.context(session)
@@ -159,10 +160,8 @@ def caregiver_relink(request: Request, token: str) -> HTMLResponse:
         links = relink(ctx, row.id)
     return render(
         request,
-        "case_created.html",
-        senior_url=flow_links(links.senior_token, full=False)["start"],
-        caregiver_url=caregiver_links(links.caregiver_token)["review"],
-        notice="Your old links stopped working. Save this new one.",
+        "case_links.html",
+        fresh=shown_links(request, links.caregiver_token, links.senior_token),
     )
 
 

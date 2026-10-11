@@ -115,6 +115,14 @@ def _mint_links(ctx: CaseContext, row: CaseRow) -> CaseLinks:
     )
 
 
+def limited_token(ctx: CaseContext, case_id: str) -> str:
+    """A photo-only link for the case, minted when it is wanted ("Send the photo step to someone
+    else") instead of being shown at the start. Nothing is stored: like every link it expires on
+    its own and stops working when `relink` moves the generation."""
+    row = _row(ctx, case_id)
+    return ctx.signer.mint(row.id, "senior", row.token_generation, SENIOR_TTL)
+
+
 def start_case(ctx: CaseContext, state: str) -> CaseLinks:
     row = CaseRow(id=uuid.uuid4().hex, state=state.upper(), status="new", token_generation=1)
     ctx.session.add(row)

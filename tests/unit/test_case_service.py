@@ -13,12 +13,14 @@ from waive.cases.extract import BillExtract, IncomeExtract
 from waive.cases.service import (
     MAX_OPEN_SCOUT_REQUESTS,
     READ_LIMITS,
+    SENIOR_TTL,
     CaseContext,
     TooManyReads,
     approve,
     authorize,
     confirm_bill,
     delete_case,
+    limited_token,
     purge_cases,
     relink,
     set_household,
@@ -384,3 +386,22 @@ def test_a_typed_income_before_the_household_question_assumes_one_person(ctx):
     submit_bill(ctx, links.case_id, bill_image())
     shown = set_income(ctx, links.case_id, Decimal("22800"))
     assert (shown.household_size, shown.annual_income) == (1, Decimal("22800"))
+
+
+def test_a_photo_only_link_can_be_minted_later_and_is_revoked_with_the_others(ctx):
+    # Phase 9: only the full link is shown at the start; "Send the photo step to someone else"
+    # asks for the limited one when it is wanted.
+    links = start_case(ctx, "MA")
+    token = limited_token(ctx, links.case_id)
+    assert authorize(ctx, token, "senior").id == links.case_id
+    with pytest.raises(PermissionError):
+        authorize(ctx, token, "caregiver")
+    claims = ctx.signer.verify(token)
+    assert (claims.case_id, claims.scope, claims.generation) == (links.case_id, "senior", 1)
+    assert claims.expires_at <= datetime.now(UTC) + SENIOR_TTL
+    relink(ctx, links.case_id)
+    with pytest.raises(PermissionError, match="revoked"):
+        authorize(ctx, token, "senior")
+    assert authorize(ctx, limited_token(ctx, links.case_id), "senior").id == links.case_id
+    with pytest.raises(KeyError):
+        limited_token(ctx, "no-such-case")

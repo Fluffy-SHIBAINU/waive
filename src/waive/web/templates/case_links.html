@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Your new links{% endblock %}
+{% block content %}
+<h1>Your new links</h1>
+<p class="card status-unknown big">Your old links stopped working. Save this new one.</p>
+<h2>Your link</h2>
+<div class="stack">
+  <p class="big">Keep this link. It opens your case.</p>
+  <p class="link" id="my-link" data-link="{{ fresh.mine.path }}">{{ fresh.mine.url }}</p>
+  <button type="button" class="btn" data-copy="my-link" data-copied="Link copied">Copy my link</button>
+  <a href="{{ fresh.mine.path }}" class="btn primary">Go on with my case</a>
+</div>
+<h2>The photo-only link</h2>
+<div class="stack">
+  <p class="big">If someone helps you with photos, send them this new link. It only lets them add photos and see the result.</p>
+  <p class="link" id="share-link" data-link="{{ fresh.share.path }}">{{ fresh.share.url }}</p>
+  <button type="button" class="btn" data-share="share-link" hidden>Share this link</button>
+  <button type="button" class="btn" data-copy="share-link" data-copied="Link copied">Copy this link</button>
+  <p><a href="{{ fresh.share.path }}">Open the photo-only page</a></p>
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="/static/case.js"></script>
+{% endblock %}
