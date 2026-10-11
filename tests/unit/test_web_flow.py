@@ -1,6 +1,7 @@
 """Phase 9: one link drives the whole case. The full link (/c/{token}) runs every step; the
 limited link (/s/{token}) still only adds photos and sees the result."""
 
+import re
 from decimal import Decimal
 
 from fastapi.testclient import TestClient
@@ -10,6 +11,7 @@ from waive.atlas.publish import publish_sheet
 from waive.atlas.samples import st_example_sheet
 from waive.cases.service import start_case
 from waive.db import CaseRow, session_scope
+from waive.web.deps import TEMPLATES_DIR
 from waive.web.routes_senior import to_decimal
 
 from tests.unit.test_web_app import make_client
@@ -375,3 +377,148 @@ def test_the_limited_link_never_sees_the_check_or_form_steps():
         assert "Check what we read" not in page and "Your form and reminders" not in page
         assert "/c/" not in page and "Federal Poverty Guidelines" not in page
     assert client.get(f"/c/{links.senior_token}/form").status_code == 403
+
+
+BAR = 'aria-label="Your case"'
+
+
+def share_path(text):
+    """The photo-only link the case bar offers to send to someone else."""
+    return re.search(r'id="share-link" data-link="(/s/[^"]+)"', text).group(1)
+
+
+def test_every_page_under_the_full_link_has_the_case_bar():
+    client, links = seeded_client()
+    base = f"/c/{links.caregiver_token}"
+    pages = {"photo": client.get(f"{base}/bill")}
+    pages["read-back"] = client.post(f"{base}/bill", files=photo())
+    pages["household"] = client.post(
+        f"{base}/confirm", data={"answer": "yes"}, follow_redirects=True
+    )
+    pages["income"] = client.post(
+        f"{base}/household", data={"size": "1", "programs": "none"}, follow_redirects=True
+    )
+    pages["could not read"] = client.post(f"{base}/income", data={"monthly": "lots"})
+    pages["result"] = client.post(f"{base}/income", files=photo(), follow_redirects=True)
+    pages["check"] = client.get(base)
+    pages["form"] = client.post(f"{base}/approve", follow_redirects=True)
+    assert str(pages["form"].url).endswith("/form")
+    for name, page in pages.items():
+        text = page.text
+        assert page.status_code == 200 and text.count(BAR) == 1, name
+        # Copy my link: a button, and the link itself as text that can be selected without it.
+        assert "Copy my link" in text and 'data-copy="my-link"' in text, name
+        assert f'id="my-link" data-link="{base}">http://testserver{base}</p>' in text, name
+        # Send the photo step to someone else: the limited link and what it can and cannot do.
+        assert "Send the photo step to someone else" in text, name
+        shared = share_path(text)
+        assert f'data-link="{shared}">http://testserver{shared}</p>' in text, name
+        assert 'data-share="share-link" hidden' in text and 'data-copy="share-link"' in text
+        assert "only lets someone add photos and see the result" in text, name
+        assert "cannot check, approve, open the form or delete" in text, name
+        assert f'action="{base}/relink"' in text and "Make new links" in text, name
+        # Delete my case: always there, and it asks before it deletes.
+        assert "Delete my case" in text and f'action="{base}/delete"' in text, name
+        assert text.count('<script src="/static/case.js"></script>') == 1, name
+        assert "onsubmit=" not in text and "onclick=" not in text, name
+    script = client.get("/static/case.js")
+    assert script.status_code == 200
+    assert "navigator.clipboard" in script.text and "navigator.share" in script.text
+    css = client.get("/static/waive.css").text
+    assert ".casebar" in css and "user-select: all" in css
+
+
+def test_pages_reached_without_the_full_link_have_no_case_bar():
+    client, links = seeded_client()
+    limited = f"/s/{links.senior_token}"
+    pages = [client.get(path) for path in ("/", "/atlas", "/atlas/229999", limited)]
+    pages.append(client.get(f"{limited}/bill"))
+    pages.append(client.post(f"{limited}/bill", files=photo()))
+    pages.append(client.post(f"{limited}/confirm", data={"answer": "yes"}, follow_redirects=True))
+    pages.append(
+        client.post(
+            f"{limited}/household", data={"size": "1", "programs": "none"}, follow_redirects=True
+        )
+    )
+    pages.append(client.post(f"{limited}/income", files=photo(), follow_redirects=True))
+    pages.append(client.get("/c/not-a-real-token"))  # the 403 page
+    for page in pages:
+        for control in (BAR, "Copy my link", "Send the photo step", "Delete my case", "case.js"):
+            assert control not in page.text, (str(page.url), control)
+        assert links.caregiver_token not in page.text, str(page.url)
+    # The script is a file of its own: the page skeleton carries no inline script.
+    skeleton = (TEMPLATES_DIR / "base.html").read_text(encoding="utf-8")
+    assert "<script>" not in skeleton and "/static/case.js" in skeleton
+
+
+def test_the_photo_step_link_from_the_bar_only_adds_photos_and_sees_the_result():
+    client, links = seeded_client()
+    base = f"/c/{links.caregiver_token}"
+    shared = share_path(client.get(f"{base}/bill").text)
+    token = shared.removeprefix("/s/")
+    assert token not in (links.caregiver_token, "")
+    claims = client.app.state.deps.signer.verify(token)
+    assert (claims.case_id, claims.scope) == (links.case_id, "senior")
+    start = client.get(shared)
+    assert start.status_code == 200 and "Take a photo of the bill" in start.text
+    assert BAR not in start.text and "/c/" not in start.text
+    # The other person adds the photo; it shows up under the full link.
+    assert client.post(f"{shared}/bill", files=photo()).status_code == 200
+    assert "$1,850.00" in client.get(base).text
+    refused = {
+        "check": client.get(f"/c/{token}"),
+        "approve": client.post(f"/c/{token}/approve"),
+        "form": client.get(f"/c/{token}/form"),
+        "packet": client.get(f"/c/{token}/packet.pdf"),
+        "relink": client.post(f"/c/{token}/relink"),
+        "delete": client.post(f"/c/{token}/delete"),
+    }
+    for name, response in refused.items():
+        assert response.status_code == 403, name
+    assert status_of(client, links.case_id) == "bill_read"
+
+
+def test_make_new_links_from_the_bar_revokes_the_link_that_was_sent_too():
+    client, links = seeded_client()
+    base = f"/c/{links.caregiver_token}"
+    client.post(f"{base}/bill", files=photo())
+    shared = share_path(client.get(base).text)
+    page = client.post(f"{base}/relink")
+    assert page.status_code == 200 and "old links stopped working" in page.text
+    assert page.headers["cache-control"] == "no-store"
+    new_base = re.search(
+        r'<a href="(/c/[^"]+)" class="btn primary">Go on with my case</a>', page.text
+    ).group(1)
+    new_shared = share_path(page.text)
+    assert f'id="my-link" data-link="{new_base}">http://testserver{new_base}</p>' in page.text
+    assert "Copy my link" in page.text and 'data-copy="share-link"' in page.text
+    assert page.text.count('<script src="/static/case.js"></script>') == 1
+    for old in (base, f"{base}/bill", shared, f"/s/{links.senior_token}"):
+        assert client.get(old).status_code == 403, old
+    check = client.get(new_base)
+    assert check.status_code == 200 and "$1,850.00" in check.text  # the case itself survived
+    assert f'id="my-link" data-link="{new_base}"' in check.text
+    assert client.get(new_shared).status_code == 200
+    assert client.get(share_path(check.text)).status_code == 200
+
+
+def test_delete_my_case_from_the_bar_asks_first_and_then_removes_everything():
+    client, links = seeded_client()
+    base = f"/c/{links.caregiver_token}"
+    client.post(f"{base}/bill", files=photo())
+    text = client.get(f"{base}/household").text
+    # The button only opens the question; the button under it does the deleting.
+    assert re.search(
+        r'<details>\s*<summary class="btn danger">Delete my case</summary>.*?'
+        rf'<form method="post" action="{re.escape(base)}/delete"[^>]*>.*?'
+        r'<button type="submit" class="btn danger">Yes, delete everything</button>',
+        text,
+        re.DOTALL,
+    )
+    assert "cannot be undone" in text
+    gone = client.post(f"{base}/delete")
+    assert gone.status_code == 200 and "deleted" in gone.text.lower()
+    assert gone.headers["clear-site-data"] == '"cache"' and BAR not in gone.text
+    assert client.get(base).status_code == 403
+    with session_scope(client.app.state.deps.engine) as session:
+        assert session.get(CaseRow, links.case_id) is None

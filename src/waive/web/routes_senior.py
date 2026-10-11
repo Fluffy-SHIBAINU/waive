@@ -22,6 +22,7 @@ from waive.cases.service import (
     CaseView,
     authorize,
     confirm_bill,
+    limited_token,
     set_household,
     set_income,
     submit_bill,
@@ -84,6 +85,20 @@ class Flow:
         return flow_links(self.token, full=self.full)
 
 
+def shown_links(request: Request, full_token: str, limited: str) -> dict[str, dict[str, str]]:
+    """The two links as the case bar shows them: the path, and the whole address as text that
+    can be selected and copied when the clipboard button cannot be used."""
+    origin = str(request.base_url).rstrip("/")
+
+    def shown(path: str) -> dict[str, str]:
+        return {"path": path, "url": origin + path}
+
+    return {
+        "mine": shown(flow_links(full_token, full=True)["review"]),
+        "share": shown(flow_links(limited, full=False)["start"]),
+    }
+
+
 def money(value: Decimal | None) -> str:
     return "" if value is None else f"${value:,.2f}"
 
@@ -130,6 +145,12 @@ class Step:
         return view(self.ctx, self.case_id)
 
     def page(self, name: str, shown: CaseView | None = None, **extra) -> HTMLResponse:
+        if self.flow.full:
+            # The case bar on every page the full link opens: the link to keep, a photo-only
+            # link to send to someone else, delete. The limited link gets none of it.
+            extra["bar"] = shown_links(
+                self.request, self.flow.token, limited_token(self.ctx, self.case_id)
+            )
         return render(
             self.request,
             name,
