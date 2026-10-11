@@ -6,6 +6,7 @@ from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+from sqlalchemy.exc import OperationalError
 from starlette.formparsers import MultiPartParser
 
 from waive.ai.client import AIClient, AIUnavailable
@@ -169,6 +170,23 @@ def create_app(
             message=(
                 "Reading photos is paused for now because the budget for today is used up. "
                 "Your helper can finish the check later."
+            ),
+        )
+
+    @app.exception_handler(OperationalError)
+    def database_busy(request: Request, exc: OperationalError) -> HTMLResponse:
+        # SQLite's single writer was still busy after the wait in db.make_engine (a scouting
+        # batch on the same file): nothing was lost, so say so instead of a traceback page.
+        if "locked" not in str(exc.orig).lower():
+            raise exc
+        return render(
+            request,
+            "error.html",
+            status_code=503,
+            title="One moment",
+            message=(
+                "Waive is busy saving other work. Nothing was lost: go back and try again "
+                "in a minute."
             ),
         )
 

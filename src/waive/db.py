@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import logging
+import sqlite3
 from collections.abc import Iterator
 from contextlib import contextmanager
 from datetime import UTC, date, datetime
@@ -21,6 +22,7 @@ from sqlalchemy import (
     Text,
     UniqueConstraint,
     create_engine,
+    event,
     exc,
     inspect,
     literal,
@@ -184,12 +186,34 @@ class UsageEventRow(Base):
     ts: Mapped[str] = mapped_column(String(40))
 
 
+# SQLite admits one writer at a time, and a scouting batch holds its write lock for a whole
+# hospital (tens of seconds). A second process, the web app during a batch, waits this long for
+# its turn instead of failing after SQLite's default five seconds; write-ahead logging lets its
+# reads through meanwhile. Production uses PostgreSQL and none of this applies.
+SQLITE_BUSY_SECONDS = 60
+
+
+def _use_write_ahead_log(dbapi_connection: Any, _record: Any) -> None:
+    """Best effort: the switch needs the file to itself for a moment, and while another process
+    is mid-write SQLite refuses it at once (it does not wait). The connection then works in the
+    file's current mode, still with the busy wait; a later connection makes the switch."""
+    cursor = dbapi_connection.cursor()
+    try:
+        cursor.execute("PRAGMA journal_mode=WAL")
+    except sqlite3.OperationalError:
+        log.debug("write-ahead logging not enabled yet: the database is busy")
+    finally:
+        cursor.close()
+
+
 def make_engine(url: str) -> Engine:
     if url.endswith(":memory:"):
         return create_engine(url, connect_args={"check_same_thread": False}, poolclass=StaticPool)
     if url.startswith("sqlite:///"):
         Path(url.removeprefix("sqlite:///")).parent.mkdir(parents=True, exist_ok=True)
-        return create_engine(url)
+        engine = create_engine(url, connect_args={"timeout": SQLITE_BUSY_SECONDS})
+        event.listen(engine, "connect", _use_write_ahead_log)
+        return engine
     return create_engine(url, pool_pre_ping=True)
 
 
