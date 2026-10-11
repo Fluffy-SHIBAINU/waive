@@ -1,13 +1,14 @@
 """Response headers for pages that carry personal data (spec §11).
 
 Everything under a capability link (/s/, /c/), the start that redirects to a freshly minted link
-(/cases) and the admin console must not land in a browser or proxy cache, must not be indexed,
-and must not hand the link to another site as a Referer. The home page and the public atlas are left alone:
-they are meant to be cached and found."""
+(/cases), the sign-in routes (/auth/), the account pages (/account) and the admin console must
+not land in a browser or proxy cache, must not be indexed, and must not hand the link to another
+site as a Referer. The home page and the public atlas are left alone: they are meant to be cached
+and found."""
 
 from starlette.types import ASGIApp, Message, Receive, Scope, Send
 
-PRIVATE_PREFIXES = ("/s/", "/c/", "/cases", "/admin")
+PRIVATE_PREFIXES = ("/s/", "/c/", "/cases", "/admin", "/auth/", "/account")
 PRIVATE_HEADERS = (
     (b"cache-control", b"no-store"),
     (b"referrer-policy", b"no-referrer"),

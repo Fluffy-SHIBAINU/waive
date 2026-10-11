@@ -2,6 +2,7 @@
 
 from contextlib import asynccontextmanager
 
+import httpx
 from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
@@ -10,6 +11,7 @@ from sqlalchemy.exc import OperationalError
 from starlette.formparsers import MultiPartParser
 
 from waive.ai.client import AIClient, AIUnavailable
+from waive.auth.oidc import HTTP_TIMEOUT_SECONDS, GoogleSignIn
 from waive.cases.service import TooManyReads
 from waive.cases.vault import cipher_from_settings, signer_from_settings
 from waive.config import Settings
@@ -26,6 +28,18 @@ def _default_ai(settings: Settings, governor):
     if settings.nebius_api_key is None:
         return None
     return AIClient(settings, governor)
+
+
+def _google(settings: Settings) -> GoogleSignIn | None:
+    """Sign-in with Google, only when its client id and secret are both set (Phase 9). Without
+    them there is no sign-in anywhere and the app works as it always did."""
+    if not settings.sign_in_configured:
+        return None
+    return GoogleSignIn(
+        settings.google_client_id,
+        settings.google_client_secret.get_secret_value(),
+        httpx.Client(timeout=HTTP_TIMEOUT_SECONDS),
+    )
 
 
 def create_app(
@@ -57,6 +71,8 @@ def create_app(
         yield
         if scheduler is not None:
             scheduler.shutdown(wait=False)
+        if app.state.google is not None:
+            app.state.google.close()
 
     # No OpenAPI schema or docs pages: /openapi.json would publish the whole route map, every
     # /admin/* path included (security audit secrets-config-8).
@@ -65,6 +81,7 @@ def create_app(
     app.state.governor = governor
     app.state.limiter = RateLimiter()
     app.state.admin_sessions = {}
+    app.state.google = _google(settings)
     app.add_middleware(BodyLimit, max_body=settings.max_upload_bytes)
     app.add_middleware(PrivateHeaders)
     # Starlette spools multipart files over 1 MiB to a plaintext temp file. With the cap in front
@@ -86,6 +103,7 @@ def create_app(
     from waive.web import (
         routes_admin,
         routes_atlas,
+        routes_auth,
         routes_caregiver,
         routes_metrics,
         routes_senior,
@@ -96,6 +114,7 @@ def create_app(
     app.include_router(routes_atlas.router)
     app.include_router(routes_metrics.router)
     app.include_router(routes_admin.router)
+    app.include_router(routes_auth.router)
 
     @app.get("/healthz")
     def healthz() -> dict[str, bool]:

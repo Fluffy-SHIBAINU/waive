@@ -105,3 +105,28 @@ def test_scout_extract_depth_defaults_to_basic_and_rejects_other_values(monkeypa
     monkeypatch.setenv("WAIVE_SCOUT_EXTRACT_DEPTH", "deep")
     with pytest.raises(ValidationError, match="scout_extract_depth"):
         Settings(_env_file=None)
+
+
+def test_google_sign_in_is_on_only_with_both_the_client_id_and_the_secret(monkeypatch):
+    # 9.7: WAIVE_GOOGLE_CLIENT_ID / WAIVE_GOOGLE_CLIENT_SECRET; without both, sign-in is hidden.
+    clear_env(monkeypatch)
+    settings = Settings(_env_file=None)
+    assert settings.google_client_id is None and settings.google_client_secret is None
+    assert settings.sign_in_configured is False
+    monkeypatch.setenv("WAIVE_GOOGLE_CLIENT_ID", "waive.apps.googleusercontent.com")
+    assert Settings(_env_file=None).sign_in_configured is False
+    monkeypatch.setenv("WAIVE_GOOGLE_CLIENT_SECRET", "")  # a blank line copied from .env.example
+    assert Settings(_env_file=None).sign_in_configured is False
+    monkeypatch.setenv("WAIVE_GOOGLE_CLIENT_SECRET", "client-secret-value")
+    settings = Settings(_env_file=None)
+    assert settings.sign_in_configured is True
+    assert settings.google_client_secret.get_secret_value() == "client-secret-value"
+    assert "client-secret-value" not in repr(settings)
+    monkeypatch.setenv("WAIVE_GOOGLE_CLIENT_ID", "")
+    assert Settings(_env_file=None).sign_in_configured is False
+    assert (settings.sign_ins_per_minute, settings.sign_ins_per_client_per_minute) == (60, 10)
+
+
+def test_env_example_lists_the_google_settings_without_values():
+    lines = (Path(__file__).resolve().parents[2] / ".env.example").read_text().splitlines()
+    assert "WAIVE_GOOGLE_CLIENT_ID=" in lines and "WAIVE_GOOGLE_CLIENT_SECRET=" in lines
