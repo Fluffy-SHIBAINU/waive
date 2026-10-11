@@ -16,6 +16,7 @@ from waive.atlas.publish import publish_sheet
 from waive.atlas.samples import st_example_sheet
 from waive.cases.synth import BillTruth, render_benefit_letter, render_bill
 from waive.db import (
+    AccountCaseRow,
     CaseRow,
     ContributionRow,
     ReportedEvidenceRow,
@@ -77,8 +78,10 @@ def forget_scout_requests(session: Session) -> int:
 
 
 def forget_cases(session: Session) -> int:
-    """Delete every case (all personal data); returns the number of cases."""
+    """Delete every case (all personal data); returns the number of cases. Accounts stay, with
+    an empty history: a deleted case is in nobody's."""
     forget_scout_requests(session)
+    session.execute(delete(AccountCaseRow))
     return session.execute(delete(CaseRow)).rowcount
 
 

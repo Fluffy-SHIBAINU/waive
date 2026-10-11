@@ -6,7 +6,7 @@ from datetime import UTC, date, datetime, time, timedelta
 from decimal import Decimal
 from typing import Any
 
-from sqlalchemy import select
+from sqlalchemy import delete, select
 from sqlalchemy.orm import Session
 
 from waive.ai.client import AIClient
@@ -16,7 +16,7 @@ from waive.cases.extract import BillExtract, extract_bill, extract_income
 from waive.cases.images import prepare_image
 from waive.cases.match import MatchCandidate, fap_domain, is_confident, match_hospital
 from waive.cases.vault import FieldCipher, Scope, TokenSigner
-from waive.db import CaseRow, ReviewItemRow
+from waive.db import AccountCaseRow, CaseRow, ReviewItemRow
 from waive.learning.hashing import case_hash
 from waive.rules.deadlines import Deadlines, deadlines_for
 from waive.rules.eligibility import EligibilityResult, Household, Tier, evaluate_eligibility
@@ -435,19 +435,28 @@ def approve(ctx: CaseContext, case_id: str) -> CaseView:
     return view(ctx, case_id)
 
 
+def unlink_accounts(session: Session, case_id: str) -> int:
+    """Take the case out of every account's history (Phase 9: deleting a case unlinks it).
+    Returns the number of accounts that kept it."""
+    gone = session.execute(delete(AccountCaseRow).where(AccountCaseRow.case_id == case_id))
+    return gone.rowcount
+
+
 def delete_case(ctx: CaseContext, case_id: str) -> None:
     """One-tap delete: the case and every personal field derived from it, the scout request its
-    bill raised included (README privacy notes)."""
+    bill raised and its place in an account's history included (README privacy notes)."""
     row = _row(ctx, case_id)
     withdraw_scouting(ctx.session, row.id)
+    unlink_accounts(ctx.session, row.id)
     ctx.session.delete(row)
     ctx.session.flush()
 
 
 def purge_cases(session: Session, today: date) -> dict[str, int]:
     """Delete cases nobody can reach any more: created but never photographed for over a day
-    ("abandoned") or older than the caregiver link's life ("expired"). Their scout requests go with
-    them, as on one-tap delete. Returns the counts by kind."""
+    ("abandoned") or older than the caregiver link's life ("expired"). Their scout requests and
+    their places in account histories go with them, as on one-tap delete. Returns the counts by
+    kind."""
     abandoned_before = datetime.combine(today - ABANDONED_AFTER, time.min, tzinfo=UTC)
     expired_before = datetime.combine(today - CAREGIVER_TTL, time.min, tzinfo=UTC)
     counts = {"abandoned": 0, "expired": 0}
@@ -462,6 +471,7 @@ def purge_cases(session: Session, today: date) -> dict[str, int]:
         else:
             continue
         withdraw_scouting(session, row.id)
+        unlink_accounts(session, row.id)
         session.delete(row)
         counts[kind] += 1
     session.flush()
