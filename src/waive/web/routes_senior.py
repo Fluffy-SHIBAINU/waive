@@ -1,4 +1,5 @@
-"""The steps both links share: camera → read-back → two questions → result (spec §9, §11).
+"""The steps both links share: camera → read-back → two questions → result, and the hospital's
+letter afterwards (spec §9, §10, §11).
 
 Phase 9: every step has one handler, registered under both links. The limited link (/s/{token})
 only adds photos and sees the result; the full link (/c/{token}) runs the same steps and, in
@@ -33,6 +34,8 @@ from waive.cases.vault import Scope
 from waive.db import session_scope
 from waive.learning.gaps import answer_gap_ask, pending_gap_ask
 from waive.learning.intake import ingest_paper
+from waive.learning.outcomes import OutcomeExtract, load_outcome, outcome_text
+from waive.learning.triage import TriageResult, triage_for
 from waive.web.deps import deps_of, render
 
 router = APIRouter()
@@ -341,7 +344,33 @@ def senior_result(request: Request, token: str) -> HTMLResponse:
         return case.page("senior_result.html", shown, ask=pending_gap_ask(case.ctx, case.case_id))
 
 
-@router.post("/s/{token}/paper", response_class=HTMLResponse)
+def _letter(
+    case: Step,
+    message: str = "",
+    outcome: OutcomeExtract | None = None,
+    triage: TriageResult | None = None,
+) -> HTMLResponse:
+    """The letter step, "Did the hospital answer?": the photo button and, on the same page, what
+    the hospital's answer says once one was read."""
+    return case.page(
+        "senior_paper.html",
+        message=message,
+        answer=outcome_text(outcome) if outcome else None,
+        triage_note=triage,
+    )
+
+
+@both("GET", "/paper", response_class=HTMLResponse)
+def senior_paper_form(request: Request, token: str) -> HTMLResponse:
+    with opened(request, token) as case:
+        return _letter(
+            case,
+            outcome=load_outcome(case.ctx, case.case_id),
+            triage=triage_for(case.ctx, case.case_id),
+        )
+
+
+@both("POST", "/paper", response_class=HTMLResponse)
 async def senior_paper(
     request: Request,
     token: str,
@@ -354,13 +383,11 @@ async def senior_paper(
         try:
             result = ingest_paper(case.ctx, case.case_id, data)
         except ImageError:
-            return case.page(
-                "senior_paper.html",
-                message="We could not read that photo. Please try again in good light.",
-            )
+            return _letter(case, "We could not read that photo. Please try again in good light.")
         except ZDRRequired:
             return case.wait("setup")
-        return case.page("senior_paper.html", message=result.message)
+        # What was just read is shown at once; a paper on another route only has its message.
+        return _letter(case, result.message, result.outcome, result.triage)
 
 
 @both("POST", "/paper/skip")

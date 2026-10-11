@@ -1,7 +1,45 @@
 {% extends "base.html" %}
-{% block title %}Thank you{% endblock %}
+{% block title %}Did the hospital answer?{% endblock %}
 {% block content %}
-<h1>Thank you</h1>
-<p class="card big">{{ message }}</p>
-<p><a href="{{ links.result }}" class="btn primary">Back to what we found</a></p>
+<h1>Did the hospital answer?</h1>
+{% if message %}<p class="card big">{{ message }}</p>{% endif %}
+{% if answer %}
+<h2>What the hospital's letter says</h2>
+<div class="card big status-{{ {"approved": "free", "more_info": "needs_info", "denied": "not_eligible"}[answer.kind] }}">
+  <p><strong>{{ answer.headline }}</strong></p>
+  {% for line in answer.lines %}<p>{{ line }}</p>{% endfor %}
+  {% if answer.documents %}
+  <ul>
+    {% for document in answer.documents %}<li>{{ document }}</li>{% endfor %}
+  </ul>
+  {% endif %}
+  {% if answer.deadline %}<p>{{ answer.deadline }}</p>{% endif %}
+</div>
+{% if triage_note and triage_note.help_text %}<p class="big">{{ triage_note.help_text }}</p>{% endif %}
+{% if triage_note and triage_note.appeal_text %}
+{% if full %}
+<p class="big">The hospital's own policy says otherwise. We wrote an appeal letter for you.</p>
+<p><a href="{{ links.review }}#answer" class="btn primary">See the appeal letter</a></p>
+{% else %}
+<p class="big">The hospital's own policy says otherwise. We wrote an appeal letter. Your helper has it.</p>
+{% endif %}
+{% endif %}
+{% else %}
+<p class="big">Lay the hospital's letter flat. Take a photo of the whole page. We tell you what it says.</p>
+{% endif %}
+<form method="post" action="{{ links.paper }}" enctype="multipart/form-data" class="stack" data-photo-form>
+  <input id="paper" class="visually-hidden" type="file" name="photo" accept="image/*" capture="environment" required>
+  <label for="paper" class="btn{% if not answer and not message %} primary{% endif %}" data-photo-button>{% if answer or message %}Take a photo of another paper{% else %}Take a photo of the letter{% endif %}</label>
+  <p class="card big" data-photo-wait hidden>Reading the paper. This can take up to a minute. Please wait.</p>
+  <noscript><button type="submit" class="btn">Send the photo</button></noscript>
+</form>
+{% if full and case.status == "approved" %}
+<p><a href="{{ links.form }}" class="btn quiet">Back to your form and reminders</a></p>
+{% elif case.tier %}
+<p><a href="{{ links.result }}" class="btn quiet">Back to what we found</a></p>
+{% endif %}
+{% if full %}<p><a href="{{ links.review }}" class="btn quiet">Check what we read</a></p>{% endif %}
+{% endblock %}
+{% block scripts %}
+<script src="/static/photo.js"></script>
 {% endblock %}

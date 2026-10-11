@@ -3,13 +3,11 @@
 in routes_senior."""
 
 from datetime import date
-from urllib.parse import quote
 
-from fastapi import APIRouter, File, Form, Request, UploadFile
+from fastapi import APIRouter, Form, Request
 from fastapi.responses import HTMLResponse, RedirectResponse, Response
 
 from waive.atlas import repo
-from waive.cases.images import ImageError
 from waive.cases.packet import build_packet, packet_data
 from waive.cases.reminders import build_ics, reminder_events
 from waive.cases.service import (
@@ -24,7 +22,6 @@ from waive.cases.service import (
 )
 from waive.db import session_scope
 from waive.learning.gaps import pending_gap_ask
-from waive.learning.intake import ingest_paper
 from waive.learning.outcomes import (
     Decision,
     OutcomeExtract,
@@ -66,7 +63,7 @@ def create_case(request: Request, state: str = Form("MA")) -> HTMLResponse:
 
 
 @router.get("/c/{token}", response_class=HTMLResponse)
-def caregiver_review(request: Request, token: str, note: str = "", fix: str = "") -> HTMLResponse:
+def caregiver_review(request: Request, token: str, fix: str = "") -> HTMLResponse:
     """The "Check what we read" page: the step after the result, and what the full link itself
     opens. `fix` opens the correction form (the read-back's "No, fix it" lands here)."""
     with opened(request, token) as case:
@@ -79,7 +76,6 @@ def caregiver_review(request: Request, token: str, note: str = "", fix: str = ""
             shown,
             sheet=sheet,
             sources=sources,
-            note=note,
             fix=bool(fix),
             ask=pending_gap_ask(case.ctx, case.case_id),
             outcome=load_outcome(case.ctx, case.case_id),
@@ -212,29 +208,6 @@ def caregiver_reminders(request: Request, token: str) -> Response:
         ics,
         media_type="text/calendar",
         headers={"Content-Disposition": 'attachment; filename="waive-reminders.ics"'},
-    )
-
-
-@router.post("/c/{token}/paper")
-async def caregiver_paper(
-    request: Request,
-    token: str,
-    photo: UploadFile = File(...),  # noqa: B008
-):
-    deps = deps_of(request)
-    data = await photo.read()
-    with session_scope(deps.engine) as session:
-        ctx = deps.context(session)
-        row = authorize(ctx, token, "caregiver")
-        if deps.ai is None:
-            note = "Reading is switched off right now."
-        else:
-            try:
-                note = ingest_paper(ctx, row.id, data).message
-            except ImageError:
-                note = "We could not read that photo. Try again in good light."
-    return RedirectResponse(
-        f"{caregiver_links(token)['review']}?note={quote(note)}", status_code=303
     )
 
 
