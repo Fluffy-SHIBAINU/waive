@@ -2,9 +2,9 @@
 
 > **For agentic workers:** execute task by task, tests first, one commit per task, following `docs/LOOP.md`. Do not start a task that says "needs gate" until `docs/PROGRESS.md` shows the gate closed.
 
-**Goal:** One person on one device finishes a case through one link; a second person is optional; signing in with Google (later Apple) keeps a history of cases across devices.
+**Goal:** One person on one device finishes a case through one link; a second person is optional; signing in with Google keeps a history of cases across devices.
 
-**Why (first user test, 2026-10-11):** the "Two links" page confused the tester, the review link was shown once and lost with no way back, and the letter step answered "We will read the hospital's answer" after it had already read it. The user approved the redesign and chose: sign-in with Google / Apple instead of a remember-me cookie; sign-in optional, offered at the result.
+**Why (first user test, 2026-10-11):** the "Two links" page confused the tester, the review link was shown once and lost with no way back, and the letter step answered "We will read the hospital's answer" after it had already read it. The user approved the redesign and chose: sign-in with Google instead of a remember-me cookie (Apple sign-in was considered and dropped by the user the same day); sign-in optional, offered at the result.
 
 **Spec:** `docs/superpowers/specs/2026-10-02-waive-design.md` (sections on the senior flow, privacy and links). This plan supersedes its two-link start.
 
@@ -13,7 +13,7 @@
 - Single link by default: the full-scope link (`/c/{token}`) drives every step. `cases/service.authorize` already lets it pass the photo steps.
 - Review stays as a screen in the same flow ("Check what we read"), then approve, then packet and reminders.
 - Sharing is optional: "Send the photo step to someone else" mints the limited link (`/s/{token}`: add photos, see the result; no review, approve, packet or delete).
-- Sign-in: Google first, Apple when a public HTTPS domain and an Apple Developer account exist. Optional; offered at the result and on the home page. A case started signed-out can be saved to the account.
+- Sign-in: Google only. Optional; offered at the result and on the home page. A case started signed-out can be saved to the account.
 - No remember-me cookie. The only cookies are the signed-in session and the short-lived OAuth state.
 - Letter step: the page shows what was read (approved / documents requested by a date / denied with an appeal draft).
 - Existing `/s/…` and `/c/…` links keep working.
@@ -77,8 +77,8 @@ Tables `accounts`, `sessions`, `account_cases` (via `init_db`; nullable addition
 ### 9.8 Home and history
 Home shows "Sign in with Google" when configured; signed in: "Your cases" and "Sign out"; result page: "Sign in to keep this case" / "Saved to your account". `GET /account` lists cases; `POST /account/delete`. Tests: listing shows only the account's cases, a case saved after sign-in appears, headers no-store.
 
-### 9.9 Apple sign-in — needs gate U9.2
-Same `oidc` module with Apple's endpoints and client-secret JWT. Only after deployment (Apple refuses localhost) and with the user's Apple Developer account.
+### 9.9 (dropped) Apple sign-in
+Dropped by the user on 2026-10-11: Google only.
 
 ### 9.10 Documents and gallery
 README (flow, privacy, settings), `docs/devpost/demo-script.md` (shots follow the one-link flow), `docs/devpost/submission.md`, `waive demo gallery` shot plan and captions, `docs/reports/security-audit.md` addendum (sign-in threat notes), `docs/PROGRESS.md`. Sample hospital letters join `waive demo reset` (task 8.12).
