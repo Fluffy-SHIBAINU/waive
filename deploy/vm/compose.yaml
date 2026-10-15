@@ -1,0 +1,51 @@
+# Waive on one Nebius VM (Phase 6 step 6.6b): the app, PostgreSQL and Caddy (HTTPS).
+# /opt/waive/.env on the VM holds the secrets plus PG_PASSWORD, WAIVE_IMAGE and WAIVE_DOMAIN;
+# it travels over SSH and is never committed.
+x-logging: &logging
+  driver: json-file
+  options:
+    max-size: "10m"
+    max-file: "3"
+
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: waive
+      POSTGRES_DB: waive
+      POSTGRES_PASSWORD: ${PG_PASSWORD}
+    volumes: ["pgdata:/var/lib/postgresql/data"]
+    ports: ["127.0.0.1:5432:5432"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U waive"]
+      interval: 5s
+      retries: 20
+    restart: unless-stopped
+    logging: *logging
+  app:
+    image: ${WAIVE_IMAGE}
+    env_file: .env
+    environment:
+      WAIVE_ENV: production
+      WAIVE_LEDGER_BACKEND: db
+      WAIVE_DATABASE_URL: postgresql+psycopg://waive:${PG_PASSWORD}@db:5432/waive
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+    logging: *logging
+  caddy:
+    image: caddy:2
+    ports: ["80:80", "443:443"]
+    environment:
+      WAIVE_DOMAIN: ${WAIVE_DOMAIN}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+    depends_on: [app]
+    restart: unless-stopped
+    logging: *logging
+
+volumes:
+  pgdata: {}
+  caddy_data: {}

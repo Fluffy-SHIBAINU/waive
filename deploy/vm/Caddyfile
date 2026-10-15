@@ -1,0 +1,6 @@
+# WAIVE_DOMAIN lists the public names, comma-separated, for example
+# "waive.kindred-ai.dev, 203-0-113-7.sslip.io". Caddy gets a Let's Encrypt certificate for each.
+{$WAIVE_DOMAIN} {
+	encode zstd gzip
+	reverse_proxy app:8000
+}

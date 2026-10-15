@@ -1,0 +1,17 @@
+#cloud-config
+# Host for Waive: Docker + Compose. __SSH_PUBLIC_KEY__ is replaced with the operator's public key
+# when the VM is created. The image is loaded over SSH and the secrets are copied over SSH into
+# /opt/waive/.env, so nothing secret is in this file.
+package_update: true
+packages: [docker.io, docker-compose-v2]
+users:
+  - name: ubuntu
+    groups: [sudo, docker]
+    shell: /bin/bash
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    ssh_authorized_keys:
+      - __SSH_PUBLIC_KEY__
+runcmd:
+  - systemctl enable --now docker
+  - mkdir -p /opt/waive
+  - chown ubuntu:ubuntu /opt/waive
