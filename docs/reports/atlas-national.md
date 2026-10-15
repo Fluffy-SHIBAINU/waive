@@ -1,14 +1,14 @@
 # Atlas coverage — national
 
-Generated 2026-10-14 by `waive atlas report --national`. Counts only; open data, CC BY 4.0.
+Generated 2026-10-15 by `waive atlas report --national`. Counts only; open data, CC BY 4.0.
 
 Hospitals in registry: 2703
-Published sheets: 368 (14%)
-Held sheets: 253; without a sheet: 2082
-Median sheet age: 3 days
+Published sheets: 360 (13%)
+Held sheets: 261; without a sheet: 2082
+Median sheet age: 4 days
 Core fields documented (published sheets): 57%
 Prediction accuracy: 100% over 2 outcomes
-Open review items: 1355
+Open review items: 1264
 
 | State | Hospitals | Published | Held | None | Coverage |
 |---|---|---|---|---|---|
@@ -16,17 +16,17 @@ Open review items: 1355
 | AL | 20 | 0 | 0 | 20 | 0% |
 | AR | 51 | 0 | 0 | 51 | 0% |
 | AZ | 44 | 0 | 0 | 44 | 0% |
-| CA | 181 | 62 | 41 | 78 | 34% |
+| CA | 181 | 59 | 44 | 78 | 33% |
 | CO | 49 | 0 | 0 | 49 | 0% |
 | CT | 22 | 0 | 0 | 22 | 0% |
 | DC | 3 | 0 | 0 | 3 | 0% |
 | DE | 6 | 0 | 0 | 6 | 0% |
-| FL | 84 | 29 | 31 | 24 | 35% |
+| FL | 84 | 28 | 32 | 24 | 33% |
 | GA | 52 | 0 | 0 | 52 | 0% |
 | HI | 9 | 0 | 0 | 9 | 0% |
 | IA | 66 | 0 | 0 | 66 | 0% |
 | ID | 21 | 0 | 0 | 21 | 0% |
-| IL | 134 | 40 | 37 | 57 | 30% |
+| IL | 134 | 39 | 38 | 57 | 29% |
 | IN | 73 | 0 | 0 | 73 | 0% |
 | KS | 50 | 0 | 0 | 50 | 0% |
 | KY | 60 | 0 | 0 | 60 | 0% |
@@ -43,11 +43,11 @@ Open review items: 1355
 | ND | 40 | 0 | 0 | 40 | 0% |
 | NE | 48 | 0 | 0 | 48 | 0% |
 | NH | 23 | 0 | 0 | 23 | 0% |
-| NJ | 53 | 16 | 14 | 23 | 30% |
+| NJ | 53 | 14 | 16 | 23 | 26% |
 | NM | 16 | 0 | 0 | 16 | 0% |
 | NV | 14 | 0 | 0 | 14 | 0% |
 | NY | 133 | 40 | 41 | 52 | 30% |
-| OH | 129 | 50 | 36 | 43 | 39% |
+| OH | 129 | 49 | 37 | 43 | 38% |
 | OK | 44 | 0 | 0 | 44 | 0% |
 | OR | 44 | 0 | 0 | 44 | 0% |
 | PA | 130 | 37 | 14 | 79 | 28% |
@@ -66,13 +66,13 @@ Open review items: 1355
 
 | Day (UTC) | Tavily credits |
 |---|---|
-| 2026-10-08 | 0 |
 | 2026-10-09 | 310 |
 | 2026-10-10 | 989 |
 | 2026-10-11 | 996 |
 | 2026-10-12 | 0 |
 | 2026-10-13 | 996 |
 | 2026-10-14 | 998 |
+| 2026-10-15 | 0 |
 
 ## Run log
 
