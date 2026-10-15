@@ -212,12 +212,23 @@ def domain_unconfirmed(domain: str | None, confidence: float | None) -> bool:
     return confidence is None or confidence < MIN_CONFIDENCE
 
 
-def pick_domain(hospital: HospitalRef, hits: list[SearchHit]) -> DomainResult | None:
+def rejected_domains(session: Session, ccn: str) -> frozenset[str]:
+    """The websites an admin found are not this hospital's (`clear_wrong_domain` records each on
+    a `domain` review item, open or not). 7.11a left three hospitals paused because rediscovery
+    would likely have found the same wrong site again."""
+    items = repo.review_items_of_kind(session, ccn, "domain")
+    return frozenset(item.detail["cleared"] for item in items if item.detail.get("cleared"))
+
+
+def pick_domain(
+    hospital: HospitalRef, hits: list[SearchHit], rejected: Iterable[str] = ()
+) -> DomainResult | None:
+    refused = frozenset(rejected)
     best: DomainResult | None = None
     best_score = -1.0
     for hit in hits:
         host = host_of(hit.url)
-        if not host or is_directory(host):
+        if not host or is_directory(host) or host in refused:
             continue
         evidence = _evidence(hospital, hit)
         score = hit.score + evidence
@@ -227,10 +238,12 @@ def pick_domain(hospital: HospitalRef, hits: list[SearchHit]) -> DomainResult | 
     return best
 
 
-def discover_domain(gateway: TavilyGateway, hospital: HospitalRef) -> DomainResult | None:
+def discover_domain(
+    gateway: TavilyGateway, hospital: HospitalRef, rejected: Iterable[str] = ()
+) -> DomainResult | None:
     query = f"{hospital.name} {hospital.city} {hospital.state} hospital financial assistance"
     hits = gateway.search(query, purpose="atlas.discover", max_results=5)
-    return pick_domain(hospital, hits)
+    return pick_domain(hospital, hits, rejected)
 
 
 def run_discovery(
@@ -239,7 +252,9 @@ def run_discovery(
     results: list[tuple[str, DomainResult | None]] = []
     rows = repo.list_hospitals(session, state=state, missing_domain=True)
     for row in rows[:limit]:
-        result = discover_domain(gateway, repo.hospital_ref(row))
+        result = discover_domain(
+            gateway, repo.hospital_ref(row), rejected_domains(session, row.ccn)
+        )
         if result is not None:
             row.website_domain = result.domain
             row.domain_confidence = result.confidence

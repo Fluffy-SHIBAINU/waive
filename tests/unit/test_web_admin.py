@@ -346,3 +346,53 @@ def test_an_admin_marks_a_website_wrong_and_the_sheet_stays_held_without_it(tmp_
         assert (row.website_domain, row.domain_confidence) == (None, None)
         held, _ = repo.latest_sheet(session, "220031")
         assert held.status is SheetStatus.HELD and held.eligibility.free_care_max_fpl is None
+
+
+def test_the_card_warns_when_the_held_sheet_was_built_from_another_website(tmp_path):
+    client = admin_client(tmp_path)
+    hold_for_its_website(client)
+    with session_scope(client.app.state.deps.engine) as session:
+        # Discovery moved to another site after the build; the held fields are example.org's.
+        row = repo.get_hospital(session, "220031")
+        row.website_domain, row.domain_confidence = "newsite.org", 0.6
+    login(client)
+    page = client.get("/admin/sheets/220031").text
+    assert "Website not confirmed" in page and ">Confirm website<" in page
+    assert "built from example.org, not newsite.org" in page
+    assert "Confirming publishes it" not in page
+    after = client.post(
+        "/admin/sheets/220031/confirm-website",
+        data={"domain": "newsite.org"},
+        follow_redirects=True,
+    )
+    assert "held; version 1; website newsite.org confirmed" in after.text
+    assert "uv run waive atlas build --state MA --ccn 220031" in after.text
+    with session_scope(client.app.state.deps.engine) as session:
+        assert repo.latest_sheet(session, "220031")[0].status is SheetStatus.HELD
+
+
+def test_console_changes_from_another_site_are_refused(tmp_path):
+    # waive.kindred-ai.dev is same-site with kindred-ai.dev and its other subdomains, so the
+    # SameSite=Strict cookie alone would let a page there post to the console.
+    client = admin_client(tmp_path)
+    hold_for_its_website(client)
+    login(client)
+    for site in ("cross-site", "same-site"):
+        refused = client.post(
+            "/admin/sheets/220031/confirm-website",
+            data={"domain": "example.org"},
+            headers={"sec-fetch-site": site},
+        )
+        assert refused.status_code == 403 and "another site" in refused.text
+    with session_scope(client.app.state.deps.engine) as session:
+        assert repo.get_hospital(session, "220031").domain_confidence == 0.6
+    # Reading the console from a link elsewhere is fine; changing it from this site works.
+    page = client.get("/admin/sheets/220031", headers={"sec-fetch-site": "cross-site"})
+    assert page.status_code == 200
+    done = client.post(
+        "/admin/sheets/220031/confirm-website",
+        data={"domain": "example.org"},
+        headers={"sec-fetch-site": "same-origin"},
+        follow_redirects=True,
+    )
+    assert "published; version 2; website example.org confirmed" in done.text

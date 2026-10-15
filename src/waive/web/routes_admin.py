@@ -26,6 +26,7 @@ from waive.learning.evidence import audit_evidence, confirm_flag, slip_flag_leve
 from waive.learning.scoreboard import queue_prechecks, scoreboard
 from waive.web.deps import deps_of, render
 from waive.web.limits import TooManyRequests
+from waive.web.signin import from_this_site
 
 router = APIRouter(prefix="/admin")
 COOKIE = "waive_admin"
@@ -54,6 +55,12 @@ def _sessions(request: Request) -> dict[str, float]:
 
 
 def require_admin(request: Request) -> None:
+    # The cookie is SameSite=Strict, but Waive runs at waive.kindred-ai.dev, the same site as
+    # kindred-ai.dev and its other subdomains: a page there could still post to the console.
+    if request.method not in ("GET", "HEAD") and not from_this_site(request):
+        raise AdminRequired(
+            "That change came from another site, so it was refused. Open the console and try again."
+        )
     sessions = _sessions(request)
     given = request.cookies.get(COOKIE, "")
     expires = sessions.get(given)
@@ -221,8 +228,10 @@ def admin_rebuild(request: Request, ccn: str):
 def _website_to_confirm(
     session: Session, hospital: HospitalRow, versions: list[SheetRow]
 ) -> dict[str, Any] | None:
-    """The website a held sheet waits on (decision 7.9a-1): its domain, how sure discovery was
-    and what the place check said of its documents. None where no held sheet waits on one."""
+    """The website a held sheet waits on (decision 7.9a-1): its domain, how sure discovery was,
+    what the place check said of its documents, and the site the sheet was built from when that
+    is another one (confirming then publishes nothing: the sheet waits for a build that scouts
+    the confirmed site). None where no held sheet waits on a website."""
     if not versions or versions[0].status != SheetStatus.HELD.value:
         return None
     domain = hospital.website_domain
@@ -233,10 +242,14 @@ def _website_to_confirm(
         for item in repo.open_review_items(session, hospital.ccn)
         if item.kind == "place_unconfirmed" and item.detail.get("domain") == domain
     ]
+    built_from = (versions[0].body.get("hospital") or {}).get("website_domain")
     return {
         "domain": domain,
         "confidence": hospital.domain_confidence,
         "place": list(dict.fromkeys(place)),
+        "elsewhere": built_from != domain,
+        "built_from": built_from,
+        "state": hospital.state,
     }
 
 

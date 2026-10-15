@@ -46,6 +46,19 @@ def get_hospital(session: Session, ccn: str) -> HospitalRow | None:
     return session.get(HospitalRow, ccn)
 
 
+def lock_hospital(session: Session, ccn: str) -> HospitalRow | None:
+    """The hospital's row read afresh and locked until the transaction ends (FOR UPDATE on
+    PostgreSQL; SQLite has one writer at a time anyway), so two admin actions on one hospital run
+    one after the other: a double click cannot publish the same sheet version twice."""
+    query = (
+        select(HospitalRow)
+        .where(HospitalRow.ccn == ccn)
+        .with_for_update()
+        .execution_options(populate_existing=True)
+    )
+    return session.scalars(query).first()
+
+
 def list_hospitals(
     session: Session, state: str | None = None, missing_domain: bool = False
 ) -> list[HospitalRow]:

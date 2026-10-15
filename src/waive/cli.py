@@ -282,13 +282,22 @@ def atlas_recheck(
     console.print(table)
     sheets = "sheet" if len(found) == 1 else "sheets"
     console.print(f"{len(found)} {sheets} with fields the current rules reject")
-    if found:
+    rebuild = [entry for entry in found if not entry.waits_on_website]
+    if rebuild:
         console.print(
             "Rebuild: "
             + "; ".join(
                 f"uv run waive atlas build --state {e.state} --ccn {e.ccn} --reuse-sources"
-                for e in found
+                for e in rebuild
             )
+        )
+    if waiting := len(found) - len(rebuild):
+        one = waiting == 1
+        console.print(
+            f"{waiting} {'sheet waits' if one else 'sheets wait'} only on an unconfirmed website "
+            "(a rebuild would be held again): `uv run waive atlas recheck --withdraw` holds "
+            f"{'it' if one else 'them'}, then Confirm website or Wrong website in the admin "
+            "console (/admin/review)"
         )
 
 
