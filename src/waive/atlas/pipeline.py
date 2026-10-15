@@ -18,7 +18,9 @@ from waive.atlas.discover import (
     domain_unconfirmed,
     host_of,
     place_unconfirmed,
+    rejected_domains,
 )
+from waive.atlas.fetch import is_asset_host
 from waive.atlas.publish import (
     DOCUMENT_CONFLICT_REASON,
     carry_over_reported,
@@ -410,7 +412,7 @@ def build_hospital(
     result = BuildResult(ccn, row.name, "skipped")
 
     if not row.website_domain:
-        found = discover_domain(gateway, repo.hospital_ref(row))
+        found = discover_domain(gateway, repo.hospital_ref(row), rejected_domains(session, ccn))
         if found is None:
             repo.add_review_item(session, ccn, "domain", {"found": None})
             result.notes.append("no official domain found")
@@ -632,7 +634,11 @@ def clear_wrong_domain(session: Session, ccn: str, reason: str) -> BuildResult:
     domain is cleared so the next build discovers it again, and a `domain` review item records
     why (and keeps the scheduler off this hospital meanwhile, schedule.FAILURE_KINDS). Harrington
     Hospital (220019): discovery picked billfairly.com, a billing directory, and the published
-    free-care limit was quoted from that directory's page about a hospital in Vidalia, Georgia."""
+    free-care limit was quoted from that directory's page about a hospital in Vidalia, Georgia.
+
+    The hospital's web documents on asset hosts go too: the scout reaches an asset host only by a
+    link on the hospital's own site (scout.policy_links), so they were linked from the rejected
+    one, and left behind they kept its limits on the held sheet (review of 7.13)."""
     row = repo.get_hospital(session, ccn)
     if row is None:
         return BuildResult(ccn, "?", "failed", notes=["hospital not in registry"])
@@ -645,7 +651,8 @@ def clear_wrong_domain(session: Session, ccn: str, reason: str) -> BuildResult:
     detached = [
         source
         for source, _ in repo.sources_for(session, ccn)
-        if source.kind is SourceKind.HOSPITAL_WEB and host_of(source.url or "") == domain
+        if source.kind is SourceKind.HOSPITAL_WEB
+        and (host_of(source.url or "") == domain or is_asset_host(source.url or ""))
     ]
     for source in detached:
         repo.unlink_source(session, ccn, source.id)
@@ -685,6 +692,15 @@ class Recheck:
     state: str
     status: SheetStatus
     rejected: list[tuple[str, str]]
+
+    @property
+    def waits_on_website(self) -> bool:
+        """Listed only for the sheet-level checks, the unconfirmed website among them: a rebuild
+        would be held again, so the remedy is `--withdraw`, then the admin's Confirm website
+        (which also stands the place check down) or Wrong website."""
+        return all(path == "sheet" for path, _ in self.rejected) and any(
+            reason.startswith(DOMAIN_UNCONFIRMED_REASON) for _, reason in self.rejected
+        )
 
 
 def recheck_sheets(session: Session, state: str | None = None) -> list[Recheck]:
@@ -726,7 +742,7 @@ def withdraw_rejected(
     of 7.9). A held sheet stays held; a published one keeps its status unless it loses its income
     rules, its documents cannot be tied to the hospital's place, or its website was matched with
     low confidence and nobody confirmed it (decision 7.9a-1). A `recheck` review item records
-    what went."""
+    what went, when anything did."""
     results: list[BuildResult] = []
     for row in repo.list_hospitals(session, state=state):
         if repo.is_demo(row.ccn):
@@ -770,9 +786,10 @@ def withdraw_rejected(
             if sheet.status is SheetStatus.PUBLISHED
             else SheetStatus.HELD
         )
-        repo.add_review_item(
-            session, row.ccn, "recheck", {"pruned": pruned, "rejected": report.rejected}
-        )
+        if pruned or report.rejected:
+            repo.add_review_item(
+                session, row.ccn, "recheck", {"pruned": pruned, "rejected": report.rejected}
+            )
         published = publish_sheet(session, withdrawn.model_copy(update={"status": status}))
         result.outcome = "published" if status is SheetStatus.PUBLISHED else "held"
         result.version = published.version if published else sheet.version
@@ -789,12 +806,15 @@ WRONG_WEBSITE_REASON = "an admin found it is not the hospital's website"
 
 def _close_website_questions(session: Session, ccn: str, domain: str) -> None:
     """An admin answered whether `domain` is the hospital's own website: the open review items
-    that asked are resolved, namely the website hold, the place check (a confirmed domain stands
-    it down; a wrong one takes its documents away) and discovery's low-confidence `domain` item."""
+    that asked are resolved, namely every website hold (whichever site it named: the hospital's
+    website is settled either way), and the place check (a confirmed domain stands it down; a
+    wrong one takes its documents away) and discovery's low-confidence `domain` item about it."""
     for item in repo.open_review_items(session, ccn):
         detail = item.detail or {}
         asked = detail.get("found") if item.kind == "domain" else detail.get("domain")
-        if item.kind in ("domain", "domain_unconfirmed", "place_unconfirmed") and asked == domain:
+        if item.kind == "domain_unconfirmed" or (
+            item.kind in ("domain", "place_unconfirmed") and asked == domain
+        ):
             item.status = "resolved"
     session.flush()
 
@@ -830,8 +850,10 @@ def confirm_domain(session: Session, ccn: str, domain: str) -> BuildResult:
     does it, with no model call. It publishes when nothing else holds it. Every other reason is
     re-checked from the stored quotes and documents and named in the notes, except the holds a
     stored sheet cannot show (`_recorded_holds`): they keep it held, and the notes say that
-    re-checking them takes a rebuild."""
-    row = repo.get_hospital(session, ccn)
+    re-checking them takes a rebuild. A sheet built from another website (the domain moved after
+    its build) is left as it is: its fields are that site's, so it waits for a build that scouts
+    the confirmed one. Each confirmation is recorded in a resolved `website_confirmed` item."""
+    row = repo.lock_hospital(session, ccn)
     if row is None:
         return BuildResult(ccn, "?", "failed", notes=["hospital not in registry"])
     result = BuildResult(ccn, row.name, "skipped")
@@ -840,6 +862,14 @@ def confirm_domain(session: Session, ccn: str, domain: str) -> BuildResult:
         current = row.website_domain or "not set"
         result.notes.append(f"the website is {current} now, not {domain}; nothing confirmed")
         return result
+    if row.domain_confidence != CONFIRMED_CONFIDENCE:
+        record = repo.add_review_item(
+            session,
+            ccn,
+            "website_confirmed",
+            {"domain": domain, "previous_confidence": row.domain_confidence},
+        )
+        record.status = "resolved"
     row.domain_confidence = CONFIRMED_CONFIDENCE
     _close_website_questions(session, ccn, domain)
     result.notes.append(f"website {domain} confirmed")
@@ -848,6 +878,20 @@ def confirm_domain(session: Session, ccn: str, domain: str) -> BuildResult:
         result.notes.append("no sheet yet")
         return result
     sheet = latest[0]
+    built_from = sheet.hospital.website_domain
+    if built_from != domain:
+        was = (
+            f"was built from {built_from}, not {domain}"
+            if built_from
+            else f"was not built from {domain}"
+        )
+        result.notes.append(
+            f"the sheet {was}; it stays {sheet.status.value} until a build scouts it: "
+            f"uv run waive atlas build --state {row.state} --ccn {ccn}"
+        )
+        result.outcome = "published" if sheet.status is SheetStatus.PUBLISHED else "held"
+        result.version = sheet.version
+        return result
     texts = {source.id: text for source, text in repo.sources_for(session, ccn)}
     grounded, pruned = _ground(sheet, texts)
     report = verify_sheet(grounded, texts)
@@ -886,9 +930,9 @@ def confirm_domain(session: Session, ccn: str, domain: str) -> BuildResult:
 def reject_domain(session: Session, ccn: str, domain: str, reason: str = "") -> BuildResult:
     """An admin found in the console that `domain` is not the hospital's website: it is cleared
     as `clear_wrong_domain` does it (its documents detached, the fields they backed dropped, the
-    sheet held, discovery left to look again) and the open review items that asked about it are
-    resolved."""
-    row = repo.get_hospital(session, ccn)
+    sheet held; discovery never picks it again) and the open review items that asked about it
+    are resolved."""
+    row = repo.lock_hospital(session, ccn)
     if row is None:
         return BuildResult(ccn, "?", "failed", notes=["hospital not in registry"])
     if row.website_domain != domain:

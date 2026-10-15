@@ -8,7 +8,11 @@
 {% if website %}
 <div class="card">
   <h2>Website not confirmed</h2>
+  {% if website.elsewhere %}
+  <p>This sheet was {% if website.built_from %}built from {{ website.built_from }}, not {{ website.domain }}{% else %}not built from {{ website.domain }}{% endif %}. Confirming that {{ website.domain }} belongs to {{ hospital.name }} in {{ hospital.city }}, {{ hospital.state }} keeps the sheet held until a build scouts it (<code>uv run waive atlas build --state {{ website.state }} --ccn {{ hospital.ccn }}</code>, spends Tavily credits).</p>
+  {% else %}
   <p>This sheet is held until an admin confirms that the website it was built from belongs to {{ hospital.name }} in {{ hospital.city }}, {{ hospital.state }}. Confirming publishes it from the stored documents if nothing else holds it, with no paid calls.</p>
+  {% endif %}
   {% for reason in website.place %}<p class="muted">Its documents also fail the place check ({{ reason }}); confirming the website overrides that check.</p>{% endfor %}
   {% with ccn=hospital.ccn, domain=website.domain, confidence=website.confidence, key="sheet" %}{% include "_website_check.html" %}{% endwith %}
 </div>

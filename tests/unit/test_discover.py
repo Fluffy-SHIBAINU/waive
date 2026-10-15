@@ -79,6 +79,17 @@ def test_pick_domain_returns_none_when_only_directories():
     assert pick_domain(HOSPITAL, [hit("https://www.yelp.com/biz/st-example")]) is None
 
 
+def test_pick_domain_never_returns_a_website_an_admin_rejected():
+    # 7.11a: rediscovery would likely find the same wrong site again (360107, 330332, 450395).
+    hits = [
+        hit("https://www.stexample.org/", "St. Example Medical Center | Boston", score=0.9),
+        hit("https://www.other.org/", "Paying your bill", score=0.5),
+    ]
+    assert pick_domain(HOSPITAL, hits).domain == "stexample.org"
+    assert pick_domain(HOSPITAL, hits, rejected={"stexample.org"}).domain == "other.org"
+    assert pick_domain(HOSPITAL, hits[:1], rejected={"stexample.org"}) is None
+
+
 class FakeGateway:
     def __init__(self, hits):
         self.hits = hits
@@ -117,6 +128,12 @@ def test_run_discovery_updates_rows_and_flags_low_confidence():
         assert (row.website_domain, row.domain_confidence) == ("somewhere.com", 0.6)
         [item] = repo.open_review_items(session, "229999")
         assert item.kind == "domain"
+        # An admin found it is not the hospital's site: discovery does not pick it again.
+        row.website_domain, row.domain_confidence = None, None
+        item.detail = {"found": None, "cleared": "somewhere.com", "reason": "not the hospital"}
+    with session_scope(engine) as session:
+        assert run_discovery(session, gateway, "MA") == [("229999", None)]
+        assert repo.get_hospital(session, "229999").website_domain is None
 
 
 def test_guide_sites_directories_and_government_hosts_are_never_the_hospital():
