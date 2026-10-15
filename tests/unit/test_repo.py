@@ -54,6 +54,19 @@ def test_sources_dedupe_by_id_and_link_to_hospitals(engine):
             assert text == SAMPLE_POLICY_TEXT
 
 
+def test_saved_text_drops_nul_characters(engine):
+    # A few fetched PDFs carry NUL characters, which PostgreSQL refuses in text columns, so the
+    # production scout could not save them. The hash stays the hash of what was fetched.
+    source = st_example_sheet().sources[0]
+    with session_scope(engine) as session:
+        repo.upsert_hospital(session, HOSPITAL)
+        repo.save_source(session, source, "Free care\x00 up to 250%\x00.", "229999")
+    with session_scope(engine) as session:
+        [(doc, text)] = repo.sources_for(session, "229999")
+        assert text == "Free care up to 250%."
+        assert doc.sha256 == source.sha256
+
+
 def test_sheet_versions_round_trip(engine):
     sheet = st_example_sheet()
     with session_scope(engine) as session:
