@@ -20,6 +20,13 @@ def senior_message(result: EligibilityResult, hospital_name: str, *, alone: bool
             f"{hospital_name} gives discounts to people like you. "
             "We can fill in the form for you."
         )
+    if result.tier is Tier.ASSISTANCE:
+        # The policy states who can get help, not how much: never promise free care here.
+        return (
+            "Good news. You can likely get help with this bill. "
+            f"{hospital_name} decides how much help you get. "
+            "We can fill in the form for you."
+        )
     if result.tier is Tier.NOT_ELIGIBLE:
         follow_up = (
             "The next page shows what we read."
@@ -37,6 +44,7 @@ def caregiver_summary(result: EligibilityResult, hospital_name: str) -> str:
     headline = {
         Tier.FREE: "Likely free care",
         Tier.DISCOUNT: f"Likely {result.discount_percent}% discount",
+        Tier.ASSISTANCE: "Likely eligible for assistance",
         Tier.NOT_ELIGIBLE: "Likely not eligible",
         Tier.NEEDS_INFO: "More information needed",
         Tier.UNKNOWN: "Policy not yet known",

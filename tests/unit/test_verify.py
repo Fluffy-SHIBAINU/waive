@@ -902,3 +902,93 @@ def test_a_discount_percentage_is_not_a_free_care_limit_of_the_poverty_level():
     assert free_care_limits_stated(
         "Free care for household income between 0 - 250% FPL; a 100% discount applies."
     ) == {Decimal(250)}
+
+
+# Decision 7.9a-2 (task 7.14): a policy that states only the income up to which any help is given.
+CEILING_SENTENCE = (
+    "Patients with household income up to 300% of the Federal Poverty Guidelines may qualify for "
+    "financial assistance."
+)
+
+
+def with_ceiling(value, quote):
+    """St. Example as a hospital whose documents state only the ceiling on any help."""
+    sheet = st_example_sheet()
+    cited = Cited[Decimal](
+        value=Decimal(value), quote=quote, source_id=SAMPLE_SOURCE_ID, checked_on=date(2026, 10, 2)
+    )
+    eligibility = sheet.eligibility.model_copy(
+        update={"free_care_max_fpl": None, "discount_tiers": None, "assistance_ceiling_fpl": cited}
+    )
+    return sheet.model_copy(update={"eligibility": eligibility})
+
+
+def test_an_assistance_ceiling_is_a_percentage_the_quote_ties_to_the_poverty_level():
+    from waive.atlas.verify import names_percent_of_poverty_level
+
+    assert names_percent_of_poverty_level(CEILING_SENTENCE, Decimal(300))
+    assert names_percent_of_poverty_level(ARNOT_SENTENCE, Decimal(400))
+    assert names_percent_of_poverty_level(
+        "household income, less than 600% of the federal poverty guidelines.", Decimal(600)
+    )
+    assert names_percent_of_poverty_level("Discounts are limited to 300% FPG.", Decimal(300))
+    assert names_percent_of_poverty_level(
+        "help is available up to 250 percent of the current poverty level", Decimal(250)
+    )
+    assert names_percent_of_poverty_level("eligible up to 137.5% of the FPL", Decimal("137.5"))
+    # Policies write the number out with the figure in brackets, and date the guidelines.
+    assert names_percent_of_poverty_level(
+        "incomes up to four hundred percent (400%) of the Federal Poverty Guidelines", Decimal(400)
+    )
+    assert names_percent_of_poverty_level(
+        "income at or below 300% of the 2026 HHS Poverty Guidelines may qualify", Decimal(300)
+    )
+    assert names_percent_of_poverty_level(
+        "up to 250% of the U.S. Federal Poverty Level", Decimal(250)
+    )
+    # The number alone, another number of the sentence, or a discount is not the ceiling.
+    assert not names_percent_of_poverty_level(
+        "Financial assistance is available for incomes up to 400%.", Decimal(400)
+    )
+    assert not names_percent_of_poverty_level(
+        "Patients between 200% and 400% of the Federal Poverty Level receive help.", Decimal(200)
+    )
+    assert names_percent_of_poverty_level(
+        "Patients between 200% and 400% of the Federal Poverty Level receive help.", Decimal(400)
+    )
+    assert not names_percent_of_poverty_level(
+        "This program follows the Federal Poverty Guidelines and gives a 40% discount.",
+        Decimal(40),
+    )
+    assert not names_percent_of_poverty_level(
+        "Help is available up to four times the federal poverty level.", Decimal(400)
+    )
+
+
+def test_a_ceiling_verifies_against_its_source_like_any_documented_value():
+    from waive.atlas.verify import CEILING_UNTIED_REASON, OTHER_STATE_REASON
+
+    ceiling = "eligibility.assistance_ceiling_fpl"
+    untied = "Financial assistance is available for household incomes up to 300%."
+    illinois = (
+        "For Illinois facilities, patients up to 300% of the Federal Poverty Guidelines may "
+        "qualify for financial assistance."
+    )
+    docs = {SAMPLE_SOURCE_ID: "\n".join([SAMPLE_POLICY_TEXT, CEILING_SENTENCE, untied, illinois])}
+    report = verify_sheet(with_ceiling(300, CEILING_SENTENCE), docs)
+    assert report.ok, report.rejected
+    assert ceiling in report.accepted
+    # A ceiling whose quote does not name the poverty level is dropped (verify_sheet rejects it).
+    assert (ceiling, CEILING_UNTIED_REASON) in verify_sheet(
+        with_ceiling(300, untied), docs
+    ).rejected
+    # The exact-quote and value rules apply to it as to every documented field.
+    assert (ceiling, "value not in quote") in verify_sheet(
+        with_ceiling(400, CEILING_SENTENCE), docs
+    ).rejected
+    invented = "Patients up to 300% of the Federal Poverty Guidelines always get help from us."
+    assert (ceiling, "quote not found in source") in verify_sheet(
+        with_ceiling(300, invented), docs
+    ).rejected
+    # Another state's clause of a system policy is not this Massachusetts hospital's ceiling.
+    assert (ceiling, OTHER_STATE_REASON) in verify_sheet(with_ceiling(300, illinois), docs).rejected

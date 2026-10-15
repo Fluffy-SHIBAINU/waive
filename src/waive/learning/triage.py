@@ -110,7 +110,10 @@ def triage(
             return TriageResult(Triage.MATCHED, matched=True)
         # The hospital helped someone the sheet said it would not: the sheet is too strict.
         return TriageResult(Triage.SHEET_WRONG, matched=False, rescout=not sheet_changed)
-    if decision is Decision.APPROVED or (decision is Decision.PARTIAL and predicted == "discount"):
+    # Under an assistance ceiling the hospital decides the amount, so any help matches (7.9a-2).
+    if decision is Decision.APPROVED or (
+        decision is Decision.PARTIAL and predicted in ("discount", "assistance")
+    ):
         return TriageResult(Triage.MATCHED, matched=True, new_documents=new_docs)
     if decision is Decision.DENIED and reasons and reasons <= CASE_ISSUE_REASONS:
         ordered = sorted(reasons, key=list(DenialReason).index)
@@ -132,13 +135,16 @@ def triage(
 
 def appeal_draft(sheet: ProcedureSheet, prediction: dict[str, Any], outcome: OutcomeExtract) -> str:
     eligibility = sheet.eligibility
-    cited = (
-        eligibility.free_care_max_fpl
-        if prediction["tier"] == "free"
-        else eligibility.discount_tiers
-    )
+    cited = {
+        "free": eligibility.free_care_max_fpl,
+        "assistance": eligibility.assistance_ceiling_fpl,
+    }.get(prediction["tier"], eligibility.discount_tiers)
     if cited is None:
-        cited = eligibility.free_care_max_fpl or eligibility.discount_tiers
+        cited = (
+            eligibility.free_care_max_fpl
+            or eligibility.discount_tiers
+            or eligibility.assistance_ceiling_fpl
+        )
     quote = cited.quote if cited is not None and cited.quote else "the published income limits"
     checked_on = cited.checked_on.isoformat() if cited is not None else "recently"
     return APPEAL_TEXT.format(

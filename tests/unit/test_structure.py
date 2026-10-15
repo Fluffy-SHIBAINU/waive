@@ -415,16 +415,21 @@ def test_an_overall_assistance_ceiling_read_as_free_care_is_dropped():
         "eligibility.free_care_max_fpl: not stated; the documents give only an overall "
         "assistance ceiling (600% FPL)",
     ]
-    assert decide_status(sheet, []) is SheetStatus.HELD
-    # The ceiling alone (the model followed the rules) leaves the same honest gap.
+    # Decision 7.9a-2 (task 7.14): the ceiling is the sheet's one income rule, cited, and the
+    # sheet may publish on it once verification has held it to its quote.
+    ceiling = sheet.eligibility.assistance_ceiling_fpl
+    assert ceiling.value == Decimal(600) and ceiling.quote == UMASS_CEILING
+    assert ceiling.source_id == SAMPLE_SOURCE_ID and ceiling.checked_on == TODAY
+    assert decide_status(sheet, []) is SheetStatus.PUBLISHED
+    # The ceiling alone (the model followed the rules) gives the same sheet.
     ceiling_only = SheetDraft(assistance_ceiling_fpl=field(600, UMASS_CEILING))
-    sheet, skipped = draft_to_sheet(ceiling_only, SAMPLE.hospital, [SAMPLE.sources[0]], TODAY)
-    assert sheet.eligibility.free_care_max_fpl is None
+    alone, skipped = draft_to_sheet(ceiling_only, SAMPLE.hospital, [SAMPLE.sources[0]], TODAY)
+    assert alone.eligibility == sheet.eligibility
     assert skipped == [
         "eligibility.free_care_max_fpl: not stated; the documents give only an overall "
         "assistance ceiling (600% FPL)"
     ]
-    assert "assistance_ceiling_fpl" in SYSTEM_PROMPT
+    assert "assistance_ceiling_fpl" in SYSTEM_PROMPT and "poverty" in SYSTEM_PROMPT
 
 
 def test_a_free_only_limit_at_the_ceiling_is_kept_unless_it_cites_the_same_passage():
@@ -446,6 +451,7 @@ def test_a_free_only_limit_at_the_ceiling_is_kept_unless_it_cites_the_same_passa
         "eligibility.free_care_max_fpl: stated 400 is at or above the overall assistance "
         "ceiling (400) but cites a different passage; check which is the free band"
     ]
+    assert sheet.eligibility.assistance_ceiling_fpl is None  # the free band is the answer
     assert decide_status(sheet, []) is SheetStatus.PUBLISHED
     # A hallucinated low ceiling cannot take a higher, differently cited limit away either.
     low = draft.model_copy(
@@ -465,6 +471,7 @@ def test_a_free_only_limit_at_the_ceiling_is_kept_unless_it_cites_the_same_passa
     sheet, skipped = draft_to_sheet(same, SAMPLE.hospital, [SAMPLE.sources[0]], TODAY)
     assert sheet.eligibility.free_care_max_fpl is None
     assert skipped[0].endswith("assistance ceiling (600); not free care")
+    assert sheet.eligibility.assistance_ceiling_fpl.quote == UMASS_CEILING
 
 
 def test_a_free_care_band_under_the_ceiling_is_kept():
@@ -478,6 +485,10 @@ def test_a_free_care_band_under_the_ceiling_is_kept():
     assert skipped == []
     assert sheet.eligibility.free_care_max_fpl.value == Decimal(250)
     assert tiers_of(sheet) == [(Decimal(250), Decimal(400), 60)]
+    # Next to a band and a table the ceiling stays off the sheet: they are the answer (7.14).
+    assert sheet.eligibility.assistance_ceiling_fpl is None
+    without = draft.model_copy(update={"assistance_ceiling_fpl": None})
+    assert draft_to_sheet(without, SAMPLE.hospital, [SAMPLE.sources[0]], TODAY)[0] == sheet
     # A ceiling the model garbled, or cited from nowhere, changes nothing.
     for ceiling in (
         field("sliding scale", "assistance is limited"),
@@ -647,7 +658,14 @@ def test_a_free_limit_quoted_from_full_or_partial_wording_becomes_the_ceiling():
         "eligibility.free_care_max_fpl: not stated; the documents give only an overall "
         "assistance ceiling (400% FPL)",
     ]
-    assert decide_status(sheet, []) is SheetStatus.HELD
+    # Task 7.14: the sentence set aside is the ceiling the sheet now publishes, cited as it was.
+    ceiling = sheet.eligibility.assistance_ceiling_fpl
+    assert (ceiling.value, ceiling.quote, ceiling.source_id) == (
+        Decimal(400),
+        arnot,
+        SAMPLE_SOURCE_ID,
+    )
+    assert decide_status(sheet, []) is SheetStatus.PUBLISHED
     # A real free-care band elsewhere in the documents still publishes.
     both = SheetDraft(
         free_care_max_fpl=field(400, arnot),
@@ -658,10 +676,80 @@ def test_a_free_limit_quoted_from_full_or_partial_wording_becomes_the_ceiling():
     )
     sheet, skipped = draft_to_sheet(both, SAMPLE.hospital, [SAMPLE.sources[0]], TODAY)
     assert sheet.eligibility.free_care_max_fpl.value == Decimal(250)
+    assert sheet.eligibility.assistance_ceiling_fpl is None
     assert any(note.startswith("eligibility.free_care_max_fpl: 400 is quoted") for note in skipped)
     assert any(
         note.startswith("eligibility.discount_tiers: only free-care bands") for note in skipped
     )
+
+
+CEILING_SENTENCE = (
+    "Patients with household income up to 300% of the Federal Poverty Guidelines may qualify for "
+    "financial assistance."
+)
+
+
+def test_a_ceiling_with_no_band_or_table_lands_on_the_sheet_and_verifies():
+    # Decision 7.9a-2 (task 7.14): Baptist Hospital FL and two AHN hospitals (7.11d) state only
+    # the income up to which any help is given. That limit is the sheet's income rule, cited.
+    draft = SheetDraft(
+        assistance_ceiling_fpl=field("300% FPL", f"  {CEILING_SENTENCE} "),
+        phone=field("617-555-0100", "Questions: call 617-555-0100"),
+    )
+    sheet, skipped = draft_to_sheet(draft, SAMPLE.hospital, [SAMPLE.sources[0]], TODAY)
+    ceiling = sheet.eligibility.assistance_ceiling_fpl
+    assert (ceiling.value, ceiling.quote, ceiling.source_id) == (
+        Decimal(300),
+        CEILING_SENTENCE,
+        SAMPLE_SOURCE_ID,
+    )
+    assert [path for path, _ in sheet.field_paths()] == [
+        "eligibility.assistance_ceiling_fpl",
+        "contacts.phone",
+    ]
+    assert skipped == [
+        "eligibility.free_care_max_fpl: not stated; the documents give only an overall "
+        "assistance ceiling (300% FPL)"
+    ]
+    docs = {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT + CEILING_SENTENCE + "\n"}
+    assert verify_sheet(sheet, docs).ok
+    assert decide_status(sheet, []) is SheetStatus.PUBLISHED
+    # A ceiling whose quote never names the poverty level is drafted, then rejected by the
+    # verifier, and the pipeline drops it (test_pipeline covers the drop).
+    untied = "Financial assistance is available for household incomes up to 300%."
+    loose = SheetDraft(assistance_ceiling_fpl=field(300, untied))
+    sheet, _ = draft_to_sheet(loose, SAMPLE.hospital, [SAMPLE.sources[0]], TODAY)
+    docs = {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT + untied + "\n"}
+    assert [path for path, _ in verify_sheet(sheet, docs).rejected] == [
+        "eligibility.assistance_ceiling_fpl"
+    ]
+
+
+def test_a_ceiling_stands_in_when_the_table_cannot_be_used():
+    # "No usable tier" (every band garbled) or bands that overlap: the structurer has no table,
+    # so the ceiling the documents state is the income rule; a 100% band still wins.
+    ceiling = field(300, CEILING_SENTENCE)
+    garbled = [{"min_fpl_exclusive": 0, "max_fpl_inclusive": "varies", "discount_percent": "?"}]
+    overlapping = [
+        {"min_fpl_exclusive": 0, "max_fpl_inclusive": 200, "discount_percent": 80},
+        {"min_fpl_exclusive": 150, "max_fpl_inclusive": 300, "discount_percent": 40},
+    ]
+    for tiers in (garbled, overlapping):
+        draft = SheetDraft(
+            assistance_ceiling_fpl=ceiling, discount_tiers=field(tiers, "sliding scale 0 to 300%")
+        )
+        sheet, skipped = draft_to_sheet(draft, SAMPLE.hospital, [SAMPLE.sources[0]], TODAY)
+        assert sheet.eligibility.discount_tiers is None
+        assert sheet.eligibility.assistance_ceiling_fpl.value == Decimal(300)
+        assert skipped[0].startswith("eligibility.discount_tiers: ")
+        assert skipped[-1].endswith("only an overall assistance ceiling (300% FPL)")
+    free_band = [{"min_fpl_exclusive": 0, "max_fpl_inclusive": 200, "discount_percent": 100}]
+    draft = SheetDraft(
+        assistance_ceiling_fpl=ceiling, discount_tiers=field(free_band, "0 to 200% 100%")
+    )
+    sheet, _ = draft_to_sheet(draft, SAMPLE.hospital, [SAMPLE.sources[0]], TODAY)
+    assert sheet.eligibility.free_care_max_fpl.value == Decimal(200)
+    assert sheet.eligibility.assistance_ceiling_fpl is None
 
 
 # The prompt's label list, echoed back whole by the model (rule 6 of SYSTEM_PROMPT).

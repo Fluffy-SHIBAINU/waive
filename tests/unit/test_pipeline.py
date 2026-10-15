@@ -327,9 +327,19 @@ UMASS_CEILING = (
 )
 
 
+# The summary names no free-care band and no table, only the ceiling on all assistance.
+UMASS_SUMMARY = (
+    "St. Example Medical Center, Boston, MA 02118. Financial Assistance Summary.\n"
+    f"{UMASS_CEILING}\n"
+    "Patients who qualify are not charged more than the amounts generally billed to patients "
+    "with insurance.\n"
+    "Questions: call 617-555-0100.\n"
+)
+
+
 class UMassGateway(FakeGateway):
     def extract(self, urls, **kwargs):
-        return [ExtractedPage(url, POLICY_TEXT + UMASS_CEILING + "\n") for url in urls]
+        return [ExtractedPage(url, UMASS_SUMMARY) for url in urls]
 
 
 class UMassAI(FakeAI):
@@ -352,15 +362,18 @@ def test_a_ceiling_on_all_assistance_is_not_published_as_free_care():
     engine = make_engine_with_hospital()
     with session_scope(engine) as session:
         result = build_hospital(session, UMassGateway(), UMassAI(), "229999", TODAY)
-        assert result.outcome == "held"
         assert (
             "eligibility.free_care_max_fpl: stated 600 is at or above the overall assistance "
             "ceiling (600); not free care" in result.notes
         )
+        # Decision 7.9a-2 (task 7.14): it publishes as what it is, the ceiling on any help.
+        assert (result.outcome, result.version) == ("published", 1)
         sheet, _ = repo.latest_sheet(session, "229999")
-        assert sheet.status is SheetStatus.HELD
+        assert sheet.status is SheetStatus.PUBLISHED
         assert sheet.eligibility.free_care_max_fpl is None
         assert sheet.eligibility.discount_tiers is None
+        ceiling = sheet.eligibility.assistance_ceiling_fpl
+        assert (ceiling.value, ceiling.quote) == (600, UMASS_CEILING)
         assert sheet.contacts.phone.value == "617-555-0100"  # the rest of the sheet survives
         kinds = sorted(item.kind for item in repo.open_review_items(session, "229999"))
         assert kinds == ["verification"]  # no misread reaches the inconsistency check
@@ -1709,3 +1722,206 @@ def test_discovery_never_brings_back_a_website_an_admin_rejected():
         result = build_hospital(session, GuessGateway(), FakeAI(), "220031", TODAY)
         assert (result.outcome, result.notes) == ("skipped", ["no official domain found"])
         assert repo.get_hospital(session, "220031").website_domain is None
+
+
+# Decision 7.9a-2 (task 7.14): documents that state only the income up to which any help is
+# given (Baptist Hospital FL and two AHN hospitals, 7.11d), not which share is free or discounted.
+CEILING_SENTENCE = (
+    "Patients with household income up to 400% of the Federal Poverty Guidelines may qualify for "
+    "financial assistance."
+)
+STATE_SENTENCE = (
+    "Households up to 300% of the Federal Poverty Guidelines may also apply to the state's Health "
+    "Safety Net."
+)
+CEILING_TEXT = (
+    "St. Example Medical Center, Boston, MA 02118. Financial Assistance Summary.\n"
+    f"{CEILING_SENTENCE}\n"
+    "The hospital decides the amount of assistance after it reviews each application.\n"
+    f"{STATE_SENTENCE}\n"
+    "Questions: call 617-555-0100.\n"
+)
+CEILING_PATH = "eligibility.assistance_ceiling_fpl"
+CEILING_NOTE = (
+    "eligibility.free_care_max_fpl: not stated; the documents give only an overall assistance "
+    "ceiling (400% FPL)"
+)
+
+
+class CeilingGateway(FakeGateway):
+    def extract(self, urls, **kwargs):
+        return [ExtractedPage(url, CEILING_TEXT) for url in urls]
+
+
+class CeilingOnlyAI(FakeAI):
+    """No model finds a free-care band or a table; each fills assistance_ceiling_fpl, set per
+    role like FakeAI's free-care limit: a value (cited with the ceiling sentence), a (value,
+    quote) pair, or None. The quote is cited from the document that contains it."""
+
+    def __init__(self, reason="400", fast="400", tiebreak="400"):
+        super().__init__(free_limit_for_fast=None, free_limit_for_tiebreak=None)
+        self.free_limits["reason"] = None
+        self.ceilings = {"reason": reason, "fast": fast, "tiebreak": tiebreak}
+
+    def complete_json(self, role, messages, schema, *, phi, purpose, max_tokens=2000):
+        draft = super().complete_json(role, messages, schema, phi=phi, purpose=purpose)
+        ceiling = self.ceilings[role]
+        if ceiling is not None:
+            value, quote = ceiling if isinstance(ceiling, tuple) else (ceiling, CEILING_SENTENCE)
+            blocks = messages[1]["content"].split("=== SOURCE id=")[1:]
+            cited = next((b for b in blocks if quote in b), blocks[0]).split(" ")[0]
+            draft.assistance_ceiling_fpl = DraftField(value=value, quote=quote, source_id=cited)
+        return draft
+
+
+def test_a_ceiling_with_no_band_or_table_publishes_and_the_rules_answer_with_it():
+    from decimal import Decimal
+
+    from waive.rules.eligibility import Household, Tier, evaluate_eligibility
+
+    engine = make_engine_with_hospital()
+    with session_scope(engine) as session:
+        result = build_hospital(session, CeilingGateway(), CeilingOnlyAI(), "229999", TODAY)
+        assert (result.outcome, result.version) == ("published", 1)
+        assert CEILING_NOTE in result.notes
+        sheet, _ = repo.latest_sheet(session, "229999")
+        assert sheet.status is SheetStatus.PUBLISHED
+        ceiling = sheet.eligibility.assistance_ceiling_fpl
+        assert (ceiling.value, ceiling.quote) == (400, CEILING_SENTENCE)
+        assert sheet.eligibility.free_care_max_fpl is None
+        assert sheet.eligibility.discount_tiers is None
+        texts = {source.id: text for source, text in repo.sources_for(session, "229999")}
+        assert verify_sheet(sheet, texts).ok
+        kinds = sorted(item.kind for item in repo.open_review_items(session, "229999"))
+        assert kinds == ["verification"]  # the note above and the unverifiable hours
+        # 300% of the poverty line for one person: help exists, the amount is the hospital's.
+        answer = evaluate_eligibility(sheet, Household(1, Decimal("47880"), "MA"))
+        assert (answer.tier, answer.discount_percent) == (Tier.ASSISTANCE, None)
+        assert answer.reasons[0].field_path == CEILING_PATH
+
+
+def test_a_ceiling_whose_quote_never_names_the_poverty_level_is_dropped_and_the_sheet_held():
+    untied = "Financial assistance is available for household incomes up to 400%."
+
+    class UntiedGateway(FakeGateway):
+        def extract(self, urls, **kwargs):
+            text = CEILING_TEXT.replace(CEILING_SENTENCE, untied)
+            return [ExtractedPage(url, text) for url in urls]
+
+    engine = make_engine_with_hospital()
+    with session_scope(engine) as session:
+        ai = CeilingOnlyAI(reason=("400", untied), fast=("400", untied))
+        result = build_hospital(session, UntiedGateway(), ai, "229999", TODAY)
+        assert result.outcome == "held"
+        assert (
+            f"{CEILING_PATH}: quote does not state the ceiling as a percentage of the poverty level"
+        ) in result.notes
+        sheet, _ = repo.latest_sheet(session, "229999")
+        assert sheet.status is SheetStatus.HELD
+        assert sheet.eligibility.assistance_ceiling_fpl is None
+        assert sheet.eligibility.free_care_max_fpl is None
+
+
+def test_a_ceiling_only_sheet_waits_on_the_website_as_before_and_publishes_once_confirmed():
+    from waive.atlas.pipeline import confirm_domain
+
+    engine = make_engine_with_hospital(UNSURE_HOSPITAL)
+    with session_scope(engine) as session:
+        result = build_hospital(session, CeilingGateway(), CeilingOnlyAI(), "220031", TODAY)
+        assert (result.outcome, result.version) == ("held", 1)
+        assert UNCONFIRMED_NOTE in result.notes
+        sheet, _ = repo.latest_sheet(session, "220031")
+        assert sheet.status is SheetStatus.HELD
+        assert sheet.eligibility.assistance_ceiling_fpl.value == 400  # kept for the admin
+        result = confirm_domain(session, "220031", "example.org")
+        assert (result.outcome, result.version) == ("published", 2)
+        assert result.notes == ["website example.org confirmed"]
+        assert repo.latest_sheet(session, "220031")[0].status is SheetStatus.PUBLISHED
+
+
+def test_a_ceiling_only_sheet_is_held_while_a_document_states_a_free_care_limit():
+    # The sheet would say the documents name no free-care band; the newer policy names one.
+    engine = make_engine_with_hospital()
+    with session_scope(engine) as session:
+        first = build_hospital(session, CeilingGateway(), CeilingOnlyAI(), "229999", TODAY)
+        assert first.outcome == "published"
+        repo.save_source(session, NEWER_POLICY, NEWER_POLICY_TEXT, "229999")
+        result = build_hospital(
+            session, CeilingGateway(), CeilingOnlyAI(), "229999", TODAY, reuse_sources=True
+        )
+        assert (result.outcome, result.version) == ("held", 2)
+        assert (
+            "the hospital's documents state different free-care limits (fap-newer-pdf: 200%)"
+        ) in result.notes
+        sheet, _ = repo.latest_sheet(session, "229999")
+        assert sheet.status is SheetStatus.HELD
+        assert sheet.eligibility.assistance_ceiling_fpl.value == 400  # kept for the admin
+        detail = review_detail(session, "229999", "document_conflict")
+        assert detail["published"] is None
+        assert detail["documents"] == [{"id": "fap-newer-pdf", "limits": ["200"]}]
+
+
+def test_two_models_disagreeing_on_the_ceiling_hold_the_sheet_like_any_critical_field():
+    engine = make_engine_with_hospital()
+    with session_scope(engine) as session:
+        ai = CeilingOnlyAI(fast=("300", STATE_SENTENCE), tiebreak="999")
+        result = build_hospital(session, CeilingGateway(), ai, "229999", TODAY)
+        assert result.outcome == "held"
+        assert f"critical fields disagree: {CEILING_PATH}" in result.notes
+        assert review_detail(session, "229999", "tiebreak")[CEILING_PATH] == {
+            "primary": "400",
+            "secondary": "300",
+            "tiebreak": "999",
+            "verdict": "unsettled",
+        }
+        sheet, _ = repo.latest_sheet(session, "229999")
+        assert sheet.status is SheetStatus.HELD
+        assert sheet.eligibility.assistance_ceiling_fpl.value == 400  # the primary's, for review
+    # The third model siding with the primary settles it, and the sheet publishes.
+    engine = make_engine_with_hospital()
+    with session_scope(engine) as session:
+        ai = CeilingOnlyAI(fast=("300", STATE_SENTENCE), tiebreak="400")
+        result = build_hospital(session, CeilingGateway(), ai, "229999", TODAY)
+        assert result.outcome == "published"
+        assert f"tie-break settled {CEILING_PATH} (primary)" in result.notes
+
+
+class TieredAI(FakeAI):
+    """The sample policy read whole: the free-care band, the 60% table, and with `ceiling` the
+    400% top of that table filed as the overall ceiling too."""
+
+    def __init__(self, ceiling):
+        super().__init__()
+        self.ceiling = ceiling
+
+    def complete_json(self, role, messages, schema, *, phi, purpose, max_tokens=2000):
+        draft = super().complete_json(role, messages, schema, phi=phi, purpose=purpose)
+        source_id = draft.free_care_max_fpl.source_id
+        draft.discount_tiers = DraftField(
+            value=[{"min_fpl_exclusive": 250, "max_fpl_inclusive": 400, "discount_percent": 60}],
+            quote=DISCOUNT_QUOTE,
+            source_id=source_id,
+        )
+        if self.ceiling:
+            draft.assistance_ceiling_fpl = DraftField(
+                value="400", quote=DISCOUNT_QUOTE, source_id=source_id
+            )
+        return draft
+
+
+def test_a_sheet_with_a_band_and_a_table_is_unchanged_by_a_ceiling():
+    built = {}
+    for ceiling in (False, True):
+        engine = make_engine_with_hospital()
+        with session_scope(engine) as session:
+            result = build_hospital(session, FakeGateway(), TieredAI(ceiling), "229999", TODAY)
+            sheet, _ = repo.latest_sheet(session, "229999")
+            kinds = sorted(item.kind for item in repo.open_review_items(session, "229999"))
+            built[ceiling] = (result.outcome, result.version, result.notes, kinds, sheet)
+    assert built[True] == built[False]
+    outcome, _, notes, _, sheet = built[True]
+    assert outcome == "published" and sheet.status is SheetStatus.PUBLISHED
+    assert sheet.eligibility.assistance_ceiling_fpl is None
+    assert sheet.eligibility.free_care_max_fpl.value == 250
+    assert len(sheet.eligibility.discount_tiers.value) == 1
+    assert not any("ceiling" in note for note in notes)

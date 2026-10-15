@@ -49,6 +49,12 @@ def _plain(value: Any, field: str) -> str:
     if isinstance(value, str):
         return value
     if isinstance(value, Decimal):
+        if field == "assistance_ceiling_fpl":
+            # Decision 7.9a-2: the policy says who can get help, not how much.
+            return (
+                f"Assistance up to {_number(value)}% of the federal poverty level; "
+                "the hospital decides the amount"
+            )
         if field.endswith("_fpl"):
             return f"{_number(value)}% of the federal poverty level"
         return f"${value:,.2f}"

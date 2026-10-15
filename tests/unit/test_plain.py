@@ -21,6 +21,17 @@ def test_fpl_limit_reads_as_a_share_of_the_poverty_level():
     assert plain_lines(Decimal("1E+2"), path) == ["100% of the federal poverty level"]
 
 
+def test_an_assistance_ceiling_says_the_hospital_decides_the_amount():
+    # Decision 7.9a-2 (task 7.14): the policy states only the income up to which help is given.
+    path = "eligibility.assistance_ceiling_fpl"
+    assert plain_lines(Decimal("400"), path) == [
+        "Assistance up to 400% of the federal poverty level; the hospital decides the amount"
+    ]
+    assert plain_lines(Decimal("137.50"), path) == [
+        "Assistance up to 137.5% of the federal poverty level; the hospital decides the amount"
+    ]
+
+
 def test_money_reads_as_dollars_and_cents():
     assert plain_lines(Decimal("1234"), "eligibility.min_balance") == ["$1,234.00"]
     assert plain_lines(Decimal("50.5"), "eligibility.min_balance") == ["$50.50"]

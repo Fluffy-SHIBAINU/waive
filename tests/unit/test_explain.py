@@ -11,6 +11,7 @@ ALL_TIERS = [
     EligibilityResult(Tier.NOT_ELIGIBLE),
     EligibilityResult(Tier.NEEDS_INFO),
     EligibilityResult(Tier.UNKNOWN),
+    EligibilityResult(Tier.ASSISTANCE),
 ]
 
 
@@ -54,3 +55,27 @@ def test_messages_for_someone_working_alone_never_send_them_to_a_helper():
     assert "next page" in senior_message(ALL_TIERS[3], "St. Example", alone=True)
     # The limited link's words are unchanged.
     assert "Your helper will ask you" in senior_message(ALL_TIERS[3], "St. Example")
+
+
+def test_assistance_under_a_ceiling_says_the_hospital_decides_how_much_and_never_free():
+    # Decision 7.9a-2 (task 7.14): the policy states only the income up to which help is given.
+    from tests.unit.test_eligibility import CEILING_QUOTE, ceiling_only_sheet
+
+    result = evaluate_eligibility(ceiling_only_sheet(), Household(1, Decimal("47880"), "MA"))
+    assert result.tier is Tier.ASSISTANCE
+    for alone in (False, True):
+        message = senior_message(result, "St. Example", alone=alone)
+        assert message == (
+            "Good news. You can likely get help with this bill. St. Example decides how much "
+            "help you get. We can fill in the form for you."
+        )
+    summary = caregiver_summary(result, "St. Example Medical Center")
+    assert summary.split("\n") == [
+        "Likely eligible for assistance at St. Example Medical Center.",
+        "Income is 300% of the poverty line; assistance exists up to 400% of the poverty level, "
+        "and the hospital decides the amount.",
+        f'Policy says: "{CEILING_QUOTE}"',
+        "This is an estimate. The hospital makes the final decision.",
+    ]
+    for text in (summary, senior_message(result, "St. Example")):
+        assert "free" not in text.lower()

@@ -270,6 +270,12 @@ def quote_addresses_insured(quote: str, value: bool) -> bool:
 
 
 OTHER_STATE_REASON = "quote states the band for another state's facilities"
+# The fields that carry an income limit, any of which a system policy may state per state.
+INCOME_LIMIT_PATHS = (
+    "eligibility.free_care_max_fpl",
+    "eligibility.discount_tiers",
+    "eligibility.assistance_ceiling_fpl",
+)
 # "For Illinois facilities – Uninsured patients with household incomes between 401% and 600%
 # ... 85% discount" inside AdventHealth's system policy (cw-f-50.1) was published for Wauchula,
 # Florida (review of 7.9). Everything after such a heading, up to the next one, is that state's.
@@ -293,10 +299,10 @@ def _state_segments(quote: str) -> list[tuple[str | None, str]]:
 
 
 def bands_under_another_state(quote: str, state: str, value: Any) -> bool:
-    """Whether a free-care limit or a discount table takes any of its numbers from a part of the
-    quote headed "for <State> facilities" for a state other than the hospital's. A quote without
-    such a heading never trips this; with one, every band must be stated in full in the parts
-    that are the hospital's own state's or nobody's."""
+    """Whether a free-care limit, an assistance ceiling or a discount table takes any of its
+    numbers from a part of the quote headed "for <State> facilities" for a state other than the
+    hospital's. A quote without such a heading never trips this; with one, every band must be
+    stated in full in the parts that are the hospital's own state's or nobody's."""
     segments = _state_segments(quote)
     if all(segment_state in (None, state) for segment_state, _ in segments):
         return False
@@ -532,6 +538,28 @@ _FPL_TIED_PERCENT = re.compile(
 )
 
 
+CEILING_UNTIED_REASON = "quote does not state the ceiling as a percentage of the poverty level"
+# Policies write "four hundred percent (400%) of the Federal Poverty Guidelines" and date or
+# attribute the guidelines ("of the 2026 HHS Poverty Guidelines"); neither unties the number.
+_BRACKETED_PERCENT = re.compile(r"\((\d{2,3}(?:\.\d+)? ?(?:%|percent))\)")
+_GUIDELINE_QUALIFIERS = re.compile(
+    r"\b(?:(?:19|20)\d\d |hhs |u\.s\. |us |united states )+(?=(?:federal )?(?:poverty|fpl|fpg))"
+)
+
+
+def names_percent_of_poverty_level(quote: str, value: Decimal) -> bool:
+    """Whether the quote names `value` as a percentage of the poverty level ("up to 300% of the
+    Federal Poverty Guidelines", "400% FPL"), read the way free-care sentences are: a bare "up to
+    400%" may be a discount or a balance, and "four times the poverty level" has no number to
+    check. An assistance ceiling publishes only on such a quote (decision 7.9a-2)."""
+    text = _GUIDELINE_QUALIFIERS.sub("", _BRACKETED_PERCENT.sub(r"\1", normalize(quote)))
+    for match in _FPL_TIED_PERCENT.finditer(text):
+        number = re.match(r"\d+(?:\.\d+)?", match.group(0))
+        if number is not None and Decimal(number.group(0)) == Decimal(value):
+            return True
+    return False
+
+
 def free_care_limits_stated(document_text: str) -> set[Decimal]:
     """The poverty-level percentages a document's free-care sentences name: every percentage in a
     sentence that promises free care and mentions the poverty level. Two stored documents of one
@@ -743,7 +771,11 @@ def verify_sheet(sheet: ProcedureSheet, documents: dict[str, str]) -> Verificati
             reason := unsupported_list_reason(path, cited.value, cited.quote or "")
         ):
             report.rejected.append((path, reason))
-        elif path in ("eligibility.free_care_max_fpl", "eligibility.discount_tiers") and (
+        elif path == "eligibility.assistance_ceiling_fpl" and not names_percent_of_poverty_level(
+            cited.quote or "", cited.value
+        ):
+            report.rejected.append((path, CEILING_UNTIED_REASON))
+        elif path in INCOME_LIMIT_PATHS and (
             bands_under_another_state(cited.quote or "", sheet.hospital.state, cited.value)
         ):
             report.rejected.append((path, OTHER_STATE_REASON))

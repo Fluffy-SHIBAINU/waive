@@ -113,3 +113,30 @@ def test_a_hospital_whose_sheet_is_held_is_under_review_with_no_figures():
     assert client.get("/atlas/220031.json").json()["status"] == "published"
     assert "published" in client.get("/atlas?q=real").text
     assert client.get("/atlas/000000.json").status_code == 404
+
+
+def test_a_ceiling_only_sheet_reads_as_the_ceiling_and_never_as_free_care():
+    # Decision 7.9a-2 (task 7.14): the policy states only the income up to which help is given.
+    from tests.unit.test_eligibility import CEILING_QUOTE, ceiling_only_sheet
+
+    client, engine = make_client()
+    sheet = ceiling_only_sheet()
+    with session_scope(engine) as session:
+        repo.upsert_hospital(session, REAL_HOSPITAL)
+        publish_sheet(session, sheet.model_copy(update={"hospital": real_sheet().hospital}))
+    page = client.get("/atlas/220031")
+    assert page.status_code == 200
+    assert "eligibility.assistance_ceiling_fpl" in page.text
+    assert (
+        "Assistance up to 400% of the federal poverty level; the hospital decides the amount"
+        in page.text
+    )
+    assert CEILING_QUOTE in page.text
+    assert "free" not in page.text.lower()
+    data = client.get("/atlas/220031.json").json()
+    assert data["status"] == "published"
+    ceiling = data["eligibility"]["assistance_ceiling_fpl"]
+    assert (ceiling["value"], ceiling["quote"]) == ("400", CEILING_QUOTE)
+    assert ceiling["source_id"] == sheet.sources[0].id and ceiling["layer"] == "documented"
+    assert data["eligibility"]["free_care_max_fpl"] is None
+    assert data["eligibility"]["discount_tiers"] is None

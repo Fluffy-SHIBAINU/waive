@@ -3,6 +3,7 @@ from decimal import Decimal
 
 from waive.atlas import repo
 from waive.atlas.publish import (
+    CRITICAL_PATHS,
     critical_conflicts,
     decide_status,
     diff_sheets,
@@ -132,6 +133,44 @@ def test_decide_status():
     assert decide_status(SAMPLE, ["eligibility.free_care_max_fpl"]) is SheetStatus.HELD
     no_limits = drop_fields(SAMPLE, ["eligibility.free_care_max_fpl", "eligibility.discount_tiers"])
     assert decide_status(no_limits, []) is SheetStatus.HELD
+
+
+CEILING = "eligibility.assistance_ceiling_fpl"
+CEILING_SENTENCE = (
+    "Patients with household income up to 400% of the Federal Poverty Guidelines may qualify for "
+    "financial assistance."
+)
+
+
+def with_ceiling(sheet, value, quote=CEILING_SENTENCE):
+    """`sheet` with only an assistance ceiling for income rules (decision 7.9a-2)."""
+    cited = sheet.eligibility.free_care_max_fpl.model_copy(
+        update={"value": Decimal(value), "quote": quote}
+    )
+    eligibility = sheet.eligibility.model_copy(
+        update={"free_care_max_fpl": None, "discount_tiers": None, "assistance_ceiling_fpl": cited}
+    )
+    return sheet.model_copy(update={"eligibility": eligibility})
+
+
+def test_a_ceiling_with_no_band_or_table_may_publish_unless_something_else_holds_it():
+    # Task 7.14: the verified ceiling is enough to publish on; every other hold still holds.
+    ceiling_only = with_ceiling(SAMPLE, 400)
+    assert decide_status(ceiling_only, []) is SheetStatus.PUBLISHED
+    assert decide_status(ceiling_only, [CEILING]) is SheetStatus.HELD
+    hold = "the hospital's website was matched with low confidence and is not confirmed yet"
+    assert decide_status(ceiling_only, [], [hold]) is SheetStatus.HELD
+    assert decide_status(drop_fields(ceiling_only, [CEILING]), []) is SheetStatus.HELD
+    assert sheet_inconsistencies(ceiling_only) == []
+
+
+def test_two_models_disagreeing_on_the_ceiling_is_a_critical_conflict():
+    assert CEILING in CRITICAL_PATHS
+    first = with_ceiling(SAMPLE, 400)
+    assert critical_conflicts(first, first) == []
+    assert critical_conflicts(first, with_ceiling(SAMPLE, 300)) == [CEILING]
+    # A model that found no ceiling (a band or a table instead) disputes nothing.
+    assert critical_conflicts(first, SAMPLE) == []
 
 
 def with_tiers(sheet, bands):
@@ -278,3 +317,43 @@ def test_documents_that_name_a_different_free_care_limit_are_a_conflict():
         == []
     )
     assert document_conflicts(drop_fields(sheet, ["eligibility.free_care_max_fpl"]), docs) == []
+
+
+def test_a_ceiling_only_sheet_conflicts_with_a_document_that_states_a_free_care_limit():
+    from waive.atlas.publish import document_conflicts
+    from waive.atlas.samples import SAMPLE_SOURCE_ID
+    from waive.atlas.schema import SourceKind
+
+    # Task 7.14: a sheet that publishes only the ceiling says the documents name no free-care
+    # band. One of the hospital's documents naming one (its own included) is a band the sheet
+    # lacks, and which is right is an admin's call, as for two free-care limits.
+    summary = f"Financial Assistance Summary. {CEILING_SENTENCE}"
+    free_text = (
+        "Patients whose family income is at or below 200 percent of the Federal Poverty Level "
+        "will be eligible for a 100 percent write-off."
+    )
+    policy = SAMPLE.sources[0].model_copy(update={"id": "fap-policy", "url": None})
+    sheet = with_ceiling(SAMPLE, 400).model_copy(update={"sources": [*SAMPLE.sources, policy]})
+    docs = {SAMPLE_SOURCE_ID: summary, "fap-policy": free_text}
+    assert document_conflicts(sheet, docs) == [{"id": "fap-policy", "limits": ["200"]}]
+    assert document_conflicts(sheet, {**docs, SAMPLE_SOURCE_ID: summary + " " + free_text}) == [
+        {"id": SAMPLE_SOURCE_ID, "limits": ["200"]},
+        {"id": "fap-policy", "limits": ["200"]},
+    ]
+    # Documents that name no free-care limit leave the ceiling standing.
+    assert document_conflicts(sheet, {**docs, "fap-policy": "Call us about financial help."}) == []
+    # A patient's approved photo supersedes; a ceiling cited from one is not checked either.
+    photo = policy.model_copy(update={"kind": SourceKind.PATIENT_PHOTO})
+    assert (
+        document_conflicts(sheet.model_copy(update={"sources": [*SAMPLE.sources, photo]}), docs)
+        == []
+    )
+    from_photo = sheet.model_copy(
+        update={
+            "sources": [
+                SAMPLE.sources[0].model_copy(update={"kind": SourceKind.PATIENT_PHOTO}),
+                policy,
+            ]
+        }
+    )
+    assert document_conflicts(from_photo, docs) == []
