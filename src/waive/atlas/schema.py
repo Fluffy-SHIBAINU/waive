@@ -82,6 +82,10 @@ class DiscountTier(BaseModel):
 class Eligibility(BaseModel):
     free_care_max_fpl: Cited[Decimal] | None = None
     discount_tiers: Cited[list[DiscountTier]] | None = None
+    # The highest income (% FPL) at which the documents offer any help, when they state no
+    # free-care band and no table (decision 7.9a-2, task 7.14): "up to 300% of the Federal
+    # Poverty Guidelines may qualify for financial assistance". The hospital decides the amount.
+    assistance_ceiling_fpl: Cited[Decimal] | None = None
     asset_test: Cited[bool] | None = None
     residency: Cited[list[str]] | None = None
     insured_patients_covered: Cited[bool] | None = None

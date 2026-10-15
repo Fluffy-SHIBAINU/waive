@@ -14,6 +14,8 @@ ASSET_WARNING = "This hospital also looks at savings and other assets."
 class Tier(StrEnum):
     FREE = "free"
     DISCOUNT = "discount"
+    # Help exists, under an assistance ceiling, and the hospital decides how much (7.9a-2).
+    ASSISTANCE = "assistance"
     NOT_ELIGIBLE = "not_eligible"
     NEEDS_INFO = "needs_info"
     UNKNOWN = "unknown"
@@ -49,6 +51,33 @@ def _reason(text: str, path: str, cited: Cited[Any]) -> Reason:
     return Reason(text=text, field_path=path, quote=cited.quote, source_id=cited.source_id)
 
 
+CEILING_PATH = "eligibility.assistance_ceiling_fpl"
+
+
+def _under_ceiling(
+    ceiling: Cited[Decimal], percent: Decimal, warnings: tuple[str, ...]
+) -> EligibilityResult:
+    """The policy states only the income up to which any help is given (decision 7.9a-2): at or
+    below it help exists and the hospital decides the amount; above it this policy gives none."""
+    limit = ceiling.value
+    if percent <= limit:
+        text = (
+            f"Income is {percent:.0f}% of the poverty line; assistance exists up to {limit:.0f}% "
+            "of the poverty level, and the hospital decides the amount."
+        )
+        return EligibilityResult(
+            Tier.ASSISTANCE,
+            percent,
+            None,
+            (_reason(text, CEILING_PATH, ceiling),),
+            warnings=warnings,
+        )
+    text = f"Income is {percent:.0f}% of the poverty line; this policy helps up to {limit:.0f}%."
+    return EligibilityResult(
+        Tier.NOT_ELIGIBLE, percent, None, (_reason(text, CEILING_PATH, ceiling),), warnings=warnings
+    )
+
+
 def evaluate_eligibility(sheet: ProcedureSheet, household: Household) -> EligibilityResult:
     eligibility = sheet.eligibility
     warnings: tuple[str, ...] = ()
@@ -66,10 +95,28 @@ def evaluate_eligibility(sheet: ProcedureSheet, household: Household) -> Eligibi
                 warnings=warnings,
             )
 
+    free_limit = eligibility.free_care_max_fpl
+    tiers = eligibility.discount_tiers
+    has_tiers = tiers is not None and bool(tiers.value)
+    # With a free-care band or a table those decide, as they always have; the ceiling is the
+    # answer only when it is the one income rule the documents give (decision 7.9a-2).
+    ceiling = None if free_limit is not None or has_tiers else eligibility.assistance_ceiling_fpl
+
     presumptive = sheet.programs.presumptive
     if presumptive is not None:
         listed = {program.lower(): program for program in presumptive.value}
         matches = [listed[p.lower()] for p in household.programs if p.lower() in listed]
+        if matches and ceiling is not None:
+            # The documents state no amount for anyone, so enrollment cannot promise free care.
+            text = (
+                f"People enrolled in {matches[0]} qualify for assistance without an income check; "
+                "the hospital decides the amount."
+            )
+            return EligibilityResult(
+                Tier.ASSISTANCE,
+                reasons=(_reason(text, "programs.presumptive", presumptive),),
+                warnings=warnings,
+            )
         if matches:
             text = f"People enrolled in {matches[0]} qualify for free care without an income check."
             return EligibilityResult(
@@ -79,10 +126,7 @@ def evaluate_eligibility(sheet: ProcedureSheet, household: Household) -> Eligibi
                 warnings=warnings,
             )
 
-    free_limit = eligibility.free_care_max_fpl
-    tiers = eligibility.discount_tiers
-    has_tiers = tiers is not None and bool(tiers.value)
-    if free_limit is None and not has_tiers:
+    if free_limit is None and not has_tiers and ceiling is None:
         return EligibilityResult(
             Tier.UNKNOWN, missing=("hospital income limits",), warnings=warnings
         )
@@ -90,6 +134,8 @@ def evaluate_eligibility(sheet: ProcedureSheet, household: Household) -> Eligibi
         return EligibilityResult(Tier.NEEDS_INFO, missing=("household income",), warnings=warnings)
 
     percent = fpl_percent(household.annual_income, household.size, household.state)
+    if ceiling is not None:
+        return _under_ceiling(ceiling, percent, warnings)
     # Paid bands first: a documented band is the specific answer for the incomes it names, so a
     # free-care limit misread from an eligibility ceiling can never turn "85% off" into "free".
     if tiers is not None and has_tiers:

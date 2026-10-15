@@ -250,6 +250,9 @@ def _drop_borrowed_specifics(
 
 
 def _lacks_income_rules(sheet: ProcedureSheet) -> bool:
+    """No free-care band and no table. An assistance ceiling alone still counts as lacking them
+    here: a sibling's policy may give the table, and is worth one more pass before the sheet
+    publishes on the ceiling (decision 7.9a-2)."""
     return sheet.eligibility.free_care_max_fpl is None and sheet.eligibility.discount_tiers is None
 
 
@@ -917,8 +920,10 @@ def confirm_domain(session: Session, ccn: str, domain: str) -> BuildResult:
     if disagreeing:
         holds.append(DOCUMENT_CONFLICT_REASON)
         result.notes.append(f"{DOCUMENT_CONFLICT_REASON} ({_listed_limits(disagreeing)})")
-    if _lacks_income_rules(reverified):
-        result.notes.append("no free-care band or discount table is left to publish")
+    if _lacks_income_rules(reverified) and reverified.eligibility.assistance_ceiling_fpl is None:
+        result.notes.append(
+            "no free-care band, discount table or assistance ceiling is left to publish"
+        )
     result.notes.extend(sheet_inconsistencies(reverified))
     status = decide_status(reverified, disputed, holds)
     published = publish_sheet(session, reverified.model_copy(update={"status": status}))

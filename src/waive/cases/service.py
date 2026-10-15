@@ -28,6 +28,9 @@ DEFAULT_DOCUMENTS = [DocType.PHOTO_ID, DocType.PROOF_OF_INCOME]
 # Paid reads one case may ask for per UTC day, by photo kind. A real household never needs more,
 # and one senior link must not be a free meter on the vision model (spec §11).
 READ_LIMITS = {"bill": 5, "income": 5, "paper": 10}
+# The answers a hospital's decision can confirm or contradict (spec §10): the case is evaluated
+# and its prediction kept for the learning loop.
+PREDICTED_TIERS = frozenset({Tier.FREE, Tier.DISCOUNT, Tier.ASSISTANCE, Tier.NOT_ELIGIBLE})
 
 
 class TooManyReads(RuntimeError):
@@ -310,7 +313,7 @@ def _evaluate(ctx: CaseContext, row: CaseRow, sealed: dict[str, Any]) -> CaseVie
         shown.deadlines = deadlines_for(
             sheet, anchor, ctx.today, bill.collection_notice_date, anchor_confirmed=confirmed
         )
-    if result.tier in {Tier.FREE, Tier.DISCOUNT, Tier.NOT_ELIGIBLE} and row.prediction is None:
+    if result.tier in PREDICTED_TIERS and row.prediction is None:
         documents = (
             sheet.apply.documents_required.value
             if sheet.apply.documents_required

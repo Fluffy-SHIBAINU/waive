@@ -94,3 +94,41 @@ def test_build_packet_returns_pdf():
     )
     pdf = build_packet(data)
     assert pdf[:5] == b"%PDF-" and len(pdf) > 2000
+
+
+def test_the_cover_letter_for_a_ceiling_only_policy_never_claims_free_care():
+    # Decision 7.9a-2 (task 7.14): the policy states only the income up to which help is given,
+    # so the letter asks under that limit and leaves the amount to the hospital.
+    from tests.unit.test_eligibility import CEILING_QUOTE, ceiling_only_sheet
+
+    sheet = ceiling_only_sheet()
+    result = evaluate_eligibility(sheet, Household(1, Decimal("22800"), "MA"))
+    shown = CaseView(
+        case_id="c",
+        status="approved",
+        hospital_name="St. Example Medical Center",
+        ccn="229999",
+        bill=BillExtract(amount_due=Decimal("1850"), statement_date=date(2026, 9, 3)),
+        household_size=1,
+        annual_income=Decimal("22800"),
+        tier=result.tier,
+        result=result,
+        deadlines=compute_deadlines(date(2026, 9, 3), TODAY),
+    )
+    data = packet_data(shown, sheet, TODAY)
+    assert data.tier_text == "Likely eligible for assistance at St. Example Medical Center."
+    assert data.reasons == [
+        (
+            "Income is 143% of the poverty line; assistance exists up to 400% of the poverty "
+            "level, and the hospital decides the amount.",
+            CEILING_QUOTE,
+        )
+    ]
+    pages = PdfReader(io.BytesIO(build_packet(data))).pages
+    text = " ".join(" ".join(page.extract_text() for page in pages).split())
+    assert "I believe I qualify. Likely eligible for assistance at St. Example Medical Center." in (
+        text
+    )
+    assert "and the hospital decides the amount." in text
+    assert f'Your policy states: "{CEILING_QUOTE}"' in text
+    assert "free" not in text.lower()

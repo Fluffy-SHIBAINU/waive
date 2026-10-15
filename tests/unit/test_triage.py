@@ -204,3 +204,28 @@ def test_outcome_without_a_prediction_is_recorded_but_not_scored(ctx):
     assert result.kind is Triage.NO_PREDICTION and result.matched is None
     assert get_row(ctx, links.case_id).outcome["triage"] == "no_prediction"
     assert triage_for(ctx, links.case_id) is None
+
+
+def test_assistance_under_a_ceiling_is_matched_by_any_amount_the_hospital_grants(ctx):
+    # Decision 7.9a-2 (task 7.14): the policy states only the income up to which help is given,
+    # so free care and a discount both match the prediction; a bare denial is a slip as before.
+    from tests.unit.test_eligibility import CEILING_QUOTE, ceiling_only_sheet
+
+    assistance = {**PREDICTION, "tier": "assistance"}
+    assert triage(assistance, outcome(Decision.APPROVED, discount=100), 1).matched is True
+    assert triage(assistance, outcome(Decision.PARTIAL, discount=40), 1).kind is Triage.MATCHED
+    issue = triage(assistance, outcome(Decision.DENIED, [DenialReason.INCOME_TOO_HIGH]), 1)
+    assert issue.kind is Triage.CASE_ISSUE and issue.matched is None
+    slip = triage(assistance, outcome(Decision.DENIED, [DenialReason.OTHER]), 1)
+    assert (slip.kind, slip.slip_value) == (Triage.HOSPITAL_SLIP, "denied_despite_policy")
+    # A case answered from a ceiling-only sheet, then denied: the appeal quotes the ceiling.
+    publish_sheet(ctx.session, ceiling_only_sheet())  # version 2
+    case_id = evaluated_case(ctx, tier=Tier.ASSISTANCE)
+    assert get_row(ctx, case_id).prediction["tier"] == "assistance"
+    denial = OutcomeExtract(
+        decision=Decision.DENIED, reasons=[DenialReason.OTHER], decision_date=date(2026, 9, 20)
+    )
+    result = record_outcome(ctx, case_id, denial)
+    assert result.kind is Triage.HOSPITAL_SLIP
+    assert f'states: "{CEILING_QUOTE}"' in result.appeal_text
+    assert "free" not in result.appeal_text.lower()

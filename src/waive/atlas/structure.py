@@ -4,7 +4,7 @@ import re
 from collections.abc import Callable
 from datetime import date
 from decimal import Decimal, InvalidOperation
-from typing import Any
+from typing import Any, NamedTuple
 from urllib.parse import unquote, urlparse
 
 from pydantic import BaseModel, field_validator
@@ -42,7 +42,7 @@ Rules:
 8. "window_days_from_first_bill", "decision_days" and "eca_wait_days" are whole numbers of days.
 9. "presumptive" lists programs whose members qualify automatically (for example Medicaid, MassHealth, SNAP).
 10. "free_care_max_fpl" is only the upper income bound of a 100% discount (free care) band: fill it when the documents say that care is free, at no charge, or discounted 100% for incomes up to that level. Otherwise leave it null.
-11. "assistance_ceiling_fpl" is the highest household income (as % FPL) at which any financial assistance or discount is available at all, when the documents state one: "assistance is available to incomes less than 600% of the federal poverty guidelines", "discounts are limited to incomes up to 300% FPG", "eligible up to 400% FPL". Such a sentence is an eligibility ceiling on all help, never a free-care band: put its number here and leave free_care_max_fpl null unless another passage grants free care. Leave assistance_ceiling_fpl null when the only income limit stated is the free-care band itself.
+11. "assistance_ceiling_fpl" is the highest household income (as % FPL) at which any financial assistance or discount is available at all, when the documents state one: "assistance is available to incomes less than 600% of the federal poverty guidelines", "discounts are limited to incomes up to 300% FPG", "eligible up to 400% FPL". Such a sentence is an eligibility ceiling on all help, never a free-care band: put its number here and leave free_care_max_fpl null unless another passage grants free care. Leave assistance_ceiling_fpl null when the only income limit stated is the free-care band itself. Its quote must include the words that tie the number to the poverty level ("up to 300% of the Federal Poverty Guidelines"), not the number alone.
 12. When the documents include versions of one policy for different states (a SOURCE header says names_state=XX), use the version for the hospital's state, the state on the "Hospital:" line, and ignore the others.
 13. Reply with only the JSON object, no commentary."""
 
@@ -119,9 +119,10 @@ class SheetDraft(BaseModel):
         return {"value": value}
 
     free_care_max_fpl: DraftField | None = None
-    # Draft only, never a sheet field: the overall ceiling on any assistance ("less than 600% of
-    # the federal poverty guidelines", UMass Memorial). Giving the model somewhere to put that
-    # number keeps it out of free_care_max_fpl; draft_to_sheet checks the two against each other.
+    # The overall ceiling on any assistance ("less than 600% of the federal poverty guidelines",
+    # UMass Memorial). Giving the model somewhere to put that number keeps it out of
+    # free_care_max_fpl; draft_to_sheet checks the two against each other, and the ceiling goes
+    # on the sheet only where it is the one income rule the documents give (task 7.14).
     assistance_ceiling_fpl: DraftField | None = None
     discount_tiers: DraftField | None = None
     asset_test: DraftField | None = None
@@ -503,27 +504,35 @@ QUOTE_FILTERS: dict[str, Callable[[Any, str], Any]] = {
 }
 
 
-def _stated_ceiling(draft: SheetDraft, known: set[str]) -> tuple[Decimal, str] | None:
+class Ceiling(NamedTuple):
+    """An overall assistance ceiling a draft states: the limit, the passage, the document."""
+
+    limit: Decimal
+    quote: str
+    source_id: str
+
+
+def _stated_ceiling(draft: SheetDraft, known: set[str]) -> Ceiling | None:
     """The overall assistance ceiling the model read and the passage it cites, when it is cited
     and numeric."""
     ceiling = draft.assistance_ceiling_fpl
     if ceiling is None or ceiling.value is None or not ceiling.quote:
         return None
-    if ceiling.source_id not in known:
+    if ceiling.source_id is None or ceiling.source_id not in known:
         return None
     try:
-        return _decimal(ceiling.value), ceiling.quote
+        return Ceiling(_decimal(ceiling.value), ceiling.quote.strip(), ceiling.source_id)
     except ValueError:
         return None
 
 
 def _set_aside_ceiling_wording(
-    ceiling: tuple[Decimal, str] | None, sections: dict[str, dict[str, Any]], skipped: list[str]
-) -> tuple[Decimal, str] | None:
+    ceiling: Ceiling | None, sections: dict[str, dict[str, Any]], skipped: list[str]
+) -> Ceiling | None:
     """A free-care limit quoted from "full or partial financial assistance ... at or below 400%"
     (Arnot Ogden, 330090) is the ceiling on any help, not a free band: it leaves the sheet and
-    stands in for the ceiling when the model gave none, so the no-income-rules note says what
-    the documents do state. The returned ceiling is the one the later checks should use."""
+    stands in for the ceiling when the model gave none, so the sheet can still publish what the
+    documents do state (task 7.14). The returned ceiling is the one the later checks use."""
     eligibility = sections.get("eligibility", {})
     stated = eligibility.get("free_care_max_fpl")
     if stated is None or not quotes_assistance_ceiling(stated.quote):
@@ -533,7 +542,7 @@ def _set_aside_ceiling_wording(
         f"eligibility.free_care_max_fpl: {stated.value:.0f} is quoted from 'full or partial "
         "assistance' wording, an eligibility ceiling, not a free-care band"
     )
-    return ceiling if ceiling is not None else (stated.value, stated.quote)
+    return ceiling if ceiling is not None else Ceiling(stated.value, stated.quote, stated.source_id)
 
 
 def _same_passage(first: str, second: str) -> bool:
@@ -543,7 +552,7 @@ def _same_passage(first: str, second: str) -> bool:
 
 
 def _drop_ceiling_read_as_free_care(
-    ceiling: tuple[Decimal, str] | None, sections: dict[str, dict[str, Any]], skipped: list[str]
+    ceiling: Ceiling | None, sections: dict[str, dict[str, Any]], skipped: list[str]
 ) -> None:
     """UMass Memorial's "Financial assistance is available to ... household income, less than 600%
     of the federal poverty guidelines" bounds every kind of help; a free-care limit stated at or
@@ -554,36 +563,44 @@ def _drop_ceiling_read_as_free_care(
     rather than dropping a limit the documents may well state."""
     if ceiling is None:
         return
-    limit, ceiling_quote = ceiling
     eligibility = sections.get("eligibility", {})
     stated = eligibility.get("free_care_max_fpl")
-    if stated is None or stated.value < limit:
+    if stated is None or stated.value < ceiling.limit:
         return
     note = (
         f"eligibility.free_care_max_fpl: stated {stated.value:.0f} is at or above the overall "
-        f"assistance ceiling ({limit:.0f})"
+        f"assistance ceiling ({ceiling.limit:.0f})"
     )
-    if not _same_passage(stated.quote, ceiling_quote):
+    if not _same_passage(stated.quote, ceiling.quote):
         skipped.append(f"{note} but cites a different passage; check which is the free band")
         return
     del eligibility["free_care_max_fpl"]
     skipped.append(f"{note}; not free care")
 
 
-def _note_ceiling_without_income_rules(
-    ceiling: tuple[Decimal, str] | None, sections: dict[str, dict[str, Any]], skipped: list[str]
-) -> None:
-    """A sheet with a ceiling but no free-care band and no table is held for lacking income
-    rules; the note tells the reviewer that the documents, not the model, left the gap."""
+def _with_ceiling_alone(
+    sheet: ProcedureSheet, ceiling: Ceiling | None, today: date, skipped: list[str]
+) -> ProcedureSheet:
+    """A ceiling with no free-care band and no table beside it is the one income rule the
+    documents give (Baptist Hospital FL, two AHN hospitals: 7.11d): it goes on the sheet, cited,
+    for verification to hold to its quote, and the rules answer "assistance exists up to X%; the
+    hospital decides the amount" (decision 7.9a-2, task 7.14). The note tells the reviewer that
+    the documents, not the model, left the free-care gap. Next to a band or a table the ceiling
+    stays off: those are the answer, and the sheet reads as it did before."""
+    eligibility = sheet.eligibility
     if ceiling is None:
-        return
-    eligibility = sections.get("eligibility", {})
-    if "free_care_max_fpl" in eligibility or "discount_tiers" in eligibility:
-        return
-    limit, _quote = ceiling
+        return sheet
+    if eligibility.free_care_max_fpl is not None or eligibility.discount_tiers is not None:
+        return sheet
     skipped.append(
         "eligibility.free_care_max_fpl: not stated; the documents give only an overall "
-        f"assistance ceiling ({limit:.0f}% FPL)"
+        f"assistance ceiling ({ceiling.limit:.0f}% FPL)"
+    )
+    cited = Cited(
+        value=ceiling.limit, quote=ceiling.quote, source_id=ceiling.source_id, checked_on=today
+    )
+    return sheet.model_copy(
+        update={"eligibility": eligibility.model_copy(update={"assistance_ceiling_fpl": cited})}
     )
 
 
@@ -651,7 +668,6 @@ def draft_to_sheet(
     ceiling = _set_aside_ceiling_wording(_stated_ceiling(draft, known), sections, skipped)
     _drop_ceiling_read_as_free_care(ceiling, sections, skipped)
     _derive_free_care_limit(draft, known, sections, today, skipped)
-    _note_ceiling_without_income_rules(ceiling, sections, skipped)
     try:
         sheet = ProcedureSheet(hospital=hospital, version=1, sources=sources, **sections)
     except ValueError as error:
@@ -660,7 +676,7 @@ def draft_to_sheet(
         skipped.append(f"eligibility.discount_tiers: {error}")
         sections.get("eligibility", {}).pop("discount_tiers", None)
         sheet = ProcedureSheet(hospital=hospital, version=1, sources=sources, **sections)
-    return sheet, skipped
+    return _with_ceiling_alone(sheet, ceiling, today, skipped), skipped
 
 
 def _draft(ai: AIClient, role: str, messages: list[dict[str, str]]) -> SheetDraft:

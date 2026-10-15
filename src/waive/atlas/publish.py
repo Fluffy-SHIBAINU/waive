@@ -16,6 +16,7 @@ from waive.db import SheetRow
 CRITICAL_PATHS = (
     "eligibility.free_care_max_fpl",
     "eligibility.discount_tiers",
+    "eligibility.assistance_ceiling_fpl",
     "apply.window_days_from_first_bill",
     "programs.presumptive",
 )
@@ -151,6 +152,16 @@ def sheet_inconsistencies(sheet: ProcedureSheet) -> list[str]:
 DOCUMENT_CONFLICT_REASON = "the hospital's documents state different free-care limits"
 
 
+def _ceiling_alone(sheet: ProcedureSheet) -> bool:
+    """The sheet's one income rule is the assistance ceiling (decision 7.9a-2)."""
+    eligibility = sheet.eligibility
+    return (
+        eligibility.assistance_ceiling_fpl is not None
+        and eligibility.free_care_max_fpl is None
+        and eligibility.discount_tiers is None
+    )
+
+
 def document_conflicts(sheet: ProcedureSheet, documents: dict[str, str]) -> list[dict[str, Any]]:
     """The hospital's other documents whose free-care sentences name a limit, none of which is
     the one the sheet publishes: one entry per document, with the limits it states. AHMC Anaheim
@@ -158,21 +169,27 @@ def document_conflicts(sheet: ProcedureSheet, documents: dict[str, str]) -> list
     the sheet published 250 because no discount table tripped sheet_inconsistencies. The model's
     pick between two documents is an admin's decision, so the sheet is held. Only the hospital's
     web documents count: a patient's photo of a newer policy was approved by an admin and is
-    meant to supersede the stored page (the learning loop), not to be held against it."""
+    meant to supersede the stored page (the learning loop), not to be held against it.
+
+    A sheet that publishes only an assistance ceiling says the documents name no free-care band
+    (task 7.14), so any of them naming one, the ceiling's own included, is a conflict too."""
     free = sheet.eligibility.free_care_max_fpl
-    if free is None or free.layer is Layer.REPORTED:
+    ceiling = sheet.eligibility.assistance_ceiling_fpl
+    # The limit the documents are checked against: the free-care band, or a ceiling standing alone.
+    limit = free if free is not None else (ceiling if _ceiling_alone(sheet) else None)
+    if limit is None or limit.layer is Layer.REPORTED:
         return []
     kinds = {source.id: source.kind for source in sheet.sources}
-    if kinds.get(free.source_id or "") is not SourceKind.HOSPITAL_WEB:
+    if kinds.get(limit.source_id or "") is not SourceKind.HOSPITAL_WEB:
         return []
     conflicts: list[dict[str, Any]] = []
     for source in sheet.sources:
-        if source.kind is not SourceKind.HOSPITAL_WEB:
+        if source.kind is not SourceKind.HOSPITAL_WEB or source.id not in documents:
             continue
-        if source.id == free.source_id or source.id not in documents:
+        if free is not None and source.id == free.source_id:
             continue
         limits = free_care_limits_stated(documents[source.id])
-        if limits and Decimal(free.value) not in limits:
+        if limits and (free is None or Decimal(free.value) not in limits):
             conflicts.append({"id": source.id, "limits": [str(limit) for limit in sorted(limits)]})
     return conflicts
 
@@ -181,10 +198,17 @@ def decide_status(
     sheet: ProcedureSheet, conflicts: list[str], holds: list[str] | None = None
 ) -> SheetStatus:
     """`holds` are reasons an admin must look first that are not model disagreements, such as
-    a discount table that turned out to describe the patient's share."""
+    a discount table that turned out to describe the patient's share. A sheet needs an income
+    rule to publish: a free-care band, a table, or, when the documents give neither, a verified
+    assistance ceiling (decision 7.9a-2, task 7.14)."""
     if conflicts or holds:
         return SheetStatus.HELD
-    if sheet.eligibility.free_care_max_fpl is None and sheet.eligibility.discount_tiers is None:
+    eligibility = sheet.eligibility
+    if (
+        eligibility.free_care_max_fpl is None
+        and eligibility.discount_tiers is None
+        and eligibility.assistance_ceiling_fpl is None
+    ):
         return SheetStatus.HELD
     if sheet_inconsistencies(sheet):
         return SheetStatus.HELD

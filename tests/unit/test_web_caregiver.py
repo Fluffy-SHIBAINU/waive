@@ -154,3 +154,51 @@ def test_correction_rejects_a_hospital_that_is_not_in_the_registry():
     assert bad.status_code == 404
     review = client.get(caregiver)
     assert review.status_code == 200 and "999999" not in review.text
+
+
+def test_a_ceiling_only_hospital_says_help_exists_and_the_hospital_decides_how_much():
+    # Decision 7.9a-2 (task 7.14): the policy states only the income up to which help is given.
+    from waive.db import CaseRow
+
+    from tests.unit.test_eligibility import CEILING_QUOTE, ceiling_only_sheet
+    from tests.unit.test_web_senior import FakeAI
+
+    client, engine = make_client(ai=FakeAI())
+    with session_scope(engine) as session:
+        repo.upsert_hospital(session, HOSPITAL)
+        publish_sheet(session, ceiling_only_sheet())
+        links = start_case(client.app.state.deps.context(session), "MA")
+    senior, caregiver = f"/s/{links.senior_token}", f"/c/{links.caregiver_token}"
+    client.post(f"{senior}/bill", files=photo())
+    client.post(f"{senior}/confirm", data={"answer": "yes"})
+    client.post(f"{senior}/household", data={"size": "1", "programs": "none"})
+    # The benefit letter says $1,900 a month: 143% of the poverty line, under the 400% ceiling.
+    for page in (
+        client.post(f"{senior}/income", files=photo(), follow_redirects=True),
+        client.get(senior),  # where the senior's link lands once there is a result
+        client.get(f"{caregiver}/result"),
+    ):
+        assert page.status_code == 200
+        card = re.search(r'class="card big status-(\w+)" id="result-text">(.*?)</div>', page.text)
+        assert card.group(1) == "assistance"
+        assert "Good news. You can likely get help with this bill." in card.group(2)
+        assert "decides how much help you get" in card.group(2)
+        assert "free" not in card.group(2).lower()
+        assert "likely do not have to pay" not in page.text
+    review = client.get(caregiver).text
+    result = review.split("<h2>Result</h2>", 1)[1].split("</div>", 1)[0]
+    assert "Likely eligible for assistance at ST. EXAMPLE MEDICAL CENTER." in result
+    assert (
+        "Income is 143% of the poverty line; assistance exists up to 400% of the poverty level, "
+        "and the hospital decides the amount." in result
+    )
+    assert CEILING_QUOTE in result
+    assert "free" not in result.lower()
+    with session_scope(engine) as session:
+        row = session.get(CaseRow, links.case_id)
+        assert (row.status, row.prediction["tier"]) == ("evaluated", "assistance")
+    # The form is made as for any answer.
+    approved = client.post(f"{caregiver}/approve", follow_redirects=True)
+    assert "Your form and reminders" in approved.text
+    pdf = client.get(f"{caregiver}/packet.pdf")
+    assert pdf.status_code == 200 and pdf.content[:5] == b"%PDF-"
