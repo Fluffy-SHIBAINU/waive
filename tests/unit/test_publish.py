@@ -219,6 +219,29 @@ def test_export_leaves_the_fictional_demo_hospital_out(tmp_path):
     assert "229999" not in out.read_text()
 
 
+def test_export_carries_published_sheets_only(tmp_path):
+    # Audit rules-correctness-9: data/atlas/*.json carried 253 held sheets. A hospital whose newest
+    # version is held is left out, not exported from the published version that hold withdrew.
+    engine = make_engine("sqlite+pysqlite:///:memory:")
+    init_db(engine)
+    third = {**REAL_HOSPITAL, "ccn": "220032", "name": "THIRD HOSPITAL"}
+    with session_scope(engine) as session:
+        repo.upsert_hospital(session, REAL_HOSPITAL)
+        repo.upsert_hospital(session, third)
+        publish_sheet(session, REAL)
+        other = REAL.model_copy(
+            update={"hospital": REAL.hospital.model_copy(update={"ccn": "220032"})}
+        )
+        publish_sheet(session, other)
+        publish_sheet(session, other.model_copy(update={"status": SheetStatus.HELD}))
+        out = tmp_path / "ma.json"
+        assert export_state(session, "MA", out) == 1
+    data = json.loads(out.read_text())
+    assert [(s["hospital"]["ccn"], s["status"]) for s in data["sheets"]] == [
+        ("220031", "published")
+    ]
+
+
 def test_a_discount_that_rises_with_income_holds_the_sheet():
     # Adventist Health (050013, 7.9): tiers 50/75/75 published from a patient-responsibility
     # table. The publish-time check is the safety net behind verify's patient-share rule.

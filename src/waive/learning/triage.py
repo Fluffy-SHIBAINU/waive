@@ -168,9 +168,13 @@ def request_rescout(session: Session, ccn: str, case_id: str) -> ReviewItemRow:
 
 
 def _latest(ctx: CaseContext, row: CaseRow) -> tuple[ProcedureSheet | None, int]:
+    """The sheet an appeal may quote (only a published one: audit rules-correctness-9), and the
+    newest version of any status: a sheet changed or held since the prediction is in doubt, so a
+    denial is the sheet's fault, not a slip of the hospital's."""
     found = repo.latest_sheet(ctx.session, row.ccn) if row.ccn else None
-    sheet = found[0] if found else None
-    return sheet, sheet.version if sheet else int(row.prediction["sheet_version"])
+    published = repo.published_sheet(ctx.session, row.ccn) if row.ccn else None
+    version = found[0].version if found else int(row.prediction["sheet_version"])
+    return (published[0] if published else None), version
 
 
 def record_outcome(ctx: CaseContext, case_id: str, outcome: OutcomeExtract) -> TriageResult:

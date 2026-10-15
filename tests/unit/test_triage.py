@@ -179,6 +179,25 @@ def test_a_denial_after_the_sheet_changed_is_sheet_wrong_without_a_rescout(ctx):
     assert repo.open_review_items(ctx.session, "229999") == []
 
 
+def test_a_denial_after_the_sheet_was_held_does_not_blame_the_hospital(ctx):
+    # The sheet behind the prediction is in doubt (held, say, until an admin confirms its
+    # website): no slip evidence, no re-scout, and no appeal quoting it.
+    from waive.atlas.schema import SheetStatus
+
+    case_id, other = evaluated_case(ctx), evaluated_case(ctx)
+    published, _ = repo.latest_sheet(ctx.session, "229999")
+    publish_sheet(ctx.session, published.model_copy(update={"status": SheetStatus.HELD}))
+    denial = OutcomeExtract(decision=Decision.DENIED, reasons=[DenialReason.OTHER])
+    result = record_outcome(ctx, case_id, denial)
+    assert result.kind is Triage.SHEET_WRONG and result.appeal_text is None
+    assert support(ctx.session, "229999", SLIP_PATH, "denied_despite_policy") == 0
+    # A prediction made before this fix from a sheet held then and still: an appeal would quote
+    # a policy Waive never published, so none is drafted.
+    get_row(ctx, other).prediction = {**PREDICTION, "sheet_version": 2}
+    assert record_outcome(ctx, other, denial).kind is Triage.HOSPITAL_SLIP
+    assert triage_for(ctx, other).appeal_text is None
+
+
 def test_outcome_without_a_prediction_is_recorded_but_not_scored(ctx):
     links = start_case(ctx, "MA")
     result = record_outcome(ctx, links.case_id, OutcomeExtract(decision=Decision.APPROVED))

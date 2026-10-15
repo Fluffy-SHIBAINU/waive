@@ -8,14 +8,18 @@ from fastapi.testclient import TestClient
 
 from waive.ai.client import AIOutputError, AIUnavailable
 from waive.atlas import repo
+from waive.atlas.pipeline import build_hospital
 from waive.atlas.publish import publish_sheet
 from waive.atlas.samples import st_example_sheet
+from waive.atlas.schema import SheetStatus
 from waive.cases.extract import BillExtract, IncomeExtract
-from waive.cases.service import start_case
+from waive.cases.service import confirm_bill, set_household, start_case
 from waive.cases.synth import make_truth, render_bill
 from waive.db import CaseRow, session_scope
 from waive.governor import BudgetExceeded
 
+from tests.unit.test_pipeline import UNSURE_HOSPITAL, FakeGateway
+from tests.unit.test_pipeline import FakeAI as DraftAI
 from tests.unit.test_web_app import make_client
 
 HOSPITAL = {
@@ -115,6 +119,47 @@ def approved_case():
     client.post(f"{caregiver}/approve")
     assert client.get(f"{caregiver}/packet.pdf").status_code == 200
     return client, links, caregiver
+
+
+NO_CHECKED_POLICY = "Waive does not have a checked policy for this hospital yet"
+
+
+def test_a_sheet_held_for_its_website_never_tells_the_senior_good_news():
+    # Review of 7.13 (exp4) and audit rules-correctness-9: Real General's sheet, held until an
+    # admin confirms its website, still answered "Good news. You likely do not have to pay this
+    # bill".
+    client, links = seeded_client()
+    engine = client.app.state.deps.engine
+    with session_scope(engine) as session:
+        repo.upsert_hospital(session, UNSURE_HOSPITAL)
+        built = build_hospital(session, FakeGateway(), DraftAI(), "220031", date(2026, 10, 2))
+        assert built.outcome == "held"
+        ctx = client.app.state.deps.context(session)
+        bill = {"statement_date": "2026-09-03", "amount_due": "1850.00"}
+        confirm_bill(ctx, links.case_id, bill, ccn="220031")
+        assert set_household(ctx, links.case_id, 1, Decimal("28000"), ()).under_review
+    for page in (
+        client.get(f"/s/{links.senior_token}"),  # where the senior's link lands
+        client.get(f"/s/{links.senior_token}/result"),
+        client.get(f"/c/{links.caregiver_token}/result"),
+    ):
+        assert page.status_code == 200
+        assert "Good news" not in page.text and "likely do not have to pay" not in page.text
+        assert NO_CHECKED_POLICY in page.text
+    review = client.get(f"/c/{links.caregiver_token}").text
+    assert NO_CHECKED_POLICY in review and "make my form" not in review
+    assert client.get(f"/c/{links.caregiver_token}/packet.pdf").status_code == 404
+
+
+def test_an_approved_case_offers_no_form_while_its_sheet_is_held():
+    client, links, caregiver = approved_case()
+    with session_scope(client.app.state.deps.engine) as session:
+        sheet, _ = repo.latest_sheet(session, "229999")
+        publish_sheet(session, sheet.model_copy(update={"status": SheetStatus.HELD}))
+    assert client.get(f"{caregiver}/packet.pdf").status_code == 404
+    assert client.get(f"{caregiver}/form", follow_redirects=False).status_code == 303
+    review = client.get(caregiver).text
+    assert NO_CHECKED_POLICY in review and "Your form and reminders" not in review
 
 
 def test_the_senior_link_cannot_change_an_approved_case():

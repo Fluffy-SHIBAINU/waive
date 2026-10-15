@@ -217,11 +217,13 @@ def publish_sheet(session: Session, sheet: ProcedureSheet) -> SheetRow | None:
 
 
 def export_state(session: Session, state: str, path: Path) -> int:
-    """Write the public JSON export; the fictional demo hospital stays out of it."""
+    """Write the public JSON export: each hospital's sheet when its newest version is published
+    (a held one is still being checked and withdrew any version before it; audit
+    rules-correctness-9). The fictional demo hospital stays out of it."""
     sheets = [
         sheet
         for sheet in repo.list_latest_sheets(session, state)
-        if not repo.is_demo(sheet.hospital.ccn)
+        if sheet.status is SheetStatus.PUBLISHED and not repo.is_demo(sheet.hospital.ccn)
     ]
     payload = {
         "generated_on": datetime.now(UTC).date().isoformat(),
