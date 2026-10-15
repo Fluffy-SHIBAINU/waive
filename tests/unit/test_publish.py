@@ -169,8 +169,18 @@ def test_two_models_disagreeing_on_the_ceiling_is_a_critical_conflict():
     first = with_ceiling(SAMPLE, 400)
     assert critical_conflicts(first, first) == []
     assert critical_conflicts(first, with_ceiling(SAMPLE, 300)) == [CEILING]
-    # A model that found no ceiling (a band or a table instead) disputes nothing.
-    assert critical_conflicts(first, SAMPLE) == []
+    # Review of 7.14: a ceiling-only sheet against a (verified) band or table is disputed too:
+    # the documents state a band the ceiling-only answer leaves out.
+    assert critical_conflicts(first, SAMPLE) == [CEILING]
+    band_only = drop_fields(SAMPLE, ["eligibility.discount_tiers"])
+    table_only = drop_fields(SAMPLE, ["eligibility.free_care_max_fpl"])
+    assert critical_conflicts(first, band_only) == [CEILING]
+    assert critical_conflicts(first, table_only) == [CEILING]
+    # A model that found nothing disputes nothing; and a band or a table the primary publishes is
+    # not held for a cross-check that read only a ceiling (the sheet reads as it did before 7.14).
+    nothing = drop_fields(SAMPLE, ["eligibility.free_care_max_fpl", "eligibility.discount_tiers"])
+    assert critical_conflicts(first, nothing) == []
+    assert critical_conflicts(SAMPLE, first) == []
 
 
 def with_tiers(sheet, bands):
@@ -357,3 +367,34 @@ def test_a_ceiling_only_sheet_conflicts_with_a_document_that_states_a_free_care_
         }
     )
     assert document_conflicts(from_photo, docs) == []
+
+
+def test_a_ceiling_only_sheet_conflicts_with_help_its_documents_give_above_the_ceiling():
+    from waive.atlas.publish import (
+        CEILING_CONFLICT_REASON,
+        DOCUMENT_CONFLICT_REASON,
+        conflict_reason,
+        document_conflicts,
+    )
+    from waive.atlas.samples import SAMPLE_SOURCE_ID
+
+    # Review of 7.14: "at or below 200% ... eligible for financial assistance" read as the
+    # ceiling, while the next sentence gives a sliding scale up to 400%.
+    first = "Patients at or below 200% of the Federal Poverty Level are eligible for financial assistance."
+    sliding = (
+        "Patients between 201% and 400% of the Federal Poverty Level receive a sliding scale "
+        "discount."
+    )
+    sheet = with_ceiling(SAMPLE, 200, quote=first)
+    assert document_conflicts(sheet, {SAMPLE_SOURCE_ID: f"{first} {sliding}"}) == [
+        {"id": SAMPLE_SOURCE_ID, "limits": ["400"]}
+    ]
+    assert conflict_reason(sheet) == CEILING_CONFLICT_REASON
+    assert conflict_reason(SAMPLE) == DOCUMENT_CONFLICT_REASON
+    # The ceiling itself, help below it, another program's limit or a payment plan: no conflict.
+    within = (
+        f"{CEILING_SENTENCE} Patients up to 200% of the FPL receive a discount. Households up to "
+        "600% of the FPL may apply to the state's Health Safety Net for financial assistance. "
+        "Payment plans are available up to 700% of the FPL."
+    )
+    assert document_conflicts(with_ceiling(SAMPLE, 400), {SAMPLE_SOURCE_ID: within}) == []

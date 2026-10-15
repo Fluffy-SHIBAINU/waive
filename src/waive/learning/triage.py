@@ -65,12 +65,22 @@ HELP_TEXT: dict[DenialReason, str] = {
     ),
 }
 
+# Under an assistance ceiling the policy says only who may qualify, never that this household is
+# owed help (decision 7.9a-2), so a refusal is no slip of the hospital's (review of 7.14).
+ASSISTANCE_DENIED_HELP = (
+    "The hospital's policy says people with your income may qualify, and the hospital decides how "
+    "much. Ask the hospital in writing why it said no, and whether it will look again."
+)
+
 APPEAL_TEXT = (
     "Appeal draft. To the Financial Assistance Office of {hospital}: on {decision_date} you denied "
     "or reduced the attached application. Your published financial assistance policy (version "
-    '{version}, checked {checked_on}) states: "{quote}". Our household income is within that '
-    "limit (about {fpl_band}% of the federal poverty guideline for our household size). Please "
-    "review the application again under your policy and send a written answer."
+    '{version}, checked {checked_on}) states: "{quote}". {income}Please review the application '
+    "again under your policy and send a written answer."
+)
+APPEAL_INCOME = (
+    "Our household income is within that limit (about {fpl_band}% of the federal poverty "
+    "guideline for our household size). "
 )
 
 
@@ -121,6 +131,13 @@ def triage(
         return TriageResult(
             Triage.CASE_ISSUE, matched=None, new_documents=new_docs, help_text=help_text
         )
+    if decision is Decision.DENIED and predicted == "assistance":
+        # No slip evidence, re-scout or appeal: the policy promised nothing to contradict.
+        ordered = sorted(reasons & CASE_ISSUE_REASONS, key=list(DenialReason).index)
+        help_text = " ".join([*(HELP_TEXT[reason] for reason in ordered), ASSISTANCE_DENIED_HELP])
+        return TriageResult(
+            Triage.CASE_ISSUE, matched=None, new_documents=new_docs, help_text=help_text
+        )
     if sheet_changed:
         return TriageResult(Triage.SHEET_WRONG, matched=False, new_documents=new_docs)
     slip_value = "partial_despite_free" if decision is Decision.PARTIAL else "denied_despite_policy"
@@ -134,11 +151,18 @@ def triage(
 
 
 def appeal_draft(sheet: ProcedureSheet, prediction: dict[str, Any], outcome: OutcomeExtract) -> str:
+    """The appeal quotes what the answer stood on. An answer from a program the policy lists
+    (presumptive eligibility) had no income band: it quotes the program rule and says nothing
+    about income, where it once claimed "about an eligible%" (review of 7.14)."""
     eligibility = sheet.eligibility
-    cited = {
-        "free": eligibility.free_care_max_fpl,
-        "assistance": eligibility.assistance_ceiling_fpl,
-    }.get(prediction["tier"], eligibility.discount_tiers)
+    fpl_band = prediction.get("fpl_band")
+    if fpl_band is None:
+        cited = sheet.programs.presumptive
+    else:
+        cited = {
+            "free": eligibility.free_care_max_fpl,
+            "assistance": eligibility.assistance_ceiling_fpl,
+        }.get(prediction["tier"], eligibility.discount_tiers)
     if cited is None:
         cited = (
             eligibility.free_care_max_fpl
@@ -153,7 +177,7 @@ def appeal_draft(sheet: ProcedureSheet, prediction: dict[str, Any], outcome: Out
         version=sheet.version,
         checked_on=checked_on,
         quote=quote,
-        fpl_band=prediction.get("fpl_band") or "an eligible",
+        income="" if fpl_band is None else APPEAL_INCOME.format(fpl_band=fpl_band),
     )
 
 

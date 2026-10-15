@@ -206,19 +206,30 @@ def test_outcome_without_a_prediction_is_recorded_but_not_scored(ctx):
     assert triage_for(ctx, links.case_id) is None
 
 
-def test_assistance_under_a_ceiling_is_matched_by_any_amount_the_hospital_grants(ctx):
+def test_assistance_under_a_ceiling_is_matched_by_any_amount_and_a_denial_blames_no_one(ctx):
     # Decision 7.9a-2 (task 7.14): the policy states only the income up to which help is given,
-    # so free care and a discount both match the prediction; a bare denial is a slip as before.
-    from tests.unit.test_eligibility import CEILING_QUOTE, ceiling_only_sheet
+    # so free care and a discount both match the prediction.
+    from tests.unit.test_eligibility import ceiling_only_sheet
 
     assistance = {**PREDICTION, "tier": "assistance"}
     assert triage(assistance, outcome(Decision.APPROVED, discount=100), 1).matched is True
     assert triage(assistance, outcome(Decision.PARTIAL, discount=40), 1).kind is Triage.MATCHED
     issue = triage(assistance, outcome(Decision.DENIED, [DenialReason.INCOME_TOO_HIGH]), 1)
     assert issue.kind is Triage.CASE_ISSUE and issue.matched is None
-    slip = triage(assistance, outcome(Decision.DENIED, [DenialReason.OTHER]), 1)
-    assert (slip.kind, slip.slip_value) == (Triage.HOSPITAL_SLIP, "denied_despite_policy")
-    # A case answered from a ceiling-only sheet, then denied: the appeal quotes the ceiling.
+    assert "higher income" in issue.help_text
+    # Review of 7.14: "may qualify" promises nothing, so a plain denial is no slip of the
+    # hospital's: help for the person, no evidence against the hospital, no re-scout, no appeal.
+    for reasons in ([DenialReason.OTHER], [], [DenialReason.OTHER, DenialReason.LATE]):
+        plain = triage(assistance, outcome(Decision.DENIED, reasons), 1)
+        assert (plain.kind, plain.matched) == (Triage.CASE_ISSUE, None), reasons
+        assert (plain.slip_value, plain.rescout, plain.appeal_text) == (None, False, None)
+        assert "decides" in plain.help_text
+    assert (
+        "too late"
+        in triage(
+            assistance, outcome(Decision.DENIED, [DenialReason.OTHER, DenialReason.LATE]), 1
+        ).help_text
+    )
     publish_sheet(ctx.session, ceiling_only_sheet())  # version 2
     case_id = evaluated_case(ctx, tier=Tier.ASSISTANCE)
     assert get_row(ctx, case_id).prediction["tier"] == "assistance"
@@ -226,6 +237,35 @@ def test_assistance_under_a_ceiling_is_matched_by_any_amount_the_hospital_grants
         decision=Decision.DENIED, reasons=[DenialReason.OTHER], decision_date=date(2026, 9, 20)
     )
     result = record_outcome(ctx, case_id, denial)
+    assert (result.kind, result.appeal_text) == (Triage.CASE_ISSUE, None)
+    assert support(ctx.session, "229999", SLIP_PATH, "denied_despite_policy") == 0
+    assert repo.open_review_items(ctx.session, "229999") == []
+    assert get_row(ctx, case_id).outcome["matched"] is None
+    assert triage_for(ctx, case_id).appeal_text is None
+
+
+def test_an_appeal_for_an_answer_from_a_program_quotes_the_program_and_claims_no_income(ctx):
+    # Review of 7.14: an answer from a listed program (SNAP) has no poverty-level band, and the
+    # appeal said "Our household income is within that limit (about an eligible% ...)".
+    links = start_case(ctx, "MA")
+    confirm_bill(
+        ctx, links.case_id, {"statement_date": "2026-09-03", "amount_due": "1850.00"}, ccn="229999"
+    )
+    shown = set_household(ctx, links.case_id, 1, Decimal("90000"), ("SNAP",))
+    assert shown.tier is Tier.FREE and get_row(ctx, links.case_id).prediction["fpl_band"] is None
+    denial = OutcomeExtract(
+        decision=Decision.DENIED, reasons=[DenialReason.OTHER], decision_date=date(2026, 9, 20)
+    )
+    result = record_outcome(ctx, links.case_id, denial)
     assert result.kind is Triage.HOSPITAL_SLIP
-    assert f'states: "{CEILING_QUOTE}"' in result.appeal_text
-    assert "free" not in result.appeal_text.lower()
+    presumptive = st_example_sheet().programs.presumptive.quote
+    assert f'states: "{presumptive}".' in result.appeal_text
+    assert "income" not in result.appeal_text and "an eligible" not in result.appeal_text
+    assert result.appeal_text.endswith(
+        "Please review the application again under your policy and send a written answer."
+    )
+    # An answer from income keeps the income sentence and its band.
+    income_route = record_outcome(ctx, evaluated_case(ctx), denial)
+    assert "Our household income is within that limit (about 101-200% of the federal poverty " in (
+        income_route.appeal_text
+    )

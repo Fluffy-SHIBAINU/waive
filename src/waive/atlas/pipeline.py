@@ -22,8 +22,8 @@ from waive.atlas.discover import (
 )
 from waive.atlas.fetch import is_asset_host
 from waive.atlas.publish import (
-    DOCUMENT_CONFLICT_REASON,
     carry_over_reported,
+    conflict_reason,
     copy_fields,
     critical_conflicts,
     decide_status,
@@ -554,21 +554,25 @@ def build_hospital(
     disagreeing = document_conflicts(sheet, texts)
     if disagreeing:
         # Two of the hospital's own documents name different free-care limits (AHMC Anaheim: a
-        # web page at 250%, the newer PDF at 200%); which one is current is an admin's call.
+        # web page at 250%, the newer PDF at 200%), or they state more than the ceiling a sheet
+        # would publish alone (7.14); which one is right is an admin's call.
         free = sheet.eligibility.free_care_max_fpl
+        path = "eligibility.free_care_max_fpl" if free else "eligibility.assistance_ceiling_fpl"
+        rule = free or sheet.eligibility.assistance_ceiling_fpl
         repo.add_review_item(
             session,
             ccn,
             "document_conflict",
             {
-                "path": "eligibility.free_care_max_fpl",
-                "published": str(free.value) if free else None,
-                "source_id": free.source_id if free else None,
+                "path": path,
+                "published": str(rule.value) if rule else None,
+                "source_id": rule.source_id if rule else None,
                 "documents": disagreeing,
             },
         )
-        holds.append(DOCUMENT_CONFLICT_REASON)
-        result.notes.append(f"{DOCUMENT_CONFLICT_REASON} ({_listed_limits(disagreeing)})")
+        reason = conflict_reason(sheet)
+        holds.append(reason)
+        result.notes.append(f"{reason} ({_listed_limits(disagreeing)})")
     unplaced = _unplaced(row, sources_with_text)
     if unplaced:
         repo.add_review_item(
@@ -918,8 +922,9 @@ def confirm_domain(session: Session, ccn: str, domain: str) -> BuildResult:
         holds.append(PATIENT_SHARE_REASON)
     disagreeing = document_conflicts(reverified, texts)
     if disagreeing:
-        holds.append(DOCUMENT_CONFLICT_REASON)
-        result.notes.append(f"{DOCUMENT_CONFLICT_REASON} ({_listed_limits(disagreeing)})")
+        reason = conflict_reason(reverified)
+        holds.append(reason)
+        result.notes.append(f"{reason} ({_listed_limits(disagreeing)})")
     if _lacks_income_rules(reverified) and reverified.eligibility.assistance_ceiling_fpl is None:
         result.notes.append(
             "no free-care band, discount table or assistance ceiling is left to publish"
