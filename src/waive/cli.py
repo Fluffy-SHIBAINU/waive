@@ -7,6 +7,7 @@ import httpx
 import typer
 from rich.console import Console
 from rich.table import Table
+from sqlalchemy.exc import ArgumentError, SQLAlchemyError
 
 from waive.ai.client import AIClient
 from waive.atlas import repo
@@ -37,6 +38,14 @@ from waive.cases.vault import new_key
 from waive.cloud.cli import cloud_app
 from waive.config import Settings
 from waive.db import init_db, make_engine, session_scope
+from waive.dbcopy import (
+    EXCLUDED_TABLES,
+    TargetNotEmpty,
+    copy_database,
+    mask_url,
+    redact,
+    same_database,
+)
 from waive.demo import DEMO_DIR, forget_cases, reset_demo, seed_demo
 from waive.doctor import run_checks
 from waive.gallery import DEFAULT_PORT, GalleryError, run_gallery
@@ -507,6 +516,74 @@ def db_upgrade() -> None:
     for name in added:
         console.print(f"Added column {name}")
     console.print(f"Added {len(added)} column(s)." if added else "Schema is up to date.")
+
+
+@db_app.command("copy")
+def db_copy(
+    to: str | None = typer.Option(
+        None,
+        "--to",
+        envvar="WAIVE_COPY_TO_URL",
+        help="Target database URL, e.g. postgresql+psycopg://USER:PASSWORD@HOST:5432/waive. "
+        "Prefer WAIVE_COPY_TO_URL: a password typed here stays in the shell history.",
+    ),
+    dry_run: bool = typer.Option(
+        False, "--dry-run", help="Print what would be copied; write nothing"
+    ),
+    replace: bool = typer.Option(
+        False,
+        "--replace",
+        help="Empty the target's copied tables first, rows it collected itself included. Its "
+        "cases, accounts, sessions and spend history are never touched.",
+    ),
+) -> None:
+    """Copy the atlas, its sources, the de-identified learning tables and the spend history into
+    another database (the production PostgreSQL). Cases, accounts and sign-in sessions are
+    personal data and never leave. Free. Run it while no scouting batch writes locally."""
+    # Plain echo, not the Rich console: URLs and driver messages print as they are, never read as
+    # markup or wrapped mid-word.
+    settings = Settings()
+    if not to:
+        typer.echo(
+            "No target database: set WAIVE_COPY_TO_URL (keeps the password out of the command "
+            "line) or pass --to URL."
+        )
+        raise typer.Exit(code=2)
+    try:
+        shown = mask_url(to)
+    except ArgumentError:
+        typer.echo(
+            "The target is not a database URL, e.g. postgresql+psycopg://USER:PASSWORD@HOST/DB"
+        )
+        raise typer.Exit(code=2) from None
+    if same_database(settings.database_url, to):
+        typer.echo(f"The target is the same database as the local one ({shown}).")
+        raise typer.Exit(code=2)
+    typer.echo(f"From {mask_url(settings.database_url)}")
+    typer.echo(f"To   {shown}")
+    ledger = settings.ledger_path if settings.ledger_backend == "file" else None
+    try:
+        report = copy_database(
+            _engine(settings), make_engine(to), ledger_path=ledger, replace=replace, dry_run=dry_run
+        )
+    except TargetNotEmpty as error:
+        typer.echo(f"Not copied: {error}. Run again with --replace to empty its copied tables.")
+        raise typer.Exit(code=1) from None
+    except SQLAlchemyError as error:
+        typer.echo(f"Copy failed and no rows were written: {redact(str(error), to)}")
+        raise typer.Exit(code=1) from None
+    for name, rows in report.rows.items():
+        replacing = f" (replacing {report.deleted[name]})" if name in report.deleted else ""
+        typer.echo(f"{name}: {rows} row(s){replacing}")
+    if report.usage_source:
+        typer.echo(
+            f"usage_events: {report.usage_events} spend event(s) from {report.usage_source}, "
+            f"{report.usage_already} already in the target"
+        )
+    else:
+        typer.echo("usage_events: no spend history found (no usage_events rows, no ledger file)")
+    typer.echo(f"Not copied (personal data): {', '.join(sorted(EXCLUDED_TABLES))}")
+    typer.echo("Dry run: nothing was written." if report.dry_run else "Done.")
 
 
 demo_app = typer.Typer(no_args_is_help=True, help="Demo data.")
