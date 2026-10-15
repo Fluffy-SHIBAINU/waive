@@ -1,17 +1,19 @@
 #cloud-config
-# Host for Waive: Docker + Compose. __SSH_PUBLIC_KEY__ is replaced with the operator's public key
-# when the VM is created. The image is loaded over SSH and the secrets are copied over SSH into
-# /opt/waive/.env, so nothing secret is in this file.
+# Host for Waive: Docker + Compose. The key placeholder below is replaced with the operator's public
+# key when the VM is created. The image is loaded over SSH and the secrets are copied over SSH into
+# /opt/waive/.env, so nothing secret is in this file. The docker group exists only after the
+# package installs, so the user joins it in runcmd (cloud-init skips a group that does not exist).
 package_update: true
 packages: [docker.io, docker-compose-v2]
 users:
   - name: ubuntu
-    groups: [sudo, docker]
+    groups: [sudo]
     shell: /bin/bash
     sudo: ALL=(ALL) NOPASSWD:ALL
     ssh_authorized_keys:
       - __SSH_PUBLIC_KEY__
 runcmd:
   - systemctl enable --now docker
+  - usermod -aG docker ubuntu
   - mkdir -p /opt/waive
   - chown ubuntu:ubuntu /opt/waive
