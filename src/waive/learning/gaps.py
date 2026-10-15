@@ -53,7 +53,7 @@ def pending_gap_ask(ctx: CaseContext, case_id: str) -> GapAsk | None:
     row = get_row(ctx, case_id)
     if row.status in {"new", "bill_read"} or "gap_ask" in load_sealed(ctx, row):
         return None
-    found = repo.latest_sheet(ctx.session, row.ccn) if row.ccn else None
+    found = repo.published_sheet(ctx.session, row.ccn) if row.ccn else None
     return gap_ask(found[0] if found else None)
 
 

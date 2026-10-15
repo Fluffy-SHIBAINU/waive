@@ -2,7 +2,7 @@
 {% block title %}Check what we read{% endblock %}
 {% block content %}
 <h1>Check what we read</h1>
-{% if case.status == "approved" %}
+{% if case.status == "approved" and case.result %}
 <p class="card status-free big">Approved. Print the packet, have it signed, and send it.</p>
 <p><a href="{{ links.form }}" class="btn primary">Your form and reminders</a></p>
 {% elif not case.bill %}
@@ -21,6 +21,7 @@
   {% if case.warnings %}<div class="row"><span>Photo</span><span>{{ case.warnings | join(", ") }}</span></div>{% endif %}
 </div>
 {% if case.needs_scouting %}<p class="card status-unknown">We do not have this hospital's policy yet. Our scouts have been asked to fetch it. Pick the hospital under "Fix something" if you recognise it.</p>{% endif %}
+{% if case.under_review %}<p class="card status-unknown">Waive does not have a checked policy for this hospital yet. The one we found is still being checked, so we cannot say yet whether this bill qualifies. Come back to this page later.</p>{% endif %}
 <h2>What you told us</h2>
 <div class="card">
   <div class="row"><span>People in your home</span><strong>{{ case.household_size or "not answered yet" }}</strong></div>

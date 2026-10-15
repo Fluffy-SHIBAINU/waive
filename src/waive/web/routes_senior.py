@@ -134,6 +134,10 @@ WAIT: dict[str, tuple[str, str]] = {
     "unread": ("your helper will read the bill", "We could not read that photo."),
     "fix": ("your helper will fix the details", "You can fix the details yourself."),
     "unfinished": ("your helper will finish the check", "We cannot finish the check yet."),
+    "under_review": (
+        "Waive does not have a checked policy for this hospital yet",
+        "Waive does not have a checked policy for this hospital yet.",
+    ),
 }
 
 
@@ -225,6 +229,8 @@ def senior_start(request: Request, token: str) -> HTMLResponse:
             return case.page(
                 "senior_result.html", shown, ask=pending_gap_ask(case.ctx, case.case_id)
             )
+        if shown.under_review:
+            return case.wait("under_review", shown)
         return case.page("senior_start.html", shown)
 
 
@@ -350,7 +356,7 @@ def senior_result(request: Request, token: str) -> HTMLResponse:
     with opened(request, token) as case:
         shown = case.view()
         if shown.tier is None:
-            return case.wait("unfinished", shown)
+            return case.wait("under_review" if shown.under_review else "unfinished", shown)
         return case.page(
             "senior_result.html",
             shown,

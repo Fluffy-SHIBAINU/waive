@@ -139,6 +139,35 @@ def test_full_flow_to_free_care(ctx):
     assert ctx.session.get(CaseRow, links.case_id) is None
 
 
+def test_a_held_sheet_never_answers_and_withdraws_the_published_version_before_it(ctx):
+    # Audit rules-correctness-9: held sheets drove eligibility. A held version that follows a
+    # published one withdrew it (another hospital's website, a failed place or website check,
+    # fields the rules now reject), so the older version does not answer either.
+    from waive.atlas.schema import SheetStatus
+    from waive.learning.gaps import NO_SHEET, pending_gap_ask
+
+    links = start_case(ctx, "MA")
+    bill = {"statement_date": "2026-09-03", "amount_due": "1850.00"}
+    confirm_bill(ctx, links.case_id, bill, ccn="229999")
+    assert set_household(ctx, links.case_id, 1, Decimal("22800"), ()).tier is Tier.FREE
+    published, _ = repo.latest_sheet(ctx.session, "229999")
+    publish_sheet(ctx.session, published.model_copy(update={"status": SheetStatus.HELD}))
+    shown = view(ctx, links.case_id)
+    assert (shown.tier, shown.result, shown.deadlines) == (None, None, None)
+    assert shown.under_review and not shown.needs_scouting
+    assert shown.senior_text == "" and shown.caregiver_text == ""
+    assert pending_gap_ask(ctx, links.case_id) is NO_SHEET
+    # A case that never had an answer gets none and makes no prediction.
+    other = start_case(ctx, "MA")
+    confirm_bill(ctx, other.case_id, bill, ccn="229999")
+    assert set_household(ctx, other.case_id, 1, Decimal("22800"), ()).under_review
+    assert ctx.session.get(CaseRow, other.case_id).prediction is None
+    # Published again (an admin confirmed the website): the answer is back.
+    publish_sheet(ctx.session, published.model_copy(update={"status": SheetStatus.PUBLISHED}))
+    assert view(ctx, links.case_id).tier is Tier.FREE
+    assert not view(ctx, links.case_id).under_review
+
+
 def test_an_approved_case_only_changes_when_the_caregiver_allows_it(ctx):
     links = start_case(ctx, "MA")
     submit_bill(ctx, links.case_id, bill_image())

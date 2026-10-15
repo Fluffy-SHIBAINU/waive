@@ -79,3 +79,37 @@ def test_atlas_list_hides_the_demo_hospital_unless_asked():
     # The phone demo's links keep working: the sheet page and its JSON stay reachable.
     assert client.get("/atlas/229999").status_code == 200
     assert client.get("/atlas/229999.json").json()["hospital"]["ccn"] == "229999"
+
+
+def test_a_hospital_whose_sheet_is_held_is_under_review_with_no_figures():
+    # Audit rules-correctness-9: the public page and its JSON served held sheets. A held version
+    # after a published one withdrew it (a wrong website, a failed check), so neither is shown.
+    from waive.atlas.schema import SheetStatus
+
+    client, engine = make_client()
+    seed(engine)
+    with session_scope(engine) as session:
+        published, _ = repo.latest_sheet(session, "220031")
+        publish_sheet(session, published.model_copy(update={"status": SheetStatus.HELD}))
+    page = client.get("/atlas/220031")
+    assert page.status_code == 200
+    assert "REAL GENERAL HOSPITAL" in page.text and "Under review" in page.text
+    assert "household income at or below 250%" not in page.text
+    assert "free_care_max_fpl" not in page.text and "version" not in page.text
+    data = client.get("/atlas/220031.json").json()
+    assert data == {
+        "ccn": "220031",
+        "name": "REAL GENERAL HOSPITAL",
+        "city": "WORCESTER",
+        "state": "MA",
+        "status": "under_review",
+    }
+    listing = client.get("/atlas?q=real").text
+    assert "under review" in listing and "published" not in listing
+    # Published again: the figures are back.
+    with session_scope(engine) as session:
+        publish_sheet(session, published.model_copy(update={"status": SheetStatus.PUBLISHED}))
+    assert "household income at or below 250%" in client.get("/atlas/220031").text
+    assert client.get("/atlas/220031.json").json()["status"] == "published"
+    assert "published" in client.get("/atlas?q=real").text
+    assert client.get("/atlas/000000.json").status_code == 404

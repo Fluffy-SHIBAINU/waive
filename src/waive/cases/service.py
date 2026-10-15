@@ -80,6 +80,9 @@ class CaseView:
     missing: tuple[str, ...] = ()
     warnings: tuple[str, ...] = ()
     needs_scouting: bool = False
+    # The hospital has a sheet, but its newest version is held: still being checked, so there is
+    # no answer from it (audit rules-correctness-9).
+    under_review: bool = False
     result: EligibilityResult | None = None
 
 
@@ -279,9 +282,13 @@ def _evaluate(ctx: CaseContext, row: CaseRow, sealed: dict[str, Any]) -> CaseVie
         shown.hospital_name = hospital.name if hospital else None
     if row.ccn is None or row.status in {"new", "bill_read"}:
         return shown
-    found = repo.latest_sheet(ctx.session, row.ccn)
+    found = repo.published_sheet(ctx.session, row.ccn)
     if found is None:
-        shown.needs_scouting = True
+        # A held sheet never answers, nor does the published version its hold withdrew.
+        if repo.latest_sheet(ctx.session, row.ccn) is None:
+            shown.needs_scouting = True
+        else:
+            shown.under_review = True
         return shown
     sheet, _ = found
     result = evaluate_eligibility(

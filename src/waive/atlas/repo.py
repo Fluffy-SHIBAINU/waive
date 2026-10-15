@@ -6,7 +6,7 @@ from typing import Any
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from waive.atlas.schema import HospitalRef, ProcedureSheet, SourceDoc
+from waive.atlas.schema import HospitalRef, ProcedureSheet, SheetStatus, SourceDoc
 from waive.db import HospitalRow, ReviewItemRow, SheetRow, SourceDocRow
 
 HOSPITAL_FIELDS = (
@@ -152,6 +152,18 @@ def latest_sheet(session: Session, ccn: str) -> tuple[ProcedureSheet, SheetRow] 
     if row is None:
         return None
     return ProcedureSheet.model_validate(row.body), row
+
+
+def published_sheet(session: Session, ccn: str) -> tuple[ProcedureSheet, SheetRow] | None:
+    """The hospital's sheet as seniors, caregivers and the public may use it: the newest version
+    when it is published, else None (audit rules-correctness-9). A held newest version is still
+    being checked, and when it follows a published one it withdrew it (another hospital's
+    website, a failed place or website check, fields the current rules reject), so the older
+    version is not offered either. Admin pages and the pipeline read `latest_sheet`."""
+    found = latest_sheet(session, ccn)
+    if found is None or found[0].status is not SheetStatus.PUBLISHED:
+        return None
+    return found
 
 
 def add_sheet_version(

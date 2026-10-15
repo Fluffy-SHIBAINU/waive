@@ -73,7 +73,7 @@ def caregiver_review(request: Request, token: str, fix: str = "") -> HTMLRespons
     opens. `fix` opens the correction form (the read-back's "No, fix it" lands here)."""
     with opened(request, token) as case:
         shown = case.view()
-        found = repo.latest_sheet(case.ctx.session, shown.ccn) if shown.ccn else None
+        found = repo.published_sheet(case.ctx.session, shown.ccn) if shown.ccn else None
         sheet = found[0] if found else None
         sources = {source.id: source for source in sheet.sources} if sheet else {}
         return case.page(
@@ -142,7 +142,7 @@ def case_form(request: Request, token: str):
     """The "Your form and reminders" page: the packet, the calendar file, where to send it."""
     with opened(request, token) as case:
         shown = case.view()
-        found = repo.latest_sheet(case.ctx.session, shown.ccn) if shown.ccn else None
+        found = repo.published_sheet(case.ctx.session, shown.ccn) if shown.ccn else None
         if shown.status != "approved" or found is None or shown.result is None:
             return case.to("review")
         return case.page(
@@ -202,7 +202,7 @@ def caregiver_packet(request: Request, token: str) -> Response:
         ctx = deps.context(session)
         row = authorize(ctx, token, "caregiver")
         shown = view(ctx, row.id)
-        found = repo.latest_sheet(session, row.ccn) if row.ccn else None
+        found = repo.published_sheet(session, row.ccn) if row.ccn else None
         if found is None or shown.result is None:
             raise KeyError("packet not ready")
         pdf = build_packet(packet_data(shown, found[0], ctx.today))
