@@ -7,8 +7,10 @@ from fastapi.testclient import TestClient
 from pydantic import SecretStr
 
 from waive.atlas import repo
+from waive.atlas.pipeline import build_hospital
 from waive.atlas.publish import publish_sheet
 from waive.atlas.samples import SAMPLE_POLICY_TEXT, st_example_sheet
+from waive.atlas.schema import SheetStatus
 from waive.cases.service import confirm_bill, set_household, start_case
 from waive.cases.vault import FieldCipher, TokenSigner, new_key
 from waive.config import Settings
@@ -21,6 +23,15 @@ from waive.learning.triage import record_outcome
 from waive.web.app import create_app
 
 from tests.unit.test_contributions import NEW_POLICY_TEXT, PhotoAI
+from tests.unit.test_pipeline import (
+    NEWER_POLICY,
+    NEWER_POLICY_TEXT,
+    REAL_HOSPITAL,
+    UNSURE_HOSPITAL,
+    FakeAI,
+    FakeGateway,
+    GroundedAI,
+)
 from tests.unit.test_web_senior import HOSPITAL
 
 TOKEN = "admin-" + "t" * 30
@@ -217,3 +228,121 @@ def test_scoreboard_page_and_precheck_queue(tmp_path):
     queued = client.post("/admin/scoreboard/prechecks", follow_redirects=True)
     assert "Queued re-checks for 1 hospital" in queued.text
     assert "priority_recheck" in client.get("/admin/review").text
+
+
+def hold_for_its_website(client):
+    """Real General (220031), built from a website discovery matched with low confidence: its
+    sheet is held until an admin confirms the site (decision 7.9a-1)."""
+    with session_scope(client.app.state.deps.engine) as session:
+        repo.upsert_hospital(session, UNSURE_HOSPITAL)
+        assert build_hospital(session, FakeGateway(), FakeAI(), "220031", TODAY).outcome == "held"
+
+
+def test_the_website_actions_need_an_admin(tmp_path):
+    client = admin_client(tmp_path)
+    hold_for_its_website(client)
+    for action in ("confirm-website", "wrong-website"):
+        refused = client.post(f"/admin/sheets/220031/{action}", data={"domain": "example.org"})
+        assert refused.status_code == 403 and "Admin sign-in" in refused.text
+    with session_scope(client.app.state.deps.engine) as session:
+        row = repo.get_hospital(session, "220031")
+        assert (row.website_domain, row.domain_confidence) == ("example.org", 0.6)
+        assert repo.latest_sheet(session, "220031")[0].status is SheetStatus.HELD
+    login(client)
+    unknown = client.post("/admin/sheets/000000/confirm-website", data={"domain": "example.org"})
+    assert unknown.status_code == 404
+
+
+def test_an_admin_confirms_a_website_and_its_held_sheet_publishes(tmp_path):
+    client = admin_client(tmp_path)
+    hold_for_its_website(client)
+    login(client)
+    page = client.get("/admin/sheets/220031").text
+    assert "Website not confirmed" in page
+    assert '<a href="https://www.example.org" rel="noreferrer">example.org</a>' in page
+    assert "matched with confidence 0.6" in page
+    assert ">Confirm website<" in page and ">Wrong website<" in page
+    assert client.get("/admin/review").text.count(">Confirm website<") == 1
+    # A page left open while the website changed confirms nothing.
+    stale = client.post(
+        "/admin/sheets/220031/confirm-website", data={"domain": "other.org"}, follow_redirects=True
+    )
+    assert "skipped; the website is example.org now, not other.org; nothing confirmed" in stale.text
+    confirmed = client.post(
+        "/admin/sheets/220031/confirm-website",
+        data={"domain": "example.org"},
+        follow_redirects=False,
+    )
+    assert confirmed.status_code == 303
+    assert confirmed.headers["location"].startswith("/admin/sheets/220031?note=")
+    page = client.get(confirmed.headers["location"]).text
+    assert "published; version 2; website example.org confirmed" in page
+    assert ">Confirm website<" not in page and ">Wrong website<" not in page
+    assert "domain_unconfirmed" not in client.get("/admin/review").text
+    with session_scope(client.app.state.deps.engine) as session:
+        assert repo.get_hospital(session, "220031").domain_confidence == 1.0
+        assert repo.latest_sheet(session, "220031")[0].status is SheetStatus.PUBLISHED
+
+
+def test_confirming_a_website_keeps_the_sheet_held_while_another_reason_remains(tmp_path):
+    client = admin_client(tmp_path)
+    with session_scope(client.app.state.deps.engine) as session:
+        repo.upsert_hospital(session, REAL_HOSPITAL)
+        assert build_hospital(session, FakeGateway(), FakeAI(), "220031", TODAY).outcome == (
+            "published"
+        )
+        repo.save_source(session, NEWER_POLICY, NEWER_POLICY_TEXT, "220031")
+        repo.get_hospital(session, "220031").domain_confidence = 0.6
+        rebuilt = build_hospital(
+            session, FakeGateway(), GroundedAI(), "220031", TODAY, reuse_sources=True
+        )
+        assert rebuilt.outcome == "held"
+    login(client)
+    after = client.post(
+        "/admin/sheets/220031/confirm-website",
+        data={"domain": "example.org"},
+        follow_redirects=True,
+    )
+    assert "held; version 2; website example.org confirmed" in after.text
+    assert "documents state different free-care limits (fap-newer-pdf: 200%)" in after.text
+    assert ">Confirm website<" not in after.text  # the website is settled; the documents are not
+    with session_scope(client.app.state.deps.engine) as session:
+        assert repo.get_hospital(session, "220031").domain_confidence == 1.0
+        assert repo.latest_sheet(session, "220031")[0].status is SheetStatus.HELD
+
+
+def test_the_website_actions_show_only_where_a_held_sheet_waits_on_its_website(tmp_path):
+    client = admin_client(tmp_path)
+    with session_scope(client.app.state.deps.engine) as session:
+        # Held for a reason of its own (the models disagree) on a site discovery was sure of.
+        repo.upsert_hospital(session, REAL_HOSPITAL)
+        ai = FakeAI(free_limit_for_fast="300", free_limit_for_tiebreak="999")
+        assert build_hospital(session, FakeGateway(), ai, "220031", TODAY).outcome == "held"
+        # Published before decision 7.9a-1 from a guess: `recheck --withdraw` holds it first.
+        repo.get_hospital(session, "229999").domain_confidence = 0.6
+    login(client)
+    for ccn in ("229999", "220031"):
+        page = client.get(f"/admin/sheets/{ccn}").text
+        assert "Website not confirmed" not in page
+        assert ">Confirm website<" not in page and ">Wrong website<" not in page
+    queue = client.get("/admin/review").text
+    assert "conflict" in queue and ">Confirm website<" not in queue
+
+
+def test_an_admin_marks_a_website_wrong_and_the_sheet_stays_held_without_it(tmp_path):
+    client = admin_client(tmp_path)
+    hold_for_its_website(client)
+    login(client)
+    after = client.post(
+        "/admin/sheets/220031/wrong-website",
+        data={"domain": "example.org", "reason": " "},
+        follow_redirects=True,
+    )
+    assert "held; version 2; domain example.org cleared (an admin found it is not the" in after.text
+    assert ">Confirm website<" not in after.text
+    assert "domain_unconfirmed" not in client.get("/admin/review").text
+    with session_scope(client.app.state.deps.engine) as session:
+        row = repo.get_hospital(session, "220031")
+        assert (row.website_domain, row.domain_confidence) == (None, None)
+        held, _ = repo.latest_sheet(session, "220031")
+        assert held.status is SheetStatus.HELD and held.eligibility.free_care_max_fpl is None

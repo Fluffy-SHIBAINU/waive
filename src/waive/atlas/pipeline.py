@@ -3,16 +3,19 @@
 import re
 from dataclasses import dataclass, field
 from datetime import date
-from typing import Literal
+from typing import Any, Literal
 
 from sqlalchemy.orm import Session
 
 from waive.ai.client import MAX_SERVER_MESSAGE_CHARS, AIClient, AIOutputError
 from waive.atlas import repo
 from waive.atlas.discover import (
+    CONFIRMED_CONFIDENCE,
+    DOMAIN_UNCONFIRMED_REASON,
     MIN_CONFIDENCE,
     PLACE_UNCONFIRMED_REASON,
     discover_domain,
+    domain_unconfirmed,
     host_of,
     place_unconfirmed,
 )
@@ -354,12 +357,41 @@ def _tiebreak(
 def _unplaced(row: HospitalRow, sources_with_text: list[tuple[SourceDoc, str]]) -> str | None:
     """Why the hospital's web documents cannot be tied to its place, or None. A domain an admin
     confirmed (confidence 1.0) is trusted; a discovered or hand-entered one is checked."""
-    if row.domain_confidence == 1.0:
+    if row.domain_confidence == CONFIRMED_CONFIDENCE:
         return None
     web_texts = [
         text for source, text in sources_with_text if source.kind is SourceKind.HOSPITAL_WEB
     ]
     return place_unconfirmed(repo.hospital_ref(row), web_texts)
+
+
+def _unconfirmed_domain(row: HospitalRow) -> str | None:
+    """The website and how sure discovery was, while nobody has confirmed a domain matched with
+    low confidence (decision 7.9a-1), or None."""
+    if not domain_unconfirmed(row.website_domain, row.domain_confidence):
+        return None
+    if row.domain_confidence is None:
+        return f"{row.website_domain} (no confidence recorded)"
+    return f"{row.website_domain} (confidence {row.domain_confidence:g})"
+
+
+def _hold_for_domain(
+    session: Session, row: HospitalRow, unconfirmed: str, holds: list[str], result: BuildResult
+) -> None:
+    """The fields stay for the admin to compare; "Confirm website" in the console publishes them
+    (confirm_domain) and "Wrong website" clears the domain (reject_domain)."""
+    repo.add_review_item(
+        session,
+        row.ccn,
+        "domain_unconfirmed",
+        {"domain": row.website_domain, "confidence": row.domain_confidence},
+    )
+    holds.append(DOMAIN_UNCONFIRMED_REASON)
+    result.notes.append(f"{DOMAIN_UNCONFIRMED_REASON}: {unconfirmed}")
+
+
+def _listed_limits(disagreeing: list[dict[str, Any]]) -> str:
+    return ", ".join(f"{entry['id']}: {'/'.join(entry['limits'])}%" for entry in disagreeing)
 
 
 def build_hospital(
@@ -531,8 +563,7 @@ def build_hospital(
             },
         )
         holds.append(DOCUMENT_CONFLICT_REASON)
-        listed = ", ".join(f"{entry['id']}: {'/'.join(entry['limits'])}%" for entry in disagreeing)
-        result.notes.append(f"{DOCUMENT_CONFLICT_REASON} ({listed})")
+        result.notes.append(f"{DOCUMENT_CONFLICT_REASON} ({_listed_limits(disagreeing)})")
     unplaced = _unplaced(row, sources_with_text)
     if unplaced:
         repo.add_review_item(
@@ -543,6 +574,9 @@ def build_hospital(
         )
         holds.append(PLACE_UNCONFIRMED_REASON)
         result.notes.append(f"{PLACE_UNCONFIRMED_REASON}: {unplaced}")
+    unconfirmed = _unconfirmed_domain(row)
+    if unconfirmed:
+        _hold_for_domain(session, row, unconfirmed, holds, result)
     status = decide_status(sheet, conflicts, holds)
     published = publish_sheet(session, sheet.model_copy(update={"status": status}))
     result.outcome = "published" if status.value == "published" else "held"
@@ -655,7 +689,8 @@ class Recheck:
 
 def recheck_sheets(session: Session, state: str | None = None) -> list[Recheck]:
     """Every latest sheet whose stored fields the current verification rules reject, with the
-    paths and reasons. No model call and no credits: a what-if over stored quotes and texts, run
+    paths and reasons, and every published one the place or website check would hold (path
+    "sheet"). No model call and no credits: a what-if over stored quotes and texts, run
     after a verifier change to find the published sheets to rebuild before exporting (four
     national sheets and sixteen Massachusetts fields kept fields the 7.9 rules had been written
     for, because they were not rebuilt; review of 7.9)."""
@@ -673,6 +708,8 @@ def recheck_sheets(session: Session, state: str | None = None) -> list[Recheck]:
             unplaced := _unplaced(row, repo.sources_for(session, row.ccn))
         ):
             rejected.append(("sheet", f"{PLACE_UNCONFIRMED_REASON}: {unplaced}"))
+        if sheet.status is SheetStatus.PUBLISHED and (unconfirmed := _unconfirmed_domain(row)):
+            rejected.append(("sheet", f"{DOMAIN_UNCONFIRMED_REASON}: {unconfirmed}"))
         if rejected:
             found.append(Recheck(row.ccn, row.name, row.state, sheet.status, rejected))
     return found
@@ -687,7 +724,9 @@ def withdraw_rejected(
     quotes and texts, so a verifier fix reaches published sheets the same day without spending
     on a rebuild (the Massachusetts batch predates the 7.9 asset, insured and list rules; review
     of 7.9). A held sheet stays held; a published one keeps its status unless it loses its income
-    rules. A `recheck` review item records what went."""
+    rules, its documents cannot be tied to the hospital's place, or its website was matched with
+    low confidence and nobody confirmed it (decision 7.9a-1). A `recheck` review item records
+    what went."""
     results: list[BuildResult] = []
     for row in repo.list_hospitals(session, state=state):
         if repo.is_demo(row.ccn):
@@ -706,7 +745,8 @@ def withdraw_rejected(
             if sheet.status is SheetStatus.PUBLISHED
             else None
         )
-        if not pruned and not report.rejected and not unplaced:
+        unconfirmed = _unconfirmed_domain(row) if sheet.status is SheetStatus.PUBLISHED else None
+        if not pruned and not report.rejected and not unplaced and not unconfirmed:
             continue
         result = BuildResult(row.ccn, row.name, "skipped")
         result.notes.extend(pruned)
@@ -723,6 +763,8 @@ def withdraw_rejected(
             )
             holds.append(PLACE_UNCONFIRMED_REASON)
             result.notes.append(f"{PLACE_UNCONFIRMED_REASON}: {unplaced}")
+        if unconfirmed:
+            _hold_for_domain(session, row, unconfirmed, holds, result)
         status = (
             decide_status(withdrawn, [], holds)
             if sheet.status is SheetStatus.PUBLISHED
@@ -737,6 +779,125 @@ def withdraw_rejected(
         results.append(result)
         session.commit()
     return results
+
+
+# A stored sheet cannot show every reason its build held it: neither model's draft nor the
+# tie-break's is kept, and verification dropped a discount table that states the patient's share.
+REBUILD_TO_RECHECK = "re-checking that needs model calls (Rebuild from stored documents)"
+WRONG_WEBSITE_REASON = "an admin found it is not the hospital's website"
+
+
+def _close_website_questions(session: Session, ccn: str, domain: str) -> None:
+    """An admin answered whether `domain` is the hospital's own website: the open review items
+    that asked are resolved, namely the website hold, the place check (a confirmed domain stands
+    it down; a wrong one takes its documents away) and discovery's low-confidence `domain` item."""
+    for item in repo.open_review_items(session, ccn):
+        detail = item.detail or {}
+        asked = detail.get("found") if item.kind == "domain" else detail.get("domain")
+        if item.kind in ("domain", "domain_unconfirmed", "place_unconfirmed") and asked == domain:
+            item.status = "resolved"
+    session.flush()
+
+
+def _recorded_holds(session: Session, ccn: str) -> tuple[list[str], bool]:
+    """What the builds since the sheet was last published (every build, when it never was)
+    recorded and a stored sheet cannot show: the critical fields the two models disputed and no
+    tie-break settled, and whether a discount table stated the patient's share. A published
+    version means its build had neither left, so older review items do not count."""
+    published = SheetStatus.PUBLISHED.value
+    last = next((row for row in repo.sheet_versions(session, ccn) if row.status == published), None)
+    disputed: set[str] = set()
+    patient_share = False
+    for item in repo.review_items_since(session, ccn, last.created_at if last else None):
+        detail = item.detail or {}
+        if item.kind == "conflict" and detail.get("paths") != ["programs.presumptive"]:
+            disputed.update(detail.get("paths", []))
+        elif item.kind == "tiebreak":
+            disputed.difference_update(
+                path
+                for path, entry in detail.items()
+                if entry.get("verdict") in ("primary", "secondary")
+            )
+        elif item.kind == "patient_share_table":
+            patient_share = True
+    return sorted(disputed), patient_share
+
+
+def confirm_domain(session: Session, ccn: str, domain: str) -> BuildResult:
+    """An admin confirmed in the console that `domain` is the hospital's own website (decision
+    7.9a-1): its confidence becomes 1.0, which also stands the place check down, the review items
+    that asked are resolved, and the latest sheet is re-verified in place as `withdraw_rejected`
+    does it, with no model call. It publishes when nothing else holds it. Every other reason is
+    re-checked from the stored quotes and documents and named in the notes, except the holds a
+    stored sheet cannot show (`_recorded_holds`): they keep it held, and the notes say that
+    re-checking them takes a rebuild."""
+    row = repo.get_hospital(session, ccn)
+    if row is None:
+        return BuildResult(ccn, "?", "failed", notes=["hospital not in registry"])
+    result = BuildResult(ccn, row.name, "skipped")
+    if row.website_domain != domain:
+        # The admin's page is older than the hospital's current website.
+        current = row.website_domain or "not set"
+        result.notes.append(f"the website is {current} now, not {domain}; nothing confirmed")
+        return result
+    row.domain_confidence = CONFIRMED_CONFIDENCE
+    _close_website_questions(session, ccn, domain)
+    result.notes.append(f"website {domain} confirmed")
+    latest = repo.latest_sheet(session, ccn)
+    if latest is None:
+        result.notes.append("no sheet yet")
+        return result
+    sheet = latest[0]
+    texts = {source.id: text for source, text in repo.sources_for(session, ccn)}
+    grounded, pruned = _ground(sheet, texts)
+    report = verify_sheet(grounded, texts)
+    result.notes.extend(pruned)
+    result.notes.extend(f"{path}: {reason}" for path, reason in report.rejected)
+    if pruned or report.rejected:
+        repo.add_review_item(
+            session, ccn, "recheck", {"pruned": pruned, "rejected": report.rejected}
+        )
+    reverified = drop_fields(grounded, [path for path, _ in report.rejected])
+    disputed, patient_share = _recorded_holds(session, ccn)
+    if disputed:
+        listed = ", ".join(disputed)
+        result.notes.append(f"critical fields disagree: {listed}; {REBUILD_TO_RECHECK}")
+    holds: list[str] = []
+    if patient_share:
+        result.notes.append(
+            f"eligibility.discount_tiers: {PATIENT_SHARE_REASON}; {REBUILD_TO_RECHECK}"
+        )
+    if patient_share or any(reason == PATIENT_SHARE_REASON for _, reason in report.rejected):
+        holds.append(PATIENT_SHARE_REASON)
+    disagreeing = document_conflicts(reverified, texts)
+    if disagreeing:
+        holds.append(DOCUMENT_CONFLICT_REASON)
+        result.notes.append(f"{DOCUMENT_CONFLICT_REASON} ({_listed_limits(disagreeing)})")
+    if _lacks_income_rules(reverified):
+        result.notes.append("no free-care band or discount table is left to publish")
+    result.notes.extend(sheet_inconsistencies(reverified))
+    status = decide_status(reverified, disputed, holds)
+    published = publish_sheet(session, reverified.model_copy(update={"status": status}))
+    result.outcome = "published" if status is SheetStatus.PUBLISHED else "held"
+    result.version = published.version if published else sheet.version
+    return result
+
+
+def reject_domain(session: Session, ccn: str, domain: str, reason: str = "") -> BuildResult:
+    """An admin found in the console that `domain` is not the hospital's website: it is cleared
+    as `clear_wrong_domain` does it (its documents detached, the fields they backed dropped, the
+    sheet held, discovery left to look again) and the open review items that asked about it are
+    resolved."""
+    row = repo.get_hospital(session, ccn)
+    if row is None:
+        return BuildResult(ccn, "?", "failed", notes=["hospital not in registry"])
+    if row.website_domain != domain:
+        current = row.website_domain or "not set"
+        note = f"the website is {current} now, not {domain}; nothing cleared"
+        return BuildResult(ccn, row.name, "skipped", notes=[note])
+    result = clear_wrong_domain(session, ccn, reason or WRONG_WEBSITE_REASON)
+    _close_website_questions(session, ccn, domain)
+    return result
 
 
 def coverage_report(session: Session, state: str) -> str:

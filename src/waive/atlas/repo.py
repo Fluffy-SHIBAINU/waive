@@ -1,6 +1,6 @@
 """Database access for the atlas: hospitals, sources, sheet versions, review items."""
 
-from datetime import date
+from datetime import date, datetime
 from typing import Any
 
 from sqlalchemy import select
@@ -184,6 +184,15 @@ def open_review_items(session: Session, ccn: str | None = None) -> list[ReviewIt
 def review_items_of_kind(session: Session, ccn: str, kind: str) -> list[ReviewItemRow]:
     """A hospital's review items of one kind, open or not, oldest first."""
     query = select(ReviewItemRow).where(ReviewItemRow.ccn == ccn, ReviewItemRow.kind == kind)
+    return list(session.scalars(query.order_by(ReviewItemRow.id)))
+
+
+def review_items_since(session: Session, ccn: str, since: datetime | None) -> list[ReviewItemRow]:
+    """A hospital's review items, open or not, filed after `since` (all of them for None), oldest
+    first."""
+    query = select(ReviewItemRow).where(ReviewItemRow.ccn == ccn)
+    if since is not None:
+        query = query.where(ReviewItemRow.created_at > since)
     return list(session.scalars(query.order_by(ReviewItemRow.id)))
 
 

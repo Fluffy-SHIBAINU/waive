@@ -12,6 +12,7 @@ from sqlalchemy import delete, select
 from sqlalchemy.orm import Session
 
 from waive.atlas import repo
+from waive.atlas.discover import CONFIRMED_CONFIDENCE
 from waive.atlas.publish import publish_sheet
 from waive.atlas.samples import st_example_sheet
 from waive.cases.synth import BillTruth, render_benefit_letter, render_bill
@@ -62,6 +63,9 @@ def seed_demo(session: Session) -> None:
             "hospital_type": "Acute Care Hospitals",
             "ownership": h.ownership,
             "website_domain": h.website_domain,
+            # Set by hand, so it counts as confirmed: a rebuild of the demo sheet (the learning
+            # loop's approved photo) is not held for an unconfirmed website (decision 7.9a-1).
+            "domain_confidence": CONFIRMED_CONFIDENCE,
         },
     )
     publish_sheet(session, sheet)
