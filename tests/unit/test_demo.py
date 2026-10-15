@@ -63,6 +63,20 @@ def test_seed_and_forget():
         assert [item.kind for item in repo.open_review_items(session)] == ["rescout_request"]
 
 
+def test_the_demo_hospitals_website_counts_as_confirmed():
+    # Decision 7.9a-1 holds a sheet built from an unconfirmed website. The fictional hospital's
+    # example.org is set by hand, so the learning-loop demo (approve a photo, rebuild from stored
+    # documents) still publishes; a reset puts the confidence back.
+    engine = memory_engine()
+    with session_scope(engine) as session:
+        seed_demo(session)
+        row = repo.get_hospital(session, "229999")
+        assert (row.website_domain, row.domain_confidence) == ("example.org", 1.0)
+        row.domain_confidence = None
+        reset_demo(session, write_files=False)
+        assert repo.get_hospital(session, "229999").domain_confidence == 1.0
+
+
 def test_demo_bill_is_rosa_and_matches_the_demo_hospital_confidently():
     # Spec §2 persona: one person, $1,900 a month, an $1,850 bill — free care under St. Example's
     # 250% rule. The same figures drive the web tests, so the video and the tests agree.

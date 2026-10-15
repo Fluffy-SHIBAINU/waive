@@ -104,6 +104,9 @@ GENERIC_WORDS = frozenset(
     }
 )
 MIN_CONFIDENCE = 0.8
+# A domain an admin confirmed in the console (or set by hand as known to be right): the website
+# and place checks below stand down for it.
+CONFIRMED_CONFIDENCE = 1.0
 
 
 @dataclass(frozen=True)
@@ -188,6 +191,25 @@ def place_unconfirmed(hospital: HospitalRef, texts: Iterable[str]) -> str | None
     if hospital.city.lower() not in lowered and not (name_tokens(hospital.name) & words):
         return f"the documents name neither {hospital.city.title()} nor the hospital"
     return None
+
+
+# Discovery is sure of a site (0.9) when a page title names the hospital or a page carries its
+# phone; otherwise it guesses (0.6). Of about 20 sheets published from a guess, three were another
+# hospital's website on day one (7.11a: Bellevue Hospital OH from Overlake's in Bellevue,
+# Washington; Bryn Mawr from bonsecours.com; St. Joseph Bethpage from St. Joseph's Health in
+# Syracuse). Decision 7.9a-1: such a sheet is held until an admin confirms the site.
+DOMAIN_UNCONFIRMED_REASON = (
+    "the hospital's website was matched with low confidence and is not confirmed yet"
+)
+
+
+def domain_unconfirmed(domain: str | None, confidence: float | None) -> bool:
+    """Whether a sheet built from `domain` waits for an admin: the site was matched with less
+    than MIN_CONFIDENCE, or set with no confidence recorded, and nobody confirmed it (1.0).
+    Without a domain there is nothing to confirm."""
+    if not domain or confidence == CONFIRMED_CONFIDENCE:
+        return False
+    return confidence is None or confidence < MIN_CONFIDENCE
 
 
 def pick_domain(hospital: HospitalRef, hits: list[SearchHit]) -> DomainResult | None:

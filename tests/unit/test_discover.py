@@ -231,3 +231,20 @@ def test_documents_must_name_the_hospitals_state_and_the_hospital_or_its_town():
     )
     # Nothing to judge (no web documents): not this check's call.
     assert place_unconfirmed(chilton, []) is None
+
+
+def test_a_website_matched_with_low_confidence_waits_for_an_admin_to_confirm_it():
+    # Decision 7.9a-1 (task 7.13): of about 20 sheets published from a 0.6 match, three were
+    # another hospital's website on day one (7.11a).
+    from waive.atlas.discover import CONFIRMED_CONFIDENCE, MIN_CONFIDENCE, domain_unconfirmed
+
+    assert domain_unconfirmed("example.org", 0.6)
+    assert domain_unconfirmed("example.org", 0.79)
+    assert domain_unconfirmed("example.org", None)  # set with no confidence recorded
+    assert not domain_unconfirmed("example.org", MIN_CONFIDENCE)
+    assert not domain_unconfirmed("example.org", 0.9)
+    assert not domain_unconfirmed("example.org", 0.95)  # entered by hand in the loop, still checked
+    assert not domain_unconfirmed("example.org", CONFIRMED_CONFIDENCE)
+    assert CONFIRMED_CONFIDENCE == 1.0
+    # No website: nothing to confirm (the build discovers one first, or stops).
+    assert not domain_unconfirmed(None, 0.6) and not domain_unconfirmed(None, None)

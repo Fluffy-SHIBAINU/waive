@@ -28,6 +28,7 @@ HOSPITAL = {
     "hospital_type": "Acute Care Hospitals",
     "ownership": "Voluntary non-profit - Private",
     "website_domain": "example.org",
+    "domain_confidence": 1.0,  # set by hand, as `waive demo seed` does
 }
 
 

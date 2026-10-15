@@ -7,6 +7,10 @@
 <div class="card">
   <div class="row"><span><code>{{ item.kind }}</code></span><strong>{% if item.ccn %}<a href="/admin/sheets/{{ item.ccn }}">{{ item.ccn }}</a>{% else %}no hospital{% endif %}</strong></div>
   <p class="muted">{{ item.detail }}</p>
+  {% set website = websites.get(item.ccn) if item.kind == "domain_unconfirmed" else none %}
+  {% if website and website.domain == item.detail.get("domain") %}
+  {% with ccn=item.ccn, domain=website.domain, confidence=website.confidence, key=item.id %}{% include "_website_check.html" %}{% endwith %}
+  {% endif %}
   <form method="post" action="/admin/review/{{ item.id }}" class="stack">
     {% if item.kind == "rescout_request" %}
     <label for="verdict-{{ item.id }}">Verdict after re-checking the documents</label>

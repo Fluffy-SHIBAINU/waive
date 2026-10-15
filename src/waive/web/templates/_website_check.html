@@ -1,0 +1,14 @@
+{# "Confirm website" and "Wrong website" for a sheet held because the website it was built from
+   is not confirmed (decision 7.9a-1). Needs ccn, domain, confidence and key (unique on the page). #}
+<p>Website: <a href="https://www.{{ domain }}" rel="noreferrer">{{ domain }}</a> · {% if confidence is none %}no confidence recorded{% else %}matched with confidence {{ confidence }}{% endif %}</p>
+<form method="post" action="/admin/sheets/{{ ccn }}/confirm-website" class="stack">
+  <input type="hidden" name="domain" value="{{ domain }}">
+  <button type="submit" class="btn primary">Confirm website</button>
+</form>
+<form method="post" action="/admin/sheets/{{ ccn }}/wrong-website" class="stack">
+  <input type="hidden" name="domain" value="{{ domain }}">
+  <p class="muted">Wrong website detaches the documents found there, holds the sheet without the fields they back and clears the domain, so the next build looks for the hospital's site again.</p>
+  <label for="wrong-website-{{ key }}">Why it is not the hospital's website (optional)</label>
+  <input id="wrong-website-{{ key }}" name="reason" type="text" maxlength="200">
+  <button type="submit" class="btn danger">Wrong website</button>
+</form>

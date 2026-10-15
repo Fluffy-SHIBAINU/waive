@@ -5,6 +5,14 @@
 <p class="muted"><a href="/admin">Back to the console</a> · <a href="/atlas/{{ hospital.ccn }}">public page</a> · flag level: {{ flag }}</p>
 <form method="post" action="/admin/rebuild/{{ hospital.ccn }}" class="stack"><button type="submit" class="btn">Rebuild from stored documents (spends tokens, never Tavily)</button></form>
 {% if note %}<p class="card">{{ note }}</p>{% endif %}
+{% if website %}
+<div class="card">
+  <h2>Website not confirmed</h2>
+  <p>This sheet is held until an admin confirms that the website it was built from belongs to {{ hospital.name }} in {{ hospital.city }}, {{ hospital.state }}. Confirming publishes it from the stored documents if nothing else holds it, with no paid calls.</p>
+  {% for reason in website.place %}<p class="muted">Its documents also fail the place check ({{ reason }}); confirming the website overrides that check.</p>{% endfor %}
+  {% with ccn=hospital.ccn, domain=website.domain, confidence=website.confidence, key="sheet" %}{% include "_website_check.html" %}{% endwith %}
+</div>
+{% endif %}
 {% for row in versions %}
 <div class="card">
   <div class="row"><span>version {{ row.version }}</span><strong>{{ row.status }} · {{ row.created_at.date() }}</strong></div>

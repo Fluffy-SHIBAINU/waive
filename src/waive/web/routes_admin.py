@@ -3,14 +3,19 @@
 import hmac
 import secrets
 import time
+from typing import Any
 from urllib.parse import quote
 
 from fastapi import APIRouter, Form, Request
 from fastapi.responses import HTMLResponse, RedirectResponse
 from sqlalchemy import func, select
+from sqlalchemy.orm import Session
 
 from waive.atlas import repo
-from waive.db import CaseRow, session_scope
+from waive.atlas.discover import domain_unconfirmed
+from waive.atlas.pipeline import BuildResult, confirm_domain, reject_domain
+from waive.atlas.schema import SheetStatus
+from waive.db import CaseRow, HospitalRow, ReviewItemRow, SheetRow, session_scope
 from waive.learning.contributions import (
     approve_contribution,
     list_contributions,
@@ -136,13 +141,27 @@ def admin_home(request: Request) -> HTMLResponse:
     return render(request, "admin_home.html", counts=counts, budget=budget, audit=audit)
 
 
+def _websites_to_confirm(session: Session, items: list[ReviewItemRow]) -> dict[str, Any]:
+    """Per hospital with an open `domain_unconfirmed` item, its website and how sure discovery
+    was, while nobody has confirmed it (the item is filed only when a sheet is held for it)."""
+    websites: dict[str, Any] = {}
+    for item in items:
+        if item.kind != "domain_unconfirmed" or not item.ccn or item.ccn in websites:
+            continue
+        row = repo.get_hospital(session, item.ccn)
+        if row is not None and domain_unconfirmed(row.website_domain, row.domain_confidence):
+            websites[item.ccn] = {"domain": row.website_domain, "confidence": row.domain_confidence}
+    return websites
+
+
 @router.get("/review", response_class=HTMLResponse)
 def admin_review(request: Request) -> HTMLResponse:
     require_admin(request)
     deps = deps_of(request)
     with session_scope(deps.engine) as session:
         items = repo.open_review_items(session)
-        return render(request, "admin_review.html", items=items)
+        websites = _websites_to_confirm(session, items)
+        return render(request, "admin_review.html", items=items, websites=websites)
 
 
 @router.post("/review/{item_id}")
@@ -199,6 +218,28 @@ def admin_rebuild(request: Request, ccn: str):
     return RedirectResponse(f"/admin/sheets/{ccn}?note={quote(note)}", status_code=303)
 
 
+def _website_to_confirm(
+    session: Session, hospital: HospitalRow, versions: list[SheetRow]
+) -> dict[str, Any] | None:
+    """The website a held sheet waits on (decision 7.9a-1): its domain, how sure discovery was
+    and what the place check said of its documents. None where no held sheet waits on one."""
+    if not versions or versions[0].status != SheetStatus.HELD.value:
+        return None
+    domain = hospital.website_domain
+    if not domain_unconfirmed(domain, hospital.domain_confidence):
+        return None
+    place = [
+        item.detail.get("reason")
+        for item in repo.open_review_items(session, hospital.ccn)
+        if item.kind == "place_unconfirmed" and item.detail.get("domain") == domain
+    ]
+    return {
+        "domain": domain,
+        "confidence": hospital.domain_confidence,
+        "place": list(dict.fromkeys(place)),
+    }
+
+
 @router.get("/sheets/{ccn}", response_class=HTMLResponse)
 def admin_sheet(request: Request, ccn: str, note: str = "") -> HTMLResponse:
     require_admin(request)
@@ -207,14 +248,51 @@ def admin_sheet(request: Request, ccn: str, note: str = "") -> HTMLResponse:
         hospital = repo.get_hospital(session, ccn)
         if hospital is None:
             raise KeyError(ccn)
+        versions = repo.sheet_versions(session, ccn)
         return render(
             request,
             "admin_sheet.html",
             hospital=hospital,
-            versions=repo.sheet_versions(session, ccn),
+            versions=versions,
             flag=slip_flag_level(session, ccn),
             note=note,
+            website=_website_to_confirm(session, hospital, versions),
         )
+
+
+def _account(result: BuildResult) -> str:
+    """One line for the sheet page: the outcome, the version, then the notes."""
+    version = [] if result.version is None else [f"version {result.version}"]
+    return "; ".join([result.outcome, *version, *result.notes])
+
+
+@router.post("/sheets/{ccn}/confirm-website")
+def admin_confirm_website(request: Request, ccn: str, domain: str = Form(...)):
+    """The admin checked that the website is the hospital's own: confidence 1.0, then the held
+    sheet is re-verified from stored documents (no paid call) and published if nothing else
+    holds it."""
+    require_admin(request)
+    deps = deps_of(request)
+    with session_scope(deps.engine) as session:
+        if repo.get_hospital(session, ccn) is None:
+            raise KeyError(ccn)
+        note = _account(confirm_domain(session, ccn, domain))
+    return RedirectResponse(f"/admin/sheets/{ccn}?note={quote(note)}", status_code=303)
+
+
+@router.post("/sheets/{ccn}/wrong-website")
+def admin_wrong_website(
+    request: Request, ccn: str, domain: str = Form(...), reason: str = Form("")
+):
+    """The admin found that the website is not the hospital's: it is cleared, its documents
+    detached and the sheet held without the fields they backed (no paid call)."""
+    require_admin(request)
+    deps = deps_of(request)
+    with session_scope(deps.engine) as session:
+        if repo.get_hospital(session, ccn) is None:
+            raise KeyError(ccn)
+        note = _account(reject_domain(session, ccn, domain, reason.strip()[:200]))
+    return RedirectResponse(f"/admin/sheets/{ccn}?note={quote(note)}", status_code=303)
 
 
 @router.get("/scoreboard", response_class=HTMLResponse)

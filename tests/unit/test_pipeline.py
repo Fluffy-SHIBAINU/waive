@@ -9,6 +9,7 @@ from pydantic import SecretStr
 
 from waive.ai.client import AIClient, AIOutputError, AIRequestRejected
 from waive.atlas import repo
+from waive.atlas.discover import MIN_CONFIDENCE
 from waive.atlas.pipeline import build_hospital, build_state, clear_wrong_domain, coverage_report
 from waive.atlas.samples import SAMPLE_POLICY_TEXT, SAMPLE_SOURCE_ID
 from waive.atlas.schema import SheetStatus, SourceDoc, SourceKind
@@ -879,6 +880,7 @@ SIBLING = {
     "name": "REAL GENERAL HOSPITAL",
     "city": "BOSTON",
     "website_domain": "example.org",
+    "domain_confidence": 0.9,  # discovery was sure of the site
 }
 THIN_PAGE = (
     "Financial assistance at Real General Hospital. We help patients who cannot pay. "
@@ -1073,6 +1075,7 @@ def test_a_state_inside_the_hospitals_own_name_does_not_make_its_policy_another_
         "city": "GRASS VALLEY",
         "state": "CA",
         "website_domain": "example.org",
+        "domain_confidence": 0.9,
     }
     engine = make_engine_with_hospital(sierra)
     own = SourceDoc(
@@ -1142,23 +1145,26 @@ def test_lists_are_pruned_again_against_the_trimmed_quote():
         assert verify_sheet(sheet, texts).ok
 
 
+NEWER_POLICY = SourceDoc(
+    id="fap-newer-pdf",
+    kind=SourceKind.HOSPITAL_WEB,
+    url="https://www.example.org/charity-care-policy-revised.pdf",
+    title="Charity Care and Discount Payment Policy",
+    fetched_on=TODAY,
+    sha256="5" * 64,
+)
+NEWER_POLICY_TEXT = (
+    "Charity Care and Discount Payment Policy. Revised April 20, 2026.\n"
+    "Patients whose family income is at or below 200 percent of the Federal Poverty Level "
+    "will be eligible for a 100 percent write-off of their balance.\n"
+)
+
+
 def test_two_documents_naming_different_free_care_limits_hold_the_sheet():
     # AHMC Anaheim (050226, review of 7.9): the web page said 0-250% of FPL is no-cost care, the
     # newer PDF said 200%, and the sheet published 250 with nothing to trip on.
     engine = make_engine_with_hospital()
-    newer = SourceDoc(
-        id="fap-newer-pdf",
-        kind=SourceKind.HOSPITAL_WEB,
-        url="https://www.example.org/charity-care-policy-revised.pdf",
-        title="Charity Care and Discount Payment Policy",
-        fetched_on=TODAY,
-        sha256="5" * 64,
-    )
-    newer_text = (
-        "Charity Care and Discount Payment Policy. Revised April 20, 2026.\n"
-        "Patients whose family income is at or below 200 percent of the Federal Poverty Level "
-        "will be eligible for a 100 percent write-off of their balance.\n"
-    )
+    newer, newer_text = NEWER_POLICY, NEWER_POLICY_TEXT
     with session_scope(engine) as session:
         build_hospital(session, FakeGateway(), FakeAI(), "229999", TODAY)
         repo.save_source(session, newer, newer_text, "229999")
@@ -1312,3 +1318,256 @@ def test_recheck_holds_a_published_sheet_whose_documents_cannot_be_tied_to_its_p
             "the documents never name Ohio"
         )
         assert recheck_sheets(session, "OH") == []  # held sheets are not listed again
+
+
+class GuessGateway(FakeGateway):
+    """Discovery's only hit names neither the hospital nor its phone: a guess (confidence 0.6)."""
+
+    def search(self, query, **kwargs):
+        if kwargs.get("include_domains"):
+            return super().search(query, **kwargs)
+        return [SearchHit("https://www.example.org/", "Paying your bill", "Questions?", 0.8)]
+
+
+UNCONFIRMED_NOTE = (
+    "the hospital's website was matched with low confidence and is not confirmed yet: "
+    "example.org (confidence 0.6)"
+)
+REBUILD_NOTE = "re-checking that needs model calls (Rebuild from stored documents)"
+# Real General with a website discovery matched with low confidence and never confirmed.
+UNSURE_HOSPITAL = {**REAL_HOSPITAL, "website_domain": "example.org", "domain_confidence": 0.6}
+
+
+def test_a_sheet_from_a_website_matched_with_low_confidence_is_held_until_an_admin_confirms_it():
+    # Decision 7.9a-1 (task 7.13). 7.11a: of about 20 sheets published from a 0.6 match, three
+    # were another hospital's site on day one (Bellevue Hospital OH from Overlake Medical
+    # Center's, in Bellevue, Washington).
+    engine = make_engine_with_hospital(REAL_HOSPITAL)
+    with session_scope(engine) as session:
+        result = build_hospital(session, GuessGateway(), FakeAI(), "220031", TODAY)
+        assert (result.outcome, result.version) == ("held", 1)
+        assert "domain example.org needs review" in result.notes
+        assert UNCONFIRMED_NOTE in result.notes
+        sheet, _ = repo.latest_sheet(session, "220031")
+        assert sheet.status is SheetStatus.HELD
+        assert sheet.eligibility.free_care_max_fpl.value == 250  # kept for the admin to compare
+        assert review_detail(session, "220031", "domain_unconfirmed") == {
+            "domain": "example.org",
+            "confidence": 0.6,
+        }
+        # The same documents publish once an admin has confirmed the website (confidence 1.0).
+        repo.get_hospital(session, "220031").domain_confidence = 1.0
+        result = build_hospital(
+            session, FakeGateway(), FakeAI(), "220031", TODAY, reuse_sources=True
+        )
+        assert (result.outcome, result.version) == ("published", 2)
+        assert UNCONFIRMED_NOTE not in result.notes
+
+
+@pytest.mark.parametrize(
+    ("confidence", "outcome"),
+    [
+        (None, "held"),  # a domain set with no confidence recorded
+        (0.6, "held"),
+        (0.79, "held"),
+        (MIN_CONFIDENCE, "published"),
+        (0.95, "published"),  # the loop's hand-entered domains (7.11b): still place-checked
+        (1.0, "published"),
+    ],
+)
+def test_only_a_website_matched_with_enough_confidence_or_confirmed_publishes(confidence, outcome):
+    hospital = {**REAL_HOSPITAL, "website_domain": "example.org", "domain_confidence": confidence}
+    engine = make_engine_with_hospital(hospital)
+    with session_scope(engine) as session:
+        assert build_hospital(session, FakeGateway(), FakeAI(), "220031", TODAY).outcome == outcome
+        kinds = {item.kind for item in repo.open_review_items(session, "220031")}
+        assert ("domain_unconfirmed" in kinds) is (outcome == "held")
+
+
+def test_recheck_holds_a_published_sheet_whose_website_is_not_confirmed():
+    # About 20 sheets stood published from a 0.6 match before decision 7.9a-1; `recheck
+    # --withdraw` must reach them without a model call.
+    from waive.atlas.pipeline import recheck_sheets, withdraw_rejected
+
+    engine = make_engine_with_hospital(REAL_HOSPITAL)
+    with session_scope(engine) as session:
+        assert build_hospital(session, FakeGateway(), FakeAI(), "220031", TODAY).outcome == (
+            "published"
+        )
+        assert recheck_sheets(session, "MA") == []
+        # As discovery left the sheets it published before 7.13: a guess nobody confirmed.
+        repo.get_hospital(session, "220031").domain_confidence = 0.6
+        session.flush()
+        [entry] = recheck_sheets(session, "MA")
+        assert (entry.ccn, entry.status) == ("220031", SheetStatus.PUBLISHED)
+        assert entry.rejected == [("sheet", UNCONFIRMED_NOTE)]
+        [result] = withdraw_rejected(session, "MA")
+        assert (result.outcome, result.version, result.notes) == ("held", 2, [UNCONFIRMED_NOTE])
+        sheet, row = repo.latest_sheet(session, "220031")
+        assert sheet.status is SheetStatus.HELD
+        assert sheet.eligibility.free_care_max_fpl.value == 250  # kept for the admin to compare
+        assert row.diff == {"status": {"old": "published", "new": "held"}}
+        assert review_detail(session, "220031", "domain_unconfirmed") == {
+            "domain": "example.org",
+            "confidence": 0.6,
+        }
+        assert recheck_sheets(session, "MA") == []  # held sheets are not listed again
+        assert withdraw_rejected(session, "MA") == []
+
+
+def test_an_admin_confirming_the_website_publishes_a_sheet_held_only_for_it():
+    from waive.atlas.pipeline import confirm_domain
+
+    engine = make_engine_with_hospital(REAL_HOSPITAL)
+    with session_scope(engine) as session:
+        assert build_hospital(session, GuessGateway(), FakeAI(), "220031", TODAY).outcome == "held"
+        # A page left open while the website changed confirms nothing.
+        stale = confirm_domain(session, "220031", "other.org")
+        assert (stale.outcome, stale.version) == ("skipped", None)
+        assert stale.notes == ["the website is example.org now, not other.org; nothing confirmed"]
+        assert repo.get_hospital(session, "220031").domain_confidence == 0.6
+
+        result = confirm_domain(session, "220031", "example.org")
+        assert (result.outcome, result.version) == ("published", 2)
+        assert result.notes == ["website example.org confirmed"]
+        assert repo.get_hospital(session, "220031").domain_confidence == 1.0
+        sheet, row = repo.latest_sheet(session, "220031")
+        assert sheet.status is SheetStatus.PUBLISHED
+        assert row.diff == {"status": {"old": "held", "new": "published"}}
+        # Answered: the website hold and discovery's "needs review" item are resolved.
+        kinds = {item.kind for item in repo.open_review_items(session, "220031")}
+        assert not kinds & {"domain_unconfirmed", "domain"}
+        items = repo.review_items_of_kind(session, "220031", "domain_unconfirmed")
+        assert [item.status for item in items] == ["resolved"]
+        # Nothing to do twice.
+        again = confirm_domain(session, "220031", "example.org")
+        assert (again.outcome, again.version) == ("published", 2)
+
+
+def test_confirming_the_website_keeps_the_sheet_held_while_its_documents_disagree():
+    from waive.atlas.pipeline import confirm_domain
+
+    engine = make_engine_with_hospital(REAL_HOSPITAL)
+    with session_scope(engine) as session:
+        assert build_hospital(session, FakeGateway(), FakeAI(), "220031", TODAY).outcome == (
+            "published"
+        )
+        repo.save_source(session, NEWER_POLICY, NEWER_POLICY_TEXT, "220031")
+        repo.get_hospital(session, "220031").domain_confidence = 0.6
+        result = build_hospital(
+            session, FakeGateway(), GroundedAI(), "220031", TODAY, reuse_sources=True
+        )
+        assert (result.outcome, result.version) == ("held", 2)
+        assert UNCONFIRMED_NOTE in result.notes
+        result = confirm_domain(session, "220031", "example.org")
+        assert (result.outcome, result.version) == ("held", 2)
+        assert result.notes == [
+            "website example.org confirmed",
+            "the hospital's documents state different free-care limits (fap-newer-pdf: 200%)",
+        ]
+        assert repo.latest_sheet(session, "220031")[0].status is SheetStatus.HELD
+        assert repo.get_hospital(session, "220031").domain_confidence == 1.0
+        kinds = {item.kind for item in repo.open_review_items(session, "220031")}
+        assert "domain_unconfirmed" not in kinds and "document_conflict" in kinds
+
+
+def test_confirming_the_website_leaves_a_model_disagreement_to_a_rebuild():
+    # A stored sheet keeps neither model's draft, so a disagreement that held it cannot be
+    # re-checked without model calls: the sheet stays held and the note says what it takes.
+    from waive.atlas.pipeline import confirm_domain, withdraw_rejected
+
+    engine = make_engine_with_hospital(UNSURE_HOSPITAL)
+    with session_scope(engine) as session:
+        ai = FakeAI(free_limit_for_fast="300", free_limit_for_tiebreak="999")
+        assert build_hospital(session, FakeGateway(), ai, "220031", TODAY).outcome == "held"
+        result = confirm_domain(session, "220031", "example.org")
+        assert (result.outcome, result.version) == ("held", 1)
+        assert result.notes == [
+            "website example.org confirmed",
+            f"critical fields disagree: eligibility.free_care_max_fpl; {REBUILD_NOTE}",
+        ]
+        # A rebuild in which the models agree publishes it.
+        result = build_hospital(
+            session, FakeGateway(), FakeAI(), "220031", TODAY, reuse_sources=True
+        )
+        assert result.outcome == "published"
+    # A disagreement the tie-break settled in the same build never held the sheet.
+    engine = make_engine_with_hospital(UNSURE_HOSPITAL)
+    with session_scope(engine) as session:
+        ai = FakeAI(free_limit_for_fast="300", free_limit_for_tiebreak="250")
+        assert build_hospital(session, FakeGateway(), ai, "220031", TODAY).outcome == "held"
+        assert confirm_domain(session, "220031", "example.org").outcome == "published"
+    # Nor does one from a build before the sheet was last published: that build settled it.
+    engine = make_engine_with_hospital(REAL_HOSPITAL)
+    with session_scope(engine) as session:
+        ai = FakeAI(free_limit_for_fast="300", free_limit_for_tiebreak="999")
+        assert build_hospital(session, FakeGateway(), ai, "220031", TODAY).outcome == "held"
+        result = build_hospital(
+            session, FakeGateway(), FakeAI(), "220031", TODAY, reuse_sources=True
+        )
+        assert (result.outcome, result.version) == ("published", 2)
+        repo.get_hospital(session, "220031").domain_confidence = 0.6
+        assert [r.outcome for r in withdraw_rejected(session, "MA")] == ["held"]
+    with session_scope(engine) as session:  # a later request: timestamps read back from storage
+        result = confirm_domain(session, "220031", "example.org")
+        assert (result.outcome, result.version) == ("published", 4)
+    # One from a rebuild after the sheet was published still holds it.
+    engine = make_engine_with_hospital(REAL_HOSPITAL)
+    with session_scope(engine) as session:
+        assert build_hospital(session, FakeGateway(), FakeAI(), "220031", TODAY).outcome == (
+            "published"
+        )
+        repo.get_hospital(session, "220031").domain_confidence = 0.6
+        ai = FakeAI(free_limit_for_fast="300", free_limit_for_tiebreak="999")
+        result = build_hospital(session, FakeGateway(), ai, "220031", TODAY, reuse_sources=True)
+        assert (result.outcome, result.version) == ("held", 2)
+    with session_scope(engine) as session:
+        result = confirm_domain(session, "220031", "example.org")
+        assert (result.outcome, result.version) == ("held", 2)
+        assert f"critical fields disagree: eligibility.free_care_max_fpl; {REBUILD_NOTE}" in (
+            result.notes
+        )
+
+
+def test_confirming_the_website_keeps_a_patient_share_table_held():
+    # Verification dropped the table, so the stored sheet alone would look publishable; the
+    # build's review item is the only record of why it was held.
+    from waive.atlas.pipeline import confirm_domain
+
+    engine = make_engine_with_hospital(UNSURE_HOSPITAL)
+    with session_scope(engine) as session:
+        result = build_hospital(session, MercyGateway(), PatientShareAI(), "220031", TODAY)
+        assert result.outcome == "held"
+        result = confirm_domain(session, "220031", "example.org")
+        assert (result.outcome, result.version) == ("held", 1)
+        assert f"eligibility.discount_tiers: {PATIENT_SHARE_REASON}; {REBUILD_NOTE}" in (
+            result.notes
+        )
+        sheet, _ = repo.latest_sheet(session, "220031")
+        assert sheet.status is SheetStatus.HELD and sheet.eligibility.discount_tiers is None
+
+
+def test_an_admin_marking_the_website_wrong_clears_it_and_keeps_the_sheet_held():
+    from waive.atlas.pipeline import reject_domain
+
+    engine = make_engine_with_hospital(REAL_HOSPITAL)
+    with session_scope(engine) as session:
+        assert build_hospital(session, GuessGateway(), FakeAI(), "220031", TODAY).outcome == "held"
+        stale = reject_domain(session, "220031", "other.org", "not the hospital")
+        assert (stale.outcome, stale.notes) == (
+            "skipped",
+            ["the website is example.org now, not other.org; nothing cleared"],
+        )
+        result = reject_domain(session, "220031", "example.org", "another hospital's site")
+        assert (result.outcome, result.version) == ("held", 2)
+        assert result.notes[0] == (
+            "domain example.org cleared (another hospital's site); 1 documents detached"
+        )
+        row = repo.get_hospital(session, "220031")
+        assert (row.website_domain, row.domain_confidence) == (None, None)
+        kinds = [item.kind for item in repo.open_review_items(session, "220031")]
+        assert "domain_unconfirmed" not in kinds
+        # The item clear_wrong_domain files keeps the scheduler off meanwhile (FAILURE_KINDS);
+        # discovery's own item about example.org is answered.
+        assert review_detail(session, "220031", "domain")["cleared"] == "example.org"
+        assert kinds.count("domain") == 1
