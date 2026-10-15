@@ -25,6 +25,9 @@ def test_caddy_serves_the_names_from_the_environment():
 def test_cloud_init_template_holds_no_key_and_no_secret():
     template = (VM / "cloud-init.template.yaml").read_text(encoding="utf-8")
     assert template.startswith("#cloud-config")
-    assert "__SSH_PUBLIC_KEY__" in template
+    assert template.count("__SSH_PUBLIC_KEY__") == 1  # only the key line is replaced
+    # The docker group appears with the package, after users are created (2026-10-15 deploy).
+    assert "usermod -aG docker ubuntu" in template
+    assert "groups: [sudo]" in template
     assert "ssh-ed25519" not in template
     assert not re.search(r"(?i)(password|secret|token|api_key)\s*[:=]", template)
