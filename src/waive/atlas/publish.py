@@ -10,7 +10,11 @@ from sqlalchemy.orm import Session
 
 from waive.atlas import repo
 from waive.atlas.schema import Layer, ProcedureSheet, SheetStatus, SourceKind
-from waive.atlas.verify import free_care_limits_stated, tiers_rise_with_income
+from waive.atlas.verify import (
+    assistance_limits_stated,
+    free_care_limits_stated,
+    tiers_rise_with_income,
+)
 from waive.db import SheetRow
 
 CRITICAL_PATHS = (
@@ -64,12 +68,33 @@ def carry_over_reported(sheet: ProcedureSheet, previous: ProcedureSheet) -> Proc
     return sheet.model_copy(update=updates) if updates else sheet
 
 
+CEILING_PATH = "eligibility.assistance_ceiling_fpl"
+
+
+def _ceiling_alone(sheet: ProcedureSheet) -> bool:
+    """The sheet's one income rule is the assistance ceiling (decision 7.9a-2)."""
+    eligibility = sheet.eligibility
+    return (
+        eligibility.assistance_ceiling_fpl is not None
+        and eligibility.free_care_max_fpl is None
+        and eligibility.discount_tiers is None
+    )
+
+
 def critical_conflicts(primary: ProcedureSheet, secondary: ProcedureSheet) -> list[str]:
+    """The critical paths the two models' (verified) sheets disagree on. A primary that would
+    publish only a ceiling is disputed by a secondary that reads a free-care band or a table: the
+    documents state more than the ceiling (review of 7.14). The other way round nothing new would
+    publish, as before 7.14: the primary's band or table is the answer and carries no ceiling."""
     conflicts = []
     for path in CRITICAL_PATHS:
         first, second = _json_value(primary, path), _json_value(secondary, path)
         if first is not None and second is not None and first != second:
             conflicts.append(path)
+        elif path == CEILING_PATH and _ceiling_alone(primary) and second is None:
+            eligibility = secondary.eligibility
+            if eligibility.free_care_max_fpl is not None or eligibility.discount_tiers is not None:
+                conflicts.append(path)
     return conflicts
 
 
@@ -150,16 +175,14 @@ def sheet_inconsistencies(sheet: ProcedureSheet) -> list[str]:
 
 
 DOCUMENT_CONFLICT_REASON = "the hospital's documents state different free-care limits"
+CEILING_CONFLICT_REASON = (
+    "the hospital's documents state a free-care band or a higher limit than the assistance ceiling"
+)
 
 
-def _ceiling_alone(sheet: ProcedureSheet) -> bool:
-    """The sheet's one income rule is the assistance ceiling (decision 7.9a-2)."""
-    eligibility = sheet.eligibility
-    return (
-        eligibility.assistance_ceiling_fpl is not None
-        and eligibility.free_care_max_fpl is None
-        and eligibility.discount_tiers is None
-    )
+def conflict_reason(sheet: ProcedureSheet) -> str:
+    """How a hold on `document_conflicts` reads for this sheet."""
+    return CEILING_CONFLICT_REASON if _ceiling_alone(sheet) else DOCUMENT_CONFLICT_REASON
 
 
 def document_conflicts(sheet: ProcedureSheet, documents: dict[str, str]) -> list[dict[str, Any]]:
@@ -172,15 +195,17 @@ def document_conflicts(sheet: ProcedureSheet, documents: dict[str, str]) -> list
     meant to supersede the stored page (the learning loop), not to be held against it.
 
     A sheet that publishes only an assistance ceiling says the documents name no free-care band
-    (task 7.14), so any of them naming one, the ceiling's own included, is a conflict too."""
+    and no help above the ceiling (task 7.14), so any document, the ceiling's own included, that
+    names a free-care limit, or help with the bill at a higher percentage of the poverty level
+    (a sliding scale on to 400% after "at or below 200% ... eligible"; review of 7.14), conflicts."""
     free = sheet.eligibility.free_care_max_fpl
-    ceiling = sheet.eligibility.assistance_ceiling_fpl
-    # The limit the documents are checked against: the free-care band, or a ceiling standing alone.
-    limit = free if free is not None else (ceiling if _ceiling_alone(sheet) else None)
-    if limit is None or limit.layer is Layer.REPORTED:
+    ceiling = sheet.eligibility.assistance_ceiling_fpl if _ceiling_alone(sheet) else None
+    # The income rule the documents are checked against: the free-care band, or the ceiling.
+    rule = free if free is not None else ceiling
+    if rule is None or rule.layer is Layer.REPORTED:
         return []
     kinds = {source.id: source.kind for source in sheet.sources}
-    if kinds.get(limit.source_id or "") is not SourceKind.HOSPITAL_WEB:
+    if kinds.get(rule.source_id or "") is not SourceKind.HOSPITAL_WEB:
         return []
     conflicts: list[dict[str, Any]] = []
     for source in sheet.sources:
@@ -188,7 +213,10 @@ def document_conflicts(sheet: ProcedureSheet, documents: dict[str, str]) -> list
             continue
         if free is not None and source.id == free.source_id:
             continue
-        limits = free_care_limits_stated(documents[source.id])
+        text = documents[source.id]
+        limits = free_care_limits_stated(text)
+        if ceiling is not None:
+            limits |= {limit for limit in assistance_limits_stated(text) if limit > ceiling.value}
         if limits and (free is None or Decimal(free.value) not in limits):
             conflicts.append({"id": source.id, "limits": [str(limit) for limit in sorted(limits)]})
     return conflicts

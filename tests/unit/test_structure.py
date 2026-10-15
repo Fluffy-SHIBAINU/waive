@@ -642,9 +642,9 @@ def test_a_rejection_that_a_smaller_prompt_cannot_change_is_not_retried():
     assert smaller == full and ai.prompts[0] == full[1]["content"]
 
 
-def test_a_free_limit_quoted_from_full_or_partial_wording_becomes_the_ceiling():
+def test_a_free_limit_quoted_from_full_or_partial_wording_is_set_aside_not_made_the_ceiling():
     # Arnot Ogden (330090, 7.9): the model put the 400% "full or partial financial assistance"
-    # sentence in free_care_max_fpl. The structurer sets it aside as the overall ceiling.
+    # sentence in free_care_max_fpl. The structurer sets it aside: it is no free-care band.
     arnot = (
         "you may qualify for full or partial financial assistance if your household income is at "
         "or below 400% of the Federal Poverty Level"
@@ -655,16 +655,21 @@ def test_a_free_limit_quoted_from_full_or_partial_wording_becomes_the_ceiling():
     assert skipped == [
         "eligibility.free_care_max_fpl: 400 is quoted from 'full or partial assistance' wording, "
         "an eligibility ceiling, not a free-care band",
-        "eligibility.free_care_max_fpl: not stated; the documents give only an overall "
-        "assistance ceiling (400% FPL)",
     ]
-    # Task 7.14: the sentence set aside is the ceiling the sheet now publishes, cited as it was.
+    # Review of 7.14: a value filed as free care never becomes the ceiling on its own ("at or
+    # below 200% ... eligible for financial assistance" is often the first of several bands).
+    assert sheet.eligibility.assistance_ceiling_fpl is None
+    assert decide_status(sheet, []) is SheetStatus.HELD
+    # The ceiling field saying the same makes it the ceiling, cited as the model gave it.
+    agreeing = draft.model_copy(update={"assistance_ceiling_fpl": field("400%", arnot)})
+    sheet, skipped = draft_to_sheet(agreeing, SAMPLE.hospital, [SAMPLE.sources[0]], TODAY)
     ceiling = sheet.eligibility.assistance_ceiling_fpl
     assert (ceiling.value, ceiling.quote, ceiling.source_id) == (
         Decimal(400),
         arnot,
         SAMPLE_SOURCE_ID,
     )
+    assert skipped[-1].endswith("only an overall assistance ceiling (400% FPL)")
     assert decide_status(sheet, []) is SheetStatus.PUBLISHED
     # A real free-care band elsewhere in the documents still publishes.
     both = SheetDraft(

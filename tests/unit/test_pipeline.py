@@ -1730,6 +1730,12 @@ CEILING_SENTENCE = (
     "Patients with household income up to 400% of the Federal Poverty Guidelines may qualify for "
     "financial assistance."
 )
+# Help under the ceiling, read as a lower ceiling by a careless model.
+UNINSURED_SENTENCE = (
+    "Uninsured patients with household income up to 300% of the Federal Poverty Guidelines "
+    "qualify for a discount."
+)
+# Another program's limit: never this hospital's ceiling (review of 7.14).
 STATE_SENTENCE = (
     "Households up to 300% of the Federal Poverty Guidelines may also apply to the state's Health "
     "Safety Net."
@@ -1738,6 +1744,7 @@ CEILING_TEXT = (
     "St. Example Medical Center, Boston, MA 02118. Financial Assistance Summary.\n"
     f"{CEILING_SENTENCE}\n"
     "The hospital decides the amount of assistance after it reviews each application.\n"
+    f"{UNINSURED_SENTENCE}\n"
     f"{STATE_SENTENCE}\n"
     "Questions: call 617-555-0100.\n"
 )
@@ -1851,20 +1858,23 @@ def test_a_ceiling_only_sheet_is_held_while_a_document_states_a_free_care_limit(
         )
         assert (result.outcome, result.version) == ("held", 2)
         assert (
-            "the hospital's documents state different free-care limits (fap-newer-pdf: 200%)"
+            "the hospital's documents state a free-care band or a higher limit than the "
+            "assistance ceiling (fap-newer-pdf: 200%)"
         ) in result.notes
         sheet, _ = repo.latest_sheet(session, "229999")
         assert sheet.status is SheetStatus.HELD
-        assert sheet.eligibility.assistance_ceiling_fpl.value == 400  # kept for the admin
+        ceiling = sheet.eligibility.assistance_ceiling_fpl
+        assert ceiling.value == 400  # kept for the admin
         detail = review_detail(session, "229999", "document_conflict")
-        assert detail["published"] is None
+        assert (detail["path"], detail["published"]) == (CEILING_PATH, "400")
+        assert detail["source_id"] == ceiling.source_id
         assert detail["documents"] == [{"id": "fap-newer-pdf", "limits": ["200"]}]
 
 
 def test_two_models_disagreeing_on_the_ceiling_hold_the_sheet_like_any_critical_field():
     engine = make_engine_with_hospital()
     with session_scope(engine) as session:
-        ai = CeilingOnlyAI(fast=("300", STATE_SENTENCE), tiebreak="999")
+        ai = CeilingOnlyAI(fast=("300", UNINSURED_SENTENCE), tiebreak="999")
         result = build_hospital(session, CeilingGateway(), ai, "229999", TODAY)
         assert result.outcome == "held"
         assert f"critical fields disagree: {CEILING_PATH}" in result.notes
@@ -1880,10 +1890,119 @@ def test_two_models_disagreeing_on_the_ceiling_hold_the_sheet_like_any_critical_
     # The third model siding with the primary settles it, and the sheet publishes.
     engine = make_engine_with_hospital()
     with session_scope(engine) as session:
-        ai = CeilingOnlyAI(fast=("300", STATE_SENTENCE), tiebreak="400")
+        ai = CeilingOnlyAI(fast=("300", UNINSURED_SENTENCE), tiebreak="400")
         result = build_hospital(session, CeilingGateway(), ai, "229999", TODAY)
         assert result.outcome == "published"
         assert f"tie-break settled {CEILING_PATH} (primary)" in result.notes
+
+
+def test_another_programs_limit_is_never_the_hospitals_ceiling():
+    # Review of 7.14: both models cite the state program's 300% as the ceiling.
+    engine = make_engine_with_hospital()
+    with session_scope(engine) as session:
+        ai = CeilingOnlyAI(reason=("300", STATE_SENTENCE), fast=("300", STATE_SENTENCE))
+        result = build_hospital(session, CeilingGateway(), ai, "229999", TODAY)
+        assert result.outcome == "held"
+        assert any(note.startswith(f"{CEILING_PATH}: quote ") for note in result.notes)
+        sheet, _ = repo.latest_sheet(session, "229999")
+        assert sheet.eligibility.assistance_ceiling_fpl is None
+
+
+# Review of 7.14: the first band of a sliding scale, worded like a ceiling.
+FIRST_BAND = (
+    "Patients with household income at or below 200% of the Federal Poverty Level are eligible "
+    "for financial assistance."
+)
+SLIDING_BAND = (
+    "Patients with household income between 201% and 400% of the Federal Poverty Level receive a "
+    "sliding scale discount."
+)
+BANDS_TEXT = (
+    "St. Example Medical Center, Boston, MA 02118. Financial Assistance Summary.\n"
+    f"{FIRST_BAND}\n{SLIDING_BAND}\nQuestions: call 617-555-0100.\n"
+)
+
+
+class BandsGateway(FakeGateway):
+    def extract(self, urls, **kwargs):
+        return [ExtractedPage(url, BANDS_TEXT) for url in urls]
+
+
+def test_the_first_band_of_a_sliding_scale_never_publishes_as_the_ceiling():
+    # Filed as free care by every model: set aside, and not made the ceiling on its own.
+    engine = make_engine_with_hospital()
+    with session_scope(engine) as session:
+        ai = FakeAI(free_limit_for_fast=("200", FIRST_BAND), free_limit_for_tiebreak=None)
+        ai.free_limits["reason"] = ("200", FIRST_BAND)
+        result = build_hospital(session, BandsGateway(), ai, "229999", TODAY)
+        assert result.outcome == "held"
+        sheet, _ = repo.latest_sheet(session, "229999")
+        assert sheet.eligibility.assistance_ceiling_fpl is None
+        assert sheet.eligibility.free_care_max_fpl is None
+    # Filed as the ceiling: the sliding scale above it holds the sheet for an admin.
+    engine = make_engine_with_hospital()
+    with session_scope(engine) as session:
+        ai = CeilingOnlyAI(reason=("200", FIRST_BAND), fast=("200", FIRST_BAND))
+        result = build_hospital(session, BandsGateway(), ai, "229999", TODAY)
+        assert result.outcome == "held"
+        assert (
+            "the hospital's documents state a free-care band or a higher limit than the "
+            "assistance ceiling"
+        ) in " ".join(result.notes)
+        sheet, _ = repo.latest_sheet(session, "229999")
+        assert sheet.eligibility.assistance_ceiling_fpl.value == 200  # kept for the admin
+
+
+FREE_PLAIN = (
+    "Patients with household income at or below 200% of the Federal Poverty Guidelines are not "
+    "billed for services."
+)
+
+
+class FreePlainGateway(FakeGateway):
+    def extract(self, urls, **kwargs):
+        return [ExtractedPage(url, CEILING_TEXT + FREE_PLAIN + "\n") for url in urls]
+
+
+class FreeBandFastAI(CeilingOnlyAI):
+    """The reason and tie-break models read only the ceiling; the fast model reads the free band
+    written in plain words instead."""
+
+    def __init__(self, tiebreak="400"):
+        super().__init__(fast=None, tiebreak=tiebreak)
+
+    def complete_json(self, role, messages, schema, *, phi, purpose, max_tokens=2000):
+        draft = super().complete_json(role, messages, schema, phi=phi, purpose=purpose)
+        if role == "fast":
+            source_id = messages[1]["content"].split("=== SOURCE id=")[1].split(" ")[0]
+            draft.free_care_max_fpl = DraftField(value="200", quote=FREE_PLAIN, source_id=source_id)
+        return draft
+
+
+def test_a_ceiling_only_reading_against_a_verified_free_band_holds_the_sheet():
+    # Review of 7.14: the cross-check found a free band; ceiling-only must not publish past it.
+    engine = make_engine_with_hospital()
+    with session_scope(engine) as session:
+        result = build_hospital(session, FreePlainGateway(), FreeBandFastAI("200"), "229999", TODAY)
+        assert result.outcome == "held"
+        assert f"critical fields disagree: {CEILING_PATH}" in result.notes
+        detail = review_detail(session, "229999", "tiebreak")[CEILING_PATH]
+        assert (detail["primary"], detail["secondary"], detail["verdict"]) == (
+            "400",
+            None,
+            "unsettled",
+        )
+    # A third model siding with the ceiling settles the dispute, and the free band in plain words
+    # still holds the sheet as a document conflict.
+    engine = make_engine_with_hospital()
+    with session_scope(engine) as session:
+        result = build_hospital(session, FreePlainGateway(), FreeBandFastAI(), "229999", TODAY)
+        assert result.outcome == "held"
+        assert f"tie-break settled {CEILING_PATH} (primary)" in result.notes
+        assert any(
+            note.startswith("the hospital's documents state a free-care band or a higher limit")
+            for note in result.notes
+        )
 
 
 class TieredAI(FakeAI):

@@ -946,6 +946,9 @@ def test_an_assistance_ceiling_is_a_percentage_the_quote_ties_to_the_poverty_lev
     assert names_percent_of_poverty_level(
         "up to 250% of the U.S. Federal Poverty Level", Decimal(250)
     )
+    assert names_percent_of_poverty_level(
+        "up to 250% of the 2026 U.S. HHS Poverty Guidelines", Decimal(250)
+    )
     # The number alone, another number of the sentence, or a discount is not the ceiling.
     assert not names_percent_of_poverty_level(
         "Financial assistance is available for incomes up to 400%.", Decimal(400)
@@ -992,3 +995,163 @@ def test_a_ceiling_verifies_against_its_source_like_any_documented_value():
     ).rejected
     # Another state's clause of a system policy is not this Massachusetts hospital's ceiling.
     assert (ceiling, OTHER_STATE_REASON) in verify_sheet(with_ceiling(300, illinois), docs).rejected
+
+
+def test_a_ceiling_quote_must_state_the_hospitals_own_top_limit_on_assistance():
+    from waive.atlas.verify import (
+        CEILING_FLOOR_REASON,
+        CEILING_NOT_ASSISTANCE_REASON,
+        CEILING_NOT_TOP_REASON,
+        CEILING_OTHER_PROGRAM_REASON,
+        CEILING_UNTIED_REASON,
+        ceiling_problem,
+    )
+
+    # Review of 7.14. Accepted: the hospital's own help, up to its top limit.
+    for quote, value in (
+        (CEILING_SENTENCE, 300),
+        (ARNOT_SENTENCE, 400),
+        ("Financial assistance is available to household incomes less than 600% of the FPG.", 600),
+        ("Discounts are limited to incomes up to 300% FPG.", 300),
+        ("Charity care is available if income does not exceed 400% of the FPL.", 400),
+        ("Income that is not more than 250% of the FPL qualifies for a discount.", 250),
+        ("Patients up to 400% of the FPL who are not eligible for Medicaid may qualify for "
+         "financial assistance.", 400),
+        ("Insured patients up to 200% FPL and uninsured patients up to 400% FPL are eligible.", 400),
+    ):  # fmt: skip
+        assert ceiling_problem(quote, Decimal(value)) is None, quote
+    # The top of the quote, not a band inside it.
+    bands = (
+        "Patients up to 200% of the Federal Poverty Level get an 80% discount and patients up to "
+        "300% of the Federal Poverty Level get a 50% discount."
+    )
+    assert ceiling_problem(bands, Decimal(200)) == CEILING_NOT_TOP_REASON
+    assert ceiling_problem(bands, Decimal(300)) is None
+    # A floor is not a ceiling.
+    for quote in (
+        "Patients with income above 400% of the Federal Poverty Guidelines may apply for "
+        "catastrophic assistance.",
+        "Patients with income of at least 400% of the Federal Poverty Level are not eligible "
+        "for assistance.",
+        "Households whose income exceeds 400% of the FPL may qualify for a discount.",
+        "Patients earning more than four hundred percent (400%) of the FPL are eligible for a "
+        "discount.",
+    ):
+        assert ceiling_problem(quote, Decimal(400)) == CEILING_FLOOR_REASON, quote
+    # Another program's limit, a payment plan, or no word of assistance at all.
+    assert ceiling_problem(
+        "Households up to 300% of the Federal Poverty Guidelines may also apply to the state's "
+        "Health Safety Net.",
+        Decimal(300),
+    ) in (CEILING_NOT_ASSISTANCE_REASON, CEILING_OTHER_PROGRAM_REASON)
+    assert (
+        ceiling_problem(
+            "Medicaid expansion adults up to 138% of the Federal Poverty Level are screened for "
+            "Medicaid eligibility.",
+            Decimal(138),
+        )
+        == CEILING_OTHER_PROGRAM_REASON
+    )
+    assert (
+        ceiling_problem(
+            "Patients earning less than 600% of the Federal Poverty Guidelines are eligible for "
+            "payment plans only.",
+            Decimal(600),
+        )
+        == CEILING_OTHER_PROGRAM_REASON
+    )
+    assert ceiling_problem(
+        "A payment plan is available to patients up to 400% of the Federal Poverty Level.",
+        Decimal(400),
+    ) in (CEILING_NOT_ASSISTANCE_REASON, CEILING_OTHER_PROGRAM_REASON)
+    assert (
+        ceiling_problem(
+            "Households up to 300% of the Federal Poverty Guidelines may apply to the state's "
+            "Health Safety Net for financial assistance.",
+            Decimal(300),
+        )
+        == CEILING_OTHER_PROGRAM_REASON
+    )
+    assert (
+        ceiling_problem("Patients up to 400% of the FPL are welcome at every campus.", Decimal(400))
+        == CEILING_NOT_ASSISTANCE_REASON
+    )
+    assert ceiling_problem("Assistance up to 400% of the cost.", Decimal(400)) == (
+        CEILING_UNTIED_REASON
+    )
+
+
+def test_verify_sheet_rejects_a_ceiling_that_is_not_the_hospitals_own_limit():
+    from waive.atlas.verify import CEILING_FLOOR_REASON, CEILING_OTHER_PROGRAM_REASON
+
+    ceiling = "eligibility.assistance_ceiling_fpl"
+    floor = (
+        "Patients with income above 300% of the Federal Poverty Guidelines may apply for "
+        "catastrophic assistance."
+    )
+    program = (
+        "Households up to 300% of the Federal Poverty Guidelines may apply to the state's Health "
+        "Safety Net for financial assistance."
+    )
+    docs = {SAMPLE_SOURCE_ID: "\n".join([SAMPLE_POLICY_TEXT, floor, program])}
+    assert (ceiling, CEILING_FLOOR_REASON) in verify_sheet(with_ceiling(300, floor), docs).rejected
+    assert (ceiling, CEILING_OTHER_PROGRAM_REASON) in verify_sheet(
+        with_ceiling(300, program), docs
+    ).rejected
+
+
+def test_free_care_in_plain_words_names_a_free_care_limit():
+    from waive.atlas.verify import free_care_limits_stated
+
+    # Review of 7.14: free bands the document-conflict net did not recognise.
+    for sentence, limit in (
+        ("Patients with household income at or below 200% of the Federal Poverty Guidelines are "
+         "not billed for services.", 200),
+        ("Patients at or below 200% FPL receive Charity Care at 100%.", 200),
+        ("Level 1 (up to 200% of the Federal Poverty Level): 100% of charges forgiven.", 200),
+        ("Patients up to 200% of the Federal Poverty Level will not be charged.", 200),
+        ("Income up to 200% of the federal poverty level qualifies for completely free services.",
+         200),
+        ("Patients at or below 100% of the Federal Poverty Level receive free care.", 100),
+    ):  # fmt: skip
+        assert free_care_limits_stated(sentence) == {Decimal(limit)}, sentence
+    # The amounts-generally-billed cap and a payment plan's terms are not free care.
+    assert (
+        free_care_limits_stated(
+            "Patients up to 400% of the FPL will not be charged more than the amounts generally "
+            "billed. Patients up to 300% FPL are not charged interest on a payment plan."
+        )
+        == set()
+    )
+
+
+def test_assistance_limits_a_document_states():
+    from waive.atlas.verify import assistance_limits_stated
+
+    # Review of 7.14: what a ceiling-only sheet is checked against (publish.document_conflicts).
+    assert assistance_limits_stated(
+        "Patients at or below 200% of the Federal Poverty Level are eligible for financial "
+        "assistance. Patients between 201% and 400% of the Federal Poverty Level receive a sliding "
+        "scale discount. Call 617-555-0100 about payment plans up to 500% of the FPL."
+    ) == {Decimal(200), Decimal(400)}
+    assert (
+        assistance_limits_stated(
+            "Households up to 300% of the Federal Poverty Guidelines may also apply to the state's "
+            "Health Safety Net for financial assistance. Our office is open to all."
+        )
+        == set()
+    )
+
+
+def test_reading_poverty_percentages_stays_fast_on_a_long_run_of_years():
+    import time
+
+    from waive.atlas.verify import assistance_limits_stated, names_percent_of_poverty_level
+
+    # A flattened table can hold thousands of year-like numbers in one "sentence"; the reading
+    # must not backtrack through them (a repeated qualifier group took 8 s for 16,000).
+    run = "Financial assistance up to 400% " + "2026 " * 20_000 + "of the year"
+    started = time.perf_counter()
+    assert not names_percent_of_poverty_level(run, Decimal(400))
+    assert assistance_limits_stated(run + ". Federal poverty level.") == set()
+    assert time.perf_counter() - started < 2

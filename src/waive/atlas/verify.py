@@ -538,13 +538,42 @@ _FPL_TIED_PERCENT = re.compile(
 )
 
 
-CEILING_UNTIED_REASON = "quote does not state the ceiling as a percentage of the poverty level"
 # Policies write "four hundred percent (400%) of the Federal Poverty Guidelines" and date or
 # attribute the guidelines ("of the 2026 HHS Poverty Guidelines"); neither unties the number.
 _BRACKETED_PERCENT = re.compile(r"\((\d{2,3}(?:\.\d+)? ?(?:%|percent))\)")
-_GUIDELINE_QUALIFIERS = re.compile(
-    r"\b(?:(?:19|20)\d\d |hhs |u\.s\. |us |united states )+(?=(?:federal )?(?:poverty|fpl|fpg))"
+# One qualifier at a time, right before the poverty words: a repeated group here would backtrack
+# through a long run of year-like numbers in a flattened table (seconds per page).
+_GUIDELINE_QUALIFIER = re.compile(
+    r"\b(?:(?:19|20)\d\d|hhs|u\.s\.|us|united states) (?=(?:federal )?(?:poverty|fpl|fpg))"
 )
+MAX_GUIDELINE_QUALIFIERS = 3  # "of the 2026 U.S. HHS Poverty Guidelines"
+# A ceiling written as a negated floor: "does not exceed 400%", "no more than 400%".
+_NOT_ABOVE = re.compile(
+    r"\b(?:does not|do not|cannot|can't|doesn't|don't|not|no|never)(?: to)? "
+    r"(?:above|over|more than|greater than|higher than|in excess of|exceeds?|exceeding|beyond)\b"
+)
+_NUMBER = re.compile(r"\d+(?:\.\d+)?")
+_SENTENCES = re.compile(r"(?<=[.;])\s+|\n{2,}|•|▪")
+
+
+def _poverty_text(text: str) -> str:
+    """`text` normalized for reading percentages of the poverty level: bracketed figures
+    unwrapped, the guidelines' year or publisher dropped, and a negated floor read as the limit
+    it is ("does not exceed 400%" as "up to 400%")."""
+    text = _BRACKETED_PERCENT.sub(r"\1", normalize(text))
+    for _ in range(MAX_GUIDELINE_QUALIFIERS):
+        text = _GUIDELINE_QUALIFIER.sub("", text)
+    return _NOT_ABOVE.sub("up to", text)
+
+
+def _tied_percents(text: str) -> list[tuple[Decimal, int]]:
+    """Each percentage of the poverty level in `text` (read by _poverty_text), and where it starts."""
+    found: list[tuple[Decimal, int]] = []
+    for match in _FPL_TIED_PERCENT.finditer(text):
+        number = _NUMBER.match(match.group(0))
+        if number is not None:
+            found.append((Decimal(number.group(0)), match.start()))
+    return found
 
 
 def names_percent_of_poverty_level(quote: str, value: Decimal) -> bool:
@@ -552,28 +581,116 @@ def names_percent_of_poverty_level(quote: str, value: Decimal) -> bool:
     Federal Poverty Guidelines", "400% FPL"), read the way free-care sentences are: a bare "up to
     400%" may be a discount or a balance, and "four times the poverty level" has no number to
     check. An assistance ceiling publishes only on such a quote (decision 7.9a-2)."""
-    text = _GUIDELINE_QUALIFIERS.sub("", _BRACKETED_PERCENT.sub(r"\1", normalize(quote)))
-    for match in _FPL_TIED_PERCENT.finditer(text):
-        number = re.match(r"\d+(?:\.\d+)?", match.group(0))
-        if number is not None and Decimal(number.group(0)) == Decimal(value):
-            return True
-    return False
+    return any(number == Decimal(value) for number, _ in _tied_percents(_poverty_text(quote)))
+
+
+CEILING_UNTIED_REASON = "quote does not state the ceiling as a percentage of the poverty level"
+CEILING_FLOOR_REASON = (
+    "quote states the percentage as a floor (above, over, at least), not a ceiling"
+)
+CEILING_NOT_TOP_REASON = "quote names a higher income limit than the ceiling"
+CEILING_NOT_ASSISTANCE_REASON = "quote does not say the hospital's financial assistance reaches it"
+CEILING_OTHER_PROGRAM_REASON = "quote is about another program or a payment plan"
+# A floor just before the percentage, the number perhaps spelled out first ("more than four
+# hundred percent (400%)").
+_FLOOR_BEFORE = re.compile(
+    r"\b(?:above|over|more than|greater than|higher than|in excess of|exceeds?|exceeding"
+    r"|at least|beyond|a minimum of)(?: \S+){0,3} ?$"
+)
+# Words that make a sentence about help with the bill ...
+_ASSISTANCE_WORDS = re.compile(
+    r"\bassist\w*|\bdiscount\w*|\bcharit\w*|\bqualif\w*|\beligib\w*|\bsliding\b|\breduc\w*"
+    r"|\bwrite[- ]?offs?\b|\bfinancial aid\b"
+)
+# ... and the programs and plans that make it someone else's help, or no help at all.
+_PROGRAMS = (
+    r"health safety net|\bhsn\b|\bmedicaid\b|\bmedi-cal\b|masshealth|mass health|marketplace"
+    r"|health connector|insurance exchange|\bchip\b|\b(?:state|county)(?:'s)? (?:program|plan)"
+)
+_OTHER_PROGRAM = re.compile(rf"{_PROGRAMS}|payment plans?|installment|extended payment")
+# "who are not eligible for Medicaid", "denied MassHealth": still the hospital's own help.
+_NEGATED_PROGRAM = re.compile(
+    rf"\b(?:not|ineligible|denied|no|without)\b(?: \S+){{0,4}}? (?:{_PROGRAMS})"
+)
+
+
+def _about_own_assistance(text: str) -> bool:
+    """Whether a sentence (read by _poverty_text) is about the hospital's own help with the bill:
+    it speaks of assistance, a discount or charity, and not of another program or a payment plan
+    (a program it rules out, "not eligible for Medicaid", does not count)."""
+    stripped = _NEGATED_PROGRAM.sub(" ", text)
+    return (
+        _ASSISTANCE_WORDS.search(stripped) is not None and _OTHER_PROGRAM.search(stripped) is None
+    )
+
+
+def ceiling_problem(quote: str, value: Decimal) -> str | None:
+    """Why `quote` cannot carry an assistance ceiling of `value`, or None when it can: it must
+    name the value as a percentage of the poverty level, as the top of the limits it names and not
+    as a floor ("above 400%"), in a sentence about the hospital's own help. Review of 7.14: a state
+    program's 300%, Medicaid screening at 138%, a payment plan, catastrophic help above 400% and
+    the first band of a sliding scale all verified as ceilings before."""
+    text = _poverty_text(quote)
+    tied = _tied_percents(text)
+    starts = [start for number, start in tied if number == Decimal(value)]
+    if not starts:
+        return CEILING_UNTIED_REASON
+    if any(_FLOOR_BEFORE.search(text, 0, start) for start in starts):
+        return CEILING_FLOOR_REASON
+    if any(number > Decimal(value) for number, _ in tied):
+        return CEILING_NOT_TOP_REASON
+    stripped = _NEGATED_PROGRAM.sub(" ", text)
+    if _ASSISTANCE_WORDS.search(stripped) is None:
+        return CEILING_NOT_ASSISTANCE_REASON
+    if _OTHER_PROGRAM.search(stripped) is not None:
+        return CEILING_OTHER_PROGRAM_REASON
+    return None
+
+
+# Free care in plain words ("are not billed for services", "will not be charged", "Charity Care at
+# 100%", "100% of charges forgiven", "completely free"); never the amounts-generally-billed cap
+# ("will not be charged more than ...") or a payment plan's terms ("not charged interest").
+_FREE_IN_PLAIN_WORDS = re.compile(
+    r"\bnot (?:be )?(?:billed|charged)\b(?! (?:for )?(?:more|any more|in excess|interest|a fee)\b)"
+    r"|\bcharity care at 100 ?(?:%|percent)"
+    r"|\b100 ?(?:%|percent) of (?:all |the |total |their )?(?:charges|bills?|balances?)\b"
+    r"(?: \S+){0,3}? (?:forgiven|waived|written off)\b"
+    r"|\b(?:completely|entirely|totally) free\b"
+)
 
 
 def free_care_limits_stated(document_text: str) -> set[Decimal]:
     """The poverty-level percentages a document's free-care sentences name: every percentage in a
     sentence that promises free care and mentions the poverty level. Two stored documents of one
     hospital naming different limits is a conflict to hold on (AHMC Anaheim, 050226: a web page
-    said 250%, the newer PDF 200%, and the sheet published 250; review of 7.9)."""
+    said 250%, the newer PDF 200%, and the sheet published 250; review of 7.9). Free care up to
+    the poverty line itself ("at or below 100% of the FPL") counts: the percentage is tied to the
+    poverty level, so it is no "100% discount"."""
     found: set[Decimal] = set()
-    for sentence in re.split(r"(?<=[.;])\s+|\n{2,}|•|▪", normalize(document_text)):
-        if _FREE_SENTENCE.search(sentence) is None or _FPL_WORDS.search(sentence) is None:
+    for sentence in _SENTENCES.split(normalize(document_text)):
+        if _FPL_WORDS.search(sentence) is None:
             continue
-        found.update(
-            Decimal(match.group(1))
-            for match in _FPL_TIED_PERCENT.finditer(sentence)
-            if match.group(1) != "100"
-        )
+        if (
+            _FREE_SENTENCE.search(sentence) is None
+            and _FREE_IN_PLAIN_WORDS.search(sentence) is None
+        ):
+            continue
+        found.update(number for number, _ in _tied_percents(_poverty_text(sentence)))
+    return found
+
+
+def assistance_limits_stated(document_text: str) -> set[Decimal]:
+    """The poverty-level percentages a document's sentences about the hospital's own help name
+    (assistance, discounts, a sliding scale; never another program or a payment plan). A sheet
+    that publishes only a ceiling is held when one of them is above it (publish.document_conflicts):
+    "at or below 200% ... eligible for financial assistance" was the first band of a sliding scale
+    that went on to 400% (review of 7.14)."""
+    found: set[Decimal] = set()
+    for sentence in _SENTENCES.split(normalize(document_text)):
+        text = _poverty_text(sentence)
+        if _FPL_WORDS.search(text) is None or not _about_own_assistance(text):
+            continue
+        found.update(number for number, _ in _tied_percents(text))
     return found
 
 
@@ -771,10 +888,10 @@ def verify_sheet(sheet: ProcedureSheet, documents: dict[str, str]) -> Verificati
             reason := unsupported_list_reason(path, cited.value, cited.quote or "")
         ):
             report.rejected.append((path, reason))
-        elif path == "eligibility.assistance_ceiling_fpl" and not names_percent_of_poverty_level(
-            cited.quote or "", cited.value
+        elif path == "eligibility.assistance_ceiling_fpl" and (
+            reason := ceiling_problem(cited.quote or "", cited.value)
         ):
-            report.rejected.append((path, CEILING_UNTIED_REASON))
+            report.rejected.append((path, reason))
         elif path in INCOME_LIMIT_PATHS and (
             bands_under_another_state(cited.quote or "", sheet.hospital.state, cited.value)
         ):

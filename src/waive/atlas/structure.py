@@ -526,23 +526,21 @@ def _stated_ceiling(draft: SheetDraft, known: set[str]) -> Ceiling | None:
         return None
 
 
-def _set_aside_ceiling_wording(
-    ceiling: Ceiling | None, sections: dict[str, dict[str, Any]], skipped: list[str]
-) -> Ceiling | None:
+def _set_aside_ceiling_wording(sections: dict[str, dict[str, Any]], skipped: list[str]) -> None:
     """A free-care limit quoted from "full or partial financial assistance ... at or below 400%"
-    (Arnot Ogden, 330090) is the ceiling on any help, not a free band: it leaves the sheet and
-    stands in for the ceiling when the model gave none, so the sheet can still publish what the
-    documents do state (task 7.14). The returned ceiling is the one the later checks use."""
+    (Arnot Ogden, 330090) is not a free band: it leaves the sheet. It does not become the ceiling
+    either: "at or below 200% ... eligible for financial assistance" is as often the first band of
+    a sliding scale that goes on to 400% (review of 7.14), so only the model's own ceiling field
+    can put a ceiling on the sheet."""
     eligibility = sections.get("eligibility", {})
     stated = eligibility.get("free_care_max_fpl")
     if stated is None or not quotes_assistance_ceiling(stated.quote):
-        return ceiling
+        return
     del eligibility["free_care_max_fpl"]
     skipped.append(
         f"eligibility.free_care_max_fpl: {stated.value:.0f} is quoted from 'full or partial "
         "assistance' wording, an eligibility ceiling, not a free-care band"
     )
-    return ceiling if ceiling is not None else Ceiling(stated.value, stated.quote, stated.source_id)
 
 
 def _same_passage(first: str, second: str) -> bool:
@@ -665,7 +663,8 @@ def draft_to_sheet(
             source_id=draft_field.source_id,
             checked_on=today,
         )
-    ceiling = _set_aside_ceiling_wording(_stated_ceiling(draft, known), sections, skipped)
+    ceiling = _stated_ceiling(draft, known)
+    _set_aside_ceiling_wording(sections, skipped)
     _drop_ceiling_read_as_free_care(ceiling, sections, skipped)
     _derive_free_care_limit(draft, known, sections, today, skipped)
     try:
