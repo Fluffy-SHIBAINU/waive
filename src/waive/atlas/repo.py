@@ -93,15 +93,17 @@ def hospital_ref(row: HospitalRow) -> HospitalRef:
 def save_source(session: Session, doc: SourceDoc, text: str, ccn: str) -> SourceDocRow:
     row = session.get(SourceDocRow, doc.id)
     if row is None:
+        # PostgreSQL refuses NUL characters in text, and a few fetched PDFs carry them; `sha256`
+        # stays the hash of what was fetched, so a refresh still sees an unchanged document.
         row = SourceDocRow(
             id=doc.id,
             kind=doc.kind.value,
             url=doc.url,
-            title=doc.title,
+            title=doc.title.replace("\x00", "") if doc.title else doc.title,
             fetched_on=doc.fetched_on,
             sha256=doc.sha256,
             effective_date=doc.effective_date,
-            text=text,
+            text=text.replace("\x00", ""),
         )
         session.add(row)
     hospital = session.get(HospitalRow, ccn)
