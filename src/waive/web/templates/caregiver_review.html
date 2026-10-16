@@ -2,9 +2,12 @@
 {% block title %}Check what we read{% endblock %}
 {% block content %}
 <h1>Check what we read</h1>
-{% if case.status == "approved" and case.result %}
-<p class="card status-free big">Approved. Print the packet, have it signed, and send it.</p>
-<p><a href="{{ links.form }}" class="btn primary">Your form and reminders</a></p>
+{% if case.status == "approved" and case.result and case.next_step == "ship" %}
+<p class="card status-not_covered big">Approved. This ambulance bill goes to SHIP, the free Medicare help line: 1-877-839-2675.</p>
+<p><a href="{{ links.form }}" class="btn primary">What to do next</a></p>
+{% elif case.status == "approved" and case.result %}
+<p class="card status-free big">Approved. Print the {{ "letter" if case.next_step != "fap" else "packet" }}, have it signed, and send it.</p>
+<p><a href="{{ links.form }}" class="btn primary">Your {{ "letter" if case.next_step != "fap" else "form and reminders" }}</a></p>
 {% elif not case.bill %}
 <p class="big">We have not read a bill yet.</p>
 <p><a href="{{ links.start }}" class="btn primary">Take a photo of the bill</a></p>
@@ -57,7 +60,7 @@
 <p><a href="{{ links.household if case.household_size is none else links.income }}" class="btn primary">Answer the questions</a></p>
 <form method="post" action="{{ links.approve }}" class="stack"><button type="submit" class="btn quiet">Make my form without it</button></form>
 {% else %}
-<form method="post" action="{{ links.approve }}" class="stack"><button type="submit" class="btn primary">Looks right, make my form</button></form>
+<form method="post" action="{{ links.approve }}" class="stack"><button type="submit" class="btn primary">Looks right{% if case.next_step == "ship" %}, show me what to do{% elif case.next_step != "fap" %}, make my letter{% else %}, make my form{% endif %}</button></form>
 {% endif %}
 {% endif %}
 <details id="fix"{% if fix %} open{% endif %}>
@@ -79,7 +82,7 @@
   <input id="size" name="size" type="number" min="1" max="12" value="{{ case.household_size or 1 }}">
   <label for="annual_income">Yearly household income (dollars)</label>
   <input id="annual_income" name="annual_income" inputmode="decimal" value="{{ case.annual_income or '' }}">
-  <label for="programs">Programs (for example MassHealth, SNAP)</label>
+  <label for="programs">Programs (for example {{ card }}, QMB, SNAP)</label>
   <input id="programs" name="programs" value="">
   <button type="submit" class="btn">Save and re-check</button>
 </form>

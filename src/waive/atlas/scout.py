@@ -16,6 +16,7 @@ from waive.atlas import repo
 from waive.atlas.discover import host_of
 from waive.atlas.fetch import DOCUMENT_HOSTS, download_text, host_allowed_for, looks_like_pdf
 from waive.atlas.schema import HospitalRef, SourceDoc, SourceKind
+from waive.atlas.structure import another_kaiser_region
 from waive.atlas.tavily_gateway import Depth, ExtractedPage, SearchHit, TavilyGateway
 from waive.governor import BudgetExceeded
 
@@ -96,13 +97,46 @@ _FUNDRAISING = re.compile(
     r"\bgolf\b|\bgala\b|fundrais|\bdonat|/giving\b|ways-to-give|support-the-foundation"
     r"|events-campaigns|charity care fund|charity-care-fund"
 )
+# Kaiser Permanente Northwest's Dental Financial Assistance policy (NW.CB.002, an Oregon program
+# with its own 100/75/50/25% bands) was stored as the financial assistance policy of fifteen
+# California Kaiser hospitals, and nine published sheets showed its dental bands (050070, 050072,
+# 050075, 050138, 050140, 050425, 050677, 050723, 050855; task 7.16). A dental program is never a
+# hospital's policy. Naming dental care among the services covered or excluded names no program
+# ("it DOES NOT cover Bariatric Surgery, dental services, and pharmacy services", MetroHealth,
+# 360059), and a policy for medical and dental care alike is still the hospital's, however the two
+# are joined ("and", "or", "&", "/", a comma). The "or" that ends "for" joins nothing: "Apply for
+# Dental Financial Assistance" is the dental program's own application (review of 7.16).
+_DENTAL_PROGRAM = re.compile(
+    r"(?<!\band[- ])(?<!\bor[- ])(?<![&/,][- ])(?<![&/,])\bdental[- ]"
+    r"(?:financial[- ](?:assistance|aid)|charity|(?:assistance|discount)[- ]program"
+    r"|sliding[- ](?:fee|scale))"
+)
+# A document names its subject first: "POLICY TITLE Dental Financial Assistance" opens Kaiser's,
+# which the search had titled after the medical program. A hospital policy that names a dental
+# program does so further in: Ellis Medicine's income table has a "Dental Financial Assistance
+# Award" column 3,463 characters into its prose (330153).
+OPENING_CHARS = 1_000
+_MARKDOWN_IMAGE = re.compile(r"!\[[^\]]*\]\([^)]*\)")
+
+
+def is_dental_program(url: str, title: str, text: str = "") -> bool:
+    """Whether a document is a dental assistance program's: its address or title names one, or the
+    opening of its text does (its first OPENING_CHARS characters of prose; links and images are
+    left out, so a site menu that links the dental program does not count). An address's slashes
+    separate its folders, so ".../dental-financial-assistance/faq" names the program while
+    "Medical/Dental Financial Assistance" joins two kinds of care."""
+    named = f"{unquote(url).replace('/', ' ')} {title}".lower().replace("_", "-")
+    if _DENTAL_PROGRAM.search(" ".join(named.split())):
+        return True
+    prose = " ".join(MARKDOWN_LINK.sub(" ", _MARKDOWN_IMAGE.sub(" ", text)).split())
+    return _DENTAL_PROGRAM.search(prose[:OPENING_CHARS].lower()) is not None
 
 
 def classify_doc(url: str, title: str) -> DocClass | None:
     if urlparse(url).path.lower().endswith(NOT_A_DOCUMENT):
         return None
     text = f"{url} {title}".lower().replace("_", "-")
-    if _FUNDRAISING.search(text):
+    if _FUNDRAISING.search(text) or is_dental_program(url, title):
         return None
     # Asset hosts put the MIME type in the query string; "application/pdf" is not an application.
     text = text.replace("application%2fpdf", " ").replace("application/pdf", " ")
@@ -218,17 +252,30 @@ def _link_text(url: str, label: str) -> str:
 
 def _is_eligibility_link(url: str, label: str) -> bool:
     text = _link_text(url, label)
-    return ELIGIBILITY_LINK.search(text) is not None and _FUNDRAISING.search(text) is None
+    return (
+        ELIGIBILITY_LINK.search(text) is not None
+        and _FUNDRAISING.search(text) is None
+        and not is_dental_program(url, label)
+    )
 
 
 def _is_lesser(url: str, label: str) -> bool:
     return _LESSER_DOCUMENT.search(_link_text(url, label)) is not None
 
 
+def _in_region(hits: list[SearchHit], hospital: HospitalRef) -> list[SearchHit]:
+    """The hits, less another Kaiser region's documents (structure.another_kaiser_region): Kaiser
+    files every region's policy on one site, and a California hospital's search filled its slots
+    with Kaiser Northwest's policy and the Mid-Atlantic States' summary, each an extraction paid
+    for only to be set aside before structuring (review of 7.16)."""
+    return [hit for hit in hits if not another_kaiser_region(hit.title, hit.url, hospital)]
+
+
 def _linked_documents(
-    texts: dict[str, str], base_domain: str, fetched: set[str]
+    texts: dict[str, str], base_domain: str, fetched: set[str], hospital: HospitalRef
 ) -> list[tuple[str, DocClass, str]]:
-    """Policy documents one link away from the web pages already fetched, best first."""
+    """Policy documents one link away from the web pages already fetched, best first. Another
+    Kaiser region's are not followed: Kaiser's documents page links every region's policy."""
     candidates: dict[str, tuple[DocClass, str]] = {}
     tables: dict[str, str] = {}
     for page_url, text in texts.items():
@@ -236,6 +283,8 @@ def _linked_documents(
             continue
         for url, label in policy_links(text, base_domain):
             if url in fetched or url in candidates or url in tables:
+                continue
+            if another_kaiser_region(label, url, hospital):
                 continue
             doc_class = classify_doc(url, label)
             if doc_class is not None:
@@ -400,7 +449,7 @@ def scout_hospital(
                 max_results=8,
             )
         )
-    selected = select_urls(hits)
+    selected = select_urls(_in_region(hits, hospital))
     if not any(doc_class == "fap" for _, doc_class in selected):
         # Search indexes miss many policy pages; map the site and look at the paths.
         mapped = gateway.map(
@@ -410,26 +459,25 @@ def scout_hospital(
             limit=30,
         )
         hits.extend(SearchHit(url=url, title="", content="", score=0.5) for url in mapped)
-        selected = select_urls(hits)
+        selected = select_urls(_in_region(hits, hospital))
     if not selected:
         return []
     downloads = Downloader(http, hospital.website_domain)
     try:
-        return _fetch_documents(
-            gateway, hospital.website_domain, hits, selected, downloads, extract_depth
-        )
+        return _fetch_documents(gateway, hospital, hits, selected, downloads, extract_depth)
     finally:
         downloads.close()
 
 
 def _fetch_documents(
     gateway: TavilyGateway,
-    domain: str,
+    hospital: HospitalRef,
     hits: list[SearchHit],
     selected: list[tuple[str, DocClass]],
     downloads: Downloader,
     extract_depth: Depth = "basic",
 ) -> list[ScoutedDoc]:
+    domain = hospital.website_domain or ""
     urls = [url for url, _ in selected]
     pages = gateway.extract(urls, purpose="atlas.scout", **_depth(extract_depth))
     by_url = fill_texts(
@@ -444,7 +492,7 @@ def _fetch_documents(
             docs.append(doc)
 
     # Entry pages usually only link to the policy; follow those links one step on the same site.
-    linked = _linked_documents(by_url, domain, set(urls))
+    linked = _linked_documents(by_url, domain, set(urls), hospital)
     if linked:
         linked_urls = [url for url, _, _ in linked]
         more = gateway.extract(linked_urls, purpose="atlas.scout", **_depth(extract_depth))
@@ -470,6 +518,12 @@ def _fetch_documents(
     if shells:
         log.info("%s: one navigation shell at %d URLs, not stored", domain, len(shells))
         docs = [doc for doc in docs if doc.url not in shells]
+    # Kaiser Northwest's dental policy came under the medical program's search title, so only its
+    # text, read here, says whose policy it is (task 7.16).
+    dental = {doc.url for doc in docs if is_dental_program(doc.url, doc.title, doc.text)}
+    if dental:
+        log.info("%s: %d dental program documents, not stored", domain, len(dental))
+        docs = [doc for doc in docs if doc.url not in dental]
     return docs
 
 

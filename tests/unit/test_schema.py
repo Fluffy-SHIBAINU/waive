@@ -6,7 +6,14 @@ import pytest
 from pydantic import ValidationError
 
 from waive.atlas.samples import st_example_sheet
-from waive.atlas.schema import Cited, DiscountTier, Eligibility, Layer, ProcedureSheet
+from waive.atlas.schema import (
+    Cited,
+    Coverage,
+    DiscountTier,
+    Eligibility,
+    Layer,
+    ProcedureSheet,
+)
 
 TODAY = date(2026, 10, 2)
 
@@ -59,6 +66,23 @@ def test_field_paths_and_completeness():
 def test_sheet_round_trips_through_json():
     sheet = st_example_sheet()
     assert ProcedureSheet.model_validate_json(sheet.model_dump_json()) == sheet
+
+
+def test_covered_providers_is_an_optional_cited_list_on_coverage():
+    # The 501(r) covered-provider list: physician groups named here are inside the FAP.
+    sheet = st_example_sheet()
+    assert sheet.coverage.covered_providers is None
+    cited = Cited[list[str]](
+        value=["Example Emergency Physicians"],
+        quote="covered providers: Example Emergency Physicians",
+        source_id=sheet.sources[0].id,
+        checked_on=TODAY,
+    )
+    with_list = sheet.model_copy(update={"coverage": Coverage(covered_providers=cited)})
+    assert dict(with_list.field_paths())["coverage.covered_providers"].value == [
+        "Example Emergency Physicians"
+    ]
+    assert ProcedureSheet.model_validate_json(with_list.model_dump_json()) == with_list
 
 
 def test_a_discount_keeps_its_decimals_and_a_whole_one_reads_as_written():

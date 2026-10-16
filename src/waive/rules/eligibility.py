@@ -16,6 +16,10 @@ class Tier(StrEnum):
     DISCOUNT = "discount"
     # Help exists, under an assistance ceiling, and the hospital decides how much (7.9a-2).
     ASSISTANCE = "assistance"
+    # A QMB or Medicaid card: federal law forbids billing the cost-sharing at all (9.12).
+    NOT_OWED = "not_owed"
+    # The bill comes from a payee outside the hospital's policy: physician group, ambulance.
+    NOT_COVERED = "not_covered"
     NOT_ELIGIBLE = "not_eligible"
     NEEDS_INFO = "needs_info"
     UNKNOWN = "unknown"
