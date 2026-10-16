@@ -87,7 +87,7 @@ def test_not_owed_tells_the_senior_the_bill_is_not_theirs_and_names_the_card():
         message = senior_message(result, "St. Example", alone=alone, card="MassHealth")
         assert "not yours to pay" in message
         assert "MassHealth or QMB card" in message
-        assert "helper" not in message
+        assert "helper" not in message and "cannot be charged" not in message
     summary = caregiver_summary(result, "St. Example")
     assert summary.startswith("Likely not owed at all")
 
@@ -97,13 +97,13 @@ def test_not_covered_names_the_payee_and_the_next_step():
     message = senior_message(
         result, "St. Example", payee="Harbor Hospitalists", route="payee_request"
     )
-    assert "St. Example's policy does not cover this bill" in message
+    assert "St. Example's policy likely does not cover this bill" in message
     assert "Harbor Hospitalists" in message
     assert "their own financial assistance" in message
     ambulance = senior_message(result, "St. Example", payee="Boston EMS", route="ship")
     assert "1-877-839-2675" in ambulance and "Medicare" in ambulance
     assert caregiver_summary(result, "St. Example").startswith(
-        "Not covered by St. Example's policy"
+        "Likely not covered by St. Example's policy"
     )
 
 
@@ -111,3 +111,11 @@ def test_a_payee_name_ending_in_a_period_never_prints_a_double_period():
     result = EligibilityResult(Tier.NOT_COVERED)
     message = senior_message(result, "St. Example", payee="Example Physicians, P.A.")
     assert "P.A.." not in message and "Example Physicians, P.A." in message
+    message = senior_message(result, "St. Example", payee="Example Physicians, Inc.")
+    assert "Inc.." not in message and "Example Physicians, Inc." in message
+
+
+def test_the_not_owed_message_names_who_must_cancel():
+    result = EligibilityResult(Tier.NOT_OWED)
+    assert "tells the hospital to cancel" in senior_message(result, "St. Example")
+    assert "tells Boston EMS to cancel" in senior_message(result, "St. Example", payee="Boston EMS")

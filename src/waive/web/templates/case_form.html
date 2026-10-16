@@ -11,7 +11,7 @@
 <p class="muted">Have the bill and your Medicare card ready when you call.</p>
 {% elif packet.kind == "cost_sharing" %}
 <h1>Your letter</h1>
-<p class="big">Your letter is ready. Print it, sign it, and send it to the hospital with a copy of your card.</p>
+<p class="big">Your letter is ready. Print it, sign it, and send it to {{ packet.payee_name or "the hospital" }} with a copy of your card.</p>
 <p><a href="{{ links.packet }}" class="btn primary">Download the letter (PDF)</a></p>
 <p class="muted">The letter tells the hospital that federal law does not allow this bill for people with a {{ packet.card }} or QMB card, and asks it to cancel the balance.</p>
 
@@ -22,7 +22,7 @@
   {% for line in packet.submit_lines %}<p>{{ line }}</p>{% endfor %}
 </div>
 {% else %}
-<p class="big">Send it to the billing address on the bill from {{ packet.hospital_name }}.</p>
+<p class="big">Send it to the billing address on the bill from {{ packet.payee_name or packet.hospital_name }}.</p>
 {% endif %}
 <h2>Put these with it</h2>
 <ul class="big">

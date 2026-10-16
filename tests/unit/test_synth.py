@@ -3,7 +3,13 @@ import random
 from decimal import Decimal
 
 from waive.cases.images import prepare_image
-from waive.cases.synth import BillTruth, generate_corpus, make_truth, render_bill
+from waive.cases.synth import (
+    BillTruth,
+    generate_corpus,
+    make_truth,
+    render_bill,
+    statement_rows,
+)
 
 
 def test_make_truth_is_deterministic_and_fictional():
@@ -57,5 +63,10 @@ def test_bills_from_outside_the_hospital_print_a_remit_to_line():
         for seed in range(40)
         if make_truth(random.Random(seed)).payee_kind != "hospital_facility"
     )
+    rows = statement_rows(truth, random.Random(2))
+    assert ("Remit to", truth.payee_name) in rows
+    own = make_truth(random.Random(1))
+    assert own.payee_kind == "hospital_facility"
+    assert not any(label == "Remit to" for label, _ in statement_rows(own, random.Random(2)))
     jpeg = render_bill(truth, random.Random(2), layout=0, rotate_deg=0.0, blur=0.0)
     assert prepare_image(jpeg).warnings == ()

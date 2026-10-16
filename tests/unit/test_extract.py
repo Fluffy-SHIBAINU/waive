@@ -2,9 +2,6 @@ import base64
 from datetime import date
 from decimal import Decimal
 
-import pytest
-from pydantic import ValidationError
-
 from waive.cases.extract import (
     BILL_PROMPT,
     BillExtract,
@@ -103,5 +100,9 @@ def test_bill_prompt_asks_who_the_payee_is_and_the_schema_names_the_kinds():
     )
     assert extract.payee_kind is PayeeKind.AMBULANCE and extract.payee_name == "Boston EMS"
     assert BillExtract().payee_kind is None
-    with pytest.raises(ValidationError):
-        BillExtract.model_validate({"payee_kind": "dentist"})
+    # An off-list label from the reader must not void the whole bill read.
+    assert BillExtract.model_validate({"payee_kind": "dentist"}).payee_kind is PayeeKind.OTHER
+    assert BillExtract.model_validate({"payee_kind": " Physician Group "}).payee_kind is (
+        PayeeKind.PHYSICIAN_GROUP
+    )
+    assert BillExtract.model_validate({"payee_kind": ""}).payee_kind is None

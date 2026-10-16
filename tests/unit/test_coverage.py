@@ -112,3 +112,29 @@ def test_a_payee_without_a_name_cannot_match_the_list():
     route = payee_route(sheet, bill)
     assert route is not None and route.kind is Route.PAYEE_REQUEST
     assert "the group that sent it" in route.result.reasons[0].text
+
+
+def test_a_short_listed_name_inside_a_longer_payee_name_is_not_a_match():
+    # token_set_ratio scored "Mercy" against "Mercy Ambulance Service" at 100 (review of 9.12).
+    sheet = with_covered(["Mercy", "Anesthesia Associates"])
+    for kind, payee in (
+        (PayeeKind.AMBULANCE, "Mercy Ambulance Service"),
+        (PayeeKind.ANESTHESIA_RADIOLOGY_PATHOLOGY, "Anesthesia Associates of Boston Ambulance"),
+    ):
+        route = payee_route(sheet, BillExtract(payee_kind=kind, payee_name=payee))
+        assert route is not None and route.kind is not Route.COVERED, payee
+
+
+def test_corporate_suffixes_and_punctuation_do_not_block_a_match():
+    sheet = with_covered(["Example Emergency Physicians, P.A."])
+    for payee in ("EXAMPLE EMERGENCY PHYSICIANS PA", "Example Emergency Physicians LLC"):
+        route = payee_route(
+            sheet, BillExtract(payee_kind=PayeeKind.PHYSICIAN_GROUP, payee_name=payee)
+        )
+        assert route is not None and route.kind is Route.COVERED, payee
+
+
+def test_not_covered_and_not_owed_reasons_stay_hedged():
+    route = payee_route(st_example_sheet(), BillExtract(payee_kind=PayeeKind.OTHER, payee_name="X"))
+    assert "likely" in route.result.reasons[0].text
+    assert "If this balance is" in COST_SHARING_RULE.text or "if" in COST_SHARING_RULE.text.lower()

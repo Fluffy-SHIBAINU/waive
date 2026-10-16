@@ -8,8 +8,8 @@
     <label class="btn"><input type="radio" name="size" value="{{ n }}" {% if n == 1 %}checked{% endif %}> {{ n }}{% if n == 4 %} or more{% endif %}</label>
     {% endfor %}
   </div>
-  <h2>Do you have a Medicaid, {{ card }} or QMB card?</h2>
-  <p class="muted">QMB means Qualified Medicare Beneficiary. It is printed on some Medicaid cards.</p>
+  <h2>Do you have {{ card }} or a QMB card?</h2>
+  <p class="muted">{{ card }} is Medicaid in your state. QMB means Qualified Medicare Beneficiary; it is printed on some Medicaid cards.</p>
   <div class="choices">
     <label class="btn"><input type="radio" name="programs" value="{{ card }}"> Yes, {{ card }}</label>
     <label class="btn"><input type="radio" name="programs" value="QMB"> Yes, QMB</label>

@@ -7,6 +7,7 @@ from dataclasses import dataclass
 from datetime import date
 from decimal import Decimal
 from typing import Literal
+from xml.sax.saxutils import escape
 
 from reportlab.lib.pagesizes import letter
 from reportlab.lib.styles import getSampleStyleSheet
@@ -79,6 +80,12 @@ class PacketData:
         return PACKET_TITLES[self.kind]
 
 
+def _clean(text: str | None) -> str | None:
+    """Text read from a photo goes into reportlab Paragraph markup: "<" or "&" in a name would
+    break or silently eat the letter (review of 9.12)."""
+    return None if text is None else escape(text)
+
+
 def packet_data(shown: CaseView, sheet: ProcedureSheet | None, today: date) -> PacketData:
     """`sheet` may be None only for a cost-sharing complaint: federal law needs no policy, and
     a hospital without a sheet still gets that letter, addressed as the bill says."""
@@ -89,9 +96,12 @@ def packet_data(shown: CaseView, sheet: ProcedureSheet | None, today: date) -> P
         kind = "payee_request"
     if sheet is None and kind != "cost_sharing":
         raise ValueError("an application needs the hospital's sheet")
+    # The hospital's own desk takes the application and the complaint about its own bill; a
+    # letter to an outside payee goes to the address on that payee's bill.
+    to_hospital = kind == "fap" or (kind == "cost_sharing" and not shown.payee_name)
     methods = (
         sheet.apply.submit_methods.value
-        if sheet is not None and sheet.apply.submit_methods and kind != "payee_request"
+        if sheet is not None and sheet.apply.submit_methods and to_hospital
         else []
     )
     if kind == "cost_sharing":
@@ -105,13 +115,13 @@ def packet_data(shown: CaseView, sheet: ProcedureSheet | None, today: date) -> P
     name = shown.hospital_name or (sheet.hospital.name if sheet else None) or "the hospital"
     return PacketData(
         kind=kind,
-        payee_name=shown.payee_name,
+        payee_name=_clean(shown.payee_name),
         card=medicaid_name(shown.state),
-        hospital_name=name,
-        submit_lines=[f"{METHOD_LABELS[m.kind]}: {m.detail}" for m in methods],
+        hospital_name=_clean(name) or name,
+        submit_lines=[_clean(f"{METHOD_LABELS[m.kind]}: {m.detail}") or "" for m in methods],
         form_url=sheet.apply.form_url.value if sheet is not None and sheet.apply.form_url else None,
-        patient_name=bill.patient_name if bill else None,
-        account_reference=bill.account_reference if bill else None,
+        patient_name=_clean(bill.patient_name) if bill else None,
+        account_reference=_clean(bill.account_reference) if bill else None,
         amount_due=bill.amount_due if bill else None,
         statement_date=bill.statement_date if bill else None,
         household_size=shown.household_size,
@@ -159,7 +169,10 @@ def _cost_sharing_letter(data: PacketData, styles) -> list:
     body, title, heading = styles["BodyText"], styles["Title"], styles["Heading2"]
     flow = [Paragraph(data.title, title), Spacer(1, 12)]
     flow.append(Paragraph(f"Date: {data.today:%B %d, %Y}", body))
-    flow.append(Paragraph(f"To: Patient Financial Services, {data.hospital_name}", body))
+    if data.payee_name:
+        flow.append(Paragraph(f"To: {data.payee_name}", body))
+    else:
+        flow.append(Paragraph(f"To: Patient Financial Services, {data.hospital_name}", body))
     for line in data.submit_lines or ["Sent to the address on the bill"]:
         flow.append(Paragraph(line, body))
     flow.append(Spacer(1, 12))
@@ -174,10 +187,10 @@ def _cost_sharing_letter(data: PacketData, styles) -> list:
     flow.append(Spacer(1, 8))
     flow.append(
         Paragraph(
-            "Federal law does not allow a provider to bill me for Medicare deductibles, "
-            "coinsurance or copayments, or for any Medicaid cost-sharing: the Medicare and "
-            "Medicaid payments must be accepted as payment in full. "
-            f"Authority: {COST_SHARING_RULE.quote}",
+            "If this balance is Medicare or Medicaid cost-sharing for a covered visit, federal "
+            "law does not allow you to bill me for it: Medicare deductibles, coinsurance and "
+            "copayments, and any Medicaid cost-sharing, must be accepted as paid in full by the "
+            f"Medicare and Medicaid payments. Authority: {COST_SHARING_RULE.quote}",
             body,
         )
     )

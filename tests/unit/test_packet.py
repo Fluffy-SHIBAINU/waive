@@ -205,5 +205,44 @@ def test_a_physician_group_bill_gets_a_request_to_the_group():
     assert data.kind == "payee_request" and data.submit_lines == []
     text = pdf_text(data).replace("\n", " ")
     assert "To: Example Emergency Physicians, P.A." in text
-    assert "financial assistance" in text and "St. Example Medical Center" not in text[:200]
-    assert "Federal Poverty" not in text
+    assert "financial assistance" in text and "Federal Poverty" not in text
+    assert "To: Patient Financial Services" not in text
+
+
+def test_a_card_holder_billed_by_an_outside_payee_gets_the_complaint_addressed_to_the_payee():
+    from waive.cases.extract import PayeeKind
+    from waive.rules.coverage import cost_sharing_result
+
+    bill = BillExtract(
+        amount_due=Decimal("640"),
+        payee_kind=PayeeKind.AMBULANCE,
+        payee_name="Boston EMS",
+    )
+    shown = shown_for(
+        cost_sharing_result(), bill, next_step="cost_sharing", payee_name="Boston EMS"
+    )
+    data = packet_data(shown, st_example_sheet(), TODAY)
+    assert data.kind == "cost_sharing" and data.submit_lines == []
+    text = pdf_text(data).replace("\n", " ")
+    assert "To: Boston EMS" in text and "To: Patient Financial Services" not in text
+    assert "If this balance is" in text  # the law applies to cost-sharing; the letter says so
+
+
+def test_names_with_markup_characters_survive_the_pdf():
+    from waive.cases.extract import PayeeKind
+    from waive.rules.coverage import payee_route
+
+    bill = BillExtract(
+        patient_name="Rosa <Alvarez>",
+        account_reference="A&B<1>",
+        statement_date=date(2026, 9, 3),
+        amount_due=Decimal("640"),
+        payee_kind=PayeeKind.PHYSICIAN_GROUP,
+        payee_name="Acme <Billing> & Co",
+    )
+    route = payee_route(st_example_sheet(), bill)
+    shown = shown_for(
+        route.result, bill, next_step="payee_request", payee_name="Acme <Billing> & Co"
+    )
+    text = pdf_text(packet_data(shown, st_example_sheet(), TODAY)).replace("\n", " ")
+    assert "Acme <Billing> & Co" in text and "Rosa <Alvarez>" in text and "A&B<1>" in text

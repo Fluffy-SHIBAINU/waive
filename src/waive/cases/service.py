@@ -19,6 +19,7 @@ from waive.cases.vault import FieldCipher, Scope, TokenSigner
 from waive.db import AccountCaseRow, CaseRow, ReviewItemRow
 from waive.learning.hashing import case_hash
 from waive.rules.coverage import (
+    OUTSIDE_FAP,
     Route,
     cost_sharing_protected,
     cost_sharing_result,
@@ -305,8 +306,11 @@ def _evaluate(ctx: CaseContext, row: CaseRow, sealed: dict[str, Any]) -> CaseVie
     programs = tuple(household.get("programs", []))
     if cost_sharing_protected(programs):
         # Federal law, not the hospital's policy, decides: no sheet needed, no FAP deadline, and
-        # no sheet prediction to learn from (task 9.12).
+        # no sheet prediction to learn from (task 9.12). The ban binds whoever sent the bill, so
+        # an outside payee is named and the letter goes to it.
         name = shown.hospital_name or (bill.hospital_name if bill else None) or "the hospital"
+        if bill and bill.payee_kind in OUTSIDE_FAP:
+            shown.payee_name = bill.payee_name
         return _answered(ctx, row, shown, cost_sharing_result(), name, "cost_sharing")
     if row.ccn is None:
         return shown
@@ -359,7 +363,9 @@ def _evaluate(ctx: CaseContext, row: CaseRow, sealed: dict[str, Any]) -> CaseVie
             "predicted_documents": [doc.value for doc in documents],
             "created_on": ctx.today.isoformat(),
         }
-        row.status = "evaluated"
+        # An approved case that only now gets an income answer stays approved (review of 9.12).
+        if row.status != "approved":
+            row.status = "evaluated"
         shown.status = row.status
         ctx.session.flush()
     return shown
@@ -387,7 +393,10 @@ def _answered(
     if row.status != "approved":
         row.status = "evaluated"
         shown.status = row.status
-        ctx.session.flush()
+    # A sheet prediction made before the answer moved off the sheet no longer describes what
+    # is shown; triage must not test the hospital's decision against it.
+    row.prediction = None
+    ctx.session.flush()
     return shown
 
 
