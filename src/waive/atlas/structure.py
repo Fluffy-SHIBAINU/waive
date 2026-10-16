@@ -319,6 +319,9 @@ KAISER_REGIONS: dict[str, frozenset[str]] = {
     "southern-california": frozenset({"CA"}),
 }
 KAISER_HOST_REGIONS: dict[str, frozenset[str]] = {"wa": frozenset({"WA"})}
+# Words that make a billing compound of the word before them in a file's name: "co-pay",
+# "co-payment", "co-insurance" (review of 7.16).
+COMPOUND_TAILS = frozenset({"pay", "pays", "payment", "payments", "insurance"})
 
 
 def is_kaiser_host(url: str) -> bool:
@@ -329,8 +332,10 @@ def is_kaiser_host(url: str) -> bool:
 def kaiser_region_states(url: str) -> set[str]:
     """The states served by the Kaiser region a kaiserpermanente.org or kp.org address names: the
     host's first label (wa.), a whole path segment (/mfa/mas, /northern-california/) or a word of
-    the file's name (mfa-policy-ga-2024-english.pdf), never part of another word. A page's or a
-    folder's name is not read word by word: "co-pay" is no Colorado. Any other site: none."""
+    the file's name (mfa-policy-ga-2024-english.pdf), never part of another word. Only a file's
+    name (a last segment with an extension) is read word by word, and there a word that begins a
+    billing compound is none ("co-pay", "co-insurance"); a folder's or a page's name counts whole
+    or not at all. Any other site: none."""
     if not is_kaiser_host(url):
         return set()
     parts = urlparse(url)
@@ -339,7 +344,10 @@ def kaiser_region_states(url: str) -> set[str]:
     tokens = set(segments)
     if segments and "." in segments[-1]:
         words = segments[-1].rsplit(".", 1)[0].split("-")
-        tokens.update(words)
+        tails = [*words[1:], ""]
+        tokens.update(
+            word for word, tail in zip(words, tails, strict=True) if tail not in COMPOUND_TAILS
+        )
         tokens.update(f"{first}-{second}" for first, second in pairwise(words))
     for token in tokens:
         found.update(KAISER_REGIONS.get(token, ()))

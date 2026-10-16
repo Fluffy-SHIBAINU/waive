@@ -1165,6 +1165,16 @@ def test_kaiser_region_markers_are_whole_tokens_on_kaiser_sites_only():
     # ... nor a word of a folder's name or a page's: only a file's name is read word by word.
     assert document_states("", "https://kp.org/mas-transit/overview") == set()
     assert document_states("", "https://kp.org/help-paying-your-bill/co-pay-assistance") == set()
+    # ... and there "co-pay", "co-payment" and "co-insurance" are billing words, not Colorado
+    # (review of 7.16).
+    for name in (
+        "support/co-pay-assistance.pdf",
+        "support/mfa-co-payment-plan-2024.pdf",
+        "support/co-insurance-faq.pdf",
+    ):
+        assert document_states("", KAISER_DOCS + name) == set(), name
+    faq = "https://healthy.kaiserpermanente.org/content/kporg/en/national/help/co-pay-faq.html"
+    assert document_states("", faq) == set()
     # ... nor the title's.
     assert document_states("Medical Financial Assistance (MAS) - nw", "https://kp.org/mfa") == set()
     # Another site's region-like paths and hosts are its own business.
@@ -1185,10 +1195,8 @@ def test_kaiser_documents_carry_their_region_in_the_prompt():
         }
     )
     content = build_messages(SAMPLE.hospital, [(northwest, SAMPLE_POLICY_TEXT)])[1]["content"]
-    assert (
-        f"=== SOURCE id=fap-nw title={KAISER_MFA!r} url={northwest.url} names_state=OR,WA ==="
-        in (content)
-    )
+    header = f"=== SOURCE id=fap-nw title={KAISER_MFA!r} url={northwest.url} names_state=OR,WA ==="
+    assert header in content
 
 
 def test_another_kaiser_regions_document_is_one_naming_only_other_states_on_kaisers_sites():
