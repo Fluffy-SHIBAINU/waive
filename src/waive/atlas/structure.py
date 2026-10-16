@@ -365,6 +365,16 @@ def document_states(title: str, url: str, hospital: HospitalRef | None = None) -
     return found | kaiser_region_states(url)
 
 
+def another_kaiser_region(title: str, url: str, hospital: HospitalRef) -> bool:
+    """A document on Kaiser's sites that names only states other than the hospital's, by its
+    region's marker, its address or its title: another region's policy, which is never this
+    hospital's even when it is all there is (task 7.16)."""
+    if not is_kaiser_host(url):
+        return False
+    named = document_states(title, url, hospital)
+    return bool(named) and hospital.state not in named
+
+
 # Task 7.15a: six published sheets quoted a translation of the hospital's policy (BID Needham 220083
 # and Brigham and Women's 220110 in Chinese, Hoag 050224 in Korean, Baptist Beaches and Nassau
 # 100117 and 100140 in Tagalog, Hardin Memorial 361315 in German), and seniors read those quotes on

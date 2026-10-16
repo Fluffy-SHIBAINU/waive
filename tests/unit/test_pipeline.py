@@ -1338,7 +1338,8 @@ def test_kaiser_documents_all_of_another_region_are_set_aside_and_the_sheet_held
     # dental one. Anywhere else, when every document is another state's, all stay: there is
     # nothing to prefer (test_other_state_versions_of_a_system_policy_are_set_aside). On Kaiser's
     # sites the address says whose policy it is, and a California sheet must not publish
-    # Washington's: it is held, and the hospital waits to be scouted again.
+    # Washington's: with no sibling to borrow from, it is held, and the hospital waits to be
+    # scouted again.
     engine = make_engine_with_hospital(KAISER_SAN_FRANCISCO)
     with session_scope(engine) as session:
         store_kaiser(session, "050076", "fap-dental", DENTAL_PATH, DENTAL_TEXT, DENTAL_TITLE)
@@ -1374,6 +1375,94 @@ def test_kaiser_documents_all_of_another_region_are_set_aside_and_the_sheet_held
         assert review_detail(session, "050076", "no_documents") == {
             "domain": "kaiserpermanente.org",
             "set_aside": ["fap-dental", "fap-washington"],
+        }
+
+
+LOS_ANGELES_SHARE = (
+    "1 policy document shared from KAISER FOUNDATION HOSPITAL - LOS ANGELES (050138) on "
+    "kaiserpermanente.org; "
+)
+
+
+def test_a_hospital_whose_documents_are_all_set_aside_borrows_its_siblings_policy_in_one_run():
+    # Review of 7.16: San Francisco (050076) had stored only Kaiser Washington's policy and the
+    # dental one. The first build set both aside and held the sheet with a no_documents item;
+    # the same command run again found nothing stored and borrowed Los Angeles's California
+    # policy. It borrows in the first run now, as a build with nothing stored does.
+    engine = make_engine_with_hospital(KAISER_LOS_ANGELES, KAISER_SAN_FRANCISCO)
+    with session_scope(engine) as session:
+        scal = store_kaiser(session, "050138", "fap-scal", SCAL_PATH, SCAL_TEXT)
+        publish_quoting(session, "050138", scal)
+        store_kaiser(session, "050076", "fap-dental", DENTAL_PATH, DENTAL_TEXT, DENTAL_TITLE)
+        washington = store_kaiser(
+            session,
+            "050076",
+            "fap-washington",
+            WASHINGTON_PATH,
+            WASHINGTON_TEXT,
+            "Charity Care Policy",
+            docs=WASHINGTON_SITE,
+        )
+        publish_quoting(session, "050076", washington)
+        ai = GroundedAI()
+        result = build_hospital(session, NoSpend(), ai, "050076", TODAY, reuse_sources=True)
+        assert (result.outcome, result.version) == ("published", 2)
+        assert result.notes[:3] == [
+            DENTAL_NOTE,
+            "1 stored document is another state's version of the system policy "
+            "(fap-washington: WA); detached and left out of the structurer",
+            LOS_ANGELES_SHARE + "none of the hospital's own documents is left once those are set "
+            "aside",
+        ]
+        assert ai.prompts and all(
+            "fap-washington" not in p and "fap-dental" not in p for p in ai.prompts
+        )
+        sheet, _ = repo.latest_sheet(session, "050076")
+        assert sheet.eligibility.free_care_max_fpl.source_id == "fap-scal"
+        assert [s.id for s in sheet.sources] == ["fap-scal"]
+        assert [s.id for s, _ in repo.sources_for(session, "050076")] == ["fap-scal"]
+        assert review_detail(session, "050076", "shared_sources")["sources"] == ["fap-scal"]
+        assert all(item.kind != "no_documents" for item in repo.open_review_items(session))
+        # The same command again finds what the first run found.
+        again = build_hospital(
+            session, NoSpend(), GroundedAI(), "050076", TODAY, reuse_sources=True
+        )
+        assert (again.outcome, again.version) == ("published", 2)
+
+
+def test_a_sibling_lends_neither_a_dental_policy_nor_another_kaisers_regions():
+    # Review of 7.16: Los Angeles (050138) still held the dental policy and Kaiser Northwest's
+    # beside California's when San Francisco (050076), with nothing stored, borrowed from it. All
+    # three were linked and listed as shared, and two were detached at once. Vallejo (050073),
+    # earlier in line, holds only Northwest's: it has nothing to lend, and the search goes on.
+    engine = make_engine_with_hospital(KAISER_VALLEJO, KAISER_LOS_ANGELES, KAISER_SAN_FRANCISCO)
+    with session_scope(engine) as session:
+        publish_quoting(
+            session, "050073", store_kaiser(session, "050073", "fap-nw", NW_PATH, NW_TEXT)
+        )
+        store_kaiser(session, "050138", "fap-dental", DENTAL_PATH, DENTAL_TEXT, DENTAL_TITLE)
+        store_kaiser(session, "050138", "fap-nw", NW_PATH, NW_TEXT)
+        publish_quoting(
+            session, "050138", store_kaiser(session, "050138", "fap-scal", SCAL_PATH, SCAL_TEXT)
+        )
+        ai = GroundedAI()
+        result = build_hospital(session, NoSpend(), ai, "050076", TODAY, reuse_sources=True)
+        assert result.outcome == "published"
+        assert result.notes[0] == (
+            LOS_ANGELES_SHARE + "the hospital's own documents state no income rules"
+        )
+        assert ai.prompts and all("fap-dental" not in p and "fap-nw" not in p for p in ai.prompts)
+        assert review_detail(session, "050076", "shared_sources")["sources"] == ["fap-scal"]
+        assert [s.id for s, _ in repo.sources_for(session, "050076")] == ["fap-scal"]
+        assert all(
+            item.kind not in ("dental_documents", "other_state_documents")
+            for item in repo.open_review_items(session, "050076")
+        )
+        # The lender keeps everything it stored: what it may cite is its own build's business.
+        assert {s.id for s, _ in repo.sources_for(session, "050138")} == {
+            "fap-dental",
+            "fap-nw",
+            "fap-scal",
         }
 
 
