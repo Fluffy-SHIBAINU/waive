@@ -109,3 +109,26 @@ def test_cms_api_rows_paginates_with_filters():
     with httpx.Client() as http:
         rows = cms_api_rows(http, api, {"STATE": "MA"}, page_size=2)
     assert [row["CCN"] for row in rows] == ["220001", "220002", "220003"]
+
+
+def test_a_dataset_family_is_matched_whole_and_a_document_landing_page_is_dropped():
+    catalog = [
+        {
+            "title": "Medicare Inpatient Hospitals - by Provider : 2024-01-01",
+            "modified": "2026-04-23",
+            "temporal": [{"startDate": "2024-01-01", "endDate": "2024-12-31"}],
+            "landingPage": {"@type": "Document", "accessURL": "https://data.cms.gov/x"},
+            "distribution": [],
+        },
+        {
+            "title": "Medicare Inpatient Hospitals - by Provider and Service : 2024-01-01",
+            "modified": "2026-04-23",
+            "temporal": [{"startDate": "2024-01-01", "endDate": "2024-12-31"}],
+            "distribution": [],
+        },
+    ]
+    found = latest_dataset(catalog, "medicare inpatient hospitals - by provider")
+    assert found.title.startswith("Medicare Inpatient Hospitals - by Provider :")
+    assert found.landing_page is None
+    assert len(datasets_named(catalog, "Medicare Inpatient Hospitals - by Provider")) == 1
+    assert latest_dataset(catalog, "Medicare Inpatient Hospitals") is None

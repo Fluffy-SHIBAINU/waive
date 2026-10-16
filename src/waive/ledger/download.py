@@ -94,14 +94,23 @@ def _ref(dataset: dict[str, Any]) -> DatasetRef:
         period_end=period.get("endDate") if isinstance(period, dict) else None,
         api_url=api_url,
         csv_url=csv_url,
-        landing_page=dataset.get("landingPage"),
+        # The real catalogue sometimes puts a document object here instead of a URL.
+        landing_page=landing if isinstance(landing := dataset.get("landingPage"), str) else None,
     )
 
 
+def _in_family(title: str, family: str) -> bool:
+    """data.cms.gov titles one version of a dataset "<family> : <date>". A family is matched
+    whole, so "Medicare Inpatient Hospitals - by Provider" never picks up "... - by Provider and
+    Service"."""
+    name = title.lower().split(" : ")[0].strip()
+    return name == family.lower().strip()
+
+
 def datasets_named(catalog: list[dict[str, Any]], title_prefix: str) -> list[DatasetRef]:
-    """The versions of one dataset family (title prefix, any case), newest period first."""
-    prefix = title_prefix.lower()
-    refs = [_ref(d) for d in catalog if str(d.get("title") or "").lower().startswith(prefix)]
+    """The versions of one dataset family (its title before " : ", any case), newest period
+    first."""
+    refs = [_ref(d) for d in catalog if _in_family(str(d.get("title") or ""), title_prefix)]
     return sorted(refs, key=lambda ref: (ref.period_end or "", ref.modified), reverse=True)
 
 

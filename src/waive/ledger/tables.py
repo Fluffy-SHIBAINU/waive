@@ -37,8 +37,8 @@ class HospitalIdRow(Base):
     match_confidence: Mapped[float | None] = mapped_column(Float, nullable=True)
     # The hospital's name as the matched source spells it (the 990 filer, or CBI's name).
     matched_name: Mapped[str | None] = mapped_column(String(200), nullable=True)
-    ein_vintage: Mapped[str | None] = mapped_column(String(60), nullable=True)
-    npi_vintage: Mapped[str | None] = mapped_column(String(60), nullable=True)
+    ein_vintage: Mapped[str | None] = mapped_column(String(100), nullable=True)
+    npi_vintage: Mapped[str | None] = mapped_column(String(100), nullable=True)
     # Hospital Enrollments' PROPRIETARY NONPROFIT column: N (nonprofit) or P (proprietary).
     nonprofit_flag: Mapped[str | None] = mapped_column(String(1), nullable=True)
     checked_on: Mapped[date | None] = mapped_column(Date, nullable=True)

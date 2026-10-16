@@ -128,3 +128,29 @@ def test_exposure_and_metrics_upserts_and_the_state_filtered_listing():
         assert [h.ccn for h, _ in repo.list_metrics(session, state="MA")] == ["220001"]
         assert repo.exposure_ranks(session) == {"220001": 0.9, "310001": 0.2}
         assert repo.get_metrics(session, "000000") is None
+
+
+def test_the_best_cost_report_is_the_newest_full_year_not_a_stub_period():
+    engine = engine_with(MA, NJ)
+    with session_scope(engine) as session:
+        repo.upsert_cost_report(
+            session, "220001", 2024, fy_begin=date(2023, 10, 1), fy_end=date(2024, 9, 30)
+        )
+        # A fiscal-year change: 92 days ending in 2025 become the "newest" year.
+        repo.upsert_cost_report(
+            session, "220001", 2025, fy_begin=date(2024, 10, 1), fy_end=date(2024, 12, 31)
+        )
+        repo.upsert_cost_report(
+            session, "310001", 2025, fy_begin=date(2024, 10, 1), fy_end=date(2024, 12, 31)
+        )
+    with session_scope(engine) as session:
+        assert repo.latest_cost_report(session, "220001").fiscal_year == 2025
+        assert repo.best_cost_report(session, "220001").fiscal_year == 2024
+        # Only a stub on file: it is still the best there is.
+        assert repo.best_cost_report(session, "310001").fiscal_year == 2025
+        best = repo.all_best_cost_reports(session)
+        assert {ccn: row.fiscal_year for ccn, row in best.items()} == {
+            "220001": 2024,
+            "310001": 2025,
+        }
+        assert repo.best_cost_report(session, "000000") is None

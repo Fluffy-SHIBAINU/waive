@@ -67,11 +67,47 @@ def latest_cost_report(session: Session, ccn: str) -> CostReportRow | None:
 
 
 def all_latest_cost_reports(session: Session) -> dict[str, CostReportRow]:
-    """Every hospital's newest cost report, keyed by CCN (ranks are computed over these)."""
+    """Every hospital's newest cost report, keyed by CCN."""
     newest: dict[str, CostReportRow] = {}
     for row in session.scalars(select(CostReportRow).order_by(CostReportRow.fiscal_year)):
         newest[row.ccn] = row
     return newest
+
+
+# A hospital that changes its fiscal year files a short stub period (29 of 6,109 real rows cover
+# under 300 days); a year's worth of charity care read against three months of costs is noise.
+FULL_YEAR_DAYS = 300
+
+
+def _full_year(row: CostReportRow, min_days: int) -> bool:
+    return (
+        row.fy_begin is not None
+        and row.fy_end is not None
+        and (row.fy_end - row.fy_begin).days >= min_days
+    )
+
+
+def all_best_cost_reports(
+    session: Session, min_days: int = FULL_YEAR_DAYS
+) -> dict[str, CostReportRow]:
+    """Every hospital's newest full-year cost report, keyed by CCN; the newest of any length
+    when it has no full year. The metrics and the pages read the same row through this."""
+    best: dict[str, CostReportRow] = {}
+    for row in session.scalars(select(CostReportRow).order_by(CostReportRow.fiscal_year)):
+        current = best.get(row.ccn)
+        if current is None or _full_year(row, min_days) or not _full_year(current, min_days):
+            best[row.ccn] = row
+    return best
+
+
+def best_cost_report(
+    session: Session, ccn: str, min_days: int = FULL_YEAR_DAYS
+) -> CostReportRow | None:
+    rows = list(session.scalars(select(CostReportRow).where(CostReportRow.ccn == ccn)))
+    if not rows:
+        return None
+    full = [row for row in rows if _full_year(row, min_days)]
+    return max(full or rows, key=lambda row: row.fiscal_year)
 
 
 def upsert_schedule_h(session: Session, ccn: str, tax_year: int, **fields: Any) -> ScheduleHRow:
