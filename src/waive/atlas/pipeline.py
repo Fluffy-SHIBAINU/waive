@@ -576,8 +576,10 @@ def build_hospital(
     if borrowed is None and not holds and _lacks_income_rules(sheet):
         # The hospital's own pages gave no income rule: a sibling's policy on the same site may
         # (Advocate Christ: a language-menu shell of its own, the enterprise policy on Advocate
-        # Illinois Masonic's sheet). One more structuring pass, Token Factory only.
-        borrowed = _share_sibling_sources(session, row, sources_with_text, result)
+        # Illinois Masonic's sheet). One more structuring pass, Token Factory only. The hospital's
+        # own translations set aside on the first pass stay its own: Baptist Beaches and Nassau
+        # link one Tagalog policy, and it is not the sibling's to lend (review of 7.15b).
+        borrowed = _share_sibling_sources(session, row, [*sources_with_text, *translations], result)
         if borrowed is not None:
             sources_with_text, shared_translations = _documents_for_structurer(
                 session, hospital, borrowed.sources, result
