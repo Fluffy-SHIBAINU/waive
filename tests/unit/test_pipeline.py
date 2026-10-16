@@ -1564,6 +1564,70 @@ def test_a_failed_structurer_still_holds_the_fields_quoted_from_what_the_build_d
         assert repo.latest_sheet(session, "050138")[0].status is SheetStatus.PUBLISHED
 
 
+def store_kaiser_region_documents(session, ccn):
+    """Kaiser Northwest's policy, quoting the sample's sentences, with California's and Kaiser
+    Washington's beside it."""
+    northwest_text = "Kaiser Foundation Health Plan of the Northwest.\n" + POLICY_TEXT
+    store_kaiser(session, ccn, "fap-nw", NW_PATH, northwest_text)
+    store_kaiser(session, ccn, "fap-scal", SCAL_PATH, SCAL_TEXT.replace("250%", "200%"))
+    store_kaiser(
+        session,
+        ccn,
+        "fap-washington",
+        WASHINGTON_PATH,
+        WASHINGTON_TEXT.replace("250%", "300%"),
+        "Charity Care Policy",
+        docs=WASHINGTON_SITE,
+    )
+
+
+def test_a_kaiser_hospital_outside_california_keeps_its_own_regions_documents():
+    # Review of 7.16: Kaiser Sunnyside (380091, Oregon) is in Kaiser Northwest's region, which
+    # serves Oregon and Washington: Northwest's policy is its own, while California's and Kaiser
+    # Washington's, which serves Washington alone, are other regions'. Kaiser Permanente Central
+    # Hospital (500052, Seattle) keeps both Northwest's and Washington's.
+    sunnyside = {
+        **KAISER_LOS_ANGELES,
+        "ccn": "380091",
+        "name": "KAISER SUNNYSIDE MEDICAL CENTER",
+        "city": "CLACKAMAS",
+        "state": "OR",
+        "zip": "97015",
+    }
+    engine = make_engine_with_hospital(sunnyside)
+    with session_scope(engine) as session:
+        store_kaiser_region_documents(session, "380091")
+        ai = GroundedAI()
+        result = build_hospital(session, NoSpend(), ai, "380091", TODAY, reuse_sources=True)
+        assert result.outcome == "published"
+        detail = review_detail(session, "380091", "other_state_documents")
+        assert detail["state"] == "OR"
+        assert sorted((entry["id"], entry["states"]) for entry in detail["sources"]) == [
+            ("fap-scal", ["CA"]),
+            ("fap-washington", ["WA"]),
+        ]
+        assert ai.prompts and all(
+            "names_state=OR,WA" in p and "fap-scal" not in p and "fap-washington" not in p
+            for p in ai.prompts
+        )
+        assert repo.latest_sheet(session, "380091")[0].eligibility.free_care_max_fpl.source_id == (
+            "fap-nw"
+        )
+    seattle = {**sunnyside, "ccn": "500052", "name": "KAISER PERMANENTE CENTRAL HOSPITAL"}
+    seattle.update(city="SEATTLE", state="WA", zip="98112")
+    engine = make_engine_with_hospital(seattle)
+    with session_scope(engine) as session:
+        store_kaiser_region_documents(session, "500052")
+        ai = GroundedAI()
+        build_hospital(session, NoSpend(), ai, "500052", TODAY, reuse_sources=True)
+        assert ai.prompts and all("fap-nw" in p and "fap-washington" in p for p in ai.prompts)
+        assert all("fap-scal" not in p for p in ai.prompts)
+        assert {s.id for s, _ in repo.sources_for(session, "500052")} == {
+            "fap-nw",
+            "fap-washington",
+        }
+
+
 # Baptist Health's Tagalog policy, which Baptist Beaches and Nassau (100117, 100140) quoted on the
 # public atlas although the English one was stored (task 7.15a).
 TAGALOG_POLICY = (
