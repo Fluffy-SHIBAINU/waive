@@ -14,6 +14,7 @@ from waive.atlas.scout import (
     THIN_CHARS,
     ScoutedDoc,
     classify_doc,
+    is_dental_program,
     navigation_shells,
     policy_links,
     scout_hospital,
@@ -942,4 +943,156 @@ def test_exclusion_lists_rank_after_the_policies_they_belong_to():
         "https://www.example.org/fa/charity-care-policy.pdf",
         "https://www.example.org/fa/charity-care-policy-es.pdf",
         "https://www.example.org/fa/charity-care-policy-zh.pdf",
+    ]
+
+
+# Task 7.16: Kaiser Permanente Northwest's dental policy (an Oregon program with its own 100/75/
+# 50/25% bands) was stored as the financial assistance policy of fifteen California Kaiser
+# hospitals, and nine published sheets (050070, 050072, 050075, 050138, 050140, 050425, 050677,
+# 050723, 050855) showed its bands. The search titled it after the medical program; only the
+# opening of its text names the dental one.
+KAISER_DOCS = "https://healthy.kaiserpermanente.org/content/dam/kporg/final/documents/"
+DENTAL_POLICY_URL = KAISER_DOCS + "dfa/policy/dfa-policy-english-ada.pdf"
+DENTAL_POLICY_TITLE = "POLICY TITLE: Medical Financial Assistance"
+DENTAL_POLICY_TEXT = (
+    "Community Benefits POLICY TITLE Dental Financial Assistance POLICY NUMBER NW.CB.002 "
+    "ACCOUNTABLE DEPARTMENT Charity Care, Community Benefits EFFECTIVE DATE January 1, 2026 "
+    "1.0 Policy Statement. Kaiser Foundation Health Plan of Northwest (KFHPNW) is committed to "
+    "providing programs that support access to dental care for people with low incomes.\n"
+    "The DFA discount is based on where the patient's household income falls within the Federal "
+    "Poverty Level (FPL) guidelines: Federal Poverty Guidelines Percentages Financial Assistance "
+    "Discount From To 0% -200% 100% Discount (Full) 201% -300% 75% Discount (Partial) 301% -350% "
+    "50% Discount (Partial) 351% -400% 25% Discount (Partial)\n"
+)
+SCAL_POLICY_URL = (
+    KAISER_DOCS + "mfa/southern-california/english/mfa-policy-and-addendum-scal-english-ada.pdf"
+)
+SCAL_POLICY_TITLE = "POLICY TITLE Medical Financial Assistance"
+# Kaiser California's hospital policy covers dental medications, as hospital policies name dental
+# care among the services they cover or exclude.
+SCAL_POLICY_TEXT = (
+    "Community Health POLICY TITLE Medical Financial Assistance POLICY NUMBER NATL.CB.307 "
+    "ACCOUNTABLE DEPARTMENT National Community Health EFFECTIVE DATE January 1st, 2025\n"
+    "5.1.1.2.5 Dental Medications. Outpatient medications prescribed by a DMD or DDS are "
+    "acceptable if the medications are medically necessary for treatment of dental services.\n"
+    "Federal Poverty Level Guidelines Financial Assistance Discount From To 0% - 200% 100% "
+    "Discount (Full) 201% - 400% 50% Discount (Partial)\n"
+)
+
+
+def test_a_dental_assistance_program_is_never_the_hospitals_policy():
+    # Kaiser's dental pages say so in their title or address.
+    assert (
+        classify_doc(
+            "https://healthy.kaiserpermanente.org/oregon-washington/help-paying-your-bill/"
+            "dental-financial-assistance",
+            "Dental Financial Assistance | Kaiser Permanente",
+        )
+        is None
+    )
+    assert classify_doc(
+        "https://kp.org/dfa", "Dental Financial Assistance | Kaiser Permanente"
+    ) is (None)
+    assert (
+        classify_doc(
+            "https://www.kp.org/help-paying-your-bill/dental-financial-assistance/"
+            "frequently-asked-questions",
+            "frequently asked questions.",
+        )
+        is None
+    )
+    assert classify_doc("https://www.x.org/dental/charity-care.pdf", "Dental Charity Care") is None
+    # Kaiser Northwest's dental policy was found under the medical program's title: nothing names
+    # the dental program until its text is read.
+    assert classify_doc(DENTAL_POLICY_URL, DENTAL_POLICY_TITLE) == "fap"
+    assert not is_dental_program(DENTAL_POLICY_URL, DENTAL_POLICY_TITLE)
+    assert is_dental_program(DENTAL_POLICY_URL, DENTAL_POLICY_TITLE, DENTAL_POLICY_TEXT)
+    # A hospital's policy that names dental care is the hospital's, and so is one for medical and
+    # dental care alike.
+    assert classify_doc(SCAL_POLICY_URL, SCAL_POLICY_TITLE) == "fap"
+    assert not is_dental_program(SCAL_POLICY_URL, SCAL_POLICY_TITLE, SCAL_POLICY_TEXT)
+    assert (
+        classify_doc(
+            "https://www.x.org/medical-and-dental-financial-assistance-policy.pdf",
+            "Medical and Dental Financial Assistance Policy",
+        )
+        == "fap"
+    )
+
+
+def test_a_hospital_policy_that_mentions_a_dental_program_stays_the_hospitals():
+    # MetroHealth (360059) excludes dental services in its opening; Ellis Medicine (330153) gives
+    # a "Dental Financial Assistance Award" column in its income table, past the opening; and a
+    # site menu links the dental program above Kaiser's medical aid page.
+    metrohealth = (
+        "Financial Assistance Program Eligibility. The Financial Assistance Program helps with MOST "
+        "MEDICALLY NECESSARY SERVICES and ONLY covers services provided by MetroHealth. For "
+        "example, it DOES NOT cover Bariatric Surgery, dental services, and pharmacy services. "
+        "Dental services and pharmacy services may be available through separate programs.\n"
+    )
+    assert not is_dental_program(
+        "https://www.metrohealth.org/globalassets/metrohealth-documents/financial-services/"
+        "fap-approval-letter_final-10.15.25.pdf",
+        "Financial Assistance Program Eligibility",
+        metrohealth,
+    )
+    ellis = (
+        "# Financial Assistance FAQs\n"
+        + BODY_TEXT * 2
+        + "| Income Tier | $ of FPL | Financial Assistance Award of Medicare-Equivalent Rate | "
+        "Dental Financial Assistance Award (Highest Vol. Payer Rates) |\n"
+        "| 1 | 0-200% | 100% | 100% |\n"
+    )
+    assert not is_dental_program(
+        "https://www.ellismedicine.org/financial-assistance/faqs.aspx",
+        "Financial Assistance FAQs",
+        ellis,
+    )
+    menu = (
+        "* [Medical Financial Assistance](https://kp.org/mfa)\n"
+        "* [Dental Financial Assistance](https://kp.org/dfa)\n"
+        "# Medical Financial Assistance\n" + BODY_TEXT
+    )
+    assert not is_dental_program(
+        "https://kp.org/mfa/mas", "Medical Financial Assistance | Kaiser Permanente", menu
+    )
+
+
+class KaiserGateway:
+    """The search finds Kaiser Northwest's dental policy under the medical program's title next to
+    the Southern California policy (task 7.16)."""
+
+    def __init__(self):
+        self.extracted = []
+
+    def search(self, query, **kwargs):
+        return [
+            hit(DENTAL_POLICY_URL, DENTAL_POLICY_TITLE, 0.9),
+            hit(SCAL_POLICY_URL, SCAL_POLICY_TITLE, 0.8),
+        ]
+
+    def extract(self, urls, **kwargs):
+        self.extracted.append(urls)
+        texts = {DENTAL_POLICY_URL: DENTAL_POLICY_TEXT, SCAL_POLICY_URL: SCAL_POLICY_TEXT}
+        return [ExtractedPage(url=url, text=texts[url]) for url in urls]
+
+
+def test_the_scout_does_not_store_a_dental_policy_found_under_the_medical_title():
+    kaiser = HOSPITAL.model_copy(update={"website_domain": "kaiserpermanente.org"})
+    gateway = KaiserGateway()
+    docs = scout_hospital(gateway, kaiser)
+    assert gateway.extracted == [[DENTAL_POLICY_URL, SCAL_POLICY_URL]]
+    assert [(doc.url, doc.doc_class) for doc in docs] == [(SCAL_POLICY_URL, "fap")]
+
+
+def test_a_dental_sliding_fee_scale_is_not_followed_as_the_income_table():
+    entry = ENTRY_PAGE + (
+        "[Dental sliding fee scale](/dental/sliding-fee-scale.pdf)\n"
+        "[Sliding fee scale](/fa/sliding-scale.pdf)\n"
+    )
+    gateway = LinkGateway(entry)
+    scout_hospital(gateway, HOSPITAL)
+    assert gateway.extracted[1] == [
+        "https://www.example.org/docs/fap.pdf",
+        "https://www.example.org/fa/sliding-scale.pdf",
     ]

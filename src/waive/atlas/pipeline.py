@@ -34,7 +34,12 @@ from waive.atlas.publish import (
     sheet_inconsistencies,
 )
 from waive.atlas.schema import HospitalRef, ProcedureSheet, SheetStatus, SourceDoc, SourceKind
-from waive.atlas.scout import navigation_shells, scout_hospital, store_scouted
+from waive.atlas.scout import (
+    is_dental_program,
+    navigation_shells,
+    scout_hospital,
+    store_scouted,
+)
 from waive.atlas.structure import document_states, structure_sheet, written_in_english
 from waive.atlas.tavily_gateway import Depth, TavilyGateway
 from waive.atlas.verify import PATIENT_SHARE_REASON, prune_lists, trim_quotes, verify_sheet
@@ -114,6 +119,38 @@ def _drop_navigation_shells(
         "of the structurer"
     )
     return [(source, text) for source, text in sources_with_text if source.url not in shells]
+
+
+def _drop_dental_documents(
+    session: Session,
+    ccn: str,
+    sources_with_text: list[tuple[SourceDoc, str]],
+    result: BuildResult,
+) -> list[tuple[SourceDoc, str]]:
+    """Stored documents of a dental assistance program (scout.is_dental_program) are detached and
+    kept from the structurer. Kaiser Northwest's dental policy was stored for fifteen California
+    Kaiser hospitals before the scout could tell it from their policy, nine sheets published its
+    dental bands (task 7.16), and a rebuild from stored documents would read it again."""
+    dental = [
+        source
+        for source, text in sources_with_text
+        if source.kind is SourceKind.HOSPITAL_WEB
+        and is_dental_program(source.url or "", source.title, text)
+    ]
+    if not dental:
+        return sources_with_text
+    for source in dental:
+        repo.unlink_source(session, ccn, source.id)
+    detail = [{"id": source.id, "url": source.url} for source in dental]
+    repo.add_review_item(session, ccn, "dental_documents", {"sources": detail})
+    listed = ", ".join(source.id for source in dental)
+    plural = "s are" if len(dental) > 1 else " is"
+    result.notes.append(
+        f"{len(dental)} stored document{plural} about a dental assistance program, not the "
+        f"hospital's financial assistance ({listed}); detached and left out of the structurer"
+    )
+    gone = {source.id for source in dental}
+    return [(source, text) for source, text in sources_with_text if source.id not in gone]
 
 
 def _drop_other_state_documents(
@@ -241,11 +278,52 @@ def _documents_for_structurer(
     sources_with_text: list[tuple[SourceDoc, str]],
     result: BuildResult,
 ) -> tuple[list[tuple[SourceDoc, str]], list[tuple[SourceDoc, str]]]:
-    """What a structuring pass reads, from the hospital's own documents or a sibling's too:
-    another state's version of a system policy detached, then the translations set aside. Those
-    come back as well, for the place check, which reads all of the hospital's documents."""
-    kept = _drop_other_state_documents(session, hospital, sources_with_text, result)
+    """What a structuring pass reads, from the hospital's own documents or a sibling's too: a
+    dental program's documents and another state's version of a system policy detached, then the
+    translations set aside. Those come back as well, for the place check, which reads all of the
+    hospital's documents. The dental ones go first: they are not the hospital's at all, so they
+    neither name its state for it nor leave another state's policy all there is to prefer."""
+    kept = _drop_dental_documents(session, hospital.ccn, sources_with_text, result)
+    kept = _drop_other_state_documents(session, hospital, kept, result)
     return _set_aside_translations(session, hospital.ccn, kept, result)
+
+
+def _nothing_left_to_structure(
+    session: Session, row: HospitalRow, set_aside: set[str], result: BuildResult
+) -> BuildResult:
+    """Every document the build had was set aside before structuring (Kaiser Foundation Hospital
+    and Rehab Center, 050073, had stored nothing but Kaiser Northwest's dental policy; task 7.16),
+    so no model is asked. A `no_documents` item records it and keeps the scheduler off the
+    hospital for a month (schedule.FAILURE_KINDS) before it is scouted again. A sheet that quoted
+    the set-aside documents loses those fields and is held, as one built from a wrong website is
+    (clear_wrong_domain): it cannot go on publishing them."""
+    ccn = row.ccn
+    repo.add_review_item(
+        session, ccn, "no_documents", {"domain": row.website_domain, "set_aside": sorted(set_aside)}
+    )
+    result.notes.append(
+        "no financial assistance documents left to structure once those are set aside"
+    )
+    latest = repo.latest_sheet(session, ccn)
+    if latest is None:
+        return result
+    sheet = latest[0]
+    dropped = [path for path, cited in sheet.field_paths() if cited.source_id in set_aside]
+    if not dropped:
+        return result
+    held = drop_fields(sheet, dropped).model_copy(
+        update={
+            "status": SheetStatus.HELD,
+            "sources": [source for source in sheet.sources if source.id not in set_aside],
+        }
+    )
+    published = publish_sheet(session, held)
+    result.outcome = "held"
+    result.version = published.version if published else sheet.version
+    result.notes.append(
+        f"{len(dropped)} fields quoted from them dropped and the sheet held: " + ", ".join(dropped)
+    )
+    return result
 
 
 @dataclass
@@ -565,9 +643,12 @@ def build_hospital(
                 result.notes.append("no financial assistance documents found")
                 return result
             sources_with_text = borrowed.sources
+    considered = {source.id for source, _ in sources_with_text}
     sources_with_text, translations = _documents_for_structurer(
         session, hospital, sources_with_text, result
     )
+    if not sources_with_text:
+        return _nothing_left_to_structure(session, row, considered, result)
 
     first_pass = _structure_and_verify(session, ai, hospital, sources_with_text, today, result)
     if first_pass is None:
