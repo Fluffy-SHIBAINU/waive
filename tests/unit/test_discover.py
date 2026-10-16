@@ -1,9 +1,12 @@
 from waive.atlas import repo
 from waive.atlas.discover import (
     DomainResult,
+    _evidence,
     host_of,
     is_directory,
     name_tokens,
+    names_only_other_states,
+    names_place,
     pick_domain,
     run_discovery,
 )
@@ -66,7 +69,14 @@ def test_body_mentions_lose_to_title_matches():
         ),
     ]
     result = pick_domain(HOSPITAL, hits)
-    assert (result.domain, result.confidence) == ("stexample.org", 0.9)
+    # The title wins, but names neither Boston nor Massachusetts, and carries no phone: Good
+    # Samaritan Hospital in San Jose has the same title as the one in Cincinnati (task 7.15a), so
+    # such a site waits for an admin to confirm it (decision 7.9a-1).
+    assert (result.domain, result.confidence) == ("stexample.org", 0.6)
+    placed = hit(
+        hits[1].url, "Financial Assistance | St. Example Medical Center, Boston", score=0.5
+    )
+    assert pick_domain(HOSPITAL, [hits[0], placed]).confidence == 0.9
 
 
 def test_pick_domain_without_evidence_has_low_confidence():
@@ -206,6 +216,297 @@ def test_a_single_distinctive_name_token_in_a_title_is_not_proof_of_the_official
             [hit("https://www.akrongeneral.org/", "Home", "Call 330-344-6000", score=0.5)],
         ).confidence
         == 0.9
+    )
+
+
+def hospital(name, city, state, phone=None):
+    return HOSPITAL.model_copy(update={"name": name, "city": city, "state": state, "phone": phone})
+
+
+def test_directories_a_newsroom_a_staffing_firm_and_asset_hosts_are_never_the_hospital():
+    # Task 7.15a: hosts discovery took for hospital sites in the national batches.
+    for host in (
+        "lownhospitalsindex.org",  # three OSF hospitals, 140012, 140179, 141310
+        "www.hospitalbills411.com",  # Keck Hospital of USC, 050696
+        "healthbillcentral.com",  # Loyola, 140276; the Hospital of the University of Pennsylvania
+        "brightbillapp.com",  # OSF Saint Elizabeth, 140110
+        "calhospital.org",  # the California Hospital Association, for Ojai, 051334
+        "njspotlightnews.org",  # a newsroom, for Heights University Hospital, 310016
+        "communityplatform.us",  # a county resource directory, for CHRISTUS Santa Rosa, 450237
+        "vituity.com",  # a physician staffing firm, for Memorial Hospital Los Banos, 050528
+    ):
+        assert is_directory(host), host
+    # Mercy Harvard (141335) got cloudinary.com, where one account holds the policies of Truman,
+    # Southeast Health, Mercy Health and Lake Region: an asset host is nobody's website.
+    mercy = hospital("MERCY HARVARD HOSPITAL", "HARVARD", "IL", "815-943-5431")
+    assets = [
+        hit(
+            "https://res.cloudinary.com/dpmykpsih/image/upload/mercyhealth-site-398/media/"
+            "bd5f019a1dc14a9e8b06989107db282f/mercy-health-financial-assistance-policy.pdf",
+            "Hospital Financial Assistance | Mercy Harvard Hospital, Harvard, Illinois",
+            "Call 815-943-5431",
+            score=0.9,
+        ),
+        hit(
+            "https://baystatehealth.canto.com/direct/document/x",
+            "Mercy Harvard Hospital",
+            score=0.8,
+        ),
+    ]
+    assert pick_domain(mercy, assets) is None
+
+
+def test_a_hit_that_names_only_other_states_is_scored_down_and_never_sure():
+    # North Shore University Hospital, Manhasset, New York (330106) was matched to NorthShore
+    # University HealthSystem in Illinois, whose page names Illinois and not New York (7.15a).
+    north_shore = hospital("NORTH SHORE UNIVERSITY HOSPITAL", "MANHASSET", "NY", "516-562-0100")
+    illinois = hit(
+        "https://www.northshore.org/globalassets/about-us/billing/plain-language-summary.pdf",
+        "NorthShore University HealthSystem Financial Assistance ...",
+        "NorthShore University HealthSystem Financial Assistance Plain Language Summary. "
+        "NorthShore University HealthSystem, Evanston, Illinois.",
+        score=0.826,
+    )
+    northwell = hit(
+        "https://www.northwell.edu/billing-and-insurance/financial-assistance-programs-policies/"
+        "financial-assistance-policy",
+        "Financial assistance policy - Financial assistance programs & policies | Northwell Health",
+        "Cohen Children's Medical Center Glen Cove Hospital Huntington Hospital Lenox Hill Hospital "
+        "Mather Hospital North Shore University Hospital",
+        score=0.668,
+    )
+    assert names_only_other_states(north_shore, illinois)
+    assert pick_domain(north_shore, [illinois, northwell]).domain == "northwell.edu"
+    # Skipping such a hit (7.15b's first cut) dropped right sites whose page names a neighbouring
+    # state, and with no other hit discovery found no site at all (review of 7.15b). The hit now
+    # scores OTHER_STATE_PENALTY less and is never sure: alone, it is a guess an admin confirms.
+    assert pick_domain(north_shore, [illinois]) == DomainResult("northshore.org", 0.6, illinois.url)
+    # The review's seven right sites, each naming a state that is not the hospital's.
+    for (name, city, state), url, title, content in (
+        (("CHRIST HOSPITAL", "CINCINNATI", "OH"),
+         "https://www.thechristhospital.com/patients-visitors/billing/financial-assistance",
+         "Financial Assistance | The Christ Hospital Health Network",
+         "The Christ Hospital Health Network serves Greater Cincinnati, Northern Kentucky and "
+         "Southeast Indiana."),
+        (("BARNES JEWISH HOSPITAL", "SAINT LOUIS", "MO"),
+         "https://www.barnesjewish.org/Patients-Visitors/Paying-for-Care/Financial-Assistance",
+         "Financial Assistance | Barnes-Jewish Hospital",
+         "Barnes-Jewish Hospital, the adult teaching hospital of Washington University School of "
+         "Medicine."),
+        (("CHAMPLAIN VALLEY PHYSICIANS HOSPITAL", "PLATTSBURGH", "NY"),
+         "https://www.uvmhealth.org/cvph/patients-and-visitors/billing-and-financial-assistance",
+         "Financial Assistance | Champlain Valley Physicians Hospital | UVM Health Network",
+         "The University of Vermont Health Network - Champlain Valley Physicians Hospital offers "
+         "financial assistance."),
+        (("PRINCETON HEALTHCARE SYSTEM", "PLAINSBORO", "NJ"),
+         "https://www.princetonhcs.org/patients-and-visitors/financial-assistance",
+         "Financial Assistance | Penn Medicine Princeton Health",
+         "Penn Medicine Princeton Health is part of the University of Pennsylvania Health System."),
+        (("SAINT LUKES EAST HOSPITAL", "LEES SUMMIT", "MO"),
+         "https://www.saintlukeskc.org/financial-assistance",
+         "Financial Assistance | Saint Luke's Health System",
+         "Saint Luke's East Hospital is part of Saint Luke's Health System, serving the Kansas "
+         "City region and Kansas."),
+        (("ST ANTHONY HOSPITAL", "GIG HARBOR", "WA"),
+         "https://www.vmfh.org/patients-visitors/billing/financial-assistance",
+         "Financial Assistance | Virginia Mason Franciscan Health",
+         "St. Anthony Hospital in Gig Harbor is part of Virginia Mason Franciscan Health."),
+        (("MASSACHUSETTS GENERAL HOSPITAL", "BOSTON", "MA"),
+         "https://www.massgeneralbrigham.org/en/patient-care/patient-visitor-information/billing/"
+         "financial-assistance",
+         "Financial Assistance | Mass General Brigham",
+         "Mass General Brigham hospitals, including Massachusetts General Hospital, in "
+         "Massachusetts and New Hampshire, offer financial assistance."),
+    ):  # fmt: skip
+        result = pick_domain(hospital(name, city, state), [hit(url, title, content)])
+        assert result == DomainResult(host_of(url), 0.6, url), name
+    # The hospital's own state counts wherever the hit names it, its own name included
+    # (Massachusetts General); a state inside its name or town that is not its own, or a street,
+    # is not another state ("Kansas City", "Sierra Nevada", "Washington Street").
+    mass_general = hospital("MASSACHUSETTS GENERAL HOSPITAL", "BOSTON", "MA")
+    assert names_place(mass_general, hit("https://x.org/", "Massachusetts General Hospital"))
+    hillcrest = hospital("HILLCREST HOSPITAL", "MAYFIELD HEIGHTS", "OH")
+    summary = hit(
+        "https://my.clevelandclinic.org/-/scassets/files/org/patients-visitors/billing/x.pdf",
+        "Summary of Financial Assistance",
+        "Cleveland Clinic Hillcrest Hospital, Cleveland, OH 44193; Florida; Nevada",
+    )
+    assert not names_only_other_states(hillcrest, summary)
+    kansas_city = hospital("SAINT LUKES HOSPITAL OF KANSAS CITY", "KANSAS CITY", "MO")
+    assert not names_only_other_states(
+        kansas_city, hit("https://www.saintlukeskc.org/", "Saint Luke's Kansas City")
+    )
+    sierra = hospital("SIERRA NEVADA MEMORIAL HOSPITAL", "GRASS VALLEY", "CA")
+    assert not names_only_other_states(
+        sierra, hit("https://www.example.org/", "Sierra Nevada Memorial Hospital")
+    )
+    beverly = hospital("BEVERLY HOSPITAL", "BEVERLY", "MA")
+    street = hit("https://www.beverlyhospital.org/", "Beverly Hospital", "85 Washington Street")
+    assert not names_only_other_states(beverly, street)
+
+
+def test_a_name_with_one_distinctive_word_needs_that_word_on_the_page():
+    # Community Hospital of San Bernardino (050089, 7.15a): "community" and "hospital" stood in
+    # for "bernardino", so Mountains Community Hospital's title was proof at confidence 0.9.
+    san_bernardino = hospital("COMMUNITY HOSPITAL OF SAN BERNARDINO", "SAN BERNARDINO", "CA")
+    mountains = hit(
+        "https://www.mchcares.com/helppayingyourbill",
+        "Financial Help Available | Mountains Community Hospital",
+        "The Hospital Bill Complaint Program is a state program that reviews hospital decisions.",
+        score=0.37,
+    )
+    dignity = hit(
+        "https://www.commonspirit.org/patient-resources/dignity-health-socal-financial-assistance",
+        "Dignity Health Southern California Financial Assistance | CommonSpirit Health",
+        "To view the list of providers who are covered or not by the financial assistance policy, "
+        "please select a facility below. #### Covered Community Hospital San Bernardino California "
+        "Hospital Medical Center St. Bernardine Medical Center",
+        score=0.736,
+    )
+    assert _evidence(san_bernardino, mountains) == 0.0
+    assert _evidence(san_bernardino, dignity) == 0.3
+    result = pick_domain(san_bernardino, [mountains, dignity])
+    assert (result.domain, result.confidence) == ("commonspirit.org", 0.6)
+    # With no distinctive word at all, a title is proof only beside the hospital's town:
+    # Community Medical Center in Toms River, New Jersey (310041) is not Fresno's Community
+    # Medical Centers.
+    toms_river = hospital("COMMUNITY MEDICAL CENTER", "TOMS RIVER", "NJ")
+    fresno = hit(
+        "https://www.communitymedical.org/for-patients-families/billing-insurance/"
+        "help-paying-your-bill",
+        "Community Medical Centers - Help Paying Your Bill",
+        "Community Medical Centers has a long history of giving back to our community.",
+        score=0.57,
+    )
+    rwj = hit(
+        "https://www.rwjbh.org/community-medical-center/billing/charges",
+        "Charges | Community Medical Center",
+        "Community Medical Center, 99 Route 37 West, Toms River, NJ 08755. Financial assistance "
+        "(partial and in full).",
+        score=0.5,
+    )
+    assert _evidence(toms_river, fresno) == 0.3
+    assert pick_domain(toms_river, [fresno, rwj]) == DomainResult("rwjbh.org", 0.9, rwj.url)
+
+
+def test_a_hit_that_names_the_hospitals_place_beats_a_same_named_hospital_elsewhere():
+    # Task 7.15a: each of these was matched to the other hospital's site at confidence 0.9.
+    good_samaritan = hospital("GOOD SAMARITAN HOSPITAL", "CINCINNATI", "OH", "513-862-2601")
+    trihealth = hit(
+        "https://www.trihealth.com/patients-and-visitors/billing-and-insurance/financial-assistance",
+        "Financial Assistance | TriHealth",
+        "Good Samaritan Hospital 375 Dixmyth Ave. Cincinnati, OH 45220 1st Floor Dixmyth Lobby",
+        score=0.723,
+    )
+    san_jose = hit(
+        "https://www.goodsamsanjose.com/patient-resources/patient-financial-resources/"
+        "financial-assistance",
+        "Financial Assistance | Good Samaritan Hospital",
+        "Good Samaritan Hospital ##### Specialties ##### Patients # Financial assistance",
+        score=0.675,
+    )
+    result = pick_domain(good_samaritan, [trihealth, san_jose])
+    assert result == DomainResult("trihealth.com", 0.6, trihealth.url)
+    # Mission, Texas (450176): the town is the hospital's own name, so "Mission Health" in
+    # Asheville names no place; the Texas address does.
+    mission = hospital("MISSION REGIONAL MEDICAL CENTER", "MISSION", "TX", "956-323-9000")
+    texas = hit(
+        "https://missionrmc.org/wp-content/uploads/2024/11/MRTX_FAP-Application-Instructions.pdf",
+        "Financial Assistance Application Form Instructions",
+        "900 South Bryan Road, Mission, TX 78572 Rev. 06/2024-AR Mission Regional Medical Center "
+        "Financial Assistance Application Form Instructions",
+        score=0.883,
+    )
+    asheville = hit(
+        "https://www.missionhealth.org/patient-resources/patient-financial-resources/"
+        "financial-assistance",
+        "Charity Financial Assistance (Medical Debt Mitigation) Policy | Mission Health",
+        "Financial relief and payment plans may be available to patients whose income falls "
+        "between 0 - 400% of the Federal Poverty Level (FPL).",
+        score=0.647,
+    )
+    assert pick_domain(mission, [texas, asheville]).domain == "missionrmc.org"
+    # Huntington, New York (330045), against Cabell Huntington in West Virginia.
+    huntington = hospital("NS/LIJ HS HUNTINGTON HOSPITAL", "HUNTINGTON", "NY", "631-351-2000")
+    northwell = hit(
+        "https://www.northwell.edu/billing-and-insurance/financial-assistance-programs-policies/"
+        "contact-us",
+        "Contact the Financial Assistance Unit | Northwell Health",
+        "| Glen Cove Hospital 101 St. Andrews Lane Glen Cove, NY 11542 Phone: (516) 674-7335 "
+        "Huntington Hospital 270 Park Avenue Huntington, NY 11743 Phone: (631) 351-7944",
+        score=0.634,
+    )
+    cabell = hit(
+        "https://cabellhuntington.org/customer-service/financial-assistance-policy",
+        "Financial Assistance Policy - Marshall Health Network - Cabell Huntington Hospital",
+        "Financial counselors are on hand to address your concerns. They may be reached by phone "
+        "at 304.526.6099 or 304.526.6344.",
+        score=0.535,
+    )
+    assert pick_domain(huntington, [northwell, cabell]).domain == "northwell.edu"
+    # Its title alone, with neither the place nor the phone, is a guess an admin confirms.
+    assert pick_domain(huntington, [cabell]) == DomainResult(
+        "cabellhuntington.org", 0.6, cabell.url
+    )
+
+
+def test_the_right_site_stays_sure_when_its_page_names_the_place_or_carries_the_phone():
+    # Fulton County Medical Center, McConnellsburg, Pennsylvania (391303): the probe's five hits.
+    fulton = hospital("FULTON COUNTY MEDICAL CENTER", "MCCONNELLSBURG", "PA", "717-485-3155")
+    hits = [
+        hit(
+            "https://www.fcmcpa.org/getpage.php?name=Financial_Assistance",
+            "Financial Assistance",
+            "Patient Financial Advocates at Fulton County Medical Center can navigate the Financial "
+            "Assistance the hospital offers that best suits you.",
+            score=0.865,
+        ),
+        hit(
+            "https://www.fcmcpa.org",
+            "Pennsylvania Hospital | 24 Hour Emergency Care Fulton County",
+            "skip navigation 214 Peach Orchard Road, McConnellsburg, PA 17233 Fulton County Medical "
+            "Center logo Patient Portal",
+            score=0.726,
+        ),
+        hit("https://www.fcmcpa.org/getpage.php?name=Registration_Process", "Registration Process",
+            "FCMC has a financial assistance program.", score=0.704),
+        hit(
+            "https://www.fcmcpa.org/community-resources",
+            "Community Resources",
+            "## Fulton County Medical Center 214 Peach Orchard Road McConnellsburg, PA (717) "
+            "485-3155",
+            score=0.671,
+        ),
+    ]  # fmt: skip
+    assert pick_domain(fulton, hits) == DomainResult("fcmcpa.org", 0.9, "https://www.fcmcpa.org")
+    # Methodist Richardson Medical Center, Texas (450537): the town is in its name, and its
+    # billing page carries the hospital's phone.
+    richardson = hospital("METHODIST RICHARDSON MEDICAL CENTER", "RICHARDSON", "TX", "469-204-1000")
+    billing = hit(
+        "https://www.methodisthealthsystem.org/methodist-richardson-medical-center/billing-estimates",
+        "Billing & Estimates | Methodist Health System",
+        'Dismiss Modal (469) 204-1000 204-1000") MyChart Pay My Bill Contact Us Giving 1. Home '
+        "2. Methodist Richardson Medical Center 3. Billing & Estimates",
+        score=0.678,
+    )
+    hits = [
+        hit(
+            "https://dollarfor.org/medical-debt-help-richardson-methodist-richardson-medical-center",
+            "Medical Bill Help from Methodist Richardson Medical Center – Dollar For",
+            score=0.763,
+        ),
+        hit(
+            "https://www.methodisthealthsystem.org/patients-visitors/patient-tools-support/"
+            "financial-assistance",
+            "Financial Assistance | Methodist Health System",
+            "Methodist Health System has a Financial Assistance Policy that provides free or "
+            "reduced-cost hospital care.",
+            score=0.731,
+        ),
+        billing,
+    ]
+    assert pick_domain(richardson, hits) == DomainResult(
+        "methodisthealthsystem.org", 0.9, billing.url
     )
 
 

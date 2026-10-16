@@ -1,6 +1,8 @@
 """Turn hospital documents into a procedure sheet draft with Nemotron (spec §8 step 4)."""
 
 import re
+import unicodedata
+from collections import Counter
 from collections.abc import Callable
 from datetime import date
 from decimal import Decimal, InvalidOperation
@@ -310,6 +312,61 @@ def document_states(title: str, url: str, hospital: HospitalRef | None = None) -
     if hospital is not None:
         found -= states_named(f"{hospital.name} {hospital.city}")
     return found
+
+
+# Task 7.15a: six published sheets quoted a translation although the hospital's English policy was
+# stored (BID Needham 220083 and Brigham and Women's 220110 in Chinese, Hoag 050224 in Korean,
+# Baptist Beaches and Nassau 100117 and 100140 in Tagalog, Hardin Memorial 361315 in German), and
+# seniors read those quotes on the public atlas. Common words of each language that no English
+# text uses and no US state code spells: "de", "la", "el", "al" and "il" are left out, so an address
+# in Los Angeles or a "De La Cruz" on a provider list never turns an English page Spanish.
+COMMON_WORDS = {
+    "english": "the and of to is are for with you your will be this that by if may not from have "
+    "has which who our it all any can must their they we would should than been were was its such "
+    "these those",
+    "spanish": "que y para por con una usted su sus se como más este esta son pueden puede cuando "
+    "también sobre ser",
+    "tagalog": "ang ng mga sa ay kung ito hindi ninyo iyong nito sila siya upang dahil kapag lamang",
+    "german": "der die das und ist nicht mit von zu den dem ein eine einen für auf sind oder wird "
+    "werden bei auch nach wenn dass kann ihre",
+    "portuguese": "que em uma um não ao é são seu sua ou pelo pela também você",
+    "french": "les et une pour dans qui sur par vous votre vos cette sont être avec aux",
+    "vietnamese": "của và là có được cho các những không một trong với người này để khi theo từ tài "
+    "chính hỗ trợ đơn",
+}
+_COMMON = {language: frozenset(words.split()) for language, words in COMMON_WORDS.items()}
+# A translation in another script: when that script holds this share of the letters. Kaiser's
+# English summary ends in its language-assistance notice in fifteen scripts, a third of its letters.
+NON_LATIN_SHARE = 0.4
+# A translation in a Latin script: another language's common words outnumber English's this many
+# times over, and there are at least this many of them.
+FOREIGN_WORD_RATIO = 2
+MIN_FOREIGN_WORDS = 3
+# Link targets, images and bare addresses carry no language.
+_LINK_TARGETS = re.compile(r"!\[[^\]]*\]\([^)]*\)|\]\([^)]*\)|https?://\S+|www\.\S+")
+_LETTER = re.compile(r"[^\W\d_]")
+_OTHER_SCRIPT = re.compile(r"(?![a-z\u00c0-\u024f\u1e00-\u1eff])[^\W\d_]")
+# Han, kana and Hangul: one character is a syllable or a word, so each counts twice.
+_DENSE_SCRIPT = re.compile(r"[\u3040-\u30ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff\uac00-\ud7af]")
+_WORD = re.compile(r"[^\W\d_]+")
+
+
+def written_in_english(text: str) -> bool:
+    """Whether a document reads as English: its letters are not mostly another script's, and no
+    other language's common words outnumber the English ones twice over. An English page that
+    quotes a Spanish line, links to its "Español" version or ends in the language-assistance
+    notice stays English; so does a table of figures or a list of names, which is nobody's prose."""
+    plain = _LINK_TARGETS.sub(" ", unicodedata.normalize("NFKC", text).lower())
+    other = len(_OTHER_SCRIPT.findall(plain))
+    latin = len(_LETTER.findall(plain)) - other
+    other += len(_DENSE_SCRIPT.findall(plain))
+    if other and other >= NON_LATIN_SHARE * (latin + other):
+        return False
+    words = Counter(_WORD.findall(plain))
+    counts = {language: sum(words[word] for word in common) for language, common in _COMMON.items()}
+    english = counts.pop("english")
+    foreign = max(counts.values())
+    return not (foreign >= MIN_FOREIGN_WORDS and foreign > FOREIGN_WORD_RATIO * english)
 
 
 def _window_days(value: Any) -> int:

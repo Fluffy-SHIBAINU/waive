@@ -1124,6 +1124,86 @@ def test_a_state_inside_the_hospitals_own_name_does_not_make_its_policy_another_
         assert all(item.kind != "other_state_documents" for item in repo.open_review_items(session))
 
 
+# Baptist Health's Tagalog policy, which Baptist Beaches and Nassau (100117, 100140) quoted on the
+# public atlas although the English one was stored (task 7.15a).
+TAGALOG_POLICY = (
+    "BAPTIST HEALTH MANWAL NG MGA POLISIYA AT PROSESO Paksa: POLISIYA NG TULONG PINANSYAL NG "
+    "OSPITAL. Ayon sa pilosopiya, misyon, at pangunahing mga halaga ng Baptist Health, ang aming "
+    "polisiya ay magbigay ng Emergency at Medically Necessary Care para sa lahat ng mga pasyente. "
+    "Buong Pinansyal na Tulong: Kabuuang kita ng pamilya ay nasa 200% o mas mababa ng Pederal na "
+    "Antas ng Kahirapan (FPL).\n"
+)
+TRANSLATION_NOTE = (
+    "1 stored document is not in English (fap-tagalog); left out of the structurer while an "
+    "English one is stored, and still linked"
+)
+
+
+def store_translation(session, ccn):
+    source = SourceDoc(
+        id="fap-tagalog",
+        kind=SourceKind.HOSPITAL_WEB,
+        url="https://www.example.org/documents/financial-assistance-policy-tagalog.pdf",
+        title="Patakaran",
+        fetched_on=TODAY,
+        sha256="5" * 64,
+    )
+    repo.save_source(session, source, TAGALOG_POLICY, ccn)
+    return source
+
+
+def test_a_translation_is_kept_from_the_structurer_while_an_english_document_is_stored():
+    # Task 7.15a: BID Needham, Hoag, Baptist Beaches and Nassau, Brigham and Women's and Hardin
+    # Memorial published quotes from a translation of the policy their English version states.
+    engine = make_engine_with_hospital()
+    with session_scope(engine) as session:
+        build_hospital(session, FakeGateway(), FakeAI(), "229999", TODAY)
+        store_translation(session, "229999")
+        ai = GroundedAI()
+        result = build_hospital(session, FakeGateway(), ai, "229999", TODAY, reuse_sources=True)
+        assert result.outcome == "published"
+        assert TRANSLATION_NOTE in result.notes
+        assert ai.prompts and all("fap-tagalog" not in p for p in ai.prompts)
+        sheet, _ = repo.latest_sheet(session, "229999")
+        assert "fap-tagalog" not in {source.id for source in sheet.sources}
+        # Nothing is detached: the translation stays the hospital's.
+        assert "fap-tagalog" in {s.id for s, _ in repo.sources_for(session, "229999")}
+    # When every stored document is a translation there is nothing to prefer: it is read.
+    engine = make_engine_with_hospital()
+    with session_scope(engine) as session:
+        repo.get_hospital(session, "229999").website_domain = "example.org"
+        store_translation(session, "229999")
+        ai = GroundedAI()
+        result = build_hospital(session, FakeGateway(), ai, "229999", TODAY, reuse_sources=True)
+        assert ai.prompts and all("fap-tagalog" in p for p in ai.prompts)
+        assert all("not in English" not in note for note in result.notes)
+
+
+def test_a_siblings_translation_is_kept_from_the_structurer_on_both_sharing_paths():
+    # The sibling's stored translation names the poverty level, so it is shared with its policy.
+    engine = make_engine_with_hospital(HOSPITAL, SIBLING)
+    with session_scope(engine) as session:
+        build_hospital(session, FakeGateway(), FakeAI(), "229999", TODAY)
+        store_translation(session, "229999")
+        # The second pass: the hospital's own thin page states no income rule.
+        store_thin_page(session, "220031")
+        ai = GroundedAI()
+        result = build_hospital(session, FakeGateway(), ai, "220031", TODAY, reuse_sources=True)
+        assert result.outcome == "published"
+        assert len(ai.prompts) >= 2 and all("fap-tagalog" not in p for p in ai.prompts)
+        assert TRANSLATION_NOTE in result.notes
+    engine = make_engine_with_hospital(HOSPITAL, SIBLING)
+    with session_scope(engine) as session:
+        build_hospital(session, FakeGateway(), FakeAI(), "229999", TODAY)
+        store_translation(session, "229999")
+        # Nothing stored of its own: the sibling's documents are shared before the first pass.
+        ai = GroundedAI()
+        result = build_hospital(session, FakeGateway(), ai, "220031", TODAY, reuse_sources=True)
+        assert result.outcome == "published"
+        assert ai.prompts and all("fap-tagalog" not in p for p in ai.prompts)
+        assert TRANSLATION_NOTE in result.notes
+
+
 class TwoSentenceAI(FakeAI):
     """Quotes a list under two sentences, only the second of which the source contains: the
     model stitched a passage, trim_quotes keeps the real sentence, and the list must follow."""

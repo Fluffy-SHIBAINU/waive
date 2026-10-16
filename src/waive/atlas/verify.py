@@ -76,9 +76,12 @@ def quote_found(quote: str, document_text: str) -> bool:
 
 
 def _number_in(number: Decimal, quote: str) -> bool:
+    """Whether the quote states `number` itself: never inside a longer number, and never as the
+    whole part of a decimal. MelroseWakefield (220070) published a 65% discount band read from the
+    Tufts table's "Outpatient Discount 65.91%", Lowell General (220063) 63 from "63.28%" (7.15a)."""
     digits = format(number.normalize(), "f")
     haystack = normalize(quote).replace(",", "")
-    return re.search(rf"(?<![\d.]){re.escape(digits)}(?!\d)", haystack) is not None
+    return re.search(rf"(?<![\d.]){re.escape(digits)}(?!\.?\d)", haystack) is not None
 
 
 def looks_serialised(value: Any) -> bool:
@@ -526,7 +529,8 @@ _FREE_SENTENCE = re.compile(
     r"|\bone hundred percent\b|\bfull(?:y)? (?:write[- ]?off|covered|discounted|charity)"
 )
 _FPL_WORDS = re.compile(r"federal poverty|\bfpl\b|\bfpg\b|poverty (?:level|guideline|income)")
-_FPL_PERCENT = re.compile(r"(?<![\d.])(\d{2,3})(?:\.\d+)? ?(?:%|percent)")
+# A percentage read whole, decimals and all: "137.5%" is not a limit of 137 (as in _number_in).
+_FPL_PERCENT = re.compile(r"(?<![\d.])(\d{2,3}(?:\.\d+)?) ?(?:%|percent)")
 # The same, tied to the poverty level by its own words ("200% of the Federal Poverty Level",
 # "250% FPL"): in "allows from 80% to 100% discounting" the 80 is a discount, not an income limit
 # (Adirondack Health, 330079, held on a conflict that was not one).
@@ -647,6 +651,92 @@ def ceiling_problem(quote: str, value: Decimal) -> str | None:
     return None
 
 
+FREE_LIMIT_UNTIED_REASON = "quote does not state the free-care limit as an income limit"
+# Task 7.15a: Oneida (330115) published free care up to 100% of the poverty level from "Sliding
+# Scale 100% 100% 89% 89% ...", whose 100s are discounts (its table gives free care to about 133%),
+# and Holzer (360054) and Grady (360210) read 100 from a discount column too. Asking for "% of the
+# poverty level" in so many words would have dropped 69 published sheets, most of them right
+# ("0% -200% 100% Discount (Full)", "| less than or equal to 200% |", "FPL LEVEL 200% 300%"), so
+# the words around the number decide. The poverty level's words, a little wider than _FPL_WORDS
+# ("the local poverty line", Carle's "FPIG"):
+_POVERTY_WORDS = re.compile(rf"{_FPL_WORDS.pattern}|\bfpig\b|\bpoverty line\b")
+# An at-most comparison; _poverty_text has already read "does not exceed" and "no more than" as
+# "up to", and "at or below", "falls below" and "equal to or less than" end in one of these.
+_AT_MOST = re.compile(r"\bup to\b|\bless than\b|\bunder\b|\bbelow\b")
+_AT_MOST_SIGN = re.compile(r"(?:≤|<=?) ?$")
+_OR_LESS = re.compile(r"\b(?:or|and) (?:less|below|lower|under)\b")
+# The end of a range ("0% - 350%", "0 to 150%", "between 0 and 200%") is a limit ...
+_RANGE_END = re.compile(
+    r"(?:\d+(?:\.\d+)? ?(?:%|percent)? ?(?:-|to|through|thru)"
+    r"|\bbetween \d+(?:\.\d+)? ?(?:%|percent)? and) ?$"
+)
+# ... its start is a floor: "201 - 300%" limits incomes at 300, never at 201.
+_RANGE_GOES_ON = re.compile(r" ?(?:-|to|through|thru) ?\d")
+_BETWEEN_BEFORE = re.compile(r"\bbetween ?$")
+_AND_A_NUMBER = re.compile(r" ?and ?\d")
+# A percentage followed by the help it sizes is how much is written off, never an income: Memorial
+# Hospital, Carthage (141305), published free care up to 100% from "FPL Guidelines 100%
+# Assistance", the column whose incomes are 150% of the guidelines.
+_SIZES_HELP = re.compile(
+    r" ?(?:discount|off\b|write[- ]?off|reduction|adjustment|assistance\b|award"
+    r"|of (?:the |total |all )?(?:charges|bills?|balances?)\b)"
+)
+_PERCENT_SIGN = re.compile(r" ?(?:%|percent\b)")
+INCOME_WORDS_BEFORE = 3
+INCOME_WORDS_AFTER = 6
+# How much text around each occurrence is read: a flattened table can be long, and the rule only
+# ever looks a few words either side.
+INCOME_CONTEXT_CHARS = 200
+
+
+def _ends_within(pattern: re.Pattern[str], before: str, words: int) -> bool:
+    """Whether `pattern` matches in `before` with at most `words` words after it."""
+    return any(len(before[match.end() :].split()) <= words for match in pattern.finditer(before))
+
+
+def _starts_within(pattern: re.Pattern[str], after: str, words: int) -> bool:
+    """Whether `pattern` matches in `after` starting within its first `words` words."""
+    tokens = after.split()
+    match = pattern.search(" ".join(tokens[: words + 1]))
+    return match is not None and match.start() < len(" ".join(tokens[:words]))
+
+
+def _income_limit_at(text: str, start: int, end: int) -> bool:
+    """Whether the number at text[start:end] reads as a limit on household income."""
+    before = text[max(0, start - INCOME_CONTEXT_CHARS) : start]
+    after = text[end : end + INCOME_CONTEXT_CHARS]
+    sign = _PERCENT_SIGN.match(after)
+    rest = after[sign.end() :] if sign else after
+    if _SIZES_HELP.match(rest) or _RANGE_GOES_ON.match(rest):
+        return False
+    if _BETWEEN_BEFORE.search(before) and _AND_A_NUMBER.match(rest):
+        return False
+    return (
+        _starts_within(_POVERTY_WORDS, rest, INCOME_WORDS_AFTER)
+        or _starts_within(_OR_LESS, rest, INCOME_WORDS_AFTER)
+        or _ends_within(_POVERTY_WORDS, before, INCOME_WORDS_BEFORE)
+        or _ends_within(_AT_MOST, before, INCOME_WORDS_BEFORE)
+        or _AT_MOST_SIGN.search(before) is not None
+        or _RANGE_END.search(before) is not None
+    )
+
+
+def states_income_limit(quote: str, value: Decimal) -> bool:
+    """Whether the quote states `value` as a limit on household income: some occurrence of it (a
+    whole number, never a decimal's whole part or a dollar figure) has the poverty level's words
+    within six words after it ("200% of the current year's federal poverty guidelines") or three
+    before it ("FPL LEVEL 200%"), an at-most comparison within three words before it ("less than
+    or equal to 200%", "Federal Poverty Level ≤ 200%") or "or less" within six after it, or ends a
+    range ("0% - 350%"). The start of a range and a percentage of the help ("100% discount",
+    "100% Assistance", "25% of total charges") never count."""
+    text = _poverty_text(quote).replace(",", "")
+    digits = format(Decimal(value).normalize(), "f")
+    return any(
+        _income_limit_at(text, match.start(), match.end())
+        for match in re.finditer(rf"(?<![\d.$]){re.escape(digits)}(?!\.?\d)", text)
+    )
+
+
 # Free care in plain words ("are not billed for services", "will not be charged", "Charity Care at
 # 100%", "100% of charges forgiven", "completely free"); never the amounts-generally-billed cap
 # ("will not be charged more than ...") or a payment plan's terms ("not charged interest").
@@ -740,11 +830,12 @@ def _states_percent_of_poverty_level(text: str, value: Decimal) -> bool:
 
 def widened_span(span: str, document_text: str, value: Decimal) -> str | None:
     """`span` together with the source sentence before or after it (or both), when the wider
-    passage states `value` as a percentage of the poverty level; None otherwise. Models often
-    quote the sentence that grants the discount and leave the limit in its neighbour ("... who
-    fall between 0 - 200% of the Federal Poverty Level. [They] will have a 100% Charity discount
-    processed.", CHRISTUS Spohn). The result is verbatim source text, so the exact-quote rule
-    still applies to it; a bare number in the neighbour (a street address) is not enough."""
+    passage states `value` as a percentage of the poverty level and as an income limit (the rule
+    verify_sheet holds a free-care quote to); None otherwise. Models often quote the sentence that
+    grants the discount and leave the limit in its neighbour ("... who fall between 0 - 200% of
+    the Federal Poverty Level. [They] will have a 100% Charity discount processed.", CHRISTUS
+    Spohn). The result is verbatim source text, so the exact-quote rule still applies to it; a
+    bare number in the neighbour (a street address) is not enough."""
     needle = normalize(span)
     if not needle:
         return None
@@ -758,8 +849,10 @@ def widened_span(span: str, document_text: str, value: Decimal) -> str | None:
             candidate = " ".join(sentences[low : high + 1])
             if len(candidate) > MAX_WIDENED_CHARS:
                 continue
-            if _states_percent_of_poverty_level(candidate, value) and quote_found(
-                candidate, document_text
+            if (
+                _states_percent_of_poverty_level(candidate, value)
+                and states_income_limit(candidate, value)
+                and quote_found(candidate, document_text)
             ):
                 return candidate
     return None
@@ -773,11 +866,11 @@ _FULL_ASSISTANCE = re.compile(r"\bfull (?:financial )?assistance\b|\bfull charit
 def anchored_span(document_text: str, value: Decimal) -> str | None:
     """The one passage of the source (a sentence, or two adjacent ones: a heading and its line)
     that promises free care, mentions the poverty level and names `value` as its only percentage
-    of it; None when there is none. For a model that gives the right limit but quotes a sentence
-    elsewhere in the document (Blessing Hospital, 140015: the definition of "financially
-    indigent" quoted, the 275% limit under "Full Financial Assistance" two paragraphs on). A
-    passage naming several percentages (a flattened table row: 200%, 300%, 400%) is ambiguous
-    and never chosen; the shortest qualifying passage wins."""
+    of it, as an income limit; None when there is none. For a model that gives the right limit but
+    quotes a sentence elsewhere in the document (Blessing Hospital, 140015: the definition of
+    "financially indigent" quoted, the 275% limit under "Full Financial Assistance" two paragraphs
+    on). A passage naming several percentages (a flattened table row: 200%, 300%, 400%) is
+    ambiguous and never chosen; the shortest qualifying passage wins."""
     sentences = [s.strip() for s in _SENTENCE_SPLIT.split(document_text) if s.strip()]
     best: str | None = None
     for index in range(len(sentences)):
@@ -792,7 +885,7 @@ def anchored_span(document_text: str, value: Decimal) -> str | None:
             if _FREE_SENTENCE.search(plain) is None and _FULL_ASSISTANCE.search(plain) is None:
                 continue
             named = {Decimal(found) for found in _FPL_PERCENT.findall(plain)} - {Decimal(100)}
-            if named != {value}:
+            if named != {value} or not states_income_limit(candidate, value):
                 continue
             if (best is None or len(candidate) < len(best)) and quote_found(
                 candidate, document_text
@@ -811,6 +904,13 @@ _POVERTY_LINE = re.compile(
 
 def _is_poverty_line(value: Any, quote: str) -> bool:
     return value == 100 and states_the_poverty_line(quote)
+
+
+def _free_limit_stated(value: Any, quote: str) -> bool:
+    """Whether `quote` can carry a free-care limit of `value`: it states the value as an income
+    limit, or it is the poverty line written without its number. verify_sheet holds the stored
+    quote to this, and trim_quotes looks for a span that meets it, never one that falls short."""
+    return states_income_limit(quote, Decimal(value)) or _is_poverty_line(value, quote)
 
 
 def states_the_poverty_line(quote: str) -> bool:
@@ -835,8 +935,7 @@ def trim_quotes(sheet: ProcedureSheet, documents: dict[str, str]) -> ProcedureSh
             continue
         span = matched_span(cited.quote, text, cited.value)
         if path == "eligibility.free_care_max_fpl" and not (
-            span is not None
-            and (value_in_quote(cited.value, span) or _is_poverty_line(cited.value, span))
+            span is not None and _free_limit_stated(cited.value, span)
         ):
             # The limit is right more often than the quote: first the neighbouring sentence,
             # then the one passage of this document that states exactly this limit.
@@ -896,6 +995,10 @@ def verify_sheet(sheet: ProcedureSheet, documents: dict[str, str]) -> Verificati
             bands_under_another_state(cited.quote or "", sheet.hospital.state, cited.value)
         ):
             report.rejected.append((path, OTHER_STATE_REASON))
+        elif path == "eligibility.free_care_max_fpl" and not _free_limit_stated(
+            cited.value, cited.quote or ""
+        ):
+            report.rejected.append((path, FREE_LIMIT_UNTIED_REASON))
         elif path == "eligibility.free_care_max_fpl" and quotes_assistance_ceiling(
             cited.quote or ""
         ):
