@@ -510,6 +510,33 @@ def test_the_right_site_stays_sure_when_its_page_names_the_place_or_carries_the_
     )
 
 
+def test_a_possessive_saint_name_still_names_the_hospital():
+    # Review of 7.15b: the registry writes "ST JOSEPHS", pages write "St. Joseph's", so the one
+    # distinctive word never matched and the right site lost all its evidence.
+    from waive.atlas.discover import place_unconfirmed
+
+    phoenix = hospital("ST JOSEPHS HOSPITAL AND MEDICAL CENTER", "PHOENIX", "AZ")
+    dignity = hit(
+        "https://www.dignityhealth.org/arizona/locations/stjosephs/patients-and-visitors/"
+        "financial-assistance",
+        "Financial Assistance | St. Joseph\u2019s Hospital and Medical Center | Dignity Health",
+        "St. Joseph's Hospital and Medical Center offers financial assistance to eligible patients.",
+    )
+    assert pick_domain(phoenix, [dignity]) == DomainResult("dignityhealth.org", 0.9, dignity.url)
+    oxnard = hospital("ST JOHNS REGIONAL MEDICAL CENTER", "OXNARD", "CA")
+    st_johns = hit(
+        "https://www.dignityhealth.org/central-coast/locations/stjohnsregional/patients-and-"
+        "visitors/billing",
+        "Billing and Financial Assistance | St. John's Regional Medical Center",
+        "St. John's Regional Medical Center, 1600 N Rose Ave, Oxnard, CA 93030",
+    )
+    assert pick_domain(oxnard, [st_johns]).confidence == 0.9
+    # The same reading holds for the documents' place check, whichever side has the apostrophe.
+    assert place_unconfirmed(phoenix, ["St. Joseph's Hospital, Phoenix, Arizona"]) is None
+    apostrophe = hospital("ST. JOSEPH'S HOSPITAL", "TAMPA", "FL")
+    assert place_unconfirmed(apostrophe, ["St. Josephs Hospital, Florida"]) is None
+
+
 def test_documents_must_name_the_hospitals_state_and_the_hospital_or_its_town():
     # National batch 2: Bellevue Hospital (Ohio) was published from Overlake Medical Center in
     # Bellevue, Washington, and Chilton Medical Center from another New Jersey hospital's site.
