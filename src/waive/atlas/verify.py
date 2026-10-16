@@ -76,9 +76,12 @@ def quote_found(quote: str, document_text: str) -> bool:
 
 
 def _number_in(number: Decimal, quote: str) -> bool:
+    """Whether the quote states `number` itself: never inside a longer number, and never as the
+    whole part of a decimal. MelroseWakefield (220070) published a 65% discount band read from the
+    Tufts table's "Outpatient Discount 65.91%", Lowell General (220063) 63 from "63.28%" (7.15a)."""
     digits = format(number.normalize(), "f")
     haystack = normalize(quote).replace(",", "")
-    return re.search(rf"(?<![\d.]){re.escape(digits)}(?!\d)", haystack) is not None
+    return re.search(rf"(?<![\d.]){re.escape(digits)}(?!\.?\d)", haystack) is not None
 
 
 def looks_serialised(value: Any) -> bool:
@@ -526,7 +529,8 @@ _FREE_SENTENCE = re.compile(
     r"|\bone hundred percent\b|\bfull(?:y)? (?:write[- ]?off|covered|discounted|charity)"
 )
 _FPL_WORDS = re.compile(r"federal poverty|\bfpl\b|\bfpg\b|poverty (?:level|guideline|income)")
-_FPL_PERCENT = re.compile(r"(?<![\d.])(\d{2,3})(?:\.\d+)? ?(?:%|percent)")
+# A percentage read whole, decimals and all: "137.5%" is not a limit of 137 (as in _number_in).
+_FPL_PERCENT = re.compile(r"(?<![\d.])(\d{2,3}(?:\.\d+)?) ?(?:%|percent)")
 # The same, tied to the poverty level by its own words ("200% of the Federal Poverty Level",
 # "250% FPL"): in "allows from 80% to 100% discounting" the 80 is a discount, not an income limit
 # (Adirondack Health, 330079, held on a conflict that was not one).
