@@ -286,6 +286,22 @@ def test_tier_percent_strings_and_ranges_are_parsed():
     assert tiers_of(sheet) == [(Decimal(201), Decimal(400), 60), (Decimal(401), Decimal(500), 25)]
 
 
+def test_a_decimal_discount_is_kept_whole_not_truncated():
+    from waive.atlas.structure import _tiers
+
+    # Review of 7.15b: Chenango (330033) states 83.5%, Berkshire (220046) 46.07%.
+    [tier] = _tiers(
+        [{"min_fpl_exclusive": 200, "max_fpl_inclusive": 250, "discount_percent": "83.5%"}]
+    )
+    assert tier.discount_percent == Decimal("83.5")
+    [tier] = _tiers([{"min_fpl_exclusive": 0, "max_fpl_inclusive": 400, "discount_percent": 46.07}])
+    assert str(tier.discount_percent) == "46.07"
+    [tier] = _tiers(
+        [{"min_fpl_exclusive": 0, "max_fpl_inclusive": 400, "discount_percent": "90.0"}]
+    )
+    assert str(tier.discount_percent) == "90"  # never 9E+1
+
+
 def test_tier_missing_lower_bound_uses_previous_max_or_zero():
     tiers = [
         {"max_fpl_inclusive": 200, "discount_percent": 100},

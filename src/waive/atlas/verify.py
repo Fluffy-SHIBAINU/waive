@@ -75,13 +75,20 @@ def quote_found(quote: str, document_text: str) -> bool:
     return _occurs_at_word_start(squashed_needle, squashed_haystack, haystack, offsets)
 
 
+def _number_pattern(number: Decimal) -> str:
+    """`number` as written, trailing zeros allowed ("$25.00" is 25, "200.00%" is 200, "63.20%" is
+    63.2), never inside a longer number nor as the whole part of a decimal."""
+    digits = format(number.normalize(), "f")
+    zeros = r"0*" if "." in digits else r"(?:\.0+)?"
+    return rf"{re.escape(digits)}{zeros}(?!\.?\d)"
+
+
 def _number_in(number: Decimal, quote: str) -> bool:
     """Whether the quote states `number` itself: never inside a longer number, and never as the
     whole part of a decimal. MelroseWakefield (220070) published a 65% discount band read from the
     Tufts table's "Outpatient Discount 65.91%", Lowell General (220063) 63 from "63.28%" (7.15a)."""
-    digits = format(number.normalize(), "f")
     haystack = normalize(quote).replace(",", "")
-    return re.search(rf"(?<![\d.]){re.escape(digits)}(?!\.?\d)", haystack) is not None
+    return re.search(rf"(?<![\d.]){_number_pattern(number)}", haystack) is not None
 
 
 def looks_serialised(value: Any) -> bool:
@@ -783,10 +790,9 @@ def states_income_limit(quote: str, value: Decimal) -> bool:
     Poverty Level ≤ 200%") or "or less" after it, or tops a band the next one starts just above
     ("150% 100% 151 - 199%"). The start of a range never counts."""
     text = _poverty_text(quote).replace(",", "")
-    digits = format(Decimal(value).normalize(), "f")
     return any(
         _income_limit_at(text, match.start(), match.end())
-        for match in re.finditer(rf"(?<![\d.$]){re.escape(digits)}(?!\.?\d)", text)
+        for match in re.finditer(rf"(?<![\d.$]){_number_pattern(Decimal(value))}", text)
     )
 
 
