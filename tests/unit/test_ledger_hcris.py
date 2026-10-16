@@ -206,8 +206,8 @@ def test_load_cost_reports_keeps_registry_ccns_one_per_year_with_vintage_and_fil
         assert (clinton.uncompensated_care_cost, clinton.total_costs) == (2573112, 91300000)
         assert (clinton.net_patient_revenue, clinton.type_of_control) == (100500000, 2)
         # The same facts in two files: the newest file's vintage and name are the ones stored.
-        assert (
-            clinton.vintage == vintage_of(newest) == "2024-01-01 to 2024-12-31, file of 2026-10-05"
+        assert clinton.vintage == "file of 2026-10-05" and vintage_of(newest).endswith(
+            clinton.vintage
         )
         assert clinton.source_file == "2024.csv"
         assert clinton.loaded_on == TODAY

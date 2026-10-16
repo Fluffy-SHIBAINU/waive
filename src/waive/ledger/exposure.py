@@ -183,7 +183,8 @@ def parse_service_area_csv(path: Path, ccns: set[str]) -> ServiceArea:
 
 
 def acs_vintage(year: int) -> str:
-    return f"ACS 5-year {year - 4}-{year}, table B17024"
+    """The five years the estimate covers; the source name already says ACS and the table."""
+    return f"{year - 4} to {year} estimates"
 
 
 def _acs_cell(value: Any) -> int:

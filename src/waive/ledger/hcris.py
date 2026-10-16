@@ -205,7 +205,7 @@ def load_cost_reports(
             type_of_control=fact.type_of_control,
             hospital_name=fact.hospital_name,
             source_file=source_file,
-            vintage=download.vintage_of(ref),
+            vintage=f"file of {ref.modified}" if ref.modified else download.vintage_of(ref),
             loaded_on=today,
         )
         loaded.add(ccn)

@@ -270,7 +270,7 @@ def test_load_exposure_end_to_end_then_a_rerun_updates_in_place(tmp_path):
         assert (ma.zips_counted, ma.zips_suppressed) == (2, 2)
         assert ma.inpatient_vintage == "2024-01-01 to 2024-12-31, file of 2026-04-23"
         assert ma.service_area_vintage == "2025-01-01 to 2025-12-31, file of 2026-07-06"
-        assert ma.acs_vintage == "ACS 5-year 2020-2024, table B17024"
+        assert ma.acs_vintage == "2020 to 2024 estimates"
         assert ma.loaded_on == TODAY
         ny = rows["330001"]
         assert (ny.discharges, ny.dual_discharges, ny.poor_seniors_served) == (None, None, None)
