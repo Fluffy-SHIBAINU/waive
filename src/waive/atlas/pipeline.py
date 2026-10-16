@@ -173,6 +173,14 @@ def _english_rules_and_translations(
     return english_rules, translations
 
 
+def _translations_to_reject(sources_with_text: list[tuple[SourceDoc, str]]) -> frozenset[str]:
+    """The web documents no field may be quoted from: the translations, while a web document in
+    English states the income rules (the rule _set_aside_translations applies before structuring,
+    held to stored sheets by verify_sheet's TRANSLATION_REASON)."""
+    english_rules, translations = _english_rules_and_translations(sources_with_text)
+    return frozenset(source.id for source, _ in translations) if english_rules else frozenset()
+
+
 ENGLISH_POLICY_MISSING = "english_policy_missing"
 
 
@@ -813,11 +821,11 @@ def recheck_sheets(session: Session, state: str | None = None) -> list[Recheck]:
         if latest is None:
             continue
         sheet = latest[0]
-        texts = {source.id: text for source, text in repo.sources_for(session, row.ccn)}
-        rejected = list(verify_sheet(sheet, texts).rejected)
-        if sheet.status is SheetStatus.PUBLISHED and (
-            unplaced := _unplaced(row, repo.sources_for(session, row.ccn))
-        ):
+        sources = repo.sources_for(session, row.ccn)
+        texts = {source.id: text for source, text in sources}
+        report = verify_sheet(sheet, texts, _translations_to_reject(sources))
+        rejected = list(report.rejected)
+        if sheet.status is SheetStatus.PUBLISHED and (unplaced := _unplaced(row, sources)):
             rejected.append(("sheet", f"{PLACE_UNCONFIRMED_REASON}: {unplaced}"))
         if sheet.status is SheetStatus.PUBLISHED and (unconfirmed := _unconfirmed_domain(row)):
             rejected.append(("sheet", f"{DOMAIN_UNCONFIRMED_REASON}: {unconfirmed}"))
@@ -848,14 +856,11 @@ def withdraw_rejected(
         sheet = latest[0]
         if published_only and sheet.status is not SheetStatus.PUBLISHED:
             continue
-        texts = {source.id: text for source, text in repo.sources_for(session, row.ccn)}
+        sources = repo.sources_for(session, row.ccn)
+        texts = {source.id: text for source, text in sources}
         grounded, pruned = _ground(sheet, texts)
-        report = verify_sheet(grounded, texts)
-        unplaced = (
-            _unplaced(row, repo.sources_for(session, row.ccn))
-            if sheet.status is SheetStatus.PUBLISHED
-            else None
-        )
+        report = verify_sheet(grounded, texts, _translations_to_reject(sources))
+        unplaced = _unplaced(row, sources) if sheet.status is SheetStatus.PUBLISHED else None
         unconfirmed = _unconfirmed_domain(row) if sheet.status is SheetStatus.PUBLISHED else None
         if not pruned and not report.rejected and not unplaced and not unconfirmed:
             continue
@@ -987,9 +992,10 @@ def confirm_domain(session: Session, ccn: str, domain: str) -> BuildResult:
         result.outcome = "published" if sheet.status is SheetStatus.PUBLISHED else "held"
         result.version = sheet.version
         return result
-    texts = {source.id: text for source, text in repo.sources_for(session, ccn)}
+    sources = repo.sources_for(session, ccn)
+    texts = {source.id: text for source, text in sources}
     grounded, pruned = _ground(sheet, texts)
-    report = verify_sheet(grounded, texts)
+    report = verify_sheet(grounded, texts, _translations_to_reject(sources))
     result.notes.extend(pruned)
     result.notes.extend(f"{path}: {reason}" for path, reason in report.rejected)
     if pruned or report.rejected:

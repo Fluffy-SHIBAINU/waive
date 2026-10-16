@@ -1131,7 +1131,7 @@ TAGALOG_POLICY = (
     "OSPITAL. Ayon sa pilosopiya, misyon, at pangunahing mga halaga ng Baptist Health, ang aming "
     "polisiya ay magbigay ng Emergency at Medically Necessary Care para sa lahat ng mga pasyente. "
     "Buong Pinansyal na Tulong: Kabuuang kita ng pamilya ay nasa 200% o mas mababa ng Pederal na "
-    "Antas ng Kahirapan (FPL).\n"
+    "Antas ng Kahirapan (FPL).\nTumawag sa 617-555-0100 mula Lunes hanggang Biyernes.\n"
 )
 TRANSLATION_NOTE = (
     "1 stored document is not in English (fap-tagalog); left out of the structurer while an "
@@ -1209,6 +1209,57 @@ def test_a_translation_stays_while_no_english_document_states_the_income_rules()
             if i.kind == "english_policy_missing"
         ]
         assert len(items) == 1 and items[0].detail["translations"] == ["fap-tagalog"]
+
+
+def test_a_field_quoted_from_a_translation_is_withdrawn_while_an_english_policy_is_stored():
+    # Review of 7.15b: 16 published sheets cite a translation while an English document stating
+    # the income rules is stored (Anna Jaques 220029 in Italian, four fields; Edward 140231 in
+    # Japanese; Jefferson Northeast 390115 in Vietnamese). recheck lists such a field and
+    # withdraw drops it at no cost; a rebuild then quotes the English document.
+    from waive.atlas.pipeline import recheck_sheets, withdraw_rejected
+    from waive.atlas.schema import Cited
+    from waive.atlas.verify import TRANSLATION_REASON
+
+    engine = make_engine_with_hospital(REAL_HOSPITAL)
+    with session_scope(engine) as session:
+        build_hospital(session, FakeGateway(), FakeAI(), "220031", TODAY)
+        translation = store_translation(session, "220031")
+        sheet, _ = repo.latest_sheet(session, "220031")
+        phone = Cited(
+            value="617-555-0100",
+            quote="Tumawag sa 617-555-0100 mula Lunes hanggang Biyernes.",
+            source_id=translation.id,
+            checked_on=TODAY,
+        )
+        quoted = sheet.model_copy(
+            update={
+                "contacts": sheet.contacts.model_copy(update={"phone": phone}),
+                "sources": [*sheet.sources, translation],
+                "version": 2,
+            }
+        )
+        repo.add_sheet_version(session, quoted, {"contacts.phone": {"old": None}})
+        [entry] = recheck_sheets(session, "MA")
+        assert entry.rejected == [("contacts.phone", TRANSLATION_REASON)]
+        [result] = withdraw_rejected(session, "MA")
+        assert result.outcome == "published"
+        latest, _ = repo.latest_sheet(session, "220031")
+        assert latest.contacts.phone is None
+        assert latest.eligibility.free_care_max_fpl.value == 250
+        # Without an English document that states the income rules, the translation's field
+        # stands (the build files an english_policy_missing item instead).
+        for source, _ in repo.sources_for(session, "220031"):
+            if source.id != translation.id:
+                repo.unlink_source(session, "220031", source.id)
+        store_thin_page(session, "220031")
+        repo.add_sheet_version(
+            session, quoted.model_copy(update={"version": 4}), {"contacts.phone": {"old": None}}
+        )
+        assert all(
+            reason != TRANSLATION_REASON
+            for entry in recheck_sheets(session, "MA")
+            for _, reason in entry.rejected
+        )
 
 
 def test_a_siblings_translation_is_kept_from_the_structurer_on_both_sharing_paths():
