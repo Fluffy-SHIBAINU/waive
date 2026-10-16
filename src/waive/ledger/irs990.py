@@ -217,11 +217,12 @@ def _extract_with_unzip(zip_path: str, member: str, out) -> None:
     if not MEMBER_NAME.match(member):
         raise ValueError(f"not a return member name: {member!r}")
     try:
-        subprocess.run(
+        # No `check`: unzip exits 3 over the stray bytes these batches carry in their central
+        # directory while still writing the member whole, so the bytes written are the test.
+        done = subprocess.run(
             ["unzip", "-p", zip_path, member],
             stdout=out,
             stderr=subprocess.DEVNULL,
-            check=True,
             timeout=UNZIP_TIMEOUT,
         )
     except FileNotFoundError as error:
@@ -229,6 +230,12 @@ def _extract_with_unzip(zip_path: str, member: str, out) -> None:
             f"{Path(zip_path).name} uses a compression Python cannot read and `unzip` is not "
             "installed; install Info-ZIP unzip and run again"
         ) from error
+    out.flush()
+    if out.tell() == 0:
+        raise RuntimeError(
+            f"unzip wrote nothing for {member} from {Path(zip_path).name} "
+            f"(exit status {done.returncode})"
+        )
 
 
 def _extract(archive: zipfile.ZipFile, member: str, target: Path) -> Path:

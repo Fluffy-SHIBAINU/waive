@@ -770,10 +770,10 @@ def test_a_deflate64_member_is_read_through_the_system_unzip(tmp_path, monkeypat
     def refuse(self, name, *args, **kwargs):
         raise NotImplementedError("That compression method is not supported")
 
-    def fake_unzip(command, stdout, stderr, check, timeout):
+    def fake_unzip(command, stdout, stderr, timeout):
         calls.append(command)
         stdout.write(b"<Return>from unzip</Return>")
-        return subprocess.CompletedProcess(command, 0)
+        return subprocess.CompletedProcess(command, 3)  # unzip grumbles about stray bytes
 
     monkeypatch.setattr(zipfile.ZipFile, "open", refuse)
     monkeypatch.setattr(irs990.subprocess, "run", fake_unzip)
@@ -796,3 +796,20 @@ def test_without_unzip_the_deflate64_batch_fails_with_a_clear_message(tmp_path, 
     monkeypatch.setattr(irs990.subprocess, "run", missing)
     with pytest.raises(RuntimeError, match="unzip"):
         irs990._extract_with_unzip(str(tmp_path / "x.zip"), "202601149339300000_public.xml", None)
+
+
+def test_an_unzip_that_writes_nothing_is_an_error_not_an_empty_return(tmp_path, monkeypatch):
+    import subprocess
+
+    from waive.ledger import irs990
+
+    monkeypatch.setattr(
+        irs990.subprocess,
+        "run",
+        lambda command, stdout, stderr, timeout: subprocess.CompletedProcess(command, 9),
+    )
+    with (
+        (tmp_path / "x.part").open("wb") as out,
+        pytest.raises(RuntimeError, match="exit status 9"),
+    ):
+        irs990._extract_with_unzip(str(tmp_path / "x.zip"), "202601149339300000_public.xml", out)
