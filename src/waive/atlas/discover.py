@@ -9,7 +9,7 @@ from sqlalchemy.orm import Session
 
 from waive.atlas import repo
 from waive.atlas.schema import HospitalRef
-from waive.atlas.states import US_STATES, states_named
+from waive.atlas.states import STATE_NAME, US_STATES, states_named
 from waive.atlas.tavily_gateway import SearchHit, TavilyGateway
 
 DIRECTORY_DOMAINS = frozenset(
@@ -76,6 +76,23 @@ DIRECTORY_DOMAINS = frozenset(
         "payerprice.com",
         "causeiq.com",
         "merriam-webster.com",
+        # Task 7.15a: directories, an association, a newsroom and a staffing firm the national
+        # batches took for hospital sites. lownhospitalsindex.org (three OSF hospitals, 140012,
+        # 140179 and 141310), hospitalbills411.com (Keck Hospital of USC, 050696),
+        # healthbillcentral.com (Loyola, 140276, and the Hospital of the University of
+        # Pennsylvania, 390111) and brightbillapp.com (OSF Saint Elizabeth, 140110) list hospitals;
+        # calhospital.org is the California Hospital Association (for Community Memorial Ojai,
+        # 051334), njspotlightnews.org a newsroom (Heights University Hospital, 310016),
+        # communityplatform.us a county resource directory (CHRISTUS Santa Rosa, 450237) and
+        # vituity.com a physician staffing firm (Memorial Hospital Los Banos, 050528).
+        "lownhospitalsindex.org",
+        "hospitalbills411.com",
+        "healthbillcentral.com",
+        "brightbillapp.com",
+        "calhospital.org",
+        "njspotlightnews.org",
+        "communityplatform.us",
+        "vituity.com",
     }
 )
 # Government hosts (illinois.gov, paauditor.gov, mass.gov, medicare.gov) publish records about
@@ -104,6 +121,9 @@ GENERIC_WORDS = frozenset(
     }
 )
 MIN_CONFIDENCE = 0.8
+# What a page that merely mentions the hospital in its body is worth (a page title naming it, or
+# its phone on the page, is worth 1.0).
+MENTION_EVIDENCE = 0.3
 # A domain an admin confirmed in the console (or set by hand as known to be right): the website
 # and place checks below stand down for it.
 CONFIRMED_CONFIDENCE = 1.0
@@ -141,27 +161,53 @@ def evidence_tokens(name: str) -> set[str]:
     """The words a page must carry to name the hospital: its distinctive tokens, or, when fewer
     than two are left ("Akron General Medical Center" keeps only "akron"), every word of four
     letters or more, so a children's hospital in the same town does not pass on the town's name
-    alone (360027, task 7.9)."""
+    alone (360027, task 7.9). The generic words only add to the distinctive one: _names_hospital
+    wants that one too (7.15a: "community" and "hospital" stood in for "bernardino")."""
     tokens = name_tokens(name)
     if len(tokens) >= 2:
         return tokens
     return {w for w in re.findall(r"[a-z0-9]+", name.lower()) if len(w) >= 4}
 
 
+def _names_hospital(hospital: HospitalRef, text: str) -> bool:
+    """Whether lower-case `text` names the hospital: two of its evidence tokens, among them every
+    distinctive word of a name that has fewer than two. Community Hospital of San Bernardino
+    (050089) was matched to Mountains Community Hospital's page at confidence 0.9 (7.15a)."""
+    tokens = evidence_tokens(hospital.name)
+    distinctive = name_tokens(hospital.name)
+    if not tokens or (len(distinctive) < 2 and not all(token in text for token in distinctive)):
+        return False
+    return sum(token in text for token in tokens) >= min(2, len(tokens))
+
+
+def _phone_on(hospital: HospitalRef, hit: SearchHit) -> bool:
+    digits = re.sub(r"\D", "", hospital.phone or "")
+    return bool(digits) and digits in re.sub(r"\D", "", f"{hit.title} {hit.content}")
+
+
+def _hit_text(hit: SearchHit) -> str:
+    return f"{hit.title} {hit.content} {hit.url}"
+
+
+def _names_city(hospital: HospitalRef, text: str) -> bool:
+    """Whether `text` names the hospital's town as whole words ("Dover" is not in "Andover")."""
+    city = " ".join(hospital.city.lower().split())
+    return bool(city) and re.search(rf"\b{re.escape(city)}\b", text.lower()) is not None
+
+
 def _evidence(hospital: HospitalRef, hit: SearchHit) -> float:
     """1.0 when the page title names the hospital or its phone appears; 0.3 for a mere mention
-    in the page body (a referral or news page), which is not proof of an official site."""
-    tokens = evidence_tokens(hospital.name)
-    needed = min(2, len(tokens))
-    title, body = hit.title.lower(), hit.content.lower()
-    phone_digits = re.sub(r"\D", "", hospital.phone or "")
-    has_phone = bool(phone_digits) and phone_digits in re.sub(
-        r"\D", "", f"{hit.title} {hit.content}"
-    )
-    if has_phone or (tokens and sum(t in title for t in tokens) >= needed):
+    in the page body (a referral or news page), which is not proof of an official site. A name
+    with no distinctive word at all ("COMMUNITY MEDICAL CENTER") is named by a title only when
+    the hit names the hospital's town too: Fresno's Community Medical Centers is not Community
+    Medical Center in Toms River (310041, 7.15a)."""
+    if _phone_on(hospital, hit):
         return 1.0
-    if tokens and sum(t in body for t in tokens) >= needed:
-        return 0.3
+    title_can_prove = bool(name_tokens(hospital.name)) or _names_city(hospital, _hit_text(hit))
+    if title_can_prove and _names_hospital(hospital, hit.title.lower()):
+        return 1.0
+    if _names_hospital(hospital, hit.content.lower()):
+        return MENTION_EVIDENCE
     return 0.0
 
 
@@ -193,11 +239,13 @@ def place_unconfirmed(hospital: HospitalRef, texts: Iterable[str]) -> str | None
     return None
 
 
-# Discovery is sure of a site (0.9) when a page title names the hospital or a page carries its
-# phone; otherwise it guesses (0.6). Of about 20 sheets published from a guess, three were another
-# hospital's website on day one (7.11a: Bellevue Hospital OH from Overlake's in Bellevue,
-# Washington; Bryn Mawr from bonsecours.com; St. Joseph Bethpage from St. Joseph's Health in
-# Syracuse). Decision 7.9a-1: such a sheet is held until an admin confirms the site.
+# Discovery is sure of a site (0.9) when a page title names the hospital and the hit names its
+# place, or a page carries its phone; otherwise it guesses (0.6). Of about 20 sheets published from
+# a guess, three were another hospital's website on day one (7.11a: Bellevue Hospital OH from
+# Overlake's in Bellevue, Washington; Bryn Mawr from bonsecours.com; St. Joseph Bethpage from St.
+# Joseph's Health in Syracuse). Decision 7.9a-1: such a sheet is held until an admin confirms the
+# site. A title alone was not enough either (7.15a): "Financial Assistance | Good Samaritan
+# Hospital" is San Jose's page, not Cincinnati's.
 DOMAIN_UNCONFIRMED_REASON = (
     "the hospital's website was matched with low confidence and is not confirmed yet"
 )
@@ -220,21 +268,76 @@ def rejected_domains(session: Session, ccn: str) -> frozenset[str]:
     return frozenset(item.detail["cleared"] for item in items if item.detail.get("cleared"))
 
 
+# Task 7.15a: discovery chose same-named hospitals elsewhere, at confidence 0.9. Good Samaritan
+# Hospital in Cincinnati (360134) got goodsamsanjose.com, whose title beat TriHealth's page with
+# the Cincinnati address; Mission Regional in Mission, Texas (450176) got Mission Health in
+# Asheville, Huntington Hospital on Long Island (330045) Cabell Huntington in West Virginia, and
+# North Shore University Hospital in Manhasset (330106) NorthShore's page, which names Illinois.
+# A hit naming other states but not the hospital's is skipped, and one that names the hospital
+# (even in passing) and its place scores PLACE_BONUS more.
+PLACE_BONUS = 0.8
+# A state's name used for a street is an address, not the state ("85 Washington Street").
+_STATE_STREET = re.compile(
+    rf"\b(?:{STATE_NAME}) (?:street|st|avenue|ave|road|rd|boulevard|blvd|drive|dr|lane|ln|way"
+    r"|place|pl|court|ct|parkway|pkwy|pike|square|sq|terrace)\b"
+)
+
+
+def _states_in(hospital: HospitalRef, text: str) -> tuple[bool, set[str]]:
+    """Whether `text` names the hospital's state, and which other states it names: written out,
+    or the hospital's own as its code after a comma or before a ZIP ("Cincinnati, OH", "OH 45220")
+    as place_unconfirmed reads it. A state inside the hospital's own name or town ("Kansas City",
+    "Sierra Nevada Memorial") or used for a street is not one the page names."""
+    state = hospital.state.upper()
+    flat = _STATE_STREET.sub(" ", " ".join(text.lower().split()))
+    named = states_named(flat) - states_named(f"{hospital.name} {hospital.city}")
+    own = state in named or re.search(rf",\s*{state}\b|\b{state}\s+\d{{5}}\b", text) is not None
+    return own, named - {state}
+
+
+def names_place(hospital: HospitalRef, hit: SearchHit) -> bool:
+    """Whether a hit names where the hospital is: its state, or its town when the town's words
+    are none of the hospital's name tokens. Huntington Hospital is named for its town, so every
+    Huntington Hospital's page names "Huntington"; Mission Regional in Mission likewise."""
+    text = _hit_text(hit)
+    if _states_in(hospital, text)[0]:
+        return True
+    city_words = set(re.findall(r"[a-z0-9]+", hospital.city.lower()))
+    return not city_words & name_tokens(hospital.name) and _names_city(hospital, text)
+
+
+def names_only_other_states(hospital: HospitalRef, hit: SearchHit) -> bool:
+    """Whether a hit names one or more states, none of them the hospital's."""
+    own, other = _states_in(hospital, _hit_text(hit))
+    return bool(other) and not own
+
+
 def pick_domain(
     hospital: HospitalRef, hits: list[SearchHit], rejected: Iterable[str] = ()
 ) -> DomainResult | None:
+    """The best hit's site, never a directory, an asset host (cloudinary.com, given to Mercy
+    Harvard, 141335, holds several health systems' PDFs) or a site an admin rejected. Sure (0.9)
+    only when the title names the hospital and the hit names its place, or the phone matches."""
+    from waive.atlas.fetch import is_asset_host  # fetch imports host_of from this module
+
     refused = frozenset(rejected)
     best: DomainResult | None = None
     best_score = -1.0
     for hit in hits:
         host = host_of(hit.url)
-        if not host or is_directory(host) or host in refused:
+        if not host or is_directory(host) or is_asset_host(hit.url) or host in refused:
+            continue
+        if names_only_other_states(hospital, hit):
             continue
         evidence = _evidence(hospital, hit)
-        score = hit.score + evidence
+        placed = names_place(hospital, hit)
+        score = (
+            hit.score + evidence + (PLACE_BONUS if evidence >= MENTION_EVIDENCE and placed else 0)
+        )
         if score > best_score:
             best_score = score
-            best = DomainResult(host, 0.9 if evidence >= 1.0 else 0.6, hit.url)
+            sure = evidence >= 1.0 and (placed or _phone_on(hospital, hit))
+            best = DomainResult(host, 0.9 if sure else 0.6, hit.url)
     return best
 
 
