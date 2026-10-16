@@ -1211,6 +1211,33 @@ def test_a_translation_stays_while_no_english_document_states_the_income_rules()
         assert len(items) == 1 and items[0].detail["translations"] == ["fap-tagalog"]
 
 
+def test_a_hospitals_own_set_aside_translation_is_never_recorded_as_shared_from_a_sibling():
+    # Review of 7.15b: Baptist Beaches and Nassau (100117, 100140) share their Tagalog policy. When
+    # the second pass borrows from the sibling, the hospital's own translation, set aside on the
+    # first pass, must not come back as the sibling's document.
+    engine = make_engine_with_hospital(HOSPITAL, SIBLING)
+    with session_scope(engine) as session:
+        build_hospital(session, FakeGateway(), FakeAI(), "229999", TODAY)
+        store_translation(session, "229999")
+        repo.link_source(session, "220031", "fap-tagalog")
+        english = "Financial assistance is based on the Federal Poverty Guidelines. Call us. " * 3
+        page = SourceDoc(
+            id="billing-real",
+            kind=SourceKind.HOSPITAL_WEB,
+            url="https://www.example.org/real/billing",
+            title="Billing | Real General",
+            fetched_on=TODAY,
+            sha256="6" * 64,
+        )
+        repo.save_source(session, page, english, "220031")
+        result = build_hospital(
+            session, FakeGateway(), GroundedAI(), "220031", TODAY, reuse_sources=True
+        )
+        assert result.outcome == "published"
+        shared = review_detail(session, "220031", "shared_sources")["sources"]
+        assert shared and "fap-tagalog" not in shared
+
+
 def test_a_field_quoted_from_a_translation_is_withdrawn_while_an_english_policy_is_stored():
     # Review of 7.15b: 16 published sheets cite a translation while an English document stating
     # the income rules is stored (Anna Jaques 220029 in Italian, four fields; Edward 140231 in
