@@ -1183,9 +1183,16 @@ def test_a_covered_provider_list_lands_on_the_sheet():
         )
     )
     sheet, skipped = draft_to_sheet(draft, SAMPLE.hospital, [SAMPLE.sources[0]], TODAY)
+    # Only the provider the quote names survives: a hallucinated entry would otherwise become
+    # a cited "covered" reason the policy text does not support.
     assert skipped == []
-    assert sheet.coverage.covered_providers.value == [
-        "Example Emergency Physicians, P.A.",
-        "Example Anesthesia Associates",
-    ]
+    assert sheet.coverage.covered_providers.value == ["Example Emergency Physicians, P.A."]
     assert "covered_providers" in SYSTEM_PROMPT
+    unnamed = SheetDraft(
+        covered_providers=field(["Harbor Hospitalists"], "providers covered by this policy: none")
+    )
+    sheet, skipped = draft_to_sheet(unnamed, SAMPLE.hospital, [SAMPLE.sources[0]], TODAY)
+    assert sheet.coverage.covered_providers is None
+    assert skipped == [
+        "coverage.covered_providers: none of the listed providers is named in the quote"
+    ]

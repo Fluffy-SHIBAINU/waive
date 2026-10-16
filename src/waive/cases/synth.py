@@ -86,6 +86,20 @@ def _font(size: int) -> ImageFont.ImageFont:
     return ImageFont.load_default(size=size)
 
 
+def statement_rows(truth: BillTruth, rng: random.Random) -> list[tuple[str, str]]:
+    """The label/value lines printed on a statement; an outside payee adds its remit-to line."""
+    rows = [
+        ("Statement date", truth.statement_date.strftime("%m/%d/%Y")),
+        ("Account number", truth.account_reference),
+        ("Patient", truth.patient_name),
+        ("Insurance payments", "$0.00" if rng.random() < 0.5 else f"${rng.randrange(100, 900)}.00"),
+        ("AMOUNT DUE", f"${truth.amount_due:,.2f}"),
+    ]
+    if truth.payee_kind != "hospital_facility" and truth.payee_name:
+        rows.append(("Remit to", truth.payee_name))
+    return rows
+
+
 def render_bill(
     truth: BillTruth, rng: random.Random, layout: int, rotate_deg: float, blur: float
 ) -> bytes:
@@ -105,15 +119,7 @@ def render_bill(
         draw.text((header_x, 160), "Patient Financial Services", fill="black", font=body)
     draw.text((header_x, 205), f"Phone: {truth.hospital_phone}", fill="black", font=body)
     draw.text((100, 330), "STATEMENT", fill="black", font=big)
-    rows = [
-        ("Statement date", truth.statement_date.strftime("%m/%d/%Y")),
-        ("Account number", truth.account_reference),
-        ("Patient", truth.patient_name),
-        ("Insurance payments", "$0.00" if rng.random() < 0.5 else f"${rng.randrange(100, 900)}.00"),
-        ("AMOUNT DUE", f"${truth.amount_due:,.2f}"),
-    ]
-    if outside:
-        rows.append(("Remit to", truth.payee_name))
+    rows = statement_rows(truth, rng)
     y = 430
     for label, value in rows:
         draw.text((100, y), label, fill="black", font=body)

@@ -6,7 +6,7 @@ from decimal import Decimal
 from enum import StrEnum
 from typing import Any
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 
 from waive.ai.client import AIClient
 
@@ -66,6 +66,22 @@ class BillExtract(BaseModel):
     payee_kind: PayeeKind | None = None
     payee_name: str | None = None
     collection_notice: bool = False
+
+    @field_validator("payee_kind", mode="before")
+    @classmethod
+    def _known_payee_kind(cls, value: Any) -> Any:
+        """An off-list label from the reader ("dentist") must not void the whole bill read:
+        it is some other business, so OTHER; blank means unread."""
+        if value is None or isinstance(value, PayeeKind):
+            return value
+        text = str(value).strip().lower().replace(" ", "_").replace("-", "_")
+        if not text:
+            return None
+        try:
+            return PayeeKind(text)
+        except ValueError:
+            return PayeeKind.OTHER
+
     collection_notice_date: date | None = None
     confidence: float = Field(default=0.5, ge=0.0, le=1.0)
 

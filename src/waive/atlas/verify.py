@@ -432,6 +432,7 @@ PROGRAM_GENERIC_WORDS = frozenset(
     }
 )  # fmt: skip
 MAX_PROGRAM_CHARS = 60
+MAX_PROVIDER_CHARS = 120
 # A criterion copied as a program ("Individual is self-identified as homeless.").
 _SENTENCE_SHAPED = re.compile(r"\b(?:is|are|was|were|has|have|will|may|must)\b|\.$")
 
@@ -470,10 +471,25 @@ def supported_programs(value: list[str], quote: str) -> list[str]:
     return kept
 
 
+def supported_providers(value: list[str], quote: str) -> list[str]:
+    """The listed covered providers the quote names (task 9.12): a provider the passage does
+    not mention would otherwise become a cited "covered" answer for a physician group."""
+    text = normalize(quote)
+    kept = [
+        item
+        for item in dict.fromkeys(value)
+        if len(item) <= MAX_PROVIDER_CHARS and normalize(item) in text
+    ]
+    if not kept:
+        raise ValueError("none of the listed providers is named in the quote")
+    return kept
+
+
 LIST_SUPPORT: dict[str, Callable[[Any, str], list[Any]]] = {
     "apply.documents_required": supported_doc_types,
     "apply.submit_methods": supported_submit_methods,
     "programs.presumptive": supported_programs,
+    "coverage.covered_providers": supported_providers,
 }
 LIST_REASON = "quote does not name every listed item"
 

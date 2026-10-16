@@ -299,7 +299,7 @@ def test_the_household_step_asks_about_a_medicaid_or_qmb_card_with_big_buttons()
     base = f"/s/{links.senior_token}"
     client.post(f"{base}/bill", files=photo())
     page = client.post(f"{base}/confirm", data={"answer": "yes"}, follow_redirects=True).text
-    assert "Do you have a Medicaid, MassHealth or QMB card?" in page
+    assert "Do you have MassHealth or a QMB card?" in page
     for label in ("Yes, MassHealth", "Yes, QMB", "SNAP only", "No, or not sure"):
         assert label in page
     assert page.count('name="programs"') == 4
@@ -338,7 +338,7 @@ def test_a_physician_group_bill_says_the_policy_does_not_cover_it_and_offers_a_r
     client.post(f"{base}/confirm", data={"answer": "yes"})
     client.post(f"{base}/household", data={"size": "1", "programs": "none"})
     result = client.post(f"{base}/income", files=photo(), follow_redirects=True).text
-    assert "policy does not cover this bill" in result
+    assert "policy likely does not cover this bill" in result
     assert "Example Emergency Physicians" in result and "their own financial assistance" in result
     assert "Good news" not in result
     client.post(f"{caregiver}/approve")
@@ -361,3 +361,32 @@ def test_an_ambulance_bill_points_to_ship_and_makes_no_packet():
     form = client.get(f"{caregiver}/form").text
     assert "1-877-839-2675" in form and "Download the packet" not in form
     assert client.get(f"{caregiver}/packet.pdf").status_code == 404
+
+
+def test_the_household_step_keeps_only_the_offered_program_answers():
+    client, links = seeded_client()
+    base = f"/s/{links.senior_token}"
+    deps = client.app.state.deps
+    client.post(f"{base}/bill", files=photo())
+    client.post(f"{base}/confirm", data={"answer": "yes"})
+    # Untrusted form text never reaches the sealed case; a padded real answer still counts.
+    client.post(f"{base}/household", data={"size": "1", "programs": "Medicare,<b>x</b>"})
+    with session_scope(deps.engine) as session:
+        sealed = deps.cipher.decrypt(session.get(CaseRow, links.case_id).sealed)
+        assert sealed["household"]["programs"] == []
+    result = client.post(
+        f"{base}/household", data={"size": "1", "programs": " QMB "}, follow_redirects=True
+    )
+    assert "not yours to pay" in result.text
+
+
+def test_the_review_page_labels_the_ambulance_approve_button():
+    ai = FakeAI(payee_kind="ambulance", payee_name="Boston EMS")
+    client, links = seeded_client(ai)
+    base = f"/s/{links.senior_token}"
+    client.post(f"{base}/bill", files=photo())
+    client.post(f"{base}/confirm", data={"answer": "yes"})
+    client.post(f"{base}/household", data={"size": "1", "programs": "none"})
+    client.post(f"{base}/income", files=photo())
+    review = client.get(f"/c/{links.caregiver_token}").text
+    assert "Looks right, show me what to do" in review

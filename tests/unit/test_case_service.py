@@ -539,3 +539,33 @@ def test_a_physician_group_on_the_covered_provider_list_gets_the_normal_answer(c
     assert shown.tier is Tier.FREE and shown.next_step == "fap"
     assert shown.result.reasons[0].field_path == "coverage.covered_providers"
     assert shown.deadlines is not None
+
+
+def test_an_approved_case_stays_approved_when_the_answer_moves_off_the_sheet(ctx):
+    links = start_case(ctx, "MA")
+    confirm_bill(ctx, links.case_id, BILL, ccn="229999")
+    assert set_household(ctx, links.case_id, 1, Decimal("22800"), ()).tier is Tier.FREE
+    approve(ctx, links.case_id)
+    assert ctx.session.get(CaseRow, links.case_id).prediction is not None
+    shown = set_household(ctx, links.case_id, 1, Decimal("22800"), ("QMB",), allow_approved=True)
+    assert shown.tier is Tier.NOT_OWED and shown.status == "approved"
+    # The sheet prediction no longer describes the shown answer: nothing for triage to test.
+    assert ctx.session.get(CaseRow, links.case_id).prediction is None
+
+
+def test_an_approved_needs_info_case_is_not_demoted_when_income_arrives(ctx):
+    links = start_case(ctx, "MA")
+    confirm_bill(ctx, links.case_id, BILL, ccn="229999")
+    assert set_household(ctx, links.case_id, 1, None, ()).tier is Tier.NEEDS_INFO
+    approve(ctx, links.case_id)  # "Make my form without it"
+    shown = set_income(ctx, links.case_id, Decimal("22800"), allow_approved=True)
+    assert shown.tier is Tier.FREE and shown.status == "approved"
+
+
+def test_a_card_holder_with_an_outside_payee_is_told_who_must_cancel(ctx):
+    links = start_case(ctx, "MA")
+    bill = {**BILL, "payee_kind": "physician_group", "payee_name": "Example Emergency Physicians"}
+    confirm_bill(ctx, links.case_id, bill, ccn="229999")
+    shown = set_household(ctx, links.case_id, 1, None, ("QMB",))
+    assert shown.tier is Tier.NOT_OWED and shown.payee_name == "Example Emergency Physicians"
+    assert "tells Example Emergency Physicians to cancel" in shown.senior_text

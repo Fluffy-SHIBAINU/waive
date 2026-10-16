@@ -27,6 +27,7 @@ from waive.atlas.verify import (
     quotes_assistance_ceiling,
     supported_doc_types,
     supported_programs,
+    supported_providers,
     supported_submit_methods,
 )
 from waive.rules.deadlines import MIN_ECA_WAIT_DAYS
@@ -561,6 +562,7 @@ QUOTE_FILTERS: dict[str, Callable[[Any, str], Any]] = {
     "apply.documents_required": supported_doc_types,
     "apply.submit_methods": supported_submit_methods,
     "programs.presumptive": supported_programs,
+    "coverage.covered_providers": supported_providers,
 }
 
 

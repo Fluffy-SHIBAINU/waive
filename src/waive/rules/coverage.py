@@ -1,6 +1,7 @@
 """Two checks before the hospital's income rules (task 9.12, research 2026-10-16 pains 5, 12, 13):
 does federal law forbid this bill at all, and does the hospital's policy cover this payee."""
 
+import re
 from dataclasses import dataclass
 from enum import StrEnum
 
@@ -44,9 +45,10 @@ class CostSharingRule:
 COST_SHARING_RULE = CostSharingRule(
     tier=Tier.NOT_OWED,
     text=(
-        "People enrolled in the Qualified Medicare Beneficiary program or Medicaid cannot be "
-        "billed Medicare deductibles, coinsurance or copayments; the provider must accept the "
-        "Medicare and Medicaid payments as payment in full."
+        "If this balance is Medicare or Medicaid cost-sharing for a covered visit, federal law "
+        "does not allow billing it to someone enrolled in the Qualified Medicare Beneficiary "
+        "program or Medicaid: the provider must accept the Medicare and Medicaid payments as "
+        "payment in full."
     ),
     quote=(
         "Social Security Act §1902(n)(3)(B), 42 U.S.C. 1396a(n)(3)(B) (QMB balance-billing "
@@ -91,15 +93,28 @@ OUTSIDE_FAP = frozenset(
 )
 COVERED_PATH = "coverage.covered_providers"
 MATCH_THRESHOLD = 85
+# Corporate suffixes and punctuation differ between a bill and a policy list; the name does not.
+_SUFFIXES = re.compile(
+    r"\b(?:p\.?a\.?|p\.?c\.?|l\.?l\.?c\.?|l\.?l\.?p\.?|inc\.?|ltd\.?|corp\.?|co\.?)\b"
+)
+_NOISE = re.compile(r"[^a-z0-9 ]+")
+
+
+def _name_key(name: str) -> str:
+    text = _SUFFIXES.sub(" ", name.lower())
+    return " ".join(_NOISE.sub(" ", text).split())
 
 
 def _listed(sheet: ProcedureSheet, payee_name: str | None) -> Reason | None:
-    """The covered-provider entry the payee's name matches, as a cited reason."""
+    """The covered-provider entry the payee's name matches, as a cited reason. Whole-name
+    similarity, never token containment: "Mercy" must not match "Mercy Ambulance Service"
+    (review of 9.12)."""
     cited = sheet.coverage.covered_providers
     if cited is None or not payee_name:
         return None
+    key = _name_key(payee_name)
     for listed in cited.value:
-        if fuzz.token_set_ratio(listed.lower(), payee_name.lower()) >= MATCH_THRESHOLD:
+        if key and fuzz.ratio(_name_key(listed), key) >= MATCH_THRESHOLD:
             text = f"{payee_name} is on the policy's list of covered providers ({listed})."
             return Reason(text, COVERED_PATH, cited.quote, cited.source_id)
     return None
@@ -113,17 +128,18 @@ def payee_route(sheet: ProcedureSheet, bill: BillExtract) -> PayeeRoute | None:
     listed = _listed(sheet, bill.payee_name)
     if listed is not None:
         return PayeeRoute(Route.COVERED, reason=listed)
+    # Hedged: the payee kind is read from a photo, and most sheets carry no provider list yet.
     who = bill.payee_name or "the group that sent it"
     if bill.payee_kind is PayeeKind.AMBULANCE:
         text = (
             f"This bill is from an ambulance service ({who}), not the hospital, so the hospital's "
-            "financial assistance policy does not cover it."
+            "financial assistance policy likely does not cover it."
         )
         kind = Route.SHIP
     else:
         text = (
             f"This bill is from {who}, not the hospital, so the hospital's financial assistance "
-            "policy does not cover it."
+            "policy likely does not cover it; its covered-provider list is the final word."
         )
         kind = Route.PAYEE_REQUEST
     reason = Reason(text, "bill.payee_kind", None, None)

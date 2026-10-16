@@ -60,7 +60,7 @@
 <p><a href="{{ links.household if case.household_size is none else links.income }}" class="btn primary">Answer the questions</a></p>
 <form method="post" action="{{ links.approve }}" class="stack"><button type="submit" class="btn quiet">Make my form without it</button></form>
 {% else %}
-<form method="post" action="{{ links.approve }}" class="stack"><button type="submit" class="btn primary">Looks right{% if case.next_step == "ship" %}{% elif case.next_step != "fap" %}, make my letter{% else %}, make my form{% endif %}</button></form>
+<form method="post" action="{{ links.approve }}" class="stack"><button type="submit" class="btn primary">Looks right{% if case.next_step == "ship" %}, show me what to do{% elif case.next_step != "fap" %}, make my letter{% else %}, make my form{% endif %}</button></form>
 {% endif %}
 {% endif %}
 <details id="fix"{% if fix %} open{% endif %}>
