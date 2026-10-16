@@ -7,17 +7,24 @@
 {% if full %}
 {% for line in case.caregiver_text.split("\n") %}{% if line.startswith("Policy says") %}<p class="quote">{{ line }}</p>{% endif %}{% endfor %}
 <h2>What happens next</h2>
-{% if case.status == "approved" %}
-<p class="big">Your form is ready. Print it, sign it and send it to the hospital.</p>
-<p><a href="{{ links.form }}" class="btn primary">Your form and reminders</a></p>
+{% if case.next_step == "ship" %}
+<p class="big">Waive has no form for an ambulance bill. SHIP counselors are free and can appeal it through Medicare: call 1-877-839-2675 or visit shiphelp.org.</p>
+<p><a href="{{ links.review }}" class="btn">Check what we read</a></p>
+{% elif case.status == "approved" %}
+<p class="big">Your {{ "letter" if case.next_step != "fap" else "form" }} is ready. Print it, sign it and send it.</p>
+<p><a href="{{ links.form }}" class="btn primary">Your {{ "letter" if case.next_step != "fap" else "form and reminders" }}</a></p>
 {% else %}
-<p class="big">Check what we read. Then we make the form for you to sign and send. You never pay anything to use Waive.</p>
+<p class="big">Check what we read. Then we make the {{ "letter" if case.next_step != "fap" else "form" }} for you to sign and send. You never pay anything to use Waive.</p>
 <p><a href="{{ links.review }}" class="btn primary">Check what we read</a></p>
 {% endif %}
 {% include "_keep_case.html" %}
 {% else %}
 <h2>What happens next</h2>
-<p class="big">Your helper will check this. Then we print the form for you to sign and mail. You never pay anything to use Waive.</p>
+{% if case.next_step == "ship" %}
+<p class="big">SHIP counselors are free and can appeal this through Medicare. Call 1-877-839-2675. Your helper can help you call.</p>
+{% else %}
+<p class="big">Your helper will check this. Then we print the {{ "letter" if case.next_step != "fap" else "form" }} for you to sign and mail. You never pay anything to use Waive.</p>
+{% endif %}
 {% endif %}
 {# The full link asks for a paper here only when the hospital's sheet has a gap; its letter step comes after the form. #}
 {% if ask or not full %}

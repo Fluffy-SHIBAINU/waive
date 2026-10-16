@@ -1,6 +1,50 @@
 {% extends "base.html" %}
-{% block title %}Your form and reminders{% endblock %}
+{% block title %}{% if case.next_step == "ship" %}What to do next{% elif case.next_step != "fap" %}Your letter{% else %}Your form and reminders{% endif %}{% endblock %}
 {% block content %}
+{% if case.next_step == "ship" %}
+<h1>What to do next</h1>
+<p class="big">This bill comes from an ambulance service{% if case.payee_name %}, {{ case.payee_name.rstrip(".") }}{% endif %}. {{ case.hospital_name }}'s policy does not cover it, so Waive makes no form for it.</p>
+<div class="card big">
+  <p><strong>Call SHIP</strong>, the free Medicare help line: <strong>1-877-839-2675</strong> (shiphelp.org).</p>
+  <p>A counselor can check whether Medicare should have paid more and file the appeal with you.</p>
+</div>
+<p class="muted">Have the bill and your Medicare card ready when you call.</p>
+{% elif packet.kind == "cost_sharing" %}
+<h1>Your letter</h1>
+<p class="big">Your letter is ready. Print it, sign it, and send it to the hospital with a copy of your card.</p>
+<p><a href="{{ links.packet }}" class="btn primary">Download the letter (PDF)</a></p>
+<p class="muted">The letter tells the hospital that federal law does not allow this bill for people with a {{ packet.card }} or QMB card, and asks it to cancel the balance.</p>
+
+<h2>Where to send it</h2>
+{% if packet.submit_lines %}
+<div class="card big">
+  <p><strong>{{ packet.hospital_name }}</strong></p>
+  {% for line in packet.submit_lines %}<p>{{ line }}</p>{% endfor %}
+</div>
+{% else %}
+<p class="big">Send it to the billing address on the bill from {{ packet.hospital_name }}.</p>
+{% endif %}
+<h2>Put these with it</h2>
+<ul class="big">
+  <li>Copy of your {{ packet.card }} or QMB card (front and back)</li>
+  <li>A copy of the hospital statement</li>
+</ul>
+<h2>If nothing changes</h2>
+<p class="big">If the bill is not cancelled in 30 days, call 1-800-MEDICARE (1-800-633-4227) and say you have a {{ packet.card }} or QMB card and were billed.</p>
+{% elif packet.kind == "payee_request" %}
+<h1>Your letter</h1>
+<p class="big">Your letter is ready. Print it, sign it, and send it to {{ (packet.payee_name or "the business that sent the bill").rstrip(".") }}.</p>
+<p><a href="{{ links.packet }}" class="btn primary">Download the letter (PDF)</a></p>
+<p class="muted">{{ packet.hospital_name }}'s policy does not cover this bill. The letter asks {{ packet.payee_name or "the sender" }} for its own financial assistance policy and application, and to hold the account meanwhile.</p>
+
+<h2>Where to send it</h2>
+<p class="big">Send it to the address on the bill from {{ (packet.payee_name or "the sender").rstrip(".") }}.</p>
+<h2>Put these with it</h2>
+<ul class="big">
+  <li>A copy of the statement</li>
+  <li>If {{ packet.hospital_name }} already gave you financial assistance for this visit, a copy of that letter</li>
+</ul>
+{% else %}
 <h1>Your form and reminders</h1>
 <p class="big">Your form is ready. Print it, sign it, and send it to the hospital.</p>
 <p><a href="{{ links.packet }}" class="btn primary">Download the packet (PDF)</a></p>
@@ -21,7 +65,9 @@
   {% for document in packet.documents %}<li>{{ document }}</li>{% endfor %}
 </ul>
 {% endif %}
+{% endif %}
 
+{% if case.next_step == "fap" %}
 <h2>Reminders</h2>
 {% if case.deadlines %}
 <div class="card">
@@ -30,9 +76,10 @@
 </div>
 {% endif %}
 <p><a href="{{ links.reminders }}" class="btn">Add reminders to my calendar</a></p>
+{% endif %}
 
-<h2>Did the hospital answer?</h2>
-<p class="big">When the hospital's letter comes, open your link again and show it to us. We tell you what it says.</p>
+<h2>Did {{ "they" if case.next_step in ("payee_request", "ship") else "the hospital" }} answer?</h2>
+<p class="big">When a letter comes, open your link again and show it to us. We tell you what it says.</p>
 <p><a href="{{ links.paper }}" class="btn">The hospital sent a letter</a></p>
 <p><a href="{{ links.review }}" class="btn quiet">Check what we read again</a></p>
 {% endblock %}

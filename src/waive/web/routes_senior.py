@@ -36,6 +36,7 @@ from waive.learning.gaps import answer_gap_ask, pending_gap_ask
 from waive.learning.intake import ingest_paper
 from waive.learning.outcomes import OutcomeExtract, load_outcome, outcome_text
 from waive.learning.triage import TriageResult, triage_for
+from waive.rules.coverage import cost_sharing_protected, medicaid_name
 from waive.web.deps import deps_of, render
 from waive.web.signin import keep_offer
 
@@ -160,12 +161,15 @@ class Step:
             extra["bar"] = shown_links(
                 self.request, self.flow.token, limited_token(self.ctx, self.case_id)
             )
+        shown = shown or self.view()
         return render(
             self.request,
             name,
             links=self.flow.links,
             full=self.flow.full,
-            case=shown or self.view(),
+            case=shown,
+            # The state's name for Medicaid on the card question and the result (9.12).
+            card=medicaid_name(shown.state),
             money=money,
             long_date=long_date,
             **extra,
@@ -304,6 +308,9 @@ def senior_household(
             return case.to("result")
         chosen = () if programs == "none" else tuple(programs.split(","))
         set_household(case.ctx, case.case_id, size, shown.annual_income, chosen)
+        if cost_sharing_protected(chosen):
+            # A QMB or Medicaid card answers the case by itself: no income is needed (9.12).
+            return case.to("result")
         return case.to("income")
 
 

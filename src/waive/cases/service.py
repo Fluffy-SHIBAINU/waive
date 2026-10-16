@@ -1,10 +1,10 @@
 """Case lifecycle: start, read bill, confirm, household, evaluate, approve, delete (spec §9)."""
 
 import uuid
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from datetime import UTC, date, datetime, time, timedelta
 from decimal import Decimal
-from typing import Any
+from typing import Any, Literal
 
 from sqlalchemy import delete, select
 from sqlalchemy.orm import Session
@@ -18,6 +18,13 @@ from waive.cases.match import MatchCandidate, fap_domain, is_confident, match_ho
 from waive.cases.vault import FieldCipher, Scope, TokenSigner
 from waive.db import AccountCaseRow, CaseRow, ReviewItemRow
 from waive.learning.hashing import case_hash
+from waive.rules.coverage import (
+    Route,
+    cost_sharing_protected,
+    cost_sharing_result,
+    medicaid_name,
+    payee_route,
+)
 from waive.rules.deadlines import Deadlines, deadlines_for
 from waive.rules.eligibility import EligibilityResult, Household, Tier, evaluate_eligibility
 from waive.rules.explain import caregiver_summary, senior_message
@@ -64,10 +71,16 @@ class CaseLinks:
     caregiver_token: str
 
 
+# What the result leads to (task 9.12): the hospital's FAP application, a cost-sharing complaint
+# (QMB or Medicaid), a request to the payee's own assistance program, or a SHIP Medicare appeal.
+NextStep = Literal["fap", "cost_sharing", "payee_request", "ship"]
+
+
 @dataclass
 class CaseView:
     case_id: str
     status: str
+    state: str = "MA"
     hospital_name: str | None = None
     ccn: str | None = None
     candidates: list[MatchCandidate] = field(default_factory=list)
@@ -87,6 +100,9 @@ class CaseView:
     # no answer from it (audit rules-correctness-9).
     under_review: bool = False
     result: EligibilityResult | None = None
+    next_step: NextStep = "fap"
+    # Who sent a bill the policy does not cover.
+    payee_name: str | None = None
 
 
 @dataclass(frozen=True)
@@ -270,6 +286,7 @@ def _evaluate(ctx: CaseContext, row: CaseRow, sealed: dict[str, Any]) -> CaseVie
     shown = CaseView(
         case_id=row.id,
         status=row.status,
+        state=row.state,
         ccn=row.ccn,
         bill=bill,
         candidates=[MatchCandidate(**c) for c in sealed.get("candidates", [])],
@@ -283,7 +300,15 @@ def _evaluate(ctx: CaseContext, row: CaseRow, sealed: dict[str, Any]) -> CaseVie
     if row.ccn:
         hospital = repo.get_hospital(ctx.session, row.ccn)
         shown.hospital_name = hospital.name if hospital else None
-    if row.ccn is None or row.status in {"new", "bill_read"}:
+    if row.status in {"new", "bill_read"}:
+        return shown
+    programs = tuple(household.get("programs", []))
+    if cost_sharing_protected(programs):
+        # Federal law, not the hospital's policy, decides: no sheet needed, no FAP deadline, and
+        # no sheet prediction to learn from (task 9.12).
+        name = shown.hospital_name or (bill.hospital_name if bill else None) or "the hospital"
+        return _answered(ctx, row, shown, cost_sharing_result(), name, "cost_sharing")
+    if row.ccn is None:
         return shown
     found = repo.published_sheet(ctx.session, row.ccn)
     if found is None:
@@ -294,17 +319,25 @@ def _evaluate(ctx: CaseContext, row: CaseRow, sealed: dict[str, Any]) -> CaseVie
             shown.under_review = True
         return shown
     sheet, _ = found
+    name = shown.hospital_name or sheet.hospital.name
+    route = payee_route(sheet, bill) if bill else None
+    if route is not None and route.result is not None:
+        shown.payee_name = bill.payee_name if bill else None
+        step: NextStep = "ship" if route.kind is Route.SHIP else "payee_request"
+        return _answered(ctx, row, shown, route.result, name, step)
     result = evaluate_eligibility(
         sheet,
         Household(
             size=int(household.get("size") or 1),
             annual_income=shown.annual_income,
             state=row.state,
-            programs=tuple(household.get("programs", [])),
+            programs=programs,
         ),
     )
+    if route is not None and route.reason is not None:
+        # A payee the policy names as covered: say so first, then the income answer.
+        result = replace(result, reasons=(route.reason, *result.reasons))
     shown.result, shown.tier, shown.missing = result, result.tier, result.missing
-    name = shown.hospital_name or sheet.hospital.name
     shown.senior_text = senior_message(result, name)
     shown.own_text = senior_message(result, name, alone=True)
     shown.caregiver_text = caregiver_summary(result, name)
@@ -326,6 +359,32 @@ def _evaluate(ctx: CaseContext, row: CaseRow, sealed: dict[str, Any]) -> CaseVie
             "predicted_documents": [doc.value for doc in documents],
             "created_on": ctx.today.isoformat(),
         }
+        row.status = "evaluated"
+        shown.status = row.status
+        ctx.session.flush()
+    return shown
+
+
+def _answered(
+    ctx: CaseContext,
+    row: CaseRow,
+    shown: CaseView,
+    result: EligibilityResult,
+    hospital_name: str,
+    step: NextStep,
+) -> CaseView:
+    """An answer that does not come from the sheet's income rules (NOT_OWED, NOT_COVERED): the
+    case is evaluated, with no sheet prediction and no FAP deadlines."""
+    shown.result, shown.tier, shown.next_step = result, result.tier, step
+    words = {
+        "card": medicaid_name(row.state),
+        "payee": shown.payee_name,
+        "route": step,
+    }
+    shown.senior_text = senior_message(result, hospital_name, **words)
+    shown.own_text = senior_message(result, hospital_name, alone=True, **words)
+    shown.caregiver_text = caregiver_summary(result, hospital_name)
+    if row.status != "approved":
         row.status = "evaluated"
         shown.status = row.status
         ctx.session.flush()

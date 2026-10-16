@@ -12,6 +12,7 @@ from waive.auth.accounts import link_case
 from waive.cases.packet import build_packet, packet_data
 from waive.cases.reminders import build_ics, reminder_events
 from waive.cases.service import (
+    CaseView,
     approve,
     authorize,
     confirm_bill,
@@ -142,12 +143,19 @@ def case_form(request: Request, token: str):
     """The "Your form and reminders" page: the packet, the calendar file, where to send it."""
     with opened(request, token) as case:
         shown = case.view()
-        found = repo.published_sheet(case.ctx.session, shown.ccn) if shown.ccn else None
-        if shown.status != "approved" or found is None or shown.result is None:
+        if shown.status != "approved" or shown.result is None:
             return case.to("review")
-        return case.page(
-            "case_form.html", shown, packet=packet_data(shown, found[0], case.ctx.today)
-        )
+        sheet = _packet_sheet(case.ctx.session, shown)
+        if sheet is None and shown.next_step != "cost_sharing":
+            return case.to("review")
+        # An ambulance bill has no letter from Waive: the page points to SHIP.
+        packet = None if shown.next_step == "ship" else packet_data(shown, sheet, case.ctx.today)
+        return case.page("case_form.html", shown, packet=packet)
+
+
+def _packet_sheet(session, shown: CaseView):
+    found = repo.published_sheet(session, shown.ccn) if shown.ccn else None
+    return found[0] if found else None
 
 
 @router.post("/c/{token}/save")
@@ -202,14 +210,17 @@ def caregiver_packet(request: Request, token: str) -> Response:
         ctx = deps.context(session)
         row = authorize(ctx, token, "caregiver")
         shown = view(ctx, row.id)
-        found = repo.published_sheet(session, row.ccn) if row.ccn else None
-        if found is None or shown.result is None:
+        sheet = _packet_sheet(session, shown)
+        if shown.result is None or shown.next_step == "ship":
             raise KeyError("packet not ready")
-        pdf = build_packet(packet_data(shown, found[0], ctx.today))
+        if sheet is None and shown.next_step != "cost_sharing":
+            raise KeyError("packet not ready")
+        pdf = build_packet(packet_data(shown, sheet, ctx.today))
+    name = "waive-application.pdf" if shown.next_step == "fap" else "waive-letter.pdf"
     return Response(
         pdf,
         media_type="application/pdf",
-        headers={"Content-Disposition": 'attachment; filename="waive-application.pdf"'},
+        headers={"Content-Disposition": f'attachment; filename="{name}"'},
     )
 
 

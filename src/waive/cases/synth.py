@@ -26,6 +26,16 @@ FICTIONAL_HOSPITALS = [
     ),
     ("Cape Example Hospital", "617-555-0150", "capeexample.example.net/patient-financial-services"),
 ]
+# Businesses that bill on their own, outside the hospital's FAP (research 2026-10-16, pain 5):
+# (payee_kind, name). About a quarter of the corpus comes from one of these.
+OUTSIDE_PAYEES = [
+    ("physician_group", "Example Emergency Physicians, P.A."),
+    ("physician_group", "Northbridge Hospitalists Medical Group"),
+    ("anesthesia_radiology_pathology", "Harbor Anesthesia Associates LLC"),
+    ("anesthesia_radiology_pathology", "Pioneer Valley Radiology, P.C."),
+    ("ambulance", "Blue Hills Ambulance Service"),
+    ("ambulance", "Cape Example EMS"),
+]
 FIRST_NAMES = ["Rosa", "Miguel", "Agnes", "Walter", "Thuy", "Dorothy", "Samuel", "Irene"]
 LAST_NAMES = ["Alvarez", "Nguyen", "Kowalski", "Okafor", "Brennan", "Haddad", "Lindqvist", "Patel"]
 
@@ -40,6 +50,9 @@ class BillTruth(BaseModel):
     patient_name: str
     amount_due: Decimal
     collection_notice: bool
+    # Who the payment goes to; the hospital itself unless an outside payee is named.
+    payee_kind: str = "hospital_facility"
+    payee_name: str | None = None
 
 
 def make_truth(rng: random.Random) -> BillTruth:
@@ -57,7 +70,16 @@ def make_truth(rng: random.Random) -> BillTruth:
         patient_name=f"{rng.choice(FIRST_NAMES)} {rng.choice(LAST_NAMES)}",
         amount_due=Decimal(str(dollars)).quantize(Decimal("0.01")),
         collection_notice=rng.random() < 0.2,
+        **_payee(name, rng),
     )
+
+
+def _payee(hospital_name: str, rng: random.Random) -> dict[str, str]:
+    """Drawn last so the fields above keep the values fixtures were written against."""
+    if rng.random() < 0.25:
+        kind, payee = rng.choice(OUTSIDE_PAYEES)
+        return {"payee_kind": kind, "payee_name": payee}
+    return {"payee_kind": "hospital_facility", "payee_name": hospital_name}
 
 
 def _font(size: int) -> ImageFont.ImageFont:
@@ -72,8 +94,15 @@ def render_bill(
     draw = ImageDraw.Draw(image)
     big, body, small = _font(52), _font(34), _font(28)
     header_x = 100 if layout % 2 == 0 else 700
-    draw.text((header_x, 90), truth.hospital_name, fill="black", font=big)
-    draw.text((header_x, 160), "Patient Financial Services", fill="black", font=body)
+    outside = truth.payee_kind != "hospital_facility" and truth.payee_name
+    if outside:
+        # An outside payee's statement: its own name on top, the hospital as the place of
+        # service, and a remit-to line naming the payee.
+        draw.text((header_x, 90), truth.payee_name, fill="black", font=big)
+        draw.text((header_x, 160), f"Services at {truth.hospital_name}", fill="black", font=body)
+    else:
+        draw.text((header_x, 90), truth.hospital_name, fill="black", font=big)
+        draw.text((header_x, 160), "Patient Financial Services", fill="black", font=body)
     draw.text((header_x, 205), f"Phone: {truth.hospital_phone}", fill="black", font=body)
     draw.text((100, 330), "STATEMENT", fill="black", font=big)
     rows = [
@@ -83,6 +112,8 @@ def render_bill(
         ("Insurance payments", "$0.00" if rng.random() < 0.5 else f"${rng.randrange(100, 900)}.00"),
         ("AMOUNT DUE", f"${truth.amount_due:,.2f}"),
     ]
+    if outside:
+        rows.append(("Remit to", truth.payee_name))
     y = 430
     for label, value in rows:
         draw.text((100, y), label, fill="black", font=body)
