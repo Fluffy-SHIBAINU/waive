@@ -91,6 +91,13 @@ class Settings(BaseSettings):
     # credits per hospital instead of seven.
     scout_extract_depth: Literal["basic", "advanced"] = "basic"
 
+    # Phase 10: the hospital ledger. Downloads of public files land under `ledger_dir`, never in
+    # the repository. The scout queue multiplies a hospital's priority by
+    # (1 + weight × its senior-exposure rank) once `waive ledger exposure` has run; the weight
+    # defaults to 0 so the queue is unchanged until the founder turns it on.
+    ledger_dir: Path = Path("var/ledger")
+    scout_exposure_weight: float = 0.0
+
     @property
     def sign_in_configured(self) -> bool:
         """Whether sign-in with Google is on: both the client id and its secret are set."""

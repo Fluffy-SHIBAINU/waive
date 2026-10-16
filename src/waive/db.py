@@ -325,3 +325,9 @@ def session_scope(engine: Engine) -> Iterator[Session]:
         raise
     finally:
         session.close()
+
+
+# Phase 10: the hospital ledger's tables live in waive/ledger/tables.py. Importing them here
+# registers them on `Base`, so `init_db` creates them wherever the app or the CLI starts. The
+# import is circular on purpose and safe: `Base` is defined above, before this line runs.
+from waive.ledger import tables as _ledger_tables  # noqa: E402, F401
