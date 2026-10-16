@@ -1,0 +1,21 @@
+{# Phase 10: the hospital's ledger under its policy sheet, three cards from free federal data.
+   `ledger` is a LedgerView, or None for a hospital Waive has nothing on (then nothing renders,
+   rather than three empty cards). #}
+{% if ledger %}
+<h2>What to expect here</h2>
+{% for label, metric in (("Free care, promised vs delivered", ledger.gap), ("Seniors at risk here", ledger.exposure), ("Collections", ledger.collections)) %}
+{% set colour = ledger_card_class(metric) %}
+<div class="card{% if colour %} {{ colour }}{% endif %}">
+{% if metric.status == "unknown" %}
+  <div class="row"><span>{{ label }}</span><strong class="muted">Not enough data yet</strong></div>
+  {% set missing = metric.missing | join("; ") %}
+  {% if missing %}<p class="muted">{{ missing[0] | upper }}{{ missing[1:] }}.</p>{% endif %}
+{% else %}
+  <div class="row"><span>{{ label }}</span><strong>{{ metric.headline }}</strong></div>
+  {% if metric.sentence %}<p>{{ metric.sentence }}</p>{% endif %}
+  <p>What to do: {{ metric.advice }}</p>
+  {% if metric.sources %}<p class="muted">{% for source in metric.sources %}{% if source.url %}<a href="{{ source.url }}">{{ source.name }}</a>{% else %}{{ source.name }}{% endif %}, {{ source.vintage }}{% if not loop.last %} · {% endif %}{% endfor %}</p>{% endif %}
+{% endif %}
+</div>
+{% endfor %}
+{% endif %}

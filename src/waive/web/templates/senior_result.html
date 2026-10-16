@@ -6,6 +6,7 @@
 <button type="button" class="btn" id="speak" hidden>Read this to me</button>
 {% if full %}
 {% for line in case.caregiver_text.split("\n") %}{% if line.startswith("Policy says") %}<p class="quote">{{ line }}</p>{% endif %}{% endfor %}
+{% if full %}{% include "_ledger_expect.html" %}{% endif %}
 <h2>What happens next</h2>
 {% if case.status == "approved" %}
 <p class="big">Your form is ready. Print it, sign it and send it to the hospital.</p>

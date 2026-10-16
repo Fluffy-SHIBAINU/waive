@@ -10,6 +10,8 @@ from waive.atlas import repo
 from waive.atlas.schema import SheetStatus
 from waive.db import HospitalRow, session_scope
 from waive.learning.evidence import public_flag_level, slip_cases
+from waive.ledger import web as ledger_web
+from waive.ledger.view import ledger_json, ledger_view
 from waive.web.deps import deps_of, render
 
 router = APIRouter()
@@ -63,11 +65,13 @@ def atlas_json(request: Request, ccn: str) -> JSONResponse:
     with session_scope(deps.engine) as session:
         found = repo.published_sheet(session, ccn)
         if found is not None:
-            return JSONResponse(found[0].model_dump(mode="json"))
+            return JSONResponse(
+                {**found[0].model_dump(mode="json"), "ledger": ledger_json(session, ccn)}
+            )
         hospital = repo.get_hospital(session, ccn)
         if hospital is None or repo.latest_sheet(session, ccn) is None:
             raise KeyError(ccn)
-        return JSONResponse(_under_review(hospital))
+        return JSONResponse({**_under_review(hospital), "ledger": ledger_json(session, ccn)})
 
 
 @router.get("/atlas/{ccn}", response_class=HTMLResponse)
@@ -79,7 +83,12 @@ def atlas_sheet(request: Request, ccn: str) -> HTMLResponse:
             hospital = repo.get_hospital(session, ccn)
             if hospital is None or repo.latest_sheet(session, ccn) is None:
                 raise KeyError(ccn)
-            return render(request, "atlas_under_review.html", hospital=_under_review(hospital))
+            return render(
+                request,
+                "atlas_under_review.html",
+                hospital=_under_review(hospital),
+                ledger=ledger_view(session, ccn),
+            )
         sheet, row = found
         sources = {s.id: s for s in sheet.sources}
         fields = [
@@ -93,4 +102,8 @@ def atlas_sheet(request: Request, ccn: str) -> HTMLResponse:
             created=row.created_at,
             flag=public_flag_level(session, ccn),
             slip_count=slip_cases(session, ccn),
+            ledger=ledger_view(session, ccn),
         )
+
+
+router.include_router(ledger_web.router)
