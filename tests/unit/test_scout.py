@@ -1079,12 +1079,93 @@ class KaiserGateway:
         return [ExtractedPage(url=url, text=texts[url]) for url in urls]
 
 
+KAISER_LOS_ANGELES = HOSPITAL.model_copy(
+    update={
+        "ccn": "050138",
+        "name": "KAISER FOUNDATION HOSPITAL - LOS ANGELES",
+        "city": "LOS ANGELES",
+        "state": "CA",
+        "zip": "90027",
+        "website_domain": "kaiserpermanente.org",
+    }
+)
+
+
 def test_the_scout_does_not_store_a_dental_policy_found_under_the_medical_title():
-    kaiser = HOSPITAL.model_copy(update={"website_domain": "kaiserpermanente.org"})
     gateway = KaiserGateway()
-    docs = scout_hospital(gateway, kaiser)
+    docs = scout_hospital(gateway, KAISER_LOS_ANGELES)
     assert gateway.extracted == [[DENTAL_POLICY_URL, SCAL_POLICY_URL]]
     assert [(doc.url, doc.doc_class) for doc in docs] == [(SCAL_POLICY_URL, "fap")]
+
+
+# Kaiser's documents, one site for every region (task 7.16).
+NCAL_POLICY_URL = (
+    KAISER_DOCS
+    + "mfa/northern-california/english-ncal/mfa-policy-and-addendum-ncal-english-ada.pdf"
+)
+NW_POLICY_URL = KAISER_DOCS + "mfa/nw/english/mfa-policy-and-addendum-nw-english-ada.pdf"
+MAS_SUMMARY_URL = KAISER_DOCS + "support/mfa-summary-mas-2022-english.pdf"
+GA_POLICY_URL = KAISER_DOCS + "support/mfa-policy-ga-2024-english.pdf"
+
+
+class RegionsGateway:
+    """Search finds Kaiser Northwest's policy and the Mid-Atlantic States' summary next to Southern
+    California's; extraction answers every URL with California's policy text."""
+
+    def __init__(self):
+        self.extracted = []
+
+    def search(self, query, **kwargs):
+        return [
+            hit(NW_POLICY_URL, SCAL_POLICY_TITLE, 0.9),
+            hit(MAS_SUMMARY_URL, "[PDF] Medical Financial Assistance Policy Summary", 0.85),
+            hit(SCAL_POLICY_URL, SCAL_POLICY_TITLE, 0.8),
+        ]
+
+    def extract(self, urls, **kwargs):
+        self.extracted.append(urls)
+        return [ExtractedPage(url=url, text=SCAL_POLICY_TEXT) for url in urls]
+
+
+def test_the_scout_spends_nothing_on_another_kaiser_regions_documents():
+    # Review of 7.16: the search filled the four slots with other regions' documents, each an
+    # extraction paid for only to be set aside before structuring.
+    gateway = RegionsGateway()
+    docs = scout_hospital(gateway, KAISER_LOS_ANGELES)
+    assert gateway.extracted == [[SCAL_POLICY_URL]]
+    assert [doc.url for doc in docs] == [SCAL_POLICY_URL]
+    # An Oregon hospital's region is the Northwest: California's is the other one there.
+    sunnyside = KAISER_LOS_ANGELES.model_copy(
+        update={"ccn": "380091", "name": "KAISER SUNNYSIDE MEDICAL CENTER", "state": "OR"}
+    )
+    gateway = RegionsGateway()
+    scout_hospital(gateway, sunnyside)
+    assert gateway.extracted == [[NW_POLICY_URL]]
+
+
+def test_the_scout_follows_no_link_to_another_kaiser_regions_documents():
+    # Kaiser's documents page links every region's policy; four of them took the four slots.
+    documents_page = (
+        "https://healthy.kaiserpermanente.org/help-paying-your-bill/medical-financial-assistance/"
+        "documents"
+    )
+    entry = (
+        "# Medical Financial Assistance documents\n"
+        + BODY_TEXT
+        + f"[Medical Financial Assistance Policy - Northern California (PDF)]({NCAL_POLICY_URL})\n"
+        f"[Medical Financial Assistance Policy - Southern California (PDF)]({SCAL_POLICY_URL})\n"
+        f"[Medical Financial Assistance Policy - Northwest (PDF)]({NW_POLICY_URL})\n"
+        f"[Medical Financial Assistance Policy - Georgia (PDF)]({GA_POLICY_URL})\n"
+        f"[Medical Financial Assistance Summary - Mid-Atlantic States (PDF)]({MAS_SUMMARY_URL})\n"
+    )
+
+    class DocumentsPage(LinkGateway):
+        def search(self, query, **kwargs):
+            return [hit(documents_page, "Medical Financial Assistance documents", 0.9)]
+
+    gateway = DocumentsPage(entry)
+    scout_hospital(gateway, KAISER_LOS_ANGELES)
+    assert gateway.extracted == [[documents_page], [NCAL_POLICY_URL, SCAL_POLICY_URL]]
 
 
 def test_a_dental_sliding_fee_scale_is_not_followed_as_the_income_table():

@@ -16,6 +16,7 @@ from waive.atlas import repo
 from waive.atlas.discover import host_of
 from waive.atlas.fetch import DOCUMENT_HOSTS, download_text, host_allowed_for, looks_like_pdf
 from waive.atlas.schema import HospitalRef, SourceDoc, SourceKind
+from waive.atlas.structure import another_kaiser_region
 from waive.atlas.tavily_gateway import Depth, ExtractedPage, SearchHit, TavilyGateway
 from waive.governor import BudgetExceeded
 
@@ -262,10 +263,19 @@ def _is_lesser(url: str, label: str) -> bool:
     return _LESSER_DOCUMENT.search(_link_text(url, label)) is not None
 
 
+def _in_region(hits: list[SearchHit], hospital: HospitalRef) -> list[SearchHit]:
+    """The hits, less another Kaiser region's documents (structure.another_kaiser_region): Kaiser
+    files every region's policy on one site, and a California hospital's search filled its slots
+    with Kaiser Northwest's policy and the Mid-Atlantic States' summary, each an extraction paid
+    for only to be set aside before structuring (review of 7.16)."""
+    return [hit for hit in hits if not another_kaiser_region(hit.title, hit.url, hospital)]
+
+
 def _linked_documents(
-    texts: dict[str, str], base_domain: str, fetched: set[str]
+    texts: dict[str, str], base_domain: str, fetched: set[str], hospital: HospitalRef
 ) -> list[tuple[str, DocClass, str]]:
-    """Policy documents one link away from the web pages already fetched, best first."""
+    """Policy documents one link away from the web pages already fetched, best first. Another
+    Kaiser region's are not followed: Kaiser's documents page links every region's policy."""
     candidates: dict[str, tuple[DocClass, str]] = {}
     tables: dict[str, str] = {}
     for page_url, text in texts.items():
@@ -273,6 +283,8 @@ def _linked_documents(
             continue
         for url, label in policy_links(text, base_domain):
             if url in fetched or url in candidates or url in tables:
+                continue
+            if another_kaiser_region(label, url, hospital):
                 continue
             doc_class = classify_doc(url, label)
             if doc_class is not None:
@@ -437,7 +449,7 @@ def scout_hospital(
                 max_results=8,
             )
         )
-    selected = select_urls(hits)
+    selected = select_urls(_in_region(hits, hospital))
     if not any(doc_class == "fap" for _, doc_class in selected):
         # Search indexes miss many policy pages; map the site and look at the paths.
         mapped = gateway.map(
@@ -447,26 +459,25 @@ def scout_hospital(
             limit=30,
         )
         hits.extend(SearchHit(url=url, title="", content="", score=0.5) for url in mapped)
-        selected = select_urls(hits)
+        selected = select_urls(_in_region(hits, hospital))
     if not selected:
         return []
     downloads = Downloader(http, hospital.website_domain)
     try:
-        return _fetch_documents(
-            gateway, hospital.website_domain, hits, selected, downloads, extract_depth
-        )
+        return _fetch_documents(gateway, hospital, hits, selected, downloads, extract_depth)
     finally:
         downloads.close()
 
 
 def _fetch_documents(
     gateway: TavilyGateway,
-    domain: str,
+    hospital: HospitalRef,
     hits: list[SearchHit],
     selected: list[tuple[str, DocClass]],
     downloads: Downloader,
     extract_depth: Depth = "basic",
 ) -> list[ScoutedDoc]:
+    domain = hospital.website_domain or ""
     urls = [url for url, _ in selected]
     pages = gateway.extract(urls, purpose="atlas.scout", **_depth(extract_depth))
     by_url = fill_texts(
@@ -481,7 +492,7 @@ def _fetch_documents(
             docs.append(doc)
 
     # Entry pages usually only link to the policy; follow those links one step on the same site.
-    linked = _linked_documents(by_url, domain, set(urls))
+    linked = _linked_documents(by_url, domain, set(urls), hospital)
     if linked:
         linked_urls = [url for url, _, _ in linked]
         more = gateway.extract(linked_urls, purpose="atlas.scout", **_depth(extract_depth))
