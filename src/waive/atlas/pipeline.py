@@ -156,26 +156,71 @@ def _drop_other_state_documents(
     return [(source, text) for source, text in sources_with_text if source.id not in gone]
 
 
+def _english_rules_and_translations(
+    sources_with_text: list[tuple[SourceDoc, str]],
+) -> tuple[bool, list[tuple[SourceDoc, str]]]:
+    """Whether a web document in English states income rules (it names the poverty level, as
+    INCOME_RULE_WORDS reads it), and the web documents in other languages."""
+    english_rules = False
+    translations: list[tuple[SourceDoc, str]] = []
+    for source, text in sources_with_text:
+        if source.kind is not SourceKind.HOSPITAL_WEB:
+            continue
+        if not written_in_english(text):
+            translations.append((source, text))
+        elif INCOME_RULE_WORDS.search(text):
+            english_rules = True
+    return english_rules, translations
+
+
+ENGLISH_POLICY_MISSING = "english_policy_missing"
+
+
+def _ask_for_the_english_policy(session: Session, ccn: str, translation_ids: list[str]) -> None:
+    """One open item per hospital, naming the translations that stand in for the English policy
+    until an admin, or a scout aimed at it, stores the English one."""
+    detail = {
+        "translations": translation_ids,
+        "reason": "only translations state the income rules; scout the English policy",
+    }
+    for item in repo.open_review_items(session, ccn):
+        if item.kind == ENGLISH_POLICY_MISSING:
+            if item.detail != detail:
+                item.detail = detail
+                session.flush()
+            return
+    repo.add_review_item(session, ccn, ENGLISH_POLICY_MISSING, detail)
+
+
 def _set_aside_translations(
-    sources_with_text: list[tuple[SourceDoc, str]], result: BuildResult
+    session: Session, ccn: str, sources_with_text: list[tuple[SourceDoc, str]], result: BuildResult
 ) -> tuple[list[tuple[SourceDoc, str]], list[tuple[SourceDoc, str]]]:
     """The documents the structurer reads, and the translations kept from it. A system publishes
     its policy in a dozen languages side by side, and the scout stores whichever the search
-    returns: six published sheets quoted a translation although the English policy was stored
-    (BID Needham, 220083, in Chinese; Baptist Beaches and Nassau, 100117 and 100140, in Tagalog;
-    task 7.15a), and seniors read those quotes on the public atlas. While the hospital has a web
-    document in English, its web documents in other languages are kept from the structurer. They
-    stay linked, so the place check and a later rebuild still see them; when every web document
-    is in another language nothing is set aside: there is nothing to prefer."""
-    web = [pair for pair in sources_with_text if pair[0].kind is SourceKind.HOSPITAL_WEB]
-    translations = [(source, text) for source, text in web if not written_in_english(text)]
-    if not translations or len(translations) == len(web):
+    returns: six published sheets quoted a translation (BID Needham, 220083, in Chinese; Baptist
+    Beaches and Nassau, 100117 and 100140, in Tagalog; task 7.15a), and seniors read those quotes
+    on the public atlas. While a web document in English states the income rules, the hospital's
+    web documents in other languages are kept from the structurer; they stay linked, so the place
+    check and a later rebuild still see them. Otherwise the translations stay: four of those six
+    hospitals stored only English billing pages and a job listing, none naming the poverty level,
+    and setting the translations aside would have left a rebuild with no income rule at all
+    (review of 7.15b). An `english_policy_missing` item asks for the English policy instead."""
+    english_rules, translations = _english_rules_and_translations(sources_with_text)
+    if not translations:
         return sources_with_text, []
     listed = ", ".join(source.id for source, _ in translations)
     plural = "s are" if len(translations) > 1 else " is"
+    if not english_rules:
+        _ask_for_the_english_policy(session, ccn, [source.id for source, _ in translations])
+        result.notes.append(
+            f"{len(translations)} stored document{plural} not in English ({listed}) and no "
+            "English one states the income rules: kept for the structurer, and an "
+            f"{ENGLISH_POLICY_MISSING} item asks for the English policy"
+        )
+        return sources_with_text, []
     result.notes.append(
         f"{len(translations)} stored document{plural} not in English ({listed}); left out of the "
-        "structurer while an English one is stored, and still linked"
+        "structurer while an English one states the income rules, and still linked"
     )
     gone = {source.id for source, _ in translations}
     kept = [(source, text) for source, text in sources_with_text if source.id not in gone]
@@ -192,7 +237,7 @@ def _documents_for_structurer(
     another state's version of a system policy detached, then the translations set aside. Those
     come back as well, for the place check, which reads all of the hospital's documents."""
     kept = _drop_other_state_documents(session, hospital, sources_with_text, result)
-    return _set_aside_translations(kept, result)
+    return _set_aside_translations(session, hospital.ccn, kept, result)
 
 
 @dataclass

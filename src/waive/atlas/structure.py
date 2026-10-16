@@ -312,12 +312,13 @@ def document_states(title: str, url: str, hospital: HospitalRef | None = None) -
     return found
 
 
-# Task 7.15a: six published sheets quoted a translation although the hospital's English policy was
-# stored (BID Needham 220083 and Brigham and Women's 220110 in Chinese, Hoag 050224 in Korean,
-# Baptist Beaches and Nassau 100117 and 100140 in Tagalog, Hardin Memorial 361315 in German), and
-# seniors read those quotes on the public atlas. Common words of each language that no English
-# text uses and no US state code spells: "de", "la", "el", "al" and "il" are left out, so an address
-# in Los Angeles or a "De La Cruz" on a provider list never turns an English page Spanish.
+# Task 7.15a: six published sheets quoted a translation of the hospital's policy (BID Needham 220083
+# and Brigham and Women's 220110 in Chinese, Hoag 050224 in Korean, Baptist Beaches and Nassau
+# 100117 and 100140 in Tagalog, Hardin Memorial 361315 in German), and seniors read those quotes on
+# the public atlas; Brigham's and Hardin's English policies were stored too. The common words of
+# each language are ones no English text uses and no US state code spells: "de", "la", "el", "al"
+# and "il" are left out, so an address in Los Angeles or a "De La Cruz" on a provider list never
+# turns an English page Spanish.
 COMMON_WORDS = {
     "english": "the and of to is are for with you your will be this that by if may not from have "
     "has which who our it all any can must their they we would should than been were was its such "
