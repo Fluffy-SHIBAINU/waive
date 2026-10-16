@@ -48,7 +48,15 @@ from waive.atlas.structure import (
     written_in_english,
 )
 from waive.atlas.tavily_gateway import Depth, TavilyGateway
-from waive.atlas.verify import PATIENT_SHARE_REASON, prune_lists, trim_quotes, verify_sheet
+from waive.atlas.verify import (
+    DENTAL_REASON,
+    OTHER_REGION_REASON,
+    PATIENT_SHARE_REASON,
+    TRANSLATION_REASON,
+    prune_lists,
+    trim_quotes,
+    verify_sheet,
+)
 from waive.db import HospitalRow, ReviewItemRow
 
 Outcome = Literal["published", "held", "skipped", "failed"]
@@ -222,12 +230,41 @@ def _english_rules_and_translations(
     return english_rules, translations
 
 
-def _translations_to_reject(sources_with_text: list[tuple[SourceDoc, str]]) -> frozenset[str]:
-    """The web documents no field may be quoted from: the translations, while a web document in
-    English states the income rules (the rule _set_aside_translations applies before structuring,
-    held to stored sheets by verify_sheet's TRANSLATION_REASON)."""
-    english_rules, translations = _english_rules_and_translations(sources_with_text)
-    return frozenset(source.id for source, _ in translations) if english_rules else frozenset()
+def _never_the_hospitals(source: SourceDoc, text: str, hospital: HospitalRef) -> str | None:
+    """Why a web document is never this hospital's, whatever else is stored, or None: it is a
+    dental program's (scout.is_dental_program) or another Kaiser region's
+    (structure.another_kaiser_region). A build detaches both before structuring
+    (_drop_dental_documents, _drop_other_state_documents), and no sibling lends them."""
+    if source.kind is not SourceKind.HOSPITAL_WEB:
+        return None
+    url = source.url or ""
+    if is_dental_program(url, source.title, text):
+        return DENTAL_REASON
+    if another_kaiser_region(source.title, url, hospital):
+        return OTHER_REGION_REASON
+    return None
+
+
+def _documents_set_aside(
+    hospital: HospitalRef, sources_with_text: list[tuple[SourceDoc, str]]
+) -> dict[str, str]:
+    """The stored web documents no field may be quoted from, each with verify_sheet's reason: a
+    dental program's and another Kaiser region's (DENTAL_REASON, OTHER_REGION_REASON), which a
+    build detaches before structuring, then, among the rest, the translations while a web document
+    in English states the income rules (TRANSLATION_REASON; _set_aside_translations keeps them
+    from the structurer). A sheet built before a rule still quotes such a document while it stays
+    linked: the nine published Kaiser California sheets quoting Kaiser Northwest's dental policy
+    passed recheck (review of 7.16)."""
+    set_aside = {
+        source.id: reason
+        for source, text in sources_with_text
+        if (reason := _never_the_hospitals(source, text, hospital))
+    }
+    rest = [(source, text) for source, text in sources_with_text if source.id not in set_aside]
+    english_rules, translations = _english_rules_and_translations(rest)
+    if english_rules:
+        set_aside.update((source.id, TRANSLATION_REASON) for source, _ in translations)
+    return set_aside
 
 
 ENGLISH_POLICY_MISSING = "english_policy_missing"
@@ -300,41 +337,53 @@ def _documents_for_structurer(
     return _set_aside_translations(session, hospital.ccn, kept, result)
 
 
+def _hold_without(session: Session, ccn: str, gone: set[str], result: BuildResult) -> bool:
+    """The latest sheet held without the fields it quotes from documents this build set aside
+    (`gone`), as one built from a wrong website is (clear_wrong_domain): it cannot go on
+    publishing a dental program's bands or another region's policy while no new sheet replaces
+    it. True when a held version was published; a sheet that quotes none of them is left as it
+    is."""
+    latest = repo.latest_sheet(session, ccn)
+    if latest is None:
+        return False
+    sheet = latest[0]
+    dropped = [path for path, cited in sheet.field_paths() if cited.source_id in gone]
+    if not dropped:
+        return False
+    held = drop_fields(sheet, dropped).model_copy(
+        update={
+            "status": SheetStatus.HELD,
+            "sources": [source for source in sheet.sources if source.id not in gone],
+        }
+    )
+    published = publish_sheet(session, held)
+    result.version = published.version if published else sheet.version
+    result.notes.append(
+        f"{len(dropped)} fields quoted from the documents set aside dropped and the sheet held: "
+        + ", ".join(dropped)
+    )
+    return True
+
+
 def _nothing_left_to_structure(
     session: Session, row: HospitalRow, set_aside: set[str], result: BuildResult
 ) -> BuildResult:
     """Every document the build had was set aside before structuring (Kaiser Foundation Hospital
-    and Rehab Center, 050073, had stored nothing but Kaiser Northwest's dental policy; task 7.16),
-    so no model is asked. A `no_documents` item records it and keeps the scheduler off the
-    hospital for a month (schedule.FAILURE_KINDS) before it is scouted again. A sheet that quoted
-    the set-aside documents loses those fields and is held, as one built from a wrong website is
-    (clear_wrong_domain): it cannot go on publishing them."""
-    ccn = row.ccn
+    and Rehab Center, 050073, had stored nothing but Kaiser Northwest's dental policy; task 7.16)
+    and no sibling could lend one, so no model is asked. A `no_documents` item records it and
+    keeps the scheduler off the hospital for a month (schedule.FAILURE_KINDS) before it is
+    scouted again, and a sheet that quoted the set-aside documents is held without them."""
     repo.add_review_item(
-        session, ccn, "no_documents", {"domain": row.website_domain, "set_aside": sorted(set_aside)}
+        session,
+        row.ccn,
+        "no_documents",
+        {"domain": row.website_domain, "set_aside": sorted(set_aside)},
     )
     result.notes.append(
         "no financial assistance documents left to structure once those are set aside"
     )
-    latest = repo.latest_sheet(session, ccn)
-    if latest is None:
-        return result
-    sheet = latest[0]
-    dropped = [path for path, cited in sheet.field_paths() if cited.source_id in set_aside]
-    if not dropped:
-        return result
-    held = drop_fields(sheet, dropped).model_copy(
-        update={
-            "status": SheetStatus.HELD,
-            "sources": [source for source in sheet.sources if source.id not in set_aside],
-        }
-    )
-    published = publish_sheet(session, held)
-    result.outcome = "held"
-    result.version = published.version if published else sheet.version
-    result.notes.append(
-        f"{len(dropped)} fields quoted from them dropped and the sheet held: " + ", ".join(dropped)
-    )
+    if _hold_without(session, row.ccn, set_aside, result):
+        result.outcome = "held"
     return result
 
 
@@ -345,18 +394,6 @@ class Borrowed:
     sources: list[tuple[SourceDoc, str]]
     shared_ids: set[str]
     item: ReviewItemRow
-
-
-def _never_the_hospitals(source: SourceDoc, text: str, hospital: HospitalRef) -> bool:
-    """A web document that is never this hospital's, whatever else is stored: a dental program's
-    (scout.is_dental_program) or another Kaiser region's (structure.another_kaiser_region). A
-    build detaches both before structuring (_drop_dental_documents, _drop_other_state_documents)."""
-    if source.kind is not SourceKind.HOSPITAL_WEB:
-        return False
-    url = source.url or ""
-    return is_dental_program(url, source.title, text) or another_kaiser_region(
-        source.title, url, hospital
-    )
 
 
 def _share_sibling_sources(
@@ -696,9 +733,13 @@ def build_hospital(
             )
     if not sources_with_text:
         return _nothing_left_to_structure(session, row, considered, result)
+    # What the build detached (a dental program's, another state's): when the structurer then
+    # fails, the sheet must not go on quoting it (review of 7.16).
+    detached = considered - {source.id for source, _ in [*sources_with_text, *translations]}
 
     first_pass = _structure_and_verify(session, ai, hospital, sources_with_text, today, result)
     if first_pass is None:
+        _hold_without(session, ccn, detached, result)
         return result
     sheet, holds = first_pass
     if borrowed is None and not holds and _lacks_income_rules(sheet):
@@ -709,14 +750,17 @@ def build_hospital(
         # link one Tagalog policy, and it is not the sibling's to lend (review of 7.15b).
         borrowed = _share_sibling_sources(session, row, [*sources_with_text, *translations], result)
         if borrowed is not None:
+            lent = {source.id for source, _ in borrowed.sources}
             sources_with_text, shared_translations = _documents_for_structurer(
                 session, hospital, borrowed.sources, result
             )
             translations = [*translations, *shared_translations]
+            detached |= lent - {source.id for source, _ in [*sources_with_text, *translations]}
             second_pass = _structure_and_verify(
                 session, ai, hospital, sources_with_text, today, result
             )
             if second_pass is None:
+                _hold_without(session, ccn, detached, result)
                 return result
             sheet, holds = second_pass
     if borrowed is not None:
@@ -953,7 +997,8 @@ def recheck_sheets(session: Session, state: str | None = None) -> list[Recheck]:
         sheet = latest[0]
         sources = repo.sources_for(session, row.ccn)
         texts = {source.id: text for source, text in sources}
-        report = verify_sheet(sheet, texts, _translations_to_reject(sources))
+        set_aside = _documents_set_aside(repo.hospital_ref(row), sources)
+        report = verify_sheet(sheet, texts, set_aside)
         rejected = list(report.rejected)
         if sheet.status is SheetStatus.PUBLISHED and (unplaced := _unplaced(row, sources)):
             rejected.append(("sheet", f"{PLACE_UNCONFIRMED_REASON}: {unplaced}"))
@@ -989,7 +1034,8 @@ def withdraw_rejected(
         sources = repo.sources_for(session, row.ccn)
         texts = {source.id: text for source, text in sources}
         grounded, pruned = _ground(sheet, texts)
-        report = verify_sheet(grounded, texts, _translations_to_reject(sources))
+        set_aside = _documents_set_aside(repo.hospital_ref(row), sources)
+        report = verify_sheet(grounded, texts, set_aside)
         unplaced = _unplaced(row, sources) if sheet.status is SheetStatus.PUBLISHED else None
         unconfirmed = _unconfirmed_domain(row) if sheet.status is SheetStatus.PUBLISHED else None
         if not pruned and not report.rejected and not unplaced and not unconfirmed:
@@ -1125,7 +1171,7 @@ def confirm_domain(session: Session, ccn: str, domain: str) -> BuildResult:
     sources = repo.sources_for(session, ccn)
     texts = {source.id: text for source, text in sources}
     grounded, pruned = _ground(sheet, texts)
-    report = verify_sheet(grounded, texts, _translations_to_reject(sources))
+    report = verify_sheet(grounded, texts, _documents_set_aside(repo.hospital_ref(row), sources))
     result.notes.extend(pruned)
     result.notes.extend(f"{path}: {reason}" for path, reason in report.rejected)
     if pruned or report.rejected:

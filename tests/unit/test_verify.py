@@ -1104,16 +1104,24 @@ def test_trimming_never_widens_a_free_care_quote_to_a_passage_the_verifier_rejec
     assert all(path != free for path, _ in verify_sheet(trimmed, docs).rejected)
 
 
-def test_a_field_quoted_from_a_translation_the_caller_names_is_rejected():
-    from waive.atlas.verify import TRANSLATION_REASON
+def test_a_field_quoted_from_a_document_the_caller_sets_aside_is_rejected_with_its_reason():
+    from waive.atlas.verify import DENTAL_REASON, OTHER_REGION_REASON, TRANSLATION_REASON
 
     # Review of 7.15b: the pipeline names the documents that are translations while an English
-    # document states the income rules; every field quoted from one is rejected.
+    # document states the income rules; every field quoted from one is rejected. Review of 7.16:
+    # so is every field quoted from a dental program's document or another Kaiser region's.
     sheet = st_example_sheet()
-    report = verify_sheet(sheet, DOCS, translations=frozenset({SAMPLE_SOURCE_ID}))
-    assert {reason for _, reason in report.rejected} == {TRANSLATION_REASON}
-    assert len(report.rejected) == len(sheet.field_paths())
+    for reason in (TRANSLATION_REASON, DENTAL_REASON, OTHER_REGION_REASON):
+        report = verify_sheet(sheet, DOCS, {SAMPLE_SOURCE_ID: reason})
+        assert {rejected for _, rejected in report.rejected} == {reason}
+        assert len(report.rejected) == len(sheet.field_paths())
     assert verify_sheet(sheet, DOCS).ok
+    assert verify_sheet(sheet, DOCS, {"fap-elsewhere": DENTAL_REASON}).ok
+    # A quote its document does not contain is reported as that first.
+    report = verify_sheet(
+        sheet, {SAMPLE_SOURCE_ID: "Nothing here."}, {SAMPLE_SOURCE_ID: DENTAL_REASON}
+    )
+    assert {rejected for _, rejected in report.rejected} == {"quote not found in source"}
 
 
 def test_a_stitched_free_care_quote_keeps_the_sentence_that_states_the_limit():
