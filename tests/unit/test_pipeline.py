@@ -1135,7 +1135,11 @@ TAGALOG_POLICY = (
 )
 TRANSLATION_NOTE = (
     "1 stored document is not in English (fap-tagalog); left out of the structurer while an "
-    "English one is stored, and still linked"
+    "English one states the income rules, and still linked"
+)
+KEPT_TRANSLATION_NOTE = (
+    "1 stored document is not in English (fap-tagalog) and no English one states the income "
+    "rules: kept for the structurer, and an english_policy_missing item asks for the English policy"
 )
 
 
@@ -1152,9 +1156,9 @@ def store_translation(session, ccn):
     return source
 
 
-def test_a_translation_is_kept_from_the_structurer_while_an_english_document_is_stored():
+def test_a_translation_is_kept_from_the_structurer_while_an_english_policy_is_stored():
     # Task 7.15a: BID Needham, Hoag, Baptist Beaches and Nassau, Brigham and Women's and Hardin
-    # Memorial published quotes from a translation of the policy their English version states.
+    # Memorial published quotes from a translation of their policy.
     engine = make_engine_with_hospital()
     with session_scope(engine) as session:
         build_hospital(session, FakeGateway(), FakeAI(), "229999", TODAY)
@@ -1168,7 +1172,9 @@ def test_a_translation_is_kept_from_the_structurer_while_an_english_document_is_
         assert "fap-tagalog" not in {source.id for source in sheet.sources}
         # Nothing is detached: the translation stays the hospital's.
         assert "fap-tagalog" in {s.id for s, _ in repo.sources_for(session, "229999")}
-    # When every stored document is a translation there is nothing to prefer: it is read.
+        assert all(i.kind != "english_policy_missing" for i in repo.open_review_items(session))
+    # When every stored document is a translation there is nothing to prefer: it is read, and an
+    # admin is asked for the English policy.
     engine = make_engine_with_hospital()
     with session_scope(engine) as session:
         repo.get_hospital(session, "229999").website_domain = "example.org"
@@ -1176,7 +1182,33 @@ def test_a_translation_is_kept_from_the_structurer_while_an_english_document_is_
         ai = GroundedAI()
         result = build_hospital(session, FakeGateway(), ai, "229999", TODAY, reuse_sources=True)
         assert ai.prompts and all("fap-tagalog" in p for p in ai.prompts)
-        assert all("not in English" not in note for note in result.notes)
+        assert KEPT_TRANSLATION_NOTE in result.notes
+        assert review_detail(session, "229999", "english_policy_missing")["translations"] == [
+            "fap-tagalog"
+        ]
+
+
+def test_a_translation_stays_while_no_english_document_states_the_income_rules():
+    # Review of 7.15b: BID Needham (220083), Baptist Beaches and Nassau (100117, 100140) and Hoag
+    # (050224) store English billing pages and a job listing, none naming the poverty level.
+    # Setting their translations aside would leave a rebuild with no income rule at all.
+    engine = make_engine_with_hospital()
+    with session_scope(engine) as session:
+        repo.get_hospital(session, "229999").website_domain = "example.org"
+        store_thin_page(session, "229999")
+        store_translation(session, "229999")
+        for _ in range(2):
+            ai = GroundedAI()
+            result = build_hospital(session, FakeGateway(), ai, "229999", TODAY, reuse_sources=True)
+            assert ai.prompts and all("fap-tagalog" in p for p in ai.prompts)
+            assert KEPT_TRANSLATION_NOTE in result.notes
+        # One open item however often it is rebuilt.
+        items = [
+            i
+            for i in repo.open_review_items(session, "229999")
+            if i.kind == "english_policy_missing"
+        ]
+        assert len(items) == 1 and items[0].detail["translations"] == ["fap-tagalog"]
 
 
 def test_a_siblings_translation_is_kept_from_the_structurer_on_both_sharing_paths():
