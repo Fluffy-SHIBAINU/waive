@@ -96,13 +96,40 @@ _FUNDRAISING = re.compile(
     r"\bgolf\b|\bgala\b|fundrais|\bdonat|/giving\b|ways-to-give|support-the-foundation"
     r"|events-campaigns|charity care fund|charity-care-fund"
 )
+# Kaiser Permanente Northwest's Dental Financial Assistance policy (NW.CB.002, an Oregon program
+# with its own 100/75/50/25% bands) was stored as the financial assistance policy of fifteen
+# California Kaiser hospitals, and nine published sheets showed its dental bands (050070, 050072,
+# 050075, 050138, 050140, 050425, 050677, 050723, 050855; task 7.16). A dental program is never a
+# hospital's policy. Naming dental care among the services covered or excluded names no program
+# ("it DOES NOT cover Bariatric Surgery, dental services, and pharmacy services", MetroHealth,
+# 360059), and a policy for medical and dental care alike is still the hospital's.
+_DENTAL_PROGRAM = re.compile(
+    r"(?<!and[- ])(?<!or[- ])(?<!&[- ])\bdental[- ](?:financial[- ](?:assistance|aid)|charity"
+    r"|(?:assistance|discount)[- ]program|sliding[- ](?:fee|scale))"
+)
+# A document names its subject first: "POLICY TITLE Dental Financial Assistance" opens Kaiser's,
+# which the search had titled after the medical program. A hospital policy that names a dental
+# program does so further in: Ellis Medicine's income table has a "Dental Financial Assistance
+# Award" column 3,463 characters into its prose (330153).
+OPENING_CHARS = 1_000
+_MARKDOWN_IMAGE = re.compile(r"!\[[^\]]*\]\([^)]*\)")
+
+
+def is_dental_program(url: str, title: str, text: str = "") -> bool:
+    """Whether a document is a dental assistance program's: its address or title names one, or the
+    opening of its text does (its first OPENING_CHARS characters of prose; links and images are
+    left out, so a site menu that links the dental program does not count)."""
+    if _DENTAL_PROGRAM.search(f"{unquote(url)} {title}".lower().replace("_", "-")):
+        return True
+    prose = " ".join(MARKDOWN_LINK.sub(" ", _MARKDOWN_IMAGE.sub(" ", text)).split())
+    return _DENTAL_PROGRAM.search(prose[:OPENING_CHARS].lower()) is not None
 
 
 def classify_doc(url: str, title: str) -> DocClass | None:
     if urlparse(url).path.lower().endswith(NOT_A_DOCUMENT):
         return None
     text = f"{url} {title}".lower().replace("_", "-")
-    if _FUNDRAISING.search(text):
+    if _FUNDRAISING.search(text) or is_dental_program(url, title):
         return None
     # Asset hosts put the MIME type in the query string; "application/pdf" is not an application.
     text = text.replace("application%2fpdf", " ").replace("application/pdf", " ")
@@ -218,7 +245,11 @@ def _link_text(url: str, label: str) -> str:
 
 def _is_eligibility_link(url: str, label: str) -> bool:
     text = _link_text(url, label)
-    return ELIGIBILITY_LINK.search(text) is not None and _FUNDRAISING.search(text) is None
+    return (
+        ELIGIBILITY_LINK.search(text) is not None
+        and _FUNDRAISING.search(text) is None
+        and not is_dental_program(url, label)
+    )
 
 
 def _is_lesser(url: str, label: str) -> bool:
@@ -470,6 +501,12 @@ def _fetch_documents(
     if shells:
         log.info("%s: one navigation shell at %d URLs, not stored", domain, len(shells))
         docs = [doc for doc in docs if doc.url not in shells]
+    # Kaiser Northwest's dental policy came under the medical program's search title, so only its
+    # text, read here, says whose policy it is (task 7.16).
+    dental = {doc.url for doc in docs if is_dental_program(doc.url, doc.title, doc.text)}
+    if dental:
+        log.info("%s: %d dental program documents, not stored", domain, len(dental))
+        docs = [doc for doc in docs if doc.url not in dental]
     return docs
 
 
