@@ -53,6 +53,7 @@ from waive.governor import make_governor
 from waive.learning.contributions import rebuild_from_sources
 from waive.learning.evidence import audit_evidence, publish_reported
 from waive.learning.scoreboard import queue_prechecks, scoreboard
+from waive.ledger.cli import ledger_app
 
 app = typer.Typer(no_args_is_help=True, help="Waive operations.")
 console = Console()
@@ -747,3 +748,7 @@ def learn_scoreboard(
     console.print(table)
     if queue:
         console.print(f"Queued priority re-checks: {', '.join(queued) or 'none'}")
+
+
+# Phase 10: the hospital ledger (free federal data per hospital; src/waive/ledger/cli.py).
+app.add_typer(ledger_app, name="ledger")
