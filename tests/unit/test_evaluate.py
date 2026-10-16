@@ -3,7 +3,7 @@ from datetime import date
 from decimal import Decimal
 from pathlib import Path
 
-from waive.cases.evaluate import compare, evaluate_corpus, write_report
+from waive.cases.evaluate import FIELDS, compare, evaluate_corpus, write_report
 from waive.cases.extract import BillExtract
 from waive.cases.synth import generate_corpus, make_truth
 
@@ -17,6 +17,7 @@ def test_compare_is_tolerant_where_it_should_be():
         fap_phone=f"({truth.fap_phone[:3]}) {truth.fap_phone[4:]}",
         fap_url="https://" + truth.fap_url,
         collection_notice=truth.collection_notice,
+        payee_kind=truth.payee_kind,
     )
     assert all(compare(truth, extract).values())
     wrong = BillExtract(
@@ -25,6 +26,14 @@ def test_compare_is_tolerant_where_it_should_be():
         collection_notice=not truth.collection_notice,  # the default flag would match a False truth
     )
     assert not any(compare(truth, wrong).values())
+    assert "payee_kind" in FIELDS
+
+
+def test_an_unread_payee_only_scores_when_the_bill_is_the_hospitals_own():
+    truth = make_truth(random.Random(5)).model_copy(update={"payee_kind": "physician_group"})
+    assert compare(truth, BillExtract())["payee_kind"] is False
+    own = truth.model_copy(update={"payee_kind": "hospital_facility"})
+    assert compare(own, BillExtract())["payee_kind"] is True
 
 
 class PerfectAI:
@@ -46,4 +55,4 @@ def test_evaluate_corpus_and_report(tmp_path):
     assert scores["n"] == 3 and scores["amount_due"] == 1.0
     write_report(scores, tmp_path / "report.md")
     text = (tmp_path / "report.md").read_text()
-    assert "| amount_due | 100% |" in text
+    assert "| amount_due | 100% |" in text and "| payee_kind | 100% |" in text

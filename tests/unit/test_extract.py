@@ -6,6 +6,7 @@ from waive.cases.extract import (
     BILL_PROMPT,
     BillExtract,
     IncomeExtract,
+    PayeeKind,
     extract_bill,
     extract_income,
     image_message,
@@ -79,3 +80,29 @@ def test_income_extract_annualizes_monthly_benefit():
     assert ai.calls[0]["purpose"] == "case.income"
     assert IncomeExtract(annual_income=Decimal("30000")).annual() == Decimal("30000")
     assert IncomeExtract().annual() is None
+
+
+def test_bill_prompt_asks_who_the_payee_is_and_the_schema_names_the_kinds():
+    # Physician, anesthesia, radiology and ambulance bills sit outside the hospital's FAP
+    # (research 2026-10-16, pain 5): the reader says who is asking for the money.
+    assert "payee_kind" in BILL_PROMPT and "remit" in BILL_PROMPT.lower()
+    for kind in ("hospital_facility", "physician_group", "anesthesia_radiology_pathology"):
+        assert kind in BILL_PROMPT
+    assert [kind.value for kind in PayeeKind] == [
+        "hospital_facility",
+        "physician_group",
+        "anesthesia_radiology_pathology",
+        "ambulance",
+        "other",
+    ]
+    extract = BillExtract.model_validate(
+        {"payee_kind": "ambulance", "payee_name": "Boston EMS", "amount_due": "120"}
+    )
+    assert extract.payee_kind is PayeeKind.AMBULANCE and extract.payee_name == "Boston EMS"
+    assert BillExtract().payee_kind is None
+    # An off-list label from the reader must not void the whole bill read.
+    assert BillExtract.model_validate({"payee_kind": "dentist"}).payee_kind is PayeeKind.OTHER
+    assert BillExtract.model_validate({"payee_kind": " Physician Group "}).payee_kind is (
+        PayeeKind.PHYSICIAN_GROUP
+    )
+    assert BillExtract.model_validate({"payee_kind": ""}).payee_kind is None

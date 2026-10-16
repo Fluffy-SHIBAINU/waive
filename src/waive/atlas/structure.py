@@ -27,6 +27,7 @@ from waive.atlas.verify import (
     quotes_assistance_ceiling,
     supported_doc_types,
     supported_programs,
+    supported_providers,
     supported_submit_methods,
 )
 from waive.rules.deadlines import MIN_ECA_WAIT_DAYS
@@ -45,8 +46,9 @@ Rules:
 9. "presumptive" lists programs whose members qualify automatically (for example Medicaid, MassHealth, SNAP).
 10. "free_care_max_fpl" is only the upper income bound of a 100% discount (free care) band: fill it when the documents say that care is free, at no charge, or discounted 100% for incomes up to that level. Otherwise leave it null.
 11. "assistance_ceiling_fpl" is the highest household income (as % FPL) at which any financial assistance or discount is available at all, when the documents state one: "assistance is available to incomes less than 600% of the federal poverty guidelines", "discounts are limited to incomes up to 300% FPG", "eligible up to 400% FPL". Such a sentence is an eligibility ceiling on all help, never a free-care band: put its number here and leave free_care_max_fpl null unless another passage grants free care. Leave assistance_ceiling_fpl null when the only income limit stated is the free-care band itself. Its quote must include the words that tie the number to the poverty level ("up to 300% of the Federal Poverty Guidelines"), not the number alone.
-12. When the documents include versions of one policy for different states (a SOURCE header says names_state=XX), use the version for the hospital's state, the state on the "Hospital:" line, and ignore the others.
-13. Reply with only the JSON object, no commentary."""
+12. "covered_providers" lists the providers (physician groups, anesthesia, radiology, emergency physicians) whose care the policy covers, when the documents give such a list; it is not the list of providers NOT covered.
+13. When the documents include versions of one policy for different states (a SOURCE header says names_state=XX), use the version for the hospital's state, the state on the "Hospital:" line, and ignore the others.
+14. Reply with only the JSON object, no commentary."""
 
 MAX_DOC_CHARS = 40_000
 PASSAGE_HEAD_CHARS = 6_000
@@ -140,6 +142,7 @@ class SheetDraft(BaseModel):
     phone: DraftField | None = None
     hours: DraftField | None = None
     languages: DraftField | None = None
+    covered_providers: DraftField | None = None
     facilities: DraftField | None = None
 
 
@@ -568,12 +571,14 @@ FIELD_MAP: dict[str, tuple[str, str, Callable[[Any], Any]]] = {
     "hours": ("contacts", "hours", _text),
     "languages": ("contacts", "languages", _str_list),
     "facilities": ("coverage", "facilities", _str_list),
+    "covered_providers": ("coverage", "covered_providers", _str_list),
 }
 # Lists whose items must each be named by the quote; the caster above shapes them, these prune.
 QUOTE_FILTERS: dict[str, Callable[[Any, str], Any]] = {
     "apply.documents_required": supported_doc_types,
     "apply.submit_methods": supported_submit_methods,
     "programs.presumptive": supported_programs,
+    "coverage.covered_providers": supported_providers,
 }
 
 

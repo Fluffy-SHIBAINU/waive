@@ -1385,3 +1385,19 @@ def test_reading_poverty_percentages_stays_fast_on_a_long_run_of_years():
     # The income-limit rule reads a few words around each occurrence, never the whole table.
     assert not states_income_limit("Sliding Scale " + "100% 89% " * 2_000, Decimal(100))
     assert time.perf_counter() - started < 2
+
+
+def test_the_verifier_rejects_a_covered_provider_the_quote_does_not_name():
+    from waive.atlas.schema import Cited, Coverage
+
+    sheet = st_example_sheet()
+    cited = Cited[list[str]](
+        value=["Example Emergency Physicians", "Harbor Hospitalists"],
+        quote="providers covered by this policy: Example Emergency Physicians",
+        source_id=SAMPLE_SOURCE_ID,
+        checked_on=sheet.eligibility.free_care_max_fpl.checked_on,
+    )
+    listed = sheet.model_copy(update={"coverage": Coverage(covered_providers=cited)})
+    report = verify_sheet(listed, {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT})
+    assert not report.ok
+    assert any(path == "coverage.covered_providers" for path, _ in report.rejected)
