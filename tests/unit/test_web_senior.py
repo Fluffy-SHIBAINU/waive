@@ -37,6 +37,9 @@ HOSPITAL = {
 
 
 class FakeAI:
+    def __init__(self, **bill):
+        self.bill = bill
+
     def complete_json(self, role, messages, schema, *, phi, purpose, max_tokens=2000):
         if schema is BillExtract:
             return BillExtract(
@@ -45,12 +48,13 @@ class FakeAI:
                 statement_date=date(2026, 9, 3),
                 amount_due=Decimal("1850.00"),
                 confidence=0.9,
+                **self.bill,
             )
         return IncomeExtract(monthly_benefit=Decimal("1900"))
 
 
-def seeded_client():
-    client, engine = make_client(ai=FakeAI())
+def seeded_client(ai=None):
+    client, engine = make_client(ai=ai or FakeAI())
     with session_scope(engine) as session:
         repo.upsert_hospital(session, HOSPITAL)
         publish_sheet(session, st_example_sheet())
@@ -288,3 +292,72 @@ def test_the_photo_button_opens_the_camera_and_the_page_says_it_is_reading():
     assert "onchange=" not in start
     css = client.get("/static/waive.css").text
     assert "[hidden] { display: none !important; }" in css
+
+
+def test_the_household_step_asks_about_a_medicaid_or_qmb_card_with_big_buttons():
+    client, links = seeded_client()
+    base = f"/s/{links.senior_token}"
+    client.post(f"{base}/bill", files=photo())
+    page = client.post(f"{base}/confirm", data={"answer": "yes"}, follow_redirects=True).text
+    assert "Do you have a Medicaid, MassHealth or QMB card?" in page
+    for label in ("Yes, MassHealth", "Yes, QMB", "SNAP only", "No, or not sure"):
+        assert label in page
+    assert page.count('name="programs"') == 4
+
+
+def test_a_qmb_card_short_circuits_to_a_not_owed_result_and_a_complaint_letter():
+    client, links = seeded_client()
+    base = f"/s/{links.senior_token}"
+    caregiver = f"/c/{links.caregiver_token}"
+    client.post(f"{base}/bill", files=photo())
+    client.post(f"{base}/confirm", data={"answer": "yes"})
+    result = client.post(
+        f"{base}/household", data={"size": "1", "programs": "QMB"}, follow_redirects=True
+    )
+    assert str(result.url).endswith("/result")  # no income step: the answer needs no income
+    assert "not yours to pay" in result.text and "MassHealth or QMB card" in result.text
+    assert "Good news" not in result.text and "likely do not have to pay" not in result.text
+    own = client.get(f"{caregiver}/result").text
+    assert "not yours to pay" in own and "we make the letter" in own.lower()
+    review = client.get(caregiver).text
+    assert "Likely not owed at all" in review and "make my letter" in review
+    client.post(f"{caregiver}/approve")
+    form = client.get(f"{caregiver}/form").text
+    assert "Your letter is ready" in form and "Send it by" not in form
+    assert "Copy of your MassHealth or QMB card" in form
+    pdf = client.get(f"{caregiver}/packet.pdf")
+    assert pdf.status_code == 200 and pdf.headers["content-disposition"].endswith('letter.pdf"')
+
+
+def test_a_physician_group_bill_says_the_policy_does_not_cover_it_and_offers_a_request():
+    ai = FakeAI(payee_kind="physician_group", payee_name="Example Emergency Physicians")
+    client, links = seeded_client(ai)
+    base = f"/s/{links.senior_token}"
+    caregiver = f"/c/{links.caregiver_token}"
+    client.post(f"{base}/bill", files=photo())
+    client.post(f"{base}/confirm", data={"answer": "yes"})
+    client.post(f"{base}/household", data={"size": "1", "programs": "none"})
+    result = client.post(f"{base}/income", files=photo(), follow_redirects=True).text
+    assert "policy does not cover this bill" in result
+    assert "Example Emergency Physicians" in result and "their own financial assistance" in result
+    assert "Good news" not in result
+    client.post(f"{caregiver}/approve")
+    form = client.get(f"{caregiver}/form").text
+    assert "Example Emergency Physicians" in form and "address on the bill" in form
+    assert client.get(f"{caregiver}/packet.pdf").status_code == 200
+
+
+def test_an_ambulance_bill_points_to_ship_and_makes_no_packet():
+    ai = FakeAI(payee_kind="ambulance", payee_name="Boston EMS")
+    client, links = seeded_client(ai)
+    base = f"/s/{links.senior_token}"
+    caregiver = f"/c/{links.caregiver_token}"
+    client.post(f"{base}/bill", files=photo())
+    client.post(f"{base}/confirm", data={"answer": "yes"})
+    client.post(f"{base}/household", data={"size": "1", "programs": "none"})
+    result = client.post(f"{base}/income", files=photo(), follow_redirects=True).text
+    assert "1-877-839-2675" in result and "Boston EMS" in result
+    client.post(f"{caregiver}/approve")
+    form = client.get(f"{caregiver}/form").text
+    assert "1-877-839-2675" in form and "Download the packet" not in form
+    assert client.get(f"{caregiver}/packet.pdf").status_code == 404

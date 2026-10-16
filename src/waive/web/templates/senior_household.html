@@ -8,11 +8,12 @@
     <label class="btn"><input type="radio" name="size" value="{{ n }}" {% if n == 1 %}checked{% endif %}> {{ n }}{% if n == 4 %} or more{% endif %}</label>
     {% endfor %}
   </div>
-  <h2>Do you have MassHealth or SNAP (food help)?</h2>
+  <h2>Do you have a Medicaid, {{ card }} or QMB card?</h2>
+  <p class="muted">QMB means Qualified Medicare Beneficiary. It is printed on some Medicaid cards.</p>
   <div class="choices">
-    <label class="btn"><input type="radio" name="programs" value="MassHealth"> Yes, MassHealth</label>
-    <label class="btn"><input type="radio" name="programs" value="SNAP"> Yes, SNAP</label>
-    <label class="btn"><input type="radio" name="programs" value="MassHealth,SNAP"> Both</label>
+    <label class="btn"><input type="radio" name="programs" value="{{ card }}"> Yes, {{ card }}</label>
+    <label class="btn"><input type="radio" name="programs" value="QMB"> Yes, QMB</label>
+    <label class="btn"><input type="radio" name="programs" value="SNAP"> SNAP only (food help)</label>
     <label class="btn"><input type="radio" name="programs" value="none" checked> No, or not sure</label>
   </div>
   <button type="submit" class="btn primary">Next</button>

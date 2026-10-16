@@ -147,6 +147,10 @@ class Contacts(BaseModel):
 class Coverage(BaseModel):
     facilities: Cited[list[str]] | None = None
     provider_list_url: Cited[str] | None = None
+    # The 501(r)(4) list of providers whose care the FAP covers (physician groups, anesthesia,
+    # radiology). A bill from a payee named here is inside the policy; other non-hospital
+    # payees are not (task 9.12).
+    covered_providers: Cited[list[str]] | None = None
 
 
 class HospitalRef(BaseModel):

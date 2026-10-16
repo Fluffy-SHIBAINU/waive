@@ -17,6 +17,7 @@ FIELDS = (
     "fap_phone",
     "fap_url",
     "collection_notice",
+    "payee_kind",
 )
 
 
@@ -42,6 +43,8 @@ def compare(truth: BillTruth, extract: BillExtract) -> dict[str, bool]:
         "fap_phone": _digits(extract.fap_phone) == _digits(truth.fap_phone),
         "fap_url": _url(extract.fap_url) == _url(truth.fap_url),
         "collection_notice": extract.collection_notice == truth.collection_notice,
+        # An unread payee is treated as the hospital's own bill, so it is right only then.
+        "payee_kind": (extract.payee_kind or "hospital_facility") == truth.payee_kind,
     }
 
 

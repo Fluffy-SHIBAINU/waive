@@ -34,3 +34,28 @@ def test_generate_corpus_writes_pairs(tmp_path):
         tmp_path / "bill-000.json"
     ).read_text()
     assert BillTruth.model_validate(truth).amount_due == Decimal(truth["amount_due"])
+
+
+def test_truth_names_the_payee_and_a_quarter_of_bills_come_from_outside_the_hospital():
+    truths = [make_truth(random.Random(seed)) for seed in range(40)]
+    kinds = {truth.payee_kind for truth in truths}
+    assert "hospital_facility" in kinds
+    assert kinds & {"physician_group", "anesthesia_radiology_pathology", "ambulance"}
+    for truth in truths:
+        assert truth.payee_name
+        if truth.payee_kind == "hospital_facility":
+            assert truth.payee_name == truth.hospital_name
+        else:
+            assert truth.payee_name != truth.hospital_name
+    # Drawn after the existing fields: the fixtures other tests read keep their values.
+    assert make_truth(random.Random(1)).hospital_name == "Northbridge Community Hospital"
+
+
+def test_bills_from_outside_the_hospital_print_a_remit_to_line():
+    truth = next(
+        make_truth(random.Random(seed))
+        for seed in range(40)
+        if make_truth(random.Random(seed)).payee_kind != "hospital_facility"
+    )
+    jpeg = render_bill(truth, random.Random(2), layout=0, rotate_deg=0.0, blur=0.0)
+    assert prepare_image(jpeg).warnings == ()

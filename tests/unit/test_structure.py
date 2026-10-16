@@ -1078,3 +1078,20 @@ def test_medicaid_is_not_named_by_the_word_medical():
         ["Medicaid"],
         "Patients with unpaid medical bills over 25% of income are deemed presumptively eligible.",
     ) == (None, ["programs.presumptive: none of the listed programs is named in the quote"])
+
+
+def test_a_covered_provider_list_lands_on_the_sheet():
+    # 501(r)(4) lists: a physician group named here is inside the FAP (task 9.12).
+    draft = SheetDraft(
+        covered_providers=field(
+            ["Example Emergency Physicians, P.A.", "Example Anesthesia Associates"],
+            "providers covered by this policy: Example Emergency Physicians, P.A.",
+        )
+    )
+    sheet, skipped = draft_to_sheet(draft, SAMPLE.hospital, [SAMPLE.sources[0]], TODAY)
+    assert skipped == []
+    assert sheet.coverage.covered_providers.value == [
+        "Example Emergency Physicians, P.A.",
+        "Example Anesthesia Associates",
+    ]
+    assert "covered_providers" in SYSTEM_PROMPT

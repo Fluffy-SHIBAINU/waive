@@ -470,3 +470,72 @@ def test_a_case_summary_opens_the_sealed_data_only_for_an_unmatched_hospital_nam
     assert summarize(ctx, row).hospital_name == "St. Example Medical Center"  # as printed
     row.outcome = {"decision": "denied", "recorded_on": "2026-10-02"}
     assert summarize(ctx, row).decision == "denied"
+
+
+BILL = {"statement_date": "2026-09-03", "amount_due": "1850.00", "hospital_name": "St. Example"}
+
+
+def test_a_qmb_or_medicaid_card_means_the_bill_is_not_owed_even_without_a_sheet(ctx):
+    # Research 2026-10-16, pain 12: federal law forbids billing QMB and Medicaid cost-sharing.
+    # No hospital policy is needed for that answer, so a hospital without a sheet still gets it.
+    links = start_case(ctx, "MA")
+    confirm_bill(ctx, links.case_id, BILL)
+    shown = set_household(ctx, links.case_id, 1, None, ("QMB",))
+    assert shown.ccn is None and shown.tier is Tier.NOT_OWED
+    assert shown.next_step == "cost_sharing" and shown.status == "evaluated"
+    assert "MassHealth or QMB card" in shown.senior_text
+    assert shown.deadlines is None
+    assert ctx.session.get(CaseRow, links.case_id).prediction is None  # not a sheet prediction
+
+
+def test_a_medicaid_card_wins_over_the_income_rules_and_over_the_payee(ctx):
+    links = start_case(ctx, "MA")
+    bill = {**BILL, "payee_kind": "ambulance", "payee_name": "Boston EMS"}
+    confirm_bill(ctx, links.case_id, bill, ccn="229999")
+    shown = set_household(ctx, links.case_id, 1, Decimal("99000"), ("MassHealth",))
+    assert shown.tier is Tier.NOT_OWED and shown.next_step == "cost_sharing"
+
+
+def test_a_physician_group_bill_is_not_covered_and_routes_to_the_group(ctx):
+    links = start_case(ctx, "MA")
+    bill = {**BILL, "payee_kind": "physician_group", "payee_name": "Example Emergency Physicians"}
+    confirm_bill(ctx, links.case_id, bill, ccn="229999")
+    shown = set_household(ctx, links.case_id, 1, Decimal("22800"), ())
+    assert shown.tier is Tier.NOT_COVERED and shown.next_step == "payee_request"
+    assert shown.payee_name == "Example Emergency Physicians"
+    assert "does not cover this bill" in shown.senior_text
+    assert shown.deadlines is None and shown.status == "evaluated"
+    assert ctx.session.get(CaseRow, links.case_id).prediction is None
+
+
+def test_an_ambulance_bill_routes_to_ship(ctx):
+    links = start_case(ctx, "MA")
+    bill = {**BILL, "payee_kind": "ambulance", "payee_name": "Boston EMS"}
+    confirm_bill(ctx, links.case_id, bill, ccn="229999")
+    shown = set_household(ctx, links.case_id, 1, Decimal("22800"), ())
+    assert shown.tier is Tier.NOT_COVERED and shown.next_step == "ship"
+    assert "1-877-839-2675" in shown.senior_text
+
+
+def test_a_physician_group_on_the_covered_provider_list_gets_the_normal_answer(ctx):
+    from waive.atlas.samples import SAMPLE_SOURCE_ID
+    from waive.atlas.schema import Cited, Coverage
+
+    sheet = st_example_sheet()
+    cited = Cited[list[str]](
+        value=["Example Emergency Physicians, P.A."],
+        quote="providers covered by this policy: Example Emergency Physicians, P.A.",
+        source_id=SAMPLE_SOURCE_ID,
+        checked_on=TODAY,
+    )
+    publish_sheet(
+        ctx.session,
+        sheet.model_copy(update={"version": 2, "coverage": Coverage(covered_providers=cited)}),
+    )
+    links = start_case(ctx, "MA")
+    bill = {**BILL, "payee_kind": "physician_group", "payee_name": "Example Emergency Physicians"}
+    confirm_bill(ctx, links.case_id, bill, ccn="229999")
+    shown = set_household(ctx, links.case_id, 1, Decimal("22800"), ())
+    assert shown.tier is Tier.FREE and shown.next_step == "fap"
+    assert shown.result.reasons[0].field_path == "coverage.covered_providers"
+    assert shown.deadlines is not None

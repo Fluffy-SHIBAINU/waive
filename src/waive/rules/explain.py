@@ -3,11 +3,43 @@
 from waive.rules.eligibility import EligibilityResult, Tier
 
 DISCLAIMER = "This is an estimate. The hospital makes the final decision."
+SHIP_PHONE = "1-877-839-2675"
 
 
-def senior_message(result: EligibilityResult, hospital_name: str, *, alone: bool = False) -> str:
+def senior_message(
+    result: EligibilityResult,
+    hospital_name: str,
+    *,
+    alone: bool = False,
+    card: str = "Medicaid",
+    payee: str | None = None,
+    route: str = "payee_request",
+) -> str:
     """`alone`: the reader holds the full link, so there is no helper to send them to; what
-    comes next is on their own next page."""
+    comes next is on their own next page. `card` is the state's Medicaid name (NOT_OWED);
+    `payee` and `route` say who sent a bill the policy does not cover (NOT_COVERED)."""
+    if result.tier is Tier.NOT_OWED:
+        return (
+            "This bill is likely not yours to pay. "
+            f"People with a {card} or QMB card cannot be charged this by law. "
+            "We make a letter that tells the hospital to cancel it."
+        )
+    if result.tier is Tier.NOT_COVERED:
+        # "Example Emergency Physicians, P.A." + "." would print "P.A..".
+        who = (payee or "another business").rstrip(".")
+        if route == "ship":
+            return (
+                f"{hospital_name}'s policy does not cover this bill. "
+                f"It comes from an ambulance service, {who}. "
+                f"Call SHIP, the free Medicare help line, at {SHIP_PHONE}. "
+                "They can appeal it through Medicare."
+            )
+        return (
+            f"{hospital_name}'s policy does not cover this bill. "
+            f"It comes from {who}. "
+            "Ask them for their own financial assistance. "
+            "We make that letter for you."
+        )
     if result.tier is Tier.FREE:
         return (
             "Good news. You likely do not have to pay this bill. "
@@ -45,11 +77,15 @@ def caregiver_summary(result: EligibilityResult, hospital_name: str) -> str:
         Tier.FREE: "Likely free care",
         Tier.DISCOUNT: f"Likely {result.discount_percent}% discount",
         Tier.ASSISTANCE: "Likely eligible for assistance",
+        Tier.NOT_OWED: "Likely not owed at all (QMB or Medicaid cost-sharing protection)",
+        Tier.NOT_COVERED: f"Not covered by {hospital_name}'s policy",
         Tier.NOT_ELIGIBLE: "Likely not eligible",
         Tier.NEEDS_INFO: "More information needed",
         Tier.UNKNOWN: "Policy not yet known",
     }[result.tier]
-    lines = [f"{headline} at {hospital_name}."]
+    lines = [
+        f"{headline}." if result.tier is Tier.NOT_COVERED else f"{headline} at {hospital_name}."
+    ]
     for reason in result.reasons:
         lines.append(reason.text)
         if reason.quote:
