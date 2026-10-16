@@ -5,6 +5,8 @@ from waive.atlas.discover import (
     host_of,
     is_directory,
     name_tokens,
+    names_only_other_states,
+    names_place,
     pick_domain,
     run_discovery,
 )
@@ -254,7 +256,7 @@ def test_directories_a_newsroom_a_staffing_firm_and_asset_hosts_are_never_the_ho
     assert pick_domain(mercy, assets) is None
 
 
-def test_a_hit_that_names_other_states_but_not_the_hospitals_is_skipped():
+def test_a_hit_that_names_only_other_states_is_scored_down_and_never_sure():
     # North Shore University Hospital, Manhasset, New York (330106) was matched to NorthShore
     # University HealthSystem in Illinois, whose page names Illinois and not New York (7.15a).
     north_shore = hospital("NORTH SHORE UNIVERSITY HOSPITAL", "MANHASSET", "NY", "516-562-0100")
@@ -273,27 +275,74 @@ def test_a_hit_that_names_other_states_but_not_the_hospitals_is_skipped():
         "Mather Hospital North Shore University Hospital",
         score=0.668,
     )
-    assert pick_domain(north_shore, [illinois]) is None
+    assert names_only_other_states(north_shore, illinois)
     assert pick_domain(north_shore, [illinois, northwell]).domain == "northwell.edu"
-    # A page that names the hospital's state beside others stays, and so does one whose only
-    # state is in the hospital's own name or town, or is a street ("Kansas City", "Sierra Nevada",
-    # "Washington Street").
+    # Skipping such a hit (7.15b's first cut) dropped right sites whose page names a neighbouring
+    # state, and with no other hit discovery found no site at all (review of 7.15b). The hit now
+    # scores OTHER_STATE_PENALTY less and is never sure: alone, it is a guess an admin confirms.
+    assert pick_domain(north_shore, [illinois]) == DomainResult("northshore.org", 0.6, illinois.url)
+    # The review's seven right sites, each naming a state that is not the hospital's.
+    for (name, city, state), url, title, content in (
+        (("CHRIST HOSPITAL", "CINCINNATI", "OH"),
+         "https://www.thechristhospital.com/patients-visitors/billing/financial-assistance",
+         "Financial Assistance | The Christ Hospital Health Network",
+         "The Christ Hospital Health Network serves Greater Cincinnati, Northern Kentucky and "
+         "Southeast Indiana."),
+        (("BARNES JEWISH HOSPITAL", "SAINT LOUIS", "MO"),
+         "https://www.barnesjewish.org/Patients-Visitors/Paying-for-Care/Financial-Assistance",
+         "Financial Assistance | Barnes-Jewish Hospital",
+         "Barnes-Jewish Hospital, the adult teaching hospital of Washington University School of "
+         "Medicine."),
+        (("CHAMPLAIN VALLEY PHYSICIANS HOSPITAL", "PLATTSBURGH", "NY"),
+         "https://www.uvmhealth.org/cvph/patients-and-visitors/billing-and-financial-assistance",
+         "Financial Assistance | Champlain Valley Physicians Hospital | UVM Health Network",
+         "The University of Vermont Health Network - Champlain Valley Physicians Hospital offers "
+         "financial assistance."),
+        (("PRINCETON HEALTHCARE SYSTEM", "PLAINSBORO", "NJ"),
+         "https://www.princetonhcs.org/patients-and-visitors/financial-assistance",
+         "Financial Assistance | Penn Medicine Princeton Health",
+         "Penn Medicine Princeton Health is part of the University of Pennsylvania Health System."),
+        (("SAINT LUKES EAST HOSPITAL", "LEES SUMMIT", "MO"),
+         "https://www.saintlukeskc.org/financial-assistance",
+         "Financial Assistance | Saint Luke's Health System",
+         "Saint Luke's East Hospital is part of Saint Luke's Health System, serving the Kansas "
+         "City region and Kansas."),
+        (("ST ANTHONY HOSPITAL", "GIG HARBOR", "WA"),
+         "https://www.vmfh.org/patients-visitors/billing/financial-assistance",
+         "Financial Assistance | Virginia Mason Franciscan Health",
+         "St. Anthony Hospital in Gig Harbor is part of Virginia Mason Franciscan Health."),
+        (("MASSACHUSETTS GENERAL HOSPITAL", "BOSTON", "MA"),
+         "https://www.massgeneralbrigham.org/en/patient-care/patient-visitor-information/billing/"
+         "financial-assistance",
+         "Financial Assistance | Mass General Brigham",
+         "Mass General Brigham hospitals, including Massachusetts General Hospital, in "
+         "Massachusetts and New Hampshire, offer financial assistance."),
+    ):  # fmt: skip
+        result = pick_domain(hospital(name, city, state), [hit(url, title, content)])
+        assert result == DomainResult(host_of(url), 0.6, url), name
+    # The hospital's own state counts wherever the hit names it, its own name included
+    # (Massachusetts General); a state inside its name or town that is not its own, or a street,
+    # is not another state ("Kansas City", "Sierra Nevada", "Washington Street").
+    mass_general = hospital("MASSACHUSETTS GENERAL HOSPITAL", "BOSTON", "MA")
+    assert names_place(mass_general, hit("https://x.org/", "Massachusetts General Hospital"))
     hillcrest = hospital("HILLCREST HOSPITAL", "MAYFIELD HEIGHTS", "OH")
     summary = hit(
         "https://my.clevelandclinic.org/-/scassets/files/org/patients-visitors/billing/x.pdf",
         "Summary of Financial Assistance",
         "Cleveland Clinic Hillcrest Hospital, Cleveland, OH 44193; Florida; Nevada",
     )
-    assert pick_domain(hillcrest, [summary]).domain == "clevelandclinic.org"
+    assert not names_only_other_states(hillcrest, summary)
     kansas_city = hospital("SAINT LUKES HOSPITAL OF KANSAS CITY", "KANSAS CITY", "MO")
-    assert pick_domain(
-        kansas_city, [hit("https://www.saintlukeskc.org/", "Saint Luke's Kansas City")]
+    assert not names_only_other_states(
+        kansas_city, hit("https://www.saintlukeskc.org/", "Saint Luke's Kansas City")
     )
     sierra = hospital("SIERRA NEVADA MEMORIAL HOSPITAL", "GRASS VALLEY", "CA")
-    assert pick_domain(sierra, [hit("https://www.example.org/", "Sierra Nevada Memorial Hospital")])
+    assert not names_only_other_states(
+        sierra, hit("https://www.example.org/", "Sierra Nevada Memorial Hospital")
+    )
     beverly = hospital("BEVERLY HOSPITAL", "BEVERLY", "MA")
     street = hit("https://www.beverlyhospital.org/", "Beverly Hospital", "85 Washington Street")
-    assert pick_domain(beverly, [street]).domain == "beverlyhospital.org"
+    assert not names_only_other_states(beverly, street)
 
 
 def test_a_name_with_one_distinctive_word_needs_that_word_on_the_page():

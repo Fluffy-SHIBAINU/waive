@@ -273,9 +273,14 @@ def rejected_domains(session: Session, ccn: str) -> frozenset[str]:
 # the Cincinnati address; Mission Regional in Mission, Texas (450176) got Mission Health in
 # Asheville, Huntington Hospital on Long Island (330045) Cabell Huntington in West Virginia, and
 # North Shore University Hospital in Manhasset (330106) NorthShore's page, which names Illinois.
-# A hit naming other states but not the hospital's is skipped, and one that names the hospital
-# (even in passing) and its place scores PLACE_BONUS more.
+# A hit that names the hospital (even in passing) and its place scores PLACE_BONUS more. One that
+# names other states but not the hospital's scores OTHER_STATE_PENALTY less and is never sure; it
+# is not skipped, because right sites name neighbouring states too (review of 7.15b: The Christ
+# Hospital's "Greater Cincinnati, Northern Kentucky and Southeast Indiana", Barnes-Jewish's
+# "teaching hospital of Washington University", CVPH's "University of Vermont Health Network"),
+# and skipping them left those hospitals with no site at all.
 PLACE_BONUS = 0.8
+OTHER_STATE_PENALTY = 1.0
 # A state's name used for a street is an address, not the state ("85 Washington Street").
 _STATE_STREET = re.compile(
     rf"\b(?:{STATE_NAME}) (?:street|st|avenue|ave|road|rd|boulevard|blvd|drive|dr|lane|ln|way"
@@ -284,15 +289,16 @@ _STATE_STREET = re.compile(
 
 
 def _states_in(hospital: HospitalRef, text: str) -> tuple[bool, set[str]]:
-    """Whether `text` names the hospital's state, and which other states it names: written out,
-    or the hospital's own as its code after a comma or before a ZIP ("Cincinnati, OH", "OH 45220")
-    as place_unconfirmed reads it. A state inside the hospital's own name or town ("Kansas City",
-    "Sierra Nevada Memorial") or used for a street is not one the page names."""
+    """Whether `text` names the hospital's state, and which other states it names. A state is
+    named written out, or the hospital's own also as its code after a comma or before a ZIP
+    ("Cincinnati, OH", "OH 45220") as place_unconfirmed reads it; a state's name used for a street
+    is no state. The hospital's own state counts wherever it is named, its own name included
+    (Massachusetts General); another state inside its name or town ("Kansas City", "Sierra Nevada
+    Memorial") is not one the page names."""
     state = hospital.state.upper()
-    flat = _STATE_STREET.sub(" ", " ".join(text.lower().split()))
-    named = states_named(flat) - states_named(f"{hospital.name} {hospital.city}")
+    named = states_named(_STATE_STREET.sub(" ", " ".join(text.lower().split())))
     own = state in named or re.search(rf",\s*{state}\b|\b{state}\s+\d{{5}}\b", text) is not None
-    return own, named - {state}
+    return own, named - states_named(f"{hospital.name} {hospital.city}") - {state}
 
 
 def names_place(hospital: HospitalRef, hit: SearchHit) -> bool:
@@ -317,26 +323,28 @@ def pick_domain(
 ) -> DomainResult | None:
     """The best hit's site, never a directory, an asset host (cloudinary.com, given to Mercy
     Harvard, 141335, holds several health systems' PDFs) or a site an admin rejected. Sure (0.9)
-    only when the title names the hospital and the hit names its place, or the phone matches."""
+    only when the title names the hospital and the hit names its place, or the phone matches,
+    and never when the hit names other states but not the hospital's."""
     from waive.atlas.fetch import is_asset_host  # fetch imports host_of from this module
 
     refused = frozenset(rejected)
     best: DomainResult | None = None
-    best_score = -1.0
+    best_score = float("-inf")
     for hit in hits:
         host = host_of(hit.url)
         if not host or is_directory(host) or is_asset_host(hit.url) or host in refused:
             continue
-        if names_only_other_states(hospital, hit):
-            continue
+        elsewhere = names_only_other_states(hospital, hit)
         evidence = _evidence(hospital, hit)
-        placed = names_place(hospital, hit)
-        score = (
-            hit.score + evidence + (PLACE_BONUS if evidence >= MENTION_EVIDENCE and placed else 0)
-        )
+        placed = not elsewhere and names_place(hospital, hit)
+        score = hit.score + evidence
+        if evidence >= MENTION_EVIDENCE and placed:
+            score += PLACE_BONUS
+        if elsewhere:
+            score -= OTHER_STATE_PENALTY
         if score > best_score:
             best_score = score
-            sure = evidence >= 1.0 and (placed or _phone_on(hospital, hit))
+            sure = not elsewhere and evidence >= 1.0 and (placed or _phone_on(hospital, hit))
             best = DomainResult(host, 0.9 if sure else 0.6, hit.url)
     return best
 
