@@ -125,6 +125,25 @@ def test_income_below_the_lowest_documented_band_is_unknown_not_a_denial():
     assert above.tier is Tier.NOT_ELIGIBLE and "helps up to 300%" in above.reasons[0].text
 
 
+def test_a_decimal_discount_band_answers_with_its_decimals():
+    # Lowell General (220063): 63.28% between 100% and 150% of the poverty level.
+    from waive.rules.explain import caregiver_summary, senior_message
+
+    sheet = with_eligibility(
+        free_care_max_fpl=free_limit(100), discount_tiers=tiers((100, 150, Decimal("63.28")))
+    )
+    result = evaluate_eligibility(sheet, household(GUIDELINE_1 * Decimal("1.2")))
+    assert (result.tier, result.discount_percent) == (Tier.DISCOUNT, Decimal("63.28"))
+    assert "63.28% discount" in result.reasons[0].text
+    assert "63.28% off" in senior_message(result, "Lowell General")
+    assert caregiver_summary(result, "Lowell General").startswith("Likely 63.28% discount")
+    whole = with_eligibility(
+        free_care_max_fpl=free_limit(100), discount_tiers=tiers((100, 150, 75))
+    )
+    answer = evaluate_eligibility(whole, household(GUIDELINE_1 * Decimal("1.2")))
+    assert "a 75% discount" in answer.reasons[0].text
+
+
 def test_income_in_a_gap_between_bands_is_unknown():
     # Mercy (220066): free care to 100%, a paid band from 200%; the 101-200% band was dropped.
     sheet = with_eligibility(

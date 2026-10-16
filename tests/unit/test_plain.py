@@ -61,6 +61,18 @@ def test_a_tier_starting_at_zero_reads_up_to():
     assert plain_lines([tier], "eligibility.discount_tiers") == ["Up to 400% of FPL: 46% discount"]
 
 
+def test_a_decimal_discount_reads_as_written():
+    # Lowell General (220063): 63.28% between 100% and 150% of FPL.
+    tier = DiscountTier(
+        min_fpl_exclusive=Decimal("100"),
+        max_fpl_inclusive=Decimal("150"),
+        discount_percent=Decimal("63.28"),
+    )
+    assert plain_lines([tier], "eligibility.discount_tiers") == [
+        "Above 100% up to 150% of FPL: 63.28% discount"
+    ]
+
+
 def test_state_programs_name_then_how_to_apply():
     programs = [
         StateProgram(

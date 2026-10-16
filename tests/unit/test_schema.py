@@ -1,3 +1,4 @@
+import json
 from datetime import date
 from decimal import Decimal
 
@@ -82,3 +83,26 @@ def test_covered_providers_is_an_optional_cited_list_on_coverage():
         "Example Emergency Physicians"
     ]
     assert ProcedureSheet.model_validate_json(with_list.model_dump_json()) == with_list
+
+
+def test_a_discount_keeps_its_decimals_and_a_whole_one_reads_as_written():
+    # Review of 7.15b: an integer discount truncated Lowell General's 63.28% and Berkshire's
+    # 46.07% (220063, 220046), each hospital's only income rule, and Chenango's 83.5% (330033).
+    def tier(percent):
+        return DiscountTier(min_fpl_exclusive=0, max_fpl_inclusive=200, discount_percent=percent)
+
+    assert str(tier(Decimal("63.28")).discount_percent) == "63.28"
+    assert str(tier(46.07).discount_percent) == "46.07"
+    for written in (75, "75", "75.0", Decimal("75.00"), 75.0):
+        assert str(tier(written).discount_percent) == "75", written
+    # Stored sheets and the public exports keep a number: 75, or 63.28, never a string.
+    whole = tier(75).model_dump(mode="json")["discount_percent"]
+    assert whole == 75 and isinstance(whole, int)
+    assert json.loads(tier(Decimal("63.28")).model_dump_json())["discount_percent"] == 63.28
+    # A row stored with an integer discount still loads, and three decimal places do not.
+    stored = {"min_fpl_exclusive": "0", "max_fpl_inclusive": "400", "discount_percent": 46}
+    assert DiscountTier.model_validate(stored).discount_percent == 46
+    with pytest.raises(ValidationError):
+        tier(Decimal("63.285"))
+    sheet = st_example_sheet()
+    assert ProcedureSheet.model_validate(json.loads(sheet.model_dump_json())) == sheet

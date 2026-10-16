@@ -129,6 +129,29 @@ def test_a_number_never_matches_the_integer_part_of_a_decimal():
     assert widened_span(lead, document, Decimal("137.5")) == document
 
 
+def test_a_decimal_discount_verifies_against_its_quote_and_trailing_zeros_match():
+    # Chenango (330033): the table states 83.5%; the tier keeps it and verifies.
+    chenango = (
+        "Annual Family Income Amount of Discount Less than 200% of FPG 100% 201% to 250% of FPG "
+        "83.5% 251% to 300% of FPG 67%"
+    )
+    docs = {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT + "\n" + chenango + "\n"}
+    sheet = with_tiers_quote(chenango, [(200, 250, Decimal("83.5")), (250, 300, 67)])
+    assert verify_sheet(sheet, docs).ok, verify_sheet(sheet, docs).rejected
+    # A whole value matches with trailing zeros after it ("$25.00", "200.00%"), never a decimal.
+    from waive.atlas.verify import states_income_limit
+
+    assert value_in_quote(Decimal(25), "Balances of $25.00 or more qualify.")
+    assert not value_in_quote(Decimal(25), "Balances of $25.50 or more qualify.")
+    assert value_in_quote(Decimal("63.2"), "Inpatient Discount 63.20%")
+    assert states_income_limit(
+        "Patients at or below 200.00% of the FPL receive free care.", Decimal(200)
+    )
+    assert not states_income_limit(
+        "Patients at or below 200.05% of the FPL receive free care.", Decimal(200)
+    )
+
+
 MERCY_TABLE = (
     "Level 1 Level 2 Level 3 Qualifying Criterion Less than 100% FPL 101 - 200% FPL "
     "201 - 250% FPL Patient Responsibility None Co-Pay Co-Pay + 15% of total charges"
@@ -1008,6 +1031,35 @@ def test_a_free_care_limit_must_be_quoted_as_an_income_limit():
     )
 
 
+def test_a_discount_of_100_beside_an_income_limit_is_no_free_care_limit_of_100():
+    from waive.atlas.verify import states_income_limit
+
+    # Review of 7.15b: in 173 passages of stored documents a 100 that is the discount verified as
+    # a free-care limit of 100, beside the real limit or after poverty words that head a column.
+    for quote in (
+        "Patients at or below 200% of the FPL receive 100% charity care.",
+        "Patients with income at or below 300% of the FPG will receive 100% financial assistance.",
+        "Household income below 190% of the FPG qualifies for a 100% charity discount.",
+        "Income Level (% of Federal Poverty Level) Discount ≤200% 100% 201-300% 75%",
+        "0–250% FPL 100% 251–400% FPL 98%",
+        "Up to 200% FPL = 100% Charity Write Off",
+        "We cover 100% at 200% FPL.",
+    ):
+        assert not states_income_limit(quote, Decimal(100)), quote
+    # The band's top, followed by the next band's start, is its limit: Grady's own table states
+    # free care to 150% (360210), and "of poverty" names the poverty level.
+    assert states_income_limit(GRADY, Decimal(150))
+    assert not states_income_limit(GRADY, Decimal(100))
+    assert states_income_limit(
+        "Patients with household income at 200% of poverty qualify for free care.", Decimal(200)
+    )
+    # A range's end still reads as its limit, help word and all ("0-200% Free Care").
+    assert states_income_limit("FPL 0-200% Free Care 201-300% 50% discount", Decimal(200))
+    # Poverty words that head a column still count; after a verb or a benefit they do not.
+    assert states_income_limit("FPL LEVEL 200% 300% 400%", Decimal(200))
+    assert not states_income_limit("Federal Poverty Level Discount 100% 75% 50%", Decimal(100))
+
+
 def test_trimming_never_widens_a_free_care_quote_to_a_passage_the_verifier_rejects():
     from waive.atlas.verify import FREE_LIMIT_UNTIED_REASON, trim_quotes
 
@@ -1026,6 +1078,36 @@ def test_trimming_never_widens_a_free_care_quote_to_a_passage_the_verifier_rejec
     docs = {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT + "\n" + document}
     trimmed = trim_quotes(with_free_limit(100, ONEIDA), docs)
     assert trimmed.eligibility.free_care_max_fpl.quote.endswith("receive free care.")
+    assert all(path != free for path, _ in verify_sheet(trimmed, docs).rejected)
+
+
+def test_a_field_quoted_from_a_translation_the_caller_names_is_rejected():
+    from waive.atlas.verify import TRANSLATION_REASON
+
+    # Review of 7.15b: the pipeline names the documents that are translations while an English
+    # document states the income rules; every field quoted from one is rejected.
+    sheet = st_example_sheet()
+    report = verify_sheet(sheet, DOCS, translations=frozenset({SAMPLE_SOURCE_ID}))
+    assert {reason for _, reason in report.rejected} == {TRANSLATION_REASON}
+    assert len(report.rejected) == len(sheet.field_paths())
+    assert verify_sheet(sheet, DOCS).ok
+
+
+def test_a_stitched_free_care_quote_keeps_the_sentence_that_states_the_limit():
+    from waive.atlas.verify import trim_quotes
+
+    # Review of 7.15b: of a stitched quote's real sentences, the longest carrying the value was
+    # kept even when only a shorter one states it as an income limit.
+    limit = "Patients with income below 275% of the Federal Poverty Guidelines pay nothing."
+    dollars = (
+        "Balances of more than 275 dollars may be paid in monthly installments through our "
+        "business office."
+    )
+    document = f"{dollars}\nOur office is open on weekdays.\nParking is free.\n{limit}\n"
+    docs = {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT + "\n" + document}
+    trimmed = trim_quotes(with_free_limit(275, f"{limit} {dollars}"), docs)
+    assert trimmed.eligibility.free_care_max_fpl.quote == limit
+    free = "eligibility.free_care_max_fpl"
     assert all(path != free for path, _ in verify_sheet(trimmed, docs).rejected)
 
 

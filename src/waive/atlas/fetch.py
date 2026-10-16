@@ -44,10 +44,6 @@ DOCUMENT_HOSTS = (
     # cdn.prod.website-files.com (Webflow); policy_links dropped both (050043, 330079, task 7.9).
     "sitecorecloud.io",
     "website-files.com",
-    # One res.cloudinary.com account holds the policy PDFs of Truman, Southeast Health, Mercy
-    # Health and Lake Region; discovery gave Mercy Harvard (141335) cloudinary.com as its website,
-    # and an asset host is never a discovered domain (discover.pick_domain, task 7.15a).
-    "cloudinary.com",
 )
 MAX_HOPS = 3
 # Wall-clock bound on parsing one PDF (the worker is killed past it).
