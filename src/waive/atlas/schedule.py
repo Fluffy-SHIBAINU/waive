@@ -156,7 +156,9 @@ def _request_matches(
     return matched, unmatched
 
 
-def build_queue(session: Session, today: date, states: tuple[str, ...] = ()) -> QueueReport:
+def build_queue(
+    session: Session, today: date, states: tuple[str, ...] = (), exposure_weight: float = 0.0
+) -> QueueReport:
     hospitals = [row for row in repo.list_hospitals(session) if not repo.is_demo(row.ccn)]
     if states:
         wanted = {state.upper() for state in states}
@@ -182,6 +184,7 @@ def build_queue(session: Session, today: date, states: tuple[str, ...] = ()) -> 
     requests, unmatched = _request_matches(
         [item for item in items if item.kind == "scout_request" and item.ccn is None], by_state
     )
+    exposure = _exposure_ranks(session) if exposure_weight > 0 else {}
 
     entries: list[QueueEntry] = []
     skipped: dict[str, str] = {}
@@ -209,6 +212,8 @@ def build_queue(session: Session, today: date, states: tuple[str, ...] = ()) -> 
             reasons.append(f"{bills} bill(s) named this hospital")
         if fetched is None:
             reasons.append("never scouted")
+        if (rank := exposure.get(row.ccn)) is not None:
+            reasons.append(f"senior exposure rank {rank:.2f}")
         entries.append(
             QueueEntry(
                 ccn=row.ccn,
@@ -217,7 +222,9 @@ def build_queue(session: Session, today: date, states: tuple[str, ...] = ()) -> 
                 staleness_days=staleness,
                 demand=demand,
                 accuracy=accuracy.get(row.ccn),
-                priority=priority_score(staleness, demand, accuracy.get(row.ccn)),
+                priority=_weighted(
+                    priority_score(staleness, demand, accuracy.get(row.ccn)), exposure_weight, rank
+                ),
                 reasons=tuple(reasons),
                 has_sources=fetched is not None,
                 rescout_requested="rescout_request" in signals.get(row.ccn, {}),
@@ -327,8 +334,9 @@ def run_once(
     states: tuple[str, ...] = (),
     limit: int | None = None,
     extract_depth: Depth = "basic",
+    exposure_weight: float = 0.0,
 ) -> RunReport:
-    queue = build_queue(session, today, states)
+    queue = build_queue(session, today, states, exposure_weight)
     return run_entries(
         session,
         gateway,
@@ -367,6 +375,7 @@ def scout_tick(
             states=scheduler_states(settings),
             limit=1,
             extract_depth=settings.scout_extract_depth,
+            exposure_weight=settings.scout_exposure_weight,
         )
     log.info(
         "scout tick: %d built, %s credits used today, stopped: %s",
@@ -393,3 +402,21 @@ def make_scheduler(engine: Engine, settings: Settings, governor: Governor, ai: A
         misfire_grace_time=600,
     )
     return scheduler
+
+
+# Phase 10: the hospital ledger's senior-exposure rank (0 to 1, `waive ledger exposure`) can lift
+# a hospital's priority so scouting credits go where the most poor seniors are. Off until
+# WAIVE_SCOUT_EXPOSURE_WEIGHT is set: with weight w the priority becomes priority × (1 + w × rank),
+# and a hospital without a rank keeps its priority.
+
+
+def _exposure_ranks(session: Session) -> dict[str, float]:
+    from waive.ledger import repo as ledger_repo
+
+    return ledger_repo.exposure_ranks(session)
+
+
+def _weighted(priority: float, weight: float, rank: float | None) -> float:
+    if weight <= 0 or rank is None:
+        return priority
+    return round(priority * (1 + weight * rank), 2)

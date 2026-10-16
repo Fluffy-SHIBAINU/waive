@@ -430,3 +430,38 @@ def test_schedule_dry_run_names_the_extract_depth_in_the_budget_line(monkeypatch
     result = CliRunner().invoke(app, ["atlas", "schedule", "--dry-run"])
     assert result.exit_code == 0, result.output
     assert "about 7 per hospital (basic extraction)" in " ".join(result.output.split())
+
+
+def test_exposure_weight_lifts_ranked_hospitals_only_when_turned_on():
+    from waive.ledger import repo as ledger_repo
+
+    engine = make_engine_with_hospital(REAL, NEW)
+    with session_scope(engine) as session:
+        ledger_repo.upsert_metrics(session, "220031", exposure_rank=1.0)
+        off = {entry.ccn: entry for entry in build_queue(session, TODAY).entries}
+        on = {
+            entry.ccn: entry for entry in build_queue(session, TODAY, exposure_weight=0.5).entries
+        }
+    assert on["220031"].priority == round(off["220031"].priority * 1.5, 2)
+    assert on["220010"].priority == off["220010"].priority  # no rank: unchanged
+    assert "senior exposure rank 1.00" in on["220031"].reasons
+    assert not any("exposure" in reason for reason in off["220031"].reasons)
+
+
+def test_scout_tick_passes_the_exposure_weight_to_the_run(tmp_path, monkeypatch):
+    from waive.atlas import schedule
+
+    seen = {}
+
+    def fake_run_once(session, gateway, ai, governor, today, **kwargs):
+        seen.update(kwargs)
+        return RunReport(today, kwargs["daily_cap"], Decimal("0"), Decimal("0"))
+
+    monkeypatch.setattr(schedule, "run_once", fake_run_once)
+    monkeypatch.setattr(schedule, "make_tavily_gateway", lambda settings, governor: object())
+    engine = make_engine("sqlite+pysqlite:///:memory:")
+    init_db(engine)
+    settings = Settings(_env_file=None, tavily_api_key=SecretStr("t"), scout_exposure_weight=0.3)
+    assert scout_tick(engine, settings, make_governor_for(tmp_path), FakeAI()) is not None
+    assert seen["exposure_weight"] == 0.3
+    assert Settings(_env_file=None).scout_exposure_weight == 0.0  # off by default
