@@ -40,7 +40,12 @@ from waive.atlas.scout import (
     scout_hospital,
     store_scouted,
 )
-from waive.atlas.structure import document_states, structure_sheet, written_in_english
+from waive.atlas.structure import (
+    document_states,
+    is_kaiser_host,
+    structure_sheet,
+    written_in_english,
+)
 from waive.atlas.tavily_gateway import Depth, TavilyGateway
 from waive.atlas.verify import PATIENT_SHARE_REASON, prune_lists, trim_quotes, verify_sheet
 from waive.db import HospitalRow, ReviewItemRow
@@ -165,7 +170,11 @@ def _drop_other_state_documents(
     which cited the Hawaii table on six California sheets (task 7.9) and AdventHealth's Illinois
     page on a Florida sheet (review of 7.9), as long as some document names the hospital's own
     state or none at all. Documents naming no state stay, and when every document is another
-    state's nothing is set aside: there is nothing to prefer."""
+    state's nothing is set aside: there is nothing to prefer. Except on Kaiser's sites, where the
+    address names the region whose policy it is (structure.kaiser_region_states): another
+    region's is set aside even when it is all there is, and the build has nothing to structure
+    rather than publish Kaiser Washington's charity care policy on a California sheet (Kaiser
+    San Francisco, 050076, had stored nothing else but the dental policy; task 7.16)."""
     ccn, state = hospital.ccn, hospital.state
     named = {
         source.id: document_states(source.title, source.url or "", hospital)
@@ -177,7 +186,9 @@ def _drop_other_state_documents(
         for source, _ in sources_with_text
         if named.get(source.id) and state not in named[source.id]
     ]
-    if not other or len(other) == len(sources_with_text):
+    if len(other) == len(sources_with_text):
+        other = [source for source in other if is_kaiser_host(source.url or "")]
+    if not other:
         return sources_with_text
     for source in other:
         repo.unlink_source(session, ccn, source.id)
