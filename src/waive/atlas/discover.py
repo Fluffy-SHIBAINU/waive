@@ -152,8 +152,19 @@ def is_directory(host: str) -> bool:
     )
 
 
+# The registry writes "ST JOSEPHS", pages "St. Joseph's" (a straight or a curly apostrophe): both
+# sides lose their apostrophes before any matching, or a possessive saint's name is never found
+# (review of 7.15b: St. Joseph's Hospital and Medical Center, Phoenix, lost all its evidence).
+_APOSTROPHES = re.compile("['\u2019]")
+
+
+def _plain(text: str) -> str:
+    """`text` lower-case, without apostrophes."""
+    return _APOSTROPHES.sub("", text.lower())
+
+
 def name_tokens(name: str) -> set[str]:
-    words = re.findall(r"[a-z0-9]+", name.lower())
+    words = re.findall(r"[a-z0-9]+", _plain(name))
     return {w for w in words if len(w) >= 4 and w not in GENERIC_WORDS}
 
 
@@ -166,13 +177,14 @@ def evidence_tokens(name: str) -> set[str]:
     tokens = name_tokens(name)
     if len(tokens) >= 2:
         return tokens
-    return {w for w in re.findall(r"[a-z0-9]+", name.lower()) if len(w) >= 4}
+    return {w for w in re.findall(r"[a-z0-9]+", _plain(name)) if len(w) >= 4}
 
 
 def _names_hospital(hospital: HospitalRef, text: str) -> bool:
-    """Whether lower-case `text` names the hospital: two of its evidence tokens, among them every
-    distinctive word of a name that has fewer than two. Community Hospital of San Bernardino
-    (050089) was matched to Mountains Community Hospital's page at confidence 0.9 (7.15a)."""
+    """Whether `text` names the hospital: two of its evidence tokens, among them every distinctive
+    word of a name that has fewer than two. Community Hospital of San Bernardino (050089) was
+    matched to Mountains Community Hospital's page at confidence 0.9 (7.15a)."""
+    text = _plain(text)
     tokens = evidence_tokens(hospital.name)
     distinctive = name_tokens(hospital.name)
     if not tokens or (len(distinctive) < 2 and not all(token in text for token in distinctive)):
@@ -191,8 +203,8 @@ def _hit_text(hit: SearchHit) -> str:
 
 def _names_city(hospital: HospitalRef, text: str) -> bool:
     """Whether `text` names the hospital's town as whole words ("Dover" is not in "Andover")."""
-    city = " ".join(hospital.city.lower().split())
-    return bool(city) and re.search(rf"\b{re.escape(city)}\b", text.lower()) is not None
+    city = " ".join(_plain(hospital.city).split())
+    return bool(city) and re.search(rf"\b{re.escape(city)}\b", _plain(text)) is not None
 
 
 def _evidence(hospital: HospitalRef, hit: SearchHit) -> float:
@@ -204,9 +216,9 @@ def _evidence(hospital: HospitalRef, hit: SearchHit) -> float:
     if _phone_on(hospital, hit):
         return 1.0
     title_can_prove = bool(name_tokens(hospital.name)) or _names_city(hospital, _hit_text(hit))
-    if title_can_prove and _names_hospital(hospital, hit.title.lower()):
+    if title_can_prove and _names_hospital(hospital, hit.title):
         return 1.0
-    if _names_hospital(hospital, hit.content.lower()):
+    if _names_hospital(hospital, hit.content):
         return MENTION_EVIDENCE
     return 0.0
 
@@ -232,9 +244,9 @@ def place_unconfirmed(hospital: HospitalRef, texts: Iterable[str]) -> str | None
     code = re.search(rf",\s*{state}\b|\b{state}\s+\d{{5}}\b", blob)
     if state not in states_named(blob) and not code:
         return f"the documents never name {US_STATES[state].title()}"
-    lowered = blob.lower()
+    lowered = _plain(blob)
     words = set(re.findall(r"[a-z0-9]+", lowered))
-    if hospital.city.lower() not in lowered and not (name_tokens(hospital.name) & words):
+    if _plain(hospital.city) not in lowered and not (name_tokens(hospital.name) & words):
         return f"the documents name neither {hospital.city.title()} nor the hospital"
     return None
 
@@ -308,7 +320,7 @@ def names_place(hospital: HospitalRef, hit: SearchHit) -> bool:
     text = _hit_text(hit)
     if _states_in(hospital, text)[0]:
         return True
-    city_words = set(re.findall(r"[a-z0-9]+", hospital.city.lower()))
+    city_words = set(re.findall(r"[a-z0-9]+", _plain(hospital.city)))
     return not city_words & name_tokens(hospital.name) and _names_city(hospital, text)
 
 
