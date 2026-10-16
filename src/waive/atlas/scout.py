@@ -102,10 +102,13 @@ _FUNDRAISING = re.compile(
 # 050075, 050138, 050140, 050425, 050677, 050723, 050855; task 7.16). A dental program is never a
 # hospital's policy. Naming dental care among the services covered or excluded names no program
 # ("it DOES NOT cover Bariatric Surgery, dental services, and pharmacy services", MetroHealth,
-# 360059), and a policy for medical and dental care alike is still the hospital's.
+# 360059), and a policy for medical and dental care alike is still the hospital's, however the two
+# are joined ("and", "or", "&", "/", a comma). The "or" that ends "for" joins nothing: "Apply for
+# Dental Financial Assistance" is the dental program's own application (review of 7.16).
 _DENTAL_PROGRAM = re.compile(
-    r"(?<!and[- ])(?<!or[- ])(?<!&[- ])\bdental[- ](?:financial[- ](?:assistance|aid)|charity"
-    r"|(?:assistance|discount)[- ]program|sliding[- ](?:fee|scale))"
+    r"(?<!\band[- ])(?<!\bor[- ])(?<![&/,][- ])(?<![&/,])\bdental[- ]"
+    r"(?:financial[- ](?:assistance|aid)|charity|(?:assistance|discount)[- ]program"
+    r"|sliding[- ](?:fee|scale))"
 )
 # A document names its subject first: "POLICY TITLE Dental Financial Assistance" opens Kaiser's,
 # which the search had titled after the medical program. A hospital policy that names a dental
@@ -118,8 +121,11 @@ _MARKDOWN_IMAGE = re.compile(r"!\[[^\]]*\]\([^)]*\)")
 def is_dental_program(url: str, title: str, text: str = "") -> bool:
     """Whether a document is a dental assistance program's: its address or title names one, or the
     opening of its text does (its first OPENING_CHARS characters of prose; links and images are
-    left out, so a site menu that links the dental program does not count)."""
-    if _DENTAL_PROGRAM.search(f"{unquote(url)} {title}".lower().replace("_", "-")):
+    left out, so a site menu that links the dental program does not count). An address's slashes
+    separate its folders, so ".../dental-financial-assistance/faq" names the program while
+    "Medical/Dental Financial Assistance" joins two kinds of care."""
+    named = f"{unquote(url).replace('/', ' ')} {title}".lower().replace("_", "-")
+    if _DENTAL_PROGRAM.search(" ".join(named.split())):
         return True
     prose = " ".join(MARKDOWN_LINK.sub(" ", _MARKDOWN_IMAGE.sub(" ", text)).split())
     return _DENTAL_PROGRAM.search(prose[:OPENING_CHARS].lower()) is not None

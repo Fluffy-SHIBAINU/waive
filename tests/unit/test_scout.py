@@ -982,42 +982,44 @@ SCAL_POLICY_TEXT = (
 
 def test_a_dental_assistance_program_is_never_the_hospitals_policy():
     # Kaiser's dental pages say so in their title or address.
-    assert (
-        classify_doc(
-            "https://healthy.kaiserpermanente.org/oregon-washington/help-paying-your-bill/"
-            "dental-financial-assistance",
-            "Dental Financial Assistance | Kaiser Permanente",
-        )
-        is None
+    dental_title = "Dental Financial Assistance | Kaiser Permanente"
+    northwest_page = (
+        "https://healthy.kaiserpermanente.org/oregon-washington/help-paying-your-bill/"
+        "dental-financial-assistance"
     )
-    assert classify_doc(
-        "https://kp.org/dfa", "Dental Financial Assistance | Kaiser Permanente"
-    ) is (None)
-    assert (
-        classify_doc(
-            "https://www.kp.org/help-paying-your-bill/dental-financial-assistance/"
-            "frequently-asked-questions",
-            "frequently asked questions.",
-        )
-        is None
+    faq = (
+        "https://www.kp.org/help-paying-your-bill/dental-financial-assistance/"
+        "frequently-asked-questions"
     )
+    assert classify_doc(northwest_page, dental_title) is None
+    assert classify_doc("https://kp.org/dfa", dental_title) is None
+    assert classify_doc(faq, "frequently asked questions.") is None
     assert classify_doc("https://www.x.org/dental/charity-care.pdf", "Dental Charity Care") is None
+    # The program's application, linked as "Apply for ..." or titled "Application for ...": the
+    # "or" that ends "for" is not "medical or dental".
+    assert classify_doc("https://kp.org/dfa/apply", "Apply for Dental Financial Assistance") is None
+    dfa_form = "https://www.x.org/forms/dfa-application.pdf"
+    assert classify_doc(dfa_form, "Application for Dental Financial Assistance (DFA)") is None
     # Kaiser Northwest's dental policy was found under the medical program's title: nothing names
     # the dental program until its text is read.
     assert classify_doc(DENTAL_POLICY_URL, DENTAL_POLICY_TITLE) == "fap"
     assert not is_dental_program(DENTAL_POLICY_URL, DENTAL_POLICY_TITLE)
     assert is_dental_program(DENTAL_POLICY_URL, DENTAL_POLICY_TITLE, DENTAL_POLICY_TEXT)
     # A hospital's policy that names dental care is the hospital's, and so is one for medical and
-    # dental care alike.
+    # dental care alike, however the two are joined.
     assert classify_doc(SCAL_POLICY_URL, SCAL_POLICY_TITLE) == "fap"
     assert not is_dental_program(SCAL_POLICY_URL, SCAL_POLICY_TITLE, SCAL_POLICY_TEXT)
-    assert (
-        classify_doc(
-            "https://www.x.org/medical-and-dental-financial-assistance-policy.pdf",
-            "Medical and Dental Financial Assistance Policy",
-        )
-        == "fap"
-    )
+    policy_pdf = "https://www.x.org/financial-assistance-policy.pdf"
+    for title in (
+        "Medical and Dental Financial Assistance Policy",
+        "Medical/Dental Financial Assistance Policy",
+        "Medical & Dental Financial Assistance Policy",
+    ):
+        assert classify_doc(policy_pdf, title) == "fap", title
+    both = "https://www.x.org/medical-and-dental-financial-assistance-policy.pdf"
+    assert classify_doc(both, "") == "fap"
+    sliding_scale = "https://www.x.org/sliding-fee-scale.pdf"
+    assert not is_dental_program(sliding_scale, "Medical, Dental Sliding Fee Scale")
 
 
 def test_a_hospital_policy_that_mentions_a_dental_program_stays_the_hospitals():
