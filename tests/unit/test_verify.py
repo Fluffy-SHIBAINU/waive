@@ -90,6 +90,45 @@ def test_numbers_must_match_whole_tokens():
     assert value_in_quote(1000, "balances over $1,000 qualify")
 
 
+# The Tufts Medicine table quoted for MelroseWakefield (220070) and Lowell General (220063).
+TUFTS_TABLE = (
+    "Family Size 100% FPL Up to 150% FPL Up to 300% FPL Greater than 301% FPL 1 $13,596 $20,388 "
+    "$40,776 $40,777 TM Lowell General Hospital Inpatient Discount 100% 63.28% 30% TM Lowell "
+    "General Hospital Outpatient Discount 70.54% TM Melrose Wakefield Hospital Inpatient Discount "
+    "100% 36.84% 30% TM Melrose Wakefield Hospital Outpatient Discount 65.91%"
+)
+
+
+def test_a_number_never_matches_the_integer_part_of_a_decimal():
+    from waive.atlas.verify import anchored_span, widened_span
+
+    # Task 7.15a: MelroseWakefield (220070) published a 65% inpatient tier read from the
+    # outpatient "65.91%", Lowell General (220063) 63 from "63.28%", Brigham and Women's (220110) a
+    # free-care limit of 150 from a Chinese table row that starts at 150.1.
+    assert not value_in_quote(Decimal(65), TUFTS_TABLE)
+    assert not value_in_quote(Decimal(63), TUFTS_TABLE)
+    assert not value_in_quote(Decimal(150), "150.1 至 250% 85%")
+    # A whole number still matches before a sign, a space or the end of a sentence, and a decimal
+    # matches itself.
+    assert value_in_quote(Decimal(65), "Patients in this band receive a 65% discount.")
+    assert value_in_quote(Decimal(250), "household income of up to 250.")
+    assert value_in_quote(Decimal("65.91"), TUFTS_TABLE)
+    assert value_in_quote(Decimal("63.28"), TUFTS_TABLE)
+    docs = {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT + "\n" + TUFTS_TABLE + "\n"}
+    melrose = with_tiers_quote(TUFTS_TABLE, [(100, 150, 65), (150, 300, 30)])
+    assert ("eligibility.discount_tiers", "value not in quote") in verify_sheet(
+        melrose, docs
+    ).rejected
+    # The anchoring helpers read "137.5%" whole: it is not a limit of 137.
+    passage = "Free care is available to patients at or below 137.5% of the Federal Poverty Level."
+    assert anchored_span(passage, Decimal(137)) is None
+    assert anchored_span(passage, Decimal("137.5")) == passage
+    lead = "Our counselors will help you apply."
+    document = f"{lead} {passage}"
+    assert widened_span(lead, document, Decimal(137)) is None
+    assert widened_span(lead, document, Decimal("137.5")) == document
+
+
 MERCY_TABLE = (
     "Level 1 Level 2 Level 3 Qualifying Criterion Less than 100% FPL 101 - 200% FPL "
     "201 - 250% FPL Patient Responsibility None Co-Pay Co-Pay + 15% of total charges"
