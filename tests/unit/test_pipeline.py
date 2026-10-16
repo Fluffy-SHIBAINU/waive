@@ -1173,11 +1173,11 @@ DENTAL_NOTE = (
 NOTHING_LEFT_NOTE = "no financial assistance documents left to structure once those are set aside"
 
 
-def store_kaiser(session, ccn, source_id, path, text, title=MFA_TITLE):
+def store_kaiser(session, ccn, source_id, path, text, title=MFA_TITLE, docs=KAISER_DOCS):
     source = SourceDoc(
         id=source_id,
         kind=SourceKind.HOSPITAL_WEB,
-        url=KAISER_DOCS + path,
+        url=docs + path,
         title=title,
         fetched_on=TODAY,
         sha256=hashlib.sha256(text.encode()).hexdigest(),
@@ -1314,6 +1314,66 @@ def test_another_kaiser_regions_policy_is_set_aside_beside_californias():
         assert review_detail(session, "050138", "other_state_documents") == {
             "state": "CA",
             "sources": [{"id": "fap-nw", "states": ["OR", "WA"]}],
+        }
+
+
+KAISER_SAN_FRANCISCO = {
+    **KAISER_LOS_ANGELES,
+    "ccn": "050076",
+    "name": "KAISER FOUNDATION HOSPITAL - SAN FRANCISCO",
+    "city": "SAN FRANCISCO",
+    "zip": "94115",
+    "phone": "415-833-2646",
+}
+WASHINGTON_SITE = "https://wa.kaiserpermanente.org/"
+WASHINGTON_PATH = "static/pdf/public/customer-service/charity-care-policy.pdf"
+WASHINGTON_TEXT = (
+    "Kaiser Foundation Health Plan of Washington. Charity Care Policy.\n" + POLICY_TEXT
+)
+
+
+def test_kaiser_documents_all_of_another_region_are_set_aside_and_the_sheet_held():
+    # Kaiser Foundation Hospital - San Francisco (050076), and Redwood City, San Leandro and
+    # Moreno Valley with it, had stored nothing but Kaiser Washington's charity care policy and the
+    # dental one. Anywhere else, when every document is another state's, all stay: there is
+    # nothing to prefer (test_other_state_versions_of_a_system_policy_are_set_aside). On Kaiser's
+    # sites the address says whose policy it is, and a California sheet must not publish
+    # Washington's: it is held, and the hospital waits to be scouted again.
+    engine = make_engine_with_hospital(KAISER_SAN_FRANCISCO)
+    with session_scope(engine) as session:
+        store_kaiser(session, "050076", "fap-dental", DENTAL_PATH, DENTAL_TEXT, DENTAL_TITLE)
+        washington = store_kaiser(
+            session,
+            "050076",
+            "fap-washington",
+            WASHINGTON_PATH,
+            WASHINGTON_TEXT,
+            "Charity Care Policy",
+            docs=WASHINGTON_SITE,
+        )
+        assert publish_quoting(session, "050076", washington).version == 1
+        quoted = [path for path, _ in repo.latest_sheet(session, "050076")[0].field_paths()]
+        result = build_hospital(session, NoSpend(), NoModel(), "050076", TODAY, reuse_sources=True)
+        assert (result.outcome, result.version) == ("held", 2)
+        assert result.notes == [
+            DENTAL_NOTE,
+            "1 stored document is another state's version of the system policy "
+            "(fap-washington: WA); detached and left out of the structurer",
+            NOTHING_LEFT_NOTE,
+            f"{len(quoted)} fields quoted from them dropped and the sheet held: "
+            + ", ".join(quoted),
+        ]
+        held, _ = repo.latest_sheet(session, "050076")
+        assert held.status is SheetStatus.HELD
+        assert held.field_paths() == [] and held.sources == []
+        assert repo.sources_for(session, "050076") == []
+        assert review_detail(session, "050076", "other_state_documents") == {
+            "state": "CA",
+            "sources": [{"id": "fap-washington", "states": ["WA"]}],
+        }
+        assert review_detail(session, "050076", "no_documents") == {
+            "domain": "kaiserpermanente.org",
+            "set_aside": ["fap-dental", "fap-washington"],
         }
 
 
