@@ -252,8 +252,18 @@ def test_directories_a_newsroom_a_staffing_firm_and_asset_hosts_are_never_the_ho
             "Mercy Harvard Hospital",
             score=0.8,
         ),
+        hit(
+            "https://osf-p-001.sitecorecontenthub.cloud/api/public/content/standardcharges.json",
+            "Mercy Harvard Hospital standard charges",
+            score=0.7,
+        ),
     ]
     assert pick_domain(mercy, assets) is None
+    # Never a website is not the fetcher's allowlist: following links to Cloudinary is the
+    # user's decision (review of 7.15b, audit item input-ssrf-4), so the fetcher does not.
+    from waive.atlas.fetch import is_asset_host
+
+    assert not is_asset_host(assets[0].url)
 
 
 def test_a_hit_that_names_only_other_states_is_scored_down_and_never_sure():

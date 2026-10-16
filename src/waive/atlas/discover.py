@@ -98,6 +98,12 @@ DIRECTORY_DOMAINS = frozenset(
 # Government hosts (illinois.gov, paauditor.gov, mass.gov, medicare.gov) publish records about
 # hospitals, never a hospital's own policy.
 DIRECTORY_SUFFIXES = (".gov",)
+# Hosts that serve files for many organisations and are nobody's website: the fetcher's asset hosts
+# (fetch.DOCUMENT_HOSTS) and these. Discovery gave Mercy Harvard (141335) cloudinary.com, where one
+# account holds the policies of Truman, Southeast Health, Mercy Health and Lake Region, and one OSF
+# hospital sitecorecontenthub.cloud, its price files' host (7.15a). Whether the fetcher may follow
+# links to them is the user's call (audit item input-ssrf-4), so they are not asset hosts there.
+NOT_A_WEBSITE = frozenset({"cloudinary.com", "sitecorecontenthub.cloud"})
 GENERIC_WORDS = frozenset(
     {
         "hospital",
@@ -150,6 +156,14 @@ def is_directory(host: str) -> bool:
     return host.endswith(DIRECTORY_SUFFIXES) or any(
         host == d or host.endswith("." + d) for d in DIRECTORY_DOMAINS
     )
+
+
+def is_not_a_website(url: str) -> bool:
+    """Whether `url` is on a file host that is never a hospital's website (NOT_A_WEBSITE)."""
+    from waive.atlas.fetch import is_asset_host  # fetch imports host_of from this module
+
+    host = (urlparse(url).hostname or "").lower()
+    return is_asset_host(url) or any(host == d or host.endswith("." + d) for d in NOT_A_WEBSITE)
 
 
 # The registry writes "ST JOSEPHS", pages "St. Joseph's" (a straight or a curly apostrophe): both
@@ -333,18 +347,15 @@ def names_only_other_states(hospital: HospitalRef, hit: SearchHit) -> bool:
 def pick_domain(
     hospital: HospitalRef, hits: list[SearchHit], rejected: Iterable[str] = ()
 ) -> DomainResult | None:
-    """The best hit's site, never a directory, an asset host (cloudinary.com, given to Mercy
-    Harvard, 141335, holds several health systems' PDFs) or a site an admin rejected. Sure (0.9)
-    only when the title names the hospital and the hit names its place, or the phone matches,
-    and never when the hit names other states but not the hospital's."""
-    from waive.atlas.fetch import is_asset_host  # fetch imports host_of from this module
-
+    """The best hit's site, never a directory, a file host (NOT_A_WEBSITE) or a site an admin
+    rejected. Sure (0.9) only when the title names the hospital and the hit names its place, or
+    the phone matches, and never when the hit names other states but not the hospital's."""
     refused = frozenset(rejected)
     best: DomainResult | None = None
     best_score = float("-inf")
     for hit in hits:
         host = host_of(hit.url)
-        if not host or is_directory(host) or is_asset_host(hit.url) or host in refused:
+        if not host or is_directory(host) or is_not_a_website(hit.url) or host in refused:
             continue
         elsewhere = names_only_other_states(hospital, hit)
         evidence = _evidence(hospital, hit)
