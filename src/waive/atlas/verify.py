@@ -955,6 +955,14 @@ def trim_quotes(sheet: ProcedureSheet, documents: dict[str, str]) -> ProcedureSh
     return sheet.model_copy(update=updates) if updates else sheet
 
 
+# Review of 7.15b: 16 published sheets cite a translation while an English document that states the
+# income rules is stored (Anna Jaques, 220029, four fields in Italian; Edward, 140231, in Japanese;
+# Jefferson Northeast, 390115, in Vietnamese), and seniors read the quotes on the public atlas. The
+# pipeline names those documents (pipeline._translations_to_reject); verify_sheet rejects every
+# field quoted from one, so a recheck withdraws it at no cost and a rebuild quotes the English one.
+TRANSLATION_REASON = "quote is from a translation while an English document states the income rules"
+
+
 @dataclass
 class VerificationReport:
     accepted: list[str] = field(default_factory=list)
@@ -965,7 +973,11 @@ class VerificationReport:
         return not self.rejected
 
 
-def verify_sheet(sheet: ProcedureSheet, documents: dict[str, str]) -> VerificationReport:
+def verify_sheet(
+    sheet: ProcedureSheet, documents: dict[str, str], translations: frozenset[str] = frozenset()
+) -> VerificationReport:
+    """Each documented field held to its quote and its source text; `translations` names the
+    documents no field may be quoted from (see TRANSLATION_REASON)."""
     report = VerificationReport()
     for path, cited in sheet.field_paths():
         if cited.layer is Layer.REPORTED:
@@ -976,6 +988,8 @@ def verify_sheet(sheet: ProcedureSheet, documents: dict[str, str]) -> Verificati
             report.rejected.append((path, "source text missing"))
         elif not quote_found(cited.quote or "", text):
             report.rejected.append((path, "quote not found in source"))
+        elif cited.source_id in translations:
+            report.rejected.append((path, TRANSLATION_REASON))
         elif looks_serialised(cited.value):
             report.rejected.append((path, "value is a list or object written as text"))
         elif not value_in_quote(cited.value, cited.quote or "") and not (

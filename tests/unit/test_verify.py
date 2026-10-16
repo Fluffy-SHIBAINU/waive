@@ -1029,6 +1029,18 @@ def test_trimming_never_widens_a_free_care_quote_to_a_passage_the_verifier_rejec
     assert all(path != free for path, _ in verify_sheet(trimmed, docs).rejected)
 
 
+def test_a_field_quoted_from_a_translation_the_caller_names_is_rejected():
+    from waive.atlas.verify import TRANSLATION_REASON
+
+    # Review of 7.15b: the pipeline names the documents that are translations while an English
+    # document states the income rules; every field quoted from one is rejected.
+    sheet = st_example_sheet()
+    report = verify_sheet(sheet, DOCS, translations=frozenset({SAMPLE_SOURCE_ID}))
+    assert {reason for _, reason in report.rejected} == {TRANSLATION_REASON}
+    assert len(report.rejected) == len(sheet.field_paths())
+    assert verify_sheet(sheet, DOCS).ok
+
+
 def test_a_discount_percentage_is_not_a_free_care_limit_of_the_poverty_level():
     # Adirondack Health (330079): its FAQ held the sheet as a "conflict" with the real 200% limit.
     from waive.atlas.verify import free_care_limits_stated
