@@ -5,6 +5,7 @@ import unicodedata
 from collections.abc import Callable
 from dataclasses import dataclass, field
 from decimal import Decimal
+from functools import partial
 from typing import Any
 
 from waive.atlas.schema import DiscountTier, DocType, Layer, ProcedureSheet, SubmitMethod
@@ -863,16 +864,25 @@ _SENTENCE_SPLIT = re.compile(r"(?<=[.;:])\s+|\n+")
 MAX_WIDENED_CHARS = 700
 
 
-def matched_span(quote: str, document_text: str, value: Any = None) -> str | None:
+def matched_span(
+    quote: str,
+    document_text: str,
+    value: Any = None,
+    usable: Callable[[str], bool] | None = None,
+) -> str | None:
     """The quote itself if the source contains it; otherwise the sentence of it that does. Among
-    several, the longest that carries `value` is preferred (a stitched quote whose longer sentence
-    is about something else must not cost the field its number), then simply the longest."""
+    several, the longest that is `usable` is preferred (a free-care limit's sentence that states
+    it as an income limit, review of 7.15b), then the longest that carries `value` (a stitched
+    quote whose longer sentence is about something else must not cost the field its number), then
+    simply the longest."""
     if quote_found(quote, document_text):
         return quote.strip()
     sentences = [s.strip() for s in _SENTENCE_SPLIT.split(quote) if s.strip()]
     candidates = [
         s for s in sorted(sentences, key=len, reverse=True) if quote_found(s, document_text)
     ]
+    if usable is not None and (preferred := [s for s in candidates if usable(s)]):
+        return preferred[0]
     if isinstance(value, int | Decimal | list) and not isinstance(value, bool):
         carrying = [s for s in candidates if value_in_quote(value, s)]
         if carrying:
@@ -992,10 +1002,10 @@ def trim_quotes(sheet: ProcedureSheet, documents: dict[str, str]) -> ProcedureSh
         text = documents.get(cited.source_id or "")
         if text is None:
             continue
-        span = matched_span(cited.quote, text, cited.value)
-        if path == "eligibility.free_care_max_fpl" and not (
-            span is not None and _free_limit_stated(cited.value, span)
-        ):
+        free_care = path == "eligibility.free_care_max_fpl"
+        usable = partial(_free_limit_stated, cited.value) if free_care else None
+        span = matched_span(cited.quote, text, cited.value, usable)
+        if free_care and not (span is not None and _free_limit_stated(cited.value, span)):
             # The limit is right more often than the quote: first the neighbouring sentence,
             # then the one passage of this document that states exactly this limit.
             limit = Decimal(cited.value)

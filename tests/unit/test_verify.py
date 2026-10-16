@@ -1093,6 +1093,24 @@ def test_a_field_quoted_from_a_translation_the_caller_names_is_rejected():
     assert verify_sheet(sheet, DOCS).ok
 
 
+def test_a_stitched_free_care_quote_keeps_the_sentence_that_states_the_limit():
+    from waive.atlas.verify import trim_quotes
+
+    # Review of 7.15b: of a stitched quote's real sentences, the longest carrying the value was
+    # kept even when only a shorter one states it as an income limit.
+    limit = "Patients with income below 275% of the Federal Poverty Guidelines pay nothing."
+    dollars = (
+        "Balances of more than 275 dollars may be paid in monthly installments through our "
+        "business office."
+    )
+    document = f"{dollars}\nOur office is open on weekdays.\nParking is free.\n{limit}\n"
+    docs = {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT + "\n" + document}
+    trimmed = trim_quotes(with_free_limit(275, f"{limit} {dollars}"), docs)
+    assert trimmed.eligibility.free_care_max_fpl.quote == limit
+    free = "eligibility.free_care_max_fpl"
+    assert all(path != free for path, _ in verify_sheet(trimmed, docs).rejected)
+
+
 def test_a_discount_percentage_is_not_a_free_care_limit_of_the_poverty_level():
     # Adirondack Health (330079): its FAQ held the sheet as a "conflict" with the real 200% limit.
     from waive.atlas.verify import free_care_limits_stated
