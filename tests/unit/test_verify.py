@@ -1008,6 +1008,35 @@ def test_a_free_care_limit_must_be_quoted_as_an_income_limit():
     )
 
 
+def test_a_discount_of_100_beside_an_income_limit_is_no_free_care_limit_of_100():
+    from waive.atlas.verify import states_income_limit
+
+    # Review of 7.15b: in 173 passages of stored documents a 100 that is the discount verified as
+    # a free-care limit of 100, beside the real limit or after poverty words that head a column.
+    for quote in (
+        "Patients at or below 200% of the FPL receive 100% charity care.",
+        "Patients with income at or below 300% of the FPG will receive 100% financial assistance.",
+        "Household income below 190% of the FPG qualifies for a 100% charity discount.",
+        "Income Level (% of Federal Poverty Level) Discount ≤200% 100% 201-300% 75%",
+        "0–250% FPL 100% 251–400% FPL 98%",
+        "Up to 200% FPL = 100% Charity Write Off",
+        "We cover 100% at 200% FPL.",
+    ):
+        assert not states_income_limit(quote, Decimal(100)), quote
+    # The band's top, followed by the next band's start, is its limit: Grady's own table states
+    # free care to 150% (360210), and "of poverty" names the poverty level.
+    assert states_income_limit(GRADY, Decimal(150))
+    assert not states_income_limit(GRADY, Decimal(100))
+    assert states_income_limit(
+        "Patients with household income at 200% of poverty qualify for free care.", Decimal(200)
+    )
+    # A range's end still reads as its limit, help word and all ("0-200% Free Care").
+    assert states_income_limit("FPL 0-200% Free Care 201-300% 50% discount", Decimal(200))
+    # Poverty words that head a column still count; after a verb or a benefit they do not.
+    assert states_income_limit("FPL LEVEL 200% 300% 400%", Decimal(200))
+    assert not states_income_limit("Federal Poverty Level Discount 100% 75% 50%", Decimal(100))
+
+
 def test_trimming_never_widens_a_free_care_quote_to_a_passage_the_verifier_rejects():
     from waive.atlas.verify import FREE_LIMIT_UNTIED_REASON, trim_quotes
 
