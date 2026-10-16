@@ -315,12 +315,13 @@ def document_states(title: str, url: str, hospital: HospitalRef | None = None) -
     return found
 
 
-# Task 7.15a: six published sheets quoted a translation although the hospital's English policy was
-# stored (BID Needham 220083 and Brigham and Women's 220110 in Chinese, Hoag 050224 in Korean,
-# Baptist Beaches and Nassau 100117 and 100140 in Tagalog, Hardin Memorial 361315 in German), and
-# seniors read those quotes on the public atlas. Common words of each language that no English
-# text uses and no US state code spells: "de", "la", "el", "al" and "il" are left out, so an address
-# in Los Angeles or a "De La Cruz" on a provider list never turns an English page Spanish.
+# Task 7.15a: six published sheets quoted a translation of the hospital's policy (BID Needham 220083
+# and Brigham and Women's 220110 in Chinese, Hoag 050224 in Korean, Baptist Beaches and Nassau
+# 100117 and 100140 in Tagalog, Hardin Memorial 361315 in German), and seniors read those quotes on
+# the public atlas; Brigham's and Hardin's English policies were stored too. The common words of
+# each language are ones no English text uses and no US state code spells: "de", "la", "el", "al"
+# and "il" are left out, so an address in Los Angeles or a "De La Cruz" on a provider list never
+# turns an English page Spanish.
 COMMON_WORDS = {
     "english": "the and of to is are for with you your will be this that by if may not from have "
     "has which who our it all any can must their they we would should than been were was its such "
@@ -334,14 +335,28 @@ COMMON_WORDS = {
     "french": "les et une pour dans qui sur par vous votre vos cette sont être avec aux",
     "vietnamese": "của và là có được cho các những không một trong với người này để khi theo từ tài "
     "chính hỗ trợ đơn",
+    # Review of 7.15b: AdventHealth (100072), Edward (140231) and Rush (140029) stored Polish,
+    # Oroville (050030) Hmong, Anna Jaques (220029) Italian, Northwestern Delnor (140211) Bosnian
+    # translations, and the first lists read them as English. Again no English words, no state
+    # codes and no surname particles ("da", "di", "do", "pa", "ak", "na", "po", "od").
+    "polish": "nie się jest oraz lub dla przez który która które jeśli może są być jako tym pomocy "
+    "finansowej",
+    "hmong": "kev pab nyiaj koj yuav thiab rau ntawm uas muaj cov tsis yog hauv txog neeg",
+    "haitian creole": "pou nan yo ki li gen sou oswa lè fè kote avèk epi konsa sèvis pasyan",
+    "italian": "che della delle degli dei sono questo questa gli nel nella alla sulla anche più "
+    "può assistenza finanziaria",
+    "albanian": "dhe të në për nga një është janë që ose nuk kjo ky tyre ndihma financiare",
+    "bosnian/croatian": "je su za koji koja koje ili ako može nije biti kao pomoć",
 }
 _COMMON = {language: frozenset(words.split()) for language, words in COMMON_WORDS.items()}
 # A translation in another script: when that script holds this share of the letters. Kaiser's
 # English summary ends in its language-assistance notice in fifteen scripts, a third of its letters.
 NON_LATIN_SHARE = 0.4
 # A translation in a Latin script: another language's common words outnumber English's this many
-# times over, and there are at least this many of them.
-FOREIGN_WORD_RATIO = 2
+# times over, and there are at least this many of them. Once over (review of 7.15b): a Spanish or
+# Vietnamese page inside an English site's menus is that language's (Carle, Catholic Health Long
+# Island, Mission Regional, Cape Cod, UMass Memorial), and no English document stored turns foreign.
+FOREIGN_WORD_RATIO = 1
 MIN_FOREIGN_WORDS = 3
 # Link targets, images and bare addresses carry no language.
 _LINK_TARGETS = re.compile(r"!\[[^\]]*\]\([^)]*\)|\]\([^)]*\)|https?://\S+|www\.\S+")
@@ -354,9 +369,9 @@ _WORD = re.compile(r"[^\W\d_]+")
 
 def written_in_english(text: str) -> bool:
     """Whether a document reads as English: its letters are not mostly another script's, and no
-    other language's common words outnumber the English ones twice over. An English page that
-    quotes a Spanish line, links to its "Español" version or ends in the language-assistance
-    notice stays English; so does a table of figures or a list of names, which is nobody's prose."""
+    other language's common words outnumber the English ones. An English page that quotes a
+    Spanish line, links to its "Español" version or ends in the language-assistance notice stays
+    English; so does a table of figures or a list of names, which is nobody's prose."""
     plain = _LINK_TARGETS.sub(" ", unicodedata.normalize("NFKC", text).lower())
     other = len(_OTHER_SCRIPT.findall(plain))
     latin = len(_LETTER.findall(plain)) - other
@@ -483,10 +498,11 @@ def _band(item: dict[str, Any], previous_max: Decimal | None) -> tuple[Decimal, 
     return _decimal(low), _decimal(high)
 
 
-def _discount(value: Any) -> int:
+def _discount(value: Any) -> Decimal:
+    """The percentage written off, decimals and all (83.5%, 46.07%: review of 7.15b)."""
     if isinstance(value, str) and _RANGE.search(value):
         raise ValueError("discount given as a range")  # never pick or average a number
-    return _int(value)
+    return _decimal(value)
 
 
 def _parse_tier_items(value: Any) -> tuple[list[DiscountTier], Decimal | None, int]:

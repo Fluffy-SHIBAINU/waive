@@ -156,26 +156,79 @@ def _drop_other_state_documents(
     return [(source, text) for source, text in sources_with_text if source.id not in gone]
 
 
+def _english_rules_and_translations(
+    sources_with_text: list[tuple[SourceDoc, str]],
+) -> tuple[bool, list[tuple[SourceDoc, str]]]:
+    """Whether a web document in English states income rules (it names the poverty level, as
+    INCOME_RULE_WORDS reads it), and the web documents in other languages."""
+    english_rules = False
+    translations: list[tuple[SourceDoc, str]] = []
+    for source, text in sources_with_text:
+        if source.kind is not SourceKind.HOSPITAL_WEB:
+            continue
+        if not written_in_english(text):
+            translations.append((source, text))
+        elif INCOME_RULE_WORDS.search(text):
+            english_rules = True
+    return english_rules, translations
+
+
+def _translations_to_reject(sources_with_text: list[tuple[SourceDoc, str]]) -> frozenset[str]:
+    """The web documents no field may be quoted from: the translations, while a web document in
+    English states the income rules (the rule _set_aside_translations applies before structuring,
+    held to stored sheets by verify_sheet's TRANSLATION_REASON)."""
+    english_rules, translations = _english_rules_and_translations(sources_with_text)
+    return frozenset(source.id for source, _ in translations) if english_rules else frozenset()
+
+
+ENGLISH_POLICY_MISSING = "english_policy_missing"
+
+
+def _ask_for_the_english_policy(session: Session, ccn: str, translation_ids: list[str]) -> None:
+    """One open item per hospital, naming the translations that stand in for the English policy
+    until an admin, or a scout aimed at it, stores the English one."""
+    detail = {
+        "translations": translation_ids,
+        "reason": "only translations state the income rules; scout the English policy",
+    }
+    for item in repo.open_review_items(session, ccn):
+        if item.kind == ENGLISH_POLICY_MISSING:
+            if item.detail != detail:
+                item.detail = detail
+                session.flush()
+            return
+    repo.add_review_item(session, ccn, ENGLISH_POLICY_MISSING, detail)
+
+
 def _set_aside_translations(
-    sources_with_text: list[tuple[SourceDoc, str]], result: BuildResult
+    session: Session, ccn: str, sources_with_text: list[tuple[SourceDoc, str]], result: BuildResult
 ) -> tuple[list[tuple[SourceDoc, str]], list[tuple[SourceDoc, str]]]:
     """The documents the structurer reads, and the translations kept from it. A system publishes
     its policy in a dozen languages side by side, and the scout stores whichever the search
-    returns: six published sheets quoted a translation although the English policy was stored
-    (BID Needham, 220083, in Chinese; Baptist Beaches and Nassau, 100117 and 100140, in Tagalog;
-    task 7.15a), and seniors read those quotes on the public atlas. While the hospital has a web
-    document in English, its web documents in other languages are kept from the structurer. They
-    stay linked, so the place check and a later rebuild still see them; when every web document
-    is in another language nothing is set aside: there is nothing to prefer."""
-    web = [pair for pair in sources_with_text if pair[0].kind is SourceKind.HOSPITAL_WEB]
-    translations = [(source, text) for source, text in web if not written_in_english(text)]
-    if not translations or len(translations) == len(web):
+    returns: six published sheets quoted a translation (BID Needham, 220083, in Chinese; Baptist
+    Beaches and Nassau, 100117 and 100140, in Tagalog; task 7.15a), and seniors read those quotes
+    on the public atlas. While a web document in English states the income rules, the hospital's
+    web documents in other languages are kept from the structurer; they stay linked, so the place
+    check and a later rebuild still see them. Otherwise the translations stay: four of those six
+    hospitals stored only English billing pages and a job listing, none naming the poverty level,
+    and setting the translations aside would have left a rebuild with no income rule at all
+    (review of 7.15b). An `english_policy_missing` item asks for the English policy instead."""
+    english_rules, translations = _english_rules_and_translations(sources_with_text)
+    if not translations:
         return sources_with_text, []
     listed = ", ".join(source.id for source, _ in translations)
     plural = "s are" if len(translations) > 1 else " is"
+    if not english_rules:
+        _ask_for_the_english_policy(session, ccn, [source.id for source, _ in translations])
+        result.notes.append(
+            f"{len(translations)} stored document{plural} not in English ({listed}) and no "
+            "English one states the income rules: kept for the structurer, and an "
+            f"{ENGLISH_POLICY_MISSING} item asks for the English policy"
+        )
+        return sources_with_text, []
     result.notes.append(
         f"{len(translations)} stored document{plural} not in English ({listed}); left out of the "
-        "structurer while an English one is stored, and still linked"
+        "structurer while an English one states the income rules, and still linked"
     )
     gone = {source.id for source, _ in translations}
     kept = [(source, text) for source, text in sources_with_text if source.id not in gone]
@@ -192,7 +245,7 @@ def _documents_for_structurer(
     another state's version of a system policy detached, then the translations set aside. Those
     come back as well, for the place check, which reads all of the hospital's documents."""
     kept = _drop_other_state_documents(session, hospital, sources_with_text, result)
-    return _set_aside_translations(kept, result)
+    return _set_aside_translations(session, hospital.ccn, kept, result)
 
 
 @dataclass
@@ -523,8 +576,10 @@ def build_hospital(
     if borrowed is None and not holds and _lacks_income_rules(sheet):
         # The hospital's own pages gave no income rule: a sibling's policy on the same site may
         # (Advocate Christ: a language-menu shell of its own, the enterprise policy on Advocate
-        # Illinois Masonic's sheet). One more structuring pass, Token Factory only.
-        borrowed = _share_sibling_sources(session, row, sources_with_text, result)
+        # Illinois Masonic's sheet). One more structuring pass, Token Factory only. The hospital's
+        # own translations set aside on the first pass stay its own: Baptist Beaches and Nassau
+        # link one Tagalog policy, and it is not the sibling's to lend (review of 7.15b).
+        borrowed = _share_sibling_sources(session, row, [*sources_with_text, *translations], result)
         if borrowed is not None:
             sources_with_text, shared_translations = _documents_for_structurer(
                 session, hospital, borrowed.sources, result
@@ -768,11 +823,11 @@ def recheck_sheets(session: Session, state: str | None = None) -> list[Recheck]:
         if latest is None:
             continue
         sheet = latest[0]
-        texts = {source.id: text for source, text in repo.sources_for(session, row.ccn)}
-        rejected = list(verify_sheet(sheet, texts).rejected)
-        if sheet.status is SheetStatus.PUBLISHED and (
-            unplaced := _unplaced(row, repo.sources_for(session, row.ccn))
-        ):
+        sources = repo.sources_for(session, row.ccn)
+        texts = {source.id: text for source, text in sources}
+        report = verify_sheet(sheet, texts, _translations_to_reject(sources))
+        rejected = list(report.rejected)
+        if sheet.status is SheetStatus.PUBLISHED and (unplaced := _unplaced(row, sources)):
             rejected.append(("sheet", f"{PLACE_UNCONFIRMED_REASON}: {unplaced}"))
         if sheet.status is SheetStatus.PUBLISHED and (unconfirmed := _unconfirmed_domain(row)):
             rejected.append(("sheet", f"{DOMAIN_UNCONFIRMED_REASON}: {unconfirmed}"))
@@ -803,14 +858,11 @@ def withdraw_rejected(
         sheet = latest[0]
         if published_only and sheet.status is not SheetStatus.PUBLISHED:
             continue
-        texts = {source.id: text for source, text in repo.sources_for(session, row.ccn)}
+        sources = repo.sources_for(session, row.ccn)
+        texts = {source.id: text for source, text in sources}
         grounded, pruned = _ground(sheet, texts)
-        report = verify_sheet(grounded, texts)
-        unplaced = (
-            _unplaced(row, repo.sources_for(session, row.ccn))
-            if sheet.status is SheetStatus.PUBLISHED
-            else None
-        )
+        report = verify_sheet(grounded, texts, _translations_to_reject(sources))
+        unplaced = _unplaced(row, sources) if sheet.status is SheetStatus.PUBLISHED else None
         unconfirmed = _unconfirmed_domain(row) if sheet.status is SheetStatus.PUBLISHED else None
         if not pruned and not report.rejected and not unplaced and not unconfirmed:
             continue
@@ -942,9 +994,10 @@ def confirm_domain(session: Session, ccn: str, domain: str) -> BuildResult:
         result.outcome = "published" if sheet.status is SheetStatus.PUBLISHED else "held"
         result.version = sheet.version
         return result
-    texts = {source.id: text for source, text in repo.sources_for(session, ccn)}
+    sources = repo.sources_for(session, ccn)
+    texts = {source.id: text for source, text in sources}
     grounded, pruned = _ground(sheet, texts)
-    report = verify_sheet(grounded, texts)
+    report = verify_sheet(grounded, texts, _translations_to_reject(sources))
     result.notes.extend(pruned)
     result.notes.extend(f"{path}: {reason}" for path, reason in report.rejected)
     if pruned or report.rejected:

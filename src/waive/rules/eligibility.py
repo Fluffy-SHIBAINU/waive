@@ -45,7 +45,7 @@ class Reason:
 class EligibilityResult:
     tier: Tier
     fpl_percent: Decimal | None = None
-    discount_percent: int | None = None
+    discount_percent: Decimal | None = None
     reasons: tuple[Reason, ...] = ()
     missing: tuple[str, ...] = ()
     warnings: tuple[str, ...] = ()
@@ -125,7 +125,7 @@ def evaluate_eligibility(sheet: ProcedureSheet, household: Household) -> Eligibi
             text = f"People enrolled in {matches[0]} qualify for free care without an income check."
             return EligibilityResult(
                 Tier.FREE,
-                discount_percent=100,
+                discount_percent=Decimal(100),
                 reasons=(_reason(text, "programs.presumptive", presumptive),),
                 warnings=warnings,
             )
@@ -169,7 +169,7 @@ def evaluate_eligibility(sheet: ProcedureSheet, household: Household) -> Eligibi
         return EligibilityResult(
             Tier.FREE,
             percent,
-            100,
+            Decimal(100),
             (_reason(text, "eligibility.free_care_max_fpl", free_limit),),
             warnings=warnings,
         )

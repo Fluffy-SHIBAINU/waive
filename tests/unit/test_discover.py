@@ -252,8 +252,40 @@ def test_directories_a_newsroom_a_staffing_firm_and_asset_hosts_are_never_the_ho
             "Mercy Harvard Hospital",
             score=0.8,
         ),
+        hit(
+            "https://osf-p-001.sitecorecontenthub.cloud/api/public/content/standardcharges.json",
+            "Mercy Harvard Hospital standard charges",
+            score=0.7,
+        ),
     ]
     assert pick_domain(mercy, assets) is None
+    # Never a website is not the fetcher's allowlist: following links to Cloudinary is the
+    # user's decision (review of 7.15b, audit item input-ssrf-4), so the fetcher does not.
+    from waive.atlas.fetch import is_asset_host
+
+    assert not is_asset_host(assets[0].url)
+
+
+def test_listings_newsrooms_and_state_government_hosts_held_as_websites_are_directories():
+    # Review of 7.15b: hosts the registry held as hospitals' websites, or the 7.15c website check
+    # cleared from them.
+    for host in (
+        "turquoise.health", "castleconnolly.com", "doxo.com", "medibillsaver.com",
+        "medicarelist.com", "hospitalcompare.io", "safehospitalsusa.com", "pdffiller.com",
+        "reddit.com", "wiktionary.org", "prnewswire.com", "cbsnews.com", "nbclosangeles.com",
+        "news10.com", "syracuse.com", "folsomtimes.com", "ohiodailydigital.com", "nursa.com",
+        "ama-assn.org", "fatf-gafi.org", "njha.com", "1degree.org", "sunshinesupportnetwork.com",
+        "recovered.org", "healthbillcentral.com", "www.turquoise.health",
+    ):  # fmt: skip
+        assert is_directory(host), host
+    # A state's .us namespace is its government's, as .gov is: www.state.oh.us collapses to oh.us
+    # (361303). A hospital's own .us domain is not.
+    assert host_of("https://www.state.oh.us/odh/hcap") == "oh.us"
+    assert is_directory("oh.us") and is_directory("dhs.state.mn.us")
+    assert not is_directory("hrmc.us") and not is_directory("communityhospital.us")
+    ohio = hospital("SOUTHWEST GENERAL HEALTH CENTER", "MIDDLEBURG HEIGHTS", "OH")
+    state = hit("https://www.state.oh.us/odh/hcap", "Southwest General Health Center | Ohio HCAP")
+    assert pick_domain(ohio, [state]) is None
 
 
 def test_a_hit_that_names_only_other_states_is_scored_down_and_never_sure():
@@ -508,6 +540,33 @@ def test_the_right_site_stays_sure_when_its_page_names_the_place_or_carries_the_
     assert pick_domain(richardson, hits) == DomainResult(
         "methodisthealthsystem.org", 0.9, billing.url
     )
+
+
+def test_a_possessive_saint_name_still_names_the_hospital():
+    # Review of 7.15b: the registry writes "ST JOSEPHS", pages write "St. Joseph's", so the one
+    # distinctive word never matched and the right site lost all its evidence.
+    from waive.atlas.discover import place_unconfirmed
+
+    phoenix = hospital("ST JOSEPHS HOSPITAL AND MEDICAL CENTER", "PHOENIX", "AZ")
+    dignity = hit(
+        "https://www.dignityhealth.org/arizona/locations/stjosephs/patients-and-visitors/"
+        "financial-assistance",
+        "Financial Assistance | St. Joseph\u2019s Hospital and Medical Center | Dignity Health",
+        "St. Joseph's Hospital and Medical Center offers financial assistance to eligible patients.",
+    )
+    assert pick_domain(phoenix, [dignity]) == DomainResult("dignityhealth.org", 0.9, dignity.url)
+    oxnard = hospital("ST JOHNS REGIONAL MEDICAL CENTER", "OXNARD", "CA")
+    st_johns = hit(
+        "https://www.dignityhealth.org/central-coast/locations/stjohnsregional/patients-and-"
+        "visitors/billing",
+        "Billing and Financial Assistance | St. John's Regional Medical Center",
+        "St. John's Regional Medical Center, 1600 N Rose Ave, Oxnard, CA 93030",
+    )
+    assert pick_domain(oxnard, [st_johns]).confidence == 0.9
+    # The same reading holds for the documents' place check, whichever side has the apostrophe.
+    assert place_unconfirmed(phoenix, ["St. Joseph's Hospital, Phoenix, Arizona"]) is None
+    apostrophe = hospital("ST. JOSEPH'S HOSPITAL", "TAMPA", "FL")
+    assert place_unconfirmed(apostrophe, ["St. Josephs Hospital, Florida"]) is None
 
 
 def test_documents_must_name_the_hospitals_state_and_the_hospital_or_its_town():

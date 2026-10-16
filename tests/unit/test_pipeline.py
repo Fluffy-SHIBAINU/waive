@@ -1131,11 +1131,15 @@ TAGALOG_POLICY = (
     "OSPITAL. Ayon sa pilosopiya, misyon, at pangunahing mga halaga ng Baptist Health, ang aming "
     "polisiya ay magbigay ng Emergency at Medically Necessary Care para sa lahat ng mga pasyente. "
     "Buong Pinansyal na Tulong: Kabuuang kita ng pamilya ay nasa 200% o mas mababa ng Pederal na "
-    "Antas ng Kahirapan (FPL).\n"
+    "Antas ng Kahirapan (FPL).\nTumawag sa 617-555-0100 mula Lunes hanggang Biyernes.\n"
 )
 TRANSLATION_NOTE = (
     "1 stored document is not in English (fap-tagalog); left out of the structurer while an "
-    "English one is stored, and still linked"
+    "English one states the income rules, and still linked"
+)
+KEPT_TRANSLATION_NOTE = (
+    "1 stored document is not in English (fap-tagalog) and no English one states the income "
+    "rules: kept for the structurer, and an english_policy_missing item asks for the English policy"
 )
 
 
@@ -1152,9 +1156,9 @@ def store_translation(session, ccn):
     return source
 
 
-def test_a_translation_is_kept_from_the_structurer_while_an_english_document_is_stored():
+def test_a_translation_is_kept_from_the_structurer_while_an_english_policy_is_stored():
     # Task 7.15a: BID Needham, Hoag, Baptist Beaches and Nassau, Brigham and Women's and Hardin
-    # Memorial published quotes from a translation of the policy their English version states.
+    # Memorial published quotes from a translation of their policy.
     engine = make_engine_with_hospital()
     with session_scope(engine) as session:
         build_hospital(session, FakeGateway(), FakeAI(), "229999", TODAY)
@@ -1168,7 +1172,9 @@ def test_a_translation_is_kept_from_the_structurer_while_an_english_document_is_
         assert "fap-tagalog" not in {source.id for source in sheet.sources}
         # Nothing is detached: the translation stays the hospital's.
         assert "fap-tagalog" in {s.id for s, _ in repo.sources_for(session, "229999")}
-    # When every stored document is a translation there is nothing to prefer: it is read.
+        assert all(i.kind != "english_policy_missing" for i in repo.open_review_items(session))
+    # When every stored document is a translation there is nothing to prefer: it is read, and an
+    # admin is asked for the English policy.
     engine = make_engine_with_hospital()
     with session_scope(engine) as session:
         repo.get_hospital(session, "229999").website_domain = "example.org"
@@ -1176,7 +1182,111 @@ def test_a_translation_is_kept_from_the_structurer_while_an_english_document_is_
         ai = GroundedAI()
         result = build_hospital(session, FakeGateway(), ai, "229999", TODAY, reuse_sources=True)
         assert ai.prompts and all("fap-tagalog" in p for p in ai.prompts)
-        assert all("not in English" not in note for note in result.notes)
+        assert KEPT_TRANSLATION_NOTE in result.notes
+        assert review_detail(session, "229999", "english_policy_missing")["translations"] == [
+            "fap-tagalog"
+        ]
+
+
+def test_a_translation_stays_while_no_english_document_states_the_income_rules():
+    # Review of 7.15b: BID Needham (220083), Baptist Beaches and Nassau (100117, 100140) and Hoag
+    # (050224) store English billing pages and a job listing, none naming the poverty level.
+    # Setting their translations aside would leave a rebuild with no income rule at all.
+    engine = make_engine_with_hospital()
+    with session_scope(engine) as session:
+        repo.get_hospital(session, "229999").website_domain = "example.org"
+        store_thin_page(session, "229999")
+        store_translation(session, "229999")
+        for _ in range(2):
+            ai = GroundedAI()
+            result = build_hospital(session, FakeGateway(), ai, "229999", TODAY, reuse_sources=True)
+            assert ai.prompts and all("fap-tagalog" in p for p in ai.prompts)
+            assert KEPT_TRANSLATION_NOTE in result.notes
+        # One open item however often it is rebuilt.
+        items = [
+            i
+            for i in repo.open_review_items(session, "229999")
+            if i.kind == "english_policy_missing"
+        ]
+        assert len(items) == 1 and items[0].detail["translations"] == ["fap-tagalog"]
+
+
+def test_a_hospitals_own_set_aside_translation_is_never_recorded_as_shared_from_a_sibling():
+    # Review of 7.15b: Baptist Beaches and Nassau (100117, 100140) share their Tagalog policy. When
+    # the second pass borrows from the sibling, the hospital's own translation, set aside on the
+    # first pass, must not come back as the sibling's document.
+    engine = make_engine_with_hospital(HOSPITAL, SIBLING)
+    with session_scope(engine) as session:
+        build_hospital(session, FakeGateway(), FakeAI(), "229999", TODAY)
+        store_translation(session, "229999")
+        repo.link_source(session, "220031", "fap-tagalog")
+        english = "Financial assistance is based on the Federal Poverty Guidelines. Call us. " * 3
+        page = SourceDoc(
+            id="billing-real",
+            kind=SourceKind.HOSPITAL_WEB,
+            url="https://www.example.org/real/billing",
+            title="Billing | Real General",
+            fetched_on=TODAY,
+            sha256="6" * 64,
+        )
+        repo.save_source(session, page, english, "220031")
+        result = build_hospital(
+            session, FakeGateway(), GroundedAI(), "220031", TODAY, reuse_sources=True
+        )
+        assert result.outcome == "published"
+        shared = review_detail(session, "220031", "shared_sources")["sources"]
+        assert shared and "fap-tagalog" not in shared
+
+
+def test_a_field_quoted_from_a_translation_is_withdrawn_while_an_english_policy_is_stored():
+    # Review of 7.15b: 16 published sheets cite a translation while an English document stating
+    # the income rules is stored (Anna Jaques 220029 in Italian, four fields; Edward 140231 in
+    # Japanese; Jefferson Northeast 390115 in Vietnamese). recheck lists such a field and
+    # withdraw drops it at no cost; a rebuild then quotes the English document.
+    from waive.atlas.pipeline import recheck_sheets, withdraw_rejected
+    from waive.atlas.schema import Cited
+    from waive.atlas.verify import TRANSLATION_REASON
+
+    engine = make_engine_with_hospital(REAL_HOSPITAL)
+    with session_scope(engine) as session:
+        build_hospital(session, FakeGateway(), FakeAI(), "220031", TODAY)
+        translation = store_translation(session, "220031")
+        sheet, _ = repo.latest_sheet(session, "220031")
+        phone = Cited(
+            value="617-555-0100",
+            quote="Tumawag sa 617-555-0100 mula Lunes hanggang Biyernes.",
+            source_id=translation.id,
+            checked_on=TODAY,
+        )
+        quoted = sheet.model_copy(
+            update={
+                "contacts": sheet.contacts.model_copy(update={"phone": phone}),
+                "sources": [*sheet.sources, translation],
+                "version": 2,
+            }
+        )
+        repo.add_sheet_version(session, quoted, {"contacts.phone": {"old": None}})
+        [entry] = recheck_sheets(session, "MA")
+        assert entry.rejected == [("contacts.phone", TRANSLATION_REASON)]
+        [result] = withdraw_rejected(session, "MA")
+        assert result.outcome == "published"
+        latest, _ = repo.latest_sheet(session, "220031")
+        assert latest.contacts.phone is None
+        assert latest.eligibility.free_care_max_fpl.value == 250
+        # Without an English document that states the income rules, the translation's field
+        # stands (the build files an english_policy_missing item instead).
+        for source, _ in repo.sources_for(session, "220031"):
+            if source.id != translation.id:
+                repo.unlink_source(session, "220031", source.id)
+        store_thin_page(session, "220031")
+        repo.add_sheet_version(
+            session, quoted.model_copy(update={"version": 4}), {"contacts.phone": {"old": None}}
+        )
+        assert all(
+            reason != TRANSLATION_REASON
+            for entry in recheck_sheets(session, "MA")
+            for _, reason in entry.rejected
+        )
 
 
 def test_a_siblings_translation_is_kept_from_the_structurer_on_both_sharing_paths():

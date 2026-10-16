@@ -5,6 +5,7 @@ import unicodedata
 from collections.abc import Callable
 from dataclasses import dataclass, field
 from decimal import Decimal
+from functools import partial
 from typing import Any
 
 from waive.atlas.schema import DiscountTier, DocType, Layer, ProcedureSheet, SubmitMethod
@@ -75,13 +76,20 @@ def quote_found(quote: str, document_text: str) -> bool:
     return _occurs_at_word_start(squashed_needle, squashed_haystack, haystack, offsets)
 
 
+def _number_pattern(number: Decimal) -> str:
+    """`number` as written, trailing zeros allowed ("$25.00" is 25, "200.00%" is 200, "63.20%" is
+    63.2), never inside a longer number nor as the whole part of a decimal."""
+    digits = format(number.normalize(), "f")
+    zeros = r"0*" if "." in digits else r"(?:\.0+)?"
+    return rf"{re.escape(digits)}{zeros}(?!\.?\d)"
+
+
 def _number_in(number: Decimal, quote: str) -> bool:
     """Whether the quote states `number` itself: never inside a longer number, and never as the
     whole part of a decimal. MelroseWakefield (220070) published a 65% discount band read from the
     Tufts table's "Outpatient Discount 65.91%", Lowell General (220063) 63 from "63.28%" (7.15a)."""
-    digits = format(number.normalize(), "f")
     haystack = normalize(quote).replace(",", "")
-    return re.search(rf"(?<![\d.]){re.escape(digits)}(?!\.?\d)", haystack) is not None
+    return re.search(rf"(?<![\d.]){_number_pattern(number)}", haystack) is not None
 
 
 def looks_serialised(value: Any) -> bool:
@@ -697,6 +705,31 @@ _SIZES_HELP = re.compile(
     r" ?(?:discount|off\b|write[- ]?off|reduction|adjustment|assistance\b|award"
     r"|of (?:the |total |all )?(?:charges|bills?|balances?)\b)"
 )
+# The same with up to two qualifiers between and more words for the help ("100% charity care",
+# "100% financial assistance", "a 100% charity discount", "100% (Charity Care)", "100% Charity
+# Write Off"), where the number does not end a range: "0-200% Free Care" is an income band. Review
+# of 7.15b: 173 passages of stored documents verified such a 100 as a free-care limit of 100.
+_SIZES_QUALIFIED_HELP = re.compile(
+    r" ?\(?(?:(?:charity|financial|full|free|hospital|sliding[- ]?scale)\)? ){0,2}\(?"
+    r"(?:discount|off\b|write[- ]?off|reduction|adjustment|assistance\b|award|charity\b|free\b"
+    r"|coverage\b|covered\b|forgiv|waiv|of (?:the |total |all |their |your |eligible )*"
+    r"(?:patient'?s? )?(?:charges|bills?|balances?|accounts?)\b)"
+)
+# Poverty words before the number head its column only when nothing between them reads as a
+# sentence, a benefit or an equation ("FPL will receive 100%", "FPL Discount 100%", "FPL = 100%"),
+# and when they do not close an earlier band ("0-250% FPL 100% 251-400% FPL 98%").
+_NOT_A_HEADER = re.compile(
+    r"\b(?:receives?|qualif\w*|eligible|gets?|will|are|is|discount\w*|charity|assist\w*|free"
+    r"|write|adjust\w*|cover\w*)\b|="
+)
+_AFTER_A_PERCENTAGE = re.compile(r"\d ?(?:%|percent)? ?(?:of (?:the )?)?$")
+# After the number, the poverty level's words ("of poverty" too) and "or less" count only before
+# the next number: in "cover 100% at 200% FPL" the poverty level is 200's.
+_POVERTY_AFTER = re.compile(rf"{_POVERTY_WORDS.pattern}|\bof poverty\b")
+_NEXT_NUMBER = re.compile(r"\d")
+# A band's top followed by the next band's start ("150% 100% 151 - 199% 90%", Grady's own table
+# with its free-care limit of 150) is that band's limit.
+_BAND_START = re.compile(r"(?<![\d.])(\d+(?:\.\d+)?) ?(?:%|percent)? ?(?:-|to\b|through\b|thru\b)")
 _PERCENT_SIGN = re.compile(r" ?(?:%|percent\b)")
 INCOME_WORDS_BEFORE = 3
 INCOME_WORDS_AFTER = 6
@@ -717,6 +750,28 @@ def _starts_within(pattern: re.Pattern[str], after: str, words: int) -> bool:
     return match is not None and match.start() < len(" ".join(tokens[:words]))
 
 
+def _poverty_header_before(before: str) -> bool:
+    """Whether poverty words head the number's column within three words before it."""
+    for match in _POVERTY_WORDS.finditer(before):
+        between = before[match.end() :]
+        if len(between.split()) > INCOME_WORDS_BEFORE or _NOT_A_HEADER.search(between):
+            continue
+        if _AFTER_A_PERCENTAGE.search(before[: match.start()]) is None:
+            return True
+    return False
+
+
+def _next_band_follows(value: Decimal, rest: str) -> bool:
+    """Whether a band starting just above `value` ("151 -", "150.1 to") opens within the next
+    three words."""
+    tokens = rest.split()
+    head = len(" ".join(tokens[:INCOME_WORDS_BEFORE]))
+    for match in _BAND_START.finditer(" ".join(tokens[: INCOME_WORDS_BEFORE + 2])):
+        if match.start() < head and value < Decimal(match.group(1)) <= value + 1:
+            return True
+    return False
+
+
 def _income_limit_at(text: str, start: int, end: int) -> bool:
     """Whether the number at text[start:end] reads as a limit on household income."""
     before = text[max(0, start - INCOME_CONTEXT_CHARS) : start]
@@ -727,29 +782,34 @@ def _income_limit_at(text: str, start: int, end: int) -> bool:
         return False
     if _BETWEEN_BEFORE.search(before) and _AND_A_NUMBER.match(rest):
         return False
+    if _RANGE_END.search(before) is not None:
+        return True
+    if _SIZES_QUALIFIED_HELP.match(rest):
+        return False
+    until_next = _NEXT_NUMBER.split(rest, maxsplit=1)[0]
     return (
-        _starts_within(_POVERTY_WORDS, rest, INCOME_WORDS_AFTER)
-        or _starts_within(_OR_LESS, rest, INCOME_WORDS_AFTER)
-        or _ends_within(_POVERTY_WORDS, before, INCOME_WORDS_BEFORE)
+        _starts_within(_POVERTY_AFTER, until_next, INCOME_WORDS_AFTER)
+        or _starts_within(_OR_LESS, until_next, INCOME_WORDS_AFTER)
+        or _poverty_header_before(before)
         or _ends_within(_AT_MOST, before, INCOME_WORDS_BEFORE)
         or _AT_MOST_SIGN.search(before) is not None
-        or _RANGE_END.search(before) is not None
+        or _next_band_follows(Decimal(text[start:end]), rest)
     )
 
 
 def states_income_limit(quote: str, value: Decimal) -> bool:
     """Whether the quote states `value` as a limit on household income: some occurrence of it (a
-    whole number, never a decimal's whole part or a dollar figure) has the poverty level's words
-    within six words after it ("200% of the current year's federal poverty guidelines") or three
-    before it ("FPL LEVEL 200%"), an at-most comparison within three words before it ("less than
-    or equal to 200%", "Federal Poverty Level ≤ 200%") or "or less" within six after it, or ends a
-    range ("0% - 350%"). The start of a range and a percentage of the help ("100% discount",
-    "100% Assistance", "25% of total charges") never count."""
+    whole number, never a decimal's whole part or a dollar figure) ends a range ("0% - 350%"), or,
+    when no help it sizes follows it ("100% charity care", "100% financial assistance"), has the
+    poverty level's words after it before the next number ("200% of the current year's federal
+    poverty guidelines", "200% of poverty"), heads a column under them ("FPL LEVEL 200%"), has an
+    at-most comparison within three words before it ("less than or equal to 200%", "Federal
+    Poverty Level ≤ 200%") or "or less" after it, or tops a band the next one starts just above
+    ("150% 100% 151 - 199%"). The start of a range never counts."""
     text = _poverty_text(quote).replace(",", "")
-    digits = format(Decimal(value).normalize(), "f")
     return any(
         _income_limit_at(text, match.start(), match.end())
-        for match in re.finditer(rf"(?<![\d.$]){re.escape(digits)}(?!\.?\d)", text)
+        for match in re.finditer(rf"(?<![\d.$]){_number_pattern(Decimal(value))}", text)
     )
 
 
@@ -820,16 +880,25 @@ _SENTENCE_SPLIT = re.compile(r"(?<=[.;:])\s+|\n+")
 MAX_WIDENED_CHARS = 700
 
 
-def matched_span(quote: str, document_text: str, value: Any = None) -> str | None:
+def matched_span(
+    quote: str,
+    document_text: str,
+    value: Any = None,
+    usable: Callable[[str], bool] | None = None,
+) -> str | None:
     """The quote itself if the source contains it; otherwise the sentence of it that does. Among
-    several, the longest that carries `value` is preferred (a stitched quote whose longer sentence
-    is about something else must not cost the field its number), then simply the longest."""
+    several, the longest that is `usable` is preferred (a free-care limit's sentence that states
+    it as an income limit, review of 7.15b), then the longest that carries `value` (a stitched
+    quote whose longer sentence is about something else must not cost the field its number), then
+    simply the longest."""
     if quote_found(quote, document_text):
         return quote.strip()
     sentences = [s.strip() for s in _SENTENCE_SPLIT.split(quote) if s.strip()]
     candidates = [
         s for s in sorted(sentences, key=len, reverse=True) if quote_found(s, document_text)
     ]
+    if usable is not None and (preferred := [s for s in candidates if usable(s)]):
+        return preferred[0]
     if isinstance(value, int | Decimal | list) and not isinstance(value, bool):
         carrying = [s for s in candidates if value_in_quote(value, s)]
         if carrying:
@@ -949,10 +1018,10 @@ def trim_quotes(sheet: ProcedureSheet, documents: dict[str, str]) -> ProcedureSh
         text = documents.get(cited.source_id or "")
         if text is None:
             continue
-        span = matched_span(cited.quote, text, cited.value)
-        if path == "eligibility.free_care_max_fpl" and not (
-            span is not None and _free_limit_stated(cited.value, span)
-        ):
+        free_care = path == "eligibility.free_care_max_fpl"
+        usable = partial(_free_limit_stated, cited.value) if free_care else None
+        span = matched_span(cited.quote, text, cited.value, usable)
+        if free_care and not (span is not None and _free_limit_stated(cited.value, span)):
             # The limit is right more often than the quote: first the neighbouring sentence,
             # then the one passage of this document that states exactly this limit.
             limit = Decimal(cited.value)
@@ -971,6 +1040,14 @@ def trim_quotes(sheet: ProcedureSheet, documents: dict[str, str]) -> ProcedureSh
     return sheet.model_copy(update=updates) if updates else sheet
 
 
+# Review of 7.15b: 16 published sheets cite a translation while an English document that states the
+# income rules is stored (Anna Jaques, 220029, four fields in Italian; Edward, 140231, in Japanese;
+# Jefferson Northeast, 390115, in Vietnamese), and seniors read the quotes on the public atlas. The
+# pipeline names those documents (pipeline._translations_to_reject); verify_sheet rejects every
+# field quoted from one, so a recheck withdraws it at no cost and a rebuild quotes the English one.
+TRANSLATION_REASON = "quote is from a translation while an English document states the income rules"
+
+
 @dataclass
 class VerificationReport:
     accepted: list[str] = field(default_factory=list)
@@ -981,7 +1058,11 @@ class VerificationReport:
         return not self.rejected
 
 
-def verify_sheet(sheet: ProcedureSheet, documents: dict[str, str]) -> VerificationReport:
+def verify_sheet(
+    sheet: ProcedureSheet, documents: dict[str, str], translations: frozenset[str] = frozenset()
+) -> VerificationReport:
+    """Each documented field held to its quote and its source text; `translations` names the
+    documents no field may be quoted from (see TRANSLATION_REASON)."""
     report = VerificationReport()
     for path, cited in sheet.field_paths():
         if cited.layer is Layer.REPORTED:
@@ -992,6 +1073,8 @@ def verify_sheet(sheet: ProcedureSheet, documents: dict[str, str]) -> Verificati
             report.rejected.append((path, "source text missing"))
         elif not quote_found(cited.quote or "", text):
             report.rejected.append((path, "quote not found in source"))
+        elif cited.source_id in translations:
+            report.rejected.append((path, TRANSLATION_REASON))
         elif looks_serialised(cited.value):
             report.rejected.append((path, "value is a list or object written as text"))
         elif not value_in_quote(cited.value, cited.quote or "") and not (

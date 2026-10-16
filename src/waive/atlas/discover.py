@@ -93,11 +93,55 @@ DIRECTORY_DOMAINS = frozenset(
         "njspotlightnews.org",
         "communityplatform.us",
         "vituity.com",
+        # Review of 7.15b: hosts the registry held as hospitals' websites, or the 7.15c website
+        # check cleared from them. Listings and ratings: turquoise.health (390329, 450211, 451316,
+        # 451322, 670059), castleconnolly.com (330259, 360355), medibillsaver.com (360143,
+        # 360040), medicarelist.com (050137, 310028, 360072), hospitalcompare.io (450162),
+        # safehospitalsusa.com (330055); bill payment and forms: doxo.com (360080, 391309),
+        # pdffiller.com (390338); news: prnewswire.com (050603), cbsnews.com (390266),
+        # nbclosangeles.com (050779), news10.com (330191), syracuse.com (330175), folsomtimes.com
+        # (050414), ohiodailydigital.com (360197); reddit.com (390217), wiktionary.org (140046);
+        # a staffing firm, nursa.com (361327, 361318); associations and others: ama-assn.org
+        # (100050), fatf-gafi.org (140135), njha.com (the New Jersey Hospital Association,
+        # 310032), 1degree.org (a resource directory, 050040), sunshinesupportnetwork.com
+        # (100105), recovered.org (451395).
+        "turquoise.health",
+        "castleconnolly.com",
+        "medibillsaver.com",
+        "medicarelist.com",
+        "hospitalcompare.io",
+        "safehospitalsusa.com",
+        "doxo.com",
+        "pdffiller.com",
+        "prnewswire.com",
+        "cbsnews.com",
+        "nbclosangeles.com",
+        "news10.com",
+        "syracuse.com",
+        "folsomtimes.com",
+        "ohiodailydigital.com",
+        "reddit.com",
+        "wiktionary.org",
+        "nursa.com",
+        "ama-assn.org",
+        "fatf-gafi.org",
+        "njha.com",
+        "1degree.org",
+        "sunshinesupportnetwork.com",
+        "recovered.org",
     }
 )
 # Government hosts (illinois.gov, paauditor.gov, mass.gov, medicare.gov) publish records about
-# hospitals, never a hospital's own policy.
+# hospitals, never a hospital's own policy; so do a state's own .us hosts (www.state.oh.us, which
+# host_of collapses to oh.us, was one hospital's website: 361303, review of 7.15b).
 DIRECTORY_SUFFIXES = (".gov",)
+_STATE_US = re.compile(rf"(?:^|\.)(?:{'|'.join(code.lower() for code in US_STATES)})\.us$")
+# Hosts that serve files for many organisations and are nobody's website: the fetcher's asset hosts
+# (fetch.DOCUMENT_HOSTS) and these. Discovery gave Mercy Harvard (141335) cloudinary.com, where one
+# account holds the policies of Truman, Southeast Health, Mercy Health and Lake Region, and one OSF
+# hospital sitecorecontenthub.cloud, its price files' host (7.15a). Whether the fetcher may follow
+# links to them is the user's call (audit item input-ssrf-4), so they are not asset hosts there.
+NOT_A_WEBSITE = frozenset({"cloudinary.com", "sitecorecontenthub.cloud"})
 GENERIC_WORDS = frozenset(
     {
         "hospital",
@@ -147,13 +191,34 @@ def host_of(url: str) -> str:
 
 
 def is_directory(host: str) -> bool:
-    return host.endswith(DIRECTORY_SUFFIXES) or any(
-        host == d or host.endswith("." + d) for d in DIRECTORY_DOMAINS
+    return (
+        host.endswith(DIRECTORY_SUFFIXES)
+        or _STATE_US.search(host) is not None
+        or any(host == d or host.endswith("." + d) for d in DIRECTORY_DOMAINS)
     )
 
 
+def is_not_a_website(url: str) -> bool:
+    """Whether `url` is on a file host that is never a hospital's website (NOT_A_WEBSITE)."""
+    from waive.atlas.fetch import is_asset_host  # fetch imports host_of from this module
+
+    host = (urlparse(url).hostname or "").lower()
+    return is_asset_host(url) or any(host == d or host.endswith("." + d) for d in NOT_A_WEBSITE)
+
+
+# The registry writes "ST JOSEPHS", pages "St. Joseph's" (a straight or a curly apostrophe): both
+# sides lose their apostrophes before any matching, or a possessive saint's name is never found
+# (review of 7.15b: St. Joseph's Hospital and Medical Center, Phoenix, lost all its evidence).
+_APOSTROPHES = re.compile("['\u2019]")
+
+
+def _plain(text: str) -> str:
+    """`text` lower-case, without apostrophes."""
+    return _APOSTROPHES.sub("", text.lower())
+
+
 def name_tokens(name: str) -> set[str]:
-    words = re.findall(r"[a-z0-9]+", name.lower())
+    words = re.findall(r"[a-z0-9]+", _plain(name))
     return {w for w in words if len(w) >= 4 and w not in GENERIC_WORDS}
 
 
@@ -166,13 +231,14 @@ def evidence_tokens(name: str) -> set[str]:
     tokens = name_tokens(name)
     if len(tokens) >= 2:
         return tokens
-    return {w for w in re.findall(r"[a-z0-9]+", name.lower()) if len(w) >= 4}
+    return {w for w in re.findall(r"[a-z0-9]+", _plain(name)) if len(w) >= 4}
 
 
 def _names_hospital(hospital: HospitalRef, text: str) -> bool:
-    """Whether lower-case `text` names the hospital: two of its evidence tokens, among them every
-    distinctive word of a name that has fewer than two. Community Hospital of San Bernardino
-    (050089) was matched to Mountains Community Hospital's page at confidence 0.9 (7.15a)."""
+    """Whether `text` names the hospital: two of its evidence tokens, among them every distinctive
+    word of a name that has fewer than two. Community Hospital of San Bernardino (050089) was
+    matched to Mountains Community Hospital's page at confidence 0.9 (7.15a)."""
+    text = _plain(text)
     tokens = evidence_tokens(hospital.name)
     distinctive = name_tokens(hospital.name)
     if not tokens or (len(distinctive) < 2 and not all(token in text for token in distinctive)):
@@ -191,8 +257,8 @@ def _hit_text(hit: SearchHit) -> str:
 
 def _names_city(hospital: HospitalRef, text: str) -> bool:
     """Whether `text` names the hospital's town as whole words ("Dover" is not in "Andover")."""
-    city = " ".join(hospital.city.lower().split())
-    return bool(city) and re.search(rf"\b{re.escape(city)}\b", text.lower()) is not None
+    city = " ".join(_plain(hospital.city).split())
+    return bool(city) and re.search(rf"\b{re.escape(city)}\b", _plain(text)) is not None
 
 
 def _evidence(hospital: HospitalRef, hit: SearchHit) -> float:
@@ -204,9 +270,9 @@ def _evidence(hospital: HospitalRef, hit: SearchHit) -> float:
     if _phone_on(hospital, hit):
         return 1.0
     title_can_prove = bool(name_tokens(hospital.name)) or _names_city(hospital, _hit_text(hit))
-    if title_can_prove and _names_hospital(hospital, hit.title.lower()):
+    if title_can_prove and _names_hospital(hospital, hit.title):
         return 1.0
-    if _names_hospital(hospital, hit.content.lower()):
+    if _names_hospital(hospital, hit.content):
         return MENTION_EVIDENCE
     return 0.0
 
@@ -232,9 +298,9 @@ def place_unconfirmed(hospital: HospitalRef, texts: Iterable[str]) -> str | None
     code = re.search(rf",\s*{state}\b|\b{state}\s+\d{{5}}\b", blob)
     if state not in states_named(blob) and not code:
         return f"the documents never name {US_STATES[state].title()}"
-    lowered = blob.lower()
+    lowered = _plain(blob)
     words = set(re.findall(r"[a-z0-9]+", lowered))
-    if hospital.city.lower() not in lowered and not (name_tokens(hospital.name) & words):
+    if _plain(hospital.city) not in lowered and not (name_tokens(hospital.name) & words):
         return f"the documents name neither {hospital.city.title()} nor the hospital"
     return None
 
@@ -308,7 +374,7 @@ def names_place(hospital: HospitalRef, hit: SearchHit) -> bool:
     text = _hit_text(hit)
     if _states_in(hospital, text)[0]:
         return True
-    city_words = set(re.findall(r"[a-z0-9]+", hospital.city.lower()))
+    city_words = set(re.findall(r"[a-z0-9]+", _plain(hospital.city)))
     return not city_words & name_tokens(hospital.name) and _names_city(hospital, text)
 
 
@@ -321,18 +387,15 @@ def names_only_other_states(hospital: HospitalRef, hit: SearchHit) -> bool:
 def pick_domain(
     hospital: HospitalRef, hits: list[SearchHit], rejected: Iterable[str] = ()
 ) -> DomainResult | None:
-    """The best hit's site, never a directory, an asset host (cloudinary.com, given to Mercy
-    Harvard, 141335, holds several health systems' PDFs) or a site an admin rejected. Sure (0.9)
-    only when the title names the hospital and the hit names its place, or the phone matches,
-    and never when the hit names other states but not the hospital's."""
-    from waive.atlas.fetch import is_asset_host  # fetch imports host_of from this module
-
+    """The best hit's site, never a directory, a file host (NOT_A_WEBSITE) or a site an admin
+    rejected. Sure (0.9) only when the title names the hospital and the hit names its place, or
+    the phone matches, and never when the hit names other states but not the hospital's."""
     refused = frozenset(rejected)
     best: DomainResult | None = None
     best_score = float("-inf")
     for hit in hits:
         host = host_of(hit.url)
-        if not host or is_directory(host) or is_asset_host(hit.url) or host in refused:
+        if not host or is_directory(host) or is_not_a_website(hit.url) or host in refused:
             continue
         elsewhere = names_only_other_states(hospital, hit)
         evidence = _evidence(hospital, hit)

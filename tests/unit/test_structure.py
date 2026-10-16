@@ -286,6 +286,22 @@ def test_tier_percent_strings_and_ranges_are_parsed():
     assert tiers_of(sheet) == [(Decimal(201), Decimal(400), 60), (Decimal(401), Decimal(500), 25)]
 
 
+def test_a_decimal_discount_is_kept_whole_not_truncated():
+    from waive.atlas.structure import _tiers
+
+    # Review of 7.15b: Chenango (330033) states 83.5%, Berkshire (220046) 46.07%.
+    [tier] = _tiers(
+        [{"min_fpl_exclusive": 200, "max_fpl_inclusive": 250, "discount_percent": "83.5%"}]
+    )
+    assert tier.discount_percent == Decimal("83.5")
+    [tier] = _tiers([{"min_fpl_exclusive": 0, "max_fpl_inclusive": 400, "discount_percent": 46.07}])
+    assert str(tier.discount_percent) == "46.07"
+    [tier] = _tiers(
+        [{"min_fpl_exclusive": 0, "max_fpl_inclusive": 400, "discount_percent": "90.0"}]
+    )
+    assert str(tier.discount_percent) == "90"  # never 9E+1
+
+
 def test_tier_missing_lower_bound_uses_previous_max_or_zero():
     tiers = [
         {"max_fpl_inclusive": 200, "discount_percent": 100},
@@ -1107,6 +1123,53 @@ TRANSLATIONS = {
         "اﻟﺴﻴﺎﺴﺔ ھو ﻀﻤﺎن طﺮﻳﻘﺔ ﻋﺎدﻟﺔ، ﻏﻴﺮ ﺗﻤﻴﻴﺰﻳﺔ، ﻓﻌﺎﻟﺔ، وﻤوﺤدة ﻟﺘﻘدﻳم اﻟﻤﺴﺎﻋدة اﻟﻤﺎﻟﻴﺔ"
     ),
 }
+# Review of 7.15b: languages the first word lists missed.
+MORE_TRANSLATIONS = {
+    "Polish (Rush, 140029)": (
+        "Wniosek o wsparcie finansowe Dzisiejsza data Imię i nazwisko pacjenta Numer dokumentacji "
+        "medycznej WAŻNE: może Pan/Pani zakwalifikować się do otrzymywania bezpłatnej lub tańszej "
+        "opieki medycznej: Wypełnienie tego wniosku ułatwi ośrodkowi Rush University Medical "
+        "Center ustalenie, czy kwalifikuje się Pan/Pani do bezpłatnych lub tańszych usług."
+    ),
+    "Hmong (Oroville, 050030)": (
+        "Daim Ntawv Thov Rau Kev Saib Xyuas Zej Tsoom Tsis Pub Lwm Tus Paub ## Ntaub Ntawv Qhia "
+        "Txog Neeg Mob (cov)Hnub Tim ntawm Qhov Kev Pab Cuam: ____ Neeg Mob Lub Npe: ____ Hnub "
+        "Yug: ____ Tus Xov Tooj Hauv Tsev: ____ Yog koj xav tau kev pab, koj yuav tsum muaj cov "
+        "ntaub ntawv thiab nyiaj tau los."
+    ),
+    "Italian (Anna Jaques, 220029)": (
+        "Riassunto semplificato della Politica di Assistenza Finanziaria Anna Jaques Hospital (AJH), "
+        "un ospedale per cure acute no-profit, è stato creato per rispondere alle esigenze dei "
+        "residenti del Massachusetts e delle aree circostanti. AJH riconosce che non tutti i "
+        "pazienti dispongono delle risorse finanziarie per pagare le proprie spese ospedaliere."
+    ),
+    "Albanian (Northwell)": (
+        "Appendiksi A Ndihma financiare është e disponueshme vetëm për shërbimet emergjente dhe të "
+        "domosdoshme mjekësore të ofruara drejtpërdrejt nga një objekt spitalor i Northwell Health "
+        "ose shërbimet e ofruara në ato objekte spitalore nga një mjek i punësuar."
+    ),
+    "Bosnian (Northwestern Delnor, 140211)": (
+        "ZAHTJEV ZA FINANCIJSKU POMOĆ Možda ćete moći dobiti besplatnu njegu ili njegu s sniženjem. "
+        "Ispunite ovu prijavu kako biste pomogli Northwestern Memorial HealthCare (NMHC) da utvrdi "
+        "možete li dobiti: Besplatne ili snižene usluge. Ako nemate zdravstveno osiguranje, ova "
+        "politika je za vas i za one koji ne mogu platiti."
+    ),
+    "Haitian Creole (Brigham and Women's)": (
+        "Règleman konsènan Asistans Finansye Règleman anrapò ak rabè pou pasyan ki pa gen asirans. "
+        "Sèvis ki kalifye pou Asistans Finansye: Swen Ijan/Sèvis Ijan; Sèvis ochwa nan Lopital ki "
+        "bay swen pandan yon ti tan ak Òganizasyon Doktè yo."
+    ),
+}
+# A Spanish policy page inside an English site's menus (Cape Cod Healthcare's "Traducción al
+# español", Carle's "Financial Assistance en Espanol").
+SPANISH_IN_AN_ENGLISH_SHELL = (
+    "Skip to Content. Find a doctor. Find a location. Pay a bill. Patients & Visitors. Health & "
+    "Wellness. Set your location to see the providers near you. "
+    "Estimado Paciente, Adjunta encontrará la Aplicación para Asistencia Financiera. Por favor, "
+    "llénela completamente y devuélvala con toda la documentación necesaria. Las aplicaciones "
+    "incompletas pueden ocasionar la denegación de la asistencia financiera. Usted puede ser "
+    "elegible si sus ingresos son bajos, y también si su seguro no cubre su factura."
+)
 # Kaiser's English summary ends in its language-assistance notice: a third of its letters are
 # Arabic, Armenian, Chinese and a dozen other scripts.
 KAISER_NOTICE = (
@@ -1125,9 +1188,11 @@ KAISER_NOTICE = (
 def test_a_document_reads_as_english_unless_another_language_clearly_dominates_it():
     from waive.atlas.structure import written_in_english
 
-    for language, text in TRANSLATIONS.items():
+    for language, text in {**TRANSLATIONS, **MORE_TRANSLATIONS}.items():
         assert not written_in_english(text), language
     assert written_in_english(SAMPLE_POLICY_TEXT)
+    # A page whose own words are Spanish is Spanish, however many English menu words wrap it.
+    assert not written_in_english(SPANISH_IN_AN_ENGLISH_SHELL)
     # English pages that quote a Spanish line, link to the other languages' versions or end in the
     # language-assistance notice stay English.
     assert written_in_english(
