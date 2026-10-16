@@ -2,7 +2,7 @@
 
 import re
 import unicodedata
-from collections.abc import Callable
+from collections.abc import Callable, Mapping
 from dataclasses import dataclass, field
 from decimal import Decimal
 from functools import partial
@@ -1045,9 +1045,14 @@ def trim_quotes(sheet: ProcedureSheet, documents: dict[str, str]) -> ProcedureSh
 # Review of 7.15b: 16 published sheets cite a translation while an English document that states the
 # income rules is stored (Anna Jaques, 220029, four fields in Italian; Edward, 140231, in Japanese;
 # Jefferson Northeast, 390115, in Vietnamese), and seniors read the quotes on the public atlas. The
-# pipeline names those documents (pipeline._translations_to_reject); verify_sheet rejects every
-# field quoted from one, so a recheck withdraws it at no cost and a rebuild quotes the English one.
+# pipeline names those documents (pipeline._documents_set_aside); verify_sheet rejects every field
+# quoted from one, so a recheck withdraws it at no cost and a rebuild quotes the English one.
 TRANSLATION_REASON = "quote is from a translation while an English document states the income rules"
+# Task 7.16: nine published Kaiser California sheets quoted Kaiser Northwest's dental policy, and
+# others Kaiser's Mid-Atlantic, Northwest, Georgia or Washington documents. A build sets those
+# aside before structuring; a sheet built before still quotes them while they stay linked.
+DENTAL_REASON = "quote is from a dental assistance program's document, not the hospital's policy"
+OTHER_REGION_REASON = "quote is from another Kaiser region's policy, not the hospital's state's"
 
 
 @dataclass
@@ -1061,10 +1066,14 @@ class VerificationReport:
 
 
 def verify_sheet(
-    sheet: ProcedureSheet, documents: dict[str, str], translations: frozenset[str] = frozenset()
+    sheet: ProcedureSheet,
+    documents: dict[str, str],
+    set_aside: Mapping[str, str] | None = None,
 ) -> VerificationReport:
-    """Each documented field held to its quote and its source text; `translations` names the
-    documents no field may be quoted from (see TRANSLATION_REASON)."""
+    """Each documented field held to its quote and its source text; `set_aside` names the
+    documents no field may be quoted from, each with the reason (TRANSLATION_REASON,
+    DENTAL_REASON, OTHER_REGION_REASON)."""
+    set_aside = set_aside or {}
     report = VerificationReport()
     for path, cited in sheet.field_paths():
         if cited.layer is Layer.REPORTED:
@@ -1075,8 +1084,8 @@ def verify_sheet(
             report.rejected.append((path, "source text missing"))
         elif not quote_found(cited.quote or "", text):
             report.rejected.append((path, "quote not found in source"))
-        elif cited.source_id in translations:
-            report.rejected.append((path, TRANSLATION_REASON))
+        elif reason := set_aside.get(cited.source_id or ""):
+            report.rejected.append((path, reason))
         elif looks_serialised(cited.value):
             report.rejected.append((path, "value is a list or object written as text"))
         elif not value_in_quote(cited.value, cited.quote or "") and not (

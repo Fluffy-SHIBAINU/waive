@@ -1173,6 +1173,13 @@ DENTAL_NOTE = (
 NOTHING_LEFT_NOTE = "no financial assistance documents left to structure once those are set aside"
 
 
+def held_note(quoted):
+    return (
+        f"{len(quoted)} fields quoted from the documents set aside dropped and the sheet held: "
+        + ", ".join(quoted)
+    )
+
+
 def store_kaiser(session, ccn, source_id, path, text, title=MFA_TITLE, docs=KAISER_DOCS):
     source = SourceDoc(
         id=source_id,
@@ -1251,12 +1258,7 @@ def test_a_sheet_that_quoted_a_dental_policy_it_had_alone_is_held_without_those_
         quoted = [path for path, _ in repo.latest_sheet(session, "050073")[0].field_paths()]
         result = build_hospital(session, NoSpend(), NoModel(), "050073", TODAY, reuse_sources=True)
         assert (result.outcome, result.version) == ("held", 2)
-        assert result.notes == [
-            DENTAL_NOTE,
-            NOTHING_LEFT_NOTE,
-            f"{len(quoted)} fields quoted from them dropped and the sheet held: "
-            + ", ".join(quoted),
-        ]
+        assert result.notes == [DENTAL_NOTE, NOTHING_LEFT_NOTE, held_note(quoted)]
         held, row = repo.latest_sheet(session, "050073")
         assert held.status is SheetStatus.HELD
         assert held.field_paths() == [] and held.sources == []
@@ -1361,8 +1363,7 @@ def test_kaiser_documents_all_of_another_region_are_set_aside_and_the_sheet_held
             "1 stored document is another state's version of the system policy "
             "(fap-washington: WA); detached and left out of the structurer",
             NOTHING_LEFT_NOTE,
-            f"{len(quoted)} fields quoted from them dropped and the sheet held: "
-            + ", ".join(quoted),
+            held_note(quoted),
         ]
         held, _ = repo.latest_sheet(session, "050076")
         assert held.status is SheetStatus.HELD
@@ -1464,6 +1465,103 @@ def test_a_sibling_lends_neither_a_dental_policy_nor_another_kaisers_regions():
             "fap-nw",
             "fap-scal",
         }
+
+
+def test_recheck_withdraw_and_confirmation_reject_fields_quoted_from_a_linked_set_aside_document():
+    # Review of 7.16: recheck flagged a field only once its document was no longer linked, so the
+    # nine published Kaiser California sheets quoting Kaiser Northwest's dental policy, still
+    # linked to them on the local database, passed it. What a build sets aside before structuring
+    # is now held to stored sheets too, with a reason each. The dental policy's and Washington's
+    # own sentences are stood in for by the sample policy's, which the sheets quote.
+    from waive.atlas.pipeline import confirm_domain, recheck_sheets, withdraw_rejected
+    from waive.atlas.verify import DENTAL_REASON, OTHER_REGION_REASON
+
+    engine = make_engine_with_hospital(KAISER_LOS_ANGELES, KAISER_SAN_FRANCISCO)
+    with session_scope(engine) as session:
+        dental = store_kaiser(
+            session, "050138", "fap-dental", DENTAL_PATH, DENTAL_TEXT + POLICY_TEXT, DENTAL_TITLE
+        )
+        publish_quoting(session, "050138", dental)
+        washington = store_kaiser(
+            session,
+            "050076",
+            "fap-washington",
+            WASHINGTON_PATH,
+            WASHINGTON_TEXT,
+            "Charity Care Policy",
+            docs=WASHINGTON_SITE,
+        )
+        publish_quoting(session, "050076", washington)
+        quoted = [path for path, _ in repo.latest_sheet(session, "050138")[0].field_paths()]
+        assert {entry.ccn: entry.rejected for entry in recheck_sheets(session, "CA")} == {
+            "050138": [(path, DENTAL_REASON) for path in quoted],
+            "050076": [(path, OTHER_REGION_REASON) for path in quoted],
+        }
+        withdrawn = withdraw_rejected(session, "CA")
+        assert sorted((r.ccn, r.outcome, r.version) for r in withdrawn) == [
+            ("050076", "held", 2),
+            ("050138", "held", 2),
+        ]
+        for ccn in ("050076", "050138"):
+            assert repo.latest_sheet(session, ccn)[0].field_paths() == []
+        assert recheck_sheets(session, "CA") == []
+    # Confirming the website re-verifies the sheet the same way: San Rafael (050510) was matched
+    # at 0.6 and given Kaiser Northwest's policy by its re-scout in 7.15c.
+    san_rafael = {
+        **KAISER_LOS_ANGELES,
+        "ccn": "050510",
+        "name": "KAISER FOUNDATION HOSPITAL",
+        "city": "SAN RAFAEL",
+        "zip": "94903",
+        "domain_confidence": 0.6,
+    }
+    engine = make_engine_with_hospital(san_rafael)
+    with session_scope(engine) as session:
+        northwest = store_kaiser(session, "050510", "fap-nw", NW_PATH, NW_TEXT + POLICY_TEXT)
+        publish_quoting(session, "050510", northwest)
+        result = confirm_domain(session, "050510", "kaiserpermanente.org")
+        assert (result.outcome, result.version) == ("held", 2)
+        assert f"eligibility.free_care_max_fpl: {OTHER_REGION_REASON}" in result.notes
+        assert repo.latest_sheet(session, "050510")[0].field_paths() == []
+
+
+class FailingModel(FakeAI):
+    def complete_json(self, *args, **kwargs):
+        raise AIOutputError("model output did not match SheetDraft (free_care_max_fpl: dict_type)")
+
+
+def test_a_failed_structurer_still_holds_the_fields_quoted_from_what_the_build_detached():
+    # Review of 7.16: Los Angeles's sheet quoted the dental policy; the rebuild detached it and
+    # the structurer then gave nothing usable, which left the dental bands published.
+    engine = make_engine_with_hospital(KAISER_LOS_ANGELES)
+    with session_scope(engine) as session:
+        dental = store_kaiser(
+            session, "050138", "fap-dental", DENTAL_PATH, DENTAL_TEXT, DENTAL_TITLE
+        )
+        store_kaiser(session, "050138", "fap-scal", SCAL_PATH, SCAL_TEXT)
+        publish_quoting(session, "050138", dental)
+        quoted = [path for path, _ in repo.latest_sheet(session, "050138")[0].field_paths()]
+        result = build_hospital(
+            session, NoSpend(), FailingModel(), "050138", TODAY, reuse_sources=True
+        )
+        assert (result.outcome, result.version) == ("failed", 2)
+        assert result.notes[0] == DENTAL_NOTE
+        assert result.notes[-1] == held_note(quoted)
+        held, _ = repo.latest_sheet(session, "050138")
+        assert held.status is SheetStatus.HELD and held.field_paths() == []
+        kinds = sorted(item.kind for item in repo.open_review_items(session, "050138"))
+        assert kinds == ["dental_documents", "structure_failed"]
+    # A sheet that quotes none of what was detached is left as it is.
+    engine = make_engine_with_hospital(KAISER_LOS_ANGELES)
+    with session_scope(engine) as session:
+        store_kaiser(session, "050138", "fap-dental", DENTAL_PATH, DENTAL_TEXT, DENTAL_TITLE)
+        scal = store_kaiser(session, "050138", "fap-scal", SCAL_PATH, SCAL_TEXT)
+        publish_quoting(session, "050138", scal)
+        result = build_hospital(
+            session, NoSpend(), FailingModel(), "050138", TODAY, reuse_sources=True
+        )
+        assert (result.outcome, result.version) == ("failed", None)
+        assert repo.latest_sheet(session, "050138")[0].status is SheetStatus.PUBLISHED
 
 
 # Baptist Health's Tagalog policy, which Baptist Beaches and Nassau (100117, 100140) quoted on the
