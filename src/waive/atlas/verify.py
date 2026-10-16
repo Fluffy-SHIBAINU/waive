@@ -128,6 +128,8 @@ _PERCENT = r"(\d+(?:\.\d+)?)\s*%"
 # "a reduction of 55% to 75%", "a discount of at least 25%" (discount word first) ...
 _RANGE_BEFORE = re.compile(
     rf"\b(?:discounts?|reductions?|reduc\w+|write[- ]?offs?)\s+(?:of\s+)?"
+    # "a sliding scale discount ranging from 20% to 80%" (Mercyhealth Crystal Lake, 140308, 7.15)
+    r"(?:(?:that\s+)?(?:ranging|ranges?)\s+)?(?:from\s+)?"
     rf"(?:(at least|up to|between)\s+)?{_PERCENT}(?:\s*(?:to|-|and)\s*{_PERCENT})?"
 )
 # ... and "a 30% to 50% discount", "up to 75% off" (discount word last).

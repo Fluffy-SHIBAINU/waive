@@ -632,6 +632,29 @@ def test_a_discount_given_as_a_range_or_a_floor_is_not_one_tier():
     assert ("eligibility.discount_tiers", RANGE_REASON) not in report.rejected
 
 
+def test_a_discount_ranging_from_one_percentage_to_another_is_a_range():
+    from waive.atlas.verify import RANGE_REASON, discount_range_in_quote
+
+    # Mercyhealth Crystal Lake (140308), 7.15: "a sliding scale discount ranging from 20% to 80%"
+    # was published as a 20% band, because only "discount of 20% to 80%" read as a range.
+    mercyhealth = (
+        "Patients with household gross income above 250% but at or below 350% of the FPL will "
+        "get a sliding scale discount ranging from 20% to 80%."
+    )
+    assert discount_range_in_quote(mercyhealth) == {Decimal(20), Decimal(80)}
+    assert discount_range_in_quote("discounts from 25% to 100% of charges") == {
+        Decimal(25),
+        Decimal(100),
+    }
+    assert discount_range_in_quote("a discount that ranges from 10% to 90%") == {
+        Decimal(10),
+        Decimal(90),
+    }
+    docs = {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT + "\n" + mercyhealth + "\n"}
+    report = verify_sheet(with_tiers_quote(mercyhealth, [(250, 350, 20)]), docs)
+    assert ("eligibility.discount_tiers", RANGE_REASON) in report.rejected
+
+
 def test_a_true_asset_test_is_not_supported_by_a_quote_that_rules_assets_out():
     from waive.atlas.verify import ASSET_REASON
 
