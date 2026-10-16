@@ -3,11 +3,11 @@
 from __future__ import annotations
 
 from datetime import date
-from decimal import Decimal
+from decimal import Decimal, InvalidOperation
 from enum import StrEnum
 from typing import Any, Generic, Literal, TypeVar
 
-from pydantic import BaseModel, Field, model_validator
+from pydantic import BaseModel, Field, field_serializer, field_validator, model_validator
 
 T = TypeVar("T")
 
@@ -76,7 +76,29 @@ class Cited(BaseModel, Generic[T]):
 class DiscountTier(BaseModel):
     min_fpl_exclusive: Decimal = Field(ge=0)
     max_fpl_inclusive: Decimal = Field(gt=0)
-    discount_percent: int = Field(ge=1, le=99)
+    # A decimal, as policies write it: an integer truncated Lowell General's 63.28% and Berkshire's
+    # 46.07% (220063, 220046), and the verifier then found neither number in its quote (7.15b).
+    discount_percent: Decimal = Field(ge=1, le=99, max_digits=5, decimal_places=2)
+
+    @field_validator("discount_percent", mode="before")
+    @classmethod
+    def _whole_percent_as_written(cls, value: Any) -> Any:
+        """75, never 75.00 or 7.5E+1 (Decimal.normalize writes 90 as 9E+1): a whole percentage
+        is kept without decimals, so the sheet and the answers print it as the policy does."""
+        if isinstance(value, bool) or not isinstance(value, int | float | str | Decimal):
+            return value
+        try:
+            number = Decimal(str(value).strip().rstrip("%"))
+        except InvalidOperation:
+            return value
+        if number.is_finite() and number == number.to_integral_value():
+            return number.quantize(Decimal(1))
+        return number
+
+    @field_serializer("discount_percent", when_used="json")
+    def _percent_as_a_number(self, value: Decimal) -> int | float:
+        """Stored sheets and the public exports keep a number (75, 63.28), never a string."""
+        return int(value) if value == value.to_integral_value() else float(value)
 
 
 class Eligibility(BaseModel):

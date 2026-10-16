@@ -129,6 +129,29 @@ def test_a_number_never_matches_the_integer_part_of_a_decimal():
     assert widened_span(lead, document, Decimal("137.5")) == document
 
 
+def test_a_decimal_discount_verifies_against_its_quote_and_trailing_zeros_match():
+    # Chenango (330033): the table states 83.5%; the tier keeps it and verifies.
+    chenango = (
+        "Annual Family Income Amount of Discount Less than 200% of FPG 100% 201% to 250% of FPG "
+        "83.5% 251% to 300% of FPG 67%"
+    )
+    docs = {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT + "\n" + chenango + "\n"}
+    sheet = with_tiers_quote(chenango, [(200, 250, Decimal("83.5")), (250, 300, 67)])
+    assert verify_sheet(sheet, docs).ok, verify_sheet(sheet, docs).rejected
+    # A whole value matches with trailing zeros after it ("$25.00", "200.00%"), never a decimal.
+    from waive.atlas.verify import states_income_limit
+
+    assert value_in_quote(Decimal(25), "Balances of $25.00 or more qualify.")
+    assert not value_in_quote(Decimal(25), "Balances of $25.50 or more qualify.")
+    assert value_in_quote(Decimal("63.2"), "Inpatient Discount 63.20%")
+    assert states_income_limit(
+        "Patients at or below 200.00% of the FPL receive free care.", Decimal(200)
+    )
+    assert not states_income_limit(
+        "Patients at or below 200.05% of the FPL receive free care.", Decimal(200)
+    )
+
+
 MERCY_TABLE = (
     "Level 1 Level 2 Level 3 Qualifying Criterion Less than 100% FPL 101 - 200% FPL "
     "201 - 250% FPL Patient Responsibility None Co-Pay Co-Pay + 15% of total charges"

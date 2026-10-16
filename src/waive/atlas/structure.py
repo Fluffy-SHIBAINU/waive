@@ -481,10 +481,11 @@ def _band(item: dict[str, Any], previous_max: Decimal | None) -> tuple[Decimal, 
     return _decimal(low), _decimal(high)
 
 
-def _discount(value: Any) -> int:
+def _discount(value: Any) -> Decimal:
+    """The percentage written off, decimals and all (83.5%, 46.07%: review of 7.15b)."""
     if isinstance(value, str) and _RANGE.search(value):
         raise ValueError("discount given as a range")  # never pick or average a number
-    return _int(value)
+    return _decimal(value)
 
 
 def _parse_tier_items(value: Any) -> tuple[list[DiscountTier], Decimal | None, int]:
