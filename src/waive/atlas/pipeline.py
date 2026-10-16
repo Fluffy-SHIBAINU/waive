@@ -35,7 +35,7 @@ from waive.atlas.publish import (
 )
 from waive.atlas.schema import HospitalRef, ProcedureSheet, SheetStatus, SourceDoc, SourceKind
 from waive.atlas.scout import navigation_shells, scout_hospital, store_scouted
-from waive.atlas.structure import document_states, structure_sheet
+from waive.atlas.structure import document_states, structure_sheet, written_in_english
 from waive.atlas.tavily_gateway import Depth, TavilyGateway
 from waive.atlas.verify import PATIENT_SHARE_REASON, prune_lists, trim_quotes, verify_sheet
 from waive.db import HospitalRow, ReviewItemRow
@@ -154,6 +154,45 @@ def _drop_other_state_documents(
     )
     gone = {source.id for source in other}
     return [(source, text) for source, text in sources_with_text if source.id not in gone]
+
+
+def _set_aside_translations(
+    sources_with_text: list[tuple[SourceDoc, str]], result: BuildResult
+) -> tuple[list[tuple[SourceDoc, str]], list[tuple[SourceDoc, str]]]:
+    """The documents the structurer reads, and the translations kept from it. A system publishes
+    its policy in a dozen languages side by side, and the scout stores whichever the search
+    returns: six published sheets quoted a translation although the English policy was stored
+    (BID Needham, 220083, in Chinese; Baptist Beaches and Nassau, 100117 and 100140, in Tagalog;
+    task 7.15a), and seniors read those quotes on the public atlas. While the hospital has a web
+    document in English, its web documents in other languages are kept from the structurer. They
+    stay linked, so the place check and a later rebuild still see them; when every web document
+    is in another language nothing is set aside: there is nothing to prefer."""
+    web = [pair for pair in sources_with_text if pair[0].kind is SourceKind.HOSPITAL_WEB]
+    translations = [(source, text) for source, text in web if not written_in_english(text)]
+    if not translations or len(translations) == len(web):
+        return sources_with_text, []
+    listed = ", ".join(source.id for source, _ in translations)
+    plural = "s are" if len(translations) > 1 else " is"
+    result.notes.append(
+        f"{len(translations)} stored document{plural} not in English ({listed}); left out of the "
+        "structurer while an English one is stored, and still linked"
+    )
+    gone = {source.id for source, _ in translations}
+    kept = [(source, text) for source, text in sources_with_text if source.id not in gone]
+    return kept, translations
+
+
+def _documents_for_structurer(
+    session: Session,
+    hospital: HospitalRef,
+    sources_with_text: list[tuple[SourceDoc, str]],
+    result: BuildResult,
+) -> tuple[list[tuple[SourceDoc, str]], list[tuple[SourceDoc, str]]]:
+    """What a structuring pass reads, from the hospital's own documents or a sibling's too:
+    another state's version of a system policy detached, then the translations set aside. Those
+    come back as well, for the place check, which reads all of the hospital's documents."""
+    kept = _drop_other_state_documents(session, hospital, sources_with_text, result)
+    return _set_aside_translations(kept, result)
 
 
 @dataclass
@@ -473,7 +512,9 @@ def build_hospital(
                 result.notes.append("no financial assistance documents found")
                 return result
             sources_with_text = borrowed.sources
-    sources_with_text = _drop_other_state_documents(session, hospital, sources_with_text, result)
+    sources_with_text, translations = _documents_for_structurer(
+        session, hospital, sources_with_text, result
+    )
 
     first_pass = _structure_and_verify(session, ai, hospital, sources_with_text, today, result)
     if first_pass is None:
@@ -485,9 +526,10 @@ def build_hospital(
         # Illinois Masonic's sheet). One more structuring pass, Token Factory only.
         borrowed = _share_sibling_sources(session, row, sources_with_text, result)
         if borrowed is not None:
-            sources_with_text = _drop_other_state_documents(
+            sources_with_text, shared_translations = _documents_for_structurer(
                 session, hospital, borrowed.sources, result
             )
+            translations = [*translations, *shared_translations]
             second_pass = _structure_and_verify(
                 session, ai, hospital, sources_with_text, today, result
             )
@@ -573,7 +615,8 @@ def build_hospital(
         reason = conflict_reason(sheet)
         holds.append(reason)
         result.notes.append(f"{reason} ({_listed_limits(disagreeing)})")
-    unplaced = _unplaced(row, sources_with_text)
+    # Translations still say where the hospital is, as they do for recheck_sheets.
+    unplaced = _unplaced(row, [*sources_with_text, *translations])
     if unplaced:
         repo.add_review_item(
             session,

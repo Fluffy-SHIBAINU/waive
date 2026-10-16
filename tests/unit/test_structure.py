@@ -1051,6 +1051,100 @@ def test_a_state_in_the_hospitals_own_name_is_not_one_its_documents_name():
     assert document_states("Pennsylvania Fair Pricing Notice", "", washington) == {"PA"}
 
 
+# Task 7.15a: the translations six published sheets quoted although the hospital's English policy
+# was stored, as their documents open.
+TRANSLATIONS = {
+    "Tagalog (Baptist Beaches and Nassau, 100117 and 100140)": (
+        "BAPTIST HEALTH MANWAL NG MGA POLISIYA AT PROSESO No. 3.14 Seksyon: Pangangalaga sa Pasyente "
+        "PANANALAPI Paksa: POLISIYA NG TULONG PINANSYAL NG OSPITAL I. POLISIYA Ayon sa pilosopiya, "
+        "misyon, at pangunahing mga halaga ng Baptist Health, ang aming polisiya ay magbigay ng "
+        "Emergency at Medically Necessary Care para sa lahat ng mga pasyente, hindi alintana ang "
+        "kanilang pinansyal na kakayahan. Buong Pinansyal na Tulong: Kabuuang kita ng pamilya ay "
+        "nasa 200% o mas mababa ng Pederal na Antas ng Kahirapan (FPL)."
+    ),
+    "Simplified Chinese (BID Needham, 220083)": (
+        "贝斯·以色列女执事医院（Needham）经济救助政策 2024 年 4 月修订 Page 1 目录 BIDH Needham "
+        "经济救助政策 适用范围 参考 目的 定义 慈善医疗：根据这项政策，BIDH Needham 将以 100%的折扣"
+        "向家庭总收入在目前 FPL 的 400%或以下的病人/担保人提供护理。"
+    ),
+    "Korean (Hoag, 050224)": (
+        "쉬운 언어 요약 호그 재정 지원 프로그램 # 우리의 사명 호그는 비영리 신앙 기반 병원입니다. "
+        "우리의 사명은 지역사회에 고품질 의료 서비스를 제공하는 것입니다. • 무료 진료 : 가족 "
+        "소득이 FPL 의 200% 이하"
+    ),
+    "German (Hardin Memorial, 361315)": (
+        "RICHTLINIE und/oder VERFAHREN TITEL: Richtlinie für finanzielle Hilfe (Financial "
+        "Assistance Policy, FAP) REICHWEITE: Diese Richtlinie gilt für alle Krankenhäuser, die zu "
+        "OhioHealth gehören, und deren angegliederte Arztpraxen. • einen Rabatt von 100 % auf die "
+        "vom Patienten zu leistenden Zahlungen für Patienten, deren Einkommen um 200 % oder mehr "
+        "unterhalb der in den USA geltenden Armutsgrenze liegt."
+    ),
+    "Spanish (BID Needham's application)": (
+        "Estimado Paciente, Adjunta encontrará la Aplicación para Asistencia Financiera del BIDH "
+        "Needham. Por favor, llénela completamente y devuélvala con toda la documentación "
+        "necesaria. Las aplicaciones incompletas pueden ocasionar la denegación de la asistencia "
+        "financiera."
+    ),
+    "Vietnamese, its words split by the PDF (Hoag's application)": (
+        "Trang 1 c ủa 2 # Đơn xin hỗ tr ợ tài chính ## Thông tin v ề ngườ i n ộp đơn (Ngườ i b ảo "
+        "lãnh) Tên ngườ i n ộp đơn ____ ngày sinh ____ Tình tr ạng hôn nhân: Đã kế t hôn Độ c thân "
+        "## Thông tin gia đình (hộ gia đình) và thu nhập của hộ gia đình"
+    ),
+    "Portuguese (Northwell)": (
+        "TÍTULO DA POLÍTICA: Política e Procedimentos de Assistência Financeira DECLARAÇÃO GERAL DE "
+        "FINALIDADE A Nuvance Health se empenha em melhorar a saúde das comunidades que atende e "
+        "está comprometida em fornecer o mais alto padrão de atendimento à comunidade, que não é "
+        "negado pela sua capacidade de pagamento."
+    ),
+    "French (Ascension Sacred Heart)": (
+        "POLITIQUE D'AIDE FINANCIÈRE La politique des organisations désignées ci-dessous vise à "
+        "assurer une pratique socialement juste pour la fourniture de soins d'urgence et autres "
+        "soins médicalement nécessaires dans les établissements de l'Organisation. Cette politique "
+        "est spécifiquement conçue pour traiter l'admissibilité à une aide financière."
+    ),
+    "Arabic (Hoag's policy)": (
+        "ﺴﺎري اﻟﻤﻔﻌول: 26/5/2026 # ﺴﻴﺎﺴﺔ ﺒﺮﻨﺎﻤﺞ اﻟﻤﺴﺎﻋدة اﻟﻤﺎﻟﻴﺔ ) FAP ( # اﻟﻐﺮض: اﻟﻐﺮض ﻤن ھذه "
+        "اﻟﺴﻴﺎﺴﺔ ھو ﻀﻤﺎن طﺮﻳﻘﺔ ﻋﺎدﻟﺔ، ﻏﻴﺮ ﺗﻤﻴﻴﺰﻳﺔ، ﻓﻌﺎﻟﺔ، وﻤوﺤدة ﻟﺘﻘدﻳم اﻟﻤﺴﺎﻋدة اﻟﻤﺎﻟﻴﺔ"
+    ),
+}
+# Kaiser's English summary ends in its language-assistance notice: a third of its letters are
+# Arabic, Armenian, Chinese and a dozen other scripts.
+KAISER_NOTICE = (
+    "NOTICE OF LANGUAGE ASSISTANCE SERVICES English: If you need help in your language, language "
+    "assistance is available at no cost to you, 24 hours a day, 7 days a week. Arabic : إذا احتجت "
+    "إلى مساعدة بلغتك، فتتوفر خدمات المساعدة اللغوية بصورة مجانية على مدار الأسبوع. Armenian: Եթե "
+    "լեզվի հարցում օգնության կարիք ունեք, լեզվական աջակցությունն անվճար մատչելի է ձեզ համար օրը 24 "
+    "ժամ, շաբաթը 7 օր: Chinese: 如果您需要使用您的语言获得帮助，我们每周 7 天、每天 24 小时免费提供"
+    "语言帮助。我们还为残疾人提供辅助工具和服务，例如盲文、大字体、音频和其他无障碍电子格式的文档。 "
+    "Farsi : اگر نيازمند پشتيبانی به زبان خودتان هستيد، کمک زبانی بهصورت رايگان در دسترس است. Hindi: "
+    "यदि आपको अपनी भाषा में सहायता चाहिए, तो भाषा संबंधी सहायता आपके लिए दिन के 24 घंटे, सप्ताह के 7 "
+    "दिन निःशुल्क उपलब्ध है।"
+)
+
+
+def test_a_document_reads_as_english_unless_another_language_clearly_dominates_it():
+    from waive.atlas.structure import written_in_english
+
+    for language, text in TRANSLATIONS.items():
+        assert not written_in_english(text), language
+    assert written_in_english(SAMPLE_POLICY_TEXT)
+    # English pages that quote a Spanish line, link to the other languages' versions or end in the
+    # language-assistance notice stay English.
+    assert written_in_english(
+        SAMPLE_POLICY_TEXT + "Para asistencia en español, llame al 617-555-0100. Si necesita ayuda "
+        "en su idioma, la asistencia está disponible sin costo para usted.\n"
+    )
+    assert written_in_english(
+        "[Español](https://www.baptistjax.com/es/patient-info/financial-assistance) | "
+        "[中文](/zh/financial-assistance) | [Tiếng Việt](/vi/financial-assistance) | "
+        "[한국어](/ko/financial-assistance)\n" + SAMPLE_POLICY_TEXT
+    )
+    assert written_in_english(SAMPLE_POLICY_TEXT + KAISER_NOTICE)
+    # A table of figures, or a provider list of names, is nobody's prose: it stays.
+    assert written_in_english("1 $15,060 $22,590 2 $20,440 $30,660 3 $25,820 $38,730")
+    assert written_in_english("Dr. Maria De La Cruz, MD; Dr. Jose Del Rio, DO; Los Angeles, CA")
+
+
 def test_two_letter_codes_that_are_english_words_count_only_inside_a_list_of_codes():
     from waive.atlas.structure import _states
 
