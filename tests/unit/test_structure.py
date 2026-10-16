@@ -1191,6 +1191,44 @@ def test_kaiser_documents_carry_their_region_in_the_prompt():
     )
 
 
+def test_another_kaiser_regions_document_is_one_naming_only_other_states_on_kaisers_sites():
+    from waive.atlas.schema import HospitalRef
+    from waive.atlas.structure import another_kaiser_region
+
+    los_angeles = HospitalRef(
+        ccn="050138",
+        name="KAISER FOUNDATION HOSPITAL - LOS ANGELES",
+        city="LOS ANGELES",
+        state="CA",
+        zip="90027",
+        ownership="Voluntary non-profit - Other",
+    )
+    northwest = KAISER_DOCS + "support/mfa-summary-nw-2023-english.pdf"
+    assert another_kaiser_region(KAISER_MFA, northwest, los_angeles)
+    # By the title as well as the address: Kaiser's Georgia page named in its search title.
+    assert another_kaiser_region(
+        "Medical Financial Assistance | Kaiser Permanente Georgia",
+        "https://healthy.kaiserpermanente.org/help-paying-your-bill/medical-financial-assistance",
+        los_angeles,
+    )
+    # California's own, Kaiser's national pages, and other systems' documents are not.
+    scal = KAISER_DOCS + "support/mfa-policy-scal-2024-english.pdf"
+    assert not another_kaiser_region(KAISER_MFA, scal, los_angeles)
+    assert not another_kaiser_region(
+        KAISER_MFA,
+        "https://healthy.kaiserpermanente.org/help-paying-your-bill/medical-financial-assistance",
+        los_angeles,
+    )
+    hawaii = "https://www.adventisthealth.org/documents/financial-assistance-policy-hawaii.pdf"
+    assert not another_kaiser_region("Financial Assistance Policy", hawaii, los_angeles)
+    # An Oregon hospital's region is Northwest's.
+    sunnyside = los_angeles.model_copy(
+        update={"ccn": "380091", "name": "KAISER SUNNYSIDE MEDICAL CENTER", "state": "OR"}
+    )
+    assert not another_kaiser_region(KAISER_MFA, northwest, sunnyside)
+    assert another_kaiser_region(KAISER_MFA, scal, sunnyside)
+
+
 # Task 7.15a: the translations six published sheets quoted although the hospital's English policy
 # was stored, as their documents open.
 TRANSLATIONS = {

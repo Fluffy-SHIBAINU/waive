@@ -41,6 +41,7 @@ from waive.atlas.scout import (
     store_scouted,
 )
 from waive.atlas.structure import (
+    another_kaiser_region,
     document_states,
     is_kaiser_host,
     structure_sheet,
@@ -170,11 +171,11 @@ def _drop_other_state_documents(
     which cited the Hawaii table on six California sheets (task 7.9) and AdventHealth's Illinois
     page on a Florida sheet (review of 7.9), as long as some document names the hospital's own
     state or none at all. Documents naming no state stay, and when every document is another
-    state's nothing is set aside: there is nothing to prefer. Except on Kaiser's sites, where the
-    address names the region whose policy it is (structure.kaiser_region_states): another
-    region's is set aside even when it is all there is, and the build has nothing to structure
-    rather than publish Kaiser Washington's charity care policy on a California sheet (Kaiser
-    San Francisco, 050076, had stored nothing else but the dental policy; task 7.16)."""
+    state's nothing is set aside: there is nothing to prefer. Except on Kaiser's sites: there a
+    document that names only other states, by its region's marker, its address or its title
+    (structure.another_kaiser_region), is another region's policy, set aside even when it is all
+    there is rather than publish Kaiser Washington's charity care policy on a California sheet
+    (Kaiser San Francisco, 050076, had stored nothing else but the dental policy; task 7.16)."""
     ccn, state = hospital.ccn, hospital.state
     named = {
         source.id: document_states(source.title, source.url or "", hospital)
@@ -346,11 +347,24 @@ class Borrowed:
     item: ReviewItemRow
 
 
+def _never_the_hospitals(source: SourceDoc, text: str, hospital: HospitalRef) -> bool:
+    """A web document that is never this hospital's, whatever else is stored: a dental program's
+    (scout.is_dental_program) or another Kaiser region's (structure.another_kaiser_region). A
+    build detaches both before structuring (_drop_dental_documents, _drop_other_state_documents)."""
+    if source.kind is not SourceKind.HOSPITAL_WEB:
+        return False
+    url = source.url or ""
+    return is_dental_program(url, source.title, text) or another_kaiser_region(
+        source.title, url, hospital
+    )
+
+
 def _share_sibling_sources(
     session: Session,
     row: HospitalRow,
     own: list[tuple[SourceDoc, str]],
     result: BuildResult,
+    because: str = "the hospital's own documents state no income rules",
 ) -> Borrowed | None:
     """The hospital's documents plus the policy documents of a sibling on the same website that
     has a published sheet, or None when no sibling can help. Searching a system site by hospital
@@ -358,10 +372,14 @@ def _share_sibling_sources(
     sibling (Adventist Health White Memorial, AdventHealth Riverview, Advocate Christ and
     Condell, task 7.9). Only documents that state income rules (they name the poverty level) are
     shared, they are linked to this hospital so --reuse-sources finds them next time, and a
-    `shared_sources` item records whose they were: a system may keep per-hospital variants."""
+    `shared_sources` item records whose they were: a system may keep per-hospital variants. A
+    dental program's or another Kaiser region's document is never lent: the build would detach
+    it at once, and a sibling that has nothing else to lend does not end the search (Los Angeles,
+    050138, held the dental policy and Kaiser Northwest's beside California's; review of 7.16)."""
     domain = row.website_domain
     if not domain:
         return None
+    hospital = repo.hospital_ref(row)
     own_ids = {source.id for source, _ in own}
     for sibling in repo.siblings_on_domain(session, domain, row.ccn):
         latest = repo.latest_sheet(session, sibling.ccn)
@@ -373,6 +391,7 @@ def _share_sibling_sources(
             if source.kind is SourceKind.HOSPITAL_WEB
             and source.id not in own_ids
             and INCOME_RULE_WORDS.search(text)
+            and not _never_the_hospitals(source, text, hospital)
         ]
         if not shared:
             continue
@@ -387,7 +406,7 @@ def _share_sibling_sources(
         plural = "s" if len(shared) > 1 else ""
         result.notes.append(
             f"{len(shared)} policy document{plural} shared from {sibling.name} ({sibling.ccn}) on "
-            f"{domain}; the hospital's own documents state no income rules"
+            f"{domain}; {because}"
         )
         return Borrowed([*own, *shared], {s.id for s, _ in shared}, item)
     return None
@@ -658,6 +677,23 @@ def build_hospital(
     sources_with_text, translations = _documents_for_structurer(
         session, hospital, sources_with_text, result
     )
+    if not sources_with_text:
+        # Every document was set aside: a sibling's policy on the same site next, as when nothing
+        # is stored. Giving up here, the same command run again would find nothing stored and
+        # borrow (San Francisco, 050076, from Los Angeles; review of 7.16). Documents an earlier
+        # build borrowed are not this build's sharing, so they do not stop it.
+        borrowed = _share_sibling_sources(
+            session,
+            row,
+            [],
+            result,
+            "none of the hospital's own documents is left once those are set aside",
+        )
+        if borrowed is not None:
+            considered |= borrowed.shared_ids
+            sources_with_text, translations = _documents_for_structurer(
+                session, hospital, borrowed.sources, result
+            )
     if not sources_with_text:
         return _nothing_left_to_structure(session, row, considered, result)
 
