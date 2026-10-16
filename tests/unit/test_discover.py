@@ -266,6 +266,28 @@ def test_directories_a_newsroom_a_staffing_firm_and_asset_hosts_are_never_the_ho
     assert not is_asset_host(assets[0].url)
 
 
+def test_listings_newsrooms_and_state_government_hosts_held_as_websites_are_directories():
+    # Review of 7.15b: hosts the registry held as hospitals' websites, or the 7.15c website check
+    # cleared from them.
+    for host in (
+        "turquoise.health", "castleconnolly.com", "doxo.com", "medibillsaver.com",
+        "medicarelist.com", "hospitalcompare.io", "safehospitalsusa.com", "pdffiller.com",
+        "reddit.com", "wiktionary.org", "prnewswire.com", "cbsnews.com", "nbclosangeles.com",
+        "news10.com", "syracuse.com", "folsomtimes.com", "ohiodailydigital.com", "nursa.com",
+        "ama-assn.org", "fatf-gafi.org", "njha.com", "1degree.org", "sunshinesupportnetwork.com",
+        "recovered.org", "healthbillcentral.com", "www.turquoise.health",
+    ):  # fmt: skip
+        assert is_directory(host), host
+    # A state's .us namespace is its government's, as .gov is: www.state.oh.us collapses to oh.us
+    # (361303). A hospital's own .us domain is not.
+    assert host_of("https://www.state.oh.us/odh/hcap") == "oh.us"
+    assert is_directory("oh.us") and is_directory("dhs.state.mn.us")
+    assert not is_directory("hrmc.us") and not is_directory("communityhospital.us")
+    ohio = hospital("SOUTHWEST GENERAL HEALTH CENTER", "MIDDLEBURG HEIGHTS", "OH")
+    state = hit("https://www.state.oh.us/odh/hcap", "Southwest General Health Center | Ohio HCAP")
+    assert pick_domain(ohio, [state]) is None
+
+
 def test_a_hit_that_names_only_other_states_is_scored_down_and_never_sure():
     # North Shore University Hospital, Manhasset, New York (330106) was matched to NorthShore
     # University HealthSystem in Illinois, whose page names Illinois and not New York (7.15a).

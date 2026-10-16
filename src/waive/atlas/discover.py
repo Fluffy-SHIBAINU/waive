@@ -93,11 +93,49 @@ DIRECTORY_DOMAINS = frozenset(
         "njspotlightnews.org",
         "communityplatform.us",
         "vituity.com",
+        # Review of 7.15b: hosts the registry held as hospitals' websites, or the 7.15c website
+        # check cleared from them. Listings and ratings: turquoise.health (390329, 450211, 451316,
+        # 451322, 670059), castleconnolly.com (330259, 360355), medibillsaver.com (360143,
+        # 360040), medicarelist.com (050137, 310028, 360072), hospitalcompare.io (450162),
+        # safehospitalsusa.com (330055); bill payment and forms: doxo.com (360080, 391309),
+        # pdffiller.com (390338); news: prnewswire.com (050603), cbsnews.com (390266),
+        # nbclosangeles.com (050779), news10.com (330191), syracuse.com (330175), folsomtimes.com
+        # (050414), ohiodailydigital.com (360197); reddit.com (390217), wiktionary.org (140046);
+        # a staffing firm, nursa.com (361327, 361318); associations and others: ama-assn.org
+        # (100050), fatf-gafi.org (140135), njha.com (the New Jersey Hospital Association,
+        # 310032), 1degree.org (a resource directory, 050040), sunshinesupportnetwork.com
+        # (100105), recovered.org (451395).
+        "turquoise.health",
+        "castleconnolly.com",
+        "medibillsaver.com",
+        "medicarelist.com",
+        "hospitalcompare.io",
+        "safehospitalsusa.com",
+        "doxo.com",
+        "pdffiller.com",
+        "prnewswire.com",
+        "cbsnews.com",
+        "nbclosangeles.com",
+        "news10.com",
+        "syracuse.com",
+        "folsomtimes.com",
+        "ohiodailydigital.com",
+        "reddit.com",
+        "wiktionary.org",
+        "nursa.com",
+        "ama-assn.org",
+        "fatf-gafi.org",
+        "njha.com",
+        "1degree.org",
+        "sunshinesupportnetwork.com",
+        "recovered.org",
     }
 )
 # Government hosts (illinois.gov, paauditor.gov, mass.gov, medicare.gov) publish records about
-# hospitals, never a hospital's own policy.
+# hospitals, never a hospital's own policy; so do a state's own .us hosts (www.state.oh.us, which
+# host_of collapses to oh.us, was one hospital's website: 361303, review of 7.15b).
 DIRECTORY_SUFFIXES = (".gov",)
+_STATE_US = re.compile(rf"(?:^|\.)(?:{'|'.join(code.lower() for code in US_STATES)})\.us$")
 # Hosts that serve files for many organisations and are nobody's website: the fetcher's asset hosts
 # (fetch.DOCUMENT_HOSTS) and these. Discovery gave Mercy Harvard (141335) cloudinary.com, where one
 # account holds the policies of Truman, Southeast Health, Mercy Health and Lake Region, and one OSF
@@ -153,8 +191,10 @@ def host_of(url: str) -> str:
 
 
 def is_directory(host: str) -> bool:
-    return host.endswith(DIRECTORY_SUFFIXES) or any(
-        host == d or host.endswith("." + d) for d in DIRECTORY_DOMAINS
+    return (
+        host.endswith(DIRECTORY_SUFFIXES)
+        or _STATE_US.search(host) is not None
+        or any(host == d or host.endswith("." + d) for d in DIRECTORY_DOMAINS)
     )
 
 
