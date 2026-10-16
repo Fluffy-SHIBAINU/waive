@@ -90,6 +90,45 @@ def test_numbers_must_match_whole_tokens():
     assert value_in_quote(1000, "balances over $1,000 qualify")
 
 
+# The Tufts Medicine table quoted for MelroseWakefield (220070) and Lowell General (220063).
+TUFTS_TABLE = (
+    "Family Size 100% FPL Up to 150% FPL Up to 300% FPL Greater than 301% FPL 1 $13,596 $20,388 "
+    "$40,776 $40,777 TM Lowell General Hospital Inpatient Discount 100% 63.28% 30% TM Lowell "
+    "General Hospital Outpatient Discount 70.54% TM Melrose Wakefield Hospital Inpatient Discount "
+    "100% 36.84% 30% TM Melrose Wakefield Hospital Outpatient Discount 65.91%"
+)
+
+
+def test_a_number_never_matches_the_integer_part_of_a_decimal():
+    from waive.atlas.verify import anchored_span, widened_span
+
+    # Task 7.15a: MelroseWakefield (220070) published a 65% inpatient tier read from the
+    # outpatient "65.91%", Lowell General (220063) 63 from "63.28%", Brigham and Women's (220110) a
+    # free-care limit of 150 from a Chinese table row that starts at 150.1.
+    assert not value_in_quote(Decimal(65), TUFTS_TABLE)
+    assert not value_in_quote(Decimal(63), TUFTS_TABLE)
+    assert not value_in_quote(Decimal(150), "150.1 至 250% 85%")
+    # A whole number still matches before a sign, a space or the end of a sentence, and a decimal
+    # matches itself.
+    assert value_in_quote(Decimal(65), "Patients in this band receive a 65% discount.")
+    assert value_in_quote(Decimal(250), "household income of up to 250.")
+    assert value_in_quote(Decimal("65.91"), TUFTS_TABLE)
+    assert value_in_quote(Decimal("63.28"), TUFTS_TABLE)
+    docs = {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT + "\n" + TUFTS_TABLE + "\n"}
+    melrose = with_tiers_quote(TUFTS_TABLE, [(100, 150, 65), (150, 300, 30)])
+    assert ("eligibility.discount_tiers", "value not in quote") in verify_sheet(
+        melrose, docs
+    ).rejected
+    # The anchoring helpers read "137.5%" whole: it is not a limit of 137.
+    passage = "Free care is available to patients at or below 137.5% of the Federal Poverty Level."
+    assert anchored_span(passage, Decimal(137)) is None
+    assert anchored_span(passage, Decimal("137.5")) == passage
+    lead = "Our counselors will help you apply."
+    document = f"{lead} {passage}"
+    assert widened_span(lead, document, Decimal(137)) is None
+    assert widened_span(lead, document, Decimal("137.5")) == document
+
+
 MERCY_TABLE = (
     "Level 1 Level 2 Level 3 Qualifying Criterion Less than 100% FPL 101 - 200% FPL "
     "201 - 250% FPL Patient Responsibility None Co-Pay Co-Pay + 15% of total charges"
@@ -887,6 +926,109 @@ def test_free_care_at_or_below_the_poverty_guidelines_is_a_limit_of_100_percent(
     )
 
 
+# Task 7.15a: published free-care limits of 100 that were discounts, not incomes.
+ONEIDA = "Sliding Scale 100% 100% 89% 89% 79% 79% 69% 69% 59% 59% 49% 49% 0%"
+HOLZER = (
+    "> Number of Household Members Account Balance Adjusted 100% Account Balance becomes 25% of "
+    "total charges."
+)
+GRADY = (
+    "% Federal Poverty Guidelines Discount of OP Charges 150% 100% 151 - 199% 90% 200% 75% "
+    "201 – 300% 55% 301 – 400% 35%"
+)
+# Memorial Hospital, Carthage (141305): "100% Assistance" is the column of free care, whose
+# incomes ($22,590 for one person) are 150% of the guidelines.
+CARTHAGE = (
+    "The household income must be at or below the guidelines listed below: Size of Family FPL "
+    "Guidelines 100% Assistance *No Patient Share Tier One *Patient Share is 25% Tier Two *Patient "
+    "Share is 50% 1 $15,060 $22,590 $22,591 $30,120 $30,121 $45,180"
+)
+
+
+def test_a_free_care_limit_must_be_quoted_as_an_income_limit():
+    from waive.atlas.verify import FREE_LIMIT_UNTIED_REASON, states_income_limit
+
+    free = "eligibility.free_care_max_fpl"
+    # Oneida (330115), Holzer (360054) and Grady (360210) published free care up to 100% of the
+    # poverty level from a discount column; Carthage's 100 names the help, not the income.
+    for quote in (ONEIDA, HOLZER, GRADY, CARTHAGE):
+        assert not states_income_limit(quote, Decimal(100)), quote
+        docs = {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT + "\n" + quote + "\n"}
+        assert (free, FREE_LIMIT_UNTIED_REASON) in verify_sheet(
+            with_free_limit(100, quote), docs
+        ).rejected
+    # Adirondack Health (330079): "from 80% to 100% discounting" is a discount, not an income.
+    assert not states_income_limit(
+        "This program is based on Federal Poverty Guidelines, and allows from 80% to 100% "
+        "discounting on services billed by Adirondack Health.",
+        Decimal(100),
+    )
+    # Published limits that are incomes stay, however the policy writes them (7.15a: a rule that
+    # wanted "% of the poverty level" spelled out would have dropped 69 sheets, most of them right).
+    for quote, value in (
+        ("Federal Poverty Guidelines Percentages Financial Assistance Discount From To 0% -200% "
+         "100% Discount (Full)", 200),  # Kaiser
+        ("Family Income % FPG Discount 0 to 150% 100%", 150),  # Massachusetts General
+        ("| less than or equal to 200% | 0% |", 200),  # Hackensack
+        ("Free Care: Insured Illinois Residents with Household Income of 250% or less of the then "
+         "current Federal Poverty Guideline", 250),  # Northwestern
+        ("Generally, patients with family income of 200% of the current year's federal poverty "
+         "guidelines or less may be eligible for a discount of 100%", 200),  # Chan Soon-Shiong
+        ("Federal Poverty Level ≤ 200%", 200),  # Carle BroMenn
+        ("FPL LEVEL 200% 300% 400% 1 $30,120 $45,180 $60,240 Discount on Charges 100% 90% 80%",
+         200),  # Cuba Memorial
+        ("Patients with income less than or equal to 250 1% of the Federal Poverty Level income "
+         '("FPL"), will be eligible for 100% charity care', 250),  # Ascension, a footnote 1
+        ("100% – 200% 100% 100%", 200),  # Atrium
+        ("0% - 350% 100% (Charity Care)", 350),  # Lower Bucks
+        ("Less than 200%", 200),  # Lehigh Valley Hazleton
+        ("Whose family incomes are at or below 200 percent of the most recent federal poverty "
+         "level guidelines and", 200),  # Gateway
+        ("Patients with an income up to 200% of the local poverty line - which equates to an "
+         "annual income of $60,000 for a family of four - may qualify for free care", 200),  # Marietta
+        ("Patients whose income does not exceed two hundred percent (200%) of the FPL receive "
+         "free care.", 200),
+    ):  # fmt: skip
+        assert states_income_limit(quote, Decimal(value)), quote
+    # A range names its end as the limit, never its start; a dollar figure is no percentage.
+    assert states_income_limit("201 - 300% of the FPL: a 50% discount", Decimal(300))
+    assert not states_income_limit("201 - 300% of the FPL: a 50% discount", Decimal(201))
+    assert not states_income_limit(
+        "Patients between 100% and 200% of the FPL receive a 50% discount", Decimal(100)
+    )
+    assert not states_income_limit("income less than $200 a week", Decimal(200))
+    # Free care up to the poverty line itself, written without its number, still verifies.
+    alliance = (
+        "Individuals are eligible for medically necessary health care at no cost if their family "
+        "does not exceed the Federal Poverty Income Guidelines."
+    )
+    docs = {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT + "\n" + alliance + "\n"}
+    assert all(
+        path != free for path, _ in verify_sheet(with_free_limit(100, alliance), docs).rejected
+    )
+
+
+def test_trimming_never_widens_a_free_care_quote_to_a_passage_the_verifier_rejects():
+    from waive.atlas.verify import FREE_LIMIT_UNTIED_REASON, trim_quotes
+
+    free = "eligibility.free_care_max_fpl"
+    # The neighbouring line names the poverty level, but not the 100 as an income: widening onto
+    # it would publish a span the income-limit rule rejects.
+    document = f"{ONEIDA}\nDiscounts follow the Federal Poverty Guidelines.\n"
+    docs = {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT + "\n" + document}
+    trimmed = trim_quotes(with_free_limit(100, ONEIDA), docs)
+    assert trimmed.eligibility.free_care_max_fpl.quote == ONEIDA
+    assert (free, FREE_LIMIT_UNTIED_REASON) in verify_sheet(trimmed, docs).rejected
+    # A neighbour that states the limit as an income is the span to keep.
+    document = (
+        f"{ONEIDA}\nPatients at or below 100% of the Federal Poverty Level receive free care.\n"
+    )
+    docs = {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT + "\n" + document}
+    trimmed = trim_quotes(with_free_limit(100, ONEIDA), docs)
+    assert trimmed.eligibility.free_care_max_fpl.quote.endswith("receive free care.")
+    assert all(path != free for path, _ in verify_sheet(trimmed, docs).rejected)
+
+
 def test_a_discount_percentage_is_not_a_free_care_limit_of_the_poverty_level():
     # Adirondack Health (330079): its FAQ held the sheet as a "conflict" with the real 200% limit.
     from waive.atlas.verify import free_care_limits_stated
@@ -1146,7 +1288,11 @@ def test_assistance_limits_a_document_states():
 def test_reading_poverty_percentages_stays_fast_on_a_long_run_of_years():
     import time
 
-    from waive.atlas.verify import assistance_limits_stated, names_percent_of_poverty_level
+    from waive.atlas.verify import (
+        assistance_limits_stated,
+        names_percent_of_poverty_level,
+        states_income_limit,
+    )
 
     # A flattened table can hold thousands of year-like numbers in one "sentence"; the reading
     # must not backtrack through them (a repeated qualifier group took 8 s for 16,000).
@@ -1154,4 +1300,6 @@ def test_reading_poverty_percentages_stays_fast_on_a_long_run_of_years():
     started = time.perf_counter()
     assert not names_percent_of_poverty_level(run, Decimal(400))
     assert assistance_limits_stated(run + ". Federal poverty level.") == set()
+    # The income-limit rule reads a few words around each occurrence, never the whole table.
+    assert not states_income_limit("Sliding Scale " + "100% 89% " * 2_000, Decimal(100))
     assert time.perf_counter() - started < 2
