@@ -1281,6 +1281,42 @@ def test_a_sheet_that_quoted_a_dental_policy_it_had_alone_is_held_without_those_
         assert repo.latest_sheet(session, "050073") is None
 
 
+NW_PATH = "mfa/nw/english/mfa-policy-and-addendum-nw-english-ada.pdf"
+# Kaiser Northwest's policy, with a free-care limit of its own so a model reading it would show.
+NW_TEXT = (
+    "Community Health POLICY TITLE Medical Financial Assistance POLICY NUMBER NATL.CB.307 "
+    "Kaiser Foundation Health Plan of the Northwest\n" + POLICY_TEXT.replace("250%", "300%")
+)
+
+
+def test_another_kaiser_regions_policy_is_set_aside_beside_californias():
+    # California Kaiser hospitals stored Kaiser Northwest's policy next to Southern California's
+    # and the dental one (San Rafael, 050510, was given Northwest's by its re-scout in 7.15c).
+    # Only the address tells the regions apart: "/mfa/nw/" is Oregon and Washington.
+    engine = make_engine_with_hospital(KAISER_LOS_ANGELES)
+    with session_scope(engine) as session:
+        store_kaiser(session, "050138", "fap-dental", DENTAL_PATH, DENTAL_TEXT, DENTAL_TITLE)
+        store_kaiser(session, "050138", "fap-nw", NW_PATH, NW_TEXT)
+        store_kaiser(session, "050138", "fap-scal", SCAL_PATH, SCAL_TEXT)
+        ai = GroundedAI()
+        result = build_hospital(session, NoSpend(), ai, "050138", TODAY, reuse_sources=True)
+        assert result.outcome == "published"
+        assert result.notes[:2] == [
+            DENTAL_NOTE,
+            "1 stored document is another state's version of the system policy (fap-nw: OR/WA); "
+            "detached and left out of the structurer",
+        ]
+        assert ai.prompts and all("fap-nw" not in p and "fap-dental" not in p for p in ai.prompts)
+        assert all("=== SOURCE id=fap-scal" in p and "names_state=CA" in p for p in ai.prompts)
+        sheet, _ = repo.latest_sheet(session, "050138")
+        assert sheet.eligibility.free_care_max_fpl.source_id == "fap-scal"
+        assert [s.id for s, _ in repo.sources_for(session, "050138")] == ["fap-scal"]
+        assert review_detail(session, "050138", "other_state_documents") == {
+            "state": "CA",
+            "sources": [{"id": "fap-nw", "states": ["OR", "WA"]}],
+        }
+
+
 # Baptist Health's Tagalog policy, which Baptist Beaches and Nassau (100117, 100140) quoted on the
 # public atlas although the English one was stored (task 7.15a).
 TAGALOG_POLICY = (
