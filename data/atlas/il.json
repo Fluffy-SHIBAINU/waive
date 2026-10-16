@@ -1,5 +1,5 @@
 {
- "generated_on": "2026-10-15",
+ "generated_on": "2026-10-16",
  "license": "CC BY 4.0",
  "state": "IL",
  "sheets": [
@@ -2713,7 +2713,7 @@
     "website_domain": "endeavorhealth.org",
     "system": null
    },
-   "version": 1,
+   "version": 2,
    "status": "published",
    "eligibility": {
     "free_care_max_fpl": {
@@ -2743,15 +2743,7 @@
     "documents_required": null,
     "documents_reported": null,
     "submit_methods": null,
-    "window_days_from_first_bill": {
-     "value": 240,
-     "layer": "documented",
-     "quote": "Endeavor Health \u3067\u306f\u3001\u6cbb\u7642\u306b\u95a2\u3059\u308b\u6700\u521d\u306e\u8acb\u6c42\u306e\u660e\u7d30\u66f8\u304b\u3089240 \u65e5\u4ee5\u5185\u306b\u9650\u308a\u3001\u7533\u8acb\u3092\u53d7\u3051\u4ed8\u3051\u307e\u3059\u3002",
-     "source_id": "application-11994b397107eb02",
-     "checked_on": "2026-10-11",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "window_days_from_first_bill": null,
     "decision_days": null,
     "decision_days_reported": null
    },
@@ -4406,6 +4398,509 @@
   },
   {
    "hospital": {
+    "ccn": "141354",
+    "name": "HSHS GOOD SHEPHERD HOSPITAL INC",
+    "city": "SHELBYVILLE",
+    "state": "IL",
+    "zip": "62565",
+    "phone": "217-774-3961",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "hshs.org",
+    "system": null
+   },
+   "version": 2,
+   "status": "published",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "Income Guidelines February 2026 through January 2027 Based on gross family income shown below as a percentage of 2026 Federal Poverty guidelines. Federal Poverty Family Size Level (FPL) 2026 200% FPL 300% FPL 400% FPL 500% FPL 600% FPL 1 $ 15,960 $ 31,920 $ 47,880 $ 63,840 $ 79,800 $ 95,760 2 21,640 43,280 64,920 86,560 108,200 129,840 3 27,320 54,640 81,960 109,280 136,600 163,920 4 33,000 66,000 99,000 132,000 165,000 198,000 5 38,680 77,360 116,040 154,720 193,400 232,080 6 44,360 88,720 133,080 177,440 221,800 266,160 7 50,040 100,080 150,120 200,160 250,200 300,240 8 55,720 111,440 167,160 222,880 278,600 334,320 Add $5,680 per person for families larger than 8 people.",
+     "source_id": "fap-5539b521bdb00177",
+     "checked_on": "2026-10-16",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "200",
+       "max_fpl_inclusive": "300",
+       "discount_percent": 90
+      },
+      {
+       "min_fpl_exclusive": "300",
+       "max_fpl_inclusive": "400",
+       "discount_percent": 80
+      }
+     ],
+     "layer": "documented",
+     "quote": "Applicable If income If income is If income is Discount is less than between between 200%, patient 200-300%, 300-400%, receives 100% patient patient discount. receives 90% receives 80% discount. discount.",
+     "source_id": "fap-5539b521bdb00177",
+     "checked_on": "2026-10-16",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "assistance_ceiling_fpl": null,
+    "asset_test": null,
+    "residency": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Financial Assistance Program to eligible persons who have no insurance, do not qualify for government programs, are underinsured, and cannot afford to pay for their healthcare or member liability under their insurance program.",
+     "source_id": "billing-f7ff88dacdb6cc5d",
+     "checked_on": "2026-10-16",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": {
+     "value": [
+      "Medicaid"
+     ],
+     "layer": "documented",
+     "quote": "In certain circumstances, patients may qualify for Presumptive assistance. These circumstances include homelessness, being deceased with no estate, mental incapacitation without a representative, Medicaid eligibility, or enrollment in state or government assistance programs.",
+     "source_id": "application-d2652a236eddf920",
+     "checked_on": "2026-10-16",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "photo_id",
+      "proof_of_income",
+      "proof_of_residency"
+     ],
+     "layer": "documented",
+     "quote": "Required documentation for financial assistance Required documentation for financial assistance can be uploaded at https://www.myhshs.org. PRESUMPTIVE ELIGIBILITY DOCUMENTS FOR LOW-INCOME INDIVIDUALS: \u2022 Temporary Assistance for Needy Families (TANF) \u2022 Illinois Housing Development Authority\u2019s Rental Housing Support Program \u2022 Wisconsin Department of Health Services Housing Assistance Program \u2022 Participation in Women, Infants and Children programs (WIC) \u2022 Supplemental Nutrition Assistance Program (SNAP) eligibility \u2022 Low Income Home Energy Assistance Program (LIHEAP) \u2022 Wisconsin Home Energy Assistance Program (WHEAP) \u2022 Enrollment in an organized community-based program providing access to medical care that assesses and documents limited low-income financial status as criteria \u2022 Receipt of grant assistance for medical services PROOF OF RESIDENCY DOCUMENTS : \u2022 State ID or Driver\u2019s License \u2022 Copy of Utility bill LEGAL DOCUMENTS: \u2022 Power of Attorney, Death Certificate, Legal Guardian, Legal Separation or Divorce Decree (if applicable) OTHER SUPPORTING DOCUMENTS: \u2022 Letters approving/denying Unemployment, Workers Compensation or Assistance from",
+     "source_id": "fap-cd47659f937922d1",
+     "checked_on": "2026-10-16",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "P.O. Box 13427 Springfield, IL 62791"
+      },
+      {
+       "kind": "fax",
+       "detail": "(513)653-4099"
+      },
+      {
+       "kind": "email",
+       "detail": "HSHSCharityservice@Ensemblehp.com"
+      },
+      {
+       "kind": "portal",
+       "detail": "https://www.myhshs.org"
+      },
+      {
+       "kind": "in_person",
+       "detail": "Please submit this application to the hospital."
+      }
+     ],
+     "layer": "documented",
+     "quote": "Please complete this form and submit it to the hospital in person, by mail (listed below), email (listed below), MyChart (https://www.myhshs.org/myhshs/Authentication/Login?), or fax (513)653-4099 to apply for free or discounted care within 90 days following the date of discharge or receipt of outpatient care.",
+     "source_id": "application-d2652a236eddf920",
+     "checked_on": "2026-10-16",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": {
+     "value": 240,
+     "layer": "documented",
+     "quote": "Note: Once approved, your application is valid for 6 months from the determination date and will retroactively cover 240 days prior to the date of application.",
+     "source_id": "application-d2652a236eddf920",
+     "checked_on": "2026-10-16",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days": null,
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "833-464-1778",
+     "layer": "documented",
+     "quote": "Phone: 833-464-1778",
+     "source_id": "billing-f7ff88dacdb6cc5d",
+     "checked_on": "2026-10-16",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": null,
+    "languages": {
+     "value": [
+      "English",
+      "Spanish"
+     ],
+     "layer": "documented",
+     "quote": "Applications are available in English and Spanish.",
+     "source_id": "application-d2652a236eddf920",
+     "checked_on": "2026-10-16",
+     "confidence": 1.0,
+     "support_count": 0
+    }
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null
+   },
+   "sources": [
+    {
+     "id": "application-250fddb11c92bb44",
+     "kind": "hospital_web",
+     "url": "https://www.hshs.org/getmedia/bcf2dd56-0d1d-4182-99d1-fec31fcc30e0/Illinois-Financial-Assistance-Application.pdf",
+     "title": "[PDF] FINANCIAL ASSISTANCE APPLICATION",
+     "fetched_on": "2026-10-13",
+     "sha256": "250fddb11c92bb44f44a093fab5b9455fa0ae8f73845aa3304dfb8d6e4fbb818",
+     "effective_date": null
+    },
+    {
+     "id": "application-73020a6c25735424",
+     "kind": "hospital_web",
+     "url": "https://www.hshs.org/getmedia/63b49946-c78f-4a27-bef0-989309ec55bf/HSHS-FA-Application-SP.pdf",
+     "title": "HSHS Financial Assistance Application (SPA)",
+     "fetched_on": "2026-10-13",
+     "sha256": "73020a6c25735424f2829264a4c805d66a245487fad56eea300358cc36bbacc8",
+     "effective_date": null
+    },
+    {
+     "id": "application-d2652a236eddf920",
+     "kind": "hospital_web",
+     "url": "https://www.hshs.org/getmedia/fc8fc549-210b-4285-8e5b-e627fb99b644/HSHS-FA-Application-EN.pdf",
+     "title": "HSHS Financial Assistance Application (ENG)",
+     "fetched_on": "2026-10-13",
+     "sha256": "d2652a236eddf920c5e97496f2d61608ef04a594626a61520d29159cda02cffd",
+     "effective_date": null
+    },
+    {
+     "id": "billing-f2a89c731aa36480",
+     "kind": "hospital_web",
+     "url": "https://www.hshs.org/patients/billing",
+     "title": "\u00ab Billing, Insurance & Financial Assistance",
+     "fetched_on": "2026-10-13",
+     "sha256": "f2a89c731aa3648012c0a56d5efc888b37b3b26005d696dbb701853b5b73306b",
+     "effective_date": null
+    },
+    {
+     "id": "billing-f7ff88dacdb6cc5d",
+     "kind": "hospital_web",
+     "url": "http://www.hshs.org/patients/billing/financial-assistance",
+     "title": "Financial Assistance | Hospital Sisters Health System (HSHS)",
+     "fetched_on": "2026-10-13",
+     "sha256": "f7ff88dacdb6cc5de19ef6fccccad4abf72a88bf6c274065d124d9ed3b1ed036",
+     "effective_date": null
+    },
+    {
+     "id": "billing-fbc6b3cf106766c9",
+     "kind": "hospital_web",
+     "url": "https://hshs.org/patients/billing/financial-assistance",
+     "title": "Financial Assistance | Hospital Sisters Health System (HSHS)",
+     "fetched_on": "2026-10-13",
+     "sha256": "fbc6b3cf106766c910b0ab12c3bc3579cdcec9167734184ec1fddccdaa009fb9",
+     "effective_date": null
+    },
+    {
+     "id": "fap-cd47659f937922d1",
+     "kind": "hospital_web",
+     "url": "https://www.hshs.org/getmedia/a6ba76f0-ed91-4659-953b-7dcefb04148c/Required-documentation-for-financial-assistance.pdf",
+     "title": "Financial Assistance Required Documentation",
+     "fetched_on": "2026-10-13",
+     "sha256": "cd47659f937922d11abdfc0617629d99406920a939260f27bf5edb1140b3027c",
+     "effective_date": null
+    },
+    {
+     "id": "fap-5539b521bdb00177",
+     "kind": "hospital_web",
+     "url": "https://www.hshs.org/getmedia/70166836-f265-459e-a377-d563c123c1b5/HSHS-Financial-Assistance-Brochure-(ENG).pdf",
+     "title": "2026 Financial Assistance Program",
+     "fetched_on": "2026-10-13",
+     "sha256": "5539b521bdb001777eb6e5462e3de8daa831d9ec8a335fd2cc75d92e1608739e",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null
+  },
+  {
+   "hospital": {
+    "ccn": "140137",
+    "name": "HSHS HOLY FAMILY HOSPITAL INC",
+    "city": "GREENVILLE",
+    "state": "IL",
+    "zip": "62246",
+    "phone": "618-664-1230",
+    "ownership": "Voluntary non-profit - Church",
+    "website_domain": "hshs.org",
+    "system": null
+   },
+   "version": 2,
+   "status": "published",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "Based on gross family income shown below as a percentage of 2026 Federal Poverty guidelines.\nFederal Poverty Family Size Level (FPL) 2026\n200% FPL\n300% FPL\n400% FPL\n500% FPL\n600% FPL\n1\t$\t15,960\t$\t31,920\t$\t47,880\t$\t63,840\t$\t79,800\t$\t95,760\n2\t21,640\t43,280\t64,920\t86,560\t108,200\t129,840\n3\t27,320\t54,640\t81,960\t109,280\t136,600\t163,920\n4\t33,000\t66,000\t99,000\t132,000\t165,000\t198,000\n5\t38,680\t77,360\t116,040\t154,720\t193,400\t232,080\n6\t44,360\t88,720\t133,080\t177,440\t221,800\t266,160\n7\t50,040\t100,080\t150,120\t200,160\t250,200\t300,240\n8\t55,720\t111,440\t167,160\t222,880\t278,600\t334,320\nAdd $5,680 per person for families larger than 8 people.\nApplicable\nIf income\nIf income is\nIf income is\nDiscount is\nless than\nbetween\nbetween\n200%, patient\n200-300%, 300-400%, receives 100%\npatient\npatient\ndiscount.\nreceives 90%\nreceives 80%\ndiscount.\ndiscount.",
+     "source_id": "fap-5539b521bdb00177",
+     "checked_on": "2026-10-16",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "200",
+       "max_fpl_inclusive": "300",
+       "discount_percent": 90
+      },
+      {
+       "min_fpl_exclusive": "300",
+       "max_fpl_inclusive": "400",
+       "discount_percent": 80
+      }
+     ],
+     "layer": "documented",
+     "quote": "Based on gross family income shown below as a percentage of 2026 Federal Poverty guidelines.\nFederal Poverty Family Size Level (FPL) 2026\n200% FPL\n300% FPL\n400% FPL\n500% FPL\n600% FPL\n1\t$\t15,960\t$\t31,920\t$\t47,880\t$\t63,840\t$\t79,800\t$\t95,760\n2\t21,640\t43,280\t64,920\t86,560\t108,200\t129,840\n3\t27,320\t54,640\t81,960\t109,280\t136,600\t163,920\n4\t33,000\t66,000\t99,000\t132,000\t165,000\t198,000\n5\t38,680\t77,360\t116,040\t154,720\t193,400\t232,080\n6\t44,360\t88,720\t133,080\t177,440\t221,800\t266,160\n7\t50,040\t100,080\t150,120\t200,160\t250,200\t300,240\n8\t55,720\t111,440\t167,160\t222,880\t278,600\t334,320\nAdd $5,680 per person for families larger than 8 people.\nApplicable\nIf income\nIf income is\nIf income is\nDiscount is\nless than\nbetween\nbetween\n200%, patient\n200-300%, 300-400%, receives 100%\npatient\npatient\ndiscount.\nreceives 90%\nreceives 80%\ndiscount.\ndiscount.",
+     "source_id": "fap-5539b521bdb00177",
+     "checked_on": "2026-10-16",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "assistance_ceiling_fpl": null,
+    "asset_test": null,
+    "residency": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Financial Assistance Program to eligible persons who have no insurance, do not qualify for government programs, are underinsured, and cannot afford to pay for their healthcare or member liability under their insurance program.",
+     "source_id": "billing-f7ff88dacdb6cc5d",
+     "checked_on": "2026-10-16",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": {
+     "value": [
+      "Temporary Assistance for Needy Families (TANF)",
+      "Women, Infants and Children programs (WIC)",
+      "Supplemental Nutrition Assistance Program (SNAP)",
+      "Low Income Home Energy Assistance Program (LIHEAP)",
+      "Wisconsin Home Energy Assistance Program (WHEAP)",
+      "Receipt of grant assistance for medical services"
+     ],
+     "layer": "documented",
+     "quote": "PRESUMPTIVE ELIGIBILITY DOCUMENTS FOR LOW-INCOME INDIVIDUALS: \u2022 Temporary Assistance for Needy Families (TANF) \u2022 Illinois Housing Development Authority\u2019s Rental Housing Support Program \u2022 Wisconsin Department of Health Services Housing Assistance Program \u2022 Participation in Women, Infants and Children programs (WIC) \u2022 Supplemental Nutrition Assistance Program (SNAP) eligibility \u2022 Low Income Home Energy Assistance Program (LIHEAP) \u2022 Wisconsin Home Energy Assistance Program (WHEAP) \u2022 Enrollment in an organized community-based program providing access to medical care that assesses and documents limited low-income financial status as criteria \u2022 Receipt of grant assistance for medical services",
+     "source_id": "fap-cd47659f937922d1",
+     "checked_on": "2026-10-16",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": {
+     "value": "https://www.hshs.org/getmedia/fc8fc549-210b-4285-8e5b-e627fb99b644/HSHS-FA-Application-EN.pdf",
+     "layer": "documented",
+     "quote": "[HSHS Financial Assistance Application (ENG)](/getmedia/fc8fc549-210b-4285-8e5b-e627fb99b644/HSHS-FA-Application-EN.pdf)",
+     "source_id": "billing-f7ff88dacdb6cc5d",
+     "checked_on": "2026-10-16",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "photo_id",
+      "proof_of_income",
+      "proof_of_residency"
+     ],
+     "layer": "documented",
+     "quote": "Required documentation for financial assistance Required documentation for financial assistance can be uploaded at https://www.myhshs.org. PRESUMPTIVE ELIGIBILITY DOCUMENTS FOR LOW-INCOME INDIVIDUALS: \u2022 Temporary Assistance for Needy Families (TANF) \u2022 Illinois Housing Development Authority\u2019s Rental Housing Support Program \u2022 Wisconsin Department of Health Services Housing Assistance Program \u2022 Participation in Women, Infants and Children programs (WIC) \u2022 Supplemental Nutrition Assistance Program (SNAP) eligibility \u2022 Low Income Home Energy Assistance Program (LIHEAP) \u2022 Wisconsin Home Energy Assistance Program (WHEAP) \u2022 Enrollment in an organized community-based program providing access to medical care that assesses and documents limited low-income financial status as criteria \u2022 Receipt of grant assistance for medical services PROOF OF RESIDENCY DOCUMENTS : \u2022 State ID or Driver\u2019s License \u2022 Copy of Utility bill LEGAL DOCUMENTS: \u2022 Power of Attorney, Death Certificate, Legal Guardian, Legal Separation or Divorce Decree (if applicable) OTHER SUPPORTING DOCUMENTS: \u2022 Letters approving/denying Unemployment, Workers Compensation or Assistance from",
+     "source_id": "fap-cd47659f937922d1",
+     "checked_on": "2026-10-16",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "P.O. Box 13427 Springfield, IL 62791"
+      },
+      {
+       "kind": "fax",
+       "detail": "(513)653-4099"
+      },
+      {
+       "kind": "email",
+       "detail": "HSHSCharityservice@Ensemblehp.com"
+      },
+      {
+       "kind": "portal",
+       "detail": "https://www.myhshs.org"
+      },
+      {
+       "kind": "in_person",
+       "detail": "Please submit this application to the hospital."
+      }
+     ],
+     "layer": "documented",
+     "quote": "Please complete this form and submit it to the hospital in person, by mail (listed below), email (listed below), MyChart (https://www.myhshs.org/myhshs/Authentication/Login?), or fax (513)653-4099 to apply for free or discounted care within 90 days following the date of discharge or receipt of outpatient care.",
+     "source_id": "application-d2652a236eddf920",
+     "checked_on": "2026-10-16",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": {
+     "value": 240,
+     "layer": "documented",
+     "quote": "Note: Once approved, your application is valid for 6 months from the determination date and will retroactively cover 240 days prior to the date of application.",
+     "source_id": "application-d2652a236eddf920",
+     "checked_on": "2026-10-16",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days": null,
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "833-464-1778",
+     "layer": "documented",
+     "quote": "Phone: 833-464-1778",
+     "source_id": "billing-f7ff88dacdb6cc5d",
+     "checked_on": "2026-10-16",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": null,
+    "languages": {
+     "value": [
+      "English",
+      "Spanish"
+     ],
+     "layer": "documented",
+     "quote": "Applications are available in English and Spanish.",
+     "source_id": "application-d2652a236eddf920",
+     "checked_on": "2026-10-16",
+     "confidence": 1.0,
+     "support_count": 0
+    }
+   },
+   "coverage": {
+    "facilities": {
+     "value": [
+      "HSHS Holy Family Hospital"
+     ],
+     "layer": "documented",
+     "quote": "HSHS Holy Family Hospital \u2013 Greenville, IL",
+     "source_id": "application-250fddb11c92bb44",
+     "checked_on": "2026-10-16",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "provider_list_url": null
+   },
+   "sources": [
+    {
+     "id": "application-250fddb11c92bb44",
+     "kind": "hospital_web",
+     "url": "https://www.hshs.org/getmedia/bcf2dd56-0d1d-4182-99d1-fec31fcc30e0/Illinois-Financial-Assistance-Application.pdf",
+     "title": "[PDF] FINANCIAL ASSISTANCE APPLICATION",
+     "fetched_on": "2026-10-13",
+     "sha256": "250fddb11c92bb44f44a093fab5b9455fa0ae8f73845aa3304dfb8d6e4fbb818",
+     "effective_date": null
+    },
+    {
+     "id": "application-73020a6c25735424",
+     "kind": "hospital_web",
+     "url": "https://www.hshs.org/getmedia/63b49946-c78f-4a27-bef0-989309ec55bf/HSHS-FA-Application-SP.pdf",
+     "title": "HSHS Financial Assistance Application (SPA)",
+     "fetched_on": "2026-10-13",
+     "sha256": "73020a6c25735424f2829264a4c805d66a245487fad56eea300358cc36bbacc8",
+     "effective_date": null
+    },
+    {
+     "id": "application-d2652a236eddf920",
+     "kind": "hospital_web",
+     "url": "https://www.hshs.org/getmedia/fc8fc549-210b-4285-8e5b-e627fb99b644/HSHS-FA-Application-EN.pdf",
+     "title": "HSHS Financial Assistance Application (ENG)",
+     "fetched_on": "2026-10-13",
+     "sha256": "d2652a236eddf920c5e97496f2d61608ef04a594626a61520d29159cda02cffd",
+     "effective_date": null
+    },
+    {
+     "id": "billing-f2a89c731aa36480",
+     "kind": "hospital_web",
+     "url": "https://www.hshs.org/patients/billing",
+     "title": "\u00ab Billing, Insurance & Financial Assistance",
+     "fetched_on": "2026-10-13",
+     "sha256": "f2a89c731aa3648012c0a56d5efc888b37b3b26005d696dbb701853b5b73306b",
+     "effective_date": null
+    },
+    {
+     "id": "billing-f7ff88dacdb6cc5d",
+     "kind": "hospital_web",
+     "url": "http://www.hshs.org/patients/billing/financial-assistance",
+     "title": "Financial Assistance | Hospital Sisters Health System (HSHS)",
+     "fetched_on": "2026-10-13",
+     "sha256": "f7ff88dacdb6cc5de19ef6fccccad4abf72a88bf6c274065d124d9ed3b1ed036",
+     "effective_date": null
+    },
+    {
+     "id": "billing-fbc6b3cf106766c9",
+     "kind": "hospital_web",
+     "url": "https://hshs.org/patients/billing/financial-assistance",
+     "title": "Financial Assistance | Hospital Sisters Health System (HSHS)",
+     "fetched_on": "2026-10-13",
+     "sha256": "fbc6b3cf106766c910b0ab12c3bc3579cdcec9167734184ec1fddccdaa009fb9",
+     "effective_date": null
+    },
+    {
+     "id": "fap-cd47659f937922d1",
+     "kind": "hospital_web",
+     "url": "https://www.hshs.org/getmedia/a6ba76f0-ed91-4659-953b-7dcefb04148c/Required-documentation-for-financial-assistance.pdf",
+     "title": "Financial Assistance Required Documentation",
+     "fetched_on": "2026-10-13",
+     "sha256": "cd47659f937922d11abdfc0617629d99406920a939260f27bf5edb1140b3027c",
+     "effective_date": null
+    },
+    {
+     "id": "fap-5539b521bdb00177",
+     "kind": "hospital_web",
+     "url": "https://www.hshs.org/getmedia/70166836-f265-459e-a377-d563c123c1b5/HSHS-Financial-Assistance-Brochure-(ENG).pdf",
+     "title": "2026 Financial Assistance Program",
+     "fetched_on": "2026-10-13",
+     "sha256": "5539b521bdb001777eb6e5462e3de8daa831d9ec8a335fd2cc75d92e1608739e",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null
+  },
+  {
+   "hospital": {
     "ccn": "140187",
     "name": "HSHS ST ELIZABETH'S HOSPITAL",
     "city": "O FALLON",
@@ -5380,193 +5875,6 @@
   },
   {
    "hospital": {
-    "ccn": "141305",
-    "name": "MEMORIAL HOSPITAL",
-    "city": "CARTHAGE",
-    "state": "IL",
-    "zip": "62321",
-    "phone": "217-357-8500",
-    "ownership": "Voluntary non-profit - Private",
-    "website_domain": "mhtlc.org",
-    "system": null
-   },
-   "version": 1,
-   "status": "published",
-   "eligibility": {
-    "free_care_max_fpl": {
-     "value": "100",
-     "layer": "documented",
-     "quote": "The household income must be at or below the guidelines listed below: Size of Family FPL Guidelines 100% Assistance *No Patient Share Tier One *Patient Share is 25% Tier Two *Patient Share is 50% 1 $15,060 $22,590 $22,591 $30,120 $30,121 $45,180 2 $20,440 $30,660 $30,661 $40,880 $40,881 $61,320 3 $25,820 $38,730 $38,731 $51,640 $51,641 $77,460 4 $31,200 $46,800 $46,801 $62,400 $62,401 $93,600 5 $36,580 $54,870 $54,871 $73,160 $73,161 $109,740 6 $41,960 $62,940 $62,941 $83,920 $83,921 $125,880 7 $47,340 $71,010 $71,011 $94,680 $94,681 $142,020 8 $52,720 $79,080 $79,081 $105,440 $105,441 $158,160 *For family units with more than 8 members, add $5,380 for each additional member >8.",
-     "source_id": "fap-bb04e37f9823dfd3",
-     "checked_on": "2026-10-14",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "discount_tiers": null,
-    "assistance_ceiling_fpl": null,
-    "asset_test": null,
-    "residency": null,
-    "insured_patients_covered": {
-     "value": true,
-     "layer": "documented",
-     "quote": "Eligibility for charity will be considered for those individuals who are uninsured and underinsured for services without third party payments",
-     "source_id": "fap-bb04e37f9823dfd3",
-     "checked_on": "2026-10-14",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "min_balance": null,
-    "services_excluded": null
-   },
-   "programs": {
-    "presumptive": {
-     "value": [
-      "homeless",
-      "deceased with no known estate",
-      "mentally incapacitated with no one to act on their behalf",
-      "currently eligible for Medicaid",
-      "eligible for energy assistance or food stamps"
-     ],
-     "layer": "documented",
-     "quote": "A patient in this situation is presumed to be eligible and therefore does not need to complete a financial assistance application if they can provide proof that they meet one of the following criteria: a. Patient states that he/she is homeless. The due diligence efforts must be documented. b. Patient is deceased with no known estate. c. Patient is mentally incapacitated with no one to act on their behalf. d. Patient is currently eligible for Medicaid, but was not eligible on a prior date of service or for non-covered services. Instead of making the patient duplicate the required paperwork Memorial Hospital will rely on the financial assistance determination process from Medicaid. e. Patients eligible for energy assistance or food stamps. f. Accounts deemed uncollectible by a contracted collection agency.",
-     "source_id": "fap-bb04e37f9823dfd3",
-     "checked_on": "2026-10-14",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "state_programs": null
-   },
-   "apply": {
-    "form_url": null,
-    "form_version": null,
-    "documents_required": {
-     "value": [
-      "proof_of_income",
-      "tax_return"
-     ],
-     "layer": "documented",
-     "quote": "Applicants requesting financial assistance under this policy may be asked to provide the following information: a completed application, income verification and income taxes from the previous year.",
-     "source_id": "fap-bb04e37f9823dfd3",
-     "checked_on": "2026-10-14",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "documents_reported": null,
-    "submit_methods": {
-     "value": [
-      {
-       "kind": "mail",
-       "detail": "Applications for financial assistance can be picked up and should be returned to Patient Accounts, 1454 N CO RD 2050 E, PO Box 160, Carthage, IL 62321."
-      },
-      {
-       "kind": "in_person",
-       "detail": "Applications are available at all facility locations and on Memorial Hospital\u2019s web site at www.mhtlc.org."
-      }
-     ],
-     "layer": "documented",
-     "quote": "Applications for financial assistance can be picked up and should be returned to Patient Accounts, 1454 N CO RD 2050 E, PO Box 160, Carthage, IL 62321. All inquiries about this policy should be referred to Patient Accounts \u2013 217-357-6591. Applications are available at all facility locations and on Memorial Hospital\u2019s web site at www.mhtlc.org.",
-     "source_id": "fap-bb04e37f9823dfd3",
-     "checked_on": "2026-10-14",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "window_days_from_first_bill": {
-     "value": 240,
-     "layer": "documented",
-     "quote": "Applications for financial assistance will be available on accounts for 240 days from first bill past discharge.",
-     "source_id": "fap-bb04e37f9823dfd3",
-     "checked_on": "2026-10-14",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "decision_days": {
-     "value": 30,
-     "layer": "documented",
-     "quote": "Determination will be made within thirty (30) days of receipt of all requested information.",
-     "source_id": "fap-bb04e37f9823dfd3",
-     "checked_on": "2026-10-14",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "decision_days_reported": null
-   },
-   "collections": {
-    "eca_wait_days": null,
-    "collection_agencies": null
-   },
-   "contacts": {
-    "phone": {
-     "value": "217-357-6591",
-     "layer": "documented",
-     "quote": "All inquiries about this policy should be referred to Patient Accounts \u2013 217-357-6591.",
-     "source_id": "fap-bb04e37f9823dfd3",
-     "checked_on": "2026-10-14",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "hours": null,
-    "languages": null
-   },
-   "coverage": {
-    "facilities": {
-     "value": [
-      "Memorial Hospital",
-      "Memorial Medical Clinics",
-      "Memorial Medical Clinics Employed Providers",
-      "NES Health",
-      "Hancock County Senior Services Association"
-     ],
-     "layer": "documented",
-     "quote": "Covered Providers: Memorial Hospital, Memorial Medical Clinics, Memorial Medical Clinics Employed Providers, NES Health, Hancock County Senior Services Association.",
-     "source_id": "fap-bb04e37f9823dfd3",
-     "checked_on": "2026-10-14",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "provider_list_url": null
-   },
-   "sources": [
-    {
-     "id": "fap-bb04e37f9823dfd3",
-     "kind": "hospital_web",
-     "url": "https://www.mhtlc.org/wp-content/uploads/2024/11/Policy-Financial-Assistance-Policy-0624.pdf",
-     "title": "[PDF] Policy, Financial Assistance Policy 0624",
-     "fetched_on": "2026-10-14",
-     "sha256": "bb04e37f9823dfd359e3425a7ee9e8c6a9c19eeef747cc048e01cf3ca3f7ddac",
-     "effective_date": null
-    },
-    {
-     "id": "application-6e805a8dbd965c8c",
-     "kind": "hospital_web",
-     "url": "https://www.mhtlc.org/wp-content/uploads/2022/03/Financial-Assistance-Brochure-Rev_-3_2022-FORM-6099.pdf",
-     "title": "Financial-Assistance-Brochure-Rev_-3_2022-FORM-6099.pdf",
-     "fetched_on": "2026-10-14",
-     "sha256": "6e805a8dbd965c8c09c832a67e8e488f2f9be974853af6c80a467bc9cca0d244",
-     "effective_date": null
-    },
-    {
-     "id": "billing-1b9bcb8e2613b390",
-     "kind": "hospital_web",
-     "url": "https://www.mhtlc.org/services/ob-resources/ob-billing",
-     "title": "Billing - Memorial Hospital, Carthage IL",
-     "fetched_on": "2026-10-14",
-     "sha256": "1b9bcb8e2613b390840fdb018faf599acd46b7e2063c76392ac49852eebc219f",
-     "effective_date": null
-    },
-    {
-     "id": "fap-6e1dd565d3d20c32",
-     "kind": "hospital_web",
-     "url": "https://www.mhtlc.org/wp-content/uploads/2022/03/Policy-Financial-Assistance.pdf",
-     "title": "Financial Assistance Policy",
-     "fetched_on": "2026-10-14",
-     "sha256": "6e1dd565d3d20c325d55da37ef9b6438a3ad3c8b9a6f02d3557f1cc684f6168a",
-     "effective_date": null
-    }
-   ],
-   "accuracy": null
-  },
-  {
-   "hospital": {
     "ccn": "141302",
     "name": "MIDWEST MEDICAL CENTER",
     "city": "GALENA",
@@ -5716,6 +6024,201 @@
      "title": "[PDF] Financial Assistance Application - Midwest Medical Center",
      "fetched_on": "2026-10-14",
      "sha256": "cd6094a55fe5cf911c6dfa7e182ed729ef3d6d21fd2f4db1014eded9ac8fa808",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null
+  },
+  {
+   "hospital": {
+    "ccn": "140101",
+    "name": "MORRIS HOSPITAL & HEALTHCARE CENTERS",
+    "city": "MORRIS",
+    "state": "IL",
+    "zip": "60450",
+    "phone": "815-942-2932",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "morrishospital.org",
+    "system": null
+   },
+   "version": 2,
+   "status": "published",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "Generally speaking, patients eligible for discounted charges must have family incomes under 600% of the Federal Poverty Guidelines, while patients eligible for free care must have family incomes under 200% of the Federal Poverty Guidelines.",
+     "source_id": "fap-797b37de9c581f3e",
+     "checked_on": "2026-10-16",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "200",
+       "max_fpl_inclusive": "600",
+       "discount_percent": 75
+      }
+     ],
+     "layer": "documented",
+     "quote": "Patients with family income of at or below 200% of the current Federal Poverty Guidelines will receive for a 100% reduction in the patient portion of billed charges (i.e., full write-off), as set forth on Exhibit 1. Patients with family income of between 201% and 600% of the current Federal Poverty Guidelines will receive a 75% discount on the patient portion of the billed charges, as indicated on Exhibit 1.",
+     "source_id": "fap-797b37de9c581f3e",
+     "checked_on": "2026-10-16",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "assistance_ceiling_fpl": null,
+    "asset_test": null,
+    "residency": null,
+    "insured_patients_covered": {
+     "value": false,
+     "layer": "documented",
+     "quote": "It is the policy of MHHC to provide financial assistance (either free care or at discounted rates) to persons or families where: (i) there is limited or no health insurance available; (ii) the patient fails to qualify for governmental assistance (for example, Medicare or Medicaid); (iii) the patient cooperates with MHHC in providing the requested information demonstrating financial need, or other facts and circumstances readily demonstrate financial need; and (iv) MHHC makes an administrative determination that financial assistance is appropriate based on the patient\u2019s ability to pay (as established by family income or based on criteria demonstrating presumptive eligibility) and the size of the patient\u2019s medical bills.",
+     "source_id": "fap-797b37de9c581f3e",
+     "checked_on": "2026-10-16",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": {
+     "value": [
+      "Homeless",
+      "Deceased with no estate",
+      "Women, Infants and Children Nutrition Program (WIC)",
+      "Supplemental Nutrition Assistance Program (SNAP)",
+      "Illinois Free Lunch and Breakfast Program",
+      "Low Income Home Energy Assistance Program (LIHEAP)",
+      "Receipt of grant assistance for medical services",
+      "Personal bankruptcy within the last 12 months",
+      "Incarceration in a penal institution",
+      "Affiliation with a religious order and vow of poverty",
+      "Temporary Assistance for Needy Families (TANF)",
+      "IHDA\u2019s Rental Housing Support Program"
+     ],
+     "layer": "documented",
+     "quote": "L. Presumptively Eligible: A patient who has not submitted a completed Financial Assistance Application, but who nonetheless is subject to one or more of the following criteria: \uf0b7 Homeless \uf0b7 Deceased with no estate \uf0b7 Mentally incapacitated with no one to act on his or her behalf \uf0b7 Medicaid eligible, but not on the date of service or for non-covered services \uf0b7 Enrolled in the following programs for low-income individuals having eligibility criteria at or below 200% of the Federal Poverty Guidelines: o Women, Infants and Children Nutrition Program (WIC) o Supplemental Nutrition Assistance Program (SNAP) o Illinois Free Lunch and Breakfast Program o Low Income Home Energy Assistance Program (LIHEAP) o Enrollment in an organized community-based program providing access to medical care that assesses and documents limited low-income financial status as a criterion for membership o Receipt of grant assistance for medical services \uf0b7 Personal bankruptcy within the last 12 months \uf0b7 Incarceration in a penal institution \uf0b7 Affiliation with a religious order and vow of poverty \uf0b7 Enrollment in the following programs for low-income individuals: o Temporary Assistance for Needy Families (TANF) o IHDA\u2019s Rental Housing Support Program",
+     "source_id": "fap-797b37de9c581f3e",
+     "checked_on": "2026-10-16",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "tax_return",
+      "pay_stubs"
+     ],
+     "layer": "documented",
+     "quote": "Along with the application, please supply copies of: (1) Your most recent tax return; (2) Two of your most recent pay stubs; and (3) Written income verification from your employer if paid in cash.",
+     "source_id": "application-36add92a29a458aa",
+     "checked_on": "2026-10-16",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "in_person",
+       "detail": "Hand-deliver the form to a Patient Service Representative; to the cashier or Financial Assistance Office at Morris Hospital, 150 W. High St., Morris, IL (First Floor); or to the Patient Registration Desk at any of the Healthcare Centers"
+      },
+      {
+       "kind": "mail",
+       "detail": "Mail to Morris Hospital & Healthcare Centers, Attn: Patient Financial Assistance Office, 150 W. High St., Morris, IL 60450"
+      },
+      {
+       "kind": "email",
+       "detail": "E-mail the form to financialassistance@morrishospital.org"
+      },
+      {
+       "kind": "fax",
+       "detail": "Fax: 815-941-2476 or 815-705-1738"
+      }
+     ],
+     "layer": "documented",
+     "quote": "E. Patients completing the Financial Assistance Application must return the signed form to through any of the following measures: \uf0b7 Hand-deliver the form to a Patient Service Representative; to the cashier or Financial Assistance Office at Morris Hospital, 150 W. High St., Morris, IL (First Floor); or to the Patient Registration Desk at any of the Healthcare Centers \uf0b7 Mail to Morris Hospital & Healthcare Centers, Attn: Patient Financial Assistance Office, 150 W. High St., Morris, IL 60450 \uf0b7 E-mail the form to financialassistance@morrishospital.org \uf0b7 Fax: 815-941-2476 or 815-705-1738",
+     "source_id": "fap-797b37de9c581f3e",
+     "checked_on": "2026-10-16",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": null,
+    "decision_days": {
+     "value": 60,
+     "layer": "documented",
+     "quote": "D. Within 60 days after submission of a completed Financial Assistance Application, MHHC will determine whether the patient qualifies for financial assistance based on financial eligibility or medical indigence and will notify the patient in writing of such determination and the amount of the discount to be provided.",
+     "source_id": "fap-797b37de9c581f3e",
+     "checked_on": "2026-10-16",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": null,
+    "hours": null,
+    "languages": null
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null
+   },
+   "sources": [
+    {
+     "id": "application-36add92a29a458aa",
+     "kind": "hospital_web",
+     "url": "https://www.morrishospital.org/patients-visitors/billing-insurance/financial-assistance/financial-assistance-program-application-process",
+     "title": "Financial Assistance Program Application Process - Morris Hospital",
+     "fetched_on": "2026-10-14",
+     "sha256": "36add92a29a458aaef167c30419e26ef81675a361ccda5ce384028d9aaa87315",
+     "effective_date": null
+    },
+    {
+     "id": "billing-0ccb95a3c8038111",
+     "kind": "hospital_web",
+     "url": "https://www.morrishospital.org/wp-content/uploads/2017/08/Billing-and-Collection-Practices.pdf",
+     "title": "Billing and Collection Practices",
+     "fetched_on": "2026-10-14",
+     "sha256": "0ccb95a3c8038111b3a70cba6c0c8daad0ff6250a8569745d07b162ef06a2361",
+     "effective_date": null
+    },
+    {
+     "id": "fap-797b37de9c581f3e",
+     "kind": "hospital_web",
+     "url": "https://www.morrishospital.org/wp-content/uploads/2025/01/Financial-Assistance-Policy.pdf",
+     "title": "Financial Assistance Policy",
+     "fetched_on": "2026-10-14",
+     "sha256": "797b37de9c581f3e6ec97dc8027ccc0086c0407c4c883292ae1c290a47da723a",
+     "effective_date": null
+    },
+    {
+     "id": "fap-dec2d3d2b5bb3afa",
+     "kind": "hospital_web",
+     "url": "https://www.morrishospital.org/wp-content/uploads/2026/03/Financial-Assistance-Policy-Spanish-Translation.pdf",
+     "title": "Politica De Asistencia Financiera",
+     "fetched_on": "2026-10-14",
+     "sha256": "dec2d3d2b5bb3afa8f4a763a29c05cb3f42a9c543c801881bc0183eef355b7ee",
+     "effective_date": null
+    },
+    {
+     "id": "fap-f23f4c4dbe170f60",
+     "kind": "hospital_web",
+     "url": "https://www.morrishospital.org/wp-content/uploads/2026/03/Financial-Assistance-Policy.pdf",
+     "title": "Financial Assistance Policy",
+     "fetched_on": "2026-10-14",
+     "sha256": "f23f4c4dbe170f609c6fbf2acd1e9230d6e040807c320f8c287c770bb806f158",
      "effective_date": null
     }
    ],
@@ -6047,7 +6550,7 @@
     "website_domain": "nm.org",
     "system": null
    },
-   "version": 1,
+   "version": 2,
    "status": "published",
    "eligibility": {
     "free_care_max_fpl": {
@@ -6084,29 +6587,8 @@
     "form_version": null,
     "documents_required": null,
     "documents_reported": null,
-    "submit_methods": {
-     "value": [
-      {
-       "kind": "mail",
-       "detail": "Northwestern Memorial HealthCare Attention: Financial Counseling 675 North Saint Clair Street, Suite 2-110, Chicago, Illinois 60611"
-      }
-     ],
-     "layer": "documented",
-     "quote": "Morate podnijeti potpuni zahtjev i popratne dokumente u roku od 240 dana nakon \u0161to ste otpu\u0161teni ili dobijete ambulantnu njegu.",
-     "source_id": "application-f25d186fd5c649c8",
-     "checked_on": "2026-10-14",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "window_days_from_first_bill": {
-     "value": 240,
-     "layer": "documented",
-     "quote": "Morate podnijeti potpuni zahtjev i popratne dokumente u roku od 240 dana nakon \u0161to ste otpu\u0161teni ili dobijete ambulantnu njegu.",
-     "source_id": "application-f25d186fd5c649c8",
-     "checked_on": "2026-10-14",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "submit_methods": null,
+    "window_days_from_first_bill": null,
     "decision_days": null,
     "decision_days_reported": null
    },
