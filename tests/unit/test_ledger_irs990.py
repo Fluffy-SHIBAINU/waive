@@ -751,3 +751,48 @@ def test_load_schedule_h_reports_a_matched_facility_the_return_never_answered_fo
             None,
         )
         assert repo.latest_schedule_h(session, "220002").free_care_fpl_pct == 400.0
+
+
+def test_a_deflate64_member_is_read_through_the_system_unzip(tmp_path, monkeypatch):
+    """2026_TEOS_XML_05A is written with Deflate64 (method 9): zipfile raises
+    NotImplementedError, and the member is pulled with `unzip -p` instead."""
+    import subprocess
+    import zipfile
+
+    from waive.ledger import irs990
+
+    zip_path = tmp_path / "2026_TEOS_XML_05A.zip"
+    member = "202601149339300000_public.xml"
+    with zipfile.ZipFile(zip_path, "w") as archive:
+        archive.writestr(member, "<Return/>")
+    calls = []
+
+    def refuse(self, name, *args, **kwargs):
+        raise NotImplementedError("That compression method is not supported")
+
+    def fake_unzip(command, stdout, stderr, check, timeout):
+        calls.append(command)
+        stdout.write(b"<Return>from unzip</Return>")
+        return subprocess.CompletedProcess(command, 0)
+
+    monkeypatch.setattr(zipfile.ZipFile, "open", refuse)
+    monkeypatch.setattr(irs990.subprocess, "run", fake_unzip)
+    found = irs990.extract_members(zip_path, ["202601149339300000"], tmp_path / "xml")
+    assert (tmp_path / "xml" / member).read_bytes() == b"<Return>from unzip</Return>"
+    assert calls == [["unzip", "-p", str(zip_path), member]]
+    assert not list((tmp_path / "xml").glob("*.part"))
+    # A member name that is not a return's never reaches a subprocess.
+    with pytest.raises(ValueError):
+        irs990._extract_with_unzip(str(zip_path), "../etc/passwd", None)
+    assert found == {"202601149339300000": tmp_path / "xml" / member}
+
+
+def test_without_unzip_the_deflate64_batch_fails_with_a_clear_message(tmp_path, monkeypatch):
+    from waive.ledger import irs990
+
+    def missing(*args, **kwargs):
+        raise FileNotFoundError("unzip")
+
+    monkeypatch.setattr(irs990.subprocess, "run", missing)
+    with pytest.raises(RuntimeError, match="unzip"):
+        irs990._extract_with_unzip(str(tmp_path / "x.zip"), "202601149339300000_public.xml", None)

@@ -17,6 +17,7 @@ import csv
 import logging
 import re
 import shutil
+import subprocess
 import xml.etree.ElementTree as ET
 import zipfile
 from collections import defaultdict
@@ -205,13 +206,43 @@ def _zip_dir(cache_dir: Path) -> Path:
     return cache_dir / "irs990" / "zips"
 
 
+# Some IRS batches (2026_TEOS_XML_05A) are written with Deflate64, which Python's zipfile
+# does not read; Info-ZIP's `unzip` does. Member names are checked against this before one is
+# handed to it.
+MEMBER_NAME = re.compile(r"^\d{18}_public\.xml$")
+UNZIP_TIMEOUT = 600
+
+
+def _extract_with_unzip(zip_path: str, member: str, out) -> None:
+    if not MEMBER_NAME.match(member):
+        raise ValueError(f"not a return member name: {member!r}")
+    try:
+        subprocess.run(
+            ["unzip", "-p", zip_path, member],
+            stdout=out,
+            stderr=subprocess.DEVNULL,
+            check=True,
+            timeout=UNZIP_TIMEOUT,
+        )
+    except FileNotFoundError as error:
+        raise RuntimeError(
+            f"{Path(zip_path).name} uses a compression Python cannot read and `unzip` is not "
+            "installed; install Info-ZIP unzip and run again"
+        ) from error
+
+
 def _extract(archive: zipfile.ZipFile, member: str, target: Path) -> Path:
     """One member to `target` through a `.part` file, so an interrupted run leaves no half
     XML under the real name."""
     partial = target.with_name(target.name + ".part")
     try:
-        with archive.open(member) as source, partial.open("wb") as out:
-            shutil.copyfileobj(source, out)
+        with partial.open("wb") as out:
+            try:
+                with archive.open(member) as source:
+                    shutil.copyfileobj(source, out)
+            except NotImplementedError:
+                # Deflate64: let the system's unzip write the member instead.
+                _extract_with_unzip(str(archive.filename), member, out)
         partial.replace(target)
     finally:
         partial.unlink(missing_ok=True)
