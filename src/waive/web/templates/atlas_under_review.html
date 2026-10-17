@@ -4,5 +4,6 @@
 <h1>{{ hospital.name }}</h1>
 <p class="muted">{{ hospital.city }}, {{ hospital.state }} · <a href="/atlas/{{ hospital.ccn }}.json">JSON</a></p>
 <p class="card status-unknown big">Under review. Waive is still checking this hospital's financial assistance policy, so no figures are shown yet.</p>
+{% include "_ledger_block.html" %}
 <p><a href="/atlas">All hospitals</a></p>
 {% endblock %}

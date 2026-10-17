@@ -17,6 +17,7 @@ from waive.cases.vault import cipher_from_settings, signer_from_settings
 from waive.config import Settings
 from waive.db import init_db, make_engine
 from waive.governor import BudgetExceeded, make_governor
+from waive.ledger import web as ledger_web
 from waive.logging_setup import configure_logging
 from waive.web.deps import STATIC_DIR, TEMPLATES_DIR, Deps, render, today_utc
 from waive.web.headers import PrivateHeaders
@@ -91,6 +92,7 @@ def create_app(
     templates = Jinja2Templates(directory=str(TEMPLATES_DIR))
     # `{{ cited.value | plain(path) }}`: cited atlas values in plain language (atlas_sheet.html).
     templates.env.filters["plain"] = plain_lines
+    ledger_web.install(templates, engine)
     app.state.deps = Deps(
         engine=engine,
         ai=ai if ai is not None else _default_ai(settings, governor),

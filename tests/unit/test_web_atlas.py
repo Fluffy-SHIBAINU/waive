@@ -103,6 +103,7 @@ def test_a_hospital_whose_sheet_is_held_is_under_review_with_no_figures():
         "city": "WORCESTER",
         "state": "MA",
         "status": "under_review",
+        "ledger": None,
     }
     listing = client.get("/atlas?q=real").text
     assert "under review" in listing and "published" not in listing

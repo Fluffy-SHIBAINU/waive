@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Hospitals by how they behave{% endblock %}
+{% block content %}
+<h1>Hospitals by how they behave</h1>
+<form method="get" action="/ledger" class="stack">
+  <label for="state">State</label>
+  <select id="state" name="state">
+    <option value=""{% if not state %} selected{% endif %}>All states</option>
+    {% for code in states %}<option value="{{ code }}"{% if code == state %} selected{% endif %}>{{ code }}</option>{% endfor %}
+  </select>
+  <label for="sort">Sort by</label>
+  <select id="sort" name="sort">
+    {% for value, words in sorts %}<option value="{{ value }}"{% if value == sort %} selected{% endif %}>{{ words }}</option>{% endfor %}
+  </select>
+  <button class="btn" type="submit">Show</button>
+</form>
+{% for row in rows %}
+<div class="card">{% if row.has_sheet %}<a href="/atlas/{{ row.ccn }}"><strong>{{ row.name }}</strong></a>{% else %}<strong>{{ row.name }}</strong>{% endif %}<br>{{ row.city }}, {{ row.state }} — {{ row.sheet_status }}
+  <p class="muted">Seniors at risk: {{ row.exposure_label | capitalize if row.exposure_label else "not enough data" }} · Free care: {% if row.gap_headline %}{{ row.gap_headline[0] | lower }}{{ row.gap_headline[1:] }}{% else %}not enough data{% endif %} · Collections: {{ row.collections_words or "not reported" }}</p>
+</div>
+{% else %}<p>No hospitals have ledger data yet.</p>{% endfor %}
+<p class="muted">Open data, CC BY 4.0. Every figure names its federal file and year. The hospital decides each application.</p>
+{% endblock %}

@@ -52,9 +52,22 @@ COPY_ORDER = [
     "reported_evidence",
     "review_items",
     "source_docs",
+    "hospital_ids",
     "hospital_sources",
+    "ledger_cost_reports",
+    "ledger_exposure",
+    "ledger_metrics",
+    "ledger_schedule_h",
     "sheets",
 ]
+# The Phase 10 ledger tables travel with the atlas; the seed leaves them empty.
+LEDGER_EMPTY = {
+    "hospital_ids": 0,
+    "ledger_cost_reports": 0,
+    "ledger_exposure": 0,
+    "ledger_metrics": 0,
+    "ledger_schedule_h": 0,
+}
 # Two Tavily calls in the same second for the same purpose are two calls: both must arrive.
 LEDGER = [
     {
@@ -264,6 +277,7 @@ def test_every_copied_table_arrives_with_its_ids_and_values(tmp_path):
         "source_docs": 2,
         "hospital_sources": 2,
         "sheets": 2,
+        **LEDGER_EMPTY,
     }
     for name in COPIED_TABLES:
         assert rows(target, table(name)) == rows(source, table(name)), name

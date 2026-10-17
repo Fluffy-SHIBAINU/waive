@@ -1,0 +1,9 @@
+{# Phase 10: the ledger's short lines on the result screen, one card per metric that has
+   something to say. `ledger_expect` opens its own session (see waive.ledger.web.install). #}
+{% set lines = ledger_expect(case.ccn) if case.ccn else [] %}
+{% if lines %}
+<h2>What to expect here</h2>
+{% for line, advice in lines %}
+<div class="card"><p class="big">{{ line }}</p><p>What to do: {{ advice }}</p></div>
+{% endfor %}
+{% endif %}
