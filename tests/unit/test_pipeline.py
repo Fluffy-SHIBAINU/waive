@@ -12,7 +12,7 @@ from waive.atlas import repo
 from waive.atlas.discover import MIN_CONFIDENCE
 from waive.atlas.pipeline import build_hospital, build_state, clear_wrong_domain, coverage_report
 from waive.atlas.samples import SAMPLE_POLICY_TEXT, SAMPLE_SOURCE_ID
-from waive.atlas.schema import SheetStatus, SourceDoc, SourceKind
+from waive.atlas.schema import ProcedureSheet, SheetStatus, SourceDoc, SourceKind
 from waive.atlas.scout import source_id_for
 from waive.atlas.structure import DraftField, SheetDraft
 from waive.atlas.tavily_gateway import ExtractedPage, SearchHit
@@ -1122,6 +1122,510 @@ def test_a_state_inside_the_hospitals_own_name_does_not_make_its_policy_another_
         assert ai.prompts and all("fap-sierra" in p for p in ai.prompts)
         assert {s.id for s, _ in repo.sources_for(session, "050150")} == {own.id, notice.id}
         assert all(item.kind != "other_state_documents" for item in repo.open_review_items(session))
+
+
+# Task 7.16: nine published Kaiser California sheets, Los Angeles (050138) among them, cited Kaiser
+# Northwest's dental policy, stored next to Kaiser California's own; an admin had confirmed
+# kaiserpermanente.org for Los Angeles (7.15c).
+KAISER_LOS_ANGELES = {
+    **HOSPITAL,
+    "ccn": "050138",
+    "name": "KAISER FOUNDATION HOSPITAL - LOS ANGELES",
+    "city": "LOS ANGELES",
+    "state": "CA",
+    "zip": "90027",
+    "phone": "323-783-4011",
+    "website_domain": "kaiserpermanente.org",
+    "domain_confidence": 1.0,
+}
+KAISER_VALLEJO = {
+    **KAISER_LOS_ANGELES,
+    "ccn": "050073",
+    "name": "KAISER FOUNDATION HOSPITAL AND REHAB CENTER",
+    "city": "VALLEJO",
+    "zip": "94589",
+    "phone": "707-651-1000",
+}
+KAISER_DOCS = "https://healthy.kaiserpermanente.org/content/dam/kporg/final/documents/"
+DENTAL_PATH = "dfa/policy/dfa-policy-english-ada.pdf"
+SCAL_PATH = "mfa/southern-california/english/mfa-policy-and-addendum-scal-english-ada.pdf"
+MFA_TITLE = "POLICY TITLE Medical Financial Assistance"
+# The search titled the dental policy after the medical program; its opening names the dental one.
+DENTAL_TITLE = "POLICY TITLE: Medical Financial Assistance"
+DENTAL_TEXT = (
+    "Community Benefits POLICY TITLE Dental Financial Assistance POLICY NUMBER NW.CB.002 "
+    "ACCOUNTABLE DEPARTMENT Charity Care, Community Benefits. Kaiser Foundation Health Plan of "
+    "Northwest (KFHPNW) is committed to providing programs that support access to dental care for "
+    "people with low incomes.\nFederal Poverty Guidelines Percentages Financial Assistance "
+    "Discount From To 0% -200% 100% Discount (Full) 201% -300% 75% Discount (Partial) 301% -350% "
+    "50% Discount (Partial) 351% -400% 25% Discount (Partial)\n"
+)
+# Kaiser California's policy opening, then the sample policy's sentences, which GroundedAI quotes.
+SCAL_TEXT = (
+    "Community Health POLICY TITLE Medical Financial Assistance POLICY NUMBER NATL.CB.307 "
+    "ACCOUNTABLE DEPARTMENT National Community Health EFFECTIVE DATE January 1st, 2025\n"
+    + POLICY_TEXT
+)
+DENTAL_NOTE = (
+    "1 stored document is about a dental assistance program, not the hospital's financial "
+    "assistance (fap-dental); detached and left out of the structurer"
+)
+NOTHING_LEFT_NOTE = "no financial assistance documents left to structure once those are set aside"
+
+
+def held_note(quoted):
+    return (
+        f"{len(quoted)} fields quoted from the documents set aside dropped and the sheet held: "
+        + ", ".join(quoted)
+    )
+
+
+def store_kaiser(session, ccn, source_id, path, text, title=MFA_TITLE, docs=KAISER_DOCS):
+    source = SourceDoc(
+        id=source_id,
+        kind=SourceKind.HOSPITAL_WEB,
+        url=docs + path,
+        title=title,
+        fetched_on=TODAY,
+        sha256=hashlib.sha256(text.encode()).hexdigest(),
+    )
+    repo.save_source(session, source, text, ccn)
+    return source
+
+
+def publish_quoting(session, ccn, source):
+    """A published sheet whose every field quotes `source`, as the nine Kaiser California sheets
+    quoted Kaiser Northwest's dental policy before 7.16."""
+    from waive.atlas.publish import publish_sheet
+    from waive.atlas.samples import st_example_sheet
+
+    body = st_example_sheet().model_dump_json().replace(SAMPLE_SOURCE_ID, source.id)
+    sheet = ProcedureSheet.model_validate_json(body).model_copy(
+        update={"hospital": repo.hospital_ref(repo.get_hospital(session, ccn)), "sources": [source]}
+    )
+    return publish_sheet(session, sheet)
+
+
+class NoSpend:
+    def search(self, *args, **kwargs):
+        raise AssertionError("Tavily search would spend credits")
+
+    def extract(self, *args, **kwargs):
+        raise AssertionError("Tavily extract would spend credits")
+
+    def map(self, *args, **kwargs):
+        raise AssertionError("Tavily map would spend credits")
+
+
+class NoModel(FakeAI):
+    def complete_json(self, *args, **kwargs):
+        raise AssertionError("the structurer has nothing of the hospital's to read")
+
+
+def test_a_stored_dental_policy_is_detached_and_never_reaches_the_structurer():
+    engine = make_engine_with_hospital(KAISER_LOS_ANGELES)
+    with session_scope(engine) as session:
+        dental = store_kaiser(
+            session, "050138", "fap-dental", DENTAL_PATH, DENTAL_TEXT, DENTAL_TITLE
+        )
+        store_kaiser(session, "050138", "fap-scal", SCAL_PATH, SCAL_TEXT)
+        ai = GroundedAI()
+        result = build_hospital(session, NoSpend(), ai, "050138", TODAY, reuse_sources=True)
+        assert result.outcome == "published"
+        assert DENTAL_NOTE in result.notes
+        assert ai.prompts and all(
+            "fap-dental" not in p and "NW.CB.002" not in p for p in ai.prompts
+        )
+        sheet, _ = repo.latest_sheet(session, "050138")
+        assert sheet.eligibility.free_care_max_fpl.source_id == "fap-scal"
+        assert [s.id for s in sheet.sources] == ["fap-scal"]
+        assert [s.id for s, _ in repo.sources_for(session, "050138")] == ["fap-scal"]
+        assert review_detail(session, "050138", "dental_documents") == {
+            "sources": [{"id": "fap-dental", "url": dental.url}]
+        }
+
+
+def test_a_sheet_that_quoted_a_dental_policy_it_had_alone_is_held_without_those_fields():
+    # Kaiser Foundation Hospital and Rehab Center (050073) had stored nothing but the dental
+    # policy. Nothing is left to structure: no model is asked, no credit is spent, and a sheet
+    # quoting the dental bands cannot stay published.
+    engine = make_engine_with_hospital(KAISER_VALLEJO)
+    with session_scope(engine) as session:
+        dental = store_kaiser(
+            session, "050073", "fap-dental", DENTAL_PATH, DENTAL_TEXT, DENTAL_TITLE
+        )
+        assert publish_quoting(session, "050073", dental).version == 1
+        quoted = [path for path, _ in repo.latest_sheet(session, "050073")[0].field_paths()]
+        result = build_hospital(session, NoSpend(), NoModel(), "050073", TODAY, reuse_sources=True)
+        assert (result.outcome, result.version) == ("held", 2)
+        assert result.notes == [DENTAL_NOTE, NOTHING_LEFT_NOTE, held_note(quoted)]
+        held, row = repo.latest_sheet(session, "050073")
+        assert held.status is SheetStatus.HELD
+        assert held.field_paths() == [] and held.sources == []
+        assert row.diff["status"] == {"old": "published", "new": "held"}
+        assert repo.sources_for(session, "050073") == []
+        kinds = sorted(item.kind for item in repo.open_review_items(session, "050073"))
+        assert kinds == ["dental_documents", "no_documents"]
+        assert review_detail(session, "050073", "no_documents") == {
+            "domain": "kaiserpermanente.org",
+            "set_aside": ["fap-dental"],
+        }
+    # With no sheet yet there is nothing to hold: the build stops at the review item.
+    engine = make_engine_with_hospital(KAISER_VALLEJO)
+    with session_scope(engine) as session:
+        store_kaiser(session, "050073", "fap-dental", DENTAL_PATH, DENTAL_TEXT, DENTAL_TITLE)
+        result = build_hospital(session, NoSpend(), NoModel(), "050073", TODAY, reuse_sources=True)
+        assert (result.outcome, result.version, result.notes) == (
+            "skipped",
+            None,
+            [DENTAL_NOTE, NOTHING_LEFT_NOTE],
+        )
+        assert repo.latest_sheet(session, "050073") is None
+
+
+NW_PATH = "mfa/nw/english/mfa-policy-and-addendum-nw-english-ada.pdf"
+# Kaiser Northwest's policy, with a free-care limit of its own so a model reading it would show.
+NW_TEXT = (
+    "Community Health POLICY TITLE Medical Financial Assistance POLICY NUMBER NATL.CB.307 "
+    "Kaiser Foundation Health Plan of the Northwest\n" + POLICY_TEXT.replace("250%", "300%")
+)
+
+
+def test_another_kaiser_regions_policy_is_set_aside_beside_californias():
+    # California Kaiser hospitals stored Kaiser Northwest's policy next to Southern California's
+    # and the dental one (San Rafael, 050510, was given Northwest's by its re-scout in 7.15c).
+    # Only the address tells the regions apart: "/mfa/nw/" is Oregon and Washington.
+    engine = make_engine_with_hospital(KAISER_LOS_ANGELES)
+    with session_scope(engine) as session:
+        store_kaiser(session, "050138", "fap-dental", DENTAL_PATH, DENTAL_TEXT, DENTAL_TITLE)
+        store_kaiser(session, "050138", "fap-nw", NW_PATH, NW_TEXT)
+        store_kaiser(session, "050138", "fap-scal", SCAL_PATH, SCAL_TEXT)
+        ai = GroundedAI()
+        result = build_hospital(session, NoSpend(), ai, "050138", TODAY, reuse_sources=True)
+        assert result.outcome == "published"
+        assert result.notes[:2] == [
+            DENTAL_NOTE,
+            "1 stored document is another state's version of the system policy (fap-nw: OR/WA); "
+            "detached and left out of the structurer",
+        ]
+        assert ai.prompts and all("fap-nw" not in p and "fap-dental" not in p for p in ai.prompts)
+        assert all("=== SOURCE id=fap-scal" in p and "names_state=CA" in p for p in ai.prompts)
+        sheet, _ = repo.latest_sheet(session, "050138")
+        assert sheet.eligibility.free_care_max_fpl.source_id == "fap-scal"
+        assert [s.id for s, _ in repo.sources_for(session, "050138")] == ["fap-scal"]
+        assert review_detail(session, "050138", "other_state_documents") == {
+            "state": "CA",
+            "sources": [{"id": "fap-nw", "states": ["OR", "WA"]}],
+        }
+
+
+KAISER_SAN_FRANCISCO = {
+    **KAISER_LOS_ANGELES,
+    "ccn": "050076",
+    "name": "KAISER FOUNDATION HOSPITAL - SAN FRANCISCO",
+    "city": "SAN FRANCISCO",
+    "zip": "94115",
+    "phone": "415-833-2646",
+}
+WASHINGTON_SITE = "https://wa.kaiserpermanente.org/"
+WASHINGTON_PATH = "static/pdf/public/customer-service/charity-care-policy.pdf"
+WASHINGTON_TEXT = (
+    "Kaiser Foundation Health Plan of Washington. Charity Care Policy.\n" + POLICY_TEXT
+)
+
+
+def test_kaiser_documents_all_of_another_region_are_set_aside_and_the_sheet_held():
+    # Kaiser Foundation Hospital - San Francisco (050076), and Redwood City, San Leandro and
+    # Moreno Valley with it, had stored nothing but Kaiser Washington's charity care policy and the
+    # dental one. Anywhere else, when every document is another state's, all stay: there is
+    # nothing to prefer (test_other_state_versions_of_a_system_policy_are_set_aside). On Kaiser's
+    # sites the address says whose policy it is, and a California sheet must not publish
+    # Washington's: with no sibling to borrow from, it is held, and the hospital waits to be
+    # scouted again.
+    engine = make_engine_with_hospital(KAISER_SAN_FRANCISCO)
+    with session_scope(engine) as session:
+        store_kaiser(session, "050076", "fap-dental", DENTAL_PATH, DENTAL_TEXT, DENTAL_TITLE)
+        washington = store_kaiser(
+            session,
+            "050076",
+            "fap-washington",
+            WASHINGTON_PATH,
+            WASHINGTON_TEXT,
+            "Charity Care Policy",
+            docs=WASHINGTON_SITE,
+        )
+        assert publish_quoting(session, "050076", washington).version == 1
+        quoted = [path for path, _ in repo.latest_sheet(session, "050076")[0].field_paths()]
+        result = build_hospital(session, NoSpend(), NoModel(), "050076", TODAY, reuse_sources=True)
+        assert (result.outcome, result.version) == ("held", 2)
+        assert result.notes == [
+            DENTAL_NOTE,
+            "1 stored document is another state's version of the system policy "
+            "(fap-washington: WA); detached and left out of the structurer",
+            NOTHING_LEFT_NOTE,
+            held_note(quoted),
+        ]
+        held, _ = repo.latest_sheet(session, "050076")
+        assert held.status is SheetStatus.HELD
+        assert held.field_paths() == [] and held.sources == []
+        assert repo.sources_for(session, "050076") == []
+        assert review_detail(session, "050076", "other_state_documents") == {
+            "state": "CA",
+            "sources": [{"id": "fap-washington", "states": ["WA"]}],
+        }
+        assert review_detail(session, "050076", "no_documents") == {
+            "domain": "kaiserpermanente.org",
+            "set_aside": ["fap-dental", "fap-washington"],
+        }
+
+
+LOS_ANGELES_SHARE = (
+    "1 policy document shared from KAISER FOUNDATION HOSPITAL - LOS ANGELES (050138) on "
+    "kaiserpermanente.org; "
+)
+
+
+def test_a_hospital_whose_documents_are_all_set_aside_borrows_its_siblings_policy_in_one_run():
+    # Review of 7.16: San Francisco (050076) had stored only Kaiser Washington's policy and the
+    # dental one. The first build set both aside and held the sheet with a no_documents item;
+    # the same command run again found nothing stored and borrowed Los Angeles's California
+    # policy. It borrows in the first run now, as a build with nothing stored does.
+    engine = make_engine_with_hospital(KAISER_LOS_ANGELES, KAISER_SAN_FRANCISCO)
+    with session_scope(engine) as session:
+        scal = store_kaiser(session, "050138", "fap-scal", SCAL_PATH, SCAL_TEXT)
+        publish_quoting(session, "050138", scal)
+        store_kaiser(session, "050076", "fap-dental", DENTAL_PATH, DENTAL_TEXT, DENTAL_TITLE)
+        washington = store_kaiser(
+            session,
+            "050076",
+            "fap-washington",
+            WASHINGTON_PATH,
+            WASHINGTON_TEXT,
+            "Charity Care Policy",
+            docs=WASHINGTON_SITE,
+        )
+        publish_quoting(session, "050076", washington)
+        ai = GroundedAI()
+        result = build_hospital(session, NoSpend(), ai, "050076", TODAY, reuse_sources=True)
+        assert (result.outcome, result.version) == ("published", 2)
+        assert result.notes[:3] == [
+            DENTAL_NOTE,
+            "1 stored document is another state's version of the system policy "
+            "(fap-washington: WA); detached and left out of the structurer",
+            LOS_ANGELES_SHARE + "none of the hospital's own documents is left once those are set "
+            "aside",
+        ]
+        assert ai.prompts and all(
+            "fap-washington" not in p and "fap-dental" not in p for p in ai.prompts
+        )
+        sheet, _ = repo.latest_sheet(session, "050076")
+        assert sheet.eligibility.free_care_max_fpl.source_id == "fap-scal"
+        assert [s.id for s in sheet.sources] == ["fap-scal"]
+        assert [s.id for s, _ in repo.sources_for(session, "050076")] == ["fap-scal"]
+        assert review_detail(session, "050076", "shared_sources")["sources"] == ["fap-scal"]
+        assert all(item.kind != "no_documents" for item in repo.open_review_items(session))
+        # The same command again finds what the first run found.
+        again = build_hospital(
+            session, NoSpend(), GroundedAI(), "050076", TODAY, reuse_sources=True
+        )
+        assert (again.outcome, again.version) == ("published", 2)
+
+
+def test_a_sibling_lends_neither_a_dental_policy_nor_another_kaisers_regions():
+    # Review of 7.16: Los Angeles (050138) still held the dental policy and Kaiser Northwest's
+    # beside California's when San Francisco (050076), with nothing stored, borrowed from it. All
+    # three were linked and listed as shared, and two were detached at once. Vallejo (050073),
+    # earlier in line, holds only Northwest's: it has nothing to lend, and the search goes on.
+    engine = make_engine_with_hospital(KAISER_VALLEJO, KAISER_LOS_ANGELES, KAISER_SAN_FRANCISCO)
+    with session_scope(engine) as session:
+        publish_quoting(
+            session, "050073", store_kaiser(session, "050073", "fap-nw", NW_PATH, NW_TEXT)
+        )
+        store_kaiser(session, "050138", "fap-dental", DENTAL_PATH, DENTAL_TEXT, DENTAL_TITLE)
+        store_kaiser(session, "050138", "fap-nw", NW_PATH, NW_TEXT)
+        publish_quoting(
+            session, "050138", store_kaiser(session, "050138", "fap-scal", SCAL_PATH, SCAL_TEXT)
+        )
+        ai = GroundedAI()
+        result = build_hospital(session, NoSpend(), ai, "050076", TODAY, reuse_sources=True)
+        assert result.outcome == "published"
+        assert result.notes[0] == (
+            LOS_ANGELES_SHARE + "the hospital's own documents state no income rules"
+        )
+        assert ai.prompts and all("fap-dental" not in p and "fap-nw" not in p for p in ai.prompts)
+        assert review_detail(session, "050076", "shared_sources")["sources"] == ["fap-scal"]
+        assert [s.id for s, _ in repo.sources_for(session, "050076")] == ["fap-scal"]
+        assert all(
+            item.kind not in ("dental_documents", "other_state_documents")
+            for item in repo.open_review_items(session, "050076")
+        )
+        # The lender keeps everything it stored: what it may cite is its own build's business.
+        assert {s.id for s, _ in repo.sources_for(session, "050138")} == {
+            "fap-dental",
+            "fap-nw",
+            "fap-scal",
+        }
+
+
+def test_recheck_withdraw_and_confirmation_reject_fields_quoted_from_a_linked_set_aside_document():
+    # Review of 7.16: recheck flagged a field only once its document was no longer linked, so the
+    # nine published Kaiser California sheets quoting Kaiser Northwest's dental policy, still
+    # linked to them on the local database, passed it. What a build sets aside before structuring
+    # is now held to stored sheets too, with a reason each. The dental policy's and Washington's
+    # own sentences are stood in for by the sample policy's, which the sheets quote.
+    from waive.atlas.pipeline import confirm_domain, recheck_sheets, withdraw_rejected
+    from waive.atlas.verify import DENTAL_REASON, OTHER_REGION_REASON
+
+    engine = make_engine_with_hospital(KAISER_LOS_ANGELES, KAISER_SAN_FRANCISCO)
+    with session_scope(engine) as session:
+        dental = store_kaiser(
+            session, "050138", "fap-dental", DENTAL_PATH, DENTAL_TEXT + POLICY_TEXT, DENTAL_TITLE
+        )
+        publish_quoting(session, "050138", dental)
+        washington = store_kaiser(
+            session,
+            "050076",
+            "fap-washington",
+            WASHINGTON_PATH,
+            WASHINGTON_TEXT,
+            "Charity Care Policy",
+            docs=WASHINGTON_SITE,
+        )
+        publish_quoting(session, "050076", washington)
+        quoted = [path for path, _ in repo.latest_sheet(session, "050138")[0].field_paths()]
+        assert {entry.ccn: entry.rejected for entry in recheck_sheets(session, "CA")} == {
+            "050138": [(path, DENTAL_REASON) for path in quoted],
+            "050076": [(path, OTHER_REGION_REASON) for path in quoted],
+        }
+        withdrawn = withdraw_rejected(session, "CA")
+        assert sorted((r.ccn, r.outcome, r.version) for r in withdrawn) == [
+            ("050076", "held", 2),
+            ("050138", "held", 2),
+        ]
+        for ccn in ("050076", "050138"):
+            assert repo.latest_sheet(session, ccn)[0].field_paths() == []
+        assert recheck_sheets(session, "CA") == []
+    # Confirming the website re-verifies the sheet the same way: San Rafael (050510) was matched
+    # at 0.6 and given Kaiser Northwest's policy by its re-scout in 7.15c.
+    san_rafael = {
+        **KAISER_LOS_ANGELES,
+        "ccn": "050510",
+        "name": "KAISER FOUNDATION HOSPITAL",
+        "city": "SAN RAFAEL",
+        "zip": "94903",
+        "domain_confidence": 0.6,
+    }
+    engine = make_engine_with_hospital(san_rafael)
+    with session_scope(engine) as session:
+        northwest = store_kaiser(session, "050510", "fap-nw", NW_PATH, NW_TEXT + POLICY_TEXT)
+        publish_quoting(session, "050510", northwest)
+        result = confirm_domain(session, "050510", "kaiserpermanente.org")
+        assert (result.outcome, result.version) == ("held", 2)
+        assert f"eligibility.free_care_max_fpl: {OTHER_REGION_REASON}" in result.notes
+        assert repo.latest_sheet(session, "050510")[0].field_paths() == []
+
+
+class FailingModel(FakeAI):
+    def complete_json(self, *args, **kwargs):
+        raise AIOutputError("model output did not match SheetDraft (free_care_max_fpl: dict_type)")
+
+
+def test_a_failed_structurer_still_holds_the_fields_quoted_from_what_the_build_detached():
+    # Review of 7.16: Los Angeles's sheet quoted the dental policy; the rebuild detached it and
+    # the structurer then gave nothing usable, which left the dental bands published.
+    engine = make_engine_with_hospital(KAISER_LOS_ANGELES)
+    with session_scope(engine) as session:
+        dental = store_kaiser(
+            session, "050138", "fap-dental", DENTAL_PATH, DENTAL_TEXT, DENTAL_TITLE
+        )
+        store_kaiser(session, "050138", "fap-scal", SCAL_PATH, SCAL_TEXT)
+        publish_quoting(session, "050138", dental)
+        quoted = [path for path, _ in repo.latest_sheet(session, "050138")[0].field_paths()]
+        result = build_hospital(
+            session, NoSpend(), FailingModel(), "050138", TODAY, reuse_sources=True
+        )
+        assert (result.outcome, result.version) == ("failed", 2)
+        assert result.notes[0] == DENTAL_NOTE
+        assert result.notes[-1] == held_note(quoted)
+        held, _ = repo.latest_sheet(session, "050138")
+        assert held.status is SheetStatus.HELD and held.field_paths() == []
+        kinds = sorted(item.kind for item in repo.open_review_items(session, "050138"))
+        assert kinds == ["dental_documents", "structure_failed"]
+    # A sheet that quotes none of what was detached is left as it is.
+    engine = make_engine_with_hospital(KAISER_LOS_ANGELES)
+    with session_scope(engine) as session:
+        store_kaiser(session, "050138", "fap-dental", DENTAL_PATH, DENTAL_TEXT, DENTAL_TITLE)
+        scal = store_kaiser(session, "050138", "fap-scal", SCAL_PATH, SCAL_TEXT)
+        publish_quoting(session, "050138", scal)
+        result = build_hospital(
+            session, NoSpend(), FailingModel(), "050138", TODAY, reuse_sources=True
+        )
+        assert (result.outcome, result.version) == ("failed", None)
+        assert repo.latest_sheet(session, "050138")[0].status is SheetStatus.PUBLISHED
+
+
+def store_kaiser_region_documents(session, ccn):
+    """Kaiser Northwest's policy, quoting the sample's sentences, with California's and Kaiser
+    Washington's beside it."""
+    northwest_text = "Kaiser Foundation Health Plan of the Northwest.\n" + POLICY_TEXT
+    store_kaiser(session, ccn, "fap-nw", NW_PATH, northwest_text)
+    store_kaiser(session, ccn, "fap-scal", SCAL_PATH, SCAL_TEXT.replace("250%", "200%"))
+    store_kaiser(
+        session,
+        ccn,
+        "fap-washington",
+        WASHINGTON_PATH,
+        WASHINGTON_TEXT.replace("250%", "300%"),
+        "Charity Care Policy",
+        docs=WASHINGTON_SITE,
+    )
+
+
+def test_a_kaiser_hospital_outside_california_keeps_its_own_regions_documents():
+    # Review of 7.16: Kaiser Sunnyside (380091, Oregon) is in Kaiser Northwest's region, which
+    # serves Oregon and Washington: Northwest's policy is its own, while California's and Kaiser
+    # Washington's, which serves Washington alone, are other regions'. Kaiser Permanente Central
+    # Hospital (500052, Seattle) keeps both Northwest's and Washington's.
+    sunnyside = {
+        **KAISER_LOS_ANGELES,
+        "ccn": "380091",
+        "name": "KAISER SUNNYSIDE MEDICAL CENTER",
+        "city": "CLACKAMAS",
+        "state": "OR",
+        "zip": "97015",
+    }
+    engine = make_engine_with_hospital(sunnyside)
+    with session_scope(engine) as session:
+        store_kaiser_region_documents(session, "380091")
+        ai = GroundedAI()
+        result = build_hospital(session, NoSpend(), ai, "380091", TODAY, reuse_sources=True)
+        assert result.outcome == "published"
+        detail = review_detail(session, "380091", "other_state_documents")
+        assert detail["state"] == "OR"
+        assert sorted((entry["id"], entry["states"]) for entry in detail["sources"]) == [
+            ("fap-scal", ["CA"]),
+            ("fap-washington", ["WA"]),
+        ]
+        assert ai.prompts and all(
+            "names_state=OR,WA" in p and "fap-scal" not in p and "fap-washington" not in p
+            for p in ai.prompts
+        )
+        assert repo.latest_sheet(session, "380091")[0].eligibility.free_care_max_fpl.source_id == (
+            "fap-nw"
+        )
+    seattle = {**sunnyside, "ccn": "500052", "name": "KAISER PERMANENTE CENTRAL HOSPITAL"}
+    seattle.update(city="SEATTLE", state="WA", zip="98112")
+    engine = make_engine_with_hospital(seattle)
+    with session_scope(engine) as session:
+        store_kaiser_region_documents(session, "500052")
+        ai = GroundedAI()
+        build_hospital(session, NoSpend(), ai, "500052", TODAY, reuse_sources=True)
+        assert ai.prompts and all("fap-nw" in p and "fap-washington" in p for p in ai.prompts)
+        assert all("fap-scal" not in p for p in ai.prompts)
+        assert {s.id for s, _ in repo.sources_for(session, "500052")} == {
+            "fap-nw",
+            "fap-washington",
+        }
 
 
 # Baptist Health's Tagalog policy, which Baptist Beaches and Nassau (100117, 100140) quoted on the

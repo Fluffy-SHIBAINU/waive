@@ -6,6 +6,7 @@ from collections import Counter
 from collections.abc import Callable
 from datetime import date
 from decimal import Decimal, InvalidOperation
+from itertools import pairwise
 from typing import Any, NamedTuple
 from urllib.parse import unquote, urlparse
 
@@ -27,6 +28,7 @@ from waive.atlas.verify import (
     quotes_assistance_ceiling,
     supported_doc_types,
     supported_programs,
+    supported_providers,
     supported_submit_methods,
 )
 from waive.rules.deadlines import MIN_ECA_WAIT_DAYS
@@ -45,8 +47,9 @@ Rules:
 9. "presumptive" lists programs whose members qualify automatically (for example Medicaid, MassHealth, SNAP).
 10. "free_care_max_fpl" is only the upper income bound of a 100% discount (free care) band: fill it when the documents say that care is free, at no charge, or discounted 100% for incomes up to that level. Otherwise leave it null.
 11. "assistance_ceiling_fpl" is the highest household income (as % FPL) at which any financial assistance or discount is available at all, when the documents state one: "assistance is available to incomes less than 600% of the federal poverty guidelines", "discounts are limited to incomes up to 300% FPG", "eligible up to 400% FPL". Such a sentence is an eligibility ceiling on all help, never a free-care band: put its number here and leave free_care_max_fpl null unless another passage grants free care. Leave assistance_ceiling_fpl null when the only income limit stated is the free-care band itself. Its quote must include the words that tie the number to the poverty level ("up to 300% of the Federal Poverty Guidelines"), not the number alone.
-12. When the documents include versions of one policy for different states (a SOURCE header says names_state=XX), use the version for the hospital's state, the state on the "Hospital:" line, and ignore the others.
-13. Reply with only the JSON object, no commentary."""
+12. "covered_providers" lists the providers (physician groups, anesthesia, radiology, emergency physicians) whose care the policy covers, when the documents give such a list; it is not the list of providers NOT covered.
+13. When the documents include versions of one policy for different states (a SOURCE header says names_state=XX), use the version for the hospital's state, the state on the "Hospital:" line, and ignore the others.
+14. Reply with only the JSON object, no commentary."""
 
 MAX_DOC_CHARS = 40_000
 PASSAGE_HEAD_CHARS = 6_000
@@ -140,6 +143,7 @@ class SheetDraft(BaseModel):
     phone: DraftField | None = None
     hours: DraftField | None = None
     languages: DraftField | None = None
+    covered_providers: DraftField | None = None
     facilities: DraftField | None = None
 
 
@@ -293,6 +297,61 @@ def _states(value: Any) -> list[str]:
 
 
 _PARENTHESISED_CODE = re.compile(rf"\(({_CODE})\)")
+# Kaiser Permanente runs its regions from one site and files each region's documents under the
+# region's marker, not a state's name: kp.org/mfa/mas is the Mid-Atlantic States' aid page,
+# .../support/mfa-summary-nw-2023-english.pdf Kaiser Northwest's (Oregon and Washington) summary,
+# wa.kaiserpermanente.org Kaiser Washington's site. Five California sheets cited the Mid-Atlantic
+# page, and California Kaiser hospitals stored the Northwest, Georgia and Washington documents
+# too (task 7.16).
+KAISER_HOSTS = ("kaiserpermanente.org", "kp.org")
+KAISER_REGIONS: dict[str, frozenset[str]] = {
+    "nw": frozenset({"OR", "WA"}),
+    "northwest": frozenset({"OR", "WA"}),
+    "mas": frozenset({"MD", "VA", "DC"}),
+    "mid-atlantic": frozenset({"MD", "VA", "DC"}),
+    "ga": frozenset({"GA"}),
+    "co": frozenset({"CO"}),
+    "hi": frozenset({"HI"}),
+    "wa": frozenset({"WA"}),  # kp.org/mfa/wa, filed like kp.org/mfa/mas
+    "ncal": frozenset({"CA"}),
+    "scal": frozenset({"CA"}),
+    "northern-california": frozenset({"CA"}),
+    "southern-california": frozenset({"CA"}),
+}
+KAISER_HOST_REGIONS: dict[str, frozenset[str]] = {"wa": frozenset({"WA"})}
+# Words that make a billing compound of the word before them in a file's name: "co-pay",
+# "co-payment", "co-insurance" (review of 7.16).
+COMPOUND_TAILS = frozenset({"pay", "pays", "payment", "payments", "insurance"})
+
+
+def is_kaiser_host(url: str) -> bool:
+    host = (urlparse(url).hostname or "").lower()
+    return any(host == base or host.endswith("." + base) for base in KAISER_HOSTS)
+
+
+def kaiser_region_states(url: str) -> set[str]:
+    """The states served by the Kaiser region a kaiserpermanente.org or kp.org address names: the
+    host's first label (wa.), a whole path segment (/mfa/mas, /northern-california/) or a word of
+    the file's name (mfa-policy-ga-2024-english.pdf), never part of another word. Only a file's
+    name (a last segment with an extension) is read word by word, and there a word that begins a
+    billing compound is none ("co-pay", "co-insurance"); a folder's or a page's name counts whole
+    or not at all. Any other site: none."""
+    if not is_kaiser_host(url):
+        return set()
+    parts = urlparse(url)
+    found = set(KAISER_HOST_REGIONS.get((parts.hostname or "").lower().split(".")[0], ()))
+    segments = [s for s in unquote(parts.path).lower().replace("_", "-").split("/") if s]
+    tokens = set(segments)
+    if segments and "." in segments[-1]:
+        words = segments[-1].rsplit(".", 1)[0].split("-")
+        tails = [*words[1:], ""]
+        tokens.update(
+            word for word, tail in zip(words, tails, strict=True) if tail not in COMPOUND_TAILS
+        )
+        tokens.update(f"{first}-{second}" for first, second in pairwise(words))
+    for token in tokens:
+        found.update(KAISER_REGIONS.get(token, ()))
+    return found
 
 
 def document_states(title: str, url: str, hospital: HospitalRef | None = None) -> set[str]:
@@ -302,14 +361,26 @@ def document_states(title: str, url: str, hospital: HospitalRef | None = None) -
     publishes records, it does not make a document Illinois's. A system that keeps one policy per
     state publishes them side by side (Adventist Health, task 7.9), and only the hospital's own
     state's version is its policy. A state inside the hospital's own name or city is not one the
-    document names: Sierra Nevada Memorial's policy is California's, not Nevada's (review of 7.9)."""
+    document names: Sierra Nevada Memorial's policy is California's, not Nevada's (review of 7.9).
+    On Kaiser's sites the region's marker in the address names the region's states as well
+    (kaiser_region_states): that is Kaiser's filing, not a word of the hospital's name."""
     path = unquote(urlparse(url).path) if url else ""
     text = re.sub(r"[-_./%+]", " ", f"{title} {path}")
     found = states_named(text)
     found.update(_PARENTHESISED_CODE.findall(title))
     if hospital is not None:
         found -= states_named(f"{hospital.name} {hospital.city}")
-    return found
+    return found | kaiser_region_states(url)
+
+
+def another_kaiser_region(title: str, url: str, hospital: HospitalRef) -> bool:
+    """A document on Kaiser's sites that names only states other than the hospital's, by its
+    region's marker, its address or its title: another region's policy, which is never this
+    hospital's even when it is all there is (task 7.16)."""
+    if not is_kaiser_host(url):
+        return False
+    named = document_states(title, url, hospital)
+    return bool(named) and hospital.state not in named
 
 
 # Task 7.15a: six published sheets quoted a translation of the hospital's policy (BID Needham 220083
@@ -568,12 +639,14 @@ FIELD_MAP: dict[str, tuple[str, str, Callable[[Any], Any]]] = {
     "hours": ("contacts", "hours", _text),
     "languages": ("contacts", "languages", _str_list),
     "facilities": ("coverage", "facilities", _str_list),
+    "covered_providers": ("coverage", "covered_providers", _str_list),
 }
 # Lists whose items must each be named by the quote; the caster above shapes them, these prune.
 QUOTE_FILTERS: dict[str, Callable[[Any, str], Any]] = {
     "apply.documents_required": supported_doc_types,
     "apply.submit_methods": supported_submit_methods,
     "programs.presumptive": supported_programs,
+    "coverage.covered_providers": supported_providers,
 }
 
 

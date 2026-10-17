@@ -632,6 +632,29 @@ def test_a_discount_given_as_a_range_or_a_floor_is_not_one_tier():
     assert ("eligibility.discount_tiers", RANGE_REASON) not in report.rejected
 
 
+def test_a_discount_ranging_from_one_percentage_to_another_is_a_range():
+    from waive.atlas.verify import RANGE_REASON, discount_range_in_quote
+
+    # Mercyhealth Crystal Lake (140308), 7.15: "a sliding scale discount ranging from 20% to 80%"
+    # was published as a 20% band, because only "discount of 20% to 80%" read as a range.
+    mercyhealth = (
+        "Patients with household gross income above 250% but at or below 350% of the FPL will "
+        "get a sliding scale discount ranging from 20% to 80%."
+    )
+    assert discount_range_in_quote(mercyhealth) == {Decimal(20), Decimal(80)}
+    assert discount_range_in_quote("discounts from 25% to 100% of charges") == {
+        Decimal(25),
+        Decimal(100),
+    }
+    assert discount_range_in_quote("a discount that ranges from 10% to 90%") == {
+        Decimal(10),
+        Decimal(90),
+    }
+    docs = {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT + "\n" + mercyhealth + "\n"}
+    report = verify_sheet(with_tiers_quote(mercyhealth, [(250, 350, 20)]), docs)
+    assert ("eligibility.discount_tiers", RANGE_REASON) in report.rejected
+
+
 def test_a_true_asset_test_is_not_supported_by_a_quote_that_rules_assets_out():
     from waive.atlas.verify import ASSET_REASON
 
@@ -1081,16 +1104,24 @@ def test_trimming_never_widens_a_free_care_quote_to_a_passage_the_verifier_rejec
     assert all(path != free for path, _ in verify_sheet(trimmed, docs).rejected)
 
 
-def test_a_field_quoted_from_a_translation_the_caller_names_is_rejected():
-    from waive.atlas.verify import TRANSLATION_REASON
+def test_a_field_quoted_from_a_document_the_caller_sets_aside_is_rejected_with_its_reason():
+    from waive.atlas.verify import DENTAL_REASON, OTHER_REGION_REASON, TRANSLATION_REASON
 
     # Review of 7.15b: the pipeline names the documents that are translations while an English
-    # document states the income rules; every field quoted from one is rejected.
+    # document states the income rules; every field quoted from one is rejected. Review of 7.16:
+    # so is every field quoted from a dental program's document or another Kaiser region's.
     sheet = st_example_sheet()
-    report = verify_sheet(sheet, DOCS, translations=frozenset({SAMPLE_SOURCE_ID}))
-    assert {reason for _, reason in report.rejected} == {TRANSLATION_REASON}
-    assert len(report.rejected) == len(sheet.field_paths())
+    for reason in (TRANSLATION_REASON, DENTAL_REASON, OTHER_REGION_REASON):
+        report = verify_sheet(sheet, DOCS, {SAMPLE_SOURCE_ID: reason})
+        assert {rejected for _, rejected in report.rejected} == {reason}
+        assert len(report.rejected) == len(sheet.field_paths())
     assert verify_sheet(sheet, DOCS).ok
+    assert verify_sheet(sheet, DOCS, {"fap-elsewhere": DENTAL_REASON}).ok
+    # A quote its document does not contain is reported as that first.
+    report = verify_sheet(
+        sheet, {SAMPLE_SOURCE_ID: "Nothing here."}, {SAMPLE_SOURCE_ID: DENTAL_REASON}
+    )
+    assert {rejected for _, rejected in report.rejected} == {"quote not found in source"}
 
 
 def test_a_stitched_free_care_quote_keeps_the_sentence_that_states_the_limit():
@@ -1385,3 +1416,19 @@ def test_reading_poverty_percentages_stays_fast_on_a_long_run_of_years():
     # The income-limit rule reads a few words around each occurrence, never the whole table.
     assert not states_income_limit("Sliding Scale " + "100% 89% " * 2_000, Decimal(100))
     assert time.perf_counter() - started < 2
+
+
+def test_the_verifier_rejects_a_covered_provider_the_quote_does_not_name():
+    from waive.atlas.schema import Cited, Coverage
+
+    sheet = st_example_sheet()
+    cited = Cited[list[str]](
+        value=["Example Emergency Physicians", "Harbor Hospitalists"],
+        quote="providers covered by this policy: Example Emergency Physicians",
+        source_id=SAMPLE_SOURCE_ID,
+        checked_on=sheet.eligibility.free_care_max_fpl.checked_on,
+    )
+    listed = sheet.model_copy(update={"coverage": Coverage(covered_providers=cited)})
+    report = verify_sheet(listed, {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT})
+    assert not report.ok
+    assert any(path == "coverage.covered_providers" for path, _ in report.rejected)

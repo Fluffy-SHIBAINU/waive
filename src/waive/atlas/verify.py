@@ -2,7 +2,7 @@
 
 import re
 import unicodedata
-from collections.abc import Callable
+from collections.abc import Callable, Mapping
 from dataclasses import dataclass, field
 from decimal import Decimal
 from functools import partial
@@ -128,6 +128,8 @@ _PERCENT = r"(\d+(?:\.\d+)?)\s*%"
 # "a reduction of 55% to 75%", "a discount of at least 25%" (discount word first) ...
 _RANGE_BEFORE = re.compile(
     rf"\b(?:discounts?|reductions?|reduc\w+|write[- ]?offs?)\s+(?:of\s+)?"
+    # "a sliding scale discount ranging from 20% to 80%" (Mercyhealth Crystal Lake, 140308, 7.15)
+    r"(?:(?:that\s+)?(?:ranging|ranges?)\s+)?(?:from\s+)?"
     rf"(?:(at least|up to|between)\s+)?{_PERCENT}(?:\s*(?:to|-|and)\s*{_PERCENT})?"
 )
 # ... and "a 30% to 50% discount", "up to 75% off" (discount word last).
@@ -440,6 +442,7 @@ PROGRAM_GENERIC_WORDS = frozenset(
     }
 )  # fmt: skip
 MAX_PROGRAM_CHARS = 60
+MAX_PROVIDER_CHARS = 120
 # A criterion copied as a program ("Individual is self-identified as homeless.").
 _SENTENCE_SHAPED = re.compile(r"\b(?:is|are|was|were|has|have|will|may|must)\b|\.$")
 
@@ -478,10 +481,25 @@ def supported_programs(value: list[str], quote: str) -> list[str]:
     return kept
 
 
+def supported_providers(value: list[str], quote: str) -> list[str]:
+    """The listed covered providers the quote names (task 9.12): a provider the passage does
+    not mention would otherwise become a cited "covered" answer for a physician group."""
+    text = normalize(quote)
+    kept = [
+        item
+        for item in dict.fromkeys(value)
+        if len(item) <= MAX_PROVIDER_CHARS and normalize(item) in text
+    ]
+    if not kept:
+        raise ValueError("none of the listed providers is named in the quote")
+    return kept
+
+
 LIST_SUPPORT: dict[str, Callable[[Any, str], list[Any]]] = {
     "apply.documents_required": supported_doc_types,
     "apply.submit_methods": supported_submit_methods,
     "programs.presumptive": supported_programs,
+    "coverage.covered_providers": supported_providers,
 }
 LIST_REASON = "quote does not name every listed item"
 
@@ -1027,9 +1045,14 @@ def trim_quotes(sheet: ProcedureSheet, documents: dict[str, str]) -> ProcedureSh
 # Review of 7.15b: 16 published sheets cite a translation while an English document that states the
 # income rules is stored (Anna Jaques, 220029, four fields in Italian; Edward, 140231, in Japanese;
 # Jefferson Northeast, 390115, in Vietnamese), and seniors read the quotes on the public atlas. The
-# pipeline names those documents (pipeline._translations_to_reject); verify_sheet rejects every
-# field quoted from one, so a recheck withdraws it at no cost and a rebuild quotes the English one.
+# pipeline names those documents (pipeline._documents_set_aside); verify_sheet rejects every field
+# quoted from one, so a recheck withdraws it at no cost and a rebuild quotes the English one.
 TRANSLATION_REASON = "quote is from a translation while an English document states the income rules"
+# Task 7.16: nine published Kaiser California sheets quoted Kaiser Northwest's dental policy, and
+# others Kaiser's Mid-Atlantic, Northwest, Georgia or Washington documents. A build sets those
+# aside before structuring; a sheet built before still quotes them while they stay linked.
+DENTAL_REASON = "quote is from a dental assistance program's document, not the hospital's policy"
+OTHER_REGION_REASON = "quote is from another Kaiser region's policy, not the hospital's state's"
 
 
 @dataclass
@@ -1043,10 +1066,14 @@ class VerificationReport:
 
 
 def verify_sheet(
-    sheet: ProcedureSheet, documents: dict[str, str], translations: frozenset[str] = frozenset()
+    sheet: ProcedureSheet,
+    documents: dict[str, str],
+    set_aside: Mapping[str, str] | None = None,
 ) -> VerificationReport:
-    """Each documented field held to its quote and its source text; `translations` names the
-    documents no field may be quoted from (see TRANSLATION_REASON)."""
+    """Each documented field held to its quote and its source text; `set_aside` names the
+    documents no field may be quoted from, each with the reason (TRANSLATION_REASON,
+    DENTAL_REASON, OTHER_REGION_REASON)."""
+    set_aside = set_aside or {}
     report = VerificationReport()
     for path, cited in sheet.field_paths():
         if cited.layer is Layer.REPORTED:
@@ -1057,8 +1084,8 @@ def verify_sheet(
             report.rejected.append((path, "source text missing"))
         elif not quote_found(cited.quote or "", text):
             report.rejected.append((path, "quote not found in source"))
-        elif cited.source_id in translations:
-            report.rejected.append((path, TRANSLATION_REASON))
+        elif reason := set_aside.get(cited.source_id or ""):
+            report.rejected.append((path, reason))
         elif looks_serialised(cited.value):
             report.rejected.append((path, "value is a list or object written as text"))
         elif not value_in_quote(cited.value, cited.quote or "") and not (

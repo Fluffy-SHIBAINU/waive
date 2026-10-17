@@ -132,3 +132,117 @@ def test_the_cover_letter_for_a_ceiling_only_policy_never_claims_free_care():
     assert "and the hospital decides the amount." in text
     assert f'Your policy states: "{CEILING_QUOTE}"' in text
     assert "free" not in text.lower()
+
+
+def shown_for(result, bill, **extra):
+    return CaseView(
+        case_id="c",
+        status="approved",
+        hospital_name="St. Example Medical Center",
+        ccn="229999",
+        bill=bill,
+        household_size=1,
+        tier=result.tier,
+        result=result,
+        **extra,
+    )
+
+
+def pdf_text(data):
+    return "".join(page.extract_text() for page in PdfReader(io.BytesIO(build_packet(data))).pages)
+
+
+def test_a_qmb_case_gets_a_cost_sharing_complaint_letter_not_an_application():
+    from waive.rules.coverage import cost_sharing_result
+
+    bill = BillExtract(
+        patient_name="Rosa Alvarez",
+        account_reference="ACCT-1",
+        amount_due=Decimal("1850"),
+        statement_date=date(2026, 9, 3),
+    )
+    shown = shown_for(cost_sharing_result(), bill, next_step="cost_sharing", state="MA")
+    data = packet_data(shown, st_example_sheet(), TODAY)
+    assert data.kind == "cost_sharing"
+    assert data.submit_lines[0].startswith("Mail:")  # the hospital's own address still helps
+    text = pdf_text(data).replace("\n", " ")
+    assert "1902(n)(3)(B)" in text and "447.15" in text
+    assert "cancel" in text.lower() and "refund" in text.lower()
+    assert "1-800-MEDICARE" in text and "MassHealth" in text
+    assert "apply for financial assistance" not in text
+    assert "Copy of your MassHealth or QMB card" in text
+
+
+def test_a_cost_sharing_letter_needs_no_sheet():
+    from waive.rules.coverage import cost_sharing_result
+
+    shown = shown_for(
+        cost_sharing_result(), BillExtract(amount_due=Decimal("1")), next_step="cost_sharing"
+    )
+    data = packet_data(shown, None, TODAY)
+    assert data.kind == "cost_sharing" and data.submit_lines == [] and data.documents == []
+    assert "address on the bill" in pdf_text(data).replace("\n", " ")
+
+
+def test_a_physician_group_bill_gets_a_request_to_the_group():
+    from waive.cases.extract import PayeeKind
+    from waive.rules.coverage import payee_route
+
+    bill = BillExtract(
+        amount_due=Decimal("640"),
+        statement_date=date(2026, 9, 3),
+        payee_kind=PayeeKind.PHYSICIAN_GROUP,
+        payee_name="Example Emergency Physicians, P.A.",
+    )
+    route = payee_route(st_example_sheet(), bill)
+    shown = shown_for(
+        route.result,
+        bill,
+        next_step="payee_request",
+        payee_name="Example Emergency Physicians, P.A.",
+    )
+    data = packet_data(shown, st_example_sheet(), TODAY)
+    assert data.kind == "payee_request" and data.submit_lines == []
+    text = pdf_text(data).replace("\n", " ")
+    assert "To: Example Emergency Physicians, P.A." in text
+    assert "financial assistance" in text and "Federal Poverty" not in text
+    assert "To: Patient Financial Services" not in text
+
+
+def test_a_card_holder_billed_by_an_outside_payee_gets_the_complaint_addressed_to_the_payee():
+    from waive.cases.extract import PayeeKind
+    from waive.rules.coverage import cost_sharing_result
+
+    bill = BillExtract(
+        amount_due=Decimal("640"),
+        payee_kind=PayeeKind.AMBULANCE,
+        payee_name="Boston EMS",
+    )
+    shown = shown_for(
+        cost_sharing_result(), bill, next_step="cost_sharing", payee_name="Boston EMS"
+    )
+    data = packet_data(shown, st_example_sheet(), TODAY)
+    assert data.kind == "cost_sharing" and data.submit_lines == []
+    text = pdf_text(data).replace("\n", " ")
+    assert "To: Boston EMS" in text and "To: Patient Financial Services" not in text
+    assert "If this balance is" in text  # the law applies to cost-sharing; the letter says so
+
+
+def test_names_with_markup_characters_survive_the_pdf():
+    from waive.cases.extract import PayeeKind
+    from waive.rules.coverage import payee_route
+
+    bill = BillExtract(
+        patient_name="Rosa <Alvarez>",
+        account_reference="A&B<1>",
+        statement_date=date(2026, 9, 3),
+        amount_due=Decimal("640"),
+        payee_kind=PayeeKind.PHYSICIAN_GROUP,
+        payee_name="Acme <Billing> & Co",
+    )
+    route = payee_route(st_example_sheet(), bill)
+    shown = shown_for(
+        route.result, bill, next_step="payee_request", payee_name="Acme <Billing> & Co"
+    )
+    text = pdf_text(packet_data(shown, st_example_sheet(), TODAY)).replace("\n", " ")
+    assert "Acme <Billing> & Co" in text and "Rosa <Alvarez>" in text and "A&B<1>" in text

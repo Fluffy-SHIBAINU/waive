@@ -1067,6 +1067,176 @@ def test_a_state_in_the_hospitals_own_name_is_not_one_its_documents_name():
     assert document_states("Pennsylvania Fair Pricing Notice", "", washington) == {"PA"}
 
 
+# Task 7.16: the Kaiser documents California Kaiser hospitals stored, as the scout titled them.
+KAISER_DOCS = "https://healthy.kaiserpermanente.org/content/dam/kporg/final/documents/"
+KAISER_MFA = "POLICY TITLE Medical Financial Assistance"
+
+
+def test_kaiser_region_markers_name_the_states_the_region_serves():
+    # Kaiser files each region's documents under the region's marker, not a state's name: five
+    # California sheets cited the Mid-Atlantic States' page, and others stored Kaiser Northwest's,
+    # Georgia's and Washington's documents.
+    from waive.atlas.structure import document_states
+
+    mid_atlantic = {"MD", "VA", "DC"}
+    northwest = {"OR", "WA"}
+    assert (
+        document_states(
+            "Medical Financial Assistance | Kaiser Permanente", "https://kp.org/mfa/mas"
+        )
+        == mid_atlantic
+    )
+    assert (
+        document_states(
+            "Medical Financial Assistance Policy Summary",
+            KAISER_DOCS + "support/2025-MFA-Program-Summary-MAS-English-ADA-v2.pdf",
+        )
+        == mid_atlantic
+    )
+    assert (
+        document_states(
+            "[PDF] Medical Financial Assistance Policy Summary | Kaiser Permanente",
+            KAISER_DOCS + "support/mfa-summary-mas-2022-english.pdf",
+        )
+        == mid_atlantic
+    )
+    assert (
+        document_states(
+            KAISER_MFA, KAISER_DOCS + "mfa/nw/english/mfa-policy-and-addendum-nw-english-ada.pdf"
+        )
+        == northwest
+    )
+    assert (
+        document_states(
+            "[PDF] Medical Financial Assistance Policy Summary - Kaiser Permanente",
+            KAISER_DOCS + "support/mfa-summary-nw-2023-english.pdf",
+        )
+        == northwest
+    )
+    assert document_states(
+        "[PDF] POLICY TITLE Medical Financial Assistance - Kaiser Permanente",
+        KAISER_DOCS + "support/mfa-policy-ga-2024-english.pdf",
+    ) == {"GA"}
+    assert document_states(
+        "Charity Care Policy",
+        "https://wa.kaiserpermanente.org/static/pdf/public/customer-service/charity-care-policy.pdf",
+    ) == {"WA"}
+    # Kaiser Washington's aid page is filed like the Mid-Atlantic States' one.
+    assert document_states(
+        "Medical Financial Assistance | Kaiser Permanente", "https://kp.org/mfa/wa"
+    ) == {"WA"}
+    assert document_states("", "https://kp.org/mfa/northwest") == northwest
+    assert document_states("", "https://www.kp.org/mfa/mid-atlantic") == mid_atlantic
+    assert document_states("", KAISER_DOCS + "support/mfa-policy-co-2024-english.pdf") == {"CO"}
+    assert document_states("", KAISER_DOCS + "support/mfa-policy-hi-2024-english.pdf") == {"HI"}
+    # California's own, by its codes as well as its name.
+    for path in (
+        "mfa/southern-california/english/mfa-policy-and-addendum-scal-english-ada.pdf",
+        "mfa/northern-california/english-ncal/mfa-policy-and-addendum-ncal-english-ada.pdf",
+        "support/mfa-policy-scal-2024-english.pdf",
+        "support/mfa-application-ncal-2024-english.pdf",
+    ):
+        assert document_states(KAISER_MFA, KAISER_DOCS + path) == {"CA"}
+    # The dental policy and Kaiser's national pages name no region.
+    assert (
+        document_states(
+            "POLICY TITLE: Medical Financial Assistance",
+            KAISER_DOCS + "dfa/policy/dfa-policy-english-ada.pdf",
+        )
+        == set()
+    )
+    assert (
+        document_states(
+            "Medical Financial Assistance | Kaiser Permanente",
+            "https://healthy.kaiserpermanente.org/help-paying-your-bill/medical-financial-assistance",
+        )
+        == set()
+    )
+
+
+def test_kaiser_region_markers_are_whole_tokens_on_kaiser_sites_only():
+    from waive.atlas.structure import document_states
+
+    # Never part of another word ("christmas", "colorectal", "gallery", "hiring") ...
+    assert (
+        document_states("", KAISER_DOCS + "support/christmas-colorectal-gallery-hiring.pdf")
+        == set()
+    )
+    # ... nor a word of a folder's name or a page's: only a file's name is read word by word.
+    assert document_states("", "https://kp.org/mas-transit/overview") == set()
+    assert document_states("", "https://kp.org/help-paying-your-bill/co-pay-assistance") == set()
+    # ... and there "co-pay", "co-payment" and "co-insurance" are billing words, not Colorado
+    # (review of 7.16).
+    for name in (
+        "support/co-pay-assistance.pdf",
+        "support/mfa-co-payment-plan-2024.pdf",
+        "support/co-insurance-faq.pdf",
+    ):
+        assert document_states("", KAISER_DOCS + name) == set(), name
+    faq = "https://healthy.kaiserpermanente.org/content/kporg/en/national/help/co-pay-faq.html"
+    assert document_states("", faq) == set()
+    # ... nor the title's.
+    assert document_states("Medical Financial Assistance (MAS) - nw", "https://kp.org/mfa") == set()
+    # Another site's region-like paths and hosts are its own business.
+    assert document_states("", "https://www.example.org/mfa/mas") == set()
+    assert (
+        document_states("", "https://www.example.org/docs/mfa-summary-nw-2023-english.pdf") == set()
+    )
+    assert document_states("", "https://wa.example.org/charity-care-policy.pdf") == set()
+    assert document_states("", "https://kp.org.example.net/mfa/mas") == set()
+
+
+def test_kaiser_documents_carry_their_region_in_the_prompt():
+    northwest = SAMPLE.sources[0].model_copy(
+        update={
+            "id": "fap-nw",
+            "title": KAISER_MFA,
+            "url": KAISER_DOCS + "mfa/nw/english/mfa-policy-and-addendum-nw-english-ada.pdf",
+        }
+    )
+    content = build_messages(SAMPLE.hospital, [(northwest, SAMPLE_POLICY_TEXT)])[1]["content"]
+    header = f"=== SOURCE id=fap-nw title={KAISER_MFA!r} url={northwest.url} names_state=OR,WA ==="
+    assert header in content
+
+
+def test_another_kaiser_regions_document_is_one_naming_only_other_states_on_kaisers_sites():
+    from waive.atlas.schema import HospitalRef
+    from waive.atlas.structure import another_kaiser_region
+
+    los_angeles = HospitalRef(
+        ccn="050138",
+        name="KAISER FOUNDATION HOSPITAL - LOS ANGELES",
+        city="LOS ANGELES",
+        state="CA",
+        zip="90027",
+        ownership="Voluntary non-profit - Other",
+    )
+    northwest = KAISER_DOCS + "support/mfa-summary-nw-2023-english.pdf"
+    assert another_kaiser_region(KAISER_MFA, northwest, los_angeles)
+    # By the title as well as the address: Kaiser's Georgia page named in its search title.
+    assert another_kaiser_region(
+        "Medical Financial Assistance | Kaiser Permanente Georgia",
+        "https://healthy.kaiserpermanente.org/help-paying-your-bill/medical-financial-assistance",
+        los_angeles,
+    )
+    # California's own, Kaiser's national pages, and other systems' documents are not.
+    scal = KAISER_DOCS + "support/mfa-policy-scal-2024-english.pdf"
+    assert not another_kaiser_region(KAISER_MFA, scal, los_angeles)
+    assert not another_kaiser_region(
+        KAISER_MFA,
+        "https://healthy.kaiserpermanente.org/help-paying-your-bill/medical-financial-assistance",
+        los_angeles,
+    )
+    hawaii = "https://www.adventisthealth.org/documents/financial-assistance-policy-hawaii.pdf"
+    assert not another_kaiser_region("Financial Assistance Policy", hawaii, los_angeles)
+    # An Oregon hospital's region is Northwest's.
+    sunnyside = los_angeles.model_copy(
+        update={"ccn": "380091", "name": "KAISER SUNNYSIDE MEDICAL CENTER", "state": "OR"}
+    )
+    assert not another_kaiser_region(KAISER_MFA, northwest, sunnyside)
+    assert another_kaiser_region(KAISER_MFA, scal, sunnyside)
+
+
 # Task 7.15a: the translations six published sheets quoted although the hospital's English policy
 # was stored, as their documents open.
 TRANSLATIONS = {
@@ -1237,3 +1407,27 @@ def test_medicaid_is_not_named_by_the_word_medical():
         ["Medicaid"],
         "Patients with unpaid medical bills over 25% of income are deemed presumptively eligible.",
     ) == (None, ["programs.presumptive: none of the listed programs is named in the quote"])
+
+
+def test_a_covered_provider_list_lands_on_the_sheet():
+    # 501(r)(4) lists: a physician group named here is inside the FAP (task 9.12).
+    draft = SheetDraft(
+        covered_providers=field(
+            ["Example Emergency Physicians, P.A.", "Example Anesthesia Associates"],
+            "providers covered by this policy: Example Emergency Physicians, P.A.",
+        )
+    )
+    sheet, skipped = draft_to_sheet(draft, SAMPLE.hospital, [SAMPLE.sources[0]], TODAY)
+    # Only the provider the quote names survives: a hallucinated entry would otherwise become
+    # a cited "covered" reason the policy text does not support.
+    assert skipped == []
+    assert sheet.coverage.covered_providers.value == ["Example Emergency Physicians, P.A."]
+    assert "covered_providers" in SYSTEM_PROMPT
+    unnamed = SheetDraft(
+        covered_providers=field(["Harbor Hospitalists"], "providers covered by this policy: none")
+    )
+    sheet, skipped = draft_to_sheet(unnamed, SAMPLE.hospital, [SAMPLE.sources[0]], TODAY)
+    assert sheet.coverage.covered_providers is None
+    assert skipped == [
+        "coverage.covered_providers: none of the listed providers is named in the quote"
+    ]
