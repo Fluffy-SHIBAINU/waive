@@ -47,6 +47,12 @@ COPIED_TABLES = frozenset(
         "review_items",
         "contributions",
         "reported_evidence",
+        # Phase 10: the hospital ledger, derived from public federal files; public like the atlas.
+        "hospital_ids",
+        "ledger_cost_reports",
+        "ledger_schedule_h",
+        "ledger_exposure",
+        "ledger_metrics",
     }
 )
 # Personal data: never read from the source, never touched in the target.

@@ -6,6 +6,7 @@
 <button type="button" class="btn" id="speak" hidden>Read this to me</button>
 {% if full %}
 {% for line in case.caregiver_text.split("\n") %}{% if line.startswith("Policy says") %}<p class="quote">{{ line }}</p>{% endif %}{% endfor %}
+{% if full %}{% include "_ledger_expect.html" %}{% endif %}
 <h2>What happens next</h2>
 {% if case.next_step == "ship" %}
 <p class="big">Waive has no form for an ambulance bill. SHIP counselors are free and can appeal it through Medicare: call 1-877-839-2675 or visit shiphelp.org.</p>
