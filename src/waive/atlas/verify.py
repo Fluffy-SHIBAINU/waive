@@ -678,6 +678,23 @@ def ceiling_problem(quote: str, value: Decimal) -> str | None:
 
 
 FREE_LIMIT_UNTIED_REASON = "quote does not state the free-care limit as an income limit"
+FREE_LIMIT_SPLIT_REASON = "quote gives different free-care limits for inpatient and outpatient care"
+_INPATIENT = re.compile(r"\bin-?patient\b")
+_OUTPATIENT = re.compile(r"\bout-?patient\b")
+
+
+def free_limit_split_by_service(quote: str) -> bool:
+    """Whether the quote gives free care up to different poverty-level limits for inpatient and
+    outpatient care. The schema holds one free-care limit, and either one misleads: OhioHealth
+    Doctors Hospital (360152, website check 2) published 150% from "up to 100% of the FPG for
+    inpatient services or 150% of the FPG for outpatient services", promising free inpatient care
+    between 100% and 150% that the policy does not give."""
+    text = normalize(quote).lower()
+    if not (_INPATIENT.search(text) and _OUTPATIENT.search(text)):
+        return False
+    return len({number for number, _ in _tied_percents(_poverty_text(quote))}) >= 2
+
+
 # Task 7.15a: Oneida (330115) published free care up to 100% of the poverty level from "Sliding
 # Scale 100% 100% 89% 89% ...", whose 100s are discounts (its table gives free care to about 133%),
 # and Holzer (360054) and Grady (360210) read 100 from a discount column too. Asking for "% of the
@@ -1109,6 +1126,10 @@ def verify_sheet(
             cited.value, cited.quote or ""
         ):
             report.rejected.append((path, FREE_LIMIT_UNTIED_REASON))
+        elif path == "eligibility.free_care_max_fpl" and free_limit_split_by_service(
+            cited.quote or ""
+        ):
+            report.rejected.append((path, FREE_LIMIT_SPLIT_REASON))
         elif path == "eligibility.free_care_max_fpl" and quotes_assistance_ceiling(
             cited.quote or ""
         ):
