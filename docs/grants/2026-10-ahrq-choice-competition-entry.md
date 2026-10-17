@@ -110,7 +110,7 @@ All three are information or simplification remedies. None sets a price or dicta
 
 *Figure 3. One ledger row for Baystate Medical Center, assembled by hand from public sources.*
 
-Two cautions travel with the row. First, Massachusetts reimburses free care through the Health Safety Net, so a low hospital-funded charity-care share is not a compliance finding; this is why M1 is a candidate measure to validate, not a grade. Second, the row is a prototype: building it automatically for every hospital with a sheet is the first Phase 1 task. Massachusetts is also where the atlas is most complete (28 of 46 nonprofit hospitals have a published sheet [24]), which makes it the first validation state.
+Two cautions travel with the row. First, Massachusetts reimburses free care through the Health Safety Net, so a low hospital-funded charity-care share is not a compliance finding; this is why M1 is a candidate measure to validate, not a grade. Second, the row is a prototype: building it automatically for every hospital with a sheet is the first Phase 1 task. Massachusetts is also where the atlas is most complete (32 of 46 nonprofit hospitals have a published sheet [24]), which makes it the first validation state.
 
 **3.3 Milestones.** Tasks 1 to 3 start now and do not depend on an award; dates for the rest assume a Phase 1 award on 2026-12-01. Findings are disseminated through the open data release, a methods note and preprint [USER CONFIRMS: venue], and the briefs in Task 7.
 
@@ -118,7 +118,7 @@ Two cautions travel with the row. First, Massachusetts reimburses free care thro
 |---|---|---|---|
 | 1 | Pre-register hypotheses H1 to H3 and the analysis plan | 15 Dec 2026 | Public registration with code [USER FILLS: registry and URL] |
 | 2 | Crosswalk from CMS certification number (CCN) to EIN to ZIP for the 1,025 nonprofit hospitals in the nine scouted states [24], with match method and confidence stored | 15 Dec 2026 | Open CSV and match-rate report |
-| 3 | Ledger v0 (Says, Does, Serves) for every hospital with a published sheet (363 on 2026-10-15); Form 990 data through tax year 2022; every cell with source and vintage | 15 Jan 2027 | Open CSV and methods note v0 |
+| 3 | Ledger v0 (Says, Does, Serves) for every hospital with a published sheet (386 on 2026-10-16); Form 990 data through tax year 2022; every cell with source and vintage | 15 Jan 2027 | Open CSV and methods note v0 |
 | 4 | Parser for IRS e-file Schedule H, tax years 2023 on, including Part V collection actions, because Community Benefit Insight no longer updates [22] | 31 Jan 2027 | Code and tests |
 | 5 | Accuracy audit: human check of a random sample of at least 100 published sheets; field-level precision with 95% confidence intervals | 31 Jan 2027 | Public audit sheet |
 | 6 | First results: H1 and H2 on the nine-state sample; Oregon before-and-after with the filings available | 2 Feb 2027 | Report with code |
@@ -191,7 +191,7 @@ Two cautions travel with the row. First, Massachusetts reimburses free care thro
 
 **Partners.** [USER FILLS: only organisations that have agreed in writing (for example navigators, counselling programs, legal aid), and the nature of each role.]
 
-**What the team has built.** Waive, a free phone-browser app for low-income seniors and their caregivers, and behind it a working pipeline that reads hospital policies into an open atlas: 2,703 nonprofit hospitals seeded from the CMS registry and 363 published sheets on 2026-10-15, including 28 of 46 in Massachusetts, with automated tests and a documented command line [24]. Spend to date is 3,680 search credits and $8.07 of model usage (as of 2026-10-13) [24]. The software was built by a solo developer working with an AI coding assistant [USER CONFIRMS: wording]. The outcomes loop has been exercised only in simulation; no real outcomes have been recorded.
+**What the team has built.** Waive, a free phone-browser app for low-income seniors and their caregivers, and behind it a working pipeline that reads hospital policies into an open atlas: 2,703 nonprofit hospitals seeded from the CMS registry and 386 published sheets on 2026-10-16, including 32 of 46 in Massachusetts, with automated tests and a documented command line [24]. Spend to date is 5,297 search credits, $11.94 of model usage and about $2.80 of cloud compute (as of 2026-10-16) [24]. The software was built by a solo developer working with an AI coding assistant [USER CONFIRMS: wording]. The outcomes loop has been exercised only in simulation; no real outcomes have been recorded.
 
 **Conflicts of interest.** [USER FILLS: entity type and ownership.] The consumer app is free to patients. [USER CONFIRMS: planned revenue includes fees from hospitals that adopt the application workflow, a commercial data tier and grants.] To keep the research independent: every metric is computed by the same open code for every hospital whatever its relationship with us; no hospital sees or influences a result before publication, except to correct a factual error through the public process; research datasets stay under CC BY 4.0; and we will disclose any payment from a hospital whose data appear in the ledger.
 
@@ -275,7 +275,7 @@ python3 -I -c "import glob, json; print(sum(len(json.load(open(f))['sheets']) fo
 uv run waive atlas report --national
 ```
 
-The first command prints the published sheets in the state exports (363 on 2026-10-15). The second prints the national coverage report from the local database: registry size, published sheets and the core-field share used in Sections 3.2, 3.3, 5.4 and 6.
+The first command prints the published sheets in the state exports (386 on 2026-10-16). The second prints the national coverage report from the local database: registry size, published sheets and the core-field share used in Sections 3.2, 3.3, 5.4 and 6.
 
 ### Text for the registration form, Section 1
 
@@ -300,13 +300,13 @@ To: HealthcareChoice@ahrq.hhs.gov. Subject: AHRQ Healthcare Choice and Competiti
 7. **Pre-registration** (Task 1). Choose the registry and add the URL.
 8. **Outcome pilot.** The entry says no real outcomes exist. Add partners or case counts only if they exist.
 9. **Small-cell threshold** (Section 7.4).
-10. **Public repository parity.** On 2026-10-16 the public repository's `docs/reports/atlas-national.md` showed the same 363 published sheets as the local copy. Push again before filing if the counts changed.
+10. **Public repository parity.** The counts in the entry (386 published sheets, 32 of 46 in Massachusetts, 5,297 search credits, $11.94 of model usage) are those of `main` on 2026-10-16, read after merging `origin/main` into this branch. The public repository's atlas report matched the local copy on 2026-10-16. Re-read the numbers before filing if scouting has continued.
 
 ### D2. Soften or handle in the text
 
 11. **The ledger is planned, not built.** Figure 3 was assembled by hand from live public sources on 2026-10-16. The collection-action cell is "not extracted" because the IRS filing could not be read (the aggregator returns blanks for this hospital and the filing PDF was not retrievable).
 12. **Outcomes are simulated only** (README: "No real outcomes yet"; nothing is deployed).
-13. **Counts.** The entry uses 363 published sheets (exports generated 2026-10-15; `docs/reports/atlas-national.md`). The research notes said 305 (from `docs/PROGRESS.md`, 2026-10-13). Re-count before filing.
+13. **Counts.** The entry uses 386 published sheets (exports generated 2026-10-16; `docs/reports/atlas-national.md`). The research notes said 305 (from `docs/PROGRESS.md`, 2026-10-13); the count was 363 on 2026-10-15 and 386 a day later as scouting continued. Re-count before filing.
 14. **Quote verification is not meaning verification.** Baystate's 150% limit is the state Health Safety Net's primary tier, not a hospital-funded tier (confirmed in the hospital's own policy); the atlas stores it as the free-care limit and does not parse the hospital's supplemental tiers. There is no human-audited accuracy figure in the repository; the entry claims none and commits to an audit (Task 5).
 15. **The "57% of core fields" figure** is an average over six fields per published sheet (`src/waive/atlas/schema.py`, `CORE_FIELDS`). It mixes fields a hospital omits with fields the reader missed; the entry says so.
 16. **Massachusetts Health Safety Net.** Free care is state-reimbursed, so low hospital-funded charity care is not a compliance finding (printed with Figures 2 and 3). In the Community Benefit Insight data, nine Massachusetts facilities (EIN 90-0656139) report identical system-level totals.
@@ -375,4 +375,4 @@ Every URL in this file was opened or fetched on 2026-10-16. "Browser pane" means
 | https://baystatehealth.canto.com/direct/document/hcpcenvpld2131t6d5rl50vu7d/WL2RJ2ri8X4cRVWQLGNk3NZUTI4/original?content-type=application%2Fpdf&name=Baystate+Health+FAP+Policy+ENGLISH.pdf | Health Safety Net tiers; supplemental program | PDF text (the server redirected to a CDN copy) |
 | https://baystatehealth.canto.com/direct/document/keoetk8i1l2ql0cl2v63rutd4k/5cEjQY7c_N9kGkm5udFul7icR8Q/original?content-type=application%2Fpdf&name=BH+Hospitals+Billing+and+Collection+Policy+revised+122020.pdf | 120 days; 240 days | PDF text (the server redirected to a CDN copy) |
 
-Local files read: `README.md`, `data/atlas/ma.json` and the eight other state exports, `docs/reports/atlas-national.md`, `docs/PROGRESS.md`, `src/waive/atlas/schema.py`, `src/waive/atlas/metrics.py`, and the two research notes dated 2026-10-16.
+Local files read: `README.md`, `data/atlas/ma.json` and the eight other state exports, `docs/reports/atlas-national.md`, `docs/PROGRESS.md`, `src/waive/atlas/schema.py`, `src/waive/atlas/metrics.py`, and the two research notes dated 2026-10-16. The atlas counts, the Massachusetts count and the spend were re-read after merging `origin/main` into this branch on 2026-10-16.
