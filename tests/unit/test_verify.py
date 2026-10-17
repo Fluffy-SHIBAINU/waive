@@ -1432,3 +1432,27 @@ def test_the_verifier_rejects_a_covered_provider_the_quote_does_not_name():
     report = verify_sheet(listed, {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT})
     assert not report.ok
     assert any(path == "coverage.covered_providers" for path, _ in report.rejected)
+
+
+def test_a_free_care_limit_that_differs_for_inpatient_and_outpatient_care_is_not_one_limit():
+    from waive.atlas.verify import FREE_LIMIT_SPLIT_REASON
+
+    # OhioHealth Doctors Hospital (360152), website check 2: "up to 100% of the FPG for inpatient
+    # services or 150% of the FPG for outpatient services" was published as free care to 150%,
+    # which promises free inpatient care the policy does not give between 100% and 150%.
+    split = (
+        "If your annual family income is up to 100% of the FPG for inpatient services or 150% of "
+        "the FPG for outpatient services, you will receive free care."
+    )
+    docs = {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT + "\n" + split + "\n"}
+    for value in (150, 100):
+        report = verify_sheet(with_free_limit(value, split), docs)
+        assert ("eligibility.free_care_max_fpl", FREE_LIMIT_SPLIT_REASON) in report.rejected
+    # One limit for both kinds of care stays a limit.
+    both = (
+        "Patients with family income at or below 200% of the Federal Poverty Level receive free "
+        "care for inpatient and outpatient services."
+    )
+    docs = {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT + "\n" + both + "\n"}
+    report = verify_sheet(with_free_limit(200, both), docs)
+    assert not any(path == "eligibility.free_care_max_fpl" for path, _ in report.rejected)
