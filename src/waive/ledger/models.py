@@ -50,7 +50,8 @@ class Metric(BaseModel):
     status: MetricStatus = MetricStatus.UNKNOWN
     headline: str = ""
     sentence: str = ""
-    # One line for the result screen's "What to expect here"; the headline when empty.
+    # One line for the result screen's "What to expect here"; the screen skips the metric when
+    # it is empty, because a bare headline such as "Medium" says nothing on its own.
     short: str = ""
     advice: str = ""
     missing: list[str] = Field(default_factory=list)
@@ -115,10 +116,11 @@ class LedgerView(BaseModel):
     computed_on: date | None = None
 
     def expect_lines(self) -> list[tuple[str, str]]:
-        """(headline, advice) for each metric that has something to say: the result screen's
-        short form of the block."""
+        """(short line, advice) for each metric that has a short line: the result screen's
+        form of the block. A metric with no short line is left out rather than shown as its
+        headline alone."""
         return [
-            (metric.short or metric.headline, metric.advice)
+            (metric.short, metric.advice)
             for metric in (self.gap, self.collections, self.exposure)
-            if metric.status is not MetricStatus.UNKNOWN and (metric.short or metric.headline)
+            if metric.status is not MetricStatus.UNKNOWN and metric.short
         ]

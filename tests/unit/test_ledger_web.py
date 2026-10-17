@@ -177,13 +177,13 @@ def test_the_block_in_the_known_state_has_three_cards_with_advice_and_sources():
     page = client.get("/atlas/220031")
     assert page.status_code == 200
     block = block_of(page.text)
-    gap = block.index("Free care, promised vs delivered")
+    gap = block.index("Free care, promised vs spent")
     exposure = block.index("Seniors at risk here")
     collections = block.index("<span>Collections</span>")
     assert gap < exposure < collections
     # The gap card: the warn colour for a hospital that promises more than it delivers.
     assert '<div class="card status-unknown">' in block
-    assert "<strong>Promises more than it delivers</strong>" in block
+    assert "<strong>Promises a lot, spends little on free care</strong>" in block
     assert "Says free care goes up to 300% of the poverty level, above 9 in 10" in block
     assert "<p>What to do: Apply in writing, keep a copy, and send every document" in block
     assert '<a href="/atlas/220031">Waive policy sheet</a>, version 1 · ' in block
@@ -225,7 +225,7 @@ def test_the_block_in_the_unknown_state_says_what_is_missing_and_gives_no_advice
     assert page.status_code == 200
     block = block_of(page.text)
     assert block.count('<strong class="muted">Not enough data yet</strong>') == 3
-    assert "Free care, promised vs delivered" in block and "Collections" in block
+    assert "Free care, promised vs spent" in block and "Collections" in block
     stated, cost = MISSING["stated"], MISSING["cost_report"]
     assert f'<p class="muted">{stated[0].upper()}{stated[1:]}; {cost}.</p>' in block
     assert MISSING["service_area"] in block
@@ -251,11 +251,11 @@ def test_the_under_review_page_and_its_json_carry_the_block():
     assert page.status_code == 200
     assert "Under review" in page.text and "free_care_max_fpl" not in page.text
     block = block_of(page.text)
-    assert "<strong>Delivers what it promises</strong>" in block
+    assert "<strong>Promise and spending in line</strong>" in block
     assert '<div class="card status-free">' in block
     assert "<strong>Medium</strong>" in block
     assert "<strong>No lawsuits, liens, credit reports or debt sales reported</strong>" in block
-    assert "What to do: Apply as the policy says; most people who qualify get it." in block
+    assert "What to do: Apply as the policy says and keep a copy." in block
     # The "Under review" card comes first, then the block, then the way back to the list.
     assert page.text.index("Under review") < page.text.index("What to expect here")
     assert page.text.index("What to expect here") < page.text.index('href="/atlas"')
@@ -341,8 +341,8 @@ def test_the_ledger_list_filters_by_state_and_links_only_hospitals_with_a_sheet(
     assert 'href="/atlas/220032"' not in text and "<strong>HALF MEMORIAL</strong>" in text
     assert "<br>LOWELL, MA — no policy sheet yet" in text
     assert (
-        '<p class="muted">Seniors at risk: High · Free care: promises more than it delivers · '
-        "Collections: Takes legal action, reports to credit agencies</p>"
+        '<p class="muted">Seniors at risk: High · Free care: promises a lot, spends little on '
+        "free care · Collections: Takes legal action, reports to credit agencies</p>"
     ) in text
     assert (
         '<p class="muted">Seniors at risk: Low · Free care: free care promised up to 200% of '
@@ -350,8 +350,9 @@ def test_the_ledger_list_filters_by_state_and_links_only_hospitals_with_a_sheet(
         "reported</p>"
     ) in text
     assert (
-        '<p class="muted">Seniors at risk: not enough data · Free care: promises less, '
-        "delivers more · Collections: Practices not reported; bad debt was 1% of revenue</p>"
+        '<p class="muted">Seniors at risk: not enough data · Free care: spends more on free '
+        "care than it promises · Collections: Practices not reported; bad debt was 1% of "
+        "revenue</p>"
     ) in text
     assert (
         '<p class="muted">Open data, CC BY 4.0. Every figure names its federal file and year. '
@@ -386,8 +387,8 @@ def test_the_ledger_list_is_empty_without_metrics_rows():
 
 
 EXPECT_LINES = (
-    "Free care is promised up to 300% of the poverty level, but given less often than at 9 in "
-    "10 hospitals.",
+    "Free care is promised up to 300% of the poverty level, but its spending on free care is "
+    "below 9 in 10 nonprofit hospitals.",
     "This hospital takes legal action and reports patients to credit agencies before checking "
     "who qualifies.",
     "About 4 in 10 of its Medicare patients are also on Medicaid.",
@@ -445,10 +446,10 @@ def test_the_template_global_returns_nothing_for_an_unknown_ccn_and_never_raises
     assert [line for line, _ in ledger_expect("220031")] == list(EXPECT_LINES)
     assert ledger_expect("220033") == [
         (
-            "Free care is promised up to 200% of the poverty level and given more often than "
-            "at most hospitals.",
-            "Ask even if the policy looks narrow; this hospital gives more free care than it "
-            "advertises.",
+            "Free care is promised up to 200% of the poverty level and its spending on free "
+            "care is above 9 in 10 nonprofit hospitals.",
+            "Ask even if the policy looks narrow; this hospital spends more on free care than "
+            "it advertises.",
         ),
         (
             "Whether this hospital sues or reports patients before checking who qualifies is "

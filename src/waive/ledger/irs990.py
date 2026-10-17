@@ -53,6 +53,11 @@ NAME_THRESHOLD = 80
 # process" (the concordance's versions column for each element).
 SEPARATE_LEGAL_SCHEMA_YEAR = 2013
 FUSED_LEGAL_SCHEMA_YEAR = 2016
+# The index is a download, and its OBJECT_ID and XML_BATCH_ID name files under the cache (the
+# member to pull, the ZIP to fetch), so a row gets in only when both look like the IRS's own:
+# an 18-digit object id ("202502269349301705") and a batch id like "2025_TEOS_XML_08A".
+OBJECT_ID = re.compile(r"^\d{18}$")
+BATCH_ID = re.compile(r"^\d{4}_TEOS_XML_\d{2}[A-Z]$")
 # Words that say what kind of company a filer is, not which hospital: dropped before matching.
 _LEGAL_WORDS = frozenset(
     {"inc", "llc", "corp", "corporation", "co", "the", "of", "and", "dba", "ltd"}
@@ -164,7 +169,8 @@ def _recency(entry: IndexEntry) -> tuple[str, str, str]:
 
 def select_returns(index_paths: list[Path], eins: set[str]) -> dict[str, IndexEntry]:
     """Each wanted EIN's newest full 990 across the index files, streamed row by row because an
-    index is 90 MB. ein -> entry."""
+    index is 90 MB. ein -> entry. A row whose OBJECT_ID or XML_BATCH_ID is not shaped like the
+    IRS's own is logged and skipped: both become file names under the cache."""
     chosen: dict[str, IndexEntry] = {}
     for path in index_paths:
         with path.open(newline="", encoding="utf-8", errors="replace") as handle:
@@ -174,12 +180,22 @@ def select_returns(index_paths: list[Path], eins: set[str]) -> dict[str, IndexEn
                 ein = normalise_ein(row.get("EIN"))
                 if ein is None or ein not in eins:
                     continue
+                object_id = (row.get("OBJECT_ID") or "").strip()
                 batch_id = (row.get("XML_BATCH_ID") or "").strip()
+                if not OBJECT_ID.match(object_id) or not BATCH_ID.match(batch_id):
+                    log.warning(
+                        "%s: row for EIN %s skipped, object id %r or batch id %r is not an IRS id",
+                        path.name,
+                        ein,
+                        object_id,
+                        batch_id,
+                    )
+                    continue
                 entry = IndexEntry(
                     ein=ein,
                     tax_period=(row.get("TAX_PERIOD") or "").strip(),
                     return_type=RETURN_TYPE,
-                    object_id=(row.get("OBJECT_ID") or "").strip(),
+                    object_id=object_id,
                     batch_id=batch_id,
                     index_year=_index_year(batch_id, path),
                     sub_date=(row.get("SUB_DATE") or "").strip(),
@@ -208,12 +224,28 @@ def _zip_dir(cache_dir: Path) -> Path:
 
 # Some IRS batches (2026_TEOS_XML_05A) are written with Deflate64, which Python's zipfile
 # does not read; Info-ZIP's `unzip` does. Member names are checked against this before one is
-# handed to it.
+# handed to it, and before one names a file under the XML directory.
 MEMBER_NAME = re.compile(r"^\d{18}_public\.xml$")
 UNZIP_TIMEOUT = 600
 
 
-def _extract_with_unzip(zip_path: str, member: str, out) -> None:
+def _target(xml_dir: Path, object_id: str) -> Path:
+    """Where the return with `object_id` lands under `xml_dir`. ValueError when the id does not
+    make a return member name or the path it makes would leave `xml_dir`: the id comes from a
+    downloaded index and the member from a downloaded ZIP, and neither gets to pick a path."""
+    member = _member(object_id)
+    if not MEMBER_NAME.match(member):
+        raise ValueError(f"not a return member name: {member!r}")
+    target = xml_dir / member
+    if not target.resolve().is_relative_to(xml_dir.resolve()):
+        raise ValueError(f"{member!r} would land outside {xml_dir}")
+    return target
+
+
+def _extract_with_unzip(zip_path: str, member: str, out, file_size: int | None = None) -> None:
+    """`unzip -p` writes `member` into `out`; `file_size` is the size the ZIP's directory
+    declares for it, and a write of any other length is an error, so a member unzip cut short
+    is never cached as the whole return. None skips the length check."""
     if not MEMBER_NAME.match(member):
         raise ValueError(f"not a return member name: {member!r}")
     try:
@@ -231,10 +263,16 @@ def _extract_with_unzip(zip_path: str, member: str, out) -> None:
             "installed; install Info-ZIP unzip and run again"
         ) from error
     out.flush()
-    if out.tell() == 0:
+    written = out.tell()
+    if written == 0:
         raise RuntimeError(
             f"unzip wrote nothing for {member} from {Path(zip_path).name} "
             f"(exit status {done.returncode})"
+        )
+    if file_size is not None and written != file_size:
+        raise RuntimeError(
+            f"unzip wrote {written} of {file_size} bytes for {member} from "
+            f"{Path(zip_path).name} (exit status {done.returncode})"
         )
 
 
@@ -248,8 +286,10 @@ def _extract(archive: zipfile.ZipFile, member: str, target: Path) -> Path:
                 with archive.open(member) as source:
                     shutil.copyfileobj(source, out)
             except NotImplementedError:
-                # Deflate64: let the system's unzip write the member instead.
-                _extract_with_unzip(str(archive.filename), member, out)
+                # Deflate64: let the system's unzip write the member instead, whole.
+                _extract_with_unzip(
+                    str(archive.filename), member, out, archive.getinfo(member).file_size
+                )
         partial.replace(target)
     finally:
         partial.unlink(missing_ok=True)
@@ -258,15 +298,16 @@ def _extract(archive: zipfile.ZipFile, member: str, target: Path) -> Path:
 
 def extract_members(zip_path: Path, object_ids: Iterable[str], xml_dir: Path) -> dict[str, Path]:
     """The returns with these object ids out of one batch ZIP, opened once for all of them.
-    Members already under `xml_dir` are kept; ids the ZIP lacks are logged and left out."""
+    Members already under `xml_dir` are kept; ids the ZIP lacks are logged and left out.
+    ValueError, before anything is written, for an id that is not an 18-digit object id."""
     found: dict[str, Path] = {}
     wanted: dict[str, str] = {}
     for object_id in object_ids:
-        target = xml_dir / _member(object_id)
+        target = _target(xml_dir, object_id)
         if target.exists():
             found[object_id] = target
         else:
-            wanted[_member(object_id)] = object_id
+            wanted[target.name] = object_id
     if not wanted:
         return found
     xml_dir.mkdir(parents=True, exist_ok=True)
@@ -276,7 +317,7 @@ def extract_members(zip_path: Path, object_ids: Iterable[str], xml_dir: Path) ->
             if member not in names:
                 log.warning("%s is not in %s", member, zip_path.name)
                 continue
-            found[object_id] = _extract(archive, member, xml_dir / member)
+            found[object_id] = _extract(archive, member, _target(xml_dir, object_id))
     return found
 
 
@@ -284,8 +325,9 @@ def fetch_return_xml(
     http: httpx.Client, cache_dir: Path, entry: IndexEntry, refresh: bool = False
 ) -> Path:
     """One return's XML, cached as `cache_dir/irs990/xml/{object_id}_public.xml`; the batch ZIP
-    is downloaded (once) when the member is missing. KeyError when the ZIP lacks the member."""
-    target = _xml_dir(cache_dir) / _member(entry.object_id)
+    is downloaded (once) when the member is missing. KeyError when the ZIP lacks the member,
+    ValueError when the entry's object id is not an 18-digit object id."""
+    target = _target(_xml_dir(cache_dir), entry.object_id)
     if target.exists() and not refresh:
         return target
     zip_path = fetch_file(
@@ -293,7 +335,7 @@ def fetch_return_xml(
     )
     _xml_dir(cache_dir).mkdir(parents=True, exist_ok=True)
     with zipfile.ZipFile(zip_path) as archive:
-        member = _member(entry.object_id)
+        member = target.name
         if member not in archive.namelist():
             raise KeyError(f"{member} is not in {zip_path.name}")
         return _extract(archive, member, target)
@@ -691,7 +733,7 @@ def _fetch_returns(
     by_batch: dict[tuple[int, str], list[str]] = defaultdict(list)
     entries = list(entries)
     for entry in entries:
-        target = xml_dir / _member(entry.object_id)
+        target = _target(xml_dir, entry.object_id)
         if target.exists():
             found[entry.object_id] = target
         else:

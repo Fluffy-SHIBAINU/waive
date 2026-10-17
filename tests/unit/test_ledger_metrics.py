@@ -15,9 +15,11 @@ from waive.ledger.metrics import (
     compute_exposure_metrics,
     exposure_label,
     gap_label,
+    is_stub_period,
     percentile_ranks,
 )
 from waive.ledger.models import ExposureLabel, GapLabel
+from waive.ledger.repo import FULL_YEAR_DAYS
 
 TODAY = date(2026, 10, 16)
 EARLIER = date(2026, 9, 1)
@@ -191,6 +193,67 @@ def test_compute_behaviour_ranks_the_gap_and_collections_and_leaves_exposure_alo
         # The exposure columns written earlier are untouched.
         assert (sheeted.exposure_rank, sheeted.exposure_computed_on) == (0.9, EARLIER)
         assert filed.exposure_rank is None and filed.exposure_computed_on is None
+
+
+def test_is_stub_period_needs_both_dates_and_under_a_full_year():
+    engine = engine_with(COSTED)
+    with session_scope(engine) as session:
+        stub = repo.upsert_cost_report(
+            session, "220033", 2024, fy_begin=date(2024, 7, 1), fy_end=date(2024, 9, 30)
+        )
+        assert is_stub_period(stub)
+        assert (stub.fy_end - stub.fy_begin).days < FULL_YEAR_DAYS
+        full = repo.upsert_cost_report(
+            session, "220033", 2023, fy_begin=date(2022, 10, 1), fy_end=date(2023, 9, 30)
+        )
+        assert not is_stub_period(full)
+        # A report without dates is of unknown length, not a stub.
+        undated = repo.upsert_cost_report(session, "220033", 2022, fy_end=date(2022, 9, 30))
+        assert not is_stub_period(undated)
+        assert not is_stub_period(None)
+
+
+def test_compute_behaviour_skips_the_shares_of_a_stub_period_but_keeps_its_year():
+    # COSTED changed its fiscal year and has only a July-to-September stub: a quarter's charity
+    # care read against SHEETED's full year would rank it first. SHEETED has a stub too, newer
+    # than its full year, and the full year is the one used.
+    engine = engine_with(SHEETED, COSTED)
+    with session_scope(engine) as session:
+        repo.upsert_cost_report(
+            session, "220033", 2024, fy_begin=date(2024, 7, 1), fy_end=date(2024, 9, 30),
+            charity_care_cost=50, total_costs=100, bad_debt=10, net_patient_revenue=100,
+        )  # fmt: skip
+        repo.upsert_cost_report(
+            session, "220031", 2024, fy_begin=date(2023, 10, 1), fy_end=date(2024, 9, 30),
+            charity_care_cost=10, total_costs=1000, bad_debt=36, net_patient_revenue=1000,
+        )  # fmt: skip
+        repo.upsert_cost_report(
+            session, "220031", 2025, fy_begin=date(2024, 10, 1), fy_end=date(2024, 12, 31),
+            charity_care_cost=500, total_costs=1000, bad_debt=0, net_patient_revenue=1000,
+        )  # fmt: skip
+        report = compute_behaviour(session, TODAY)
+    assert (report.hospitals, report.with_cost_report, report.gap_partial) == (2, 2, 1)
+    with session_scope(engine) as session:
+        costed = repo.get_metrics(session, "220033")
+        sheeted = repo.get_metrics(session, "220031")
+    assert costed is not None and costed.cost_report_year == 2024
+    assert (costed.charity_cost_pct, costed.charity_rank, costed.charity_peers) == (
+        None,
+        None,
+        None,
+    )
+    assert (costed.bad_debt_pct, costed.bad_debt_rank, costed.bad_debt_peers) == (
+        None,
+        None,
+        None,
+    )
+    assert (sheeted.charity_cost_pct, sheeted.bad_debt_pct, sheeted.cost_report_year) == (
+        1.0,
+        3.6,
+        2024,
+    )
+    # Alone with a value, SHEETED has no rank either: the stub never became a peer.
+    assert sheeted.charity_rank is None and sheeted.bad_debt_rank is None
 
 
 def test_compute_behaviour_alone_in_the_country_has_a_value_but_no_rank():

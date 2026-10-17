@@ -14,6 +14,7 @@ from sqlalchemy.orm import Session
 
 from waive.atlas import repo as atlas_repo
 from waive.ledger import explain, repo
+from waive.ledger.metrics import is_stub_period
 from waive.ledger.models import (
     CollectionsMetric,
     ExposureLabel,
@@ -58,6 +59,15 @@ def _status(*inputs: object) -> MetricStatus:
     if present == len(inputs):
         return MetricStatus.KNOWN
     return MetricStatus.PARTIAL if present else MetricStatus.UNKNOWN
+
+
+def _cost_report_missing(cost: CostReportRow | None, cell: str) -> str:
+    """Why a cost-report number is absent: no report, only a stub period, or a blank line."""
+    if cost is None:
+        return explain.MISSING["cost_report"]
+    if is_stub_period(cost):
+        return explain.MISSING["short_period"]
+    return explain.MISSING[cell]
 
 
 def _cost_report_source(cost: CostReportRow) -> Source:
@@ -108,7 +118,7 @@ def _gap(
         sources.append(_schedule_h_source(filing, ein))
     missing = [explain.MISSING["stated"]] if stated is None else []
     if charity is None:
-        missing.append(explain.MISSING["charity_cell" if cost else "cost_report"])
+        missing.append(_cost_report_missing(cost, "charity_cell"))
     return GapMetric(
         status=_status(stated, charity),
         headline=explain.gap_headline(label, stated, charity),
@@ -219,7 +229,7 @@ def _collections(
         sources.append(_cost_report_source(cost))
     missing = [explain.MISSING["schedule_h"]] if flag_line is None else []
     if bad_debt is None:
-        missing.append(explain.MISSING["bad_debt_cell" if cost else "cost_report"])
+        missing.append(_cost_report_missing(cost, "bad_debt_cell"))
     return CollectionsMetric(
         status=_status(flag_line, bad_debt),
         headline=explain.collections_headline(*flags, bad_debt),

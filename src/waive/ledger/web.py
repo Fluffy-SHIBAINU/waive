@@ -14,13 +14,14 @@ from typing import Any
 from fastapi import APIRouter, Request
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
+from sqlalchemy import func, select
 from sqlalchemy.engine import Engine
 from sqlalchemy.orm import Session
 
 from waive.atlas import repo as atlas_repo
 from waive.atlas.schema import SheetStatus
-from waive.db import HospitalRow, session_scope
-from waive.ledger import repo
+from waive.db import HospitalRow, SheetRow, session_scope
+from waive.ledger import explain, repo
 from waive.ledger.models import (
     CollectionsMetric,
     ExposureMetric,
@@ -30,7 +31,7 @@ from waive.ledger.models import (
     MetricStatus,
 )
 from waive.ledger.tables import LedgerMetricsRow
-from waive.ledger.view import expect_lines, ledger_view
+from waive.ledger.view import expect_lines
 from waive.web.deps import deps_of, render
 
 log = logging.getLogger(__name__)
@@ -66,25 +67,49 @@ def card_class(metric: Metric) -> str:
     return ""
 
 
-def _sheet_status(session: Session, ccn: str) -> tuple[bool, str]:
-    found = atlas_repo.latest_sheet(session, ccn)
-    if found is None:
+def _sheet_statuses(session: Session) -> dict[str, str]:
+    """ccn -> the status of each hospital's newest sheet version, in one query for the whole
+    list. The row's status column is written with the body and never changed afterwards, so
+    it says what `latest_sheet` would say without loading a body per hospital."""
+    newest = (
+        select(SheetRow.ccn, func.max(SheetRow.version).label("version"))
+        .group_by(SheetRow.ccn)
+        .subquery()
+    )
+    query = select(SheetRow.ccn, SheetRow.status).join(
+        newest, (SheetRow.ccn == newest.c.ccn) & (SheetRow.version == newest.c.version)
+    )
+    return {ccn: status for ccn, status in session.execute(query)}
+
+
+def _sheet_status(status: str | None) -> tuple[bool, str]:
+    """Whether the hospital's page exists and what the list says under its name, from the
+    status of its newest sheet version (None when it has no sheet at all)."""
+    if status is None:
         return False, "no policy sheet yet"
-    if found[0].status is SheetStatus.PUBLISHED:
+    if status == SheetStatus.PUBLISHED:
         return True, "published"
     return True, "under review"
 
 
-def _row(session: Session, hospital: HospitalRow, metrics: LedgerMetricsRow) -> dict[str, Any]:
+def _row(hospital: HospitalRow, metrics: LedgerMetricsRow, sheet: str | None) -> dict[str, Any]:
     """One line of the list: who the hospital is, whether its page exists, and the three
-    metrics in the words the view gives them (an unknown one is left empty)."""
-    view = ledger_view(session, hospital.ccn)
-    has_sheet, sheet_status = _sheet_status(session, hospital.ccn)
-    gap_headline = collections_words = ""
-    if view is not None:
-        if view.gap.status is not MetricStatus.UNKNOWN:
-            gap_headline = view.gap.headline
-        collections_words = view.collections.headline
+    metrics in the words `explain` gives them, read from the metrics row alone. These are the
+    headlines the atlas page's cards show; the gap is left empty while neither of its inputs
+    is known, as the view leaves the card's status unknown."""
+    has_sheet, sheet_status = _sheet_status(sheet)
+    gap_headline = ""
+    if metrics.stated_fpl is not None or metrics.charity_cost_pct is not None:
+        label = GapLabel(metrics.gap_label) if metrics.gap_label else None
+        gap_headline = explain.gap_headline(label, metrics.stated_fpl, metrics.charity_cost_pct)
+    collections_words = explain.collections_headline(
+        metrics.lawsuits,
+        metrics.liens,
+        metrics.credit_reporting,
+        metrics.sells_debt,
+        metrics.legal_action,
+        metrics.bad_debt_pct,
+    )
     return {
         "ccn": hospital.ccn,
         "name": hospital.name,
@@ -112,7 +137,11 @@ def _sorted(rows: list[dict[str, Any]], sort: str) -> list[dict[str, Any]]:
 @router.get("/ledger", response_class=HTMLResponse)
 def ledger_list(request: Request, state: str = "", sort: str = "exposure") -> HTMLResponse:
     """Every hospital with a metrics row, ranked; the demo hospital never appears. A state that
-    is not two letters means all states, and an unknown sort is the default one."""
+    is not two letters means all states, and an unknown sort is the default one.
+
+    The page is public and unauthenticated, so it costs two statements however long the list
+    is: the joined hospital and metrics rows, and every hospital's newest sheet status. The
+    words come from the metrics row, never from a per-hospital view."""
     state = state.upper() if len(state) == 2 and state.isalpha() else ""
     sort = sort if sort in dict(SORTS) else SORTS[0][0]
     deps = deps_of(request)
@@ -123,8 +152,9 @@ def ledger_list(request: Request, state: str = "", sort: str = "exposure") -> HT
             if not atlas_repo.is_demo(hospital.ccn)
         ]
         states = sorted({hospital.state for hospital, _ in listed if hospital.state})
+        sheets = _sheet_statuses(session)
         rows = [
-            _row(session, hospital, metrics)
+            _row(hospital, metrics, sheets.get(hospital.ccn))
             for hospital, metrics in listed
             if not state or hospital.state == state
         ]

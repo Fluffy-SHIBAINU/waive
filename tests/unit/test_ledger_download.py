@@ -3,6 +3,7 @@
 import json
 
 import httpx
+import pytest
 import respx
 
 from waive.ledger.download import (
@@ -70,6 +71,50 @@ def test_fetch_file_leaves_no_file_behind_when_the_download_fails(tmp_path):
         else:  # pragma: no cover
             raise AssertionError("a 404 must raise")
     assert list(tmp_path.iterdir()) == []
+
+
+# The catalogue that names a URL is itself a download: a URL on another scheme, or one that
+# names no plain file, is refused before any request or any write. No route is mocked, so a
+# request that slipped through would fail as unmocked.
+@respx.mock
+@pytest.mark.parametrize(
+    ("url", "message"),
+    [
+        ("http://example.org/files/a.csv", "is not an https URL"),
+        ("ftp://example.org/files/a.csv", "is not an https URL"),
+        ("https://example.org/files/", "'' is not a plain file name"),
+        ("https://example.org", "'' is not a plain file name"),
+        ("https://example.org/files/..", "'..' is not a plain file name"),
+        ("https://example.org/files/%2e%2e", "'..' is not a plain file name"),
+        ("https://example.org/files/.", "'.' is not a plain file name"),
+        ("https://example.org/a%2F..%2Fb.csv", "'a/../b.csv' is not a plain file name"),
+        ("https://example.org/a%5C..%5Cb.csv", "is not a plain file name"),
+    ],
+)
+def test_fetch_file_refuses_a_url_that_is_not_https_or_names_no_plain_file(tmp_path, url, message):
+    with httpx.Client() as http:
+        with pytest.raises(ValueError, match=message):
+            fetch_file(http, url, tmp_path / "src")
+    assert not (tmp_path / "src").exists()
+
+
+@respx.mock
+def test_fetch_file_checks_a_given_name_the_same_way(tmp_path):
+    with httpx.Client() as http:
+        with pytest.raises(ValueError, match="'../x.json' is not a plain file name"):
+            fetch_file(http, "https://example.org/files/a.csv", tmp_path, name="../x.json")
+    assert list(tmp_path.iterdir()) == []
+
+
+@respx.mock
+def test_fetch_file_saves_under_the_unquoted_basename(tmp_path):
+    respx.get("https://example.org/files/a%20b.csv").mock(
+        return_value=httpx.Response(200, content=b"x")
+    )
+    with httpx.Client() as http:
+        assert fetch_file(http, "https://example.org/files/a%20b.csv", tmp_path) == tmp_path / (
+            "a b.csv"
+        )
 
 
 @respx.mock

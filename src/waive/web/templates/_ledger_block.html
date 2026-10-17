@@ -3,7 +3,7 @@
    rather than three empty cards). #}
 {% if ledger %}
 <h2>What to expect here</h2>
-{% for label, metric in (("Free care, promised vs delivered", ledger.gap), ("Seniors at risk here", ledger.exposure), ("Collections", ledger.collections)) %}
+{% for label, metric in (("Free care, promised vs spent", ledger.gap), ("Seniors at risk here", ledger.exposure), ("Collections", ledger.collections)) %}
 {% set colour = ledger_card_class(metric) %}
 <div class="card{% if colour %} {{ colour }}{% endif %}">
 {% if metric.status == "unknown" %}

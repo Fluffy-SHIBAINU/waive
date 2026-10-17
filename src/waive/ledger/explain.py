@@ -25,6 +25,9 @@ MISSING = {
     # charity-care cell empty, so this is a common state and not the same as no report.
     "charity_cell": "its cost report leaves the charity-care line blank",
     "bad_debt_cell": "its cost report leaves the bad-debt line blank",
+    # The only report on file is a stub period (a changed fiscal year): a few months of costs
+    # cannot be ranked against other hospitals' full years, so the metrics skip it.
+    "short_period": "its only cost report covers less than a year",
 }
 
 # (rank floor, fraction) from the top down; the first floor the rank reaches names it.
@@ -83,18 +86,21 @@ def _join(parts: list[str]) -> str:
     return ", ".join(parts[:-1]) + " and " + parts[-1]
 
 
-# Metric 1: the gap between the free care promised and the free care given.
+# Metric 1: the gap between the free care promised and the share of costs spent on it. The
+# inputs are two ranks, the stated limit's and the charity-cost share's, so every line here
+# speaks of promising and spending; none says how often an applicant gets free care, which
+# no federal file reports.
 
 
 def gap_headline(
     label: GapLabel | None, stated_fpl: float | None, charity_cost_pct: float | None
 ) -> str:
     if label is GapLabel.PROMISES_MORE:
-        return "Promises more than it delivers"
+        return "Promises a lot, spends little on free care"
     if label is GapLabel.DELIVERS:
-        return "Delivers what it promises"
+        return "Promise and spending in line"
     if label is GapLabel.PROMISES_LESS:
-        return "Promises less, delivers more"
+        return "Spends more on free care than it promises"
     if stated_fpl is not None:
         return f"Free care promised up to {fpl(stated_fpl)}"
     if charity_cost_pct is not None:
@@ -141,8 +147,10 @@ def gap_short(
     charity_cost_pct: float | None,
     charity_rank: float | None,
 ) -> str:
-    """One line for the result screen. A "promises more" hospital whose charity rank is still
-    above the middle is not told it gives less than half of hospitals do; that would be false."""
+    """One line for the result screen: the promise, then where the hospital's free-care
+    spending ranks, through `rank_phrase`. The label only picks the joining word, because a
+    label is a difference of two ranks: a "promises less" hospital can still rank below the
+    middle on spending, and the line must say so rather than "more often than most"."""
     if label is None or stated_fpl is None:
         if stated_fpl is not None:
             return f"Free care is promised up to {fpl(stated_fpl)}."
@@ -150,13 +158,11 @@ def gap_short(
             return f"This hospital spent {percent(charity_cost_pct)} of its costs on free care."
         return ""
     promise = f"Free care is promised up to {fpl(stated_fpl)}"
-    if label is GapLabel.PROMISES_MORE:
-        if charity_rank is not None and charity_rank <= 0.45:
-            return f"{promise}, but given less often than at {_below_fraction(charity_rank)} hospitals."
-        return f"{promise}, but given less often than that promise suggests."
-    if label is GapLabel.PROMISES_LESS:
-        return f"{promise} and given more often than at most hospitals."
-    return f"{promise} and given about as often as elsewhere."
+    spending = rank_phrase(charity_rank)
+    if not spending:
+        return f"{promise}."
+    joiner = ", but" if label is GapLabel.PROMISES_MORE else " and"
+    return f"{promise}{joiner} its spending on free care is {spending}."
 
 
 def gap_advice(label: GapLabel | None) -> str:
@@ -166,11 +172,11 @@ def gap_advice(label: GapLabel | None) -> str:
             "first time."
         )
     if label is GapLabel.DELIVERS:
-        return "Apply as the policy says; most people who qualify get it."
+        return "Apply as the policy says and keep a copy."
     if label is GapLabel.PROMISES_LESS:
         return (
-            "Ask even if the policy looks narrow; this hospital gives more free care than it "
-            "advertises."
+            "Ask even if the policy looks narrow; this hospital spends more on free care than "
+            "it advertises."
         )
     return "Apply in writing and keep a copy."
 
@@ -203,10 +209,12 @@ def exposure_sentence(
         sentences.append(f"It had about {count(discharges)} Medicare inpatients{when}.")
     elif benes and dual_benes is not None:
         sentences.append(exposure_short(dual_benes, benes).replace(" are ", " were ", 1))
+    # poor_seniors_served is the hospital's share of each ZIP's poor seniors, weighted by its
+    # share of that ZIP's Medicare cases: far fewer people than live in those ZIPs.
     if poor_seniors_served is not None:
         sentences.append(
-            f"About {count(poor_seniors_served)} people 65 or over living under twice the "
-            "poverty line are in the ZIP codes it serves."
+            f"Going by where its Medicare patients live, about {count(poor_seniors_served)} "
+            "people 65 or over living under twice the poverty line look to this hospital."
         )
     return " ".join(sentences)
 
@@ -223,9 +231,11 @@ def exposure_short(dual_benes: int | None, benes: int | None) -> str:
 
 
 def exposure_advice() -> str:
+    # The same hedge as the cost-sharing rule in waive.rules.coverage: the ban covers the
+    # Medicare cost-sharing on a covered visit, not every charge on the bill.
     return (
-        "If you have both Medicare and Medicaid, you cannot be billed for this visit. Waive "
-        "writes that letter instead of an application."
+        "If you have both Medicare and Medicaid, the hospital likely cannot bill you the "
+        "Medicare cost-sharing. Waive writes that letter instead of an application."
     )
 
 
@@ -409,7 +419,7 @@ def collections_advice(any_engaged: bool | None) -> str:
         )
     if any_engaged is False:
         return (
-            "Apply before the first bill is 120 days old; this hospital reported no collection "
-            "actions before checking eligibility."
+            "Apply before the first bill is 120 days old; this hospital reported no lawsuits, "
+            "liens, credit reporting or debt sales before checking eligibility."
         )
     return "Apply within 120 days of the first bill and keep a copy of everything."

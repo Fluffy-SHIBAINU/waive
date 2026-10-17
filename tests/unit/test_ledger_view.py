@@ -9,10 +9,10 @@ from waive.atlas import repo as atlas_repo
 from waive.atlas.publish import publish_sheet
 from waive.atlas.samples import st_example_sheet
 from waive.db import init_db, make_engine, session_scope
-from waive.ledger import repo
+from waive.ledger import explain, repo
 from waive.ledger.explain import MISSING
 from waive.ledger.metrics import compute_behaviour, compute_exposure_metrics
-from waive.ledger.models import MetricStatus
+from waive.ledger.models import ExposureLabel, ExposureMetric, GapMetric, LedgerView, MetricStatus
 from waive.ledger.view import (
     ACS_SOURCE,
     COST_REPORT_SOURCE,
@@ -129,7 +129,7 @@ def test_ledger_view_known_state_has_numbers_words_and_sources():
     assert (gap.charity_cost_pct, gap.charity_rank, gap.charity_peers) == (0.9, 0.0, 2)
     assert (gap.charity_pct_990, gap.cost_report_year, gap.gap) == (1.1, 2024, 1.0)
     assert gap.label.value == "promises_more_delivers_less"
-    assert gap.headline == "Promises more than it delivers"
+    assert gap.headline == "Promises a lot, spends little on free care"
     assert gap.sentence == (
         "Says free care goes up to 300% of the poverty level, above 9 in 10 nonprofit "
         "hospitals. Spent 0.9% of its costs on free care in the year to September 2024, "
@@ -137,8 +137,8 @@ def test_ledger_view_known_state_has_numbers_words_and_sources():
         "of expenses."
     )
     assert gap.short == (
-        "Free care is promised up to 300% of the poverty level, but given less often than "
-        "at 9 in 10 hospitals."
+        "Free care is promised up to 300% of the poverty level, but its spending on free care "
+        "is below 9 in 10 nonprofit hospitals."
     )
     assert gap.advice.startswith("Apply in writing, keep a copy")
     assert [(s.name, s.vintage, s.url) for s in gap.sources] == [
@@ -160,9 +160,9 @@ def test_ledger_view_known_state_has_numbers_words_and_sources():
     assert (exposure.score, exposure.rank, exposure.peers) == (770.4 + 8397.0, 1.0, 3)
     assert exposure.label.value == "high" and exposure.headline == "High"
     assert exposure.sentence == (
-        "About 770 of its 1,850 Medicare inpatients in 2024 were also on Medicaid. About "
-        "8,400 people 65 or over living under twice the poverty line are in the ZIP codes it "
-        "serves."
+        "About 770 of its 1,850 Medicare inpatients in 2024 were also on Medicaid. Going by "
+        "where its Medicare patients live, about 8,400 people 65 or over living under twice "
+        "the poverty line look to this hospital."
     )
     assert exposure.short == "About 4 in 10 of its Medicare patients are also on Medicaid."
     assert exposure.advice.startswith("If you have both Medicare and Medicaid")
@@ -330,8 +330,8 @@ def test_expect_lines_in_order_without_unknown_metrics():
         low = expect_lines(session, "220033")
         bare = expect_lines(session, "220034")
     assert [line for line, _ in full] == [
-        "Free care is promised up to 300% of the poverty level, but given less often than "
-        "at 9 in 10 hospitals.",
+        "Free care is promised up to 300% of the poverty level, but its spending on free care "
+        "is below 9 in 10 nonprofit hospitals.",
         "This hospital takes legal action and reports patients to credit agencies before "
         "checking who qualifies.",
         "About 4 in 10 of its Medicare patients are also on Medicaid.",
@@ -339,15 +339,84 @@ def test_expect_lines_in_order_without_unknown_metrics():
     assert full[0][1].startswith("Apply in writing, keep a copy")
     assert full[1][1].startswith("Apply within 120 days of the first bill. Waive")
     assert full[2][1].startswith("If you have both Medicare and Medicaid")
-    # A cost-report-only hospital still has a gap line and a collections line; its exposure
-    # short line is empty, so the headline stands in.
+    # A cost-report-only hospital still has a gap line and a collections line. It has
+    # service-area data but no inpatient counts, so its exposure short line is empty and the
+    # metric is left out: the screen never shows the bare word "Medium".
     assert [line for line, _ in low] == [
         "This hospital spent 5% of its costs on free care.",
         "Whether this hospital sues or reports patients before checking who qualifies is not "
         "on file.",
-        "Medium",
     ]
     assert bare == []
+
+
+def test_expect_lines_use_the_short_line_only_and_skip_a_metric_without_one():
+    # Service-area data ranks the hospital (headline "Medium") but without inpatient counts
+    # there is no short line; the headline alone must not stand in for it.
+    exposure = ExposureMetric(
+        status=MetricStatus.PARTIAL,
+        headline="Medium",
+        short="",
+        advice=explain.exposure_advice(),
+        poor_seniors_served=3000,
+        label=ExposureLabel.MEDIUM,
+    )
+    gap = GapMetric(
+        status=MetricStatus.PARTIAL,
+        headline="Spent 5% of its costs on free care",
+        short="This hospital spent 5% of its costs on free care.",
+        advice="Apply in writing and keep a copy.",
+    )
+    view = LedgerView(ccn="220033", gap=gap, exposure=exposure)
+    assert view.expect_lines() == [
+        ("This hospital spent 5% of its costs on free care.", "Apply in writing and keep a copy.")
+    ]
+    # With inpatient counts the exposure line is the share, never the headline.
+    with_counts = exposure.model_copy(
+        update={"short": "About 4 in 10 of its Medicare patients are also on Medicaid."}
+    )
+    lines = LedgerView(ccn="220033", gap=gap, exposure=with_counts).expect_lines()
+    assert [line for line, _ in lines][-1] == (
+        "About 4 in 10 of its Medicare patients are also on Medicaid."
+    )
+    assert "Medium" not in [line for line, _ in lines]
+    # A known metric whose short line is empty is skipped too; an unknown one always is.
+    assert LedgerView(ccn="220034", gap=gap.model_copy(update={"short": ""})).expect_lines() == []
+    unknown = gap.model_copy(update={"status": MetricStatus.UNKNOWN})
+    assert LedgerView(ccn="220034", gap=unknown).expect_lines() == []
+
+
+def test_a_stub_period_cost_report_is_named_and_never_called_a_year():
+    # The hospital changed its fiscal year and its only report covers July to September: the
+    # metrics skip its shares, and the card says why rather than "the year to September".
+    engine = make_engine("sqlite+pysqlite:///:memory:")
+    init_db(engine)
+    with session_scope(engine) as session:
+        atlas_repo.upsert_hospital(session, LOW)
+        atlas_repo.upsert_hospital(session, FULL)
+        repo.upsert_cost_report(
+            session, "220033", 2024, fy_begin=date(2024, 7, 1), fy_end=date(2024, 9, 30),
+            charity_care_cost=50, total_costs=100, bad_debt=10, net_patient_revenue=100,
+            vintage="HCRIS 2024",
+        )  # fmt: skip
+        repo.upsert_cost_report(
+            session, "220031", 2024, fy_begin=date(2023, 10, 1), fy_end=date(2024, 9, 30),
+            charity_care_cost=9, total_costs=1000, bad_debt=36, net_patient_revenue=1000,
+        )  # fmt: skip
+        compute_behaviour(session, TODAY)
+        view = ledger_view(session, "220033")
+        full = ledger_view(session, "220031")
+    assert view.gap.status is MetricStatus.UNKNOWN
+    assert view.gap.charity_cost_pct is None and view.gap.cost_report_year == 2024
+    assert view.gap.missing == [MISSING["stated"], MISSING["short_period"]]
+    assert view.collections.missing == [MISSING["schedule_h"], MISSING["short_period"]]
+    assert view.gap.sources == [] and view.collections.sources == []
+    for text in (view.gap.headline, view.gap.sentence, view.collections.sentence):
+        assert "year to" not in text, text
+    # A full year's report is still read, ranked and dated as before.
+    assert full.gap.charity_cost_pct == 0.9 and full.collections.bad_debt_pct == 3.6
+    assert full.gap.missing == [MISSING["stated"]]
+    assert "in the year to September 2024" in full.gap.sentence
 
 
 def test_a_blank_charity_cell_is_named_as_such_and_vintages_never_print_none():

@@ -63,11 +63,11 @@ def test_number_words():
 
 def test_gap_headlines():
     assert explain.gap_headline(GapLabel.PROMISES_MORE, 300.0, 0.9) == (
-        "Promises more than it delivers"
+        "Promises a lot, spends little on free care"
     )
-    assert explain.gap_headline(GapLabel.DELIVERS, 300.0, 2.0) == "Delivers what it promises"
+    assert explain.gap_headline(GapLabel.DELIVERS, 300.0, 2.0) == "Promise and spending in line"
     assert explain.gap_headline(GapLabel.PROMISES_LESS, 200.0, 5.0) == (
-        "Promises less, delivers more"
+        "Spends more on free care than it promises"
     )
     assert explain.gap_headline(None, 300.0, None) == (
         "Free care promised up to 300% of the poverty level"
@@ -100,25 +100,35 @@ def test_gap_sentence_says_only_the_parts_that_exist():
 
 def test_gap_short_lines():
     assert explain.gap_short(GapLabel.PROMISES_MORE, 300.0, 0.9, 0.2) == (
-        "Free care is promised up to 300% of the poverty level, but given less often than "
-        "at 3 in 4 hospitals."
+        "Free care is promised up to 300% of the poverty level, but its spending on free care "
+        "is below 3 in 4 nonprofit hospitals."
     )
     assert explain.gap_short(GapLabel.PROMISES_MORE, 300.0, 1.5, 0.4) == (
-        "Free care is promised up to 300% of the poverty level, but given less often than "
-        "at half of hospitals."
+        "Free care is promised up to 300% of the poverty level, but its spending on free care "
+        "is below half of nonprofit hospitals."
     )
-    # A high promise rank with a middling charity rank is still a gap, but not "less than half".
+    # A high promise rank with a middling charity rank is still a gap, and the line says
+    # where the spending ranks rather than guessing at how often care is given.
     assert explain.gap_short(GapLabel.PROMISES_MORE, 300.0, 2.0, 0.6) == (
-        "Free care is promised up to 300% of the poverty level, but given less often than "
-        "that promise suggests."
+        "Free care is promised up to 300% of the poverty level, but its spending on free care "
+        "is above half of nonprofit hospitals."
     )
     assert explain.gap_short(GapLabel.DELIVERS, 300.0, 2.0, 0.5) == (
-        "Free care is promised up to 300% of the poverty level and given about as often as "
-        "elsewhere."
+        "Free care is promised up to 300% of the poverty level and its spending on free care "
+        "is about the middle of nonprofit hospitals."
+    )
+    # 140 of 160 real "in line" hospitals rank outside the middle third on spending.
+    assert explain.gap_short(GapLabel.DELIVERS, 300.0, 4.0, 0.85) == (
+        "Free care is promised up to 300% of the poverty level and its spending on free care "
+        "is above 4 in 5 nonprofit hospitals."
     )
     assert explain.gap_short(GapLabel.PROMISES_LESS, 200.0, 5.0, 0.8) == (
-        "Free care is promised up to 200% of the poverty level and given more often than at "
-        "most hospitals."
+        "Free care is promised up to 200% of the poverty level and its spending on free care "
+        "is above 4 in 5 nonprofit hospitals."
+    )
+    # A label with no charity rank cannot happen from the metrics, but the line still stands.
+    assert explain.gap_short(GapLabel.DELIVERS, 300.0, 2.0, None) == (
+        "Free care is promised up to 300% of the poverty level."
     )
     assert explain.gap_short(None, 300.0, None, None) == (
         "Free care is promised up to 300% of the poverty level."
@@ -129,15 +139,31 @@ def test_gap_short_lines():
     assert explain.gap_short(None, None, None, None) == ""
 
 
+def test_gap_short_never_claims_how_often_care_is_given():
+    # MGH (CCN 220071): stated rank 0.04, charity rank 0.35, so the ranks differ by more than
+    # a quarter of the field and the label is "promises less". Its spending is still below
+    # the middle, and the line must say that, not "more often than at most hospitals".
+    line = explain.gap_short(GapLabel.PROMISES_LESS, 200.0, 1.9, 0.35)
+    assert line == (
+        "Free care is promised up to 200% of the poverty level and its spending on free care "
+        "is below half of nonprofit hospitals."
+    )
+    assert_plain(line)
+    for label in GapLabel:
+        for rank in (0.0, 0.35, 0.5, 0.8, 1.0):
+            words = explain.gap_short(label, 250.0, 2.0, rank)
+            assert "more often than at most" not in words, words
+            assert "often" not in words and "given" not in words, words
+            assert explain.rank_phrase(rank) in words, words
+
+
 def test_gap_advice():
     assert explain.gap_advice(GapLabel.PROMISES_MORE) == (
         "Apply in writing, keep a copy, and send every document the list asks for the first time."
     )
-    assert explain.gap_advice(GapLabel.DELIVERS) == (
-        "Apply as the policy says; most people who qualify get it."
-    )
+    assert explain.gap_advice(GapLabel.DELIVERS) == "Apply as the policy says and keep a copy."
     assert explain.gap_advice(GapLabel.PROMISES_LESS) == (
-        "Ask even if the policy looks narrow; this hospital gives more free care than it "
+        "Ask even if the policy looks narrow; this hospital spends more on free care than it "
         "advertises."
     )
     assert explain.gap_advice(None) == "Apply in writing and keep a copy."
@@ -150,18 +176,20 @@ def test_exposure_words():
     assert explain.exposure_headline(None) == "Not enough data yet"
     full = explain.exposure_sentence(1850, 770.4, 1200, 480, 8397.0, "2024")
     assert full == (
-        "About 770 of its 1,850 Medicare inpatients in 2024 were also on Medicaid. About "
-        "8,400 people 65 or over living under twice the poverty line are in the ZIP codes it "
-        "serves."
+        "About 770 of its 1,850 Medicare inpatients in 2024 were also on Medicaid. Going by "
+        "where its Medicare patients live, about 8,400 people 65 or over living under twice "
+        "the poverty line look to this hospital."
     )
     assert_plain(full)
     assert explain.exposure_sentence(1850, 770.4, None, None, None, None) == (
         "About 770 of its 1,850 Medicare inpatients were also on Medicaid."
     )
-    assert explain.exposure_sentence(None, None, None, None, 8397.0, "2024") == (
-        "About 8,400 people 65 or over living under twice the poverty line are in the ZIP "
-        "codes it serves."
+    # The count is the hospital's share of its ZIPs' poor seniors, not their residents.
+    assert explain.exposure_sentence(None, None, None, None, 15_310.0, "2024") == (
+        "Going by where its Medicare patients live, about 15,300 people 65 or over living "
+        "under twice the poverty line look to this hospital."
     )
+    assert "ZIP codes it serves" not in explain.exposure_sentence(None, None, None, None, 1.0, None)
     assert explain.exposure_sentence(1850, None, None, None, None, "2024") == (
         "It had about 1,850 Medicare inpatients in 2024."
     )
@@ -178,9 +206,10 @@ def test_exposure_words():
     assert explain.exposure_short(None, 1200) == ""
     assert explain.exposure_short(10, 0) == ""
     assert explain.exposure_advice() == (
-        "If you have both Medicare and Medicaid, you cannot be billed for this visit. Waive "
-        "writes that letter instead of an application."
+        "If you have both Medicare and Medicaid, the hospital likely cannot bill you the "
+        "Medicare cost-sharing. Waive writes that letter instead of an application."
     )
+    assert_plain(explain.exposure_advice())
 
 
 def test_action_words_name_patients_once():
@@ -291,8 +320,8 @@ def test_collections_short_and_advice():
         "letter if a collector calls."
     )
     assert explain.collections_advice(False) == (
-        "Apply before the first bill is 120 days old; this hospital reported no collection "
-        "actions before checking eligibility."
+        "Apply before the first bill is 120 days old; this hospital reported no lawsuits, "
+        "liens, credit reporting or debt sales before checking eligibility."
     )
     assert explain.collections_advice(None) == (
         "Apply within 120 days of the first bill and keep a copy of everything."
@@ -308,8 +337,10 @@ def test_missing_words():
         "service_area",
         "charity_cell",
         "bad_debt_cell",
+        "short_period",
     }
     assert explain.MISSING["charity_cell"] == "its cost report leaves the charity-care line blank"
+    assert explain.MISSING["short_period"] == "its only cost report covers less than a year"
     assert explain.MISSING["stated"] == (
         "no free-care limit on file (no published policy sheet and no matched tax filing)"
     )

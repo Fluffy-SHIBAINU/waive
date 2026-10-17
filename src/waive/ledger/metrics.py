@@ -18,10 +18,24 @@ from sqlalchemy.orm import Session
 from waive.atlas import repo as atlas_repo
 from waive.ledger import repo
 from waive.ledger.models import ExposureLabel, GapLabel
+from waive.ledger.tables import CostReportRow
 
-# A hospital whose promise rank and delivery rank differ by a quarter of the field or more
-# is called out either way; anything closer is "delivers what it promises".
+# A hospital whose promise rank and spending rank differ by a quarter of the field or more
+# is called out either way; anything closer is "promise and spending in line".
 GAP_THRESHOLD = 0.25
+
+
+def is_stub_period(cost: CostReportRow | None) -> bool:
+    """True when the report covers a stub period: both dates known and under a full year
+    apart. `repo.best_cost_report` prefers a full year and falls back to a stub only when the
+    hospital has nothing longer; a stub's shares are not ranked, since a few months of
+    charity care read against other hospitals' full years is noise."""
+    return (
+        cost is not None
+        and cost.fy_begin is not None
+        and cost.fy_end is not None
+        and (cost.fy_end - cost.fy_begin).days < repo.FULL_YEAR_DAYS
+    )
 
 
 def percentile_ranks(values: dict[str, float]) -> dict[str, float]:
@@ -119,9 +133,10 @@ def compute_behaviour(session: Session, today: date) -> BehaviourReport:
             report.stated_from_990 += 1
         if cost is not None:
             report.with_cost_report += 1
-            found.charity_cost_pct = _share(cost.charity_care_cost, cost.total_costs)
             found.cost_report_year = cost.fiscal_year
-            found.bad_debt_pct = _share(cost.bad_debt, cost.net_patient_revenue)
+            if not is_stub_period(cost):
+                found.charity_cost_pct = _share(cost.charity_care_cost, cost.total_costs)
+                found.bad_debt_pct = _share(cost.bad_debt, cost.net_patient_revenue)
         if filing is not None:
             report.with_schedule_h += 1
             found.charity_pct_990 = filing.charity_pct_of_expense

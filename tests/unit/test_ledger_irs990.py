@@ -176,6 +176,48 @@ def test_select_returns_keeps_only_990s_and_the_newest_period_per_wanted_ein():
     assert select_returns([INDEX], {"000000000"}) == {}
 
 
+def test_select_returns_skips_rows_whose_ids_would_name_a_path(tmp_path):
+    """OBJECT_ID names the member and the XML file, XML_BATCH_ID the ZIP: a row of the
+    downloaded index that carries anything but the IRS's own id shapes is logged and left out,
+    even when its period would make it the newest."""
+    header = INDEX.read_text().splitlines()[0]
+    hostile = tmp_path / "index_2026.csv"
+    hostile.write_text(
+        "\n".join(
+            [
+                header,
+                ",EFILE,912155626,202509,2026,UMass,990,1,../../../../escaped,2025_TEOS_XML_08A",
+                ",EFILE,912155626,202509,2026,UMass,990,1,202602269349301705,../../zips",
+                ",EFILE,912155626,202509,2026,UMass,990,1,2026022693493017,2026_TEOS_XML_08A",
+            ]
+        )
+        + "\n"
+    )
+    # The warning carries the ids, which the app's RedactingFilter masks on pytest's caplog
+    # handler once any test has built the web app; a handler of this test's own hears them.
+    import logging
+
+    heard: list[str] = []
+
+    class Grab(logging.Handler):
+        def emit(self, record: logging.LogRecord) -> None:
+            heard.append(record.getMessage())
+
+    logger = logging.getLogger("waive.ledger.irs990")
+    handler = Grab(level=logging.WARNING)
+    logger.addHandler(handler)
+    try:
+        assert select_returns([hostile], {"912155626"}) == {}
+        chosen = select_returns([INDEX, hostile], {"912155626"})
+    finally:
+        logger.removeHandler(handler)
+    assert chosen["912155626"].object_id == UMASS_OBJECT
+    skipped = [message for message in heard if "skipped" in message]
+    assert len(skipped) == 6
+    assert "'../../../../escaped'" in skipped[0] and "index_2026.csv" in skipped[0]
+    assert "'../../zips'" in skipped[1]
+
+
 def test_select_returns_reads_several_index_files_and_keeps_the_newest_across_them(tmp_path):
     older = tmp_path / "index_2024.csv"
     rows = INDEX.read_text().splitlines()
@@ -228,12 +270,41 @@ def test_extract_members_pulls_many_members_in_one_pass_and_skips_the_present(tm
     xml_dir = tmp_path / "xml"
     xml_dir.mkdir()
     (xml_dir / f"{MOUNT_AUBURN_OBJECT}_public.xml").write_bytes(b"kept")
-    found = extract_members(archive, {UMASS_OBJECT, MOUNT_AUBURN_OBJECT, "1"}, xml_dir)
+    found = extract_members(
+        archive, {UMASS_OBJECT, MOUNT_AUBURN_OBJECT, "999999999999999999"}, xml_dir
+    )
     assert set(found) == {UMASS_OBJECT, MOUNT_AUBURN_OBJECT}
     assert found[UMASS_OBJECT].read_bytes() == SCHEDULE_H
     # A member already on disk is not extracted again.
     assert found[MOUNT_AUBURN_OBJECT].read_bytes() == b"kept"
     assert extract_members(archive, set(), xml_dir) == {}
+
+
+def test_extract_members_refuses_an_object_id_that_would_leave_the_xml_dir(tmp_path):
+    """A hostile index row and a ZIP holding a member of the same name: the id is refused
+    before the ZIP is opened, and nothing lands where the traversal pointed."""
+    escaped = "../../../escaped"
+    archive = build_zip(tmp_path / "batch.zip", {escaped: b"<x/>", UMASS_OBJECT: SCHEDULE_H})
+    xml_dir = tmp_path / "cache" / "irs990" / "xml"
+    with pytest.raises(ValueError, match="not a return member name"):
+        extract_members(archive, [UMASS_OBJECT, escaped], xml_dir)
+    assert not (tmp_path / "escaped_public.xml").exists()
+    assert not xml_dir.exists()
+    # A present-looking id is checked the same way whether or not the file is cached.
+    xml_dir.mkdir(parents=True)
+    with pytest.raises(ValueError):
+        extract_members(archive, ["2025022693493017050"], xml_dir)
+    assert list(xml_dir.iterdir()) == []
+
+
+@respx.mock
+def test_fetch_return_xml_refuses_an_object_id_that_would_leave_the_xml_dir(tmp_path):
+    route = respx.get(BATCH_URL.format(year=2025, batch_id="2025_TEOS_XML_08A")).mock(
+        return_value=httpx.Response(200, content=b"")
+    )
+    with httpx.Client() as http, pytest.raises(ValueError, match="not a return member name"):
+        fetch_return_xml(http, tmp_path, entry("../../../escaped"))
+    assert route.call_count == 0 and not (tmp_path / "irs990").exists()
 
 
 # --- Schedule H ----------------------------------------------------------------------------
@@ -763,8 +834,9 @@ def test_a_deflate64_member_is_read_through_the_system_unzip(tmp_path, monkeypat
 
     zip_path = tmp_path / "2026_TEOS_XML_05A.zip"
     member = "202601149339300000_public.xml"
+    payload = b"<Return>from unzip</Return>"
     with zipfile.ZipFile(zip_path, "w") as archive:
-        archive.writestr(member, "<Return/>")
+        archive.writestr(member, payload)
     calls = []
 
     def refuse(self, name, *args, **kwargs):
@@ -772,19 +844,48 @@ def test_a_deflate64_member_is_read_through_the_system_unzip(tmp_path, monkeypat
 
     def fake_unzip(command, stdout, stderr, timeout):
         calls.append(command)
-        stdout.write(b"<Return>from unzip</Return>")
+        stdout.write(payload)  # the whole member, as the ZIP's directory declares it
         return subprocess.CompletedProcess(command, 3)  # unzip grumbles about stray bytes
 
     monkeypatch.setattr(zipfile.ZipFile, "open", refuse)
     monkeypatch.setattr(irs990.subprocess, "run", fake_unzip)
     found = irs990.extract_members(zip_path, ["202601149339300000"], tmp_path / "xml")
-    assert (tmp_path / "xml" / member).read_bytes() == b"<Return>from unzip</Return>"
+    assert (tmp_path / "xml" / member).read_bytes() == payload
     assert calls == [["unzip", "-p", str(zip_path), member]]
     assert not list((tmp_path / "xml").glob("*.part"))
     # A member name that is not a return's never reaches a subprocess.
     with pytest.raises(ValueError):
         irs990._extract_with_unzip(str(zip_path), "../etc/passwd", None)
     assert found == {"202601149339300000": tmp_path / "xml" / member}
+
+
+def test_an_unzip_cut_short_is_an_error_and_leaves_no_file_under_the_real_name(
+    tmp_path, monkeypatch
+):
+    """The ZIP's directory says how long the member is; a shorter write is a partial member,
+    not the return, and must not be cached as one."""
+    import subprocess
+    import zipfile
+
+    from waive.ledger import irs990
+
+    zip_path = tmp_path / "2026_TEOS_XML_05A.zip"
+    member = "202601149339300000_public.xml"
+    with zipfile.ZipFile(zip_path, "w") as archive:
+        archive.writestr(member, b"<Return>from unzip</Return>")
+
+    def refuse(self, name, *args, **kwargs):
+        raise NotImplementedError("That compression method is not supported")
+
+    def short_unzip(command, stdout, stderr, timeout):
+        stdout.write(b"<Return>")
+        return subprocess.CompletedProcess(command, 0)
+
+    monkeypatch.setattr(zipfile.ZipFile, "open", refuse)
+    monkeypatch.setattr(irs990.subprocess, "run", short_unzip)
+    with pytest.raises(RuntimeError, match="wrote 8 of 27 bytes"):
+        irs990.extract_members(zip_path, ["202601149339300000"], tmp_path / "xml")
+    assert list((tmp_path / "xml").iterdir()) == []
 
 
 def test_without_unzip_the_deflate64_batch_fails_with_a_clear_message(tmp_path, monkeypatch):

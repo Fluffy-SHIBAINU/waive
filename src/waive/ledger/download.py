@@ -10,7 +10,7 @@ import logging
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
-from urllib.parse import urlparse
+from urllib.parse import unquote, urlparse
 
 import httpx
 
@@ -22,6 +22,19 @@ CMS_API_PAGE = 5000
 DOWNLOAD_TIMEOUT = httpx.Timeout(600.0, connect=30.0)
 
 
+def _file_name(url: str, name: str | None) -> str:
+    """The name to save `url` under: `name`, else the URL's unquoted basename. Only an https
+    URL is fetched, and the name must be a plain file name (not empty, "." or "..", no path
+    separator), since the catalogue that names the URL is itself a download."""
+    parts = urlparse(url)
+    if parts.scheme != "https":
+        raise ValueError(f"{url!r} is not an https URL")
+    file_name = name if name is not None else unquote(parts.path.rsplit("/", 1)[-1])
+    if file_name in ("", ".", "..") or "/" in file_name or "\\" in file_name:
+        raise ValueError(f"{file_name!r} is not a plain file name ({url})")
+    return file_name
+
+
 def fetch_file(
     http: httpx.Client,
     url: str,
@@ -31,9 +44,11 @@ def fetch_file(
     refresh: bool = False,
 ) -> Path:
     """Download `url` into `dest_dir` as `name` (default: the URL's basename), streaming to a
-    `.part` file and renaming at the end. Served from the cache unless `refresh`."""
+    `.part` file and renaming at the end. Served from the cache unless `refresh`. A URL that is
+    not https, or that names no plain file, is refused (ValueError) before anything is written."""
+    file_name = _file_name(url, name)
     dest_dir.mkdir(parents=True, exist_ok=True)
-    target = dest_dir / (name or Path(urlparse(url).path).name)
+    target = dest_dir / file_name
     if target.exists() and not refresh:
         return target
     partial = target.with_name(target.name + ".part")

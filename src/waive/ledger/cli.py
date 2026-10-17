@@ -181,7 +181,7 @@ def ledger_show(ccn: str = typer.Option(..., "--ccn", help="Hospital CCN")) -> N
         console.print(f"{ccn}: no ledger data")
         raise typer.Exit(code=1)
     for label, metric in (
-        ("Free care, promised vs delivered", view.gap),
+        ("Free care, promised vs spent", view.gap),
         ("Seniors at risk here", view.exposure),
         ("Collections", view.collections),
     ):

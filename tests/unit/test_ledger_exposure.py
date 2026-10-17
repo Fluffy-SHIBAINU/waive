@@ -107,6 +107,20 @@ def test_parse_inpatient_csv_reads_the_counts_and_a_blank_count_as_none():
     assert facts["310001"] == InpatientFacts("310001", discharges=600, benes=400, dual_benes=None)
 
 
+def test_a_count_cell_that_is_not_a_number_is_none_and_never_aborts_the_load(tmp_path):
+    path = tmp_path / "inpatient.csv"
+    path.write_text(
+        "Rndrng_Prvdr_CCN,Tot_Benes,Tot_Dschrgs,Bene_Dual_Cnt\n"
+        "220001,NaN,inf,12.0\n"
+        "310001,400,600,-inf\n",
+        encoding="utf-8",
+    )
+    facts = parse_inpatient_csv(path)
+    # "NaN" and "inf" are None like a blank; a decimal count is still read whole.
+    assert facts["220001"] == InpatientFacts("220001", discharges=None, benes=None, dual_benes=12)
+    assert facts["310001"] == InpatientFacts("310001", discharges=600, benes=400, dual_benes=None)
+
+
 def test_parse_service_area_csv_keeps_wanted_providers_and_counts_suppressed_rows():
     area = parse_service_area_csv(SERVICE_AREA, WANTED)
     assert isinstance(area, ServiceArea)

@@ -118,11 +118,15 @@ class ExposureReport:
 
 
 def _count(text: str | None) -> int | None:
-    """A CMS count cell as an int; None when blank or suppressed."""
+    """A CMS count cell as an int; None when blank, suppressed or not a number ("NaN", "inf"),
+    so one odd cell never aborts the whole load."""
     text = (text or "").strip()
     if not text or text == SUPPRESSED:
         return None
-    return int(float(text))
+    try:
+        return int(float(text))
+    except (ValueError, OverflowError):
+        return None
 
 
 def _zip5(text: str) -> str:
