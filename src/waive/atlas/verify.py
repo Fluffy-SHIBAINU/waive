@@ -679,6 +679,32 @@ def ceiling_problem(quote: str, value: Decimal) -> str | None:
 
 FREE_LIMIT_UNTIED_REASON = "quote does not state the free-care limit as an income limit"
 FREE_LIMIT_SPLIT_REASON = "quote gives different free-care limits for inpatient and outpatient care"
+FREE_LIMIT_NOT_FREE_REASON = "quote describes a sliding scale or a denial, not free care"
+# Website check 3: "granted on a sliding scale … up to 200%" (UF Health Jacksonville, 100001),
+# "prorated on a sliding scale" (Summa Western Reserve, 360150) and "denied Financial Assistance,
+# due to being over the 200%" (UF Health Shands, 100113) were each published as free care to 200%.
+_NOT_FREE_HINT = re.compile(r"\bsliding\b|\bprorat|\bdenied\b")
+_FREE_WORDING = re.compile(
+    r"\bfree\b|\bno[- ]cost\b|\bno charge\b|\b100 ?(?:%|percent)|\bfull\b|\bforgiv|\bwaive"
+    r"|\bwrite[- ]?off\b|\bwritten off\b|\bno patient responsibility\b|\bnot be responsible\b"
+)
+# "100% NJ Charity Care" is New Jersey's program (Thomas Jefferson University Hospital, 390174,
+# Philadelphia, quoted Jefferson's New Jersey section; website check 3).
+_STATE_PROGRAM = re.compile(r"\b(nj|new jersey) charity care\b", re.IGNORECASE)
+
+
+def free_limit_not_free(quote: str) -> bool:
+    """Whether a free-care quote describes a sliding scale, a prorated scale or a denial without
+    promising free care anywhere in it."""
+    text = normalize(quote).lower()
+    return _NOT_FREE_HINT.search(text) is not None and _FREE_WORDING.search(text) is None
+
+
+def names_other_states_program(quote: str, state: str) -> bool:
+    """Whether the quote ties the limit to another state's charity care program."""
+    return state != "NJ" and _STATE_PROGRAM.search(normalize(quote)) is not None
+
+
 _INPATIENT = re.compile(r"\bin-?patient\b")
 _OUTPATIENT = re.compile(r"\bout-?patient\b")
 
@@ -1130,6 +1156,12 @@ def verify_sheet(
             cited.quote or ""
         ):
             report.rejected.append((path, FREE_LIMIT_SPLIT_REASON))
+        elif path == "eligibility.free_care_max_fpl" and free_limit_not_free(cited.quote or ""):
+            report.rejected.append((path, FREE_LIMIT_NOT_FREE_REASON))
+        elif path == "eligibility.free_care_max_fpl" and names_other_states_program(
+            cited.quote or "", sheet.hospital.state
+        ):
+            report.rejected.append((path, OTHER_STATE_REASON))
         elif path == "eligibility.free_care_max_fpl" and quotes_assistance_ceiling(
             cited.quote or ""
         ):
