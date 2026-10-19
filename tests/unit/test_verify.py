@@ -1456,3 +1456,49 @@ def test_a_free_care_limit_that_differs_for_inpatient_and_outpatient_care_is_not
     docs = {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT + "\n" + both + "\n"}
     report = verify_sheet(with_free_limit(200, both), docs)
     assert not any(path == "eligibility.free_care_max_fpl" for path, _ in report.rejected)
+
+
+def test_a_sliding_scale_or_another_states_program_is_no_free_care_limit():
+    from waive.atlas.verify import FREE_LIMIT_NOT_FREE_REASON, OTHER_STATE_REASON
+
+    free = "eligibility.free_care_max_fpl"
+    # Website check 3 (2026-10-19): UF Health Jacksonville (100001), Summa Western Reserve
+    # (360150) and UF Health Shands (100113) published free care to 200% from a sliding scale,
+    # a prorated scale and a denial sentence; none of the three promises free care.
+    for quote in (
+        "Financial Assistance shall be granted on a sliding scale for qualified applicants for "
+        "patients with income up to 200% of the poverty guidelines.",
+        "For insured patients, HFA eligibility is based upon expanded income levels of up to "
+        "200% of FPG and is prorated on a sliding scale.",
+        "Individuals who are denied Financial Assistance, due to being over the 200% of federal "
+        "poverty limit, can be reviewed for Catastrophic Reduction.",
+    ):
+        docs = {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT + "\n" + quote + "\n"}
+        assert (free, FREE_LIMIT_NOT_FREE_REASON) in verify_sheet(
+            with_free_limit(200, quote), docs
+        ).rejected, quote
+    # Thomas Jefferson University Hospital (390174, Philadelphia) quoted Jefferson's New Jersey
+    # section: "100% NJ Charity Care (free care)" is New Jersey's program, not Pennsylvania's.
+    nj = (
+        "Patients with family gross income less than or equal to 200% of Federal Poverty Level "
+        '("FPL ") are eligible for 100% NJ Charity Care (free care).'
+    )
+    sheet = with_free_limit(200, nj)
+    pa = sheet.model_copy(update={"hospital": sheet.hospital.model_copy(update={"state": "PA"})})
+    docs = {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT + "\n" + nj + "\n"}
+    assert (free, OTHER_STATE_REASON) in verify_sheet(pa, docs).rejected
+    nj_sheet = sheet.model_copy(
+        update={"hospital": sheet.hospital.model_copy(update={"state": "NJ"})}
+    )
+    assert not any(p == free for p, _ in verify_sheet(nj_sheet, docs).rejected)
+    # Free care said plainly, or as a sliding scale that starts with free care, stays.
+    for quote in (
+        "Patients with family income at or below 200% of the Federal Poverty Level receive free "
+        "care, and a sliding scale applies above it.",
+        "Charity Care: The hospital bill amount that the patient is responsible for will be "
+        "forgiven when an income level is 200% percent or less of the FPL.",
+    ):
+        docs = {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT + "\n" + quote + "\n"}
+        assert not any(
+            p == free for p, _ in verify_sheet(with_free_limit(200, quote), docs).rejected
+        ), quote
