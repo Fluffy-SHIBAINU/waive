@@ -62,6 +62,14 @@ class Settings(BaseSettings):
     # Deployment (spec §14). `production` is set on the endpoint, never in a developer's .env:
     # it refuses the SQLite default so a misconfigured container cannot silently start empty.
     env: Literal["development", "production"] = "development"
+
+    # The Kindred ID wall (web/kindred_auth.py): every request needs the family's session cookie
+    # except paths under these prefixes, comma-separated. The senior and caregiver links (`/s/`,
+    # `/c/`) are walled too while Waive is a private beta; add them here when it opens.
+    wall_exempt_prefixes: str = "/healthz,/static/,/robots.txt,/favicon.ico"
+    # Local development only: this address stands in for a session, and only for a request
+    # that arrived at localhost. The verifier ignores it whenever `env` is production.
+    kindred_auth_bypass: str | None = Field(default=None, validation_alias="KINDRED_AUTH_BYPASS")
     # `db` keeps the spend ledger in the `usage_events` table (stateless containers); `file`
     # keeps `var/usage.jsonl` for local work.
     ledger_backend: Literal["file", "db"] = "file"
@@ -90,6 +98,18 @@ class Settings(BaseSettings):
     # renders pages more fully at two credits per five URLs instead of one; about nine
     # credits per hospital instead of seven.
     scout_extract_depth: Literal["basic", "advanced"] = "basic"
+
+    @property
+    def wall_exempt(self) -> tuple[str, ...]:
+        """The path prefixes the Kindred ID wall lets through without a session."""
+        return tuple(p.strip() for p in self.wall_exempt_prefixes.split(",") if p.strip())
+
+    @property
+    def wall_env(self) -> dict[str, str]:
+        """What the verifier's bypass reads: Waive's own environment name and the bypass address,
+        from these settings rather than the process environment, so `WAIVE_ENV=production` in a
+        `.env` file counts the same as in the container."""
+        return {"WAIVE_ENV": self.env, "KINDRED_AUTH_BYPASS": self.kindred_auth_bypass or ""}
 
     @property
     def sign_in_configured(self) -> bool:

@@ -20,6 +20,7 @@ from waive.governor import BudgetExceeded, make_governor
 from waive.logging_setup import configure_logging
 from waive.web.deps import STATIC_DIR, TEMPLATES_DIR, Deps, render, today_utc
 from waive.web.headers import PrivateHeaders
+from waive.web.kindred_auth import KindredWallMiddleware
 from waive.web.limits import BodyLimit, RateLimiter, TooManyRequests, UploadTooLarge
 from waive.web.plain import plain_lines
 from waive.web.signin import home_page
@@ -85,6 +86,12 @@ def create_app(
     app.state.google = _google(settings)
     app.add_middleware(BodyLimit, max_body=settings.max_upload_bytes)
     app.add_middleware(PrivateHeaders)
+    # The Kindred ID wall, added last so it is outermost: nothing below it, the body cap and the
+    # private headers included, runs for a request without the family's session cookie. Waive's
+    # own sign-in and the capability links sit behind it (design §9.5, decision 10).
+    app.add_middleware(
+        KindredWallMiddleware, exempt_prefixes=settings.wall_exempt, env=settings.wall_env
+    )
     # Starlette spools multipart files over 1 MiB to a plaintext temp file. With the cap in front
     # nothing admitted needs to leave memory, which keeps "photos are never written to disk" true.
     MultiPartParser.spool_max_size = settings.max_upload_bytes + 1
