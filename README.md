@@ -175,7 +175,7 @@ uv run waive atlas export --state MA       # data/atlas/ma.json, CC BY 4.0
 uv run waive atlas report --state MA       # docs/reports/atlas-ma.md
 ```
 
-The admin console (`/admin/login`) switches on when `WAIVE_ADMIN_TOKEN` (16+ characters) is set. The production container is built with `docker build -t waive:dev .`.
+The admin console (`/admin/login`) switches on when `WAIVE_ADMIN_TOKEN` (16+ characters) is set. The production container is built with `docker build -t waive:dev .`. Every page sits behind the Kindred ID wall (see below); on a laptop, `KINDRED_AUTH_BYPASS=you@example.com` in `.env` opens it for requests to `localhost`.
 
 ## Commands
 
@@ -215,6 +215,27 @@ The admin console (`/admin/login`) switches on when `WAIVE_ADMIN_TOKEN` (16+ cha
 - **Web pages, PDFs and model output are data, never instructions.** The structurer has no tools, its output is schema-validated, and quote verification rejects any value that is not in the source.
 - **No money ever.** Every page says: Waive never asks for money, card numbers or bank logins. Results are estimates; the hospital decides.
 
+## Kindred ID wall
+
+`waive.kindred-ai.dev` is one of the Kindred family's products and sits behind the family's one sign-in, **Kindred ID** (`https://id.kindred-ai.dev`, Google OIDC). The Issuer signs an ES256 session into the cookie `kindred_session` on `Domain=kindred-ai.dev`; Waive checks that cookie itself against the Issuer's published keys (`/.well-known/jwks.json`, cached in process, refetched at most every 30 s on an unknown key id). No shared secret, no call to the Issuer per request. Waive's own sign-in with Google (account history) and the senior and caregiver capability links are unchanged and sit behind the wall: while Waive is a private beta, a senior who receives a link must also be on the Kindred allowlist.
+
+- **Files.** `src/waive/web/kindred_auth.py` is a verbatim copy of the reference verifier (`eventhorizon/id/verifiers/kindred_auth.py`; copy the newer file over it, never edit it here; ruff skips it). `create_app()` adds `KindredWallMiddleware` outermost, so a request without a session never reaches the body cap, the private headers or a route. The base template's footer carries the "Signed in to Kindred · Sign out" form (`POST https://id.kindred-ai.dev/logout`), which signs the reader out of every Kindred product.
+- **What a request without a session gets.** A page load (`Sec-Fetch-Mode: navigate`, or `Accept: text/html` without that header) is sent with `303` to `https://id.kindred-ai.dev/login?return_to=<the request URL>`, built from `X-Forwarded-Proto` and `X-Forwarded-Host` (Caddy sets both); anything else gets `401 {"error":"unauthenticated","login":…}` with `Cache-Control: no-store`. A session within 24 hours of expiry sends page loads through `/login` again (Google answers with the account already chosen).
+- **Exempt paths.** `WAIVE_WALL_EXEMPT_PREFIXES`, comma-separated prefixes, default `/healthz,/static/,/robots.txt,/favicon.ico`. When Waive opens to the public, the senior and caregiver links are the first exemptions to add, with no code change: set `WAIVE_WALL_EXEMPT_PREFIXES=/healthz,/static/,/robots.txt,/favicon.ico,/s/,/c/` in `/opt/waive/.env` on the VM and `docker compose up -d app`.
+- **Local development.** `KINDRED_AUTH_BYPASS=<email>` in `.env` stands in for a session, only for a request that arrived at `localhost`, `127.0.0.1` or `[::1]`, and never when `WAIVE_ENV=production`. Chrome refuses a cookie on `Domain=localhost`, so this is the local path; the tests run signed in the same way (`tests/conftest.py`), except `tests/unit/test_kindred_wall.py`, which signs tokens with a key it generates and never opens a socket.
+- **Proof, from any machine without the cookie:**
+
+```bash
+curl -sI -H "Sec-Fetch-Mode: navigate" -H "Accept: text/html" https://waive.kindred-ai.dev/atlas | grep -i '^HTTP\|^location'
+# HTTP/2 303 … location: https://id.kindred-ai.dev/login?return_to=https%3A%2F%2Fwaive.kindred-ai.dev%2Fatlas
+curl -si https://waive.kindred-ai.dev/atlas/229999.json | grep -i '^HTTP\|^cache-control\|unauthenticated'
+# HTTP/2 401 … cache-control: no-store … {"error":"unauthenticated","login":"https://id.kindred-ai.dev/login?return_to=…"}
+curl -s https://waive.kindred-ai.dev/healthz                      # {"ok":true}
+curl -sI https://waive.kindred-ai.dev/static/waive.css | head -1  # HTTP/2 200
+```
+
+The live metrics and atlas JSON now need the cookie too (`curl -b kindred_session=…`), or their prefixes in the exempt list.
+
 ## Costs
 
 Actual spend to date (from the usage ledger, `uv run waive doctor` prints the totals): **5,297 Tavily credits, $11.94 Token Factory, ≈ $2.80 AI Cloud** (the one VM, since 2026-10-15) as of 2026-10-16.
@@ -253,7 +274,7 @@ src/waive/
   cases/       images, extract, match, vault, service, packet, reminders, synth, evaluate
   learning/    classify, intake, contributions, outcomes, triage, evidence, gaps, hashing, scoreboard
   rules/       fpl, eligibility, deadlines, explain
-  web/         app factory, routes, templates, static CSS
+  web/         app factory, routes, templates, static CSS; kindred_auth.py, the Kindred ID verifier (verbatim copy)
   cli.py       the `waive` command
   demo.py      the fictional demo hospital; `demo reset`: delete every case, re-seed it, write the demo images
   gallery.py   `demo gallery`: scripted demo case, headless Chrome screenshots, README diagrams via kroki.io

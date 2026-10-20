@@ -15,6 +15,10 @@
 <footer class="foot">
 <p>Waive never asks for money, card numbers or bank logins.</p>
 <p>Results are estimates. The hospital makes the final decision.</p>
+<form class="kindred" method="post" action="https://id.kindred-ai.dev/logout">
+<input type="hidden" name="return_to" value="https://www.kindred-ai.dev/">
+Signed in to Kindred · <button type="submit" class="link">Sign out</button>
+</form>
 </footer>
 {% block scripts %}{% endblock %}
 {% if bar %}<script src="/static/case.js"></script>{% endif %}
