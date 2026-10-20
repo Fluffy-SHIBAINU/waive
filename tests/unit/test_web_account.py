@@ -58,6 +58,13 @@ def main_of(page):
     return page.text.split('<main class="page">', 1)[1].split("</main>", 1)[0]
 
 
+def waive_text(page) -> str:
+    """The page without the footer's Kindred ID sign-out form, which is on every page whatever
+    Waive's own sign-in settings say (web/kindred_auth.py)."""
+    head, _, rest = page.text.partition('<form class="kindred"')
+    return head + rest.partition("</form>")[2]
+
+
 def begin(client):
     """Press "Start a case"; returns the full link's address (/c/{token})."""
     created = client.post("/cases", data={"state": "MA"}, follow_redirects=False)
@@ -110,7 +117,7 @@ def test_without_google_settings_nothing_about_sign_in_is_rendered_anywhere():
     for page in pages:
         assert page.status_code == 200
         for word in SIGN_IN_WORDS:
-            assert word not in page.text, (str(page.url), word)
+            assert word not in waive_text(page), (str(page.url), word)
     # The pages that only exist for someone signed in are not there at all.
     assert client.get("/account", follow_redirects=False).status_code == 404
     assert client.get("/account/cases/" + "a" * 32, follow_redirects=False).status_code == 404
@@ -122,7 +129,7 @@ def test_without_google_settings_nothing_about_sign_in_is_rendered_anywhere():
 def test_with_google_settings_the_home_page_offers_sign_in_below_start():
     client, _ = signin_client()
     page = client.get("/")
-    text = page.text
+    text = waive_text(page)
     button = '<a href="/auth/google/start" class="btn">Sign in with Google</a>'
     assert button in text
     assert text.index("Start a case") < text.index(button) < text.index("/atlas")

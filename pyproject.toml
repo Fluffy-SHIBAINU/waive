@@ -51,13 +51,18 @@ packages = ["src/waive"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "-q -m 'not live' --disable-socket --allow-unix-socket"
-markers = ["live: calls real external APIs and spends credits"]
+markers = [
+  "live: calls real external APIs and spends credits",
+  "kindred_wall: runs against the real Kindred ID wall (tests/conftest.py signs every other test in)",
+]
 
 [tool.ruff]
 line-length = 100
 target-version = "py312"
-# Plans and specs under docs/ contain code blocks that must stay as written.
-extend-exclude = ["docs"]
+# Plans and specs under docs/ contain code blocks that must stay as written. The Kindred ID
+# verifier is a verbatim copy of eventhorizon/id/verifiers/kindred_auth.py and stays as written
+# so the copies never drift.
+extend-exclude = ["docs", "src/waive/web/kindred_auth.py"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "B", "UP"]
