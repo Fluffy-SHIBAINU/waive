@@ -175,6 +175,8 @@ uv run waive atlas export --state MA       # data/atlas/ma.json, CC BY 4.0
 uv run waive atlas report --state MA       # docs/reports/atlas-ma.md
 ```
 
+`waive atlas export --state XX --tender PATH` also writes the snapshot Tender (`tender.kindred-ai.dev`, the Kindred agent that pins hospital policies to their state and county) imports: a CSV with one row per hospital in Waive's registry for the state (nonprofits, plus Washington's public hospital districts, which RCW 70.170 covers), the fictional demo hospital excepted, under the header `ccn,name,status,website,fap_url,source_kind,source_title,free_pct,quote,discount_pct,discount_quote,retrieved_at,system_name,system_size,sheet_version,source_sha256`. `status` is `published`, `held`, `draft` or `unscouted`, from the hospital's newest sheet version. Only a published row carries the policy columns — the free-care limit as the sheet writes it with its quote, the top of the highest discount tier with the table's quote, the cited source's URL, kind, title and SHA-256, the date the field was checked, and the sheet version — and its website only when discovery matched the domain with a confidence of 0.9 or more; a published sheet whose cited source has no URL (a patient's photo, a Form 990) is exported as `held`. Every other status leaves the policy and website columns empty, which is how a withdrawn sheet reaches Tender: its import clears what it held. `system_size` stays empty for Tender to fill. Run it after each publish batch (`uv run waive atlas export --state WA --tender data/atlas/tender-wa.csv`) and post the file to Tender's import.
+
 The admin console (`/admin/login`) switches on when `WAIVE_ADMIN_TOKEN` (16+ characters) is set. The production container is built with `docker build -t waive:dev .`. Every page sits behind the Kindred ID wall (see below); on a laptop, `KINDRED_AUTH_BYPASS=you@example.com` in `.env` opens it for requests to `localhost`.
 
 ## Commands
@@ -184,12 +186,12 @@ The admin console (`/admin/login`) switches on when `WAIVE_ADMIN_TOKEN` (16+ cha
 | `waive doctor [--live]` | Configuration and connectivity checks without printing secrets; `--live` calls both APIs | 1 Tavily credit with `--live` |
 | `waive keygen` | Fresh vault key and link secret for `.env` | no |
 | `waive serve [--host] [--port]` | Run the web app | no |
-| `waive atlas seed --state XX \| --all-states` | Load nonprofit acute-care and critical-access hospitals from CMS | no |
+| `waive atlas seed --state XX \| --all-states` | Load nonprofit acute-care and critical-access hospitals from CMS (Washington's public hospital districts too) | no |
 | `waive atlas build --state XX [--limit N] [--ccn X] [--rebuild] [--reuse-sources] [--no-dual]` | Discover, scout, structure, verify and publish sheets (`--reuse-sources` re-structures from stored documents without Tavily) | yes |
 | `waive atlas overlay --state XX` | Add cited state programs to every sheet in the state | yes |
 | `waive atlas refresh --ccn X \| --state XX [--limit N]` | Re-fetch stored documents; re-structure only the hospitals whose documents changed | yes |
 | `waive atlas schedule [--dry-run\|--run] [--limit N] [--state XX] [--top N]` | Show the scouting priority queue and today's budget; `--run` spends credits | with `--run` |
-| `waive atlas export --state XX [--out PATH]` | Write the latest sheets as open data | no |
+| `waive atlas export --state XX [--out PATH] [--tender PATH]` | Write the latest sheets as open data; `--tender` adds the per-state snapshot Tender imports | no |
 | `waive atlas report --state XX \| --national [--out PATH]` | Coverage report in Markdown | no |
 | `waive atlas recheck [--state XX] [--all] [--withdraw]` | List latest sheets whose stored fields the current verification rules reject (run after a rule change); `--withdraw` republishes them without those fields, no model call | no |
 | `waive corpus generate [--count N] [--out DIR] [--seed N]` | Fictional bill images with ground truth | no |
