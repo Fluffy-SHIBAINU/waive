@@ -11,15 +11,11 @@
   </select>
   <button type="submit" class="btn primary">Start a case</button>
 </form>
-{#- Sign-in (Phase 9). Without Google settings neither branch renders and the page is as it was. #}
-{%- if signed_in %}
+{#- "Your cases" (Phase 9), kept under the reader's Kindred account: the page is as it always was until there is one. #}
+{%- if history %}
 <h2>Your cases</h2>
 {% include "_history.html" %}
 <p><a href="/account" class="btn quiet">Your account</a></p>
-<form method="post" action="/auth/signout" class="stack"><button type="submit" class="btn quiet">Sign out</button></form>
-{%- elif sign_in %}
-<p><a href="/auth/google/start" class="btn">Sign in with Google</a></p>
-<p class="muted">Signing in keeps your cases together, on any phone or computer. We do not get your name or your email.</p>
 {%- endif %}
 <p><a href="/atlas">Browse hospital policies</a></p>
 {% endblock %}

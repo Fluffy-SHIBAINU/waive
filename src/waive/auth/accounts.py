@@ -35,9 +35,10 @@ def signer_subject_hash(signer: TokenSigner, provider: str, subject: str) -> str
 
 
 def get_or_create(session: Session, provider: str, digest: str) -> AccountRow:
-    """The account for a subject hash, made on the first sign-in. Call it before any other write
-    in the transaction: when two first sign-ins of one person race, the loser rolls back and
-    takes the winner's row."""
+    """The account for a subject hash, made on the first sign-in. Safe at any point in a
+    transaction: the insert runs in its own savepoint, so when two first sign-ins of one person
+    race, the loser undoes only that insert, keeps every other write it made, and takes the
+    winner's row."""
     query = select(AccountRow).where(
         AccountRow.provider == provider, AccountRow.subject_hash == digest
     )
@@ -45,11 +46,11 @@ def get_or_create(session: Session, provider: str, digest: str) -> AccountRow:
     if found is not None:
         return found
     row = AccountRow(provider=provider, subject_hash=digest)
-    session.add(row)
     try:
-        session.flush()
+        with session.begin_nested():
+            session.add(row)
+            session.flush()
     except IntegrityError:
-        session.rollback()
         return session.scalars(query).one()
     return row
 

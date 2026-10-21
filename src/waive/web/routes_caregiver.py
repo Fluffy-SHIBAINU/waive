@@ -35,7 +35,7 @@ from waive.learning.triage import record_outcome, triage_for
 from waive.web.deps import deps_of, render
 from waive.web.limits import client_key
 from waive.web.routes_senior import flow_links, opened, shown_links, to_decimal
-from waive.web.signin import from_this_site, home_page, provider, signed_in, start_link
+from waive.web.signin import from_this_site, home_page, signed_in
 
 router = APIRouter()
 
@@ -51,8 +51,8 @@ def create_case(request: Request, state: str = Form("MA")) -> RedirectResponse:
     reload cannot start a second case. Nothing else is shown; the photo-only link for a second
     person is minted when the case bar is asked for it."""
     deps = deps_of(request)
-    # No sign-in here and a new case with its capability link per call: a process-wide ceiling
-    # first (no header can dodge it), then a best-effort one per client.
+    # A new case with its capability link per call: a process-wide ceiling first (no header can
+    # dodge it), then a best-effort one per client.
     settings = request.app.state.settings
     limiter = request.app.state.limiter
     limiter.check("cases", settings.cases_per_minute, 60, "new cases")
@@ -60,9 +60,10 @@ def create_case(request: Request, state: str = Form("MA")) -> RedirectResponse:
         f"cases:{client_key(request)}", settings.cases_per_client_per_minute, 60, "new cases"
     )
     with session_scope(deps.engine) as session:
-        links = start_case(deps.context(session), state)
-        # Started while signed in: the case goes into that account's history without asking.
+        # Started from this site's own form: the case goes into the reader's history without
+        # asking. Another site's form post starts a case that is in nobody's history.
         account_id = signed_in(request, session) if from_this_site(request) else None
+        links = start_case(deps.context(session), state)
         if account_id is not None:
             link_case(session, account_id, links.case_id)
     return RedirectResponse(caregiver_links(links.caregiver_token)["start"], status_code=303)
@@ -161,16 +162,17 @@ def _packet_sheet(session, shown: CaseView):
 @router.post("/c/{token}/save")
 def caregiver_save(request: Request, token: str, back: str = Form("review")):
     """The "Save this case to my account" button. The full link shows the case may be opened;
-    the session says whose account. When the session ran out since the page was shown, sign-in
-    comes first and keeps the case on its way back."""
+    the Kindred session says whose account. Only this site's own form puts a case into the
+    reader's history (as /cases and /account/delete do): the Kindred cookie is SameSite=Lax, so
+    a neighbour on kindred-ai.dev that holds the full link could otherwise post here with it.
+    A post from elsewhere, or one with no account on it (never behind the wall; a wall-exempt
+    /c/ page one day), changes nothing and goes back to the case page, never home."""
     with opened(request, token) as case:
-        if provider(request) is None:
-            raise KeyError("sign-in is not configured")
-        account_id = signed_in(request, case.ctx.session)
-        if account_id is None:
-            return RedirectResponse(start_link(token), status_code=303)
-        link_case(case.ctx.session, account_id, case.case_id)
-        return case.to("result" if back == "result" else "review")
+        landing = "result" if back == "result" else "review"
+        account_id = signed_in(request, case.ctx.session) if from_this_site(request) else None
+        if account_id is not None:
+            link_case(case.ctx.session, account_id, case.case_id)
+        return case.to(landing)
 
 
 @router.post("/c/{token}/relink", response_class=HTMLResponse)

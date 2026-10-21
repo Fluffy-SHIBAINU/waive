@@ -176,12 +176,12 @@ class Step:
         )
 
     def keep(self, back: str) -> dict[str, str] | None:
-        """What the result and check pages offer about keeping this case in an account, when
-        sign-in is configured. Only the full link gets the offer: the photo-only link cannot
-        put a case into anyone's account."""
+        """What the result and check pages offer about keeping this case in the reader's
+        account. Only the full link gets the offer: the photo-only link cannot put a case into
+        anyone's account."""
         if not self.flow.full:
             return None
-        return keep_offer(self.request, self.ctx.session, self.case_id, self.flow.token, back)
+        return keep_offer(self.request, self.ctx.session, self.case_id, back)
 
     def wait(self, why: str, shown: CaseView | None = None) -> HTMLResponse:
         return self.page("senior_wait.html", shown, reason=WAIT[why][1 if self.flow.full else 0])

@@ -1,14 +1,17 @@
-"""Who is signed in (Phase 9): the session cookie, and what every route module needs to ask.
+"""Who is signed in (Phase 9, re-keyed to Kindred accounts 2026-10-21), and what every route
+module needs to ask.
 
-The cookie holds a random session id and nothing else; the account behind it is looked up in
-the database on each request (auth/sessions.py). While sign-in is not configured, nobody is
-signed in and no cookie is read or set.
+The reader is whoever the Kindred ID wall let in (web/kindred_auth.py puts the Issuer's session
+on `request.state.kindred_user`). Its `sub` is Google's own subject id, signed through by the
+Issuer, so the account row is the one Waive's own Google sign-in would have made for the same
+person: provider "google", the subject hashed under the token secret (auth/accounts.py). That
+own sign-in (routes_auth.py) is dormant: its session cookie helpers stay here for it, but no
+route reads the cookie to decide who is asking.
 
 Also here, because more than one route module shows them: the history of an account's cases,
 the home page for whoever is asking, and what a case page offers about keeping the case."""
 
 from dataclasses import dataclass
-from urllib.parse import urlencode
 
 from fastapi import Request
 from fastapi.responses import HTMLResponse, Response
@@ -60,10 +63,13 @@ def from_this_site(request: Request) -> bool:
 
 
 def signed_in(request: Request, session: Session) -> int | None:
-    """The account id of the signed-in browser, or None."""
-    if provider(request) is None:
+    """The account id of the Kindred reader on this request, made on first sight. None only
+    when no Kindred session reached the request, which the wall never lets happen."""
+    user = getattr(request.state, "kindred_user", None)
+    if not user:
         return None
-    return sessions.read(session, request.cookies.get(SESSION_COOKIE, ""))
+    digest = accounts.signer_subject_hash(deps_of(request).signer, accounts.GOOGLE, user["sub"])
+    return accounts.get_or_create(session, accounts.GOOGLE, digest).id
 
 
 def set_session_cookie(response: Response, request: Request, session_id: str) -> None:
@@ -90,11 +96,6 @@ def private(response: Response) -> Response:
     for name, value in PRIVATE_HEADERS:
         response.headers[name.decode("ascii")] = value.decode("ascii")
     return response
-
-
-def start_link(case_token: str = "") -> str:
-    """Where "Sign in with Google" goes; with a case's full link, sign-in keeps that case."""
-    return "/auth/google/start" + (f"?{urlencode({'case': case_token})}" if case_token else "")
 
 
 @dataclass(frozen=True)
@@ -126,45 +127,32 @@ def history(ctx: CaseContext, account_id: int) -> list[HistoryEntry]:
 
 
 def home_page(request: Request, notice: str = "") -> HTMLResponse:
-    """The home page for whoever is asking: as it always was while sign-in is not configured;
-    with "Sign in with Google" when it is; with the person's cases and "Sign out" when they are
-    signed in. A page with someone's cases on it is never cached, indexed or sent as a referrer."""
+    """The home page for whoever is asking: as it always was until the reader has a case, then
+    with "Your cases" under the start. A page with someone's cases on it is never cached,
+    indexed or sent as a referrer."""
     deps = deps_of(request)
-    sign_in = provider(request) is not None
-    cases: list[HistoryEntry] | None = None
-    if sign_in:
-        with session_scope(deps.engine) as session:
-            account_id = signed_in(request, session)
-            if account_id is not None:
-                cases = history(deps.context(session), account_id)
-    response = render(
-        request,
-        "home.html",
-        notice=notice,
-        sign_in=sign_in,
-        signed_in=cases is not None,
-        history=cases or [],
-    )
-    if sign_in:
-        # One address, two pages: a cache between here and the browser must not hand the
-        # signed-out one to someone signed in.
-        response.headers["Vary"] = "Cookie"
-    return private(response) if cases is not None else response
+    cases: list[HistoryEntry] = []
+    with session_scope(deps.engine) as session:
+        account_id = signed_in(request, session)
+        if account_id is not None:
+            cases = history(deps.context(session), account_id)
+    response = render(request, "home.html", notice=notice, history=cases)
+    # One address, a page per account: a cache between here and the browser must not hand one
+    # reader's page to another, the empty one included.
+    response.headers["Vary"] = "Cookie"
+    return private(response) if cases else response
 
 
 def keep_offer(
-    request: Request, session: Session, case_id: str, token: str, back: str
+    request: Request, session: Session, case_id: str, back: str
 ) -> dict[str, str] | None:
-    """What a page under a case's full link offers about keeping the case in an account: sign in
-    (and keep it on the way back), save it with one tap, or the word that it is saved. None
-    while sign-in is not configured. `back` names the page to return to after a save."""
-    if provider(request) is None:
-        return None
+    """What a page under a case's full link offers about keeping the case in the reader's
+    account: save it with one tap, or the word that it is saved. None when no account is on the
+    request (never behind the wall; a wall-exempt /c/ page one day), so the Save button is never
+    offered to nobody: the feature document's §7 said "never None", its §13.6 settles it this
+    way. `back` names the page to return to after a save."""
     account_id = signed_in(request, session)
     if account_id is None:
-        state = "sign_in"
-    elif accounts.is_linked(session, account_id, case_id):
-        state = "saved"
-    else:
-        state = "save"
-    return {"state": state, "back": back, "start": start_link(token)}
+        return None
+    saved = accounts.is_linked(session, account_id, case_id)
+    return {"state": "saved" if saved else "save", "back": back}

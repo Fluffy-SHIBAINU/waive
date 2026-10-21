@@ -110,11 +110,14 @@ def test_token_pages_are_never_cached_indexed_or_leaked_as_referrer():
         assert headers["cache-control"] == "no-store", path
         assert headers["referrer-policy"] == "no-referrer", path
         assert "noindex" in headers["x-robots-tag"], path
-    created = client.post("/cases", data={"state": "MA"})
-    assert created.headers["cache-control"] == "no-store"
     for path in ("/", "/healthz", "/static/waive.css", "/atlas", "/atlas/229999"):
         headers = client.get(path).headers
         assert "x-robots-tag" not in headers and headers.get("cache-control") != "no-store", path
+    # Starting a case puts it in the reader's history, and from then on the home page shows it
+    # and is private too (test_web_account).
+    created = client.post("/cases", data={"state": "MA"})
+    assert created.headers["cache-control"] == "no-store"
+    assert client.get("/").headers["cache-control"] == "no-store"
     gone = client.post(f"/c/{links.caregiver_token}/delete")
     assert gone.headers["clear-site-data"] == '"cache"'
 
