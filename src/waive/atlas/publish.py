@@ -1,5 +1,6 @@
 """Verification outcomes, cross-checks, versioning and export (spec §8 steps 5–7)."""
 
+import csv
 import json
 from datetime import UTC, datetime
 from decimal import Decimal
@@ -9,13 +10,13 @@ from typing import Any
 from sqlalchemy.orm import Session
 
 from waive.atlas import repo
-from waive.atlas.schema import Layer, ProcedureSheet, SheetStatus, SourceKind
+from waive.atlas.schema import Cited, Layer, ProcedureSheet, SheetStatus, SourceDoc, SourceKind
 from waive.atlas.verify import (
     assistance_limits_stated,
     free_care_limits_stated,
     tiers_rise_with_income,
 )
-from waive.db import SheetRow
+from waive.db import HospitalRow, SheetRow
 
 CRITICAL_PATHS = (
     "eligibility.free_care_max_fpl",
@@ -268,21 +269,131 @@ def publish_sheet(session: Session, sheet: ProcedureSheet) -> SheetRow | None:
     return repo.add_sheet_version(session, sheet.model_copy(update={"version": version}), diff)
 
 
+def _latest_by_hospital(
+    session: Session, state: str
+) -> list[tuple[HospitalRow, tuple[ProcedureSheet, SheetRow] | None]]:
+    """Every registry hospital of a state, by name, with its newest sheet version (None when it
+    was never scouted). The fictional demo hospital stays out of every export."""
+    return [
+        (hospital, repo.latest_sheet(session, hospital.ccn))
+        for hospital in repo.list_hospitals(session, state=state)
+        if not repo.is_demo(hospital.ccn)
+    ]
+
+
 def export_state(session: Session, state: str, path: Path) -> int:
     """Write the public JSON export: each hospital's sheet when its newest version is published
     (a held one is still being checked and withdrew any version before it; audit
-    rules-correctness-9). The fictional demo hospital stays out of it."""
-    sheets = [
-        sheet
-        for sheet in repo.list_latest_sheets(session, state)
-        if sheet.status is SheetStatus.PUBLISHED and not repo.is_demo(sheet.hospital.ccn)
-    ]
+    rules-correctness-9), each with the stored `diff` of that version. The fictional demo
+    hospital stays out of it."""
+    sheets: list[dict[str, Any]] = []
+    for _hospital, found in _latest_by_hospital(session, state):
+        if found is None or found[0].status is not SheetStatus.PUBLISHED:
+            continue
+        sheet, row = found
+        sheets.append({**sheet.model_dump(mode="json"), "diff": row.diff})
     payload = {
         "generated_on": datetime.now(UTC).date().isoformat(),
         "license": "CC BY 4.0",
         "state": state.upper(),
-        "sheets": [sheet.model_dump(mode="json") for sheet in sheets],
+        "sheets": sheets,
     }
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(payload, indent=1), encoding="utf-8")
     return len(sheets)
+
+
+# The snapshot Tender imports (Kindred connect, spec 5.3): this header, in this order.
+TENDER_COLUMNS: tuple[str, ...] = (
+    "ccn",
+    "name",
+    "status",
+    "website",
+    "fap_url",
+    "source_kind",
+    "source_title",
+    "free_pct",
+    "quote",
+    "discount_pct",
+    "discount_quote",
+    "retrieved_at",
+    "system_name",
+    "system_size",
+    "sheet_version",
+    "source_sha256",
+)
+# Tender stores a website only when discovery matched the domain at least this surely; below it
+# the column stays empty and Tender keeps the website it holds (an admin's entry included).
+TENDER_WEBSITE_CONFIDENCE = 0.9
+UNSCOUTED = "unscouted"
+
+
+def _source_of(sheet: ProcedureSheet, cited: Cited[Any] | None) -> SourceDoc | None:
+    if cited is None or cited.source_id is None:
+        return None
+    return next((source for source in sheet.sources if source.id == cited.source_id), None)
+
+
+def tender_row(
+    hospital: HospitalRow, found: tuple[ProcedureSheet, SheetRow] | None
+) -> dict[str, str]:
+    """One snapshot row. `status` follows the hospital's newest sheet version (`unscouted` with
+    none); only a published row carries the policy and website columns, so a held, draft or
+    unscouted row tells Tender to clear what it imported before. The policy columns come from
+    the free-care field, or from the discount table when the sheet has no free-care field; a
+    sheet with neither, or whose cited source has no URL (a patient's photo, a Form 990), is
+    exported as held: Tender shows a quote only with the URL it was read from. `system_size` is
+    Tender's to fill."""
+    row = dict.fromkeys(TENDER_COLUMNS, "")
+    row["ccn"], row["name"] = hospital.ccn, hospital.name
+    row["system_name"] = hospital.system or ""
+    if found is None:
+        row["status"] = UNSCOUTED
+        return row
+    sheet, _ = found
+    if sheet.status is not SheetStatus.PUBLISHED:
+        row["status"] = sheet.status.value
+        return row
+    free = sheet.eligibility.free_care_max_fpl
+    tiers = sheet.eligibility.discount_tiers
+    if tiers is not None and not tiers.value:
+        tiers = None
+    rule = free if free is not None else tiers
+    source = _source_of(sheet, rule)
+    if rule is None or source is None or not source.url:
+        row["status"] = SheetStatus.HELD.value
+        return row
+    row["status"] = SheetStatus.PUBLISHED.value
+    confidence = hospital.domain_confidence
+    if (
+        hospital.website_domain
+        and confidence is not None
+        and confidence >= TENDER_WEBSITE_CONFIDENCE
+    ):
+        row["website"] = hospital.website_domain
+    row["fap_url"] = source.url
+    row["source_kind"] = source.kind.value
+    row["source_title"] = source.title
+    if free is not None:
+        row["free_pct"] = str(free.value)
+        row["quote"] = free.quote or ""
+    if tiers is not None:
+        row["discount_pct"] = str(max(tier.max_fpl_inclusive for tier in tiers.value))
+        row["discount_quote"] = tiers.quote or ""
+    row["retrieved_at"] = rule.checked_on.isoformat()
+    row["sheet_version"] = str(sheet.version)
+    row["source_sha256"] = source.sha256
+    return row
+
+
+def export_tender(session: Session, state: str, path: Path) -> int:
+    """Write the per-state snapshot Tender imports: one row per registry hospital of the state
+    under TENDER_COLUMNS (see `tender_row`). A snapshot is complete, so a hospital whose sheet
+    was withdrawn appears with an empty policy, and Tender clears it. Returns the row count."""
+    rows = [tender_row(hospital, found) for hospital, found in _latest_by_hospital(session, state)]
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("w", encoding="utf-8", newline="") as handle:
+        writer = csv.DictWriter(handle, fieldnames=TENDER_COLUMNS, lineterminator="\n")
+        writer.writeheader()
+        writer.writerows(rows)
+    return len(rows)

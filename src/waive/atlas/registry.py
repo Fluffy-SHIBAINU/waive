@@ -16,6 +16,10 @@ from waive.atlas import repo
 CMS_DATASTORE_URL = "https://data.cms.gov/provider-data/api/1/datastore/query/xubh-q36u/0"
 ELIGIBLE_TYPES = {"Acute Care Hospitals", "Critical Access Hospitals"}
 NONPROFIT_PREFIX = "Voluntary non-profit"
+# RCW 70.170 covers every Washington hospital, public hospital districts included, so Washington's
+# seed also keeps "Government - Hospital District or Authority" rows (Kindred connect, spec 5.2).
+DISTRICT_PREFIX = "Government - Hospital District"
+DISTRICT_STATES: frozenset[str] = frozenset({"WA"})
 
 # The 50 states and the District of Columbia, as CMS spells them in the `state` column.
 STATES: tuple[str, ...] = (
@@ -50,9 +54,15 @@ def fetch_cms_rows(state: str, http: httpx.Client, page_size: int = 500) -> list
 
 
 def is_eligible(row: dict[str, Any]) -> bool:
-    return row.get("hospital_type") in ELIGIBLE_TYPES and str(
-        row.get("hospital_ownership", "")
-    ).startswith(NONPROFIT_PREFIX)
+    """A nonprofit acute-care or critical-access hospital, or a public hospital district of one
+    of those types in a state whose charity-care statute covers districts too (Washington)."""
+    if row.get("hospital_type") not in ELIGIBLE_TYPES:
+        return False
+    ownership = str(row.get("hospital_ownership", ""))
+    if ownership.startswith(NONPROFIT_PREFIX):
+        return True
+    state = str(row.get("state", "")).upper()
+    return state in DISTRICT_STATES and ownership.startswith(DISTRICT_PREFIX)
 
 
 def normalize_phone(raw: str | None) -> str | None:
