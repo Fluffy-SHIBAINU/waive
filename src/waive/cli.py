@@ -20,7 +20,7 @@ from waive.atlas.pipeline import (
     recheck_sheets,
     withdraw_rejected,
 )
-from waive.atlas.publish import export_state
+from waive.atlas.publish import export_state, export_tender
 from waive.atlas.refresh import refresh_hospital
 from waive.atlas.registry import seed_all_states, seed_state
 from waive.atlas.schedule import (
@@ -229,13 +229,22 @@ def atlas_overlay(state: str = typer.Option(..., "--state")) -> None:
 def atlas_export(
     state: str = typer.Option(..., "--state"),
     out: Path | None = typer.Option(None, "--out"),  # noqa: B008
+    tender: Path | None = typer.Option(  # noqa: B008
+        None,
+        "--tender",
+        help="Also write the snapshot Tender imports: a CSV with one row per registry hospital",
+    ),
 ) -> None:
-    """Write the latest sheets for a state as open data (CC BY 4.0)."""
+    """Write the latest sheets for a state as open data (CC BY 4.0); with --tender, also the
+    per-state snapshot Tender imports."""
     settings = Settings()
     path = out or Path("data/atlas") / f"{state.lower()}.json"
     with session_scope(_engine(settings)) as session:
         count = export_state(session, state, path)
+        hospitals = None if tender is None else export_tender(session, state, tender)
     console.print(f"Exported {count} sheets to {path}")
+    if tender is not None:
+        console.print(f"Exported {hospitals} hospitals for Tender to {tender}")
 
 
 @atlas_app.command("recheck")
