@@ -155,6 +155,8 @@ def test_a_valid_session_reaches_the_atlas_and_the_sign_out_line():
     assert 'action="https://id.kindred-ai.dev/logout"' in page.text
     assert '<input type="hidden" name="return_to" value="https://www.kindred-ai.dev/">' in page.text
     assert "Signed in to Kindred" in page.text and "Sign out" in page.text
+    # Every Kindred product links back to the family's site from its header.
+    assert '<a href="https://kindred-ai.dev/" class="muted">Kindred AI</a>' in page.text
     assert EMAIL not in page.text
     assert get(c, "/metrics.json", **cookie(token())).status_code == 200
 
