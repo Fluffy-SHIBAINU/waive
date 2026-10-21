@@ -1,5 +1,9 @@
-"""Phase 9, task 9.7: the sign-in routes. Google is played by respx with a key made in
-test_oidc; nothing here reaches the network."""
+"""Phase 9, task 9.7: Waive's own sign-in routes. Google is played by respx with a key made in
+test_oidc; nothing here reaches the network.
+
+Since 2026-10-21 the reader is the Kindred account the wall let in (tests/conftest.py signs every
+request in as `test`); these routes are dormant and no page reads the session they set. They
+stay as they were, and the last test here pins that they decide nothing."""
 
 import base64
 import logging
@@ -530,6 +534,26 @@ def test_starting_and_returning_are_rate_limited():
     assert per_client.app.state.settings.sign_ins_per_minute == 60
     assert per_client.get("/auth/google/start", follow_redirects=False).status_code == 302
     assert per_client.get("/auth/google/start", follow_redirects=False).status_code == 429
+
+
+@respx.mock
+def test_waives_own_session_no_longer_says_who_is_asking():
+    """A round trip through Waive's own sign-in still makes its account and session, and the
+    callback still keeps a carried case in that account. No page reads that session: the home
+    page shows the Kindred reader's history, which this case is not in."""
+    client, engine = signin_client()
+    links = new_case(client, engine)
+    sign_in(client, case=links.caregiver_token)
+    assert SESSION_COOKIE in client.cookies
+    [google_account] = rows(engine, AccountRow)
+    [link] = rows(engine, AccountCaseRow)
+    assert (link.account_id, link.case_id) == (google_account.id, links.case_id)
+    home = client.get("/")
+    assert home.status_code == 200 and "Your cases" not in home.text
+    assert "Sign in with Google" not in home.text and "Sign out" in home.text  # Kindred's
+    # The reader's own account was made on that first look, beside the dormant one.
+    assert len(rows(engine, AccountRow)) == 2
+    assert len(rows(engine, SessionRow)) == 1
 
 
 @respx.mock

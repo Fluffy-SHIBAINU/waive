@@ -130,13 +130,23 @@ def test_get_or_create_makes_one_account_per_provider_subject(ctx):
     assert "subject-1" not in str(stored)
 
 
-def test_two_first_sign_ins_at_once_end_up_with_the_same_account():
+def test_two_first_sign_ins_at_once_end_up_with_the_same_account_and_lose_nothing_else():
+    """The loser's insert is undone in its own savepoint: a case it started before asking for
+    the account, and what it links afterwards, survive in the same transaction."""
     engine = make_engine("sqlite+pysqlite:///:memory:")
     init_db(engine)
     digest = accounts.subject_hash(SECRET, "google", "subject-1")
     with session_scope(engine) as session:
         winner = accounts.get_or_create(session, "google", digest).id
     with session_scope(engine) as session:
+        context = CaseContext(
+            session=session,
+            ai=None,
+            cipher=FieldCipher(base64.b64decode(new_key())),
+            signer=TokenSigner(SECRET),
+            today=TODAY,
+        )
+        links = start_case(context, "MA")
         looks = []
 
         def not_there_yet(*args, **kwargs):
@@ -147,8 +157,11 @@ def test_two_first_sign_ins_at_once_end_up_with_the_same_account():
         session.scalar = not_there_yet
         assert accounts.get_or_create(session, "google", digest).id == winner
         assert len(looks) == 1
+        assert accounts.link_case(session, winner, links.case_id) is True
     with session_scope(engine) as session:
         assert len(session.scalars(select(AccountRow)).all()) == 1
+        assert session.get(CaseRow, links.case_id) is not None
+        assert [row.id for row in accounts.cases_of(session, winner)] == [links.case_id]
 
 
 def test_an_account_lists_only_its_own_cases_newest_first(ctx):

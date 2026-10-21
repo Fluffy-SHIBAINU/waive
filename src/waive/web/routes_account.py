@@ -3,7 +3,8 @@ and deleting the account with everything in it.
 
 An account keeps which cases are its own, never their links: opening a case from the history
 mints a fresh full link then and there, so "Make new links" still revokes every older one. The
-routes do not exist while sign-in is not configured, and without a session they lead home."""
+account is the reader's Kindred account (web/signin.py); without one, which the wall never lets
+happen, the routes lead home."""
 
 from fastapi import APIRouter, Request
 from fastapi.responses import HTMLResponse, RedirectResponse
@@ -18,26 +19,19 @@ from waive.web.signin import (
     from_this_site,
     history,
     home_page,
-    provider,
     signed_in,
 )
 
 router = APIRouter()
 
 
-def _on(request: Request) -> None:
-    if provider(request) is None:
-        raise KeyError("sign-in is not configured")
-
-
 def _home() -> RedirectResponse:
-    """Nobody is signed in: the home page has the way in."""
+    """Nobody is signed in: the home page is where the wall sends people to sign in."""
     return RedirectResponse("/", status_code=303)
 
 
 @router.get("/account", response_class=HTMLResponse)
 def account_page(request: Request):
-    _on(request)
     deps = deps_of(request)
     with session_scope(deps.engine) as session:
         account_id = signed_in(request, session)
@@ -50,7 +44,6 @@ def account_page(request: Request):
 def open_case(request: Request, case_id: str) -> RedirectResponse:
     """The "Open this case" button: a fresh full link for one of the account's own cases. A case
     that is not in this account is not found, whether or not it exists."""
-    _on(request)
     deps = deps_of(request)
     with session_scope(deps.engine) as session:
         account_id = signed_in(request, session)
@@ -67,8 +60,8 @@ def open_case(request: Request, case_id: str) -> RedirectResponse:
 @router.post("/account/delete", response_class=HTMLResponse)
 def delete_my_account(request: Request):
     """The "Delete my account and all my cases" button, behind its question on the account page:
-    the account, its sessions in every browser and every case in its history."""
-    _on(request)
+    the account, its sessions in every browser and every case in its history. The reader stays
+    signed in to Kindred, so the home page that follows starts a fresh, empty account for them."""
     deps = deps_of(request)
     with session_scope(deps.engine) as session:
         # The session cookie alone is not enough for this one: the form must come from here.
