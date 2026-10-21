@@ -680,6 +680,20 @@ def ceiling_problem(quote: str, value: Decimal) -> str | None:
 FREE_LIMIT_UNTIED_REASON = "quote does not state the free-care limit as an income limit"
 FREE_LIMIT_SPLIT_REASON = "quote gives different free-care limits for inpatient and outpatient care"
 FREE_LIMIT_NOT_FREE_REASON = "quote describes a sliding scale or a denial, not free care"
+FREE_LIMIT_LATER_BAND_REASON = "quote gives the limit as the top of a later band, not the free band"
+_RANGE = re.compile(r"(?<![\d.])(\d{2,3})\s?%?\s*[-\u2013]\s*(\d{2,3})\s?%")
+
+
+def free_limit_tops_later_band(quote: str, value: Any) -> bool:
+    """Whether every range in the quote that ends at `value` starts one above another percentage
+    the quote names: "200% 201% - 300%" is a second band (AHN Saint Vincent, 390009, website
+    check 4: free care to 200%, 75% off to 300%, published as free care to 300%)."""
+    text = normalize(quote)
+    numbers = {int(n) for n in re.findall(r"(?<![\d.$])(\d{2,3})\s?%", text)}
+    ends = [(int(a), int(b)) for a, b in _RANGE.findall(text) if Decimal(b) == Decimal(value)]
+    return bool(ends) and all(start - 1 in numbers for start, _ in ends)
+
+
 # Website check 3: "granted on a sliding scale … up to 200%" (UF Health Jacksonville, 100001),
 # "prorated on a sliding scale" (Summa Western Reserve, 360150) and "denied Financial Assistance,
 # due to being over the 200%" (UF Health Shands, 100113) were each published as free care to 200%.
@@ -1156,6 +1170,10 @@ def verify_sheet(
             cited.quote or ""
         ):
             report.rejected.append((path, FREE_LIMIT_SPLIT_REASON))
+        elif path == "eligibility.free_care_max_fpl" and free_limit_tops_later_band(
+            cited.quote or "", cited.value
+        ):
+            report.rejected.append((path, FREE_LIMIT_LATER_BAND_REASON))
         elif path == "eligibility.free_care_max_fpl" and free_limit_not_free(cited.quote or ""):
             report.rejected.append((path, FREE_LIMIT_NOT_FREE_REASON))
         elif path == "eligibility.free_care_max_fpl" and names_other_states_program(

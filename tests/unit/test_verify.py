@@ -1502,3 +1502,22 @@ def test_a_sliding_scale_or_another_states_program_is_no_free_care_limit():
         assert not any(
             p == free for p, _ in verify_sheet(with_free_limit(200, quote), docs).rejected
         ), quote
+
+
+def test_the_top_of_a_later_band_is_no_free_care_limit():
+    from waive.atlas.verify import FREE_LIMIT_LATER_BAND_REASON
+
+    # AHN Saint Vincent (390009), website check 4: the table "100% Discount 75% Discount Household
+    # Members Federal Poverty Level - 100% 200% 201% - 300%" gives free care to 200% and 75% off
+    # from 201% to 300%; it was published as free care to 300%.
+    quote = "Household Members Federal Poverty Level - 100% 200% 201% - 300%"
+    docs = {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT + "\n" + quote + "\n"}
+    report = verify_sheet(with_free_limit(300, quote), docs)
+    assert ("eligibility.free_care_max_fpl", FREE_LIMIT_LATER_BAND_REASON) in report.rejected
+    # The first band's top stays a limit.
+    first = (
+        "Federal Poverty Guidelines Financial Assistance Discount 0% – 200% 100% 201% - 250% 80%"
+    )
+    docs = {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT + "\n" + first + "\n"}
+    report = verify_sheet(with_free_limit(200, first), docs)
+    assert not any(p == "eligibility.free_care_max_fpl" for p, _ in report.rejected)
