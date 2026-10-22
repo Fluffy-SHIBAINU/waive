@@ -172,3 +172,82 @@ def test_seed_all_states_continues_past_a_failing_state(tmp_path):
     with session_scope(engine) as session:
         assert [h.ccn for h in repo.list_hospitals(session, "VT")] == ["470003"]
         assert len(repo.list_hospitals(session)) == 3
+
+
+WA_ROWS = [
+    {
+        "facility_id": "500002",
+        "facility_name": "NONPROFIT MEDICAL CENTER",
+        "address": "1 MAIN ST",
+        "citytown": "WALLA WALLA",
+        "state": "WA",
+        "zip_code": "99362",
+        "telephone_number": "5095550100",
+        "hospital_type": "Acute Care Hospitals",
+        "hospital_ownership": "Voluntary non-profit - Private",
+    },
+    {
+        "facility_id": "501339",
+        "facility_name": "DISTRICT CRITICAL ACCESS",
+        "address": "2 MAIN ST",
+        "citytown": "COUPEVILLE",
+        "state": "WA",
+        "zip_code": "98239",
+        "telephone_number": "3605550100",
+        "hospital_type": "Critical Access Hospitals",
+        "hospital_ownership": "Government - Hospital District or Authority",
+    },
+    {
+        "facility_id": "500058",
+        "facility_name": "DISTRICT GENERAL",
+        "address": "3 MAIN ST",
+        "citytown": "WENATCHEE",
+        "state": "WA",
+        "zip_code": "98801",
+        "telephone_number": "5095550101",
+        "hospital_type": "Acute Care Hospitals",
+        "hospital_ownership": "Government - Hospital District or Authority",
+    },
+    {
+        "facility_id": "504001",
+        "facility_name": "DISTRICT PSYCHIATRIC",
+        "address": "4 MAIN ST",
+        "citytown": "SPOKANE",
+        "state": "WA",
+        "zip_code": "99201",
+        "telephone_number": "5095550102",
+        "hospital_type": "Psychiatric",
+        "hospital_ownership": "Government - Hospital District or Authority",
+    },
+    {
+        "facility_id": "500100",
+        "facility_name": "STATE HOSPITAL",
+        "address": "5 MAIN ST",
+        "citytown": "SEATTLE",
+        "state": "WA",
+        "zip_code": "98101",
+        "telephone_number": "2065550100",
+        "hospital_type": "Acute Care Hospitals",
+        "hospital_ownership": "Government - State",
+    },
+    {
+        "facility_id": "450001",
+        "facility_name": "TEXAS DISTRICT HOSPITAL",
+        "address": "6 MAIN ST",
+        "citytown": "AUSTIN",
+        "state": "TX",
+        "zip_code": "78701",
+        "telephone_number": "5125550100",
+        "hospital_type": "Acute Care Hospitals",
+        "hospital_ownership": "Government - Hospital District or Authority",
+    },
+]
+
+
+def test_washington_keeps_its_public_hospital_districts():
+    # RCW 70.170 covers every Washington hospital, public hospital districts included (Kindred
+    # connect, spec 5.2): a Washington district row of an eligible type is kept; a district of
+    # another type, another kind of government hospital, or a district in another state is not.
+    assert [is_eligible(row) for row in WA_ROWS] == [True, True, True, False, False, False]
+    # The rule reads the row as CMS sends it and as a lower-cased copy.
+    assert is_eligible({**WA_ROWS[1], "state": "wa"})
