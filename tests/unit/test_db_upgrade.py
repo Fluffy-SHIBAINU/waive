@@ -52,13 +52,17 @@ def test_fresh_database_needs_no_upgrade():
 
 def test_upgrade_adds_missing_columns_and_keeps_existing_rows():
     engine = old_engine(OLD_CASES, OLD_CASE_ROW)
-    assert init_db(engine) == ["cases.status", "cases.outcome"]
+    assert init_db(engine) == ["cases.status", "cases.outcome", "cases.source"]
     columns = {column["name"] for column in inspect(engine).get_columns("cases")}
-    assert {"status", "outcome"} <= columns
+    assert {"status", "outcome", "source"} <= columns
     with session_scope(engine) as session:
         row = session.get(CaseRow, "abc")
         assert (row.state, row.ccn, row.token_generation) == ("MA", "229999", 2)
-        assert (row.status, row.outcome) == ("new", None)  # the model default fills old rows
+        assert (row.status, row.outcome, row.source) == (
+            "new",
+            None,
+            None,
+        )  # defaults fill old rows
         row.outcome = {"decision": "denied"}
     with session_scope(engine) as session:
         assert session.get(CaseRow, "abc").outcome == {"decision": "denied"}

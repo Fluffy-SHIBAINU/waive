@@ -1,7 +1,8 @@
-"""The Kindred ID wall: waive.kindred-ai.dev answers nothing without the family's session cookie
-(design: eventhorizon/.claude/features/kindred-id.md §9.5; verifier copied verbatim into
-web/kindred_auth.py). Tokens are signed with a key generated here and the verifier's key lookup
-is stood in for, so no socket opens: the suite runs with --disable-socket."""
+"""The Kindred ID wall: waive.kindred-ai.dev answers its reading pages to anyone and everything
+else only with the family's session cookie (design: eventhorizon/.claude/features/kindred-id.md
+§9.5 and the Kindred connect design §5.5; verifier copied verbatim into web/kindred_auth.py,
+Waive's two rules on top in web/wall.py). Tokens are signed with a key generated here and the
+verifier's key lookup is stood in for, so no socket opens: the suite runs with --disable-socket."""
 
 import base64
 import hashlib
@@ -17,11 +18,17 @@ from cryptography.hazmat.primitives.asymmetric import ec
 from fastapi.testclient import TestClient
 from starlette.responses import PlainTextResponse
 
+from waive.atlas import repo
+from waive.atlas.publish import publish_sheet
+from waive.atlas.samples import st_example_sheet
 from waive.config import Settings
+from waive.db import session_scope
 from waive.web import kindred_auth
 from waive.web.kindred_auth import KindredWallMiddleware
+from waive.web.wall import Wall
 
 from tests.unit.test_web_app import make_client
+from tests.unit.test_web_senior import HOSPITAL
 
 pytestmark = pytest.mark.kindred_wall
 
@@ -70,6 +77,15 @@ def client(**overrides) -> TestClient:
     return c
 
 
+def seeded_client(**overrides) -> TestClient:
+    """The real wall in front of an app that knows the example hospital and its sheet."""
+    c = client(**overrides)
+    with session_scope(c.app.state.deps.engine) as session:
+        repo.upsert_hospital(session, HOSPITAL)
+        publish_sheet(session, st_example_sheet())
+    return c
+
+
 def get(c: TestClient, path: str, **headers):
     return c.get(path, headers=headers, follow_redirects=False)
 
@@ -79,20 +95,20 @@ def get(c: TestClient, path: str, **headers):
 
 def test_a_page_load_without_a_session_goes_to_the_issuer_with_the_request_url():
     c = client()
-    page = get(c, "/atlas?state=MA", **NAV)
+    page = get(c, "/account?tab=cases", **NAV)
     assert page.status_code == 303
-    assert page.headers["location"] == LOGIN + quote("http://testserver/atlas?state=MA", safe="")
+    assert page.headers["location"] == LOGIN + quote("http://testserver/account?tab=cases", safe="")
     # Behind Caddy the public name and scheme arrive in the forwarded headers.
     forwarded = get(
         c,
-        "/atlas",
+        "/account",
         **NAV,
         **{"x-forwarded-host": "waive.kindred-ai.dev", "x-forwarded-proto": "https"},
     )
     assert forwarded.status_code == 303
-    assert forwarded.headers["location"] == LOGIN + "https%3A%2F%2Fwaive.kindred-ai.dev%2Fatlas"
+    assert forwarded.headers["location"] == LOGIN + "https%3A%2F%2Fwaive.kindred-ai.dev%2Faccount"
     # Accept: text/html counts as a page load when the browser sends no Sec-Fetch-Mode.
-    assert get(c, "/", accept="text/html,*/*").status_code == 303
+    assert get(c, "/admin", accept="text/html,*/*").status_code == 303
 
 
 def test_a_fetch_without_a_session_gets_401_json_that_is_never_cached():
@@ -102,12 +118,12 @@ def test_a_fetch_without_a_session_gets_401_json_that_is_never_cached():
         {"sec-fetch-mode": "cors", "accept": "text/html"},
         {"accept": "application/json"},
     ):
-        answer = get(c, "/atlas/229999.json", **headers)
+        answer = get(c, "/metrics.json", **headers)
         assert answer.status_code == 401, headers
         assert answer.headers["cache-control"] == "no-store"
         assert answer.json() == {
             "error": "unauthenticated",
-            "login": LOGIN + quote("http://testserver/atlas/229999.json", safe=""),
+            "login": LOGIN + quote("http://testserver/metrics.json", safe=""),
         }
 
 
@@ -115,8 +131,8 @@ def test_the_wall_is_outermost_so_a_body_is_never_read_before_the_session_check(
     c = client()
     cap = c.app.state.settings.max_upload_bytes
     oversized = {"photo": ("bill.jpg", b"x" * (cap + 1), "image/jpeg")}
-    assert c.post("/s/not-a-real-token/bill", files=oversized).status_code == 401
-    assert c.post("/cases", data={"hospital": "x"}).status_code == 401
+    assert c.post("/account/delete", files=oversized).status_code == 401
+    assert c.post("/admin/login", data={"token": "x"}).status_code == 401
 
 
 def test_health_and_static_files_stay_open():
@@ -127,10 +143,17 @@ def test_health_and_static_files_stay_open():
 
 def test_the_exempt_prefixes_come_from_the_setting():
     assert Settings(_env_file=None).wall_exempt == (
+        "/",
+        "/atlas",
+        "/start",
+        "/cases",
+        "/s/",
+        "/c/",
+        "/stats",
         "/healthz",
-        "/static/",
         "/robots.txt",
         "/favicon.ico",
+        "/static/",
     )
     opened = client(wall_exempt_prefixes=" /healthz, /static/ ,/atlas,, ")
     assert opened.app.state.settings.wall_exempt == ("/healthz", "/static/", "/atlas")
@@ -143,6 +166,87 @@ def test_the_exempt_prefixes_come_from_the_setting():
 def test_the_exempt_setting_reads_the_environment(monkeypatch):
     monkeypatch.setenv("WAIVE_WALL_EXEMPT_PREFIXES", "/healthz,/static/,/s/,/c/")
     assert Settings(_env_file=None).wall_exempt == ("/healthz", "/static/", "/s/", "/c/")
+
+
+# ── open for reading (design §5.5) ──────────────────────────────────────────
+
+
+def test_reading_needs_no_session_but_the_account_pages_and_the_console_do():
+    """The home page, the atlas, the confirm page and the start behind it, the case's own pages
+    under its link, the public counts, health, robots and static files answer without a
+    session; the account pages, the console and the metrics still send a page load to the
+    Issuer and a fetch to 401."""
+    c = seeded_client()
+    for path in (
+        "/",
+        "/atlas",
+        "/atlas/229999",
+        "/atlas/229999.json",
+        "/start?ccn=229999",
+        "/stats",
+        "/healthz",
+        "/robots.txt",
+        "/static/waive.css",
+    ):
+        assert get(c, path, **NAV).status_code == 200, path
+        assert get(c, path).status_code == 200, path
+    started = c.post("/start", data={"ccn": "229999", "source": "ccn_link"}, follow_redirects=False)
+    assert started.status_code == 303
+    assert get(c, started.headers["location"], **NAV).status_code == 200
+    assert (
+        get(c, "/s/not-a-real-token", **NAV).status_code == 403
+    )  # the link is checked, not a session
+    assert c.post("/cases", data={"state": "MA"}, follow_redirects=False).status_code == 303
+    for path in ("/account", "/admin", "/admin/login", "/metrics", "/metrics.json"):
+        assert get(c, path, **NAV).status_code == 303, path
+        assert get(c, path).status_code == 401, path
+    assert c.post("/account/delete").status_code == 401
+
+
+def test_an_open_page_still_knows_a_signed_in_reader():
+    """The wall stands down on an open path, but a valid session still names the reader: the
+    home page lists their cases. Without a session, or with a bad one, the same page answers
+    with nobody's."""
+    c = seeded_client()
+    mine = {**cookie(token()), "sec-fetch-site": "same-origin"}
+    started = c.post(
+        "/start", data={"ccn": "229999", "source": "ccn_link"}, headers=mine, follow_redirects=False
+    )
+    assert started.status_code == 303
+    home = get(c, "/", **NAV, **cookie(token()))
+    assert home.status_code == 200 and "Your cases" in home.text
+    assert home.headers["cache-control"] == "no-store"
+    for headers in ({}, cookie(token(exp=int(time.time()) - 3600)), cookie("not-a-token")):
+        page = get(c, "/", **NAV, **headers)
+        assert page.status_code == 200 and "Your cases" not in page.text, headers
+    # The case page under its link knows the reader too: started from this site by a signed-in
+    # reader, the case is in their history already; without a session the page makes no offer.
+    link = started.headers["location"].rsplit("/", 1)[0]
+    assert "Saved to your account" in get(c, link, **cookie(token())).text
+    anonymous = get(c, link).text
+    assert "Saved to your account" not in anonymous and "Save this case" not in anonymous
+
+
+def test_the_root_entry_opens_the_home_page_alone():
+    """ "/" in the exempt list is the home page, never a prefix; a prefix stays a prefix."""
+    seen = {}
+
+    async def inner(scope, receive, send):
+        seen["user"] = scope.get("state", {}).get("kindred_user")
+        await PlainTextResponse("ok")(scope, receive, send)
+
+    walled = TestClient(
+        Wall(inner, exempt_prefixes=("/", "/open"), env={"WAIVE_ENV": "development"})
+    )
+    assert walled.get("/").status_code == 200 and seen["user"] is None
+    assert walled.get("/open/anything").status_code == 200
+    assert walled.get("/closed", headers=NAV, follow_redirects=False).status_code == 303
+    assert walled.get("/closed").status_code == 401
+    assert walled.get("/", headers=cookie(token())).status_code == 200
+    assert seen["user"]["email"] == EMAIL
+    assert walled.get("/", headers=cookie("garbage")).status_code == 200 and seen["user"] is None
+    bare = TestClient(Wall(inner, exempt_prefixes=("/open",), env={"WAIVE_ENV": "development"}))
+    assert bare.get("/", headers=NAV, follow_redirects=False).status_code == 303
 
 
 # ── with a session ──────────────────────────────────────────────────────────
@@ -164,22 +268,22 @@ def test_a_valid_session_reaches_the_atlas_and_the_sign_out_line():
 def test_an_expired_session_is_refused():
     c = client()
     old = token(exp=int(time.time()) - 3600)
-    assert get(c, "/atlas", **NAV, **cookie(old)).status_code == 303
-    assert get(c, "/atlas", **cookie(old)).status_code == 401
+    assert get(c, "/account", **NAV, **cookie(old)).status_code == 303
+    assert get(c, "/metrics.json", **cookie(old)).status_code == 401
 
 
 def test_a_session_about_to_expire_renews_on_a_page_load_but_still_serves_fetches():
     c = client()
     soon = token(exp=int(time.time()) + 3600)
-    assert get(c, "/atlas", **NAV, **cookie(soon)).status_code == 303
-    assert get(c, "/atlas", **cookie(soon)).status_code == 200
+    assert get(c, "/account", **NAV, **cookie(soon)).status_code == 303
+    assert get(c, "/metrics.json", **cookie(soon)).status_code == 200
 
 
 def test_the_issuers_oauth_state_cookie_is_never_a_session():
     c = client()
     state = token(headers={"typ": "kindred-oauth"})
-    assert get(c, "/atlas", **cookie(state)).status_code == 401
-    assert get(c, "/atlas", **cookie(token(headers={"typ": "JWT"}))).status_code == 200
+    assert get(c, "/metrics.json", **cookie(state)).status_code == 401
+    assert get(c, "/metrics.json", **cookie(token(headers={"typ": "JWT"}))).status_code == 200
 
 
 def test_hs256_with_the_public_key_as_the_secret_is_refused():
@@ -206,7 +310,7 @@ def test_hs256_with_the_public_key_as_the_secret_is_refused():
     signature = b64(hmac.new(PUBLIC_PEM, f"{header}.{payload}".encode(), hashlib.sha256).digest())
     forged = f"{header}.{payload}.{signature}"
     assert kindred_auth.verify_session(forged) is None
-    assert get(client(), "/atlas", **cookie(forged)).status_code == 401
+    assert get(client(), "/metrics.json", **cookie(forged)).status_code == 401
 
 
 def test_wrong_audience_issuer_or_key_is_refused():
@@ -251,14 +355,15 @@ def test_a_cached_key_verifies_without_a_socket_and_an_unknown_key_fails_closed(
 
     monkeypatch.setattr(kindred_auth, "jwk_client", lambda: Unreachable())
     c = client()
-    assert get(c, "/atlas", **cookie(token())).status_code == 200
-    assert get(c, "/atlas", **cookie(token(headers={"kid": "rotated"}))).status_code == 401
+    assert get(c, "/metrics.json", **cookie(token())).status_code == 200
+    rotated = cookie(token(headers={"kid": "rotated"}))
+    assert get(c, "/metrics.json", **rotated).status_code == 401
     assert fetches == []
     monkeypatch.setattr(kindred_auth, "_fetched_at", 0.0)
-    assert get(c, "/atlas", **cookie(token(headers={"kid": "rotated"}))).status_code == 401
-    assert get(c, "/atlas", **cookie(token(headers={"kid": "rotated"}))).status_code == 401
+    assert get(c, "/metrics.json", **rotated).status_code == 401
+    assert get(c, "/metrics.json", **rotated).status_code == 401
     assert fetches == [True]  # one fetch per cooldown, however many unknown ids arrive
-    assert get(c, "/atlas", **cookie(token())).status_code == 200
+    assert get(c, "/metrics.json", **cookie(token())).status_code == 200
 
 
 # ── the local bypass ────────────────────────────────────────────────────────
@@ -270,12 +375,12 @@ def test_the_bypass_counts_only_for_a_localhost_host_outside_production():
         "WAIVE_ENV": "development",
         "KINDRED_AUTH_BYPASS": "Dev@Kindred-ai.dev",
     }
-    assert get(dev, "/atlas", **NAV, host="localhost:8000").status_code == 200
-    assert get(dev, "/atlas", **NAV, host="127.0.0.1:8000").status_code == 200
-    assert get(dev, "/atlas", **NAV, host="waive.kindred-ai.dev").status_code == 303
-    assert get(dev, "/atlas", **NAV).status_code == 303  # Host: testserver
+    assert get(dev, "/account", **NAV, host="localhost:8000").status_code == 200
+    assert get(dev, "/account", **NAV, host="127.0.0.1:8000").status_code == 200
+    assert get(dev, "/account", **NAV, host="waive.kindred-ai.dev").status_code == 303
+    assert get(dev, "/account", **NAV).status_code == 303  # Host: testserver
     assert (
-        get(client(), "/atlas", **NAV, host="localhost:8000").status_code == 303
+        get(client(), "/account", **NAV, host="localhost:8000").status_code == 303
     )  # no address set
 
     production = client(
@@ -285,8 +390,8 @@ def test_the_bypass_counts_only_for_a_localhost_host_outside_production():
         kindred_auth_bypass="dev@kindred-ai.dev",
     )
     assert production.app.state.settings.wall_env["WAIVE_ENV"] == "production"
-    assert get(production, "/atlas", **NAV, host="localhost:8000").status_code == 303
-    assert get(production, "/atlas", host="localhost:8000").status_code == 401
+    assert get(production, "/account", **NAV, host="localhost:8000").status_code == 303
+    assert get(production, "/metrics.json", host="localhost:8000").status_code == 401
     assert get(production, "/healthz", host="localhost:8000").status_code == 200
 
 

@@ -166,8 +166,20 @@ def full_token(ctx: CaseContext, case_id: str) -> str:
     return ctx.signer.mint(row.id, "caregiver", row.token_generation, CAREGIVER_TTL)
 
 
-def start_case(ctx: CaseContext, state: str) -> CaseLinks:
-    row = CaseRow(id=uuid.uuid4().hex, state=state.upper(), status="new", token_generation=1)
+def start_case(
+    ctx: CaseContext, state: str, *, ccn: str | None = None, source: str | None = None
+) -> CaseLinks:
+    """A new case in `state`. With `ccn` the hospital is chosen before any photo (the start from
+    a hospital page, `/start?ccn=`): its policy shows from the first step, and a bill the registry
+    cannot match keeps it (`submit_bill`). `source` says where the start came from (/stats)."""
+    row = CaseRow(
+        id=uuid.uuid4().hex,
+        state=state.upper(),
+        ccn=ccn,
+        source=source,
+        status="new",
+        token_generation=1,
+    )
     ctx.session.add(row)
     ctx.session.flush()
     return _mint_links(ctx, row)
@@ -438,6 +450,9 @@ def submit_bill(
     sealed = _load(ctx, row)
     count_read(sealed, "bill", ctx.today)
     _save(ctx, row, sealed)
+    # A hospital chosen at the start (`start_case(ccn=...)`) stands until a bill is read: the
+    # registry's confident match replaces it, an unsure one keeps it instead of asking the scouts.
+    chosen = row.ccn if row.status == "new" else None
     extract = extract_bill(ctx.ai, prepared.jpeg, synthetic=synthetic)
     hospitals = [repo.hospital_ref(h) for h in repo.list_hospitals(ctx.session)]
     candidates = match_hospital(extract, hospitals)
@@ -446,6 +461,9 @@ def submit_bill(
     sealed["image_warnings"] = list(prepared.warnings)
     if candidates and is_confident(candidates):
         row.ccn = candidates[0].ccn
+        sealed["needs_scouting"] = False
+    elif chosen is not None:
+        row.ccn = chosen
         sealed["needs_scouting"] = False
     else:
         row.ccn = None

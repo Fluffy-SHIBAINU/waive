@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Check a bill from {{ hospital.name }}{% endblock %}
+{% block content %}
+<h1>Check a bill from {{ hospital.name }}</h1>
+<p class="muted">{{ hospital.city }}, {{ hospital.state }}</p>
+{%- if sheet %}
+<p class="lead">Waive has this hospital's financial assistance policy on file, checked on {{ checked }}. <a href="/atlas/{{ hospital.ccn }}">Read the policy</a>.</p>
+{%- else %}
+<p class="lead">Waive is still checking this hospital's financial assistance policy. You can start now; the result waits until the policy is checked.</p>
+{%- endif %}
+<form method="post" action="/start" class="stack">
+  <input type="hidden" name="ccn" value="{{ hospital.ccn }}">
+  <input type="hidden" name="source" value="ccn_link">
+  <button type="submit" class="btn primary">Start a case for this hospital</button>
+</form>
+<p class="muted">Nothing starts until you press the button. Waive never asks for money, card numbers or bank logins.</p>
+<p><a href="/">Start with another hospital</a></p>
+{% endblock %}
