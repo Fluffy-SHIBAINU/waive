@@ -63,10 +63,15 @@ class Settings(BaseSettings):
     # it refuses the SQLite default so a misconfigured container cannot silently start empty.
     env: Literal["development", "production"] = "development"
 
-    # The Kindred ID wall (web/kindred_auth.py): every request needs the family's session cookie
-    # except paths under these prefixes, comma-separated. The senior and caregiver links (`/s/`,
-    # `/c/`) are walled too while Waive is a private beta; add them here when it opens.
-    wall_exempt_prefixes: str = "/healthz,/static/,/robots.txt,/favicon.ico"
+    # The Kindred ID wall (web/wall.py over web/kindred_auth.py): every request needs the
+    # family's session cookie except paths under these prefixes, comma-separated. Open for
+    # reading (design §5.5): the home page ("/" is that page alone, never a prefix), the atlas,
+    # the confirm page and the start behind it, the home page's own start, the senior and
+    # caregiver links, the public counts, health, robots and static files. The account pages,
+    # the admin console and the metrics stay walled.
+    wall_exempt_prefixes: str = (
+        "/,/atlas,/start,/cases,/s/,/c/,/stats,/healthz,/robots.txt,/favicon.ico,/static/"
+    )
     # Local development only: this address stands in for a session, and only for a request
     # that arrived at localhost. The verifier ignores it whenever `env` is production.
     kindred_auth_bypass: str | None = Field(default=None, validation_alias="KINDRED_AUTH_BYPASS")

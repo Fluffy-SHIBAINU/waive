@@ -99,6 +99,7 @@ def test_token_pages_are_never_cached_indexed_or_leaked_as_referrer():
         f"/c/{links.caregiver_token}",
         f"/c/{links.caregiver_token}/reminders.ics",
         "/admin/login",
+        "/start",  # the confirm page, here its 404
         "/s/not-a-real-token",  # the 403 page too
         "/auth/google/start",  # sign-in and account addresses, also while they answer 404
         "/auth/google/callback",

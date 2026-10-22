@@ -1,7 +1,8 @@
 """Response headers for pages that carry personal data (spec §11).
 
-Everything under a capability link (/s/, /c/), the start that redirects to a freshly minted link
-(/cases), the sign-in routes (/auth/), the account pages (/account) and the admin console must
+Everything under a capability link (/s/, /c/), the starts that redirect to a freshly minted link
+(/cases, and /start from a hospital page), the sign-in routes (/auth/), the account pages
+(/account) and the admin console must
 not land in a browser or proxy cache, must not be indexed, and must not hand the link to another
 site as a Referer. The public atlas is left alone: it is meant to be cached and found. So is the
 home page, except when it shows a signed-in person's cases (web/signin.py puts the same headers
@@ -9,7 +10,7 @@ on that response)."""
 
 from starlette.types import ASGIApp, Message, Receive, Scope, Send
 
-PRIVATE_PREFIXES = ("/s/", "/c/", "/cases", "/admin", "/auth/", "/account")
+PRIVATE_PREFIXES = ("/s/", "/c/", "/cases", "/start", "/admin", "/auth/", "/account")
 PRIVATE_HEADERS = (
     (b"cache-control", b"no-store"),
     (b"referrer-policy", b"no-referrer"),
