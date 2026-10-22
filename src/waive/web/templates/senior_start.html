@@ -3,6 +3,9 @@
 {% block content %}
 <h1>Let's look at your hospital bill</h1>
 {% if problem %}<p class="card big">{{ problem }}</p>{% endif %}
+{%- if case.hospital_name and not case.bill %}
+<p class="muted">This case is for {{ case.hospital_name }}.</p>
+{%- endif %}
 <p class="big">Lay the bill flat. Take a photo of the whole page.</p>
 <form method="post" action="{{ links.bill }}" enctype="multipart/form-data" class="stack" data-photo-form>
   <input id="photo" class="visually-hidden" type="file" name="photo" accept="image/*" capture="environment" required>

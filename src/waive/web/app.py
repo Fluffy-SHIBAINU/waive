@@ -4,7 +4,7 @@ from contextlib import asynccontextmanager
 
 import httpx
 from fastapi import FastAPI, Request
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, PlainTextResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from sqlalchemy.exc import OperationalError
@@ -21,10 +21,19 @@ from waive.ledger import web as ledger_web
 from waive.logging_setup import configure_logging
 from waive.web.deps import STATIC_DIR, TEMPLATES_DIR, Deps, render, today_utc
 from waive.web.headers import PrivateHeaders
-from waive.web.kindred_auth import KindredWallMiddleware
 from waive.web.limits import BodyLimit, RateLimiter, TooManyRequests, UploadTooLarge
 from waive.web.plain import plain_lines
 from waive.web.signin import home_page
+from waive.web.wall import Wall
+
+ROBOTS = """User-agent: *
+Disallow: /start
+Disallow: /cases
+Disallow: /s/
+Disallow: /c/
+Disallow: /account
+Disallow: /auth/
+"""
 
 
 def _default_ai(settings: Settings, governor):
@@ -88,11 +97,10 @@ def create_app(
     app.add_middleware(BodyLimit, max_body=settings.max_upload_bytes)
     app.add_middleware(PrivateHeaders)
     # The Kindred ID wall, added last so it is outermost: nothing below it, the body cap and the
-    # private headers included, runs for a request without the family's session cookie. Waive's
-    # own sign-in and the capability links sit behind it (design §9.5, decision 10).
-    app.add_middleware(
-        KindredWallMiddleware, exempt_prefixes=settings.wall_exempt, env=settings.wall_env
-    )
+    # private headers included, runs for a walled request without the family's session cookie.
+    # The reading paths are open (`wall_exempt`, design §5.5); the account pages, Waive's own
+    # sign-in and the admin console sit behind it (design §9.5).
+    app.add_middleware(Wall, exempt_prefixes=settings.wall_exempt, env=settings.wall_env)
     # Starlette spools multipart files over 1 MiB to a plaintext temp file. With the cap in front
     # nothing admitted needs to leave memory, which keeps "photos are never written to disk" true.
     MultiPartParser.spool_max_size = settings.max_upload_bytes + 1
@@ -135,6 +143,14 @@ def create_app(
     @app.get("/", response_class=HTMLResponse)
     def home(request: Request) -> HTMLResponse:
         return home_page(request)
+
+    @app.get("/robots.txt", response_class=PlainTextResponse)
+    def robots() -> PlainTextResponse:
+        """What crawlers may not follow: the confirm page a hospital page links to and the starts
+        behind it (a crawler walking every hospital page would otherwise spend the case-per-minute
+        ceiling), and the private addresses, whose pages say noindex too (web/headers.py). The
+        atlas is meant to be found."""
+        return PlainTextResponse(ROBOTS)
 
     @app.exception_handler(PermissionError)
     def forbidden(request: Request, exc: PermissionError) -> HTMLResponse:

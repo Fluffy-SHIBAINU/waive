@@ -134,6 +134,9 @@ class CaseRow(Base):
     prediction: Mapped[dict[str, Any] | None] = mapped_column(JSON, nullable=True)
     # De-identified summary for the scoreboard: decision enum, triage class, matched flag, date.
     outcome: Mapped[dict[str, Any] | None] = mapped_column(JSON, nullable=True)
+    # Where the start came from, for the public counts on /stats (design §5.5): "ccn_link" when
+    # a reader came through another Kindred product's hospital page (/start?ccn=), else None.
+    source: Mapped[str | None] = mapped_column(String(20), nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
     updated_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), default=utcnow, onupdate=utcnow

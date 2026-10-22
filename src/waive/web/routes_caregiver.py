@@ -22,7 +22,7 @@ from waive.cases.service import (
     start_case,
     view,
 )
-from waive.db import session_scope
+from waive.db import HospitalRow, session_scope
 from waive.learning.gaps import pending_gap_ask
 from waive.learning.outcomes import (
     Decision,
@@ -34,7 +34,7 @@ from waive.learning.outcomes import (
 from waive.learning.triage import record_outcome, triage_for
 from waive.web.deps import deps_of, render
 from waive.web.limits import client_key
-from waive.web.routes_senior import flow_links, opened, shown_links, to_decimal
+from waive.web.routes_senior import flow_links, long_date, opened, shown_links, to_decimal
 from waive.web.signin import from_this_site, home_page, signed_in
 
 router = APIRouter()
@@ -44,10 +44,16 @@ def caregiver_links(token: str) -> dict[str, str]:
     return flow_links(token, full=True)
 
 
-@router.post("/cases")
-def create_case(request: Request, state: str = Form("MA")) -> RedirectResponse:
+# The one start source /stats counts apart from the home page's form (design §5.5): the confirm
+# page's hidden field says it, and only this value is ever stored.
+CCN_LINK = "ccn_link"
+
+
+def _start(
+    request: Request, state: str, *, ccn: str | None = None, source: str | None = None
+) -> RedirectResponse:
     """One link from the start (Phase 9): the new case opens at the photo step under its full
-    link. A 303, so the browser's history holds that page's GET and never this POST: Back or a
+    link. A 303, so the browser's history holds that page's GET and never the POST: Back or a
     reload cannot start a second case. Nothing else is shown; the photo-only link for a second
     person is minted when the case bar is asked for it."""
     deps = deps_of(request)
@@ -63,10 +69,58 @@ def create_case(request: Request, state: str = Form("MA")) -> RedirectResponse:
         # Started from this site's own form: the case goes into the reader's history without
         # asking. Another site's form post starts a case that is in nobody's history.
         account_id = signed_in(request, session) if from_this_site(request) else None
-        links = start_case(deps.context(session), state)
+        links = start_case(deps.context(session), state, ccn=ccn, source=source)
         if account_id is not None:
             link_case(session, account_id, links.case_id)
     return RedirectResponse(caregiver_links(links.caregiver_token)["start"], status_code=303)
+
+
+@router.post("/cases")
+def create_case(request: Request, state: str = Form("MA")) -> RedirectResponse:
+    """The home page's own form: a case in the chosen state, the hospital read from the bill."""
+    return _start(request, state)
+
+
+def _hospital(session, ccn: str) -> HospitalRow:
+    """The registry's row for a CCN from a link or a form, or the 404 page."""
+    hospital = repo.get_hospital(session, ccn.strip()) if ccn.strip() else None
+    if hospital is None:
+        raise KeyError(ccn)
+    return hospital
+
+
+@router.get("/start", response_class=HTMLResponse)
+def start_confirm(request: Request, ccn: str = "") -> HTMLResponse:
+    """The confirm page another Kindred product's hospital page links to (`/start?ccn=`, design
+    §5.5): it names the hospital, says whether its policy is on file, and offers one button.
+    Looking creates nothing: a crawler or a browser's prefetch following the link from every
+    hospital page mints no case and spends none of the case-per-minute ceiling; only the POST
+    below does. An unknown CCN is the 404 page."""
+    deps = deps_of(request)
+    with session_scope(deps.engine) as session:
+        hospital = _hospital(session, ccn)
+        found = repo.published_sheet(session, hospital.ccn)
+        return render(
+            request,
+            "start_confirm.html",
+            hospital=hospital,
+            sheet=found[0] if found else None,
+            checked=long_date(found[1].created_at.date()) if found else "",
+        )
+
+
+@router.post("/start")
+def start_from_link(
+    request: Request, ccn: str = Form(""), source: str = Form("")
+) -> RedirectResponse:
+    """The confirm page's one button: the case starts in the hospital's own state with the
+    hospital chosen, counted on /stats under the source the form names. An unknown CCN starts
+    nothing (the 404 page)."""
+    deps = deps_of(request)
+    with session_scope(deps.engine) as session:
+        hospital = _hospital(session, ccn)
+        state, chosen = hospital.state, hospital.ccn
+    return _start(request, state, ccn=chosen, source=CCN_LINK if source == CCN_LINK else None)
 
 
 @router.get("/c/{token}", response_class=HTMLResponse)
