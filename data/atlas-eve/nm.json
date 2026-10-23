@@ -63,7 +63,7 @@
       "Patient who has filed bankruptcy and whose bill has been fully discharged by the court"
      ],
      "layer": "documented",
-     "quote": "Homelessness or receipt of care from a homeless shelter;",
+     "quote": "Homelessness or receipt of care from a homeless shelter; || Eligibility for out of state or out of area medical assistance programs; || Patient who has filed bankruptcy and whose bill has been fully discharged by the court.",
      "source_id": "fap-fea3eba34ca31b31",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -96,7 +96,7 @@
       "other"
      ],
      "layer": "documented",
-     "quote": "10.4.1 Payroll stubs showing gross income;",
+     "quote": "10.4.1 Payroll stubs showing gross income; || 10.4.4 Letter from a state or federal agency showing amount of income received from that agency; || 10.4.8 IRS Income Tax Return forms;",
      "source_id": "fap-fea3eba34ca31b31",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -202,8 +202,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Eligibility for out of state or out of area medical assistance programs; | Patient who has filed bankruptcy and whose bill has been fully discharged by the court.",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: 10.4.4 Letter from a state or federal agency showing amount of income received from that agency; | 10.4.8 IRS Income Tax Return forms;",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent dropped eligibility.discount_tiers: between 1 and 3 excerpts allowed",
     "agent judge on programs.presumptive: Quote lists only three categories (homelessness/shelter, out-of-state medical assistance, bankruptcy discharge). Deceased with no estate and SNAP are not in the quote.",
     "agent judge on programs.state_programs: Quote names only the San Juan County Indigent Health Care Program. The name 'San Juan County Indigent Fund' does not appear.",
@@ -249,7 +249,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "200% or less 0%",
+     "quote": "200% or less 0% || 201% to 250% 25% || 251% to 400% 50%",
      "source_id": "fap-ada5b1150e0e963a",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -291,7 +291,7 @@
       "Patient is deceased with no known estate"
      ],
      "layer": "documented",
-     "quote": "1. Participation or enrollment in state-funded prescription programs; 2. Patients determined to be homeless; 3. Participation in Women, Infants and Children programs (WIC); 4. Participation in the food stamp program;",
+     "quote": "1. Participation or enrollment in state-funded prescription programs; 2. Patients determined to be homeless; 3. Participation in Women, Infants and Children programs (WIC); 4. Participation in the food stamp program; || 5. Subsidized school lunch program eligibility; 6. Low income/subsidized housing is provided as a valid address; 7. Personal bankruptcy; 8. Patient is deceased with no known estate; || 9. Account balances remaining after payment has been received and applied from a sole community provider fund",
      "source_id": "fap-ada5b1150e0e963a",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -400,8 +400,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: 201% to 250% 25% | 251% to 400% 50%",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: 5. Subsidized school lunch program eligibility; 6. Low income/subsidized housing is provided as a valid address; 7. Pers | 9. Account balances remaining after payment has been received and applied from a sole community provider fund",
+    "eligibility.discount_tiers: value backed by 3 verbatim spans",
+    "programs.presumptive: value backed by 3 verbatim spans",
     "agent dropped apply.submit_methods: excerpt not in source: Please return completed application and required documentati",
     "agent judge on eligibility.discount_tiers: Quote gives 201% to 250% at 25%, but the value records 75% for that tier. The 251% to 400% tier at 50% matches.",
     "agent judge on eligibility.assistance_ceiling_fpl: Quote says only '401% or greater 100%', which does not plainly state that no assistance is offered above 400%.",
@@ -446,7 +446,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "200% or less 0%",
+     "quote": "200% or less 0% || 201% to 250% 25% || 251% to 400% 50%",
      "source_id": "fap-ada5b1150e0e963a",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -498,7 +498,7 @@
       "Patient is deceased with no known estate"
      ],
      "layer": "documented",
-     "quote": "2. Patients determined to be homeless; 3. Participation in Women, Infants and Children programs (WIC); 4. Participation in the food stamp program;",
+     "quote": "2. Patients determined to be homeless; 3. Participation in Women, Infants and Children programs (WIC); 4. Participation in the food stamp program; || 1. Participation or enrollment in state-funded prescription programs; || 7. Personal bankruptcy; 8. Patient is deceased with no known estate;",
      "source_id": "fap-ada5b1150e0e963a",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -607,8 +607,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: 201% to 250% 25% | 251% to 400% 50%",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: 1. Participation or enrollment in state-funded prescription programs; | 7. Personal bankruptcy; 8. Patient is deceased with no known estate;",
+    "eligibility.discount_tiers: value backed by 3 verbatim spans",
+    "programs.presumptive: value backed by 3 verbatim spans",
     "agent dropped apply.submit_methods: excerpt not in source: Please return completed application and required documentati",
     "agent judge on eligibility.assistance_ceiling_fpl: Quote only says '401% or greater 100%'. It does not state that no assistance is offered above 400%, and the 100% figure is unexplained.",
     "agent judge on programs.presumptive: Quote lists items 1, 2, 3, 4, 7 and 8 only. The value's 'school lunch' and 'low income/subsidized housing' items do not appear in the quote.",
@@ -653,7 +653,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "201% to 250% 25%",
+     "quote": "201% to 250% 25% || 251% to 400% 50% || Patients whose family income is above 200% but not more than 400% of the FPG are eligible to receive a discount",
      "source_id": "fap-ada5b1150e0e963a",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -703,7 +703,7 @@
       "Patient is deceased with no known estate"
      ],
      "layer": "documented",
-     "quote": "Participation or enrollment in state-funded prescription programs;",
+     "quote": "Participation or enrollment in state-funded prescription programs; || Patients determined to be homeless; || Personal bankruptcy",
      "source_id": "fap-ada5b1150e0e963a",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -728,7 +728,7 @@
       "pay_stubs"
      ],
      "layer": "documented",
-     "quote": "Prior year\u2019s tax return(s)",
+     "quote": "Prior year\u2019s tax return(s) || Minimum of two most recent pay stubs",
      "source_id": "fap-2483a7670c61bdc5",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -811,9 +811,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: 251% to 400% 50% | Patients whose family income is above 200% but not more than 400% of the FPG are eligible to receive a discount",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Patients determined to be homeless; | Personal bankruptcy",
-    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: Minimum of two most recent pay stubs",
+    "eligibility.discount_tiers: value backed by 3 verbatim spans",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 2 verbatim spans",
     "agent dropped apply.submit_methods: excerpt not in source: To apply for financial assistance, please complete an online"
    ]
   },
@@ -889,7 +889,7 @@
       "bank_statements"
      ],
      "layer": "documented",
-     "quote": "Last year\u2019s federal tax return",
+     "quote": "Last year\u2019s federal tax return || Two most recent paycheck stubs || Social Security check or award letter",
      "source_id": "web-6ba4397c49e640dd",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -916,7 +916,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Phone: Call our Financial Counselor at 575-736-8120",
+     "quote": "Phone: Call our Financial Counselor at 575-736-8120 || Email: Send a request to [email protected] || In Person: Visit 702 N. 13th Street, Artesia, NM 88210",
      "source_id": "web-6ba4397c49e640dd",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -955,7 +955,7 @@
       "Spanish"
      ],
      "layer": "documented",
-     "quote": "Apply in English [https://nova.interlace.health/remote/public/e7a6d8d7-c6b1-4f09-8450-4872fcfbea9f?tid=21b6fcd0-d0ae-4f7e-9365-c7505877825b&eid=a8f342ae-49c8-4fdb-9956-e2b26e9f951c]",
+     "quote": "Apply in English [https://nova.interlace.health/remote/public/e7a6d8d7-c6b1-4f09-8450-4872fcfbea9f?tid=21b6fcd0-d0ae-4f7e-9365-c7505877825b&eid=a8f342ae-49c8-4fdb-9956-e2b26e9f951c] || Apply in Spanish [https://nova.interlace.health/remote/public/5c9cc571-e47e-4217-bf32-ee78a1442c57?tid=21b6fcd0-d0ae-4f7e-9365-c7505877825b&eid=f00dbe99-6de0-4660-990d-c8addf2e5f03]",
      "source_id": "web-6ba4397c49e640dd",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -998,9 +998,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Two most recent paycheck stubs | Social Security check or award letter",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Email: Send a request to [email protected] | In Person: Visit 702 N. 13th Street, Artesia, NM 88210",
-    "contacts.languages: 1 more verbatim excerpt(s) supported this value: Apply in Spanish [https://nova.interlace.health/remote/public/5c9cc571-e47e-4217-bf32-ee78a1442c57?tid=21b6fcd0-d0ae-4f7"
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 3 verbatim spans",
+    "contacts.languages: value backed by 2 verbatim spans"
    ]
   },
   {
@@ -1193,7 +1193,7 @@
       "homeless"
      ],
      "layer": "documented",
-     "quote": "Patients who are participating in state Medicaid programs are eligible for presumptive assistance.",
+     "quote": "Patients who are participating in state Medicaid programs are eligible for presumptive assistance. || Supplemental Nutrition Assistance Program (SNAP); Temporary Assistance for Needy Families (NMWorks); Children's Health Insurance Program (CHIP); Women, Infants, and Children Program (WIC)",
      "source_id": "fap-99d1af9061ead852",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1212,7 +1212,7 @@
       "proof_of_income"
      ],
      "layer": "documented",
-     "quote": "A \"W-2\" withholding statement; or",
+     "quote": "A \"W-2\" withholding statement; or || Current pay stubs (3 months); or || Last year\u2019s income tax return, including schedules if applicable; or",
      "source_id": "fap-b772ad7272bc3623",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1231,7 +1231,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Mail completed application with all documentation to: Covenant Health, Attn: Financial Assistance P.O. Box 31001-3422, Pasadena, CA 91110-3422 UNITED STATES OF AMERICA.",
+     "quote": "Mail completed application with all documentation to: Covenant Health, Attn: Financial Assistance P.O. Box 31001-3422, Pasadena, CA 91110-3422 UNITED STATES OF AMERICA. || To submit your completed application in person: Take to your nearest Hospital Financial Counselor's Office.",
      "source_id": "fap-b772ad7272bc3623",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1328,9 +1328,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: Supplemental Nutrition Assistance Program (SNAP); Temporary Assistance for Needy Families (NMWorks); Children's Health I",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Current pay stubs (3 months); or | Last year\u2019s income tax return, including schedules if applicable; or",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: To submit your completed application in person: Take to your nearest Hospital Financial Counselor's Office.",
+    "programs.presumptive: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 2 verbatim spans",
     "agent judge on programs.presumptive: Quote lists Medicaid, SNAP, TANF/NMWorks, CHIP and WIC only. Nothing in the quote mentions homeless status.",
     "agent judge on apply.documents_required: Quote lists W-2, pay stubs, and last year's tax return. It does not mention 3 months of pay stubs, employer/other signed statements, or asset-income statements.",
     "agent judge on apply.window_days_from_first_bill: Quote says the FAP-Eligible Time Period is 240 days but does not state that it runs from the first bill.",
@@ -1417,7 +1417,7 @@
       "Patient is deceased with no known estate"
      ],
      "layer": "documented",
-     "quote": "1. Participation or enrollment in state-funded prescription programs; 2. Patients determined to be homeless; 3. Participation in Women, Infants and Children programs (WIC); 4. Participation in the food stamp program;",
+     "quote": "1. Participation or enrollment in state-funded prescription programs; 2. Patients determined to be homeless; 3. Participation in Women, Infants and Children programs (WIC); 4. Participation in the food stamp program; || 5. Subsidized school lunch program eligibility; 6. Low income/subsidized housing is provided as a valid address; 7. Personal bankruptcy; 8. Patient is deceased with no known estate; || 10. Patients enrolled in limited service Medicaid programs that use a defined family income at or below 200% of the Federal Poverty Guidelines",
      "source_id": "fap-ada5b1150e0e963a",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1526,7 +1526,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: 5. Subsidized school lunch program eligibility; 6. Low income/subsidized housing is provided as a valid address; 7. Pers | 10. Patients enrolled in limited service Medicaid programs that use a defined family income at or below 200% of the Fede",
+    "programs.presumptive: value backed by 3 verbatim spans",
     "agent dropped apply.submit_methods: excerpt not in source: Please return completed application and required documentati",
     "agent judge on eligibility.discount_tiers: Quote gives patient-pay percentages (25% for 201-250%, 50% for 251-400%), not discount percents; the 75% and 50% discounts require inverting them.",
     "agent judge on programs.presumptive: Value lists items 1-8 only; the quote also lists item 10 (limited service Medicaid patients at or below 200% FPG), which the value omits.",
@@ -1571,7 +1571,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "201% to 250% 25%",
+     "quote": "201% to 250% 25% || 251% to 400% 50% || Patients whose family income is above 200% but not more than 400% of the FPG are eligible to receive a discount",
      "source_id": "fap-ada5b1150e0e963a",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1631,7 +1631,7 @@
       "Patient is deceased with no known estate"
      ],
      "layer": "documented",
-     "quote": "2. Patients determined to be homeless;",
+     "quote": "2. Patients determined to be homeless; || 3. Participation in Women, Infants and Children programs (WIC); || 4. Participation in the food stamp program;",
      "source_id": "fap-ada5b1150e0e963a",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1657,7 +1657,7 @@
       "pay_stubs"
      ],
      "layer": "documented",
-     "quote": "a. A completed financial assistance application",
+     "quote": "a. A completed financial assistance application || b. Prior year\u2019s tax return(s) || c. Minimum of two most recent pay stubs",
      "source_id": "fap-ada5b1150e0e963a",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1740,9 +1740,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: 251% to 400% 50% | Patients whose family income is above 200% but not more than 400% of the FPG are eligible to receive a discount",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: 3. Participation in Women, Infants and Children programs (WIC); | 4. Participation in the food stamp program;",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: b. Prior year\u2019s tax return(s) | c. Minimum of two most recent pay stubs",
+    "eligibility.discount_tiers: value backed by 3 verbatim spans",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent dropped apply.submit_methods: excerpt not in source: Please return completed application and required documentati",
     "agent judge on eligibility.assistance_ceiling_fpl: Quote reads '401% or greater 100%', which does not plainly state that no assistance is offered above 400% FPL.",
     "agent judge on eligibility.asset_test: Quote defines 'underinsured' by insurance enrollment and FPL only; it says nothing about whether assets are considered.",
@@ -1840,7 +1840,7 @@
       "Patient is deceased with no known estate"
      ],
      "layer": "documented",
-     "quote": "1. Participation or enrollment in state-funded prescription programs;",
+     "quote": "1. Participation or enrollment in state-funded prescription programs; || 2. Patients determined to be homeless; || 3. Participation in Women, Infants and Children programs (WIC);",
      "source_id": "fap-ada5b1150e0e963a",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1949,7 +1949,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: 2. Patients determined to be homeless; | 3. Participation in Women, Infants and Children programs (WIC);",
+    "programs.presumptive: value backed by 3 verbatim spans",
     "agent dropped apply.submit_methods: excerpt not in source: Please return completed application and required documentati",
     "agent judge on eligibility.discount_tiers: Quote lists 201% to 250% at 25% and 251% to 400% at 50%; the value records 75% and 50% discounts, and the quote does not state discount percents as discounts.",
     "agent judge on eligibility.assistance_ceiling_fpl: Quote only has a table row '401% or greater 100%'; it does not plainly say no assistance is offered above 400%, and 100% may mean full charges owed.",
@@ -1995,7 +1995,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "201% to 250% 25%",
+     "quote": "201% to 250% 25% || 251% to 400% 50% || Patients whose family income is above 200% but not more than 400% of the FPG are eligible to receive a discount for emergency or other medically necessary services as outlined in the table below",
      "source_id": "fap-ada5b1150e0e963a",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2037,7 +2037,7 @@
       "Patient is deceased with no known estate"
      ],
      "layer": "documented",
-     "quote": "1. Participation or enrollment in state-funded prescription programs; 2. Patients determined to be homeless; 3. Participation in Women, Infants and Children programs (WIC); 4. Participation in the food stamp program;",
+     "quote": "1. Participation or enrollment in state-funded prescription programs; 2. Patients determined to be homeless; 3. Participation in Women, Infants and Children programs (WIC); 4. Participation in the food stamp program; || 5. Subsidized school lunch program eligibility; 6. Low income/subsidized housing is provided as a valid address; 7. Personal bankruptcy; 8. Patient is deceased with no known estate; || Once determined, due to the inherent nature of the presumptive circumstances, the patient will be eligible for 100% write off of the account balance.",
      "source_id": "fap-ada5b1150e0e963a",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2136,8 +2136,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: 251% to 400% 50% | Patients whose family income is above 200% but not more than 400% of the FPG are eligible to receive a discount for emer",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: 5. Subsidized school lunch program eligibility; 6. Low income/subsidized housing is provided as a valid address; 7. Pers | Once determined, due to the inherent nature of the presumptive circumstances, the patient will be eligible for 100% writ",
+    "eligibility.discount_tiers: value backed by 3 verbatim spans",
+    "programs.presumptive: value backed by 3 verbatim spans",
     "agent dropped apply.submit_methods: excerpt not in source: Please return completed application and required documentati",
     "agent judge on eligibility.assistance_ceiling_fpl: Quote reads '401% or greater 100%' with no statement that no assistance is offered above 400%; the 100% is ambiguous."
    ]
@@ -2340,7 +2340,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "101- 150% 87% 13%",
+     "quote": "101- 150% 87% 13% || 151-200% 77% 23% || 201-250% 67% 33%",
      "source_id": "fap-1bec225167c15ed2",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2413,7 +2413,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Online at www.holycrossmedicalcenter.org",
+     "quote": "Online at www.holycrossmedicalcenter.org || Picked up at HCH || By contacting a customer service representative at 575-737-3454.",
      "source_id": "fap-1bec225167c15ed2",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2500,8 +2500,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: 151-200% 77% 23% | 201-250% 67% 33%",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Picked up at HCH | By contacting a customer service representative at 575-737-3454.",
+    "eligibility.discount_tiers: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 3 verbatim spans",
     "agent judge on eligibility.discount_tiers: Quote gives only 101-150% (87%), 151-200% (77%), and 201-250% (67%). The 250-300% tier at 57% is not in the quote.",
     "agent judge on eligibility.assistance_ceiling_fpl: Quote says >300% gets 0%/100% and the patient 'can qualify for self-pay discount', which implies assistance continues above 300% FPL, not that none is offered.",
     "agent judge on eligibility.min_balance: Quote gives $1,500 as a threshold below which predictive software may determine eligibility. It does not say $1,500 is a minimum balance required for assistance.",

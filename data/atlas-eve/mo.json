@@ -95,7 +95,7 @@
       "insurance_card"
      ],
      "layer": "documented",
-     "quote": "Federal Tax Return: A full copy of the most recent federal tax return, including all forms and schedules",
+     "quote": "Federal Tax Return: A full copy of the most recent federal tax return, including all forms and schedules || Minimum 60 days of pay stubs required || Other forms of income should include interest, rent, alimony, pensions, disability, dividends, Social Security (most recent benefit letter)",
      "source_id": "fap-e2169745bc9cf37f",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -118,7 +118,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Submit your application and documents via: MyMercy",
+     "quote": "Submit your application and documents via: MyMercy || Mercy Health Attention: Financial Assistance Department 2115 S Fremont Avenue, Suite 5300 Springfield, MO 65804 (Mailing address only) || Fax: 417-829-4604",
      "source_id": "fap-e2169745bc9cf37f",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -208,8 +208,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Minimum 60 days of pay stubs required | Other forms of income should include interest, rent, alimony, pensions, disability, dividends, Social Security (most rec",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Mercy Health Attention: Financial Assistance Department 2115 S Fremont Avenue, Suite 5300 Springfield, MO 65804 (Mailing | Fax: 417-829-4604",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 3 verbatim spans",
     "agent judge on eligibility.free_care_max_fpl: Quote is a table fragment '0 - 200% 100% 100%' which gives 100% at 0-200% FPL; it does not clearly state the value as a plain sentence, though it reads as 200 supporting the free-care line.",
     "agent judge on eligibility.insured_patients_covered: Quote says insured patients need not complete Insurance Eligibility Screening before applying; it does not state that insured patients are covered by assistance.",
     "agent judge on apply.documents_required: Quote lists tax return, pay stubs, and other income proof, but does not mention Medicaid Screening or Insurance card, so the value includes unsupported items.",
@@ -265,7 +265,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "201% - 250% 80%",
+     "quote": "201% - 250% 80% || 251% - 300% 60% || 301% - 350% 50% of amount over $2,000",
      "source_id": "fap-61d36dc9a749f6b4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -338,7 +338,7 @@
       "medicaid_denial"
      ],
      "layer": "documented",
-     "quote": "1. Completed Financial Assistance Application (signed by the patient/guarantor).",
+     "quote": "1. Completed Financial Assistance Application (signed by the patient/guarantor). || 2. Verification of Gross Income for Applicant/Guarantor. || 3. Federal Tax Return Documentation.",
      "source_id": "fap-61d36dc9a749f6b4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -420,7 +420,7 @@
       "Vietnamese"
      ],
      "layer": "documented",
-     "quote": "Our Financial Assistance documentation is available to download in 11 languages: Arabic / \u0627\u0644\u0639\u0631\u0628\u064a\u0629",
+     "quote": "Our Financial Assistance documentation is available to download in 11 languages: Arabic / \u0627\u0644\u0639\u0631\u0628\u064a\u0629 || Traditional Chinese / \u4e2d\u6587 \uff08\u7e41\u9ad4\uff09 || French / Fran\u00e7ais",
      "source_id": "web-5800a77ce6bb55db",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -463,9 +463,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: 251% - 300% 60% | 301% - 350% 50% of amount over $2,000",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: 2. Verification of Gross Income for Applicant/Guarantor. | 3. Federal Tax Return Documentation.",
-    "contacts.languages: 2 more verbatim excerpt(s) supported this value: Traditional Chinese / \u4e2d\u6587 \uff08\u7e41\u9ad4\uff09 | French / Fran\u00e7ais",
+    "eligibility.discount_tiers: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "contacts.languages: value backed by 3 verbatim spans",
     "agent dropped eligibility.residency: quote is not a substring of the source",
     "agent judge on eligibility.discount_tiers: Quote gives only the 201-250% (80%), 251-300% (60%) and 301-350% (50%) tiers. The 350-400% at 20% tier in the value is not in the quote.",
     "agent judge on apply.form_url: Quote shows only the path /SSMHealth/media/...pdf in brackets; the domain https://www.ssmhealth.com is not stated in the quote.",
@@ -665,7 +665,7 @@
       "Tagalog"
      ],
      "layer": "documented",
-     "quote": "Spanish (Espa\u00f1ol)",
+     "quote": "Spanish (Espa\u00f1ol) || Vietnamese (Vi\u1ec7t) || Chinese (\u4e2d\u2f42)",
      "source_id": "fap-17b8f1162b2b6cae",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -708,7 +708,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "contacts.languages: 2 more verbatim excerpt(s) supported this value: Vietnamese (Vi\u1ec7t) | Chinese (\u4e2d\u2f42)",
+    "contacts.languages: value backed by 3 verbatim spans",
     "agent judge on programs.presumptive: Quote only says determination follows exhausting Medicaid or public program efforts; it does not say Medicaid enrollees are presumptively eligible.",
     "agent judge on apply.form_url: Quote gives only the relative path /globalassets/financialassistanceapp_english-fy27.pdf; the https://www.mymlc.com domain is not stated.",
     "agent judge on contacts.languages: Quote lists only Spanish, Vietnamese, and Chinese; the value's twelve other languages are not in the quote."
@@ -762,7 +762,7 @@
       "deceased with no estate"
      ],
      "layer": "documented",
-     "quote": "Patients who are incarcerated or homeless and confirmed no other liable party can be billed, will be deemed 100% financial assistance.",
+     "quote": "Patients who are incarcerated or homeless and confirmed no other liable party can be billed, will be deemed 100% financial assistance. || Deceased patients 18 years of age and over will be reviewed by Third Party Vendor and once determined uncollectible, will be deemed 100% charity",
      "source_id": "fap-4dbed64b2b51c210",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -799,7 +799,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Completed applications for financial assistance can be returned to: Mercy Health Attention Financial Assistance 2115 S Fremont Avenue, Suite 5300 Springfield, MO 65804 Fax: 417-829-4604",
+     "quote": "Completed applications for financial assistance can be returned to: Mercy Health Attention Financial Assistance 2115 S Fremont Avenue, Suite 5300 Springfield, MO 65804 Fax: 417-829-4604 || obtained on www.mercy.net/fa.",
      "source_id": "fap-4dbed64b2b51c210",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -846,7 +846,7 @@
       "Spanish"
      ],
      "layer": "documented",
-     "quote": "The paper Financial Assistance Application and Policy are available in both English and other languages prevalent in the area",
+     "quote": "The paper Financial Assistance Application and Policy are available in both English and other languages prevalent in the area || Financial Assistance Application (English and Spanish) below:",
      "source_id": "fap-4dbed64b2b51c210",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -871,9 +871,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: Deceased patients 18 years of age and over will be reviewed by Third Party Vendor and once determined uncollectible, wil",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: obtained on www.mercy.net/fa.",
-    "contacts.languages: 1 more verbatim excerpt(s) supported this value: Financial Assistance Application (English and Spanish) below:",
+    "programs.presumptive: value backed by 2 verbatim spans",
+    "apply.submit_methods: value backed by 2 verbatim spans",
+    "contacts.languages: value backed by 2 verbatim spans",
     "agent judge on eligibility.insured_patients_covered: Quote only says insured patients need not complete Insurance Eligibility Screening before applying; it does not say insured patients are covered.",
     "agent judge on programs.presumptive: Quote covers incarcerated/homeless (confirmed no other liable party) and deceased 18+ after vendor review; it never says 'deceased with no estate'.",
     "agent judge on apply.submit_methods: Mail and fax addresses are stated as return methods, but the quote does not say applications can be submitted online; 'obtained on www.mercy.net/fa' refers to obtaining the form."
@@ -980,7 +980,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Submit your application and documents via: MyMercy",
+     "quote": "Submit your application and documents via: MyMercy || Mercy Health Attention: Financial Assistance Department 2115 S Fremont Avenue, Suite 5300 Springfield, MO 65804 || Fax: 417-829-4604",
      "source_id": "fap-e2169745bc9cf37f",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1070,7 +1070,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Mercy Health Attention: Financial Assistance Department 2115 S Fremont Avenue, Suite 5300 Springfield, MO 65804 | Fax: 417-829-4604",
+    "apply.submit_methods: value backed by 3 verbatim spans",
     "agent dropped apply.documents_required: between 1 and 3 excerpts allowed",
     "agent judge on eligibility.free_care_max_fpl: Quote says patients at or below 200% FPL get presumptive financial assistance, not that they get 100% free care.",
     "agent judge on eligibility.discount_tiers: Quote gives '201% - 300% 80% 70%' with two percents and no clear mapping; the 70% is unexplained and the tier is not clearly 80%.",
@@ -1134,7 +1134,7 @@
       "photo_id"
      ],
      "layer": "documented",
-     "quote": "2025 Tax Return Documents",
+     "quote": "2025 Tax Return Documents || Two (2) Most Recent Banking Statements || Two (2) Most Recent Payroll Check Stubs",
      "source_id": "fap-b54df081e5df041c",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1212,7 +1212,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Two (2) Most Recent Banking Statements | Two (2) Most Recent Payroll Check Stubs",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent judge on eligibility.asset_test: Quote is only a blank bank-name line and account balance prompt on the form; it does not state that assets are considered.",
     "agent judge on apply.form_url: Quote is only the title 'FINANCIAL ASSISTANCE APPLICATION'; it does not state the URL, though the title alone does not contradict it.",
     "agent judge on apply.documents_required: Quote lists three documents only; 'Valid personal identification' is not in the quote and is unsupported."
@@ -1297,7 +1297,7 @@
       "pay_stubs"
      ],
      "layer": "documented",
-     "quote": "A. Most recent tax return D. Written income verification from an employer if paid in cash",
+     "quote": "A. Most recent tax return D. Written income verification from an employer if paid in cash || B. Most recent W-2 form and 1099 forms E. Proof of non-filing (IRS Form 4506) || C. Two (2) most recent pay stubs",
      "source_id": "fap-779a0414a63dc869",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1324,7 +1324,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "You may submit the form in person at the service location or per the submission instructions below to apply for free or discounted care.",
+     "quote": "You may submit the form in person at the service location or per the submission instructions below to apply for free or discounted care. || BJC HealthCare: Mail to P.O. Box 790024, St. Louis, MO 63179-0024, email to patacct@bjc.org, or fax to 314-747-6977.",
      "source_id": "fap-779a0414a63dc869",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1380,7 +1380,7 @@
       "Vietnamese"
      ],
      "layer": "documented",
-     "quote": "\u0627\u0644\u0639\u0631\u0628\u064a\u0629 (Arabic)",
+     "quote": "\u0627\u0644\u0639\u0631\u0628\u064a\u0629 (Arabic) || Espa\u00f1ol (Spanish) || Ti\u1ebfng Vi\u1ec7t (Vietnamese)",
      "source_id": "web-adf109f06bbebdf6",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1423,9 +1423,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: B. Most recent W-2 form and 1099 forms E. Proof of non-filing (IRS Form 4506) | C. Two (2) most recent pay stubs",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: BJC HealthCare: Mail to P.O. Box 790024, St. Louis, MO 63179-0024, email to patacct@bjc.org, or fax to 314-747-6977.",
-    "contacts.languages: 2 more verbatim excerpt(s) supported this value: Espa\u00f1ol (Spanish) | Ti\u1ebfng Vi\u1ec7t (Vietnamese)",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 2 verbatim spans",
+    "contacts.languages: value backed by 3 verbatim spans",
     "apply.form_url: not an absolute URL ('/sites/bjc/files/2026-05/3259250-Financial-Assistance-Applic'); dropped"
    ]
   },
@@ -1507,7 +1507,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Completed applications may be submitted through the MyChart Online Portal or may be returned by mail, fax or electronic mail to:",
+     "quote": "Completed applications may be submitted through the MyChart Online Portal or may be returned by mail, fax or electronic mail to: || Fax: 417-269-0518 || Email: FinancialAssistanceApplications@coxhealth.com",
      "source_id": "fap-34e095e711588ed9",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1560,7 +1560,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Fax: 417-269-0518 | Email: FinancialAssistanceApplications@coxhealth.com",
+    "apply.submit_methods: value backed by 3 verbatim spans",
     "agent judge on apply.documents_required: Quote says proof of income 'such as' a tax return or paycheck stub; it does not state these are the required documents exclusively.",
     "agent judge on apply.submit_methods: Quote lists online portal, mail, fax, and email only; it does not mention the in_person option or the mail address shown in the value beyond 'mail'."
    ]
@@ -1720,7 +1720,7 @@
       "Arabic"
      ],
      "layer": "documented",
-     "quote": "Descargar una aplicaci\u00f3n en espa\u00f1ol",
+     "quote": "Descargar una aplicaci\u00f3n en espa\u00f1ol || \u0637\u0644\u0628 \u0627\u0644\u062a\u0642\u062f\u064a\u0645 \u0639\u0644\u0649 \u0627\u0644\u0645\u0633\u0627\u0639\u062f\u0629 \u0627\u0644\u0645\u0627\u0644\u064a\u0629",
      "source_id": "web-d588880fd58dfb08",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1745,7 +1745,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "contacts.languages: 1 more verbatim excerpt(s) supported this value: \u0637\u0644\u0628 \u0627\u0644\u062a\u0642\u062f\u064a\u0645 \u0639\u0644\u0649 \u0627\u0644\u0645\u0633\u0627\u0639\u062f\u0629 \u0627\u0644\u0645\u0627\u0644\u064a\u0629",
+    "contacts.languages: value backed by 2 verbatim spans",
     "agent judge on eligibility.assistance_ceiling_fpl: Quote says patients at or below 400% FPL may qualify. It does not say assistance is unavailable above 400%.",
     "agent judge on apply.form_url: Quote only says 'Download an Application in English' and contains no URL.",
     "agent judge on contacts.languages: Quote is link text in Spanish and Arabic. It does not state which languages are offered for assistance."
@@ -1826,7 +1826,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Completed applications for financial assistance can be returned to: Mercy Health Attention Financial Assistance 2115 S Fremont Avenue, Suite 5300 Springfield, MO 65804 Fax: 417-829-4604",
+     "quote": "Completed applications for financial assistance can be returned to: Mercy Health Attention Financial Assistance 2115 S Fremont Avenue, Suite 5300 Springfield, MO 65804 Fax: 417-829-4604 || Mercy Health customer service 855-420-7900.",
      "source_id": "fap-4dbed64b2b51c210",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1898,7 +1898,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Mercy Health customer service 855-420-7900.",
+    "apply.submit_methods: value backed by 2 verbatim spans",
     "agent judge on eligibility.insured_patients_covered: Quote only says insured patients need not complete the Insurance Eligibility Screening before applying. It does not state that insured patients are covered.",
     "agent judge on programs.presumptive: Quote says patients who are incarcerated or homeless (with no other liable party) are deemed 100% assistance. The value omits 'incarcerated'.",
     "agent judge on apply.submit_methods: Quote gives a mail address and fax for returning applications, but the phone number is listed as customer service, not a submission method.",
@@ -2005,7 +2005,7 @@
       "other"
      ],
      "layer": "documented",
-     "quote": "Last year\u2019s state and federal income tax return (and income tax return s for spouse, if filed separately)",
+     "quote": "Last year\u2019s state and federal income tax return (and income tax return s for spouse, if filed separately) || Two most recent paycheck stubs for patient/responsible party and patient\u2019s spouse || Past 3 months\u2019 bank statements for all accounts",
      "source_id": "fap-d04aacd226eb19bb",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2079,7 +2079,7 @@
    "accuracy": null,
    "eve_review": [
     "eligibility.discount_tiers: 0-100% at 0% is no discount; skipped",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Two most recent paycheck stubs for patient/responsible party and patient\u2019s spouse | Past 3 months\u2019 bank statements for all accounts",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent dropped apply.submit_methods: excerpt not in source: Please visit our Patient Accounts office located at the main"
    ]
   },
@@ -2197,7 +2197,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Submit your application and documents via: MyMercy",
+     "quote": "Submit your application and documents via: MyMercy || Mercy Health Attention: Financial Assistance Department 2115 S Fremont Avenue, Suite 5300 Springfield, MO 65804 || Fax: 417-829-4604",
      "source_id": "fap-e2169745bc9cf37f",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2286,7 +2286,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Mercy Health Attention: Financial Assistance Department 2115 S Fremont Avenue, Suite 5300 Springfield, MO 65804 | Fax: 417-829-4604",
+    "apply.submit_methods: value backed by 3 verbatim spans",
     "agent dropped apply.documents_required: between 1 and 3 excerpts allowed",
     "agent judge on eligibility.discount_tiers: Quote lists two percents (80% and 70%) for 201%-300% with no label showing which applies; the value keeps only 80%.",
     "agent judge on eligibility.insured_patients_covered: Quote only says insured patients need not complete the Insurance Eligibility Screening first; it does not state they are covered.",
@@ -2390,7 +2390,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Mail to Saint Luke\u2019s, 901 E. 104th St., Attn: Hospital CBO 6th Floor, Kansas City, MO 64131, or email to slhsbilling@saintlukeskc.org.",
+     "quote": "Mail to Saint Luke\u2019s, 901 E. 104th St., Attn: Hospital CBO 6th Floor, Kansas City, MO 64131, or email to slhsbilling@saintlukeskc.org. || You may submit the form in person at the service location or per the submission instructions below to apply for free or discounted care.",
      "source_id": "fap-9e66253b6197a74f",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2469,7 +2469,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: You may submit the form in person at the service location or per the submission instructions below to apply for free or ",
+    "apply.submit_methods: value backed by 2 verbatim spans",
     "agent judge on eligibility.assistance_ceiling_fpl: Quote gives a dollar income cap ($100,000 a year family income), not a percent of FPL, so the FPL ceiling value is not stated.",
     "agent judge on eligibility.insured_patients_covered: Quote only tells insured patients to contact their insurance provider about coverage. It does not state that insured patients are covered.",
     "agent judge on apply.documents_required: Quote gives income tax return or paycheck stub only as examples ('such as'), not as the complete required list.",
@@ -2569,7 +2569,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Submit your application and documents via: MyMercy",
+     "quote": "Submit your application and documents via: MyMercy || Mercy Health Attention: Financial Assistance Department 2115 S Fremont Avenue, Suite 5300 Springfield, MO 65804 || Fax: 417-829-4604",
      "source_id": "fap-e2169745bc9cf37f",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2658,7 +2658,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Mercy Health Attention: Financial Assistance Department 2115 S Fremont Avenue, Suite 5300 Springfield, MO 65804 | Fax: 417-829-4604",
+    "apply.submit_methods: value backed by 3 verbatim spans",
     "agent dropped eligibility.free_care_max_fpl: quote is not a substring of the source",
     "agent dropped apply.documents_required: between 1 and 3 excerpts allowed",
     "agent judge on eligibility.discount_tiers: Quote shows '201% - 300% 80% 70%' which has two percents (80 and 70) but the value records only the 80% tier and no 70% tier; the value is incomplete and the bounds/percent pairing is ambiguous.",
@@ -2948,7 +2948,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Submit your application and documents via: MyMercy",
+     "quote": "Submit your application and documents via: MyMercy || Mercy Health Attention: Financial Assistance Department 2115 S Fremont Avenue, Suite 5300 Springfield, MO 65804 || Fax: 417-829-4604",
      "source_id": "fap-e2169745bc9cf37f",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3038,7 +3038,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Mercy Health Attention: Financial Assistance Department 2115 S Fremont Avenue, Suite 5300 Springfield, MO 65804 | Fax: 417-829-4604",
+    "apply.submit_methods: value backed by 3 verbatim spans",
     "agent dropped apply.documents_required: between 1 and 3 excerpts allowed",
     "agent judge on eligibility.free_care_max_fpl: Quote is a table fragment '0 - 200% 100% 100%' that does not clearly label 200% as the 100% free-care cap; it reads as a range with 100% discount, not an explicit statement.",
     "agent judge on eligibility.discount_tiers: Quote shows '201% - 300% 80% 70%' with two percentages; it does not clearly state the 80% applies to the tier, and the second 70% is unexplained. Ambiguous for the recorded tier.",
@@ -3094,7 +3094,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "201% - 250% 80%",
+     "quote": "201% - 250% 80% || 251% - 300% 60% || 301% - 350% 50% of amount over $2,000",
      "source_id": "fap-61d36dc9a749f6b4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3167,7 +3167,7 @@
       "medicaid_denial"
      ],
      "layer": "documented",
-     "quote": "2. Verification of Gross Income for Applicant/Guarantor.",
+     "quote": "2. Verification of Gross Income for Applicant/Guarantor. || 3. Federal Tax Return Documentation. || 4. Bank/Savings Statements.",
      "source_id": "fap-61d36dc9a749f6b4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3194,7 +3194,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Applications for Financial Assistance can be returned to a SSM Health representative at the facility in which care was provided or mailed to:",
+     "quote": "Applications for Financial Assistance can be returned to a SSM Health representative at the facility in which care was provided or mailed to: || Fax: (314) 989-6734 || Email: financialaid@ssmhealth.com",
      "source_id": "fap-61d36dc9a749f6b4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3273,9 +3273,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: 251% - 300% 60% | 301% - 350% 50% of amount over $2,000",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: 3. Federal Tax Return Documentation. | 4. Bank/Savings Statements.",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Fax: (314) 989-6734 | Email: financialaid@ssmhealth.com",
+    "eligibility.discount_tiers: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 3 verbatim spans",
     "agent dropped eligibility.residency: quote is not a substring of the source",
     "agent dropped contacts.languages: quote is not a substring of the source",
     "agent judge on apply.form_url: Quote gives only a relative path in brackets, not the full https://www.ssmhealth.com URL; the domain is not stated in the quote.",
@@ -3331,7 +3331,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "201% - 250% 80%",
+     "quote": "201% - 250% 80% || 251% - 300% 60% || 301% - 350% 50% of amount over $2,000 351% - 400% 20% of amount over $2,000",
      "source_id": "fap-61d36dc9a749f6b4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3405,7 +3405,7 @@
       "medicaid_denial"
      ],
      "layer": "documented",
-     "quote": "1. Completed Financial Assistance Application (signed by the patient/guarantor).",
+     "quote": "1. Completed Financial Assistance Application (signed by the patient/guarantor). || 2. Verification of Gross Income for Applicant/Guarantor. || 3. Federal Tax Return Documentation.",
      "source_id": "fap-61d36dc9a749f6b4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3511,8 +3511,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: 251% - 300% 60% | 301% - 350% 50% of amount over $2,000 351% - 400% 20% of amount over $2,000",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: 2. Verification of Gross Income for Applicant/Guarantor. | 3. Federal Tax Return Documentation.",
+    "eligibility.discount_tiers: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent dropped eligibility.residency: quote is not a substring of the source",
     "agent dropped contacts.languages: quote is not a substring of the source",
     "agent judge on programs.presumptive: Quote lists homeless, deceased with no known estate, and bankruptcy. 'Medicaid enrolled' does not appear in the quote.",
@@ -3602,7 +3602,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Completed applications may be mailed to: Cox North Hospital Attn: Financial Navigators 1423 N Jefferson Avenue Springfield, MO 65802",
+     "quote": "Completed applications may be mailed to: Cox North Hospital Attn: Financial Navigators 1423 N Jefferson Avenue Springfield, MO 65802 || Completed applications may be faxed to: 417-269-0518 || Completed applications may be returned in person (not mailed) to any CoxHealth Outpatient registration or CoxHealth Emergency department",
      "source_id": "web-cd0217e21dfa0245",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3696,7 +3696,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Completed applications may be faxed to: 417-269-0518 | Completed applications may be returned in person (not mailed) to any CoxHealth Outpatient registration or CoxHealth Emer",
+    "apply.submit_methods: value backed by 3 verbatim spans",
     "agent judge on apply.submit_methods: Quote covers mail, fax, and in-person return but never mentions online submission or Apply In MyChart, and omits the listed in-person locations (Springfield, Branson, Monett, Lamar).",
     "agent judge on apply.decision_days: Quote says response within 10 to 15 business days, a range, not a single value of 15 days."
    ]
@@ -3734,7 +3734,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "C. 101-300% FPL \u2013 patient service fee 1. Outpatient office visit $25 2. Emergency Department $50 3. Inpatient $100 per inpatient day",
+     "quote": "C. 101-300% FPL \u2013 patient service fee 1. Outpatient office visit $25 2. Emergency Department $50 3. Inpatient $100 per inpatient day || D. 301-400% FPL: Services will be discounted by the current Uninsured Discount amount, with an additional 25% discount on the remaining balance",
      "source_id": "fap-438c4acc4918fa5e",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3836,7 +3836,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "In person",
+     "quote": "In person || Mail to 2301 Holmes, ATTN FCC, Kansas City, MO 64108 || Email to financialcounseling@uhkc.org",
      "source_id": "web-e4c0e504d3972df4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3891,7 +3891,7 @@
       "Arabic"
      ],
      "layer": "documented",
-     "quote": "Download an Application in English [https://www.universityhealthkc.org/media/e3b68cc11d5f45d694725fb8b2499263/uh-financial-assistance-application-10272-3-13-25.pdf] Descargar una aplicaci\u00f3n en espa\u00f1ol",
+     "quote": "Download an Application in English [https://www.universityhealthkc.org/media/e3b68cc11d5f45d694725fb8b2499263/uh-financial-assistance-application-10272-3-13-25.pdf] Descargar una aplicaci\u00f3n en espa\u00f1ol || \u0637\u0644\u0628 \u0627\u0644\u062a\u0642\u062f\u064a\u0645 \u0639\u0644\u0649 \u0627\u0644\u0645\u0633\u0627\u0639\u062f\u0629 \u0627\u0644\u0645\u0627\u0644\u064a\u0629",
      "source_id": "web-e4c0e504d3972df4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3935,9 +3935,9 @@
    "accuracy": null,
    "eve_review": [
     "eligibility.discount_tiers: 100-300% at 0% is no discount; skipped",
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: D. 301-400% FPL: Services will be discounted by the current Uninsured Discount amount, with an additional 25% discount o",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Mail to 2301 Holmes, ATTN FCC, Kansas City, MO 64108 | Email to financialcounseling@uhkc.org",
-    "contacts.languages: 1 more verbatim excerpt(s) supported this value: \u0637\u0644\u0628 \u0627\u0644\u062a\u0642\u062f\u064a\u0645 \u0639\u0644\u0649 \u0627\u0644\u0645\u0633\u0627\u0639\u062f\u0629 \u0627\u0644\u0645\u0627\u0644\u064a\u0629",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "apply.submit_methods: value backed by 3 verbatim spans",
+    "contacts.languages: value backed by 2 verbatim spans",
     "agent judge on eligibility.discount_tiers: Quote gives a flat service fee for 101-300% FPL, not a 0% discount. For 301-400% it gives an uninsured discount plus an additional 25% on the balance, not a clean 25% tier.",
     "agent judge on apply.submit_methods: Quote lists in person, mail, and email only. No online upload method appears in the quote.",
     "agent judge on contacts.languages: Quote shows translated link text (Spanish, Arabic) but never states that services or applications are available in those languages."
@@ -4027,7 +4027,7 @@
       "medicaid_denial"
      ],
      "layer": "documented",
-     "quote": "1. Completed Financial Assistance Application (signed by the patient/guarantor).",
+     "quote": "1. Completed Financial Assistance Application (signed by the patient/guarantor). || 2. Verification of Gross Income for Applicant/Guarantor. || 3. Federal Tax Return Documentation.",
      "source_id": "fap-61d36dc9a749f6b4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4133,7 +4133,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: 2. Verification of Gross Income for Applicant/Guarantor. | 3. Federal Tax Return Documentation.",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent dropped eligibility.discount_tiers: between 1 and 3 excerpts allowed",
     "agent dropped eligibility.residency: quote is not a substring of the source",
     "agent dropped contacts.languages: quote is not a substring of the source",
@@ -4233,7 +4233,7 @@
       "medicaid_denial"
      ],
      "layer": "documented",
-     "quote": "1. Completed Financial Assistance Application (signed by the patient/guarantor).",
+     "quote": "1. Completed Financial Assistance Application (signed by the patient/guarantor). || 2. Verification of Gross Income for Applicant/Guarantor. || 3. Federal Tax Return Documentation.",
      "source_id": "fap-61d36dc9a749f6b4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4360,7 +4360,7 @@
    "accuracy": null,
    "eve_review": [
     "eligibility.asset_test: quote matched the source only after typography normalization",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: 2. Verification of Gross Income for Applicant/Guarantor. | 3. Federal Tax Return Documentation.",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent dropped eligibility.discount_tiers: between 1 and 3 excerpts allowed",
     "agent dropped eligibility.residency: quote is not a substring of the source",
     "agent judge on apply.form_url: Quote gives only the relative path /SSMHealth/media/...pdf in brackets; the full https://www.ssmhealth.com domain does not appear in the quote.",
@@ -4442,7 +4442,7 @@
       "pay_stubs"
      ],
      "layer": "documented",
-     "quote": "A. Most recent tax return D. Written income verification from an employer if paid in cash",
+     "quote": "A. Most recent tax return D. Written income verification from an employer if paid in cash || B. Most recent W-2 form and 1099 forms E. Proof of non-filing (IRS Form 4506) || C. Two (2) most recent pay stubs",
      "source_id": "fap-779a0414a63dc869",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4469,7 +4469,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "You may submit the form in person at the service location or per the submission instructions below to apply for free or discounted care.",
+     "quote": "You may submit the form in person at the service location or per the submission instructions below to apply for free or discounted care. || Mail to P.O. Box 790024, St. Louis, MO 63179-0024, email to patacct@bjc.org, or fax to 314-747-6977.",
      "source_id": "fap-779a0414a63dc869",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4525,7 +4525,7 @@
       "Vietnamese"
      ],
      "layer": "documented",
-     "quote": "\u0627\u0644\u0639\u0631\u0628\u064a\u0629 (Arabic)",
+     "quote": "\u0627\u0644\u0639\u0631\u0628\u064a\u0629 (Arabic) || Bosanski (Bosnian) || Espa\u00f1ol (Spanish)",
      "source_id": "web-adf109f06bbebdf6",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4568,9 +4568,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: B. Most recent W-2 form and 1099 forms E. Proof of non-filing (IRS Form 4506) | C. Two (2) most recent pay stubs",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Mail to P.O. Box 790024, St. Louis, MO 63179-0024, email to patacct@bjc.org, or fax to 314-747-6977.",
-    "contacts.languages: 2 more verbatim excerpt(s) supported this value: Bosanski (Bosnian) | Espa\u00f1ol (Spanish)",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 2 verbatim spans",
+    "contacts.languages: value backed by 3 verbatim spans",
     "apply.form_url: not an absolute URL ('/sites/bjc/files/2026-05/3259250-Financial-Assistance-Applic'); dropped",
     "agent judge on eligibility.assistance_ceiling_fpl: Quote gives 300% FPL only as the discount eligibility limit; it does not say no assistance of any kind is offered above 300% FPL.",
     "agent judge on eligibility.insured_patients_covered: Quote only tells insured patients to contact their insurance provider about coverage; it does not state insured patients are covered.",
@@ -4618,7 +4618,7 @@
       "homeless"
      ],
      "layer": "documented",
-     "quote": "Patients who are incarcerated or homeless and confirmed no other liable party can be billed, will be deemed 100% financial assistance.",
+     "quote": "Patients who are incarcerated or homeless and confirmed no other liable party can be billed, will be deemed 100% financial assistance. || Mercy will grant these patients financial assistance presumptively, without the requirement of an application.",
      "source_id": "fap-4dbed64b2b51c210",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4646,7 +4646,7 @@
       "insurance_card"
      ],
      "layer": "documented",
-     "quote": "Federal Tax Return: A full copy of the most recent federal tax return, including all forms and schedules",
+     "quote": "Federal Tax Return: A full copy of the most recent federal tax return, including all forms and schedules || Minimum 60 days of pay stubs required || Other forms of income should include interest, rent, alimony, pensions, disability, dividends, Social Security (most recent benefit letter)",
      "source_id": "fap-e2169745bc9cf37f",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4669,7 +4669,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Submit your application and documents via: MyMercy",
+     "quote": "Submit your application and documents via: MyMercy || Mercy Health Attention: Financial Assistance Department 2115 S Fremont Avenue, Suite 5300 Springfield, MO 65804 (Mailing address only) Fax: 417-829-4604",
      "source_id": "fap-e2169745bc9cf37f",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4758,9 +4758,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: Mercy will grant these patients financial assistance presumptively, without the requirement of an application.",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Minimum 60 days of pay stubs required | Other forms of income should include interest, rent, alimony, pensions, disability, dividends, Social Security (most rec",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Mercy Health Attention: Financial Assistance Department 2115 S Fremont Avenue, Suite 5300 Springfield, MO 65804 (Mailing",
+    "programs.presumptive: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 2 verbatim spans",
     "agent judge on eligibility.insured_patients_covered: Quote only says insured patients need not complete the Insurance Eligibility Screening before applying. It does not say insured patients are covered by assistance.",
     "agent judge on programs.presumptive: Quote covers incarcerated or homeless patients with no other liable party. It never mentions Medicaid, so the Medicaid value is unsupported.",
     "agent judge on apply.documents_required: Quote supports federal tax return, pay stubs, and Social Security letter. It does not mention an insurance card, so that value is unsupported."
@@ -4839,7 +4839,7 @@
       "Patient is deceased with no known estate"
      ],
      "layer": "documented",
-     "quote": "1. State-funded prescription programs; 2. Homeless or received care from a homeless clinic; 3. Participation in Women, Infants and Children programs (WIC);",
+     "quote": "1. State-funded prescription programs; 2. Homeless or received care from a homeless clinic; 3. Participation in Women, Infants and Children programs (WIC); || 4. Food stamp eligibility; 5. Subsidized school lunch program eligibility; || 8. Patient is deceased with no known estate.",
      "source_id": "fap-f0c7f3b213f678d1",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4858,7 +4858,7 @@
       "proof_of_income"
      ],
      "layer": "documented",
-     "quote": "Complete copies of previous year\u2019s federal income tax return including Schedule C if self-employed. If you self prepare we will need ALL W2\u2019S.",
+     "quote": "Complete copies of previous year\u2019s federal income tax return including Schedule C if self-employed. If you self prepare we will need ALL W2\u2019S. || Last 4 payroll stubs for both spouses, for all jobs held, along with any other family members of the household with an applicable income for the current year. || Social Security Benefits \u2013 Must show benefit amount received each month.",
      "source_id": "fap-61a9c4a98b461f26",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4881,7 +4881,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "please complete the following form and return it to the address below.",
+     "quote": "please complete the following form and return it to the address below. || Phone: 573-258-8591 || Fax: 573-472-7178",
      "source_id": "fap-61a9c4a98b461f26",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4960,9 +4960,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: 4. Food stamp eligibility; 5. Subsidized school lunch program eligibility; | 8. Patient is deceased with no known estate.",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Last 4 payroll stubs for both spouses, for all jobs held, along with any other family members of the household with an a | Social Security Benefits \u2013 Must show benefit amount received each month.",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Phone: 573-258-8591 | Fax: 573-472-7178",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 3 verbatim spans",
     "agent judge on eligibility.insured_patients_covered: Quote only describes the 80% discount tier and says nothing about insured patients being covered.",
     "agent judge on apply.documents_required: Quote shows tax return, payroll stubs, and Social Security only; disability and unemployment benefit documents are not in the quote.",
     "agent judge on apply.submit_methods: Quote gives fax and phone numbers and says 'the address below' but does not show the mailing address stated in the value."
@@ -5038,7 +5038,7 @@
       "Deceased unmarried adult patients"
      ],
      "layer": "documented",
-     "quote": "Patients that are proven to be homeless and unable to provide verifications to complete the financial assistance application.",
+     "quote": "Patients that are proven to be homeless and unable to provide verifications to complete the financial assistance application. || Patients who are incarcerated and unable to provide verifications to complete the financial assistance application. || Patients that receive benefits under the Women, Infants and Children\u2019s (WIC) program.",
      "source_id": "fap-34639576e4fc9c81",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5056,7 +5056,7 @@
       "proof_of_income"
      ],
      "layer": "documented",
-     "quote": "1. Proof of identity (driver\u2019s license, or other photo ID with patients\u2019 address)",
+     "quote": "1. Proof of identity (driver\u2019s license, or other photo ID with patients\u2019 address) || 2. Proof of annual income (copies of the previous year's income tax return) || 3. Proof of current income (copy of employers check stub(s) for all employers where employees worked in the current year.",
      "source_id": "fap-34639576e4fc9c81",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5152,8 +5152,8 @@
    "eve_review": [
     "eligibility.discount_tiers: 100-250% at 0% is no discount; skipped",
     "eligibility.discount_tiers: 250-350% at 0% is no discount; skipped",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Patients who are incarcerated and unable to provide verifications to complete the financial assistance application. | Patients that receive benefits under the Women, Infants and Children\u2019s (WIC) program.",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: 2. Proof of annual income (copies of the previous year's income tax return) | 3. Proof of current income (copy of employers check stub(s) for all employers where employees worked in the current year",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent judge on eligibility.free_care_max_fpl: Quote states eligibility at income not exceeding 100% FPL but never says this level receives free care or 100% assistance.",
     "agent judge on eligibility.discount_tiers: Quote gives bounds of 100-250% and 251-350% (not 250-350) and no discount percentages; the recorded 0% discounts appear nowhere in the quote.",
     "agent judge on programs.presumptive: Quote covers only homeless, incarcerated and WIC; SNAP, State Medicaid, Bankruptcy and deceased unmarried adults are not in the quote.",
@@ -5265,7 +5265,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Mail to P.O. Box 790024, St. Louis, MO 63179-0024, email to patacct@bjc.org, or fax to 314-747-6977.",
+     "quote": "Mail to P.O. Box 790024, St. Louis, MO 63179-0024, email to patacct@bjc.org, or fax to 314-747-6977. || You may submit the form in person at the service location or per the submission instructions below to apply for free or discounted care.",
      "source_id": "fap-779a0414a63dc869",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5344,7 +5344,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: You may submit the form in person at the service location or per the submission instructions below to apply for free or ",
+    "apply.submit_methods: value backed by 2 verbatim spans",
     "agent dropped apply.documents_required: excerpt not in source: Most recent tax return D. Written income verification from a",
     "agent judge on eligibility.assistance_ceiling_fpl: Quote says income must not exceed 300% FPL to be eligible for a discount. It does not say no assistance of any kind is offered above that level.",
     "agent judge on eligibility.insured_patients_covered: Quote only compares billed amounts for eligible patients against amounts billed to insured individuals. It does not state that insured patients are covered."
@@ -5398,7 +5398,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "FPL 100% 125% 150% 175% 200% FAMILY SIZE",
+     "quote": "FPL 100% 125% 150% 175% 200% FAMILY SIZE || BALANCE DUE FROM PATIENT 0% 10% 20% 30% 37% BALANCE DUE FROM PATIENT || FA Coverage Discount 100% 90% 80% 70% 63%",
      "source_id": "fap-95d3c70f0f67decf",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5431,7 +5431,7 @@
       "Incarceration in a penal institution"
      ],
      "layer": "documented",
-     "quote": "Homelessness which is defined as an individual without permanent housing who may live on the streets, stay in a shelter, mission, single room occupancy facilities, abandoned building or vehicle, or in any other unstable or non-permanent situation.",
+     "quote": "Homelessness which is defined as an individual without permanent housing who may live on the streets, stay in a shelter, mission, single room occupancy facilities, abandoned building or vehicle, or in any other unstable or non-permanent situation. || Deceased with no estate. || Incarceration in a penal institution.",
      "source_id": "fap-95d3c70f0f67decf",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5547,8 +5547,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: BALANCE DUE FROM PATIENT 0% 10% 20% 30% 37% BALANCE DUE FROM PATIENT | FA Coverage Discount 100% 90% 80% 70% 63%",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Deceased with no estate. | Incarceration in a penal institution.",
+    "eligibility.discount_tiers: value backed by 3 verbatim spans",
+    "programs.presumptive: value backed by 3 verbatim spans",
     "agent judge on programs.presumptive: Quote lists only Homelessness, Deceased with no estate, and Incarceration. It does not mention mental incapacitation, Medicaid eligibility, or out-of-state coverage items in the value."
    ]
   },
@@ -5630,7 +5630,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Submit your application and documents via: MyMercy",
+     "quote": "Submit your application and documents via: MyMercy || Mercy Health Attention: Financial Assistance Department 2115 S Fremont Avenue, Suite 5300 Springfield, MO 65804 || Fax: 417-829-4604",
      "source_id": "fap-e2169745bc9cf37f",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5720,7 +5720,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Mercy Health Attention: Financial Assistance Department 2115 S Fremont Avenue, Suite 5300 Springfield, MO 65804 | Fax: 417-829-4604",
+    "apply.submit_methods: value backed by 3 verbatim spans",
     "agent dropped eligibility.free_care_max_fpl: quote is not a substring of the source",
     "agent dropped eligibility.discount_tiers: quote is not a substring of the source",
     "agent dropped apply.documents_required: between 1 and 3 excerpts allowed",
@@ -5817,7 +5817,7 @@
       "pay_stubs"
      ],
      "layer": "documented",
-     "quote": "A. Most recent tax return D. Written income verification from an employer if paid in cash",
+     "quote": "A. Most recent tax return D. Written income verification from an employer if paid in cash || B. Most recent W-2 form and 1099 forms E. Proof of non-filing (IRS Form 4506) || C. Two (2) most recent pay stubs",
      "source_id": "fap-779a0414a63dc869",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5844,7 +5844,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "You may submit the form in person at the service location or per the submission instructions below to apply for free or discounted care.",
+     "quote": "You may submit the form in person at the service location or per the submission instructions below to apply for free or discounted care. || Mail to P.O. Box 790024, St. Louis, MO 63179-0024, email to patacct@bjc.org, or fax to 314-747-6977.",
      "source_id": "fap-779a0414a63dc869",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5900,7 +5900,7 @@
       "Vietnamese"
      ],
      "layer": "documented",
-     "quote": "\u0627\u0644\u0639\u0631\u0628\u064a\u0629 (Arabic)",
+     "quote": "\u0627\u0644\u0639\u0631\u0628\u064a\u0629 (Arabic) || Bosanski (Bosnian) || Espa\u00f1ol (Spanish)",
      "source_id": "web-adf109f06bbebdf6",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5943,9 +5943,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: B. Most recent W-2 form and 1099 forms E. Proof of non-filing (IRS Form 4506) | C. Two (2) most recent pay stubs",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Mail to P.O. Box 790024, St. Louis, MO 63179-0024, email to patacct@bjc.org, or fax to 314-747-6977.",
-    "contacts.languages: 2 more verbatim excerpt(s) supported this value: Bosanski (Bosnian) | Espa\u00f1ol (Spanish)",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 2 verbatim spans",
+    "contacts.languages: value backed by 3 verbatim spans",
     "apply.form_url: not an absolute URL ('/sites/bjc/files/2026-05/3259250-Financial-Assistance-Applic'); dropped",
     "agent judge on eligibility.assistance_ceiling_fpl: The quote only sets 300% FPL as the income limit for a discount. It does not say no assistance of any kind is offered above 300%.",
     "agent judge on eligibility.insured_patients_covered: Quote only says eligible patients are billed less than amounts billed to insured individuals. It does not state that insured patients are covered.",
@@ -6170,7 +6170,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "201% up to 220% FPG 95% 5%",
+     "quote": "201% up to 220% FPG 95% 5% || 221% up to 240% FPG 90% 10% || 241% up to 260% FPG 85% 15%",
      "source_id": "fap-159b5ed825c1a2e2",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -6267,7 +6267,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "By phone - Speak to a customer service representative any time Monday-Friday from 8 a.m. to 4:30 p.m. CST at 816.792.7110 .",
+     "quote": "By phone - Speak to a customer service representative any time Monday-Friday from 8 a.m. to 4:30 p.m. CST at 816.792.7110 . || By fax - Fax your completed application along with your supporting documentation to our secure fax line at 816.407.4369 ATTN: Financial Assistance. || By mail - Send your completed application along with your supporting documentation to: Liberty Hospital ATTN: Financial Assistance 2525 Glenn Hendren Drive Liberty, MO 64068",
      "source_id": "web-816843fb3f801497",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -6366,8 +6366,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: 221% up to 240% FPG 90% 10% | 241% up to 260% FPG 85% 15%",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: By fax - Fax your completed application along with your supporting documentation to our secure fax line at 816.407.4369  | By mail - Send your completed application along with your supporting documentation to: Liberty Hospital ATTN: Financial ",
+    "eligibility.discount_tiers: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 3 verbatim spans",
     "agent judge on eligibility.discount_tiers: Quote only covers tiers up to 260% FPG. Tiers 260-280, 280-290, and 290-300 with their percents are not in the quote.",
     "agent judge on apply.submit_methods: Quote covers phone, fax, and mail only. The in_person method is not in the quote."
    ]
@@ -6473,7 +6473,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Applications are available in the hospital, at all registration areas and the cashier's office as well as on-line via the hospital website",
+     "quote": "Applications are available in the hospital, at all registration areas and the cashier's office as well as on-line via the hospital website || Applications can also be obtained free of charge by mail or by calling 314-576-8100",
      "source_id": "web-a6e1f705d9a76128",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -6558,7 +6558,7 @@
    "accuracy": null,
    "eve_review": [
     "eligibility.discount_tiers: 0-400% at 100% is the free-care band, not a tier; skipped",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Applications can also be obtained free of charge by mail or by calling 314-576-8100",
+    "apply.submit_methods: value backed by 2 verbatim spans",
     "agent judge on eligibility.discount_tiers: Quote says 0%-400% FPL qualifies and discounts range 25%-100%, but gives no tier structure; the single 100% tier up to 400% is not stated.",
     "agent judge on apply.documents_required: Quote also lists alimony/child support documentation and supporter income declaration, which are omitted; proof of residency applies only to non-filers of tax returns."
    ]
@@ -6668,7 +6668,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "BJC HealthCare at 314-362-8400 or 855-362-8400",
+     "quote": "BJC HealthCare at 314-362-8400 or 855-362-8400 || Information and application forms are also available at BJC.org or SaintLukesKC.org.",
      "source_id": "fap-184a2c21b725a578",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -6721,7 +6721,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Information and application forms are also available at BJC.org or SaintLukesKC.org.",
+    "apply.submit_methods: value backed by 2 verbatim spans",
     "agent judge on eligibility.assistance_ceiling_fpl: Quote gives 300% FPL only as the discount eligibility limit, not as the point above which no assistance of any kind is offered.",
     "agent judge on eligibility.insured_patients_covered: Quote only tells insured patients to contact their insurance provider about coverage; it does not say insured patients are covered.",
     "agent judge on apply.submit_methods: Quote says BJC phone numbers are for contact and that forms are 'available at' BJC.org or SaintLukesKC.org; it does not state these are ways to submit an application."
@@ -6765,7 +6765,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "201-250% FPG will receive a 50% reduction of the self-pay balance due",
+     "quote": "201-250% FPG will receive a 50% reduction of the self-pay balance due || 251-300% FPG will receive a 25% reduction of the self-pay balance due",
      "source_id": "fap-bc406309dec56220",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -6799,7 +6799,7 @@
       "Nonpaying out of State Medicaid Program"
      ],
      "layer": "documented",
-     "quote": "Assumed indigent patients including those that are homeless, a resident of a shelter facility with no coverage, incarcerated and found to be without coverage and/or without resources, deceased with no estate, mentally incapacitated with no one to act on their behalf, or those Saint Francis Medical Center determines are without a credit report.",
+     "quote": "Assumed indigent patients including those that are homeless, a resident of a shelter facility with no coverage, incarcerated and found to be without coverage and/or without resources, deceased with no estate, mentally incapacitated with no one to act on their behalf, or those Saint Francis Medical Center determines are without a credit report. || Non-covered vaccines for children charges. || Nonpaying out of State Medicaid Program.",
      "source_id": "fap-bc406309dec56220",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -6816,7 +6816,7 @@
       "pay_stubs"
      ],
      "layer": "documented",
-     "quote": "Complete copies of the most current federal income tax return, including all applicable schedules/forms for all applicants or IRS verification of non-filing. Also acceptable is a Social Security/Disability benefits statement. If these documents are unattainable, an Income Verification Letter from an employer will be accepted.",
+     "quote": "Complete copies of the most current federal income tax return, including all applicable schedules/forms for all applicants or IRS verification of non-filing. Also acceptable is a Social Security/Disability benefits statement. If these documents are unattainable, an Income Verification Letter from an employer will be accepted. || Most recent paycheck stub for all working adults within the household.",
      "source_id": "fap-bc406309dec56220",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -6843,7 +6843,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Please complete the enclosed patient financial assistance application and return by mail, email or fax to one of the following:",
+     "quote": "Please complete the enclosed patient financial assistance application and return by mail, email or fax to one of the following: || Email: financialcounselors@sfmc.net Fax: 573-331-3887 || You may also take the application to Saint Francis Medical Center\u2019s cashier window.",
      "source_id": "fap-36ac2a0bcde3b015",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -6905,10 +6905,10 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: 251-300% FPG will receive a 25% reduction of the self-pay balance due",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Non-covered vaccines for children charges. | Nonpaying out of State Medicaid Program.",
-    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: Most recent paycheck stub for all working adults within the household.",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Email: financialcounselors@sfmc.net Fax: 573-331-3887 | You may also take the application to Saint Francis Medical Center\u2019s cashier window.",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 2 verbatim spans",
+    "apply.submit_methods: value backed by 3 verbatim spans",
     "agent judge on eligibility.assistance_ceiling_fpl: Quote only says income at or below 300% FPG qualifies for Traditional Financial Assistance. It does not say no assistance of any kind is offered above 300%.",
     "agent judge on apply.submit_methods: Quote gives email, fax, and cashier window, but no mailing address. The mail detail '211 Saint Francis Drive Cape Girardeau, MO 63703' is not in the quote."
    ]
@@ -6995,7 +6995,7 @@
       "Mentally incapacitated"
      ],
      "layer": "documented",
-     "quote": "1. Homeless or receiving care from a homeless clinic",
+     "quote": "1. Homeless or receiving care from a homeless clinic || 2. Participation in Women's Infants, and Children's programs (WIC) || 3. Supplemental Nutrition Assistance Program (SNAP)",
      "source_id": "fap-4eed817174d79a33",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -7021,7 +7021,7 @@
       "bank_statements"
      ],
      "layer": "documented",
-     "quote": "1) Copy of the most recent Federal tax return (1040)",
+     "quote": "1) Copy of the most recent Federal tax return (1040) || 2) Copy of 3 months of most recent pay stubs for all employed family members or self-employment income and expenses || 3) Copy of 3 months of most recent checking and/or savings bank statement",
      "source_id": "fap-9319c718e90f1e6d",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -7110,8 +7110,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: 2. Participation in Women's Infants, and Children's programs (WIC) | 3. Supplemental Nutrition Assistance Program (SNAP)",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: 2) Copy of 3 months of most recent pay stubs for all employed family members or self-employment income and expenses | 3) Copy of 3 months of most recent checking and/or savings bank statement",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent judge on eligibility.discount_tiers: Quote gives only a 62% discount over 250% FPG; it does not state an upper bound, so max_fpl_inclusive 999999 is not in the quote.",
     "agent judge on programs.presumptive: Quote lists only three programs (homeless/homeless clinic, WIC, SNAP); value adds unsupported items like Medicaid spend-down, deceased, incarcerated, and mentally incapacitated.",
     "agent judge on apply.window_days_from_first_bill: Quote says applications are considered while account is open and no older than 240 days, which is not explicitly measured from first bill.",
@@ -7205,7 +7205,7 @@
       "pay_stubs"
      ],
      "layer": "documented",
-     "quote": "A. Most recent tax return D. Written income verification from an employer if paid in cash",
+     "quote": "A. Most recent tax return D. Written income verification from an employer if paid in cash || B. Most recent W-2 form and 1099 forms E. Proof of non-filing (IRS Form 4506) || C. Two (2) most recent pay stubs",
      "source_id": "fap-779a0414a63dc869",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -7232,7 +7232,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Mail to P.O. Box 790024, St. Louis, MO 63179-0024, email to patacct@bjc.org, or fax to 314-747-6977.",
+     "quote": "Mail to P.O. Box 790024, St. Louis, MO 63179-0024, email to patacct@bjc.org, or fax to 314-747-6977. || You may submit the form in person at the service location or per the submission instructions below to apply for free or discounted care.",
      "source_id": "fap-779a0414a63dc869",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -7288,7 +7288,7 @@
       "Vietnamese"
      ],
      "layer": "documented",
-     "quote": "\u0627\u0644\u0639\u0631\u0628\u064a\u0629 (Arabic)",
+     "quote": "\u0627\u0644\u0639\u0631\u0628\u064a\u0629 (Arabic) || Espa\u00f1ol (Spanish) || Ti\u1ebfng Vi\u1ec7t (Vietnamese)",
      "source_id": "web-adf109f06bbebdf6",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -7331,9 +7331,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: B. Most recent W-2 form and 1099 forms E. Proof of non-filing (IRS Form 4506) | C. Two (2) most recent pay stubs",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: You may submit the form in person at the service location or per the submission instructions below to apply for free or ",
-    "contacts.languages: 2 more verbatim excerpt(s) supported this value: Espa\u00f1ol (Spanish) | Ti\u1ebfng Vi\u1ec7t (Vietnamese)",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 2 verbatim spans",
+    "contacts.languages: value backed by 3 verbatim spans",
     "apply.form_url: not an absolute URL ('/sites/bjc/files/2026-05/3259250-Financial-Assistance-Applic'); dropped",
     "agent judge on eligibility.insured_patients_covered: Quote says eligible patients are billed less than amounts billed to insured individuals; it does not state that insured patients are covered by assistance.",
     "agent judge on apply.documents_required: Quote lists tax return, W-2/1099, pay stubs, employer verification, and IRS 4506 non-filing proof as options (A-E); the value omits some and presents them as a required set.",
@@ -7424,7 +7424,7 @@
       "medicaid_denial"
      ],
      "layer": "documented",
-     "quote": "1. Completed Financial Assistance Application (signed by the patient/guarantor).",
+     "quote": "1. Completed Financial Assistance Application (signed by the patient/guarantor). || 2. Verification of Gross Income for Applicant/Guarantor. || 3. Federal Tax Return Documentation.",
      "source_id": "fap-61d36dc9a749f6b4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -7505,7 +7505,7 @@
    "accuracy": null,
    "eve_review": [
     "eligibility.asset_test: quote matched the source only after typography normalization",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: 2. Verification of Gross Income for Applicant/Guarantor. | 3. Federal Tax Return Documentation.",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent dropped eligibility.discount_tiers: between 1 and 3 excerpts allowed",
     "agent judge on apply.documents_required: Quote lists only three documents (application, gross income verification, federal tax return); bank statements and Medicaid letter are not in the quote."
    ]
@@ -7667,7 +7667,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "201% - 250% FPL 100% less co- pay $700 co-pay per admission/account 251% - 300% FPL 100% less co- pay $1,500 co-pay per admission/account",
+     "quote": "201% - 250% FPL 100% less co- pay $700 co-pay per admission/account 251% - 300% FPL 100% less co- pay $1,500 co-pay per admission/account || Scheduled Services not approved for continuation of care Less than 300% FPL 75% 25%",
      "source_id": "fap-6b782f4f75217c81",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -7823,7 +7823,7 @@
    "eve_review": [
     "eligibility.discount_tiers: 200-250% at 100% is the free-care band, not a tier; skipped",
     "eligibility.discount_tiers: 250-300% at 100% is the free-care band, not a tier; skipped",
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: Scheduled Services not approved for continuation of care Less than 300% FPL 75% 25%",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
     "agent dropped apply.submit_methods: excerpt not in source: These documents are available free of charge on line at www.",
     "agent judge on eligibility.discount_tiers: The 100% tiers are stated as '100% less co-pay' ($700 and $1,500 per admission), so the value's 100% discount omits the co-pays. The 0-300% tier is also not stated as starting at 0.",
     "agent judge on programs.presumptive: Quote names presumptive scoring as a presumptive mechanism. Medicaid appears only as a documentation-waiver case, not as a presumptive program.",
@@ -7917,7 +7917,7 @@
       "pay_stubs"
      ],
      "layer": "documented",
-     "quote": "A. Most recent tax return D. Written income verification from an employer if paid in cash",
+     "quote": "A. Most recent tax return D. Written income verification from an employer if paid in cash || B. Most recent W-2 form and 1099 forms E. Proof of non-filing (IRS Form 4506) || C. Two (2) most recent pay stubs",
      "source_id": "fap-779a0414a63dc869",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -7944,7 +7944,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "You may submit the form in person at the service location or per the submission instructions below to apply for free or discounted care.",
+     "quote": "You may submit the form in person at the service location or per the submission instructions below to apply for free or discounted care. || BJC HealthCare: Mail to P.O. Box 790024, St. Louis, MO 63179-0024, email to patacct@bjc.org, or fax to 314-747-6977.",
      "source_id": "fap-779a0414a63dc869",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -8000,7 +8000,7 @@
       "Vietnamese"
      ],
      "layer": "documented",
-     "quote": "\u0627\u0644\u0639\u0631\u0628\u064a\u0629 (Arabic)",
+     "quote": "\u0627\u0644\u0639\u0631\u0628\u064a\u0629 (Arabic) || Bosanski (Bosnian) || \u7b80\u4f53\u4e2d\u6587 (Chinese Simplified)",
      "source_id": "web-adf109f06bbebdf6",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -8043,9 +8043,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: B. Most recent W-2 form and 1099 forms E. Proof of non-filing (IRS Form 4506) | C. Two (2) most recent pay stubs",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: BJC HealthCare: Mail to P.O. Box 790024, St. Louis, MO 63179-0024, email to patacct@bjc.org, or fax to 314-747-6977.",
-    "contacts.languages: 2 more verbatim excerpt(s) supported this value: Bosanski (Bosnian) | \u7b80\u4f53\u4e2d\u6587 (Chinese Simplified)",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 2 verbatim spans",
+    "contacts.languages: value backed by 3 verbatim spans",
     "apply.form_url: not an absolute URL ('/sites/bjc/files/2026-05/3259250-Financial-Assistance-Applic'); dropped",
     "agent judge on eligibility.assistance_ceiling_fpl: The quote gives a dollar income cutoff ($100,000 a year family income), not a percent of FPL, so it does not state 100000 as an FPL ceiling.",
     "agent judge on eligibility.insured_patients_covered: The quote says eligible patients are billed less than amounts for insured individuals. It does not state that insured patients are covered.",
@@ -8133,7 +8133,7 @@
       "Spanish"
      ],
      "layer": "documented",
-     "quote": "NOTICE TO PATIENTS:",
+     "quote": "NOTICE TO PATIENTS: || AVISO PARA PACIENTES:",
      "source_id": "web-6843e44559e57536",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -8167,7 +8167,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "contacts.languages: 1 more verbatim excerpt(s) supported this value: AVISO PARA PACIENTES:",
+    "contacts.languages: value backed by 2 verbatim spans",
     "agent judge on apply.submit_methods: Quote says to return the application to the Admissions Department, but does not say in person; the kind 'in_person' is not stated.",
     "agent judge on contacts.phone: Quote shows the number labeled '(phone)' but does not say it is the financial assistance contact; it only states a phone label.",
     "agent judge on contacts.languages: Quote is only a heading in English and Spanish; it does not state that these are the languages supported for assistance."
@@ -8326,7 +8326,7 @@
       "pay_stubs"
      ],
      "layer": "documented",
-     "quote": "A. Most recent tax return D. Written income verification from an employer if paid in cash",
+     "quote": "A. Most recent tax return D. Written income verification from an employer if paid in cash || B. Most recent W-2 form and 1099 forms E. Proof of non-filing (IRS Form 4506) || C. Two (2) most recent pay stubs",
      "source_id": "fap-779a0414a63dc869",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -8349,7 +8349,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "You may submit the form in person at the service location or per the submission instructions below to apply for free or discounted care.",
+     "quote": "You may submit the form in person at the service location or per the submission instructions below to apply for free or discounted care. || Mail to Saint Luke\u2019s, 901 E. 104th St., Attn: Hospital CBO 6th Floor, Kansas City, MO 64131, or email to slhsbilling@saintlukeskc.org.",
      "source_id": "fap-779a0414a63dc869",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -8428,8 +8428,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: B. Most recent W-2 form and 1099 forms E. Proof of non-filing (IRS Form 4506) | C. Two (2) most recent pay stubs",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Mail to Saint Luke\u2019s, 901 E. 104th St., Attn: Hospital CBO 6th Floor, Kansas City, MO 64131, or email to slhsbilling@sai",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 2 verbatim spans",
     "agent judge on eligibility.assistance_ceiling_fpl: Quote says only that discount eligibility requires income at or below 300% FPL. It does not say no assistance of any kind is offered above 300%.",
     "agent judge on eligibility.insured_patients_covered: Quote says eligible patients are billed less than amounts billed to insured individuals. It does not say insured patients are covered by assistance.",
     "agent judge on apply.documents_required: Quote lists five items (A\u2013E, including employer income verification and IRS Form 4506 proof of non-filing). Value omits two of them.",
@@ -8567,7 +8567,7 @@
       "Spanish"
      ],
      "layer": "documented",
-     "quote": "The paper Financial Assistance Application and Policy are available in both English and other languages prevalent in the area",
+     "quote": "The paper Financial Assistance Application and Policy are available in both English and other languages prevalent in the area || Financial Assistance Application (English and Spanish) below:",
      "source_id": "fap-4dbed64b2b51c210",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -8592,7 +8592,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "contacts.languages: 1 more verbatim excerpt(s) supported this value: Financial Assistance Application (English and Spanish) below:",
+    "contacts.languages: value backed by 2 verbatim spans",
     "agent judge on eligibility.free_care_max_fpl: Quote says patients at or below 200% FPL get presumptive assistance, not explicitly 100% free care.",
     "agent judge on eligibility.insured_patients_covered: Quote only says insured patients need not complete the Insurance Eligibility Screening first; it does not state they are covered.",
     "agent judge on apply.submit_methods: Quote supports mail and fax only; the online method www.mercy.net/fa does not appear in the quote.",
@@ -8690,7 +8690,7 @@
       "proof_of_income"
      ],
      "layer": "documented",
-     "quote": "Completed Financial Assistance Application (see next page)",
+     "quote": "Completed Financial Assistance Application (see next page) || Federal Tax Return: A full copy of the most recent federal tax return, including all forms and schedules || Proof of Income: Provide income documentation for all household members over the age of 18",
      "source_id": "fap-e2169745bc9cf37f",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -8713,7 +8713,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Submit your application and documents via: MyMercy Once logged into your MyMercy account, under the Main Menu option, select Pay My Bill.",
+     "quote": "Submit your application and documents via: MyMercy Once logged into your MyMercy account, under the Main Menu option, select Pay My Bill. || Mercy Health Attention: Financial Assistance Department 2115 S Fremont Avenue, Suite 5300 Springfield, MO 65804 (Mailing address only) Fax: 417-829-4604",
      "source_id": "fap-e2169745bc9cf37f",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -8803,8 +8803,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Federal Tax Return: A full copy of the most recent federal tax return, including all forms and schedules | Proof of Income: Provide income documentation for all household members over the age of 18",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Mercy Health Attention: Financial Assistance Department 2115 S Fremont Avenue, Suite 5300 Springfield, MO 65804 (Mailing",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 2 verbatim spans",
     "agent judge on eligibility.discount_tiers: Quote shows 201%-300% with 80%, but also an unexplained 70% with no bound, so the 80% tier is not cleanly confirmed as the only tier.",
     "agent judge on programs.presumptive: Quote mentions only incarcerated, homeless, and bankruptcy. It says nothing about Medicaid enrolled or deceased patients.",
     "agent judge on apply.documents_required: Quote lists the application, federal tax return, and proof of income. It does not list a Medicaid Screening as a required document.",
@@ -8900,7 +8900,7 @@
       "proof_of_income"
      ],
      "layer": "documented",
-     "quote": "Completed Financial Assistance Application (see next page)",
+     "quote": "Completed Financial Assistance Application (see next page) || Federal Tax Return: A full copy of the most recent federal tax return, including all forms and schedules, for each household member(s) over the age of 18 listed on this application. || Proof of Income: Provide income documentation for all household members over the age of 18 included on the application.",
      "source_id": "fap-e2169745bc9cf37f",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -8923,7 +8923,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Submit your application and documents via: MyMercy",
+     "quote": "Submit your application and documents via: MyMercy || Mercy Health Attention: Financial Assistance Department 2115 S Fremont Avenue, Suite 5300 Springfield, MO 65804 (Mailing address only) || Fax: 417-829-4604",
      "source_id": "fap-e2169745bc9cf37f",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -9013,8 +9013,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Federal Tax Return: A full copy of the most recent federal tax return, including all forms and schedules, for each house | Proof of Income: Provide income documentation for all household members over the age of 18 included on the application.",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Mercy Health Attention: Financial Assistance Department 2115 S Fremont Avenue, Suite 5300 Springfield, MO 65804 (Mailing | Fax: 417-829-4604",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 3 verbatim spans",
     "agent judge on eligibility.discount_tiers: Quote gives two unlabeled percentages (80% and 70%) for 201-300%, so the 80% discount is not clearly stated.",
     "agent judge on eligibility.insured_patients_covered: Quote only says insured patients need not complete the Insurance Eligibility Screening first; it does not say they are covered.",
     "agent judge on programs.presumptive: Quote covers only incarcerated or homeless patients; it does not mention Medicaid enrolled.",
@@ -9120,7 +9120,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Saint Luke's (Plaza, North, South, East, Allen County, Anderson, Hedrick and Wright Hospitals) and physician balances for Anderson, Hedrick, Wright, and Saint Luke's Physician Group: Mail to Saint Luke's, 901 E. 104th St., Attn: Hospital CBO 6th Floor, Kansas City, MO 64131, or email to slhsbilling@saintlukeskc.org.",
+     "quote": "Saint Luke's (Plaza, North, South, East, Allen County, Anderson, Hedrick and Wright Hospitals) and physician balances for Anderson, Hedrick, Wright, and Saint Luke's Physician Group: Mail to Saint Luke's, 901 E. 104th St., Attn: Hospital CBO 6th Floor, Kansas City, MO 64131, or email to slhsbilling@saintlukeskc.org. || You may submit the form in person at the service location or per the submission instructions below to apply for free or discounted care.",
      "source_id": "fap-779a0414a63dc869",
      "checked_on": "2026-10-23",
      "confidence": 0.8,
@@ -9182,7 +9182,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: You may submit the form in person at the service location or per the submission instructions below to apply for free or ",
+    "apply.submit_methods: value backed by 2 verbatim spans",
     "apply.submit_methods: quote matched the source only after typography normalization",
     "contacts.phone: quote matched the source only after typography normalization",
     "agent dropped apply.documents_required: excerpt not in source: A. Most recent tax return D. Written income verification fro",
@@ -9384,7 +9384,7 @@
       "Telugu"
      ],
      "layer": "documented",
-     "quote": "Spanish (Espa\u00f1ol)",
+     "quote": "Spanish (Espa\u00f1ol) || Vietnamese (Vi\u1ec7t) || Chinese (\u4e2d\u2f42)",
      "source_id": "fap-17b8f1162b2b6cae",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -9427,7 +9427,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "contacts.languages: 2 more verbatim excerpt(s) supported this value: Vietnamese (Vi\u1ec7t) | Chinese (\u4e2d\u2f42)",
+    "contacts.languages: value backed by 3 verbatim spans",
     "agent dropped contacts.hours: quote is not a substring of the source",
     "agent judge on programs.presumptive: Quote only says a third party scores propensity to pay and charity probability. It names no presumptive programs like Medicaid or homeless status.",
     "agent judge on apply.form_url: Quote gives only the path /globalassets/financialassistanceapp_english-fy27.pdf. The domain www.mymlc.com does not appear in the quote.",
@@ -9522,7 +9522,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Applications may be submitted directly through the MyChart online portal.",
+     "quote": "Applications may be submitted directly through the MyChart online portal. || Completed applications may be submitted through the MyChart Online Portal or may be returned by mail, fax or electronic mail to || Or completed applications may be returned in person (not mailed) to any Cox Outpatient Registration Desk or Cox Emergency Department in Springfield, Branson, Monett, Lamar",
      "source_id": "fap-34e095e711588ed9",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -9620,7 +9620,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Completed applications may be submitted through the MyChart Online Portal or may be returned by mail, fax or electronic  | Or completed applications may be returned in person (not mailed) to any Cox Outpatient Registration Desk or Cox Emergenc",
+    "apply.submit_methods: value backed by 3 verbatim spans",
     "agent judge on apply.documents_required: Quote says proof of income 'such as' a tax return or paycheck stub, giving examples, not a required list.",
     "agent judge on apply.submit_methods: Quote supports online, mail, fax, email, and in-person, but not the specific fax number, email address, or mailing street address in the details.",
     "agent judge on apply.decision_days: Quote says decisions are typically made within 10 to 15 business days; it does not state a single value of 15 days."
@@ -9702,7 +9702,7 @@
       "Medicaid eligible but no program reimbursement"
      ],
      "layer": "documented",
-     "quote": "Patients that are proven to be homeless and unable to provide verifications to complete the financial assistance application.",
+     "quote": "Patients that are proven to be homeless and unable to provide verifications to complete the financial assistance application. || Patients who are incarcerated and unable to provide verifications to complete the financial assistance application. || Patients that receive benefits under the Women, Infants and Children\u2019s (WIC) program.",
      "source_id": "fap-2aed4a52358027c3",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -9728,7 +9728,7 @@
       "proof_of_income"
      ],
      "layer": "documented",
-     "quote": "1. Proof of identity (driver\u2019s license, or other photo ID with patients address)",
+     "quote": "1. Proof of identity (driver\u2019s license, or other photo ID with patients address) || 2. Proof of annual income (copies of the previous year's income tax return) || 3. Proof of current income (copy of employers check stub(s) for all employers where employee worked in current year.",
      "source_id": "fap-2aed4a52358027c3",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -9837,8 +9837,8 @@
    "eve_review": [
     "eligibility.discount_tiers: 100-200% at 0% is no discount; skipped",
     "eligibility.discount_tiers: 200-250% at 0% is no discount; skipped",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Patients who are incarcerated and unable to provide verifications to complete the financial assistance application. | Patients that receive benefits under the Women, Infants and Children\u2019s (WIC) program.",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: 2. Proof of annual income (copies of the previous year's income tax return) | 3. Proof of current income (copy of employers check stub(s) for all employers where employee worked in current year.",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent dropped apply.submit_methods: excerpt not in source: Email: Completed Applications with all required attachments ",
     "agent judge on eligibility.discount_tiers: Quote gives the 100-200% and 200-250% bands but no discount percentages. The recorded discount_percent of 0 for both tiers is not stated.",
     "agent judge on eligibility.assistance_ceiling_fpl: Quote says assistance may be provided above 250% FPL when bills exceed 30% of income, so 250 is not a ceiling where assistance stops.",
@@ -9891,7 +9891,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "201\u2013250% FPL \u2192 85% discount",
+     "quote": "201\u2013250% FPL \u2192 85% discount || 251\u2013300% FPL \u2192 70% discount || 300\u2013400% FPL \u2192 60% discount",
      "source_id": "fap-195b94dede75deb7",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -9928,7 +9928,7 @@
       "Incarcerated patients who lack personal income or financial resources while in custody"
      ],
      "layer": "documented",
-     "quote": "Approved/Active Medicaid coverage (including out-of-state) that does not apply to the date of service.",
+     "quote": "Approved/Active Medicaid coverage (including out-of-state) that does not apply to the date of service. || Homeless, indigent, or income-based public assistance recipients || Incarcerated patients who lack personal income or financial resources while in custody",
      "source_id": "fap-195b94dede75deb7",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -9948,7 +9948,7 @@
       "pay_stubs"
      ],
      "layer": "documented",
-     "quote": "a. IRS Tax Return from most recent year and all applicable schedules b. W-2 from most recent tax year for each working adult in the household c. Social Security Benefit Verification Letter from the most recent year for each person receiving Social Security benefits.",
+     "quote": "a. IRS Tax Return from most recent year and all applicable schedules b. W-2 from most recent tax year for each working adult in the household c. Social Security Benefit Verification Letter from the most recent year for each person receiving Social Security benefits. || d. Statement of weekly unemployment benefits e. Paystubs from the most recent three months for each working adult in the household. f. Self-declaration of income",
      "source_id": "fap-195b94dede75deb7",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -9967,7 +9967,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Financial Assistance applications can be obtained through the Business Office at 1502 North Jefferson Carrollton, MO 64633",
+     "quote": "Financial Assistance applications can be obtained through the Business Office at 1502 North Jefferson Carrollton, MO 64633 || CCMH\u2019s website:https://www.carrollcountyhospital.org/patients/financial-assistance- policy.",
      "source_id": "fap-195b94dede75deb7",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -10054,10 +10054,10 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: 251\u2013300% FPL \u2192 70% discount | 300\u2013400% FPL \u2192 60% discount",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Homeless, indigent, or income-based public assistance recipients | Incarcerated patients who lack personal income or financial resources while in custody",
-    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: d. Statement of weekly unemployment benefits e. Paystubs from the most recent three months for each working adult in the",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: CCMH\u2019s website:https://www.carrollcountyhospital.org/patients/financial-assistance- policy."
+    "eligibility.discount_tiers: value backed by 3 verbatim spans",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 2 verbatim spans",
+    "apply.submit_methods: value backed by 2 verbatim spans"
    ]
   },
   {
@@ -10093,7 +10093,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "I 0 - 200% 100% 100%",
+     "quote": "I 0 - 200% 100% 100% || II 201% - 300% 80% 70%",
      "source_id": "web-e85b6e1c9bad9203",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -10148,7 +10148,7 @@
       "other"
      ],
      "layer": "documented",
-     "quote": "Federal Tax Return: A full copy of the most recent federal tax return, including all forms and schedules",
+     "quote": "Federal Tax Return: A full copy of the most recent federal tax return, including all forms and schedules || Minimum 60 days of pay stubs required || Social Security (most recent benefit letter)",
      "source_id": "fap-e2169745bc9cf37f",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -10171,7 +10171,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Submit your application and documents via: MyMercy",
+     "quote": "Submit your application and documents via: MyMercy || Mercy Health Attention: Financial Assistance Department 2115 S Fremont Avenue, Suite 5300 Springfield, MO 65804 || Fax: 417-829-4604",
      "source_id": "fap-e2169745bc9cf37f",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -10262,9 +10262,9 @@
    "accuracy": null,
    "eve_review": [
     "eligibility.discount_tiers: 0-200% at 100% is the free-care band, not a tier; skipped",
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: II 201% - 300% 80% 70%",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Minimum 60 days of pay stubs required | Social Security (most recent benefit letter)",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Mercy Health Attention: Financial Assistance Department 2115 S Fremont Avenue, Suite 5300 Springfield, MO 65804 | Fax: 417-829-4604",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 3 verbatim spans",
     "agent judge on eligibility.discount_tiers: Quote gives two percents (80% and 70%) for 201%-300% with no labels; the value picks 80 without support for which applies.",
     "agent judge on eligibility.insured_patients_covered: Quote only says insured patients need not complete the insurance screening before applying; it does not state they are covered.",
     "agent judge on programs.presumptive: Quote covers incarcerated or homeless patients; value lists only homeless and omits incarcerated.",
@@ -10360,7 +10360,7 @@
       "pay_stubs"
      ],
      "layer": "documented",
-     "quote": "A. Most recent tax return D. Written income verification from an employer if paid in cash",
+     "quote": "A. Most recent tax return D. Written income verification from an employer if paid in cash || B. Most recent W-2 form and 1099 forms E. Proof of non-filing (IRS Form 4506) || C. Two (2) most recent pay stubs",
      "source_id": "fap-779a0414a63dc869",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -10387,7 +10387,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "You may submit the form in person at the service location or per the submission instructions below to apply for free or discounted care.",
+     "quote": "You may submit the form in person at the service location or per the submission instructions below to apply for free or discounted care. || BJC HealthCare: Mail to P.O. Box 790024, St. Louis, MO 63179-0024, email to patacct@bjc.org, or fax to 314-747-6977.",
      "source_id": "fap-779a0414a63dc869",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -10443,7 +10443,7 @@
       "Vietnamese"
      ],
      "layer": "documented",
-     "quote": "\u0627\u0644\u0639\u0631\u0628\u064a\u0629 (Arabic)",
+     "quote": "\u0627\u0644\u0639\u0631\u0628\u064a\u0629 (Arabic) || Bosanski (Bosnian) || \u7b80\u4f53\u4e2d\u6587 (Chinese Simplified)",
      "source_id": "web-133972a1c9d49b79",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -10486,9 +10486,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: B. Most recent W-2 form and 1099 forms E. Proof of non-filing (IRS Form 4506) | C. Two (2) most recent pay stubs",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: BJC HealthCare: Mail to P.O. Box 790024, St. Louis, MO 63179-0024, email to patacct@bjc.org, or fax to 314-747-6977.",
-    "contacts.languages: 2 more verbatim excerpt(s) supported this value: Bosanski (Bosnian) | \u7b80\u4f53\u4e2d\u6587 (Chinese Simplified)",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 2 verbatim spans",
+    "contacts.languages: value backed by 3 verbatim spans",
     "apply.form_url: not an absolute URL ('/sites/bjc/files/2026-05/3259250-Financial-Assistance-Applic'); dropped",
     "agent judge on eligibility.assistance_ceiling_fpl: Quote gives a family income cap of $100,000 a year, not a percent of FPL; it does not state an FPL ceiling.",
     "agent judge on eligibility.insured_patients_covered: Quote tells insured patients to contact their insurer and gives uninsured patients a 40% discount; it does not state insured patients are covered.",
@@ -10579,7 +10579,7 @@
       "proof_of_income"
      ],
      "layer": "documented",
-     "quote": "Completed Financial Assistance Application (see next page):",
+     "quote": "Completed Financial Assistance Application (see next page): || Medicaid Screening: || Federal Tax Return: A full copy of the most recent federal tax return, including all forms and schedules",
      "source_id": "fap-e2169745bc9cf37f",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -10678,7 +10678,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Medicaid Screening: | Federal Tax Return: A full copy of the most recent federal tax return, including all forms and schedules",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "contacts.languages: quote matched the source only after typography normalization",
     "agent dropped eligibility.discount_tiers: excerpt not in source: II 201% - 300% 80% 70%",
     "agent dropped apply.submit_methods: excerpt not in source: A Financial Assistance Application may be submitted in writi",
@@ -10818,7 +10818,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "You may send your application either by mail, email, or fax to the following:",
+     "quote": "You may send your application either by mail, email, or fax to the following: || Mail: Mosaic Life Care, Financial Counseling, 5325 Faraon Street, St. Joseph, MO 64506 || Fax: 816-271-6662",
      "source_id": "fap-17b8f1162b2b6cae",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -10885,7 +10885,7 @@
       "Telugu"
      ],
      "layer": "documented",
-     "quote": "Spanish (Espa\u00f1ol)",
+     "quote": "Spanish (Espa\u00f1ol) || Vietnamese (Vi\u1ec7t) || Chinese (\u4e2d\u2f42)",
      "source_id": "fap-17b8f1162b2b6cae",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -10928,8 +10928,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Mail: Mosaic Life Care, Financial Counseling, 5325 Faraon Street, St. Joseph, MO 64506 | Fax: 816-271-6662",
-    "contacts.languages: 2 more verbatim excerpt(s) supported this value: Vietnamese (Vi\u1ec7t) | Chinese (\u4e2d\u2f42)",
+    "apply.submit_methods: value backed by 3 verbatim spans",
+    "contacts.languages: value backed by 3 verbatim spans",
     "agent dropped contacts.hours: quote is not a substring of the source",
     "agent judge on eligibility.insured_patients_covered: Quote says insured patients are covered only if the insurance contract does not allow it. That is conditional, not a plain true.",
     "agent judge on programs.presumptive: Quote concerns third-party scoring of propensity to pay and charity probability. It does not mention Medicaid enrollment or homelessness.",

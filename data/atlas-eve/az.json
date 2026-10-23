@@ -43,7 +43,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "200% - 300% FPL 75% discount off AGB 75% discount off BAI",
+     "quote": "200% - 300% FPL 75% discount off AGB 75% discount off BAI || > 300% - 400% FPL 50% discount off AGB 50% discount off BAI",
      "source_id": "fap-51370475301f62de",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -104,7 +104,7 @@
       "bank_statements"
      ],
      "layer": "documented",
-     "quote": "Prior year income tax returns,",
+     "quote": "Prior year income tax returns, || 3 most recent pay stubs; and/or || 3 most recent savings and checking accounts statements.",
      "source_id": "fap-51370475301f62de",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -195,8 +195,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: > 300% - 400% FPL 50% discount off AGB 50% discount off BAI",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: 3 most recent pay stubs; and/or | 3 most recent savings and checking accounts statements.",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent dropped apply.submit_methods: excerpt not in source: Return to: Banner Health c/o PBM PO Box 743711, Los Angeles,",
     "agent judge on eligibility.free_care_max_fpl: Quote says \"< 200% of FPL\" for 100% discount, which excludes 200% itself, so 200 is not plainly the highest percent with free care.",
     "agent judge on eligibility.insured_patients_covered: Quote only says underinsured patients may qualify for one specific Underinsured/Balance After Insurance discount, not that insured patients are generally covered.",
@@ -456,7 +456,7 @@
       "Incarcerated, and care is not the financial responsibility of the local, state or federal institution."
      ],
      "layer": "documented",
-     "quote": "Awarded AHCCCS coverage, but coverage is not retroactive to the date of service.",
+     "quote": "Awarded AHCCCS coverage, but coverage is not retroactive to the date of service. || Covered by AHCCCS the month before or after receiving care. || Incarcerated, and care is not the financial responsibility of the local, state or federal institution.",
      "source_id": "web-162408b27fe70f33",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -487,7 +487,7 @@
       "pay_stubs"
      ],
      "layer": "documented",
-     "quote": "Complete copy of the signed prior year federal tax returns;",
+     "quote": "Complete copy of the signed prior year federal tax returns; || 2 months of personal bank statements for all account types (savings, checking, etc.); || 2 paycheck stubs or a letter from the applicant\u2019s Human Resources Dept.",
      "source_id": "fap-d18c332717ba7619",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -510,7 +510,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Please visit nahealth.com/billing-insurance/northern-arizona-healthcares/financial-assistance-program/ to obtain a copy of the Financial Assistance Application",
+     "quote": "Please visit nahealth.com/billing-insurance/northern-arizona-healthcares/financial-assistance-program/ to obtain a copy of the Financial Assistance Application || To mail your Financial Assistance application, send to; Northern Arizona Healthcare, Financial Counseling, 1200 N. Beaver St., Flagstaff, AZ 86001 || If you need help completing the Financial Assistance Application, please call (928) 773-2025 to make an appointment with one of our Financial Counselors.",
      "source_id": "fap-d18c332717ba7619",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -597,9 +597,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Covered by AHCCCS the month before or after receiving care. | Incarcerated, and care is not the financial responsibility of the local, state or federal institution.",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: 2 months of personal bank statements for all account types (savings, checking, etc.); | 2 paycheck stubs or a letter from the applicant\u2019s Human Resources Dept.",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: To mail your Financial Assistance application, send to; Northern Arizona Healthcare, Financial Counseling, 1200 N. Beave | If you need help completing the Financial Assistance Application, please call (928) 773-2025 to make an appointment with",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 3 verbatim spans",
     "agent dropped contacts.languages: excerpt not in source: Navajo",
     "agent judge on eligibility.insured_patients_covered: Quote makes insured-patient assistance conditional on the insurance contract allowing it; it does not state they are covered.",
     "agent judge on apply.decision_days: Quote says 15 business days, not calendar days; the value 15 omits the business-day unit."
@@ -810,7 +810,7 @@
       "Out of State Medicaid eligibility"
      ],
      "layer": "documented",
-     "quote": "Homeless Patients: Validate there is no AHCCCS coverage. Confirm homeless status.",
+     "quote": "Homeless Patients: Validate there is no AHCCCS coverage. Confirm homeless status. || Out of State Medicaid eligibility - if unable to obtain enrollment for the facility or physician, the account will be adjusted to 100% Charity.",
      "source_id": "fap-389f66029f9cf4c0",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -839,7 +839,7 @@
       "other"
      ],
      "layer": "documented",
-     "quote": "Deceased Patients: Clinical documentation from an HonorHealth Facility, a copy of the Death Certificate or Obituary",
+     "quote": "Deceased Patients: Clinical documentation from an HonorHealth Facility, a copy of the Death Certificate or Obituary || Those applying as a Medically Indigent household must include their medical bills for the last 12 months.",
      "source_id": "fap-389f66029f9cf4c0",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -866,7 +866,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Patients may apply for financial assistance by completing the application either in person or by mail, through MyChart, through a surrogate, through a family member, or through another appropriate party.",
+     "quote": "Patients may apply for financial assistance by completing the application either in person or by mail, through MyChart, through a surrogate, through a family member, or through another appropriate party. || Financial assistance applications and advice may be obtained by contacting HonorHealth Customer Service at 623-300-9044",
      "source_id": "fap-389f66029f9cf4c0",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -953,9 +953,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: Out of State Medicaid eligibility - if unable to obtain enrollment for the facility or physician, the account will be ad",
-    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: Those applying as a Medically Indigent household must include their medical bills for the last 12 months.",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Financial assistance applications and advice may be obtained by contacting HonorHealth Customer Service at 623-300-9044",
+    "programs.presumptive: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 2 verbatim spans",
+    "apply.submit_methods: value backed by 2 verbatim spans",
     "agent dropped contacts.languages: quote is not a substring of the source",
     "agent judge on eligibility.discount_tiers: Quote says 'less than 400%', so the upper bound is exclusive; value has max_fpl_inclusive 400.",
     "agent judge on eligibility.insured_patients_covered: Quote only defines the amount due by insured patients after insurance adjudication; it does not say insured patients are covered.",
@@ -1001,7 +1001,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "200% - 300% FPL 75% discount off AGB 75% discount off BAI",
+     "quote": "200% - 300% FPL 75% discount off AGB 75% discount off BAI || > 300% - 400% FPL 50% discount off AGB 50% discount off BAI",
      "source_id": "fap-51370475301f62de",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1083,7 +1083,7 @@
       "bank_statements"
      ],
      "layer": "documented",
-     "quote": "Prior year income tax returns,",
+     "quote": "Prior year income tax returns, || 3 most recent pay stubs; and/or || 3 most recent savings and checking accounts statements.",
      "source_id": "fap-51370475301f62de",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1174,9 +1174,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: > 300% - 400% FPL 50% discount off AGB 50% discount off BAI",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
     "eligibility.asset_test: quote matched the source only after typography normalization",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: 3 most recent pay stubs; and/or | 3 most recent savings and checking accounts statements.",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "contacts.languages: quote matched the source only after typography normalization",
     "agent dropped apply.submit_methods: excerpt not in source: Banner Health c/o PBM PO Box 743711, Los Angeles, CA 90074-3",
     "agent judge on eligibility.free_care_max_fpl: Quote says \"< 200% of FPL\" gets 100% discount, a strict less-than bound. It does not state that 200% itself gets free care.",
@@ -1271,7 +1271,7 @@
       "proof_of_income"
      ],
      "layer": "documented",
-     "quote": "Complete copy of the signed prior year federal tax returns;",
+     "quote": "Complete copy of the signed prior year federal tax returns; || 2 months of personal bank statements for all account types (savings, checking, etc.); || 2 paycheck stubs or a letter from the applicant\u2019s Human Resources Dept.",
      "source_id": "fap-d18c332717ba7619",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1360,7 +1360,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: 2 months of personal bank statements for all account types (savings, checking, etc.); | 2 paycheck stubs or a letter from the applicant\u2019s Human Resources Dept.",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent dropped programs.presumptive: excerpt not in source: AHCCCS covered patients who exceed maximum allowable days;\nB",
     "agent dropped apply.submit_methods: excerpt not in source: Completed Financial Assistance\nApplications, accompanied by ",
     "agent dropped contacts.languages: excerpt not in source: Navajo",
@@ -1430,7 +1430,7 @@
       "bank_statements"
      ],
      "layer": "documented",
-     "quote": "Last year\u2019s income tax return, including schedules if applicable; or",
+     "quote": "Last year\u2019s income tax return, including schedules if applicable; or || A \"W-2\" withholding statement; or || Current pay stubs (3 months); or",
      "source_id": "fap-431a9d152139135e",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1453,7 +1453,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Mail or fax completed application with all documentation to: St Joseph's Hospital and Medical Center, PO Box 3008, Rancho Cordova, CA 95741-3008. Fax: 877-691-1151.",
+     "quote": "Mail or fax completed application with all documentation to: St Joseph's Hospital and Medical Center, PO Box 3008, Rancho Cordova, CA 95741-3008. Fax: 877-691-1151. || To submit your completed application in person: St Joseph's Hospital and Medical Center, 350 West Thomas Road, Phoenix, AZ 85013",
      "source_id": "fap-431a9d152139135e",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1515,8 +1515,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: A \"W-2\" withholding statement; or | Current pay stubs (3 months); or",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: To submit your completed application in person: St Joseph's Hospital and Medical Center, 350 West Thomas Road, Phoenix, ",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 2 verbatim spans",
     "agent judge on apply.documents_required: Quote lists tax return, W-2, and pay stubs only; it does not mention bank statements, which the value includes."
    ]
   },
@@ -1588,7 +1588,7 @@
       "Patient is deceased with no known spouse or known estate"
      ],
      "layer": "documented",
-     "quote": "Recipient of state-funded prescription programs;",
+     "quote": "Recipient of state-funded prescription programs; || Homeless or one who received care from a homeless or free care clinic; || Participation in Women, Infants and Children programs (WIC);",
      "source_id": "fap-174bfaef7b79efbc",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1638,7 +1638,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Mail or fax completed application with all documentation to: Chandler Regional Medical Center, PO Box 3008, Rancho Cordova, CA 95741-3008. Fax: 877-691-1151.",
+     "quote": "Mail or fax completed application with all documentation to: Chandler Regional Medical Center, PO Box 3008, Rancho Cordova, CA 95741-3008. Fax: 877-691-1151. || To submit your completed application in person: Chandler Regional Medical Center, 1955 W Frye Road, Chandler, AZ 85224",
      "source_id": "fap-75cf116ad5a65aa9",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1698,7 +1698,7 @@
       "Traditional Chinese"
      ],
      "layer": "documented",
-     "quote": "Arabic [/content/dam/commonspiritorg/en/dharz/ceaz/finance/assistance/crmc-financial-assistance-summary-ar.pdf]",
+     "quote": "Arabic [/content/dam/commonspiritorg/en/dharz/ceaz/finance/assistance/crmc-financial-assistance-summary-ar.pdf] || German [/content/dam/commonspiritorg/en/dharz/ceaz/finance/assistance/crmc-financial-assistance-summary-de.pdf] || Spanish [/content/dam/commonspiritorg/en/dharz/ceaz/finance/assistance/crmc-financial-assistance-summary-es.pdf]",
      "source_id": "web-37ba64d060ce03fc",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1742,9 +1742,9 @@
    "accuracy": null,
    "eve_review": [
     "eligibility.discount_tiers: 200-400% at 100% is the free-care band, not a tier; skipped",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Homeless or one who received care from a homeless or free care clinic; | Participation in Women, Infants and Children programs (WIC);",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: To submit your completed application in person: Chandler Regional Medical Center, 1955 W Frye Road, Chandler, AZ 85224",
-    "contacts.languages: 2 more verbatim excerpt(s) supported this value: German [/content/dam/commonspiritorg/en/dharz/ceaz/finance/assistance/crmc-financial-assistance-summary-de.pdf] | Spanish [/content/dam/commonspiritorg/en/dharz/ceaz/finance/assistance/crmc-financial-assistance-summary-es.pdf]",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 2 verbatim spans",
+    "contacts.languages: value backed by 3 verbatim spans",
     "agent dropped eligibility.residency: quote is not a substring of the source",
     "agent dropped apply.documents_required: between 1 and 3 excerpts allowed",
     "agent judge on eligibility.discount_tiers: Quote gives tier 201%-400% FPL with reduction to AGB; it does not state a 100% discount percent, so value's discount_percent 100 and min/max bounds are not supported as a 100% tier.",
@@ -1792,7 +1792,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "200% - 300% FPL 75% discount off AGB 75% discount off BAI",
+     "quote": "200% - 300% FPL 75% discount off AGB 75% discount off BAI || > 300% - 400% FPL 50% discount off AGB 50% discount off BAI",
      "source_id": "fap-51370475301f62de",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1854,7 +1854,7 @@
       "tax_return"
      ],
      "layer": "documented",
-     "quote": "If currently employed, copies of last three (3) most recent consecutive payroll stubs (patient, guarantor and spouse)",
+     "quote": "If currently employed, copies of last three (3) most recent consecutive payroll stubs (patient, guarantor and spouse) || If self-employed, a copy of Federal tax form Schedule C or other proof of income and expenses || Determination of State or government assistance (Medicaid/AHCCCS)**",
      "source_id": "fap-81f055599d14a718",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1945,8 +1945,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: > 300% - 400% FPL 50% discount off AGB 50% discount off BAI",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: If self-employed, a copy of Federal tax form Schedule C or other proof of income and expenses | Determination of State or government assistance (Medicaid/AHCCCS)**",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent dropped apply.submit_methods: excerpt not in source: Return to: Banner Health c/o PBM PO Box 743711, Los Angeles,",
     "agent judge on eligibility.free_care_max_fpl: Quote says '< 200% of FPL' gets 100% discount, so 200% itself is excluded; the 200%-300% tier gives 75%, so 200 is not the highest 100% free-care level.",
     "agent judge on eligibility.insured_patients_covered: Quote only says Underinsured patients may qualify for the Balance After Insurance discount; it does not state that insured patients are generally covered.",
@@ -2013,7 +2013,7 @@
       "Other significant barriers are present"
      ],
      "layer": "documented",
-     "quote": "1. Received care in the Emergency Department who are without financial resources may be eligible for FA if they are unemployed or have no permanent address. Indigent patients without access to the required application documentation may still be eligible for financial assistance, 2. Have income below 200% FPGs and considered self-pay, 3. Are deceased, 4. Are eligible for state-funded prescription programs, 5. Are homeless or received care from a homeless clinic, 6. Are participating in Women, Infants and Children (WIC) programs, 7. Are eligible for food stamps (SNAP), 8. Are eligible for subsidized school lunch programs,",
+     "quote": "1. Received care in the Emergency Department who are without financial resources may be eligible for FA if they are unemployed or have no permanent address. Indigent patients without access to the required application documentation may still be eligible for financial assistance, 2. Have income below 200% FPGs and considered self-pay, 3. Are deceased, 4. Are eligible for state-funded prescription programs, 5. Are homeless or received care from a homeless clinic, 6. Are participating in Women, Infants and Children (WIC) programs, 7. Are eligible for food stamps (SNAP), 8. Are eligible for subsidized school lunch programs, || 9. Are eligible for other state or local assistance programs that are unfunded (e.g., Medicaid spend-down), 10. Are referred through a National Association of Free Clinics, 11. Are Medicaid eligible, when the following criteria apply: || 12. Low income/subsidized housing is provided as a valid address, or 13. Other significant barriers are present.",
      "source_id": "fap-dbb1f6c3f2e92802",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2042,7 +2042,7 @@
       "bank_statements"
      ],
      "layer": "documented",
-     "quote": "1. Tax returns and supporting schedules (previous year) for self-employment, 2. Pay stubs (most recent 3/12 months), 3. Social Security award letter, and 4. W-2 or unemployment statements.",
+     "quote": "1. Tax returns and supporting schedules (previous year) for self-employment, 2. Pay stubs (most recent 3/12 months), 3. Social Security award letter, and 4. W-2 or unemployment statements. || 1. If income below 138%- AHCCCS determination letter, 2. Bank statements (most recent 3 months, all accounts), 3. If no income, provide a statement of support.",
      "source_id": "fap-dbb1f6c3f2e92802",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2069,7 +2069,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Applications are available by written request at: Summit Healthcare Regional Medical Center Patient Financial Services 2200 E. Show Low Lake Rd. Show Low, Arizona 85901",
+     "quote": "Applications are available by written request at: Summit Healthcare Regional Medical Center Patient Financial Services 2200 E. Show Low Lake Rd. Show Low, Arizona 85901 || Applications are available by phone at: Customer Service at (928)537-6911 or (888)538-1491 || downloading and printing the financial assistance application form, at no charge from our website at: https://summithealthcare.net/billing-information",
      "source_id": "fap-dbb1f6c3f2e92802",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2130,9 +2130,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: 9. Are eligible for other state or local assistance programs that are unfunded (e.g., Medicaid spend-down), 10. Are refe | 12. Low income/subsidized housing is provided as a valid address, or 13. Other significant barriers are present.",
-    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: 1. If income below 138%- AHCCCS determination letter, 2. Bank statements (most recent 3 months, all accounts), 3. If no ",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Applications are available by phone at: Customer Service at (928)537-6911 or (888)538-1491 | downloading and printing the financial assistance application form, at no charge from our website at: https://summitheal",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 2 verbatim spans",
+    "apply.submit_methods: value backed by 3 verbatim spans",
     "agent judge on programs.presumptive: Items 11-13 are conditional in the quote ('when the following criteria apply'), but the value lists them unconditionally, dropping the qualifier.",
     "agent judge on apply.documents_required: Quote makes the AHCCCS letter conditional on income below 138% and the statement of support conditional on no income; the value drops these conditions.",
     "agent judge on apply.submit_methods: Quote supports mail, phone, and online only; the in_person method and its detail do not appear in the quoted text."
@@ -2176,7 +2176,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "200% - 300% FPL 75% discount off AGB 75% discount off BAI",
+     "quote": "200% - 300% FPL 75% discount off AGB 75% discount off BAI || > 300% - 400% FPL 50% discount off AGB 50% discount off BAI",
      "source_id": "fap-51370475301f62de",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2237,7 +2237,7 @@
       "bank_statements"
      ],
      "layer": "documented",
-     "quote": "Prior year income tax returns,",
+     "quote": "Prior year income tax returns, || 3 most recent pay stubs; and/or || 3 most recent savings and checking accounts statements.",
      "source_id": "fap-51370475301f62de",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2328,8 +2328,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: > 300% - 400% FPL 50% discount off AGB 50% discount off BAI",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: 3 most recent pay stubs; and/or | 3 most recent savings and checking accounts statements.",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent dropped apply.submit_methods: excerpt not in source: Return to: Banner Health c/o PBM, PO Box 743711, Los Angeles"
    ]
   },
@@ -2371,7 +2371,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "200% - 300% FPL 75% discount off AGB 75% discount off BAI",
+     "quote": "200% - 300% FPL 75% discount off AGB 75% discount off BAI || > 300% - 400% FPL 50% discount off AGB 50% discount off BAI",
      "source_id": "fap-51370475301f62de",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2432,7 +2432,7 @@
       "bank_statements"
      ],
      "layer": "documented",
-     "quote": "Prior year income tax returns,",
+     "quote": "Prior year income tax returns, || 3 most recent pay stubs; and/or || 3 most recent savings and checking accounts statements.",
      "source_id": "fap-51370475301f62de",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2544,9 +2544,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: > 300% - 400% FPL 50% discount off AGB 50% discount off BAI",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
     "eligibility.asset_test: quote matched the source only after typography normalization",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: 3 most recent pay stubs; and/or | 3 most recent savings and checking accounts statements.",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "contacts.languages: quote matched the source only after typography normalization",
     "agent judge on eligibility.insured_patients_covered: Quote only says Underinsured patients may qualify for the Underinsured/Balance After Insurance discount; it does not state insured patients generally are covered.",
     "agent judge on programs.presumptive: Quote describes presumptive eligibility based on household income but never mentions Medicaid enrollment.",
@@ -2593,7 +2593,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "200% - 300% FPL 75% discount off AGB 75% discount off BAI",
+     "quote": "200% - 300% FPL 75% discount off AGB 75% discount off BAI || > 300% - 400% FPL 50% discount off AGB 50% discount off BAI",
      "source_id": "fap-51370475301f62de",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2628,7 +2628,7 @@
       "bank_statements"
      ],
      "layer": "documented",
-     "quote": "Prior year income tax returns,",
+     "quote": "Prior year income tax returns, || 3 most recent pay stubs; and/or || 3 most recent savings and checking accounts statements.",
      "source_id": "fap-51370475301f62de",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2704,8 +2704,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: > 300% - 400% FPL 50% discount off AGB 50% discount off BAI",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: 3 most recent pay stubs; and/or | 3 most recent savings and checking accounts statements.",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent dropped eligibility.insured_patients_covered: quote is not a substring of the source",
     "agent dropped programs.presumptive: quote shorter than 8 characters",
     "agent judge on eligibility.free_care_max_fpl: Quote says \"< 200% of FPL\" 100% discount, which is strictly below 200%, not that 200% itself gets free care.",
@@ -2746,7 +2746,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "A patient will receive an 84% discount against gross charges if he or she can demonstrate family income above 200% but less than 400% of FPG listed on Attachment A.",
+     "quote": "A patient will receive an 84% discount against gross charges if he or she can demonstrate family income above 200% but less than 400% of FPG listed on Attachment A. || 201%- 400% Discounted 84% Emergency and Other Medically Necessary Care",
      "source_id": "fap-46a38e35fba10745",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2783,7 +2783,7 @@
       "Deceased Patients"
      ],
      "layer": "documented",
-     "quote": "Deceased Patients: Death Certificate or Obituary",
+     "quote": "Deceased Patients: Death Certificate or Obituary || Homeless Patients: AHCCCS website verification or account notes. || AHCCCS Qualified: Notification of eligibility (this includes patients who become eligible within 30 days of the date of service).",
      "source_id": "fap-46a38e35fba10745",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2891,8 +2891,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: 201%- 400% Discounted 84% Emergency and Other Medically Necessary Care",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Homeless Patients: AHCCCS website verification or account notes. | AHCCCS Qualified: Notification of eligibility (this includes patients who become eligible within 30 days of the date of ",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "programs.presumptive: value backed by 3 verbatim spans",
     "agent dropped apply.submit_methods: excerpt not in source: Patients may apply for financial assistance by completing th"
    ]
   },
@@ -2934,7 +2934,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "200% - 300% FPL 75% discount off AGB 75% discount off BAI",
+     "quote": "200% - 300% FPL 75% discount off AGB 75% discount off BAI || > 300% - 400% FPL 50% discount off AGB 50% discount off BAI",
      "source_id": "fap-51370475301f62de",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3086,7 +3086,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: > 300% - 400% FPL 50% discount off AGB 50% discount off BAI",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
     "agent dropped apply.submit_methods: excerpt not in source: Banner Health c/o PBM PO Box 743711, Los Angeles, CA 90074-3",
     "agent judge on eligibility.insured_patients_covered: Quote only defines Underinsured Patient as someone with third-party insurance and financial limitations; it does not state insured patients are covered by assistance.",
     "agent judge on collections.eca_wait_days: Quote says 120 days past the date of the first billing statement, which is a Notification Period; it does not clearly state days before collection actions. Strictly ambiguous, so not supported."
@@ -3125,7 +3125,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "60% adjustment of the self-pay balance for applicants with household income of up to 400% of the Federal Poverty Guidelines;",
+     "quote": "60% adjustment of the self-pay balance for applicants with household income of up to 400% of the Federal Poverty Guidelines; || 100% adjustment of the self-pay balance for applicants with household income of equal to or less than 200% of the Federal Poverty Guidelines",
      "source_id": "fap-4579d47e7ac69b56",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3193,7 +3193,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Applications for financial assistance are available at no charge at the following website: www.mayoclinic.org/financialassistance",
+     "quote": "Applications for financial assistance are available at no charge at the following website: www.mayoclinic.org/financialassistance || Applications are available by written request at: Mayo Clinic Hospital, Phoenix, Arizona Patient Account Services 5777 East Mayo Boulevard Phoenix, AZ 85054 || Applications are also available at the Mayo Clinic Hospital, Phoenix, Arizona Admissions, Business Services desk locations and the Emergency Department.",
      "source_id": "fap-4579d47e7ac69b56",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3262,8 +3262,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: 100% adjustment of the self-pay balance for applicants with household income of equal to or less than 200% of the Federa",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Applications are available by written request at: Mayo Clinic Hospital, Phoenix, Arizona Patient Account Services 5777 E | Applications are also available at the Mayo Clinic Hospital, Phoenix, Arizona Admissions, Business Services desk locatio"
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "apply.submit_methods: value backed by 3 verbatim spans"
    ]
   },
   {
@@ -3304,7 +3304,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "200% - 300% FPL 75% discount off AGB 75% discount off BAI",
+     "quote": "200% - 300% FPL 75% discount off AGB 75% discount off BAI || > 300% - 400% FPL 50% discount off AGB 50% discount off BAI",
      "source_id": "fap-51370475301f62de",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3357,7 +3357,7 @@
       "bank_statements"
      ],
      "layer": "documented",
-     "quote": "Prior year income tax returns,",
+     "quote": "Prior year income tax returns, || 3 most recent pay stubs; and/or || 3 most recent savings and checking accounts statements.",
      "source_id": "fap-51370475301f62de",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3380,7 +3380,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Patients can obtain a financial assistance application in person, at a Hospital or by accessing it from the BH website.",
+     "quote": "Patients can obtain a financial assistance application in person, at a Hospital or by accessing it from the BH website. || All applications for financial assistance must be either physically delivered to the Hospital, mailed to the address provided on the application form, or submitted per instructions contained on the BH website.",
      "source_id": "fap-51370475301f62de",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3433,9 +3433,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: > 300% - 400% FPL 50% discount off AGB 50% discount off BAI",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: 3 most recent pay stubs; and/or | 3 most recent savings and checking accounts statements.",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: All applications for financial assistance must be either physically delivered to the Hospital, mailed to the address pro",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 2 verbatim spans",
     "agent judge on eligibility.free_care_max_fpl: Quote says '< 200% of FPL' gets 100% discount, which is strictly below 200%, so it does not plainly state 200% itself gets free care.",
     "agent judge on apply.submit_methods: Quote says the in-person option is for obtaining the application, not submitting it; only physical delivery, mail, or website submission are stated as submission methods.",
     "agent judge on collections.eca_wait_days: Quote mentions a 120-day Notification Period after the first billing statement but does not plainly state a wait before collection actions."
@@ -3479,7 +3479,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "200% - 300% FPL 75% discount off AGB 75% discount off BAI",
+     "quote": "200% - 300% FPL 75% discount off AGB 75% discount off BAI || > 300% - 400% FPL 50% discount off AGB 50% discount off BAI",
      "source_id": "fap-51370475301f62de",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3540,7 +3540,7 @@
       "bank_statements"
      ],
      "layer": "documented",
-     "quote": "Prior year income tax returns,",
+     "quote": "Prior year income tax returns, || 3 most recent pay stubs; and/or || 3 most recent savings and checking accounts statements.",
      "source_id": "fap-51370475301f62de",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3631,8 +3631,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: > 300% - 400% FPL 50% discount off AGB 50% discount off BAI",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: 3 most recent pay stubs; and/or | 3 most recent savings and checking accounts statements.",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent dropped apply.submit_methods: excerpt not in source: BannerFAApplications@bannerhealth.com",
     "agent judge on eligibility.free_care_max_fpl: Quote says '< 200% of FPL' gets 100% discount, which is below 200%. It does not state that 200% itself gets free care.",
     "agent judge on eligibility.discount_tiers: Quote gives '200% - 300%' with no exclusive lower bound, but the value sets min_fpl_exclusive to 200. The 200% boundary is not stated that way.",
@@ -3678,7 +3678,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "200% - 300% FPL 75% discount off AGB 75% discount off BAI",
+     "quote": "200% - 300% FPL 75% discount off AGB 75% discount off BAI || > 300% - 400% FPL 50% discount off AGB 50% discount off BAI",
      "source_id": "fap-51370475301f62de",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3729,7 +3729,7 @@
       "bank_statements"
      ],
      "layer": "documented",
-     "quote": "Prior year income tax returns,",
+     "quote": "Prior year income tax returns, || 3 most recent pay stubs; and/or || 3 most recent savings and checking accounts statements.",
      "source_id": "fap-51370475301f62de",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3820,8 +3820,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: > 300% - 400% FPL 50% discount off AGB 50% discount off BAI",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: 3 most recent pay stubs; and/or | 3 most recent savings and checking accounts statements.",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent dropped programs.presumptive: quote is not a substring of the source",
     "agent dropped apply.submit_methods: excerpt not in source: BannerFAApplications@bannerhealth.com",
     "agent judge on eligibility.free_care_max_fpl: Quote says '< 200% of FPL' for 100% discount, which excludes 200 itself; it does not state 200 as the highest percent receiving free care.",
@@ -3866,7 +3866,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "200% - 300% FPL 75% discount off AGB 75% discount off BAI",
+     "quote": "200% - 300% FPL 75% discount off AGB 75% discount off BAI || > 300% - 400% FPL 50% discount off AGB 50% discount off BAI",
      "source_id": "fap-51370475301f62de",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3919,7 +3919,7 @@
       "bank_statements"
      ],
      "layer": "documented",
-     "quote": "Prior year income tax returns,",
+     "quote": "Prior year income tax returns, || 3 most recent pay stubs; and/or || 3 most recent savings and checking accounts statements.",
      "source_id": "fap-51370475301f62de",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3942,7 +3942,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Patients can obtain a financial assistance application in person, at a Hospital or by accessing it from the BH website.",
+     "quote": "Patients can obtain a financial assistance application in person, at a Hospital or by accessing it from the BH website. || All applications for financial assistance must be either physically delivered to the Hospital, mailed to the address provided on the application form, or submitted per instructions contained on the BH website.",
      "source_id": "fap-51370475301f62de",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4031,9 +4031,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: > 300% - 400% FPL 50% discount off AGB 50% discount off BAI",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: 3 most recent pay stubs; and/or | 3 most recent savings and checking accounts statements.",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: All applications for financial assistance must be either physically delivered to the Hospital, mailed to the address pro",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 2 verbatim spans",
     "agent judge on eligibility.free_care_max_fpl: Quote says less than 200% gets 100% discount, which is exclusive; it does not state that 200% itself gets free care.",
     "agent judge on eligibility.discount_tiers: Quote lists the first tier as starting at 200% inclusive, but the value sets min_fpl_exclusive to 200.",
     "agent judge on eligibility.asset_test: Quote only requests savings and checking statements as documents; it does not state that assets are considered.",
@@ -4109,7 +4109,7 @@
       "AHCCCS enrollment"
      ],
      "layer": "documented",
-     "quote": "prior or current AHCCCS enrollment",
+     "quote": "prior or current AHCCCS enrollment || Homeless Patients: Validate there is no AHCCCS coverage. Confirm homeless status.",
      "source_id": "fap-389f66029f9cf4c0",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4138,7 +4138,7 @@
       "other"
      ],
      "layer": "documented",
-     "quote": "Deceased Patients: Clinical documentation from an HonorHealth Facility, a copy of the Death Certificate or Obituary",
+     "quote": "Deceased Patients: Clinical documentation from an HonorHealth Facility, a copy of the Death Certificate or Obituary || Homeless Patients: Validate there is no AHCCCS coverage. Confirm homeless status. || Those applying as a Medically Indigent household must include their medical bills for the last 12 months.",
      "source_id": "fap-389f66029f9cf4c0",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4165,7 +4165,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Patients may apply for financial assistance by completing the application either in person or by mail, through MyChart, through a surrogate, through a family member, or through another appropriate party.",
+     "quote": "Patients may apply for financial assistance by completing the application either in person or by mail, through MyChart, through a surrogate, through a family member, or through another appropriate party. || Financial assistance applications and advice may be obtained by contacting HonorHealth Customer Service at 623-300-9044",
      "source_id": "fap-389f66029f9cf4c0",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4261,9 +4261,9 @@
    "accuracy": null,
    "eve_review": [
     "eligibility.asset_test: quote matched the source only after typography normalization",
-    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: Homeless Patients: Validate there is no AHCCCS coverage. Confirm homeless status.",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Homeless Patients: Validate there is no AHCCCS coverage. Confirm homeless status. | Those applying as a Medically Indigent household must include their medical bills for the last 12 months.",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Financial assistance applications and advice may be obtained by contacting HonorHealth Customer Service at 623-300-9044",
+    "programs.presumptive: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 2 verbatim spans",
     "agent judge on eligibility.discount_tiers: Quote says above 200% but less than 400%, so 400 is exclusive; the value sets max_fpl_inclusive to 400, which conflicts with the quote.",
     "agent judge on programs.presumptive: Quote lists AHCCCS enrollment and homeless patients with verification steps but never calls them presumptive eligibility categories.",
     "agent judge on apply.submit_methods: Quote says applications can be submitted in person, by mail, or through MyChart; phone is only for obtaining assistance or advice, not submitting an application.",
@@ -4308,7 +4308,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "200% - 300% FPL 75% discount off AGB 75% discount off BAI",
+     "quote": "200% - 300% FPL 75% discount off AGB 75% discount off BAI || > 300% - 400% FPL 50% discount off AGB 50% discount off BAI",
      "source_id": "fap-51370475301f62de",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4353,7 +4353,7 @@
       "bank_statements"
      ],
      "layer": "documented",
-     "quote": "Prior year income tax returns,",
+     "quote": "Prior year income tax returns, || 3 most recent pay stubs; and/or || 3 most recent savings and checking accounts statements.",
      "source_id": "fap-51370475301f62de",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4455,8 +4455,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: > 300% - 400% FPL 50% discount off AGB 50% discount off BAI",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: 3 most recent pay stubs; and/or | 3 most recent savings and checking accounts statements.",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent dropped eligibility.insured_patients_covered: quote is not a substring of the source",
     "agent dropped contacts.languages: quote is not a substring of the source",
     "agent judge on eligibility.free_care_max_fpl: Quote says '< 200% of FPL' gets 100% discount, so 200% itself is not stated as free care; the highest free-care percent is not stated as 200.",
@@ -4502,7 +4502,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "200% - 300% FPL 75% discount off AGB 75% discount off BAI",
+     "quote": "200% - 300% FPL 75% discount off AGB 75% discount off BAI || > 300% - 400% FPL 50% discount off AGB 50% discount off BAI",
      "source_id": "fap-51370475301f62de",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4577,7 +4577,7 @@
       "tax_return"
      ],
      "layer": "documented",
-     "quote": "If currently employed, copies of last three (3) most recent consecutive payroll stubs (patient, guarantor and spouse)",
+     "quote": "If currently employed, copies of last three (3) most recent consecutive payroll stubs (patient, guarantor and spouse) || If retired and/or receiving Social Security, a copy of SSA 1099 form or reward letter** || Determination of State or government assistance (Medicaid/AHCCCS)**",
      "source_id": "fap-81f055599d14a718",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4669,8 +4669,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: > 300% - 400% FPL 50% discount off AGB 50% discount off BAI",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: If retired and/or receiving Social Security, a copy of SSA 1099 form or reward letter** | Determination of State or government assistance (Medicaid/AHCCCS)**",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent dropped eligibility.asset_test: quote is not a substring of the source",
     "agent dropped apply.submit_methods: excerpt not in source: All applications for financial assistance must be either phy",
     "agent judge on eligibility.free_care_max_fpl: Quote says 100% discount applies to income '< 200% of FPL' (strictly below 200), so 200 is the boundary, not the highest percent still getting free care.",
@@ -4750,7 +4750,7 @@
       "homeless"
      ],
      "layer": "documented",
-     "quote": "Homeless Patients: Validate there is no AHCCCS coverage. Confirm homeless status.",
+     "quote": "Homeless Patients: Validate there is no AHCCCS coverage. Confirm homeless status. || AHCCCS Eligible Members:",
      "source_id": "fap-389f66029f9cf4c0",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4802,7 +4802,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Email: financialassistance@honorhealth.com",
+     "quote": "Email: financialassistance@honorhealth.com || Fax: 480-882-6081 || MyChart: Follow the on-screen prompts to apply and upload your documents securely.",
      "source_id": "fap-51d87f54296dd912",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4898,8 +4898,8 @@
    "accuracy": null,
    "eve_review": [
     "eligibility.asset_test: quote matched the source only after typography normalization",
-    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: AHCCCS Eligible Members:",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Fax: 480-882-6081 | MyChart: Follow the on-screen prompts to apply and upload your documents securely.",
+    "programs.presumptive: value backed by 2 verbatim spans",
+    "apply.submit_methods: value backed by 3 verbatim spans",
     "agent judge on eligibility.discount_tiers: Quote says 'less than 400%' so the upper bound is exclusive, but the value sets max_fpl_inclusive to 400.",
     "agent judge on eligibility.insured_patients_covered: Quote only defines the amount due for insured patients after insurance adjudication; it does not state that insured patients are covered by assistance.",
     "agent judge on programs.presumptive: Quote only shows a truncated 'AHCCCS Eligible Members:' heading and a homeless-patient verification step; it does not state Medicaid-enrolled patients are presumptively eligible.",
@@ -4945,7 +4945,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "200% - 300% FPL 75% discount off AGB 75% discount off BAI",
+     "quote": "200% - 300% FPL 75% discount off AGB 75% discount off BAI || > 300% - 400% FPL 50% discount off AGB 50% discount off BAI",
      "source_id": "fap-51370475301f62de",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5008,7 +5008,7 @@
       "tax_return"
      ],
      "layer": "documented",
-     "quote": "Proof of income. Acceptable documents include:",
+     "quote": "Proof of income. Acceptable documents include: || If currently employed, copies of last three (3) most recent consecutive payroll stubs (patient, guarantor and spouse) || If Unemployed, a copy of your prior year\u2019s federal income tax return, unemployment reward letter or self-declaration",
      "source_id": "fap-81f055599d14a718",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5099,8 +5099,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: > 300% - 400% FPL 50% discount off AGB 50% discount off BAI",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: If currently employed, copies of last three (3) most recent consecutive payroll stubs (patient, guarantor and spouse) | If Unemployed, a copy of your prior year\u2019s federal income tax return, unemployment reward letter or self-declaration",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent dropped apply.submit_methods: excerpt not in source: Return to: Banner Health c/o PBM PO Box 743711, Los Angeles,",
     "agent judge on eligibility.free_care_max_fpl: Quote says '< 200% of FPL' (strictly under 200%), and the 200%-300% tier starts at 200, so the highest 100% free-care level of 200 is not clearly stated.",
     "agent judge on programs.presumptive: Quote covers presumptive eligibility based on household income only; it does not mention Medicaid enrollment as a presumptive category.",
@@ -5323,7 +5323,7 @@
       "medicaid_denial"
      ],
      "layer": "documented",
-     "quote": "Copies of previous years tax return or W2's, last three months of pay stubs from employer, social security income statements and any other applicable proof of income.",
+     "quote": "Copies of previous years tax return or W2's, last three months of pay stubs from employer, social security income statements and any other applicable proof of income. || Copies of last 6 months bank statements. || Copy of denial letter from Medicaid (AHCCCS)",
      "source_id": "fap-963e971049f2233c",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5400,7 +5400,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Copies of last 6 months bank statements. | Copy of denial letter from Medicaid (AHCCCS)",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent judge on eligibility.free_care_max_fpl: Quote says patients between 200%-240% FPL may qualify for up to 100% assistance; it does not state 200% as the highest free-care level.",
     "agent judge on eligibility.insured_patients_covered: Quote covers low-income patients without insurance or unable to pay copays, coinsurance, or deductibles; it does not state insured patients are covered."
    ]
@@ -5826,7 +5826,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "101% - 150% 25%",
+     "quote": "101% - 150% 25% || 151% - 200% 50% || 201 \u2013 250% 75%",
      "source_id": "fap-e13e5aa7c1352020",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5854,7 +5854,7 @@
       "eligible for Financial Assistance based upon socio-economic information specific to the patient that is gathered from market sources"
      ],
      "layer": "documented",
-     "quote": "If the patient has proof of current enrollment in a Medicaid or Medical Assistance through the Arizona Health Care Cost Containment System, or is deemed eligible for such coverage, the patient does not need to complete an application",
+     "quote": "If the patient has proof of current enrollment in a Medicaid or Medical Assistance through the Arizona Health Care Cost Containment System, or is deemed eligible for such coverage, the patient does not need to complete an application || If Sage Memorial determined the patient is eligible for Financial Assistance based upon socio-economic information specific to the patient that is gathered from market sources",
      "source_id": "fap-e13e5aa7c1352020",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5879,7 +5879,7 @@
       "pay_stubs"
      ],
      "layer": "documented",
-     "quote": "Tax returns and supporting schedules (previous 2 years)",
+     "quote": "Tax returns and supporting schedules (previous 2 years) || Pay stubs for the most recent 3 months",
      "source_id": "fap-acc62dcfe52d0f27",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5983,9 +5983,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: 151% - 200% 50% | 201 \u2013 250% 75%",
-    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: If Sage Memorial determined the patient is eligible for Financial Assistance based upon socio-economic information speci",
-    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: Pay stubs for the most recent 3 months",
+    "eligibility.discount_tiers: value backed by 3 verbatim spans",
+    "programs.presumptive: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 2 verbatim spans",
     "agent dropped contacts.phone: quote is not a substring of the source",
     "agent judge on apply.window_days_from_first_bill: Quote anchors the 120 days to the first post-discharge billing statement, not the first bill generally as the field requires.",
     "agent judge on contacts.languages: Quote only says the policy, application, and summary are translated into Navajo; it does not describe contact or phone language support."
@@ -6039,7 +6039,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Patients whose family income is at 126% and below 150% of the FPL are eligible to receive a 90% discount.",
+     "quote": "Patients whose family income is at 126% and below 150% of the FPL are eligible to receive a 90% discount. || Patients whose family income is at 151% and below 175% of the FPL are eligible to receive an 80% discount. || Patients whose family income is at 176% and below 200% of the FPL are eligible to receive a 70% discount.",
      "source_id": "fap-e63c6c28b46cdfbb",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -6081,7 +6081,7 @@
       "Patient is deceased with no known estate"
      ],
      "layer": "documented",
-     "quote": "1. State-funded prescription programs;",
+     "quote": "1. State-funded prescription programs; || 2. Homelessness or received care from a homeless clinic; || 8. Patient is deceased with no known estate.",
      "source_id": "fap-e63c6c28b46cdfbb",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -6108,7 +6108,7 @@
       "proof_of_income"
      ],
      "layer": "documented",
-     "quote": "_____ 1. 2 Months of Bank Account: Checking/Savings Statements",
+     "quote": "_____ 1. 2 Months of Bank Account: Checking/Savings Statements || _____ 2. Utility Bills || _____ 3. Last year\u2019s taxes",
      "source_id": "fap-ff395dc6ecf0e03a",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -6131,7 +6131,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Mail information to:",
+     "quote": "Mail information to: || Little Colorado Medical Center || (928)289-0049 (fax)",
      "source_id": "fap-ff395dc6ecf0e03a",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -6220,10 +6220,10 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: Patients whose family income is at 151% and below 175% of the FPL are eligible to receive an 80% discount. | Patients whose family income is at 176% and below 200% of the FPL are eligible to receive a 70% discount.",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: 2. Homelessness or received care from a homeless clinic; | 8. Patient is deceased with no known estate.",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: _____ 2. Utility Bills | _____ 3. Last year\u2019s taxes",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Little Colorado Medical Center | (928)289-0049 (fax)",
+    "eligibility.discount_tiers: value backed by 3 verbatim spans",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 3 verbatim spans",
     "agent judge on eligibility.discount_tiers: Quote gives only the 90%, 80%, and 70% tiers. The 200-300% tier at 65% and its bounds do not appear in the quote.",
     "agent judge on programs.presumptive: Quote shows only items 1, 2, and 8. The value's other five presumptive categories (WIC, food stamps, school lunch, other assistance, housing) are not in the quote.",
     "agent judge on apply.documents_required: Quote lists only three documents (bank statements, utility bills, last year's taxes). The value adds mortgage/rent receipts, proof of income, and miscellaneous receipts.",
@@ -6367,7 +6367,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Poverty Level 100% 125% 130% 133% 135% 138% 150% 175% 180% 185% 200%",
+     "quote": "Poverty Level 100% 125% 130% 133% 135% 138% 150% 175% 180% 185% 200% || Discount 100% Discount 90% Discount 80% Discount 70% Discount 60% Discount 50% Discount 40% Discount 30% Discount 20% Discount 15% Discount 10%",
      "source_id": "fap-64a1358a78eab34e",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -6492,7 +6492,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: Discount 100% Discount 90% Discount 80% Discount 70% Discount 60% Discount 50% Discount 40% Discount 30% Discount 20% Di",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
     "apply.documents_required: quote matched the source only after typography normalization",
     "agent dropped eligibility.free_care_max_fpl: quote is not a substring of the source"
    ]
@@ -6681,7 +6681,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "200% - 300% FPL 75% discount off AGB 75% discount off BAI",
+     "quote": "200% - 300% FPL 75% discount off AGB 75% discount off BAI || > 300% - 400% FPL 50% discount off AGB 50% discount off BAI",
      "source_id": "fap-51370475301f62de",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -6846,7 +6846,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: > 300% - 400% FPL 50% discount off AGB 50% discount off BAI",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
     "agent dropped apply.submit_methods: excerpt not in source: Return to: Banner Health c/o PBM PO Box 743711, Los Angeles,",
     "agent judge on eligibility.free_care_max_fpl: Quote says '< 200% of FPL' gets 100% discount, a strict less-than that excludes 200%. The value 200 treats the bound as inclusive.",
     "agent judge on eligibility.insured_patients_covered: Quote only says underinsured patients may qualify for a balance-after-insurance discount; it does not state coverage of insured patients generally.",

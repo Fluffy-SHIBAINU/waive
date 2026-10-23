@@ -17,9 +17,8 @@ from pathlib import Path
 import httpx
 
 from waive.atlas.fetch import html_text, pdf_text
-from waive.atlas.pipeline import _ground
 from waive.atlas.schema import ProcedureSheet
-from waive.atlas.verify import verify_sheet
+from waive.atlas.verify import prune_lists, trim_quotes, verify_sheet
 
 SRC = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("data/atlas-eve")
 OUT = Path(sys.argv[2]) if len(sys.argv) > 2 else Path("data/atlas-eve-verified")
@@ -30,6 +29,9 @@ SOURCES = Path(sys.argv[4]) if len(sys.argv) > 4 else Path.home() / "waive-atlas
 OUT.mkdir(parents=True, exist_ok=True)
 SOURCES.mkdir(parents=True, exist_ok=True)
 _index_lock = threading.Lock()
+# One fetch per source id per run: system policies are cited by dozens of sheets.
+_cache: dict[str, tuple[str | None, dict]] = {}
+_cache_lock = threading.Lock()
 
 USER_AGENT = (
     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) "
@@ -41,13 +43,24 @@ _local = threading.local()
 
 def client() -> httpx.Client:
     if not hasattr(_local, "http"):
-        _local.http = httpx.Client(follow_redirects=False, timeout=15.0)
+        _local.http = httpx.Client(follow_redirects=True, timeout=20.0)
     return _local.http
 
 
 def fetch_one(source_id: str, url: str, recorded_sha256: str) -> tuple[str | None, dict]:
     """The document's text through Waive's own extractors, saved under SOURCES with an index row.
-    Returns the text (None when unreachable or unreadable) and the index row."""
+    Returns the text (None when unreachable or unreadable) and the index row. Fetched once per
+    source id per run; later callers get the same result."""
+    with _cache_lock:
+        if source_id in _cache:
+            return _cache[source_id]
+    result = _fetch_uncached(source_id, url, recorded_sha256)
+    with _cache_lock:
+        _cache.setdefault(source_id, result)
+    return result
+
+
+def _fetch_uncached(source_id: str, url: str, recorded_sha256: str) -> tuple[str | None, dict]:
     row = {
         "id": source_id,
         "url": url,
@@ -113,7 +126,7 @@ def process(raw: dict) -> dict:
             texts[src.id] = text
         else:
             missing.append(src.url or src.id)
-    grounded, pruned = _ground(sheet, texts)
+    grounded, pruned = prune_lists(trim_quotes(sheet, texts), texts)
     report = verify_sheet(grounded, texts)
     final = strip_rejected(grounded, report.rejected)
     income = (

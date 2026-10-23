@@ -38,7 +38,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Patients whose household income falls between 138% and 150% of the FPG will be eligible for a partial discount up to 90% of the amounts generally billed.",
+     "quote": "Patients whose household income falls between 138% and 150% of the FPG will be eligible for a partial discount up to 90% of the amounts generally billed. || Patients whose household income falls between 151% and 200% of the FPG will be eligible for a partial discount up to 75% of the amounts generally billed. || patients whose household income exceeds 201% of the FPG but is less than 400% of the FPG may receive a discount of 50% off WRMC\u2019s gross charges if they are uninsured",
      "source_id": "fap-e1d2078a8ef0ccad",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -114,7 +114,7 @@
       "proof_of_income"
      ],
      "layer": "documented",
-     "quote": "A copy of the most recent federal and Arkansas tax returns, including all schedules of patient, spouse or any person who claims the patient as a dependent for tax purposes.",
+     "quote": "A copy of the most recent federal and Arkansas tax returns, including all schedules of patient, spouse or any person who claims the patient as a dependent for tax purposes. || A copy of the two (2) most recent bank statements from all banking institutions of the household. || Proof of household income (pay stubs for the past sixty (60) days).",
      "source_id": "fap-e1d2078a8ef0ccad",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -245,8 +245,8 @@
    "eve_review": [
     "eligibility.discount_tiers: 138-150% says 'up to 90%', a cap rather than a fixed discount; skipped",
     "eligibility.discount_tiers: 150-200% says 'up to 75%', a cap rather than a fixed discount; skipped",
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: Patients whose household income falls between 151% and 200% of the FPG will be eligible for a partial discount up to 75% | patients whose household income exceeds 201% of the FPG but is less than 400% of the FPG may receive a discount of 50% o",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: A copy of the two (2) most recent bank statements from all banking institutions of the household. | Proof of household income (pay stubs for the past sixty (60) days).",
+    "eligibility.discount_tiers: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent dropped apply.form_url: quote is not a substring of the source",
     "agent judge on eligibility.discount_tiers: Quote gives 138-150% at 90%, 151-200% at 75%, and 201-400% at 50%, but says 'less than 400%' where value says inclusive 400, and 50% tier is limited to uninsured patients.",
     "agent judge on eligibility.insured_patients_covered: Quote only says the self-pay amount for an insured patient would be any co-payment or deductible; it does not state insured patients are covered by assistance.",
@@ -321,7 +321,7 @@
       "Patient is deceased with no known spouse or known estate"
      ],
      "layer": "documented",
-     "quote": "Recipient of state-funded prescription programs;",
+     "quote": "Recipient of state-funded prescription programs; || Homeless or one who received care from a homeless or free care clinic; || Participation in Women, Infants and Children programs (WIC);",
      "source_id": "fap-174bfaef7b79efbc",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -339,7 +339,7 @@
       "pay_stubs"
      ],
      "layer": "documented",
-     "quote": "Copy of the individual\u2019s most recently filed federal income tax return;",
+     "quote": "Copy of the individual\u2019s most recently filed federal income tax return; || Current Form W-2; || Current paystubs; or",
      "source_id": "fap-174bfaef7b79efbc",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -362,7 +362,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Mail or fax completed application with all documentation to: Financial Assistance Center, ATTN: EES - Financial Assistance Center, P.O. Box 660872. Dallas, TX 75266-0872 Fax: 469-803-4627.",
+     "quote": "Mail or fax completed application with all documentation to: Financial Assistance Center, ATTN: EES - Financial Assistance Center, P.O. Box 660872. Dallas, TX 75266-0872 Fax: 469-803-4627. || To submit your completed application in person: CHI St. Vincent Infirmary, 2 St Vincent Cir, Little Rock, AR 72205",
      "source_id": "fap-d15a3331bdb4994f",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -466,9 +466,9 @@
    "accuracy": null,
    "eve_review": [
     "eligibility.discount_tiers: 200-400% at 100% is the free-care band, not a tier; skipped",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Homeless or one who received care from a homeless or free care clinic; | Participation in Women, Infants and Children programs (WIC);",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Current Form W-2; | Current paystubs; or",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: To submit your completed application in person: CHI St. Vincent Infirmary, 2 St Vincent Cir, Little Rock, AR 72205",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 2 verbatim spans",
     "agent dropped eligibility.residency: quote is not a substring of the source",
     "agent dropped apply.form_url: quote is not a substring of the source",
     "agent judge on eligibility.discount_tiers: Quote covers 201%-400% FPL with balance reduced to no more than the AGB. It gives no 100% discount percent, so the value's discount_percent of 100 is not stated.",
@@ -541,7 +541,7 @@
       "deceased"
      ],
      "layer": "documented",
-     "quote": "Patients who are incarcerated or homeless and confirmed no other liable party can be billed, will be deemed 100% financial assistance. Bankruptcy accounts upon notification of filing will be deemed 100% charitable.",
+     "quote": "Patients who are incarcerated or homeless and confirmed no other liable party can be billed, will be deemed 100% financial assistance. Bankruptcy accounts upon notification of filing will be deemed 100% charitable. || Mercy will utilize a third-party-tool to identify patients that are at or below 200% of the Federal Poverty Guidelines with low propensity to pay. Mercy will grant these patients financial assistance presumptively, without the requirement of an application.",
      "source_id": "fap-4dbed64b2b51c210",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -578,7 +578,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Submit your application and documents via: MyMercy",
+     "quote": "Submit your application and documents via: MyMercy || Mercy Health Attention: Financial Assistance Department 2115 S Fremont Avenue, Suite 5300 Springfield, MO 65804 (Mailing address only) || Fax: 417-829-4604",
      "source_id": "fap-e2169745bc9cf37f",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -668,8 +668,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: Mercy will utilize a third-party-tool to identify patients that are at or below 200% of the Federal Poverty Guidelines w",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Mercy Health Attention: Financial Assistance Department 2115 S Fremont Avenue, Suite 5300 Springfield, MO 65804 (Mailing | Fax: 417-829-4604",
+    "programs.presumptive: value backed by 2 verbatim spans",
+    "apply.submit_methods: value backed by 3 verbatim spans",
     "agent dropped apply.documents_required: between 1 and 3 excerpts allowed",
     "agent judge on eligibility.discount_tiers: Quote shows 201%-300% with 80% and 70%, but the value lists only one tier with 80%; the 70% tier is missing and the quote's two percent columns are ambiguous.",
     "agent judge on eligibility.insured_patients_covered: Quote says insured patients need not complete Insurance Eligibility Screening before applying; it does not say insured patients are covered by assistance.",
@@ -720,7 +720,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Poverty Level @ 111% up to 250% 90%",
+     "quote": "Poverty Level @ 111% up to 250% 90% || Poverty Level @ 251% up to 275% 70% || Poverty Level @ 276% up to 300% 50%",
      "source_id": "fap-d146b8a1019e2018",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -764,7 +764,7 @@
       "Patient is deceased with no known estate"
      ],
      "layer": "documented",
-     "quote": "a. State-funded prescription programs;",
+     "quote": "a. State-funded prescription programs; || b. Homeless or received care from a homeless clinic; || c. Participation in Women, Infants and Children programs (WIC);",
      "source_id": "fap-d146b8a1019e2018",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -781,7 +781,7 @@
       "bank_statements"
      ],
      "layer": "documented",
-     "quote": "A. Most Recent Federal Income Tax Return.",
+     "quote": "A. Most Recent Federal Income Tax Return. || B. Most Recent Federal Income Tax Return, plus employer\u2019s verification of earnings for current year. || C. For Self-Employed Individuals, their most recent Federal Income Tax Return, and a copy of the last four quarterly returns.",
      "source_id": "fap-d146b8a1019e2018",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -804,7 +804,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Physical address: 719 Detroit Ave, Danville, AR 72833",
+     "quote": "Physical address: 719 Detroit Ave, Danville, AR 72833 || Mailing address: P.O. Box 639, Danville, AR 72833 || If you have any questions or need assistance please call: 479-495-2241 Ext 209",
      "source_id": "fap-efa06103f7f53002",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -910,10 +910,10 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: Poverty Level @ 251% up to 275% 70% | Poverty Level @ 276% up to 300% 50%",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: b. Homeless or received care from a homeless clinic; | c. Participation in Women, Infants and Children programs (WIC);",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: B. Most Recent Federal Income Tax Return, plus employer\u2019s verification of earnings for current year. | C. For Self-Employed Individuals, their most recent Federal Income Tax Return, and a copy of the last four quarterly ret",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Mailing address: P.O. Box 639, Danville, AR 72833 | If you have any questions or need assistance please call: 479-495-2241 Ext 209",
+    "eligibility.discount_tiers: value backed by 3 verbatim spans",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 3 verbatim spans",
     "apply.form_url: not an absolute URL ('/wp-content/uploads/2022/02/FAP_AND_WAIVER_APP.pdf'); dropped",
     "agent judge on programs.presumptive: Quote lists only three programs (a, b, c). The value's other five items (food stamps, school lunch, housing, deceased, etc.) do not appear in the quote.",
     "agent judge on apply.documents_required: Quote lists only three document items (A, B, C). The value's fourth item, Bank Statements with Social Security Deposits, is not in the quote.",
@@ -986,7 +986,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "please call or come by the Business Office at Unity Health.",
+     "quote": "please call or come by the Business Office at Unity Health. || Sincerely, Financial Counselor (501) 380-1022",
      "source_id": "fap-752074230de7446e",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1049,7 +1049,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Sincerely, Financial Counselor (501) 380-1022",
+    "apply.submit_methods: value backed by 2 verbatim spans",
     "agent dropped apply.documents_required: between 1 and 3 excerpts allowed",
     "agent judge on eligibility.asset_test: Quote is a table heading listing assets convertible to cash; it does not plainly state that assets are considered for eligibility.",
     "agent judge on apply.submit_methods: Quote supports in-person (Business Office) and phone, but nothing about mailing the application; the mail entry is unsupported."
@@ -1205,7 +1205,7 @@
       "Spanish"
      ],
      "layer": "documented",
-     "quote": "Financial Assistance Policy Summary - Spanish [/images/important-docs/Plain-Financial-Summary-NARMC-Spanish.pdf]",
+     "quote": "Financial Assistance Policy Summary - Spanish [/images/important-docs/Plain-Financial-Summary-NARMC-Spanish.pdf] || Financial Assistance Application - Spanish [/images/important-docs/Financial-Assistance-Policy-Application-NARMC-Spanish.pdf]",
      "source_id": "web-381d17d34f15d656",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1248,7 +1248,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "contacts.languages: 1 more verbatim excerpt(s) supported this value: Financial Assistance Application - Spanish [/images/important-docs/Financial-Assistance-Policy-Application-NARMC-Spanish",
+    "contacts.languages: value backed by 2 verbatim spans",
     "apply.form_url: not an absolute URL ('/images/important-docs/Financial-Assistance-Policy-Applicati'); dropped",
     "agent dropped apply.documents_required: excerpt not in source: Copy of the last Federal Income Tax form you filed  yes  no ",
     "agent judge on eligibility.discount_tiers: Quote gives 138% to 200% FPL at 50% of AGB, but does not state whether the bounds are exclusive or inclusive as the value does.",
@@ -1303,7 +1303,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "For those applicants with a household income in excess of 300% but not exceeding 400% of the Federal Poverty Guideline, a sliding scale will apply to gross charges based on income and the number of people in the household.",
+     "quote": "For those applicants with a household income in excess of 300% but not exceeding 400% of the Federal Poverty Guideline, a sliding scale will apply to gross charges based on income and the number of people in the household. || Discount 100% 94% 88% 82% 76% 75% || %FPL 300% 325% 350% 375% 400%",
      "source_id": "fap-89654b710fc895d3",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1335,7 +1335,7 @@
       "Patient currently has Medicaid but has a prior balance"
      ],
      "layer": "documented",
-     "quote": "Patient is expired with no immediate or known family members",
+     "quote": "Patient is expired with no immediate or known family members || Patient is homeless || Patient has qualified for Medicaid within the last 24 months",
      "source_id": "fap-89654b710fc895d3",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1362,7 +1362,7 @@
       "pay_stubs"
      ],
      "layer": "documented",
-     "quote": "Signed Application for Financial Assistance;",
+     "quote": "Signed Application for Financial Assistance; || Must provide copy of 3 months\u2019 current bank statements || If patient does not file taxes: proof of earnings (check stub, payroll record, or letter from employer)",
      "source_id": "fap-89654b710fc895d3",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1454,9 +1454,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: Discount 100% 94% 88% 82% 76% 75% | %FPL 300% 325% 350% 375% 400%",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Patient is homeless | Patient has qualified for Medicaid within the last 24 months",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Must provide copy of 3 months\u2019 current bank statements | If patient does not file taxes: proof of earnings (check stub, payroll record, or letter from employer)",
+    "eligibility.discount_tiers: value backed by 3 verbatim spans",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent judge on eligibility.free_care_max_fpl: Quote says applicants 'below 300%' FPL are considered for full assistance. It does not state that exactly 300% gets 100% free care.",
     "agent judge on eligibility.discount_tiers: Quote gives a sliding scale for 300-400% FPL with six discount values (100-75%) against five FPL points. It does not clearly assign 94/88/82/76% to each band, and 75% is unassigned.",
     "agent judge on programs.presumptive: Quote lists only three presumptive criteria (expired with no family, homeless, Medicaid within 24 months). Hospice, PARO capacity model, and prior-balance items are not in the quote.",
@@ -1547,7 +1547,7 @@
       "medicaid_denial"
      ],
      "layer": "documented",
-     "quote": "Most Current FEDERAL TAX RETURN (complete with all attachments)",
+     "quote": "Most Current FEDERAL TAX RETURN (complete with all attachments) || LAST TWO BANK STATEMENTS || MEDICAID DENIAL - You must be SCREENED for Medicaid to qualify",
      "source_id": "fap-ba5e552622cb980f",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1623,7 +1623,7 @@
       "Arabic"
      ],
      "layer": "documented",
-     "quote": "ATENCI\u00d3N: si habla espa\u00f1ol, tiene a su disposici\u00f3n servicios gratuitos de asistencia ling\u00fc\u00edstica.",
+     "quote": "ATENCI\u00d3N: si habla espa\u00f1ol, tiene a su disposici\u00f3n servicios gratuitos de asistencia ling\u00fc\u00edstica. || CH\u00da \u00dd: N\u1ebfu b\u1ea1n n\u00f3i Ti\u1ebfng Vi\u1ec7t, c\u00f3 c\u00e1c d\u1ecbch v\u1ee5 h\u1ed7 tr\u1ee3 ng\u00f4n ng\u1eef mi\u1ec5n ph\u00ed d\u00e0nh cho b\u1ea1n. || \u6ce8\u610f\uff1a\u5982\u679c\u60a8\u4f7f\u7528\u7e41\u9ad4\u4e2d\u6587\uff0c\u60a8\u53ef\u4ee5\u514d\u8cbb\u7372\u5f97\u8a9e\u8a00\u63f4\u52a9\u670d\u52d9\u3002",
      "source_id": "fap-6757ae437ed62e1c",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1658,8 +1658,8 @@
    "accuracy": null,
    "eve_review": [
     "eligibility.discount_tiers: 138-200% at 100% is the free-care band, not a tier; skipped",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: LAST TWO BANK STATEMENTS | MEDICAID DENIAL - You must be SCREENED for Medicaid to qualify",
-    "contacts.languages: 2 more verbatim excerpt(s) supported this value: CH\u00da \u00dd: N\u1ebfu b\u1ea1n n\u00f3i Ti\u1ebfng Vi\u1ec7t, c\u00f3 c\u00e1c d\u1ecbch v\u1ee5 h\u1ed7 tr\u1ee3 ng\u00f4n ng\u1eef mi\u1ec5n ph\u00ed d\u00e0nh cho b\u1ea1n. | \u6ce8\u610f\uff1a\u5982\u679c\u60a8\u4f7f\u7528\u7e41\u9ad4\u4e2d\u6587\uff0c\u60a8\u53ef\u4ee5\u514d\u8cbb\u7372\u5f97\u8a9e\u8a00\u63f4\u52a9\u670d\u52d9\u3002",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "contacts.languages: value backed by 3 verbatim spans",
     "agent judge on eligibility.free_care_max_fpl: Quote lists tiers with percent reductions in ambiguous order; the 0-138% band reads as 50% reduction, so no explicit 100% free-care line at 200% is stated.",
     "agent judge on programs.presumptive: Quote lists two presumptive categories: homeless and physically or mentally incapacitated with no one to act for them. Value omits the incapacitated category.",
     "agent judge on apply.documents_required: Value includes 'last two paycheck stubs', which does not appear in the quote. Quote lists tax return, two bank statements, and Medicaid denial.",
@@ -1715,7 +1715,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "For those applicants with a household income in excess of 300% but not exceeding 400% of the Federal Poverty Guideline, a sliding scale will apply to gross charges based on income and the number of people in the household.",
+     "quote": "For those applicants with a household income in excess of 300% but not exceeding 400% of the Federal Poverty Guideline, a sliding scale will apply to gross charges based on income and the number of people in the household. || Discount 100% 94% 88% 82% 76% 75% || %FPL 300% 325% 350% 375% 400%",
      "source_id": "fap-89654b710fc895d3",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1755,7 +1755,7 @@
       "currently has Medicaid but has a prior balance"
      ],
      "layer": "documented",
-     "quote": "\u25cf Patient is expired with no immediate or known family members \u25cf Patient is homeless \u25cf Patient has qualified for Medicaid within the last 24 months \u25cf Patient is in hospice and has Medicaid coverage \u25cf Patient is within the financial eligibility levels of Medicaid a predicted by the PARO capacity to pay model but is unwilling or unable to comply with the application process\u2019",
+     "quote": "\u25cf Patient is expired with no immediate or known family members \u25cf Patient is homeless \u25cf Patient has qualified for Medicaid within the last 24 months \u25cf Patient is in hospice and has Medicaid coverage \u25cf Patient is within the financial eligibility levels of Medicaid a predicted by the PARO capacity to pay model but is unwilling or unable to comply with the application process\u2019 || \u25cf Patient currently has Medicaid but has a prior balance",
      "source_id": "fap-89654b710fc895d3",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1874,8 +1874,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: Discount 100% 94% 88% 82% 76% 75% | %FPL 300% 325% 350% 375% 400%",
-    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: \u25cf Patient currently has Medicaid but has a prior balance",
+    "eligibility.discount_tiers: value backed by 3 verbatim spans",
+    "programs.presumptive: value backed by 2 verbatim spans",
     "agent judge on eligibility.discount_tiers: The 300-400% range and percents appear, but the garbled table ('100% 94% 88% 82% 76% 75%' over five FPL points) does not clearly map 76% to 375-400%, and the 75% value is unaccounted for."
    ]
   },
@@ -1926,7 +1926,7 @@
       "bank_statements"
      ],
      "layer": "documented",
-     "quote": "_____ Copy of most recent Income Tax Return. _____Please check if you are exempt from filing taxes",
+     "quote": "_____ Copy of most recent Income Tax Return. _____Please check if you are exempt from filing taxes || _____ Proof of Current Income. You may provide check stubs (minimum one month) or an official statement on letterhead from Employer. || _____ Current bank statements (past TWO months)",
      "source_id": "fap-3dc094a63324b09c",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1999,7 +1999,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: _____ Proof of Current Income. You may provide check stubs (minimum one month) or an official statement on letterhead fr | _____ Current bank statements (past TWO months)"
+    "apply.documents_required: value backed by 3 verbatim spans"
    ]
   },
   {
@@ -2042,7 +2042,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "For income levels at 120% of the Poverty Guidelines an 80% discount will be given. For incomes at 200% of the Poverty Guidelines, a 60% discount will be given.",
+     "quote": "For income levels at 120% of the Poverty Guidelines an 80% discount will be given. For incomes at 200% of the Poverty Guidelines, a 60% discount will be given. || For incomes at 250% of the Poverty Guidelines, a 40% discount will be given. For incomes at 300% of the Poverty Guidelines, a 20% discount will be given.",
      "source_id": "web-17dd7026a42eb869",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2147,7 +2147,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: For incomes at 250% of the Poverty Guidelines, a 40% discount will be given. For incomes at 300% of the Poverty Guidelin",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
     "apply.form_url: not an absolute URL ('/Content/Uploads/ouachitamedcenter.com/files/FinancialAssist'); dropped",
     "agent dropped apply.submit_methods: excerpt not in source: Please call or visit the Financial Counselor at 870-836-1209",
     "agent judge on eligibility.discount_tiers: Quote gives discounts at points (120%=80%, 200%=60%, 250%=40%, 300%=20%) but no bands; the 0% lower bound and tier ranges are not stated."
@@ -2201,7 +2201,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "For those applicants with a household income in excess of 300% but not exceeding 400% of the Federal Poverty Guideline, a sliding scale will apply to gross charges based on income and the number of people in the household.",
+     "quote": "For those applicants with a household income in excess of 300% but not exceeding 400% of the Federal Poverty Guideline, a sliding scale will apply to gross charges based on income and the number of people in the household. || Discount 100% 94% 88% 82% 76% 75% || %FPL 300% 325% 350% 375% 400%",
      "source_id": "fap-89654b710fc895d3",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2240,7 +2240,7 @@
       "Patient currently has Medicaid but has a prior balance"
      ],
      "layer": "documented",
-     "quote": "Patient is expired with no immediate or known family members",
+     "quote": "Patient is expired with no immediate or known family members || Patient is homeless || Patient has qualified for Medicaid within the last 24 months",
      "source_id": "fap-89654b710fc895d3",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2267,7 +2267,7 @@
       "pay_stubs"
      ],
      "layer": "documented",
-     "quote": "Signed Application for Financial Assistance;",
+     "quote": "Signed Application for Financial Assistance; || Must provide copy of 3 months\u2019 current bank statements || If applicable: Complete copy of most recent Tax Return with attachments",
      "source_id": "fap-89654b710fc895d3",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2359,9 +2359,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: Discount 100% 94% 88% 82% 76% 75% | %FPL 300% 325% 350% 375% 400%",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Patient is homeless | Patient has qualified for Medicaid within the last 24 months",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Must provide copy of 3 months\u2019 current bank statements | If applicable: Complete copy of most recent Tax Return with attachments"
+    "eligibility.discount_tiers: value backed by 3 verbatim spans",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans"
    ]
   },
   {
@@ -2433,7 +2433,7 @@
       "deceased with no estate"
      ],
      "layer": "documented",
-     "quote": "Patients who are homeless and do not have a physical address may be presumptively eligible without the need for additional assessment hereunder.",
+     "quote": "Patients who are homeless and do not have a physical address may be presumptively eligible without the need for additional assessment hereunder. || A deceased patient who does not have an estate subject to probate and for whom no other party is responsible for payment, may be considered for presumptive eligibility for financial assistance.",
      "source_id": "fap-c0bb3ef853bd74de",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2470,7 +2470,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Please mail completed form and attachments to the hospital where you were treated: Baptist Health Financial Counselors",
+     "quote": "Please mail completed form and attachments to the hospital where you were treated: Baptist Health Financial Counselors || Please pay the remaining balance in full or contact us at 866.273.5392 to arrange a payment plan for your balance.",
      "source_id": "fap-5636546add2ee668",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2538,7 +2538,7 @@
       "Kinyarwanda"
      ],
      "layer": "documented",
-     "quote": "Espa\u00f1ol (Spanish)",
+     "quote": "Espa\u00f1ol (Spanish) || \u0629\u064a\u0628\u0631\u0639\u0644\u0627 (Arabic) || \u03a1\u0443\u0441\u0441\u043a\u0438\u0439 (Russian)",
      "source_id": "fap-5636546add2ee668",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2581,9 +2581,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: A deceased patient who does not have an estate subject to probate and for whom no other party is responsible for payment",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Please pay the remaining balance in full or contact us at 866.273.5392 to arrange a payment plan for your balance.",
-    "contacts.languages: 2 more verbatim excerpt(s) supported this value: \u0629\u064a\u0628\u0631\u0639\u0644\u0627 (Arabic) | \u03a1\u0443\u0441\u0441\u043a\u0438\u0439 (Russian)",
+    "programs.presumptive: value backed by 2 verbatim spans",
+    "apply.submit_methods: value backed by 2 verbatim spans",
+    "contacts.languages: value backed by 3 verbatim spans",
     "agent dropped apply.documents_required: between 1 and 3 excerpts allowed",
     "agent judge on eligibility.insured_patients_covered: Quote only says some insured patients with emergency or medically necessary care not allowed by insurance may get an AGB-limited discount; not general coverage.",
     "agent judge on apply.form_url: Quote gives only the relative path /-/media/...; the baptisthealth.com domain is not stated in the quote.",
@@ -2667,7 +2667,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Completed applications for financial assistance can be returned to: Mercy Health Attention Financial Assistance 2115 S Fremont Avenue, Suite 5300 Springfield, MO 65804 Fax: 417-829-4604",
+     "quote": "Completed applications for financial assistance can be returned to: Mercy Health Attention Financial Assistance 2115 S Fremont Avenue, Suite 5300 Springfield, MO 65804 Fax: 417-829-4604 || Patients may request a paper application to apply for assistance at any time or find an application on www.mercy.net/fa.",
      "source_id": "fap-4dbed64b2b51c210",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2714,7 +2714,7 @@
       "Spanish"
      ],
      "layer": "documented",
-     "quote": "The paper Financial Assistance Application and Policy are available in both English and other languages prevalent in the area",
+     "quote": "The paper Financial Assistance Application and Policy are available in both English and other languages prevalent in the area || Financial Assistance Application (English and Spanish) below",
      "source_id": "fap-4dbed64b2b51c210",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2739,8 +2739,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Patients may request a paper application to apply for assistance at any time or find an application on www.mercy.net/fa.",
-    "contacts.languages: 1 more verbatim excerpt(s) supported this value: Financial Assistance Application (English and Spanish) below",
+    "apply.submit_methods: value backed by 2 verbatim spans",
+    "contacts.languages: value backed by 2 verbatim spans",
     "agent judge on eligibility.insured_patients_covered: Quote only says insured patients need not complete the Insurance Eligibility Screening before applying. It does not say insured patients are covered.",
     "agent judge on programs.presumptive: Quote covers patients who are incarcerated or homeless (with no liable party), deemed 100% assistance. Value omits 'incarcerated'."
    ]
@@ -2793,7 +2793,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "150% or less 151% to 175% 176% to 200% 201% to 250% 251% to 300% Over 300%",
+     "quote": "150% or less 151% to 175% 176% to 200% 201% to 250% 251% to 300% Over 300% || % of Financial Assistance 100% 80% 60% 40% 20% 0%",
      "source_id": "fap-35c9c6b396931298",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2821,7 +2821,7 @@
       "deceased with no estate"
      ],
      "layer": "documented",
-     "quote": "JRMC will also consider any type of Medicaid eligibility as qualification for 100% financial assistance.",
+     "quote": "JRMC will also consider any type of Medicaid eligibility as qualification for 100% financial assistance. || Patients who are deceased and have no estate are deemed to have no income for the purpose of determining financial assistance eligibility.",
      "source_id": "fap-35c9c6b396931298",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2839,7 +2839,7 @@
       "photo_id"
      ],
      "layer": "documented",
-     "quote": "Last two pay stubs for each employed member of the household.",
+     "quote": "Last two pay stubs for each employed member of the household. || Last two years tax returns for self-employed individuals. || Proof of residency such as a driver's license, utility bill, lease agreement, etc.",
      "source_id": "fap-35c9c6b396931298",
      "checked_on": "2026-10-23",
      "confidence": 0.8,
@@ -2908,9 +2908,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: % of Financial Assistance 100% 80% 60% 40% 20% 0%",
-    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: Patients who are deceased and have no estate are deemed to have no income for the purpose of determining financial assis",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Last two years tax returns for self-employed individuals. | Proof of residency such as a driver's license, utility bill, lease agreement, etc.",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "programs.presumptive: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "apply.documents_required: quote matched the source only after typography normalization",
     "agent dropped eligibility.assistance_ceiling_fpl: quote is not a substring of the source"
    ]
@@ -2963,7 +2963,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "For those applicants with a household income in excess of 300% but not exceeding 400% of the Federal Poverty Guideline, a sliding scale will apply to gross charges based on income and the number of people in the household.",
+     "quote": "For those applicants with a household income in excess of 300% but not exceeding 400% of the Federal Poverty Guideline, a sliding scale will apply to gross charges based on income and the number of people in the household. || Discount 100% 94% 88% 82% 76% 75% || %FPL 300% 325% 350% 375% 400%",
      "source_id": "fap-89654b710fc895d3",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3003,7 +3003,7 @@
       "Patient currently has Medicaid but has a prior balance"
      ],
      "layer": "documented",
-     "quote": "\u25cf Patient is expired with no immediate or known family members \u25cf Patient is homeless \u25cf Patient has qualified for Medicaid within the last 24 months \u25cf Patient is in hospice and has Medicaid coverage",
+     "quote": "\u25cf Patient is expired with no immediate or known family members \u25cf Patient is homeless \u25cf Patient has qualified for Medicaid within the last 24 months \u25cf Patient is in hospice and has Medicaid coverage || \u25cf Patient is within the financial eligibility levels of Medicaid a predicted by the PARO capacity to pay model but is unwilling or unable to comply with the application process\u2019 (see Presumptive Financial Assistance Eligibility section) || \u25cf Patient currently has Medicaid but has a prior balance",
      "source_id": "fap-89654b710fc895d3",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3030,7 +3030,7 @@
       "pay_stubs"
      ],
      "layer": "documented",
-     "quote": "Signed Application for Financial Assistance; \u25cf Must provide copy of 3 months\u2019 current bank statements \u25cf If applicable: Complete copy of most recent Tax Return with attachments; \u25cf If patient does not file taxes: proof of earnings (check stub, payroll record, or letter from employer);",
+     "quote": "Signed Application for Financial Assistance; \u25cf Must provide copy of 3 months\u2019 current bank statements \u25cf If applicable: Complete copy of most recent Tax Return with attachments; \u25cf If patient does not file taxes: proof of earnings (check stub, payroll record, or letter from employer); || \u25cf If applicable: Proof of disability (Social Security Administration Benefits letter)",
      "source_id": "fap-89654b710fc895d3",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3122,9 +3122,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: Discount 100% 94% 88% 82% 76% 75% | %FPL 300% 325% 350% 375% 400%",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: \u25cf Patient is within the financial eligibility levels of Medicaid a predicted by the PARO capacity to pay model but is un | \u25cf Patient currently has Medicaid but has a prior balance",
-    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: \u25cf If applicable: Proof of disability (Social Security Administration Benefits letter)",
+    "eligibility.discount_tiers: value backed by 3 verbatim spans",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 2 verbatim spans",
     "agent judge on eligibility.discount_tiers: Quote gives 300-400% sliding scale and a garbled table listing 100, 94, 88, 82, 76, 75% against 300-400%. The pairing of each percent to a tier is inferred, and the 75% has no clear tier.",
     "agent judge on eligibility.assistance_ceiling_fpl: Quote says a sliding scale applies from 300% up to 400% but does not state that no assistance is offered above 400% FPL."
    ]
@@ -3154,7 +3154,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "If your family income is between 301% and 400% of the federal poverty level, then you may be eligible for partial assistance.",
+     "quote": "If your family income is between 301% and 400% of the federal poverty level, then you may be eligible for partial assistance. || Partial Assistance (50%)",
      "source_id": "web-d62569467f3f68ac",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3198,7 +3198,7 @@
       "homeless"
      ],
      "layer": "documented",
-     "quote": "Patients who are homeless and do not have a physical address may be presumptively eligible without the need for additional assessment hereunder.",
+     "quote": "Patients who are homeless and do not have a physical address may be presumptively eligible without the need for additional assessment hereunder. || BH requires all patients, whether insured or not, to file for Medicaid or present evidence indicating ineligibility for Medicaid prior to filing for the FAP",
      "source_id": "fap-c0bb3ef853bd74de",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3225,7 +3225,7 @@
       "other"
      ],
      "layer": "documented",
-     "quote": "All pages of most recent State and Federal tax return filed or due (most recent two years if self-employed), including a copy of the W-2.",
+     "quote": "All pages of most recent State and Federal tax return filed or due (most recent two years if self-employed), including a copy of the W-2. || Two most recent pay stubs and other proof of income from all income sources || Two most recent bank statements from all accounts with any supporting documentation",
      "source_id": "fap-c0bb3ef853bd74de",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3244,7 +3244,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Patient or Guarantor must submit a completed application in writing to the appropriate hospital personnel.",
+     "quote": "Patient or Guarantor must submit a completed application in writing to the appropriate hospital personnel. || A copy of this policy, a plain language summary, and an application form will be available upon request and free of charge by mail.",
      "source_id": "fap-c0bb3ef853bd74de",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3326,11 +3326,11 @@
    "accuracy": null,
    "eve_review": [
     "eligibility.free_care_max_fpl: owner review says 300% is a discount or assistance limit, not free care; recorded as assistance_ceiling_fpl.",
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: Partial Assistance (50%)",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
     "eligibility.insured_patients_covered: quote matched the source only after typography normalization",
-    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: BH requires all patients, whether insured or not, to file for Medicaid or present evidence indicating ineligibility for ",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Two most recent pay stubs and other proof of income from all income sources | Two most recent bank statements from all accounts with any supporting documentation",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: A copy of this policy, a plain language summary, and an application form will be available upon request and free of char",
+    "programs.presumptive: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 2 verbatim spans",
     "agent judge on programs.presumptive: Quote supports only homeless patients being presumptively eligible; it says patients must file for Medicaid, so Medicaid is not presumptive.",
     "agent judge on apply.form_url: Quote shows only the relative path /-/media/...pdf; the domain https://www.baptisthealth.com is not stated in the quote.",
     "agent judge on apply.submit_methods: Quote says submit in writing to hospital personnel and that the policy and application are available by mail; it does not say applications can be submitted by mail.",
@@ -3385,7 +3385,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "For those applicants with a household income in excess of 300% but not exceeding 400% of the Federal Poverty Guideline, a sliding scale will apply to gross charges based on income and the number of people in the household.",
+     "quote": "For those applicants with a household income in excess of 300% but not exceeding 400% of the Federal Poverty Guideline, a sliding scale will apply to gross charges based on income and the number of people in the household. || Discount 100% 94% 88% 82% 76% 75% || %FPL 300% 325% 350% 375% 400%",
      "source_id": "fap-89654b710fc895d3",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3417,7 +3417,7 @@
       "Patient currently has Medicaid but has a prior balance"
      ],
      "layer": "documented",
-     "quote": "Patient is expired with no immediate or known family members",
+     "quote": "Patient is expired with no immediate or known family members || Patient is homeless || Patient has qualified for Medicaid within the last 24 months",
      "source_id": "fap-89654b710fc895d3",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3444,7 +3444,7 @@
       "pay_stubs"
      ],
      "layer": "documented",
-     "quote": "Signed Application for Financial Assistance;",
+     "quote": "Signed Application for Financial Assistance; || Must provide copy of 3 months\u2019 current bank statements || If patient does not file taxes: proof of earnings (check stub, payroll record, or letter from employer);",
      "source_id": "fap-89654b710fc895d3",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3536,9 +3536,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: Discount 100% 94% 88% 82% 76% 75% | %FPL 300% 325% 350% 375% 400%",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Patient is homeless | Patient has qualified for Medicaid within the last 24 months",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Must provide copy of 3 months\u2019 current bank statements | If patient does not file taxes: proof of earnings (check stub, payroll record, or letter from employer);",
+    "eligibility.discount_tiers: value backed by 3 verbatim spans",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent judge on eligibility.free_care_max_fpl: Quote says applicants below 300% FPL get full assistance; it does not state that exactly 300% gets free care, so the inclusive boundary is unsupported.",
     "agent judge on programs.presumptive: Quote lists only three presumptive categories (expired/no family, homeless, Medicaid within 24 months); value adds three more not in the quote.",
     "agent judge on apply.documents_required: Quote lists signed application, 3 months bank statements, and earnings proof only if no tax filing; tax return and disability proof are not in the quote."
@@ -3646,7 +3646,7 @@
       "proof_of_income"
      ],
      "layer": "documented",
-     "quote": "Pay stubs for the last three months 2. Income tax return for the previous year 3. W2 forms for the previous year 4. State/Federal assistance documents 5. Bank statements for the last three months 6. Pension/retirement statements",
+     "quote": "Pay stubs for the last three months 2. Income tax return for the previous year 3. W2 forms for the previous year 4. State/Federal assistance documents 5. Bank statements for the last three months 6. Pension/retirement statements || 7. Legal documents including divorce decree and/or child support and alimony",
      "source_id": "fap-026658eaf35c0b6b",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3669,7 +3669,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Please return this application and the requested information to the Business Office of the Baptist facility where services were received.",
+     "quote": "Please return this application and the requested information to the Business Office of the Baptist facility where services were received. || FAX #: 870-936-1062 || Email Address: fap@bmhcc.org",
      "source_id": "fap-c4f0efc9432c9890",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3756,8 +3756,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: 7. Legal documents including divorce decree and/or child support and alimony",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: FAX #: 870-936-1062 | Email Address: fap@bmhcc.org",
+    "apply.documents_required: value backed by 2 verbatim spans",
+    "apply.submit_methods: value backed by 3 verbatim spans",
     "agent judge on eligibility.free_care_max_fpl: Quote says '< 200% 100%', meaning under 200% gets free care. It does not state that 200% itself gets 100%, so 200 as the inclusive maximum is not stated."
    ]
   },
@@ -3804,7 +3804,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "If your family income is between 151% and 300% of the Federal Poverty Guidelines, you may qualify for a partial discount.",
+     "quote": "If your family income is between 151% and 300% of the Federal Poverty Guidelines, you may qualify for a partial discount. || Discount 100% 100% 90% 80% 70% 0% Family Size/FPL 138% 150% 200% 250% 300% 400%",
      "source_id": "web-69ebb61f13230c59",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3843,7 +3843,7 @@
       "Medicaid eligible on prior date of service"
      ],
      "layer": "documented",
-     "quote": "If patient states (s)he is homeless and WRH does not find any evidence to the contrary.",
+     "quote": "If patient states (s)he is homeless and WRH does not find any evidence to the contrary. || If patient is mentally or physically incapacitated and has no one to act on his/her behalf. || If patient is currently a resident of a nursing home facility and the facility can provide on a letterhead stating patient is a resident on a fixed income with a provided Medicaid number.",
      "source_id": "web-69ebb61f13230c59",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3953,8 +3953,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: Discount 100% 100% 90% 80% 70% 0% Family Size/FPL 138% 150% 200% 250% 300% 400%",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: If patient is mentally or physically incapacitated and has no one to act on his/her behalf. | If patient is currently a resident of a nursing home facility and the facility can provide on a letterhead stating patie",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "programs.presumptive: value backed by 3 verbatim spans",
     "apply.form_url: not an absolute URL ('/files/documents/WRH Financial Assistance Application.pdf'); dropped",
     "agent dropped apply.submit_methods: excerpt not in source: Patient Financial Counseling Office\n1710 Harrison Street\nBat",
     "agent judge on eligibility.insured_patients_covered: Quote addresses uninsured or limited-insurance patients; it does not state that insured patients are covered.",
@@ -4010,7 +4010,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "For those applicants with a household income in excess of 300% but not exceeding 400% of the Federal Poverty Guideline, a sliding scale will apply to gross charges based on income and the number of people in the household.",
+     "quote": "For those applicants with a household income in excess of 300% but not exceeding 400% of the Federal Poverty Guideline, a sliding scale will apply to gross charges based on income and the number of people in the household. || Discount 100% 94% 88% 82% 76% 75% || %FPL 300% 325% 350% 375% 400%",
      "source_id": "fap-89654b710fc895d3",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4050,7 +4050,7 @@
       "Patient currently has Medicaid but has a prior balance"
      ],
      "layer": "documented",
-     "quote": "Patient is expired with no immediate or known family members",
+     "quote": "Patient is expired with no immediate or known family members || Patient is homeless || Patient has qualified for Medicaid within the last 24 months",
      "source_id": "fap-89654b710fc895d3",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4077,7 +4077,7 @@
       "pay_stubs"
      ],
      "layer": "documented",
-     "quote": "Signed Application for Financial Assistance;",
+     "quote": "Signed Application for Financial Assistance; || Must provide copy of 3 months\u2019 current bank statements || If applicable: Complete copy of most recent Tax Return with attachments",
      "source_id": "fap-89654b710fc895d3",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4169,9 +4169,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: Discount 100% 94% 88% 82% 76% 75% | %FPL 300% 325% 350% 375% 400%",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Patient is homeless | Patient has qualified for Medicaid within the last 24 months",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Must provide copy of 3 months\u2019 current bank statements | If applicable: Complete copy of most recent Tax Return with attachments",
+    "eligibility.discount_tiers: value backed by 3 verbatim spans",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent judge on eligibility.discount_tiers: Quote gives a sliding scale above 300% to 400% and a garbled table (100%, 94%, 88%, 82%, 76%, 75% against 300%-400%). The tier-to-percent mapping is not clearly stated.",
     "agent judge on eligibility.assistance_ceiling_fpl: Quote says a sliding scale applies above 300% but not exceeding 400%. It does not state that no assistance is offered above 400%.",
     "agent judge on programs.presumptive: Quote lists only three presumptive criteria (expired with no family, homeless, Medicaid within 24 months). Value adds three more not in the quote.",
@@ -4303,7 +4303,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Please return this application and the requested information to the Business Office of the Baptist facility where services were received.",
+     "quote": "Please return this application and the requested information to the Business Office of the Baptist facility where services were received. || Fax # 901-226-0772 || Email Address: fap@bmhcc.org",
      "source_id": "fap-479eb4eb1e9d002b",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4390,7 +4390,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Fax # 901-226-0772 | Email Address: fap@bmhcc.org",
+    "apply.submit_methods: value backed by 3 verbatim spans",
     "agent judge on eligibility.free_care_max_fpl: Quote says \"< 200% 100%\", which literally means under 200%. The 201% tier start implies 200 is included, but the quote does not state it.",
     "agent judge on eligibility.insured_patients_covered: Quote only says Medically Underinsured patients get a 25% discount on liability over $5,000. It does not state that insured patients are covered as a boolean."
    ]
@@ -4586,7 +4586,7 @@
       "homeless"
      ],
      "layer": "documented",
-     "quote": "Patients who are incarcerated or homeless and confirmed no other liable party can be billed, will be deemed 100% financial assistance.",
+     "quote": "Patients who are incarcerated or homeless and confirmed no other liable party can be billed, will be deemed 100% financial assistance. || Mercy will utilize a third-party-tool to identify patients that are at or below 200% of the Federal Poverty Guidelines with low propensity to pay. Mercy will grant these patients financial assistance presumptively, without the requirement of an application.",
      "source_id": "fap-4dbed64b2b51c210",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4614,7 +4614,7 @@
       "insurance_card"
      ],
      "layer": "documented",
-     "quote": "Federal Tax Return: A full copy of the most recent federal tax return, including all forms and schedules",
+     "quote": "Federal Tax Return: A full copy of the most recent federal tax return, including all forms and schedules || Proof of Income: Provide income documentation for all household members over the age of 18 included on the application. One or more of the following are required for all: o Minimum 60 days of pay stubs required || please provide a copy of the most recent insurance card or contact Customer Service to update",
      "source_id": "fap-e2169745bc9cf37f",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4637,7 +4637,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Submit your application and documents via: MyMercy",
+     "quote": "Submit your application and documents via: MyMercy || Mercy Health Attention: Financial Assistance Department 2115 S Fremont Avenue, Suite 5300 Springfield, MO 65804 || Fax: 417-829-4604",
      "source_id": "fap-e2169745bc9cf37f",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4727,9 +4727,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: Mercy will utilize a third-party-tool to identify patients that are at or below 200% of the Federal Poverty Guidelines w",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Proof of Income: Provide income documentation for all household members over the age of 18 included on the application.  | please provide a copy of the most recent insurance card or contact Customer Service to update",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Mercy Health Attention: Financial Assistance Department 2115 S Fremont Avenue, Suite 5300 Springfield, MO 65804 | Fax: 417-829-4604",
+    "programs.presumptive: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 3 verbatim spans",
     "agent judge on eligibility.discount_tiers: Quote gives 201%-300% with two percentages (80% and 70%) and no labels; it does not show that 80% alone applies to this tier.",
     "agent judge on eligibility.insured_patients_covered: Quote only says insured patients need not complete Insurance Eligibility Screening before applying; it does not say they are covered.",
     "agent judge on programs.presumptive: Quote names incarcerated or homeless patients and patients at or below 200% FPL via a tool; Medicaid is not named as a presumptive category.",
@@ -4822,7 +4822,7 @@
       "proof_of_income"
      ],
      "layer": "documented",
-     "quote": "Completed Financial Assistance Application (see next page):",
+     "quote": "Completed Financial Assistance Application (see next page): || Medicaid Screening: || Federal Tax Return: A full copy of the most recent federal tax return, including all forms and schedules, for each household member(s) over the age of 18 listed on this application.",
      "source_id": "fap-e2169745bc9cf37f",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4845,7 +4845,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Submit your application and documents via: MyMercy",
+     "quote": "Submit your application and documents via: MyMercy || Mercy Health Attention: Financial Assistance Department 2115 S Fremont Avenue, Suite 5300 Springfield, MO 65804 (Mailing address only) || Fax: 417-829-4604",
      "source_id": "fap-e2169745bc9cf37f",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4935,8 +4935,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Medicaid Screening: | Federal Tax Return: A full copy of the most recent federal tax return, including all forms and schedules, for each house",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Mercy Health Attention: Financial Assistance Department 2115 S Fremont Avenue, Suite 5300 Springfield, MO 65804 (Mailing | Fax: 417-829-4604",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 3 verbatim spans",
     "agent dropped eligibility.free_care_max_fpl: quote is not a substring of the source",
     "agent judge on eligibility.discount_tiers: Quote shows garbled 'II 201% - 300% 80% 70%'; it lists two percents (80 and 70) and does not clearly tie 80% to 200-300 FPL with bounds as stored.",
     "agent judge on programs.presumptive: Quote covers incarcerated, homeless, bankruptcy, and deceased; it does not mention Medicaid enrolled as a presumptive category.",
@@ -5006,7 +5006,7 @@
       "homeless"
      ],
      "layer": "documented",
-     "quote": "Mercy will utilize a third-party-tool to identify patients that are at or below 200% of the Federal Poverty Guidelines with low propensity to pay. Mercy will grant these patients financial assistance presumptively, without the requirement of an application.",
+     "quote": "Mercy will utilize a third-party-tool to identify patients that are at or below 200% of the Federal Poverty Guidelines with low propensity to pay. Mercy will grant these patients financial assistance presumptively, without the requirement of an application. || Patients who are incarcerated or homeless and confirmed no other liable party can be billed, will be deemed 100% financial assistance.",
      "source_id": "fap-4dbed64b2b51c210",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5033,7 +5033,7 @@
       "insurance_card"
      ],
      "layer": "documented",
-     "quote": "Federal Tax Return: A full copy of the most recent federal tax return, including all forms and schedules",
+     "quote": "Federal Tax Return: A full copy of the most recent federal tax return, including all forms and schedules || Proof of Income: Provide income documentation for all household members over the age of 18 included on the application. One or more of the following are required for all: o Minimum 60 days of pay stubs required || please provide a copy of the most recent insurance card or contact Customer Service to update",
      "source_id": "fap-e2169745bc9cf37f",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5056,7 +5056,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Mercy Health Attention: Financial Assistance Department 2115 S Fremont Avenue, Suite 5300 Springfield, MO 65804 (Mailing address only) Fax: 417-829-4604",
+     "quote": "Mercy Health Attention: Financial Assistance Department 2115 S Fremont Avenue, Suite 5300 Springfield, MO 65804 (Mailing address only) Fax: 417-829-4604 || Once logged into your MyMercy account, under the Main Menu option, select Pay My Bill. Then choose View Balance Details, select Manage Financial Assistance.",
      "source_id": "fap-e2169745bc9cf37f",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5146,9 +5146,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: Patients who are incarcerated or homeless and confirmed no other liable party can be billed, will be deemed 100% financi",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Proof of Income: Provide income documentation for all household members over the age of 18 included on the application.  | please provide a copy of the most recent insurance card or contact Customer Service to update",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Once logged into your MyMercy account, under the Main Menu option, select Pay My Bill. Then choose View Balance Details,",
+    "programs.presumptive: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 2 verbatim spans",
     "agent judge on eligibility.free_care_max_fpl: Quote shows tier I as 0-200% at 100% discount; it does not explicitly say 'free care' up to 200%, though the table reads as 100% discount through 200%.",
     "agent judge on programs.presumptive: Quote covers presumptive grants for patients at or below 200% FPL via a tool and for incarcerated or homeless patients; 'Medicaid' is not mentioned in the quote.",
     "agent judge on apply.documents_required: Quote lists tax return, proof of income, and insurance card; 'Medicaid Screening' is not a document listed in the quote.",
@@ -5246,7 +5246,7 @@
       "Spanish"
      ],
      "layer": "documented",
-     "quote": "Application Form- English",
+     "quote": "Application Form- English || Application Form - Spanish",
      "source_id": "web-4b287160792d3bca",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5280,7 +5280,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "contacts.languages: 1 more verbatim excerpt(s) supported this value: Application Form - Spanish",
+    "contacts.languages: value backed by 2 verbatim spans",
     "agent judge on apply.form_url: Quote is only the link text 'Application Form- English'; it does not state the URL value.",
     "agent judge on apply.documents_required: Quote requires a tax return with W-2 and 1099 copies; it does not mention a general 'tax return' item as a separate requirement beyond that, so the list is only partly supported.",
     "agent judge on contacts.phone: Quote is the phone number alone with no indication it is the financial assistance contact; the value itself matches the quote text.",
@@ -5369,7 +5369,7 @@
       "deceased patient with no estate"
      ],
      "layer": "documented",
-     "quote": "If patient states (s)he is homeless and WRH does not find any evidence to the contrary.",
+     "quote": "If patient states (s)he is homeless and WRH does not find any evidence to the contrary. || If patient is mentally or physically incapacitated and has no one to act on his/her behalf. || If patient is currently a resident of a nursing home facility and the facility can provide on a letterhead stating patient is a resident on a fixed income with a provided Medicaid number.",
      "source_id": "web-e735429bcbab26c0",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5487,7 +5487,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: If patient is mentally or physically incapacitated and has no one to act on his/her behalf. | If patient is currently a resident of a nursing home facility and the facility can provide on a letterhead stating patie",
+    "programs.presumptive: value backed by 3 verbatim spans",
     "agent dropped apply.submit_methods: excerpt not in source: You may also visit a Financial Counselor Monday through Frid",
     "agent judge on eligibility.discount_tiers: Garbled table lists percents and FPL headers without stating band bounds; the mapping of 90/80/70% to 150-200/200-250/250-300 is inferred, not stated.",
     "agent judge on programs.presumptive: Quote supports only homeless, incapacitated, and nursing home resident; 'Medicaid eligible on prior date of service' and 'deceased patient with no estate' are not in the quote.",
@@ -5772,7 +5772,7 @@
       "bank_statements"
      ],
      "layer": "documented",
-     "quote": "Completed and signed IRS form 4506-T",
+     "quote": "Completed and signed IRS form 4506-T || Copy of your most recent state and federal tax return, including W-2\u2019s and all schedules. (If self-employed, you will need to provide the last two years of your tax information.) || Copies of the two most recent pay stubs for all wage-earners who live in the household",
      "source_id": "fap-7cb1347184976304",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5859,7 +5859,7 @@
       "Kinyarwanda"
      ],
      "layer": "documented",
-     "quote": "Espa\u00f1ol (Spanish)",
+     "quote": "Espa\u00f1ol (Spanish) || \u0629\u064a\u0628\u0631\u0639\u0644\u0627 (Arabic) || \u03a1\u0443\u0441\u0441\u043a\u0438\u0439 (Russian)",
      "source_id": "fap-7cb1347184976304",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5902,8 +5902,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Copy of your most recent state and federal tax return, including W-2\u2019s and all schedules. (If self-employed, you will ne | Copies of the two most recent pay stubs for all wage-earners who live in the household",
-    "contacts.languages: 2 more verbatim excerpt(s) supported this value: \u0629\u064a\u0628\u0631\u0639\u0644\u0627 (Arabic) | \u03a1\u0443\u0441\u0441\u043a\u0438\u0439 (Russian)",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "contacts.languages: value backed by 3 verbatim spans",
     "agent judge on programs.presumptive: Quote mentions only homeless patients without a physical address. It does not mention Medicaid enrollment.",
     "agent judge on apply.form_url: Quote gives only a relative path link. The domain baptisthealth.com does not appear in the quote, so the full URL is not stated.",
     "agent judge on apply.documents_required: Quote lists only 4506-T, tax return, and pay stubs. Bank statements and investment statements are not in the quote.",
@@ -6069,7 +6069,7 @@
       "proof_of_income"
      ],
      "layer": "documented",
-     "quote": "Completed Financial Assistance Application (see next page)",
+     "quote": "Completed Financial Assistance Application (see next page) || Federal Tax Return: A full copy of the most recent federal tax return, including all forms and schedules, for each household member(s) over the age of 18 listed on this application. || Proof of Income: Provide income documentation for all household members over the age of 18 included on the application.",
      "source_id": "fap-e2169745bc9cf37f",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -6092,7 +6092,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Submit your application and documents via: MyMercy",
+     "quote": "Submit your application and documents via: MyMercy || Mercy Health Attention: Financial Assistance Department 2115 S Fremont Avenue, Suite 5300 Springfield, MO 65804 (Mailing address only) Fax: 417-829-4604",
      "source_id": "fap-e2169745bc9cf37f",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -6182,8 +6182,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Federal Tax Return: A full copy of the most recent federal tax return, including all forms and schedules, for each house | Proof of Income: Provide income documentation for all household members over the age of 18 included on the application.",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Mercy Health Attention: Financial Assistance Department 2115 S Fremont Avenue, Suite 5300 Springfield, MO 65804 (Mailing",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 2 verbatim spans",
     "agent judge on eligibility.free_care_max_fpl: Quote shows '0 - 200% 100% 100%' which is a tier row; it does not plainly state 200 is the highest FPL receiving 100% free care, though it is suggestive.",
     "agent judge on programs.presumptive: Quote covers incarcerated, homeless, bankruptcy, and deceased; it does not state Medicaid enrolled as a presumptive category, so the value includes an unsupported item.",
     "agent judge on apply.documents_required: Quote lists application, Federal Tax Return, and Proof of Income; 'Medicaid Screening' is not stated as a required document in the quote.",
@@ -6238,7 +6238,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "For those applicants with a household income in excess of 300% but not exceeding 400% of the Federal Poverty Guideline, a sliding scale will apply to gross charges based on income and the number of people in the household.",
+     "quote": "For those applicants with a household income in excess of 300% but not exceeding 400% of the Federal Poverty Guideline, a sliding scale will apply to gross charges based on income and the number of people in the household. || Discount 100% 94% 88% 82% 76% 75% || %FPL 300% 325% 350% 375% 400%",
      "source_id": "fap-89654b710fc895d3",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -6270,7 +6270,7 @@
       "Patient currently has Medicaid but has a prior balance"
      ],
      "layer": "documented",
-     "quote": "Patient is expired with no immediate or known family members \u25cf Patient is homeless \u25cf Patient has qualified for Medicaid within the last 24 months \u25cf Patient is in hospice and has Medicaid coverage",
+     "quote": "Patient is expired with no immediate or known family members \u25cf Patient is homeless \u25cf Patient has qualified for Medicaid within the last 24 months \u25cf Patient is in hospice and has Medicaid coverage || Patient is within the financial eligibility levels of Medicaid a predicted by the PARO capacity to pay model but is unwilling or unable to comply with the application process\u2019 || Patient currently has Medicaid but has a prior balance",
      "source_id": "fap-89654b710fc895d3",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -6297,7 +6297,7 @@
       "pay_stubs"
      ],
      "layer": "documented",
-     "quote": "Signed Application for Financial Assistance; \u25cf Must provide copy of 3 months\u2019 current bank statements \u25cf If applicable: Complete copy of most recent Tax Return with attachments;",
+     "quote": "Signed Application for Financial Assistance; \u25cf Must provide copy of 3 months\u2019 current bank statements \u25cf If applicable: Complete copy of most recent Tax Return with attachments; || If patient does not file taxes: proof of earnings (check stub, payroll record, or letter from employer); || If applicable: Proof of disability (Social Security Administration Benefits letter)",
      "source_id": "fap-89654b710fc895d3",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -6389,9 +6389,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: Discount 100% 94% 88% 82% 76% 75% | %FPL 300% 325% 350% 375% 400%",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Patient is within the financial eligibility levels of Medicaid a predicted by the PARO capacity to pay model but is unwi | Patient currently has Medicaid but has a prior balance",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: If patient does not file taxes: proof of earnings (check stub, payroll record, or letter from employer); | If applicable: Proof of disability (Social Security Administration Benefits letter)",
+    "eligibility.discount_tiers: value backed by 3 verbatim spans",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent judge on eligibility.free_care_max_fpl: Quote says applicants 'below 300%' are considered for full assistance. It does not state that 300% itself gets 100% free care.",
     "agent judge on eligibility.discount_tiers: Quote gives six percentages (100, 94, 88, 82, 76, 75) against five FPL points (300-400%). The value omits the 75% level and the alignment of percents to bounds is not stated.",
     "agent judge on apply.documents_required: Quote marks the tax return and disability letter as 'if applicable' and the earnings proof as applying only if patient does not file taxes. The value lists them as unconditional.",
@@ -6441,7 +6441,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "100% Financial Assistance 75% Financial Assistance 50% Financial Assistance 25% Financial Assistance",
+     "quote": "100% Financial Assistance 75% Financial Assistance 50% Financial Assistance 25% Financial Assistance || To qualify for some level of free or reduced-charge care, your family income must be no more than 225% of the following income scale",
      "source_id": "fap-aeae7999fc5bbfed",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -6485,7 +6485,7 @@
       "bank_statements"
      ],
      "layer": "documented",
-     "quote": "Complete an application form",
+     "quote": "Complete an application form || Provide documentation of gross income for the last three (3) months, including where applicable; || Provide bank statements for the last two months for all household members",
      "source_id": "fap-aeae7999fc5bbfed",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -6550,8 +6550,8 @@
    "accuracy": null,
    "eve_review": [
     "eligibility.discount_tiers: 0-150% at 100% is the free-care band, not a tier; skipped",
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: To qualify for some level of free or reduced-charge care, your family income must be no more than 225% of the following ",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Provide documentation of gross income for the last three (3) months, including where applicable; | Provide bank statements for the last two months for all household members",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent judge on eligibility.free_care_max_fpl: Quote says the bill may be discounted up to 100% for income at or under 225% FPG, which does not clearly establish 100% free care at 225%. The quoted tier list places 100% only up to 150%.",
     "agent judge on eligibility.discount_tiers: Quote lists the 100/75/50/25% labels and the 225% scale but does not state the 150, 175, 200 bounds or map each percent to its bounds.",
     "agent judge on apply.documents_required: Quote lists an application form, three months of gross income documentation, and two months of bank statements. It does not mention Form 1040, pay stubs, or other payment source evidence."
@@ -6807,7 +6807,7 @@
       "other"
      ],
      "layer": "documented",
-     "quote": "1) Last three months of paystubs for each employed person living in the household",
+     "quote": "1) Last three months of paystubs for each employed person living in the household || 2) Copy of the last 3 months' bank statements (NOTE: Printed statements only are accepted.) || 3) Most recent tax return (Form 1040) (from all adults in the household)",
      "source_id": "fap-423ac291e984c8a8",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -6880,7 +6880,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: 2) Copy of the last 3 months' bank statements (NOTE: Printed statements only are accepted.) | 3) Most recent tax return (Form 1040) (from all adults in the household)",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent dropped apply.submit_methods: quote is not a substring of the source",
     "agent judge on eligibility.insured_patients_covered: Quote only describes insured patients whose coverage is insufficient for the bill; it does not state that they are covered by assistance.",
     "agent judge on apply.documents_required: Quote lists only three documents; the fourth item (SNAP or housing benefits notification) does not appear in the quote.",
@@ -6971,7 +6971,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Completed applications for financial assistance can be returned to: Mercy Health Attention Financial Assistance 2115 S Fremont Avenue, Suite 5300 Springfield, MO 65804 Fax: 417-829-4604",
+     "quote": "Completed applications for financial assistance can be returned to: Mercy Health Attention Financial Assistance 2115 S Fremont Avenue, Suite 5300 Springfield, MO 65804 Fax: 417-829-4604 || obtained on www.mercy.net/fa.",
      "source_id": "fap-4dbed64b2b51c210",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -7043,7 +7043,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: obtained on www.mercy.net/fa.",
+    "apply.submit_methods: value backed by 2 verbatim spans",
     "agent judge on eligibility.insured_patients_covered: Quote only says insured patients need not complete insurance screening before applying. It does not state that insured patients are covered.",
     "agent judge on apply.submit_methods: Mail and fax are stated for returning applications. The online entry is only where the application is obtained ('obtained on www.mercy.net/fa'), not where it is submitted.",
     "agent judge on contacts.languages: Quote says the application is available in English and 'other languages prevalent in the area'. Spanish is not named."
@@ -7092,7 +7092,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "At or below 200% poverty level o 75% discount off of self pay price",
+     "quote": "At or below 200% poverty level o 75% discount off of self pay price || At or below 300% poverty level o 50% discount off of self pay price || At or below 400% poverty level o 25% discount off of self pay price",
      "source_id": "fap-32909364d84e8be5",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -7193,7 +7193,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: At or below 300% poverty level o 50% discount off of self pay price | At or below 400% poverty level o 25% discount off of self pay price",
+    "eligibility.discount_tiers: value backed by 3 verbatim spans",
     "agent dropped apply.submit_methods: excerpt not in source: Please complete the following information and return to the ",
     "agent judge on eligibility.discount_tiers: Quote gives 75% at or below 200%, 50% at or below 300%, and 25% at or below 400%, but never states the 100% lower bound in the value.",
     "agent judge on apply.documents_required: Quote lists the same documents but says they 'may be required' before a discount is approved, not that they are required.",

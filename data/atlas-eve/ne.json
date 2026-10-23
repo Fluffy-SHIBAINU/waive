@@ -76,7 +76,7 @@
       "bank_statements"
      ],
      "layer": "documented",
-     "quote": "Last year\u2019s income tax return, including schedules if applicable; or",
+     "quote": "Last year\u2019s income tax return, including schedules if applicable; or || A \"W-2\" withholding statement; or || Current pay stubs (3 months); or",
      "source_id": "fap-6e197ec13cbb56a1",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -181,7 +181,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: A \"W-2\" withholding statement; or | Current pay stubs (3 months); or",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent dropped apply.submit_methods: excerpt not in source: Applications for financial assistance are available online",
     "agent judge on apply.form_url: Quote says applications are available online but does not give the URL; the specific URL is not stated in the quote.",
     "agent judge on apply.documents_required: Quote lists only some options (tax return, W-2, pay stubs); bank statements are not mentioned in the quoted text.",
@@ -277,7 +277,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Apply for Medicaid in Nebraska [http://dhhs.ne.gov/pages/accessnebraska.aspx]",
+     "quote": "Apply for Medicaid in Nebraska [http://dhhs.ne.gov/pages/accessnebraska.aspx] || Apply for Medicaid in Iowa [https://hhs.iowa.gov/programs/apply-services] || Apply for Medicaid Kansas [https://www.kancare.ks.gov/apply-now]",
      "source_id": "web-3c7c340d57209b6a",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -295,7 +295,7 @@
       "social_security_letter"
      ],
      "layer": "documented",
-     "quote": "Attach a copy of your most recent IRS Form 1040 and appropriate schedules",
+     "quote": "Attach a copy of your most recent IRS Form 1040 and appropriate schedules || If you have no income, send us a letter of support. The person who provides your support must sign the letter || Based on initial financial screening, you may need to apply for Medical Assistance (Medicaid, Disability and/or other available programs) and send a copy of your Letter of Denial",
      "source_id": "fap-7bc83f2dcede48e7",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -392,8 +392,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.state_programs: 2 more verbatim excerpt(s) supported this value: Apply for Medicaid in Iowa [https://hhs.iowa.gov/programs/apply-services] | Apply for Medicaid Kansas [https://www.kancare.ks.gov/apply-now]",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: If you have no income, send us a letter of support. The person who provides your support must sign the letter | Based on initial financial screening, you may need to apply for Medical Assistance (Medicaid, Disability and/or other av",
+    "programs.state_programs: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "collections.eca_wait_days: quote matched the source only after typography normalization",
     "apply.form_url: not an absolute URL ('/sites/default/files/documents/patients-visitors/FA_Applicat'); dropped",
     "agent dropped apply.submit_methods: excerpt not in source: Mail the completed Application and documents to: Nebraska Me",
@@ -477,7 +477,7 @@
       "deceased with no known estate"
      ],
      "layer": "documented",
-     "quote": "Homeless or one who received care from a homeless or free care clinic;",
+     "quote": "Homeless or one who received care from a homeless or free care clinic; || Participation in Women, Infants and Children programs (WIC); || Eligibility or referrals for other state or local assistance programs (e.g., Medicaid)",
      "source_id": "fap-174bfaef7b79efbc",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -544,7 +544,7 @@
     "eligibility.discount_tiers: 200-400% at 100% is the free-care band, not a tier; skipped",
     "eligibility.asset_test: quote matched the source only after typography normalization",
     "eligibility.insured_patients_covered: quote matched the source only after typography normalization",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Participation in Women, Infants and Children programs (WIC); | Eligibility or referrals for other state or local assistance programs (e.g., Medicaid)",
+    "programs.presumptive: value backed by 3 verbatim spans",
     "agent dropped apply.documents_required: between 1 and 3 excerpts allowed",
     "agent judge on eligibility.discount_tiers: Quote gives a 201%-400% tier reducing balances to no more than the AGB amount, not a 100% discount, and does not state a 100% percent.",
     "agent judge on eligibility.residency: Quote adds an exception for visits within a California Hospital Facility that the recorded value omits.",
@@ -653,7 +653,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Completed applications must be returned to: 1. Mary Lanning Healthcare, Patient Business Services Department, 715 N St. Joseph Ave, Hastings, Nebraska, 68901.",
+     "quote": "Completed applications must be returned to: 1. Mary Lanning Healthcare, Patient Business Services Department, 715 N St. Joseph Ave, Hastings, Nebraska, 68901. || by e-mail (upon patient election) by e-mailing patientaccounts@marylanning.org || in person at \u2022 the emergency room \u2022 any admission areas \u2022 patient financial services department",
      "source_id": "fap-d06ea80cf904281a",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -732,7 +732,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: by e-mail (upon patient election) by e-mailing patientaccounts@marylanning.org | in person at \u2022 the emergency room \u2022 any admission areas \u2022 patient financial services department",
+    "apply.submit_methods: value backed by 3 verbatim spans",
     "agent dropped apply.documents_required: excerpt not in source: MLH reserves the right to request or access additional infor",
     "agent dropped apply.window_days_from_first_bill: quote is not a substring of the source"
    ]
@@ -785,7 +785,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Family income above 200% FPL but equal to or less than 250% FPL are eligible to receive 80% discount on the patient balance due.",
+     "quote": "Family income above 200% FPL but equal to or less than 250% FPL are eligible to receive 80% discount on the patient balance due. || Family income above 250% FPL but equal to or less than 300% FPL are eligible to receive 60% discount on the patient balance due. || Family income above 300% FPL but equal to or less than 350% FPL are eligible to receive 40% discount on the patient balance due.",
      "source_id": "fap-47a625b08e1929af",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -850,7 +850,7 @@
       "bank_statements"
      ],
      "layer": "documented",
-     "quote": "1.) Copy of the tax return from the most recent tax year including all schedules, W-2s, and 1099s.",
+     "quote": "1.) Copy of the tax return from the most recent tax year including all schedules, W-2s, and 1099s. || 2.) A copy of the most recent pay stub. || Asset information: Applicants will also be asked to provide information on monetary assets such as checking accounts, savings or money market accounts, certificates of deposits, non-retirement investment accounts as well as real estate other than the primary residence and other assets.",
      "source_id": "fap-47a625b08e1929af",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -877,7 +877,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Financial assistance applications are to be submitted to the following office: Methodist Health System Financial Assistance 825 South 169th Street P.O. Box 2797 Omaha, NE 68103-2797 402-354-4230 or 888-485-4494",
+     "quote": "Financial assistance applications are to be submitted to the following office: Methodist Health System Financial Assistance 825 South 169th Street P.O. Box 2797 Omaha, NE 68103-2797 402-354-4230 or 888-485-4494 || by contacting the MHS Financial Assistance Department at 402-354-4230 or 888-485-4494; or the emergency room front desk or the admissions desk at any MHS facility; or (ii) by download at www.bestcare.org/tools/Financial-Assistance",
      "source_id": "fap-47a625b08e1929af",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -975,10 +975,10 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: Family income above 250% FPL but equal to or less than 300% FPL are eligible to receive 60% discount on the patient bala | Family income above 300% FPL but equal to or less than 350% FPL are eligible to receive 40% discount on the patient bala",
+    "eligibility.discount_tiers: value backed by 3 verbatim spans",
     "eligibility.asset_test: quote matched the source only after typography normalization",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: 2.) A copy of the most recent pay stub. | Asset information: Applicants will also be asked to provide information on monetary assets such as checking accounts, sa",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: by contacting the MHS Financial Assistance Department at 402-354-4230 or 888-485-4494; or the emergency room front desk ",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 2 verbatim spans",
     "agent judge on eligibility.discount_tiers: Quote lists only 200-250% (80%), 250-300% (60%), and 300-350% (40%). The 350-400% tier at 20% does not appear in the quote.",
     "agent judge on eligibility.insured_patients_covered: Quote only defines an underinsured patient as someone with private or public coverage. It does not state that insured patients are covered.",
     "agent judge on apply.form_url: Quote shows only a relative path (/sites/default/files/...) with no bestcare.org domain, so the full URL is not stated in the quote.",
@@ -1033,7 +1033,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "201 \u2013 250% 90%",
+     "quote": "201 \u2013 250% 90% || 251 \u2013 300% 80% || 301 \u2013 350% 70% 351 \u2013 400% Maximum 60%",
      "source_id": "fap-a66942a74c87aaa1",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1104,7 +1104,7 @@
       "Nebraska Housing Authority's Rental Housing Support Program (Section 8)"
      ],
      "layer": "documented",
-     "quote": "a. Patient is homeless (with such status verified after review of available facts).",
+     "quote": "a. Patient is homeless (with such status verified after review of available facts). || e. Patient is enrolled or covered by: Women\u2019s, Infants and Children Nutrition Program (WIC). Supplemental Nutrition Assistance Program Free Lunch Program Low Income Home Energy Assistance Program (LIHEAP) || j. Patient or patient\u2019s family is enrolled in Nebraska Housing Authority\u2019s Rental Housing Support Program (Section 8)",
      "source_id": "fap-a66942a74c87aaa1",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1131,7 +1131,7 @@
       "proof_of_income"
      ],
      "layer": "documented",
-     "quote": "a. Copy of the most recent Federal income 1040 tax return and schedules (preferred) or statement income tax return;",
+     "quote": "a. Copy of the most recent Federal income 1040 tax return and schedules (preferred) or statement income tax return; || b. Copy of the most recent W-2 for and 1099 forms, or similar forms issued to members of partnerships, limited liability companies or other entities. || c. Copies of two (2) most recent pay stubs;",
      "source_id": "fap-a66942a74c87aaa1",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1158,7 +1158,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "At RWHS\u2019s main Registration desk or Emergency Room desk",
+     "quote": "At RWHS\u2019s main Registration desk or Emergency Room desk || Mail completed applications (with all documentation / information specified in the application instructions) or deliver in per to RWHS Financial Assistance Office, Regional West Health Services, 4021 Avenue B, Scottsbluff, NE 69361-4602. || Email us directly at FAST@RWHS.org.",
      "source_id": "fap-a66942a74c87aaa1",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1248,10 +1248,10 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: 251 \u2013 300% 80% | 301 \u2013 350% 70% 351 \u2013 400% Maximum 60%",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: e. Patient is enrolled or covered by: Women\u2019s, Infants and Children Nutrition Program (WIC). Supplemental Nutrition Assi | j. Patient or patient\u2019s family is enrolled in Nebraska Housing Authority\u2019s Rental Housing Support Program (Section 8)",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: b. Copy of the most recent W-2 for and 1099 forms, or similar forms issued to members of partnerships, limited liability | c. Copies of two (2) most recent pay stubs;",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Mail completed applications (with all documentation / information specified in the application instructions) or deliver  | Email us directly at FAST@RWHS.org.",
+    "eligibility.discount_tiers: value backed by 3 verbatim spans",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 3 verbatim spans",
     "agent judge on programs.presumptive: Quote lists only homeless, WIC, SNAP, Free Lunch, LIHEAP, and Section 8. Deceased with no estate, incapacitated, Medicaid, grant, and state prescription programs are absent.",
     "agent judge on apply.documents_required: Quote covers 1040 return, W-2/1099, and two pay stubs. Employer verification for cash pay and a third-party income verification are not in the quote.",
     "agent judge on apply.submit_methods: Mail and email match the quote, but in-person lists an address absent from that quote, and online is only a website document download, not a submission method.",
@@ -1301,7 +1301,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "201 - 250% 75% Discount equal to 100% of Medicare Cost to Charge Ratio 15%",
+     "quote": "201 - 250% 75% Discount equal to 100% of Medicare Cost to Charge Ratio 15% || 251 - 300% 50% Discount equal to 100% of Medicare Cost to Charge Ratio 15% || 301 - 350% 25% Discount equal to 100% of Medicare Cost to Charge Ratio 15%",
      "source_id": "fap-55f4097edf68766f",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1355,7 +1355,7 @@
       "proof_of_income"
      ],
      "layer": "documented",
-     "quote": "Copy of the most recent Federal income tax return (preferred) or state income tax return;",
+     "quote": "Copy of the most recent Federal income tax return (preferred) or state income tax return; || Copies of two (2) most recent pay stubs; || Written verification from an employer if paid in cash; or",
      "source_id": "fap-55f4097edf68766f",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1378,7 +1378,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "return to the hospital or mail to: Great Plains Health Financial Counseling PO Box 1167 North Platte NE 69103",
+     "quote": "return to the hospital or mail to: Great Plains Health Financial Counseling PO Box 1167 North Platte NE 69103 || complete the Financial Assistance Program Application at gphealth.org/financial-assistance",
      "source_id": "fap-55f4097edf68766f",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1468,9 +1468,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: 251 - 300% 50% Discount equal to 100% of Medicare Cost to Charge Ratio 15% | 301 - 350% 25% Discount equal to 100% of Medicare Cost to Charge Ratio 15%",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Copies of two (2) most recent pay stubs; | Written verification from an employer if paid in cash; or",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: complete the Financial Assistance Program Application at gphealth.org/financial-assistance",
+    "eligibility.discount_tiers: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 2 verbatim spans",
     "agent dropped programs.presumptive: quote is not a substring of the source",
     "agent judge on apply.documents_required: Quote lists only three documents (tax return, two pay stubs, employer verification if paid in cash). The W-2/1099 item and the 'one other reasonable form' item are not in the quote."
    ]
@@ -1523,7 +1523,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Family income above 200% FPL but equal to or less than 250% FPL are eligible to receive 80% discount on the patient balance due.",
+     "quote": "Family income above 200% FPL but equal to or less than 250% FPL are eligible to receive 80% discount on the patient balance due. || Family income above 250% FPL but equal to or less than 300% FPL are eligible to receive 60% discount on the patient balance due. || Family income above 300% FPL but equal to or less than 350% FPL are eligible to receive 40% discount on the patient balance due.",
      "source_id": "fap-47a625b08e1929af",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1597,7 +1597,7 @@
       "bank_statements"
      ],
      "layer": "documented",
-     "quote": "1.) Copy of the tax return from the most recent tax year including all schedules, W-2s, and 1099s.",
+     "quote": "1.) Copy of the tax return from the most recent tax year including all schedules, W-2s, and 1099s. || 2.) A copy of the most recent pay stub. || 3.) If social security income: a copy of check or a copy of bank statement showing the most recent social security deposit.",
      "source_id": "fap-47a625b08e1929af",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1620,7 +1620,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Financial assistance applications are to be submitted to the following office: Methodist Health System Financial Assistance 825 South 169th Street P.O. Box 2797 Omaha, NE 68103-2797",
+     "quote": "Financial assistance applications are to be submitted to the following office: Methodist Health System Financial Assistance 825 South 169th Street P.O. Box 2797 Omaha, NE 68103-2797 || Patients may obtain any or all of the above (i) by contacting the MHS Financial Assistance Department at 402-354-4230 or 888-485-4494; or the emergency room front desk or the admissions desk at any MHS facility",
      "source_id": "fap-47a625b08e1929af",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1726,11 +1726,11 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: Family income above 250% FPL but equal to or less than 300% FPL are eligible to receive 60% discount on the patient bala | Family income above 300% FPL but equal to or less than 350% FPL are eligible to receive 40% discount on the patient bala",
+    "eligibility.discount_tiers: value backed by 3 verbatim spans",
     "eligibility.asset_test: quote matched the source only after typography normalization",
     "eligibility.insured_patients_covered: quote matched the source only after typography normalization",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: 2.) A copy of the most recent pay stub. | 3.) If social security income: a copy of check or a copy of bank statement showing the most recent social security depos",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Patients may obtain any or all of the above (i) by contacting the MHS Financial Assistance Department at 402-354-4230 or",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 2 verbatim spans",
     "agent judge on eligibility.discount_tiers: Quote lists only three tiers (200-250%, 250-300%, 300-350%). The 350-400% tier at 20% in the value does not appear in the quote.",
     "agent judge on eligibility.insured_patients_covered: Quote addresses assistance for underinsured patients subject to insurer contracts; it does not state that insured patients are covered.",
     "agent judge on apply.form_url: Quote gives only a relative path (/sites/default/files/...pdf) with no bestcare.org domain, so the full URL in the value is not stated.",
@@ -2055,7 +2055,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Completed applications must be returned to the Patient Accounts Department or Admissions Area (Registration) who will forward to Patient Accounts.",
+     "quote": "Completed applications must be returned to the Patient Accounts Department or Admissions Area (Registration) who will forward to Patient Accounts. || Our address: Columbus Community Hospital, Patient Accounts Department, 4600 38th Street, Columbus, NE 68601. || On-line Business Office for Patient Accounts \u2013 patientaccounts@columbushosp.org",
      "source_id": "fap-b17ab0270f0f9c12",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2145,7 +2145,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Our address: Columbus Community Hospital, Patient Accounts Department, 4600 38th Street, Columbus, NE 68601. | On-line Business Office for Patient Accounts \u2013 patientaccounts@columbushosp.org",
+    "apply.submit_methods: value backed by 3 verbatim spans",
     "agent dropped programs.presumptive: excerpt not in source: Eligibility for other state or local assistance programs tha",
     "agent judge on apply.submit_methods: Quote covers in-person return, mail address, and email, but contains no phone number for the phone submit method."
    ]
@@ -2196,7 +2196,7 @@
       "social_security_letter"
      ],
      "layer": "documented",
-     "quote": "The verification shall consist of a copy of the last year\u2019s tax return, copies of payroll check stubs and/or certified statement of income from your employer(s) for the past 3 months.",
+     "quote": "The verification shall consist of a copy of the last year\u2019s tax return, copies of payroll check stubs and/or certified statement of income from your employer(s) for the past 3 months. || disabled persons, proof of income from Social Security or any other type of disability income",
      "source_id": "fap-4fecf40aa06bbbcf",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2261,7 +2261,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: disabled persons, proof of income from Social Security or any other type of disability income"
+    "apply.documents_required: value backed by 2 verbatim spans"
    ]
   },
   {
@@ -2304,7 +2304,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Federal Poverty Income Percentage Allowed Family Size 2024 FPL 100% 80% 60% 40% 20%",
+     "quote": "Federal Poverty Income Percentage Allowed Family Size 2024 FPL 100% 80% 60% 40% 20% || FPL 150% 175% 200% 250% 300% || Patients who qualify for financial assistance as Financially Indigent are eligible for financial assistance based upon the following sliding fee scale",
      "source_id": "fap-2d90ae94fe6eb269",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2358,7 +2358,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Completed applications must be returned to HHC\u2019s Patient Financial Services at 1621 Front Street, Henderson, NE 68371.",
+     "quote": "Completed applications must be returned to HHC\u2019s Patient Financial Services at 1621 Front Street, Henderson, NE 68371. || by e-mail (upon patient election) by e-mailing ayost@hendersonhealth.org, (iii) by download from www.hendersonhealth.org, or (iv) in person at (a) the emergency room, (b) any admission areas, or (c) Patient Financial Services at 1621 Front Street, Henderson, NE 68371",
      "source_id": "fap-2d90ae94fe6eb269",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2454,8 +2454,8 @@
    "accuracy": null,
    "eve_review": [
     "eligibility.discount_tiers: 0-150% at 100% is the free-care band, not a tier; skipped",
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: FPL 150% 175% 200% 250% 300% | Patients who qualify for financial assistance as Financially Indigent are eligible for financial assistance based upon t",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: by e-mail (upon patient election) by e-mailing ayost@hendersonhealth.org, (iii) by download from www.hendersonhealth.org",
+    "eligibility.discount_tiers: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 2 verbatim spans",
     "agent dropped apply.documents_required: excerpt not in source: Employment pay stubs from prior 3 months for all members of ",
     "agent judge on eligibility.discount_tiers: Quote lists the bounds (150-300%) and percents (100-20%) in separate rows, not as paired tiers. The 0% lower bound and the pairing to each percent are inferred from table layout.",
     "agent judge on eligibility.insured_patients_covered: Quote is a fragment about remaining copay, deductible, or coinsurance due from the patient. It does not explicitly state that insured patients are covered.",
@@ -2618,7 +2618,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Patients whose family income is at or above 101% of the FPL but not more than 200% of the FPL are eligible for partial financial assistance based on the specific eligibility criteria described in Addendum E.",
+     "quote": "Patients whose family income is at or above 101% of the FPL but not more than 200% of the FPL are eligible for partial financial assistance based on the specific eligibility criteria described in Addendum E. || <100% 125% 150% 175% 200% >200% 100% 80% 60% 40% 20% 0%",
      "source_id": "fap-2dd55b201ecc668e",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2645,7 +2645,7 @@
       "Is a person whose income is at or below 100% of the current Federal Poverty Level"
      ],
      "layer": "documented",
-     "quote": "Relies upon State-funded prescription programs;",
+     "quote": "Relies upon State-funded prescription programs; || Is transient, homeless, or unidentified, or who received care from a homeless clinic; || Is a person whose income is at or below 100% of the current Federal Poverty Level.",
      "source_id": "fap-2dd55b201ecc668e",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2671,7 +2671,7 @@
       "bank_statements"
      ],
      "layer": "documented",
-     "quote": "Recent tax return for ALL family members.",
+     "quote": "Recent tax return for ALL family members. || Proof of income for patient, spouse, and/or all parents of a minor child, a copy of last 2 months of payroll stubs || A copy of one bank statement.",
      "source_id": "fap-2dd55b201ecc668e",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2791,9 +2791,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: <100% 125% 150% 175% 200% >200% 100% 80% 60% 40% 20% 0%",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Is transient, homeless, or unidentified, or who received care from a homeless clinic; | Is a person whose income is at or below 100% of the current Federal Poverty Level.",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Proof of income for patient, spouse, and/or all parents of a minor child, a copy of last 2 months of payroll stubs | A copy of one bank statement.",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent dropped eligibility.insured_patients_covered: quote is not a substring of the source",
     "agent judge on programs.presumptive: Quote lists only three presumptive categories (state-funded prescriptions, homeless/transient, income at or below 100% FPL); value has nine items.",
     "agent judge on apply.form_url: Quote gives only the relative path /sites/default/files/...; the domain https://www.brodstonehealthcare.org is not in the quote.",
@@ -2849,7 +2849,7 @@
       "Eligible for Medicaid, but was not at the date of service"
      ],
      "layer": "documented",
-     "quote": "Homelessness;",
+     "quote": "Homelessness; || Deceased and has no known estate able to pay hospital debts; || Eligible for Medicaid, but was not at the date of service",
      "source_id": "fap-f63f25757ccc3466",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2964,7 +2964,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Deceased and has no known estate able to pay hospital debts; | Eligible for Medicaid, but was not at the date of service",
+    "programs.presumptive: value backed by 3 verbatim spans",
     "apply.decision_days: quote matched the source only after typography normalization",
     "agent dropped eligibility.free_care_max_fpl: quote is not a substring of the source",
     "agent dropped eligibility.discount_tiers: quote is not a substring of the source",
@@ -3066,7 +3066,7 @@
       "proof_of_income"
      ],
      "layer": "documented",
-     "quote": "Federal Tax Return (Last Filed)",
+     "quote": "Federal Tax Return (Last Filed) || 3 Months of Bank Statements (all accounts) || 1 Month of Payroll Stubs for each working member of household",
      "source_id": "fap-ed9b364aa6b58505",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3155,7 +3155,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: 3 Months of Bank Statements (all accounts) | 1 Month of Payroll Stubs for each working member of household",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent dropped apply.submit_methods: excerpt not in source: in person at patient accounts at Memorial Community Health, ",
     "agent judge on eligibility.insured_patients_covered: Quote only says patients must be Uninsured or Underinsured at or below 100% FPL; it does not state that insured patients are covered.",
     "agent judge on apply.documents_required: Quote lists only three documents; Social Security Notice and Unemployment Compensation Notice do not appear in it."
@@ -3218,7 +3218,7 @@
       "pay_stubs"
      ],
      "layer": "documented",
-     "quote": "Please attach a copy of the most current tax filing forms (1040 or 1040A)",
+     "quote": "Please attach a copy of the most current tax filing forms (1040 or 1040A) || ATTACH COPY OF PAY STUBS",
      "source_id": "fap-99b906aa1903bfac",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3310,7 +3310,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: ATTACH COPY OF PAY STUBS",
+    "apply.documents_required: value backed by 2 verbatim spans",
     "agent dropped apply.submit_methods: excerpt not in source: by mail by calling 402-372-4029, (ii) by email (upon patient",
     "agent judge on contacts.languages: Quote is only a link titled Politicas de Asistencia Financiera (Spanish title); it does not state English and Spanish as supported languages."
    ]
@@ -3381,7 +3381,7 @@
       "other"
      ],
      "layer": "documented",
-     "quote": "The verification shall consist of a copy of last year\u2019s tax return, copies of payroll check stubs and/or certified statement of income from your employer(s) for the past 3 months.",
+     "quote": "The verification shall consist of a copy of last year\u2019s tax return, copies of payroll check stubs and/or certified statement of income from your employer(s) for the past 3 months. || A personal financial statement is attached and must also be completed for all family members shown as dependents.",
      "source_id": "fap-ce292101f3065682",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3478,7 +3478,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: A personal financial statement is attached and must also be completed for all family members shown as dependents.",
+    "apply.documents_required: value backed by 2 verbatim spans",
     "agent dropped eligibility.insured_patients_covered: quote is not a substring of the source",
     "agent judge on eligibility.free_care_max_fpl: Quote gives a 125% FPL eligibility threshold for Financially Indigent status but does not state that this level receives 100% free care."
    ]
@@ -3602,7 +3602,7 @@
       "other"
      ],
      "layer": "documented",
-     "quote": "Federal Tax Return including W-2 forms for tax year ______________.",
+     "quote": "Federal Tax Return including W-2 forms for tax year ______________. || Proof of income for the 3 most recent months for guarantor and spouse || Copies of bank statements for the 3 most recent months for all accounts (checking, savings, etc.)",
      "source_id": "fap-a772ababafe47df3",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3621,7 +3621,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Completed applications must be returned to YGHCS Patient Accounts 2222 North Lincoln Avenue, York, Nebraska 68467.",
+     "quote": "Completed applications must be returned to YGHCS Patient Accounts 2222 North Lincoln Avenue, York, Nebraska 68467. || in person at (a) the emergency room, (b) any admission areas, or (c) YGHCS Patient Accounts",
      "source_id": "fap-a772ababafe47df3",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3708,8 +3708,8 @@
    "accuracy": null,
    "eve_review": [
     "eligibility.insured_patients_covered: quote matched the source only after typography normalization",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Proof of income for the 3 most recent months for guarantor and spouse | Copies of bank statements for the 3 most recent months for all accounts (checking, savings, etc.)",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: in person at (a) the emergency room, (b) any admission areas, or (c) YGHCS Patient Accounts",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 2 verbatim spans",
     "agent judge on eligibility.discount_tiers: Table gives discount at each FPL point only. It does not state band boundaries, so the exclusive/inclusive tier ranges are inferred, not stated.",
     "agent judge on eligibility.assistance_ceiling_fpl: Quote states an eligibility threshold (income at or below 200% FPL). It does not state that no assistance is offered above 200%.",
     "agent judge on eligibility.insured_patients_covered: Quote defines 'Underinsured' patients and their conditions. It does not state that insured patients are covered.",
@@ -3766,7 +3766,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Percent of Federal Poverty Guideline 150.0% 187.5% 225.0% 262.5% 300.0%",
+     "quote": "Percent of Federal Poverty Guideline 150.0% 187.5% 225.0% 262.5% 300.0% || Percent of Discount (off of AGB) 100% 80% 60% 40% 20%",
      "source_id": "fap-000fea3476aa9719",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3803,7 +3803,7 @@
       "currently eligible for Medicaid, but was not at the date of service"
      ],
      "layer": "documented",
-     "quote": "Individual is homeless;",
+     "quote": "Individual is homeless; || Individual is deceased and has no known estate able to pay hospital debts; and || Individual is currently eligible for Medicaid, but was not at the date of service",
      "source_id": "fap-000fea3476aa9719",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3822,7 +3822,7 @@
       "other"
      ],
      "layer": "documented",
-     "quote": "Federal Tax Return including W-2 forms for the previous 2 tax years.",
+     "quote": "Federal Tax Return including W-2 forms for the previous 2 tax years. || Proof of income for the 3 most recent months for guarantor and spouse || Copies of bank statements for the 3 most recent months for all accounts (checking, savings, etc)",
      "source_id": "fap-000fea3476aa9719",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3853,7 +3853,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Applying for financial assistance can be initiated by a patient requesting assistance in person, over the phone, through the mail or via the web site at www.hcmc.us.com.",
+     "quote": "Applying for financial assistance can be initiated by a patient requesting assistance in person, over the phone, through the mail or via the web site at www.hcmc.us.com. || Please return application to: 1113 Sherman Street \u00b7 Saint Paul, NE 68873 \u00b7 308.754.4421 \u00b7 fax 308.754.2313 \u00b7 www.hcmc.us.com",
      "source_id": "fap-000fea3476aa9719",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3932,10 +3932,10 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: Percent of Discount (off of AGB) 100% 80% 60% 40% 20%",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Individual is deceased and has no known estate able to pay hospital debts; and | Individual is currently eligible for Medicaid, but was not at the date of service",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Proof of income for the 3 most recent months for guarantor and spouse | Copies of bank statements for the 3 most recent months for all accounts (checking, savings, etc)",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Please return application to: 1113 Sherman Street \u00b7 Saint Paul, NE 68873 \u00b7 308.754.4421 \u00b7 fax 308.754.2313 \u00b7 www.hcmc.us",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 2 verbatim spans",
     "agent dropped contacts.phone: quote is not a substring of the source",
     "agent judge on eligibility.free_care_max_fpl: Quote says less than 150% gets 100% discount, so 150 itself is excluded; the highest percent still getting free care is strictly below 150.",
     "agent judge on apply.documents_required: Quote lists only three documents; the value adds a fourth, 'Letter of Denial from the Department of Health & Human Services', which the quote does not contain."
@@ -4053,7 +4053,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Nebraska residents, age 19 through 64, whose income is at or below 138 percent of the federal poverty level are eligible for Medicaid under the Nebraska Medicaid Expansion, Heritage Health Adult Program.",
+     "quote": "Nebraska residents, age 19 through 64, whose income is at or below 138 percent of the federal poverty level are eligible for Medicaid under the Nebraska Medicaid Expansion, Heritage Health Adult Program. || To learn more about Medicaid benefits visit www.AccessNebraska.ne.gov",
      "source_id": "web-326d807d75e6424b",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4071,7 +4071,7 @@
       "bank_statements"
      ],
      "layer": "documented",
-     "quote": "I have included current proof of income for two (2) months from all sources of earning for each person in my household (pay stubs, unemployment/SSI/Disability/SSA Statements)",
+     "quote": "I have included current proof of income for two (2) months from all sources of earning for each person in my household (pay stubs, unemployment/SSI/Disability/SSA Statements) || I have included signed Federal Income Tax returns for the most recent tax year for all applicable household members || I have included copies of bank statements for all accounts listed within this application",
      "source_id": "fap-d9073614b7887429",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4094,7 +4094,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Completed applications must be returned to: Memorial Hospital Attn: Patient Accounts 300 N. Columbia Ave. Seward, NE 68434",
+     "quote": "Completed applications must be returned to: Memorial Hospital Attn: Patient Accounts 300 N. Columbia Ave. Seward, NE 68434 || by e-mail at patient.accounts@ mhcs.us || in person at (a) the emergency department, (b) the hospital admission department",
      "source_id": "fap-f45628249ccb981a",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4169,7 +4169,7 @@
       "\ud55c\uad6d\uc5b4"
      ],
      "layer": "documented",
-     "quote": "If you speak another language, assistance services, free of charge, are available to you. Call 1-402-643-2971",
+     "quote": "If you speak another language, assistance services, free of charge, are available to you. Call 1-402-643-2971 || \u0641\u0627\u0631\u0633\u06cc [/language-assistance] || Espa\u00f1ol [/language-assistance]",
      "source_id": "web-326d807d75e6424b",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4213,10 +4213,10 @@
    "accuracy": null,
    "eve_review": [
     "eligibility.free_care_max_fpl: owner review says 175% is a discount or assistance limit, not free care; dropped; the sheet already records a 300% ceiling.",
-    "programs.state_programs: 1 more verbatim excerpt(s) supported this value: To learn more about Medicaid benefits visit www.AccessNebraska.ne.gov",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: I have included signed Federal Income Tax returns for the most recent tax year for all applicable household members | I have included copies of bank statements for all accounts listed within this application",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: by e-mail at patient.accounts@ mhcs.us | in person at (a) the emergency department, (b) the hospital admission department",
-    "contacts.languages: 2 more verbatim excerpt(s) supported this value: \u0641\u0627\u0631\u0633\u06cc [/language-assistance] | Espa\u00f1ol [/language-assistance]",
+    "programs.state_programs: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 3 verbatim spans",
+    "contacts.languages: value backed by 3 verbatim spans",
     "agent dropped programs.presumptive: quote shorter than 8 characters",
     "agent judge on eligibility.free_care_max_fpl: Quote gives the range 'FPL 0% to 175%' but does not state that care is 100% free in that range.",
     "agent judge on eligibility.assistance_ceiling_fpl: Quote says households at or below 300% FPL have eligible income; it does not say no assistance is offered above 300%.",
@@ -4314,7 +4314,7 @@
       "deceased with no estate"
      ],
      "layer": "documented",
-     "quote": "patient is homeless",
+     "quote": "patient is homeless || patient is eligible for Medicaid coverage prospectively || patient is deceased and estate search does not find any results",
      "source_id": "fap-aeabd1b66b3ee659",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4332,7 +4332,7 @@
       "bank_statements"
      ],
      "layer": "documented",
-     "quote": "W-2 forms for each member of the household",
+     "quote": "W-2 forms for each member of the household || Previous two years income tax returns for all members of the household || Three months most current employment stubs for all members of the household",
      "source_id": "fap-aeabd1b66b3ee659",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4446,8 +4446,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: patient is eligible for Medicaid coverage prospectively | patient is deceased and estate search does not find any results",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Previous two years income tax returns for all members of the household | Three months most current employment stubs for all members of the household",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent judge on eligibility.asset_test: Quote requires bank statements for household members but does not state that assets are considered."
    ]
   },
@@ -4504,7 +4504,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Patients can apply for financial assistance by completing and submitting a financial assistance application to: Patient Financial Counselor, West Holt Memorial Hospital, 406 W. Neely St., Atkinson, NE 68713.",
+     "quote": "Patients can apply for financial assistance by completing and submitting a financial assistance application to: Patient Financial Counselor, West Holt Memorial Hospital, 406 W. Neely St., Atkinson, NE 68713. || A copy of the Policy and a financial assistance application may be obtained at no charge by going to the Hospital website, www.westholtmed.org, or by visiting the Hospital Admission desk or the Patient Financial Counselor office.",
      "source_id": "fap-a2f993f5fe218e14",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4559,7 +4559,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: A copy of the Policy and a financial assistance application may be obtained at no charge by going to the Hospital websit",
+    "apply.submit_methods: value backed by 2 verbatim spans",
     "agent judge on apply.submit_methods: Quote supports mail submission, but in-person visiting is only described for obtaining the application, not for submitting it."
    ]
   },
@@ -4702,7 +4702,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Completed applications must be returned to Providence Medical Center Attn: Patient Financial Services 1200 Providence Rd Wayne, NE 68787.",
+     "quote": "Completed applications must be returned to Providence Medical Center Attn: Patient Financial Services 1200 Providence Rd Wayne, NE 68787. || patient financial services at 1200 Providence Rd Wayne, NE 68787 || e-mailing patient.accounts@providencemedical.com",
      "source_id": "fap-00d046a8e374c32f",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4757,7 +4757,7 @@
       "Spanish"
      ],
      "layer": "documented",
-     "quote": "Financial Assistance Application- English",
+     "quote": "Financial Assistance Application- English || Financial Assistance Application- Spanish",
      "source_id": "fap-00d046a8e374c32f",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4800,8 +4800,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: patient financial services at 1200 Providence Rd Wayne, NE 68787 | e-mailing patient.accounts@providencemedical.com",
-    "contacts.languages: 1 more verbatim excerpt(s) supported this value: Financial Assistance Application- Spanish",
+    "apply.submit_methods: value backed by 3 verbatim spans",
+    "contacts.languages: value backed by 2 verbatim spans",
     "agent judge on eligibility.assistance_ceiling_fpl: Quote says no discount is allowed at 301% and above; it does not state that no assistance of any kind is offered above 300%.",
     "agent judge on eligibility.insured_patients_covered: Quote covers underinsured or uninsured patients; it does not state that insured patients are covered.",
     "agent judge on programs.presumptive: Quote also names households with no income and patients qualifying for other programs; the value omits these categories.",
@@ -4926,7 +4926,7 @@
       "tax_return"
      ],
      "layer": "documented",
-     "quote": "Last 3 months of paycheck stubs or if self-employed, a profit and loss statement for last 3 months",
+     "quote": "Last 3 months of paycheck stubs or if self-employed, a profit and loss statement for last 3 months || Most recent Federal income Tax Return with all supporting documents || Last 3 months of bank statements for checking, savings and health savings accounts",
      "source_id": "fap-50b3f4378bc72599",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4945,7 +4945,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Completed applications must be returned to: Patient Financial Services Osmond General Hospital 402 N. Maple St. Osmond, NE 68765",
+     "quote": "Completed applications must be returned to: Patient Financial Services Osmond General Hospital 402 N. Maple St. Osmond, NE 68765 || in person at patient financial services at Osmond General Hospital 402 N. Maple St. Osmond, NE 68765",
      "source_id": "fap-f9ed9a4118a77eb7",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5032,8 +5032,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Most recent Federal income Tax Return with all supporting documents | Last 3 months of bank statements for checking, savings and health savings accounts",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: in person at patient financial services at Osmond General Hospital 402 N. Maple St. Osmond, NE 68765",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 2 verbatim spans",
     "agent judge on eligibility.free_care_max_fpl: Quote is a discount table header listing 100% to 50% discount levels and FPL columns; it does not plainly state that free care applies up to 100% FPL.",
     "agent judge on eligibility.discount_tiers: Quote lists discount levels and FPL column values but does not plainly pair each tier's lower bound, upper bound, and percent as the recorded tiers do.",
     "agent judge on apply.documents_required: Quote names only 3 of the 11 recorded documents; the other eight items are not in the quote.",
@@ -5083,7 +5083,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Household Income as compared to FPL 100% 125% 150% 175% 200%",
+     "quote": "Household Income as compared to FPL 100% 125% 150% 175% 200% || Discount applied 100% 75% 50% 25% 0%",
      "source_id": "fap-50e0027d7b1b4b50",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5127,7 +5127,7 @@
       "medicaid_denial"
      ],
      "layer": "documented",
-     "quote": "Most recent W-2s for all members of the patient's household",
+     "quote": "Most recent W-2s for all members of the patient's household || The most recent IRS tax returns of all members of the patient's household || Pay stubs for all members of the patient's household (3 months is preferred)",
      "source_id": "fap-50e0027d7b1b4b50",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5150,7 +5150,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Completed applications must be returned to Patient Accounting Office at 1305 Highway 6&34 Cambridge Nebraska 69022.",
+     "quote": "Completed applications must be returned to Patient Accounting Office at 1305 Highway 6&34 Cambridge Nebraska 69022. || by e-mail by e-mailing FinancialAid@trivalleyhealth.com (iii) by download from www.trivalleyhealth.com, or (iv) in person at (a) the emergency room, (b) any admission areas",
      "source_id": "fap-50e0027d7b1b4b50",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5220,9 +5220,9 @@
    "accuracy": null,
    "eve_review": [
     "eligibility.discount_tiers: 175-200% at 0% is no discount; skipped",
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: Discount applied 100% 75% 50% 25% 0%",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: The most recent IRS tax returns of all members of the patient's household | Pay stubs for all members of the patient's household (3 months is preferred)",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: by e-mail by e-mailing FinancialAid@trivalleyhealth.com (iii) by download from www.trivalleyhealth.com, or (iv) in perso",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 2 verbatim spans",
     "agent dropped eligibility.insured_patients_covered: quote is not a substring of the source",
     "agent judge on programs.presumptive: Quote says hospital may provide assistance without an application, which is presumptive eligibility; the recorded value is an empty list, not a description of this.",
     "agent judge on apply.documents_required: Quote lists only W-2s, tax returns, and pay stubs; value adds bank statements and Medicaid denial letter not in the quote.",
@@ -5287,7 +5287,7 @@
       "Medicaid spend-down"
      ],
      "layer": "documented",
-     "quote": "2. Homeless or received care from a homeless clinic;",
+     "quote": "2. Homeless or received care from a homeless clinic; || 3. Participation in Women, Infants and Children programs (WIC); || 6. Eligibility for other state or local assistance programs that are unfunded (e.g., Medicaid spend-down)",
      "source_id": "fap-6a970c4f7f69ac83",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5417,7 +5417,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: 3. Participation in Women, Infants and Children programs (WIC); | 6. Eligibility for other state or local assistance programs that are unfunded (e.g., Medicaid spend-down)",
+    "programs.presumptive: value backed by 3 verbatim spans",
     "agent judge on eligibility.insured_patients_covered: Quote addresses charging limits (AGB) for approved applicants, not that insured patients are covered; the value's meaning is not stated as a coverage rule."
    ]
   },
@@ -5489,7 +5489,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Select one of the following ways to apply: 1) Phone at 855.632.7633 2) Online at http://http://dhhs.ne.gov/children_family_services/accessnebraska/Pages/accessnebraska_index.aspx",
+     "quote": "Select one of the following ways to apply: 1) Phone at 855.632.7633 2) Online at http://http://dhhs.ne.gov/children_family_services/accessnebraska/Pages/accessnebraska_index.aspx || 3) In person at your local Department of Health and Human Services.",
      "source_id": "fap-0f1610f08e2bd40e",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5543,7 +5543,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Apply by completing an application over the phone, in person, online or via mailed application.",
+     "quote": "Apply by completing an application over the phone, in person, online or via mailed application. || Phone: 308-254-8778 || In Person at: Sidney Regional Medical Center 1000 Pole Creek Crossing Sidney NE 69162",
      "source_id": "fap-b145a031cc077d3f",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5616,8 +5616,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.state_programs: 1 more verbatim excerpt(s) supported this value: 3) In person at your local Department of Health and Human Services.",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Phone: 308-254-8778 | In Person at: Sidney Regional Medical Center 1000 Pole Creek Crossing Sidney NE 69162",
+    "programs.state_programs: value backed by 2 verbatim spans",
+    "apply.submit_methods: value backed by 3 verbatim spans",
     "agent judge on apply.documents_required: Quote says the Medicaid denial letter is only something that 'may' be included, not a required document.",
     "agent judge on apply.submit_methods: Quote supports phone, in person, online and mail, but gives no online URL; the online detail URL is not in this quote.",
     "agent judge on contacts.languages: Quote names no languages; it only says a language translation line is available, which is a service, not a language."
@@ -5671,7 +5671,7 @@
       "homeless"
      ],
      "layer": "documented",
-     "quote": "Patient is deceased with no known estate.",
+     "quote": "Patient is deceased with no known estate. || Patient is qualified for Medicaid in a state other than Iowa or Nebraska. || Patient is homeless or family/friends provide documented information establishing the patient\u2019s inability to pay.",
      "source_id": "fap-6c8d79fdd165f0bf",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5808,7 +5808,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Patient is qualified for Medicaid in a state other than Iowa or Nebraska. | Patient is homeless or family/friends provide documented information establishing the patient\u2019s inability to pay."
+    "programs.presumptive: value backed by 3 verbatim spans"
    ]
   },
   {
@@ -5889,7 +5889,7 @@
       "pay_stubs"
      ],
      "layer": "documented",
-     "quote": "Federal and State Tax returns for the most recently completed tax year",
+     "quote": "Federal and State Tax returns for the most recently completed tax year || Proof of current year income for the most recent 3 months from ALL sources of earnings for each person in the household (pay stubs, SSI/SSA/Disability statements, bank statements, etc.)",
      "source_id": "fap-5f140314a24434d7",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -6007,7 +6007,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: Proof of current year income for the most recent 3 months from ALL sources of earnings for each person in the household ",
+    "apply.documents_required: value backed by 2 verbatim spans",
     "agent judge on eligibility.free_care_max_fpl: The quote says Financially Indigent patients get 100% assistance but never states an FPL percentage, so 200 is not stated.",
     "agent judge on eligibility.insured_patients_covered: Quote only defines 'Underinsured' patients; it does not state that insured patients are covered, so true is not stated."
    ]
@@ -6251,7 +6251,7 @@
       "other"
      ],
      "layer": "documented",
-     "quote": "1. Copies of last 3 months paystubs for all employers. If self-employed, statement of 3 months income/expenses.",
+     "quote": "1. Copies of last 3 months paystubs for all employers. If self-employed, statement of 3 months income/expenses. || 4. Most current complete bank statement (includes checking, savings, CD, money market) 5. Most recently completed tax return. || 7. Letter of determination from Health and Human Services. You MUST apply for assistance with the Department of Health and Human Services.",
      "source_id": "fap-87d9bd73d0879f26",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -6278,7 +6278,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Applications can be downloaded from the Beatrice Community Hospital website:",
+     "quote": "Applications can be downloaded from the Beatrice Community Hospital website: || Apply in person by visiting Patient Financial Services at BCHHC || Request an application by mail at BCHHC Box 278 Beatrice, NE 68310",
      "source_id": "fap-87d9bd73d0879f26",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -6347,8 +6347,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: 4. Most current complete bank statement (includes checking, savings, CD, money market) 5. Most recently completed tax re | 7. Letter of determination from Health and Human Services. You MUST apply for assistance with the Department of Health a",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Apply in person by visiting Patient Financial Services at BCHHC | Request an application by mail at BCHHC Box 278 Beatrice, NE 68310",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 3 verbatim spans",
     "agent dropped apply.form_url: quote is not a substring of the source",
     "agent judge on apply.documents_required: Quote covers only items 1, 4, 5 and 7. Value adds items 2, 3, 6 and 8 (unemployment/work comp, child support, Social Security, EBT card), which the quote does not show.",
     "agent judge on apply.submit_methods: Quote shows online, in person and mail only. The phone method (402-228-3344 application request) is not stated in the application-method quote."
@@ -6431,7 +6431,7 @@
       "Collection agency utilized by the Hospital has verified the patient has no assets and/or no income and has recommended the account for financial assistance."
      ],
      "layer": "documented",
-     "quote": "Patient is homeless with no dependents",
+     "quote": "Patient is homeless with no dependents || Patient is eligible for supplemental nutrition assistance || Collection agency utilized by the Hospital has verified the patient has no assets and/or no income and has recommended the account for financial assistance.",
      "source_id": "fap-d53f75c33d44666a",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -6458,7 +6458,7 @@
       "pay_stubs"
      ],
      "layer": "documented",
-     "quote": "W-2s from prior 12 months for all members of the patient's household",
+     "quote": "W-2s from prior 12 months for all members of the patient's household || The most recent statements for all financial accounts owned by the patient or members of the patient's household || The two most recent pay stubs",
      "source_id": "fap-d53f75c33d44666a",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -6481,7 +6481,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Completed applications must be returned to Jennie M. Melham Memorial Medical Center, PO Box 250, Broken Bow, Ne 68822, Attn: Patient Accounts",
+     "quote": "Completed applications must be returned to Jennie M. Melham Memorial Medical Center, PO Box 250, Broken Bow, Ne 68822, Attn: Patient Accounts || by e-mail (upon patient election) by e-mailing Jessica.fangmeyer@melham.org || in person at (a) the emergency room,",
      "source_id": "fap-d53f75c33d44666a",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -6567,9 +6567,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Patient is eligible for supplemental nutrition assistance | Collection agency utilized by the Hospital has verified the patient has no assets and/or no income and has recommended t",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: The most recent statements for all financial accounts owned by the patient or members of the patient's household | The two most recent pay stubs",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: by e-mail (upon patient election) by e-mailing Jessica.fangmeyer@melham.org | in person at (a) the emergency room,",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 3 verbatim spans",
     "agent judge on eligibility.insured_patients_covered: Quote only defines 'Underinsured' as limited coverage that excludes hospital services; it does not state insured patients are covered by assistance.",
     "agent judge on programs.presumptive: Quote lists only 3 presumptive criteria; the value adds two more (low-income housing with confirmation, community clinic referral) not in the quote.",
     "agent judge on apply.documents_required: Quote lists only 3 documents; the value adds tax returns, a 'completed in full' requirement, and a Medicaid letter not in the quote.",

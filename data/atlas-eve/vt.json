@@ -1276,7 +1276,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "For insured patients whose household income is between 250% FPL and 300% FPL, we will discount all out-of-pocket costs for emergency and medically necessary services rendered by 80%.",
+     "quote": "For insured patients whose household income is between 250% FPL and 300% FPL, we will discount all out-of-pocket costs for emergency and medically necessary services rendered by 80%. || For insured patients whose household income is between 300% FPL and 350% FPL, we will discount all out-of-pocket costs for emergency and medically necessary services rendered by 60%. || For insured patients whose household income is between 350% FPL and 400% FPL, we will discount all out-of-pocket costs for emergency and medically necessary services rendered by 40%.",
      "source_id": "fap-443bcc0573a7fdbd",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1316,7 +1316,7 @@
       "Incarcerated with no health care coverage"
      ],
      "layer": "documented",
-     "quote": "Eligibility for other state or local assistance programs that are unfunded (e.g., Medicaid spend-down).",
+     "quote": "Eligibility for other state or local assistance programs that are unfunded (e.g., Medicaid spend-down). || Supplemental Security Income (SSI) eligibility. \u2022 Food Stamp eligibility. \u2022 Fuel assistance eligibility. \u2022 Participation in Women, Infants and Children programs (WIC); or \u2022 Patients are incarcerated with no health care coverage.",
      "source_id": "fap-443bcc0573a7fdbd",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1342,7 +1342,7 @@
       "proof_of_income"
      ],
      "layer": "documented",
-     "quote": "Please provide a copy of your most recent tax filing.",
+     "quote": "Please provide a copy of your most recent tax filing. || If you cannot provide a tax return, please provide alternative documentation such as paystubs, SS Benefit statement, pension benefit statement, bank statement, profit & loss statement, documentation of public assistance, letter from an employer or a self-attestation letter. || If you are unemployed and there is no income coming into the household a written letter explaining is required.",
      "source_id": "fap-6195d4752cef29d6",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1357,7 +1357,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Submit the form and required financial items to our Resource Advocate",
+     "quote": "Submit the form and required financial items to our Resource Advocate || Jocelyne Smith, CAC Patient Resource Advocate Grace Cottage P.O. Box 216 Townshend, VT 05353",
      "source_id": "web-8dff25a919cacf6b",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1436,10 +1436,10 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: For insured patients whose household income is between 300% FPL and 350% FPL, we will discount all out-of-pocket costs f | For insured patients whose household income is between 350% FPL and 400% FPL, we will discount all out-of-pocket costs f",
-    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: Supplemental Security Income (SSI) eligibility. \u2022 Food Stamp eligibility. \u2022 Fuel assistance eligibility. \u2022 Participation",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: If you cannot provide a tax return, please provide alternative documentation such as paystubs, SS Benefit statement, pen | If you are unemployed and there is no income coming into the household a written letter explaining is required.",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Jocelyne Smith, CAC Patient Resource Advocate Grace Cottage P.O. Box 216 Townshend, VT 05353",
+    "eligibility.discount_tiers: value backed by 3 verbatim spans",
+    "programs.presumptive: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 2 verbatim spans",
     "agent dropped eligibility.residency: judge: Quote only says the patient must be a Vermont resident at time of service; the living/working/school, undocumented and housing details are not in it."
    ]
   },
@@ -1533,7 +1533,7 @@
       "social_security_letter"
      ],
      "layer": "documented",
-     "quote": "Most recently filed tax return (IRS form 1040)",
+     "quote": "Most recently filed tax return (IRS form 1040) || Paystubs from the past 30 days || Copy of recent Bank Statement(s)",
      "source_id": "fap-e07ca50f30bacf87",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1556,7 +1556,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Please complete the following information and return to any Gifford Health Care location",
+     "quote": "Please complete the following information and return to any Gifford Health Care location || Mail to: Gifford Health Care, PO Box 2000, Attn: Health Connections, Randolph, VT 05060 or || Email to HealthConnect@GiffordHealthCare.Org.",
      "source_id": "fap-e07ca50f30bacf87",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1627,8 +1627,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Paystubs from the past 30 days | Copy of recent Bank Statement(s)",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Mail to: Gifford Health Care, PO Box 2000, Attn: Health Connections, Randolph, VT 05060 or | Email to HealthConnect@GiffordHealthCare.Org.",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 3 verbatim spans",
     "agent dropped eligibility.discount_tiers: quote is not a substring of the source",
     "agent judge on eligibility.free_care_max_fpl: The quote is a benefits table fragment with no FPL percentage; it does not state 150.",
     "agent judge on eligibility.assistance_ceiling_fpl: The quote is the same table fragment with no FPL percentage; it does not state 200 or any assistance ceiling.",
@@ -2690,7 +2690,7 @@
       "bank_statements"
      ],
      "layer": "documented",
-     "quote": "A complete copy of the most recent federal or state income tax return, including all supporting schedules.",
+     "quote": "A complete copy of the most recent federal or state income tax return, including all supporting schedules. || such as two recent consecutive pay stubs, statement of unemployment benefits or workers compensation benefits, statement of any public assistance, Social Security benefit statement || Two recent, consecutive monthly statements for all bank accounts or investment accounts held by any member of the household.",
      "source_id": "web-d04b6c920ff16b8f",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2803,7 +2803,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: such as two recent consecutive pay stubs, statement of unemployment benefits or workers compensation benefits, statement | Two recent, consecutive monthly statements for all bank accounts or investment accounts held by any member of the househ",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent judge on programs.state_programs: Quote names Vermont Health Connect only in a list. It says assistance is given 'whenever possible', but the value's how_to_apply says the hospital 'will assist all patients', dropping that qualifier."
    ]
   },

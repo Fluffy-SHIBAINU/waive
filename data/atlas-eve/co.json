@@ -43,7 +43,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "> 250% - 300% FPL 75% discount off AGB 75% discount off BAI",
+     "quote": "> 250% - 300% FPL 75% discount off AGB 75% discount off BAI || > 300% - 400% FPL 50% discount off AGB 50% discount off BAI",
      "source_id": "fap-51370475301f62de",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -117,7 +117,7 @@
       "bank_statements"
      ],
      "layer": "documented",
-     "quote": "Prior year income tax returns,",
+     "quote": "Prior year income tax returns, || 3 most recent pay stubs; and/or || 3 most recent savings and checking accounts statements.",
      "source_id": "fap-51370475301f62de",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -219,9 +219,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: > 300% - 400% FPL 50% discount off AGB 50% discount off BAI",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
     "eligibility.asset_test: quote matched the source only after typography normalization",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: 3 most recent pay stubs; and/or | 3 most recent savings and checking accounts statements.",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent dropped contacts.languages: quote is not a substring of the source"
    ]
   },
@@ -408,7 +408,7 @@
       "bankruptcy"
      ],
      "layer": "documented",
-     "quote": "Verified resident address of a shelter/homeless, without signed financial assistance application on file",
+     "quote": "Verified resident address of a shelter/homeless, without signed financial assistance application on file || Verified \u201chomeless\u201d or \u201ctransient\u201d status, without a signed financial assistance application on file || Account is identified in official bankruptcy and there are no estate assets",
      "source_id": "fap-127bd5b8667e7fa8",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -426,7 +426,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Required items for application include: CICP/MISS - All household members social security numbers, dates of birth, and full legal names",
+     "quote": "Required items for application include: CICP/MISS - All household members social security numbers, dates of birth, and full legal names || Medicaid - All household members birth certificate or passport - State issued ID with current address",
      "source_id": "fap-127bd5b8667e7fa8",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -445,7 +445,7 @@
       "medicaid_denial"
      ],
      "layer": "documented",
-     "quote": "All household members social security numbers, dates of birth, and full legal names (i.e., Driver\u2019s Licenses, Birth Certificates, Passports)",
+     "quote": "All household members social security numbers, dates of birth, and full legal names (i.e., Driver\u2019s Licenses, Birth Certificates, Passports) || Cards or copies of cards for any current health insurance || Current bank account statements for all accounts - Copy of Medicaid Denial Letter",
      "source_id": "fap-127bd5b8667e7fa8",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -529,9 +529,9 @@
     "eligibility.free_care_max_fpl: 40.9% FPL is below the poverty line; left for review, not recorded",
     "eligibility.free_care_max_fpl: owner review: discount, not free care.",
     "eligibility.discount_tiers: 40.9-250% at 100% is the free-care band, not a tier; skipped",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Verified \u201chomeless\u201d or \u201ctransient\u201d status, without a signed financial assistance application on file | Account is identified in official bankruptcy and there are no estate assets",
-    "programs.state_programs: 1 more verbatim excerpt(s) supported this value: Medicaid - All household members birth certificate or passport - State issued ID with current address",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Cards or copies of cards for any current health insurance | Current bank account statements for all accounts - Copy of Medicaid Denial Letter",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "programs.state_programs: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent judge on eligibility.discount_tiers: Quote gives a presumptive eligibility band up to 250% FPL at amounts generally billed, not a 100% discount tier from 40.9% to 250%.",
     "agent judge on programs.presumptive: Quote lists shelter/homeless, homeless or transient, and bankruptcy only; Medicaid is not listed as presumptive in the quote.",
     "agent judge on programs.state_programs: Quote gives CICP and Medicaid document items but does not mention the 8 weeks of proof of income in the value.",
@@ -617,7 +617,7 @@
       "proof_of_income"
      ],
      "layer": "documented",
-     "quote": "Income Tax Return",
+     "quote": "Income Tax Return || IRS form W-2 || Paycheck stub",
      "source_id": "fap-659fb69c277ab381",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -636,7 +636,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Contact the hospital financial counselor",
+     "quote": "Contact the hospital financial counselor || Visit the SLV Health website at Hospital Discounted Care | San Luis Valley Health to obtain a copy of the FAA.",
      "source_id": "fap-659fb69c277ab381",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -701,8 +701,8 @@
    "accuracy": null,
    "eve_review": [
     "programs.state_programs: quote matched the source only after typography normalization",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: IRS form W-2 | Paycheck stub",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Visit the SLV Health website at Hospital Discounted Care | San Luis Valley Health to obtain a copy of the FAA.",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 2 verbatim spans",
     "agent judge on programs.state_programs: Quote only mentions HDC card following State of Colorado application; it does not name the program or give how to apply as recorded.",
     "agent judge on apply.documents_required: Quote lists only three documents (Income Tax Return, W-2, Paycheck stub); value adds bank statements and signed attestation not in the quote.",
     "agent judge on apply.submit_methods: Quote gives contact the financial counselor and a website for the FAA; it does not say the website method is 'online' as kind, and the value is only partially aligned.",
@@ -752,7 +752,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Poudre Valley Hospital 28% 91% 81% 72% 72%",
+     "quote": "Poudre Valley Hospital 28% 91% 81% 72% 72% || Patients approved for Financial Assistance with an annual Family Income between 251% and 400% of FPL guidelines will receive a discount on gross charges as outlined in the table above.",
      "source_id": "fap-9ce27002800cf17b",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -827,7 +827,7 @@
       "social_security_letter"
      ],
      "layer": "documented",
-     "quote": "UCHealth requires an applicant to submit at least one of the following acceptable forms of Family Income verification: a. Most recent month's paycheck stubs, wage record, or letter from their employer stating their salary or hourly wage and usual number of hours worked per pay period.",
+     "quote": "UCHealth requires an applicant to submit at least one of the following acceptable forms of Family Income verification: a. Most recent month's paycheck stubs, wage record, or letter from their employer stating their salary or hourly wage and usual number of hours worked per pay period. || Colorado ID || ii. Pay stub with Colorado home address listed",
      "source_id": "fap-9ce27002800cf17b",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -956,8 +956,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: Patients approved for Financial Assistance with an annual Family Income between 251% and 400% of FPL guidelines will rec",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Colorado ID | ii. Pay stub with Colorado home address listed",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent dropped eligibility.insured_patients_covered: quote is not a substring of the source",
     "agent judge on eligibility.discount_tiers: Quote gives only the 251%-400% range and says discounts are per a table; the specific 91%/81%/72% bounds and percents are not stated in the quote itself, and the 28%/72% text is garbled.",
     "agent judge on apply.documents_required: Quote lists only pay stubs/wage record as one option and then mentions Colorado ID and pay stub address; the other listed documents (bank statements, tax return, W-2, etc.) are not in the quote."
@@ -1135,7 +1135,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "251-299% 10% of charges 10% of charges 25% of charges",
+     "quote": "251-299% 10% of charges 10% of charges 25% of charges || 300-399% 20% of charges 20% of charges 35% of charges",
      "source_id": "web-cdc2bb5c62f6aebe",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1229,7 +1229,7 @@
    "accuracy": null,
    "eve_review": [
     "eligibility.free_care_max_fpl: 250% is Colorado Hospital Discounted Care, recorded under programs.state_programs instead of the free-care line",
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: 300-399% 20% of charges 20% of charges 35% of charges",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
     "agent dropped contacts.languages: quote is not a substring of the source",
     "agent judge on eligibility.free_care_max_fpl: Quote gives a 0-250% range with '$0 copay per visit' but never says 100% free care; the copay wording does not state free care.",
     "agent judge on eligibility.discount_tiers: Bounds and 10%/20% tiers appear, but the quote also lists conflicting percents (25% and 35%) for the same tiers, so the tier percents are not clearly stated.",
@@ -1371,7 +1371,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Patients approved for Financial Assistance with an annual Family Income between 251% and 400% of FPL guidelines will receive a discount on gross charges as outlined in Appendix A.",
+     "quote": "Patients approved for Financial Assistance with an annual Family Income between 251% and 400% of FPL guidelines will receive a discount on gross charges as outlined in Appendix A. || Parkview Medical Center Inc. 14% 95% 91% 86% 86%",
      "source_id": "fap-9ce27002800cf17b",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1421,7 +1421,7 @@
       "Special Supplemental Nutrition Program for Women, Infants, and Children (WIC)"
      ],
      "layer": "documented",
-     "quote": "A patient is deceased with no estate on file;",
+     "quote": "A patient is deceased with no estate on file; || A patient is documented as homeless; or || Social Security ii. Unemployment benefits iii. Food stamps iv. Special Supplemental Nutrition Program for Women, Infants, and Children (WIC)",
      "source_id": "fap-9ce27002800cf17b",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1441,7 +1441,7 @@
       "social_security_letter"
      ],
      "layer": "documented",
-     "quote": "Most recent month's paycheck stubs, wage record, or letter from their employer stating their salary or hourly wage and usual number of hours worked per pay period.",
+     "quote": "Most recent month's paycheck stubs, wage record, or letter from their employer stating their salary or hourly wage and usual number of hours worked per pay period. || Most recent bank statement from all banking or credit union institutions || The previous year's tax return",
      "source_id": "fap-9ce27002800cf17b",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1570,9 +1570,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: Parkview Medical Center Inc. 14% 95% 91% 86% 86%",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: A patient is documented as homeless; or | Social Security ii. Unemployment benefits iii. Food stamps iv. Special Supplemental Nutrition Program for Women, Infants",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Most recent bank statement from all banking or credit union institutions | The previous year's tax return"
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans"
    ]
   },
   {
@@ -1682,7 +1682,7 @@
       "social_security_letter"
      ],
      "layer": "documented",
-     "quote": "Proof of address (identification card, driver\u2019s license, rental agreement, bank statement or utility bill)",
+     "quote": "Proof of address (identification card, driver\u2019s license, rental agreement, bank statement or utility bill) || Employment income from all working non-student adults ages 18 and older. Please provide a copy of last month\u2019s paycheck stubs or a letter from employer stating gross income earned for last month. || Unearned income for all household members: Social Security income, either SSI or SSDI",
      "source_id": "fap-b1dcf25e2ed33a9c",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1777,7 +1777,7 @@
    "eve_review": [
     "eligibility.discount_tiers: 0-250% at 100% is the free-care band, not a tier; skipped",
     "eligibility.discount_tiers: 250-350% at 0% is no discount; skipped",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Employment income from all working non-student adults ages 18 and older. Please provide a copy of last month\u2019s paycheck  | Unearned income for all household members: Social Security income, either SSI or SSDI",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent judge on eligibility.discount_tiers: Quote gives the 250% and 350% bounds but states no discount percentages. The 100% and 0% values are not in the quote.",
     "agent judge on eligibility.assistance_ceiling_fpl: Quote is only the fragment 'FPL over 350%'. It does not say assistance is withheld above 350% FPL.",
     "agent judge on programs.state_programs: Quote names HB 21-1198 and hospital discounted care, but the how_to_apply text about who must be screened is not in the quote.",
@@ -1823,7 +1823,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "> 250% - 300% FPL 75% discount off AGB 75% discount off BAI",
+     "quote": "> 250% - 300% FPL 75% discount off AGB 75% discount off BAI || > 300% - 400% FPL 50% discount off AGB 50% discount off BAI",
      "source_id": "fap-51370475301f62de",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1897,7 +1897,7 @@
       "bank_statements"
      ],
      "layer": "documented",
-     "quote": "Prior year income tax returns,",
+     "quote": "Prior year income tax returns, || 3 most recent pay stubs; and/or || 3 most recent savings and checking accounts statements.",
      "source_id": "fap-51370475301f62de",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1988,8 +1988,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: > 300% - 400% FPL 50% discount off AGB 50% discount off BAI",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: 3 most recent pay stubs; and/or | 3 most recent savings and checking accounts statements.",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent dropped apply.submit_methods: excerpt not in source: Banner Health c/o PBM PO Box 743711, Los Angeles, CA 90074-3",
     "agent judge on programs.presumptive: Quote describes enrolling in Medicaid within 12 months after service, a retroactive enrollment condition; it does not describe presumptive eligibility.",
     "agent judge on programs.state_programs: Quote says CICP ended July 1, 2025, but gives no application method, so it does not support how_to_apply.",
@@ -2295,7 +2295,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "ONLINE \u2013 Yampa Valley Medical Center financial assistance policy is available online at the following website: https://www.uchealthbillpay.org.",
+     "quote": "ONLINE \u2013 Yampa Valley Medical Center financial assistance policy is available online at the following website: https://www.uchealthbillpay.org. || CALL \u2013 (970) 879-1322. Customer service is available Monday through Friday 8:00am to 4:30 pm || VISIT \u2013 The Financial Counseling office is located at 1024 Central Park Dr., Steamboat Springs, CO 80487",
      "source_id": "fap-bdc69568ca3a5eaf",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2401,7 +2401,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: CALL \u2013 (970) 879-1322. Customer service is available Monday through Friday 8:00am to 4:30 pm | VISIT \u2013 The Financial Counseling office is located at 1024 Central Park Dr., Steamboat Springs, CO 80487",
+    "apply.submit_methods: value backed by 3 verbatim spans",
     "agent judge on eligibility.assistance_ceiling_fpl: Quote gives an eligibility limit (income not more than 400% FPL) but does not say no assistance of any kind is offered above 400%.",
     "agent judge on eligibility.insured_patients_covered: Quote is a truncated fragment ('Uninsured or under-insured AND') and does not state that insured patients are covered.",
     "agent judge on programs.state_programs: Quote names CICP but only says patients qualifying for programs must comply with requirements; it does not describe how to apply.",
@@ -2708,7 +2708,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Public health coverage and discount programs, like Health First Colorado, Child Health Plan Plus (CHP+), Emergency Medicaid, and hospital discounts.",
+     "quote": "Public health coverage and discount programs, like Health First Colorado, Child Health Plan Plus (CHP+), Emergency Medicaid, and hospital discounts. || See if you can get Health First Colorado (Colorado Medicaid).",
      "source_id": "web-ba93804f189240a8",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2735,7 +2735,7 @@
       "proof_of_income"
      ],
      "layer": "documented",
-     "quote": "State Income Tax Return for the most current year \u2022 Supporting W-2 \u2022 Supporting 1099's \u2022 Copies of all bank statements for last 3 months \u2022 Most recent bank and broker statements listed in the Federal Tax Return \u2022 Current credit report",
+     "quote": "State Income Tax Return for the most current year \u2022 Supporting W-2 \u2022 Supporting 1099's \u2022 Copies of all bank statements for last 3 months \u2022 Most recent bank and broker statements listed in the Federal Tax Return \u2022 Current credit report || Most Recent Employer Pay Stubs \u2022 Written documentation from income sources \u2022 Proof of Medicaid Eligibility",
      "source_id": "fap-8e28c6eb7e259082",
      "checked_on": "2026-10-23",
      "confidence": 0.8,
@@ -2808,8 +2808,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.state_programs: 1 more verbatim excerpt(s) supported this value: See if you can get Health First Colorado (Colorado Medicaid).",
-    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: Most Recent Employer Pay Stubs \u2022 Written documentation from income sources \u2022 Proof of Medicaid Eligibility",
+    "programs.state_programs: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 2 verbatim spans",
     "apply.documents_required: quote matched the source only after typography normalization",
     "agent dropped eligibility.free_care_max_fpl: quote is not a substring of the source",
     "agent judge on eligibility.discount_tiers: Quote gives FPL bands and income-based balance caps (3% and 4% of income) but no discount_percent values of 97 or 96.",
@@ -2859,7 +2859,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "3 200% to 299% 80%",
+     "quote": "3 200% to 299% 80% || 4 300% to 399% 50% || 5 400% to 500% 40%",
      "source_id": "fap-97679ad2c51651fb",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2906,7 +2906,7 @@
       "deceased with no estate"
      ],
      "layer": "documented",
-     "quote": "CICP eligible patients that receive services at a non-CICP participating VVH Physician Practices will receive the applicable FAP discount",
+     "quote": "CICP eligible patients that receive services at a non-CICP participating VVH Physician Practices will receive the applicable FAP discount || Patient is deceased and has left no estate.",
      "source_id": "fap-97679ad2c51651fb",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2940,7 +2940,7 @@
       "tax_return"
      ],
      "layer": "documented",
-     "quote": "1. Healthcare Financial Assistance Application",
+     "quote": "1. Healthcare Financial Assistance Application || 3. Income Verification || 6. Verification of Assets:",
      "source_id": "fap-4ca0d908c4e3b173",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3052,9 +3052,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: 4 300% to 399% 50% | 5 400% to 500% 40%",
-    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: Patient is deceased and has left no estate.",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: 3. Income Verification | 6. Verification of Assets:",
+    "eligibility.discount_tiers: value backed by 3 verbatim spans",
+    "programs.presumptive: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent judge on eligibility.free_care_max_fpl: The quote is a cryptic fragment \"2 < 199% 100%\". It uses '<' rather than stating plainly that up to 199% FPL receives 100% free care.",
     "agent judge on eligibility.discount_tiers: Quote tiers start at 200%, not the value's exclusive 199% lower bound. The value's bounds (199, 299, 299, 399, 399, 500) do not match the quoted bounds (200-299, 300-399, 400-500).",
     "agent judge on eligibility.insured_patients_covered: Quote says co-pay and deductible balances 'may be eligible unless precluded by law or contractual agreements'. This is hedged and conditional, not a plain statement that insured patients are covered.",
@@ -3103,7 +3103,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "200% - 300% FPL 75% discount off AGB 75% discount off BAI",
+     "quote": "200% - 300% FPL 75% discount off AGB 75% discount off BAI || > 300% - 400% FPL 50% discount off AGB 50% discount off BAI",
      "source_id": "fap-51370475301f62de",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3169,7 +3169,7 @@
       "bank_statements"
      ],
      "layer": "documented",
-     "quote": "Prior year income tax returns,",
+     "quote": "Prior year income tax returns, || 3 most recent pay stubs; and/or || 3 most recent savings and checking accounts statements.",
      "source_id": "fap-51370475301f62de",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3192,7 +3192,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Patients can obtain a financial assistance application in person, at a Hospital or by accessing it from the BH website.",
+     "quote": "Patients can obtain a financial assistance application in person, at a Hospital or by accessing it from the BH website. || Patients can also request an application to be mailed to the patient by calling 1-888-264-2127. || All applications for financial assistance must be either physically delivered to the Hospital, mailed to the address provided on the application form, or submitted per instructions contained on the BH website.",
      "source_id": "fap-51370475301f62de",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3237,9 +3237,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: > 300% - 400% FPL 50% discount off AGB 50% discount off BAI",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: 3 most recent pay stubs; and/or | 3 most recent savings and checking accounts statements.",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Patients can also request an application to be mailed to the patient by calling 1-888-264-2127. | All applications for financial assistance must be either physically delivered to the Hospital, mailed to the address pro",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 3 verbatim spans",
     "agent dropped eligibility.insured_patients_covered: quote is not a substring of the source",
     "agent dropped collections.eca_wait_days: quote is not a substring of the source",
     "agent judge on eligibility.free_care_max_fpl: Quote says '< 200% of FPL' gets 100% discount; strict less-than vs value 200 is ambiguous but the quote does not state 200 as the highest free-care level inclusive.",
@@ -3289,7 +3289,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "FPL Discount </= 250% 100%",
+     "quote": "FPL Discount </= 250% 100% || 251% \u2013 350% 80% || 351% \u2013 450% 60% 451% \u2013 550% 50%",
      "source_id": "fap-dbe2afa4b8f1a3c4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3359,7 +3359,7 @@
       "proof_of_residency"
      ],
      "layer": "documented",
-     "quote": "PHOTO ID/PROOF OF IDENTIFICATION \u2022 Current driver license or state identification \u2022 Current passport",
+     "quote": "PHOTO ID/PROOF OF IDENTIFICATION \u2022 Current driver license or state identification \u2022 Current passport || Copy of the most recent filed income tax return, if not filed copy of the most recent W-2\u2019s. \u2022 Copy of the two most recent paystubs for all jobs held throughout the year. || Copy of rent lease or a most recent mortgage statement.",
      "source_id": "fap-5f36f60abcab16de",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3488,8 +3488,8 @@
    "accuracy": null,
    "eve_review": [
     "eligibility.discount_tiers: 0-250% at 100% is the free-care band, not a tier; skipped",
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: 251% \u2013 350% 80% | 351% \u2013 450% 60% 451% \u2013 550% 50%",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Copy of the most recent filed income tax return, if not filed copy of the most recent W-2\u2019s. \u2022 Copy of the two most rece | Copy of rent lease or a most recent mortgage statement.",
+    "eligibility.discount_tiers: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent judge on programs.state_programs: Quote only names Hospital Discounted Care under HB 21-1198; it does not state the how_to_apply screening text in the value."
    ]
   },
@@ -3692,7 +3692,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Z 0 - 40% and Homeless N 0 - 40% A 41 - 62% B 63 - 81% C 82 - 100% D 101 - 117% E 118 - 133% F 134 - 159% G 160 - 185% H 186 - 200% I 201 - 250% J 251 - 300% K 301 - 400%",
+     "quote": "Z 0 - 40% and Homeless N 0 - 40% A 41 - 62% B 63 - 81% C 82 - 100% D 101 - 117% E 118 - 133% F 134 - 159% G 160 - 185% H 186 - 200% I 201 - 250% J 251 - 300% K 301 - 400% || Ambulatory Surgery (HB) $0 $15 $65 $105 $155 $220 $300 $390 $535 $600 $630 AGB AGB",
      "source_id": "fap-b1c851a9f3b55b35",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3773,7 +3773,7 @@
       "proof_of_income"
      ],
      "layer": "documented",
-     "quote": "First and last name, address, contact information (e.g., email, phone), and birth date for the applicant and any other household members included in the application",
+     "quote": "First and last name, address, contact information (e.g., email, phone), and birth date for the applicant and any other household members included in the application || Employer and income information for each working adult household member || Liquid Resources - Liquid resources are resources that can be converted to cash immediately.",
      "source_id": "fap-b1c851a9f3b55b35",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3882,8 +3882,8 @@
     "eligibility.free_care_max_fpl: 40% FPL is below the poverty line; left for review, not recorded",
     "eligibility.free_care_max_fpl: owner review: cannot tell from the document; rebuild.",
     "eligibility.discount_tiers: 0-40% at 100% is the free-care band, not a tier; skipped",
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: Ambulatory Surgery (HB) $0 $15 $65 $105 $155 $220 $300 $390 $535 $600 $630 AGB AGB",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Employer and income information for each working adult household member | Liquid Resources - Liquid resources are resources that can be converted to cash immediately.",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent dropped contacts.languages: excerpt not in source: \u0644\u0639\u0631\u0628\u064a\u0629 [...] (Arabic)",
     "agent judge on eligibility.free_care_max_fpl: Quote shows only a tier label 'Z 0 - 40% and Homeless' with no statement that this range receives 100% free care.",
     "agent judge on eligibility.discount_tiers: Quote gives FPL bands (A-K) and prices, but no discount percentages (90, 80, 70, etc.), so the tier percents are not stated.",
@@ -3952,7 +3952,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "See if you can get Health First Colorado (Colorado Medicaid).",
+     "quote": "See if you can get Health First Colorado (Colorado Medicaid). || Public health coverage and discount programs, like Health First Colorado, Child Health Plan Plus (CHP+), Emergency Medicaid, and hospital discounts.",
      "source_id": "web-fe2c648b3f49295a",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4038,7 +4038,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.state_programs: 1 more verbatim excerpt(s) supported this value: Public health coverage and discount programs, like Health First Colorado, Child Health Plan Plus (CHP+), Emergency Medic",
+    "programs.state_programs: value backed by 2 verbatim spans",
     "agent dropped apply.documents_required: between 1 and 3 excerpts allowed",
     "agent judge on eligibility.free_care_max_fpl: Quote says patients with income at FPL levels get 100% charity discount but never states the 250% threshold as the highest free-care percent; the number 250 is not stated as a limit.",
     "agent judge on eligibility.assistance_ceiling_fpl: Quote says expanded policy covers 251 to 400 percent FPL, which implies 400 as a ceiling but does not state that no assistance is offered above 400 percent.",
@@ -4075,7 +4075,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "251-299% 10% of charges 10% of charges 25% of charges",
+     "quote": "251-299% 10% of charges 10% of charges 25% of charges || 300-399% 20% of charges 20% of charges 35% of charges",
      "source_id": "web-cdc2bb5c62f6aebe",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4169,7 +4169,7 @@
    "accuracy": null,
    "eve_review": [
     "eligibility.free_care_max_fpl: 250% is Colorado Hospital Discounted Care, recorded under programs.state_programs instead of the free-care line",
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: 300-399% 20% of charges 20% of charges 35% of charges",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
     "agent dropped contacts.languages: quote is not a substring of the source",
     "agent judge on eligibility.free_care_max_fpl: Quote says \"0-250%\" next to \"$0 copay per visit\" but never states 100% free care; a copay is not clearly free care.",
     "agent judge on eligibility.discount_tiers: Quote gives 251-299% at 10% and 300-399% at 20%, but the value's second tier starts at exclusive 299, not 300. Extra 25%/35% figures are unexplained.",
@@ -4219,7 +4219,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Patients approved for Financial Assistance with an annual Family Income between 251% and 400% of FPL guidelines will receive a discount on gross charges as outlined in Appendix A.",
+     "quote": "Patients approved for Financial Assistance with an annual Family Income between 251% and 400% of FPL guidelines will receive a discount on gross charges as outlined in Appendix A. || Medical Center of the Rockies 27% 91% 82% 73% 73%",
      "source_id": "fap-9ce27002800cf17b",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4277,7 +4277,7 @@
       "Special Supplemental Nutrition Program for Women, Infants, and Children (WIC)"
      ],
      "layer": "documented",
-     "quote": "A patient is deceased with no estate on file;",
+     "quote": "A patient is deceased with no estate on file; || A patient is documented as homeless; or || Social Security ii. Unemployment benefits iii. Food stamps iv. Special Supplemental Nutrition Program for Women, Infants, and Children (WIC)",
      "source_id": "fap-9ce27002800cf17b",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4297,7 +4297,7 @@
       "social_security_letter"
      ],
      "layer": "documented",
-     "quote": "Most recent month's paycheck stubs, wage record, or letter from their employer stating their salary or hourly wage and usual number of hours worked per pay period.",
+     "quote": "Most recent month's paycheck stubs, wage record, or letter from their employer stating their salary or hourly wage and usual number of hours worked per pay period. || Most recent bank statement from all banking or credit union institutions || The previous year's tax return",
      "source_id": "fap-9ce27002800cf17b",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4417,9 +4417,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: Medical Center of the Rockies 27% 91% 82% 73% 73%",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: A patient is documented as homeless; or | Social Security ii. Unemployment benefits iii. Food stamps iv. Special Supplemental Nutrition Program for Women, Infants",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Most recent bank statement from all banking or credit union institutions | The previous year's tax return"
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans"
    ]
   },
   {
@@ -4460,7 +4460,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "> 250% - 300% FPL 75% discount off AGB 75% discount off BAI",
+     "quote": "> 250% - 300% FPL 75% discount off AGB 75% discount off BAI || > 300% - 400% FPL 50% discount off AGB 50% discount off BAI",
      "source_id": "fap-51370475301f62de",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4535,7 +4535,7 @@
       "tax_return"
      ],
      "layer": "documented",
-     "quote": "Proof of income. Acceptable documents include:",
+     "quote": "Proof of income. Acceptable documents include: || If currently employed, copies of last three (3) most recent consecutive payroll stubs (patient, guarantor and spouse) || If self-employed, a copy of Federal tax form Schedule C or other proof of income and expenses",
      "source_id": "fap-81f055599d14a718",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4627,8 +4627,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: > 300% - 400% FPL 50% discount off AGB 50% discount off BAI",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: If currently employed, copies of last three (3) most recent consecutive payroll stubs (patient, guarantor and spouse) | If self-employed, a copy of Federal tax form Schedule C or other proof of income and expenses",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent dropped apply.submit_methods: excerpt not in source: Banner Health c/o PBM PO Box 743711, Los Angeles, CA 90074-3",
     "agent judge on eligibility.insured_patients_covered: Quote only says underinsured patients may qualify for the BAI discount; it does not state insured patients are covered generally.",
     "agent judge on programs.state_programs: Quote says CICP ended on July 1, 2025; the value's how_to_apply field holds an end date, not an application method, so it does not match the field meaning.",
@@ -4678,7 +4678,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Longs Peak Hospital 19% 94% 87% 81% 81%",
+     "quote": "Longs Peak Hospital 19% 94% 87% 81% 81% || Patients approved for Financial Assistance with an annual Family Income between 251% and 400% of FPL guidelines will receive a discount on gross charges as outlined in the table above.",
      "source_id": "fap-9ce27002800cf17b",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4737,7 +4737,7 @@
       "Other means-tested social services programs"
      ],
      "layer": "documented",
-     "quote": "A patient is deceased with no estate on file;",
+     "quote": "A patient is deceased with no estate on file; || A patient is documented as homeless; or || At the time of screening, a patient qualifies for public health programs including, but not limited to: i. Social Security ii. Unemployment benefits iii. Food stamps iv. Special Supplemental Nutrition Program for Women, Infants, and Children (WIC)",
      "source_id": "fap-9ce27002800cf17b",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4757,7 +4757,7 @@
       "social_security_letter"
      ],
      "layer": "documented",
-     "quote": "Most recent month's paycheck stubs, wage record, or letter from their employer stating their salary or hourly wage and usual number of hours worked per pay period.",
+     "quote": "Most recent month's paycheck stubs, wage record, or letter from their employer stating their salary or hourly wage and usual number of hours worked per pay period. || Most recent bank statement from all banking or credit union institutions || The previous year's tax return",
      "source_id": "fap-9ce27002800cf17b",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4890,9 +4890,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: Patients approved for Financial Assistance with an annual Family Income between 251% and 400% of FPL guidelines will rec",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: A patient is documented as homeless; or | At the time of screening, a patient qualifies for public health programs including, but not limited to: i. Social Securi",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Most recent bank statement from all banking or credit union institutions | The previous year's tax return",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent judge on eligibility.discount_tiers: Quote gives only a garbled table line (19% 94% 87% 81% 81%) and says 251%-400% gets a table discount. The 300% and 350% bounds and the tier mapping are not stated.",
     "agent judge on programs.presumptive: Quote lists deceased with no estate, homeless, and Social Security, Unemployment, Food stamps, WIC. 'Other means-tested social services programs' is not in the quote.",
     "agent judge on apply.documents_required: Quote gives only three documents (paycheck stubs, bank statement, prior year tax return). The value's other five items, including W-2 and unemployment letter, are not in the quote.",
@@ -4942,7 +4942,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Grandview Hospital 16% 95% 89% 84% 84%",
+     "quote": "Grandview Hospital 16% 95% 89% 84% 84% || Federal Poverty Level 251-300% 301-350% 351-400% Catastrophic",
      "source_id": "fap-9ce27002800cf17b",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5022,7 +5022,7 @@
       "proof_of_residency"
      ],
      "layer": "documented",
-     "quote": "UCHealth requires an applicant to submit at least one of the following acceptable forms of Family Income verification: a. Most recent month's paycheck stubs, wage record, or letter from their employer stating their salary or hourly wage and usual number of hours worked per pay period.",
+     "quote": "UCHealth requires an applicant to submit at least one of the following acceptable forms of Family Income verification: a. Most recent month's paycheck stubs, wage record, or letter from their employer stating their salary or hourly wage and usual number of hours worked per pay period. || UCHealth requires applicants to submit at least one of the following acceptable forms of residency documentation: i. Colorado ID ii. Pay stub with Colorado home address listed",
      "source_id": "fap-9ce27002800cf17b",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5151,8 +5151,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: Federal Poverty Level 251-300% 301-350% 351-400% Catastrophic",
-    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: UCHealth requires applicants to submit at least one of the following acceptable forms of residency documentation: i. Col",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 2 verbatim spans",
     "agent judge on eligibility.discount_tiers: Quote is a garbled table: '16% 95% 89% 84% 84%' with ranges 251-300, 301-350, 351-400. Percent-to-band pairing and the extra 16%/84% are unclear.",
     "agent judge on apply.documents_required: Quote mentions only paycheck stubs, Colorado ID, and pay stub with Colorado address. Value adds tax returns, W-2s, bank statements, and others not in the quote."
    ]
@@ -5200,7 +5200,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Greeley Hospital 26% 91% 83% 74% 74%",
+     "quote": "Greeley Hospital 26% 91% 83% 74% 74% || Patients approved for Financial Assistance with an annual Family Income between 251% and 400% of FPL guidelines will receive a discount on gross charges as outlined in the table above.",
      "source_id": "fap-9ce27002800cf17b",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5263,7 +5263,7 @@
       "social_security_letter"
      ],
      "layer": "documented",
-     "quote": "Most recent month's paycheck stubs, wage record, or letter from their employer stating their salary or hourly wage and usual number of hours worked per pay period.",
+     "quote": "Most recent month's paycheck stubs, wage record, or letter from their employer stating their salary or hourly wage and usual number of hours worked per pay period. || Most recent bank statement from all banking or credit union institutions || The previous year's tax return",
      "source_id": "fap-9ce27002800cf17b",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5392,8 +5392,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: Patients approved for Financial Assistance with an annual Family Income between 251% and 400% of FPL guidelines will rec",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Most recent bank statement from all banking or credit union institutions | The previous year's tax return",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent dropped programs.presumptive: excerpt not in source: At the time of screening, a patient qualifies for public hea",
     "agent judge on eligibility.discount_tiers: Quote gives 91%, 83%, 74% and the 251%-400% range but not the 300% and 350% tier bounds; it defers to a table not included in the quote.",
     "agent judge on apply.documents_required: Quote names only three documents (paycheck stubs/wage record, bank statements, prior-year tax return); the value adds five more not in the quote."
@@ -5442,7 +5442,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Patients approved for Financial Assistance with an annual Family Income between 251% and 400% of FPL guidelines will receive a discount on gross charges as outlined in Appendix A.",
+     "quote": "Patients approved for Financial Assistance with an annual Family Income between 251% and 400% of FPL guidelines will receive a discount on gross charges as outlined in Appendix A. || Highlands Ranch Hospital 18% 94% 88% 82% 82%",
      "source_id": "fap-9ce27002800cf17b",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5484,7 +5484,7 @@
       "Special Supplemental Nutrition Program for Women, Infants, and Children (WIC)"
      ],
      "layer": "documented",
-     "quote": "A patient is deceased with no estate on file;",
+     "quote": "A patient is deceased with no estate on file; || A patient is documented as homeless; or || Social Security ii. Unemployment benefits iii. Food stamps iv. Special Supplemental Nutrition Program for Women, Infants, and Children (WIC)",
      "source_id": "fap-9ce27002800cf17b",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5514,7 +5514,7 @@
       "other"
      ],
      "layer": "documented",
-     "quote": "Most recent month's paycheck stubs, wage record, or letter from their employer stating their salary or hourly wage and usual number of hours worked per pay period.",
+     "quote": "Most recent month's paycheck stubs, wage record, or letter from their employer stating their salary or hourly wage and usual number of hours worked per pay period. || Colorado ID || Pay stub with Colorado home address listed",
      "source_id": "fap-9ce27002800cf17b",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5643,9 +5643,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: Highlands Ranch Hospital 18% 94% 88% 82% 82%",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: A patient is documented as homeless; or | Social Security ii. Unemployment benefits iii. Food stamps iv. Special Supplemental Nutrition Program for Women, Infants",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Colorado ID | Pay stub with Colorado home address listed",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent dropped eligibility.insured_patients_covered: quote is not a substring of the source",
     "agent judge on eligibility.discount_tiers: Quote gives only a 251%-400% range and says discounts are in Appendix A. The 300%/350% bounds and 94/88/82 percents appear only in a garbled table fragment.",
     "agent judge on eligibility.asset_test: Quote only sets an income limit of 400% FPL. It does not say whether assets are considered, so the false value is unsupported.",
@@ -5684,7 +5684,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "251-299%",
+     "quote": "251-299% || 10% of charges || 300-399% 20% of charges 20% of charges 35% of charges",
      "source_id": "web-cdc2bb5c62f6aebe",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5794,7 +5794,7 @@
    "accuracy": null,
    "eve_review": [
     "eligibility.free_care_max_fpl: 250% is Colorado Hospital Discounted Care, recorded under programs.state_programs instead of the free-care line",
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: 10% of charges | 300-399% 20% of charges 20% of charges 35% of charges",
+    "eligibility.discount_tiers: value backed by 3 verbatim spans",
     "agent judge on eligibility.free_care_max_fpl: Quote says assistance is required for patients under 250% FPL, not that 250% is the highest percent receiving 100% free care; no free-care level is stated.",
     "agent judge on eligibility.discount_tiers: Quote gives 251-299% at 10% and 300-399% at 20%, but also lists 35% of charges with no bound, and the value's tier bounds and 250/299 overlap do not match the quote cleanly.",
     "agent judge on eligibility.insured_patients_covered: Quote says insured patients not eligible get payment plan options; it does not state insured patients are covered by assistance.",
@@ -5836,7 +5836,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "FHW Charity 251\u2013300% 60% discount",
+     "quote": "FHW Charity 251\u2013300% 60% discount || FHW Charity 301\u2013350% 55% discount || FHW Charity 351\u2013400% 50% discount",
      "source_id": "fap-5b8100d864da3458",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5903,7 +5903,7 @@
       "tax_return"
      ],
      "layer": "documented",
-     "quote": "a. Paystubs for the last 30 days",
+     "quote": "a. Paystubs for the last 30 days || b. Income Tax Returns",
      "source_id": "fap-5b8100d864da3458",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5926,7 +5926,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "please call 970.858.2729",
+     "quote": "please call 970.858.2729 || You can pay your bill online. || Our office is located at 228 N. Cherry Street, Fruita, Colorado",
      "source_id": "web-20b0b14de6f912d2",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -6006,9 +6006,9 @@
    "accuracy": null,
    "eve_review": [
     "eligibility.free_care_max_fpl: 250% is Colorado Hospital Discounted Care, recorded under programs.state_programs instead of the free-care line",
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: FHW Charity 301\u2013350% 55% discount | FHW Charity 351\u2013400% 50% discount",
-    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: b. Income Tax Returns",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: You can pay your bill online. | Our office is located at 228 N. Cherry Street, Fruita, Colorado",
+    "eligibility.discount_tiers: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 2 verbatim spans",
+    "apply.submit_methods: value backed by 3 verbatim spans",
     "agent judge on eligibility.free_care_max_fpl: Quote gives an HDC 0\u2013250% screening range but does not say 250% is the highest level receiving 100% free care.",
     "agent judge on programs.state_programs: Quote only lists public coverage types (Medicare, Health First Colorado, Emergency Medicaid, CHP+); it does not describe how to apply for any program.",
     "agent judge on apply.submit_methods: Quote mentions calling, paying bills online, and the office address, but does not say these are methods for submitting a financial assistance application."
@@ -6135,7 +6135,7 @@
       "other"
      ],
      "layer": "documented",
-     "quote": "copies of last three (3) most recent consecutive payroll stubs (patient, guarantor and spouse)",
+     "quote": "copies of last three (3) most recent consecutive payroll stubs (patient, guarantor and spouse) || a copy of your prior year\u2019s federal income tax return || a copy of SSA 1099 form or reward letter",
      "source_id": "fap-81f055599d14a718",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -6226,7 +6226,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: a copy of your prior year\u2019s federal income tax return | a copy of SSA 1099 form or reward letter",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent dropped apply.submit_methods: excerpt not in source: Return to: Banner Health c/o PBM PO Box 743711, Los Angeles,",
     "agent judge on eligibility.free_care_max_fpl: Quote says '< 200% of FPL' gets 100% discount, so 200% itself is not in the free tier; the highest free-care percent is below 200, not 200.",
     "agent judge on programs.presumptive: Quote describes presumptive eligibility based on household income but does not mention Medicaid.",
@@ -6406,7 +6406,7 @@
       "proof_of_income"
      ],
      "layer": "documented",
-     "quote": "Proof of Physical address (at least 2 of the following: current month\u2019s utility, water, trash, or rent/mortgage)",
+     "quote": "Proof of Physical address (at least 2 of the following: current month\u2019s utility, water, trash, or rent/mortgage) || Income Tax Return b) IRS form W-2 c) Paycheck stub d) Complete bank statements (savings and checking) e) Signed attestation to income",
      "source_id": "fap-e1077ceaa46dd576",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -6493,7 +6493,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: Income Tax Return b) IRS form W-2 c) Paycheck stub d) Complete bank statements (savings and checking) e) Signed attestat",
+    "apply.documents_required: value backed by 2 verbatim spans",
     "agent judge on programs.state_programs: Quote only says to visit the website to get the FAA. It does not identify a state program or name 'Hospital Discounted Care' as one.",
     "agent judge on apply.submit_methods: Quote says 'Contact the hospital financial counselor' but does not say in person, so the kind 'in_person' is not stated.",
     "agent judge on apply.decision_days: Quote gives 15 days for processing plus 15 days to notify the patient. It never states a 30-day decision period; 30 is an inferred sum."
@@ -6537,7 +6537,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "All FAP applicants will be checked for current Medicaid/Hospital Discounted Care eligibility.",
+     "quote": "All FAP applicants will be checked for current Medicaid/Hospital Discounted Care eligibility. || Prior to any financial assistance being granted, Mt. San Rafael Hospital will look at other resources of payment such as Hospital Discounted Care or Medicaid/CHP+.",
      "source_id": "web-02309990eca4a3ce",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -6643,7 +6643,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.state_programs: 1 more verbatim excerpt(s) supported this value: Prior to any financial assistance being granted, Mt. San Rafael Hospital will look at other resources of payment such as",
+    "programs.state_programs: value backed by 2 verbatim spans",
     "agent dropped eligibility.discount_tiers: quote is not a substring of the source",
     "agent dropped eligibility.insured_patients_covered: quote is not a substring of the source",
     "agent judge on apply.submit_methods: Quote gives phone 719-845-4251 for assistance, but does not say it is a submission method; it only says patients may call for assistance.",
@@ -6694,7 +6694,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Patients approved for Financial Assistance with an annual Family Income between 251% and 400% of FPL guidelines will receive a discount on gross charges as outlined in Appendix A.",
+     "quote": "Patients approved for Financial Assistance with an annual Family Income between 251% and 400% of FPL guidelines will receive a discount on gross charges as outlined in Appendix A. || Pikes Peak Regional Hospital 33% 89% 78% 67% 67%",
      "source_id": "fap-9ce27002800cf17b",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -6766,7 +6766,7 @@
       "proof_of_residency"
      ],
      "layer": "documented",
-     "quote": "UCHealth requires an applicant to submit at least one of the following acceptable forms of Family Income verification: a. Most recent month's paycheck stubs, wage record, or letter from their employer stating their salary or hourly wage and usual number of hours worked per pay period.",
+     "quote": "UCHealth requires an applicant to submit at least one of the following acceptable forms of Family Income verification: a. Most recent month's paycheck stubs, wage record, or letter from their employer stating their salary or hourly wage and usual number of hours worked per pay period. || UCHealth requires applicants to submit at least one of the following acceptable forms of residency documentation: i. Colorado ID || Pay stub with Colorado home address listed",
      "source_id": "fap-9ce27002800cf17b",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -6899,8 +6899,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: Pikes Peak Regional Hospital 33% 89% 78% 67% 67%",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: UCHealth requires applicants to submit at least one of the following acceptable forms of residency documentation: i. Col | Pay stub with Colorado home address listed",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent judge on eligibility.discount_tiers: Quote gives only the 251%-400% range and says discounts are in Appendix A. The 300% and 350% bounds and the per-tier percents are not clearly stated; the garbled table row does not map them.",
     "agent judge on eligibility.insured_patients_covered: Quote lists being Uninsured or Under-insured as a requirement. It does not state that insured patients are covered; it implies the opposite.",
     "agent judge on apply.documents_required: Quote lists only paycheck stubs/wage record, Colorado ID, and pay stub with Colorado address. Bank statements, tax return, W-2, and other listed documents do not appear.",
@@ -6970,7 +6970,7 @@
       "Patient who has filed bankruptcy and whose bill has been fully discharged by the court"
      ],
      "layer": "documented",
-     "quote": "Homelessness or receipt of care from a homeless shelter",
+     "quote": "Homelessness or receipt of care from a homeless shelter || Eligibility for medical assistance programs such as Health First Colorado Medicaid or CHP+, Medicare Savings Program (MSP, Long Term Care (LTC), Out-of-State Medicaid programs, Hospital Discounted Care (HDC) || Patient who has filed bankruptcy and whose bill has been fully discharged by the court",
      "source_id": "fap-6222456954afae6e",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -6992,7 +6992,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "HEALTH FIRST COLORADO (COLORADO\u2019S MEDICAID PROGRAM)",
+     "quote": "HEALTH FIRST COLORADO (COLORADO\u2019S MEDICAID PROGRAM) || CHILD HEALTH PLAN PLUS (CHP+) || HOSPITAL DISCOUNTED CARE (HDC)",
      "source_id": "web-a7673784f882a6cb",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -7020,7 +7020,7 @@
       "photo_id"
      ],
      "layer": "documented",
-     "quote": "\u2610One (1) month most recent, consecutive paycheck stubs OR a statement from the employer",
+     "quote": "\u2610One (1) month most recent, consecutive paycheck stubs OR a statement from the employer || \u2610Medicare, Medicaid, CHP+ and other Health Insurance Cards || \u2610Driver\u2019s License or other Identification for each member of the household over the age of 18 applying for financial assistance",
      "source_id": "fap-7e133378b819f903",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -7053,7 +7053,7 @@
       "Spanish"
      ],
      "layer": "documented",
-     "quote": "Patient\u2019s Rights Form in English [https://www.swhealth.org/wp-content/uploads/2025/07/Patient-Rights-English-07012025.pdf]",
+     "quote": "Patient\u2019s Rights Form in English [https://www.swhealth.org/wp-content/uploads/2025/07/Patient-Rights-English-07012025.pdf] || Patient\u2019s Rights Form in Spanish [https://www.swhealth.org/wp-content/uploads/2025/07/Patient-Rights-Spanish-07012025.pdf]",
      "source_id": "web-a7673784f882a6cb",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -7096,10 +7096,10 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Eligibility for medical assistance programs such as Health First Colorado Medicaid or CHP+, Medicare Savings Program (MS | Patient who has filed bankruptcy and whose bill has been fully discharged by the court",
-    "programs.state_programs: 2 more verbatim excerpt(s) supported this value: CHILD HEALTH PLAN PLUS (CHP+) | HOSPITAL DISCOUNTED CARE (HDC)",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: \u2610Medicare, Medicaid, CHP+ and other Health Insurance Cards | \u2610Driver\u2019s License or other Identification for each member of the household over the age of 18 applying for financial ass",
-    "contacts.languages: 1 more verbatim excerpt(s) supported this value: Patient\u2019s Rights Form in Spanish [https://www.swhealth.org/wp-content/uploads/2025/07/Patient-Rights-Spanish-07012025.pd",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "programs.state_programs: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "contacts.languages: value backed by 2 verbatim spans",
     "agent dropped apply.submit_methods: excerpt not in source: Call: 970-564-2131 or",
     "agent dropped contacts.phone: quote is not a substring of the source"
    ]
@@ -7154,7 +7154,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Discounted care through Colorado Indigent Care Program (CICP), established in Part 1 of Article 3 of Title 25.5, C.R.S.",
+     "quote": "Discounted care through Colorado Indigent Care Program (CICP), established in Part 1 of Article 3 of Title 25.5, C.R.S. || The application process is the same process required for applicants of CICP or HDC.",
      "source_id": "fap-25532ca6f93012bf",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -7179,7 +7179,7 @@
       "proof_of_income"
      ],
      "layer": "documented",
-     "quote": "Driver License or ID",
+     "quote": "Driver License or ID || Social Security card if legal citizen || Most current month of income includes income for any employed household member",
      "source_id": "fap-25532ca6f93012bf",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -7255,8 +7255,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.state_programs: 1 more verbatim excerpt(s) supported this value: The application process is the same process required for applicants of CICP or HDC.",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Social Security card if legal citizen | Most current month of income includes income for any employed household member",
+    "programs.state_programs: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent judge on eligibility.insured_patients_covered: Quote says insured patients will be screened only upon request per HDC guidelines; it does not state they are covered, so true is not supported.",
     "agent judge on programs.state_programs: Quote names CICP only; it does not say CICP application is the same as HDC in a way that supports the how_to_apply text as stated, and it lacks a clear standalone program description beyond the name.",
     "agent judge on apply.form_url: Quote shows only a link label and a relative path (/docs/...pdf?sub=For%20Patients), not the full https://www.avrmc.org URL in the value.",
