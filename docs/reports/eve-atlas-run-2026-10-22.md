@@ -68,7 +68,7 @@ Puerto Rico 24, Minnesota 20, Iowa 15, Oklahoma 12, Michigan 11. Some are system
 
 ### 8. Waive-side fixes found along the way
 
-Four published sheets carry two phone numbers concatenated into one field (Albany Medical Center, Carlinville, Illini Community, Taylorville). Asset tests and application windows stated in the same documents are missing from several published MA, NY and IL sheets.
+Asset tests and application windows stated in the same documents are missing from several published MA, NY and IL sheets. (An earlier draft of this report called four published phone fields concatenated; that was the evaluation stripping non-digits from "A or B" values Waive stores on purpose. Withdrawn.)
 
 ## What was produced
 
@@ -121,7 +121,7 @@ Haiku folds the free-care row into the tier table. Sonnet 5 is the floor for str
 
 ## Findings for Waive's own pipeline
 
-1. Concatenated phone numbers in published sheets. Albany Medical Center `518262198118662627476`, Carlinville `21785450928552624778`, Illini Community `85535458962172773512`, Taylorville `21778847748005622829`. Two numbers glued into one field. Eve's extraction of the same documents gives single numbers.
+1. Phone disagreements are a comparison artifact, not a Waive bug. Waive keeps a hospital's readable text such as "518-262-1981 or 1-866-262-7476" on purpose (its own test pins this); the evaluation stripped non-digits before comparing, which glued the two numbers together. Eve returns one number. Both are defensible; nothing to fix in Waive.
 2. Asset tests missed. Ten of 22 published sheets have `asset_test` empty where the same policy states one.
 3. Application windows missed. Five published sheets lack `window_days_from_first_bill` where the policy states it.
 4. OSF Holy Family free-care line: published 350, Eve 250. Needs a human read of the PDF.

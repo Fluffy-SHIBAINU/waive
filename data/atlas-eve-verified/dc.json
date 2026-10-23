@@ -1,0 +1,381 @@
+{
+ "generated_on": "2026-10-23",
+ "license": "CC BY 4.0",
+ "state": "DC",
+ "status": "draft",
+ "built_by": "eve waive-agent",
+ "verified_on": "2026-10-23",
+ "sheets": [
+  {
+   "hospital": {
+    "ccn": "090005",
+    "name": "SIBLEY MEMORIAL HOSPITAL",
+    "city": "WASHINGTON",
+    "state": "DC",
+    "zip": "20016",
+    "phone": "202-537-4680",
+    "ownership": "Voluntary non-profit - Other",
+    "website_domain": "hopkinsmedicine.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": null,
+    "discount_tiers": null,
+    "assistance_ceiling_fpl": null,
+    "asset_test": null,
+    "residency": null,
+    "insured_patients_covered": null,
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": null,
+    "documents_reported": null,
+    "submit_methods": null,
+    "window_days_from_first_bill": null,
+    "decision_days": null,
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": null,
+    "hours": null,
+    "languages": null
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-0ba4546dc2757675",
+     "kind": "hospital_web",
+     "url": "https://hpo-docs.jh.edu/cwc8yZlN",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "0ba4546dc275767534db7c9a903a521951666ed4fbe0727c1da31d90563df18b",
+     "effective_date": null
+    },
+    {
+     "id": "fap-775b04c39dbe0d0f",
+     "kind": "hospital_web",
+     "url": "https://hpo-docs.jh.edu/kYSFXXDt",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "775b04c39dbe0d0ff3572765f0e4ea6f222409d15613c5bde047671ec64df97d",
+     "effective_date": null
+    },
+    {
+     "id": "fap-c80e4a95d17fe683",
+     "kind": "hospital_web",
+     "url": "https://hpo-docs.jh.edu/XQmxfYxl",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "c80e4a95d17fe683645e395ee64c7e2f5e67c43b54b9ca8d1d661c8adc6ad2db",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: a. A patient with Active Medical Assistance Pharmacy coverage b. QMB coverage/SLMB coverage | d. A patient that is deceased with no estate on file e. A patient that is deemed homeless f. A patient that presents a s",
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: 5. Proof of monthly living expense as recorded on your application, such as copies of phone bills, utility bills, or ren | 9. If applicable, self-employed patients completed tax return (including profit or loss). 10. If applicable, zero income",
+    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: EMAIL: FinancialAssistance@jhmi.edu PHONE: 443-997-3067 FAX: 443-769-1250",
+    "agent dropped eligibility.discount_tiers: judge: Quote lists only the 401-450 (75%), 451-500 (50%) and 501-550 (35%) tiers; the 550-600 (25%) tier is missing.",
+    "agent dropped eligibility.residency: judge: Quote refers only to the 'hospital's service area'; it never says DC and most of Maryland and Virginia."
+   ],
+   "eve_verified": {
+    "on": "2026-10-23",
+    "sources_fetched": 0,
+    "sources_total": 3,
+    "sources_missing": [
+     "https://hpo-docs.jh.edu/cwc8yZlN",
+     "https://hpo-docs.jh.edu/kYSFXXDt",
+     "https://hpo-docs.jh.edu/XQmxfYxl"
+    ],
+    "accepted": [],
+    "rejected": [
+     [
+      "eligibility.free_care_max_fpl",
+      "source text missing"
+     ],
+     [
+      "eligibility.asset_test",
+      "source text missing"
+     ],
+     [
+      "eligibility.insured_patients_covered",
+      "source text missing"
+     ],
+     [
+      "programs.presumptive",
+      "source text missing"
+     ],
+     [
+      "apply.documents_required",
+      "source text missing"
+     ],
+     [
+      "apply.submit_methods",
+      "source text missing"
+     ],
+     [
+      "apply.decision_days",
+      "source text missing"
+     ],
+     [
+      "contacts.phone",
+      "source text missing"
+     ]
+    ],
+    "pruned": [],
+    "income_rule_verified": false,
+    "core_completeness": 0.0
+   }
+  },
+  {
+   "hospital": {
+    "ccn": "090011",
+    "name": "MEDSTAR WASHINGTON HOSPITAL CENTER",
+    "city": "WASHINGTON",
+    "state": "DC",
+    "zip": "20010",
+    "phone": "202-877-7000",
+    "ownership": "Voluntary non-profit - Other",
+    "website_domain": "medstarhealth.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "Free Care: Free Care (100% Financial Assistance) will be available to uninsured and underinsured patients with family incomes between 0% and 200% of the FPL.",
+     "source_id": "fap-b95c0699bae1032f",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "200",
+       "max_fpl_inclusive": "250",
+       "discount_percent": 80
+      },
+      {
+       "min_fpl_exclusive": "250",
+       "max_fpl_inclusive": "300",
+       "discount_percent": 60
+      },
+      {
+       "min_fpl_exclusive": "300",
+       "max_fpl_inclusive": "350",
+       "discount_percent": 40
+      },
+      {
+       "min_fpl_exclusive": "350",
+       "max_fpl_inclusive": "400",
+       "discount_percent": 20
+      }
+     ],
+     "layer": "documented",
+     "quote": "201% to 250% 75% % 80% 251% to 300% 60% 60% 301% to 350% 40% 351% to 400% 20%",
+     "source_id": "fap-b95c0699bae1032f",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "assistance_ceiling_fpl": {
+     "value": "400",
+     "layer": "documented",
+     "quote": "Reduced Cost-Care will be available to uninsured and underinsured patients with family incomes between 201% and 400% of the FPL",
+     "source_id": "fap-b95c0699bae1032f",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "asset_test": null,
+    "residency": {
+     "value": [
+      "All patients must provide proof of residency within Maryland, northern Virginia, or within the District of Columbia."
+     ],
+     "layer": "documented",
+     "quote": "All patients must provide proof of residency within Maryland, northern Virginia, or within the District of Columbia.",
+     "source_id": "fap-b95c0699bae1032f",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "An \u201cUnderinsured Patient\u201d is defined as an individual who elects third party insurance coverage with high out of pocket insurance benefits or a patient with Medicare coverage resulting in large patient account balances.",
+     "source_id": "fap-b95c0699bae1032f",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": {
+     "value": "https://www.medstarhealth.org/-/media/project/mho/medstar/financial-pdf/appendix-1/appendix_1_medstar_uniform_financial_assistance_application.pdf",
+     "layer": "documented",
+     "quote": "MedStar Health Uniform Financial Assistance Application",
+     "source_id": "fap-3e2c6451a8d9f7df",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "pay_stubs"
+     ],
+     "layer": "documented",
+     "quote": "Proof of residency documentation would include gas and electric bills, pay stubs, bank statements, rent statements, etc.",
+     "source_id": "fap-b95c0699bae1032f",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": null,
+    "window_days_from_first_bill": {
+     "value": 240,
+     "layer": "documented",
+     "quote": "MedStar Health will consider for eligibility all accounts (including bad debts) 240 days after the initial bill is provided.",
+     "source_id": "fap-b95c0699bae1032f",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days": {
+     "value": 14,
+     "layer": "documented",
+     "quote": "On receipt of a completed application, MedStar Health will make a final eligibility determination within 14 days.",
+     "source_id": "fap-b95c0699bae1032f",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "1-800-280-9006",
+     "layer": "documented",
+     "quote": "A free copy is available on all hospital websites and patient portals via the following URL: www.medstarhealth.org/FinancialAssistance, or by call customer service at 1-800-280-9006.",
+     "source_id": "fap-b95c0699bae1032f",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": null,
+    "languages": {
+     "value": [
+      "English",
+      "Spanish"
+     ],
+     "layer": "documented",
+     "quote": "Financial Assistance Policy (English) (Spanish)",
+     "source_id": "web-8a81961bce1ae4e2",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-b95c0699bae1032f",
+     "kind": "hospital_web",
+     "url": "https://www.medstarhealth.org/-/media/project/mho/medstar/financial-pdf/medstar-health-corporate-financial-assistance-policy_2025.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "b95c0699bae1032f9614f274daee19941228d61506da99a03a6e324a7bbd8e71",
+     "effective_date": null
+    },
+    {
+     "id": "fap-3e2c6451a8d9f7df",
+     "kind": "hospital_web",
+     "url": "https://www.medstarhealth.org/-/media/project/mho/medstar/financial-pdf/appendix-1/appendix_1_medstar_uniform_financial_assistance_application.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "3e2c6451a8d9f7df8cbfd794cc21626abd954d921e4a714b9e061e856ee232cd",
+     "effective_date": null
+    },
+    {
+     "id": "web-8a81961bce1ae4e2",
+     "kind": "hospital_web",
+     "url": "https://www.medstarhealth.org/locations/medstar-washington-hospital-center/patient-resources",
+     "title": "Patient Resources & Forms | MedStar Washington Hospital Center | MedStar Health",
+     "fetched_on": "2026-10-23",
+     "sha256": "8a81961bce1ae4e2e5bf2675bdaaa8dd30d8acbd00d3334ff64c4aa76d43cbcc",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "agent dropped apply.submit_methods: quote is not a substring of the source"
+   ],
+   "eve_verified": {
+    "on": "2026-10-23",
+    "sources_fetched": 3,
+    "sources_total": 3,
+    "sources_missing": [],
+    "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
+     "eligibility.assistance_ceiling_fpl",
+     "eligibility.residency",
+     "eligibility.insured_patients_covered",
+     "apply.form_url",
+     "apply.documents_required",
+     "apply.window_days_from_first_bill",
+     "apply.decision_days",
+     "contacts.phone",
+     "contacts.languages"
+    ],
+    "rejected": [
+     [
+      "eligibility.asset_test",
+      "quote does not support the asset-test value"
+     ]
+    ],
+    "pruned": [
+     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
+     "apply.documents_required: 1 item not named in the trimmed quote"
+    ],
+    "income_rule_verified": true,
+    "core_completeness": 0.83
+   }
+  }
+ ]
+}

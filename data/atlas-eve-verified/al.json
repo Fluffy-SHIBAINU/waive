@@ -1,0 +1,3866 @@
+{
+ "generated_on": "2026-10-23",
+ "license": "CC BY 4.0",
+ "state": "AL",
+ "status": "draft",
+ "built_by": "eve waive-agent",
+ "verified_on": "2026-10-23",
+ "sheets": [
+  {
+   "hospital": {
+    "ccn": "010007",
+    "name": "MIZELL MEMORIAL HOSPITAL",
+    "city": "OPP",
+    "state": "AL",
+    "zip": "36467",
+    "phone": "334-493-3541",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "mizellmh.com",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "If the patient\u2019s income is under 200% of the Federal Poverty Guidelines (FPG) (Exhibit D) the patient will be approved for financial assistance at 100% with no patient financial responsibility except for any applicable clinic visit copays.",
+     "source_id": "fap-230776a7e0a76492",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "200",
+       "max_fpl_inclusive": "250",
+       "discount_percent": 89
+      },
+      {
+       "min_fpl_exclusive": "250",
+       "max_fpl_inclusive": "300",
+       "discount_percent": 77
+      }
+     ],
+     "layer": "documented",
+     "quote": "Service 200% 250% 300% Inpatient 100.00% 71% 42% Outpatient 100.00% 89% 77%",
+     "source_id": "fap-230776a7e0a76492",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "assistance_ceiling_fpl": null,
+    "asset_test": null,
+    "residency": null,
+    "insured_patients_covered": null,
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": null,
+    "documents_reported": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "ask for an application to be mailed to them"
+      },
+      {
+       "kind": "portal",
+       "detail": "access the form on the hospital's website at www.mizellmh.com"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Once a patient requests assistance they can either ask for an application to be mailed to them, come by the hospital to pick one up, or access the form on the hospital\u2019s website at www.mizellmh.com.",
+     "source_id": "fap-230776a7e0a76492",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": null,
+    "decision_days": null,
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "(334) 493-3541",
+     "layer": "documented",
+     "quote": "may be contacted at (334) 493-3541.",
+     "source_id": "fap-230776a7e0a76492",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": null,
+    "languages": {
+     "value": [
+      "English"
+     ],
+     "layer": "documented",
+     "quote": "Should the applicant be non-English speaking, Mizell Memorial Hospital staff will utilize the Limited English Proficiency (LEP) policy and contact an interpreter service",
+     "source_id": "fap-230776a7e0a76492",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-230776a7e0a76492",
+     "kind": "hospital_web",
+     "url": "https://www.mizellmh.com/docs/Financial_Assistance_Policy_Revised_3.4.22.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "230776a7e0a7649280c0527ee16612575a8b31483bd736aaaf1dbb14b1044ea3",
+     "effective_date": null
+    },
+    {
+     "id": "fap-73526bff8f61f31e",
+     "kind": "hospital_web",
+     "url": "https://www.mizellmh.com/docs/Financial_Assistance_Application_Updated_3.2022.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "73526bff8f61f31e2c5de15297f0c166a985c1f272d2c92048de77652309d1e3",
+     "effective_date": null
+    },
+    {
+     "id": "web-428f1d22e8faf510",
+     "kind": "hospital_web",
+     "url": "https://www.mizellmh.com/getpage.php?name=b_office",
+     "title": "Business Office",
+     "fetched_on": "2026-10-23",
+     "sha256": "428f1d22e8faf5109fd4717655ecdc415dc027b7a54e1e49e9ebce5c4749420b",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "apply.form_url: not an absolute URL ('www.mizellmh.com'); dropped",
+    "agent dropped eligibility.insured_patients_covered: quote is not a substring of the source"
+   ],
+   "eve_verified": {
+    "on": "2026-10-23",
+    "sources_fetched": 3,
+    "sources_total": 3,
+    "sources_missing": [],
+    "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
+     "apply.submit_methods",
+     "contacts.phone",
+     "contacts.languages"
+    ],
+    "rejected": [
+     [
+      "eligibility.assistance_ceiling_fpl",
+      "quote states the percentage as a floor (above, over, at least), not a ceiling"
+     ],
+     [
+      "eligibility.asset_test",
+      "quote does not support the asset-test value"
+     ]
+    ],
+    "pruned": [
+     "apply.documents_required: none of the listed documents is named in the quote (after trimming)",
+     "apply.submit_methods: 1 item not named in the trimmed quote"
+    ],
+    "income_rule_verified": true,
+    "core_completeness": 0.67
+   }
+  },
+  {
+   "hospital": {
+    "ccn": "010011",
+    "name": "ST. VINCENT'S EAST",
+    "city": "BIRMINGHAM",
+    "state": "AL",
+    "zip": "35235",
+    "phone": "205-838-3122",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "healthcare.ascension.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "250",
+     "layer": "documented",
+     "quote": "Patients with income less than or equal to 250% of the Federal Poverty Level income (\u201cFPL\u201d), will be eligible for 100% charity care",
+     "source_id": "fap-aad68acd3f9bdd4d",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "250",
+       "max_fpl_inclusive": "325",
+       "discount_percent": 91.2
+      },
+      {
+       "min_fpl_exclusive": "325",
+       "max_fpl_inclusive": "400",
+       "discount_percent": 85
+      }
+     ],
+     "layer": "documented",
+     "quote": "91.2% 251% - 325% of FPL Base 85% 326% - 400% of FPL Base",
+     "source_id": "fap-aad68acd3f9bdd4d",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "assistance_ceiling_fpl": {
+     "value": "400",
+     "layer": "documented",
+     "quote": "Patients with incomes above 250% of the FPL but not exceeding 400% of the FPL, will receive a sliding scale discount",
+     "source_id": "fap-aad68acd3f9bdd4d",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "asset_test": null,
+    "residency": {
+     "value": [
+      "Financial assistance described in this section is limited to Patients that live in the Community"
+     ],
+     "layer": "documented",
+     "quote": "Financial assistance described in this section is limited to Patients that live in the Community",
+     "source_id": "fap-aad68acd3f9bdd4d",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "insured_patients_covered": null,
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "pay_stubs",
+      "tax_return",
+      "other"
+     ],
+     "layer": "documented",
+     "quote": "Copies of 3 most recent paystubs from employer \u2022 Copies of most recent yearly tax return (if self-employed, include all schedules)",
+     "source_id": "fap-309f36cef50bd94a",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "St Vincent's Birmingham Ascension Medical Group PO Box 935345 Atlanta GA 31193 / PO Box 80278 Indianapolis IN 46240-9998"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Please print and mail or hand deliver your completed application and supporting documentation to the following address:",
+     "source_id": "fap-309f36cef50bd94a",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": {
+     "value": 240,
+     "layer": "documented",
+     "quote": "submits a financial assistance application (an \u201cApplication\u201d) on or prior to the 240th day after the Patient\u2019s first discharge bill",
+     "source_id": "fap-aad68acd3f9bdd4d",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days": null,
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "877-202-0356",
+     "layer": "documented",
+     "quote": "calling our customer service department at 877-202-0356",
+     "source_id": "fap-aad68acd3f9bdd4d",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": null,
+    "languages": null
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-aad68acd3f9bdd4d",
+     "kind": "hospital_web",
+     "url": "https://healthcare.ascension.org/-/media/healthcare/financial-assistance/alabama/albir/fap/runningfile_albir_english_financial-assistance-policy.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "aad68acd3f9bdd4dbb1f8e85fd71c114bbfdcd088d58aec4c2b2b64b9b2b1e4e",
+     "effective_date": null
+    },
+    {
+     "id": "fap-309f36cef50bd94a",
+     "kind": "hospital_web",
+     "url": "https://healthcare.ascension.org/-/media/healthcare/financial-assistance/alabama/albir/fap-application/runningfile_albir_english_financial-assistance-application.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "309f36cef50bd94acca71df9e93bfeab071ac23a6ce2f9fe05384a3731c0eced",
+     "effective_date": null
+    },
+    {
+     "id": "web-362f16dcfbc21836",
+     "kind": "hospital_web",
+     "url": "https://uabstvincents.org/billing/contact-billing-financial-services/",
+     "title": "Contact Billing & Financial Services - UAB St. Vincent's",
+     "fetched_on": "2026-10-23",
+     "sha256": "362f16dcfbc21836b07418ef973e70b97bd84e857f2e466bc182cec55f88583c",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [],
+   "eve_verified": {
+    "on": "2026-10-23",
+    "sources_fetched": 3,
+    "sources_total": 3,
+    "sources_missing": [],
+    "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
+     "eligibility.assistance_ceiling_fpl",
+     "eligibility.residency",
+     "apply.documents_required",
+     "apply.submit_methods",
+     "apply.window_days_from_first_bill",
+     "contacts.phone"
+    ],
+    "rejected": [
+     [
+      "eligibility.asset_test",
+      "quote does not support the asset-test value"
+     ]
+    ],
+    "pruned": [
+     "programs.presumptive: none of the listed programs is named in the quote (after trimming)",
+     "apply.documents_required: 3 items not named in the trimmed quote",
+     "apply.submit_methods: 2 items not named in the trimmed quote"
+    ],
+    "income_rule_verified": true,
+    "core_completeness": 0.83
+   }
+  },
+  {
+   "hospital": {
+    "ccn": "010016",
+    "name": "SHELBY BAPTIST MEDICAL CENTER",
+    "city": "ALABASTER",
+    "state": "AL",
+    "zip": "35007",
+    "phone": "205-620-8100",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "baptisthealthal.com",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "300",
+     "layer": "documented",
+     "quote": "Uninsured individuals or family/households who meet three hundred percent (300%) or below of FPG will qualify for financial assistance for their financial responsibility for services that are eligible in this policy.",
+     "source_id": "fap-0d81b3f3ee402a4b",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": null,
+    "assistance_ceiling_fpl": null,
+    "asset_test": null,
+    "residency": {
+     "value": [
+      "Patients/Guarantors, who meet eligibility requirements and reside where Baptist Health operates acute care facilities, will be offered financial assistance."
+     ],
+     "layer": "documented",
+     "quote": "Patients/Guarantors, who meet eligibility requirements and reside where Baptist Health operates acute care facilities, will be offered financial assistance.",
+     "source_id": "fap-0d81b3f3ee402a4b",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Individuals or family/households with insurance/third party coverage who meet two hundred twenty five percent (225%) or below of FPG will qualify for financial assistance",
+     "source_id": "fap-0d81b3f3ee402a4b",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
+    "state_programs": {
+     "value": [
+      {
+       "name": "Alabama Health Care Responsibility Act",
+       "how_to_apply": "Baptist Health will work with approved community not-for-profit agencies and county and state funded programs, including but not limited to the Alabama Health Care Responsibility Act."
+      }
+     ],
+     "layer": "documented",
+     "quote": "Baptist Health will work with approved community not-for-profit agencies and county and state funded programs, including but not limited to the Alabama Health Care Responsibility Act.",
+     "source_id": "fap-0d81b3f3ee402a4b",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
+   },
+   "apply": {
+    "form_url": {
+     "value": "https://www.baptisthealthal.com/patient-financial-resources/billing-insurance-questions",
+     "layer": "documented",
+     "quote": "Please click below for our financial assistance program application (Guarantor Financial Statement Application):",
+     "source_id": "web-499440bdef17d171",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "proof_of_income",
+      "tax_return",
+      "other"
+     ],
+     "layer": "documented",
+     "quote": "Income tax returns or other form of income attestation, including W2 forms, IRS 1099 documents, pay stubs, and bank statements.",
+     "source_id": "fap-0d81b3f3ee402a4b",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "in_person",
+       "detail": "Patients can get help with the financial assistance program application process at Baptist Health business office locations before, during, or after the patient's hospital stay."
+      },
+      {
+       "kind": "mail",
+       "detail": "You can apply for help with your bill in person or by mail."
+      }
+     ],
+     "layer": "documented",
+     "quote": "You can apply for help with your bill in person or by mail.",
+     "source_id": "web-499440bdef17d171",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": {
+     "value": 240,
+     "layer": "documented",
+     "quote": "This period ends after the 240th day after the first post patient discharge statement.",
+     "source_id": "fap-0d81b3f3ee402a4b",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days": null,
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": {
+     "value": 240,
+     "layer": "documented",
+     "quote": "Bills that are not paid 240 days after the first billing date may be reported on the patient/guarantor credit history.",
+     "source_id": "web-499440bdef17d171",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "(205) 592-1216 or (800) 443-1039",
+     "layer": "documented",
+     "quote": "To reach Financial Assistance representatives at Citizens Hospital, Princeton Hospital, Shelby Hospital, or Walker Hospital, please call (205) 592-1216 or (800) 443-1039.",
+     "source_id": "fap-0d81b3f3ee402a4b",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": {
+     "value": "Monday \u2013 Friday, 8:00 a.m. \u2013 4:30 p.m. (CST)",
+     "layer": "documented",
+     "quote": "Financial Assistance representatives are available Monday \u2013 Friday, 8:00 a.m. \u2013 4:30 p.m. (CST).",
+     "source_id": "fap-0d81b3f3ee402a4b",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "languages": null
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-0d81b3f3ee402a4b",
+     "kind": "hospital_web",
+     "url": "https://orlandohealth.getbynder.com/asset/87f94485-6964-4247-8adc-2ad1e494040f/Baptist-Health-Financial-Assistance-Policy-04-2026_English_508.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "0d81b3f3ee402a4bf08449192610c8ff1f9183f0ff34ffd5095398c81e10f818",
+     "effective_date": null
+    },
+    {
+     "id": "fap-14419d25d47244c2",
+     "kind": "hospital_web",
+     "url": "https://orlandohealth.getbynder.com/asset/3adbfd91-93e8-4a3c-a20f-574f468b7ae5/GFSA-2026-07-Form-4903-132950-English_508.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "14419d25d47244c26d3882eee43b23757701eb58f6c8f73f1008ec6abe0d2091",
+     "effective_date": null
+    },
+    {
+     "id": "web-499440bdef17d171",
+     "kind": "hospital_web",
+     "url": "https://www.baptisthealthal.com/patient-financial-resources/billing-insurance-questions",
+     "title": "Billing and Insurance Questions - Baptist Health - Hospitals & Emergency Room in Birmingham, AL",
+     "fetched_on": "2026-10-23",
+     "sha256": "499440bdef17d1716ccf1fb85544f30c27d2fa5cd68714d333245043a2495775",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "agent dropped contacts.languages: quote is not a substring of the source"
+   ],
+   "eve_verified": {
+    "on": "2026-10-23",
+    "sources_fetched": 3,
+    "sources_total": 3,
+    "sources_missing": [],
+    "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.residency",
+     "eligibility.insured_patients_covered",
+     "programs.state_programs",
+     "apply.form_url",
+     "apply.documents_required",
+     "apply.submit_methods",
+     "apply.window_days_from_first_bill",
+     "collections.eca_wait_days",
+     "contacts.phone",
+     "contacts.hours"
+    ],
+    "rejected": [
+     [
+      "eligibility.assistance_ceiling_fpl",
+      "quote does not state the ceiling as a percentage of the poverty level"
+     ],
+     [
+      "eligibility.asset_test",
+      "quote does not support the asset-test value"
+     ]
+    ],
+    "pruned": [
+     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
+     "apply.documents_required: 1 item not named in the trimmed quote",
+     "apply.submit_methods: 1 item not named in the trimmed quote"
+    ],
+    "income_rule_verified": true,
+    "core_completeness": 0.83
+   }
+  },
+  {
+   "hospital": {
+    "ccn": "010024",
+    "name": "JACKSON HOSPITAL & CLINIC INC",
+    "city": "MONTGOMERY",
+    "state": "AL",
+    "zip": "36106",
+    "phone": "334-293-8000",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "jackson.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "150",
+     "layer": "documented",
+     "quote": "100% to 150% of the FPL base = 100% adjustment/write off",
+     "source_id": "fap-5c98fcd5dc4ab2de",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "150",
+       "max_fpl_inclusive": "200",
+       "discount_percent": 75
+      },
+      {
+       "min_fpl_exclusive": "200",
+       "max_fpl_inclusive": "250",
+       "discount_percent": 50
+      },
+      {
+       "min_fpl_exclusive": "250",
+       "max_fpl_inclusive": "300",
+       "discount_percent": 25
+      }
+     ],
+     "layer": "documented",
+     "quote": "151% to 200% of the FPL base = 75% adjustment/write off 201% to 250% of the FPL base = 50% adjustment/write off 251% to 300% of the FPL base = 25% adjustment/write off",
+     "source_id": "fap-5c98fcd5dc4ab2de",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "assistance_ceiling_fpl": {
+     "value": "300",
+     "layer": "documented",
+     "quote": "JHC will use a sliding scale up to 300% of the current Federal Poverty Level (FPL) Guidelines as a basis for income eligibility.",
+     "source_id": "fap-5c98fcd5dc4ab2de",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "asset_test": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Individuals who have significant liquid (cash) assets more than the below limits, may be refused. Protected asset levels will be as follows:",
+     "source_id": "fap-5c98fcd5dc4ab2de",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "residency": {
+     "value": [
+      "Citizenship of the United States of America is required."
+     ],
+     "layer": "documented",
+     "quote": "Citizenship of the United States of America is required.",
+     "source_id": "fap-5c98fcd5dc4ab2de",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Eligible individuals include patients who do not have insurance and patients who have insurance but are underinsured.",
+     "source_id": "fap-5c98fcd5dc4ab2de",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "min_balance": {
+     "value": "2500",
+     "layer": "documented",
+     "quote": "-$2,500 or less Financial Assistance Coordinator -$2,501 to $25,000 Director, Patient Access",
+     "source_id": "fap-5c98fcd5dc4ab2de",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
+    "state_programs": {
+     "value": [
+      {
+       "name": "Alabama Medicaid Program",
+       "how_to_apply": "Applicants must first be screened for or receive a denial from the Alabama Medicaid Program."
+      }
+     ],
+     "layer": "documented",
+     "quote": "Applicants must first be screened for or receive a denial from the Alabama Medicaid Program.",
+     "source_id": "fap-5c98fcd5dc4ab2de",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
+   },
+   "apply": {
+    "form_url": {
+     "value": "https://res.cloudinary.com/dpmykpsih/image/upload/jackson-hospital-site-324/media/7e14be0488ba4be6a06d4604f54b08c3/financial-assistance-program-application-2022.pdf",
+     "layer": "documented",
+     "quote": "Jackson Hospital & Clinic Financial Assistance Program Application",
+     "source_id": "fap-375b864720fcb849",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "tax_return",
+      "other"
+     ],
+     "layer": "documented",
+     "quote": "- Copy of the most recent year\u2019s tax return including all schedules. Applicants may call 800-829-1040 for a free transcript of their Tax Return, if they do not have one on file.",
+     "source_id": "fap-5c98fcd5dc4ab2de",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "in_person",
+       "detail": "From the hospital's main registration desk, Emergency room registration desk or any other registration area throughout the facility located at 1725 Pine St., Montgomery, AL 36106."
+      },
+      {
+       "kind": "phone",
+       "detail": "By calling the Business Office at (334) 293-8153 and one will be mailed to the patient"
+      },
+      {
+       "kind": "phone",
+       "detail": "By calling the Financial Assistance Coordinator at (334) 293-6970"
+      }
+     ],
+     "layer": "documented",
+     "quote": "By calling the Business Office at (334) 293-8153 and one will be mailed to the patient",
+     "source_id": "fap-5c98fcd5dc4ab2de",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": {
+     "value": 180,
+     "layer": "documented",
+     "quote": "Applications that are received more than 6 months (180 days) from the date of service or three months from the date of the last insurance payment are not eligible.",
+     "source_id": "fap-5c98fcd5dc4ab2de",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days": {
+     "value": 15,
+     "layer": "documented",
+     "quote": "Applicant will receive a letter detailing the determination within 15 business days of receipt of application.",
+     "source_id": "fap-5c98fcd5dc4ab2de",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": {
+     "value": 240,
+     "layer": "documented",
+     "quote": "No ECA activity can occur however until after 240 days from the patient\u2019s first statement.",
+     "source_id": "fap-5c98fcd5dc4ab2de",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "(334) 293-6970",
+     "layer": "documented",
+     "quote": "By calling the Financial Assistance Coordinator at (334) 293-6970",
+     "source_id": "fap-5c98fcd5dc4ab2de",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": null,
+    "languages": {
+     "value": [
+      "English",
+      "Spanish"
+     ],
+     "layer": "documented",
+     "quote": "Applications are available in both English and Spanish.",
+     "source_id": "fap-5c98fcd5dc4ab2de",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-5c98fcd5dc4ab2de",
+     "kind": "hospital_web",
+     "url": "https://res.cloudinary.com/dpmykpsih/raw/upload/jackson-hospital-site-324/media/r/7b2fd5cb91fc45c9811d231ed7d6e093/financial-assistance-policy_617.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "5c98fcd5dc4ab2de785257b6d0b7ae352b538a2bfd3e9712b497e42fa52754a7",
+     "effective_date": null
+    },
+    {
+     "id": "fap-375b864720fcb849",
+     "kind": "hospital_web",
+     "url": "https://res.cloudinary.com/dpmykpsih/image/upload/jackson-hospital-site-324/media/7e14be0488ba4be6a06d4604f54b08c3/financial-assistance-program-application-2022.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "375b864720fcb849146dd6a9724538dd19924ad12063de72c54b9ec88c3b842d",
+     "effective_date": null
+    },
+    {
+     "id": "web-590d1a01cbd9f50b",
+     "kind": "hospital_web",
+     "url": "https://www.jackson.org/patient-resources/patients-visitors/financial-services-billing/",
+     "title": "Financial services and billing | Jackson Hospital | Montgomery, Alabama",
+     "fetched_on": "2026-10-23",
+     "sha256": "590d1a01cbd9f50ba3bfa5c1238fceaa0434ae767771af26b1c4dd49d80310f5",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [],
+   "eve_verified": {
+    "on": "2026-10-23",
+    "sources_fetched": 2,
+    "sources_total": 3,
+    "sources_missing": [
+     "https://www.jackson.org/patient-resources/patients-visitors/financial-services-billing/"
+    ],
+    "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
+     "eligibility.assistance_ceiling_fpl",
+     "eligibility.asset_test",
+     "eligibility.residency",
+     "eligibility.insured_patients_covered",
+     "eligibility.min_balance",
+     "programs.state_programs",
+     "apply.form_url",
+     "apply.documents_required",
+     "apply.submit_methods",
+     "apply.window_days_from_first_bill",
+     "apply.decision_days",
+     "collections.eca_wait_days",
+     "contacts.phone",
+     "contacts.languages"
+    ],
+    "rejected": [
+     [
+      "contacts.hours",
+      "source text missing"
+     ]
+    ],
+    "pruned": [
+     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
+     "apply.documents_required: 6 items not named in the trimmed quote",
+     "apply.submit_methods: 1 item not named in the trimmed quote"
+    ],
+    "income_rule_verified": true,
+    "core_completeness": 1.0
+   }
+  },
+  {
+   "hospital": {
+    "ccn": "010034",
+    "name": "COMMUNITY HOSPITAL INC",
+    "city": "TALLASSEE",
+    "state": "AL",
+    "zip": "36078",
+    "phone": "334-283-6541",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "chal.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": null,
+    "discount_tiers": null,
+    "assistance_ceiling_fpl": null,
+    "asset_test": null,
+    "residency": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "All claims must be filed against any/all patient/guarantor owned insurance policies and paid directly to Community Hospital, Inc. before we will consider any portion of the balance for the Financial Hardship Policy.",
+     "source_id": "web-9ad9d873d6d0d559",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": {
+     "value": "http://www.chal.org/financial_assistance_policy_and_application_final.pdf",
+     "layer": "documented",
+     "quote": "Click here to download the complete Financial Assistance Policy and Request for Financial Hardship Application.",
+     "source_id": "web-9ad9d873d6d0d559",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "form_version": null,
+    "documents_required": null,
+    "documents_reported": null,
+    "submit_methods": null,
+    "window_days_from_first_bill": null,
+    "decision_days": null,
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "(334) 283-6541",
+     "layer": "documented",
+     "quote": "Request a copy to be mailed to you by calling the business office at (334) 283-6541",
+     "source_id": "web-9ad9d873d6d0d559",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": null,
+    "languages": null
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-82ae8fff79c709c5",
+     "kind": "hospital_web",
+     "url": "https://www.chal.org/financial_assistance_policy_and_application_final.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "82ae8fff79c709c5b2bb83e0e5188053dcfa9e3af7e3dcbb0f83593a96aab460",
+     "effective_date": null
+    },
+    {
+     "id": "web-9ad9d873d6d0d559",
+     "kind": "hospital_web",
+     "url": "https://www.chal.org/about/financial-assistance-program/",
+     "title": "Community Hospital - Excellence in Community Healthcare",
+     "fetched_on": "2026-10-23",
+     "sha256": "9ad9d873d6d0d559e187e322c2c7f04efd9997916335032d614f8c96c7bc232d",
+     "effective_date": null
+    },
+    {
+     "id": "web-dbfa0a10c9babea6",
+     "kind": "hospital_web",
+     "url": "https://www.chal.org/about/resources",
+     "title": "Community Hospital - Excellence in Community Healthcare",
+     "fetched_on": "2026-10-23",
+     "sha256": "dbfa0a10c9babea6f10a1c33c3f43cd6422ab90d14c0c2c832dad50b3029a9de",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "agent dropped eligibility.discount_tiers: judge: The quote says 'less than 200%', so the upper bound is exclusive, not inclusive at 200.",
+    "agent dropped programs.presumptive: judge: First quote only says 'these patients' were deemed indigent by the state; it does not mention Medicaid exhausted days or uncovered charges.",
+    "agent dropped apply.documents_required: judge: The quote mentions check stubs as examples but never an employer letter; the other items match.",
+    "agent dropped apply.submit_methods: judge: The quote only says to call to arrange a time to finalize; it does not mention returning the form to the Patient Accounts Department."
+   ],
+   "eve_verified": {
+    "on": "2026-10-23",
+    "sources_fetched": 3,
+    "sources_total": 3,
+    "sources_missing": [],
+    "accepted": [
+     "eligibility.insured_patients_covered",
+     "apply.form_url",
+     "contacts.phone"
+    ],
+    "rejected": [
+     [
+      "eligibility.free_care_max_fpl",
+      "value not in quote"
+     ],
+     [
+      "eligibility.asset_test",
+      "quote does not support the asset-test value"
+     ]
+    ],
+    "pruned": [],
+    "income_rule_verified": false,
+    "core_completeness": 0.33
+   }
+  },
+  {
+   "hospital": {
+    "ccn": "010044",
+    "name": "MARION REGIONAL MEDICAL CENTER",
+    "city": "HAMILTON",
+    "state": "AL",
+    "zip": "35570",
+    "phone": "205-921-6200",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "nmhs.net",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "Patients whose gross family income is at or below 200% (between 0% and 200%) of the FPL are eligible to receive free (charity).",
+     "source_id": "fap-f6a29f19e0315452",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": null,
+    "assistance_ceiling_fpl": null,
+    "asset_test": null,
+    "residency": {
+     "value": [
+      "This policy applies only to individuals residing in the Hospital service area, as defined in the definitions section of this policy."
+     ],
+     "layer": "documented",
+     "quote": "This policy applies only to individuals residing in the Hospital service area, as defined in the definitions section of this policy.",
+     "source_id": "fap-f6a29f19e0315452",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "insured_patients_covered": null,
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": {
+     "value": [
+      "state funded prescription programs",
+      "homeless or received care from a homeless clinic(s)",
+      "participation in Women, Infants and Children program (WIC)",
+      "food stamp eligibility",
+      "out of state Medicaid patients"
+     ],
+     "layer": "documented",
+     "quote": "state funded prescription programs; homeless or received care from a homeless clinic(s); participation in Women, Infants and Children program (WIC); food stamp eligibility, and out of state Medicaid patients (when NMHS is not participating).",
+     "source_id": "fap-f6a29f19e0315452",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": {
+     "value": "https://edge.sitecorecloud.io/merge1-nmhsxmcloud-production-5c00/media/nmhs/files/patients-and-visitors/financial-assistance-application.pdf",
+     "layer": "documented",
+     "quote": "APPLICATION FOR FINANCIAL ASSISTANCE",
+     "source_id": "fap-b24b8ba12c1cd847",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "proof_of_income",
+      "other"
+     ],
+     "layer": "documented",
+     "quote": "1. ALL SOURCES OF MONTHLY INCOME FOR PATIENT AND/OR SPOUSE AS APPLICABLE",
+     "source_id": "fap-b24b8ba12c1cd847",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "North Mississippi Health Services, Attn: Financial Assistance, 1494 Cliff Gookin Blvd, Tupelo, MS 38801"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Please mail or bring information requested to: North Mississippi Health Services Attn: Financial Assistance 1494 Cliff Gookin Blvd Tupelo, MS 38801",
+     "source_id": "fap-b24b8ba12c1cd847",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": {
+     "value": 240,
+     "layer": "documented",
+     "quote": "Patients must return their completed application and the required supporting financial documentation to the Business Office of the facility where medical services were received, within 240 days from the date of the patient\u2019s first bill.",
+     "source_id": "web-b6304ba045c17093",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days": {
+     "value": 30,
+     "layer": "documented",
+     "quote": "Submitted applications will be processed and a determination letter returned to the patient within 30 days.",
+     "source_id": "web-b6304ba045c17093",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": {
+     "value": 120,
+     "layer": "documented",
+     "quote": "Non-payment will not be reported to a collection agency until a minimum 120 days after the first billing date.",
+     "source_id": "web-b6304ba045c17093",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "662-377-3219",
+     "layer": "documented",
+     "quote": "If you have any questions about this application, please contact us at 662-377-3219.",
+     "source_id": "fap-b24b8ba12c1cd847",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": null,
+    "languages": {
+     "value": [
+      "English",
+      "Spanish"
+     ],
+     "layer": "documented",
+     "quote": "Financial Assistance Application: English Spanish",
+     "source_id": "web-b6304ba045c17093",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-f6a29f19e0315452",
+     "kind": "hospital_web",
+     "url": "https://edge.sitecorecloud.io/merge1-nmhsxmcloud-production-5c00/media/nmhs/files/patients-and-visitors/charity-policy-guidlines.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "f6a29f19e031545258424c1755ea67f5610bbc072dd4de10e0d0a78218212846",
+     "effective_date": null
+    },
+    {
+     "id": "web-b6304ba045c17093",
+     "kind": "hospital_web",
+     "url": "https://www.nmhs.net/patients-and-visitors/billing-and-insurance/financial-assistance",
+     "title": "Financial Assistance | North Mississippi Health Services",
+     "fetched_on": "2026-10-23",
+     "sha256": "b6304ba045c170937b39a873e6ee7f30bf682b7796c558ed90feb33fee577673",
+     "effective_date": null
+    },
+    {
+     "id": "fap-b24b8ba12c1cd847",
+     "kind": "hospital_web",
+     "url": "https://edge.sitecorecloud.io/merge1-nmhsxmcloud-production-5c00/media/nmhs/files/patients-and-visitors/financial-assistance-application.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "b24b8ba12c1cd847f4a52aa954ebd95732d3e0e2d1646ee4ece270ea0045c850",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "agent dropped eligibility.insured_patients_covered: quote is not a substring of the source"
+   ],
+   "eve_verified": {
+    "on": "2026-10-23",
+    "sources_fetched": 3,
+    "sources_total": 3,
+    "sources_missing": [],
+    "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.residency",
+     "programs.presumptive",
+     "apply.form_url",
+     "apply.documents_required",
+     "apply.submit_methods",
+     "apply.window_days_from_first_bill",
+     "apply.decision_days",
+     "collections.eca_wait_days",
+     "contacts.phone",
+     "contacts.languages"
+    ],
+    "rejected": [
+     [
+      "eligibility.asset_test",
+      "quote does not support the asset-test value"
+     ]
+    ],
+    "pruned": [
+     "apply.documents_required: 4 items not named in the trimmed quote",
+     "apply.submit_methods: 3 items not named in the trimmed quote"
+    ],
+    "income_rule_verified": true,
+    "core_completeness": 0.83
+   }
+  },
+  {
+   "hospital": {
+    "ccn": "010045",
+    "name": "FAYETTE MEDICAL CENTER",
+    "city": "FAYETTE",
+    "state": "AL",
+    "zip": "35555",
+    "phone": "205-932-5966",
+    "ownership": "Voluntary non-profit - Other",
+    "website_domain": "dchsystem.com",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "250",
+     "layer": "documented",
+     "quote": "Uninsured and underinsured patients with annualized family incomes not in excess of 250% of the Federal Poverty Guidelines may be eligible for fully discounted care.",
+     "source_id": "fap-ef77d3bba0149018",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": null,
+    "assistance_ceiling_fpl": null,
+    "asset_test": null,
+    "residency": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Underinsured Patient: An individual, with private or public insurance coverage, for whom it would be a financial hardship to fully pay the expected out-of-pocket expenses for medical services provided by DCH.",
+     "source_id": "fap-ef77d3bba0149018",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": {
+     "value": "https://www.dchsystem.com/documents/content/financialassistanceform.pdf",
+     "layer": "documented",
+     "quote": "DCH HEALTH SYSTEM Financial Assistance 809 University Blvd. East Tuscaloosa, AL 35405",
+     "source_id": "fap-f3340fd52da2e896",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "pay_stubs",
+      "tax_return",
+      "bank_statements"
+     ],
+     "layer": "documented",
+     "quote": "All sources of income including Paycheck Stubs, Food Stamps, Social Security, and SSI \u2022 Income Tax Form(s) \u2022 Bank Statement(s)",
+     "source_id": "fap-f3340fd52da2e896",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "DCH HEALTH SYSTEM FINANCIAL ASSISTANCE 809 UNIVERSITY BLVD. EAST TUSCALOOSA, AL 35405"
+      }
+     ],
+     "layer": "documented",
+     "quote": "returning it to the following address: DCH HEALTH SYSTEM FINANCIAL ASSISTANCE 809 UNIVERSITY BLVD. EAST TUSCALOOSA, AL 35405",
+     "source_id": "fap-f3340fd52da2e896",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": null,
+    "decision_days": null,
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": {
+     "value": 120,
+     "layer": "documented",
+     "quote": "After 120 days from placement with the third party agency if adequate payments arrangements are not obtained, the account is closed and written off as Medicare Bad Debt.",
+     "source_id": "fap-ef77d3bba0149018",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "205.343.8321",
+     "layer": "documented",
+     "quote": "please contact DCH Customer Service at 205.343.8321",
+     "source_id": "fap-ef77d3bba0149018",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": null,
+    "languages": {
+     "value": [
+      "primary language of 5 percent or more of the primary community served"
+     ],
+     "layer": "documented",
+     "quote": "Provide notices and other information on Financial Assistance to all patients in the primary language of 5 percent or more of the primary community served by the hospital.",
+     "source_id": "fap-ef77d3bba0149018",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-ef77d3bba0149018",
+     "kind": "hospital_web",
+     "url": "https://www.dchsystem.com/documents/DCH-Financial-Assistance-Charity-Care-Policy-2024.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "ef77d3bba014901859ae94ae24c2d4903a21059e9ecaa3f646b3b873f871f8cf",
+     "effective_date": null
+    },
+    {
+     "id": "fap-f3340fd52da2e896",
+     "kind": "hospital_web",
+     "url": "https://www.dchsystem.com/documents/content/financialassistanceform.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "f3340fd52da2e8964725455fb8aad7e6acce54584bafd37dbe45f78721148a1c",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "agent dropped programs.presumptive: quote is not a substring of the source"
+   ],
+   "eve_verified": {
+    "on": "2026-10-23",
+    "sources_fetched": 2,
+    "sources_total": 2,
+    "sources_missing": [],
+    "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.insured_patients_covered",
+     "apply.form_url",
+     "apply.documents_required",
+     "apply.submit_methods",
+     "collections.eca_wait_days",
+     "contacts.phone",
+     "contacts.languages"
+    ],
+    "rejected": [
+     [
+      "eligibility.asset_test",
+      "quote does not support the asset-test value"
+     ]
+    ],
+    "pruned": [
+     "apply.submit_methods: 1 item not named in the trimmed quote"
+    ],
+    "income_rule_verified": true,
+    "core_completeness": 0.83
+   }
+  },
+  {
+   "hospital": {
+    "ccn": "010056",
+    "name": "ST VINCENT'S BIRMINGHAM",
+    "city": "BIRMINGHAM",
+    "state": "AL",
+    "zip": "35205",
+    "phone": "205-939-7000",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "healthcare.ascension.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "250",
+     "layer": "documented",
+     "quote": "If your income is less than or equal to 250% of the Federal Poverty Level, you may receive a 100% charity care write-off on the portion of the charges for which you are responsible.",
+     "source_id": "web-b85888a03ffb74dc",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": null,
+    "assistance_ceiling_fpl": null,
+    "asset_test": null,
+    "residency": {
+     "value": [
+      "Patients must live in Jefferson, Blount, Chilton, Cullman, Shelby, St Clair, Talladega or Walker County."
+     ],
+     "layer": "documented",
+     "quote": "You may be able to get financial assistance if you live in Jefferson, Blount, Chilton, Cullman, Shelby, St Clair, Talladega or Walker County.",
+     "source_id": "web-b85888a03ffb74dc",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "insured_patients_covered": null,
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "pay_stubs"
+     ],
+     "layer": "documented",
+     "quote": "Copies of 3 most recent paystubs from employer",
+     "source_id": "fap-309f36cef50bd94a",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": null,
+    "window_days_from_first_bill": null,
+    "decision_days": null,
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "877-202-0356",
+     "layer": "documented",
+     "quote": "For help with a Financial Assistance Policy application, you may contact customer service at 877-202-0356",
+     "source_id": "web-b85888a03ffb74dc",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": null,
+    "languages": null
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-aad68acd3f9bdd4d",
+     "kind": "hospital_web",
+     "url": "https://healthcare.ascension.org/-/media/healthcare/financial-assistance/alabama/albir/fap/runningfile_albir_english_financial-assistance-policy.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "aad68acd3f9bdd4dbb1f8e85fd71c114bbfdcd088d58aec4c2b2b64b9b2b1e4e",
+     "effective_date": null
+    },
+    {
+     "id": "fap-309f36cef50bd94a",
+     "kind": "hospital_web",
+     "url": "https://healthcare.ascension.org/-/media/healthcare/financial-assistance/alabama/albir/fap-application/runningfile_albir_english_financial-assistance-application.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "309f36cef50bd94acca71df9e93bfeab071ac23a6ce2f9fe05384a3731c0eced",
+     "effective_date": null
+    },
+    {
+     "id": "web-b85888a03ffb74dc",
+     "kind": "hospital_web",
+     "url": "https://healthcare.ascension.org/financial-assistance/alabama-ascension-st-vincents-birmingham-financial-assistance",
+     "title": "Ascension St. Vincent's Birmingham | Ascension",
+     "fetched_on": "2026-10-23",
+     "sha256": "b85888a03ffb74dc96a4ec1b66a64d555e146616546ae1bb4d6b4cd355bac46b",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: 85% 326% - 400% of FPL Base",
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Copies of most recent yearly tax return (if self-employed, include all schedules) | Current bank statements (checking and savings accounts) from last 3 months",
+    "agent dropped apply.submit_methods: judge: Quote shows mail or hand delivery and lists PO Box 935345 and PO Box 80278, but gives no Atlanta GA 31193 address or recipient name.",
+    "agent dropped apply.window_days_from_first_bill: judge: Quote is truncated at '240th day after the Patient's' and never says the 240 days run from the first bill."
+   ],
+   "eve_verified": {
+    "on": "2026-10-23",
+    "sources_fetched": 3,
+    "sources_total": 3,
+    "sources_missing": [],
+    "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.residency",
+     "apply.documents_required",
+     "contacts.phone"
+    ],
+    "rejected": [
+     [
+      "eligibility.discount_tiers",
+      "value not in quote"
+     ],
+     [
+      "eligibility.asset_test",
+      "quote does not support the asset-test value"
+     ],
+     [
+      "eligibility.insured_patients_covered",
+      "quote does not say whether insured patients are covered"
+     ],
+     [
+      "apply.form_url",
+      "quote not found in source"
+     ]
+    ],
+    "pruned": [
+     "apply.documents_required: 2 items not named in the trimmed quote"
+    ],
+    "income_rule_verified": true,
+    "core_completeness": 0.5
+   }
+  },
+  {
+   "hospital": {
+    "ccn": "010065",
+    "name": "RUSSELL MEDICAL CENTER",
+    "city": "ALEXANDER CITY",
+    "state": "AL",
+    "zip": "35010",
+    "phone": "256-329-7100",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "russellcares.com",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": null,
+    "discount_tiers": null,
+    "assistance_ceiling_fpl": null,
+    "asset_test": null,
+    "residency": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "For patients who are uninsured, underinsured or cannot pay their deductible or co-pays, the Hospital will provide, upon request, (1) a packet of information that contains the FAP and the FAP application",
+     "source_id": "fap-5b65735c5b44267c",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": null,
+    "documents_reported": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "P.O. Box 939 Alexander City AL, 35011"
+      }
+     ],
+     "layer": "documented",
+     "quote": "please mail the information to P.O. Box 939 Alexander City AL, 35011 or call (256) 329-7136 to schedule an appointment with our patient accounting supervisor for review.",
+     "source_id": "fap-c595ec40acd80da5",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": {
+     "value": 240,
+     "layer": "documented",
+     "quote": "Patients have up to 240 days from the first billing statement to apply for financial assistance.",
+     "source_id": "web-8fc8bacbedb2e9f9",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days": null,
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": {
+     "value": 180,
+     "layer": "documented",
+     "quote": "Russell Medical does not engage in extraordinary collection actions during the first 180 days after your first billing statement.",
+     "source_id": "web-8fc8bacbedb2e9f9",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "256-329-7136",
+     "layer": "documented",
+     "quote": "Our Business Office is open Monday-Friday, 8:00 a.m.-4:30 p.m. Call us at 256-329-7136",
+     "source_id": "web-8fc8bacbedb2e9f9",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": {
+     "value": "Monday-Friday, 8:00 a.m.-4:30 p.m.",
+     "layer": "documented",
+     "quote": "Our Business Office is open Monday-Friday, 8:00 a.m.-4:30 p.m. Call us at 256-329-7136",
+     "source_id": "web-8fc8bacbedb2e9f9",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "languages": {
+     "value": [
+      "English",
+      "Spanish"
+     ],
+     "layer": "documented",
+     "quote": "The FAP, FAP application, and plain language summary shall be available in English and Spanish, upon request.",
+     "source_id": "fap-5b65735c5b44267c",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-5b65735c5b44267c",
+     "kind": "hospital_web",
+     "url": "https://www.russellcares.com/wp-content/uploads/Charity-Uninsured-2026-e33be79b-7999-4e48-b9ae-e41f8c1eef49.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "5b65735c5b44267ceb438d7e1bef860890911f202d3f543adac1917db3686dbf",
+     "effective_date": null
+    },
+    {
+     "id": "fap-c595ec40acd80da5",
+     "kind": "hospital_web",
+     "url": "https://www.russellcares.com/wp-content/uploads/2026-Charity-Application.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "c595ec40acd80da5d307863a30ad9d91eeae8f00b746bddbe98d02a8fc0574d4",
+     "effective_date": null
+    },
+    {
+     "id": "web-8fc8bacbedb2e9f9",
+     "kind": "hospital_web",
+     "url": "https://www.russellcares.com/patients-visitors/insurance-and-billing",
+     "title": "Insurance & Billing | Russell Medical",
+     "fetched_on": "2026-10-23",
+     "sha256": "8fc8bacbedb2e9f92a4da2a6698d0b62356c3fc321ddb01682be71a3e5a14225",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "agent dropped apply.documents_required: judge: The quote lists items 1-2e only. Food stamps verification, proof of Medicaid non-eligibility, and the pharmacy printout do not appear."
+   ],
+   "eve_verified": {
+    "on": "2026-10-23",
+    "sources_fetched": 3,
+    "sources_total": 3,
+    "sources_missing": [],
+    "accepted": [
+     "eligibility.insured_patients_covered",
+     "apply.submit_methods",
+     "apply.window_days_from_first_bill",
+     "collections.eca_wait_days",
+     "contacts.phone",
+     "contacts.hours",
+     "contacts.languages"
+    ],
+    "rejected": [
+     [
+      "eligibility.asset_test",
+      "quote does not support the asset-test value"
+     ]
+    ],
+    "pruned": [
+     "apply.submit_methods: 1 item not named in the trimmed quote"
+    ],
+    "income_rule_verified": false,
+    "core_completeness": 0.33
+   }
+  },
+  {
+   "hospital": {
+    "ccn": "010090",
+    "name": "USA HEALTH HCA PROVIDENCE HOSPITAL, LLC",
+    "city": "MOBILE",
+    "state": "AL",
+    "zip": "36608",
+    "phone": "251-633-1000",
+    "ownership": "Voluntary non-profit - Church",
+    "website_domain": "usahealthsystem.com",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "up to 200% 100% FAP adjustment applied",
+     "source_id": "fap-6a0883beee0dadd0",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "200",
+       "max_fpl_inclusive": "300",
+       "discount_percent": 85
+      },
+      {
+       "min_fpl_exclusive": "300",
+       "max_fpl_inclusive": "400",
+       "discount_percent": 75
+      }
+     ],
+     "layer": "documented",
+     "quote": "200-300% 85% FAP adjustment applied 300-400% 75% FAP adjustment applied",
+     "source_id": "fap-6a0883beee0dadd0",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "assistance_ceiling_fpl": {
+     "value": "400",
+     "layer": "documented",
+     "quote": "patients are eligible for financial assistance when they receive emergency or medically necessary care at a USA Health facility, and the patient's family income is at or less than 400% of the Federal Poverty Level (FPL)",
+     "source_id": "fap-6a0883beee0dadd0",
+     "checked_on": "2026-10-23",
+     "confidence": 0.8,
+     "support_count": 0
+    },
+    "asset_test": null,
+    "residency": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "The purpose of this policy is to provide a fair and consistent method for uninsured and/or under-insured patients to apply and be considered for financial assistance",
+     "source_id": "fap-6a0883beee0dadd0",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": {
+     "value": [
+      "Medicaid enrolled"
+     ],
+     "layer": "documented",
+     "quote": "USA Health reserves the right to include out of state Medicaid in Presumptive Assistance.",
+     "source_id": "fap-6a0883beee0dadd0",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": {
+     "value": "https://www.usahealthsystem.com/uploads/pdfs/financial-assistance/application-for-financial-assistance-202509.pdf",
+     "layer": "documented",
+     "quote": "Financial Assistance Application",
+     "source_id": "fap-9216b520ca9a19b0",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "pay_stubs",
+      "tax_return"
+     ],
+     "layer": "documented",
+     "quote": "1. Copies of 3 most recent paystubs from employer 2. Copies of most recently filed tax return (if self-employed, include all schedules)",
+     "source_id": "fap-6a0883beee0dadd0",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "phone",
+       "detail": "(251) 434-3505, Monday \u2013 Friday, 8 am \u2013 4:30 pm"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Phone: (251) 434-3505, Monday \u2013 Friday, 8 am \u2013 4:30 pm",
+     "source_id": "fap-6a0883beee0dadd0",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": {
+     "value": 240,
+     "layer": "documented",
+     "quote": "Patient applications can be submitted for consideration for up to 240 days past the date of service",
+     "source_id": "fap-6a0883beee0dadd0",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days": null,
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": {
+     "value": 120,
+     "layer": "documented",
+     "quote": "The Hospital Business Office will not utilize outside collection efforts (ECA) during the first 120 days after the first bill.",
+     "source_id": "fap-6a0883beee0dadd0",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "(251) 434-3505",
+     "layer": "documented",
+     "quote": "calling (251) 434-3505, Monday \u2013 Friday, 8 am \u2013 4:30 pm",
+     "source_id": "fap-6a0883beee0dadd0",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": {
+     "value": "Monday \u2013 Friday, 8 am \u2013 4:30 pm",
+     "layer": "documented",
+     "quote": "calling (251) 434-3505, Monday \u2013 Friday, 8 am \u2013 4:30 pm",
+     "source_id": "fap-6a0883beee0dadd0",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "languages": null
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-6a0883beee0dadd0",
+     "kind": "hospital_web",
+     "url": "https://www.usahealthsystem.com/uploads/pdfs/financial-assistance/usa-financial-assistance-policy-202505.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "6a0883beee0dadd0e95b454435650629db5a32bb451888e7e3fe048f4a2b2510",
+     "effective_date": null
+    },
+    {
+     "id": "fap-9216b520ca9a19b0",
+     "kind": "hospital_web",
+     "url": "https://www.usahealthsystem.com/uploads/pdfs/financial-assistance/application-for-financial-assistance-202509.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "9216b520ca9a19b0663c44400a7f523293ccb38fb152905901d5e070e897b714",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "eligibility.assistance_ceiling_fpl: quote matched the source only after typography normalization",
+    "eligibility.asset_test: quote matched the source only after typography normalization"
+   ],
+   "eve_verified": {
+    "on": "2026-10-23",
+    "sources_fetched": 2,
+    "sources_total": 2,
+    "sources_missing": [],
+    "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
+     "eligibility.assistance_ceiling_fpl",
+     "eligibility.insured_patients_covered",
+     "programs.presumptive",
+     "apply.form_url",
+     "apply.documents_required",
+     "apply.submit_methods",
+     "apply.window_days_from_first_bill",
+     "collections.eca_wait_days",
+     "contacts.phone",
+     "contacts.hours"
+    ],
+    "rejected": [
+     [
+      "eligibility.asset_test",
+      "quote does not support the asset-test value"
+     ]
+    ],
+    "pruned": [
+     "apply.documents_required: 2 items not named in the trimmed quote",
+     "apply.submit_methods: 1 item not named in the trimmed quote"
+    ],
+    "income_rule_verified": true,
+    "core_completeness": 1.0
+   }
+  },
+  {
+   "hospital": {
+    "ccn": "010100",
+    "name": "THOMAS HOSPITAL",
+    "city": "FAIRHOPE",
+    "state": "AL",
+    "zip": "36532",
+    "phone": "251-928-2375",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "infirmaryhealth.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "Generally, patients are eligible for \u201cfull\u201d Financial Assistance when their monthly Family Income is at or below 200% of FPG.",
+     "source_id": "fap-52f9ab4f1024f07a",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": null,
+    "assistance_ceiling_fpl": null,
+    "asset_test": null,
+    "residency": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "IH is committed to providing financial assistance to patients who require emergent or other medically necessary hospital care, are uninsured or underinsured",
+     "source_id": "fap-52f9ab4f1024f07a",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": {
+     "value": "https://www.infirmaryhealth.org/financial-assistance",
+     "layer": "documented",
+     "quote": "Download an application from the IH website: https://www.infirmaryhealth.org/financial-assistance.",
+     "source_id": "fap-9af6058fa9458113",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "tax_return",
+      "proof_of_income",
+      "other"
+     ],
+     "layer": "documented",
+     "quote": "Latest/Current Federal and State income tax return. If you did not file income tax returns, please call the Internal Revenue Service for a verification letter",
+     "source_id": "fap-9af6058fa9458113",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "in_person",
+       "detail": "Obtain an application at each hospital's main Registration desk or Emergency Room desk."
+      }
+     ],
+     "layer": "documented",
+     "quote": "Obtain an application at each hospital\u2019s main Registration desk or Emergency Room desk.",
+     "source_id": "fap-9af6058fa9458113",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": null,
+    "decision_days": null,
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": {
+     "value": 120,
+     "layer": "documented",
+     "quote": "Collection activities for non-applicants may begin 120 days after the first billing date.",
+     "source_id": "fap-52f9ab4f1024f07a",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "251-435-3541",
+     "layer": "documented",
+     "quote": "IH Patient Business Services Dept. at 251-435-3541",
+     "source_id": "fap-9af6058fa9458113",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": {
+     "value": "Monday - Friday 8 a.m. to 4:30 p.m.",
+     "layer": "documented",
+     "quote": "please call: IH Patient Business Services Dept. at 251-435-3541, Monday - Friday 8 a.m. to 4:30 p.m.",
+     "source_id": "fap-9af6058fa9458113",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "languages": {
+     "value": [
+      "English"
+     ],
+     "layer": "documented",
+     "quote": "The Financial Assistance Application (in English) is available, or will be provided to the patient, free of charge.",
+     "source_id": "fap-52f9ab4f1024f07a",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-52f9ab4f1024f07a",
+     "kind": "hospital_web",
+     "url": "https://www.infirmaryhealth.org/documents/content/FA_PolicyProcedure2023Oct01Draft1-JDP.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "52f9ab4f1024f07a43dd341b1c648b979298b3bbc889b1cea78d3d7e7b138bd2",
+     "effective_date": null
+    },
+    {
+     "id": "fap-9af6058fa9458113",
+     "kind": "hospital_web",
+     "url": "https://www.infirmaryhealth.org/documents/content/IH_Financial-Assistance-Policy_Summary_Instructions_Application_10012019.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "9af6058fa9458113573a5f967dd549ba94e4a85b8b429c58ed0756ed01afd122",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "eligibility.discount_tiers: 200-350% at 0% is no discount; skipped"
+   ],
+   "eve_verified": {
+    "on": "2026-10-23",
+    "sources_fetched": 2,
+    "sources_total": 2,
+    "sources_missing": [],
+    "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.insured_patients_covered",
+     "apply.form_url",
+     "apply.documents_required",
+     "apply.submit_methods",
+     "collections.eca_wait_days",
+     "contacts.phone",
+     "contacts.hours",
+     "contacts.languages"
+    ],
+    "rejected": [
+     [
+      "eligibility.assistance_ceiling_fpl",
+      "quote does not state the ceiling as a percentage of the poverty level"
+     ],
+     [
+      "eligibility.asset_test",
+      "quote does not support the asset-test value"
+     ]
+    ],
+    "pruned": [
+     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
+     "apply.documents_required: 1 item not named in the trimmed quote",
+     "apply.submit_methods: 3 items not named in the trimmed quote"
+    ],
+    "income_rule_verified": true,
+    "core_completeness": 0.83
+   }
+  },
+  {
+   "hospital": {
+    "ccn": "010101",
+    "name": "CITIZENS BAPTIST MEDICAL CENTER",
+    "city": "TALLADEGA",
+    "state": "AL",
+    "zip": "35160",
+    "phone": "256-761-4542",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "baptisthealthal.com",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "225",
+     "layer": "documented",
+     "quote": "If a validated financial statement application reflects an income at or below 225% of the most current Federal Poverty Level for the stated family size, the account will qualify for financial assistance in its entirety.",
+     "source_id": "web-a7193e7be1e59e46",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": null,
+    "assistance_ceiling_fpl": null,
+    "asset_test": null,
+    "residency": {
+     "value": [
+      "Applicants must reside where Baptist Health operates acute care facilities."
+     ],
+     "layer": "documented",
+     "quote": "Patients/Guarantors, who meet eligibility requirements and reside where Baptist Health operates acute care facilities, will be offered financial assistance.",
+     "source_id": "fap-0d81b3f3ee402a4b",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Individuals or family/households with insurance/third party coverage who meet two hundred twenty five percent (225%) or below of FPG will qualify for financial assistance for their self-pay after insurance financial responsibility",
+     "source_id": "fap-0d81b3f3ee402a4b",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "tax_return",
+      "other",
+      "pay_stubs",
+      "bank_statements"
+     ],
+     "layer": "documented",
+     "quote": "Income tax returns or other form of income attestation, including W2 forms, IRS 1099 documents, pay stubs, and bank statements. e. Disclosure of assets that are convertible to cash and unnecessary for daily living. f. Signature certification on completed Guarantor Financial Statement Application (GFSA).",
+     "source_id": "fap-0d81b3f3ee402a4b",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "in_person",
+       "detail": "At Baptist Health business office locations"
+      },
+      {
+       "kind": "mail",
+       "detail": "Mail the completed application"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Patients can get help with the financial assistance program application process at Baptist Health business office locations before, during, or after the patient's hospital stay. You can apply for help with your bill in person or by mail.",
+     "source_id": "web-a7193e7be1e59e46",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": {
+     "value": 240,
+     "layer": "documented",
+     "quote": "This period ends after the 240th day after the first post patient discharge statement.",
+     "source_id": "fap-0d81b3f3ee402a4b",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days": null,
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": {
+     "value": 240,
+     "layer": "documented",
+     "quote": "Bills that are not paid 240 days after the first billing date may be reported on the patient/guarantor credit history.",
+     "source_id": "web-a7193e7be1e59e46",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "(205) 592-1216",
+     "layer": "documented",
+     "quote": "Baptist Health Citizens Hospital: (205) 592-1216 or (800) 443-1039",
+     "source_id": "web-a7193e7be1e59e46",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": {
+     "value": "Monday \u2013 Friday, 8:00 a.m. \u2013 4:30 p.m. (CST)",
+     "layer": "documented",
+     "quote": "Financial Assistance representatives are available Monday \u2013 Friday, 8:00 a.m. \u2013 4:30 p.m. (CST).",
+     "source_id": "fap-0d81b3f3ee402a4b",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "languages": null
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-0d81b3f3ee402a4b",
+     "kind": "hospital_web",
+     "url": "https://orlandohealth.getbynder.com/asset/87f94485-6964-4247-8adc-2ad1e494040f/Baptist-Health-Financial-Assistance-Policy-04-2026_English_508.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "0d81b3f3ee402a4bf08449192610c8ff1f9183f0ff34ffd5095398c81e10f818",
+     "effective_date": null
+    },
+    {
+     "id": "fap-14419d25d47244c2",
+     "kind": "hospital_web",
+     "url": "https://orlandohealth.getbynder.com/asset/3adbfd91-93e8-4a3c-a20f-574f468b7ae5/GFSA-2026-07-Form-4903-132950-English_508.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "14419d25d47244c26d3882eee43b23757701eb58f6c8f73f1008ec6abe0d2091",
+     "effective_date": null
+    },
+    {
+     "id": "web-a7193e7be1e59e46",
+     "kind": "hospital_web",
+     "url": "https://www.baptisthealthal.com/patient-financial-resources/billing-insurance-questions",
+     "title": "Billing and Insurance Questions - Baptist Health - Hospitals & Emergency Room in Birmingham, AL",
+     "fetched_on": "2026-10-23",
+     "sha256": "a7193e7be1e59e469549be8e15dde5672178cd9fccaecfbecebef7e010e36d91",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: Individuals are deemed eligible for presumptive financial assistance via Independent Eligibility Assessments that determ",
+    "contacts.languages: 1 more verbatim excerpt(s) supported this value: Guarantor Financial Statement Application (GFSA) &ndash; Spanish",
+    "agent dropped programs.state_programs: judge: Quote names the Act but not that screening is accepted; it says to apply for Medicaid and be denied, not to cooperate with a pending process."
+   ],
+   "eve_verified": {
+    "on": "2026-10-23",
+    "sources_fetched": 3,
+    "sources_total": 3,
+    "sources_missing": [],
+    "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.residency",
+     "eligibility.insured_patients_covered",
+     "apply.documents_required",
+     "apply.submit_methods",
+     "apply.window_days_from_first_bill",
+     "collections.eca_wait_days",
+     "contacts.phone",
+     "contacts.hours"
+    ],
+    "rejected": [
+     [
+      "eligibility.asset_test",
+      "quote does not support the asset-test value"
+     ],
+     [
+      "apply.form_url",
+      "quote not found in source"
+     ],
+     [
+      "contacts.languages",
+      "quote not found in source"
+     ]
+    ],
+    "pruned": [
+     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)"
+    ],
+    "income_rule_verified": true,
+    "core_completeness": 0.67
+   }
+  },
+  {
+   "hospital": {
+    "ccn": "010103",
+    "name": "PRINCETON BAPTIST MEDICAL CENTER",
+    "city": "BIRMINGHAM",
+    "state": "AL",
+    "zip": "35211",
+    "phone": "205-783-3800",
+    "ownership": "Voluntary non-profit - Church",
+    "website_domain": "baptisthealthal.com",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "300",
+     "layer": "documented",
+     "quote": "Uninsured individuals or family/households who meet three hundred percent (300%) or below of FPG will qualify for financial assistance for their financial responsibility for services that are eligible in this policy.",
+     "source_id": "fap-0d81b3f3ee402a4b",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": null,
+    "assistance_ceiling_fpl": null,
+    "asset_test": null,
+    "residency": {
+     "value": [
+      "Patients/Guarantors, who meet eligibility requirements and reside where Baptist Health operates acute care facilities, will be offered financial assistance."
+     ],
+     "layer": "documented",
+     "quote": "Patients/Guarantors, who meet eligibility requirements and reside where Baptist Health operates acute care facilities, will be offered financial assistance.",
+     "source_id": "fap-0d81b3f3ee402a4b",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Individuals or family/households with insurance/third party coverage who meet two hundred twenty five percent (225%) or below of FPG will qualify for financial assistance for their self-pay after insurance financial responsibility for services that are eligible in this policy.",
+     "source_id": "fap-0d81b3f3ee402a4b",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
+    "state_programs": {
+     "value": [
+      {
+       "name": "Alabama Health Care Responsibility Act",
+       "how_to_apply": "Baptist Health will work with approved community not-for-profit agencies and county and state funded programs, including but not limited to the Alabama Health Care Responsibility Act."
+      }
+     ],
+     "layer": "documented",
+     "quote": "Baptist Health will work with approved community not-for-profit agencies and county and state funded programs, including but not limited to the Alabama Health Care Responsibility Act.",
+     "source_id": "fap-0d81b3f3ee402a4b",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "proof_of_income",
+      "tax_return",
+      "other"
+     ],
+     "layer": "documented",
+     "quote": "Income tax returns or other form of income attestation, including W2 forms, IRS 1099 documents, pay stubs, and bank statements.",
+     "source_id": "fap-0d81b3f3ee402a4b",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "in_person",
+       "detail": "Patients can get help with the financial assistance program application process at Baptist Health business office locations before, during, or after the patient's hospital stay. You can apply for help with your bill in person or by mail."
+      },
+      {
+       "kind": "mail",
+       "detail": "You can apply for help with your bill in person or by mail."
+      }
+     ],
+     "layer": "documented",
+     "quote": "Patients can get help with the financial assistance program application process at Baptist Health business office locations before, during, or after the patient's hospital stay. You can apply for help with your bill in person or by mail.",
+     "source_id": "web-0540ed2297d173fd",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": {
+     "value": 240,
+     "layer": "documented",
+     "quote": "This period ends after the 240th day after the first post patient discharge statement.",
+     "source_id": "fap-0d81b3f3ee402a4b",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days": null,
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": {
+     "value": 240,
+     "layer": "documented",
+     "quote": "Bills that are not paid 240 days after the first billing date may be reported on the patient/guarantor credit history.",
+     "source_id": "web-0540ed2297d173fd",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "(205) 592-1216 or (800) 443-1039",
+     "layer": "documented",
+     "quote": "To reach Financial Assistance representatives at Citizens Hospital, Princeton Hospital, Shelby Hospital, or Walker Hospital, please call (205) 592-1216 or (800) 443-1039.",
+     "source_id": "fap-0d81b3f3ee402a4b",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": {
+     "value": "Monday \u2013 Friday, 8:00 a.m. \u2013 4:30 p.m. (CST)",
+     "layer": "documented",
+     "quote": "Financial Assistance representatives are available Monday \u2013 Friday, 8:00 a.m. \u2013 4:30 p.m. (CST).",
+     "source_id": "fap-0d81b3f3ee402a4b",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "languages": null
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-0d81b3f3ee402a4b",
+     "kind": "hospital_web",
+     "url": "https://orlandohealth.getbynder.com/asset/87f94485-6964-4247-8adc-2ad1e494040f/Baptist-Health-Financial-Assistance-Policy-04-2026_English_508.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "0d81b3f3ee402a4bf08449192610c8ff1f9183f0ff34ffd5095398c81e10f818",
+     "effective_date": null
+    },
+    {
+     "id": "fap-14419d25d47244c2",
+     "kind": "hospital_web",
+     "url": "https://orlandohealth.getbynder.com/asset/3adbfd91-93e8-4a3c-a20f-574f468b7ae5/GFSA-2026-07-Form-4903-132950-English_508.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "14419d25d47244c26d3882eee43b23757701eb58f6c8f73f1008ec6abe0d2091",
+     "effective_date": null
+    },
+    {
+     "id": "web-0540ed2297d173fd",
+     "kind": "hospital_web",
+     "url": "https://www.baptisthealthal.com/patient-financial-resources/billing-insurance-questions",
+     "title": "Billing and Insurance Questions - Baptist Health - Hospitals & Emergency Room in Birmingham, AL",
+     "fetched_on": "2026-10-23",
+     "sha256": "0540ed2297d173fd533d072d57a56547929a8b5d7a9653ab6caa26fb4bd4d46d",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [],
+   "eve_verified": {
+    "on": "2026-10-23",
+    "sources_fetched": 3,
+    "sources_total": 3,
+    "sources_missing": [],
+    "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.residency",
+     "eligibility.insured_patients_covered",
+     "programs.state_programs",
+     "apply.documents_required",
+     "apply.submit_methods",
+     "apply.window_days_from_first_bill",
+     "collections.eca_wait_days",
+     "contacts.phone",
+     "contacts.hours"
+    ],
+    "rejected": [
+     [
+      "eligibility.assistance_ceiling_fpl",
+      "quote does not say the hospital's financial assistance reaches it"
+     ],
+     [
+      "eligibility.asset_test",
+      "quote does not support the asset-test value"
+     ],
+     [
+      "apply.form_url",
+      "quote not found in source"
+     ],
+     [
+      "contacts.languages",
+      "quote not found in source"
+     ]
+    ],
+    "pruned": [
+     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
+     "apply.documents_required: 1 item not named in the trimmed quote",
+     "apply.submit_methods: 1 item not named in the trimmed quote"
+    ],
+    "income_rule_verified": true,
+    "core_completeness": 0.67
+   }
+  },
+  {
+   "hospital": {
+    "ccn": "010113",
+    "name": "MOBILE INFIRMARY MEDICAL CENTER",
+    "city": "MOBILE",
+    "state": "AL",
+    "zip": "36607",
+    "phone": "251-435-4700",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "infirmaryhealth.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "Generally, patients are eligible for \u201cfull\u201d Financial Assistance when their monthly Family Income is at or below 200% of FPG.",
+     "source_id": "fap-52f9ab4f1024f07a",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": null,
+    "assistance_ceiling_fpl": null,
+    "asset_test": null,
+    "residency": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Underinsured: The patient has some level of insurance or third-party assistance but still has out- of-pocket expenses that exceed their payment abilities.",
+     "source_id": "fap-52f9ab4f1024f07a",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": {
+     "value": "https://www.infirmaryhealth.org/financial-assistance",
+     "layer": "documented",
+     "quote": "Download an application from the IH website: https://www.infirmaryhealth.org/financial-assistance.",
+     "source_id": "fap-9af6058fa9458113",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "tax_return",
+      "proof_of_income",
+      "other"
+     ],
+     "layer": "documented",
+     "quote": "Latest/Current Federal and State income tax return. If you did not file income tax returns, please call the Internal Revenue Service for a verification letter",
+     "source_id": "fap-9af6058fa9458113",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "Mail completed applications (with all documentation/information specified in the application instructions) to: IH Patient Business Services Dept., Mobile Infirmary Medical Center, P.O. Box 2144, Mobile, Alabama 36652."
+      }
+     ],
+     "layer": "documented",
+     "quote": "Mail completed applications (with all documentation/information specified in the application instructions) to: IH Patient Business Services Dept., Mobile Infirmary Medical Center, P.O. Box 2144, Mobile, Alabama 36652.",
+     "source_id": "fap-9af6058fa9458113",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": null,
+    "decision_days": null,
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": {
+     "value": 120,
+     "layer": "documented",
+     "quote": "Collection activities for non-applicants may begin 120 days after the first billing date.",
+     "source_id": "fap-52f9ab4f1024f07a",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "251-435-3541",
+     "layer": "documented",
+     "quote": "Request an application be mailed to you, by calling IH Patient Business Services Dept. at 251- 435-3541.",
+     "source_id": "fap-9af6058fa9458113",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": {
+     "value": "Monday - Friday 8 a.m. to 4:30 p.m.",
+     "layer": "documented",
+     "quote": "For help, or questions, please call: IH Patient Business Services Dept. at 251-435-3541, Monday - Friday 8 a.m. to 4:30 p.m.",
+     "source_id": "fap-9af6058fa9458113",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "languages": {
+     "value": [
+      "English"
+     ],
+     "layer": "documented",
+     "quote": "The Financial Assistance Application (in English) is available, or will be provided to the patient, free of charge.",
+     "source_id": "fap-52f9ab4f1024f07a",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-52f9ab4f1024f07a",
+     "kind": "hospital_web",
+     "url": "https://www.infirmaryhealth.org/documents/content/FA_PolicyProcedure2023Oct01Draft1-JDP.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "52f9ab4f1024f07a43dd341b1c648b979298b3bbc889b1cea78d3d7e7b138bd2",
+     "effective_date": null
+    },
+    {
+     "id": "fap-9af6058fa9458113",
+     "kind": "hospital_web",
+     "url": "https://www.infirmaryhealth.org/documents/content/IH_Financial-Assistance-Policy_Summary_Instructions_Application_10012019.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "9af6058fa9458113573a5f967dd549ba94e4a85b8b429c58ed0756ed01afd122",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "eligibility.discount_tiers: 200-350% at 0% is no discount; skipped"
+   ],
+   "eve_verified": {
+    "on": "2026-10-23",
+    "sources_fetched": 2,
+    "sources_total": 2,
+    "sources_missing": [],
+    "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.insured_patients_covered",
+     "apply.form_url",
+     "apply.documents_required",
+     "apply.submit_methods",
+     "collections.eca_wait_days",
+     "contacts.phone",
+     "contacts.hours",
+     "contacts.languages"
+    ],
+    "rejected": [
+     [
+      "eligibility.assistance_ceiling_fpl",
+      "quote does not state the ceiling as a percentage of the poverty level"
+     ],
+     [
+      "eligibility.asset_test",
+      "quote does not support the asset-test value"
+     ]
+    ],
+    "pruned": [
+     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
+     "apply.documents_required: 1 item not named in the trimmed quote",
+     "apply.submit_methods: 3 items not named in the trimmed quote"
+    ],
+    "income_rule_verified": true,
+    "core_completeness": 0.83
+   }
+  },
+  {
+   "hospital": {
+    "ccn": "010129",
+    "name": "NORTH BALDWIN INFIRMARY",
+    "city": "BAY MINETTE",
+    "state": "AL",
+    "zip": "36507",
+    "phone": "251-937-5521",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "infirmaryhealth.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "Generally, patients are eligible for \u201cfull\u201d Financial Assistance when their monthly Family Income is at or below 200% of FPG.",
+     "source_id": "fap-52f9ab4f1024f07a",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": null,
+    "assistance_ceiling_fpl": null,
+    "asset_test": null,
+    "residency": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Underinsured: The patient has some level of insurance or third-party assistance but still has out- of-pocket expenses that exceed their payment abilities.",
+     "source_id": "fap-52f9ab4f1024f07a",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": {
+     "value": "https://www.infirmaryhealth.org/financial-assistance",
+     "layer": "documented",
+     "quote": "Download an application from the IH website: https://www.infirmaryhealth.org/financial-assistance.",
+     "source_id": "fap-9af6058fa9458113",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "tax_return",
+      "proof_of_income",
+      "other"
+     ],
+     "layer": "documented",
+     "quote": "Latest/Current Federal and State income tax return. If you did not file income tax returns, please call the Internal Revenue Service for a verification letter",
+     "source_id": "fap-9af6058fa9458113",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "in_person",
+       "detail": "Obtain an application at each hospital's main Registration desk or Emergency Room desk."
+      }
+     ],
+     "layer": "documented",
+     "quote": "Obtain an application at each hospital\u2019s main Registration desk or Emergency Room desk.",
+     "source_id": "fap-9af6058fa9458113",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": null,
+    "decision_days": null,
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": {
+     "value": 120,
+     "layer": "documented",
+     "quote": "Collection activities for non-applicants may begin 120 days after the first billing date.",
+     "source_id": "fap-52f9ab4f1024f07a",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "251-435-3541",
+     "layer": "documented",
+     "quote": "Request an application be mailed to you, by calling IH Patient Business Services Dept. at 251- 435-3541.",
+     "source_id": "fap-9af6058fa9458113",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": {
+     "value": "Monday - Friday 8 a.m. to 4:30 p.m.",
+     "layer": "documented",
+     "quote": "For help, or questions, please call: IH Patient Business Services Dept. at 251-435-3541, Monday - Friday 8 a.m. to 4:30 p.m.",
+     "source_id": "fap-9af6058fa9458113",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "languages": {
+     "value": [
+      "English"
+     ],
+     "layer": "documented",
+     "quote": "The Financial Assistance Application (in English) is available, or will be provided to the patient, free of charge.",
+     "source_id": "fap-52f9ab4f1024f07a",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-52f9ab4f1024f07a",
+     "kind": "hospital_web",
+     "url": "https://www.infirmaryhealth.org/documents/content/FA_PolicyProcedure2023Oct01Draft1-JDP.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "52f9ab4f1024f07a43dd341b1c648b979298b3bbc889b1cea78d3d7e7b138bd2",
+     "effective_date": null
+    },
+    {
+     "id": "fap-9af6058fa9458113",
+     "kind": "hospital_web",
+     "url": "https://www.infirmaryhealth.org/documents/content/IH_Financial-Assistance-Policy_Summary_Instructions_Application_10012019.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "9af6058fa9458113573a5f967dd549ba94e4a85b8b429c58ed0756ed01afd122",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "eligibility.discount_tiers: 200-350% at 0% is no discount; skipped"
+   ],
+   "eve_verified": {
+    "on": "2026-10-23",
+    "sources_fetched": 2,
+    "sources_total": 2,
+    "sources_missing": [],
+    "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.insured_patients_covered",
+     "apply.form_url",
+     "apply.documents_required",
+     "apply.submit_methods",
+     "collections.eca_wait_days",
+     "contacts.phone",
+     "contacts.hours",
+     "contacts.languages"
+    ],
+    "rejected": [
+     [
+      "eligibility.assistance_ceiling_fpl",
+      "quote does not state the ceiling as a percentage of the poverty level"
+     ],
+     [
+      "eligibility.asset_test",
+      "quote does not support the asset-test value"
+     ]
+    ],
+    "pruned": [
+     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
+     "apply.documents_required: 1 item not named in the trimmed quote",
+     "apply.submit_methods: 3 items not named in the trimmed quote"
+    ],
+    "income_rule_verified": true,
+    "core_completeness": 0.83
+   }
+  },
+  {
+   "hospital": {
+    "ccn": "010130",
+    "name": "ST VINCENT'S ST CLAIR",
+    "city": "PELL CITY",
+    "state": "AL",
+    "zip": "35125",
+    "phone": "205-338-3301",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "uabstvincents.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "patients with income less than 200% of the Federal Poverty Level income (\u201cFPL\u201d), may be eligible for 100% charity assistance",
+     "source_id": "fap-6881cd9d2d636f43",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": null,
+    "assistance_ceiling_fpl": null,
+    "asset_test": null,
+    "residency": {
+     "value": [
+      "Charity assistance is limited to Alabama residents; out-of-state patients are not eligible for charity assistance."
+     ],
+     "layer": "documented",
+     "quote": "Charity assistance is limited to patients who live in the state of Alabama; out of state patients are not eligible for charity assistance.",
+     "source_id": "fap-6881cd9d2d636f43",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "insured_patients_covered": null,
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
+    "state_programs": {
+     "value": [
+      {
+       "name": "Medicaid",
+       "how_to_apply": "Work with a UAB Health System financial counselor to apply."
+      },
+      {
+       "name": "Cooper Green eligibility",
+       "how_to_apply": "Work with a UAB Health System financial counselor to apply."
+      }
+     ],
+     "layer": "documented",
+     "quote": "UAB Health System requires patients to work with a financial counselor to apply for Medicaid or other public assistance programs (ex: Cooper Green eligibility)",
+     "source_id": "fap-6881cd9d2d636f43",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "social_security_letter"
+     ],
+     "layer": "documented",
+     "quote": "Patients must present proof that they are lawfully present in the US by means of a valid Social Security card or permanent resident/visa card",
+     "source_id": "fap-6881cd9d2d636f43",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": null,
+    "window_days_from_first_bill": {
+     "value": 240,
+     "layer": "documented",
+     "quote": "Patients will be allowed to apply for financial assistance for up to 240 days from the date of the first billing statement.",
+     "source_id": "fap-6881cd9d2d636f43",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days": null,
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "205-801-9910",
+     "layer": "documented",
+     "quote": "UAB Medicine Financial Assistance 205-801-9910 option 4",
+     "source_id": "web-3b6a1eeb6fcf2088",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": null,
+    "languages": {
+     "value": [
+      "English",
+      "Spanish",
+      "Traditional Chinese",
+      "Simplified Chinese"
+     ],
+     "layer": "documented",
+     "quote": "Financial Assistance Application (English)",
+     "source_id": "web-3b6a1eeb6fcf2088",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-6881cd9d2d636f43",
+     "kind": "hospital_web",
+     "url": "https://uabstvincents.org/wp-content/uploads/sites/10/2026/07/STV_FinancialAssistancePolicy_2026.07.24.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "6881cd9d2d636f43f2c09d2e8dba1b2ff6820d80b27700b276f676f79f241dca",
+     "effective_date": null
+    },
+    {
+     "id": "fap-66b18422a13db367",
+     "kind": "hospital_web",
+     "url": "https://uabstvincents.org/wp-content/uploads/sites/10/2025/05/financial-assistance-application-english.docx.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "66b18422a13db36768b0b59ce234395c0cc7bdd6b933a9c541d7fff5f8404cfa",
+     "effective_date": null
+    },
+    {
+     "id": "web-3b6a1eeb6fcf2088",
+     "kind": "hospital_web",
+     "url": "https://uabstvincents.org/billing/contact-billing-financial-services/",
+     "title": "Contact Billing & Financial Services - UAB St. Vincent's",
+     "fetched_on": "2026-10-23",
+     "sha256": "3b6a1eeb6fcf2088af24128b312a56f372f158cd9d27b5005a8fd9d4954b4f5b",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "contacts.languages: 2 more verbatim excerpt(s) supported this value: Financial Assistance Application (Spanish) | Financial Assistance Application (Traditional Chinese) [https://uabstvincents.org/wp-content/uploads/sites/10/2025/05/fi",
+    "agent dropped eligibility.asset_test: judge: The quote is only a bare form label for cash, savings and checking accounts. It does not state that assets are considered in eligibility.",
+    "agent dropped programs.presumptive: judge: The quote says such individuals 'may be considered for charity care' under extraordinary circumstances. It does not describe presumptive eligibility."
+   ],
+   "eve_verified": {
+    "on": "2026-10-23",
+    "sources_fetched": 3,
+    "sources_total": 3,
+    "sources_missing": [],
+    "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.residency",
+     "programs.state_programs",
+     "apply.documents_required",
+     "apply.window_days_from_first_bill",
+     "contacts.phone",
+     "contacts.languages"
+    ],
+    "rejected": [
+     [
+      "eligibility.insured_patients_covered",
+      "quote does not say whether insured patients are covered"
+     ],
+     [
+      "apply.form_url",
+      "quote not found in source"
+     ]
+    ],
+    "pruned": [],
+    "income_rule_verified": true,
+    "core_completeness": 0.5
+   }
+  },
+  {
+   "hospital": {
+    "ccn": "010173",
+    "name": "ST VINCENT'S CHILTON",
+    "city": "CLANTON",
+    "state": "AL",
+    "zip": "35045",
+    "phone": "205-258-4400",
+    "ownership": "Voluntary non-profit - Church",
+    "website_domain": "healthcare.ascension.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "250",
+     "layer": "documented",
+     "quote": "Patients with income less than or equal to 250% of the Federal Poverty Level income (\u201cFPL\u201d), will be eligible for 100% charity care",
+     "source_id": "fap-aad68acd3f9bdd4d",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "250",
+       "max_fpl_inclusive": "325",
+       "discount_percent": 91.2
+      },
+      {
+       "min_fpl_exclusive": "325",
+       "max_fpl_inclusive": "400",
+       "discount_percent": 85
+      }
+     ],
+     "layer": "documented",
+     "quote": "91.2% 251% - 325% of FPL Base 85% 326% - 400% of FPL Base",
+     "source_id": "fap-aad68acd3f9bdd4d",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "assistance_ceiling_fpl": {
+     "value": "400",
+     "layer": "documented",
+     "quote": "Patients with incomes above 250% of the FPL but not exceeding 400% of the FPL, will receive a sliding scale discount",
+     "source_id": "fap-aad68acd3f9bdd4d",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "asset_test": null,
+    "residency": {
+     "value": [
+      "Financial assistance described in this section is limited to Patients that live in the Community"
+     ],
+     "layer": "documented",
+     "quote": "Financial assistance described in this section is limited to Patients that live in the Community",
+     "source_id": "fap-aad68acd3f9bdd4d",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "insured_patients_covered": null,
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": {
+     "value": [
+      "presumptive scoring"
+     ],
+     "layer": "documented",
+     "quote": "may include the use of presumptive scoring for a Patient with a sufficient unpaid balance",
+     "source_id": "fap-aad68acd3f9bdd4d",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": {
+     "value": "https://healthcare.ascension.org/-/media/healthcare/financial-assistance/alabama/albir/fap-application/runningfile_albir_english_financial-assistance-application.pdf",
+     "layer": "documented",
+     "quote": "Financial assistance application form",
+     "source_id": "fap-309f36cef50bd94a",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "pay_stubs",
+      "other"
+     ],
+     "layer": "documented",
+     "quote": "Copies of 3 most recent paystubs from employer",
+     "source_id": "fap-309f36cef50bd94a",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "St Vincent's Birmingham Ascension Medical Group PO Box 935345 Atlanta GA 31193 / PO Box 80278 Indianapolis IN 46240-9998"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Please print and mail or hand deliver your completed application and supporting documentation to the following address:",
+     "source_id": "fap-309f36cef50bd94a",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": {
+     "value": 240,
+     "layer": "documented",
+     "quote": "submits a financial assistance application (an \u201cApplication\u201d) on or prior to the 240th day after the Patient\u2019s first discharge bill",
+     "source_id": "fap-aad68acd3f9bdd4d",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days": {
+     "value": 45,
+     "layer": "documented",
+     "quote": "notify the Patient in writing of the final determination within forty-five (45) calendar days",
+     "source_id": "fap-548e9ee7963d1276",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": {
+     "value": 120,
+     "layer": "documented",
+     "quote": "the Organization will refrain from initiating ECAs for at least 120 days from the date the first post-discharge billing statement for the care is sent to the Patient",
+     "source_id": "fap-548e9ee7963d1276",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "877-202-0356",
+     "layer": "documented",
+     "quote": "please call one of our Patient Representatives at 877- 202-0356",
+     "source_id": "fap-309f36cef50bd94a",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": null,
+    "languages": null
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-aad68acd3f9bdd4d",
+     "kind": "hospital_web",
+     "url": "https://healthcare.ascension.org/-/media/healthcare/financial-assistance/alabama/albir/fap/runningfile_albir_english_financial-assistance-policy.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "aad68acd3f9bdd4dbb1f8e85fd71c114bbfdcd088d58aec4c2b2b64b9b2b1e4e",
+     "effective_date": null
+    },
+    {
+     "id": "fap-309f36cef50bd94a",
+     "kind": "hospital_web",
+     "url": "https://healthcare.ascension.org/-/media/healthcare/financial-assistance/alabama/albir/fap-application/runningfile_albir_english_financial-assistance-application.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "309f36cef50bd94acca71df9e93bfeab071ac23a6ce2f9fe05384a3731c0eced",
+     "effective_date": null
+    },
+    {
+     "id": "fap-548e9ee7963d1276",
+     "kind": "hospital_web",
+     "url": "https://healthcare.ascension.org/-/media/healthcare/financial-assistance/alabama/albir/billing-collection-policy/runningfile_albir_english_health-billing-and-collections-policy.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "548e9ee7963d12767116458759b46b43091c30f016ac660d7277ca65d1c1ab68",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [],
+   "eve_verified": {
+    "on": "2026-10-23",
+    "sources_fetched": 3,
+    "sources_total": 3,
+    "sources_missing": [],
+    "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
+     "eligibility.assistance_ceiling_fpl",
+     "eligibility.residency",
+     "programs.presumptive",
+     "apply.form_url",
+     "apply.documents_required",
+     "apply.submit_methods",
+     "apply.window_days_from_first_bill",
+     "apply.decision_days",
+     "collections.eca_wait_days",
+     "contacts.phone"
+    ],
+    "rejected": [
+     [
+      "eligibility.asset_test",
+      "quote does not support the asset-test value"
+     ],
+     [
+      "eligibility.insured_patients_covered",
+      "quote does not say whether insured patients are covered"
+     ]
+    ],
+    "pruned": [
+     "apply.documents_required: 4 items not named in the trimmed quote",
+     "apply.submit_methods: 2 items not named in the trimmed quote"
+    ],
+    "income_rule_verified": true,
+    "core_completeness": 1.0
+   }
+  },
+  {
+   "hospital": {
+    "ccn": "011304",
+    "name": "OCHSNER CHOCTAW GENERAL",
+    "city": "BUTLER",
+    "state": "AL",
+    "zip": "36904",
+    "phone": "205-459-9100",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "ochsner.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "Ochsner shall provide a 100% Financial Assistance discount for eligible services to patients whose Family Income is at 200% of the FPL Guidelines or less.",
+     "source_id": "fap-fa9f5fdd4a451c07",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": null,
+    "assistance_ceiling_fpl": null,
+    "asset_test": null,
+    "residency": {
+     "value": [
+      "This policy applies all patients who are residents of Alabama, Louisiana or Mississippi and receive either Professional Services or Technical Services at Ochsner Health"
+     ],
+     "layer": "documented",
+     "quote": "This policy applies all patients who are residents of Alabama, Louisiana or Mississippi and receive either Professional Services or Technical Services at Ochsner Health",
+     "source_id": "fap-fa9f5fdd4a451c07",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Financial Assistance applies to patient liability only, including but not limited to, deductibles, co-payments, and co-insurances",
+     "source_id": "fap-fa9f5fdd4a451c07",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": {
+     "value": "http://ochsner-craft.s3.amazonaws.com/www/static/Financial-Assistance-Application-English.pdf",
+     "layer": "documented",
+     "quote": "Financial Assistance Application MRN: _____________________",
+     "source_id": "fap-fa9f5fdd4a451c07",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "tax_return",
+      "proof_of_income",
+      "other"
+     ],
+     "layer": "documented",
+     "quote": "A. Proof of Income (Please provide 1 of the following): a. Copy of tax return (Form 1040) for current tax year or",
+     "source_id": "fap-fa9f5fdd4a451c07",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "Ochsner Health System Attn: ________________ 1514 Jefferson Hwy New Orleans, LA 70121"
+      },
+      {
+       "kind": "fax",
+       "detail": "Fax- (504)-842-0322"
+      },
+      {
+       "kind": "email",
+       "detail": "OchsnerFADocs@ochsner.org"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Please Mail Completed Info to: Ochsner Health System Attn: ________________ 1514 Jefferson Hwy New Orleans, LA 70121 Applications can also be emailed or faxed to: Fax- (504)-842-0322",
+     "source_id": "fap-fa9f5fdd4a451c07",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": {
+     "value": 240,
+     "layer": "documented",
+     "quote": "A patient has 240 days from the date of the first post-discharge bill for an episode of care to apply for Financial Assistance for that episode of care.",
+     "source_id": "fap-fa9f5fdd4a451c07",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days": null,
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "504-842-4190",
+     "layer": "documented",
+     "quote": "Phone: 504-842-4190",
+     "source_id": "web-6d0264bbf5c03c9c",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": {
+     "value": "Monday\u2013Friday from 7:30 a.m. to 6 p.m.",
+     "layer": "documented",
+     "quote": "call Ochsner's patient account customer service department Monday\u2013Friday from 7:30 a.m. to 6 p.m.",
+     "source_id": "web-6d0264bbf5c03c9c",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "languages": null
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-d84d777445165990",
+     "kind": "hospital_web",
+     "url": "https://ochsner-craft.s3.amazonaws.com/doctors/OHS.REV.042-Financial-Assistance-With-Attachments-A-D.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "d84d77744516599005b6c46fc90dc601c8302fcbfdc64e2683fec7f0e0e6f955",
+     "effective_date": null
+    },
+    {
+     "id": "fap-fa9f5fdd4a451c07",
+     "kind": "hospital_web",
+     "url": "http://ochsner-craft.s3.amazonaws.com/www/static/Financial-Assistance-Application-English.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "fa9f5fdd4a451c076b8e6350a365718df900b6ab2c6b25c0d1288e13a081d942",
+     "effective_date": null
+    },
+    {
+     "id": "web-6d0264bbf5c03c9c",
+     "kind": "hospital_web",
+     "url": "https://www.ochsner.org/patients-visitors/billing-and-financial-services/",
+     "title": "Billing and Financial Services | Ochsner Health",
+     "fetched_on": "2026-10-23",
+     "sha256": "6d0264bbf5c03c9c5b20abad728e73b1c66c17acc60c1364fac785a68b34a13f",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "agent dropped programs.presumptive: quote is not a substring of the source"
+   ],
+   "eve_verified": {
+    "on": "2026-10-23",
+    "sources_fetched": 3,
+    "sources_total": 3,
+    "sources_missing": [],
+    "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.residency",
+     "eligibility.insured_patients_covered",
+     "apply.form_url",
+     "apply.documents_required",
+     "apply.submit_methods",
+     "apply.window_days_from_first_bill",
+     "contacts.phone",
+     "contacts.hours"
+    ],
+    "rejected": [
+     [
+      "eligibility.asset_test",
+      "quote does not support the asset-test value"
+     ]
+    ],
+    "pruned": [
+     "apply.documents_required: 2 items not named in the trimmed quote",
+     "apply.submit_methods: 2 items not named in the trimmed quote"
+    ],
+    "income_rule_verified": true,
+    "core_completeness": 0.83
+   }
+  },
+  {
+   "hospital": {
+    "ccn": "011305",
+    "name": "ST VINCENTS BLOUNT",
+    "city": "ONEONTA",
+    "state": "AL",
+    "zip": "35121",
+    "phone": "205-274-3000",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "healthcare.ascension.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "250",
+     "layer": "documented",
+     "quote": "Patients with income less than or equal to 250% of the Federal Poverty Level income (\u201cFPL\u201d), will be eligible for 100% charity care",
+     "source_id": "fap-aad68acd3f9bdd4d",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "250",
+       "max_fpl_inclusive": "325",
+       "discount_percent": 91.2
+      },
+      {
+       "min_fpl_exclusive": "325",
+       "max_fpl_inclusive": "400",
+       "discount_percent": 85
+      }
+     ],
+     "layer": "documented",
+     "quote": "91.2% 251% - 325% of FPL Base 85% 326% - 400% of FPL Base",
+     "source_id": "fap-aad68acd3f9bdd4d",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "assistance_ceiling_fpl": {
+     "value": "400",
+     "layer": "documented",
+     "quote": "Patients with incomes above 250% of the FPL but not exceeding 400% of the FPL, will receive a sliding scale discount",
+     "source_id": "fap-aad68acd3f9bdd4d",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "asset_test": null,
+    "residency": {
+     "value": [
+      "You may be able to get financial assistance if you live in Jefferson, Blount, Chilton, Cullman, Shelby, St Clair, Talladega or Walker County."
+     ],
+     "layer": "documented",
+     "quote": "You may be able to get financial assistance if you live in Jefferson, Blount, Chilton, Cullman, Shelby, St Clair, Talladega or Walker County.",
+     "source_id": "web-fec59d3fa7379185",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "insured_patients_covered": null,
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": {
+     "value": [
+      "presumptive scoring"
+     ],
+     "layer": "documented",
+     "quote": "may include the use of presumptive scoring for a Patient with a sufficient unpaid balance within the first 240 days after the Patient\u2019s first discharge bill",
+     "source_id": "fap-aad68acd3f9bdd4d",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": null,
+    "documents_reported": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "phone",
+       "detail": "For help with a Financial Assistance Policy application, you may contact customer service at 877-202-0356."
+      }
+     ],
+     "layer": "documented",
+     "quote": "For help with a Financial Assistance Policy application, you may contact customer service at 877-202-0356 .",
+     "source_id": "web-fec59d3fa7379185",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": {
+     "value": 240,
+     "layer": "documented",
+     "quote": "submits a financial assistance application (an \u201cApplication\u201d) on or prior to the 240th day after the Patient\u2019s first discharge bill",
+     "source_id": "fap-aad68acd3f9bdd4d",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days": null,
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": null,
+    "hours": null,
+    "languages": {
+     "value": [
+      "English",
+      "Spanish",
+      "Simplified Chinese",
+      "Traditional Chinese"
+     ],
+     "layer": "documented",
+     "quote": "English Financial Assistance Policy Financial Assistance Application Billing Policy Amount Generally Billed Calculation Summary of Financial Assistance Policy",
+     "source_id": "web-fec59d3fa7379185",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-aad68acd3f9bdd4d",
+     "kind": "hospital_web",
+     "url": "https://healthcare.ascension.org/-/media/healthcare/financial-assistance/alabama/albir/fap/runningfile_albir_english_financial-assistance-policy.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "aad68acd3f9bdd4dbb1f8e85fd71c114bbfdcd088d58aec4c2b2b64b9b2b1e4e",
+     "effective_date": null
+    },
+    {
+     "id": "web-fec59d3fa7379185",
+     "kind": "hospital_web",
+     "url": "https://healthcare.ascension.org/financial-assistance/alabama-ascension-st-vincents-blount-financial-assistance",
+     "title": "Ascension St. Vincent's Blount | Ascension",
+     "fetched_on": "2026-10-23",
+     "sha256": "fec59d3fa7379185041b9bc5e0df68ea45b1d13302e685d3db71c09e7efcde44",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "agent dropped contacts.phone: quote is not a substring of the source"
+   ],
+   "eve_verified": {
+    "on": "2026-10-23",
+    "sources_fetched": 2,
+    "sources_total": 2,
+    "sources_missing": [],
+    "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
+     "eligibility.assistance_ceiling_fpl",
+     "eligibility.residency",
+     "programs.presumptive",
+     "apply.submit_methods",
+     "apply.window_days_from_first_bill",
+     "contacts.languages"
+    ],
+    "rejected": [
+     [
+      "eligibility.asset_test",
+      "quote does not support the asset-test value"
+     ],
+     [
+      "eligibility.insured_patients_covered",
+      "quote does not say whether insured patients are covered"
+     ]
+    ],
+    "pruned": [
+     "apply.submit_methods: 1 item not named in the trimmed quote"
+    ],
+    "income_rule_verified": true,
+    "core_completeness": 0.5
+   }
+  }
+ ]
+}
