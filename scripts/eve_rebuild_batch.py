@@ -56,10 +56,16 @@ def confidence(ccn):
     return (row[0] if row else None) or 0.0
 
 
-def order():
+def order(ccn_file: str = ""):
     """Sure websites (0.9) first, so a batch's sheets can publish; unconfirmed (0.6) ones are held
-    for a website check whatever the rebuild finds. Within each, by state and CCN."""
-    rebuild = json.load(open(f"{REPO}/data/atlas-eve/_rebuild.json"))
+    for a website check whatever the rebuild finds. Within each, by state and CCN. With
+    `ccn_file` (one "ST CCN" per line, as `waive atlas eve-refetch --run` writes it, task 7.12d)
+    those hospitals instead of _rebuild.json."""
+    if ccn_file:
+        pairs = [line.split() for line in open(ccn_file) if line.strip()]
+        rebuild = [{"state": st, "ccn": ccn} for st, ccn in pairs]
+    else:
+        rebuild = json.load(open(f"{REPO}/data/atlas-eve/_rebuild.json"))
     skip = {r["ccn"] for r in json.load(open(f"{REPO}/data/atlas-eve/_skip.json"))}
     rows = sorted(
         (r for r in rebuild if r["ccn"] not in skip),
@@ -76,8 +82,11 @@ def main():
     ap.add_argument("--tf-cap", default="")
     ap.add_argument("--out", default="")
     ap.add_argument("--list", action="store_true", help="print the order and exit")
+    ap.add_argument(
+        "--ccns", default="", help='rebuild these ("ST CCN" per line), not _rebuild.json'
+    )
     a = ap.parse_args()
-    eligible, no_text = order()
+    eligible, no_text = order(a.ccns)
     if a.list:
         print(f"eligible {len(eligible)}; without stored text {len(no_text)}")
         print("no text:", " ".join(r["ccn"] for r in no_text))
