@@ -7,8 +7,8 @@ this module reconciles:
 - ``residency`` is one sentence, not a list.
 - ``documents_required`` are free-text items, mapped onto ``DocType`` by keyword.
 - ``submit_methods.kind`` may say ``online``; the sheet says ``portal``.
-- a quote may hold up to three verbatim excerpts joined with ``" || "``; the first excerpt is
-  kept as the quote and the rest go into the review item, because the verifier wants one span.
+- a quote may hold up to three verbatim excerpts joined with ``" || "``; all are kept, and
+  ``verify.quote_found`` checks each span on its own.
 - discount tiers of 0% or 100% are not tiers; a 100% row is the free-care line.
 
 Every imported sheet is version 1 with status ``draft``. Nothing is published here: a reviewer

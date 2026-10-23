@@ -25,6 +25,51 @@ Largest: Wisconsin 105, Michigan 88, Indiana 70, Minnesota 62, Kentucky 58, Miss
 
 Snapshot: `~/waive-atlas-backup/complete-run-20261022-2332` with a SHA-256 manifest.
 
+## What is required before any of this reaches patients
+
+Measured with Waive's own `verify_sheet` and `sheet_inconsistencies` over all 1,348 converted sheets, each source stood in by its quotes (every rule runs except substring-in-document, which the agent already enforced against the fetched text). Results are in `data/atlas-eve/_waive-verify-review.md`.
+
+| Metric | Count |
+|---|---|
+| Sheets whose income rule (free-care line or tiers) passes Waive's verifier | 972 of 1,348 (72%) |
+| Review-ready: income rule verified, no inconsistency, core completeness at least 50% | 926 (68%) |
+| No verified income rule | 376 |
+| Publish-time inconsistency (free line above first band, discounts rising with income) | 23 |
+| Core completeness under 50% | 30 |
+
+### 1. Refetch and verify (no model cost, network only)
+
+The import stores no source text. Run the normal path on the stored URLs so `quote_found` runs against real documents: `waive atlas build --state XX --ccn NNNNNN --reuse-sources` after a fetch, or a small `refetch` step over `sources[].url`. Expect a few percent of quotes to fail on PDFs whose text layer differs between `unpdf` and `pdf_worker.py`.
+
+### 2. Two verifier changes in this PR, to review
+
+- `quote_found` accepts a quote made of up to three verbatim spans joined with `" || "`, each checked on its own. Tier tables and document lists span rows and sentences.
+- `value_in_quote` accepts a tier's exclusive lower bound when the quote states the written inclusive start: "201% to 400%" supports `min_fpl_exclusive = 200`, as do "200.1%" and "200.01%". This moved verified tier tables from 114 to 279. Previously only a quote that also contained the previous band's upper bound passed.
+
+### 3. Rebuild the 376 sheets with no verified income rule, and the 370 rejected tier tables
+
+Most are Opus-era drafts whose tier quote holds bounds without percentages, or percentages without bounds. The current prompt (v4, Sonnet 5 structuring) quotes whole table rows. Cost about $0.12 per hospital, so about $90 for the income-rule set; the tier-only rejections largely overlap with it.
+
+### 4. Align three list fields with Waive's vocabulary, then prune
+
+`apply.documents_required` (820 rejected), `programs.presumptive` (746) and `eligibility.asset_test` (607) fail Waive's marker rules: the quote must name each document type, describe automatic eligibility, or contain an asset word plus a tested or negated verb. These are not blocking; `prune_lists` keeps the supported subset at publish. Adding Waive's marker vocabulary to the extraction prompt fixes the next run. Asset-test quotes like "Assets will also be used when:" need the verb Waive expects (considered, reviewed, counted, included).
+
+### 5. Recover 180 blocked hospitals with a browser fetch
+
+Sites behind a WAF return 403 to server-side fetches: Intermountain (13), Sanford (11), Avera (10), CHI Health (10), PeaceHealth, MultiCare, VMFH, MercyOne, CHRISTUS. Concentrated in SD, UT, NE, WA, MT, ND, CO. A headless browser or the Vercel Sandbox with a real browser recovers most. No model cost beyond the normal build.
+
+### 6. Scout again for 177 hospitals with no official policy found
+
+Puerto Rico 24, Minnesota 20, Iowa 15, Oklahoma 12, Michigan 11. Some are system hospitals whose policy sits on the parent domain; a second scout with the system name usually finds it. Others may have no web policy, which is itself a finding.
+
+### 7. Human review queue
+
+853 review-ready sheets carry judge notes; 23 carry a publish-time inconsistency and 30 are under 50% core completeness. The notes sit in each sheet's `eve_review` list and in the `eve-import` review item when imported with `--db`. A reviewer reads the income rule, the quote, and the source URL; everything else can be pruned by rule.
+
+### 8. Waive-side fixes found along the way
+
+Four published sheets carry two phone numbers concatenated into one field (Albany Medical Center, Carlinville, Illini Community, Taylorville). Asset tests and application windows stated in the same documents are missing from several published MA, NY and IL sheets.
+
 ## What was produced
 
 | Metric | Value |

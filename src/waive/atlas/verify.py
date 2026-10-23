@@ -57,7 +57,20 @@ def _occurs_at_word_start(
     return False
 
 
+SPAN_SEPARATOR = " || "
+
+
 def quote_found(quote: str, document_text: str) -> bool:
+    """A quote is found when it occurs in the document at a word boundary. A quote made of
+    several verbatim spans joined with `" || "` (one value stated across table rows or
+    sentences) is found when every span is."""
+    if SPAN_SEPARATOR in quote:
+        spans = [span.strip() for span in quote.split(SPAN_SEPARATOR) if span.strip()]
+        return bool(spans) and all(_single_quote_found(span, document_text) for span in spans)
+    return _single_quote_found(quote, document_text)
+
+
+def _single_quote_found(quote: str, document_text: str) -> bool:
     """Whether the document contains the quote, starting at a word boundary: "phone: 508-334-9300"
     is not in "telephone: 508-334-9300" (UMass Memorial, 220163), although it is a substring."""
     needle = normalize(quote)
@@ -926,12 +939,23 @@ def value_in_quote(value: Any, quote: str) -> bool:
         return _number_in(Decimal(value), quote)
     if isinstance(value, list) and value and all(isinstance(v, DiscountTier) for v in value):
         return all(
-            _number_in(tier.min_fpl_exclusive, quote)
+            _lower_bound_in(tier.min_fpl_exclusive, quote)
             and _number_in(tier.max_fpl_inclusive, quote)
             and _number_in(Decimal(tier.discount_percent), quote)
             for tier in value
         )
     return True
+
+
+def _lower_bound_in(bound: Decimal, quote: str) -> bool:
+    """A tier's exclusive lower bound is stated when the quote names the bound itself ("above
+    200%", "0 to 200% ... 200.1 to 400%") or the first value above it as policies write an
+    inclusive start: the next whole percent ("201% to 400%") or a tenth or hundredth past it
+    ("200.1%", "200.01%")."""
+    return any(
+        _number_in(bound + step, quote)
+        for step in (Decimal(0), Decimal(1), Decimal("0.1"), Decimal("0.01"))
+    )
 
 
 _SENTENCE_SPLIT = re.compile(r"(?<=[.;:])\s+|\n+")
