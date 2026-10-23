@@ -1029,14 +1029,32 @@
    "eligibility": {
     "free_care_max_fpl": null,
     "discount_tiers": null,
-    "assistance_ceiling_fpl": null,
+    "assistance_ceiling_fpl": {
+     "value": "350",
+     "layer": "documented",
+     "quote": "and who are within 350% of the national poverty guidelines.",
+     "source_id": "fap-491007bfc63ca107",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "asset_test": null,
-    "residency": null,
+    "residency": {
+     "value": [
+      "Was the patient a resident of Michigan at the time of service?"
+     ],
+     "layer": "documented",
+     "quote": "Was the patient a resident of Michigan at the time of service? Yes \u00a3 No \u00a3",
+     "source_id": "fap-2279ee42be574feb",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "some or all of their costs covered regardless of whether they have healthcare coverage, or are",
-     "source_id": "fap-2279ee42be574feb",
+     "quote": "Patients may be eligible for Charity Care if they have no insurance or have high co-pay/ deductibles associated with their insurance.",
+     "source_id": "fap-491007bfc63ca107",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -1051,14 +1069,42 @@
    "apply": {
     "form_url": null,
     "form_version": null,
-    "documents_required": null,
+    "documents_required": {
+     "value": [
+      "pay_stubs",
+      "tax_return"
+     ],
+     "layer": "documented",
+     "quote": "The hospital may only request recent paystubs or income tax returns for documentation of income.",
+     "source_id": "fap-2279ee42be574feb",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "documents_reported": null,
-    "submit_methods": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "Mail completed application and supporting documents to: Lake Huron Medical Center, Attention: Patient Financial Services, 2601 Electric Avenue, Port Huron, MI 48060"
+      },
+      {
+       "kind": "in_person",
+       "detail": "You may also submit the application and supporting documents in person at the same address."
+      }
+     ],
+     "layer": "documented",
+     "quote": "Mail completed application and supporting documents to: Lake Huron Medical Center, Attention: Patient Financial Services 2601 Electric Avenue, Port Huron, MI 48060 You may also submit the application and supporting documents in person at the same address.",
+     "source_id": "fap-2279ee42be574feb",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "window_days_from_first_bill": null,
     "decision_days": {
      "value": 30,
      "layer": "documented",
-     "quote": "will notify you of the final determination of eligibility and appeal rights, if applicable, within 30 days of",
+     "quote": "We will notify you of the final determination of eligibility and appeal rights, if applicable, within 30 days of receiving a complete application and supporting documents.",
      "source_id": "fap-2279ee42be574feb",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1074,7 +1120,7 @@
     "phone": {
      "value": "810-216-3052",
      "layer": "documented",
-     "quote": "reason, including language assistance, by calling our Patient Financial Services at 810-216-3052.",
+     "quote": "You may obtain help for any reason, including language assistance, by calling our Patient Financial Services at 810-216-3052.",
      "source_id": "fap-2279ee42be574feb",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1097,12 +1143,21 @@
      "fetched_on": "2026-10-23",
      "sha256": "2279ee42be574feb62f8af40a3784dab8570e72b8669c9e6cf2fb0e84ed84e8e",
      "effective_date": null
+    },
+    {
+     "id": "fap-491007bfc63ca107",
+     "kind": "hospital_web",
+     "url": "https://mylakehuron.com/wp-content/uploads/2025/12/CAP-Program-2-UPDATED-FOR-LHMC.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "491007bfc63ca1070a05e34a378fc82bfcd6a9dc6de03cbf73f8c9a6aa32e759",
+     "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "agent dropped apply.documents_required: judge: Quote lacks '3' months, 'from all sources', 'surviving financially', and the medical expense and premium details; it only says 'receipts/EOB noted above'.",
-    "agent dropped apply.submit_methods: judge: Quote names mail and in-person submission but gives no address or attention line."
+    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: Proof of Income from all sources MUST be supplied with this application (e.g., 3 most recent months of pay stubs, most r",
+    "agent judge on eligibility.residency: Quote is a form question about Michigan residency, not a value stating a residency requirement; the value is a question, not a fact."
    ]
   },
   {
@@ -5007,24 +5062,58 @@
     "state_programs": null
    },
    "apply": {
-    "form_url": null,
+    "form_url": {
+     "value": "https://www.uphealthsystem.com/docs/ahuphealthsystemlibraries/default-document-library/lpnt-faa-form.pdf",
+     "layer": "documented",
+     "quote": "Financial Assistance Application [/docs/ahuphealthsystemlibraries/default-document-library/lpnt-faa-form.pdf]",
+     "source_id": "web-5b1e67cb76a99cf7",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "form_version": null,
     "documents_required": {
      "value": [
       "tax_return",
+      "pay_stubs",
       "bank_statements",
-      "pay_stubs"
+      "proof_of_income"
      ],
      "layer": "documented",
-     "quote": "supporting documents (such as recent tax returns, bank statements and pay stubs)",
-     "source_id": "fap-0f7b088f70566a7a",
+     "quote": "Most recent tax return, including W-2 forms and supporting schedules",
+     "source_id": "fap-87412fbbf63fda54",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "documents_reported": null,
-    "submit_methods": null,
-    "window_days_from_first_bill": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "Mail (or hand deliver) your complete Financial Assistance Application with documentation to: UP Health System Portage, Attn: Financial Counselors, 500 Campus Drive, Hancock, MI. 49930"
+      },
+      {
+       "kind": "in_person",
+       "detail": "hand deliver your complete Financial Assistance Application with documentation, or visit a Financial Counselor at the above address"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Mail (or hand deliver) your complete Financial Assistance Application with documentation to:",
+     "source_id": "fap-87412fbbf63fda54",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": {
+     "value": 60,
+     "layer": "documented",
+     "quote": "Submitting a complete Financial Assistance Application with supporting documentation within 60 days from receiving service",
+     "source_id": "fap-0f7b088f70566a7a",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "decision_days": {
      "value": 30,
      "layer": "documented",
@@ -5044,13 +5133,21 @@
     "phone": {
      "value": "906-483-1100",
      "layer": "documented",
-     "quote": "please call Patient Financial Services at 906-483-1100 option 2 or visit a Financial Counselor at the above address.",
-     "source_id": "fap-87412fbbf63fda54",
+     "quote": "available via phone at 906-483-1100 option 2 or in person during normal business hours",
+     "source_id": "fap-0f7b088f70566a7a",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "hours": null,
+    "hours": {
+     "value": "normal business hours",
+     "layer": "documented",
+     "quote": "or in person during normal business hours or by appointment from one of the Financial Counselors",
+     "source_id": "fap-0f7b088f70566a7a",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "languages": null
    },
    "coverage": {
@@ -5078,18 +5175,23 @@
      "effective_date": null
     },
     {
-     "id": "web-e36c03d583e4f8d2",
+     "id": "web-5b1e67cb76a99cf7",
      "kind": "hospital_web",
      "url": "https://www.uphealthsystem.com/patient-financial-information",
      "title": "Patient Financial Information | UP Health System",
      "fetched_on": "2026-10-23",
-     "sha256": "e36c03d583e4f8d29483788e3b3d31bdfb5e6404099e7ad22339abb18e8da419",
+     "sha256": "5b1e67cb76a99cf7eab209678549d484d50bd7e4e80fe04efa2ed4eb7fc4a855",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "agent dropped apply.submit_methods: judge: Quote supports mail and hand delivery, but the address in the value does not appear; the quote ends at 'to:'."
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Last 2 pay stubs or a letter from an employer verifying income (include employer\u2019s phone number and address) | Bank statements for the past 2 months",
+    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: please call Patient Financial Services at 906-483-1100 option 2 or visit a Financial Counselor at the above address",
+    "agent judge on apply.form_url: Quote shows only a relative path in brackets with the form name; the domain (uphealthsystem.com) and full URL do not appear in the quote.",
+    "agent judge on apply.submit_methods: Quote supports mail and in-person options, but the mailing address (500 Campus Drive, Hancock, MI 49930) is not in the quote; the mail sentence is cut off after 'to:'.",
+    "agent judge on apply.window_days_from_first_bill: Quote says 60 days from receiving service, not from the first bill.",
+    "agent judge on apply.decision_days: Quote says determinations take 30 business days, but the value 30 drops the 'business' qualifier, so it is not a plain calendar-day count."
    ]
   },
   {
@@ -5491,7 +5593,7 @@
      "value": true,
      "layer": "documented",
      "quote": "Memorial Healthcare also provides financial assistance to patients based on their income, assets, and financial needs.",
-     "source_id": "web-10044e9650045d80",
+     "source_id": "web-f1123adbd9aa8c60",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -5510,13 +5612,25 @@
      "value": "https://memorialhealthcare.org/wp-content/uploads/2026/04/103.01S.pdf",
      "layer": "documented",
      "quote": "Financial Assistance Application and Supporting Documents [https://memorialhealthcare.org/wp-content/uploads/2026/04/103.01S.pdf]",
-     "source_id": "web-10044e9650045d80",
+     "source_id": "web-f1123adbd9aa8c60",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "form_version": null,
-    "documents_required": null,
+    "documents_required": {
+     "value": [
+      "tax_return",
+      "other",
+      "pay_stubs"
+     ],
+     "layer": "documented",
+     "quote": "PLEASE PROVIDE LAST FILED TAX RETURN, COPIES OF CHECKS, PAYSTUBS, OR STATEMENTS TO SUPPORT ALL REPORTED INCOME.",
+     "source_id": "fap-0e7446c8009144e9",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "documents_reported": null,
     "submit_methods": null,
     "window_days_from_first_bill": null,
@@ -5529,10 +5643,10 @@
    },
    "contacts": {
     "phone": {
-     "value": "989-720-2000",
+     "value": "989-723-5211",
      "layer": "documented",
-     "quote": "For more information, please contact our Customer Service department at 989-720-2000 .",
-     "source_id": "web-10044e9650045d80",
+     "quote": "826 W. King Street \u25cf Owosso, MI 48867 \u25cf phone: 989-723-5211 \u25cf MemorialHealthcare.org",
+     "source_id": "fap-0e7446c8009144e9",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -5556,12 +5670,21 @@
      "effective_date": null
     },
     {
-     "id": "web-10044e9650045d80",
+     "id": "fap-0e7446c8009144e9",
+     "kind": "hospital_web",
+     "url": "https://memorialhealthcare.org/wp-content/uploads/2015/02/8.28-ONE-PAGE-FINANCIAL-ASSISTANCE-APPLICATION.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "0e7446c8009144e917f0fbccf607e6c6f8c7c020e309a6a802f78729afa1b432",
+     "effective_date": null
+    },
+    {
+     "id": "web-f1123adbd9aa8c60",
      "kind": "hospital_web",
      "url": "https://memorialhealthcare.org/patient-information/financial-services/financial-assistance/",
      "title": "Financial Assistance - Memorial Healthcare",
      "fetched_on": "2026-10-23",
-     "sha256": "10044e9650045d804230a3e65c767fcc11bfc543b7642b9fece5cb5dae481d5e",
+     "sha256": "f1123adbd9aa8c60c85aa7e3db08f051c5080469c2149315afdf9fdd1a45cbee",
      "effective_date": null
     }
    ],
@@ -5761,7 +5884,15 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": null,
+    "free_care_max_fpl": {
+     "value": "150",
+     "layer": "documented",
+     "quote": "0% 150% 85% 15% Of the total balance owed.",
+     "source_id": "fap-9d28c0bb7dcff9a9",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "discount_tiers": {
      "value": [
       {
@@ -5781,7 +5912,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "0% 150% 85% 15%",
+     "quote": "0% 150% 85% 15% Of the total balance owed. 151% 250% 70% 30% Of the total balance owed 251% 400% 40% 60% Of the total balance owed >401% Full Charges",
      "source_id": "fap-9d28c0bb7dcff9a9",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5790,7 +5921,7 @@
     "assistance_ceiling_fpl": {
      "value": "400",
      "layer": "documented",
-     "quote": "If the patient\u2019s income falls below 400% of the guidelines, the patient is eligible for some level of discount.",
+     "quote": ">401% Full Charges",
      "source_id": "fap-9d28c0bb7dcff9a9",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5801,7 +5932,7 @@
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "UNDERINSURED Persons eligible for assistance will be responsible for a percentage of their balance for facility services only after insurance payments have been applied",
+     "quote": "UNDERINSURED Persons eligible for assistance will be responsible for a percentage of their balance for facility services only after insurance payments have been applied in accordance with the Federal Poverty Guidelines Sliding Fee Scales in Table 3 below.",
      "source_id": "fap-9d28c0bb7dcff9a9",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5823,14 +5954,27 @@
       "other"
      ],
      "layer": "documented",
-     "quote": "submitting proof of prior year income and family household size with an application submitted to the Patient Financial Services department.",
+     "quote": "submitting proof of prior year income and family household size with an application submitted to the Patient Financial Services department",
      "source_id": "fap-9d28c0bb7dcff9a9",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "documents_reported": null,
-    "submit_methods": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "in_person",
+       "detail": "application submitted to the Patient Financial Services department"
+      }
+     ],
+     "layer": "documented",
+     "quote": "with an application submitted to the Patient Financial Services department",
+     "source_id": "fap-9d28c0bb7dcff9a9",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "window_days_from_first_bill": null,
     "decision_days": null,
     "decision_days_reported": null
@@ -5850,7 +5994,7 @@
      "support_count": 0
     },
     "hours": {
-     "value": "Monday-Friday 8am-5pm",
+     "value": "Monday-Friday from 8am-5pm",
      "layer": "documented",
      "quote": "please call (810) 262-9260, Option #5, Monday-Friday from 8am-5pm.",
      "source_id": "web-9353fca690541b4b",
@@ -5896,7 +6040,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: 151% 250% 70% 30% | 251% 400% 40% 60%"
+    "agent judge on eligibility.free_care_max_fpl: Quote shows 0%-150% with an 85% discount and 15% payment, not 100% free care; the free-care line is not stated.",
+    "agent judge on eligibility.assistance_ceiling_fpl: Quote says '>401% Full Charges', which implies a ceiling of 401, not 400.",
+    "agent judge on apply.submit_methods: Quote says an application is submitted to the Patient Financial Services department but does not state the method is in person."
    ]
   },
   {
@@ -7098,19 +7244,29 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": null,
-    "discount_tiers": null,
-    "assistance_ceiling_fpl": null,
-    "asset_test": {
-     "value": true,
+    "free_care_max_fpl": {
+     "value": "400",
      "layer": "documented",
-     "quote": "The discount is based on family size, annual income, and assets, as defined in Section 3.",
+     "quote": "1 $0 $63,840 100%",
      "source_id": "fap-0d5e55de234c36d4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "residency": null,
+    "discount_tiers": null,
+    "assistance_ceiling_fpl": null,
+    "asset_test": null,
+    "residency": {
+     "value": [
+      "Permanent residence in the United States of America, having a personal residence within the state of Michigan or Ohio, within approximately 25 miles of a McLaren HealthCare facility."
+     ],
+     "layer": "documented",
+     "quote": "1. Permanent residence in the United States of America 2. Having a personal residence within the state of Michigan or Ohio, within approximately 25 miles of a McLaren HealthCare facility.",
+     "source_id": "fap-0d5e55de234c36d4",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
@@ -7126,10 +7282,8 @@
    "programs": {
     "presumptive": {
      "value": [
-      "third party information",
-      "prior financial assistance determination",
-      "approval of income-based government programs (e.g., Medicaid Emergency Services Only, Family Planning)",
-      "discretion of the facility CFO"
+      "Medicaid Emergency Services Only",
+      "Family Planning"
      ],
      "layer": "documented",
      "quote": "Presumptive financial assistance may be applied based on third party information, a prior financial assistance determination, approval of government programs based on income (for example Medicaid Emergency Services Only, or Family Planning) or at the discretion of the facility CFO.",
@@ -7141,50 +7295,65 @@
     "state_programs": null
    },
    "apply": {
-    "form_url": null,
+    "form_url": {
+     "value": "https://www.mclaren.org/Uploads/Public/Documents/Corporate/application_cover_letter_english.pdf",
+     "layer": "documented",
+     "quote": "Financial Assistance Application [/Uploads/Public/Documents/Corporate/application_cover_letter_english.pdf]",
+     "source_id": "web-dc5f3b15ca64615a",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "form_version": null,
     "documents_required": {
      "value": [
-      "pay_stubs",
-      "bank_statements",
+      "social_security_letter",
       "proof_of_income",
-      "other",
       "tax_return"
      ],
      "layer": "documented",
-     "quote": "Michigan Residents: Most recent pay stubs for the last 4 pay periods, Most recent bank statements for the last 2 months, Other proof of income, Assets",
+     "quote": "COMPLETED FINANCIAL ASSISTANCE APPLICATION (incomplete applications will not be considered) \u00b7 PROOF OF HOUSEHOLD INCOME",
      "source_id": "fap-27688bb5c00ca0f2",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "documents_reported": null,
-    "submit_methods": null,
-    "window_days_from_first_bill": {
-     "value": 240,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "McLaren Corporate Services, Attn: Revenue Cycle Operations - Customer Service, 50820 Schoenherr Rd., Shelby Township, MI 48315"
+      },
+      {
+       "kind": "email",
+       "detail": "FinancialAssistance@mclaren.org"
+      }
+     ],
      "layer": "documented",
-     "quote": "the opportunity to apply for financial assistance up to 240 days from their first post discharge statement.",
-     "source_id": "fap-0d5e55de234c36d4",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "decision_days": {
-     "value": 30,
-     "layer": "documented",
-     "quote": "Please allow 30 business days to process the application.",
+     "quote": "PLEASE RETURN THE COMPLETED APPLICATION AND SUPPORTING DOCUMENTS WITHIN FOURTEEN (14) DAYS TO: McLaren Corporate Services Attn: Revenue Cycle Operations - Customer Service 50820 Schoenherr Rd. Shelby Township, MI 48315 OR FinancialAssistance@mclaren.org",
      "source_id": "fap-27688bb5c00ca0f2",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
+    "window_days_from_first_bill": {
+     "value": 240,
+     "layer": "documented",
+     "quote": "the opportunity to apply for financial assistance up to 240 days from their first post discharge statement",
+     "source_id": "fap-0d5e55de234c36d4",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days": null,
     "decision_days_reported": null
    },
    "collections": {
     "eca_wait_days": {
      "value": 120,
      "layer": "documented",
-     "quote": "In the event of non-payment, only after 120 days following the first patient statement, and no earlier, MHC may take action against delinquent balances",
+     "quote": "only after 120 days following the first patient statement, and no earlier, MHC may take action against delinquent balances, including, but not limited to, extraordinary collection activities (ECAs)",
      "source_id": "fap-0d5e55de234c36d4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -7194,28 +7363,16 @@
    },
    "contacts": {
     "phone": {
-     "value": "1-844-321-1557",
+     "value": "586-710-8300",
      "layer": "documented",
-     "quote": "Please contact our Financial Counselors located at a McLaren hospital or call 586-710-8300 or 1-844-321-1557.",
+     "quote": "call 586-710-8300 or 1-844-321-1557",
      "source_id": "fap-0d5e55de234c36d4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "hours": null,
-    "languages": {
-     "value": [
-      "English",
-      "Arabic",
-      "Spanish"
-     ],
-     "layer": "documented",
-     "quote": "English Financial Assistance Policy [/Uploads/Public/Documents/corporate/financial-assistance/financial-assistance-policy-ENGLISH.pdf]",
-     "source_id": "web-3736b3ff076026ad",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "languages": null
    },
    "coverage": {
     "facilities": null,
@@ -7226,7 +7383,7 @@
     {
      "id": "fap-0d5e55de234c36d4",
      "kind": "hospital_web",
-     "url": "https://www.mclaren.org/Uploads/Public/Documents/corporate/financial-assistance/financial-assistance-policy-english.pdf",
+     "url": "https://www.mclaren.org/Uploads/Public/Documents/corporate/financial-assistance/financial-assistance-policy-ENGLISH.pdf",
      "title": "",
      "fetched_on": "2026-10-23",
      "sha256": "0d5e55de234c36d4a12b45bf6237ea992dfc1330523796fddc4b89d795035f29",
@@ -7242,22 +7399,22 @@
      "effective_date": null
     },
     {
-     "id": "web-3736b3ff076026ad",
+     "id": "web-dc5f3b15ca64615a",
      "kind": "hospital_web",
      "url": "https://www.mclaren.org/main/financial-assistance",
      "title": "Financial Assistance",
      "fetched_on": "2026-10-23",
-     "sha256": "3736b3ff076026ad14d6141cbb7b75a19a8cd91ba8dc6cdeb493401546352486",
+     "sha256": "dc5f3b15ca64615a90797bd7fab29e0109f1f239e3ec2da54ea01fc59317cee7",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: INCOME VERIFICATION FORM (IF YOU CURRENTLY DO NOT HAVE ANY INCOME) | COPY OF LAST FILED FEDERAL TAX RETURN",
-    "contacts.languages: 2 more verbatim excerpt(s) supported this value: Arabic Financial Assistance Policy [/Uploads/Public/Documents/corporate/financial-assistance/financial-assistance-policy | Spanish Financial Assistance Policy [/Uploads/Public/Documents/corporate/financial-assistance/financial-assistance-polic",
-    "agent dropped eligibility.free_care_max_fpl: judge: The quote has a 400% FPL header and one 100% row up to $63,840 for a family of 1. It never states that 100% free care extends to 400%.",
-    "agent dropped eligibility.residency: judge: The quote covers only a Michigan/Ohio residence within about 25 miles. It says nothing about permanently residing in the U.S.",
-    "agent dropped apply.submit_methods: judge: The quote gives in person/in writing, the street address, and the email. It lacks the mail recipient name, the Attn line, and the Financial Counselors at a hospital."
+    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: INCOME VERIFICATION FORM (IF YOU CURRENTLY DO NOT HAVE ANY INCOME) \u00b7 COPY OF LAST FILED FEDERAL TAX RETURN",
+    "agent dropped eligibility.asset_test: quote is not a substring of the source",
+    "agent dropped contacts.languages: excerpt not in source: English",
+    "agent judge on eligibility.free_care_max_fpl: The quote is a table row (household 1, $0, $63,840, 100%) with no stated FPL percentage, so 400% is not stated.",
+    "agent judge on apply.form_url: Quote shows only the relative path /Uploads/Public/Documents/Corporate/application_cover_letter_english.pdf; the mclaren.org domain is not stated."
    ]
   },
   {
@@ -8221,30 +8378,30 @@
     "free_care_max_fpl": {
      "value": "300",
      "layer": "documented",
-     "quote": "Please note that, once deemed eligible for SFAP financial assistance, patients will not be billed for medically necessary care, as all such charges are written off due to the 100% discount.",
-     "source_id": "fap-75c7dbbe3b1d75a1",
+     "quote": "<=300% FPG = 100% discount.",
+     "source_id": "fap-a9dc11d275f80a2c",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "discount_tiers": null,
-    "assistance_ceiling_fpl": null,
-    "asset_test": {
-     "value": true,
+    "assistance_ceiling_fpl": {
+     "value": "300",
      "layer": "documented",
-     "quote": "applicant\u2019s liquid assets may not exceed $10,000 with the following exception; the patient may have up to $100,000 in a retirement account",
-     "source_id": "fap-75c7dbbe3b1d75a1",
+     "quote": "a patient may qualify for SFAP if the patient\u2019s household income does not exceed 300% of the established FPG set forth for the current year.",
+     "source_id": "fap-a9dc11d275f80a2c",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
+    "asset_test": null,
     "residency": {
      "value": [
       "The applicant must be a Michigan resident at the time of service."
      ],
      "layer": "documented",
      "quote": "The applicant must be a Michigan resident at the time of service.",
-     "source_id": "fap-75c7dbbe3b1d75a1",
+     "source_id": "fap-a9dc11d275f80a2c",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -8252,8 +8409,8 @@
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "a patient may be granted financial assistance for residual balances after insurance if a case can be made for financial hardship.",
-     "source_id": "fap-75c7dbbe3b1d75a1",
+     "quote": "Patients who qualify for SFAP may not be charged more than the Amounts Generally Billed (ABG) for emergency or other medically necessary services.",
+     "source_id": "fap-a9dc11d275f80a2c",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -8264,14 +8421,14 @@
    "programs": {
     "presumptive": {
      "value": [
-      "Active Ingham Health Plan member",
-      "Active Medicaid ESO member",
-      "Deceased patient (death certificate)",
-      "Healthcare Recovery Score below 650 (uninsured only)"
+      "Ingham Health Plan",
+      "Medicaid ESO",
+      "homeless",
+      "Deceased"
      ],
      "layer": "documented",
-     "quote": "Ingham Health Plan Member Discount Active member in IHP None 100%",
-     "source_id": "fap-75c7dbbe3b1d75a1",
+     "quote": "Ingham Health Plan Member Discount Active member in IHP",
+     "source_id": "fap-a9dc11d275f80a2c",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -8283,7 +8440,7 @@
      "value": "https://www.uofmhealthsparrow.org/patient-resources/financial-resources/financial-assistance",
      "layer": "documented",
      "quote": "Complete a SFAP application online: https://www.uofmhealthsparrow.org/patient-resources/financial-resources/financial-assistance",
-     "source_id": "fap-75c7dbbe3b1d75a1",
+     "source_id": "fap-a9dc11d275f80a2c",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -8292,15 +8449,14 @@
     "documents_required": {
      "value": [
       "tax_return",
-      "other",
       "pay_stubs",
-      "proof_of_income",
       "social_security_letter",
-      "bank_statements"
+      "bank_statements",
+      "other"
      ],
      "layer": "documented",
      "quote": "a. Federal Income Tax Return for most recent tax year (Form 1040) b. Most recent Wage and Tax Statement (W-2) and/or Miscellaneous Income (Form 1099) c. Recent copy of pay stub with year-to-date earnings for each member of the household.",
-     "source_id": "fap-75c7dbbe3b1d75a1",
+     "source_id": "fap-a9dc11d275f80a2c",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -8309,21 +8465,29 @@
     "submit_methods": {
      "value": [
       {
+       "kind": "portal",
+       "detail": "Completing the application available on the UMH Sparrow website: www.uofmhealthsparrow.org"
+      },
+      {
+       "kind": "phone",
+       "detail": "Contacting a Financial Counselor at UMH Sparrow by calling 517 364 6060."
+      },
+      {
+       "kind": "phone",
+       "detail": "Contacting UMH Sparrow Billing Customer Service by calling 517 364 7999"
+      },
+      {
        "kind": "mail",
-       "detail": "UMH-Sparrow, Financial Counseling, 1215 E. Michigan Ave, Lansing, MI 48906"
+       "detail": "Mail information to: UMH-Sparrow, Financial Counseling, 1215 E. Michigan Ave, Lansing, MI 48906"
       },
       {
        "kind": "fax",
-       "detail": "517 364 2186"
-      },
-      {
-       "kind": "portal",
-       "detail": "https://www.uofmhealthsparrow.org/patient-resources/financial-resources/financial-assistance"
+       "detail": "Fax information to 517 364 2186"
       }
      ],
      "layer": "documented",
-     "quote": "Mail information to: o UMH-Sparrow, Financial Counseling, 1215 E. Michigan Ave, Lansing, MI 48906 \u2022 Fax information to 517 364 2186",
-     "source_id": "fap-75c7dbbe3b1d75a1",
+     "quote": "a. Completing the application available on the UMH Sparrow website: www.uofmhealthsparrow.org b. Contacting a Financial Counselor at UMH Sparrow by calling 517 364 6060.",
+     "source_id": "fap-a9dc11d275f80a2c",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -8338,10 +8502,10 @@
    },
    "contacts": {
     "phone": {
-     "value": "517-364-6060",
+     "value": "517 364 6060",
      "layer": "documented",
-     "quote": "Contact our financial counselors by phone 517-364-6060 or 833-227-7664, Monday \u2013 Friday 8am -4pm",
-     "source_id": "fap-75c7dbbe3b1d75a1",
+     "quote": "Contacting a Financial Counselor at UMH Sparrow by calling 517 364 6060.",
+     "source_id": "fap-a9dc11d275f80a2c",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -8350,7 +8514,7 @@
      "value": "Monday \u2013 Friday 8am -4pm",
      "layer": "documented",
      "quote": "Contact our financial counselors by phone 517-364-6060 or 833-227-7664, Monday \u2013 Friday 8am -4pm",
-     "source_id": "fap-75c7dbbe3b1d75a1",
+     "source_id": "fap-a9dc11d275f80a2c",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -8366,7 +8530,7 @@
      ],
      "layer": "documented",
      "quote": "Applications are available in Albanian, Arabic, Bengali, Chinese, English, and Spanish.",
-     "source_id": "fap-75c7dbbe3b1d75a1",
+     "source_id": "fap-a9dc11d275f80a2c",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -8379,39 +8543,43 @@
    },
    "sources": [
     {
-     "id": "fap-75c7dbbe3b1d75a1",
+     "id": "fap-a9dc11d275f80a2c",
      "kind": "hospital_web",
-     "url": "https://www.uofmhealthsparrow.org/sites/default/files/2026-01/umh-sparrow-financial-assistance-policy-sfap-english-january-2026.pdf",
+     "url": "https://www.uofmhealthsparrow.org/sites/default/files/2025-10/sparrow-financial-aid-policy-sfap-english-september-2025.pdf",
      "title": "",
      "fetched_on": "2026-10-23",
-     "sha256": "75c7dbbe3b1d75a101720da363196a150560b8169f85087a521f5b91e0f20bd4",
+     "sha256": "a9dc11d275f80a2ce65f7258f4d0c7131340af8992739edceb457ba9a7ffd20e",
      "effective_date": null
     },
     {
-     "id": "fap-b9cb334d72ca91e5",
+     "id": "web-a924408c2338f710",
      "kind": "hospital_web",
-     "url": "https://www.uofmhealthsparrow.org/sites/default/files/2025-03/sparrow-financial-assistance-application-english-march-2025.pdf",
-     "title": "",
+     "url": "https://www.uofmhealthsparrow.org/media/28341",
+     "title": "Sparrow Financial Assistance Application - English | March 2025 | UM Health-Sparrow",
      "fetched_on": "2026-10-23",
-     "sha256": "b9cb334d72ca91e5f402346151ba426bcc4977becc337d0f2ed4aa20bacaa132",
+     "sha256": "a924408c2338f710026f654ef84caf79c474208703fabaac9a7eb9bb935e6306",
      "effective_date": null
     },
     {
-     "id": "web-0d67f089566de0cf",
+     "id": "web-bad7be2a1ca560ce",
      "kind": "hospital_web",
-     "url": "https://www.uofmhealthsparrow.org/patient-resources/financial-resources/financial-assistance",
-     "title": "Financial Assistance | UM Health-Sparrow",
+     "url": "https://www.uofmhealthsparrow.org/patient-resources/financial-resources/billing-insurance",
+     "title": "Billing & Insurance | UM Health-Sparrow",
      "fetched_on": "2026-10-23",
-     "sha256": "0d67f089566de0cf0659be8fa2d6ad666bf191ee8cf8a4b310d9e1af6c0ecbea",
+     "sha256": "bad7be2a1ca560ce89ea5ff501ef0a020287966bc1d8695c6c4d77cf1fbbd09d",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.free_care_max_fpl: 1 more verbatim excerpt(s) supported this value: Household income is not more than 300% of the Federal Poverty Level.",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Medicaid ESO Member Discount Active member in Medicaid ESO per CHAMPS None 100% Deceased Receipt of death certificate No | Score < 650 for uninsured patients only.",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: d. Proof of other income; examples, unemployment compensation, disability income, rental income, pensions, annuities, in | i. Response from Medicaid, Healthy Michigan, or Marketplace j. For patient and households with zero (0) income, a comple",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Complete a SFAP application online: https://www.uofmhealthsparrow.org/patient-resources/financial-resources/financial-as"
+    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Medicaid ESO Member Discount Active member in Medicaid ESO per CHAMPS | Deceased Receipt of death certificate",
+    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: e. Copy of Social Security benefit letter for the current year f. Current bank statement of checking/savings accounts g.",
+    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Mail information to: o UMH-Sparrow, Financial Counseling, 1215 E. Michigan Ave, Lansing, MI 48906 | Fax information to 517 364 2186",
+    "agent dropped eligibility.asset_test: quote is not a substring of the source",
+    "agent judge on eligibility.assistance_ceiling_fpl: Quote gives 300% as an eligibility limit for SFAP but does not say no assistance is offered above 300% FPG.",
+    "agent judge on eligibility.insured_patients_covered: Quote only says SFAP-qualifying patients may not be charged more than AGB; it does not state insured patients are covered.",
+    "agent judge on programs.presumptive: Quote lists Ingham Health Plan, Medicaid ESO, and Deceased; 'homeless' does not appear in the quote.",
+    "agent judge on apply.submit_methods: Quote has online, phone (517 364 6060), mail, and fax; the value's phone entry for Billing Customer Service (517 364 7999) does not appear in the quote."
    ]
   },
   {
@@ -11521,7 +11689,15 @@
     "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": null,
-    "insured_patients_covered": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "You may be eligible for financial assistance if you are not insured or are underinsured.",
+     "source_id": "fap-f61dc2bfe752d2cf",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "min_balance": null,
     "services_excluded": null
    },
@@ -11542,7 +11718,24 @@
     "form_version": null,
     "documents_required": null,
     "documents_reported": null,
-    "submit_methods": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "Aspire Rural Health System Attn: Financial Counselor 4675 Hill St., Cass City, MI 48726"
+      },
+      {
+       "kind": "in_person",
+       "detail": "You may also apply in person by visiting the office at the address noted above."
+      }
+     ],
+     "layer": "documented",
+     "quote": "Aspire Rural Health System Attn: Financial Counselor 4675 Hill St., Cass City, MI 48726",
+     "source_id": "web-043eface1d13f257",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "window_days_from_first_bill": null,
     "decision_days": null,
     "decision_days_reported": null
@@ -11564,7 +11757,7 @@
     "hours": {
      "value": "Monday - Friday: 8:00 a.m. - 4:30 p.m.",
      "layer": "documented",
-     "quote": "Monday - Friday: 8:00 a.m. - 4:30 p.m.",
+     "quote": "Phone Hours Monday - Friday: 8:00 a.m. - 4:30 p.m.",
      "source_id": "web-043eface1d13f257",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -11599,7 +11792,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "agent dropped apply.submit_methods: judge: Quote gives only '4675 Hill St., Cass City, MI 48726' and 'the office'; it never names Aspire Rural Health System or a Financial Counselor."
+    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: You may also apply in person by visiting the office at the address noted above."
    ]
   },
   {
@@ -12380,7 +12573,15 @@
     "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": null,
-    "insured_patients_covered": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "You may be eligible for financial assistance if you are not insured or are underinsured.",
+     "source_id": "fap-f61dc2bfe752d2cf",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "min_balance": null,
     "services_excluded": null
    },
@@ -12404,7 +12605,8 @@
       "tax_return",
       "social_security_letter",
       "bank_statements",
-      "pay_stubs"
+      "pay_stubs",
+      "proof_of_income"
      ],
      "layer": "documented",
      "quote": "- Most recently filed tax return - Proof of Medicaid denial for assistance (Hospital Service Only; NOT required for NHSC sites) - Current Bank Statement (Past 90 days) - Current Paycheck Stub(s) (Past 60 days) - Statement of income from other sources (Social Security, Pension, Workers Compensation, etc.)",
@@ -12427,8 +12629,8 @@
     "phone": {
      "value": "989-912-6800",
      "layer": "documented",
-     "quote": "Request the information by calling 989-912-6800 .",
-     "source_id": "web-043eface1d13f257",
+     "quote": "Request the information by calling 989-912-6800.",
+     "source_id": "fap-f61dc2bfe752d2cf",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -12442,17 +12644,7 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "languages": {
-     "value": [
-      "Spanish"
-     ],
-     "layer": "documented",
-     "quote": "Financial Assistance Policy \u2013 Plain Language Summary (Spanish)",
-     "source_id": "web-043eface1d13f257",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "languages": null
    },
    "coverage": {
     "facilities": null,
@@ -12490,7 +12682,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "agent dropped apply.submit_methods: judge: Quote confirms mail and in-person submission but omits the address, Attn line, and Cass City location; it only says 'the following address'."
+    "agent dropped apply.submit_methods: excerpt not in source: You may also apply in person by visiting the office at the a"
    ]
   },
   {
@@ -13555,21 +13747,29 @@
     "free_care_max_fpl": {
      "value": "300",
      "layer": "documented",
-     "quote": "Patients who qualify for SFAP cannot be charged more than the Amounts Generally Billed (AGB) for medically necessary care. Please note that, once deemed eligible for SFAP financial assistance, patients will not be billed for medically necessary care, as all such charges are written off due to the 100% discount.",
+     "quote": "<=300% FPG = 100% discount.",
      "source_id": "fap-75c7dbbe3b1d75a1",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "discount_tiers": null,
-    "assistance_ceiling_fpl": null,
+    "assistance_ceiling_fpl": {
+     "value": "300",
+     "layer": "documented",
+     "quote": "a patient may qualify for SFAP if the patient\u2019s household income does not exceed 300% of the established FPG set forth for the current year.",
+     "source_id": "fap-75c7dbbe3b1d75a1",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "asset_test": {
      "value": true,
      "layer": "documented",
-     "quote": "The applicant's liquid assets may not exceed $10,000 with the following exception; the patient may have up to $100,000 in a retirement account, I.R.A., T.S.A, or 401K.",
+     "quote": "The applicant\u2019s liquid assets may not exceed $10,000 with the following exception; the patient may have up to $100,000 in a retirement account, I.R.A., T.S.A, or 401K.",
      "source_id": "fap-75c7dbbe3b1d75a1",
      "checked_on": "2026-10-23",
-     "confidence": 0.8,
+     "confidence": 1.0,
      "support_count": 0
     },
     "residency": {
@@ -13586,7 +13786,7 @@
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "However, a patient may be granted financial assistance for residual balances after insurance if a case can be made for financial hardship.",
+     "quote": "a patient may be granted financial assistance for residual balances after insurance if a case can be made for financial hardship.",
      "source_id": "fap-75c7dbbe3b1d75a1",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -13598,36 +13798,17 @@
    "programs": {
     "presumptive": {
      "value": [
-      "Presumptive charity scoring (Healthcare Recovery Score) when income documentation is not available",
-      "Active Ingham Health Plan member",
-      "Active Medicaid ESO member",
-      "Deceased patient"
+      "Ingham Health Plan",
+      "Medicaid ESO"
      ],
      "layer": "documented",
-     "quote": "Presumptive Charity Scoring \u2013 Patients may qualify for financial assistance using a presumptive charity scoring when documentation to determine FPG is not readily available",
+     "quote": "Ingham Health Plan Member Discount Active member in IHP None 100%",
      "source_id": "fap-75c7dbbe3b1d75a1",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "state_programs": {
-     "value": [
-      {
-       "name": "Medicaid",
-       "how_to_apply": "UM Health-Sparrow Financial Counselors can help you apply (517-364-6060 or 833-227-7664)."
-      },
-      {
-       "name": "ACA Marketplace coverage",
-       "how_to_apply": "UM Health-Sparrow Financial Counselors can help you apply (517-364-6060 or 833-227-7664)."
-      }
-     ],
-     "layer": "documented",
-     "quote": "UM Health-Sparrow Financial Counselors can assist uninsured and underinsured patients in applying for Medicaid, ACA Marketplace coverage, and other programs to cover medical costs.",
-     "source_id": "web-7f3c3315a0e614f9",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "state_programs": null
    },
    "apply": {
     "form_url": {
@@ -13643,14 +13824,13 @@
     "documents_required": {
      "value": [
       "tax_return",
-      "other",
       "pay_stubs",
-      "proof_of_income",
       "social_security_letter",
-      "bank_statements"
+      "bank_statements",
+      "other"
      ],
      "layer": "documented",
-     "quote": "a. Federal Income Tax Return for most recent tax year (Form 1040) b. Most recent Wage and Tax Statement (W-2) and/or Miscellaneous Income (Form 1099) c. Recent copy of pay stub with year-to-date earnings for each member of the household.",
+     "quote": "Federal Income Tax Return for most recent tax year (Form 1040)",
      "source_id": "fap-75c7dbbe3b1d75a1",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -13660,17 +13840,29 @@
     "submit_methods": {
      "value": [
       {
+       "kind": "portal",
+       "detail": "Completing the application available on the UMH Sparrow website: www.uofmhealthsparrow.org"
+      },
+      {
+       "kind": "phone",
+       "detail": "Contacting a Financial Counselor at UMH Sparrow by calling 517 364 6060"
+      },
+      {
        "kind": "mail",
-       "detail": "UMH Sparrow, Financial Counseling, 1215 E. Michigan Ave, Lansing, MI 48906"
+       "detail": "Mail information to: UMH-Sparrow, Financial Counseling, 1215 E. Michigan Ave, Lansing, MI 48906"
       },
       {
        "kind": "fax",
-       "detail": "517 364 2186"
+       "detail": "Fax information to 517 364 2186"
+      },
+      {
+       "kind": "in_person",
+       "detail": "Obtaining a copy of a paper application that are available at any UMH Sparrow facility or office"
       }
      ],
      "layer": "documented",
-     "quote": "Mail information to: o UMH Sparrow, Financial Counseling, 1215 E. Michigan Ave, Lansing, MI 48906 \u2022 Fax information to 517 364 2186",
-     "source_id": "fap-b9cb334d72ca91e5",
+     "quote": "Completing the application available on the UMH Sparrow website: www.uofmhealthsparrow.org",
+     "source_id": "fap-75c7dbbe3b1d75a1",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -13685,9 +13877,9 @@
    },
    "contacts": {
     "phone": {
-     "value": "517-364-6060",
+     "value": "517 364 6060",
      "layer": "documented",
-     "quote": "Contact our financial counselors by phone 517-364-6060 or 833-227-7664, Monday \u2013 Friday 8am -4pm",
+     "quote": "Financial Counseling 517 364 6060 or toll free 833-227-7664",
      "source_id": "fap-75c7dbbe3b1d75a1",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -13733,32 +13925,17 @@
      "fetched_on": "2026-10-23",
      "sha256": "75c7dbbe3b1d75a101720da363196a150560b8169f85087a521f5b91e0f20bd4",
      "effective_date": null
-    },
-    {
-     "id": "fap-b9cb334d72ca91e5",
-     "kind": "hospital_web",
-     "url": "https://www.uofmhealthsparrow.org/sites/default/files/2025-03/sparrow-financial-assistance-application-english-march-2025.pdf",
-     "title": "",
-     "fetched_on": "2026-10-23",
-     "sha256": "b9cb334d72ca91e5f402346151ba426bcc4977becc337d0f2ed4aa20bacaa132",
-     "effective_date": null
-    },
-    {
-     "id": "web-7f3c3315a0e614f9",
-     "kind": "hospital_web",
-     "url": "https://www.uofmhealthsparrow.org/patient-resources/financial-resources/financial-assistance",
-     "title": "Financial Assistance | UM Health-Sparrow",
-     "fetched_on": "2026-10-23",
-     "sha256": "7f3c3315a0e614f9abcf294ea52d12aef5308f4ab2db44d28db2014b8d0650fd",
-     "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.free_care_max_fpl: 1 more verbatim excerpt(s) supported this value: Household income is not more than 300% of the Federal Poverty Level.",
-    "eligibility.asset_test: quote matched the source only after typography normalization",
-    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: Ingham Health Plan Member Discount Active member in IHP None 100% Medicaid ESO Member Discount Active member in Medicaid",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: d. Proof of other income; examples, unemployment compensation, disability income, rental income, pensions, annuities, in | h. IRA/401K statements i. Response from Medicaid, Healthy Michigan, or Marketplace j. For patient and households with ze"
+    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: Medicaid ESO Member Discount Active member in Medicaid ESO per CHAMPS None 100%",
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Recent copy of pay stub with year-to-date earnings for each member of the household. | Copy of Social Security benefit letter for the current year",
+    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Mail information to: o UMH-Sparrow, Financial Counseling, 1215 E. Michigan Ave, Lansing, MI 48906 | Fax information to 517 364 2186",
+    "agent judge on eligibility.assistance_ceiling_fpl: Quote only says SFAP eligibility applies if income does not exceed 300% FPG. It does not say no assistance of any kind is offered above 300%, and another quote mentions hardship cases.",
+    "agent judge on programs.presumptive: Quote lists Ingham Health Plan and Medicaid ESO as member discounts at 100% for active members. It does not describe them as presumptive eligibility.",
+    "agent judge on apply.documents_required: Quote supports only Form 1040, pay stub, and Social Security letter. The value's W-2/1099, bank statement, and Michigan residence documents are not in the quote.",
+    "agent judge on apply.submit_methods: Quote supports only online, mail, and fax. The value's phone and in-person methods are not stated in the quote."
    ]
   },
   {
@@ -14127,17 +14304,17 @@
     "free_care_max_fpl": null,
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
-    "asset_test": {
+    "asset_test": null,
+    "residency": null,
+    "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "I understand that the information I submit concerning my income, family size, assets, expenses, and medical bills is subject to verification by Aspire Rural Health System.",
-     "source_id": "fap-277cdbbd0267a840",
+     "quote": "You may be eligible for financial assistance if you are not insured or are underinsured.",
+     "source_id": "fap-f61dc2bfe752d2cf",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "residency": null,
-    "insured_patients_covered": null,
     "min_balance": null,
     "services_excluded": null
    },
@@ -14159,13 +14336,12 @@
     "documents_required": {
      "value": [
       "tax_return",
-      "medicaid_denial",
+      "social_security_letter",
       "bank_statements",
-      "pay_stubs",
-      "social_security_letter"
+      "pay_stubs"
      ],
      "layer": "documented",
-     "quote": "Most recently filed tax return - Proof of Medicaid denial for assistance (Hospital Service Only; NOT required for NHSC sites)",
+     "quote": "Most recently filed tax return - Proof of Medicaid denial for assistance (Hospital Service Only; NOT required for NHSC sites) - Current Bank Statement (Past 90 days) - Current Paycheck Stub(s) (Past 60 days) - Statement of income from other sources (Social Security, Pension, Workers Compensation, etc.)",
      "source_id": "fap-277cdbbd0267a840",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -14185,8 +14361,8 @@
     "phone": {
      "value": "989-912-6800",
      "layer": "documented",
-     "quote": "please contact one of our financial assistance counselors at 989-912-6800",
-     "source_id": "fap-277cdbbd0267a840",
+     "quote": "Request the information by calling 989-912-6800.",
+     "source_id": "fap-f61dc2bfe752d2cf",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -14200,17 +14376,7 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "languages": {
-     "value": [
-      "Spanish"
-     ],
-     "layer": "documented",
-     "quote": "Financial Assistance Policy \u2013 Plain Language Summary (Spanish)",
-     "source_id": "web-043eface1d13f257",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "languages": null
    },
    "coverage": {
     "facilities": null,
@@ -14219,12 +14385,12 @@
    },
    "sources": [
     {
-     "id": "web-924ba6fbb6509b34",
+     "id": "fap-f61dc2bfe752d2cf",
      "kind": "hospital_web",
-     "url": "https://aspirerhs.org/wp-content/uploads/2025/10/Aspire-Financial-Assistance-Plain-Language-Summary-1.docx",
+     "url": "https://aspirerhs.org/wp-content/uploads/2025/03/Aspire-Financial-Assistance-Plain-Language-Summary.pdf",
      "title": "",
      "fetched_on": "2026-10-23",
-     "sha256": "924ba6fbb6509b34ac91898bf5bda256b6bfb827955463fce7221437469a9b2f",
+     "sha256": "f61dc2bfe752d2cf184ab161ef497451f4e8b1fef20b56a95afb19a31f1aa0df",
      "effective_date": null
     },
     {
@@ -14248,8 +14414,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Current Bank Statement (Past 90 days) - Current Paycheck Stub(s) (Past 60 days) | Statement of income from other sources (Social Security, Pension, Workers Compensation, etc.)",
-    "agent dropped apply.submit_methods: judge: The quote mentions mail and in-person submission but never states the address (4675 Hill St., Cass City) or the Attn line."
+    "agent dropped apply.submit_methods: excerpt not in source: You may also apply in person by visiting the office at the a",
+    "agent judge on eligibility.insured_patients_covered: The quote says eligibility applies to those who are not insured or are underinsured. It does not say insured patients are covered, so the value true is not stated."
    ]
   },
   {

@@ -217,6 +217,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-a9e09e47e34836db": true,
+     "fap-c63934458ff050fc": true,
+     "web-ffa7097b2c55f3df": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -415,6 +421,11 @@
     "sources_fetched": 2,
     "sources_total": 2,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-3f0087f59acfc5b9": true,
+     "fap-474e722f8f9cba79": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.residency",
@@ -612,6 +623,11 @@
     "sources_fetched": 2,
     "sources_total": 2,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-4814c19e6936f4a5": true,
+     "fap-474e722f8f9cba79": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.residency",
@@ -867,6 +883,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-a9e09e47e34836db": true,
+     "fap-c63934458ff050fc": true,
+     "web-fc34662b8c34fc93": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -931,7 +953,7 @@
      "value": true,
      "layer": "documented",
      "quote": "Patients with insurance who receive medically necessary services that are not covered by their insurance may also be eligible for this discount.",
-     "source_id": "web-81e27c552f120585",
+     "source_id": "web-6f1f89c4fd399056",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -971,11 +993,15 @@
       {
        "kind": "mail",
        "detail": "Allina Health Partners Care, PO Box 43, MR 10209, Minneapolis, MN 55440-0043"
+      },
+      {
+       "kind": "portal",
+       "detail": "log in to your Allina Health account and apply for financial assistance through the Billing page"
       }
      ],
      "layer": "documented",
      "quote": "You may scan and email the completed application to AllinaPartnersCare@allina.com or you can fax it to 612-262-3625 or mail it to Allina Health Partners Care, PO Box 43, MR 10209, Minneapolis, MN 55440-0043.",
-     "source_id": "web-81e27c552f120585",
+     "source_id": "web-6f1f89c4fd399056",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -1009,7 +1035,7 @@
      "value": "612-262-9000",
      "layer": "documented",
      "quote": "Need help paying your bill? Call 612-262-9000 612-262-9000 .",
-     "source_id": "web-81e27c552f120585",
+     "source_id": "web-6f1f89c4fd399056",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -1018,7 +1044,7 @@
      "value": "Monday to Thursday: 8 a.m. to 4:30 p.m. Friday: 9 a.m. to 4:30 p.m.",
      "layer": "documented",
      "quote": "Monday to Thursday: 8 a.m. to 4:30 p.m. Friday: 9 a.m. to 4:30 p.m.",
-     "source_id": "web-81e27c552f120585",
+     "source_id": "web-6f1f89c4fd399056",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -1043,34 +1069,43 @@
     {
      "id": "fap-b1ea791913a76181",
      "kind": "hospital_web",
-     "url": "https://www.allinahealth.org/-/media/allina-health/files/customer-service/partnerscareprogramapp.pdf",
+     "url": "https://www.allinahealth.org/customer-service/-/media/allina-health/files/customer-service/partnerscareprogramapp.pdf",
      "title": "",
      "fetched_on": "2026-10-23",
      "sha256": "b1ea791913a76181202271d86bbbd0922271a4a75992378f3b0d95683bc2c796",
      "effective_date": null
     },
     {
-     "id": "web-81e27c552f120585",
+     "id": "web-6f1f89c4fd399056",
      "kind": "hospital_web",
      "url": "https://www.allinahealth.org/customer-service/financial-assistance",
      "title": "Financial Assistance | Medical Bills | Allina Health",
      "fetched_on": "2026-10-23",
-     "sha256": "81e27c552f120585e10a413d8fdb9aba30cab0f47e53e3686240bb5f1cce85ed",
+     "sha256": "6f1f89c4fd39905602fd6d156cd44a4a2a8d727201d34e94683d7a73ebd154a9",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
+    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: Allina Health will consider any patient with a documented bankruptcy to be considered under the category of charity care",
     "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Copies of the 2 most recent pay stubs or employer statement listing 2 months of pay (if employed). | Previous year\u2019s federal tax return.",
+    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: You can also log in to your Allina Health account and apply for financial assistance through the Billing page in your ac",
     "agent dropped programs.state_programs: quote is not a substring of the source",
     "agent dropped contacts.languages: quote is not a substring of the source",
-    "agent judge on eligibility.assistance_ceiling_fpl: Quote says patients at or below 275% FPL are deemed eligible; it does not state that nothing is offered above 275% FPL."
+    "agent judge on programs.presumptive: Quote supports presumptive eligibility software and bankruptcy consideration, but does not mention Medicaid as a presumptive category.",
+    "agent judge on apply.decision_days: Quote says to allow 30 days for processing, which supports 30 as a processing allowance but not explicitly as a decision deadline."
    ],
    "eve_verified": {
     "on": "2026-10-23",
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-1e86c5c45db22bd7": true,
+     "fap-b1ea791913a76181": true,
+     "web-6f1f89c4fd399056": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.assistance_ceiling_fpl",
      "eligibility.insured_patients_covered",
@@ -1088,6 +1123,7 @@
      ]
     ],
     "pruned": [
+     "programs.presumptive: none of the listed programs is named in the quote (after trimming)",
      "apply.documents_required: 3 items not named in the trimmed quote"
     ],
     "income_rule_verified": false,
@@ -1205,6 +1241,10 @@
     "sources_fetched": 1,
     "sources_total": 1,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-1e86c5c45db22bd7": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.insured_patients_covered",
@@ -1370,6 +1410,10 @@
     "sources_fetched": 1,
     "sources_total": 1,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-5c7c7701f1c41bb7": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.residency",
@@ -1536,6 +1580,10 @@
     "sources_fetched": 1,
     "sources_total": 1,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-692a1508d7e891a2": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.insured_patients_covered",
@@ -1580,21 +1628,21 @@
     "free_care_max_fpl": null,
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
-    "asset_test": {
+    "asset_test": null,
+    "residency": null,
+    "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "Documentation of their financial status, furnished by providing a copy of last year\u2019s tax return of the patient and of whoever claims the patient as a dependent and/or evidence of the last three months\u2019 incomes; along with most current bank statements for checking, savings and investment account balances for validation of income and assets",
+     "quote": "Eligibility for charity care will be considered for those individuals who are uninsured, underinsured, ineligible for any government health care program, and who are unable to pay for their care",
      "source_id": "fap-52efaf732a45f416",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "residency": null,
-    "insured_patients_covered": null,
     "min_balance": {
      "value": "5",
      "layer": "documented",
-     "quote": "before applying for financial assistance with balances greater than $5.00 (five dollars)",
+     "quote": "before applying for financial assistance with balances greater than $5.00 (five dollars).",
      "source_id": "fap-52efaf732a45f416",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1603,24 +1651,46 @@
     "services_excluded": null
    },
    "programs": {
-    "presumptive": null,
+    "presumptive": {
+     "value": [
+      "Homelessness",
+      "Women, Infants and Children programs (WIC)"
+     ],
+     "layer": "documented",
+     "quote": "Presumptive eligibility may be determined on the basis of individual life circumstances that may include: 1. State-funded prescription programs. 2. Homelessness or having received care from a homeless clinic. 3. Participation in Women, Infants and Children programs (WIC).",
+     "source_id": "fap-52efaf732a45f416",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "state_programs": null
    },
    "apply": {
     "form_url": null,
     "form_version": null,
-    "documents_required": null,
+    "documents_required": {
+     "value": [
+      "tax_return",
+      "other"
+     ],
+     "layer": "documented",
+     "quote": "Federal tax return (1040 form) or No taxes are filed - proof of gross yearly income required",
+     "source_id": "fap-8d228daf446ef4c5",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "documents_reported": null,
     "submit_methods": {
      "value": [
       {
        "kind": "in_person",
-       "detail": "Stopping at the cashier\u2019s office located inside the main entrance of the clinic."
+       "detail": "Stopping at the cashier's office located inside the main entrance of the clinic"
       }
      ],
      "layer": "documented",
      "quote": "Stopping at the cashier\u2019s office located inside the main entrance of the clinic.",
-     "source_id": "web-5afbff725aa19974",
+     "source_id": "web-8ba3640d3ad48f8f",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -1628,7 +1698,7 @@
     "window_days_from_first_bill": {
      "value": 240,
      "layer": "documented",
-     "quote": "Applications for Charity Care must be made for eligible visits within 240 days of the first billing statement or within 30 days after a written notice has been given to a patient, whichever is greater from the time of first billing.",
+     "quote": "Applications for Charity Care must be made for eligible visits within 240 days of the first billing statement or within 30 days after a written notice has been given to a patient, whichever is greater",
      "source_id": "fap-52efaf732a45f416",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1649,7 +1719,7 @@
     "eca_wait_days": {
      "value": 120,
      "layer": "documented",
-     "quote": "legal actions for any patient without first making reasonable efforts to determine whether that patient is eligible for charity care under this financial assistance policy for at least 120 days following the first billing statement",
+     "quote": "making reasonable efforts to determine whether that patient is eligible for charity care under this financial assistance policy for at least 120 days following the first billing statement",
      "source_id": "fap-52efaf732a45f416",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1659,10 +1729,10 @@
    },
    "contacts": {
     "phone": {
-     "value": "877.201.3731",
+     "value": "507.457.4488",
      "layer": "documented",
      "quote": "Calling the Business Office at 507.457.4488 or toll free at 877.201.3731 .",
-     "source_id": "web-5afbff725aa19974",
+     "source_id": "web-8ba3640d3ad48f8f",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -1671,7 +1741,7 @@
      "value": "Mon\u2013Fri: 8 a.m. \u2013 4:30 p.m.",
      "layer": "documented",
      "quote": "Mon\u2013Fri: 8 a.m. \u2013 4:30 p.m.",
-     "source_id": "web-5afbff725aa19974",
+     "source_id": "web-8ba3640d3ad48f8f",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -1694,42 +1764,49 @@
      "effective_date": null
     },
     {
-     "id": "web-5afbff725aa19974",
+     "id": "fap-8d228daf446ef4c5",
+     "kind": "hospital_web",
+     "url": "https://www.winonahealth.org/wp-content/uploads/2990A-Financial-Assistance-Application-112021.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "8d228daf446ef4c57037989577fe3b9be80a695a2d03cf61af02352d3a9ff43f",
+     "effective_date": null
+    },
+    {
+     "id": "web-8ba3640d3ad48f8f",
      "kind": "hospital_web",
      "url": "https://www.winonahealth.org/patients-and-visitors/patients/billing-insurance/financial-assistance-program/",
      "title": "Financial Assistance Program - Winona Health",
      "fetched_on": "2026-10-23",
-     "sha256": "5afbff725aa1997449eaae84064889c07f658c5c30cb21b6fda3145add62304e",
-     "effective_date": null
-    },
-    {
-     "id": "fap-c299bdb014f4d685",
-     "kind": "hospital_web",
-     "url": "https://www.winonahealth.org/wp-content/uploads/2990A-Financial-Assistance-Application-031423.pdf",
-     "title": "",
-     "fetched_on": "2026-10-23",
-     "sha256": "c299bdb014f4d685957e715598432ad7fdf4ce30fe9b7f720fb402d531d87e60",
+     "sha256": "8ba3640d3ad48f8f6b72ad3af5be642c03cb7f6b1c738c86a0343380e783c360",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: 2. Homelessness or having received care from a homeless clinic. | 3. Participation in Women, Infants and Children programs (WIC).",
-    "programs.state_programs: 2 more verbatim excerpt(s) supported this value: Wisconsin residents [https://access.wisconsin.gov/] | Iowa residents [http://dhs.iowa.gov/]",
-    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: Documentation of their financial status, furnished by providing a copy of last year\u2019s tax return of the patient and of w",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Calling the Business Office at 507.457.4488 or toll free at 877.201.3731 . | Or sending a request to our billing office at Winona Health Services, Attn: Business Office, P.O. Box 5600, Winona, MN 5",
-    "agent dropped eligibility.insured_patients_covered: quote is not a substring of the source"
+    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: 6. Eligibility for other state or local assistance programs that are unfunded (e.g., Medicaid spend-down). | 8. Patient is deceased with no known estate.",
+    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: Recent bank statement Last Payroll check stub Recent balances of any FSA, HSA, HRA",
+    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Calling the Business Office at 507.457.4488 or toll free at 877.201.3731 . | sending a request to our billing office at Winona Health Services, Attn: Business Office, P.O. Box 5600, Winona, MN 5598",
+    "agent dropped eligibility.asset_test: quote is not a substring of the source",
+    "agent judge on eligibility.insured_patients_covered: Quote limits eligibility to uninsured, underinsured, or government-ineligible patients who cannot pay; it does not state insured patients are covered.",
+    "agent judge on collections.eca_wait_days: Quote concerns making reasonable eligibility-determination efforts for at least 120 days after first bill; it does not state the wait before collection actions."
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 2,
+    "sources_fetched": 3,
     "sources_total": 3,
-    "sources_missing": [
-     "https://www.winonahealth.org/wp-content/uploads/2990A-Financial-Assistance-Application-031423.pdf"
-    ],
+    "sources_missing": [],
+    "sha256_match": {
+     "fap-52efaf732a45f416": true,
+     "fap-8d228daf446ef4c5": true,
+     "web-8ba3640d3ad48f8f": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
-     "eligibility.asset_test",
+     "eligibility.insured_patients_covered",
      "eligibility.min_balance",
+     "programs.presumptive",
+     "apply.documents_required",
      "apply.submit_methods",
      "apply.window_days_from_first_bill",
      "apply.decision_days",
@@ -1738,10 +1815,6 @@
      "contacts.hours"
     ],
     "rejected": [
-     [
-      "programs.state_programs",
-      "quote not found in source"
-     ],
      [
       "apply.form_url",
       "quote not found in source"
@@ -1752,12 +1825,12 @@
      ]
     ],
     "pruned": [
-     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
-     "apply.documents_required: none of the listed documents is named in the quote (after trimming)",
+     "programs.presumptive: 2 items not named in the trimmed quote",
+     "apply.documents_required: 2 items not named in the trimmed quote",
      "apply.submit_methods: 2 items not named in the trimmed quote"
     ],
     "income_rule_verified": false,
-    "core_completeness": 0.33
+    "core_completeness": 0.5
    }
   },
   {
@@ -1775,11 +1848,29 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": null,
+    "free_care_max_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "To be eligible for full Financial Assistance (charity care), your household income should be at or below 200% of the Federal Poverty Level (FPL)",
+     "source_id": "web-54049bd24eca28a1",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
     "asset_test": null,
-    "residency": null,
+    "residency": {
+     "value": [
+      "Uninsured patients who live in and have an active address within the United States will receive a discount on medically needed hospital services."
+     ],
+     "layer": "documented",
+     "quote": "Uninsured patients who live in and have an active address within the United States will receive a discount on medically needed hospital services.",
+     "source_id": "web-54049bd24eca28a1",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "insured_patients_covered": null,
     "min_balance": null,
     "services_excluded": null
@@ -1791,9 +1882,32 @@
    "apply": {
     "form_url": null,
     "form_version": null,
-    "documents_required": null,
+    "documents_required": {
+     "value": [
+      "tax_return"
+     ],
+     "layer": "documented",
+     "quote": "Pay stubs from the past 30 days, or if you are self-employed, bring your most recent tax return",
+     "source_id": "web-54049bd24eca28a1",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "documents_reported": null,
-    "submit_methods": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "portal",
+       "detail": "MyChart account - log in and navigate to the Financial Assistance section"
+      }
+     ],
+     "layer": "documented",
+     "quote": "If you have a MyChart account, you can log in and navigate to the Financial Assistance section to begin the process.",
+     "source_id": "web-54049bd24eca28a1",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "window_days_from_first_bill": null,
     "decision_days": null,
     "decision_days_reported": null
@@ -1804,19 +1918,19 @@
    },
    "contacts": {
     "phone": {
-     "value": "1-855-324-7843",
+     "value": "612-672-6724",
      "layer": "documented",
-     "quote": "1-855-FAIRVIEW 1-855-324-7843",
-     "source_id": "web-ffd8563a9b3b677f",
+     "quote": "M Health Fairview hospitals: 612-672-6724",
+     "source_id": "web-54049bd24eca28a1",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "hours": {
-     "value": "24/7",
+     "value": "Mon - Thu: 8:00 AM - 5:30 PM Fri: 9:00 AM - 4:30 PM",
      "layer": "documented",
-     "quote": "Contact Us 24/7:",
-     "source_id": "web-ffd8563a9b3b677f",
+     "quote": "Mon - Thu: 8:00 AM - 5:30 PM Fri: 9:00 AM - 4:30 PM",
+     "source_id": "web-54049bd24eca28a1",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -1830,30 +1944,70 @@
    },
    "sources": [
     {
-     "id": "web-ffd8563a9b3b677f",
+     "id": "web-54049bd24eca28a1",
      "kind": "hospital_web",
-     "url": "https://www.mhealthfairview.org/resources/policies-and-documentation/financial-assistance-policy",
-     "title": "Financial Assistance Policy | M Health Fairview",
+     "url": "https://www.mhealthfairview.org/bill-pay-and-financial-resources/support/financial-assistance",
+     "title": "Financial Assistance | M Health Fairview",
      "fetched_on": "2026-10-23",
-     "sha256": "ffd8563a9b3b677f061af61a8a9f8359bb9c33beb230990239b98c441fbce683",
+     "sha256": "54049bd24eca28a13d68ca0f9148fbd462836d5354b99490c480e127cd6cceb2",
      "effective_date": null
     }
    ],
    "accuracy": null,
-   "eve_review": [],
+   "eve_review": [
+    "eligibility.discount_tiers: 200-400% at 0% is no discount; skipped",
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Your driver's license or photo ID | Health insurance card if you have one",
+    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Download our application [https://www.fvfiles.com/2266.pdf] or fill out the form online by clicking \u201cApply Here\u201d below. | If you have questions or would like help with your application, please call one of the numbers below based on where you ",
+    "agent judge on eligibility.discount_tiers: Quote gives the 201%-400% range but never states a 0% discount; the discount_percent of 0 is not in the quote.",
+    "agent judge on eligibility.assistance_ceiling_fpl: Quote says income is no more than 400% FPL but does not say assistance is unavailable above 400% or that no assistance of any kind is offered.",
+    "agent judge on programs.state_programs: Quote only says Minnesota residents can apply through MNsure; it does not name Medical Assistance/MinnesotaCare as the program.",
+    "agent judge on apply.submit_methods: Quote supports online (MyChart and form online) and downloading the application, but not a mail method or the phone number 612-672-6724 as a submit method."
+   ],
    "eve_verified": {
     "on": "2026-10-23",
     "sources_fetched": 1,
     "sources_total": 1,
     "sources_missing": [],
+    "sha256_match": {
+     "web-54049bd24eca28a1": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.residency",
+     "apply.documents_required",
+     "apply.submit_methods",
      "contacts.phone",
      "contacts.hours"
     ],
-    "rejected": [],
-    "pruned": [],
-    "income_rule_verified": false,
-    "core_completeness": 0.17
+    "rejected": [
+     [
+      "eligibility.assistance_ceiling_fpl",
+      "quote does not say the hospital's financial assistance reaches it"
+     ],
+     [
+      "eligibility.asset_test",
+      "quote does not support the asset-test value"
+     ],
+     [
+      "programs.state_programs",
+      "quote not found in source"
+     ],
+     [
+      "apply.form_url",
+      "quote not found in source"
+     ],
+     [
+      "contacts.languages",
+      "quote not found in source"
+     ]
+    ],
+    "pruned": [
+     "apply.documents_required: 2 items not named in the trimmed quote",
+     "apply.submit_methods: 2 items not named in the trimmed quote"
+    ],
+    "income_rule_verified": true,
+    "core_completeness": 0.67
    }
   },
   {
@@ -1871,16 +2025,43 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": null,
-    "discount_tiers": null,
+    "free_care_max_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "If the patient is at or below 200% of the Federal Poverty Level, they will receive a full discount (100%).",
+     "source_id": "fap-7a22160901533428",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "200",
+       "max_fpl_inclusive": "300",
+       "discount_percent": 75
+      },
+      {
+       "min_fpl_exclusive": "300",
+       "max_fpl_inclusive": "400",
+       "discount_percent": 50
+      }
+     ],
+     "layer": "documented",
+     "quote": "FPL Score Discount 200% or less 100% Discount 201-300% 75% Discount 301-400% 50% Discount",
+     "source_id": "fap-7a22160901533428",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": null,
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "You may apply for the HealthPartners Financial Assistance Program even if you have insurance coverage. Any discount you receive will be applied to your remaining balance after insurance payments are made.",
-     "source_id": "web-5bb13c01cb874144",
+     "quote": "You may apply for the HealthPartners Financial Assistance Program even if you have insurance coverage.",
+     "source_id": "web-202b2547d6683dee",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -1903,36 +2084,19 @@
      ],
      "layer": "documented",
      "quote": "Your last federal income tax return or Income Earnings Statement from the Social Security Administration if you did not file taxes last year.",
-     "source_id": "web-5bb13c01cb874144",
+     "source_id": "web-202b2547d6683dee",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "documents_reported": null,
-    "submit_methods": {
-     "value": [
-      {
-       "kind": "portal",
-       "detail": "Apply online by signing in to your HealthPartners account, navigating to the 'Pay bills' section, selecting 'Request financial assistance'"
-      },
-      {
-       "kind": "email",
-       "detail": "Email to hpfinancialassistance@healthpartners.com"
-      }
-     ],
-     "layer": "documented",
-     "quote": "Email to hpfinancialassistance@healthpartners.com",
-     "source_id": "web-5bb13c01cb874144",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "submit_methods": null,
     "window_days_from_first_bill": null,
     "decision_days": {
      "value": 14,
      "layer": "documented",
      "quote": "We will send you a letter about your application in 10-14 days.",
-     "source_id": "web-5bb13c01cb874144",
+     "source_id": "web-202b2547d6683dee",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -1947,13 +2111,21 @@
     "phone": {
      "value": "952-993-7672",
      "layer": "documented",
-     "quote": "Park Nicollet Health Services P.O. Box 773217 Detroit, MI 48277-3217 Email: hpfinancialassistance@healthpartners.com Phone: 952-993-7672 \u2022 Fax: 952-993-2770",
-     "source_id": "fap-77344ce9bbfd7017",
+     "quote": "Park Nicollet Health Services, including Methodist Hospital: 952-993-7672",
+     "source_id": "fap-7a22160901533428",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "hours": null,
+    "hours": {
+     "value": "Monday\u2013Friday from 8:00 a.m.\u20134:30 p.m.",
+     "layer": "documented",
+     "quote": "Patient Financial Services locations are open for phone calls on Monday\u2013Friday from 8:00 a.m.\u2013 4:30 p.m.",
+     "source_id": "fap-7a22160901533428",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "languages": {
      "value": [
       "English",
@@ -1965,8 +2137,8 @@
       "Karen"
      ],
      "layer": "documented",
-     "quote": "Financial Assistance Program Application \u2013 Spanish (PDF)",
-     "source_id": "web-5bb13c01cb874144",
+     "quote": "Financial Assistance Program Application \u2013 English (PDF)",
+     "source_id": "web-202b2547d6683dee",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -1979,12 +2151,12 @@
    },
    "sources": [
     {
-     "id": "fap-aa2f790603befd4e",
+     "id": "fap-7a22160901533428",
      "kind": "hospital_web",
-     "url": "https://www.healthpartners.com/content/dam/brand-identity/pdfs/plan/financial-assistance/2016-21627-English-financial-assistance-policy.pdf",
+     "url": "https://www.healthpartners.com/content/dam/brand-identity/pdfs/care/system-financial-assistance-policy.pdf",
      "title": "",
      "fetched_on": "2026-10-23",
-     "sha256": "aa2f790603befd4e59e545ca10b693b7d488b47a866a50f924ca255136332241",
+     "sha256": "7a221609015334280f3d51e77fc1a5a37bf176e925c8ef1e63fa9281979ef129",
      "effective_date": null
     },
     {
@@ -1997,58 +2169,60 @@
      "effective_date": null
     },
     {
-     "id": "web-5bb13c01cb874144",
+     "id": "web-202b2547d6683dee",
      "kind": "hospital_web",
      "url": "https://www.healthpartners.com/care/pay-bill/billing-financial-resources/financial-assistance/",
      "title": "Financial assistance | HealthPartners & Park Nicollet",
      "fetched_on": "2026-10-23",
-     "sha256": "5bb13c01cb874144a2d7a5763eedae2f211191bdb9eeeb14d73e8050fb7d16d1",
+     "sha256": "202b2547d6683dee79565c553865dba8fb6fa2cb4929542199e6c591fc22ec6a",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Copies of your last 60 days of pay stubs. | Social Security letter or unemployment benefit letter, if applicable.",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Fax to 952-993-2770 | In person at any HealthPartners clinic. Please put your application and required documents in a sealed envelope",
-    "contacts.languages: 2 more verbatim excerpt(s) supported this value: Financial Assistance Program Application \u2013 Somali (PDF) | Financial Assistance Program Application \u2013 Vietnamese (PDF)",
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Copies of your last 60 days of pay stubs. | Your latest financial statement supporting liquid asset holdings",
+    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Email to hpfinancialassistance@healthpartners.com | Fax to 952-993-2770",
+    "contacts.languages: 2 more verbatim excerpt(s) supported this value: Financial Assistance Program Application \u2013 Spanish (PDF) | Financial Assistance Program Application \u2013 Somali (PDF)",
     "apply.form_url: not an absolute URL ('/content/dam/brand-identity/pdfs/care/hp-financial-assistanc'); dropped",
-    "agent judge on eligibility.asset_test: Quote is only a fragment listing assets ('Assets, such as property or savings accounts'); it does not state that assets are considered.",
-    "agent judge on apply.documents_required: Quote omits the 'latest financial statement supporting liquid asset holdings' item, which the value includes.",
-    "agent judge on apply.submit_methods: Quote supports email, fax, and in-person submission only; the value's online and mail methods do not appear in the quote.",
-    "agent judge on apply.decision_days: Quote says a letter comes in '10-14 days', a range; it does not state a single value of 14.",
-    "agent judge on contacts.languages: Quote shows only Spanish, Somali, and Vietnamese application PDFs; English, Hmong, Russian, and Karen are not mentioned."
+    "agent dropped programs.presumptive: quote is not a substring of the source",
+    "agent judge on apply.documents_required: Quote lists tax return or SSA statement, pay stubs, and liquid asset statement. It does not mention an unemployment benefit letter.",
+    "agent judge on apply.submit_methods: Quote lists only email and fax. Value also includes online, mail, and in-person, which the quote does not state.",
+    "agent judge on apply.decision_days: Quote says a letter will arrive in 10-14 days, a range. It does not state a single value of 14 days.",
+    "agent judge on contacts.languages: Quote names only English, Spanish, and Somali application forms. Russian, Karen, Vietnamese, and Hmong are not in the quote."
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 2,
+    "sources_fetched": 3,
     "sources_total": 3,
-    "sources_missing": [
-     "https://www.healthpartners.com/content/dam/brand-identity/pdfs/plan/financial-assistance/2016-21627-English-financial-assistance-policy.pdf"
-    ],
+    "sources_missing": [],
+    "sha256_match": {
+     "fap-7a22160901533428": true,
+     "fap-77344ce9bbfd7017": true,
+     "web-202b2547d6683dee": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
      "eligibility.insured_patients_covered",
      "apply.documents_required",
-     "apply.submit_methods",
      "apply.decision_days",
      "contacts.phone",
+     "contacts.hours",
      "contacts.languages"
     ],
     "rejected": [
      [
       "eligibility.asset_test",
       "quote does not support the asset-test value"
-     ],
-     [
-      "programs.state_programs",
-      "quote not found in source"
      ]
     ],
     "pruned": [
      "apply.documents_required: 1 item not named in the trimmed quote",
-     "apply.submit_methods: 3 items not named in the trimmed quote"
+     "apply.submit_methods: none of the listed channels is named in the quote (after trimming)"
     ],
-    "income_rule_verified": false,
-    "core_completeness": 0.5
+    "income_rule_verified": true,
+    "core_completeness": 0.67
    }
   },
   {
@@ -2068,22 +2242,14 @@
    "eligibility": {
     "free_care_max_fpl": null,
     "discount_tiers": null,
-    "assistance_ceiling_fpl": {
-     "value": "275",
-     "layer": "documented",
-     "quote": "a patient or their guarantor\u2019s gross income is determined to be at or below 275% of the Federal Poverty Guidelines, they will be deemed eligible for Allina Partners Care",
-     "source_id": "fap-1e86c5c45db22bd7",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": null,
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "If anyone listed on the application has current healthcare coverage, please indicate this and send a copy of the front and back of the health insurance card.",
-     "source_id": "fap-b1ea791913a76181",
+     "quote": "Patients with insurance who receive medically necessary services that are not covered by their insurance may also be eligible for this discount.",
+     "source_id": "web-8a4ccdc267686397",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -2093,20 +2259,7 @@
    },
    "programs": {
     "presumptive": null,
-    "state_programs": {
-     "value": [
-      {
-       "name": "Medical Assistance/MNCare",
-       "how_to_apply": "If anyone listed on the application is uninsured, they need to apply for Medical Assistance/MNCare and then provide us with their written determination letter."
-      }
-     ],
-     "layer": "documented",
-     "quote": "If anyone listed on the application is uninsured, they need to apply for Medical Assistance/MNCare and then provide us with their written determination letter.",
-     "source_id": "fap-b1ea791913a76181",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "state_programs": null
    },
    "apply": {
     "form_url": null,
@@ -2126,13 +2279,21 @@
     "submit_methods": {
      "value": [
       {
+       "kind": "email",
+       "detail": "AllinaPartnersCare@allina.com"
+      },
+      {
+       "kind": "fax",
+       "detail": "612-262-3625"
+      },
+      {
        "kind": "mail",
-       "detail": "Allina Health Partners Care 10209 PO Box 43 Minneapolis MN 55440-0043"
+       "detail": "Allina Health Partners Care, PO Box 43, MR 10209, Minneapolis, MN 55440-0043"
       }
      ],
      "layer": "documented",
-     "quote": "Allina Health Partners Care 10209 PO Box 43 Minneapolis MN 55440-0043",
-     "source_id": "fap-b1ea791913a76181",
+     "quote": "You may scan and email the completed application to AllinaPartnersCare@allina.com or you can fax it to 612-262-3625 or mail it to Allina Health Partners Care, PO Box 43, MR 10209, Minneapolis, MN 55440-0043.",
+     "source_id": "web-8a4ccdc267686397",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -2165,34 +2326,22 @@
     "phone": {
      "value": "612-262-9000",
      "layer": "documented",
-     "quote": "(612) 262-9000 or (800) 859-5077",
-     "source_id": "fap-b1ea791913a76181",
+     "quote": "Need help paying your bill? Call 612-262-9000 612-262-9000 .",
+     "source_id": "web-8a4ccdc267686397",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "hours": {
-     "value": "Monday - Thursday 8:00am - 4:30pm Friday 9:00am - 4:30pm",
+     "value": "Monday to Thursday: 8 a.m. to 4:30 p.m. Friday: 9 a.m. to 4:30 p.m.",
      "layer": "documented",
-     "quote": "Hours: Monday - Thursday 8:00am - 4:30pm Friday 9:00am - 4:30pm",
-     "source_id": "fap-b1ea791913a76181",
+     "quote": "Monday to Thursday: 8 a.m. to 4:30 p.m. Friday: 9 a.m. to 4:30 p.m.",
+     "source_id": "web-8a4ccdc267686397",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "languages": {
-     "value": [
-      "English",
-      "Spanish",
-      "Somali"
-     ],
-     "layer": "documented",
-     "quote": "You can download a copy of this application in English, Spanish or Somali at www.allinahealth.org/financialassistance.",
-     "source_id": "fap-b1ea791913a76181",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "languages": null
    },
    "coverage": {
     "facilities": null,
@@ -2203,7 +2352,7 @@
     {
      "id": "fap-1e86c5c45db22bd7",
      "kind": "hospital_web",
-     "url": "https://www.allinahealth.org/customer-service/-/media/allina-health/files/customer-service/allina-partners-care-policy.pdf",
+     "url": "https://www.allinahealth.org/-/media/allina-health/files/customer-service/allina-partners-care-policy.pdf",
      "title": "",
      "fetched_on": "2026-10-23",
      "sha256": "1e86c5c45db22bd77b566cb06ac50e5f17c3a69c55f1fcc404305375205a6bd1",
@@ -2212,55 +2361,63 @@
     {
      "id": "fap-b1ea791913a76181",
      "kind": "hospital_web",
-     "url": "https://www.allinahealth.org/customer-service/-/media/allina-health/files/customer-service/partnerscareprogramapp.pdf",
+     "url": "https://www.allinahealth.org/-/media/allina-health/files/customer-service/partnerscareprogramapp.pdf",
      "title": "",
      "fetched_on": "2026-10-23",
      "sha256": "b1ea791913a76181202271d86bbbd0922271a4a75992378f3b0d95683bc2c796",
      "effective_date": null
     },
     {
-     "id": "web-dd4b7f830279ec78",
+     "id": "web-8a4ccdc267686397",
      "kind": "hospital_web",
-     "url": "https://www.allinahealth.org/abbott-northwestern-hospital/contact-us",
-     "title": "Contact Us | Call Us |  Abbott Northwestern Hospital",
+     "url": "https://www.allinahealth.org/customer-service/financial-assistance",
+     "title": "Financial Assistance | Medical Bills | Allina Health",
      "fetched_on": "2026-10-23",
-     "sha256": "dd4b7f830279ec786d1e7859c7f42767ece3dea3050040bad2047e12b522d9b7",
+     "sha256": "8a4ccdc267686397fefd760e078a5363405c25d2ce51aa76b0b68e7ad29cbe93",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
     "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Copies of the 2 most recent pay stubs or employer statement listing 2 months of pay (if employed). | Previous year\u2019s federal tax return.",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Email address: AllinaPartnersCare@allina.com",
-    "agent judge on eligibility.assistance_ceiling_fpl: Quote says patients at or below 275% FPL are deemed eligible. It does not say assistance is unavailable above 275% FPL.",
-    "agent judge on eligibility.insured_patients_covered: Quote only asks insured applicants to indicate coverage and send insurance card copies. It does not state insured patients are covered."
+    "agent dropped eligibility.assistance_ceiling_fpl: quote is not a substring of the source",
+    "agent dropped programs.state_programs: quote is not a substring of the source",
+    "agent judge on programs.presumptive: Quote mentions third-party presumptive eligibility software but does not name Medicaid or any program.",
+    "agent judge on apply.documents_required: Quote lists bank statements, pay stubs, and tax return only; it does not mention insurance card or Social Security award letter."
    ],
    "eve_verified": {
     "on": "2026-10-23",
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-1e86c5c45db22bd7": true,
+     "fap-b1ea791913a76181": true,
+     "web-8a4ccdc267686397": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
-     "eligibility.assistance_ceiling_fpl",
      "eligibility.insured_patients_covered",
-     "programs.state_programs",
      "apply.documents_required",
      "apply.submit_methods",
      "apply.window_days_from_first_bill",
      "apply.decision_days",
      "contacts.phone",
-     "contacts.hours",
-     "contacts.languages"
+     "contacts.hours"
     ],
     "rejected": [
      [
       "eligibility.asset_test",
       "quote does not support the asset-test value"
+     ],
+     [
+      "contacts.languages",
+      "quote not found in source"
      ]
     ],
     "pruned": [
-     "apply.documents_required: 2 items not named in the trimmed quote",
-     "apply.submit_methods: 1 item not named in the trimmed quote"
+     "programs.presumptive: none of the listed programs is named in the quote (after trimming)",
+     "apply.documents_required: 4 items not named in the trimmed quote"
     ],
     "income_rule_verified": false,
     "core_completeness": 0.5
@@ -2285,7 +2442,17 @@
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
     "asset_test": null,
-    "residency": null,
+    "residency": {
+     "value": [
+      "This program is for Minnesota residents with Medicare Part A and Part B."
+     ],
+     "layer": "documented",
+     "quote": "This program is for Minnesota residents with Medicare Part A and Part B.",
+     "source_id": "web-3d2403b5c3262506",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
@@ -2304,11 +2471,11 @@
      "value": [
       {
        "name": "Senior Partners",
-       "how_to_apply": "call 952-767-0665 or visit the website"
+       "how_to_apply": "To learn more, call 952-767-0665 or visit the website."
       }
      ],
      "layer": "documented",
-     "quote": "This program is for Minnesota residents with Medicare Part A and Part B. The program helps with Medicate deductibles and coinsurances. To learn more, call 952-767-0665 or visit the website.",
+     "quote": "Senior Partners This program is for Minnesota residents with Medicare Part A and Part B. The program helps with Medicate deductibles and coinsurances. To learn more, call 952-767-0665 or visit the website.",
      "source_id": "web-3d2403b5c3262506",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2316,7 +2483,15 @@
     }
    },
    "apply": {
-    "form_url": null,
+    "form_url": {
+     "value": "https://live-grand-itasca.pantheonsite.io/sites/default/files/2026-02/Financial-Assistance-Application-2023.docx",
+     "layer": "documented",
+     "quote": "You can also download an application here",
+     "source_id": "web-3d2403b5c3262506",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "form_version": null,
     "documents_required": {
      "value": [
@@ -2334,11 +2509,11 @@
      "value": [
       {
        "kind": "mail",
-       "detail": "Main Campus (1601 Golf Course Road, Grand Rapids, MN 55744) by mail"
+       "detail": "All applications should be returned to Grand Itasca\u2019s Financial Advocates at the Main Campus (1601 Golf Course Road, Grand Rapids, MN 55744) in-person or by mail."
       },
       {
        "kind": "in_person",
-       "detail": "Main Campus (1601 Golf Course Road, Grand Rapids, MN 55744) in-person"
+       "detail": "All applications should be returned to Grand Itasca\u2019s Financial Advocates at the Main Campus (1601 Golf Course Road, Grand Rapids, MN 55744) in-person or by mail."
       }
      ],
      "layer": "documented",
@@ -2358,9 +2533,9 @@
    },
    "contacts": {
     "phone": {
-     "value": "218-999-1036",
+     "value": "218-999-1710",
      "layer": "documented",
-     "quote": "Grand Itasca's Financial Advocates can also be reached by phone at: 218-999-1036",
+     "quote": "To request an application by mail, please call 218-999-1710.",
      "source_id": "web-3d2403b5c3262506",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2395,19 +2570,25 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: To request an application by mail, please call 218-999-1710.",
     "contacts.languages: 2 more verbatim excerpt(s) supported this value: \u7e41\u9ad4\u4e2d\u6587 [/sites/default/files/2026-03/Language-Services.pdf] | Soomaali [/sites/default/files/2026-03/Language-Services.pdf]",
-    "agent judge on eligibility.insured_patients_covered: Quote says payment plans are available regardless of insurance. It does not say financial assistance covers insured patients.",
-    "agent judge on contacts.languages: Quote shows only three language links (Espa\u00f1ol, \u7e41\u9ad4\u4e2d\u6587, Soomaali). It does not state the full list of 15 languages."
+    "agent judge on eligibility.insured_patients_covered: Quote says payment plans are available regardless of insurance coverage. It does not state that insured patients are covered by financial assistance.",
+    "agent judge on apply.form_url: Quote only says an application can be downloaded 'here' and contains no URL.",
+    "agent judge on contacts.languages: Quote shows only three language links (Espa\u00f1ol, \u7e41\u9ad4\u4e2d\u6587, Soomaali). It does not support the full list of 15 languages."
    ],
    "eve_verified": {
     "on": "2026-10-23",
     "sources_fetched": 1,
     "sources_total": 1,
     "sources_missing": [],
+    "sha256_match": {
+     "web-3d2403b5c3262506": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
+     "eligibility.residency",
      "eligibility.insured_patients_covered",
      "programs.state_programs",
+     "apply.form_url",
      "apply.documents_required",
      "apply.submit_methods",
      "contacts.phone",
@@ -2419,19 +2600,13 @@
       "quote does not support the asset-test value"
      ],
      [
-      "apply.form_url",
-      "quote not found in source"
-     ],
-     [
       "contacts.languages",
       "quote not found in source"
      ]
     ],
-    "pruned": [
-     "apply.submit_methods: 1 item not named in the trimmed quote"
-    ],
+    "pruned": [],
     "income_rule_verified": false,
-    "core_completeness": 0.5
+    "core_completeness": 0.67
    }
   },
   {
@@ -2631,6 +2806,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-7a22160901533428": true,
+     "web-202b2547d6683dee": true,
+     "web-40563a8b97afa89e": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -2684,36 +2865,31 @@
     },
     "asset_test": null,
     "residency": null,
-    "insured_patients_covered": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Patients with insurance who receive medically necessary services that are not covered by their insurance may also be eligible for this discount.",
+     "source_id": "web-81e27c552f120585",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "min_balance": null,
     "services_excluded": null
    },
    "programs": {
     "presumptive": null,
-    "state_programs": {
-     "value": [
-      {
-       "name": "Medical Assistance/MNCare",
-       "how_to_apply": "If anyone listed on the application is uninsured, they need to apply for Medical Assistance/MNCare and then provide us with their written determination letter."
-      }
-     ],
-     "layer": "documented",
-     "quote": "If anyone listed on the application is uninsured, they need to apply for Medical Assistance/MNCare and then provide us with their written determination letter.",
-     "source_id": "fap-b1ea791913a76181",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "state_programs": null
    },
    "apply": {
     "form_url": null,
     "form_version": null,
     "documents_required": {
      "value": [
-      "pay_stubs"
+      "insurance_card"
      ],
      "layer": "documented",
-     "quote": "Copies of the 2 most recent pay stubs or employer statement listing 2 months of pay (if employed).",
+     "quote": "If anyone listed on the application has current healthcare coverage, please indicate this and send a copy of the front and back of the health insurance card.",
      "source_id": "fap-b1ea791913a76181",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2747,36 +2923,24 @@
    },
    "contacts": {
     "phone": {
-     "value": "(612) 262-9000 or (800) 859-5077",
+     "value": "612-262-9000",
      "layer": "documented",
-     "quote": "(612) 262-9000 or (800) 859-5077",
-     "source_id": "fap-b1ea791913a76181",
+     "quote": "Need help paying your bill? Call 612-262-9000 612-262-9000 .",
+     "source_id": "web-81e27c552f120585",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "hours": {
-     "value": "Monday - Thursday 8:00am - 4:30pm Friday 9:00am - 4:30pm",
+     "value": "Monday to Thursday: 8 a.m. to 4:30 p.m. Friday: 9 a.m. to 4:30 p.m.",
      "layer": "documented",
-     "quote": "Hours: Monday - Thursday 8:00am - 4:30pm Friday 9:00am - 4:30pm",
-     "source_id": "fap-b1ea791913a76181",
+     "quote": "Monday to Thursday: 8 a.m. to 4:30 p.m. Friday: 9 a.m. to 4:30 p.m.",
+     "source_id": "web-81e27c552f120585",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "languages": {
-     "value": [
-      "English",
-      "Spanish",
-      "Somali"
-     ],
-     "layer": "documented",
-     "quote": "You can download a copy of this application in English, Spanish or Somali at www.allinahealth.org/financialassistance.",
-     "source_id": "fap-b1ea791913a76181",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "languages": null
    },
    "coverage": {
     "facilities": null,
@@ -2803,46 +2967,54 @@
      "effective_date": null
     },
     {
-     "id": "web-19b86d68fe005f18",
+     "id": "web-81e27c552f120585",
      "kind": "hospital_web",
-     "url": "https://www.allinahealth.org/customer-service/billing-and-insurance",
-     "title": "Billing | Pay bills online | Allina Health",
+     "url": "https://www.allinahealth.org/customer-service/financial-assistance",
+     "title": "Financial Assistance | Medical Bills | Allina Health",
      "fetched_on": "2026-10-23",
-     "sha256": "19b86d68fe005f18706beb7f983f7e7c4c73ca6130dcbb4904b35bc324ad0d33",
+     "sha256": "81e27c552f120585e10a413d8fdb9aba30cab0f47e53e3686240bb5f1cce85ed",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Previous year\u2019s federal tax return. | Bank statements, stocks/bonds, CDs, money market accounts.",
-    "agent dropped eligibility.insured_patients_covered: quote is not a substring of the source",
-    "agent dropped apply.submit_methods: excerpt not in source: For patients applying electronically via MyChart/Allina Heal",
-    "agent judge on eligibility.assistance_ceiling_fpl: Quote says patients at or below 275% FPL are deemed eligible for Allina Partners Care. It does not say assistance stops above 275%.",
-    "agent judge on apply.documents_required: Quote lists pay stubs, federal tax return, and bank/investment statements. It does not mention front and back of the health insurance card."
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Bank statements, stocks/bonds, CDs, money market accounts. | Copies of the 2 most recent pay stubs or employer statement listing 2 months of pay (if employed). Previous year\u2019s feder",
+    "agent dropped programs.state_programs: quote is not a substring of the source",
+    "agent dropped apply.submit_methods: excerpt not in source: For patients applying electronically via MyChart/Allina Heal"
    ],
    "eve_verified": {
     "on": "2026-10-23",
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-1e86c5c45db22bd7": true,
+     "fap-b1ea791913a76181": true,
+     "web-81e27c552f120585": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.assistance_ceiling_fpl",
-     "programs.state_programs",
+     "eligibility.insured_patients_covered",
      "apply.documents_required",
      "apply.window_days_from_first_bill",
      "apply.decision_days",
      "contacts.phone",
-     "contacts.hours",
-     "contacts.languages"
+     "contacts.hours"
     ],
     "rejected": [
      [
       "eligibility.asset_test",
       "quote does not support the asset-test value"
+     ],
+     [
+      "contacts.languages",
+      "quote not found in source"
      ]
     ],
     "pruned": [
-     "apply.documents_required: 3 items not named in the trimmed quote"
+     "programs.presumptive: none of the listed programs is named in the quote (after trimming)",
+     "apply.documents_required: 4 items not named in the trimmed quote"
     ],
     "income_rule_verified": false,
     "core_completeness": 0.33
@@ -2868,10 +3040,10 @@
     "assistance_ceiling_fpl": {
      "value": "275",
      "layer": "documented",
-     "quote": "a patient or their guarantor\u2019s gross income is determined to be at or below 275% of the Federal Poverty Guidelines, they will be deemed eligible for Allina Partners Care",
+     "quote": "a patient or their guarantor's gross income is determined to be at or below 275% of the Federal Poverty Guidelines, they will be deemed eligible for Allina Partners Care",
      "source_id": "fap-1e86c5c45db22bd7",
      "checked_on": "2026-10-23",
-     "confidence": 1.0,
+     "confidence": 0.8,
      "support_count": 0
     },
     "asset_test": null,
@@ -2897,13 +3069,13 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "bank_statements"
+      "pay_stubs"
      ],
      "layer": "documented",
-     "quote": "Bank statements, stocks/bonds, CDs, money market accounts.",
+     "quote": "Copies of the 2 most recent pay stubs or employer statement listing 2 months of pay (if employed).",
      "source_id": "fap-b1ea791913a76181",
      "checked_on": "2026-10-23",
-     "confidence": 1.0,
+     "confidence": 0.8,
      "support_count": 0
     },
     "documents_reported": null,
@@ -2920,10 +3092,6 @@
       {
        "kind": "mail",
        "detail": "Allina Health Partners Care, PO Box 43, MR 10209, Minneapolis, MN 55440-0043"
-      },
-      {
-       "kind": "portal",
-       "detail": "log in to your Allina Health account and apply for financial assistance through the Billing page"
       }
      ],
      "layer": "documented",
@@ -2936,7 +3104,7 @@
     "window_days_from_first_bill": {
      "value": 240,
      "layer": "documented",
-     "quote": "If an application is received within 240 days from the date of the first post-discharge billing statement",
+     "quote": "If an application is received within 240 days from the date of the first post-discharge billing statement, and the applicant is deemed eligible for Allina Partners Care",
      "source_id": "fap-1e86c5c45db22bd7",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3014,16 +3182,26 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Copies of the 2 most recent pay stubs or employer statement listing 2 months of pay (if employed). | Previous year\u2019s federal tax return.",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: You can also log in to your Allina Health account and apply for financial assistance through the Billing page in your ac",
+    "eligibility.assistance_ceiling_fpl: quote matched the source only after typography normalization",
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Previous year's federal tax return. | Bank statements, stocks/bonds, CDs, money market accounts.",
+    "apply.documents_required: quote matched the source only after typography normalization",
     "agent dropped programs.state_programs: quote is not a substring of the source",
-    "agent dropped contacts.languages: quote is not a substring of the source"
+    "agent judge on eligibility.assistance_ceiling_fpl: Quote says patients at or below 275% FPL are deemed eligible; it does not say assistance is unavailable above 275% FPL.",
+    "agent judge on programs.presumptive: Quote covers only bankruptcy as presumptive charity care; it does not mention Medicaid.",
+    "agent judge on apply.documents_required: Quote lists pay stubs or employer statement, previous federal tax return, and bank/investment statements. It does not mention insurance card or Social Security/SSI/pension award letters.",
+    "agent judge on contacts.languages: Quote lists Spanish, Somali, Russian, Hmong, Vietnamese and Chinese; English is not mentioned in the quote."
    ],
    "eve_verified": {
     "on": "2026-10-23",
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-1e86c5c45db22bd7": true,
+     "fap-b1ea791913a76181": true,
+     "web-6f1f89c4fd399056": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.assistance_ceiling_fpl",
      "eligibility.insured_patients_covered",
@@ -3038,10 +3216,15 @@
      [
       "eligibility.asset_test",
       "quote does not support the asset-test value"
+     ],
+     [
+      "contacts.languages",
+      "quote not found in source"
      ]
     ],
     "pruned": [
-     "apply.documents_required: 3 items not named in the trimmed quote"
+     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
+     "apply.documents_required: 4 items not named in the trimmed quote"
     ],
     "income_rule_verified": false,
     "core_completeness": 0.5
@@ -3261,6 +3444,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-a9e09e47e34836db": true,
+     "fap-c63934458ff050fc": true,
+     "web-a6fb78d77de4e2e7": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -3316,8 +3505,8 @@
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "If the patient has primary insurance, the patient needs to have insurance coverage that is eligible for Allina Health network to receive ongoing financial assistance.",
-     "source_id": "fap-1e86c5c45db22bd7",
+     "quote": "Patients with insurance who receive medically necessary services that are not covered by their insurance may also be eligible for this discount.",
+     "source_id": "web-6f1f89c4fd399056",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -3340,20 +3529,32 @@
      "quote": "Bank statements, stocks/bonds, CDs, money market accounts.",
      "source_id": "fap-b1ea791913a76181",
      "checked_on": "2026-10-23",
-     "confidence": 1.0,
+     "confidence": 0.8,
      "support_count": 0
     },
     "documents_reported": null,
     "submit_methods": {
      "value": [
       {
+       "kind": "email",
+       "detail": "AllinaPartnersCare@allina.com"
+      },
+      {
+       "kind": "fax",
+       "detail": "612-262-3625"
+      },
+      {
        "kind": "mail",
-       "detail": "Allina Health Partners Care 10209 PO Box 43 Minneapolis MN 55440-0043"
+       "detail": "Allina Health Partners Care, PO Box 43, MR 10209, Minneapolis, MN 55440-0043"
+      },
+      {
+       "kind": "portal",
+       "detail": "log in to your Allina Health account and apply for financial assistance through the Billing page"
       }
      ],
      "layer": "documented",
-     "quote": "Allina Health Partners Care 10209 PO Box 43 Minneapolis MN 55440-0043",
-     "source_id": "fap-b1ea791913a76181",
+     "quote": "You may scan and email the completed application to AllinaPartnersCare@allina.com or you can fax it to 612-262-3625 or mail it to Allina Health Partners Care, PO Box 43, MR 10209, Minneapolis, MN 55440-0043.",
+     "source_id": "web-6f1f89c4fd399056",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -3367,7 +3568,15 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "decision_days": null,
+    "decision_days": {
+     "value": 30,
+     "layer": "documented",
+     "quote": "PLEASE ALLOW 30 DAYS FOR PROCESSING. YOU WILL RECEIVE NOTIFICATION OF OUR DECISION BY MAIL.",
+     "source_id": "fap-b1ea791913a76181",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "decision_days_reported": null
    },
    "collections": {
@@ -3378,34 +3587,22 @@
     "phone": {
      "value": "612-262-9000",
      "layer": "documented",
-     "quote": "(612) 262-9000 or (800) 859-5077",
-     "source_id": "fap-b1ea791913a76181",
+     "quote": "Need help paying your bill? Call 612-262-9000 612-262-9000 .",
+     "source_id": "web-6f1f89c4fd399056",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "hours": {
-     "value": "Monday - Thursday 8:00am - 4:30pm Friday 9:00am - 4:30pm",
+     "value": "Monday to Thursday: 8 a.m. to 4:30 p.m. Friday: 9 a.m. to 4:30 p.m.",
      "layer": "documented",
-     "quote": "Hours: Monday - Thursday 8:00am - 4:30pm Friday 9:00am - 4:30pm",
-     "source_id": "fap-b1ea791913a76181",
+     "quote": "Monday to Thursday: 8 a.m. to 4:30 p.m. Friday: 9 a.m. to 4:30 p.m.",
+     "source_id": "web-6f1f89c4fd399056",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "languages": {
-     "value": [
-      "English",
-      "Spanish",
-      "Somali"
-     ],
-     "layer": "documented",
-     "quote": "You can download a copy of this application in English, Spanish or Somali at www.allinahealth.org/financialassistance.",
-     "source_id": "fap-b1ea791913a76181",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "languages": null
    },
    "coverage": {
     "facilities": null,
@@ -3416,7 +3613,7 @@
     {
      "id": "fap-1e86c5c45db22bd7",
      "kind": "hospital_web",
-     "url": "https://www.allinahealth.org/-/media/allina-health/files/customer-service/allina-partners-care-policy.pdf",
+     "url": "https://www.allinahealth.org/customer-service/-/media/allina-health/files/customer-service/allina-partners-care-policy.pdf",
      "title": "",
      "fetched_on": "2026-10-23",
      "sha256": "1e86c5c45db22bd77b566cb06ac50e5f17c3a69c55f1fcc404305375205a6bd1",
@@ -3432,46 +3629,56 @@
      "effective_date": null
     },
     {
-     "id": "web-aa96085ed4a424b3",
+     "id": "web-6f1f89c4fd399056",
      "kind": "hospital_web",
-     "url": "https://www.allinahealth.org/buffalo-hospital/contact-us",
-     "title": "Contact Information | Buffalo Hospitals in Buffalo, Minnesota",
+     "url": "https://www.allinahealth.org/customer-service/financial-assistance",
+     "title": "Financial Assistance | Medical Bills | Allina Health",
      "fetched_on": "2026-10-23",
-     "sha256": "aa96085ed4a424b3b7f96a8b7cd61967dba807fab17129e9ea03659b15974dca",
+     "sha256": "6f1f89c4fd39905602fd6d156cd44a4a2a8d727201d34e94683d7a73ebd154a9",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Copies of the 2 most recent pay stubs or employer statement listing 2 months of pay (if employed). | Previous year\u2019s federal tax return.",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Email address: AllinaPartnersCare@allina.com | (612) 262-9000 or (800) 859-5077",
-    "agent dropped eligibility.assistance_ceiling_fpl: quote is not a substring of the source",
-    "agent dropped programs.presumptive: quote is not a substring of the source",
-    "agent judge on contacts.languages: Quote says the application can be downloaded in English, Spanish, or Somali; it does not state languages supported for contacting the office."
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Copies of the 2 most recent pay stubs or employer statement listing 2 months of pay (if employed). | Previous year's federal tax return.",
+    "apply.documents_required: quote matched the source only after typography normalization",
+    "agent dropped programs.state_programs: quote is not a substring of the source",
+    "agent dropped contacts.languages: quote is not a substring of the source",
+    "agent judge on eligibility.assistance_ceiling_fpl: Quote says income must be at or below 275% FPL to qualify, but does not clearly state this is the ceiling above which no assistance of any kind is offered; it may be a discount-specific threshold.",
+    "agent judge on apply.documents_required: Quote lists bank statements, pay stubs, and prior-year tax return only; it does not mention a Social Security letter or insurance card as required documents."
    ],
    "eve_verified": {
     "on": "2026-10-23",
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-1e86c5c45db22bd7": true,
+     "fap-b1ea791913a76181": true,
+     "web-6f1f89c4fd399056": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.insured_patients_covered",
      "apply.documents_required",
      "apply.submit_methods",
      "apply.window_days_from_first_bill",
+     "apply.decision_days",
      "contacts.phone",
-     "contacts.hours",
-     "contacts.languages"
+     "contacts.hours"
     ],
     "rejected": [
+     [
+      "eligibility.assistance_ceiling_fpl",
+      "quote does not say the hospital's financial assistance reaches it"
+     ],
      [
       "eligibility.asset_test",
       "quote does not support the asset-test value"
      ]
     ],
     "pruned": [
-     "apply.documents_required: 2 items not named in the trimmed quote",
-     "apply.submit_methods: 2 items not named in the trimmed quote"
+     "apply.documents_required: 4 items not named in the trimmed quote"
     ],
     "income_rule_verified": false,
     "core_completeness": 0.5
@@ -3521,20 +3728,7 @@
    },
    "programs": {
     "presumptive": null,
-    "state_programs": {
-     "value": [
-      {
-       "name": "Medical Assistance (MA) / MinnesotaCare",
-       "how_to_apply": "Applicants may be required to apply through MNsure for Medicaid, MinnesotaCare, Qualified Health Plan or other acceptable form of healthcare coverage"
-      }
-     ],
-     "layer": "documented",
-     "quote": "Applicants may be required to apply through MNsure for Medicaid, MinnesotaCare, Qualified Health Plan or other acceptable form of healthcare coverage as outlined in the Affordable Care Act (ACA).",
-     "source_id": "fap-5c7c7701f1c41bb7",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "state_programs": null
    },
    "apply": {
     "form_url": null,
@@ -3547,7 +3741,7 @@
       "tax_return"
      ],
      "layer": "documented",
-     "quote": "Acceptable verification of income and assets includes the following for all adult members of the family: payroll stubs from the most recent month, statements demonstrating Social Security, unemployment, disability and spousal/child support benefits, bank and brokerage account statements (for cash or stock), and the most recent year's tax return.",
+     "quote": "payroll stubs from the most recent month, statements demonstrating Social Security, unemployment, disability and spousal/child support benefits, bank and brokerage account statements (for cash or stock), and the most recent year's tax return",
      "source_id": "fap-5c7c7701f1c41bb7",
      "checked_on": "2026-10-23",
      "confidence": 0.8,
@@ -3558,11 +3752,15 @@
      "value": [
       {
        "kind": "portal",
-       "detail": "financial assistance application via My Chart, M Health Fairview website"
+       "detail": "MyChart"
+      },
+      {
+       "kind": "portal",
+       "detail": "M Health Fairview website / downloading the financial assistance application"
       }
      ],
      "layer": "documented",
-     "quote": "To apply for financial assistance, a person must complete a financial assistance application via My Chart, M Health Fairview website or downloading the financial assistance application and provide the required documentation regarding family income and assets",
+     "quote": "a person must complete a financial assistance application via My Chart, M Health Fairview website or downloading the financial assistance application",
      "source_id": "fap-5c7c7701f1c41bb7",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3592,7 +3790,7 @@
     "eca_wait_days": {
      "value": 120,
      "layer": "documented",
-     "quote": "M Health Fairview will issue billing statements in accordance with established timelines and will provide a minimum of 120 days from the first post-visit billing statement before initiating extraordinary collection actions on an account.",
+     "quote": "will provide a minimum of 120 days from the first post-visit billing statement before initiating extraordinary collection actions on an account",
      "source_id": "fap-5c7c7701f1c41bb7",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3604,7 +3802,7 @@
     "phone": {
      "value": "612-672-6724",
      "layer": "documented",
-     "quote": "M Health Fairview Customer Service at 612-672-6724",
+     "quote": "A financial assistance application can also be obtained free of charge by calling M Health Fairview Customer Service at 612-672-6724",
      "source_id": "fap-5c7c7701f1c41bb7",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3658,22 +3856,27 @@
    "accuracy": null,
    "eve_review": [
     "eligibility.discount_tiers: 200-400% at 0% is no discount; skipped",
+    "eligibility.assistance_ceiling_fpl: quote matched the source only after typography normalization",
     "apply.documents_required: quote matched the source only after typography normalization",
     "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: A financial assistance application can also be obtained free of charge by calling M Health Fairview Customer Service at ",
-    "agent dropped eligibility.insured_patients_covered: quote is not a substring of the source",
-    "agent judge on eligibility.discount_tiers: Quote gives 201-400% with an AGB or uninsured discount, whichever is higher. It does not state a 0% discount, so the discount_percent of 0 is unsupported.",
-    "agent judge on programs.state_programs: Quote mentions Medicaid and MinnesotaCare via MNsure, but never names \"Medical Assistance (MA)\" as the program name.",
-    "agent judge on apply.submit_methods: Quote supports online via My Chart or website, but not mail submission. The phone number is given only to obtain the application free, not to submit it."
+    "agent dropped programs.state_programs: quote is not a substring of the source",
+    "agent judge on eligibility.discount_tiers: Quote gives the 201-400% tier as AGB or uninsured discount, whichever is higher. It does not state a 0 percent discount.",
+    "agent judge on eligibility.insured_patients_covered: Quote only says partial-assistance patients need not apply for Medicaid. It does not state insured patients are covered."
    ],
    "eve_verified": {
     "on": "2026-10-23",
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-5c7c7701f1c41bb7": true,
+     "web-119917328783c4d1": true,
+     "web-54049bd24eca28a1": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.residency",
-     "programs.state_programs",
      "apply.documents_required",
      "apply.submit_methods",
      "apply.window_days_from_first_bill",
@@ -3684,8 +3887,16 @@
     ],
     "rejected": [
      [
+      "eligibility.assistance_ceiling_fpl",
+      "quote does not say the hospital's financial assistance reaches it"
+     ],
+     [
       "eligibility.asset_test",
       "quote does not support the asset-test value"
+     ],
+     [
+      "eligibility.insured_patients_covered",
+      "quote does not say whether insured patients are covered"
      ],
      [
       "apply.form_url",
@@ -3697,7 +3908,7 @@
      ]
     ],
     "pruned": [
-     "apply.submit_methods: 2 items not named in the trimmed quote"
+     "apply.submit_methods: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": true,
     "core_completeness": 0.67
@@ -3750,7 +3961,7 @@
     "state_programs": {
      "value": [
       {
-       "name": "Medical Assistance (MA) / MinnesotaCare",
+       "name": "Medical Assistance or Minnesota Care",
        "how_to_apply": "Applicants may be required to apply through MNsure for Medicaid, MinnesotaCare, Qualified Health Plan or other acceptable form of healthcare coverage as outlined in the Affordable Care Act (ACA)."
       }
      ],
@@ -3773,10 +3984,10 @@
       "tax_return"
      ],
      "layer": "documented",
-     "quote": "Acceptable verification of income and assets includes the following for all adult members of the family: payroll stubs from the most recent month, statements demonstrating Social Security, unemployment, disability and spousal/child support benefits, bank and brokerage account statements (for cash or stock), and the most recent year's tax return.",
+     "quote": "Acceptable verification of income and assets includes the following for all adult members of the family: payroll stubs from the most recent month, statements demonstrating Social Security, unemployment, disability and spousal/child support benefits, bank and brokerage account statements (for cash or stock), and the most recent year\u2019s tax return.",
      "source_id": "fap-5c7c7701f1c41bb7",
      "checked_on": "2026-10-23",
-     "confidence": 0.8,
+     "confidence": 1.0,
      "support_count": 0
     },
     "documents_reported": null,
@@ -3836,15 +4047,7 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "hours": {
-     "value": "Mon - Thu: 8:00 AM - 5:30 PM Fri: 9:00 AM - 4:30 PM",
-     "layer": "documented",
-     "quote": "Mon - Thu: 8:00 AM - 5:30 PM Fri: 9:00 AM - 4:30 PM",
-     "source_id": "web-54049bd24eca28a1",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "hours": null,
     "languages": null
    },
    "coverage": {
@@ -3861,41 +4064,25 @@
      "fetched_on": "2026-10-23",
      "sha256": "5c7c7701f1c41bb7b9683de68622f009a16fe7d4bddd3db90ab991f6e3bc2359",
      "effective_date": null
-    },
-    {
-     "id": "web-119917328783c4d1",
-     "kind": "hospital_web",
-     "url": "https://www.mhealthfairview.org/resources/policies-and-documentation/financial-assistance-applications",
-     "title": "Financial Assistance Applications | M Health Fairview",
-     "fetched_on": "2026-10-23",
-     "sha256": "119917328783c4d101c02cead13a1cfe114324388ff36a2a5ea4d9b68f048744",
-     "effective_date": null
-    },
-    {
-     "id": "web-54049bd24eca28a1",
-     "kind": "hospital_web",
-     "url": "https://www.mhealthfairview.org/bill-pay-and-financial-resources/support/financial-assistance",
-     "title": "Financial Assistance | M Health Fairview",
-     "fetched_on": "2026-10-23",
-     "sha256": "54049bd24eca28a13d68ca0f9148fbd462836d5354b99490c480e127cd6cceb2",
-     "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.assistance_ceiling_fpl: quote matched the source only after typography normalization",
-    "apply.documents_required: quote matched the source only after typography normalization",
+    "eligibility.discount_tiers: 200-400% at 0% is no discount; skipped",
     "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: A financial assistance application can also be obtained free of charge by calling M Health Fairview Customer Service at ",
-    "agent judge on eligibility.discount_tiers: Value is empty, but the quote states a 201-400% tier of AGB or uninsured discount, whichever is higher. The tier should be recorded.",
-    "agent judge on eligibility.insured_patients_covered: Quote is a discount table mentioning AGB or uninsured discounts; it does not explicitly state that insured patients are covered.",
-    "agent judge on programs.state_programs: Quote names Medicaid, MinnesotaCare, and QHPs via MNsure but never says 'Medical Assistance (MA)' as the program name recorded.",
-    "agent judge on apply.submit_methods: Quote mentions My Chart, the website, downloading the application, and phone calls; it never mentions mail, so the 'mail' kind is unsupported."
+    "agent judge on eligibility.discount_tiers: Quote gives '201-400% AGB or uninsured discount, whichever is higher'. It states no 0% discount_percent, so the value's 0 is unsupported.",
+    "agent judge on eligibility.insured_patients_covered: Quote shows a discount table for 201-400% AGB or uninsured discount but never states that insured patients are covered.",
+    "agent judge on apply.submit_methods: Quote supports online (My Chart, website) and phone, but says nothing about mailing; 'mail' kind is unsupported, and 'downloading' is not mail."
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 3,
-    "sources_total": 3,
+    "sources_fetched": 1,
+    "sources_total": 1,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-5c7c7701f1c41bb7": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.residency",
@@ -3905,8 +4092,7 @@
      "apply.window_days_from_first_bill",
      "apply.decision_days",
      "collections.eca_wait_days",
-     "contacts.phone",
-     "contacts.hours"
+     "contacts.phone"
     ],
     "rejected": [
      [
@@ -3920,14 +4106,6 @@
      [
       "eligibility.insured_patients_covered",
       "quote does not say whether insured patients are covered"
-     ],
-     [
-      "apply.form_url",
-      "quote not found in source"
-     ],
-     [
-      "contacts.languages",
-      "quote not found in source"
      ]
     ],
     "pruned": [
@@ -3955,15 +4133,7 @@
     "free_care_max_fpl": null,
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
-    "asset_test": {
-     "value": true,
-     "layer": "documented",
-     "quote": "income (Federal Poverty Level guidelines used to determine the amount of financial assistance offered), family size, assets, and any special consideration",
-     "source_id": "fap-c5df1b36a944b602",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "asset_test": null,
     "residency": null,
     "insured_patients_covered": {
      "value": true,
@@ -3986,11 +4156,13 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "tax_return"
+      "tax_return",
+      "bank_statements",
+      "pay_stubs"
      ],
      "layer": "documented",
-     "quote": "Tax return from current or prior year (or W-2 if tax not available) \u2022 Social security, pension, retirement benefits (if applicable)",
-     "source_id": "fap-474e722f8f9cba79",
+     "quote": "submitting tax returns, bank statements and pay stubs",
+     "source_id": "fap-c5df1b36a944b602",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -4004,11 +4176,11 @@
       },
       {
        "kind": "mail",
-       "detail": "requesting a copy by mail"
+       "detail": "requesting a copy by mail or email"
       }
      ],
      "layer": "documented",
-     "quote": "available free of charge by calling Patient Account Services at 1-844-217-9591 and requesting a copy by mail or email",
+     "quote": "calling Patient Account Services at 1-844-217-9591 and requesting a copy by mail or email",
      "source_id": "fap-c5df1b36a944b602",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4033,17 +4205,7 @@
      "support_count": 0
     },
     "hours": null,
-    "languages": {
-     "value": [
-      "Translations"
-     ],
-     "layer": "documented",
-     "quote": "Translations of the Financial Assistance Policy, Financial Assistance Application and this Plain Language Summary are available at",
-     "source_id": "fap-c5df1b36a944b602",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "languages": null
    },
    "coverage": {
     "facilities": null,
@@ -4059,41 +4221,32 @@
      "fetched_on": "2026-10-23",
      "sha256": "c5df1b36a944b60257450c9e9ced69a5d29f0d82ce0b59dad014148662c5b183",
      "effective_date": null
-    },
-    {
-     "id": "fap-474e722f8f9cba79",
-     "kind": "hospital_web",
-     "url": "https://mcforms.mayo.edu/mc4200-mc4299/mc4244-15.pdf",
-     "title": "",
-     "fetched_on": "2026-10-23",
-     "sha256": "474e722f8f9cba7904f3c3ab738014c1ecda369189bb014f6ccb61f533957c2c",
-     "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Bank statements (most recent month for all accounts) | Pay stubs (most recent month)",
-    "agent judge on apply.documents_required: Quote also lists Social security, pension, retirement benefits (if applicable), which the value omits.",
-    "agent judge on apply.submit_methods: Quote only says to call for a copy of the policy by mail or email; it does not state a mail submission method or the online URL.",
-    "agent judge on contacts.languages: Quote says translations are available but names no languages; 'Translations' is not a language."
+    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Mayo Clinic Health System in Mankato: 1025 Marsh Street, Mankato, MN | www.mayoclinichealthsystem.org/financialassistance",
+    "agent judge on eligibility.insured_patients_covered: Quote says aid is offered to uninsured and underinsured patients; it does not plainly state that insured patients are covered.",
+    "agent judge on apply.submit_methods: Quote shows phone calls, a request for a copy by mail or email, a Mankato address, and a URL, but does not say in-person or online submission is accepted."
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 2,
-    "sources_total": 2,
+    "sources_fetched": 1,
+    "sources_total": 1,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-c5df1b36a944b602": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
-     "eligibility.asset_test",
      "eligibility.insured_patients_covered",
      "apply.documents_required",
      "apply.submit_methods",
-     "contacts.phone",
-     "contacts.languages"
+     "contacts.phone"
     ],
     "rejected": [],
     "pruned": [
-     "apply.documents_required: 2 items not named in the trimmed quote",
-     "apply.submit_methods: 1 item not named in the trimmed quote"
+     "apply.submit_methods: 2 items not named in the trimmed quote"
     ],
     "income_rule_verified": false,
     "core_completeness": 0.5
@@ -4310,6 +4463,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-a9e09e47e34836db": true,
+     "fap-c63934458ff050fc": true,
+     "web-1092a5791847e1f0": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -4368,36 +4527,31 @@
     },
     "asset_test": null,
     "residency": null,
-    "insured_patients_covered": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "The Community Care Program may also be beneficial to patients who have health insurance but are not able to afford what their insurance does not cover.",
+     "source_id": "web-11e59f4e1b6923b6",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "min_balance": null,
     "services_excluded": null
    },
    "programs": {
     "presumptive": null,
-    "state_programs": {
-     "value": [
-      {
-       "name": "Medical Assistance/MNCare",
-       "how_to_apply": "If anyone listed on the application is uninsured, they need to apply for Medical Assistance/MNCare and then provide us with their written determination letter."
-      }
-     ],
-     "layer": "documented",
-     "quote": "If anyone listed on the application is uninsured, they need to apply for Medical Assistance/MNCare and then provide us with their written determination letter.",
-     "source_id": "fap-b1ea791913a76181",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "state_programs": null
    },
    "apply": {
     "form_url": null,
     "form_version": null,
     "documents_required": {
      "value": [
-      "pay_stubs"
+      "bank_statements"
      ],
      "layer": "documented",
-     "quote": "Copies of the 2 most recent pay stubs or employer statement listing 2 months of pay (if employed).",
+     "quote": "Bank statements, stocks/bonds, CDs, money market accounts.",
      "source_id": "fap-b1ea791913a76181",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4408,7 +4562,7 @@
      "value": [
       {
        "kind": "mail",
-       "detail": "Allina Health Partners Care 10209, PO Box 43, Minneapolis MN 55440-0043"
+       "detail": "Allina Health Partners Care 10209 PO Box 43 Minneapolis MN 55440-0043"
       }
      ],
      "layer": "documented",
@@ -4421,7 +4575,7 @@
     "window_days_from_first_bill": {
      "value": 240,
      "layer": "documented",
-     "quote": "If an application is received within 240 days from the date of the first post-discharge billing statement, and the applicant is deemed eligible for Allina Partners Care",
+     "quote": "If an application is received within 240 days from the date of the first post-discharge billing statement",
      "source_id": "fap-1e86c5c45db22bd7",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4443,7 +4597,15 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": null,
+    "phone": {
+     "value": "612.262.9000",
+     "layer": "documented",
+     "quote": "For billing questions: 612.262.9000.",
+     "source_id": "web-11e59f4e1b6923b6",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "hours": {
      "value": "Monday - Thursday 8:00am - 4:30pm Friday 9:00am - 4:30pm",
      "layer": "documented",
@@ -4485,42 +4647,49 @@
     {
      "id": "fap-b1ea791913a76181",
      "kind": "hospital_web",
-     "url": "https://www.allinahealth.org/-/media/allina-health/files/customer-service/partnerscareprogramapp.pdf",
+     "url": "https://www.allinahealth.org/customer-service/-/media/allina-health/files/customer-service/partnerscareprogramapp.pdf",
      "title": "",
      "fetched_on": "2026-10-23",
      "sha256": "b1ea791913a76181202271d86bbbd0922271a4a75992378f3b0d95683bc2c796",
      "effective_date": null
     },
     {
-     "id": "web-d8edf3196f0161f6",
+     "id": "web-11e59f4e1b6923b6",
      "kind": "hospital_web",
      "url": "https://www.stfrancis-shakopee.com/patients-and-visitors/billing-information/",
      "title": "Billing information | St. Francis Regional Medical Center",
      "fetched_on": "2026-10-23",
-     "sha256": "d8edf3196f0161f69975edbe16c75fec059788796ba590fe81d5733ff0edcf47",
+     "sha256": "11e59f4e1b6923b6480247458fb318f72f5e308d5e214618b9d0412d12251df1",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Previous year\u2019s federal tax return. | Bank statements, stocks/bonds, CDs, money market accounts.",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: (612) 262-9000 or (800) 859-5077 | Email address: AllinaPartnersCare@allina.com",
-    "agent judge on eligibility.assistance_ceiling_fpl: Quote says gross income at or below 275% FPL is deemed eligible. It does not say assistance is unavailable above 275% FPL."
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Copies of the 2 most recent pay stubs or employer statement listing 2 months of pay (if employed). | Previous year\u2019s federal tax return.",
+    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Email address: AllinaPartnersCare@allina.com | (612) 262-9000 or (800) 859-5077",
+    "agent judge on eligibility.assistance_ceiling_fpl: Quote gives 275% FPL as the eligibility threshold for Partners Care (at or below). It does not state that no assistance is offered above 275% FPL.",
+    "agent judge on programs.presumptive: Quote says third-party presumptive eligibility software may be used for Partners Care. It does not mention Medicaid.",
+    "agent judge on apply.documents_required: Quote lists bank statements, pay stubs, and the prior year's federal tax return. It does not mention a Social Security letter or insurance card."
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 2,
+    "sources_fetched": 3,
     "sources_total": 3,
-    "sources_missing": [
-     "https://www.stfrancis-shakopee.com/patients-and-visitors/billing-information/"
-    ],
+    "sources_missing": [],
+    "sha256_match": {
+     "fap-1e86c5c45db22bd7": true,
+     "fap-b1ea791913a76181": true,
+     "web-11e59f4e1b6923b6": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.assistance_ceiling_fpl",
-     "programs.state_programs",
+     "eligibility.insured_patients_covered",
      "apply.documents_required",
      "apply.submit_methods",
      "apply.window_days_from_first_bill",
      "apply.decision_days",
+     "contacts.phone",
      "contacts.hours",
      "contacts.languages"
     ],
@@ -4528,22 +4697,15 @@
      [
       "eligibility.asset_test",
       "quote does not support the asset-test value"
-     ],
-     [
-      "eligibility.insured_patients_covered",
-      "source text missing"
-     ],
-     [
-      "contacts.phone",
-      "source text missing"
      ]
     ],
     "pruned": [
-     "apply.documents_required: 2 items not named in the trimmed quote",
+     "programs.presumptive: none of the listed programs is named in the quote (after trimming)",
+     "apply.documents_required: 4 items not named in the trimmed quote",
      "apply.submit_methods: 2 items not named in the trimmed quote"
     ],
     "income_rule_verified": false,
-    "core_completeness": 0.33
+    "core_completeness": 0.5
    }
   },
   {
@@ -4715,6 +4877,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-7a22160901533428": true,
+     "fap-77344ce9bbfd7017": true,
+     "web-c020d91fa792d191": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -4763,21 +4931,13 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "asset_test": {
-     "value": true,
-     "layer": "documented",
-     "quote": "Liquid assets : The liquid asset limit is $20,000.00.",
-     "source_id": "web-81e27c552f120585",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "asset_test": null,
     "residency": null,
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "Patients with insurance who receive medically necessary services that are not covered by their insurance may also be eligible for this discount.",
-     "source_id": "web-81e27c552f120585",
+     "quote": "If anyone listed on the application has current healthcare coverage, please indicate this and send a copy of the front and back of the health insurance card.",
+     "source_id": "fap-b1ea791913a76181",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -4787,17 +4947,30 @@
    },
    "programs": {
     "presumptive": null,
-    "state_programs": null
+    "state_programs": {
+     "value": [
+      {
+       "name": "Medical Assistance/MNCare",
+       "how_to_apply": "If anyone listed on the application is uninsured, they need to apply for Medical Assistance/MNCare and then provide us with their written determination letter."
+      }
+     ],
+     "layer": "documented",
+     "quote": "If anyone listed on the application is uninsured, they need to apply for Medical Assistance/MNCare and then provide us with their written determination letter.",
+     "source_id": "fap-b1ea791913a76181",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
    },
    "apply": {
     "form_url": null,
     "form_version": null,
     "documents_required": {
      "value": [
-      "pay_stubs"
+      "bank_statements"
      ],
      "layer": "documented",
-     "quote": "Copies of the 2 most recent pay stubs or employer statement listing 2 months of pay (if employed).",
+     "quote": "Bank statements, stocks/bonds, CDs, money market accounts.",
      "source_id": "fap-b1ea791913a76181",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4807,25 +4980,13 @@
     "submit_methods": {
      "value": [
       {
-       "kind": "email",
-       "detail": "AllinaPartnersCare@allina.com"
-      },
-      {
-       "kind": "fax",
-       "detail": "612-262-3625"
-      },
-      {
        "kind": "mail",
-       "detail": "Allina Health Partners Care, PO Box 43, MR 10209, Minneapolis, MN 55440-0043"
-      },
-      {
-       "kind": "portal",
-       "detail": "log in to your Allina Health account and apply for financial assistance through the Billing page"
+       "detail": "Allina Health Partners Care 10209 PO Box 43 Minneapolis MN 55440-0043"
       }
      ],
      "layer": "documented",
-     "quote": "You may scan and email the completed application to AllinaPartnersCare@allina.com or you can fax it to 612-262-3625 or mail it to Allina Health Partners Care, PO Box 43, MR 10209, Minneapolis, MN 55440-0043.",
-     "source_id": "web-81e27c552f120585",
+     "quote": "Allina Health Partners Care 10209 PO Box 43 Minneapolis MN 55440-0043",
+     "source_id": "fap-b1ea791913a76181",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -4856,24 +5017,36 @@
    },
    "contacts": {
     "phone": {
-     "value": "612-262-9000",
+     "value": "(612) 262-9000",
      "layer": "documented",
-     "quote": "Need help paying your bill? Call 612-262-9000 612-262-9000 .",
-     "source_id": "web-81e27c552f120585",
+     "quote": "(612) 262-9000 or (800) 859-5077",
+     "source_id": "fap-b1ea791913a76181",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "hours": {
-     "value": "Monday to Thursday: 8 a.m. to 4:30 p.m. Friday: 9 a.m. to 4:30 p.m.",
+     "value": "Monday - Thursday 8:00am - 4:30pm Friday 9:00am - 4:30pm",
      "layer": "documented",
-     "quote": "Monday to Thursday: 8 a.m. to 4:30 p.m. Friday: 9 a.m. to 4:30 p.m.",
-     "source_id": "web-81e27c552f120585",
+     "quote": "Hours: Monday - Thursday 8:00am - 4:30pm Friday 9:00am - 4:30pm",
+     "source_id": "fap-b1ea791913a76181",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "languages": null
+    "languages": {
+     "value": [
+      "English",
+      "Spanish",
+      "Somali"
+     ],
+     "layer": "documented",
+     "quote": "You can download a copy of this application in English, Spanish or Somali at www.allinahealth.org/financialassistance.",
+     "source_id": "fap-b1ea791913a76181",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
    },
    "coverage": {
     "facilities": null,
@@ -4900,219 +5073,45 @@
      "effective_date": null
     },
     {
-     "id": "web-81e27c552f120585",
+     "id": "web-19b86d68fe005f18",
      "kind": "hospital_web",
-     "url": "https://www.allinahealth.org/customer-service/financial-assistance",
-     "title": "Financial Assistance | Medical Bills | Allina Health",
+     "url": "https://www.allinahealth.org/customer-service/billing-and-insurance",
+     "title": "Billing | Pay bills online | Allina Health",
      "fetched_on": "2026-10-23",
-     "sha256": "81e27c552f120585e10a413d8fdb9aba30cab0f47e53e3686240bb5f1cce85ed",
+     "sha256": "19b86d68fe005f18706beb7f983f7e7c4c73ca6130dcbb4904b35bc324ad0d33",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Previous year\u2019s federal tax return. | Bank statements, stocks/bonds, CDs, money market accounts.",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: You can also log in to your Allina Health account and apply for financial assistance through the Billing page in your ac",
-    "agent dropped programs.state_programs: quote is not a substring of the source",
-    "agent dropped contacts.languages: quote is not a substring of the source",
-    "agent judge on eligibility.assistance_ceiling_fpl: Quote gives an eligibility threshold (at or below 275% FPG) but does not state that no assistance is offered above 275%."
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Copies of the 2 most recent pay stubs or employer statement listing 2 months of pay (if employed). | Previous year\u2019s federal tax return.",
+    "agent judge on eligibility.assistance_ceiling_fpl: The quote says patients at or below 275% FPL are deemed eligible. It does not say assistance stops above 275% FPL.",
+    "agent judge on eligibility.insured_patients_covered: The quote only asks insured applicants to send their insurance card. It does not state that insured patients are covered.",
+    "agent judge on programs.presumptive: The quote says presumptive eligibility software may be used, but the recorded value is an empty list, which does not reflect that.",
+    "agent judge on apply.documents_required: The quote lists bank statements, pay stubs, and the federal tax return. It does not mention Social Security or an insurance card as required documents."
    ],
    "eve_verified": {
     "on": "2026-10-23",
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-1e86c5c45db22bd7": true,
+     "fap-b1ea791913a76181": true,
+     "web-19b86d68fe005f18": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.assistance_ceiling_fpl",
-     "eligibility.asset_test",
-     "eligibility.insured_patients_covered",
-     "apply.documents_required",
-     "apply.submit_methods",
-     "apply.window_days_from_first_bill",
-     "apply.decision_days",
-     "contacts.phone",
-     "contacts.hours"
-    ],
-    "rejected": [],
-    "pruned": [
-     "apply.documents_required: 2 items not named in the trimmed quote"
-    ],
-    "income_rule_verified": false,
-    "core_completeness": 0.5
-   }
-  },
-  {
-   "hospital": {
-    "ccn": "240141",
-    "name": "FAIRVIEW NORTHLAND REGIONAL HOSPITAL",
-    "city": "PRINCETON",
-    "state": "MN",
-    "zip": "55371",
-    "phone": "952-892-2101",
-    "ownership": "Voluntary non-profit - Other",
-    "website_domain": "mhealthfairview.org",
-    "system": null
-   },
-   "version": 1,
-   "status": "draft",
-   "eligibility": {
-    "free_care_max_fpl": null,
-    "discount_tiers": null,
-    "assistance_ceiling_fpl": null,
-    "asset_test": null,
-    "residency": {
-     "value": [
-      "Applicants must be a United States resident, which includes undocumented individuals residing in the United States."
-     ],
-     "layer": "documented",
-     "quote": "Applicants must be a United States resident. This includes undocumented individuals residing in the United States.",
-     "source_id": "fap-5c7c7701f1c41bb7",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "insured_patients_covered": {
-     "value": true,
-     "layer": "documented",
-     "quote": "Annual Gross Income (201%-400% FPL) Insured or uninsured AGB or uninsured discount, whichever is higher",
-     "source_id": "fap-5c7c7701f1c41bb7",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "min_balance": null,
-    "services_excluded": null
-   },
-   "programs": {
-    "presumptive": null,
-    "state_programs": {
-     "value": [
-      {
-       "name": "Medical Assistance (MA)",
-       "how_to_apply": "Applicants may be required to apply through MNsure for Medicaid, MinnesotaCare, Qualified Health Plan or other acceptable form of healthcare coverage as outlined in the Affordable Care Act (ACA)."
-      },
-      {
-       "name": "MinnesotaCare",
-       "how_to_apply": "Applicants may be required to apply through MNsure for Medicaid, MinnesotaCare, Qualified Health Plan or other acceptable form of healthcare coverage as outlined in the Affordable Care Act (ACA)."
-      }
-     ],
-     "layer": "documented",
-     "quote": "Applicants may be required to apply through MNsure for Medicaid, MinnesotaCare, Qualified Health Plan or other acceptable form of healthcare coverage as outlined in the Affordable Care Act (ACA).",
-     "source_id": "fap-5c7c7701f1c41bb7",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
-   },
-   "apply": {
-    "form_url": null,
-    "form_version": null,
-    "documents_required": {
-     "value": [
-      "pay_stubs",
-      "social_security_letter",
-      "bank_statements",
-      "tax_return"
-     ],
-     "layer": "documented",
-     "quote": "Acceptable verification of income and assets includes the following for all adult members of the family: payroll stubs from the most recent month, statements demonstrating Social Security, unemployment, disability and spousal/child support benefits, bank and brokerage account statements (for cash or stock), and the most recent year\u2019s tax return.",
-     "source_id": "fap-5c7c7701f1c41bb7",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "documents_reported": null,
-    "submit_methods": {
-     "value": [
-      {
-       "kind": "portal",
-       "detail": "My Chart, M Health Fairview website"
-      }
-     ],
-     "layer": "documented",
-     "quote": "a person must complete a financial assistance application via My Chart, M Health Fairview website or downloading the financial assistance application",
-     "source_id": "fap-5c7c7701f1c41bb7",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "window_days_from_first_bill": {
-     "value": 240,
-     "layer": "documented",
-     "quote": "M Health Fairview will accept applications for Financial Assistance for a minimum of 240 days after the date the first post-discharge billing statement is provided to the patient.",
-     "source_id": "fap-5c7c7701f1c41bb7",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "decision_days": {
-     "value": 30,
-     "layer": "documented",
-     "quote": "M Health Fairview will provide written notice of its Financial Assistance determinations within 30 calendar days of receiving a complete Financial Assistance application.",
-     "source_id": "fap-5c7c7701f1c41bb7",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "decision_days_reported": null
-   },
-   "collections": {
-    "eca_wait_days": null,
-    "collection_agencies": null
-   },
-   "contacts": {
-    "phone": {
-     "value": "612-672-6724",
-     "layer": "documented",
-     "quote": "calling M Health Fairview Customer Service at 612-672-6724, Grand Itasca Clinics & Hospitals 218-999-1710 or Fairview Range Customer Service at 218-362-6624",
-     "source_id": "fap-5c7c7701f1c41bb7",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "hours": null,
-    "languages": null
-   },
-   "coverage": {
-    "facilities": null,
-    "provider_list_url": null,
-    "covered_providers": null
-   },
-   "sources": [
-    {
-     "id": "fap-5c7c7701f1c41bb7",
-     "kind": "hospital_web",
-     "url": "https://www.mhealthfairview.org/sites/default/files/2026-02/Financial-Assistance-Policy_FINAL.pdf",
-     "title": "",
-     "fetched_on": "2026-10-23",
-     "sha256": "5c7c7701f1c41bb7b9683de68622f009a16fe7d4bddd3db90ab991f6e3bc2359",
-     "effective_date": null
-    }
-   ],
-   "accuracy": null,
-   "eve_review": [
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: A financial assistance application can also be obtained free of charge by calling M Health Fairview Customer Service at ",
-    "agent dropped eligibility.free_care_max_fpl: quote is not a substring of the source",
-    "agent dropped eligibility.discount_tiers: excerpt not in source: When the patient applies and qualifies for financial assista",
-    "agent dropped collections.eca_wait_days: quote is not a substring of the source",
-    "agent judge on eligibility.insured_patients_covered: Quote is only a pricing-table row for the 201%-400% FPL tier mentioning insured or uninsured AGB; it does not plainly state insured patients are covered.",
-    "agent judge on programs.state_programs: Quote names Medicaid, MinnesotaCare and QHP via MNsure; it never says 'Medical Assistance (MA)', so that program name is not stated.",
-    "agent judge on apply.submit_methods: Quote gives online (My Chart, website), phone and downloading the application; it does not state a 'mail' submission method."
-   ],
-   "eve_verified": {
-    "on": "2026-10-23",
-    "sources_fetched": 1,
-    "sources_total": 1,
-    "sources_missing": [],
-    "accepted": [
-     "eligibility.residency",
      "eligibility.insured_patients_covered",
      "programs.state_programs",
      "apply.documents_required",
      "apply.submit_methods",
      "apply.window_days_from_first_bill",
      "apply.decision_days",
-     "contacts.phone"
+     "contacts.phone",
+     "contacts.hours",
+     "contacts.languages"
     ],
     "rejected": [
      [
@@ -5121,7 +5120,7 @@
      ]
     ],
     "pruned": [
-     "apply.submit_methods: 2 items not named in the trimmed quote"
+     "apply.documents_required: 4 items not named in the trimmed quote"
     ],
     "income_rule_verified": false,
     "core_completeness": 0.5
@@ -5306,6 +5305,11 @@
     "sources_fetched": 2,
     "sources_total": 2,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-4814c19e6936f4a5": true,
+     "fap-474e722f8f9cba79": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -5515,6 +5519,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-7a22160901533428": true,
+     "fap-fe12fbafd223a101": true,
+     "web-61d20ac37fdcf3da": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -5576,7 +5586,7 @@
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "M Health Fairview Medicare Partners is a partnership between M Health Fairview and the Seven County Senior Federation Senior Community Services. M Health Fairview has agreed to waive hospital and clinic co-insurances and deductibles for members of this program.",
+     "quote": "Family Size Annual Gross Income (200% FPL = 100% charity Insured or uninsured",
      "source_id": "fap-5c7c7701f1c41bb7",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5590,7 +5600,7 @@
     "state_programs": {
      "value": [
       {
-       "name": "Medical Assistance / MinnesotaCare (MA)",
+       "name": "Medical Assistance or MinnesotaCare",
        "how_to_apply": "Applicants may be required to apply through MNsure for Medicaid, MinnesotaCare, Qualified Health Plan or other acceptable form of healthcare coverage as outlined in the Affordable Care Act (ACA)."
       }
      ],
@@ -5613,7 +5623,7 @@
       "tax_return"
      ],
      "layer": "documented",
-     "quote": "Acceptable verification of income and assets includes the following for all adult members of the family: payroll stubs from the most recent month, statements demonstrating Social Security, unemployment, disability and spousal/child support benefits, bank and brokerage account statements (for cash or stock), and the most recent year\u2019s tax return.",
+     "quote": "payroll stubs from the most recent month, statements demonstrating Social Security, unemployment, disability and spousal/child support benefits, bank and brokerage account statements (for cash or stock), and the most recent year\u2019s tax return",
      "source_id": "fap-5c7c7701f1c41bb7",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5624,11 +5634,11 @@
      "value": [
       {
        "kind": "portal",
-       "detail": "financial assistance application via My Chart, M Health Fairview website"
+       "detail": "My Chart, M Health Fairview website"
       }
      ],
      "layer": "documented",
-     "quote": "To apply for financial assistance, a person must complete a financial assistance application via My Chart, M Health Fairview website or downloading the financial assistance application and provide the required documentation regarding family income and assets",
+     "quote": "a person must complete a financial assistance application via My Chart, M Health Fairview website or downloading the financial assistance application and provide the required documentation",
      "source_id": "fap-5c7c7701f1c41bb7",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5656,6 +5666,195 @@
    },
    "collections": {
     "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "612-672-6724",
+     "layer": "documented",
+     "quote": "M Health Fairview Customer Service at 612-672-6724",
+     "source_id": "fap-5c7c7701f1c41bb7",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": null,
+    "languages": null
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-5c7c7701f1c41bb7",
+     "kind": "hospital_web",
+     "url": "https://www.mhealthfairview.org/sites/default/files/2026-02/Financial-Assistance-Policy_FINAL.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "5c7c7701f1c41bb7b9683de68622f009a16fe7d4bddd3db90ab991f6e3bc2359",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "eligibility.discount_tiers: 200-400% at 0% is no discount; skipped",
+    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: A financial assistance application can also be obtained free of charge by calling M Health Fairview Customer Service at ",
+    "agent dropped collections.eca_wait_days: quote is not a substring of the source",
+    "agent judge on eligibility.discount_tiers: Quote gives 201-400% as AGB or uninsured discount, whichever is higher; it does not state the 0% discount value or the 200/400 bounds as a percent tier with 0 discount.",
+    "agent judge on eligibility.insured_patients_covered: Quote is truncated and only references a table header with 'Insured or uninsured'; it does not clearly state insured patients are covered."
+   ],
+   "eve_verified": {
+    "on": "2026-10-23",
+    "sources_fetched": 1,
+    "sources_total": 1,
+    "sources_missing": [],
+    "sha256_match": {
+     "fap-5c7c7701f1c41bb7": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
+    "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.residency",
+     "eligibility.insured_patients_covered",
+     "programs.state_programs",
+     "apply.documents_required",
+     "apply.submit_methods",
+     "apply.window_days_from_first_bill",
+     "apply.decision_days",
+     "contacts.phone"
+    ],
+    "rejected": [
+     [
+      "eligibility.assistance_ceiling_fpl",
+      "quote does not say the hospital's financial assistance reaches it"
+     ],
+     [
+      "eligibility.asset_test",
+      "quote does not support the asset-test value"
+     ]
+    ],
+    "pruned": [
+     "apply.submit_methods: 2 items not named in the trimmed quote"
+    ],
+    "income_rule_verified": true,
+    "core_completeness": 0.67
+   }
+  },
+  {
+   "hospital": {
+    "ccn": "240210",
+    "name": "M HEALTH FAIRVIEW ST JOHN'S HOSPITAL",
+    "city": "MAPLEWOOD",
+    "state": "MN",
+    "zip": "55109",
+    "phone": "651-232-7000",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "mhealthfairview.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": null,
+    "discount_tiers": null,
+    "assistance_ceiling_fpl": null,
+    "asset_test": null,
+    "residency": {
+     "value": [
+      "Applicants must be a United States resident, including undocumented individuals residing in the United States."
+     ],
+     "layer": "documented",
+     "quote": "Applicants must be a United States resident. This includes undocumented individuals residing in the United States.",
+     "source_id": "fap-5c7c7701f1c41bb7",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "insured_patients_covered": null,
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
+    "state_programs": {
+     "value": [
+      {
+       "name": "Medical Assistance / MinnesotaCare",
+       "how_to_apply": "Minnesota residents can complete this process at MNsure"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Patients seeking full Financial Assistance who appear eligible for Medical Assistance are required to apply for all available programs. Minnesota residents can complete this process at MNsure",
+     "source_id": "web-54049bd24eca28a1",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "pay_stubs",
+      "social_security_letter",
+      "bank_statements",
+      "tax_return"
+     ],
+     "layer": "documented",
+     "quote": "Acceptable verification of income and assets includes the following for all adult members of the family: payroll stubs from the most recent month, statements demonstrating Social Security, unemployment, disability and spousal/child support benefits, bank and brokerage account statements (for cash or stock), and the most recent year's tax return.",
+     "source_id": "fap-5c7c7701f1c41bb7",
+     "checked_on": "2026-10-23",
+     "confidence": 0.8,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "portal",
+       "detail": "complete a financial assistance application via My Chart, M Health Fairview website or downloading the financial assistance application"
+      }
+     ],
+     "layer": "documented",
+     "quote": "a person must complete a financial assistance application via My Chart, M Health Fairview website or downloading the financial assistance application and provide the required documentation",
+     "source_id": "fap-5c7c7701f1c41bb7",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": {
+     "value": 240,
+     "layer": "documented",
+     "quote": "M Health Fairview will accept applications for Financial Assistance for a minimum of 240 days after the date the first post-discharge billing statement is provided to the patient.",
+     "source_id": "fap-5c7c7701f1c41bb7",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days": {
+     "value": 30,
+     "layer": "documented",
+     "quote": "M Health Fairview will provide written notice of its Financial Assistance determinations within 30 calendar days of receiving a complete Financial Assistance application.",
+     "source_id": "fap-5c7c7701f1c41bb7",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": {
+     "value": 120,
+     "layer": "documented",
+     "quote": "M Health Fairview will issue billing statements in accordance with established timelines and will provide a minimum of 120 days from the first post-visit billing statement before initiating extraordinary collection actions on an account.",
+     "source_id": "fap-5c7c7701f1c41bb7",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "collection_agencies": null
    },
    "contacts": {
@@ -5715,27 +5914,33 @@
    ],
    "accuracy": null,
    "eve_review": [
+    "eligibility.assistance_ceiling_fpl: quote matched the source only after typography normalization",
+    "apply.documents_required: quote matched the source only after typography normalization",
     "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: A financial assistance application can also be obtained free of charge by calling M Health Fairview Customer Service at ",
-    "agent dropped collections.eca_wait_days: quote is not a substring of the source",
-    "agent dropped contacts.languages: excerpt not in source: Hmong [https://www.fvfiles.com/2266hg.pdf]",
-    "agent judge on eligibility.discount_tiers: Quote states a 201-400% tier with AGB or uninsured discount, but the value is empty and no discount percent is given.",
-    "agent judge on programs.state_programs: Quote lists Medicaid, MinnesotaCare, and Qualified Health Plan as options; value captures only one program, MA/MinnesotaCare.",
-    "agent judge on apply.submit_methods: Quote supports online via My Chart and phone calls, but does not state mail submission; the mail method is not in the quote."
+    "agent dropped eligibility.free_care_max_fpl: quote is not a substring of the source",
+    "agent dropped eligibility.discount_tiers: quote is not a substring of the source",
+    "agent judge on eligibility.insured_patients_covered: Quote only gives a 201-400% AGB or uninsured discount tier. It does not state that insured patients are covered by assistance.",
+    "agent judge on programs.state_programs: Quote mentions Medical Assistance and MNsure for Minnesota residents but never names MinnesotaCare as a program."
    ],
    "eve_verified": {
     "on": "2026-10-23",
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-5c7c7701f1c41bb7": true,
+     "web-119917328783c4d1": true,
+     "web-54049bd24eca28a1": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
-     "eligibility.free_care_max_fpl",
      "eligibility.residency",
-     "eligibility.insured_patients_covered",
      "programs.state_programs",
      "apply.documents_required",
      "apply.submit_methods",
      "apply.window_days_from_first_bill",
      "apply.decision_days",
+     "collections.eca_wait_days",
      "contacts.phone",
      "contacts.hours"
     ],
@@ -5749,181 +5954,16 @@
       "quote does not support the asset-test value"
      ],
      [
+      "eligibility.insured_patients_covered",
+      "quote does not say whether insured patients are covered"
+     ],
+     [
       "apply.form_url",
       "quote not found in source"
-     ]
-    ],
-    "pruned": [
-     "apply.submit_methods: 2 items not named in the trimmed quote"
-    ],
-    "income_rule_verified": true,
-    "core_completeness": 0.67
-   }
-  },
-  {
-   "hospital": {
-    "ccn": "240210",
-    "name": "M HEALTH FAIRVIEW ST JOHN'S HOSPITAL",
-    "city": "MAPLEWOOD",
-    "state": "MN",
-    "zip": "55109",
-    "phone": "651-232-7000",
-    "ownership": "Voluntary non-profit - Private",
-    "website_domain": "mhealthfairview.org",
-    "system": null
-   },
-   "version": 1,
-   "status": "draft",
-   "eligibility": {
-    "free_care_max_fpl": null,
-    "discount_tiers": null,
-    "assistance_ceiling_fpl": null,
-    "asset_test": null,
-    "residency": {
-     "value": [
-      "Applicants must be a United States resident, including undocumented individuals residing in the United States."
      ],
-     "layer": "documented",
-     "quote": "Applicants must be a United States resident. This includes undocumented individuals residing in the United States.",
-     "source_id": "fap-5c7c7701f1c41bb7",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "insured_patients_covered": null,
-    "min_balance": null,
-    "services_excluded": null
-   },
-   "programs": {
-    "presumptive": null,
-    "state_programs": {
-     "value": [
-      {
-       "name": "Medical Assistance or MinnesotaCare (MA)",
-       "how_to_apply": "Applicants may be required to apply through MNsure for Medicaid, MinnesotaCare, Qualified Health Plan or other acceptable form of healthcare coverage as outlined in the Affordable Care Act (ACA)."
-      }
-     ],
-     "layer": "documented",
-     "quote": "Applicants may be required to apply through MNsure for Medicaid, MinnesotaCare, Qualified Health Plan or other acceptable form of healthcare coverage as outlined in the Affordable Care Act (ACA).",
-     "source_id": "fap-5c7c7701f1c41bb7",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
-   },
-   "apply": {
-    "form_url": null,
-    "form_version": null,
-    "documents_required": {
-     "value": [
-      "pay_stubs",
-      "social_security_letter",
-      "bank_statements",
-      "tax_return",
-      "proof_of_income"
-     ],
-     "layer": "documented",
-     "quote": "Acceptable verification of income and assets includes the following for all adult members of the family: payroll stubs from the most recent month, statements demonstrating Social Security, unemployment, disability and spousal/child support benefits, bank and brokerage account statements (for cash or stock), and the most recent year\u2019s tax return. An income statement for self-employed applicants is required.",
-     "source_id": "fap-5c7c7701f1c41bb7",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "documents_reported": null,
-    "submit_methods": {
-     "value": [
-      {
-       "kind": "portal",
-       "detail": "complete a financial assistance application via My Chart, M Health Fairview website"
-      }
-     ],
-     "layer": "documented",
-     "quote": "a person must complete a financial assistance application via My Chart, M Health Fairview website or downloading the financial assistance application and provide the required documentation regarding family income and assets",
-     "source_id": "fap-5c7c7701f1c41bb7",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "window_days_from_first_bill": {
-     "value": 240,
-     "layer": "documented",
-     "quote": "M Health Fairview will accept applications for Financial Assistance for a minimum of 240 days after the date the first post-discharge billing statement is provided to the patient.",
-     "source_id": "fap-5c7c7701f1c41bb7",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "decision_days": {
-     "value": 30,
-     "layer": "documented",
-     "quote": "M Health Fairview will provide written notice of its Financial Assistance determinations within 30 calendar days of receiving a complete Financial Assistance application.",
-     "source_id": "fap-5c7c7701f1c41bb7",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "decision_days_reported": null
-   },
-   "collections": {
-    "eca_wait_days": null,
-    "collection_agencies": null
-   },
-   "contacts": {
-    "phone": {
-     "value": "612-672-6724",
-     "layer": "documented",
-     "quote": "calling M Health Fairview Customer Service at 612-672-6724, Grand Itasca Clinics & Hospitals 218-999-1710 or Fairview Range Customer Service at 218-362-6624",
-     "source_id": "fap-5c7c7701f1c41bb7",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "hours": null,
-    "languages": null
-   },
-   "coverage": {
-    "facilities": null,
-    "provider_list_url": null,
-    "covered_providers": null
-   },
-   "sources": [
-    {
-     "id": "fap-5c7c7701f1c41bb7",
-     "kind": "hospital_web",
-     "url": "https://www.mhealthfairview.org/sites/default/files/2026-02/Financial-Assistance-Policy_FINAL.pdf",
-     "title": "",
-     "fetched_on": "2026-10-23",
-     "sha256": "5c7c7701f1c41bb7b9683de68622f009a16fe7d4bddd3db90ab991f6e3bc2359",
-     "effective_date": null
-    }
-   ],
-   "accuracy": null,
-   "eve_review": [
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: A financial assistance application can also be obtained free of charge by calling M Health Fairview Customer Service at ",
-    "agent dropped eligibility.free_care_max_fpl: quote is not a substring of the source",
-    "agent dropped collections.eca_wait_days: quote is not a substring of the source",
-    "agent judge on eligibility.discount_tiers: Value is an empty list, but the quote states a 201-400% AGB or uninsured discount tier, so the value should not be empty.",
-    "agent judge on programs.state_programs: Quote says applicants may be required to apply for Medicaid, MinnesotaCare, or a Qualified Health Plan; it never names a program 'Medical Assistance or MinnesotaCare (MA)'.",
-    "agent judge on apply.submit_methods: Phone entry describes calling to obtain the application free of charge, not a method to submit it; only the My Chart online method is a submission method."
-   ],
-   "eve_verified": {
-    "on": "2026-10-23",
-    "sources_fetched": 1,
-    "sources_total": 1,
-    "sources_missing": [],
-    "accepted": [
-     "eligibility.residency",
-     "programs.state_programs",
-     "apply.documents_required",
-     "apply.submit_methods",
-     "apply.window_days_from_first_bill",
-     "apply.decision_days",
-     "contacts.phone"
-    ],
-    "rejected": [
      [
-      "eligibility.asset_test",
-      "quote does not support the asset-test value"
+      "contacts.languages",
+      "quote not found in source"
      ]
     ],
     "pruned": [
@@ -5971,7 +6011,15 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "insured_patients_covered": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Insured or uninsured Annual Gross Income (201%-400% FPL) Insured or uninsured AGB or uninsured discount, whichever is higher",
+     "source_id": "fap-5c7c7701f1c41bb7",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "min_balance": null,
     "services_excluded": null
    },
@@ -5980,8 +6028,8 @@
     "state_programs": {
      "value": [
       {
-       "name": "Medical Assistance/MinnesotaCare (MA)",
-       "how_to_apply": "Applicants may be required to apply through MNsure for Medicaid, MinnesotaCare, Qualified Health Plan or other acceptable form of healthcare coverage as outlined in the Affordable Care Act (ACA)."
+       "name": "Medical Assistance / MinnesotaCare (MA)",
+       "how_to_apply": "Apply through MNsure for Medicaid, MinnesotaCare, Qualified Health Plan or other acceptable form of healthcare coverage as outlined in the Affordable Care Act (ACA)."
       }
      ],
      "layer": "documented",
@@ -6014,12 +6062,16 @@
      "value": [
       {
        "kind": "portal",
-       "detail": "MyChart"
+       "detail": "MyChart - Apply Now at https://mychart.fairview.org/MyChart/FinancialAssistance/Index"
+      },
+      {
+       "kind": "portal",
+       "detail": "Apply Here online form at https://surveynet.fairview.org/redcap/surveys/?s=RKHCA774LCWP9HM4"
       }
      ],
      "layer": "documented",
-     "quote": "To apply for financial assistance, a person must complete a financial assistance application via My Chart, M Health Fairview website or downloading the financial assistance application",
-     "source_id": "fap-5c7c7701f1c41bb7",
+     "quote": "Once that is done, you can apply for our Financial Assistance program via MyChart or by form.",
+     "source_id": "web-54049bd24eca28a1",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -6113,21 +6165,28 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: A financial assistance application can also be obtained free of charge by calling M Health Fairview Customer Service at ",
+    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: If you have questions or would like help with your application, please call one of the numbers below based on where you ",
     "contacts.languages: 2 more verbatim excerpt(s) supported this value: Hmong Hmoob [https://www.fvfiles.com/2266hg.pdf] | Somali Soomaali [https://www.fvfiles.com/2266so.pdf]",
-    "agent judge on eligibility.discount_tiers: Quote states a 201-400% tier at AGB or uninsured discount, whichever is higher, but the value is an empty array.",
-    "agent judge on eligibility.insured_patients_covered: Quote only shows discount tiers, including an uninsured discount; it does not state that insured patients are covered.",
-    "agent judge on apply.submit_methods: Quote gives online via My Chart or website, downloading the application, and phone numbers; it does not say mail, so kind mail is unsupported.",
-    "agent judge on contacts.languages: Quote names only English, Hmong, and Somali; Karen, Spanish, and Vietnamese do not appear in the quote."
+    "agent judge on eligibility.discount_tiers: Value is an empty list, but the quote states a 201-400% tier with AGB or uninsured discount, whichever is higher.",
+    "agent judge on programs.state_programs: Quote says applicants 'may be required' to apply through MNsure for Medicaid/MinnesotaCare; it does not name 'Medical Assistance / MinnesotaCare (MA)' as a program.",
+    "agent judge on apply.submit_methods: Quote mentions MyChart, a form, and numbers below, but contains none of the URLs or the phone number given in the value.",
+    "agent judge on contacts.languages: Quote shows only English, Hmong, and Somali; Karen, Spanish, and Vietnamese do not appear in the quote."
    ],
    "eve_verified": {
     "on": "2026-10-23",
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-5c7c7701f1c41bb7": true,
+     "web-119917328783c4d1": true,
+     "web-54049bd24eca28a1": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.residency",
+     "eligibility.insured_patients_covered",
      "programs.state_programs",
      "apply.documents_required",
      "apply.submit_methods",
@@ -6147,10 +6206,6 @@
       "quote does not support the asset-test value"
      ],
      [
-      "eligibility.insured_patients_covered",
-      "quote does not say whether insured patients are covered"
-     ],
-     [
       "apply.form_url",
       "quote not found in source"
      ],
@@ -6160,7 +6215,7 @@
      ]
     ],
     "pruned": [
-     "apply.submit_methods: 2 items not named in the trimmed quote"
+     "apply.submit_methods: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": true,
     "core_completeness": 0.67
@@ -6181,20 +6236,12 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": {
-     "value": "200",
-     "layer": "documented",
-     "quote": "Patients whose Family Income is at or below 200% of the FPL with liquid assets under $20,000 will be eligible for free care",
-     "source_id": "fap-1be2f2e7d1491110",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "free_care_max_fpl": null,
     "discount_tiers": null,
     "assistance_ceiling_fpl": {
      "value": "300",
      "layer": "documented",
-     "quote": "NMH\u2019s uninsured or underinsured patients whose Family Income is at or below 300% of the Federal Poverty Level (FPL) will be provided Charity Care consistent with this policy",
+     "quote": "NMH\u2019s uninsured or underinsured patients whose Family Income is at or below 300% of the Federal Poverty Level (FPL) will be provided Charity Care consistent with this policy through an application process.",
      "source_id": "fap-1be2f2e7d1491110",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -6215,7 +6262,7 @@
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "Financial assistance shall be considered for patients who are uninsured, underinsured, ineligible for any government programs, or otherwise are unable to pay for medically necessary care",
+     "quote": "Patients with insurance who receive Medically Necessary Care are required to have a claim submitted to the insurance carrier for payment or denial of payment prior to determining the amount eligible for Charity Care coverage under this policy.",
      "source_id": "fap-1be2f2e7d1491110",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -6241,7 +6288,7 @@
      "value": [
       {
        "name": "Medical Assistance",
-       "how_to_apply": "Patients must apply for health insurance (Medical Assistance, MinnesotaCare) if it is determined you may be eligible"
+       "how_to_apply": "Apply for health insurance (Medical Assistance, MinnesotaCare) if it is determined you may be eligible"
       },
       {
        "name": "MinnesotaCare",
@@ -6261,12 +6308,25 @@
     "form_version": null,
     "documents_required": null,
     "documents_reported": null,
-    "submit_methods": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "North Memorial Health Hospital \u2013 Financial Assistance, 3300 Oakdale Avenue North, Robbinsdale, MN 55422"
+      }
+     ],
+     "layer": "documented",
+     "quote": "North Memorial Health Hospital \u2013 Financial Assistance, 3300 Oakdale Avenue North, Robbinsdale, MN 55422",
+     "source_id": "fap-1be2f2e7d1491110",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "window_days_from_first_bill": {
      "value": 365,
      "layer": "documented",
-     "quote": "Balances must be within 365 days of the first post-discharge billing statement you received for that balance",
-     "source_id": "fap-86ba24f2b7b96630",
+     "quote": "A patient must apply for financial assistance within 365 days after the date of the first post-services billing statement.",
+     "source_id": "fap-1be2f2e7d1491110",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -6274,7 +6334,7 @@
     "decision_days": {
      "value": 30,
      "layer": "documented",
-     "quote": "Requests for eligibility for financial assistance shall be processed promptly and NMH shall notify the patient or applicant of eligibility determination in writing within 30 daysof receipt of a completed application.",
+     "quote": "NMH shall notify the patient or applicant of eligibility determination in writing within 30 daysof receipt of a completed application.",
      "source_id": "fap-1be2f2e7d1491110",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -6344,25 +6404,30 @@
    "accuracy": null,
    "eve_review": [
     "eligibility.discount_tiers: 200-300% at 0% is no discount; skipped",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: If anyone listed on the application is insured a copy of the front and back of the insurance card is needed for each ins | Please provide most recent paycheck detail/stub for Primary Applicant and all Family Members in the household.",
-    "agent dropped apply.submit_methods: excerpt not in source: Fax to: (763) 581-4491",
-    "agent judge on eligibility.discount_tiers: Quote gives the 201% to 300% band but no discount percent. The 0 is not stated; it only says amount owed not to exceed AGB.",
-    "agent judge on eligibility.assistance_ceiling_fpl: Quote says care is provided at or below 300% FPL but does not state that no assistance is offered above 300%.",
-    "agent judge on programs.state_programs: Quote names Medical Assistance and MinnesotaCare, but the per-program how_to_apply wording in the value is not in the quote.",
-    "agent judge on apply.documents_required: Quote supports asset statements, insurance card copy, and paycheck stubs, but not federal tax return as a required document."
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: a copy of the front and back of the insurance card is needed for each insured individual | Provide the most recent year\u2019s federal tax return including Schedules C, E, & F",
+    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Delivered in person at the following locations: a) North Memorial Health Hospital Registration Department, Robbinsdale a | Fax to: (763) 581-4491 e) Email to: FAA@NorthMemorial.com",
+    "agent dropped eligibility.free_care_max_fpl: quote is not a substring of the source",
+    "agent judge on eligibility.discount_tiers: Quote says 201-300% owe no more than AGB, not a 0% discount; it also omits the 100% free-care tier at or below 200%.",
+    "agent judge on apply.documents_required: Quote mentions asset statements, insurance card copies, and federal tax return only; paycheck stubs and Social Security/pension letters are not in the quote."
    ],
    "eve_verified": {
     "on": "2026-10-23",
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-1be2f2e7d1491110": true,
+     "fap-86ba24f2b7b96630": true,
+     "web-c27be417ca96cc27": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
-     "eligibility.free_care_max_fpl",
      "eligibility.assistance_ceiling_fpl",
      "eligibility.residency",
      "eligibility.insured_patients_covered",
      "programs.presumptive",
      "programs.state_programs",
+     "apply.submit_methods",
      "apply.window_days_from_first_bill",
      "apply.decision_days",
      "collections.eca_wait_days",
@@ -6375,9 +6440,10 @@
      ]
     ],
     "pruned": [
-     "apply.documents_required: none of the listed documents is named in the quote (after trimming)"
+     "apply.documents_required: none of the listed documents is named in the quote (after trimming)",
+     "apply.submit_methods: 3 items not named in the trimmed quote"
     ],
-    "income_rule_verified": true,
+    "income_rule_verified": false,
     "core_completeness": 0.33
    }
   },
@@ -6559,6 +6625,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-174bfaef7b79efbc": true,
+     "fap-e4142b1248b8adbd": true,
+     "web-d20bc262cacc9664": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.assistance_ceiling_fpl",
@@ -6746,6 +6818,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-7a22160901533428": true,
+     "fap-77344ce9bbfd7017": true,
+     "web-4603ed20474ff606": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.insured_patients_covered",
@@ -6960,6 +7038,12 @@
     "sources_missing": [
      "https://www.aspirus.org/Uploads/Public/Documents/Financial/Application%2012.19.25.pdf"
     ],
+    "sha256_match": {
+     "fap-4cbbb9fee901f756": true,
+     "fap-b15da51e8ca0839b": true,
+     "web-1da1676f83f82220": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -7203,6 +7287,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-a9e09e47e34836db": true,
+     "fap-c63934458ff050fc": true,
+     "web-8865ff112631e43c": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -7407,6 +7497,10 @@
     "sources_fetched": 1,
     "sources_total": 1,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-a9e09e47e34836db": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -7575,6 +7669,12 @@
     "sources_missing": [
      "https://www.ebch.org/wp-content/uploads/2026/04/EBCH-Financial-Assistance-Policy-2026.pdf"
     ],
+    "sha256_match": {
+     "fap-ba6674e73432ab5d": true,
+     "fap-ca5da27c5d5db0f5": true,
+     "web-6779a01c3689395a": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.asset_test",
@@ -7703,7 +7803,15 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "hours": null,
+    "hours": {
+     "value": "Monday through Friday 8 a.m. to 4:30 p.m.",
+     "layer": "documented",
+     "quote": "Monday through Friday 8 a.m. to 4:30 p.m.",
+     "source_id": "web-249340a7b8d71729",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "languages": null
    },
    "coverage": {
@@ -7749,11 +7857,15 @@
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 2,
+    "sources_fetched": 3,
     "sources_total": 3,
-    "sources_missing": [
-     "https://www.riverviewhealth.org/patients-and-visitors/billing-information/discounts/"
-    ],
+    "sources_missing": [],
+    "sha256_match": {
+     "fap-d860492c4b19f37e": true,
+     "fap-9f042cfead3c1e04": true,
+     "web-249340a7b8d71729": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.residency",
@@ -7761,14 +7873,10 @@
      "apply.window_days_from_first_bill",
      "apply.decision_days",
      "collections.eca_wait_days",
-     "contacts.phone"
+     "contacts.phone",
+     "contacts.hours"
     ],
-    "rejected": [
-     [
-      "contacts.hours",
-      "source text missing"
-     ]
-    ],
+    "rejected": [],
     "pruned": [
      "apply.documents_required: 3 items not named in the trimmed quote"
     ],
@@ -8002,6 +8110,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-a9e09e47e34836db": true,
+     "fap-c63934458ff050fc": true,
+     "web-479975d385cbc309": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -8200,6 +8314,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-5a96573db187a58f": true,
+     "fap-8287de703ba1a5bc": true,
+     "web-9782e7bccc32b6c3": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.insured_patients_covered",
@@ -8388,6 +8508,10 @@
     "sources_fetched": 1,
     "sources_total": 1,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-ada825567fa134e5": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.asset_test",
@@ -8617,6 +8741,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-5adcb3ddc156be3d": true,
+     "fap-1de6caf1733f65b0": true,
+     "web-a3bad642e663d7d8": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -8823,6 +8953,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-3203cb50133efde8": true,
+     "fap-9ca8f5898f1de8a5": true,
+     "web-8c0229b6c8056a13": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.asset_test",
@@ -9008,6 +9144,11 @@
     "sources_fetched": 2,
     "sources_total": 2,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-d4e0dc3db4b03e0c": true,
+     "fap-474e722f8f9cba79": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.insured_patients_covered",
@@ -9185,11 +9326,15 @@
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 2,
+    "sources_fetched": 3,
     "sources_total": 3,
-    "sources_missing": [
-     "https://d3842c36-0578-46fe-8c91-4fdfae3b80c9.filesusr.com/ugd/b898c2_009bee1cfc8e4f6496d5f61b7ed292b5.docx?dn=Financial%20Assistance%20Application.docx"
-    ],
+    "sources_missing": [],
+    "sha256_match": {
+     "fap-9668c20e07b58c3a": true,
+     "web-997a7baf03c96c92": true,
+     "web-2523224a49478ed8": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.asset_test",
@@ -9431,6 +9576,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-a9e09e47e34836db": true,
+     "fap-c63934458ff050fc": true,
+     "web-24135a9ea9899abe": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -9506,15 +9657,7 @@
    },
    "contacts": {
     "phone": null,
-    "hours": {
-     "value": "8:00-5:00, Monday-Friday (or by appointment)",
-     "layer": "documented",
-     "quote": "BBuussiinneessss OOffffiiccee hhoouurrss aarree 88::0000\u2013\u201355::0000,, MMoonnddaayy--FFrriiddaayy ((oorr bbyy aappppooiinnttmmeenntt))",
-     "source_id": "fap-736d44da0c871f75",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "hours": null,
     "languages": null
    },
    "coverage": {
@@ -9553,44 +9696,35 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: oo PPaattiieenntt iiss eelliiggiibbllee ffoorr ssttaattee--ffuunnddeedd pprreessccrriippttiioonn mmeeddiiccaattiioonn pp | oo PPaattiieenntt rreecceeiivveess ffrreeee ccaarree ffrroomm aa ccoommmmuunniittyy cclliinniicc aanndd iiss rreeffeerrr",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: oo CCooppyy ooff mmoosstt rreecceenntt ffeeddeerraall ttaaxx rreettuurrnn oo DDooccuummeennttaattiioonn ooff qquuaalliif | oo IInn ssoommee ccaasseess,, iinnffoorrmmaattiioonn oonn aavvaaiillaabbllee aasssseettss oorr ootthheerr ffiinnaannccii",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: oo OOnnlliinnee aatt wwwwww..lliiffeeccaarreemmeeddiiccaallcceenntteerr..oorrgg",
-    "agent dropped eligibility.discount_tiers: excerpt not in source: IInndd ii vviidduuaallss wwiitthh aannnnuuaall hhoouusseehho",
+    "agent dropped eligibility.free_care_max_fpl: quote is not a substring of the source",
+    "agent dropped eligibility.discount_tiers: quote is not a substring of the source",
+    "agent dropped eligibility.asset_test: quote is not a substring of the source",
+    "agent dropped eligibility.insured_patients_covered: quote is not a substring of the source",
+    "agent dropped programs.presumptive: quote is not a substring of the source",
+    "agent dropped apply.documents_required: excerpt not in source: Bank statements",
+    "agent dropped apply.submit_methods: excerpt not in source: patients must submit a complete application (including suppo",
     "agent dropped contacts.phone: quote is not a substring of the source",
-    "agent judge on apply.submit_methods: Quote gives the mail address and website and says 'either in person', but names no in-person locations (Business Office, ER desk, etc.) as the value does."
+    "agent dropped contacts.hours: quote is not a substring of the source"
    ],
    "eve_verified": {
     "on": "2026-10-23",
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
-    "accepted": [
-     "contacts.hours"
-    ],
+    "sha256_match": {
+     "fap-736d44da0c871f75": true,
+     "fap-852754fbfb7c0ce8": true,
+     "web-eecb775c902857f7": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
+    "accepted": [],
     "rejected": [
-     [
-      "eligibility.free_care_max_fpl",
-      "value not in quote"
-     ],
-     [
-      "eligibility.asset_test",
-      "quote does not support the asset-test value"
-     ],
-     [
-      "eligibility.insured_patients_covered",
-      "quote does not say whether insured patients are covered"
-     ],
      [
       "apply.form_url",
       "quote not found in source"
      ]
     ],
-    "pruned": [
-     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
-     "apply.documents_required: none of the listed documents is named in the quote (after trimming)",
-     "apply.submit_methods: none of the listed channels is named in the quote (after trimming)"
-    ],
+    "pruned": [],
     "income_rule_verified": false,
     "core_completeness": 0.0
    }
@@ -9776,6 +9910,11 @@
     "sources_fetched": 2,
     "sources_total": 2,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-4814c19e6936f4a5": true,
+     "fap-474e722f8f9cba79": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -9976,6 +10115,10 @@
     "sources_fetched": 1,
     "sources_total": 1,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-4814c19e6936f4a5": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -10186,6 +10329,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-88260a897b993e8e": true,
+     "fap-353933476b0d11e9": true,
+     "web-36485f8ba9f614a0": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "programs.presumptive",
@@ -10236,7 +10385,7 @@
     "free_care_max_fpl": {
      "value": "200",
      "layer": "documented",
-     "quote": "2026 Federal Poverty Level 200% Federal Poverty Level Free Care",
+     "quote": "200% Federal Poverty Level Free Care",
      "source_id": "fap-efdb66d68d18a2eb",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -10272,20 +10421,16 @@
     "submit_methods": {
      "value": [
       {
-       "kind": "mail",
-       "detail": "mailed to the applicant at the address provided on the application"
+       "kind": "phone",
+       "detail": "320-864-7101"
       },
       {
        "kind": "in_person",
-       "detail": "in person at 1805 Hennepin Avenue North, Glencoe, MN 55336"
+       "detail": "1805 Hennepin Avenue North, Glencoe, MN 55336"
       },
       {
        "kind": "portal",
-       "detail": "online at https://grhsonline.org/billing"
-      },
-      {
-       "kind": "phone",
-       "detail": "calling Patient Financial Services at 320-864-7101"
+       "detail": "https://grhsonline.org/billing"
       }
      ],
      "layer": "documented",
@@ -10315,7 +10460,7 @@
     "phone": {
      "value": "320-864-7101",
      "layer": "documented",
-     "quote": "calling Patient Financial Services at 320-864-7101",
+     "quote": "Additional information regarding financial assistance can be obtained by calling Patient Financial Services at 320-864-7101",
      "source_id": "fap-efdb66d68d18a2eb",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -10325,26 +10470,12 @@
      "value": "8 a.m. and 4:30 p.m., Monday \u2013 Friday",
      "layer": "documented",
      "quote": "please call our Insurance and Billing Department at 320-864-7101 between 8 a.m. and 4:30 p.m., Monday \u2013 Friday",
-     "source_id": "web-478f009472242952",
+     "source_id": "web-c2e837e7dcd9dbbc",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "languages": {
-     "value": [
-      "English",
-      "Spanish",
-      "Vietnamese",
-      "Chinese",
-      "Lao"
-     ],
-     "layer": "documented",
-     "quote": "Pol\u00edtica/Procedimiento:",
-     "source_id": "web-478f009472242952",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "languages": null
    },
    "coverage": {
     "facilities": null,
@@ -10371,37 +10502,39 @@
      "effective_date": null
     },
     {
-     "id": "web-478f009472242952",
+     "id": "web-c2e837e7dcd9dbbc",
      "kind": "hospital_web",
      "url": "https://glencoehealth.org/billing-and-insurance/financial-assistance/",
      "title": "Financial Assistance - Glencoe Regional Health",
      "fetched_on": "2026-10-23",
-     "sha256": "478f0094722429525a9bf465103e88da03e4048657d14afb1225fc1107cab867",
+     "sha256": "c2e837e7dcd9dbbc42dada24f93da5b32b5454c98308f5f39cc780040eed4c42",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: If you did not file taxes and only received Social Security: Social Security Benefit Statement from the previous year | If you have applied for Medical Assistance in the current year, please include a copy of your determination letter",
-    "contacts.languages: 2 more verbatim excerpt(s) supported this value: Financial Assistance Policy \u2013 Vietnamese [https://glencoehealth.org/wp-content/uploads/2026/07/Quynh-Nguyen-Financial-As | Financial Assistance Policy \u2013 Chinese [https://glencoehealth.org/wp-content/uploads/2026/07/Junqiao-Chen-Financial-Assis",
-    "agent judge on eligibility.free_care_max_fpl: Quote says income less than 200% FPL qualifies for free care. It does not state that 200% itself is included, so the inclusive maximum is not confirmed.",
-    "agent judge on eligibility.discount_tiers: Quote says 'less than four times' FPL, so the upper bound is exclusive. The value's max_fpl_inclusive of 400 is not what the quote states.",
-    "agent judge on apply.submit_methods: Quote gives phone, in-person, and online options only. The mail method with 'mailed to the applicant at the address provided on the application' does not appear in the quote.",
-    "agent judge on contacts.languages: Quote lists only Spanish, Vietnamese, and Chinese policy links. English and Lao are not stated in the quote."
+    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: If you did not file taxes and only received Social Security: Social Security Benefit Statement from the previous year",
+    "agent judge on eligibility.discount_tiers: Quote says income is 'less than four times' FPL, but the value uses max_fpl_inclusive 400. It is also a single family example, not a stated tier schedule.",
+    "agent judge on eligibility.assistance_ceiling_fpl: Quote says patients up to 4 times FPL 'may qualify for assistance'. It does not state that no assistance is offered above 400% FPL."
    ],
    "eve_verified": {
     "on": "2026-10-23",
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-efdb66d68d18a2eb": true,
+     "fap-86b239278a872414": true,
+     "web-c2e837e7dcd9dbbc": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "apply.documents_required",
      "apply.submit_methods",
      "apply.decision_days",
      "contacts.phone",
-     "contacts.hours",
-     "contacts.languages"
+     "contacts.hours"
     ],
     "rejected": [
      [
@@ -10479,7 +10612,7 @@
      "value": [
       {
        "kind": "in_person",
-       "detail": "In-person delivery: Patient Accounts Manager, 200 N. Elm St., Onamia"
+       "detail": "Patient Accounts Manager, 200 N. Elm St., Onamia"
       },
       {
        "kind": "mail",
@@ -10521,24 +10654,14 @@
     "phone": {
      "value": "320-532-2640",
      "layer": "documented",
-     "quote": "individual who has questions about financial assistance or who would like assistance with the application process can contact the health system\u2019s Patient Accounts Self-Pay Representative by calling (320) 532-2640.",
+     "quote": "You can also visit the Patient Accounts Office at 200 North Elm Street in Onamia.",
      "source_id": "fap-8c88d5dd8d693c26",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "hours": null,
-    "languages": {
-     "value": [
-      "primary language of that population"
-     ],
-     "layer": "documented",
-     "quote": "If any population with limited English proficiency comprises more than 5% of the population in the health system\u2019s community or more than 1,000 individuals, then all communication methods described in this policy will also be followed in the primary language of that population.",
-     "source_id": "fap-8c88d5dd8d693c26",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "languages": null
    },
    "coverage": {
     "facilities": null,
@@ -10578,24 +10701,27 @@
    "eve_review": [
     "apply.documents_required: 2 more verbatim excerpt(s) supported this value: 2 most recent pay stubs | Social security or other benefit monthly payment vouchers",
     "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Mail: Patient Accounts Manager, 200 N. Elm St., Onamia, MN 56359 | Fax: Patient Accounts Office, (320) 532-2658",
-    "agent judge on apply.window_days_from_first_bill: Quote gives 365 days from sending the billing statement, not from the first bill. The anchor point does not match the field.",
-    "agent judge on contacts.languages: Value is a placeholder, not a language. Quote only says translation applies to a population's primary language if thresholds are met, and names no language."
+    "agent judge on eligibility.insured_patients_covered: Quote says insured individuals may qualify when deductibles/non-covered services make them unable to pay; it does not state insured patients are covered as a flat true value.",
+    "agent judge on contacts.phone: Quote gives the office address in Onamia but no phone number; 320-532-2640 does not appear in the quote."
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 2,
+    "sources_fetched": 3,
     "sources_total": 3,
-    "sources_missing": [
-     "https://www.mlhealth.org/sites/default/files/2026-10/financial%20assistance%20application.pdf"
-    ],
+    "sources_missing": [],
+    "sha256_match": {
+     "fap-8c88d5dd8d693c26": true,
+     "fap-d566c1dcf4be397f": true,
+     "web-84f9c98eb9cb3118": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.insured_patients_covered",
      "apply.documents_required",
      "apply.submit_methods",
      "apply.window_days_from_first_bill",
      "apply.decision_days",
-     "contacts.phone",
-     "contacts.languages"
+     "contacts.phone"
     ],
     "rejected": [],
     "pruned": [
@@ -10809,6 +10935,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-a9e09e47e34836db": true,
+     "fap-c63934458ff050fc": true,
+     "web-a0cf4610f233316c": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -11057,6 +11189,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-a9e09e47e34836db": true,
+     "web-32bc6e2df29e4a94": false,
+     "fap-c63934458ff050fc": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -11253,6 +11391,11 @@
     "sources_fetched": 2,
     "sources_total": 2,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-c08951a52536f713": true,
+     "fap-474e722f8f9cba79": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -11443,6 +11586,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-0eb94610dee33f74": true,
+     "fap-f14f3fe3c2364b84": true,
+     "web-9e53962141c17820": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.insured_patients_covered",
@@ -11608,6 +11757,10 @@
     "sources_fetched": 1,
     "sources_total": 1,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-174bfaef7b79efbc": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.residency",
@@ -11793,6 +11946,12 @@
     "sources_missing": [
      "https://mlhmn.formstack.com/forms/financial_assistance_application"
     ],
+    "sha256_match": {
+     "fap-487b4ee3e250a74f": true,
+     "web-5ebe9cf4096ea1a9": false,
+     "web-2935af89b694c4b6": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.asset_test",
@@ -11970,6 +12129,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-174bfaef7b79efbc": true,
+     "fap-e4142b1248b8adbd": true,
+     "web-4eb978b1c84f208d": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.insured_patients_covered",
@@ -12027,8 +12192,8 @@
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "If anyone listed on the application has current healthcare coverage, please indicate this and send a copy of the front and back of the health insurance card.",
-     "source_id": "fap-b1ea791913a76181",
+     "quote": "Patients with insurance who receive medically necessary services that are not covered by their insurance may also be eligible for this discount.",
+     "source_id": "web-81e27c552f120585",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -12038,20 +12203,7 @@
    },
    "programs": {
     "presumptive": null,
-    "state_programs": {
-     "value": [
-      {
-       "name": "Medical Assistance/MNCare",
-       "how_to_apply": "If anyone listed on the application is uninsured, they need to apply for Medical Assistance/MNCare and then provide us with their written determination letter."
-      }
-     ],
-     "layer": "documented",
-     "quote": "If anyone listed on the application is uninsured, they need to apply for Medical Assistance/MNCare and then provide us with their written determination letter.",
-     "source_id": "fap-b1ea791913a76181",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "state_programs": null
    },
    "apply": {
     "form_url": null,
@@ -12085,7 +12237,7 @@
      ],
      "layer": "documented",
      "quote": "You may scan and email the completed application to AllinaPartnersCare@allina.com or you can fax it to 612-262-3625 or mail it to Allina Health Partners Care, PO Box 43, MR 10209, Minneapolis, MN 55440-0043.",
-     "source_id": "web-8a4ccdc267686397",
+     "source_id": "web-81e27c552f120585",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -12119,7 +12271,7 @@
      "value": "612-262-9000",
      "layer": "documented",
      "quote": "Need help paying your bill? Call 612-262-9000 612-262-9000 .",
-     "source_id": "web-8a4ccdc267686397",
+     "source_id": "web-81e27c552f120585",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -12128,7 +12280,7 @@
      "value": "Monday to Thursday: 8 a.m. to 4:30 p.m. Friday: 9 a.m. to 4:30 p.m.",
      "layer": "documented",
      "quote": "Monday to Thursday: 8 a.m. to 4:30 p.m. Friday: 9 a.m. to 4:30 p.m.",
-     "source_id": "web-8a4ccdc267686397",
+     "source_id": "web-81e27c552f120585",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -12144,7 +12296,7 @@
     {
      "id": "fap-1e86c5c45db22bd7",
      "kind": "hospital_web",
-     "url": "https://www.allinahealth.org/customer-service/-/media/allina-health/files/customer-service/allina-partners-care-policy.pdf",
+     "url": "https://www.allinahealth.org/-/media/allina-health/files/customer-service/allina-partners-care-policy.pdf",
      "title": "",
      "fetched_on": "2026-10-23",
      "sha256": "1e86c5c45db22bd77b566cb06ac50e5f17c3a69c55f1fcc404305375205a6bd1",
@@ -12153,38 +12305,45 @@
     {
      "id": "fap-b1ea791913a76181",
      "kind": "hospital_web",
-     "url": "https://www.allinahealth.org/customer-service/-/media/allina-health/files/customer-service/partnerscareprogramapp.pdf",
+     "url": "https://www.allinahealth.org/-/media/allina-health/files/customer-service/partnerscareprogramapp.pdf",
      "title": "",
      "fetched_on": "2026-10-23",
      "sha256": "b1ea791913a76181202271d86bbbd0922271a4a75992378f3b0d95683bc2c796",
      "effective_date": null
     },
     {
-     "id": "web-8a4ccdc267686397",
+     "id": "web-81e27c552f120585",
      "kind": "hospital_web",
      "url": "https://www.allinahealth.org/customer-service/financial-assistance",
      "title": "Financial Assistance | Medical Bills | Allina Health",
      "fetched_on": "2026-10-23",
-     "sha256": "8a4ccdc267686397fefd760e078a5363405c25d2ce51aa76b0b68e7ad29cbe93",
+     "sha256": "81e27c552f120585e10a413d8fdb9aba30cab0f47e53e3686240bb5f1cce85ed",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
     "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Previous year\u2019s federal tax return. | Bank statements, stocks/bonds, CDs, money market accounts.",
-    "agent judge on eligibility.assistance_ceiling_fpl: The quote states eligibility at or below 275% FPL but does not say assistance is unavailable above 275%.",
-    "agent judge on eligibility.insured_patients_covered: Quote only asks insured applicants to indicate coverage and send card copies; it does not state insured patients are covered.",
-    "agent judge on contacts.languages: Quote lists Spanish, Somali, Russian, Hmong, Vietnamese and Chinese as 'also available'; English is not stated in the quote."
+    "agent dropped programs.state_programs: quote is not a substring of the source",
+    "agent judge on eligibility.assistance_ceiling_fpl: Quote states eligibility at or below 275% FPL but does not say assistance is unavailable above 275%.",
+    "agent judge on programs.presumptive: Quote mentions third-party presumptive eligibility software but does not name Medicaid or any specific program.",
+    "agent judge on apply.documents_required: Quote lists pay stubs or employer statement, prior federal tax return, and bank/investment statements; insurance card and Social Security letter are not mentioned.",
+    "agent judge on contacts.languages: Quote lists Spanish, Somali, Russian, Hmong, Vietnamese, and Chinese; English is not stated in the quote."
    ],
    "eve_verified": {
     "on": "2026-10-23",
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-1e86c5c45db22bd7": true,
+     "fap-b1ea791913a76181": true,
+     "web-81e27c552f120585": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.assistance_ceiling_fpl",
      "eligibility.insured_patients_covered",
-     "programs.state_programs",
      "apply.documents_required",
      "apply.submit_methods",
      "apply.window_days_from_first_bill",
@@ -12203,7 +12362,8 @@
      ]
     ],
     "pruned": [
-     "apply.documents_required: 2 items not named in the trimmed quote"
+     "programs.presumptive: none of the listed programs is named in the quote (after trimming)",
+     "apply.documents_required: 4 items not named in the trimmed quote"
     ],
     "income_rule_verified": false,
     "core_completeness": 0.5
@@ -12254,7 +12414,15 @@
     "state_programs": null
    },
    "apply": {
-    "form_url": null,
+    "form_url": {
+     "value": "https://res.cloudinary.com/dpmykpsih/image/upload/lake-region-v8-site-364/media/e2d73cdbac9d4462b489154c5e0bfa1d/2026-lrh-03183-application-for-financial-assistance.pdf",
+     "layer": "documented",
+     "quote": "Community care application.",
+     "source_id": "web-59a0b05e76d11426",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "form_version": null,
     "documents_required": {
      "value": [
@@ -12397,14 +12565,19 @@
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 2,
+    "sources_fetched": 3,
     "sources_total": 3,
-    "sources_missing": [
-     "https://www.lrhc.org/patients-visitors/patients/financial-services/"
-    ],
+    "sources_missing": [],
+    "sha256_match": {
+     "fap-c71b1f605eadc6ed": true,
+     "fap-9319c718e90f1e6d": true,
+     "web-59a0b05e76d11426": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.insured_patients_covered",
+     "apply.form_url",
      "apply.documents_required",
      "apply.submit_methods",
      "apply.window_days_from_first_bill",
@@ -12418,10 +12591,6 @@
      [
       "eligibility.discount_tiers",
       "value not in quote"
-     ],
-     [
-      "apply.form_url",
-      "source text missing"
      ]
     ],
     "pruned": [
@@ -12430,7 +12599,7 @@
      "apply.submit_methods: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": true,
-    "core_completeness": 0.67
+    "core_completeness": 0.83
    }
   }
  ]

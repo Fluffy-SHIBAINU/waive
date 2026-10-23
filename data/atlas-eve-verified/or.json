@@ -21,26 +21,104 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": null,
-    "discount_tiers": null,
-    "assistance_ceiling_fpl": null,
+    "free_care_max_fpl": {
+     "value": "300",
+     "layer": "documented",
+     "quote": "300% or less of the Federal Poverty Level Zero (Full Charity)",
+     "source_id": "fap-7a5900fa182379a1",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "300",
+       "max_fpl_inclusive": "400",
+       "discount_percent": 75
+      }
+     ],
+     "layer": "documented",
+     "quote": "301% to 400% of the Federal Poverty Level 75% of the AGB, less insurance/third party payment (if any) (Discount)",
+     "source_id": "fap-7a5900fa182379a1",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "assistance_ceiling_fpl": {
+     "value": "400",
+     "layer": "documented",
+     "quote": "> 400% of the Federal Poverty Level No Financial Assistance",
+     "source_id": "fap-7a5900fa182379a1",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "asset_test": null,
     "residency": null,
-    "insured_patients_covered": null,
-    "min_balance": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Will owe the hospital $500 or more after adjustments from insurance or other third-party payers",
+     "source_id": "fap-7a5900fa182379a1",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "min_balance": {
+     "value": "500",
+     "layer": "documented",
+     "quote": "Will owe the hospital $500 or more after adjustments from insurance or other third-party payers",
+     "source_id": "fap-7a5900fa182379a1",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "services_excluded": null
    },
    "programs": {
     "presumptive": null,
-    "state_programs": null
+    "state_programs": {
+     "value": [
+      {
+       "name": "Oregon Health Plan",
+       "how_to_apply": "The patient financial advocate assists low-income Oregon residents with Oregon Health Plan eligibility and applications. They can be reached by phone at 541-296-7221 from 8 a.m. to 4:30 p.m."
+      }
+     ],
+     "layer": "documented",
+     "quote": "The patient financial advocate assists low-income Oregon residents with Oregon Health Plan eligibility and applications. They can be reached by phone at 541-296-7221 from 8 a.m. to 4:30 p.m.",
+     "source_id": "web-04c87961dc03f9d9",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
    },
    "apply": {
     "form_url": null,
     "form_version": null,
-    "documents_required": null,
+    "documents_required": {
+     "value": [
+      "pay_stubs",
+      "other"
+     ],
+     "layer": "documented",
+     "quote": "Recent pay stubs from within the 6 months before or after the patient is first billed (or in preservice when Application is submitted)",
+     "source_id": "fap-7a5900fa182379a1",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "documents_reported": null,
     "submit_methods": null,
-    "window_days_from_first_bill": null,
+    "window_days_from_first_bill": {
+     "value": 240,
+     "layer": "documented",
+     "quote": "within 240 days following the initial billing statement for the services provided, 12 months after the patient pays for the services provided",
+     "source_id": "fap-7a5900fa182379a1",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "decision_days": null,
     "decision_days_reported": null
    },
@@ -49,8 +127,24 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": null,
-    "hours": null,
+    "phone": {
+     "value": "541-296-7504",
+     "layer": "documented",
+     "quote": "Call us at 541-296-7504 so we can help you as soon as possible.",
+     "source_id": "web-04c87961dc03f9d9",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": {
+     "value": "Monday through Friday, from 7 a.m. \u2013 8 p.m. Pacific Time",
+     "layer": "documented",
+     "quote": "Contact us Monday through Friday, from 7 a.m. \u2013 8 p.m. Pacific Time.",
+     "source_id": "web-04c87961dc03f9d9",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "languages": null
    },
    "coverage": {
@@ -98,67 +192,41 @@
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 0,
+    "sources_fetched": 2,
     "sources_total": 3,
     "sources_missing": [
-     "https://www.adventisthealth.org/documents/system/financial-assistance/oregon/financial-assistance-policy-or-english.pdf",
-     "https://www.adventisthealth.org/documents/system/financial-assistance/application/financial-assistance-application-english.pdf",
-     "https://www.adventisthealth.org/columbia-gorge/patients-and-visitors/help-paying-your-bill/"
+     "https://www.adventisthealth.org/documents/system/financial-assistance/application/financial-assistance-application-english.pdf"
     ],
-    "accepted": [],
+    "sha256_match": {
+     "fap-7a5900fa182379a1": true,
+     "fap-a19279fbb16bd80d": true,
+     "web-04c87961dc03f9d9": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
+    "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
+     "eligibility.assistance_ceiling_fpl",
+     "eligibility.insured_patients_covered",
+     "eligibility.min_balance",
+     "programs.state_programs",
+     "apply.documents_required",
+     "apply.window_days_from_first_bill",
+     "contacts.phone",
+     "contacts.hours"
+    ],
     "rejected": [
      [
-      "eligibility.free_care_max_fpl",
-      "source text missing"
-     ],
-     [
-      "eligibility.discount_tiers",
-      "source text missing"
-     ],
-     [
-      "eligibility.assistance_ceiling_fpl",
-      "source text missing"
-     ],
-     [
-      "eligibility.insured_patients_covered",
-      "source text missing"
-     ],
-     [
-      "eligibility.min_balance",
-      "source text missing"
-     ],
-     [
-      "programs.presumptive",
-      "source text missing"
-     ],
-     [
-      "programs.state_programs",
-      "source text missing"
-     ],
-     [
       "apply.form_url",
-      "source text missing"
-     ],
-     [
-      "apply.documents_required",
-      "source text missing"
-     ],
-     [
-      "apply.window_days_from_first_bill",
-      "source text missing"
-     ],
-     [
-      "contacts.phone",
-      "source text missing"
-     ],
-     [
-      "contacts.hours",
-      "source text missing"
+      "quote not found in source"
      ]
     ],
-    "pruned": [],
-    "income_rule_verified": false,
-    "core_completeness": 0.0
+    "pruned": [
+     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
+     "apply.documents_required: 1 item not named in the trimmed quote"
+    ],
+    "income_rule_verified": true,
+    "core_completeness": 0.67
    }
   },
   {
@@ -379,6 +447,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-731cb96f01a2a259": true,
+     "fap-1b1246d3266b9cad": true,
+     "web-951c7456c7eeb8a6": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -613,6 +687,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-8316e0d0c07c7862": true,
+     "fap-4fc3acd192b48414": true,
+     "web-c20c29377dbe92c8": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -836,6 +916,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-dc631ce07556d2a4": true,
+     "fap-ed0d5dedd41e1cb2": true,
+     "web-6141d5789557618e": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.assistance_ceiling_fpl",
@@ -1035,6 +1121,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-8316e0d0c07c7862": true,
+     "fap-4fc3acd192b48414": true,
+     "web-a9c23508a62599fd": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.asset_test",
@@ -1087,15 +1179,7 @@
     "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": null,
-    "insured_patients_covered": {
-     "value": true,
-     "layer": "documented",
-     "quote": "You may qualify for free care or reduced-price care based on your family size and income, even if you have health insurance.",
-     "source_id": "fap-1512ca33308e5096",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "insured_patients_covered": null,
     "min_balance": null,
     "services_excluded": null
    },
@@ -1106,49 +1190,11 @@
    "apply": {
     "form_url": null,
     "form_version": null,
-    "documents_required": {
-     "value": [
-      "pay_stubs",
-      "tax_return",
-      "proof_of_income",
-      "other"
-     ],
-     "layer": "documented",
-     "quote": "A \"W-2\" withholding statement; and \u2022 Current pay stubs (3 months); and \u2022 Last year\u2019s income tax return, including schedules if applicable; and \u2022 Written, signed statements from employers or others; and \u2022 Approval/denial of eligibility for Medicaid and/or state-funded medical assistance; and \u2022 Approval/denial of eligibility for unemployment compensation.",
-     "source_id": "fap-1512ca33308e5096",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "documents_required": null,
     "documents_reported": null,
-    "submit_methods": {
-     "value": [
-      {
-       "kind": "mail",
-       "detail": "Mail or fax completed application with all documentation to: McKenzie Willamette Medical Center 1460 G street, Springfield Or. 97477"
-      },
-      {
-       "kind": "fax",
-       "detail": "Fax to: 541-744-6168"
-      }
-     ],
-     "layer": "documented",
-     "quote": "Mail or fax completed application with all documentation to: McKenzie Willamette Medical Center 1460 G street, Springfield Or. 97477",
-     "source_id": "fap-1512ca33308e5096",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "submit_methods": null,
     "window_days_from_first_bill": null,
-    "decision_days": {
-     "value": 14,
-     "layer": "documented",
-     "quote": "We will notify you of the final determination of eligibility and appeal rights, if applicable, within 14 calendar days of receiving a complete financial assistance application, including documentation of income.",
-     "source_id": "fap-1512ca33308e5096",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "decision_days": null,
     "decision_days_reported": null
    },
    "collections": {
@@ -1157,10 +1203,10 @@
    },
    "contacts": {
     "phone": {
-     "value": "541-726-4400",
+     "value": "833-282-0583",
      "layer": "documented",
-     "quote": "Please call the Financial Counselors at 541-726-4400.",
-     "source_id": "fap-1512ca33308e5096",
+     "quote": "call 833-282-0583",
+     "source_id": "web-964890be2dff90a4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -1184,15 +1230,6 @@
      "effective_date": null
     },
     {
-     "id": "fap-1512ca33308e5096",
-     "kind": "hospital_web",
-     "url": "https://mckweb.com/wp-content/uploads/2026/07/MWMC-Financial-Assistance-Paperwork-2025.pdf",
-     "title": "",
-     "fetched_on": "2026-10-23",
-     "sha256": "1512ca33308e50962e27facfe0d6d0da7dcef4ed3d7bda3102ed74a4875ba534",
-     "effective_date": null
-    },
-    {
      "id": "web-964890be2dff90a4",
      "kind": "hospital_web",
      "url": "https://mckweb.com/billing-insurance/",
@@ -1203,40 +1240,31 @@
     }
    ],
    "accuracy": null,
-   "eve_review": [
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: To submit your completed application in person: 1460 G Street Springfield, Or. 97477- Financial Counseling Department | Fax to: 541-744-6168",
-    "agent judge on eligibility.asset_test: The quote only says the information may be used if income is above 101% FPL. It does not say assets are considered."
-   ],
+   "eve_review": [],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 2,
-    "sources_total": 3,
+    "sources_fetched": 1,
+    "sources_total": 2,
     "sources_missing": [
      "https://mckweb.com/wp-content/uploads/2023/09/MWMC-Financial-Assistance-Charity-Care-Policy-CCP.pdf"
     ],
+    "sha256_match": {
+     "fap-4370136445e29660": true,
+     "web-964890be2dff90a4": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
-     "eligibility.insured_patients_covered",
-     "apply.documents_required",
-     "apply.submit_methods",
-     "apply.decision_days",
      "contacts.phone"
     ],
     "rejected": [
-     [
-      "eligibility.asset_test",
-      "quote does not support the asset-test value"
-     ],
      [
       "apply.form_url",
       "quote not found in source"
      ]
     ],
-    "pruned": [
-     "apply.documents_required: 1 item not named in the trimmed quote",
-     "apply.submit_methods: 1 item not named in the trimmed quote"
-    ],
+    "pruned": [],
     "income_rule_verified": false,
-    "core_completeness": 0.5
+    "core_completeness": 0.17
    }
   },
   {
@@ -1294,7 +1322,7 @@
       "other"
      ],
      "layer": "documented",
-     "quote": "Proof of residency. Provide one of the following: utility bill in your name, rental agreement, mortgage statement for your residence, copy of your driver\u2019s license or identification card.",
+     "quote": "Provide one of the following: utility bill in your name, rental agreement, mortgage statement for your residence, copy of your driver\u2019s license or identification card.",
      "source_id": "fap-e50e7d56cde4c9a1",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1305,19 +1333,11 @@
      "value": [
       {
        "kind": "mail",
-       "detail": "Oregon Health & Science University, Patient Financial Services, RPB07, 3181 SW Sam Jackson Park Road, Portland, OR 97239-3098"
-      },
-      {
-       "kind": "fax",
-       "detail": "503-418-2377"
-      },
-      {
-       "kind": "email",
-       "detail": "sfr@ohsu.edu"
+       "detail": "Oregon Health & Science University Patient Financial Services, RPB07 3181 SW Sam Jackson Park Road Portland, OR 97239-3098"
       }
      ],
      "layer": "documented",
-     "quote": "Mail: Oregon Health & Science University Patient Financial Services, RPB07 3181 SW Sam Jackson Park Road Portland, OR 97239-3098 Fax: 503-418-2377 Email: sfr@ohsu.edu",
+     "quote": "Mail: Oregon Health & Science University Patient Financial Services, RPB07 3181 SW Sam Jackson Park Road Portland, OR 97239-3098",
      "source_id": "fap-e50e7d56cde4c9a1",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1341,19 +1361,19 @@
    },
    "contacts": {
     "phone": {
-     "value": "833-851-5553",
+     "value": "503-494-8551",
      "layer": "documented",
-     "quote": "Current billing or payment questions. 833-851-5553",
-     "source_id": "web-78bb0c47050466e5",
+     "quote": "For help filling out the application, call 503-494-8551, Monday-Friday, 9 a.m-4:30 p.m.",
+     "source_id": "fap-e50e7d56cde4c9a1",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "hours": {
-     "value": "8 a.m. to 6 p.m., Mon. \u2013 Thurs. 8 a.m. to 5 p.m., Fri.",
+     "value": "Monday-Friday, 9 a.m-4:30 p.m.",
      "layer": "documented",
-     "quote": "Hours: 8 a.m. to 6 p.m., Mon. \u2013 Thurs. 8 a.m. to 5 p.m., Fri.",
-     "source_id": "web-78bb0c47050466e5",
+     "quote": "For help filling out the application, call 503-494-8551, Monday-Friday, 9 a.m-4:30 p.m.",
+     "source_id": "fap-e50e7d56cde4c9a1",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -1367,12 +1387,12 @@
    },
    "sources": [
     {
-     "id": "web-7abc7f22a9f19a11",
+     "id": "web-660c4975116bc8ed",
      "kind": "hospital_web",
      "url": "https://tualityhealthcare.ellucid.com/pman/documents/view/1022/?security=63099d1896e8da1eee340e7cc860dc394a8da5a2",
      "title": "Policy Manager - MCN Solutions",
      "fetched_on": "2026-10-23",
-     "sha256": "7abc7f22a9f19a11afd5644c184b29b636d6cc6ddbd4cd762e2b759eab6b7a8c",
+     "sha256": "660c4975116bc8ed0100286731d3379459a9afa20dfb7e5e27a44dfb94b4da08",
      "effective_date": null
     },
     {
@@ -1385,28 +1405,32 @@
      "effective_date": null
     },
     {
-     "id": "web-78bb0c47050466e5",
+     "id": "web-8442be7805ba1c47",
      "kind": "hospital_web",
-     "url": "https://tuality.org/patient-resources/billing/bill_payment_overview/",
-     "title": "Paying for Your Care : Hillsboro Medical Center",
+     "url": "https://tuality.org/patient-resources/billing/faq/",
+     "title": "Billing and Insurance FAQ : Hillsboro Medical Center",
      "fetched_on": "2026-10-23",
-     "sha256": "78bb0c47050466e59a4c4ebc2ae007d1167a9d0bf57e348e8fc284739408a063",
+     "sha256": "8442be7805ba1c47124fead546066ae0e277ddb0f9e7c2ff8257d92dba0f84bd",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Paycheck stubs for the last 3 full calendar months. | Income tax returns for the most recent year filed, including any schedules (such as schedule C for self-employment incom",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: To deliver in person: Please call 503-494-8551 to determine location closest to you.",
-    "agent judge on eligibility.asset_test: Quote says the information is not used for financial assistance determinations; it does not say assets are considered.",
-    "agent judge on apply.documents_required: Quote names only proof of residency, paystubs for 3 months, and tax returns. Value adds Social Security, child support, self-employment worksheet, bank, and investment documents not in the quote.",
-    "agent judge on contacts.languages: Quote is a website language toggle showing English and Espa\u00f1ol; it does not state that Spanish assistance is offered, and English is omitted from the value."
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Paycheck stubs for the last 3 full calendar months. | Social Security, Veterans, Pension Award Letter or the equivalent",
+    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Fax: 503-418-2377 Email: sfr@ohsu.edu | To deliver in person: Please call 503-494-8551 to determine location closest to you.",
+    "agent judge on apply.documents_required: Quote covers proof of residency, paycheck stubs, and Social Security/Veterans/Pension letters only. It does not mention income tax returns or bank/credit union statements."
    ],
    "eve_verified": {
     "on": "2026-10-23",
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "web-660c4975116bc8ed": false,
+     "fap-e50e7d56cde4c9a1": true,
+     "web-8442be7805ba1c47": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.residency",
      "eligibility.insured_patients_covered",
@@ -1416,19 +1440,10 @@
      "contacts.phone",
      "contacts.hours"
     ],
-    "rejected": [
-     [
-      "eligibility.asset_test",
-      "quote does not support the asset-test value"
-     ],
-     [
-      "contacts.languages",
-      "quote not found in source"
-     ]
-    ],
+    "rejected": [],
     "pruned": [
-     "apply.documents_required: 5 items not named in the trimmed quote",
-     "apply.submit_methods: 1 item not named in the trimmed quote"
+     "apply.documents_required: 3 items not named in the trimmed quote",
+     "apply.submit_methods: 3 items not named in the trimmed quote"
     ],
     "income_rule_verified": false,
     "core_completeness": 0.5
@@ -1630,6 +1645,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-8316e0d0c07c7862": true,
+     "fap-4fc3acd192b48414": true,
+     "web-90d38437c939034d": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.asset_test",
@@ -1864,6 +1885,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-8316e0d0c07c7862": true,
+     "fap-4fc3acd192b48414": true,
+     "web-f5c6e1b580f01421": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.asset_test",
@@ -2122,6 +2149,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-731cb96f01a2a259": true,
+     "fap-1b1246d3266b9cad": true,
+     "web-1648a6c93bdd726d": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -2344,6 +2377,11 @@
     "sources_fetched": 2,
     "sources_total": 2,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-731cb96f01a2a259": true,
+     "web-f5ed06153556dae9": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -2577,6 +2615,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-bfe1f1ca4317f9b8": true,
+     "fap-3399bc1a3b0b93bf": true,
+     "web-cb340a8f9dc23f47": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.asset_test",
@@ -2759,6 +2803,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-66dc35ae3766a1ca": true,
+     "fap-396b7752e5a08d6c": true,
+     "web-3086412b8f598e89": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.min_balance",
@@ -2965,6 +3015,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-4f42b6fac6ab6dc4": true,
+     "fap-7da278fca3e41773": true,
+     "web-b4e975b039dd523e": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.insured_patients_covered",
@@ -3170,6 +3226,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-15b52d76c292a49d": true,
+     "fap-066e75e7c5972a4f": true,
+     "web-b7fc402d1bd5571d": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.residency",
@@ -3400,6 +3462,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-0a756335ac5e6d7b": true,
+     "fap-b15b3af4b20ce3de": true,
+     "web-ed1cf61c9145fad1": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.residency",
@@ -3447,26 +3515,90 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": null,
+    "free_care_max_fpl": {
+     "value": "300",
+     "layer": "documented",
+     "quote": "300% or less of the Federal Poverty Level Zero (Full Charity)",
+     "source_id": "fap-7a5900fa182379a1",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "discount_tiers": null,
-    "assistance_ceiling_fpl": null,
+    "assistance_ceiling_fpl": {
+     "value": "400",
+     "layer": "documented",
+     "quote": "> 400% of the Federal Poverty Level No Financial Assistance",
+     "source_id": "fap-7a5900fa182379a1",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "asset_test": null,
     "residency": null,
-    "insured_patients_covered": null,
-    "min_balance": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Will owe the hospital $500 or more after adjustments from insurance or other third-party payers",
+     "source_id": "fap-7a5900fa182379a1",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "min_balance": {
+     "value": "500",
+     "layer": "documented",
+     "quote": "Will owe the hospital $500 or more after adjustments from insurance or other third-party payers",
+     "source_id": "fap-7a5900fa182379a1",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "services_excluded": null
    },
    "programs": {
     "presumptive": null,
-    "state_programs": null
+    "state_programs": {
+     "value": [
+      {
+       "name": "Oregon Health Plan",
+       "how_to_apply": "The patient financial advocate assists low-income Oregon residents with Oregon Health Plan eligibility and applications. They can be reached by phone at 541-296-7221 from 8 a.m. to 4:30 p.m."
+      }
+     ],
+     "layer": "documented",
+     "quote": "The patient financial advocate assists low-income Oregon residents with Oregon Health Plan eligibility and applications. They can be reached by phone at 541-296-7221 from 8 a.m. to 4:30 p.m.",
+     "source_id": "web-717bee932e9e918c",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
    },
    "apply": {
     "form_url": null,
     "form_version": null,
-    "documents_required": null,
+    "documents_required": {
+     "value": [
+      "pay_stubs",
+      "other"
+     ],
+     "layer": "documented",
+     "quote": "Recent pay stubs from within the 6 months before or after the patient is first billed (or in preservice when Application is submitted)",
+     "source_id": "fap-7a5900fa182379a1",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "documents_reported": null,
     "submit_methods": null,
-    "window_days_from_first_bill": null,
+    "window_days_from_first_bill": {
+     "value": 240,
+     "layer": "documented",
+     "quote": "The Application Period begins on the date the care is provided and ends on the latter of the 240th day after the date that the first post-discharge billing statement for the care is provided",
+     "source_id": "fap-7a5900fa182379a1",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "decision_days": null,
     "decision_days_reported": null
    },
@@ -3476,7 +3608,15 @@
    },
    "contacts": {
     "phone": null,
-    "hours": null,
+    "hours": {
+     "value": "Monday through Friday, from 7 a.m. \u2013 8 p.m. Pacific Time",
+     "layer": "documented",
+     "quote": "Contact us Monday through Friday, from 7 a.m. \u2013 8 p.m. Pacific Time.",
+     "source_id": "web-717bee932e9e918c",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "languages": null
    },
    "coverage": {
@@ -3524,63 +3664,43 @@
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 0,
+    "sources_fetched": 2,
     "sources_total": 3,
     "sources_missing": [
-     "https://www.adventisthealth.org/documents/system/financial-assistance/oregon/financial-assistance-policy-or-english.pdf",
-     "https://www.adventisthealth.org/documents/system/financial-assistance/application/financial-assistance-application-english.pdf",
-     "https://www.adventisthealth.org/portland/patients-and-visitors/patient-financial-services/financial-assistance/"
+     "https://www.adventisthealth.org/documents/system/financial-assistance/application/financial-assistance-application-english.pdf"
     ],
-    "accepted": [],
+    "sha256_match": {
+     "fap-7a5900fa182379a1": true,
+     "fap-a19279fbb16bd80d": true,
+     "web-717bee932e9e918c": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
+    "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.assistance_ceiling_fpl",
+     "eligibility.insured_patients_covered",
+     "eligibility.min_balance",
+     "programs.state_programs",
+     "apply.documents_required",
+     "apply.window_days_from_first_bill",
+     "contacts.hours"
+    ],
     "rejected": [
      [
-      "eligibility.free_care_max_fpl",
-      "source text missing"
-     ],
-     [
       "eligibility.discount_tiers",
-      "source text missing"
-     ],
-     [
-      "eligibility.assistance_ceiling_fpl",
-      "source text missing"
-     ],
-     [
-      "eligibility.insured_patients_covered",
-      "source text missing"
-     ],
-     [
-      "eligibility.min_balance",
-      "source text missing"
-     ],
-     [
-      "programs.presumptive",
-      "source text missing"
-     ],
-     [
-      "programs.state_programs",
-      "source text missing"
+      "value not in quote"
      ],
      [
       "apply.form_url",
-      "source text missing"
-     ],
-     [
-      "apply.documents_required",
-      "source text missing"
-     ],
-     [
-      "apply.window_days_from_first_bill",
-      "source text missing"
-     ],
-     [
-      "contacts.hours",
-      "source text missing"
+      "quote not found in source"
      ]
     ],
-    "pruned": [],
-    "income_rule_verified": false,
-    "core_completeness": 0.0
+    "pruned": [
+     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
+     "apply.documents_required: 2 items not named in the trimmed quote"
+    ],
+    "income_rule_verified": true,
+    "core_completeness": 0.33
    }
   },
   {
@@ -3804,6 +3924,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-731cb96f01a2a259": true,
+     "fap-1b1246d3266b9cad": true,
+     "web-2d84991a980781c1": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -4044,6 +4170,11 @@
     "sources_fetched": 2,
     "sources_total": 2,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-731cb96f01a2a259": true,
+     "web-21524ec2852fc300": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -4266,6 +4397,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-731cb96f01a2a259": true,
+     "fap-1b1246d3266b9cad": true,
+     "web-0618df7471ea5cbf": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -4485,6 +4622,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-8316e0d0c07c7862": true,
+     "fap-4fc3acd192b48414": true,
+     "web-eba97cd3cac7f306": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.assistance_ceiling_fpl",
@@ -4731,6 +4874,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-9f80a1b7279d78ae": true,
+     "fap-12c23401dbd1fe32": true,
+     "web-1016dc0a04f72192": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.asset_test",
@@ -4979,6 +5128,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-0030b7c2c8e78173": true,
+     "fap-98fd69e1adf7b880": true,
+     "web-712417ac64b2a194": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.asset_test",
@@ -5046,8 +5201,29 @@
     "form_version": null,
     "documents_required": null,
     "documents_reported": null,
-    "submit_methods": null,
-    "window_days_from_first_bill": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "Samaritan Health Services, Regional Business Office, PO Box 1188, Corvallis, OR 97339-1188"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Write to : Samaritan Health Services, Regional Business Office, PO Box 1188, Corvallis, OR 97339-1188.",
+     "source_id": "web-4c24f977ab47b43f",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": {
+     "value": 10,
+     "layer": "documented",
+     "quote": "Return the completed Financial Assistance Application along with required supporting documents within 10 days from receipt of your billing statement.",
+     "source_id": "web-4c24f977ab47b43f",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "decision_days": null,
     "decision_days_reported": null
    },
@@ -5056,8 +5232,24 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": null,
-    "hours": null,
+    "phone": {
+     "value": "800-640-5339",
+     "layer": "documented",
+     "quote": "Billing questions? Call 800-640-5339",
+     "source_id": "web-4c24f977ab47b43f",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": {
+     "value": "Monday through Friday, 8 a.m. to 5 p.m.",
+     "layer": "documented",
+     "quote": "Hours: Monday through Friday, 8 a.m. to 5 p.m. or inquire online",
+     "source_id": "web-4c24f977ab47b43f",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "languages": null
    },
    "coverage": {
@@ -5067,27 +5259,52 @@
    },
    "sources": [
     {
-     "id": "web-41cb68d198fbc5a3",
+     "id": "web-0159f6797f7819f4",
      "kind": "hospital_web",
-     "url": "https://samaritanhealthservices.navexone.com/content/dotNet/noAuth/login.aspx?ReturnUrl=%2fcontent%2fdocview%2f%3fdocid%3d1715%26public%3dtrue&docid=1715&public=true",
+     "url": "https://samaritanhealthservices.navexone.com/content/dotNet/noAuth/login.aspx?ReturnUrl=%2fcontent%2fdocview%2f%3fapp%3dpt%26source%3dunspecified%26docid%3d14366%26public%3dtrue&app=pt&source=unspecified&docid=14366&public=true",
      "title": "PolicyTech - Log in",
      "fetched_on": "2026-10-23",
-     "sha256": "41cb68d198fbc5a3c31391a9269d868032c74da7b0b6899d94c543a766cb4c4a",
+     "sha256": "0159f6797f7819f4c2f96cf02948f4b61e52fa98f637b1cee26b2a89c89286a0",
+     "effective_date": null
+    },
+    {
+     "id": "web-4c24f977ab47b43f",
+     "kind": "hospital_web",
+     "url": "https://samhealth.org/patient-visitors/make-a-payment/financial-assistance/financial-assistance-process/",
+     "title": "Financial Assistance Process - Samaritan Health Services",
+     "fetched_on": "2026-10-23",
+     "sha256": "4c24f977ab47b43f53694d32d9dd61e8eec152095472eba1b41b0b3702f7e601",
      "effective_date": null
     }
    ],
    "accuracy": null,
-   "eve_review": [],
+   "eve_review": [
+    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Call : 800-640-5339",
+    "agent dropped apply.documents_required: between 1 and 3 excerpts allowed",
+    "agent judge on apply.submit_methods: The quote lists a mailing address and a phone number but does not say they are for submitting financial assistance applications."
+   ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 1,
-    "sources_total": 1,
+    "sources_fetched": 2,
+    "sources_total": 2,
     "sources_missing": [],
-    "accepted": [],
+    "sha256_match": {
+     "web-0159f6797f7819f4": false,
+     "web-4c24f977ab47b43f": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
+    "accepted": [
+     "apply.submit_methods",
+     "apply.window_days_from_first_bill",
+     "contacts.phone",
+     "contacts.hours"
+    ],
     "rejected": [],
-    "pruned": [],
+    "pruned": [
+     "apply.submit_methods: 1 item not named in the trimmed quote"
+    ],
     "income_rule_verified": false,
-    "core_completeness": 0.0
+    "core_completeness": 0.33
    }
   },
   {
@@ -5309,6 +5526,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-731cb96f01a2a259": true,
+     "fap-1b1246d3266b9cad": true,
+     "web-2790cd569bece95a": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -5525,6 +5748,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-4f42b6fac6ab6dc4": true,
+     "fap-7da278fca3e41773": true,
+     "web-26ce49253d2703b5": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.insured_patients_covered",
@@ -5787,6 +6016,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-bfe1f1ca4317f9b8": true,
+     "fap-3399bc1a3b0b93bf": true,
+     "web-3fc5577912524b76": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.asset_test",
@@ -5838,7 +6073,15 @@
     "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": null,
-    "insured_patients_covered": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "financial assistance will be provided to uninsured and insured patients with demonstrated financial need",
+     "source_id": "web-5b0c849e469b6fb3",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "min_balance": null,
     "services_excluded": null
    },
@@ -5849,11 +6092,29 @@
    "apply": {
     "form_url": null,
     "form_version": null,
-    "documents_required": null,
+    "documents_required": {
+     "value": [
+      "tax_return"
+     ],
+     "layer": "documented",
+     "quote": "Most recent federal tax return.",
+     "source_id": "web-5b0c849e469b6fb3",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "documents_reported": null,
     "submit_methods": null,
     "window_days_from_first_bill": null,
-    "decision_days": null,
+    "decision_days": {
+     "value": 30,
+     "layer": "documented",
+     "quote": "will take no more than 30 days to process",
+     "source_id": "web-5b0c849e469b6fb3",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "decision_days_reported": null
    },
    "collections": {
@@ -5861,8 +6122,24 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": null,
-    "hours": null,
+    "phone": {
+     "value": "800-640-5339",
+     "layer": "documented",
+     "quote": "Billing questions? Call 800-640-5339",
+     "source_id": "web-5b0c849e469b6fb3",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": {
+     "value": "Monday through Friday, 8 a.m. to 5 p.m.",
+     "layer": "documented",
+     "quote": "Hours: Monday through Friday, 8 a.m. to 5 p.m. or inquire online",
+     "source_id": "web-5b0c849e469b6fb3",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "languages": null
    },
    "coverage": {
@@ -5872,27 +6149,63 @@
    },
    "sources": [
     {
-     "id": "web-fd34bde4d55a1a46",
+     "id": "web-5f1b09d8a5d30852",
      "kind": "hospital_web",
      "url": "https://samaritanhealthservices.navexone.com/content/dotNet/noAuth/login.aspx?ReturnUrl=%2fcontent%2fdocview%2f%3fdocid%3d1715%26public%3dtrue&docid=1715&public=true",
      "title": "PolicyTech - Log in",
      "fetched_on": "2026-10-23",
-     "sha256": "fd34bde4d55a1a466f7ac0e8bee67789eb74f3bb3ebd426060055ab1396b4eaf",
+     "sha256": "5f1b09d8a5d3085223ff1459e09875da4973a379356bbe18632a873bf3a44636",
+     "effective_date": null
+    },
+    {
+     "id": "web-f7be0e795298ee8e",
+     "kind": "hospital_web",
+     "url": "https://samaritanhealthservices.navexone.com/content/dotNet/noAuth/login.aspx?ReturnUrl=%2fcontent%2fdocview%2f%3fapp%3dpt%26source%3dunspecified%26docid%3d14366%26public%3dtrue&app=pt&source=unspecified&docid=14366&public=true",
+     "title": "PolicyTech - Log in",
+     "fetched_on": "2026-10-23",
+     "sha256": "f7be0e795298ee8e8492f1940195fb3ec66fd5db98505e052360d48562f9073c",
+     "effective_date": null
+    },
+    {
+     "id": "web-5b0c849e469b6fb3",
+     "kind": "hospital_web",
+     "url": "https://samhealth.org/patient-visitors/make-a-payment/financial-assistance/",
+     "title": "Financial Assistance - Samaritan Health Services",
+     "fetched_on": "2026-10-23",
+     "sha256": "5b0c849e469b6fb341a244c9c3a8948b0a98c216898e53721aaee3f886e1cc3b",
      "effective_date": null
     }
    ],
    "accuracy": null,
-   "eve_review": [],
+   "eve_review": [
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Current proof of income. | Bank statements.",
+    "agent dropped programs.state_programs: quote is not a substring of the source",
+    "agent judge on apply.documents_required: Quote names only three documents (tax return, proof of income, bank statements). The value adds aid letters, transcripts, and state assistance proof, which the quote does not mention."
+   ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 1,
-    "sources_total": 1,
+    "sources_fetched": 3,
+    "sources_total": 3,
     "sources_missing": [],
-    "accepted": [],
+    "sha256_match": {
+     "web-5f1b09d8a5d30852": false,
+     "web-f7be0e795298ee8e": false,
+     "web-5b0c849e469b6fb3": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
+    "accepted": [
+     "eligibility.insured_patients_covered",
+     "apply.documents_required",
+     "apply.decision_days",
+     "contacts.phone",
+     "contacts.hours"
+    ],
     "rejected": [],
-    "pruned": [],
+    "pruned": [
+     "apply.documents_required: 3 items not named in the trimmed quote"
+    ],
     "income_rule_verified": false,
-    "core_completeness": 0.0
+    "core_completeness": 0.33
    }
   },
   {
@@ -6077,6 +6390,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-15b52d76c292a49d": true,
+     "fap-066e75e7c5972a4f": true,
+     "web-9dfaf6723651d12d": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.residency",
@@ -6114,13 +6433,59 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": null,
-    "discount_tiers": null,
-    "assistance_ceiling_fpl": null,
+    "free_care_max_fpl": {
+     "value": "300",
+     "layer": "documented",
+     "quote": "300% or less of the Federal Poverty Level Zero (Full Charity)",
+     "source_id": "fap-7a5900fa182379a1",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "300",
+       "max_fpl_inclusive": "400",
+       "discount_percent": 75
+      }
+     ],
+     "layer": "documented",
+     "quote": "301% to 400% of the Federal Poverty Level 75% of the AGB, less insurance/third party payment (if any) (Discount)",
+     "source_id": "fap-7a5900fa182379a1",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "assistance_ceiling_fpl": {
+     "value": "400",
+     "layer": "documented",
+     "quote": "> 400% of the Federal Poverty Level No Financial Assistance",
+     "source_id": "fap-7a5900fa182379a1",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "asset_test": null,
     "residency": null,
-    "insured_patients_covered": null,
-    "min_balance": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Will owe the hospital $500 or more after adjustments from insurance or other third-party payers",
+     "source_id": "fap-7a5900fa182379a1",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "min_balance": {
+     "value": "500",
+     "layer": "documented",
+     "quote": "Will owe the hospital $500 or more after adjustments from insurance or other third-party payers",
+     "source_id": "fap-7a5900fa182379a1",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "services_excluded": null
    },
    "programs": {
@@ -6130,10 +6495,46 @@
    "apply": {
     "form_url": null,
     "form_version": null,
-    "documents_required": null,
+    "documents_required": {
+     "value": [
+      "pay_stubs",
+      "other"
+     ],
+     "layer": "documented",
+     "quote": "Recent pay stubs from within the 6 months before or after the patient is first billed (or in preservice when Application is submitted)",
+     "source_id": "fap-7a5900fa182379a1",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "documents_reported": null,
-    "submit_methods": null,
-    "window_days_from_first_bill": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "Submit a true, accurate, and complete confidential Financial Assistance Application by mail"
+      },
+      {
+       "kind": "portal",
+       "detail": "or online submission within the Application Period"
+      }
+     ],
+     "layer": "documented",
+     "quote": "must Submit a true, accurate, and complete confidential Financial Assistance Application by mail or online submission within the Application Period.",
+     "source_id": "fap-7a5900fa182379a1",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": {
+     "value": 240,
+     "layer": "documented",
+     "quote": "within 240 days following the initial billing statement for the services provided, 12 months after the patient pays for the services provided",
+     "source_id": "fap-7a5900fa182379a1",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "decision_days": null,
     "decision_days_reported": null
    },
@@ -6142,8 +6543,24 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": null,
-    "hours": null,
+    "phone": {
+     "value": "844-827-5047",
+     "layer": "documented",
+     "quote": "by phone to (844) 827- 5047 to receive a paper copy of this Policy and an application form",
+     "source_id": "fap-7a5900fa182379a1",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": {
+     "value": "Monday through Friday, from 7 a.m. \u2013 8 p.m. Pacific Time",
+     "layer": "documented",
+     "quote": "Contact us Monday through Friday, from 7 a.m. \u2013 8 p.m. Pacific Time.",
+     "source_id": "web-b67150de0386ac95",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "languages": null
    },
    "coverage": {
@@ -6194,71 +6611,46 @@
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 0,
+    "sources_fetched": 2,
     "sources_total": 3,
     "sources_missing": [
-     "https://www.adventisthealth.org/documents/system/financial-assistance/oregon/financial-assistance-policy-or-english.pdf",
-     "https://www.adventisthealth.org/documents/system/financial-assistance/application/financial-assistance-application-english.pdf",
-     "https://www.adventisthealth.org/tillamook/patients-and-visitors/help-paying-your-bill/"
+     "https://www.adventisthealth.org/documents/system/financial-assistance/application/financial-assistance-application-english.pdf"
     ],
-    "accepted": [],
+    "sha256_match": {
+     "fap-7a5900fa182379a1": true,
+     "fap-a19279fbb16bd80d": true,
+     "web-b67150de0386ac95": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
+    "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
+     "eligibility.assistance_ceiling_fpl",
+     "eligibility.insured_patients_covered",
+     "eligibility.min_balance",
+     "apply.documents_required",
+     "apply.submit_methods",
+     "apply.window_days_from_first_bill",
+     "contacts.phone",
+     "contacts.hours"
+    ],
     "rejected": [
      [
-      "eligibility.free_care_max_fpl",
-      "source text missing"
-     ],
-     [
-      "eligibility.discount_tiers",
-      "source text missing"
-     ],
-     [
-      "eligibility.assistance_ceiling_fpl",
-      "source text missing"
-     ],
-     [
-      "eligibility.insured_patients_covered",
-      "source text missing"
-     ],
-     [
-      "eligibility.min_balance",
-      "source text missing"
-     ],
-     [
-      "programs.presumptive",
-      "source text missing"
-     ],
-     [
       "apply.form_url",
-      "source text missing"
-     ],
-     [
-      "apply.documents_required",
-      "source text missing"
-     ],
-     [
-      "apply.submit_methods",
-      "source text missing"
-     ],
-     [
-      "apply.window_days_from_first_bill",
-      "source text missing"
-     ],
-     [
-      "contacts.phone",
-      "source text missing"
-     ],
-     [
-      "contacts.hours",
-      "source text missing"
+      "quote not found in source"
      ],
      [
       "contacts.languages",
-      "source text missing"
+      "quote not found in source"
      ]
     ],
-    "pruned": [],
-    "income_rule_verified": false,
-    "core_completeness": 0.0
+    "pruned": [
+     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
+     "apply.documents_required: 2 items not named in the trimmed quote",
+     "apply.submit_methods: 1 item not named in the trimmed quote"
+    ],
+    "income_rule_verified": true,
+    "core_completeness": 0.83
    }
   },
   {
@@ -6462,6 +6854,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-731cb96f01a2a259": true,
+     "fap-1b1246d3266b9cad": true,
+     "web-d2845423e84aa0c4": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -6669,6 +7067,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-3ed890305c673899": true,
+     "fap-71d77b87c8348903": true,
+     "web-0b805644a3a7f08a": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.insured_patients_covered",
@@ -6860,8 +7264,26 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "hours": null,
-    "languages": null
+    "hours": {
+     "value": "Monday through Friday, 8 a.m. to 5 p.m.",
+     "layer": "documented",
+     "quote": "Monday through Friday, 8 a.m. to 5 p.m.",
+     "source_id": "web-422aca90ac1572de",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "languages": {
+     "value": [
+      "Spanish"
+     ],
+     "layer": "documented",
+     "quote": "ATENCI\u00d3N: Si habla espa\u00f1ol, tiene a su disposici\u00f3n servicios gratuitos de asistencia lingu\u00edstica.",
+     "source_id": "web-422aca90ac1572de",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
    },
    "coverage": {
     "facilities": null,
@@ -6913,11 +7335,15 @@
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 2,
+    "sources_fetched": 3,
     "sources_total": 3,
-    "sources_missing": [
-     "https://www.grh.org/patients-visitors/patient-financial-services/"
-    ],
+    "sources_missing": [],
+    "sha256_match": {
+     "fap-9310fd0beffb933d": true,
+     "fap-542db877a23a9608": true,
+     "web-422aca90ac1572de": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.assistance_ceiling_fpl",
@@ -6929,7 +7355,9 @@
      "apply.window_days_from_first_bill",
      "apply.decision_days",
      "collections.eca_wait_days",
-     "contacts.phone"
+     "contacts.phone",
+     "contacts.hours",
+     "contacts.languages"
     ],
     "rejected": [
      [
@@ -6938,15 +7366,7 @@
      ],
      [
       "apply.form_url",
-      "source text missing"
-     ],
-     [
-      "contacts.hours",
-      "source text missing"
-     ],
-     [
-      "contacts.languages",
-      "source text missing"
+      "quote not found in source"
      ]
     ],
     "pruned": [
@@ -6999,8 +7419,24 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": null,
-    "hours": null,
+    "phone": {
+     "value": "541-768-4392",
+     "layer": "documented",
+     "quote": "For more information, please contact our customer service team at 541-768-4392 or 800-640-5339 .",
+     "source_id": "web-8b1e73d96cb327e4",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": {
+     "value": "Monday through Friday, 8 a.m. to 5 p.m.",
+     "layer": "documented",
+     "quote": "Hours: Monday through Friday, 8 a.m. to 5 p.m. or inquire online",
+     "source_id": "web-8b1e73d96cb327e4",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "languages": null
    },
    "coverage": {
@@ -7010,12 +7446,21 @@
    },
    "sources": [
     {
-     "id": "web-58cba6473506bfee",
+     "id": "web-417198a082d34846",
      "kind": "hospital_web",
-     "url": "https://samaritanhealthservices.navexone.com/content/dotNet/noAuth/login.aspx?ReturnUrl=%2fcontent%2fdocview%2f%3fdocid%3d1715%26public%3dtrue&docid=1715&public=true",
+     "url": "https://samaritanhealthservices.navexone.com/content/dotNet/noAuth/login.aspx?ReturnUrl=%2fcontent%2fdocview%2f%3fapp%3dpt%26source%3dunspecified%26docid%3d14366%26public%3dtrue&app=pt&source=unspecified&docid=14366&public=true",
      "title": "PolicyTech - Log in",
      "fetched_on": "2026-10-23",
-     "sha256": "58cba6473506bfee9192a3b45756743c9ad4362fb0adfbaf161153f9a478d477",
+     "sha256": "417198a082d34846de79f9687be6ca559168dbe622323f686a191d1a32a11a23",
+     "effective_date": null
+    },
+    {
+     "id": "web-8b1e73d96cb327e4",
+     "kind": "hospital_web",
+     "url": "https://samhealth.org/patient-visitors/make-a-payment/pay-your-bill/",
+     "title": "Pay Your Bill - Samaritan Health Services",
+     "fetched_on": "2026-10-23",
+     "sha256": "8b1e73d96cb327e49f4e55621ebd9189ebd6fdc6f4d0ff6573b1b39d0352db73",
      "effective_date": null
     }
    ],
@@ -7023,14 +7468,22 @@
    "eve_review": [],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 1,
-    "sources_total": 1,
+    "sources_fetched": 2,
+    "sources_total": 2,
     "sources_missing": [],
-    "accepted": [],
+    "sha256_match": {
+     "web-417198a082d34846": false,
+     "web-8b1e73d96cb327e4": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
+    "accepted": [
+     "contacts.phone",
+     "contacts.hours"
+    ],
     "rejected": [],
     "pruned": [],
     "income_rule_verified": false,
-    "core_completeness": 0.0
+    "core_completeness": 0.17
    }
   },
   {
@@ -7245,6 +7698,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-bfe1f1ca4317f9b8": true,
+     "fap-3399bc1a3b0b93bf": true,
+     "web-9840cef79eb7d60c": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.asset_test",
@@ -7326,16 +7785,20 @@
     "submit_methods": {
      "value": [
       {
-       "kind": "in_person",
-       "detail": "available to all patients in English and Spanish at any Patient Financial Representative (PFR) office, Good Shepherd Medical Group Business Offices"
+       "kind": "portal",
+       "detail": "FAP applications are available ... on our website at GSHealth.org"
       },
       {
-       "kind": "portal",
-       "detail": "on our website at GSHealth.org"
+       "kind": "in_person",
+       "detail": "at any Patient Financial Representative (PFR) office, Good Shepherd Medical Group Business Offices"
+      },
+      {
+       "kind": "email",
+       "detail": "contacted via email at pfs@gshealth.org"
       }
      ],
      "layer": "documented",
-     "quote": "FAP applications are available to all patients in English and Spanish at any Patient Financial Representative (PFR) office, Good Shepherd Medical Group Business Offices or on our website at GSHealth.org",
+     "quote": "FAP applications are available to all patients in English and Spanish at any Patient Financial Representative (PFR) office, Good Shepherd Medical Group Business Offices or on our website at GSHealth.org. Also maintained on our website is a list of providers that deliver care at our facility that do or do not offer financial assistance under our FAP. For questions or information, a PFR may be reached at 541-667-3450 or may be contacted via email at pfs@gshealth.org.",
      "source_id": "fap-d01560057f3d9551",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -7400,16 +7863,24 @@
    ],
    "accuracy": null,
    "eve_review": [
+    "eligibility.discount_tiers: 0-200% at 100% is the free-care band, not a tier; skipped",
+    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: 1 To $0 54,776 Over From $31,300 62,600 Income | 75% 96,450 64,301 79,950 53,301 63,450 42,301 46,950 31,301 86,301",
     "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Most recent payroll check stub and/or proof of unemployment benefits | Most recent bank statements",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: may be reached at 541-667-3450 or may be contacted via email at pfs@gshealth.org",
-    "agent dropped eligibility.discount_tiers: excerpt not in source: 75%",
-    "agent judge on eligibility.free_care_max_fpl: Quote says sliding scale from 200% up to 400% FPL; it does not state 200% is the 100% free care line, only the start of allowances."
+    "agent judge on eligibility.free_care_max_fpl: Quote says allowances follow a sliding scale from 200% up to 400% FPL. It does not state that 100% free care applies up to 200%.",
+    "agent judge on eligibility.discount_tiers: Quote is a garbled table with dollar income figures and 100%/75% headings. It does not clearly state the FPL bounds or the 50% tier.",
+    "agent judge on apply.submit_methods: Quote supports online and in-person availability. Email to pfs@gshealth.org is given only for questions or information, not as a way to submit an application.",
+    "agent judge on contacts.languages: Quote says FAP applications are available in English and Spanish. It does not state the languages for contacting staff."
    ],
    "eve_verified": {
     "on": "2026-10-23",
     "sources_fetched": 2,
     "sources_total": 2,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-d01560057f3d9551": true,
+     "fap-bf5f5d572870f6d0": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.insured_patients_covered",
      "apply.documents_required",
@@ -7423,13 +7894,16 @@
       "quote does not state the free-care limit as an income limit"
      ],
      [
+      "eligibility.discount_tiers",
+      "value not in quote"
+     ],
+     [
       "eligibility.asset_test",
       "quote does not support the asset-test value"
      ]
     ],
     "pruned": [
-     "apply.documents_required: 2 items not named in the trimmed quote",
-     "apply.submit_methods: 2 items not named in the trimmed quote"
+     "apply.documents_required: 2 items not named in the trimmed quote"
     ],
     "income_rule_verified": false,
     "core_completeness": 0.5

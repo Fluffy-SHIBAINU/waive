@@ -23,18 +23,10 @@
     "free_care_max_fpl": null,
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
-    "asset_test": {
-     "value": true,
-     "layer": "documented",
-     "quote": "In instances where a substantial financial resource is available that is not otherwise counted as income according the MAGI, such as certain unearned income not reported on taxes, approval of financial assistance is at the discretion of the CFO or his/her designee.",
-     "source_id": "fap-17b050d24f01bc57",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "asset_test": null,
     "residency": {
      "value": [
-      "This policy applies to residents of the area of service as defined above, which is Laramie County, Wyoming."
+      "This policy applies to residents of the area of service as defined above."
      ],
      "layer": "documented",
      "quote": "This policy applies to residents of the area of service as defined above.",
@@ -43,11 +35,19 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "insured_patients_covered": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Private Health Insurance coverage card (including companies on the Health Insurance Marketplace and employer-based health insurance), Medicare A or B card, Medicare Supplemental Insurance, Medicaid or Equality Care.",
+     "source_id": "fap-48f95e76a0ff8833",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "min_balance": {
      "value": "1000",
      "layer": "documented",
-     "quote": "An applicant may qualify for a discount or an additional discount when his or her patient financial responsibility exceeds 30% of the household income but no less than $1,000.",
+     "quote": "his or her patient financial responsibility exceeds 30% of the household income but no less than $1,000",
      "source_id": "fap-17b050d24f01bc57",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -63,8 +63,8 @@
     "form_url": {
      "value": "https://www.cheyenneregional.org/wp-content/uploads/2023/08/Financial-Assistance-Application-English-fillable-TC06142023-2.pdf",
      "layer": "documented",
-     "quote": "[https://www.cheyenneregional.org/wp-content/uploads/2023/08/Financial-Assistance-Application-English-fillable-TC06142023-2.pdf] Financial Assistance Application (English)",
-     "source_id": "web-6d676751502464ce",
+     "quote": "Financial Assistance Application (English)",
+     "source_id": "web-c83e4c4105af1256",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -74,7 +74,9 @@
      "value": [
       "photo_id",
       "proof_of_residency",
-      "proof_of_income"
+      "bank_statements",
+      "tax_return",
+      "other"
      ],
      "layer": "documented",
      "quote": "Photo Identification",
@@ -98,15 +100,7 @@
     "decision_days_reported": null
    },
    "collections": {
-    "eca_wait_days": {
-     "value": 30,
-     "layer": "documented",
-     "quote": "This notice will also state a deadline for when ECAs may be initiated that is no earlier than 30 days after the notice was sent.",
-     "source_id": "fap-17b050d24f01bc57",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "eca_wait_days": null,
     "collection_agencies": null
    },
    "contacts": {
@@ -122,7 +116,7 @@
     "hours": {
      "value": "Mon-Fri 8:30am-5:00pm",
      "layer": "documented",
-     "quote": "Mon-Fri 8:30am-5:00pm",
+     "quote": "Mon- Fri. 8:30am-5:00pm Mon-Fri 8:30am-5:00pm",
      "source_id": "fap-48f95e76a0ff8833",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -166,22 +160,23 @@
      "effective_date": null
     },
     {
-     "id": "web-6d676751502464ce",
+     "id": "web-c83e4c4105af1256",
      "kind": "hospital_web",
      "url": "https://www.cheyenneregional.org/billing-and-insurance/financial-assistance-program/",
      "title": "Financial Assistance Program - Cheyenne Regional Medical Center",
      "fetched_on": "2026-10-23",
-     "sha256": "6d676751502464cee436040f5e8bac15f14441db741b18111af885076d3da3e6",
+     "sha256": "c83e4c4105af1256d477bb5df49e6d0f4ae5267109c4355af6b4f478b0f37fbc",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.residency: 1 more verbatim excerpt(s) supported this value: I. Area of Service \u2013 Laramie County, Wyoming",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Proof of Residency | Income Verification",
-    "agent dropped apply.submit_methods: excerpt not in source: please call 307-996-4777 (option 2) or e-mail us at Financia",
-    "agent judge on apply.documents_required: Quote is a bare list of labels separated by '||' with no statement that these documents are required.",
-    "agent judge on contacts.languages: Quote is a bare checkbox-style list ('English Spanish Other') from a form and does not state which languages are offered."
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Proof of Residency | Bank Statements: Provide 90 days of bank statements for ALL accounts",
+    "agent dropped apply.submit_methods: excerpt not in source: If you choose to email your application and/or supporting do",
+    "agent judge on eligibility.insured_patients_covered: Quote only lists insurance cards accepted as documentation. It does not state that insured patients are covered.",
+    "agent judge on apply.form_url: Quote is only the link label 'Financial Assistance Application (English)'. It contains no URL.",
+    "agent judge on apply.documents_required: Quote lists Photo ID, Proof of Residency and Bank Statements only. Tax Return and Private Health Insurance card are not in the quote.",
+    "agent judge on contacts.languages: Quote is a form language checklist (English, Spanish, Other blank). It does not state which languages the hospital offers help in."
    ]
   },
   {

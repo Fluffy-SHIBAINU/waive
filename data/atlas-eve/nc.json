@@ -3499,50 +3499,58 @@
    "status": "draft",
    "eligibility": {
     "free_care_max_fpl": {
-     "value": "300",
+     "value": "100",
      "layer": "documented",
-     "quote": "% of Poverty Guidelines 300% Discount 100%",
+     "quote": "% of Poverty Guidelines 300% Discount 100% Discount",
      "source_id": "fap-30675af61112eeaa",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "discount_tiers": null,
-    "assistance_ceiling_fpl": null,
+    "assistance_ceiling_fpl": {
+     "value": "300",
+     "layer": "documented",
+     "quote": "Household income below 300 percent of the federal poverty level",
+     "source_id": "web-a5329620862f0341",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "asset_test": {
      "value": true,
      "layer": "documented",
-     "quote": "The applicant\u2019s net worth, considering liquid and non-liquid assets;",
+     "quote": "The applicant\u2019s net worth, considering liquid and non-liquid assets",
      "source_id": "fap-30675af61112eeaa",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "residency": null,
-    "insured_patients_covered": {
-     "value": true,
+    "residency": {
+     "value": [
+      "The applicant must be a North Carolina resident (the criteria for determining residency is attached as Appendix A to this policy)"
+     ],
      "layer": "documented",
-     "quote": "open accounts are identified as \u201cpending charity\u201d if the patient is uninsured, or their insurance does not pay 100% of contracted charges.",
+     "quote": "The applicant must be a North Carolina resident (the criteria for determining residency is attached as Appendix A to this policy);",
      "source_id": "fap-30675af61112eeaa",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
+    "insured_patients_covered": null,
     "min_balance": null,
     "services_excluded": null
    },
    "programs": {
     "presumptive": {
      "value": [
-      "Homelessness or receipt of care from a homeless clinic or shelter",
-      "Mental incapacitation with no one to act on the patient's behalf",
-      "Enrollment in Medicaid of patient or a child in their household",
-      "WIC program",
-      "SNAP benefits",
-      "Eligibility in other state or local assistance programs, such as Victims of Violent Crimes"
+      "Homelessness",
+      "Medicaid",
+      "WIC",
+      "SNAP"
      ],
      "layer": "documented",
-     "quote": "i. Homelessness or receipt of care from a homeless clinic or shelter; ii. Mental incapacitation with no one to act on the patient\u2019s behalf; iii. Enrollment in Medicaid of patient or a child in their household; iv. Women, Infants and Children (WIC) program;",
+     "quote": "Homelessness or receipt of care from a homeless clinic or shelter;",
      "source_id": "fap-30675af61112eeaa",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3565,40 +3573,17 @@
      "value": [
       "tax_return",
       "pay_stubs",
-      "proof_of_income",
-      "proof_of_residency",
       "medicaid_denial"
      ],
      "layer": "documented",
-     "quote": "1. A copy of the most recent tax return (to include all copies of applicable forms, schedules, and required attachments); 2. Most recent pay stub(s) that show work history for the past 4 weeks; 3. Written verification of other income sources (e.g. child support, social security, alimony) or if unemployed.",
+     "quote": "A copy of the most recent tax return (to include all copies of applicable forms, schedules, and required attachments);",
      "source_id": "fap-30675af61112eeaa",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "documents_reported": null,
-    "submit_methods": {
-     "value": [
-      {
-       "kind": "mail",
-       "detail": "WakeMed, PO Box 14465, Raleigh, NC 27620-4465"
-      },
-      {
-       "kind": "email",
-       "detail": "FinancialAssistance@wakemed.org"
-      },
-      {
-       "kind": "fax",
-       "detail": "(919) 350-6968"
-      }
-     ],
-     "layer": "documented",
-     "quote": "Mail Documentation to: WakeMed PO Box 14465 Raleigh, NC 27620-4465",
-     "source_id": "fap-8e5ed1463ed14653",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "submit_methods": null,
     "window_days_from_first_bill": {
      "value": 240,
      "layer": "documented",
@@ -3612,15 +3597,7 @@
     "decision_days_reported": null
    },
    "collections": {
-    "eca_wait_days": {
-     "value": 120,
-     "layer": "documented",
-     "quote": "WakeMed will not engage in ECAs during the one hundred twenty (120) day period after the first post- discharge billing statement.",
-     "source_id": "fap-30675af61112eeaa",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "eca_wait_days": null,
     "collection_agencies": null
    },
    "contacts": {
@@ -3633,7 +3610,15 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "hours": null,
+    "hours": {
+     "value": "regular business hours",
+     "layer": "documented",
+     "quote": "WakeMed\u2019s customer service representatives are available during regular business hours at (919) 350-8359",
+     "source_id": "fap-30675af61112eeaa",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "languages": {
      "value": [
       "English",
@@ -3683,10 +3668,12 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: v. SNAP benefits (Supplemental Nutritional Assistance Program, (formerly | Eligibility in other state or local assistance programs, such as Victims of Violent Crimes.",
-    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: a. Permanent residency (as outlined in Appendix A); b. Disability; c. Medicaid Denial; and d. Household Financial Income",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Email: FinancialAssistance@wakemed.org | Fax: (919) 350-6968",
-    "agent dropped eligibility.residency: judge: The quote only says the applicant must be an NC resident. It says nothing about non-NC citizens or undocumented residents being approved with management approval."
+    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: Enrollment in Medicaid of patient or a child in their household; iv. Women, Infants and Children (WIC) program; v. SNAP ",
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Most recent pay stub(s) that show work history for the past 4 weeks; | Proof of the following (as applicable): a. Permanent residency (as outlined in Appendix A); b. Disability; c. Medicaid D",
+    "agent dropped apply.submit_methods: excerpt not in source: Mail Documentation to: WakeMed PO Box 14465 Raleigh, NC 2762",
+    "agent dropped collections.eca_wait_days: quote is not a substring of the source",
+    "agent judge on eligibility.free_care_max_fpl: The quote is a table fragment showing '300%' and '100% Discount' with no clear statement of the FPL level that receives 100% free care.",
+    "agent judge on contacts.languages: The quote says the policy documents can be viewed and printed in English and Spanish; it does not state the languages contact staff support."
    ]
   },
   {
@@ -4844,141 +4831,6 @@
   },
   {
    "hospital": {
-    "ccn": "340115",
-    "name": "FIRSTHEALTH MOORE REGIONAL HOSPITAL",
-    "city": "PINEHURST",
-    "state": "NC",
-    "zip": "28374",
-    "phone": "910-715-1000",
-    "ownership": "Voluntary non-profit - Private",
-    "website_domain": "firsthealth.org",
-    "system": null
-   },
-   "version": 1,
-   "status": "draft",
-   "eligibility": {
-    "free_care_max_fpl": null,
-    "discount_tiers": null,
-    "assistance_ceiling_fpl": null,
-    "asset_test": null,
-    "residency": null,
-    "insured_patients_covered": {
-     "value": true,
-     "layer": "documented",
-     "quote": "This program is available to patients without health insurance and insured patients receiving care that is not covered by their insurance plan.",
-     "source_id": "fap-c96dea2cf1d7b251",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "min_balance": null,
-    "services_excluded": null
-   },
-   "programs": {
-    "presumptive": null,
-    "state_programs": {
-     "value": [
-      {
-       "name": "North Carolina Medical Debt Mitigation Program",
-       "how_to_apply": "FirstHealth will screen all guarantors during the pre-registration and registration process to determine if they qualify for financial help based on non-income-related questions, following North Carolina Medicaid Debt Mitigation program guidelines."
-      }
-     ],
-     "layer": "documented",
-     "quote": "FirstHealth is dedicated to helping people with medical debt through the North Carolina Medical Debt Mitigation Program.",
-     "source_id": "fap-c96dea2cf1d7b251",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
-   },
-   "apply": {
-    "form_url": null,
-    "form_version": null,
-    "documents_required": {
-     "value": [
-      "tax_return",
-      "pay_stubs"
-     ],
-     "layer": "documented",
-     "quote": "Documentation, such as tax returns and current pay stubs, will be requested to demonstrate financial need.",
-     "source_id": "fap-c96dea2cf1d7b251",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "documents_reported": null,
-    "submit_methods": {
-     "value": [
-      {
-       "kind": "portal",
-       "detail": "www.firsthealth.org/paymybill and select Financial Assistance"
-      },
-      {
-       "kind": "mail",
-       "detail": "FirstHealth of the Carolinas, Attn: Patient Accounts Dept., P.O. Box 3000, Pinehurst, NC 28374"
-      },
-      {
-       "kind": "phone",
-       "detail": "(800) 798-6946"
-      }
-     ],
-     "layer": "documented",
-     "quote": "To apply for Financial Aid, go to website complete and complete the financial aid application form or contact patient accounts. Go to www.firsthealth.org/paymybill and select Financial Assistance.",
-     "source_id": "fap-c96dea2cf1d7b251",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "window_days_from_first_bill": null,
-    "decision_days": null,
-    "decision_days_reported": null
-   },
-   "collections": {
-    "eca_wait_days": null,
-    "collection_agencies": null
-   },
-   "contacts": {
-    "phone": {
-     "value": "(800) 798-6946",
-     "layer": "documented",
-     "quote": "Please call (800) 798-6946 Monday through Friday 8:30 a.m.- 5 p.m. or visit www.firsthealth.org/paymybill",
-     "source_id": "fap-c96dea2cf1d7b251",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "hours": {
-     "value": "Monday through Friday between 8:30 a.m. and 5 p.m.",
-     "layer": "documented",
-     "quote": "We are available Monday through Friday between 8:30 a.m. and 5 p.m. or visit our website at www.firsthealth.org/paymybill.",
-     "source_id": "fap-c96dea2cf1d7b251",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "languages": null
-   },
-   "coverage": {
-    "facilities": null,
-    "provider_list_url": null,
-    "covered_providers": null
-   },
-   "sources": [
-    {
-     "id": "fap-c96dea2cf1d7b251",
-     "kind": "hospital_web",
-     "url": "https://stmlfirsthealthncus001.blob.core.windows.net/public/Patients%20and%20Visitors/0181-170-23%20Outpatient%20Handbook_Complete%20Book.pdf",
-     "title": "",
-     "fetched_on": "2026-10-23",
-     "sha256": "c96dea2cf1d7b2515e234c7cb0582b802b9c43193609f783c638dbac39a5d9bb",
-     "effective_date": null
-    }
-   ],
-   "accuracy": null,
-   "eve_review": []
-  },
-  {
-   "hospital": {
     "ccn": "340119",
     "name": "STANLY REGIONAL MEDICAL CENTER",
     "city": "ALBEMARLE",
@@ -5236,7 +5088,15 @@
     "state_programs": null
    },
    "apply": {
-    "form_url": null,
+    "form_url": {
+     "value": "https://www.randolphhealth.org/media/1701/financial-assistance-application-rev-2026.docx",
+     "layer": "documented",
+     "quote": "Financial Assistance Application [/media/1701/financial-assistance-application-rev-2026.docx]",
+     "source_id": "web-245d0306a1e9f552",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "form_version": null,
     "documents_required": null,
     "documents_reported": null,
@@ -5297,7 +5157,9 @@
     }
    ],
    "accuracy": null,
-   "eve_review": []
+   "eve_review": [
+    "agent judge on apply.form_url: The quote shows only the relative path /media/1701/financial-assistance-application-rev-2026.docx; the domain (randolphhealth.org) and https scheme in the value do not appear in the quote."
+   ]
   },
   {
    "hospital": {
@@ -6631,13 +6493,21 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": null,
+    "free_care_max_fpl": {
+     "value": "100",
+     "layer": "documented",
+     "quote": "% of Poverty Guidelines 300% Discount 100% Discount",
+     "source_id": "fap-9c30bd920d9996d1",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "discount_tiers": null,
     "assistance_ceiling_fpl": {
      "value": "300",
      "layer": "documented",
-     "quote": "Household income below 300 percent of the federal poverty level",
-     "source_id": "web-a5329620862f0341",
+     "quote": "Following financial assistance review and denial, patients who are denied traditional financial assistance based on income guidelines exceeding 300% of the Federal Poverty Guidelines may be eligible for catastrophic financial assistance.",
+     "source_id": "fap-9c30bd920d9996d1",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -6645,8 +6515,8 @@
     "asset_test": {
      "value": true,
      "layer": "documented",
-     "quote": "The applicant\u2019s net worth, considering liquid and non-liquid assets;",
-     "source_id": "fap-30675af61112eeaa",
+     "quote": "The applicant\u2019s net worth, considering liquid and non-liquid assets",
+     "source_id": "fap-9c30bd920d9996d1",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -6656,38 +6526,27 @@
       "The applicant must be a North Carolina resident (the criteria for determining residency is attached as Appendix A to this policy)"
      ],
      "layer": "documented",
-     "quote": "The applicant must be a North Carolina resident (the criteria for determining residency is attached as Appendix A to this policy);",
-     "source_id": "fap-30675af61112eeaa",
+     "quote": "The applicant must be a North Carolina resident (the criteria for determining residency is attached as Appendix A to this policy)",
+     "source_id": "fap-9c30bd920d9996d1",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "insured_patients_covered": {
-     "value": true,
-     "layer": "documented",
-     "quote": "All patients who are identified as \u201cpending charity\u201d will be screened for alternative sources of funding to meet their medical expenses",
-     "source_id": "fap-30675af61112eeaa",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "insured_patients_covered": null,
     "min_balance": null,
     "services_excluded": null
    },
    "programs": {
     "presumptive": {
      "value": [
-      "Homelessness or receipt of care from a homeless clinic or shelter",
-      "Mental incapacitation with no one to act on the patient's behalf",
-      "Enrollment in Medicaid of patient or a child in their household",
-      "Women, Infants and Children (WIC) program",
-      "SNAP benefits",
-      "Minors 17 years of age or younger who are deemed financially responsible for a minor child who has received services at WakeMed",
-      "Eligibility in other state or local assistance programs, such as Victims of Violent Crimes"
+      "Homelessness",
+      "Medicaid",
+      "WIC",
+      "SNAP"
      ],
      "layer": "documented",
-     "quote": "i. Homelessness or receipt of care from a homeless clinic or shelter; ii. Mental incapacitation with no one to act on the patient\u2019s behalf; iii. Enrollment in Medicaid of patient or a child in their household;",
-     "source_id": "fap-30675af61112eeaa",
+     "quote": "Homelessness or receipt of care from a homeless clinic or shelter;",
+     "source_id": "fap-9c30bd920d9996d1",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -6696,9 +6555,9 @@
    },
    "apply": {
     "form_url": {
-     "value": "https://www.wakemed.org/patients-and-visitors/billing-and-insurance/financial-assistance",
+     "value": "https://www.wakemed.org/sites/default/files/pdf/Financial-Assistance/English%20Financial%20Assistance%20Application_0.pdf",
      "layer": "documented",
-     "quote": "Financial Assistance Application & Instructions (.pdf)",
+     "quote": "Financial Assistance Application & Instructions (.pdf) [https://www.wakemed.org/sites/default/files/pdf/Financial-Assistance/English%20Financial%20Assistance%20Application_0.pdf]",
      "source_id": "web-a5329620862f0341",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -6709,12 +6568,13 @@
      "value": [
       "tax_return",
       "pay_stubs",
-      "social_security_letter",
-      "proof_of_residency"
+      "proof_of_residency",
+      "medicaid_denial",
+      "proof_of_income"
      ],
      "layer": "documented",
-     "quote": "A copy of the most recent tax return (to include all copies of applicable forms, schedules, and required attachments); 2. Most recent pay stub(s) that show work history for the past 4 weeks;",
-     "source_id": "fap-30675af61112eeaa",
+     "quote": "1. A copy of the most recent tax return (to include all copies of applicable forms, schedules, and required attachments);",
+     "source_id": "fap-9c30bd920d9996d1",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -6724,23 +6584,19 @@
      "value": [
       {
        "kind": "mail",
-       "detail": "WakeMed, PO Box 14465, Raleigh, NC 27620-4465"
-      },
-      {
-       "kind": "email",
-       "detail": "FinancialAssistance@wakemed.org"
-      },
-      {
-       "kind": "fax",
-       "detail": "(919) 350-6968"
-      },
-      {
-       "kind": "phone",
-       "detail": "(919) 350-8359"
+       "detail": "Mail Documentation to: WakeMed PO Box 14465 Raleigh, NC 27620-4465"
       },
       {
        "kind": "in_person",
-       "detail": "WakeMed Raleigh or WakeMed Cary Customer Service Offices"
+       "detail": "WakeMed Raleigh 3000 New Bern Ave Raleigh, NC 27610 / WakeMed Cary 1900 Kildaire Farm Road Cary, NC 27518"
+      },
+      {
+       "kind": "email",
+       "detail": "Email: FinancialAssistance@wakemed.org"
+      },
+      {
+       "kind": "fax",
+       "detail": "Fax: (919) 350-6968"
       }
      ],
      "layer": "documented",
@@ -6754,7 +6610,7 @@
      "value": 240,
      "layer": "documented",
      "quote": "Completed financial assistance applications must be received within two hundred forty (240) days of the date on the first post-discharge billing statement sent by WakeMed",
-     "source_id": "fap-30675af61112eeaa",
+     "source_id": "fap-9c30bd920d9996d1",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -6771,7 +6627,7 @@
      "value": "(919) 350-8359",
      "layer": "documented",
      "quote": "WakeMed\u2019s customer service representatives are available during regular business hours at (919) 350-8359 to provide information about the policy and assist with application questions.",
-     "source_id": "fap-30675af61112eeaa",
+     "source_id": "fap-9c30bd920d9996d1",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -6780,7 +6636,7 @@
      "value": "regular business hours",
      "layer": "documented",
      "quote": "WakeMed\u2019s customer service representatives are available during regular business hours at (919) 350-8359",
-     "source_id": "fap-30675af61112eeaa",
+     "source_id": "fap-9c30bd920d9996d1",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -6791,8 +6647,8 @@
       "Spanish"
      ],
      "layer": "documented",
-     "quote": "where they are accessible to view and print in English and Spanish.",
-     "source_id": "fap-30675af61112eeaa",
+     "quote": "accessible to view and print in English and Spanish",
+     "source_id": "fap-9c30bd920d9996d1",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -6805,18 +6661,18 @@
    },
    "sources": [
     {
-     "id": "fap-30675af61112eeaa",
+     "id": "fap-9c30bd920d9996d1",
      "kind": "hospital_web",
-     "url": "https://www.wakemed.org/sites/default/files/pdf/Financial-Assistance/FAENGLISH2026.pdf",
+     "url": "https://www.wakemed.org/sites/default/files/2024-11/FinancialAssistance%20Policy.pdf",
      "title": "",
      "fetched_on": "2026-10-23",
-     "sha256": "30675af61112eeaa5516949bd238dff63e769f71ae7bdfbd821a1d04face72ce",
+     "sha256": "9c30bd920d9996d1d46d41f6ccd61075f12751de590b932a82057f97305c70b3",
      "effective_date": null
     },
     {
      "id": "fap-8e5ed1463ed14653",
      "kind": "hospital_web",
-     "url": "https://www.wakemed.org/sites/default/files/pdf/Financial-Assistance/English%20Financial%20Assistance%20Application_0.pdf",
+     "url": "https://www.wakemed.org/sites/default/files/pdf/Financial-Assistance/English%20Financial%20Assistance%20Application.pdf",
      "title": "",
      "fetched_on": "2026-10-23",
      "sha256": "8e5ed1463ed14653733ce6ca2925501ea5ea51f2bc3d392fcb788b1ae3e97d4e",
@@ -6834,8 +6690,13 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 0-300% at 100% is the free-care band, not a tier; skipped",
-    "agent dropped collections.eca_wait_days: quote is not a substring of the source"
+    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: Enrollment in Medicaid of patient or a child in their household; iv. Women, Infants and Children (WIC) program; v. SNAP ",
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: 2. Most recent pay stub(s) that show work history for the past 4 weeks; | 4. Proof of the following (as applicable): a. Permanent residency (as outlined in Appendix A); b. Disability; c. Medicai",
+    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Email: FinancialAssistance@wakemed.org Phone: (919) 350-8359 Fax: (919) 350-6968",
+    "agent dropped collections.eca_wait_days: quote is not a substring of the source",
+    "agent judge on eligibility.free_care_max_fpl: Quote is a fragment of a table ('300% Discount 100% Discount'). It does not state that 100% free care applies up to 100% FPL.",
+    "agent judge on eligibility.assistance_ceiling_fpl: Quote says patients above 300% FPL may be eligible for catastrophic assistance, so assistance is offered above 300%, not cut off there.",
+    "agent judge on apply.submit_methods: Quote gives mail, email, and fax only. The in_person entry with the Raleigh and Cary street addresses does not appear in the quote."
    ]
   },
   {
@@ -9379,10 +9240,10 @@
     "asset_test": {
      "value": true,
      "layer": "documented",
-     "quote": "Eligibility for this program is generally based on your family\u2019s income, size, and assets.",
+     "quote": "Eligibility for this program is generally based on your family's income, size, and assets.",
      "source_id": "fap-bfa9f94d082bba5e",
      "checked_on": "2026-10-23",
-     "confidence": 1.0,
+     "confidence": 0.8,
      "support_count": 0
     },
     "residency": null,
@@ -9397,17 +9258,30 @@
    "apply": {
     "form_url": null,
     "form_version": null,
-    "documents_required": null,
+    "documents_required": {
+     "value": [
+      "pay_stubs",
+      "tax_return",
+      "other",
+      "bank_statements"
+     ],
+     "layer": "documented",
+     "quote": "The last 3 recent payroll check stubs from each company. (Please indicate whether paid weekly or bi-weekly.)",
+     "source_id": "fap-bfa9f94d082bba5e",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "documents_reported": null,
     "submit_methods": {
      "value": [
       {
        "kind": "mail",
-       "detail": "Ashe Memorial Hospital, Attn: Financial Counselor, 200 Hospital Avenue, Jefferson, NC 28640-9244"
+       "detail": "mail the original completed application and supporting documentation to the address below: Ashe Memorial Hospital Attn: Financial Counselor 200 Hospital Avenue Jefferson, NC 28640-9244"
       }
      ],
      "layer": "documented",
-     "quote": "mail the original completed application and supporting documentation to the address below: Ashe Memorial Hospital Attn: Financial Counselor 200 Hospital Avenue Jefferson, NC 28640-9244",
+     "quote": "Please keep a copy of this application and mail the original completed application and supporting documentation to the address below:",
      "source_id": "fap-bfa9f94d082bba5e",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -9440,17 +9314,7 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "languages": {
-     "value": [
-      "Spanish"
-     ],
-     "layer": "documented",
-     "quote": "Click here to view and download a financial assistance application. For a Spanish version, please click here .",
-     "source_id": "web-3220e9ac99b68cba",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "languages": null
    },
    "coverage": {
     "facilities": null,
@@ -9488,7 +9352,10 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "agent dropped apply.documents_required: excerpt not in source: v Copy of your Social Security check or bank statement if yo"
+    "eligibility.asset_test: quote matched the source only after typography normalization",
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Income tax return for the last year. | W-2 tax statement(s)",
+    "agent judge on apply.documents_required: Quote lists only recent payroll stubs, income tax return, and W-2s. The bank statement entries are not in the quote.",
+    "agent judge on apply.submit_methods: Quote supports mailing the original application and documentation, but the mailing address in the value is not stated in the quote."
    ]
   },
   {

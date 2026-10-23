@@ -182,6 +182,11 @@
     "sources_fetched": 2,
     "sources_total": 2,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-e3440884ff6f53a6": true,
+     "web-c0fc23a0969dc19c": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -376,6 +381,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-fec4d093f708d0a6": true,
+     "fap-ee70239fe79c09f0": true,
+     "web-0b24407c89a16eca": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.min_balance",
@@ -428,14 +439,22 @@
     "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": null,
-    "insured_patients_covered": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Patients eligible for Medicaid on the date of service qualify for 100% charity on their Medicaid copay and coinsurance balances without submitting an application.",
+     "source_id": "fap-1c84bcf6827af8af",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "min_balance": null,
     "services_excluded": null
    },
    "programs": {
     "presumptive": {
      "value": [
-      "Medicaid enrolled"
+      "Medicaid"
      ],
      "layer": "documented",
      "quote": "Patients eligible for Medicaid on the date of service qualify for 100% charity on their Medicaid copay and coinsurance balances without submitting an application.",
@@ -468,7 +487,7 @@
     "window_days_from_first_bill": {
      "value": 240,
      "layer": "documented",
-     "quote": "applications for charity care can be submitted up to 240 days after the date of the first billing. After 240 days, the account is no longer eligible for charity care.",
+     "quote": "If the account is in a Bad Debt status, applications for charity care can be submitted up to 240 days after the date of the first billing.",
      "source_id": "fap-1c84bcf6827af8af",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -538,20 +557,26 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: b. Brief written or typed explanation of applicant\u2019s circumstances | c. Bank statements for the last 3 months including checking, savings, certificates of deposit, etc.",
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Bank statements for the last 3 months including checking, savings, certificates of deposit, etc. | Proof of Income \u2013 3 most recent pay stub indicating year-to-date earnings",
     "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: 2) Faxed to the Cashier office at 907-714-4637 | 3) Mailed to: Financial Counselor Central Peninsula Hospital 250 Hospital Place Soldotna, AK 99669",
     "agent dropped eligibility.free_care_max_fpl: quote is not a substring of the source",
     "agent dropped eligibility.discount_tiers: excerpt not in source: Monthly Poverty Income Level < 201-250% ... 70% Assistance",
-    "agent judge on eligibility.insured_patients_covered: Quote is a fragment describing a bill-to-income criterion for non-elective bills after insurance. It does not state that insured patients are covered.",
-    "agent judge on apply.documents_required: Quote lists only three items (financial statement, written explanation, bank statements). The value also includes proof of income and Medicaid pre-screening, which the quote does not state.",
-    "agent judge on apply.decision_days: Quote says eligibility is determined within 30 working days, not 30 days. The unit differs from the recorded value."
+    "agent judge on eligibility.insured_patients_covered: Quote only covers Medicaid-eligible patients getting 100% charity on copay/coinsurance; it does not state that insured patients are generally covered.",
+    "agent judge on apply.decision_days: Quote says eligibility determination within 30 working days, not calendar days; value of 30 omits the working-day qualifier."
    ],
    "eve_verified": {
     "on": "2026-10-23",
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-1c84bcf6827af8af": true,
+     "fap-c12236daef8f2fb3": true,
+     "web-d185b23a7d08cf25": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
+     "eligibility.insured_patients_covered",
      "programs.presumptive",
      "apply.submit_methods",
      "apply.window_days_from_first_bill",
@@ -562,10 +587,6 @@
      [
       "eligibility.asset_test",
       "quote does not support the asset-test value"
-     ],
-     [
-      "eligibility.insured_patients_covered",
-      "quote does not say whether insured patients are covered"
      ],
      [
       "apply.form_url",
@@ -595,16 +616,38 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": null,
-    "discount_tiers": null,
+    "free_care_max_fpl": {
+     "value": "300",
+     "layer": "documented",
+     "quote": "Annual family income, adjusted for family size, is at or below 300% of the current FPL guidelines, The patient is determined to be financially indigent and qualifies for financial assistance 100% write-off on patient responsibility amounts for Eligible Services.",
+     "source_id": "fap-e3440884ff6f53a6",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "300",
+       "max_fpl_inclusive": "350",
+       "discount_percent": 87
+      }
+     ],
+     "layer": "documented",
+     "quote": "Annual family income, adjusted for family size, is between 301% and 350% of the current FPL guidelines, The patient is eligible for a discount of 87% from original charges on patient responsibility amounts for Eligible Services, and in no event will be charged in excess of AGB.",
+     "source_id": "fap-e3440884ff6f53a6",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": null,
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "This includes people without health insurance, and those who do have insurance but are unable to pay their out-of-pocket costs.",
-     "source_id": "fap-f583f0b25a5afe5e",
+     "quote": "Financial assistance is available to both uninsured and insured patients if they meet the requirements of this policy.",
+     "source_id": "fap-e3440884ff6f53a6",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -613,34 +656,52 @@
     "services_excluded": null
    },
    "programs": {
-    "presumptive": null,
+    "presumptive": {
+     "value": [
+      "Medicaid"
+     ],
+     "layer": "documented",
+     "quote": "Patients who are participating in state Medicaid programs are eligible for presumptive assistance.",
+     "source_id": "fap-e3440884ff6f53a6",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "state_programs": null
    },
    "apply": {
     "form_url": null,
     "form_version": null,
-    "documents_required": null,
-    "documents_reported": null,
-    "submit_methods": {
+    "documents_required": {
      "value": [
-      {
-       "kind": "portal",
-       "detail": "Online at providence.org/financialhelp for an application, policy, and additional information"
-      }
+      "pay_stubs",
+      "tax_return",
+      "social_security_letter",
+      "other"
      ],
      "layer": "documented",
-     "quote": "Online at providence.org/financialhelp for an application, policy, and additional information",
-     "source_id": "fap-f583f0b25a5afe5e",
+     "quote": "to include pay stubs or tax returns, or other income information (e.g. W-2 forms, social security award letters) and statements for income drawn from assets",
+     "source_id": "fap-b772ad7272bc3623",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "window_days_from_first_bill": null,
+    "documents_reported": null,
+    "submit_methods": null,
+    "window_days_from_first_bill": {
+     "value": 240,
+     "layer": "documented",
+     "quote": "The FAP-Eligible Time Period for (i) hospital services is the 240-day period of time",
+     "source_id": "fap-e3440884ff6f53a6",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "decision_days": {
      "value": 30,
      "layer": "documented",
-     "quote": "You\u2019ll receive an answer within 30 days after we receive your financial assistance application (14 days in Washington).",
-     "source_id": "web-b6e8bbbe2eb25987",
+     "quote": "Patients will receive notification of FAP eligibility determination within 30 days of submission of the completed Financial Assistance Application and necessary documentation.",
+     "source_id": "fap-e3440884ff6f53a6",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -653,34 +714,24 @@
    },
    "contacts": {
     "phone": {
-     "value": "1-855-229-6466",
+     "value": "1-866-747-2455",
      "layer": "documented",
-     "quote": "Speak with a Financial Counselor at 1-855-229-6466, Monday\u2013Friday, 7 a.m. to 5:30 p.m. pacific time",
-     "source_id": "fap-f583f0b25a5afe5e",
+     "quote": "or by calling 1-866-747-2455 to request a copy",
+     "source_id": "fap-e3440884ff6f53a6",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "hours": {
-     "value": "Monday\u2013Friday, 7 a.m. to 5:30 p.m. pacific time",
+     "value": "Monday \u2013 Friday, 7 a.m. to 5:30 p.m. PT",
      "layer": "documented",
-     "quote": "Speak with a Financial Counselor at 1-855-229-6466, Monday\u2013Friday, 7 a.m. to 5:30 p.m. pacific time",
-     "source_id": "fap-f583f0b25a5afe5e",
+     "quote": "We're available Monday \u2013 Friday, 7 a.m. to 5:30 p.m. PT.",
+     "source_id": "web-2e0753c02e9b6bb1",
      "checked_on": "2026-10-23",
-     "confidence": 1.0,
+     "confidence": 0.8,
      "support_count": 0
     },
-    "languages": {
-     "value": [
-      "multiple languages"
-     ],
-     "layer": "documented",
-     "quote": "Translations of the Financial Assistance Policy, Financial Assistance Application and this Plain Language Summary are available in multiple languages online or by request.",
-     "source_id": "fap-f583f0b25a5afe5e",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "languages": null
    },
    "coverage": {
     "facilities": null,
@@ -689,49 +740,77 @@
    },
    "sources": [
     {
-     "id": "fap-f583f0b25a5afe5e",
+     "id": "fap-e3440884ff6f53a6",
      "kind": "hospital_web",
-     "url": "https://www.providence.org/-/media/project/psjh/shared/files/financial-assistance/pls/ak/plain-language-summary-alaska-english.pdf?hash=0CEBB21ED1A20502C06F34E5F3C734F8&rev=0ebaabc25c3b4e93a04fa69501bbd48b",
+     "url": "https://www.providence.org/-/media/project/psjh/shared/files/financial-assistance/policy/ak/fa-policy-english.pdf?rev=ffc65c3229f749a98fcceb43225241cd",
      "title": "",
      "fetched_on": "2026-10-23",
-     "sha256": "f583f0b25a5afe5eb2f3a411f59c610db16c4a91e94fadbb9c3a859cdbe50c34",
+     "sha256": "e3440884ff6f53a6b7b00948df3313ee347b1bb0bc185e25d16aea2950a30053",
      "effective_date": null
     },
     {
-     "id": "web-b6e8bbbe2eb25987",
+     "id": "web-2e0753c02e9b6bb1",
      "kind": "hospital_web",
      "url": "https://www.providence.org/billing-support/help-paying-your-bill",
      "title": "Get Help Paying Your Medical Bills | Billing Support | Providence",
      "fetched_on": "2026-10-23",
-     "sha256": "b6e8bbbe2eb259879c13b383353ce7bacede1cb9283a5382ef8b58b6d848dc43",
+     "sha256": "2e0753c02e9b6bb1d9ac59f1977a1cbbbd2914de86949d657b9fcfcd45862247",
+     "effective_date": null
+    },
+    {
+     "id": "fap-b772ad7272bc3623",
+     "kind": "hospital_web",
+     "url": "https://www.providence.org/-/media/project/psjh/shared/files/financial-assistance/application/covenant/cov-fa-app-eng.pdf?rev=dbb07c5ed6264c04926dc4baf29a5097",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "b772ad7272bc36236b30be4cfa6d308a1d508d7d1ec3011bb048682d20625f8b",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Written requests can be sent to Providence, Attn: Financial Assistance, P.O. Box 31001-3422, Pasadena, CA, USA, 91110-34 | In person at the registration desk at any Providence hospital listed below",
-    "agent judge on apply.submit_methods: Quote covers online, mail, and in-person only; the phone method in the value is not in the quote. Quote is also a concatenated string, not plain text."
+    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: For patients who participate in state funded FPL-qualified public assistance programs (e.g., Supplemental Nutrition Assi",
+    "contacts.hours: quote matched the source only after typography normalization",
+    "agent dropped apply.submit_methods: excerpt not in source: Mail completed application with all documentation to: Covena",
+    "agent judge on eligibility.asset_test: Quote says assets are considered only as required by CMS for Medicare cost reporting, for Medicare patients without Medicaid. It does not state a general asset test.",
+    "agent judge on programs.presumptive: Only Medicaid is stated as presumptive. SNAP and WIC appear in a separate sentence about public assistance programs without presumptive wording.",
+    "agent judge on apply.documents_required: Quote lists pay stubs or tax returns, W-2 forms, social security award letters, and asset income statements. It does not mention bank statements.",
+    "agent judge on apply.window_days_from_first_bill: Quote says the FAP-Eligible Time Period is 240 days but does not say it runs from the first bill."
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 2,
-    "sources_total": 2,
+    "sources_fetched": 3,
+    "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-e3440884ff6f53a6": true,
+     "web-2e0753c02e9b6bb1": false,
+     "fap-b772ad7272bc3623": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
      "eligibility.insured_patients_covered",
-     "apply.submit_methods",
+     "programs.presumptive",
+     "apply.documents_required",
+     "apply.window_days_from_first_bill",
      "apply.decision_days",
      "contacts.phone",
-     "contacts.hours",
-     "contacts.languages"
+     "contacts.hours"
     ],
-    "rejected": [],
+    "rejected": [
+     [
+      "eligibility.asset_test",
+      "quote does not support the asset-test value"
+     ]
+    ],
     "pruned": [
-     "apply.documents_required: none of the listed documents is named in the quote (after trimming)",
-     "apply.submit_methods: 3 items not named in the trimmed quote"
+     "programs.presumptive: 2 items not named in the trimmed quote",
+     "apply.documents_required: 1 item not named in the trimmed quote"
     ],
-    "income_rule_verified": false,
-    "core_completeness": 0.33
+    "income_rule_verified": true,
+    "core_completeness": 0.67
    }
   },
   {
@@ -750,14 +829,33 @@
    "status": "draft",
    "eligibility": {
     "free_care_max_fpl": null,
-    "discount_tiers": null,
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "200",
+       "max_fpl_inclusive": "250",
+       "discount_percent": 80
+      },
+      {
+       "min_fpl_exclusive": "250",
+       "max_fpl_inclusive": "350",
+       "discount_percent": 60
+      }
+     ],
+     "layer": "documented",
+     "quote": "Income Poverty Income Level \u2264 200% Income Poverty Income Level \u2264 201% - 250% Income Poverty Income Level \u2264 251% - 350% 100% Assistance 80% Assistance 60% Assistance",
+     "source_id": "fap-d51df470da4669e9",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": null,
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "1) Financial Hardship: A person who is uninsured or under insured and is accepted for care with no or limited ability to pay for the services rendered",
+     "quote": "Free or discounted health services may be provided to persons who cannot afford to pay, including those who are uninsured or under-insured and/or eligible for any private or public health care program.",
      "source_id": "fap-d51df470da4669e9",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -775,21 +873,18 @@
     "services_excluded": null
    },
    "programs": {
-    "presumptive": null,
-    "state_programs": {
+    "presumptive": {
      "value": [
-      {
-       "name": "Medicaid Expedited Enrollment",
-       "how_to_apply": "South Peninsula Hospital is qualified to make preliminary Medicaid eligibility determinations for qualified applicants. Presumptive Eligibility is an expedited process of enrolling eligible applicants for short term coverage in the Medicaid program."
-      }
+      "Medicaid"
      ],
      "layer": "documented",
-     "quote": "South Peninsula Hospital is qualified to make preliminary Medicaid eligibility determinations for qualified applicants. Presumptive Eligibility is an expedited process of enrolling eligible applicants for short term coverage in the Medicaid program.",
-     "source_id": "web-a3f60c3b40e748b0",
+     "quote": "Patients eligible for Medicaid on or after the date of service qualify for 100% financial assistance on their balance(s), after all available insurance resources have been exhausted",
+     "source_id": "fap-d51df470da4669e9",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
-    }
+    },
+    "state_programs": null
    },
    "apply": {
     "form_url": null,
@@ -813,7 +908,7 @@
     "window_days_from_first_bill": {
      "value": 240,
      "layer": "documented",
-     "quote": "If the account is in a Bad Debt status, applications for financial assistance can be submitted up to 240 days after the date of the first billing statement.",
+     "quote": "applications for financial assistance can be submitted up to 240 days after the date of the first billing statement",
      "source_id": "fap-d51df470da4669e9",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -872,34 +967,41 @@
      "effective_date": null
     },
     {
-     "id": "web-a3f60c3b40e748b0",
+     "id": "web-f1150ef761eb3285",
      "kind": "hospital_web",
-     "url": "https://sphosp.org/for-patients/financial-assistance",
-     "title": "Financial Assistance - South Peninsula Hospital",
+     "url": "https://sphosp.org/for-patients/make-a-payment",
+     "title": "Make a Payment - South Peninsula Hospital",
      "fetched_on": "2026-10-23",
-     "sha256": "a3f60c3b40e748b00d5e26437628818a0537d8d7076ab10c57332367c1f4722c",
+     "sha256": "f1150ef761eb32853ac6e7529d6d0082deaff40d39002852d69df6f06bd9eb9a",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Bank statements for the last 3-months including checking, savings, certificates of deposit etc. for all household member | Proof of Income \u2013 Most recent pay stubs indicating year to date earnings and/or unemployment check stubs or determinatio",
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: b) Bank statements for the last 3-months including checking, savings, certificates of deposit etc. for all household mem | c) Proof of Income \u2013 Most recent pay stubs indicating year to date earnings and/or unemployment check stubs or determina",
+    "apply.documents_required: quote matched the source only after typography normalization",
     "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: b) Faxed to registration office at 907-235-0251 | c) Emailed to the Financial Navigators at PFN@sphosp.org",
     "agent dropped eligibility.free_care_max_fpl: quote is not a substring of the source",
-    "agent dropped eligibility.discount_tiers: excerpt not in source: Income Poverty Income Level \u2264 201% - 250% ... 80% Assistance",
-    "agent judge on programs.state_programs: Quote describes hospital preliminary Medicaid eligibility determinations and presumptive eligibility, but does not name a program 'Medicaid Expedited Enrollment' as a state program entry.",
-    "agent judge on apply.submit_methods: Quote lists only in-person, fax, and email; the mail method with the Homer, AK mailing address is not in the quote.",
-    "agent judge on apply.decision_days: Quote says determination within 45 working days, not calendar days; value 45 drops the working-days qualifier."
+    "agent dropped contacts.hours: quote is not a substring of the source",
+    "agent judge on apply.submit_methods: Quote lists only in-person, fax, and email; the recorded mail method to the Homer address does not appear in the quote.",
+    "agent judge on apply.decision_days: Quote says 45 working days, but the value 45 drops the working-day qualifier and so does not state the recorded calendar-day count."
    ],
    "eve_verified": {
     "on": "2026-10-23",
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-d51df470da4669e9": true,
+     "fap-3f62b65ec7738bdd": true,
+     "web-f1150ef761eb3285": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
+     "eligibility.discount_tiers",
      "eligibility.insured_patients_covered",
      "eligibility.min_balance",
-     "programs.state_programs",
+     "programs.presumptive",
      "apply.submit_methods",
      "apply.window_days_from_first_bill",
      "apply.decision_days",
@@ -907,21 +1009,20 @@
     ],
     "rejected": [
      [
-      "eligibility.asset_test",
-      "quote does not support the asset-test value"
+      "eligibility.assistance_ceiling_fpl",
+      "quote does not state the ceiling as a percentage of the poverty level"
      ],
      [
-      "apply.form_url",
-      "quote not found in source"
+      "eligibility.asset_test",
+      "quote does not support the asset-test value"
      ]
     ],
     "pruned": [
-     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
      "apply.documents_required: none of the listed documents is named in the quote (after trimming)",
      "apply.submit_methods: 3 items not named in the trimmed quote"
     ],
-    "income_rule_verified": false,
-    "core_completeness": 0.33
+    "income_rule_verified": true,
+    "core_completeness": 0.5
    }
   }
  ]

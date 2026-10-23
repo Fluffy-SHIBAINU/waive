@@ -168,7 +168,15 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": null,
+    "free_care_max_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "Full financial assistance will be provided to those patients where the adjusted gross household income from the patient's federal tax return or income documentation is at or below 200% of the federal poverty guidelines",
+     "source_id": "fap-dad8928ba329da4c",
+     "checked_on": "2026-10-23",
+     "confidence": 0.8,
+     "support_count": 0
+    },
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
     "asset_test": {
@@ -184,7 +192,7 @@
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "Private-pay patients and any patient with a liability after third party coverage who indicate an inability to pay are",
+     "quote": "This discount may be extended to insured patients whose out of pocket expenses exceed the AGB discount.",
      "source_id": "fap-dad8928ba329da4c",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -196,9 +204,8 @@
    "programs": {
     "presumptive": {
      "value": [
-      "SNAP participants",
-      "State Energy Assistance Program participants",
-      "WIC participants"
+      "SNAP",
+      "WIC"
      ],
      "layer": "documented",
      "quote": "Supplemental Nutritional Assistance Program (SNAP)_",
@@ -207,38 +214,31 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "state_programs": null
-   },
-   "apply": {
-    "form_url": {
-     "value": "https://wvumedicine.org/wp-content/uploads/System_Pages/Forms/UHC_FAP_Attachment-1_Financial-Application.2024-4282025.pdf",
-     "layer": "documented",
-     "quote": "Financial Assistance Application Form [https://wvumedicine.org/wp-content/uploads/System_Pages/Forms/UHC_FAP_Attachment-1_Financial-Application.2024-4282025.pdf]",
-     "source_id": "web-dd646080444d243f",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "form_version": null,
-    "documents_required": {
+    "state_programs": {
      "value": [
-      "tax_return",
-      "pay_stubs",
-      "social_security_letter"
+      {
+       "name": "Health Access or Health Right",
+       "how_to_apply": "see facility specific policy"
+      }
      ],
      "layer": "documented",
-     "quote": "Wages/Self Employment $ Copy of most recent federal tax return (or form 4506t), pay stubs for the",
-     "source_id": "fap-5412f6f0668cc3c6",
+     "quote": "Self-pay account balance will be adjusted, in accordance with this financial assistance policy, for participating facilities, when a patient qualifies for Health Access or Health Right (see facility specific policy).",
+     "source_id": "fap-dad8928ba329da4c",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
-    },
+    }
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": null,
     "documents_reported": null,
     "submit_methods": null,
     "window_days_from_first_bill": {
      "value": 240,
      "layer": "documented",
-     "quote": "Application Forms may be accepted up to 240 days from the first post discharge billing statements.",
+     "quote": "Financial Assistance Application Forms may be accepted up to 240 days from the first post discharge billing statements.",
      "source_id": "fap-dad8928ba329da4c",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -253,15 +253,23 @@
    },
    "contacts": {
     "phone": {
-     "value": "855-778-2922",
+     "value": "304-598-6260",
      "layer": "documented",
-     "quote": "By calling Patient Financial Services at 855-778-2922",
+     "quote": "By calling our financial counselors at 304-598-6260",
      "source_id": "fap-dad8928ba329da4c",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "hours": null,
+    "hours": {
+     "value": "Monday \u2013 Friday, 8 am \u2013 4:30 pm",
+     "layer": "documented",
+     "quote": "please contact us at one of the numbers below, Monday \u2013 Friday, 8 am \u2013 4:30 pm, or visit us in person.",
+     "source_id": "web-3495f66c9e440765",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "languages": null
    },
    "coverage": {
@@ -289,178 +297,23 @@
      "effective_date": null
     },
     {
-     "id": "web-dd646080444d243f",
+     "id": "web-3495f66c9e440765",
      "kind": "hospital_web",
-     "url": "https://wvumedicine.org/billing-and-insurance/financial-assistance/policies-and-financial-applications/",
-     "title": "Policies and Financial Applications | WVU Medicine",
+     "url": "https://wvumedicine.org/billing-and-insurance/financial-assistance/",
+     "title": "Financial Assistance | WVU Medicine",
      "fetched_on": "2026-10-23",
-     "sha256": "dd646080444d243f4265e4bc002f6487b0b1ed6623c086b07d32a1f50ed6a64d",
+     "sha256": "3495f66c9e44076516a21ba046101a22d83745a8b241b54540da408e800b2719",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: State\u2019s Energy Assistance Program | Federal Supplemental Food Program for Women, Infants, and Children (WIC)",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Social Security $ Social Security award letter | Unemployment, Workers\u2019 Compensation $ Unemployment benefit letter, Workers\u2019 Compensation benefit letter",
-    "agent dropped eligibility.free_care_max_fpl: judge: Quote is truncated before any FPL percentage; 200% is not stated.",
-    "agent dropped apply.submit_methods: judge: The quote says to mail the application but gives no address."
-   ]
-  },
-  {
-   "hospital": {
-    "ccn": "510007",
-    "name": "ST MARYS MEDICAL CENTER",
-    "city": "HUNTINGTON",
-    "state": "WV",
-    "zip": "25702",
-    "phone": "304-526-1234",
-    "ownership": "Voluntary non-profit - Church",
-    "website_domain": "smmc.marshallhealthnetwork.org",
-    "system": null
-   },
-   "version": 1,
-   "status": "draft",
-   "eligibility": {
-    "free_care_max_fpl": null,
-    "discount_tiers": null,
-    "assistance_ceiling_fpl": null,
-    "asset_test": {
-     "value": true,
-     "layer": "documented",
-     "quote": "Uninsured Patients having annual household incomes of $125,000 or less may, depending upon their assets and liabilities, qualify for discounted pricing for Covered Services",
-     "source_id": "fap-bb50b17b65bc2f3a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "residency": null,
-    "insured_patients_covered": {
-     "value": false,
-     "layer": "documented",
-     "quote": "This policy and the Financial Assistance Programs hereunder do not apply to the portion of charges an insured patient is personally responsible for, i.e., co-pays, co-",
-     "source_id": "fap-bb50b17b65bc2f3a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "min_balance": null,
-    "services_excluded": null
-   },
-   "programs": {
-    "presumptive": null,
-    "state_programs": {
-     "value": [
-      {
-       "name": "Medicaid",
-       "how_to_apply": "Patient Financial Services (PFS) will help patients apply for Medicaid."
-      }
-     ],
-     "layer": "documented",
-     "quote": "PFS will assist the patient in applying for Medicaid.",
-     "source_id": "fap-bb50b17b65bc2f3a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
-   },
-   "apply": {
-    "form_url": null,
-    "form_version": null,
-    "documents_required": {
-     "value": [
-      "pay_stubs",
-      "bank_statements",
-      "tax_return",
-      "social_security_letter",
-      "proof_of_income",
-      "other",
-      "medicaid_denial"
-     ],
-     "layer": "documented",
-     "quote": "____ The last two pay stubs from the last 2 pay periods for yourself and anyone residing in the household over the age of 18. If you or your spouse are unemployed a certification of no employment must be completed. _____ Bank Statement from the past 30 days from your bank",
-     "source_id": "fap-dec624fe5f28df79",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "documents_reported": null,
-    "submit_methods": null,
-    "window_days_from_first_bill": null,
-    "decision_days": {
-     "value": 10,
-     "layer": "documented",
-     "quote": "We will respond to you within 10 working days of the receipt of all required information whether your financial assistance has been approved or denied.",
-     "source_id": "fap-dec624fe5f28df79",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "decision_days_reported": null
-   },
-   "collections": {
-    "eca_wait_days": null,
-    "collection_agencies": null
-   },
-   "contacts": {
-    "phone": {
-     "value": "304.526.1014",
-     "layer": "documented",
-     "quote": "please contact our billing department at 304.526.1014 from 8 a.m. to 4:00 p.m. EST or email billing@st-marys.org",
-     "source_id": "web-b7bac473b7ad8ce3",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "hours": {
-     "value": "8 a.m. to 4:00 p.m. EST",
-     "layer": "documented",
-     "quote": "please contact our billing department at 304.526.1014 from 8 a.m. to 4:00 p.m. EST or email billing@st-marys.org",
-     "source_id": "web-b7bac473b7ad8ce3",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "languages": null
-   },
-   "coverage": {
-    "facilities": null,
-    "provider_list_url": null,
-    "covered_providers": null
-   },
-   "sources": [
-    {
-     "id": "fap-bb50b17b65bc2f3a",
-     "kind": "hospital_web",
-     "url": "https://smmc.marshallhealthnetwork.org/assets/SMMC/Billing/FAP/SMMC-FAP-Policy-FY2021-as-approved-10-26-21.pdf",
-     "title": "",
-     "fetched_on": "2026-10-23",
-     "sha256": "bb50b17b65bc2f3ab04ae36fabe879e90d58fb33d6fc7d38ed4c21db4f232bc7",
-     "effective_date": null
-    },
-    {
-     "id": "fap-dec624fe5f28df79",
-     "kind": "hospital_web",
-     "url": "https://smmc.marshallhealthnetwork.org/assets/SMMC/Documents/FAP/2026-Financial-Assistance-Application-.pdf",
-     "title": "",
-     "fetched_on": "2026-10-23",
-     "sha256": "dec624fe5f28df791d8549c5bca7fc91e9b620e6d3b47bc8024ef43726bb811a",
-     "effective_date": null
-    },
-    {
-     "id": "web-b7bac473b7ad8ce3",
-     "kind": "hospital_web",
-     "url": "https://smmc.marshallhealthnetwork.org/patients-and-visitors/billing",
-     "title": "Billing - St. Mary's Medical Center",
-     "fetched_on": "2026-10-23",
-     "sha256": "b7bac473b7ad8ce33b9caa937776c31bb3e2147434d925e0d6995f2eabb1c9bc",
-     "effective_date": null
-    }
-   ],
-   "accuracy": null,
-   "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: ____ Federal Income Tax Return from the previous year. If you do not file taxes, please initial _________________. ____  | ____ Child Support if it is received. ____ Letter from Supporter, if you live in a household and pay rent, utilities, et",
-    "agent dropped apply.form_url: quote is not a substring of the source",
-    "agent dropped apply.submit_methods: judge: The quote says to mail 'to PFS at the address on the application form'; the specific street address does not appear."
+    "eligibility.free_care_max_fpl: quote matched the source only after typography normalization",
+    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: Federal Supplemental Food Program for Women, Infants, and Children (WIC)",
+    "agent dropped apply.documents_required: between 1 and 3 excerpts allowed",
+    "agent dropped apply.submit_methods: excerpt not in source: Please provide the information requested and mail to the fol",
+    "agent judge on eligibility.insured_patients_covered: Quote says the discount 'may be extended' to insured patients with out-of-pocket costs above the AGB discount. That is a hedged possibility, not a plain statement of coverage.",
+    "agent judge on programs.presumptive: Quote lists SNAP and WIC as programs but does not say they are presumptive eligibility programs."
    ]
   },
   {
@@ -632,7 +485,7 @@
     "zip": "25550",
     "phone": "304-675-4340",
     "ownership": "Voluntary non-profit - Private",
-    "website_domain": "rh.marshallhealthnetwork.org",
+    "website_domain": "rivershealth.org",
     "system": null
    },
    "version": 1,
@@ -640,7 +493,15 @@
    "eligibility": {
     "free_care_max_fpl": null,
     "discount_tiers": null,
-    "assistance_ceiling_fpl": null,
+    "assistance_ceiling_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "Has a household income equal to or less than 200% of the Federal Poverty Guidelines",
+     "source_id": "web-e82e2166a43ffc4e",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "asset_test": null,
     "residency": null,
     "insured_patients_covered": null,
@@ -648,7 +509,17 @@
     "services_excluded": null
    },
    "programs": {
-    "presumptive": null,
+    "presumptive": {
+     "value": [
+      "Medicaid"
+     ],
+     "layer": "documented",
+     "quote": "Individual is denied Medicaid Coverage",
+     "source_id": "web-e82e2166a43ffc4e",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "state_programs": null
    },
    "apply": {
@@ -660,14 +531,22 @@
      "value": [
       {
        "kind": "mail",
-       "detail": "Rivers Health, 2520 Valley Drive, Point Pleasant, WV, 25550"
+       "detail": "Completed applications can be mailed to Rivers Health, 2520 Valley Drive, Point Pleasant, WV, 25550."
+      },
+      {
+       "kind": "in_person",
+       "detail": "By visiting the Financial Counselor's Office between 7:30 a.m. and 4:00 p.m. on Monday through Friday."
+      },
+      {
+       "kind": "phone",
+       "detail": "contact Patient Financial Services at 304.675.1020 or the Financial Counselor at 304.675.4340 ext. 1394"
       }
      ],
      "layer": "documented",
      "quote": "Completed applications can be mailed to Rivers Health, 2520 Valley Drive, Point Pleasant, WV, 25550.",
      "source_id": "web-e82e2166a43ffc4e",
      "checked_on": "2026-10-23",
-     "confidence": 1.0,
+     "confidence": 0.8,
      "support_count": 0
     },
     "window_days_from_first_bill": {
@@ -688,21 +567,21 @@
    },
    "contacts": {
     "phone": {
-     "value": "304.675.1020",
+     "value": "304.675.4340",
      "layer": "documented",
-     "quote": "Prior to receiving services, an individual may contact Patient Financial Services at 304.675.1020 or the Financial Counselor at 304.675.4340 ext. 1394.",
+     "quote": "Rivers Health 2520 Valley Drive Point Pleasant, WV 304.675.4340",
      "source_id": "web-e82e2166a43ffc4e",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "hours": {
-     "value": "Monday through Friday, 7:30 a.m. to 4:00 p.m. (Financial Counselor's Office)",
+     "value": "7:30 a.m. to 4:00 p.m. Monday through Friday",
      "layer": "documented",
-     "quote": "By visiting the Financial Counselor\u2019s Office between 7:30 a.m. and 4:00 p.m. on Monday through Friday.",
+     "quote": "By visiting the Financial Counselor's Office between 7:30 a.m. and 4:00 p.m. on Monday through Friday.",
      "source_id": "web-e82e2166a43ffc4e",
      "checked_on": "2026-10-23",
-     "confidence": 1.0,
+     "confidence": 0.8,
      "support_count": 0
     },
     "languages": null
@@ -723,15 +602,6 @@
      "effective_date": null
     },
     {
-     "id": "web-e82e2166a43ffc4e",
-     "kind": "hospital_web",
-     "url": "https://rh.marshallhealthnetwork.org/patients/financial-counseling",
-     "title": "Financial Counseling - Marshall Health Network - Rivers Health",
-     "fetched_on": "2026-10-23",
-     "sha256": "e82e2166a43ffc4e3fcf9603397d4f05823ff2b5a00b184f34eab157030fa8f2",
-     "effective_date": null
-    },
-    {
      "id": "web-255faa386b73244f",
      "kind": "hospital_web",
      "url": "https://rh.marshallhealthnetwork.org/assets/RH/Documents/Financial-Assistance-Application-FY26-docx.docx",
@@ -739,10 +609,26 @@
      "fetched_on": "2026-10-23",
      "sha256": "255faa386b73244f0902fade39699b687bce8ee40c6d1b6f3946b3a58dca53cf",
      "effective_date": null
+    },
+    {
+     "id": "web-e82e2166a43ffc4e",
+     "kind": "hospital_web",
+     "url": "https://rh.marshallhealthnetwork.org/patients/financial-counseling",
+     "title": "Financial Counseling - Marshall Health Network - Rivers Health",
+     "fetched_on": "2026-10-23",
+     "sha256": "e82e2166a43ffc4e3fcf9603397d4f05823ff2b5a00b184f34eab157030fa8f2",
+     "effective_date": null
     }
    ],
    "accuracy": null,
-   "eve_review": []
+   "eve_review": [
+    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: By visiting the Financial Counselor's Office between 7:30 a.m. and 4:00 p.m. on Monday through Friday. | Prior to receiving services, an individual may contact Patient Financial Services at 304.675.1020 or the Financial Couns",
+    "apply.submit_methods: quote matched the source only after typography normalization",
+    "contacts.hours: quote matched the source only after typography normalization",
+    "apply.form_url: not an absolute URL ('/assets/RH/Documents/Financial-Assistance-Application-FY26-d'); dropped",
+    "agent judge on eligibility.assistance_ceiling_fpl: Quote gives 200% FPG as an eligibility threshold but does not say assistance is unavailable above 200%.",
+    "agent judge on programs.presumptive: Quote says an individual denied Medicaid coverage qualifies, but never calls this presumptive eligibility or names a program list."
+   ]
   },
   {
    "hospital": {
@@ -1272,13 +1158,29 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": null,
+    "free_care_max_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "Full financial assistance will be provided to those patients where the adjusted gross household income from the patient\u2019s federal tax return or income documentation is at or below 200%",
+     "source_id": "fap-4de22a65d7710d4e",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "discount_tiers": null,
-    "assistance_ceiling_fpl": null,
+    "assistance_ceiling_fpl": {
+     "value": "300",
+     "layer": "documented",
+     "quote": "whose annual income is greater than 200% but less than or equal to 300% of the federal poverty guidelines",
+     "source_id": "fap-4de22a65d7710d4e",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "asset_test": {
      "value": true,
      "layer": "documented",
-     "quote": "v. Cash Assets: All cash assets including bank accounts, stocks, bonds, and CDs. The first",
+     "quote": "Cash Assets: All cash assets including bank accounts, stocks, bonds, and CDs. The first $10,000 is not counted toward income.",
      "source_id": "fap-4de22a65d7710d4e",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1288,7 +1190,7 @@
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "This discount may be extended to insured patients whose out of pocket expenses exceed the",
+     "quote": "This discount may be extended to insured patients whose out of pocket expenses exceed the AGB discount.",
      "source_id": "fap-4de22a65d7710d4e",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1302,10 +1204,10 @@
      "value": [
       "Supplemental Nutritional Assistance Program (SNAP)",
       "State's Energy Assistance Program",
-      "WIC"
+      "Federal Special Supplemental Food Program for Women, Infants, and Children (WIC)"
      ],
      "layer": "documented",
-     "quote": "i. Supplemental Nutritional Assistance Program SNAP)",
+     "quote": "Those who are eligible for the following programs will be eligible for WVU Cares, unless otherwise eligible for Medicaid or CHIP.",
      "source_id": "fap-4de22a65d7710d4e",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1314,36 +1216,49 @@
     "state_programs": null
    },
    "apply": {
-    "form_url": {
-     "value": "https://wvumedicine.org/wp-content/uploads/System_Pages/Financial-Assistance-Application-Form.pdf",
-     "layer": "documented",
-     "quote": "Financial Assistance Application Form [https://wvumedicine.org/wp-content/uploads/System_Pages/Financial-Assistance-Application-Form.pdf]",
-     "source_id": "web-dd646080444d243f",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "form_url": null,
     "form_version": null,
     "documents_required": {
      "value": [
-      "medicaid_denial",
+      "proof_of_income",
       "tax_return",
       "pay_stubs",
-      "social_security_letter"
+      "other"
      ],
      "layer": "documented",
-     "quote": "Documentation of a denied Medicaid (Medical Assistance) application dated within in the last 90 days is required for application.",
-     "source_id": "fap-97a3c5a4576247bc",
+     "quote": "income from the patient\u2019s federal tax return or income documentation (after qualifying expenses) is at or below 200%",
+     "source_id": "fap-4de22a65d7710d4e",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "documents_reported": null,
-    "submit_methods": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "Completed Financial Assistance Application Forms are submitted to the Patient Financial Services/Patient Access Department for review and evaluation. The return address is listed on the Financial Assistance Application"
+      },
+      {
+       "kind": "portal",
+       "detail": "By logging into your MyWVUChart account at https://mywvuchart.com/MyChart/FinancialAssistance/"
+      },
+      {
+       "kind": "phone",
+       "detail": "By calling the financial counselors office at 304-598-6260"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Completed Financial Assistance Application Forms are submitted to the Patient Financial Services/Patient Access Department for review and evaluation. The return address is listed on the Financial Assistance Application (Attachment I).",
+     "source_id": "fap-4de22a65d7710d4e",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "window_days_from_first_bill": {
      "value": 240,
      "layer": "documented",
-     "quote": "may be accepted up to 240 days from the first billing statement.",
+     "quote": "Financial Assistance Application Forms may be accepted up to 240 days from the first post discharge billing statements.",
      "source_id": "fap-4de22a65d7710d4e",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1358,9 +1273,9 @@
    },
    "contacts": {
     "phone": {
-     "value": "855-778-2922",
+     "value": "304-598-6260",
      "layer": "documented",
-     "quote": "By calling Patient Financial Services at 855-778-2922",
+     "quote": "By calling our financial counselors at 304-598-6260",
      "source_id": "fap-4de22a65d7710d4e",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1383,32 +1298,14 @@
      "fetched_on": "2026-10-23",
      "sha256": "4de22a65d7710d4eaf8e865a2039fb9d3b9f1b0313d6d43cda2399c205865ed9",
      "effective_date": null
-    },
-    {
-     "id": "fap-97a3c5a4576247bc",
-     "kind": "hospital_web",
-     "url": "https://wvumedicine.org/wp-content/uploads/System_Pages/Financial-Assistance-Application-Form.pdf",
-     "title": "",
-     "fetched_on": "2026-10-23",
-     "sha256": "97a3c5a4576247bc98de90c19d574a29052533a6010d57f9b9a91ff7b8bd687b",
-     "effective_date": null
-    },
-    {
-     "id": "web-dd646080444d243f",
-     "kind": "hospital_web",
-     "url": "https://wvumedicine.org/billing-and-insurance/financial-assistance/policies-and-financial-applications/",
-     "title": "Policies and Financial Applications | WVU Medicine",
-     "fetched_on": "2026-10-23",
-     "sha256": "dd646080444d243f4265e4bc002f6487b0b1ed6623c086b07d32a1f50ed6a64d",
-     "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: ii. State\u2019s Energy Assistance Program | iii. Federal Special Supplemental Food Program for Women, Infants, and Children (WIC)",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Copy of most recent federal tax return (or form 4506t), pay stubs for the | Social Security $ Social Security award letter",
-    "agent dropped eligibility.free_care_max_fpl: judge: Quote is truncated before any FPL percentage; 200 is not stated.",
-    "agent dropped apply.submit_methods: judge: Quote says to mail but gives no address."
+    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: i. Supplemental Nutritional Assistance Program SNAP) | ii. State\u2019s Energy Assistance Program iii. Federal Special Supplemental Food Program for Women, Infants, and Children (W",
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: gross income documented on pay stubs or income letters from the most recent 30-day period will be used | Insurance: Documentation of all medical insurance coverage.",
+    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: By logging into your MyWVUChart account at https://mywvuchart.com/MyChart/FinancialAssistance/ | By calling the financial counselors office at 304-598-6260",
+    "agent judge on eligibility.assistance_ceiling_fpl: Quote gives a discount tier from 200% to 300% FPG. It does not say no assistance is offered above 300%."
    ]
   },
   {
@@ -2174,13 +2071,21 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": null,
+    "free_care_max_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "Full financial assistance will be provided to those patients where the adjusted gross household income from the patient\u2019s federal tax return or income documentation is at or below 200% of the federal poverty guidelines",
+     "source_id": "fap-66c724ff2bfbc109",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
     "asset_test": {
      "value": true,
      "layer": "documented",
-     "quote": "Cash Assets: All cash assets including bank accounts, stocks, bonds, and CDs. The first",
+     "quote": "Cash Assets: All cash assets including bank accounts, stocks, bonds, and CDs. The first $10,000 is not counted toward income.",
      "source_id": "fap-66c724ff2bfbc109",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2190,7 +2095,7 @@
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "Private-pay patients and any patient with a liability after third party coverage who indicate an inability",
+     "quote": "This discount may be extended to insured patients whose out of pocket expenses exceed the AGB discount.",
      "source_id": "fap-66c724ff2bfbc109",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2202,9 +2107,8 @@
    "programs": {
     "presumptive": {
      "value": [
-      "SNAP participants",
-      "State Energy Assistance Program participants",
-      "WIC participants"
+      "SNAP",
+      "WIC"
      ],
      "layer": "documented",
      "quote": "Supplemental Nutritional Assistance Program (SNAP)",
@@ -2213,26 +2117,64 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "state_programs": null
+    "state_programs": {
+     "value": [
+      {
+       "name": "Health Access or Health Right",
+       "how_to_apply": "see facility specific policy"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Self-pay account balance will be adjusted, in accordance with this financial assistance policy, for participating facilities, when a patient qualifies for Health Access or Health Right (see facility specific policy).",
+     "source_id": "fap-66c724ff2bfbc109",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
    },
    "apply": {
-    "form_url": {
-     "value": "https://wvumedicine.org/wp-content/uploads/System_Pages/Forms/CCMC_FAP_Attachment-1_Financial-Application.2024-4282025.pdf",
+    "form_url": null,
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "proof_of_income",
+      "medicaid_denial",
+      "pay_stubs"
+     ],
      "layer": "documented",
-     "quote": "Financial Assistance Application Form [https://wvumedicine.org/wp-content/uploads/System_Pages/Forms/CCMC_FAP_Attachment-1_Financial-Application.2024-4282025.pdf]",
-     "source_id": "web-dd646080444d243f",
+     "quote": "Documentation in the form of a denial letter from the Medicaid program in the state of residence, or chart notes/denial letter from the outside contracted agency indicating the reason for the Medicaid denial is required.",
+     "source_id": "fap-66c724ff2bfbc109",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "form_version": null,
-    "documents_required": null,
     "documents_reported": null,
-    "submit_methods": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "portal",
+       "detail": "www.wvumedicine.org / MyWVUChart account at https://mywvuchart.com/MyChart/FinancialAssistance/"
+      },
+      {
+       "kind": "phone",
+       "detail": "financial counselors at 304-598-6260"
+      },
+      {
+       "kind": "mail",
+       "detail": "Completed Financial Assistance Application Forms are submitted to the Patient Financial Services/Patient Access Department for review and evaluation. The return address is listed on the Financial Assistance Application"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Our WVU Medicine website: www.wvumedicine.org",
+     "source_id": "fap-66c724ff2bfbc109",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "window_days_from_first_bill": {
      "value": 240,
      "layer": "documented",
-     "quote": "may be accepted up to 240 days from the first billing statement.",
+     "quote": "Financial Assistance Application Forms may be accepted up to 240 days from the first post discharge billing statements.",
      "source_id": "fap-66c724ff2bfbc109",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2249,7 +2191,7 @@
     "phone": {
      "value": "304-598-6260",
      "layer": "documented",
-     "quote": "By calling the financial counselors office at 304-598-6260",
+     "quote": "By calling our financial counselors at 304-598-6260",
      "source_id": "fap-66c724ff2bfbc109",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2272,32 +2214,15 @@
      "fetched_on": "2026-10-23",
      "sha256": "66c724ff2bfbc1098abd50aca9986d565402fd344c3e9150d1e06c93f2c255c7",
      "effective_date": null
-    },
-    {
-     "id": "fap-358ba030d2970367",
-     "kind": "hospital_web",
-     "url": "https://wvumedicine.org/wp-content/uploads/System_Pages/Forms/CCMC_FAP_Attachment-1_Financial-Application.2024-4282025.pdf",
-     "title": "",
-     "fetched_on": "2026-10-23",
-     "sha256": "358ba030d2970367b33668f1166812ceefeed6a0e98d8c509d588cf779f3b66b",
-     "effective_date": null
-    },
-    {
-     "id": "web-dd646080444d243f",
-     "kind": "hospital_web",
-     "url": "https://wvumedicine.org/billing-and-insurance/financial-assistance/policies-and-financial-applications/",
-     "title": "Policies and Financial Applications | WVU Medicine",
-     "fetched_on": "2026-10-23",
-     "sha256": "dd646080444d243f4265e4bc002f6487b0b1ed6623c086b07d32a1f50ed6a64d",
-     "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: State\u2019s Energy Assistance Program | Federal Special Supplemental Food Program for Women, Infants, and Children (WIC)",
-    "agent dropped eligibility.free_care_max_fpl: judge: The quote is cut off before any FPL percentage; 200 is not stated.",
-    "agent dropped apply.documents_required: judge: The quote is cut off at 'pay stubs for the'; 'last 30 days' does not appear.",
-    "agent dropped apply.submit_methods: judge: The quote shows mail to 800 Garfield Ave., Parkersburg, WV 26101 but omits the recipient name and 'Financial Counseling'."
+    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: Federal Special Supplemental Food Program for Women, Infants, and Children (WIC)",
+    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: gross income documented on pay stubs or income letters from the most recent 30-day period will be used.",
+    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: By calling the financial counselors office at 304-598-6260 | By logging into your MyWVUChart account at https://mywvuchart.com/MyChart/FinancialAssistance/",
+    "agent judge on programs.presumptive: Quote only lists SNAP and WIC as programs. It does not say they confer presumptive eligibility.",
+    "agent judge on apply.submit_methods: Quote supports online and phone methods only. The mail method, with its return-address detail, does not appear in the quote."
    ]
   },
   {
@@ -2321,37 +2246,26 @@
     "asset_test": {
      "value": true,
      "layer": "documented",
-     "quote": "[3] Savings account (bank, credit union, and etc.) [4] Certificates of Deposit [5] Stocks or bonds",
+     "quote": "Savings account (bank, credit union, and etc.) [4] Certificates of Deposit [5] Stocks or bonds [6] Property including rental property",
      "source_id": "fap-d2f247f051d151b4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "residency": null,
-    "insured_patients_covered": {
-     "value": false,
-     "layer": "documented",
-     "quote": "To qualify for Financial Assistance under this Policy, the patient must: A. Be Uninsured;",
-     "source_id": "fap-d2f247f051d151b4",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "insured_patients_covered": null,
     "min_balance": null,
     "services_excluded": null
    },
    "programs": {
     "presumptive": {
      "value": [
-      "Eligible for state-funded prescription programs",
-      "Homeless or received care from a homeless clinic",
-      "Eligible for WIC",
-      "Eligible for SNAP",
-      "Eligible for low income/subsidized housing",
-      "Deceased with no estate or mentally incapacitated with no one to act on patient's behalf"
+      "homeless",
+      "WIC",
+      "SNAP"
      ],
      "layer": "documented",
-     "quote": "[b] The patient is eligible for state-funded prescription programs; [c] The patient is homeless or received care from a homeless clinic; [d] The patient is eligible for assistance through the Women, Infants and Children program (WIC)",
+     "quote": "[c] The patient is homeless or received care from a homeless clinic; [d] The patient is eligible for assistance through the Women, Infants and Children program (WIC) [e] The patient is eligible for assistance through the Supplemental Nutrition Assistance Program (SNAP);",
      "source_id": "fap-d2f247f051d151b4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2360,24 +2274,17 @@
     "state_programs": null
    },
    "apply": {
-    "form_url": {
-     "value": "https://www.arh.org/wp-content/uploads/2025/10/Financial-Evaluation.pdf",
-     "layer": "documented",
-     "quote": "ACCESS FINANCIAL ASSISTANCE APPLICATION [https://www.arh.org/wp-content/uploads/2025/10/Financial-Evaluation.pdf]",
-     "source_id": "web-8a2c7e60bd768efd",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "form_url": null,
     "form_version": null,
     "documents_required": {
      "value": [
       "tax_return",
-      "proof_of_income"
+      "proof_of_income",
+      "other"
      ],
      "layer": "documented",
-     "quote": "COPY OF INCOME TAX RETURN \u2013 ATTACH VERIFICATION OF HOUSEHOLD INCOME \u2013 ATTACH",
-     "source_id": "fap-5c7ae6e1838f0c26",
+     "quote": "[1] Copy of the previous year's income tax return",
+     "source_id": "fap-d2f247f051d151b4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -2386,16 +2293,20 @@
     "submit_methods": {
      "value": [
       {
-       "kind": "mail",
-       "detail": "Mail to the Revenue Cycle Manager at the applicable facility"
+       "kind": "portal",
+       "detail": "Copies of the application form and instructions are available online at http://www.arh.org/patients_visitors/financial_assistance.aspx"
       },
       {
        "kind": "in_person",
-       "detail": "Return to the Revenue Cycle Manager at the applicable facility"
+       "detail": "requesting a copy in person at any of the ARH Facilities' patient admission or registration areas"
+      },
+      {
+       "kind": "mail",
+       "detail": "requesting a free copy by mail by contacting the ARH Facilities' Collections Department"
       }
      ],
      "layer": "documented",
-     "quote": "Completed applications, along with all required documentation, should be returned or mailed to the Revenue Cycle Manager at the applicable facility.",
+     "quote": "Copies of the application form and instructions are available online at http://www.arh.org/patients _visitors/financial_ assistance.aspx , by requesting a copy in person at any of the ARH Facilities' patient admission or registration areas, or by requesting a free copy by mail by contacting the ARH Facilities' Collections Department.",
      "source_id": "fap-d2f247f051d151b4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2417,7 +2328,7 @@
     "eca_wait_days": {
      "value": 120,
      "layer": "documented",
-     "quote": "If a patient does not submit a Financial Assistance application within the first 120 days from the date on which ARH issues its first, post-discharge billing statement, then ARH may begin engaging in the collection actions described below",
+     "quote": "If a patient does not submit a Financial Assistance application within the first 120 days from the date on which ARH issues its first, post-discharge billing statement, then ARH may begin engaging in the collection actions described below after issuing an ECA Initiation Notice.",
      "source_id": "fap-d2f247f051d151b4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2426,15 +2337,7 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": {
-     "value": "859-226-2440",
-     "layer": "documented",
-     "quote": "wanting the FAP or FAP application via mail may contact Appalachian Regional Healthcare at 859-226-2440 or by mail at 2260 Executive Drive Lexington, KY 40505.",
-     "source_id": "web-8a2c7e60bd768efd",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "phone": null,
     "hours": null,
     "languages": null
    },
@@ -2463,18 +2366,19 @@
      "effective_date": null
     },
     {
-     "id": "web-8a2c7e60bd768efd",
+     "id": "web-933121a64edee4d6",
      "kind": "hospital_web",
-     "url": "https://www.arh.org/financial-assistance",
-     "title": "Financial Assistance - Appalachian Regional Healthcare",
+     "url": "https://www.arh.org/price-transparency",
+     "title": "Price Transparency - Appalachian Regional Healthcare",
      "fetched_on": "2026-10-23",
-     "sha256": "8a2c7e60bd768efd8b6c9f0e30c62c6bc813c725dd0d4ca45be6ee86494f7340",
+     "sha256": "933121a64edee4d61991bed7ed0e2a3a42e3c6e5a05248e89aadce57f7d34060",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: [e] The patient is eligible for assistance through the Supplemental Nutrition Assistance Program (SNAP); [f] The patient"
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: [2] Verification of household income | [3] Savings account (bank, credit union, and etc.)",
+    "agent judge on eligibility.asset_test: Quote only lists asset types (savings, CDs, stocks/bonds, property). It does not state that assets are considered in eligibility."
    ]
   },
   {
@@ -2931,17 +2835,35 @@
    "eligibility": {
     "free_care_max_fpl": null,
     "discount_tiers": null,
-    "assistance_ceiling_fpl": null,
-    "asset_test": {
-     "value": true,
+    "assistance_ceiling_fpl": {
+     "value": "138",
      "layer": "documented",
-     "quote": "MHHS will consider economic assets and total income. There are cases where a patient will have a low income but adequate resources to pay the account.",
+     "quote": "Charity Care will be denied to uninsured patients whose income falls below 138% of the Federal Poverty Level, and who refuse to take the necessary steps to obtain medical assistance through outside health and Medicaid agencies",
      "source_id": "fap-f97cacb5de716175",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "residency": null,
+    "asset_test": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Verification of income and assets is required spanning all dates of service in application.",
+     "source_id": "fap-f97cacb5de716175",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "residency": {
+     "value": [
+      "MHHS provides a substantial amount of discounted and free medical care to the needy patients of our service area."
+     ],
+     "layer": "documented",
+     "quote": "MHHS provides a substantial amount of discounted and free medical care to the needy patients of our service area.",
+     "source_id": "fap-f97cacb5de716175",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "insured_patients_covered": null,
     "min_balance": null,
     "services_excluded": null
@@ -2951,7 +2873,15 @@
     "state_programs": null
    },
    "apply": {
-    "form_url": null,
+    "form_url": {
+     "value": "https://www.mhhs.healthcare/wp-content/uploads/2024/11/financial-assistance-application.pdf",
+     "layer": "documented",
+     "quote": "Financial Assistance Application (PDF) [/wp-content/uploads/2024/11/financial-assistance-application.pdf]",
+     "source_id": "web-4f968f7df953c4ef",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "form_version": null,
     "documents_required": {
      "value": [
@@ -2967,9 +2897,34 @@
      "support_count": 0
     },
     "documents_reported": null,
-    "submit_methods": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "mailing a completed application, along with proof of household income, to the address below"
+      },
+      {
+       "kind": "in_person",
+       "detail": "bringing the application and proof of household income to any patient registration area of Minnie Hamilton Health System"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Individuals may apply for Financial Assistance Programs by mailing a completed application, along with proof of household income, to the address below or by bringing the application and proof of household income to any patient registration area of Minnie Hamilton Health System.",
+     "source_id": "web-4f968f7df953c4ef",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "window_days_from_first_bill": null,
-    "decision_days": null,
+    "decision_days": {
+     "value": 30,
+     "layer": "documented",
+     "quote": "the patient will be notified within 30 days of the decision via phone call or letter",
+     "source_id": "fap-f97cacb5de716175",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "decision_days_reported": null
    },
    "collections": {
@@ -2980,17 +2935,17 @@
     "phone": {
      "value": "304-354-9244",
      "layer": "documented",
-     "quote": "For information about MHHS' Financial Assistance Program and translation services, please call for a representative at 304-354-9244.",
+     "quote": "please call for a representative at 304-354-9244",
      "source_id": "fap-f97cacb5de716175",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "hours": {
-     "value": "Monday-Friday 8 am \u2013 4:30 pm",
+     "value": "Monday-Friday 8 AM \u2013 4:30 PM",
      "layer": "documented",
-     "quote": "If you have a question or need more information about sliding fee, please feel free to call our office. Monday-Friday 8 am \u2013 4:30 pm @ (304) 354-9244 .",
-     "source_id": "web-4f968f7df953c4ef",
+     "quote": "MONDAY-FRIDAY 8 AM \u2013 4:30 PM @ 304-354-9244",
+     "source_id": "fap-045bc188029e381b",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -3023,12 +2978,12 @@
      "effective_date": null
     },
     {
-     "id": "fap-f5529818cc327081",
+     "id": "fap-045bc188029e381b",
      "kind": "hospital_web",
-     "url": "https://www.mhhs.healthcare/wp-content/uploads/2024/11/financial-assistance-application.pdf",
+     "url": "https://www.mhhs.healthcare/wp-content/uploads/2024/11/sliding-scale-application.pdf",
      "title": "",
      "fetched_on": "2026-10-23",
-     "sha256": "f5529818cc327081bc7833aef0ff5dd07dd0f1181c652b332142694dc6937e2b",
+     "sha256": "045bc188029e381b7767f782d5826280889addf60d9b97488f265101be524c69",
      "effective_date": null
     },
     {
@@ -3043,8 +2998,14 @@
    ],
    "accuracy": null,
    "eve_review": [
+    "eligibility.discount_tiers: 0-100% at 0% is no discount; skipped",
     "apply.documents_required: 2 more verbatim excerpt(s) supported this value: 2. Prior year W-2 or 1099 Form. | 3. Current pay stub.",
-    "agent dropped apply.submit_methods: judge: Quote supports mail and in-person at any registration area, but says only 'the address below'; the specific mailing address is not in the quote."
+    "agent judge on eligibility.discount_tiers: Quote gives category percents (B 25%, C 50%, D 60%) but no FPL bounds. The value's FPL bounds (0, 100, 0) and the 0% tier do not appear in the quote.",
+    "agent judge on eligibility.assistance_ceiling_fpl: Quote says uninsured patients below 138% FPL who refuse outside assistance steps will be denied. It does not say no assistance is offered above 138%.",
+    "agent judge on eligibility.residency: Quote is a general statement about providing discounted and free care to needy patients in the service area. It states no residency requirement.",
+    "agent judge on apply.form_url: Quote gives only the relative path /wp-content/uploads/... The domain mhhs.healthcare does not appear in the quote.",
+    "agent judge on apply.decision_days: Quote says patients are notified within 30 days of the decision. It does not say a decision is made within 30 days.",
+    "eligibility.discount_tiers: rejected by schema (3 validation errors for ProcedureSheet); dropped"
    ]
   },
   {
@@ -3384,32 +3345,29 @@
     "free_care_max_fpl": null,
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
-    "asset_test": null,
-    "residency": null,
-    "insured_patients_covered": {
-     "value": false,
+    "asset_test": {
+     "value": true,
      "layer": "documented",
-     "quote": "To qualify for Financial Assistance under this Policy, the patient must: A. Be Uninsured;",
+     "quote": "Savings account (bank, credit union, and etc.) [4] Certificates of Deposit [5] Stocks or bonds [6] Property including rental property",
      "source_id": "fap-d2f247f051d151b4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
+    "residency": null,
+    "insured_patients_covered": null,
     "min_balance": null,
     "services_excluded": null
    },
    "programs": {
     "presumptive": {
      "value": [
-      "Eligible for state-funded prescription programs",
-      "Homeless or received care from a homeless clinic",
-      "Eligible for WIC",
-      "Eligible for SNAP",
-      "Eligible for low income/subsidized housing",
-      "Deceased with no estate or mentally incapacitated with no one to act on patient's behalf"
+      "WIC",
+      "SNAP",
+      "homeless"
      ],
      "layer": "documented",
-     "quote": "[b] The patient is eligible for state-funded prescription programs; [c] The patient is homeless or received care from a homeless clinic; [d] The patient is eligible for assistance through the Women, Infants and Children program (WIC)",
+     "quote": "[c] The patient is homeless or received care from a homeless clinic; [d] The patient is eligible for assistance through the Women, Infants and Children program (WIC) [e] The patient is eligible for assistance through the Supplemental Nutrition Assistance Program (SNAP);",
      "source_id": "fap-d2f247f051d151b4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3422,7 +3380,7 @@
      "value": "https://www.arh.org/wp-content/uploads/2025/10/Financial-Evaluation.pdf",
      "layer": "documented",
      "quote": "ACCESS FINANCIAL ASSISTANCE APPLICATION [https://www.arh.org/wp-content/uploads/2025/10/Financial-Evaluation.pdf]",
-     "source_id": "web-8a2c7e60bd768efd",
+     "source_id": "web-8fda3d0df5a55617",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -3431,11 +3389,12 @@
     "documents_required": {
      "value": [
       "tax_return",
-      "proof_of_income"
+      "proof_of_income",
+      "other"
      ],
      "layer": "documented",
-     "quote": "COPY OF INCOME TAX RETURN \u2013 ATTACH VERIFICATION OF HOUSEHOLD INCOME \u2013 ATTACH",
-     "source_id": "fap-5c7ae6e1838f0c26",
+     "quote": "[1] Copy of the previous year's income tax return [2] Verification of household income [3] Savings account (bank, credit union, and etc.)",
+     "source_id": "fap-d2f247f051d151b4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -3445,15 +3404,19 @@
      "value": [
       {
        "kind": "mail",
-       "detail": "Mail to the Revenue Cycle Manager at the applicable facility"
+       "detail": "requesting a free copy by mail by contacting the ARH Facilities' Collections Department"
       },
       {
        "kind": "in_person",
-       "detail": "Return to the Revenue Cycle Manager at the applicable facility"
+       "detail": "requesting a copy in person at any of the ARH Facilities' patient admission or registration areas"
+      },
+      {
+       "kind": "portal",
+       "detail": "Copies of the application form and instructions are available online at http://www.arh.org/patients _visitors/financial_ assistance.aspx"
       }
      ],
      "layer": "documented",
-     "quote": "Completed applications, along with all required documentation, should be returned or mailed to the Revenue Cycle Manager at the applicable facility.",
+     "quote": "Copies of the application form and instructions are available online at http://www.arh.org/patients _visitors/financial_ assistance.aspx , by requesting a copy in person at any of the ARH Facilities' patient admission or registration areas, or by requesting a free copy by mail by contacting the ARH Facilities' Collections Department.",
      "source_id": "fap-d2f247f051d151b4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3462,7 +3425,7 @@
     "window_days_from_first_bill": {
      "value": 240,
      "layer": "documented",
-     "quote": "up to 240 days from the date on which ARH issues its first, post-discharge billing statement",
+     "quote": "A patient may apply for Financial Assistance during the patient registration process or any time after, up to 240 days from the date on which ARH issues its first, post-discharge billing statement.",
      "source_id": "fap-d2f247f051d151b4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3475,7 +3438,7 @@
     "eca_wait_days": {
      "value": 120,
      "layer": "documented",
-     "quote": "If a patient does not submit a Financial Assistance application within the first 120 days from the date on which ARH issues its first, post-discharge billing statement, then ARH may begin engaging in the collection actions",
+     "quote": "If a patient does not submit a Financial Assistance application within the first 120 days from the date on which ARH issues its first, post-discharge billing statement, then ARH may begin engaging in the collection actions described below after issuing an ECA Initiation Notice.",
      "source_id": "fap-d2f247f051d151b4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3488,7 +3451,7 @@
      "value": "859-226-2440",
      "layer": "documented",
      "quote": "may contact Appalachian Regional Healthcare at 859-226-2440 or by mail at 2260 Executive Drive Lexington, KY 40505.",
-     "source_id": "web-8a2c7e60bd768efd",
+     "source_id": "web-8fda3d0df5a55617",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -3521,19 +3484,18 @@
      "effective_date": null
     },
     {
-     "id": "web-8a2c7e60bd768efd",
+     "id": "web-8fda3d0df5a55617",
      "kind": "hospital_web",
      "url": "https://www.arh.org/financial-assistance",
      "title": "Financial Assistance - Appalachian Regional Healthcare",
      "fetched_on": "2026-10-23",
-     "sha256": "8a2c7e60bd768efd8b6c9f0e30c62c6bc813c725dd0d4ca45be6ee86494f7340",
+     "sha256": "8fda3d0df5a5561772e241faf552f2e21ba0cb62e11999f5d84aa1c9770c0801",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: [e] The patient is eligible for assistance through the Supplemental Nutrition Assistance Program (SNAP); [f] The patient",
-    "agent dropped eligibility.asset_test: judge: The quote is a bare list item naming a savings account; on its own it does not say assets are considered for eligibility."
+    "agent judge on eligibility.asset_test: Quote lists asset types (savings, CDs, stocks/bonds, property) but does not state that assets are considered for eligibility."
    ]
   },
   {
@@ -3551,13 +3513,21 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": null,
+    "free_care_max_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "Full financial assistance will be provided to those patients where the adjusted gross household income from the patient\u2019s federal tax return or income documentation is at or below 200%",
+     "source_id": "fap-4ad60bdea9f907ba",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
     "asset_test": {
      "value": true,
      "layer": "documented",
-     "quote": "v. Cash Assets: All cash assets including bank accounts, stocks, bonds, and CDs. The first",
+     "quote": "Cash Assets: All cash assets including bank accounts, stocks, bonds, and CDs. The first $10,000 is not counted toward income.",
      "source_id": "fap-4ad60bdea9f907ba",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3567,7 +3537,7 @@
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "a. Private-pay patients and any patient with a liability after third party coverage who indicate an inability",
+     "quote": "This discount may be extended to insured patients whose out of pocket expenses exceed the AGB discount.",
      "source_id": "fap-4ad60bdea9f907ba",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3579,12 +3549,12 @@
    "programs": {
     "presumptive": {
      "value": [
-      "SNAP participants",
-      "State Energy Assistance Program participants",
-      "WIC participants"
+      "Supplemental Nutritional Assistance Program (SNAP)",
+      "State's Energy Assistance Program",
+      "Federal Special Supplemental Food Program for Women, Infants, and Children (WIC)"
      ],
      "layer": "documented",
-     "quote": "i. Supplemental Nutritional Assistance Program (SNAP)",
+     "quote": "Those who are eligible for the following programs will be eligible for WVU Cares, unless otherwise eligible for Medicaid or CHIP.",
      "source_id": "fap-4ad60bdea9f907ba",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3593,35 +3563,49 @@
     "state_programs": null
    },
    "apply": {
-    "form_url": {
-     "value": "https://wvumedicine.org/wp-content/uploads/System_Pages/Forms/PVH_FAP_Attachment-1_Financial-Application.2024-4282025.pdf",
-     "layer": "documented",
-     "quote": "Financial Assistance Application Form [https://wvumedicine.org/wp-content/uploads/System_Pages/Forms/PVH_FAP_Attachment-1_Financial-Application.2024-4282025.pdf]",
-     "source_id": "web-dd646080444d243f",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "form_url": null,
     "form_version": null,
     "documents_required": {
      "value": [
+      "medicaid_denial",
       "tax_return",
-      "social_security_letter",
-      "bank_statements"
+      "pay_stubs",
+      "proof_of_income"
      ],
      "layer": "documented",
-     "quote": "Wages/Self Employment $ Copy of most recent federal tax return (or form 4506t), pay stubs for the",
-     "source_id": "fap-540d0faacca53883",
+     "quote": "Documentation in the form of a denial letter from the Medicaid program in the state of residence",
+     "source_id": "fap-4ad60bdea9f907ba",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "documents_reported": null,
-    "submit_methods": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "The return address is listed on the Financial Assistance Application (Attachment I)."
+      },
+      {
+       "kind": "portal",
+       "detail": "By logging into your MyWVUChart account at https://mywvuchart.com/MyChart/FinancialAssistance/"
+      },
+      {
+       "kind": "phone",
+       "detail": "By calling the financial counselors office at 304-598-6260"
+      }
+     ],
+     "layer": "documented",
+     "quote": "By logging into your MyWVUChart account at https://mywvuchart.com/MyChart/FinancialAssistance/",
+     "source_id": "fap-4ad60bdea9f907ba",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "window_days_from_first_bill": {
      "value": 240,
      "layer": "documented",
-     "quote": "may be accepted up to 240 days from the first billing statement.",
+     "quote": "Financial Assistance Application Forms may be accepted up to 240 days from the first post discharge billing statements.",
      "source_id": "fap-4ad60bdea9f907ba",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3638,7 +3622,7 @@
     "phone": {
      "value": "304-598-6260",
      "layer": "documented",
-     "quote": "By calling the financial counselors office at 304-598-6260",
+     "quote": "By calling our financial counselors at 304-598-6260",
      "source_id": "fap-4ad60bdea9f907ba",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3661,33 +3645,14 @@
      "fetched_on": "2026-10-23",
      "sha256": "4ad60bdea9f907ba15d7ec3e6c34cb48698dab4cfb5ae82144d68790b899e01c",
      "effective_date": null
-    },
-    {
-     "id": "fap-540d0faacca53883",
-     "kind": "hospital_web",
-     "url": "https://wvumedicine.org/wp-content/uploads/System_Pages/Forms/PVH_FAP_Attachment-1_Financial-Application.2024-4282025.pdf",
-     "title": "",
-     "fetched_on": "2026-10-23",
-     "sha256": "540d0faacca5388391147e1bc2a45b6cd1be2c8eb747e574a62ebd5203f83a03",
-     "effective_date": null
-    },
-    {
-     "id": "web-dd646080444d243f",
-     "kind": "hospital_web",
-     "url": "https://wvumedicine.org/billing-and-insurance/financial-assistance/policies-and-financial-applications/",
-     "title": "Policies and Financial Applications | WVU Medicine",
-     "fetched_on": "2026-10-23",
-     "sha256": "dd646080444d243f4265e4bc002f6487b0b1ed6623c086b07d32a1f50ed6a64d",
-     "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: ii. State\u2019s Energy Assistance Program | iii. Federal Special Supplemental Food Program for Women, Infants, and Children (WIC)",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Social Security $ Social Security award letter | Checking Accounts (total balances) Yes / No Most current bank statement(s)",
-    "agent dropped eligibility.free_care_max_fpl: judge: The quote is cut off before any FPL percentage. 200% is not stated.",
-    "agent dropped eligibility.residency: judge: The quote only names permanent residents, working visa and student visa holders. Green card, tax filing and primary insurance are not mentioned.",
-    "agent dropped apply.submit_methods: judge: The quote has mail, the hospital name and 100 Pin Oak Lane, but omits 'Financial Counseling' and 'Keyser, WV 26726'."
+    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: i. Supplemental Nutritional Assistance Program (SNAP) ii. State\u2019s Energy Assistance Program iii. Federal Special Supplem",
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Household adjusted gross income from the applicant\u2019s Federal tax return or current income documentation | gross income documented on pay stubs or income letters from the most recent 30-day period will be used",
+    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: The return address is listed on the Financial Assistance Application (Attachment I). | By calling the financial counselors office at 304-598-6260",
+    "agent judge on eligibility.free_care_max_fpl: Quote says full assistance for income at or below 200% but does not state it is 100% free care; it lacks the phrase tying it to free care, though 'full financial assistance' reasonably implies it."
    ]
   },
   {
@@ -3902,8 +3867,8 @@
     "phone": {
      "value": "(304) 442-5151",
      "layer": "documented",
-     "quote": "Montgomery, WV 25136 Call Us Now (304) 442-5151",
-     "source_id": "web-5279f073be627083",
+     "quote": "Call Us Now (304) 442-5151",
+     "source_id": "web-5f2c6f40efbfc70f",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -3912,7 +3877,7 @@
      "value": "Monday - Friday 8:00 am - 4:30 pm",
      "layer": "documented",
      "quote": "Operator on Duty Monday - Friday 8:00 am - 4:30 pm",
-     "source_id": "web-5279f073be627083",
+     "source_id": "web-5f2c6f40efbfc70f",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -3928,28 +3893,19 @@
     {
      "id": "fap-ee14ccfa3acf9d9b",
      "kind": "hospital_web",
-     "url": "https://mghwv.com/front/pdf/MGH_Financial_Assistance_Policy_new.pdf",
+     "url": "https://www.mghwv.com/front/pdf/MGH_Financial_Assistance_Policy_new.pdf",
      "title": "",
      "fetched_on": "2026-10-23",
      "sha256": "ee14ccfa3acf9d9b673a345c3c1cb07372688ba98595f780ffcada7f37e388b9",
      "effective_date": null
     },
     {
-     "id": "fap-e30c550182db54ac",
+     "id": "web-5f2c6f40efbfc70f",
      "kind": "hospital_web",
-     "url": "https://mghwv.com/front/pdf/MGHAssistanceProgram.pdf",
-     "title": "",
-     "fetched_on": "2026-10-23",
-     "sha256": "e30c550182db54acef9cdb6b12b9fc78d2baff76494d41ef76c6b62fea8e5ebf",
-     "effective_date": null
-    },
-    {
-     "id": "web-5279f073be627083",
-     "kind": "hospital_web",
-     "url": "https://mghwv.com/financial_assistance",
+     "url": "https://www.mghwv.com/patient",
      "title": "Montgomery General Hospital | Montgomery, WV",
      "fetched_on": "2026-10-23",
-     "sha256": "5279f073be62708313b1abcbedf0f87d57e09008448e679c24b0e4996e3975a2",
+     "sha256": "5f2c6f40efbfc70fc8a362f20c1def41e72d31cf90c98a96e1c78ada3e6b4499",
      "effective_date": null
     }
    ],
@@ -4153,13 +4109,21 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": null,
+    "free_care_max_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "Full financial assistance will be provided to those patients where the adjusted gross household income from the patient\u2019s federal tax return or income documentation is at or below 200% of the federal poverty guidelines",
+     "source_id": "fap-ad139f35388d597b",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
     "asset_test": {
      "value": true,
      "layer": "documented",
-     "quote": "v. Cash Assets: All cash assets including bank accounts, stocks, bonds, and CDs. The first $10,000 is not",
+     "quote": "Cash Assets: All cash assets including bank accounts, stocks, bonds, and CDs. The first $10,000 is not counted toward income.",
      "source_id": "fap-ad139f35388d597b",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4169,7 +4133,7 @@
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "This discount may be extended to insured patients whose out of",
+     "quote": "This discount may be extended to insured patients whose out of pocket expenses exceed the AGB discount.",
      "source_id": "fap-ad139f35388d597b",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4181,37 +4145,75 @@
    "programs": {
     "presumptive": {
      "value": [
-      "Supplemental Nutritional Assistance Program (SNAP) participants",
-      "State's Energy Assistance Program participants",
-      "WIC participants"
+      "SNAP",
+      "WIC"
      ],
      "layer": "documented",
-     "quote": "i. Supplemental Nutritional Assistance Program (SNAP)",
+     "quote": "Those who are eligible for the following programs will be eligible for WVU Cares, unless otherwise eligible for Medicaid or CHIP.",
      "source_id": "fap-ad139f35388d597b",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "state_programs": null
+    "state_programs": {
+     "value": [
+      {
+       "name": "Health Access or Health Right",
+       "how_to_apply": "Self-pay account balance will be adjusted, in accordance with this financial assistance policy, for participating facilities, when a patient qualifies for Health Access or Health Right (see facility specific policy)."
+      }
+     ],
+     "layer": "documented",
+     "quote": "Self-pay account balance will be adjusted, in accordance with this financial assistance policy, for participating facilities, when a patient qualifies for Health Access or Health Right (see facility specific policy).",
+     "source_id": "fap-ad139f35388d597b",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
    },
    "apply": {
-    "form_url": {
-     "value": "https://wvumedicine.org/wp-content/uploads/System_Pages/Forms/JGH_FAP_Attachment1_Financial-Application.2024-4282025.pdf",
+    "form_url": null,
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "other",
+      "medicaid_denial",
+      "pay_stubs",
+      "proof_of_income"
+     ],
      "layer": "documented",
-     "quote": "Financial Assistance Application Form [https://wvumedicine.org/wp-content/uploads/System_Pages/Forms/JGH_FAP_Attachment1_Financial-Application.2024-4282025.pdf]",
-     "source_id": "web-dd646080444d243f",
+     "quote": "Documentation in the form of a denial letter from the Medicaid program in the state of residence, or chart notes/denial letter from the outside contracted agency indicating the reason for the Medicaid denial is required.",
+     "source_id": "fap-ad139f35388d597b",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "form_version": null,
-    "documents_required": null,
     "documents_reported": null,
-    "submit_methods": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "portal",
+       "detail": "www.wvumedicine.org"
+      },
+      {
+       "kind": "phone",
+       "detail": "304-598-6260"
+      },
+      {
+       "kind": "portal",
+       "detail": "https://mywvuchart.com/MyChart/FinancialAssistance/"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Our WVU Medicine website: www.wvumedicine.org",
+     "source_id": "fap-ad139f35388d597b",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "window_days_from_first_bill": {
      "value": 240,
      "layer": "documented",
-     "quote": "240 days from first billing statement), a scheduled appointment, or a patient in need of financial clearance prior",
+     "quote": "Financial Assistance Application Forms may be accepted up to 240 days from the first post discharge billing statements.",
      "source_id": "fap-ad139f35388d597b",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4226,9 +4228,9 @@
    },
    "contacts": {
     "phone": {
-     "value": "855-778-2922",
+     "value": "304-598-6260",
      "layer": "documented",
-     "quote": "calling patient financial services at 855-778-2922",
+     "quote": "By calling our financial counselors at 304-598-6260",
      "source_id": "fap-ad139f35388d597b",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4251,32 +4253,14 @@
      "fetched_on": "2026-10-23",
      "sha256": "ad139f35388d597bbf56ff1d56c2d28107658f90194c1fab284b898620bc7b0b",
      "effective_date": null
-    },
-    {
-     "id": "fap-423b699832cc3348",
-     "kind": "hospital_web",
-     "url": "https://wvumedicine.org/wp-content/uploads/System_Pages/Forms/JGH_FAP_Attachment1_Financial-Application.2024-4282025.pdf",
-     "title": "",
-     "fetched_on": "2026-10-23",
-     "sha256": "423b699832cc334879e467c42c537a7275e2a09c672b90802a68b1f7fb9cf1c0",
-     "effective_date": null
-    },
-    {
-     "id": "web-dd646080444d243f",
-     "kind": "hospital_web",
-     "url": "https://wvumedicine.org/billing-and-insurance/financial-assistance/policies-and-financial-applications/",
-     "title": "Policies and Financial Applications | WVU Medicine",
-     "fetched_on": "2026-10-23",
-     "sha256": "dd646080444d243f4265e4bc002f6487b0b1ed6623c086b07d32a1f50ed6a64d",
-     "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: ii. State\u2019s Energy Assistance Program | iii. Federal Special Supplemental Food Program for Women, Infants, and Children (WIC)",
-    "agent dropped eligibility.free_care_max_fpl: judge: Quote is truncated before stating any FPL percentage; 200 does not appear.",
-    "agent dropped apply.documents_required: judge: Quote does not mention 'within the last 90 days' for the Medicaid denial; that part is truncated.",
-    "agent dropped apply.submit_methods: judge: Quote says to mail the application but gives no address."
+    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: i. Supplemental Nutritional Assistance Program (SNAP) | iii. Federal Special Supplemental Food Program for Women, Infants, and Children (WIC)",
+    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: gross income documented on pay stubs or income letters from the most recent 30-day period will be used.",
+    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: By calling the financial counselors office at 304-598-6260 | By logging into your MyWVUChart account at https://mywvuchart.com/MyChart/FinancialAssistance/",
+    "agent judge on apply.documents_required: Quote requires a Medicaid denial letter and pay stubs or income letters, but does not mention bankruptcy notice or Proof of Claim."
    ]
   },
   {

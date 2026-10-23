@@ -923,13 +923,32 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "discount_tiers": null,
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "100",
+       "max_fpl_inclusive": "200",
+       "discount_percent": 50
+      },
+      {
+       "min_fpl_exclusive": "200",
+       "max_fpl_inclusive": "1000000",
+       "discount_percent": 35
+      }
+     ],
+     "layer": "documented",
+     "quote": "Patients with annual household income(s) above the DHHS Poverty Guidelines but less than 200% of the DHHS Poverty Guidelines, will have the account balance discounted by 50%.",
+     "source_id": "fap-82ae8fff79c709c5",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "assistance_ceiling_fpl": null,
     "asset_test": {
      "value": true,
      "layer": "documented",
-     "quote": "All other sources of money or other assets must be noted on the application.",
-     "source_id": "web-9ad9d873d6d0d559",
+     "quote": "Community Hospital, Inc. will be granted the authority by the patient/guarantor to verify the account balance(s) in any bank or savings and loan institutions",
+     "source_id": "fap-82ae8fff79c709c5",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -938,8 +957,8 @@
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "All claims must be filed against any/all patient/guarantor owned insurance policies and paid directly to Community Hospital, Inc. before we will consider any portion of the balance for the Financial Hardship Policy.",
-     "source_id": "web-9ad9d873d6d0d559",
+     "quote": "Community Hospital offers financial discounts on self- pay and underinsured balances.",
+     "source_id": "fap-82ae8fff79c709c5",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -952,20 +971,51 @@
     "state_programs": null
    },
    "apply": {
-    "form_url": {
-     "value": "http://www.chal.org/financial_assistance_policy_and_application_final.pdf",
+    "form_url": null,
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "proof_of_income",
+      "social_security_letter",
+      "other",
+      "tax_return",
+      "bank_statements"
+     ],
      "layer": "documented",
-     "quote": "Click here to download the complete Financial Assistance Policy and Request for Financial Hardship Application. [http://www.chal.org/financial_assistance_policy_and_application_final.pdf]",
-     "source_id": "web-9ad9d873d6d0d559",
+     "quote": "Verification of monthly income for self and/or anyone listed within the house hold (ex. 2 consecutive check stubs if paid bi-weekly, 4 consecutive check stubs if paid weekly, etc.)",
+     "source_id": "fap-82ae8fff79c709c5",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "form_version": null,
-    "documents_required": null,
     "documents_reported": null,
-    "submit_methods": null,
-    "window_days_from_first_bill": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "phone",
+       "detail": "call Crystal Chandler at (334) 283-3736 (Last name A-L) or Sarah James at (334) 283-3850 (Last name M-Z)"
+      },
+      {
+       "kind": "mail",
+       "detail": "returned to Patient Accounts Department"
+      }
+     ],
+     "layer": "documented",
+     "quote": "please call Crystal Chandler at (334) 283-3736 (Last name A-L) or Sarah James at (334) 283-3850 (Last name M-Z) to arrange a time to finalize the application process.",
+     "source_id": "fap-82ae8fff79c709c5",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": {
+     "value": 15,
+     "layer": "documented",
+     "quote": "It is very important that we receive this completed application and information within fifteen (15) days from the date of service from the hospital.",
+     "source_id": "fap-82ae8fff79c709c5",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "decision_days": null,
     "decision_days_reported": null
    },
@@ -977,8 +1027,8 @@
     "phone": {
      "value": "(334) 283-6541",
      "layer": "documented",
-     "quote": "Request a copy to be mailed to you by calling the business office at (334) 283-6541",
-     "source_id": "web-9ad9d873d6d0d559",
+     "quote": "805 FRIENDSHIP ROAD, TALLASSEE, AL 36078 (334) 283-6541",
+     "source_id": "fap-82ae8fff79c709c5",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -995,19 +1045,10 @@
     {
      "id": "fap-82ae8fff79c709c5",
      "kind": "hospital_web",
-     "url": "https://www.chal.org/financial_assistance_policy_and_application_final.pdf",
+     "url": "http://www.chal.org/financial_assistance_policy_and_application_final.pdf",
      "title": "",
      "fetched_on": "2026-10-23",
      "sha256": "82ae8fff79c709c5b2bb83e0e5188053dcfa9e3af7e3dcbb0f83593a96aab460",
-     "effective_date": null
-    },
-    {
-     "id": "web-9ad9d873d6d0d559",
-     "kind": "hospital_web",
-     "url": "https://www.chal.org/about/financial-assistance-program/",
-     "title": "Community Hospital - Excellence in Community Healthcare",
-     "fetched_on": "2026-10-23",
-     "sha256": "9ad9d873d6d0d559e187e322c2c7f04efd9997916335032d614f8c96c7bc232d",
      "effective_date": null
     },
     {
@@ -1022,10 +1063,13 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "agent dropped eligibility.discount_tiers: judge: The quote says 'less than 200%', so the upper bound is exclusive, not inclusive at 200.",
-    "agent dropped programs.presumptive: judge: First quote only says 'these patients' were deemed indigent by the state; it does not mention Medicaid exhausted days or uncovered charges.",
-    "agent dropped apply.documents_required: judge: The quote mentions check stubs as examples but never an employer letter; the other items match.",
-    "agent dropped apply.submit_methods: judge: The quote only says to call to arrange a time to finalize; it does not mention returning the form to the Patient Accounts Department."
+    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: Patients with annual household income(s) greater that 200% of the DHHS Poverty Guidelines will be offered a 35% discount",
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Most recent tax return in its entirety. If patient has not filed taxes within past 5 years then they can contact the IRS | Three consecutive bank statements for checking and/or savings account",
+    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: returned to Patient Accounts Department within 15 days from being discharged",
+    "agent judge on eligibility.discount_tiers: Quote gives 50% for 100-200% FPL and 35% above 200%, but states no upper bound. The value's max_fpl_inclusive of 1000000 does not appear in the quote.",
+    "agent judge on eligibility.insured_patients_covered: Quote says discounts are offered on self-pay and underinsured balances. It does not state that insured patients are covered.",
+    "agent judge on apply.documents_required: Quote lists monthly income, most recent tax return, and three bank statements. Social security/disability, food stamp, and child support verifications are not in the quote.",
+    "agent judge on apply.window_days_from_first_bill: Quote says 15 days from the date of service, not from the first bill. The value does not match the field definition."
    ]
   },
   {
@@ -1596,21 +1640,21 @@
    "eligibility": {
     "free_care_max_fpl": null,
     "discount_tiers": null,
-    "assistance_ceiling_fpl": null,
-    "asset_test": {
-     "value": true,
+    "assistance_ceiling_fpl": {
+     "value": "350",
      "layer": "documented",
-     "quote": "Hospital may also consider other indicators of a patient\u2019s ability to pay in determining financial assistance eligibility, such as third-party coverage, income, or other financial resources.",
+     "quote": "Individuals whose family incomes are less than or equal to 350% of Federal Poverty Guidelines are eligible to receive free or discounted care on the following sliding scale basis",
      "source_id": "fap-5b65735c5b44267c",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
+    "asset_test": null,
     "residency": null,
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "For patients who are uninsured, underinsured or cannot pay their deductible or co-pays, the Hospital will provide, upon request, (1) a packet of information that contains the FAP and the FAP application",
+     "quote": "For patients who are uninsured, underinsured or cannot pay their deductible or co-pays, the Hospital will provide, upon request, (1) a packet of information",
      "source_id": "fap-5b65735c5b44267c",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1635,8 +1679,8 @@
        "detail": "P.O. Box 939 Alexander City AL, 35011"
       },
       {
-       "kind": "in_person",
-       "detail": "Call (256) 329-7136 to schedule an appointment with the patient accounting supervisor"
+       "kind": "phone",
+       "detail": "call (256) 329-7136 to schedule an appointment with our patient accounting supervisor for review"
       }
      ],
      "layer": "documented",
@@ -1649,8 +1693,8 @@
     "window_days_from_first_bill": {
      "value": 240,
      "layer": "documented",
-     "quote": "Patients have up to 240 days from the first billing statement to apply for financial assistance.",
-     "source_id": "web-8fc8bacbedb2e9f9",
+     "quote": "If a patient submits a complete FAP application for financial assistance within the two hundred and forty (240) day application period",
+     "source_id": "fap-5b65735c5b44267c",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -1674,7 +1718,7 @@
     "phone": {
      "value": "256-329-7136",
      "layer": "documented",
-     "quote": "Our Business Office is open Monday-Friday, 8:00 a.m.-4:30 p.m. Call us at 256-329-7136",
+     "quote": "Call us at 256-329-7136 for assistance with:",
      "source_id": "web-8fc8bacbedb2e9f9",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1683,7 +1727,7 @@
     "hours": {
      "value": "Monday-Friday, 8:00 a.m.-4:30 p.m.",
      "layer": "documented",
-     "quote": "Our Business Office is open Monday-Friday, 8:00 a.m.-4:30 p.m. Call us at 256-329-7136",
+     "quote": "Our Business Office is open Monday-Friday, 8:00 a.m.-4:30 p.m.",
      "source_id": "web-8fc8bacbedb2e9f9",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1738,7 +1782,10 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "agent dropped apply.documents_required: judge: The quote lists items 1-2e only. Food stamps verification, proof of Medicaid non-eligibility, and the pharmacy printout do not appear."
+    "apply.form_url: not an absolute URL ('/wp-content/uploads/2026-Charity-Application.pdf'); dropped",
+    "agent dropped apply.documents_required: excerpt not in source: _____ Insurance \u2013\n_____ Insurance card(s)",
+    "agent judge on eligibility.insured_patients_covered: Quote covers uninsured and underinsured patients, not insured patients generally; the value true for insured_patients_covered is not what the quote states.",
+    "agent judge on apply.window_days_from_first_bill: Quote says a complete application within the 240-day application period; it does not say the period runs from the first bill. Plausible but not stated."
    ]
   },
   {

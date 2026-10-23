@@ -46,7 +46,15 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "assistance_ceiling_fpl": null,
+    "assistance_ceiling_fpl": {
+     "value": "500",
+     "layer": "documented",
+     "quote": "Combined household income less than 500% of the current federal poverty level",
+     "source_id": "fap-c8d7f302a71ec901",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "asset_test": {
      "value": true,
      "layer": "documented",
@@ -58,10 +66,10 @@
     },
     "residency": {
      "value": [
-      "Service-area and all Maryland residents are considered regardless of immigration status, and non-service-area residents needing medically necessary care may also be considered."
+      "All residents of Meritus\u2019 service area, and all Maryland residents, will be considered for financial assistance regardless of United States immigration status."
      ],
      "layer": "documented",
-     "quote": "All residents of Meritus\u2019 service area, and all Maryland residents, will be considered for financial assistance regardless of United States immigration status. Financial assistance consideration is available to non-service area residents requiring medically necessary care at Meritus.",
+     "quote": "All residents of Meritus\u2019 service area, and all Maryland residents, will be considered for financial assistance regardless of United States immigration status.",
      "source_id": "fap-c8d7f302a71ec901",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -70,8 +78,8 @@
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "Meritus applies the criteria above to a patient\u2019s balance after any insurance payments have been received.",
-     "source_id": "fap-c8d7f302a71ec901",
+     "quote": "Do you have any unpaid out-of-pocket expenses for hospital services (excluding amounts covered by your insurance) incurred by your household/family?",
+     "source_id": "fap-877701ba1c27aa5a",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -82,18 +90,14 @@
    "programs": {
     "presumptive": {
      "value": [
-      "Households with children in free or reduced lunch program",
       "Low-income-household energy assistance program",
-      "Special Low Income Medicare Beneficiary (SLMB) coverage",
+      "Women, Infants and Children Programs (WIC)",
+      "Supplemental Nutritional Assistance Program (SNAP)",
       "Homelessness",
-      "Maryland Public Health System Emergency Petition patients",
-      "WIC participation",
-      "SNAP",
-      "Other means-tested social services programs deemed eligible by Maryland Department of Health and HSCRC",
       "Deceased patient with no known estate"
      ],
      "layer": "documented",
-     "quote": "a. Households with children in the free or reduced lunch program; b. Low-income-household energy assistance program; c. Special Low Income Medicare Beneficiary (\u201cSLMB\u201d) coverage (covers Medicare Part B premiums); d. Homelessness;",
+     "quote": "Low-income-household energy assistance program;",
      "source_id": "fap-c8d7f302a71ec901",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -112,13 +116,43 @@
      "support_count": 0
     },
     "form_version": null,
-    "documents_required": null,
+    "documents_required": {
+     "value": [
+      "tax_return",
+      "pay_stubs",
+      "proof_of_income",
+      "social_security_letter"
+     ],
+     "layer": "documented",
+     "quote": "(a) A copy of their most recent Federal Income Tax Return (if married and filing separately, then also a copy of spouse's tax return and a copy of any other person's tax return whose income is considered part of the family income); (b) Proof of disability income (if applicable); (c) A copy of their most recent pay stubs (if employed), other evidence of income of any other person whose income is considered part of the family income or documentation of how they are paying for living expenses; (d) Proof of social security income (if applicable); (e) A Medical Assistance Notice of Determination (if applicable);",
+     "source_id": "fap-c8d7f302a71ec901",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "documents_reported": null,
-    "submit_methods": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "portal",
+       "detail": "Apply online through MyChart account"
+      },
+      {
+       "kind": "mail",
+       "detail": "Complete paper application and return to Meritus Medical Center, Attn: Patient Accounts/Financial Assistance, 11116 Medical Campus Road, Hagerstown, MD 21742"
+      }
+     ],
+     "layer": "documented",
+     "quote": "You may apply online through your MyChart account or by completing a paper application. If submitting a paper application, please complete all sections and return it with the required documentation to: Meritus Medical Center",
+     "source_id": "fap-877701ba1c27aa5a",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "window_days_from_first_bill": {
      "value": 240,
      "layer": "documented",
-     "quote": "If documentation is received after collection actions have been initiated, but within 240 days after patient receipt of the first post discharge billing statement, Meritus shall cease all collection actions",
+     "quote": "within the 240 days after the patient receives the first post-discharge billing statement (approximately 8 months)",
      "source_id": "fap-c8d7f302a71ec901",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -127,7 +161,7 @@
     "decision_days": {
      "value": 30,
      "layer": "documented",
-     "quote": "After applying, the hospital will send an acknowledgment letter to the patient within two (2) business days and an eligibility determination will be made within thirty (30) days.",
+     "quote": "an eligibility determination will be made within thirty (30) days",
      "source_id": "fap-c8d7f302a71ec901",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -158,7 +192,7 @@
      "support_count": 0
     },
     "hours": {
-     "value": "Monday through Friday, 7:30 a.m. to 4:00 p.m.",
+     "value": "Monday through Friday, from 7:30 a.m. to 4:00 p.m.",
      "layer": "documented",
      "quote": "please contact a Financial Counselor at (301) 790-8247, Monday through Friday, from 7:30 a.m. to 4:00 p.m.",
      "source_id": "fap-877701ba1c27aa5a",
@@ -215,9 +249,11 @@
    "accuracy": null,
    "eve_review": [
     "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: For a patient with family income of more than 300% but not more than 400% of the federal poverty level, by 50%; | For a patient with family income of more than 400% but not more than 500% of the federal poverty level, by 40%",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: e. Maryland Public Health System Emergency Petition patients; f. Participation in Women, Infants and Children Programs ( | h. Other means-tested social services programs deemed eligible for hospital free medically necessary care policies by th",
-    "agent dropped apply.documents_required: judge: Quote lists 'Federal Income Tax Return' without saying 'most recent'; the rest of the list matches.",
-    "agent dropped apply.submit_methods: judge: Quote says only 'online through your MyChart account'; the 'Billing > Financial Assistance' path is not stated. The mail address matches."
+    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Participation in Women, Infants and Children Programs (\u201cWIC\u201d); | Supplemental Nutritional Assistance Program (SNAP)",
+    "agent judge on eligibility.assistance_ceiling_fpl: Quote says income 'less than 500%' qualifies, which conflicts with the tiers' inclusive 500% bound and does not state that no assistance is offered above 500%.",
+    "agent judge on eligibility.insured_patients_covered: Quote is a question asking about unpaid out-of-pocket expenses excluding insurance-covered amounts; it does not state insured patients are covered.",
+    "agent judge on programs.presumptive: Quote lists only three programs (energy assistance, WIC, SNAP). Homelessness and deceased patient with no known estate are not in the quote.",
+    "agent judge on apply.submit_methods: Quote supports online via MyChart and paper return to Meritus Medical Center, but the mailing address in the value does not appear in the quote."
    ]
   },
   {
@@ -824,7 +860,15 @@
    "eligibility": {
     "free_care_max_fpl": null,
     "discount_tiers": null,
-    "assistance_ceiling_fpl": null,
+    "assistance_ceiling_fpl": {
+     "value": "500",
+     "layer": "documented",
+     "quote": "Patients who are therefore eligible for the Medical Hardship Program are those with a family income above 500% of the federal poverty level.",
+     "source_id": "fap-572c8bfd0bd5c3b0",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "asset_test": {
      "value": true,
      "layer": "documented",
@@ -834,7 +878,17 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "residency": null,
+    "residency": {
+     "value": [
+      "Income-based payment plans are available to all patients who are United States residents, regardless of income, for medically necessary hospital care."
+     ],
+     "layer": "documented",
+     "quote": "FHH/FHMG shall make income-based payment plans available to help all patients who are United States residents, regardless of income, pay for medically necessary hospital care at FHH",
+     "source_id": "fap-572c8bfd0bd5c3b0",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
@@ -848,50 +902,20 @@
     "services_excluded": null
    },
    "programs": {
-    "presumptive": {
-     "value": [
-      "Active Medical Assistance pharmacy coverage",
-      "QMB and SLMB coverage",
-      "Homelessness",
-      "Maryland Public Health System Emergency Petition patients",
-      "WIC",
-      "SNAP/Food Stamps",
-      "Child enrolled in free and reduced-cost meal program",
-      "Low-income household energy assistance program",
-      "Eligibility for other state or local assistance programs",
-      "Deceased with no known estate",
-      "Former State Only Medical Assistance Program eligibility criteria"
-     ],
-     "layer": "documented",
-     "quote": "a. Active Medical Assistance pharmacy coverage; b. Qualified Medicare Beneficiary (\"QMB\") coverage (covers Medicare deductibles) and Special Low Income Medicare Beneficiary (\"SLMB\") coverage (covers Medicare Part B premiums); c. Homelessness; d. Maryland Public Health System Emergency Petition patients;",
-     "source_id": "fap-572c8bfd0bd5c3b0",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "presumptive": null,
     "state_programs": null
    },
    "apply": {
-    "form_url": {
-     "value": "https://www.frederickhealth.org/about/billing-financial-assistance/",
-     "layer": "documented",
-     "quote": "Financial Assistance Application are available to patients upon request at FHH/ FHMG, through mail (postal service), and on the FHH/FHMG website at https://www.frederickhealth.org/about/billing-financial-assistance/.",
-     "source_id": "fap-572c8bfd0bd5c3b0",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "form_url": null,
     "form_version": null,
     "documents_required": {
      "value": [
       "tax_return",
-      "proof_of_income",
       "pay_stubs",
-      "social_security_letter",
-      "other"
+      "social_security_letter"
      ],
      "layer": "documented",
-     "quote": "A copy of their most recent Federal Income Tax Return",
+     "quote": "A copy of their most recent Federal Income Tax Return (if married and filing separately, then also a copy of spouse's tax return and a copy of any other person's tax return whose income is considered part of the family income)",
      "source_id": "fap-572c8bfd0bd5c3b0",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -902,20 +926,20 @@
      "value": [
       {
        "kind": "mail",
-       "detail": "Frederick Health Attn: Financial Counseling 400 West Seventh St. Frederick, MD 21701"
+       "detail": "Appeals should be made in writing and mailed to: Frederick Health, 400 West Seventh Street Frederick, MD 21701 Attn: Financial Counseling Team."
       },
       {
        "kind": "in_person",
-       "detail": "Cashier's Office 400 West Seventh St Frederick, MD 21701"
+       "detail": "help is available at our physical location at 400 West Seventh St. Frederick, MD 21701"
       },
       {
-       "kind": "email",
-       "detail": "FinancialAssistance@Frederick.Health"
+       "kind": "phone",
+       "detail": "Patients can also call 240-566-4214 with any inquiries regarding the Financial Assistance application process."
       }
      ],
      "layer": "documented",
-     "quote": "Via Mail: Frederick Health Attn: Financial Counseling 400 West Seventh St. Frederick, MD 21701 Via Drop of location: Cashier's Office 400 West Seventh St Frederick, MD 21701 You may also submit requested documents via our email address: FinancialAssistance@Frederick.Health",
-     "source_id": "fap-d86ddbbfd5b5047a",
+     "quote": "Should a patient need assistance applying for Financial Assistance, help is available at our physical location at 400 West Seventh St. Frederick, MD 21701. Patients can also call 240-566-4214 with any inquiries regarding the Financial Assistance application process.",
+     "source_id": "fap-572c8bfd0bd5c3b0",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -923,7 +947,7 @@
     "window_days_from_first_bill": {
      "value": 240,
      "layer": "documented",
-     "quote": "Financial Assistance Application within the 240 days after the patient receives the first post-discharge billing statement",
+     "quote": "within the 240 days after the patient receives the first post-discharge billing statement (approximately 8 months)",
      "source_id": "fap-572c8bfd0bd5c3b0",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -932,7 +956,7 @@
     "decision_days": {
      "value": 14,
      "layer": "documented",
-     "quote": "an eligibility determination will be made within fourteen (14) days of a completed application.",
+     "quote": "an eligibility determination will be made within fourteen (14) days of a completed application",
      "source_id": "fap-572c8bfd0bd5c3b0",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -942,9 +966,9 @@
    },
    "collections": {
     "eca_wait_days": {
-     "value": 240,
+     "value": 120,
      "layer": "documented",
-     "quote": "No extraordinary collection actions (as described in this Policy) will be taken prior to 240 days after the first post-discharge billing statement",
+     "quote": "FHH/FHMG will not refer accounts to a collection agency prior to 120 days after the first post-discharge billing statement",
      "source_id": "fap-572c8bfd0bd5c3b0",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -962,15 +986,7 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "hours": {
-     "value": "Monday through Friday, 9:00 am to 4:00 pm",
-     "layer": "documented",
-     "quote": "please contact a Financial Counselor at (240)566-4214 Monday through Friday between the hours of 9:00 am and 4:00 pm.",
-     "source_id": "fap-d86ddbbfd5b5047a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "hours": null,
     "languages": {
      "value": [
       "Spanish"
@@ -997,21 +1013,15 @@
      "fetched_on": "2026-10-23",
      "sha256": "572c8bfd0bd5c3b051eaddf0a1e2f4bcb4d2d9ada75652e0f44daa543a5c58fd",
      "effective_date": null
-    },
-    {
-     "id": "fap-d86ddbbfd5b5047a",
-     "kind": "hospital_web",
-     "url": "https://www.frederickhealth.org/documents/page%20links/billing%20&%20finance/Financial-Assistance-Application-English.pdf",
-     "title": "",
-     "fetched_on": "2026-10-23",
-     "sha256": "d86ddbbfd5b5047a1b47a173fe59b724c33c6a424bd23cd9f2ae3ac44ab68494",
-     "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Women, Infants and Children Programs (\"WIC\"); Food Stamp/ Supplemental Nutritional Assistance Program; households with a | f. Eligibility for other state or local assistance programs; g. Deceased with no known estate; and h. Patients that are ",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: b. Proof of disability income (if applicable); c. A copy of their most recent pay stubs (if employed) | d. Proof of social security income (if applicable); e. A Medical Assistance Notice of Determination (if applicable); f. "
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: A copy of their most recent pay stubs (if employed), other evidence of income of any other person whose income is consid | Proof of social security income (if applicable); e. A Medical Assistance Notice of Determination (if applicable)",
+    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Appeals should be made in writing and mailed to: Frederick Health, 400 West Seventh Street Frederick, MD 21701 Attn: Fin",
+    "agent dropped programs.presumptive: quote is not a substring of the source",
+    "agent judge on eligibility.insured_patients_covered: Quote says patient balance after insurance 'may be eligible for consideration'; it does not state insured patients are covered, and value is boolean true.",
+    "agent judge on contacts.languages: Quote says policy, summary, and application are available in Spanish; it does not say Spanish is the only language, so the list may be incomplete."
    ]
   },
   {
@@ -1043,7 +1053,15 @@
     "state_programs": null
    },
    "apply": {
-    "form_url": null,
+    "form_url": {
+     "value": "https://mdmercy.com/-/media/files/about-mercy/policies-and-documents/mduniformfinancialassistanceapp-final-03062026a.docx",
+     "layer": "documented",
+     "quote": "Financial Assistance Application [/-/media/files/about-mercy/policies-and-documents/mduniformfinancialassistanceapp-final-03062026a.docx]",
+     "source_id": "web-f0386aaf0928cffd",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "form_version": null,
     "documents_required": null,
     "documents_reported": null,
@@ -1060,8 +1078,8 @@
     "phone": {
      "value": "410-951-1700",
      "layer": "documented",
-     "quote": "a patient can be put on a sliding scale which would allow a percentage of assistance depending on their eligibility under current guidelines. For more information please call 410-951-1700.",
-     "source_id": "web-83f5493c3ef8d31f",
+     "quote": "For more information please call 410-951-1700.",
+     "source_id": "web-f0386aaf0928cffd",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -1094,12 +1112,12 @@
      "effective_date": null
     },
     {
-     "id": "web-83f5493c3ef8d31f",
+     "id": "web-f0386aaf0928cffd",
      "kind": "hospital_web",
      "url": "https://mdmercy.com/patients-and-visitors/billing-and-insurance/financial-assistance",
      "title": "Financial Counseling and Assistance - Mercy Medical Center",
      "fetched_on": "2026-10-23",
-     "sha256": "83f5493c3ef8d31f8da227f60903e3211b608f658b286fc552ef5f551427e9ed",
+     "sha256": "f0386aaf0928cffd9e9f933229ecb7bfce0f52fca6da796413d5e5527edc2b0f",
      "effective_date": null
     }
    ],
@@ -1340,7 +1358,7 @@
     "zip": "21550",
     "phone": "301-533-4173",
     "ownership": "Voluntary non-profit - Private",
-    "website_domain": "wvumedicine.org",
+    "website_domain": "grmc-wvumedicine.org",
     "system": null
    },
    "version": 1,
@@ -1352,7 +1370,7 @@
     "asset_test": {
      "value": true,
      "layer": "documented",
-     "quote": "List the amount of your monthly income from all sources. YOU ARE REQUIRED to supply proof of income and assets.",
+     "quote": "YOU ARE REQUIRED to supply proof of income and assets.",
      "source_id": "fap-76259d28f375de63",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1365,24 +1383,29 @@
    },
    "programs": {
     "presumptive": null,
-    "state_programs": null
-   },
-   "apply": {
-    "form_url": {
-     "value": "https://wvumedicine.org/wp-content/uploads/System_Pages/Forms/MD-Caring-FA-Application-2.pdf",
+    "state_programs": {
+     "value": [
+      {
+       "name": "Medical Assistance",
+       "how_to_apply": "Have you applied for Medical Assistance in the state in which you live?"
+      }
+     ],
      "layer": "documented",
-     "quote": "Financial Assistance Application Form [https://wvumedicine.org/wp-content/uploads/System_Pages/Forms/MD-Caring-FA-Application-2.pdf]",
-     "source_id": "web-dd646080444d243f",
+     "quote": "Have you applied for Medical Assistance in the state in which you live? _________ My Medical Assistance Application appointment is scheduled for ___________",
+     "source_id": "fap-76259d28f375de63",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
-    },
+    }
+   },
+   "apply": {
+    "form_url": null,
     "form_version": null,
     "documents_required": {
      "value": [
+      "tax_return",
       "proof_of_income",
-      "other",
-      "tax_return"
+      "other"
      ],
      "layer": "documented",
      "quote": "YOU ARE REQUIRED to supply proof of income and assets. If you have no income you must request and complete a proof ofno income form.",
@@ -1437,20 +1460,14 @@
      "fetched_on": "2026-10-23",
      "sha256": "76259d28f375de6366d8b951deaed04b11df53705faebaf1cd682402172965d5",
      "effective_date": null
-    },
-    {
-     "id": "web-dd646080444d243f",
-     "kind": "hospital_web",
-     "url": "https://wvumedicine.org/billing-and-insurance/financial-assistance/policies-and-financial-applications/",
-     "title": "Policies and Financial Applications | WVU Medicine",
-     "fetched_on": "2026-10-23",
-     "sha256": "dd646080444d243f4265e4bc002f6487b0b1ed6623c086b07d32a1f50ed6a64d",
-     "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: Employment Copy of most recent federal tax return (Preferred)"
+    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: Employment Copy of most recent federal tax return (Preferred)",
+    "agent judge on programs.state_programs: Quote is a form question asking whether the patient applied for Medical Assistance; it does not state a program exists or describe it as a program the hospital offers.",
+    "agent judge on apply.documents_required: Quote lists proof of income, proof of assets, and a most recent federal tax return as preferred; it does not clearly say the tax return is required, and 'proof of no income form' is not captured.",
+    "agent judge on contacts.phone: Quote gives two numbers, 301-533-4159 or 301-533-4179; the value records only one and omits the second without stating which is the contact."
    ]
   },
   {

@@ -164,6 +164,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-51370475301f62de": true,
+     "fap-81f055599d14a718": true,
+     "web-9b97970fb0b1dc53": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.insured_patients_covered",
@@ -218,8 +224,8 @@
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "TMC will provide financial assistance for Medically Necessary healthcare in a fair, consistent, respectful, and objective manner to low income patients who do not have insurance coverage or are underinsured.",
-     "source_id": "fap-a55b554d4db99676",
+     "quote": "we provide financial assistance for medically necessary health care in a fair, consistent, respectful and objective manner to low-income patients who do not have insurance coverage or are underinsured.",
+     "source_id": "web-6cf1708b2bd22d6e",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -232,8 +238,8 @@
     "state_programs": {
      "value": [
       {
-       "name": "AHCCCS (Arizona Health Care Cost Containment System)",
-       "how_to_apply": "Our financial representatives will consult with the patient and patient's family to identify state or federal resources available to cover the cost of care, frequently involving obtaining health coverage through AHCCCS."
+       "name": "AHCCCS",
+       "how_to_apply": "Our financial representatives will consult with the patient and patient's family to identify state or federal resources available to cover the cost of care. This frequently involves obtaining health coverage through the Arizona Health Care Cost Containment System, or AHCCCS."
       }
      ],
      "layer": "documented",
@@ -245,7 +251,15 @@
     }
    },
    "apply": {
-    "form_url": null,
+    "form_url": {
+     "value": "https://tmchdfdstorageprod.blob.core.windows.net/payload/documents/financial-assistance-application.pdf",
+     "layer": "documented",
+     "quote": "A copy of the Community Care application may be downloaded with this link",
+     "source_id": "web-6cf1708b2bd22d6e",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "form_version": null,
     "documents_required": {
      "value": [
@@ -253,40 +267,22 @@
       "proof_of_residency",
       "other",
       "pay_stubs",
-      "proof_of_income",
       "tax_return"
      ],
      "layer": "documented",
-     "quote": "copies of social security cards, proof of residency, bank or credit union statements for the last three months, investment statements for the last three months, W-2s or other wage or income information such as three months of payroll stubs, social security checks, or unemployment checks, self-employment business records, income award letters/grant of education benefits, or other documents showing income and assets, a copy of the current IRS tax return, mortgage statements and annual property tax statements, and documents evidencing the relationships of household members",
-     "source_id": "fap-a55b554d4db99676",
+     "quote": "Documentation provided with the completed Community Care application must include, as applicable: copies of Social Security cards, proof of residency, bank or credit union statements for the last three months, investment statements for the last three months, W-2s or other wage or income information such as three months of payroll stubs, Social Security checks, or unemployment checks, self-employment business records, income award letters/grant of education benefits, or other documents showing income and assets, a copy of the current IRS tax return, mortgage statements and annual property tax statements",
+     "source_id": "web-6cf1708b2bd22d6e",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "documents_reported": null,
-    "submit_methods": {
-     "value": [
-      {
-       "kind": "mail",
-       "detail": "P.O. Box 42195, Tucson, AZ 85733"
-      },
-      {
-       "kind": "fax",
-       "detail": "(520) 324-3004"
-      }
-     ],
-     "layer": "documented",
-     "quote": "Completion includes filling out and submitting a Community Care application, along with all requested documentation of income and assets, to P.O. Box 42195, Tucson, AZ 85733 or by Fax (520) 324-3004.",
-     "source_id": "fap-a55b554d4db99676",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "submit_methods": null,
     "window_days_from_first_bill": {
      "value": 30,
      "layer": "documented",
      "quote": "Patients wishing to apply for financial assistance must complete a Community Care application within 30 days of discharge.",
-     "source_id": "fap-a55b554d4db99676",
+     "source_id": "web-6cf1708b2bd22d6e",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -295,7 +291,7 @@
      "value": 30,
      "layer": "documented",
      "quote": "The TMC Business Office will review the patient applications and inform patients via mail of the results within 30 days of receiving a completed application and all requested documentation.",
-     "source_id": "fap-a55b554d4db99676",
+     "source_id": "web-6cf1708b2bd22d6e",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -307,7 +303,7 @@
      "value": 120,
      "layer": "documented",
      "quote": "TMC will continue to bill the patient for at least 120 days and may elect to begin collection activity including possible transfer to a collection agency.",
-     "source_id": "fap-a55b554d4db99676",
+     "source_id": "web-6cf1708b2bd22d6e",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -316,31 +312,23 @@
    },
    "contacts": {
     "phone": {
-     "value": "520-324-1310",
+     "value": "(520) 324-1310",
      "layer": "documented",
-     "quote": "by calling the business office anytime at (520) 324- 1310",
-     "source_id": "fap-a55b554d4db99676",
+     "quote": "Members of the public may readily obtain the current AGB percentage and a description of how it is calculated by contacting TMC Patient Financial Services at (520) 324-1310 .",
+     "source_id": "web-6cf1708b2bd22d6e",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "hours": {
-     "value": "24-hour basis",
-     "layer": "documented",
-     "quote": "Business Office phone line on a 24-hour basis at (520) 324-1310.",
-     "source_id": "fap-a55b554d4db99676",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "hours": null,
     "languages": {
      "value": [
       "English",
       "Spanish"
      ],
      "layer": "documented",
-     "quote": "Materials describing the Community Car Policy, including cards and brochures, are available in English and Spanish on the hospital website, in admitting areas, and at the business office.",
-     "source_id": "fap-a55b554d4db99676",
+     "quote": "Materials describing the Community Care Policy, including cards and brochures, are available in English and Spanish on the hospital website, in Admitting and at the Business Office.",
+     "source_id": "web-6cf1708b2bd22d6e",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -353,24 +341,6 @@
    },
    "sources": [
     {
-     "id": "fap-a55b554d4db99676",
-     "kind": "hospital_web",
-     "url": "https://tmchdfdstorageprod.blob.core.windows.net/payload/documents/TMC%20Financial%20Assistance%20Policy.pdf",
-     "title": "",
-     "fetched_on": "2026-10-23",
-     "sha256": "a55b554d4db99676fcc8b8b8742c0725bd9c138bc002f003f005922e805ccac3",
-     "effective_date": null
-    },
-    {
-     "id": "fap-c34d9239def4cb9c",
-     "kind": "hospital_web",
-     "url": "https://accountf2197fd5.blob.core.windows.net/payload/documents/financial-assistance-application.pdf",
-     "title": "",
-     "fetched_on": "2026-10-23",
-     "sha256": "c34d9239def4cb9c6c21e93fd8904ec58fcb79ff528ad856bb31eeeb433e0737",
-     "effective_date": null
-    },
-    {
      "id": "web-6cf1708b2bd22d6e",
      "kind": "hospital_web",
      "url": "https://tmctucson.tmcaz.com/en/pay-my-bill/financial-assistance",
@@ -382,25 +352,31 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: by mail to TMC Business Office, PO Box 42195 Tucson, Az 87533 or in person at 1400 N Wilmot, Tucson, AZ 85712",
-    "agent judge on programs.state_programs: Quote names AHCCCS and says care frequently involves obtaining AHCCCS coverage. The how_to_apply text in the value (financial representatives consulting patients) is not in this quote.",
-    "agent judge on apply.window_days_from_first_bill: Quote says the application must be completed within 30 days of discharge, not days from the first bill."
+    "eligibility.assistance_ceiling_fpl: quote matched the source only after typography normalization",
+    "eligibility.asset_test: quote matched the source only after typography normalization",
+    "agent dropped apply.submit_methods: excerpt not in source: may be requested by calling the Business Office at (520) 324",
+    "agent judge on eligibility.insured_patients_covered: Quote says assistance is for low-income patients without insurance or underinsured; it does not state insured patients are covered.",
+    "agent judge on apply.form_url: Quote says a copy may be downloaded 'with this link' but does not include the URL itself; the URL cannot be verified from the quote.",
+    "agent judge on apply.window_days_from_first_bill: Quote says apply within 30 days of discharge, not days from first bill; the window is measured from discharge."
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 3,
-    "sources_total": 3,
+    "sources_fetched": 1,
+    "sources_total": 1,
     "sources_missing": [],
+    "sha256_match": {
+     "web-6cf1708b2bd22d6e": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.insured_patients_covered",
      "programs.state_programs",
+     "apply.form_url",
      "apply.documents_required",
-     "apply.submit_methods",
      "apply.window_days_from_first_bill",
      "apply.decision_days",
      "collections.eca_wait_days",
      "contacts.phone",
-     "contacts.hours",
      "contacts.languages"
     ],
     "rejected": [
@@ -411,15 +387,9 @@
      [
       "eligibility.asset_test",
       "quote does not support the asset-test value"
-     ],
-     [
-      "apply.form_url",
-      "quote not found in source"
      ]
     ],
-    "pruned": [
-     "apply.submit_methods: 1 item not named in the trimmed quote"
-    ],
+    "pruned": [],
     "income_rule_verified": false,
     "core_completeness": 0.5
    }
@@ -626,6 +596,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-d18c332717ba7619": true,
+     "fap-eab749c8d024e9c6": true,
+     "web-162408b27fe70f33": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -651,6 +627,164 @@
     ],
     "income_rule_verified": true,
     "core_completeness": 0.83
+   }
+  },
+  {
+   "hospital": {
+    "ccn": "030012",
+    "name": "YAVAPAI REGIONAL MEDICAL CENTER",
+    "city": "PRESCOTT",
+    "state": "AZ",
+    "zip": "86301",
+    "phone": "928-445-2700",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "yrmc.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "Up to 200% of the FPL \u2013 Any patient whose Family Income is at or below 200% of the FPL, including, without limitation, any Uninsured or Underinsured patient, is eligible to receive Financial Assistance up to a 100% discount",
+     "source_id": "fap-174bfaef7b79efbc",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": null,
+    "assistance_ceiling_fpl": null,
+    "asset_test": {
+     "value": true,
+     "layer": "documented",
+     "quote": "CommonSpirit Hospital Organization may consider the 'monetary assets' of the patient's Family. However, for purposes of this determination, monetary assets will not include retirement or deferred compensation plans.",
+     "source_id": "fap-174bfaef7b79efbc",
+     "checked_on": "2026-10-23",
+     "confidence": 0.8,
+     "support_count": 0
+    },
+    "residency": {
+     "value": [
+      "Financial Assistance shall be provided to patients who meet the eligibility requirements and have established residency within the CommonSpirit Entity Service Area as defined by the most recent Hospital Facility CHNA, unless the visit is urgent or emergent or occurs within a California Hospital Facility."
+     ],
+     "layer": "documented",
+     "quote": "have established residency within the CommonSpirit Entity Service Area as defined by the most recent Hospital Facility CHNA, unless the visit is urgent or emergent or occurs within a California Hospital Facility",
+     "source_id": "fap-174bfaef7b79efbc",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Financial Assistance is offered to insured patients to the extent allowed under the patient's insurance carrier contract.",
+     "source_id": "fap-174bfaef7b79efbc",
+     "checked_on": "2026-10-23",
+     "confidence": 0.8,
+     "support_count": 0
+    },
+    "min_balance": {
+     "value": "10",
+     "layer": "documented",
+     "quote": "The patient must have a minimum account balance of ten dollars ($10.00) with the CommonSpirit Hospital Organization.",
+     "source_id": "fap-174bfaef7b79efbc",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": null,
+    "documents_reported": null,
+    "submit_methods": null,
+    "window_days_from_first_bill": {
+     "value": 240,
+     "layer": "documented",
+     "quote": "240 days from the date of the initial post-discharge bill for the EMCare received at a Hospital Facility",
+     "source_id": "fap-174bfaef7b79efbc",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days": null,
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": null,
+    "hours": null,
+    "languages": {
+     "value": [
+      "English",
+      "Spanish"
+     ],
+     "layer": "documented",
+     "quote": "shall be provided in English, Spanish, and other primary languages spoken by the population served by an individual Hospital Facility",
+     "source_id": "fap-174bfaef7b79efbc",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-174bfaef7b79efbc",
+     "kind": "hospital_web",
+     "url": "https://www.commonspirit.org/content/dam/shared/en/pdfs/finance/assistance/g-003-financial-assistance-policy-en.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "174bfaef7b79efbc711bdebbd9fd4c32f36f18dbeacc32c91392fd6c9b21a139",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "eligibility.discount_tiers: 200-400% at 100% is the free-care band, not a tier; skipped",
+    "eligibility.asset_test: quote matched the source only after typography normalization",
+    "eligibility.insured_patients_covered: quote matched the source only after typography normalization",
+    "agent dropped programs.presumptive: between 1 and 3 excerpts allowed",
+    "agent dropped apply.documents_required: between 1 and 3 excerpts allowed",
+    "agent judge on eligibility.discount_tiers: Quote gives 201%-400% FPL tier reducing balance to the AGB amount. It gives no 100% discount percent and no 'at or above 201%' bound matching min_fpl_exclusive 200.",
+    "agent judge on contacts.languages: Quote says English, Spanish, and other primary languages spoken by the population served, so the list is not limited to those two languages."
+   ],
+   "eve_verified": {
+    "on": "2026-10-23",
+    "sources_fetched": 1,
+    "sources_total": 1,
+    "sources_missing": [],
+    "sha256_match": {
+     "fap-174bfaef7b79efbc": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
+    "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.asset_test",
+     "eligibility.residency",
+     "eligibility.insured_patients_covered",
+     "eligibility.min_balance",
+     "apply.window_days_from_first_bill",
+     "contacts.languages"
+    ],
+    "rejected": [],
+    "pruned": [],
+    "income_rule_verified": true,
+    "core_completeness": 0.17
    }
   },
   {
@@ -846,6 +980,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-389f66029f9cf4c0": true,
+     "fap-2e731542ab491306": true,
+     "web-31cc5a6f58b7a3f2": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -1049,6 +1189,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-51370475301f62de": true,
+     "fap-81f055599d14a718": true,
+     "web-21d283ebf995d72f": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.assistance_ceiling_fpl",
@@ -1267,6 +1413,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-d18c332717ba7619": true,
+     "web-162408b27fe70f33": true,
+     "fap-eab749c8d024e9c6": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -1343,11 +1495,11 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "proof_of_income",
+      "tax_return",
       "other"
      ],
      "layer": "documented",
-     "quote": "Provide documentation for family income \u25a1 Provide documentation for family assets",
+     "quote": "Last year\u2019s income tax return, including schedules if applicable; or",
      "source_id": "fap-431a9d152139135e",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1358,11 +1510,11 @@
      "value": [
       {
        "kind": "mail",
-       "detail": "St Joseph's Hospital and Medical Center, PO Box 3008, Rancho Cordova, CA 95741-3008"
+       "detail": "Mail completed application with all documentation to: St Joseph's Hospital and Medical Center, PO Box 3008, Rancho Cordova, CA 95741-3008"
       },
       {
        "kind": "fax",
-       "detail": "877-691-1151"
+       "detail": "Fax: 877-691-1151"
       }
      ],
      "layer": "documented",
@@ -1428,13 +1580,20 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: To submit your completed application in person: St Joseph's Hospital and Medical Center, 350 West Thomas Road, Phoenix, "
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: A \"W-2\" withholding statement; or | Current pay stubs (3 months); or",
+    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: To submit your completed application in person: St Joseph's Hospital and Medical Center, 350 West Thomas Road, Phoenix, ",
+    "agent judge on apply.documents_required: Quote lists tax return, W-2, and pay stubs only; it does not mention bank statements, which the value includes."
    ],
    "eve_verified": {
     "on": "2026-10-23",
     "sources_fetched": 2,
     "sources_total": 2,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-431a9d152139135e": true,
+     "web-5bc626d9e667d34e": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.assistance_ceiling_fpl",
      "eligibility.asset_test",
@@ -1446,6 +1605,7 @@
     ],
     "rejected": [],
     "pruned": [
+     "apply.documents_required: 2 items not named in the trimmed quote",
      "apply.submit_methods: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": false,
@@ -1625,6 +1785,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-174bfaef7b79efbc": true,
+     "fap-75cf116ad5a65aa9": true,
+     "web-37ba64d060ce03fc": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.asset_test",
@@ -1814,6 +1980,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-51370475301f62de": true,
+     "fap-81f055599d14a718": true,
+     "web-f8d6f6c50b693437": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.insured_patients_covered",
@@ -1989,6 +2161,10 @@
     "sources_fetched": 1,
     "sources_total": 1,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-dbb1f6c3f2e92802": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "apply.form_url",
@@ -2165,6 +2341,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-51370475301f62de": true,
+     "fap-81f055599d14a718": true,
+     "web-6d135ec78377343c": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.insured_patients_covered",
@@ -2367,6 +2549,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-51370475301f62de": true,
+     "fap-81f055599d14a718": true,
+     "web-0badfa641dd2fc27": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.insured_patients_covered",
@@ -2537,6 +2725,10 @@
     "sources_fetched": 1,
     "sources_total": 1,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-51370475301f62de": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.asset_test",
@@ -2726,6 +2918,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-46a38e35fba10745": true,
+     "fap-d923c65d218fde22": true,
+     "web-0b03bfb820ddb1cf": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -2914,6 +3112,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-51370475301f62de": true,
+     "fap-81f055599d14a718": true,
+     "web-7f60c65e01987991": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.insured_patients_covered",
@@ -3077,6 +3281,10 @@
     "sources_fetched": 1,
     "sources_total": 1,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-4579d47e7ac69b56": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.insured_patients_covered",
@@ -3248,6 +3456,10 @@
     "sources_fetched": 1,
     "sources_total": 1,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-51370475301f62de": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.asset_test",
@@ -3428,6 +3640,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-51370475301f62de": true,
+     "fap-81f055599d14a718": true,
+     "web-7f1e0b25ca9a40b6": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.insured_patients_covered",
@@ -3614,6 +3832,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-51370475301f62de": true,
+     "fap-81f055599d14a718": true,
+     "web-98a1dd0ed6432ab2": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.insured_patients_covered",
@@ -3807,6 +4031,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-51370475301f62de": true,
+     "fap-a1c34c3ee4644cdf": true,
+     "web-111cbb1dfc077eb9": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.insured_patients_covered",
@@ -4040,6 +4270,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-389f66029f9cf4c0": true,
+     "fap-2e731542ab491306": true,
+     "web-efa4499c1dc0ef69": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -4230,6 +4466,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-51370475301f62de": true,
+     "fap-a1c34c3ee4644cdf": true,
+     "web-20785ef1bd7e8f6e": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.asset_test",
@@ -4414,6 +4656,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-51370475301f62de": true,
+     "fap-81f055599d14a718": true,
+     "web-ddd9260832bf9a6d": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.insured_patients_covered",
@@ -4656,6 +4904,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-389f66029f9cf4c0": true,
+     "fap-51d87f54296dd912": true,
+     "web-83b0cd9a737a02c8": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -4840,6 +5094,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-51370475301f62de": true,
+     "fap-81f055599d14a718": true,
+     "web-1cbe07922b886ade": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.insured_patients_covered",
@@ -4889,15 +5149,7 @@
     "free_care_max_fpl": null,
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
-    "asset_test": {
-     "value": true,
-     "layer": "documented",
-     "quote": "Checking: Yes No Amount: $___________________ Savings (including flexible spending and health savings accounts): Yes No Amount: $___________________",
-     "source_id": "fap-ba07f1a366f435a4",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "asset_test": null,
     "residency": null,
     "insured_patients_covered": null,
     "min_balance": null,
@@ -4913,14 +5165,14 @@
     "documents_required": {
      "value": [
       "pay_stubs",
+      "other",
       "social_security_letter",
       "bank_statements",
-      "tax_return",
-      "other"
+      "tax_return"
      ],
      "layer": "documented",
-     "quote": "Last 4 paystubs Copy of mortgage payment OR Letter from employer Copy of rental agreement Social Security benefits (if applicable) Other documents requested Last 3 months bank statements Copies of monthly bills Previous year\u2019s Federal Tax Return",
-     "source_id": "fap-ba07f1a366f435a4",
+     "quote": "Last 4 paystubs ___ Copy of mortgage payment OR ___ Letter from employer ___ Copy of rental agreement ___ Social Security benefits (if applicable) ___ Other documents requested ___ Last 3 months bank statements ___ Copies of monthly bills ___ Previous years Federal Tax Return",
+     "source_id": "fap-ea1ff5e2d318b5b0",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -4935,7 +5187,7 @@
      ],
      "layer": "documented",
      "quote": "Please complete and return the following form with requested documents to the Facility Registration Department or Financial Counselor to be evaluated for Financial Assistance.",
-     "source_id": "fap-ba07f1a366f435a4",
+     "source_id": "fap-ea1ff5e2d318b5b0",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -4949,71 +5201,9 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": {
-     "value": "800-353-1380",
-     "layer": "documented",
-     "quote": "800-353-1380",
-     "source_id": "web-02b8e5e3056fc695",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "phone": null,
     "hours": null,
-    "languages": {
-     "value": [
-      "English",
-      "\u12a0\u121b\u122d\u129b",
-      "\u0627\u0644\u0639\u0631\u0628\u064a\u0629",
-      "\u09ac\u09be\u0982\u09b2\u09be",
-      "\u103b\u1019\u1014\u1039\u1019\u102c\u1018\u102c\u101e\u102c",
-      "tsalagi gawonihisdi",
-      "\u7e41\u9ad4\u4e2d\u6587",
-      "Chahta",
-      "Oroomiffa",
-      "Nederlands",
-      "Fran\u00e7ais",
-      "Krey\u00f2l Ayisyen",
-      "Deutsch",
-      "\u0a97\u0ac1\u0a9c\u0ab0\u0abe\u0aa4\u0ac0",
-      "\u0939\u093f\u0902\u0926\u0940",
-      "Hmoob",
-      "Igbo asusu",
-      "Ilokano",
-      "Italiano",
-      "\u65e5\u672c\u8a9e",
-      "\ud55c\uad6d\uc5b4",
-      "\u0e9e\u0eb2\u0eaa\u0eb2\u0ea5\u0eb2\u0ea7",
-      "Kajin \u1e42aj\u014d\u1e37",
-      "\u1781\u17d2\u1798\u17c2\u179a",
-      "Din\u00e9 Bizaad",
-      "\u0928\u0947\u092a\u093e\u0932\u0940",
-      "Deitsch",
-      "\u0641\u0627\u0631\u0633\u06cc",
-      "Polski",
-      "Portugu\u00eas",
-      "\u0a2a\u0a70\u0a1c\u0a3e\u0a2c\u0a40",
-      "Rom\u00e2n\u0103",
-      "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-      "Gagana fa'a S\u0101moa",
-      "Srpsko\u2011hrvatski",
-      "Espa\u00f1ol",
-      "\u0723\u0718\u073c\u072a\u0738\u072c\u0742",
-      "Tagalog",
-      "\u0e20\u0e32\u0e29\u0e32\u0e44\u0e17\u0e22",
-      "T\u00fcrk\u00e7e",
-      "\u0423\u043a\u0440\u0430\u0457\u043d\u0441\u044c\u043a\u0430",
-      "\u0627\u064f\u0631\u062f\u064f\u0648",
-      "Ti\u1ebfng Vi\u1ec7t",
-      "\u00e8d\u00e8 Yor\u00f9b\u00e1",
-      "\u05e2\u05b4\u05d1\u05e8\u05b4\u05d9\u05ea"
-     ],
-     "layer": "documented",
-     "quote": "English , \u12a0\u121b\u122d\u129b , \u0627\u0644\u0639\u0631\u0628\u064a\u0629 , \u09ac\u09be\u0982\u09b2\u09be , \u103b\u1019\u1014\u1039\u1019\u102c\u1018\u102c\u101e\u102c , tsalagi gawonihisdi , \u7e41\u9ad4\u4e2d\u6587 , Chahta",
-     "source_id": "web-02b8e5e3056fc695",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "languages": null
    },
    "coverage": {
     "facilities": null,
@@ -5040,38 +5230,49 @@
      "effective_date": null
     },
     {
-     "id": "web-02b8e5e3056fc695",
+     "id": "web-711752fa69ed8764",
      "kind": "hospital_web",
-     "url": "https://www.healthiertucson.com/eligibility-services",
-     "title": "Eligibility Services | Financial Information | Patients & Visitors",
+     "url": "https://www.healthiertucson.com/financial-information",
+     "title": "Financial Information",
      "fetched_on": "2026-10-23",
-     "sha256": "02b8e5e3056fc6952364491e192c7dfe83fb9a505f428eb4851f853055aef3ab",
+     "sha256": "711752fa69ed87641bdadec4bb866cad5c33bcb0b4a786e8d28ae2ec3562493e",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "agent judge on eligibility.asset_test: Quote shows blank checking/savings amount fields on a form; it does not state that assets are considered as an eligibility test.",
-    "agent judge on contacts.languages: Quote lists only 8 languages; value contains about 45 languages, so the value includes languages not in the quote."
+    "agent judge on apply.form_url: Quote gives only a relative path (/Uploads/...pdf) with no healthiertucson.com domain, so the full URL in the value is not stated.",
+    "agent judge on apply.documents_required: Quote is a blank checklist of options, not a statement of what is required. It also includes mortgage, rental agreement, and monthly bills, which the value omits.",
+    "agent judge on apply.submit_methods: Quote says to return the form with documents to the Registration Department or Financial Counselor. It does not say in person, so the in_person kind is not stated."
    ],
    "eve_verified": {
     "on": "2026-10-23",
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-ba07f1a366f435a4": true,
+     "fap-ea1ff5e2d318b5b0": true,
+     "web-711752fa69ed8764": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
-     "eligibility.asset_test",
      "apply.documents_required",
-     "apply.submit_methods",
-     "contacts.phone",
-     "contacts.languages"
+     "apply.submit_methods"
     ],
-    "rejected": [],
-    "pruned": [
-     "apply.documents_required: 1 item not named in the trimmed quote"
+    "rejected": [
+     [
+      "eligibility.asset_test",
+      "quote does not support the asset-test value"
+     ],
+     [
+      "apply.form_url",
+      "quote not found in source"
+     ]
     ],
+    "pruned": [],
     "income_rule_verified": false,
-    "core_completeness": 0.5
+    "core_completeness": 0.33
    }
   },
   {
@@ -5135,7 +5336,9 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "tax_return"
+      "tax_return",
+      "pay_stubs",
+      "social_security_letter"
      ],
      "layer": "documented",
      "quote": "Copies of previous years tax return or W2's, last three months of pay stubs from employer, social security income statements and any other applicable proof of income.",
@@ -5145,7 +5348,20 @@
      "support_count": 0
     },
     "documents_reported": null,
-    "submit_methods": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "in_person",
+       "detail": "return to the Hospital Patient Access or Patient Accounts Department"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Patient is required to complete the Financial Disclosure Worksheet and return to the Hospital Patient Access or Patient Accounts Department with the following attachments",
+     "source_id": "fap-963e971049f2233c",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "window_days_from_first_bill": null,
     "decision_days": null,
     "decision_days_reported": null
@@ -5167,7 +5383,7 @@
      "value": "928-684-4365",
      "layer": "documented",
      "quote": "For Patient Billing Support you may call 928-684-4365.",
-     "source_id": "web-121e27b715feedfa",
+     "source_id": "web-6582570751bb986f",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -5191,35 +5407,45 @@
      "effective_date": null
     },
     {
-     "id": "web-121e27b715feedfa",
+     "id": "web-6582570751bb986f",
      "kind": "hospital_web",
      "url": "https://wickhosp.com/patient-information/",
      "title": "Wickenburg Community Hospital & Clinics",
      "fetched_on": "2026-10-23",
-     "sha256": "121e27b715feedfaddfff8b9a9df75f4caa7a956144729f8cd0659a9a4b54f13",
+     "sha256": "6582570751bb986f88ad5571da668e256e6546f094059392c1971f5ab07cb839",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 200-240% at 100% is the free-care band, not a tier; skipped",
     "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Copies of last 6 months bank statements. | Copy of denial letter from Medicaid (AHCCCS)",
-    "agent judge on eligibility.insured_patients_covered: Quote covers low-income patients without insurance or unable to pay cost-sharing; it does not state insured patients are covered as a general rule."
+    "agent judge on eligibility.free_care_max_fpl: Quote says patients between 200%-240% FPL may qualify for up to 100% assistance; it does not state 200% as the highest free-care level.",
+    "agent judge on eligibility.insured_patients_covered: Quote covers low-income patients without insurance or unable to pay copays, coinsurance, or deductibles; it does not state insured patients are covered."
    ],
    "eve_verified": {
     "on": "2026-10-23",
     "sources_fetched": 2,
     "sources_total": 2,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-963e971049f2233c": true,
+     "web-6582570751bb986f": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.residency",
      "eligibility.insured_patients_covered",
      "programs.presumptive",
      "apply.documents_required",
+     "apply.submit_methods",
      "collections.eca_wait_days",
      "contacts.phone"
     ],
     "rejected": [
+     [
+      "eligibility.free_care_max_fpl",
+      "quote does not state the free-care limit as an income limit"
+     ],
      [
       "eligibility.asset_test",
       "quote does not support the asset-test value"
@@ -5229,7 +5455,7 @@
      "apply.documents_required: 2 items not named in the trimmed quote"
     ],
     "income_rule_verified": false,
-    "core_completeness": 0.33
+    "core_completeness": 0.5
    }
   },
   {
@@ -5250,12 +5476,20 @@
     "free_care_max_fpl": null,
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
-    "asset_test": null,
+    "asset_test": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Financial assistance is generally secondary to all other financial resources available to the patient including insurance, government programs, third- party liability and qualified assets.",
+     "source_id": "fap-91b5881ad042d1a5",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "residency": null,
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "will provide financial assistance for medically necessary health care in a fair, consistent, respectful and objective manner to low-income patients who do not have insurance coverage or are underinsured",
+     "quote": "Eligible patients are uninsured or underinsured persons who receive inpatient or outpatient medically necessary services from Benson Hospital",
      "source_id": "fap-91b5881ad042d1a5",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5273,12 +5507,15 @@
     "form_version": null,
     "documents_required": {
      "value": [
+      "proof_of_residency",
+      "bank_statements",
+      "other",
       "pay_stubs",
       "social_security_letter",
-      "other"
+      "tax_return"
      ],
      "layer": "documented",
-     "quote": "\u2751 Most current W-2s and tax forms \u2751 Last three (3) paycheck stubs from employment \u2751 Social Security Award Letter for current year \u2751 Unemployment Compensation Benefit Letter",
+     "quote": "Documentation provided with the completed Community Care application must include, as applicable: Proof of residency; bank or credit union statements for the last three months; W-2s or other wage or income information such as three months of payroll stubs, Social Security checks, unemployment checks, self-employment business records, income award letters/grant of education benefits, or other documents showing income; a copy of the current IRS tax return and documents evidencing the relationships of household members, including birth or baptismal certificates, adoption papers, marriage license, divorce decree or legal separation documents.",
      "source_id": "fap-91b5881ad042d1a5",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5319,7 +5556,7 @@
     "decision_days": {
      "value": 30,
      "layer": "documented",
-     "quote": "The Benson Hospital Business Office has 30 days from the date when the completed application is received to authorize financial assistance and to notify the patient.",
+     "quote": "inform patients via mail or E-Mail of the results within 30 days of receiving a completed application and all requested documentation",
      "source_id": "fap-91b5881ad042d1a5",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5331,7 +5568,7 @@
     "eca_wait_days": {
      "value": 120,
      "layer": "documented",
-     "quote": "Collection activities, including transferring to a collection agency, will begin on accounts older than 120 days.",
+     "quote": "Benson Hospital will continue to bill the patient for at least 120 days if the patient does not make payment arrangements or fails to initiate the financial assistance process. Collection activities, including transferring to a collection agency, will begin on accounts older than 120 days.",
      "source_id": "fap-91b5881ad042d1a5",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5343,21 +5580,13 @@
     "phone": {
      "value": "(520)720-6519",
      "layer": "documented",
-     "quote": "calling Benson Hospital's Business Office at (520)720-6519",
+     "quote": "contacting Benson Hospital's Business Office at (520)720-6519 or by E-Mail at FAP@bensonhospital.org",
      "source_id": "fap-91b5881ad042d1a5",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "hours": {
-     "value": "Monday through Friday, 8 a.m. to 4:30 p.m.",
-     "layer": "documented",
-     "quote": "Our Billing Office is open for your convenience Monday through Friday, 8 a.m. to 4:30 p.m.",
-     "source_id": "web-19063a1f49073f58",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "hours": null,
     "languages": {
      "value": [
       "English",
@@ -5389,34 +5618,39 @@
     {
      "id": "fap-d5390f933464e6b3",
      "kind": "hospital_web",
-     "url": "https://tmchdfdstorageprod.blob.core.windows.net/payload/documents/financial-assistance-program-application.pdf",
+     "url": "https://accountf2197fd5.blob.core.windows.net/payload/documents/financial-assistance-program-application.pdf",
      "title": "",
      "fetched_on": "2026-10-23",
      "sha256": "d5390f933464e6b385308f770ec9919d7f196e04f7e6b44af898d370db7bf89a",
      "effective_date": null
     },
     {
-     "id": "web-19063a1f49073f58",
+     "id": "web-9dfa61f68eec80e9",
      "kind": "hospital_web",
-     "url": "https://bensonhospital.org/en/about-my-bill",
-     "title": "About My Bill | Benson Hospital",
+     "url": "https://bensonhospital.org/en/about-my-bill/financial-assistance",
+     "title": "Financial Assistance | Benson Hospital",
      "fetched_on": "2026-10-23",
-     "sha256": "19063a1f49073f58dcc04cdf5e7f504207b4d2d90d5cfe3994f85a42aaad32af",
+     "sha256": "9dfa61f68eec80e942b30c99f543d747d73c93d6ef3ca78d5a90b116e17e25e2",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: \u2751 Copy of Checking/Savings Account Statement(s) \u2751 Rent Receipt/Lease/Mortgage Statement \u2751 Room and Board/Support Letter | \u2751 Utility Bills \u2751 Divorce Decree",
-    "agent judge on eligibility.asset_test: Quote lists bank, mortgage and property tax statements as documents but never states that assets are considered.",
-    "agent judge on apply.window_days_from_first_bill: Quote measures the 30-day application window from discharge, not from the first bill."
+    "agent judge on apply.window_days_from_first_bill: Quote says the application must be completed within 30 days of discharge, not days from the first bill."
    ],
    "eve_verified": {
     "on": "2026-10-23",
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-91b5881ad042d1a5": true,
+     "fap-d5390f933464e6b3": true,
+     "web-9dfa61f68eec80e9": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
+     "eligibility.asset_test",
      "eligibility.insured_patients_covered",
      "apply.documents_required",
      "apply.submit_methods",
@@ -5424,7 +5658,6 @@
      "apply.decision_days",
      "collections.eca_wait_days",
      "contacts.phone",
-     "contacts.hours",
      "contacts.languages"
     ],
     "rejected": [
@@ -5433,13 +5666,11 @@
       "quote does not say the hospital's financial assistance reaches it"
      ],
      [
-      "eligibility.asset_test",
-      "quote does not support the asset-test value"
+      "apply.form_url",
+      "quote not found in source"
      ]
     ],
-    "pruned": [
-     "apply.documents_required: 2 items not named in the trimmed quote"
-    ],
+    "pruned": [],
     "income_rule_verified": false,
     "core_completeness": 0.5
    }
@@ -5465,11 +5696,11 @@
     "asset_test": null,
     "residency": {
      "value": [
-      "Are a resident of Arizona"
+      "Eligible patients are uninsured or underinsured people who receive inpatient or outpatient medically necessary services from NCCH, Sulphur Springs Medical Center, and Sunsites Medical Clinic."
      ],
      "layer": "documented",
-     "quote": "Are a resident of Arizona",
-     "source_id": "fap-02a5c0edb6e0c190",
+     "quote": "Eligible patients are uninsured or underinsured people who receive inpatient or outpatient medically necessary services from NCCH, Sulphur Springs Medical Center, and Sunsites Medical Clinic.",
+     "source_id": "fap-17e5276c3dc5dcd3",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -5477,7 +5708,7 @@
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "Eligible patients are uninsured or underinsured people who receive inpatient or outpatient medically necessary services from NCCH, Sulphur Springs Medical Center, and Sunsites Medical Clinic.",
+     "quote": "Financial assistance is available to eligible patients who are uninsured, underinsured, or otherwise demonstrate financial need, in accordance with the criteria established within this policy.",
      "source_id": "fap-17e5276c3dc5dcd3",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5499,6 +5730,7 @@
       "proof_of_residency",
       "other",
       "pay_stubs",
+      "proof_of_income",
       "tax_return"
      ],
      "layer": "documented",
@@ -5513,7 +5745,7 @@
      "value": [
       {
        "kind": "mail",
-       "detail": "mail to NCCH ATTN: Patient Financial Services 901 W Rex Allen Dr. Willcox, AZ 85643"
+       "detail": "NCCH ATTN: Patient Financial Services 901 W Rex Allen Dr. Willcox, AZ 85643"
       },
       {
        "kind": "in_person",
@@ -5521,7 +5753,7 @@
       },
       {
        "kind": "email",
-       "detail": "by email npfs@ncch.com"
+       "detail": "npfs@ncch.com"
       }
      ],
      "layer": "documented",
@@ -5559,7 +5791,7 @@
     "phone": {
      "value": "520-384-3541",
      "layer": "documented",
-     "quote": "Patients can request financial assistance information or a copy of this policy or the Financial Assistance application by calling the hospital at 520-384-3541.",
+     "quote": "calling the hospital at 520-384-3541. Voicemail is available, and calls will be followed up on within two working days.",
      "source_id": "fap-17e5276c3dc5dcd3",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5592,15 +5824,6 @@
      "effective_date": null
     },
     {
-     "id": "fap-02a5c0edb6e0c190",
-     "kind": "hospital_web",
-     "url": "https://tmchdfdstorageprod.blob.core.windows.net/payload/documents/NCCH_financial_assistance_application_2013.pdf",
-     "title": "",
-     "fetched_on": "2026-10-23",
-     "sha256": "02a5c0edb6e0c1907290445b544d1bbf667cfe936f8225a368a14e269fccebf4",
-     "effective_date": null
-    },
-    {
      "id": "web-8ef8964e2acbdbb9",
      "kind": "hospital_web",
      "url": "https://ncch.com/en/patient-financial-services",
@@ -5608,17 +5831,33 @@
      "fetched_on": "2026-10-23",
      "sha256": "8ef8964e2acbdbb9e3ca39f03667a146338f0ceb9fe71ca47078bd2195006d74",
      "effective_date": null
+    },
+    {
+     "id": "fap-02a5c0edb6e0c190",
+     "kind": "hospital_web",
+     "url": "https://tmchdfdstorageprod.blob.core.windows.net/payload/documents/NCCH_financial_assistance_application_2013.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "02a5c0edb6e0c1907290445b544d1bbf667cfe936f8225a368a14e269fccebf4",
+     "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "agent judge on apply.window_days_from_first_bill: Quote says the application must be completed within 30 days of date of service, not of the first bill."
+    "agent judge on eligibility.residency: The quote describes eligible patient types and services (uninsured/underinsured, medically necessary care at listed facilities), not a residency requirement.",
+    "agent judge on apply.window_days_from_first_bill: The quote sets the 30-day window from date of service, not from the first bill."
    ],
    "eve_verified": {
     "on": "2026-10-23",
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-17e5276c3dc5dcd3": true,
+     "web-8ef8964e2acbdbb9": false,
+     "fap-02a5c0edb6e0c190": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.residency",
      "eligibility.insured_patients_covered",
@@ -5808,6 +6047,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-e13e5aa7c1352020": true,
+     "fap-acc62dcfe52d0f27": true,
+     "web-b489f49148cc1a21": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "apply.form_url",
@@ -6008,6 +6253,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-e63c6c28b46cdfbb": true,
+     "fap-ff395dc6ecf0e03a": true,
+     "web-17e44dc489dc2b31": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.insured_patients_covered",
@@ -6097,19 +6348,10 @@
     {
      "id": "web-6269f9d587007b94",
      "kind": "hospital_web",
-     "url": "https://www.cqch.org/_files/ugd/6b8c2f_d2d5e4a908aa4e7f864476a414c09337.docx?dn=Financial_Assistance_Policy_(17466_-1).docx",
+     "url": "https://www.cqch.org/_files/ugd/6b8c2f_d2d5e4a908aa4e7f864476a414c09337.docx",
      "title": "",
      "fetched_on": "2026-10-23",
      "sha256": "6269f9d587007b94a4083024115e1c7da0e6b36ee6d729bb15d4a3f8004c025d",
-     "effective_date": null
-    },
-    {
-     "id": "web-f965bb394ad3d25c",
-     "kind": "hospital_web",
-     "url": "https://www.cqch.org/_files/ugd/6b8c2f_ebdf0a3302c94b2198fb0616866547b6.docx?dn=Financial%20Assistance%20Application%20Form%2011.15.23.docx",
-     "title": "",
-     "fetched_on": "2026-10-23",
-     "sha256": "f965bb394ad3d25c15d0a65e5d7bfc3988b6dc2332419dab4b94e3bc65ff15ca",
      "effective_date": null
     }
    ],
@@ -6117,12 +6359,13 @@
    "eve_review": [],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 0,
-    "sources_total": 2,
-    "sources_missing": [
-     "https://www.cqch.org/_files/ugd/6b8c2f_d2d5e4a908aa4e7f864476a414c09337.docx?dn=Financial_Assistance_Policy_(17466_-1).docx",
-     "https://www.cqch.org/_files/ugd/6b8c2f_ebdf0a3302c94b2198fb0616866547b6.docx?dn=Financial%20Assistance%20Application%20Form%2011.15.23.docx"
-    ],
+    "sources_fetched": 1,
+    "sources_total": 1,
+    "sources_missing": [],
+    "sha256_match": {
+     "web-6269f9d587007b94": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [],
     "rejected": [],
     "pruned": [],
@@ -6147,7 +6390,15 @@
    "eligibility": {
     "free_care_max_fpl": null,
     "discount_tiers": null,
-    "assistance_ceiling_fpl": null,
+    "assistance_ceiling_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "Determination will be based on a sliding scale up to 200% of the FPG.",
+     "source_id": "fap-e3a33d1b1ef4b274",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "asset_test": null,
     "residency": null,
     "insured_patients_covered": null,
@@ -6163,38 +6414,27 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "proof_of_income",
-      "other"
+      "tax_return",
+      "other",
+      "pay_stubs"
      ],
      "layer": "documented",
-     "quote": "W-2 withholding statements for all employment during the relevant time period",
-     "source_id": "fap-e3a33d1b1ef4b274",
+     "quote": "we will need a copy of last year's tax return, W2's, 2 recent pay stubs",
+     "source_id": "fap-64a1358a78eab34e",
      "checked_on": "2026-10-23",
-     "confidence": 1.0,
+     "confidence": 0.8,
      "support_count": 0
     },
     "documents_reported": null,
     "submit_methods": {
      "value": [
       {
+       "kind": "mail",
+       "detail": "request them by telephone or electronically and provided upon request by mail, e-mail, fax or any other means practicable"
+      },
+      {
        "kind": "in_person",
        "detail": "Patients may pick up financial assistance application request forms at the business office"
-      },
-      {
-       "kind": "phone",
-       "detail": "request them by telephone"
-      },
-      {
-       "kind": "mail",
-       "detail": "provided upon request by mail"
-      },
-      {
-       "kind": "email",
-       "detail": "provided upon request by...e-mail"
-      },
-      {
-       "kind": "fax",
-       "detail": "provided upon request by...fax"
       }
      ],
      "layer": "documented",
@@ -6224,7 +6464,7 @@
     "phone": {
      "value": "928-333-4368",
      "layer": "documented",
-     "quote": "contact the Registration Office and/or Billing Office at 928-333-4368.",
+     "quote": "For this request you can contact the Registration Office and/or Billing Office at 928-333-4368.",
      "source_id": "fap-e3a33d1b1ef4b274",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -6256,19 +6496,36 @@
      "fetched_on": "2026-10-23",
      "sha256": "64a1358a78eab34eeaf2b117504388bf5097dcddf58237e3d14726d49311d24a",
      "effective_date": null
+    },
+    {
+     "id": "web-bde4f1896d46ee97",
+     "kind": "hospital_web",
+     "url": "https://www.wmrmc.com/contact",
+     "title": "White Mountain Regional Medical Center - Contact",
+     "fetched_on": "2026-10-23",
+     "sha256": "bde4f1896d46ee9701febe4f89b094630e5be4af4d70a797424f9ea30edb4d6e",
+     "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
     "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: Discount 100% Discount 90% Discount 80% Discount 70% Discount 60% Discount 50% Discount 40% Discount 30% Discount 20% Di",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Pay stubs from all employment for the last three months and/or information about current employment | An income tax return from the most recently filed calendar year"
+    "apply.documents_required: quote matched the source only after typography normalization",
+    "agent dropped eligibility.free_care_max_fpl: quote is not a substring of the source"
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 2,
-    "sources_total": 2,
+    "sources_fetched": 3,
+    "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-e3a33d1b1ef4b274": true,
+     "fap-64a1358a78eab34e": true,
+     "web-bde4f1896d46ee97": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
+     "eligibility.assistance_ceiling_fpl",
      "apply.documents_required",
      "apply.submit_methods",
      "apply.decision_days",
@@ -6276,17 +6533,11 @@
     ],
     "rejected": [
      [
-      "eligibility.free_care_max_fpl",
-      "value not in quote"
-     ],
-     [
       "eligibility.discount_tiers",
       "value not in quote"
      ]
     ],
-    "pruned": [
-     "apply.documents_required: 3 items not named in the trimmed quote"
-    ],
+    "pruned": [],
     "income_rule_verified": false,
     "core_completeness": 0.5
    }
@@ -6328,12 +6579,8 @@
     "state_programs": {
      "value": [
       {
-       "name": "Arizona AHCCCS",
-       "how_to_apply": "you are requested to apply for Arizona AHCCCS / or California MEDI-Cal as part of the application process"
-      },
-      {
-       "name": "California MEDI-Cal",
-       "how_to_apply": "you are requested to apply for Arizona AHCCCS / or California MEDI-Cal as part of the application process"
+       "name": "Arizona AHCCCS / California MEDI-Cal",
+       "how_to_apply": "you are requested to apply for Arizona AHCCCS / or California MEDI-Cal as part of the application process and provide your denial or approval letter when received"
       }
      ],
      "layer": "documented",
@@ -6366,11 +6613,15 @@
      "value": [
       {
        "kind": "in_person",
-       "detail": "return it with all the required documentation to the front desk at Business Office"
+       "detail": "Return application with required documentation to the front desk at Business Office"
+      },
+      {
+       "kind": "phone",
+       "detail": "Contact the Business Office at 928-669-7311"
       }
      ],
      "layer": "documented",
-     "quote": "please return it with all the required documentation to the front desk at Business Office.",
+     "quote": "please return it with all the required documentation to the front desk at Business Office. If you have questions, please contact the Business Office at 928-669-7311.",
      "source_id": "fap-c89c04bd33ab0d02",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -6386,10 +6637,10 @@
    },
    "contacts": {
     "phone": {
-     "value": "928-669-7311",
+     "value": "928-669-7464",
      "layer": "documented",
-     "quote": "If you have questions, please contact the Business Office at 928-669-7311.",
-     "source_id": "fap-c89c04bd33ab0d02",
+     "quote": "Billing Department Telephone Number: (928) 669-7464",
+     "source_id": "web-994c77ffbc79937e",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -6433,8 +6684,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: If you have questions, please contact the Business Office at 928-669-7311.",
-    "agent judge on eligibility.insured_patients_covered: The quote is a form question asking whether the patient has insurance; it does not state that insured patients are covered."
+    "agent judge on eligibility.insured_patients_covered: Quote is only an intake question asking whether the patient has insurance; it does not state that insured patients are covered.",
+    "agent judge on contacts.phone: Quote gives the Billing Department number as (928) 669-7464, which matches, but the value's phone is correct; however the Business Office number 928-669-7311 is a different line, so this is supported."
    ],
    "eve_verified": {
     "on": "2026-10-23",
@@ -6443,6 +6694,12 @@
     "sources_missing": [
      "https://www.lapazhospital.org/docs/FAP_and_sliding_fee_English_031726.pdf"
     ],
+    "sha256_match": {
+     "fap-f212073fed7b9a7d": true,
+     "fap-c89c04bd33ab0d02": true,
+     "web-994c77ffbc79937e": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.insured_patients_covered",
      "programs.state_programs",
@@ -6451,9 +6708,7 @@
      "contacts.phone"
     ],
     "rejected": [],
-    "pruned": [
-     "apply.submit_methods: 1 item not named in the trimmed quote"
-    ],
+    "pruned": [],
     "income_rule_verified": false,
     "core_completeness": 0.5
    }
@@ -6628,6 +6883,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-51370475301f62de": true,
+     "fap-81f055599d14a718": true,
+     "web-5e8f481a94152fc0": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.insured_patients_covered",

@@ -145,6 +145,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-356ce1d641afd492": true,
+     "web-82f15d236c324e9b": false,
+     "web-530e3aa12ff253a3": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.asset_test",
@@ -395,6 +401,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-d9c5de9c9fa6dd89": true,
+     "web-0ad5b20f0414f649": false,
+     "fap-86ebf190164300d8": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -571,6 +583,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-350aa088e70f037f": true,
+     "fap-ab0818dd8cea573c": true,
+     "web-aed58dcf0521d3f6": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "apply.documents_required",
@@ -772,6 +790,11 @@
     "sources_fetched": 2,
     "sources_total": 2,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-17604b377ebc8366": true,
+     "fap-2599954cd9fe1639": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.asset_test",
@@ -812,126 +835,26 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": {
-     "value": "200",
-     "layer": "documented",
-     "quote": "Income below 200% of FPL: 100% discount.",
-     "source_id": "fap-b044ddbbd1563c3a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "discount_tiers": {
-     "value": [
-      {
-       "min_fpl_exclusive": "200",
-       "max_fpl_inclusive": "250",
-       "discount_percent": 75
-      },
-      {
-       "min_fpl_exclusive": "250",
-       "max_fpl_inclusive": "300",
-       "discount_percent": 50
-      }
-     ],
-     "layer": "documented",
-     "quote": "Income between 200%-250% of FPL: 75% discount. Income between 250%-300% FPL: 50% discount.",
-     "source_id": "fap-b044ddbbd1563c3a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "free_care_max_fpl": null,
+    "discount_tiers": null,
     "assistance_ceiling_fpl": null,
     "asset_test": null,
-    "residency": {
-     "value": [
-      "All North Carolina residents and non-North Carolina residents within a Novant Health Service Area are eligible to apply for Financial Assistance."
-     ],
-     "layer": "documented",
-     "quote": "All North Carolina residents and non-North Carolina residents within a Novant Health Service Area (see attached) are eligible to apply for Financial Assistance, as defined in this Policy.",
-     "source_id": "fap-b044ddbbd1563c3a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "insured_patients_covered": {
-     "value": true,
-     "layer": "documented",
-     "quote": "Insured patients meeting the requirements above and any insured patients presumed to be eligible to receive Financial Assistance under this Policy will obtain a discount on the applicable patient responsibility",
-     "source_id": "fap-b044ddbbd1563c3a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "residency": null,
+    "insured_patients_covered": null,
     "min_balance": null,
     "services_excluded": null
    },
    "programs": {
-    "presumptive": {
-     "value": [
-      "homelessness"
-     ],
-     "layer": "documented",
-     "quote": "Presumptive eligibility will be extended based on certain non-income-based criteria as follows: homelessness; mental incapacitation with no one to act on the patient\u2019s behalf; enrollment in Medicaid of patient or a child in their household; enrollment in another means-tested public assistance program",
-     "source_id": "fap-b044ddbbd1563c3a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "presumptive": null,
     "state_programs": null
    },
    "apply": {
-    "form_url": {
-     "value": "https://www.novanthealth.org/globalassets/buttons-and-documents-ctaslinks/documents-pdfs/faa_app_english.pdf",
-     "layer": "documented",
-     "quote": "Mail Completed Application to: Novant Health, ATTN: Financial Assistance, PO BOX 11549, Winston Salem, NC 27116",
-     "source_id": "fap-ca5263cb0798e7ad",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "form_url": null,
     "form_version": null,
-    "documents_required": {
-     "value": [
-      "pay_stubs",
-      "tax_return",
-      "other"
-     ],
-     "layer": "documented",
-     "quote": "Supporting data includes proof of income documents such as W2 forms, pay stubs or the previous year\u2019s tax return.",
-     "source_id": "fap-b044ddbbd1563c3a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "documents_required": null,
     "documents_reported": null,
-    "submit_methods": {
-     "value": [
-      {
-       "kind": "mail",
-       "detail": "Novant Health, ATTN: Financial Assistance, PO BOX 11549, Winston Salem, NC 27116"
-      },
-      {
-       "kind": "portal",
-       "detail": "For NC patients, you can apply for financial assistance by signing into your MyChart account and completing the application."
-      }
-     ],
-     "layer": "documented",
-     "quote": "By Mail Download PDF and send us your completed application along with the supporting documents to: Novant Health ATTN: Financial Assistance PO BOX 11549 Winston Salem, NC 27116",
-     "source_id": "web-c1460dd0606fd2f1",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "window_days_from_first_bill": {
-     "value": 240,
-     "layer": "documented",
-     "quote": "Application Period - the period that begins on the date the care is provided to an individual and ends on the 240th day after the individual is provided with the first billing statement for the care.",
-     "source_id": "fap-b044ddbbd1563c3a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "submit_methods": null,
+    "window_days_from_first_bill": null,
     "decision_days": null,
     "decision_days_reported": null
    },
@@ -940,28 +863,9 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": {
-     "value": "(336) 718-5393",
-     "layer": "documented",
-     "quote": "Novant Health Forsyth Medical Center Novant Health Clemmons Medical Center Novant Health Kernersville Medical Center Novant Health Medical Park Hospital Novant Health Thomasville Medical Center (336) 718-5393",
-     "source_id": "fap-b044ddbbd1563c3a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "phone": null,
     "hours": null,
-    "languages": {
-     "value": [
-      "English",
-      "Spanish"
-     ],
-     "layer": "documented",
-     "quote": "Applications are available in English and Spanish.",
-     "source_id": "fap-b044ddbbd1563c3a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "languages": null
    },
    "coverage": {
     "facilities": null,
@@ -1001,35 +905,73 @@
    "eve_review": [],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 3,
+    "sources_fetched": 0,
     "sources_total": 3,
-    "sources_missing": [],
-    "accepted": [
-     "eligibility.free_care_max_fpl",
-     "eligibility.discount_tiers",
-     "eligibility.residency",
-     "eligibility.insured_patients_covered",
-     "programs.presumptive",
-     "apply.form_url",
-     "apply.documents_required",
-     "apply.submit_methods",
-     "apply.window_days_from_first_bill",
-     "contacts.phone",
-     "contacts.languages"
+    "sources_missing": [
+     "https://www.novanthealth.org/globalassets/buttons-and-documents-ctaslinks/documents-pdfs/policy-nc-hospitals-financial-assistance.pdf",
+     "https://www.novanthealth.org/globalassets/buttons-and-documents-ctaslinks/documents-pdfs/faa_app_english.pdf",
+     "https://www.novanthealth.org/for-patients/billing--insurance/financial-assistance/"
     ],
+    "sha256_match": {
+     "fap-b044ddbbd1563c3a": null,
+     "fap-ca5263cb0798e7ad": null,
+     "web-c1460dd0606fd2f1": null
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
+    "accepted": [],
     "rejected": [
      [
+      "eligibility.free_care_max_fpl",
+      "source text missing"
+     ],
+     [
+      "eligibility.discount_tiers",
+      "source text missing"
+     ],
+     [
       "eligibility.assistance_ceiling_fpl",
-      "quote does not state the ceiling as a percentage of the poverty level"
+      "source text missing"
+     ],
+     [
+      "eligibility.residency",
+      "source text missing"
+     ],
+     [
+      "eligibility.insured_patients_covered",
+      "source text missing"
+     ],
+     [
+      "programs.presumptive",
+      "source text missing"
+     ],
+     [
+      "apply.form_url",
+      "source text missing"
+     ],
+     [
+      "apply.documents_required",
+      "source text missing"
+     ],
+     [
+      "apply.submit_methods",
+      "source text missing"
+     ],
+     [
+      "apply.window_days_from_first_bill",
+      "source text missing"
+     ],
+     [
+      "contacts.phone",
+      "source text missing"
+     ],
+     [
+      "contacts.languages",
+      "source text missing"
      ]
     ],
-    "pruned": [
-     "programs.presumptive: 3 items not named in the trimmed quote",
-     "apply.documents_required: 1 item not named in the trimmed quote",
-     "apply.submit_methods: 2 items not named in the trimmed quote"
-    ],
-    "income_rule_verified": true,
-    "core_completeness": 1.0
+    "pruned": [],
+    "income_rule_verified": false,
+    "core_completeness": 0.0
    }
   },
   {
@@ -1047,127 +989,26 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": {
-     "value": "200",
-     "layer": "documented",
-     "quote": "Income below 200% of FPL: 100% discount.",
-     "source_id": "fap-ebf261b8c5cf6cc3",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "discount_tiers": {
-     "value": [
-      {
-       "min_fpl_exclusive": "200",
-       "max_fpl_inclusive": "250",
-       "discount_percent": 75
-      },
-      {
-       "min_fpl_exclusive": "250",
-       "max_fpl_inclusive": "300",
-       "discount_percent": 50
-      }
-     ],
-     "layer": "documented",
-     "quote": "Income between 200%-250% of FPL: 75% discount. Income between 250%-300% FPL: 50% discount.",
-     "source_id": "fap-ebf261b8c5cf6cc3",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "free_care_max_fpl": null,
+    "discount_tiers": null,
     "assistance_ceiling_fpl": null,
     "asset_test": null,
-    "residency": {
-     "value": [
-      "All North Carolina residents and non-North Carolina residents within the following South Carolina counties are eligible to apply for financial assistance as defined in this Policy. Horry County, Lancaster County, and York County, SC."
-     ],
-     "layer": "documented",
-     "quote": "All North Carolina residents and non-North Carolina residents within the following South Carolina counties are eligible to apply for financial assistance as defined in this Policy. Horry County, Lancaster County, and York County, SC.",
-     "source_id": "fap-ebf261b8c5cf6cc3",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "insured_patients_covered": {
-     "value": true,
-     "layer": "documented",
-     "quote": "Insured patients meeting the requirements above and any insured patients presumed to be eligible to receive Financial Assistance under this Policy will obtain a discount on the applicable patient responsibility",
-     "source_id": "fap-ebf261b8c5cf6cc3",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "residency": null,
+    "insured_patients_covered": null,
     "min_balance": null,
     "services_excluded": null
    },
    "programs": {
-    "presumptive": {
-     "value": [
-      "homelessness"
-     ],
-     "layer": "documented",
-     "quote": "Presumptive eligibility will be extended based on certain non-income-based criteria as follows: homelessness; mental incapacitation with no one to act on the patient\u2019s behalf; enrollment in Medicaid of patient or a child in their household; enrollment in another means-tested public assistance program",
-     "source_id": "fap-ebf261b8c5cf6cc3",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "presumptive": null,
     "state_programs": null
    },
    "apply": {
-    "form_url": {
-     "value": "https://www.novanthealth.org/globalassets/buttons-and-documents-ctaslinks/documents-pdfs/faa_app_english.pdf",
-     "layer": "documented",
-     "quote": "Mail Completed Application to: Novant Health, ATTN: Financial Assistance, PO BOX 11549, Winston Salem, NC 27116",
-     "source_id": "fap-ca5263cb0798e7ad",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "form_url": null,
     "form_version": null,
-    "documents_required": {
-     "value": [
-      "other",
-      "pay_stubs",
-      "tax_return",
-      "proof_of_income"
-     ],
-     "layer": "documented",
-     "quote": "Supporting data includes proof of income documents such as W2 forms, pay stubs or the previous year\u2019s tax return.",
-     "source_id": "fap-ebf261b8c5cf6cc3",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "documents_required": null,
     "documents_reported": null,
-    "submit_methods": {
-     "value": [
-      {
-       "kind": "mail",
-       "detail": "Download PDF and send us your completed application along with the supporting documents to: Novant Health, ATTN: Financial Assistance, PO BOX 11549, Winston Salem, NC 27116"
-      },
-      {
-       "kind": "portal",
-       "detail": "For NC patients, you can apply for financial assistance by signing into your MyChart account and completing the application."
-      }
-     ],
-     "layer": "documented",
-     "quote": "By Mail Download PDF and send us your completed application along with the supporting documents to: Novant Health ATTN: Financial Assistance PO BOX 11549 Winston Salem, NC 27116",
-     "source_id": "web-82293044678f5ec5",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "window_days_from_first_bill": {
-     "value": 240,
-     "layer": "documented",
-     "quote": "Application Period - the period that begins on the date the care is provided to an individual and ends on the 240th day after the individual is provided with the first billing statement for the care.",
-     "source_id": "fap-ebf261b8c5cf6cc3",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "submit_methods": null,
+    "window_days_from_first_bill": null,
     "decision_days": null,
     "decision_days_reported": null
    },
@@ -1178,18 +1019,7 @@
    "contacts": {
     "phone": null,
     "hours": null,
-    "languages": {
-     "value": [
-      "English",
-      "Spanish"
-     ],
-     "layer": "documented",
-     "quote": "Applications are available in English and Spanish.",
-     "source_id": "fap-ebf261b8c5cf6cc3",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "languages": null
    },
    "coverage": {
     "facilities": null,
@@ -1231,33 +1061,69 @@
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 3,
+    "sources_fetched": 0,
     "sources_total": 3,
-    "sources_missing": [],
-    "accepted": [
-     "eligibility.free_care_max_fpl",
-     "eligibility.discount_tiers",
-     "eligibility.residency",
-     "eligibility.insured_patients_covered",
-     "programs.presumptive",
-     "apply.form_url",
-     "apply.documents_required",
-     "apply.submit_methods",
-     "apply.window_days_from_first_bill",
-     "contacts.languages"
+    "sources_missing": [
+     "https://www.novanthealth.org/globalassets/buttons-and-documents-ctaslinks/documents-pdfs/financial-assistance-policy-nc-hospitals.pdf?v=2",
+     "https://www.novanthealth.org/globalassets/buttons-and-documents-ctaslinks/documents-pdfs/faa_app_english.pdf",
+     "https://www.novanthealth.org/for-patients/billing--insurance/financial-assistance/"
     ],
+    "sha256_match": {
+     "fap-ebf261b8c5cf6cc3": null,
+     "fap-ca5263cb0798e7ad": null,
+     "web-82293044678f5ec5": null
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
+    "accepted": [],
     "rejected": [
      [
+      "eligibility.free_care_max_fpl",
+      "source text missing"
+     ],
+     [
+      "eligibility.discount_tiers",
+      "source text missing"
+     ],
+     [
       "eligibility.assistance_ceiling_fpl",
-      "quote does not state the ceiling as a percentage of the poverty level"
+      "source text missing"
+     ],
+     [
+      "eligibility.residency",
+      "source text missing"
+     ],
+     [
+      "eligibility.insured_patients_covered",
+      "source text missing"
+     ],
+     [
+      "programs.presumptive",
+      "source text missing"
+     ],
+     [
+      "apply.form_url",
+      "source text missing"
+     ],
+     [
+      "apply.documents_required",
+      "source text missing"
+     ],
+     [
+      "apply.submit_methods",
+      "source text missing"
+     ],
+     [
+      "apply.window_days_from_first_bill",
+      "source text missing"
+     ],
+     [
+      "contacts.languages",
+      "source text missing"
      ]
     ],
-    "pruned": [
-     "programs.presumptive: 3 items not named in the trimmed quote",
-     "apply.submit_methods: 2 items not named in the trimmed quote"
-    ],
-    "income_rule_verified": true,
-    "core_completeness": 0.83
+    "pruned": [],
+    "income_rule_verified": false,
+    "core_completeness": 0.0
    }
   },
   {
@@ -1406,6 +1272,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-c46e7184823c54df": true,
+     "fap-d7fdce2d8f37891d": true,
+     "web-a6419afb16fed534": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "apply.submit_methods",
@@ -1595,6 +1467,11 @@
     "sources_fetched": 2,
     "sources_total": 2,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-17604b377ebc8366": true,
+     "fap-2599954cd9fe1639": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.asset_test",
@@ -1755,6 +1632,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-dcd1ac5a6c7aa5c1": true,
+     "fap-65aed559dda6fe3e": true,
+     "web-d2c67f8bfff0fbae": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "apply.documents_required",
@@ -2010,6 +1893,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-8c8a353f7434f8bf": true,
+     "fap-df81b44ca47dbb01": true,
+     "web-1331b4f01f505d88": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -2062,7 +1951,15 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": null,
+    "free_care_max_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "Household income below 200% of federal poverty level = 100% discount",
+     "source_id": "web-c5dbe6419f2446e8",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "discount_tiers": {
      "value": [
       {
@@ -2241,12 +2138,17 @@
    "eve_review": [],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 2,
+    "sources_fetched": 3,
     "sources_total": 3,
-    "sources_missing": [
-     "https://www.iredellhealth.org/patients-and-visitors/billing-and-insurance/financial-assistance/"
-    ],
+    "sources_missing": [],
+    "sha256_match": {
+     "fap-29a9d4902b979010": true,
+     "web-c5dbe6419f2446e8": false,
+     "fap-079f65bd92fff9d1": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
+     "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
      "eligibility.assistance_ceiling_fpl",
      "eligibility.residency",
@@ -2260,12 +2162,8 @@
     ],
     "rejected": [
      [
-      "eligibility.free_care_max_fpl",
-      "source text missing"
-     ],
-     [
       "eligibility.insured_patients_covered",
-      "source text missing"
+      "quote does not say whether insured patients are covered"
      ]
     ],
     "pruned": [
@@ -2273,7 +2171,7 @@
      "apply.submit_methods: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": true,
-    "core_completeness": 0.67
+    "core_completeness": 0.83
    }
   },
   {
@@ -2415,6 +2313,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-397b98dc222ad68d": true,
+     "fap-9ff767aeafa10f69": true,
+     "web-358cf89020f0ab54": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.insured_patients_covered",
@@ -2583,6 +2487,11 @@
     "sources_fetched": 2,
     "sources_total": 2,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-17604b377ebc8366": true,
+     "fap-2599954cd9fe1639": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.asset_test",
@@ -2764,6 +2673,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-d9c5de9c9fa6dd89": true,
+     "fap-86ebf190164300d8": true,
+     "web-72c7f3dabd40053f": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -2928,6 +2843,11 @@
     "sources_fetched": 2,
     "sources_total": 2,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-17604b377ebc8366": true,
+     "fap-2599954cd9fe1639": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.asset_test",
@@ -2965,119 +2885,26 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": {
-     "value": "300",
-     "layer": "documented",
-     "quote": "The patient must have annual family income less than or equal to 300% of the available current year Federal Poverty Guidelines Financial Assistance.",
-     "source_id": "fap-b3dfcefb6ce14478",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "discount_tiers": {
-     "value": [
-      {
-       "min_fpl_exclusive": "200",
-       "max_fpl_inclusive": "250",
-       "discount_percent": 75
-      },
-      {
-       "min_fpl_exclusive": "250",
-       "max_fpl_inclusive": "300",
-       "discount_percent": 50
-      }
-     ],
-     "layer": "documented",
-     "quote": "Income between 200%-250% of FPL: 75% discount. Income between 250%-300% FPL: 50% discount.",
-     "source_id": "fap-b3dfcefb6ce14478",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "free_care_max_fpl": null,
+    "discount_tiers": null,
     "assistance_ceiling_fpl": null,
     "asset_test": null,
-    "residency": {
-     "value": [
-      "All North Carolina residents and non-North Carolina residents within a Novant Health Service Area are eligible to apply for Financial Assistance."
-     ],
-     "layer": "documented",
-     "quote": "All North Carolina residents and non-North Carolina residents within a Novant Health Service Area (see attached) are eligible to apply for Financial Assistance, as defined in this Policy.",
-     "source_id": "fap-b3dfcefb6ce14478",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "insured_patients_covered": {
-     "value": true,
-     "layer": "documented",
-     "quote": "Insured patients meeting the requirements above and any insured patients presumed to be eligible to receive Financial Assistance under this Policy will obtain a discount on the applicable patient responsibility (minus copays)",
-     "source_id": "fap-b3dfcefb6ce14478",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "residency": null,
+    "insured_patients_covered": null,
     "min_balance": null,
     "services_excluded": null
    },
    "programs": {
-    "presumptive": {
-     "value": [
-      "homelessness",
-      "enrollment in another means-tested public assistance program"
-     ],
-     "layer": "documented",
-     "quote": "Presumptive eligibility will be extended based on certain non-income-based criteria as follows: homelessness; mental incapacitation with no one to act on the patient\u2019s behalf; enrollment in Medicaid of patient or a child in their household; enrollment in another means-tested public assistance program",
-     "source_id": "fap-b3dfcefb6ce14478",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "presumptive": null,
     "state_programs": null
    },
    "apply": {
     "form_url": null,
     "form_version": null,
-    "documents_required": {
-     "value": [
-      "pay_stubs",
-      "tax_return",
-      "other"
-     ],
-     "layer": "documented",
-     "quote": "Supporting data includes proof of income documents such as W2 forms, pay stubs or the previous year\u2019s tax return.",
-     "source_id": "fap-b3dfcefb6ce14478",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "documents_required": null,
     "documents_reported": null,
-    "submit_methods": {
-     "value": [
-      {
-       "kind": "mail",
-       "detail": "Novant Health, ATTN: Financial Assistance, PO BOX 11549, Winston Salem, NC 27116"
-      },
-      {
-       "kind": "portal",
-       "detail": "For NC patients, you can apply for financial assistance by signing into your MyChart account and completing the application."
-      }
-     ],
-     "layer": "documented",
-     "quote": "By Mail Download PDF and send us your completed application along with the supporting documents to: Novant Health ATTN: Financial Assistance PO BOX 11549 Winston Salem, NC 27116",
-     "source_id": "web-2e27214ae59bc1c4",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "window_days_from_first_bill": {
-     "value": 240,
-     "layer": "documented",
-     "quote": "Application Period - the period that begins on the date the care is provided to an individual and ends on the 240th day after the individual is provided with the first billing statement for the care.",
-     "source_id": "fap-b3dfcefb6ce14478",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "submit_methods": null,
+    "window_days_from_first_bill": null,
     "decision_days": null,
     "decision_days_reported": null
    },
@@ -3086,28 +2913,9 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": {
-     "value": "(704) 384-0539",
-     "layer": "documented",
-     "quote": "Novant Health Presbyterian Medical Center Novant Health Matthews Medical Center Novant Health Huntersville Medical Center Novant Health Charlotte Orthopedic Hospital Novant Health Rowan Medical Center Novant Health Mint Hill Medical Center Novant Health Brunswick Medical Center Novant Health Ballantyne Medical Center (704) 384-0539",
-     "source_id": "fap-b3dfcefb6ce14478",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "phone": null,
     "hours": null,
-    "languages": {
-     "value": [
-      "English",
-      "Spanish"
-     ],
-     "layer": "documented",
-     "quote": "Applications are available in English and Spanish.",
-     "source_id": "fap-b3dfcefb6ce14478",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "languages": null
    },
    "coverage": {
     "facilities": null,
@@ -3149,34 +2957,69 @@
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 3,
+    "sources_fetched": 0,
     "sources_total": 3,
-    "sources_missing": [],
-    "accepted": [
-     "eligibility.free_care_max_fpl",
-     "eligibility.discount_tiers",
-     "eligibility.residency",
-     "eligibility.insured_patients_covered",
-     "programs.presumptive",
-     "apply.documents_required",
-     "apply.submit_methods",
-     "apply.window_days_from_first_bill",
-     "contacts.phone",
-     "contacts.languages"
+    "sources_missing": [
+     "https://www.novanthealth.org/globalassets/buttons-and-documents-ctaslinks/documents-pdfs/policy-nc-hospitals-financial-assistance-1-1-25.pdf",
+     "https://www.novanthealth.org/globalassets/buttons-and-documents-ctaslinks/documents-pdfs/faa_app_english.pdf",
+     "https://www.novanthealth.org/for-patients/billing--insurance/financial-assistance/"
     ],
+    "sha256_match": {
+     "fap-b3dfcefb6ce14478": null,
+     "fap-ca5263cb0798e7ad": null,
+     "web-2e27214ae59bc1c4": null
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
+    "accepted": [],
     "rejected": [
      [
+      "eligibility.free_care_max_fpl",
+      "source text missing"
+     ],
+     [
+      "eligibility.discount_tiers",
+      "source text missing"
+     ],
+     [
       "eligibility.assistance_ceiling_fpl",
-      "quote does not state the ceiling as a percentage of the poverty level"
+      "source text missing"
+     ],
+     [
+      "eligibility.residency",
+      "source text missing"
+     ],
+     [
+      "eligibility.insured_patients_covered",
+      "source text missing"
+     ],
+     [
+      "programs.presumptive",
+      "source text missing"
+     ],
+     [
+      "apply.documents_required",
+      "source text missing"
+     ],
+     [
+      "apply.submit_methods",
+      "source text missing"
+     ],
+     [
+      "apply.window_days_from_first_bill",
+      "source text missing"
+     ],
+     [
+      "contacts.phone",
+      "source text missing"
+     ],
+     [
+      "contacts.languages",
+      "source text missing"
      ]
     ],
-    "pruned": [
-     "programs.presumptive: 2 items not named in the trimmed quote",
-     "apply.documents_required: 1 item not named in the trimmed quote",
-     "apply.submit_methods: 2 items not named in the trimmed quote"
-    ],
-    "income_rule_verified": true,
-    "core_completeness": 0.83
+    "pruned": [],
+    "income_rule_verified": false,
+    "core_completeness": 0.0
    }
   },
   {
@@ -3341,6 +3184,11 @@
     "sources_fetched": 2,
     "sources_total": 2,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-17604b377ebc8366": true,
+     "fap-2599954cd9fe1639": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.asset_test",
@@ -3504,11 +3352,14 @@
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 1,
+    "sources_fetched": 2,
     "sources_total": 2,
-    "sources_missing": [
-     "https://crhealthcare.org/wp-content/uploads/2025/12/Financial-Assistance-Policy-FINAL-CHS-Regional-Finance-Committee_rev_1.1.2026_.docx"
-    ],
+    "sources_missing": [],
+    "sha256_match": {
+     "web-61b8a07c5a39c601": true,
+     "web-4eb4cc71a91f9407": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.insured_patients_covered",
@@ -3542,31 +3393,23 @@
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
     "asset_test": null,
-    "residency": null,
-    "insured_patients_covered": {
-     "value": true,
+    "residency": {
+     "value": [
+      "The applicant must be a North Carolina resident (the criteria for determining residency is attached as Appendix A to this policy)"
+     ],
      "layer": "documented",
-     "quote": "open accounts are identified as \u201cpending charity\u201d if the patient is uninsured, or their insurance does not pay 100% of contracted charges.",
+     "quote": "The applicant must be a North Carolina resident (the criteria for determining residency is attached as Appendix A to this policy);",
      "source_id": "fap-30675af61112eeaa",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
+    "insured_patients_covered": null,
     "min_balance": null,
     "services_excluded": null
    },
    "programs": {
-    "presumptive": {
-     "value": [
-      "WIC program"
-     ],
-     "layer": "documented",
-     "quote": "i. Homelessness or receipt of care from a homeless clinic or shelter; ii. Mental incapacitation with no one to act on the patient\u2019s behalf; iii. Enrollment in Medicaid of patient or a child in their household; iv. Women, Infants and Children (WIC) program;",
-     "source_id": "fap-30675af61112eeaa",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "presumptive": null,
     "state_programs": null
    },
    "apply": {
@@ -3574,32 +3417,17 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "tax_return",
-      "pay_stubs",
-      "proof_of_income"
+      "tax_return"
      ],
      "layer": "documented",
-     "quote": "1. A copy of the most recent tax return (to include all copies of applicable forms, schedules, and required attachments); 2. Most recent pay stub(s) that show work history for the past 4 weeks; 3. Written verification of other income sources (e.g. child support, social security, alimony) or if unemployed.",
+     "quote": "A copy of the most recent tax return (to include all copies of applicable forms, schedules, and required attachments);",
      "source_id": "fap-30675af61112eeaa",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "documents_reported": null,
-    "submit_methods": {
-     "value": [
-      {
-       "kind": "mail",
-       "detail": "WakeMed, PO Box 14465, Raleigh, NC 27620-4465"
-      }
-     ],
-     "layer": "documented",
-     "quote": "Mail Documentation to: WakeMed PO Box 14465 Raleigh, NC 27620-4465",
-     "source_id": "fap-8e5ed1463ed14653",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "submit_methods": null,
     "window_days_from_first_bill": {
      "value": 240,
      "layer": "documented",
@@ -3613,15 +3441,7 @@
     "decision_days_reported": null
    },
    "collections": {
-    "eca_wait_days": {
-     "value": 120,
-     "layer": "documented",
-     "quote": "WakeMed will not engage in ECAs during the one hundred twenty (120) day period after the first post- discharge billing statement.",
-     "source_id": "fap-30675af61112eeaa",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "eca_wait_days": null,
     "collection_agencies": null
    },
    "contacts": {
@@ -3634,7 +3454,15 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "hours": null,
+    "hours": {
+     "value": "regular business hours",
+     "layer": "documented",
+     "quote": "WakeMed\u2019s customer service representatives are available during regular business hours at (919) 350-8359",
+     "source_id": "fap-30675af61112eeaa",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "languages": {
      "value": [
       "English",
@@ -3684,30 +3512,40 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: v. SNAP benefits (Supplemental Nutritional Assistance Program, (formerly | Eligibility in other state or local assistance programs, such as Victims of Violent Crimes.",
-    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: a. Permanent residency (as outlined in Appendix A); b. Disability; c. Medicaid Denial; and d. Household Financial Income",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Email: FinancialAssistance@wakemed.org | Fax: (919) 350-6968",
-    "agent dropped eligibility.residency: judge: The quote only says the applicant must be an NC resident. It says nothing about non-NC citizens or undocumented residents being approved with management approval."
+    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: Enrollment in Medicaid of patient or a child in their household; iv. Women, Infants and Children (WIC) program; v. SNAP ",
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Most recent pay stub(s) that show work history for the past 4 weeks; | Proof of the following (as applicable): a. Permanent residency (as outlined in Appendix A); b. Disability; c. Medicaid D",
+    "agent dropped apply.submit_methods: excerpt not in source: Mail Documentation to: WakeMed PO Box 14465 Raleigh, NC 2762",
+    "agent dropped collections.eca_wait_days: quote is not a substring of the source",
+    "agent judge on eligibility.free_care_max_fpl: The quote is a table fragment showing '300%' and '100% Discount' with no clear statement of the FPL level that receives 100% free care.",
+    "agent judge on contacts.languages: The quote says the policy documents can be viewed and printed in English and Spanish; it does not state the languages contact staff support."
    ],
    "eve_verified": {
     "on": "2026-10-23",
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-30675af61112eeaa": true,
+     "fap-8e5ed1463ed14653": true,
+     "web-a5329620862f0341": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
-     "eligibility.insured_patients_covered",
-     "programs.presumptive",
+     "eligibility.residency",
      "apply.documents_required",
-     "apply.submit_methods",
      "apply.window_days_from_first_bill",
-     "collections.eca_wait_days",
      "contacts.phone",
+     "contacts.hours",
      "contacts.languages"
     ],
     "rejected": [
      [
       "eligibility.free_care_max_fpl",
       "quote does not state the free-care limit as an income limit"
+     ],
+     [
+      "eligibility.assistance_ceiling_fpl",
+      "quote does not say the hospital's financial assistance reaches it"
      ],
      [
       "eligibility.asset_test",
@@ -3719,12 +3557,11 @@
      ]
     ],
     "pruned": [
-     "programs.presumptive: 5 items not named in the trimmed quote",
-     "apply.documents_required: 2 items not named in the trimmed quote",
-     "apply.submit_methods: 2 items not named in the trimmed quote"
+     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
+     "apply.documents_required: 2 items not named in the trimmed quote"
     ],
     "income_rule_verified": false,
-    "core_completeness": 0.5
+    "core_completeness": 0.33
    }
   },
   {
@@ -3867,6 +3704,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-dcd1ac5a6c7aa5c1": true,
+     "fap-65aed559dda6fe3e": true,
+     "web-d2c67f8bfff0fbae": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "apply.documents_required",
@@ -3914,126 +3757,26 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": {
-     "value": "200",
-     "layer": "documented",
-     "quote": "Income below 200% of FPL: 100% discount.",
-     "source_id": "fap-b044ddbbd1563c3a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "discount_tiers": {
-     "value": [
-      {
-       "min_fpl_exclusive": "200",
-       "max_fpl_inclusive": "250",
-       "discount_percent": 75
-      },
-      {
-       "min_fpl_exclusive": "250",
-       "max_fpl_inclusive": "300",
-       "discount_percent": 50
-      }
-     ],
-     "layer": "documented",
-     "quote": "Income between 200%-250% of FPL: 75% discount. Income between 250%-300% FPL: 50% discount.",
-     "source_id": "fap-b044ddbbd1563c3a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "free_care_max_fpl": null,
+    "discount_tiers": null,
     "assistance_ceiling_fpl": null,
     "asset_test": null,
-    "residency": {
-     "value": [
-      "All North Carolina residents and non-North Carolina residents within a Novant Health Service Area are eligible to apply for Financial Assistance."
-     ],
-     "layer": "documented",
-     "quote": "All North Carolina residents and non-North Carolina residents within a Novant Health Service Area (see attached) are eligible to apply for Financial Assistance, as defined in this Policy.",
-     "source_id": "fap-b044ddbbd1563c3a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "insured_patients_covered": {
-     "value": true,
-     "layer": "documented",
-     "quote": "Insured patients meeting the requirements above and any insured patients presumed to be eligible to receive Financial Assistance under this Policy will obtain a discount on the applicable patient responsibility (minus copays) as follows:",
-     "source_id": "fap-b044ddbbd1563c3a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "residency": null,
+    "insured_patients_covered": null,
     "min_balance": null,
     "services_excluded": null
    },
    "programs": {
-    "presumptive": {
-     "value": [
-      "homelessness"
-     ],
-     "layer": "documented",
-     "quote": "Presumptive eligibility will be extended based on certain non-income-based criteria as follows: homelessness; mental incapacitation with no one to act on the patient\u2019s behalf; enrollment in Medicaid of patient or a child in their household; enrollment in another means-tested public assistance program",
-     "source_id": "fap-b044ddbbd1563c3a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "presumptive": null,
     "state_programs": null
    },
    "apply": {
-    "form_url": {
-     "value": "https://www.novanthealth.org/globalassets/buttons-and-documents-ctaslinks/documents-pdfs/faa_app_english.pdf",
-     "layer": "documented",
-     "quote": "Mail Completed Application to: Novant Health, ATTN: Financial Assistance, PO BOX 11549, Winston Salem, NC 27116",
-     "source_id": "fap-ca5263cb0798e7ad",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "form_url": null,
     "form_version": null,
-    "documents_required": {
-     "value": [
-      "pay_stubs",
-      "tax_return",
-      "other"
-     ],
-     "layer": "documented",
-     "quote": "Supporting data includes proof of income documents such as W2 forms, pay stubs or the previous year\u2019s tax return.",
-     "source_id": "fap-b044ddbbd1563c3a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "documents_required": null,
     "documents_reported": null,
-    "submit_methods": {
-     "value": [
-      {
-       "kind": "mail",
-       "detail": "Novant Health, ATTN: Financial Assistance, PO BOX 11549, Winston Salem, NC 27116"
-      },
-      {
-       "kind": "portal",
-       "detail": "For NC patients, you can apply for financial assistance by signing into your MyChart account and completing the application."
-      }
-     ],
-     "layer": "documented",
-     "quote": "By Mail Download PDF and send us your completed application along with the supporting documents to: Novant Health ATTN: Financial Assistance PO BOX 11549 Winston Salem, NC 27116",
-     "source_id": "web-d37f7b6924deecda",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "window_days_from_first_bill": {
-     "value": 240,
-     "layer": "documented",
-     "quote": "Application Period - the period that begins on the date the care is provided to an individual and ends on the 240th day after the individual is provided with the first billing statement for the care.",
-     "source_id": "fap-b044ddbbd1563c3a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "submit_methods": null,
+    "window_days_from_first_bill": null,
     "decision_days": null,
     "decision_days_reported": null
    },
@@ -4042,28 +3785,9 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": {
-     "value": "(336) 718-5393",
-     "layer": "documented",
-     "quote": "Novant Health Thomasville Medical Center (336) 718-5393",
-     "source_id": "fap-b044ddbbd1563c3a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "phone": null,
     "hours": null,
-    "languages": {
-     "value": [
-      "English",
-      "Spanish"
-     ],
-     "layer": "documented",
-     "quote": "Applications are available in English and Spanish.",
-     "source_id": "fap-b044ddbbd1563c3a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "languages": null
    },
    "coverage": {
     "facilities": null,
@@ -4103,35 +3827,73 @@
    "eve_review": [],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 3,
+    "sources_fetched": 0,
     "sources_total": 3,
-    "sources_missing": [],
-    "accepted": [
-     "eligibility.free_care_max_fpl",
-     "eligibility.discount_tiers",
-     "eligibility.residency",
-     "eligibility.insured_patients_covered",
-     "programs.presumptive",
-     "apply.form_url",
-     "apply.documents_required",
-     "apply.submit_methods",
-     "apply.window_days_from_first_bill",
-     "contacts.phone",
-     "contacts.languages"
+    "sources_missing": [
+     "https://www.novanthealth.org/globalassets/buttons-and-documents-ctaslinks/documents-pdfs/policy-nc-hospitals-financial-assistance.pdf",
+     "https://www.novanthealth.org/for-patients/billing--insurance/financial-assistance/",
+     "https://www.novanthealth.org/globalassets/buttons-and-documents-ctaslinks/documents-pdfs/faa_app_english.pdf"
     ],
+    "sha256_match": {
+     "fap-b044ddbbd1563c3a": null,
+     "web-d37f7b6924deecda": null,
+     "fap-ca5263cb0798e7ad": null
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
+    "accepted": [],
     "rejected": [
      [
+      "eligibility.free_care_max_fpl",
+      "source text missing"
+     ],
+     [
+      "eligibility.discount_tiers",
+      "source text missing"
+     ],
+     [
       "eligibility.assistance_ceiling_fpl",
-      "quote does not state the ceiling as a percentage of the poverty level"
+      "source text missing"
+     ],
+     [
+      "eligibility.residency",
+      "source text missing"
+     ],
+     [
+      "eligibility.insured_patients_covered",
+      "source text missing"
+     ],
+     [
+      "programs.presumptive",
+      "source text missing"
+     ],
+     [
+      "apply.form_url",
+      "source text missing"
+     ],
+     [
+      "apply.documents_required",
+      "source text missing"
+     ],
+     [
+      "apply.submit_methods",
+      "source text missing"
+     ],
+     [
+      "apply.window_days_from_first_bill",
+      "source text missing"
+     ],
+     [
+      "contacts.phone",
+      "source text missing"
+     ],
+     [
+      "contacts.languages",
+      "source text missing"
      ]
     ],
-    "pruned": [
-     "programs.presumptive: 3 items not named in the trimmed quote",
-     "apply.documents_required: 1 item not named in the trimmed quote",
-     "apply.submit_methods: 2 items not named in the trimmed quote"
-    ],
-    "income_rule_verified": true,
-    "core_completeness": 1.0
+    "pruned": [],
+    "income_rule_verified": false,
+    "core_completeness": 0.0
    }
   },
   {
@@ -4264,6 +4026,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-356ce1d641afd492": true,
+     "web-82f15d236c324e9b": true,
+     "web-30ec344ef8886d3c": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "programs.presumptive",
@@ -4496,6 +4264,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-d9c5de9c9fa6dd89": true,
+     "fap-86ebf190164300d8": true,
+     "web-83967a848eb529de": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -4688,6 +4462,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-5cc34c34ffa2330c": true,
+     "fap-566c53bd5c85fa38": true,
+     "web-28b08e6710232033": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.residency",
@@ -4866,6 +4646,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-397b98dc222ad68d": true,
+     "fap-9ff767aeafa10f69": true,
+     "web-d5235656b5ba4f84": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.insured_patients_covered",
@@ -4892,153 +4678,6 @@
      "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)"
     ],
     "income_rule_verified": true,
-    "core_completeness": 0.5
-   }
-  },
-  {
-   "hospital": {
-    "ccn": "340115",
-    "name": "FIRSTHEALTH MOORE REGIONAL HOSPITAL",
-    "city": "PINEHURST",
-    "state": "NC",
-    "zip": "28374",
-    "phone": "910-715-1000",
-    "ownership": "Voluntary non-profit - Private",
-    "website_domain": "firsthealth.org",
-    "system": null
-   },
-   "version": 1,
-   "status": "draft",
-   "eligibility": {
-    "free_care_max_fpl": null,
-    "discount_tiers": null,
-    "assistance_ceiling_fpl": null,
-    "asset_test": null,
-    "residency": null,
-    "insured_patients_covered": {
-     "value": true,
-     "layer": "documented",
-     "quote": "This program is available to patients without health insurance and insured patients receiving care that is not covered by their insurance plan.",
-     "source_id": "fap-c96dea2cf1d7b251",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "min_balance": null,
-    "services_excluded": null
-   },
-   "programs": {
-    "presumptive": null,
-    "state_programs": {
-     "value": [
-      {
-       "name": "North Carolina Medical Debt Mitigation Program",
-       "how_to_apply": "FirstHealth will screen all guarantors during the pre-registration and registration process to determine if they qualify for financial help based on non-income-related questions, following North Carolina Medicaid Debt Mitigation program guidelines."
-      }
-     ],
-     "layer": "documented",
-     "quote": "FirstHealth is dedicated to helping people with medical debt through the North Carolina Medical Debt Mitigation Program.",
-     "source_id": "fap-c96dea2cf1d7b251",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
-   },
-   "apply": {
-    "form_url": null,
-    "form_version": null,
-    "documents_required": {
-     "value": [
-      "tax_return",
-      "pay_stubs"
-     ],
-     "layer": "documented",
-     "quote": "Documentation, such as tax returns and current pay stubs, will be requested to demonstrate financial need.",
-     "source_id": "fap-c96dea2cf1d7b251",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "documents_reported": null,
-    "submit_methods": {
-     "value": [
-      {
-       "kind": "portal",
-       "detail": "www.firsthealth.org/paymybill and select Financial Assistance"
-      }
-     ],
-     "layer": "documented",
-     "quote": "To apply for Financial Aid, go to website complete and complete the financial aid application form or contact patient accounts. Go to www.firsthealth.org/paymybill and select Financial Assistance.",
-     "source_id": "fap-c96dea2cf1d7b251",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "window_days_from_first_bill": null,
-    "decision_days": null,
-    "decision_days_reported": null
-   },
-   "collections": {
-    "eca_wait_days": null,
-    "collection_agencies": null
-   },
-   "contacts": {
-    "phone": {
-     "value": "(800) 798-6946",
-     "layer": "documented",
-     "quote": "Please call (800) 798-6946 Monday through Friday 8:30 a.m.- 5 p.m. or visit www.firsthealth.org/paymybill",
-     "source_id": "fap-c96dea2cf1d7b251",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "hours": {
-     "value": "Monday through Friday between 8:30 a.m. and 5 p.m.",
-     "layer": "documented",
-     "quote": "We are available Monday through Friday between 8:30 a.m. and 5 p.m. or visit our website at www.firsthealth.org/paymybill.",
-     "source_id": "fap-c96dea2cf1d7b251",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "languages": null
-   },
-   "coverage": {
-    "facilities": null,
-    "provider_list_url": null,
-    "covered_providers": null
-   },
-   "sources": [
-    {
-     "id": "fap-c96dea2cf1d7b251",
-     "kind": "hospital_web",
-     "url": "https://stmlfirsthealthncus001.blob.core.windows.net/public/Patients%20and%20Visitors/0181-170-23%20Outpatient%20Handbook_Complete%20Book.pdf",
-     "title": "",
-     "fetched_on": "2026-10-23",
-     "sha256": "c96dea2cf1d7b2515e234c7cb0582b802b9c43193609f783c638dbac39a5d9bb",
-     "effective_date": null
-    }
-   ],
-   "accuracy": null,
-   "eve_review": [],
-   "eve_verified": {
-    "on": "2026-10-23",
-    "sources_fetched": 1,
-    "sources_total": 1,
-    "sources_missing": [],
-    "accepted": [
-     "eligibility.insured_patients_covered",
-     "programs.state_programs",
-     "apply.documents_required",
-     "apply.submit_methods",
-     "contacts.phone",
-     "contacts.hours"
-    ],
-    "rejected": [],
-    "pruned": [
-     "apply.submit_methods: 2 items not named in the trimmed quote"
-    ],
-    "income_rule_verified": false,
     "core_completeness": 0.5
    }
   },
@@ -5268,6 +4907,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-d9c5de9c9fa6dd89": true,
+     "fap-86ebf190164300d8": true,
+     "web-0ad5b20f0414f649": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -5382,19 +5027,29 @@
     }
    ],
    "accuracy": null,
-   "eve_review": [],
+   "eve_review": [
+    "agent judge on apply.form_url: The quote shows only the relative path /media/1701/financial-assistance-application-rev-2026.docx; the domain (randolphhealth.org) and https scheme in the value do not appear in the quote."
+   ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 1,
+    "sources_fetched": 3,
     "sources_total": 3,
-    "sources_missing": [
-     "https://www.randolphhealth.org/media/1650/fd-pa-007-financial-assistance-policy-exe.docx",
-     "https://www.randolphhealth.org/media/1701/financial-assistance-application-rev-2026.docx"
-    ],
+    "sources_missing": [],
+    "sha256_match": {
+     "web-1b591fcbeafb6a55": true,
+     "web-dffb7aa528627c5c": true,
+     "web-245d0306a1e9f552": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "contacts.phone"
     ],
-    "rejected": [],
+    "rejected": [
+     [
+      "apply.form_url",
+      "quote not found in source"
+     ]
+    ],
     "pruned": [],
     "income_rule_verified": false,
     "core_completeness": 0.17
@@ -5588,6 +5243,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-d7e3e49c10e2e606": true,
+     "fap-044f7e9f42bbb401": true,
+     "web-b66b6bca9d05a5a3": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -5781,6 +5442,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-248c95e4db28a90a": true,
+     "web-5594b9e726944165": false,
+     "web-3065424d582cd6ba": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.residency",
@@ -5814,127 +5481,26 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": {
-     "value": "200",
-     "layer": "documented",
-     "quote": "Income below 200% of FPL: 100% discount.",
-     "source_id": "fap-b044ddbbd1563c3a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "discount_tiers": {
-     "value": [
-      {
-       "min_fpl_exclusive": "200",
-       "max_fpl_inclusive": "250",
-       "discount_percent": 75
-      },
-      {
-       "min_fpl_exclusive": "250",
-       "max_fpl_inclusive": "300",
-       "discount_percent": 50
-      }
-     ],
-     "layer": "documented",
-     "quote": "Income between 200%-250% of FPL: 75% discount. Income between 250%-300% FPL: 50% discount.",
-     "source_id": "fap-b044ddbbd1563c3a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "free_care_max_fpl": null,
+    "discount_tiers": null,
     "assistance_ceiling_fpl": null,
     "asset_test": null,
-    "residency": {
-     "value": [
-      "All North Carolina residents and non-North Carolina residents within a Novant Health Service Area are eligible to apply for Financial Assistance."
-     ],
-     "layer": "documented",
-     "quote": "All North Carolina residents and non-North Carolina residents within a Novant Health Service Area (see attached) are eligible to apply for Financial Assistance",
-     "source_id": "fap-b044ddbbd1563c3a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "insured_patients_covered": {
-     "value": true,
-     "layer": "documented",
-     "quote": "Insured patients meeting the requirements above and any insured patients presumed to be eligible to receive Financial Assistance under this Policy will obtain a discount on the applicable patient responsibility",
-     "source_id": "fap-b044ddbbd1563c3a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "residency": null,
+    "insured_patients_covered": null,
     "min_balance": null,
     "services_excluded": null
    },
    "programs": {
-    "presumptive": {
-     "value": [
-      "homelessness"
-     ],
-     "layer": "documented",
-     "quote": "Presumptive eligibility will be extended based on certain non-income-based criteria as follows: homelessness; mental incapacitation with no one to act on the patient\u2019s behalf; enrollment in Medicaid of patient or a child in their household; enrollment in another means-tested public assistance program",
-     "source_id": "fap-b044ddbbd1563c3a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "presumptive": null,
     "state_programs": null
    },
    "apply": {
-    "form_url": {
-     "value": "https://www.novanthealth.org/globalassets/buttons-and-documents-ctaslinks/documents-pdfs/policy-nc-hospitals-financial-assistance.pdf",
-     "layer": "documented",
-     "quote": "NC Hospital Policy (English PDF)",
-     "source_id": "web-ad6f97c78104e667",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "form_url": null,
     "form_version": null,
-    "documents_required": {
-     "value": [
-      "other",
-      "pay_stubs",
-      "tax_return",
-      "proof_of_income"
-     ],
-     "layer": "documented",
-     "quote": "Supporting data includes proof of income documents such as W2 forms, pay stubs or the previous year\u2019s tax return.",
-     "source_id": "fap-b044ddbbd1563c3a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "documents_required": null,
     "documents_reported": null,
-    "submit_methods": {
-     "value": [
-      {
-       "kind": "mail",
-       "detail": "Novant Health, ATTN: Financial Assistance, PO BOX 11549, Winston Salem, NC 27116"
-      },
-      {
-       "kind": "portal",
-       "detail": "For NC patients, you can apply for financial assistance by signing into your MyChart account and completing the application."
-      }
-     ],
-     "layer": "documented",
-     "quote": "Download PDF and send us your completed application along with the supporting documents to: Novant Health ATTN: Financial Assistance PO BOX 11549 Winston Salem, NC 27116",
-     "source_id": "web-ad6f97c78104e667",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "window_days_from_first_bill": {
-     "value": 240,
-     "layer": "documented",
-     "quote": "Application Period - the period that begins on the date the care is provided to an individual and ends on the 240th day after the individual is provided with the first billing statement for the care.",
-     "source_id": "fap-b044ddbbd1563c3a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "submit_methods": null,
+    "window_days_from_first_bill": null,
     "decision_days": null,
     "decision_days_reported": null
    },
@@ -5943,28 +5509,9 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": {
-     "value": "(336) 718-5393",
-     "layer": "documented",
-     "quote": "Novant Health Medical Park Hospital Novant Health Thomasville Medical Center (336) 718-5393",
-     "source_id": "fap-b044ddbbd1563c3a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "phone": null,
     "hours": null,
-    "languages": {
-     "value": [
-      "English",
-      "Spanish"
-     ],
-     "layer": "documented",
-     "quote": "Applications are available in English and Spanish.",
-     "source_id": "fap-b044ddbbd1563c3a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "languages": null
    },
    "coverage": {
     "facilities": null,
@@ -6004,34 +5551,73 @@
    "eve_review": [],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 3,
+    "sources_fetched": 0,
     "sources_total": 3,
-    "sources_missing": [],
-    "accepted": [
-     "eligibility.free_care_max_fpl",
-     "eligibility.discount_tiers",
-     "eligibility.residency",
-     "eligibility.insured_patients_covered",
-     "programs.presumptive",
-     "apply.form_url",
-     "apply.documents_required",
-     "apply.submit_methods",
-     "apply.window_days_from_first_bill",
-     "contacts.phone",
-     "contacts.languages"
+    "sources_missing": [
+     "https://www.novanthealth.org/globalassets/buttons-and-documents-ctaslinks/documents-pdfs/policy-nc-hospitals-financial-assistance.pdf",
+     "https://www.novanthealth.org/for-patients/billing--insurance/financial-assistance/",
+     "https://www.novanthealth.org/for-patients/billing--insurance/patient-saver-hub/"
     ],
+    "sha256_match": {
+     "fap-b044ddbbd1563c3a": null,
+     "web-ad6f97c78104e667": null,
+     "web-40f6d77988919498": null
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
+    "accepted": [],
     "rejected": [
      [
+      "eligibility.free_care_max_fpl",
+      "source text missing"
+     ],
+     [
+      "eligibility.discount_tiers",
+      "source text missing"
+     ],
+     [
       "eligibility.assistance_ceiling_fpl",
-      "quote does not state the ceiling as a percentage of the poverty level"
+      "source text missing"
+     ],
+     [
+      "eligibility.residency",
+      "source text missing"
+     ],
+     [
+      "eligibility.insured_patients_covered",
+      "source text missing"
+     ],
+     [
+      "programs.presumptive",
+      "source text missing"
+     ],
+     [
+      "apply.form_url",
+      "source text missing"
+     ],
+     [
+      "apply.documents_required",
+      "source text missing"
+     ],
+     [
+      "apply.submit_methods",
+      "source text missing"
+     ],
+     [
+      "apply.window_days_from_first_bill",
+      "source text missing"
+     ],
+     [
+      "contacts.phone",
+      "source text missing"
+     ],
+     [
+      "contacts.languages",
+      "source text missing"
      ]
     ],
-    "pruned": [
-     "programs.presumptive: 3 items not named in the trimmed quote",
-     "apply.submit_methods: 2 items not named in the trimmed quote"
-    ],
-    "income_rule_verified": true,
-    "core_completeness": 1.0
+    "pruned": [],
+    "income_rule_verified": false,
+    "core_completeness": 0.0
    }
   },
   {
@@ -6280,6 +5866,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-397b98dc222ad68d": true,
+     "web-f7e21428f4251395": false,
+     "fap-9ff767aeafa10f69": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -6327,128 +5919,26 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": {
-     "value": "200",
-     "layer": "documented",
-     "quote": "Income below 200% of FPL: 100% discount.",
-     "source_id": "fap-b044ddbbd1563c3a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "discount_tiers": {
-     "value": [
-      {
-       "min_fpl_exclusive": "200",
-       "max_fpl_inclusive": "250",
-       "discount_percent": 75
-      },
-      {
-       "min_fpl_exclusive": "250",
-       "max_fpl_inclusive": "300",
-       "discount_percent": 50
-      }
-     ],
-     "layer": "documented",
-     "quote": "Income between 200%-250% of FPL: 75% discount. Income between 250%-300% FPL: 50% discount.",
-     "source_id": "fap-b044ddbbd1563c3a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "free_care_max_fpl": null,
+    "discount_tiers": null,
     "assistance_ceiling_fpl": null,
     "asset_test": null,
-    "residency": {
-     "value": [
-      "All North Carolina residents and non-North Carolina residents within a Novant Health Service Area are eligible to apply for Financial Assistance."
-     ],
-     "layer": "documented",
-     "quote": "All North Carolina residents and non-North Carolina residents within a Novant Health Service Area (see attached) are eligible to apply for Financial Assistance, as defined in this Policy.",
-     "source_id": "fap-b044ddbbd1563c3a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "insured_patients_covered": {
-     "value": true,
-     "layer": "documented",
-     "quote": "Insured patients meeting the requirements above and any insured patients presumed to be eligible to receive Financial Assistance under this Policy will obtain a discount on the applicable patient responsibility (minus copays)",
-     "source_id": "fap-b044ddbbd1563c3a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "residency": null,
+    "insured_patients_covered": null,
     "min_balance": null,
     "services_excluded": null
    },
    "programs": {
-    "presumptive": {
-     "value": [
-      "homelessness",
-      "enrollment in another means-tested public assistance program"
-     ],
-     "layer": "documented",
-     "quote": "Presumptive eligibility will be extended based on certain non-income-based criteria as follows: homelessness; mental incapacitation with no one to act on the patient\u2019s behalf; enrollment in Medicaid of patient or a child in their household; enrollment in another means-tested public assistance program",
-     "source_id": "fap-b044ddbbd1563c3a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "presumptive": null,
     "state_programs": null
    },
    "apply": {
-    "form_url": {
-     "value": "https://www.novanthealth.org/globalassets/buttons-and-documents-ctaslinks/documents-pdfs/faa_app_english.pdf",
-     "layer": "documented",
-     "quote": "Mail Completed Application to: Novant Health, ATTN: Financial Assistance, PO BOX 11549, Winston Salem, NC 27116",
-     "source_id": "fap-ca5263cb0798e7ad",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "form_url": null,
     "form_version": null,
-    "documents_required": {
-     "value": [
-      "other",
-      "pay_stubs",
-      "tax_return",
-      "proof_of_income"
-     ],
-     "layer": "documented",
-     "quote": "Supporting data includes proof of income documents such as W2 forms, pay stubs or the previous year\u2019s tax return.",
-     "source_id": "fap-b044ddbbd1563c3a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "documents_required": null,
     "documents_reported": null,
-    "submit_methods": {
-     "value": [
-      {
-       "kind": "mail",
-       "detail": "Novant Health, ATTN: Financial Assistance, PO BOX 11549, Winston Salem, NC 27116"
-      },
-      {
-       "kind": "portal",
-       "detail": "For NC patients, you can apply for financial assistance by signing into your MyChart account and completing the application."
-      }
-     ],
-     "layer": "documented",
-     "quote": "By Mail Download PDF and send us your completed application along with the supporting documents to: Novant Health ATTN: Financial Assistance PO BOX 11549 Winston Salem, NC 27116",
-     "source_id": "web-55be9ae28f582abc",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "window_days_from_first_bill": {
-     "value": 240,
-     "layer": "documented",
-     "quote": "Application Period - the period that begins on the date the care is provided to an individual and ends on the 240th day after the individual is provided with the first billing statement for the care.",
-     "source_id": "fap-b044ddbbd1563c3a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "submit_methods": null,
+    "window_days_from_first_bill": null,
     "decision_days": null,
     "decision_days_reported": null
    },
@@ -6457,28 +5947,9 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": {
-     "value": "(910) 667-7050",
-     "layer": "documented",
-     "quote": "Novant Health New Hanover Regional Medical Center Novant Health Scotts Hill Medical Center Novant Health Pender Medical Center (910) 667-7050",
-     "source_id": "fap-b044ddbbd1563c3a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "phone": null,
     "hours": null,
-    "languages": {
-     "value": [
-      "English",
-      "Spanish"
-     ],
-     "layer": "documented",
-     "quote": "Applications are available in English and Spanish.",
-     "source_id": "fap-b044ddbbd1563c3a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "languages": null
    },
    "coverage": {
     "facilities": null,
@@ -6518,34 +5989,73 @@
    "eve_review": [],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 3,
+    "sources_fetched": 0,
     "sources_total": 3,
-    "sources_missing": [],
-    "accepted": [
-     "eligibility.free_care_max_fpl",
-     "eligibility.discount_tiers",
-     "eligibility.residency",
-     "eligibility.insured_patients_covered",
-     "programs.presumptive",
-     "apply.form_url",
-     "apply.documents_required",
-     "apply.submit_methods",
-     "apply.window_days_from_first_bill",
-     "contacts.phone",
-     "contacts.languages"
+    "sources_missing": [
+     "https://www.novanthealth.org/globalassets/buttons-and-documents-ctaslinks/documents-pdfs/policy-nc-hospitals-financial-assistance.pdf",
+     "https://www.novanthealth.org/globalassets/buttons-and-documents-ctaslinks/documents-pdfs/faa_app_english.pdf",
+     "https://www.novanthealth.org/for-patients/billing--insurance/financial-assistance/"
     ],
+    "sha256_match": {
+     "fap-b044ddbbd1563c3a": null,
+     "fap-ca5263cb0798e7ad": null,
+     "web-55be9ae28f582abc": null
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
+    "accepted": [],
     "rejected": [
      [
+      "eligibility.free_care_max_fpl",
+      "source text missing"
+     ],
+     [
+      "eligibility.discount_tiers",
+      "source text missing"
+     ],
+     [
       "eligibility.assistance_ceiling_fpl",
-      "quote does not state the ceiling as a percentage of the poverty level"
+      "source text missing"
+     ],
+     [
+      "eligibility.residency",
+      "source text missing"
+     ],
+     [
+      "eligibility.insured_patients_covered",
+      "source text missing"
+     ],
+     [
+      "programs.presumptive",
+      "source text missing"
+     ],
+     [
+      "apply.form_url",
+      "source text missing"
+     ],
+     [
+      "apply.documents_required",
+      "source text missing"
+     ],
+     [
+      "apply.submit_methods",
+      "source text missing"
+     ],
+     [
+      "apply.window_days_from_first_bill",
+      "source text missing"
+     ],
+     [
+      "contacts.phone",
+      "source text missing"
+     ],
+     [
+      "contacts.languages",
+      "source text missing"
      ]
     ],
-    "pruned": [
-     "programs.presumptive: 2 items not named in the trimmed quote",
-     "apply.submit_methods: 2 items not named in the trimmed quote"
-    ],
-    "income_rule_verified": true,
-    "core_completeness": 1.0
+    "pruned": [],
+    "income_rule_verified": false,
+    "core_completeness": 0.0
    }
   },
   {
@@ -6563,127 +6073,26 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": {
-     "value": "200",
-     "layer": "documented",
-     "quote": "Income below 200% of FPL: 100% discount.",
-     "source_id": "fap-b044ddbbd1563c3a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "discount_tiers": {
-     "value": [
-      {
-       "min_fpl_exclusive": "200",
-       "max_fpl_inclusive": "250",
-       "discount_percent": 75
-      },
-      {
-       "min_fpl_exclusive": "250",
-       "max_fpl_inclusive": "300",
-       "discount_percent": 50
-      }
-     ],
-     "layer": "documented",
-     "quote": "Income between 200%-250% of FPL: 75% discount. Income between 250%-300% FPL: 50% discount.",
-     "source_id": "fap-b044ddbbd1563c3a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "free_care_max_fpl": null,
+    "discount_tiers": null,
     "assistance_ceiling_fpl": null,
     "asset_test": null,
-    "residency": {
-     "value": [
-      "All North Carolina residents and non-North Carolina residents within a Novant Health Service Area are eligible to apply for Financial Assistance."
-     ],
-     "layer": "documented",
-     "quote": "All North Carolina residents and non-North Carolina residents within a Novant Health Service Area (see attached) are eligible to apply for Financial Assistance",
-     "source_id": "fap-b044ddbbd1563c3a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "insured_patients_covered": {
-     "value": true,
-     "layer": "documented",
-     "quote": "Insured patients meeting the requirements above and any insured patients presumed to be eligible to receive Financial Assistance under this Policy will obtain a discount on the applicable patient responsibility",
-     "source_id": "fap-b044ddbbd1563c3a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "residency": null,
+    "insured_patients_covered": null,
     "min_balance": null,
     "services_excluded": null
    },
    "programs": {
-    "presumptive": {
-     "value": [
-      "homelessness",
-      "enrollment in another means-tested public assistance program"
-     ],
-     "layer": "documented",
-     "quote": "Presumptive eligibility will be extended based on certain non-income-based criteria as follows: homelessness; mental incapacitation with no one to act on the patient\u2019s behalf; enrollment in Medicaid of patient or a child in their household; enrollment in another means-tested public assistance program",
-     "source_id": "fap-b044ddbbd1563c3a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "presumptive": null,
     "state_programs": null
    },
    "apply": {
-    "form_url": {
-     "value": "https://www.novanthealth.org/for-patients/billing--insurance/financial-assistance/",
-     "layer": "documented",
-     "quote": "Download PDF and send us your completed application along with the supporting documents to:",
-     "source_id": "web-8d553cdfe2207a9d",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "form_url": null,
     "form_version": null,
-    "documents_required": {
-     "value": [
-      "pay_stubs",
-      "tax_return",
-      "other"
-     ],
-     "layer": "documented",
-     "quote": "Supporting data includes proof of income documents such as W2 forms, pay stubs or the previous year\u2019s tax return.",
-     "source_id": "fap-b044ddbbd1563c3a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "documents_required": null,
     "documents_reported": null,
-    "submit_methods": {
-     "value": [
-      {
-       "kind": "mail",
-       "detail": "Novant Health, ATTN: Financial Assistance, PO BOX 11549, Winston Salem, NC 27116"
-      },
-      {
-       "kind": "portal",
-       "detail": "For NC patients, you can apply for financial assistance by signing into your MyChart account and completing the application."
-      }
-     ],
-     "layer": "documented",
-     "quote": "By Mail Download PDF and send us your completed application along with the supporting documents to:",
-     "source_id": "web-8d553cdfe2207a9d",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "window_days_from_first_bill": {
-     "value": 240,
-     "layer": "documented",
-     "quote": "Application Period - the period that begins on the date the care is provided to an individual and ends on the 240th day after the individual is provided with the first billing statement for the care.",
-     "source_id": "fap-b044ddbbd1563c3a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "submit_methods": null,
+    "window_days_from_first_bill": null,
     "decision_days": null,
     "decision_days_reported": null
    },
@@ -6692,42 +6101,9 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": {
-     "value": "(704) 384-0539",
-     "layer": "documented",
-     "quote": "Novant Health Presbyterian Medical Center Novant Health Matthews Medical Center Novant Health Huntersville Medical Center Novant Health Charlotte Orthopedic Hospital Novant Health Rowan Medical Center Novant Health Mint Hill Medical Center Novant Health Brunswick Medical Center Novant Health Ballantyne Medical Center (704) 384-0539",
-     "source_id": "fap-b044ddbbd1563c3a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "phone": null,
     "hours": null,
-    "languages": {
-     "value": [
-      "English",
-      "Spanish",
-      "Amharic",
-      "Arabic",
-      "Chinese",
-      "French",
-      "German",
-      "Greek",
-      "Hindi",
-      "Italian",
-      "Japanese",
-      "Portuguese",
-      "Russian",
-      "Swahili",
-      "Urdu",
-      "Vietnamese"
-     ],
-     "layer": "documented",
-     "quote": "Documents are available in other preferred languages in PDF format: Amharic | Arabic | Chinese | French | German | Greek | Hindi | Italian | Japanese | Portuguese | Russian | Swahili | Urdu | Vietnamese",
-     "source_id": "web-8d553cdfe2207a9d",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "languages": null
    },
    "coverage": {
     "facilities": null,
@@ -6767,35 +6143,73 @@
    "eve_review": [],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 3,
+    "sources_fetched": 0,
     "sources_total": 3,
-    "sources_missing": [],
-    "accepted": [
-     "eligibility.free_care_max_fpl",
-     "eligibility.discount_tiers",
-     "eligibility.residency",
-     "eligibility.insured_patients_covered",
-     "programs.presumptive",
-     "apply.form_url",
-     "apply.documents_required",
-     "apply.submit_methods",
-     "apply.window_days_from_first_bill",
-     "contacts.phone",
-     "contacts.languages"
+    "sources_missing": [
+     "https://www.novanthealth.org/globalassets/buttons-and-documents-ctaslinks/documents-pdfs/policy-nc-hospitals-financial-assistance.pdf",
+     "https://www.novanthealth.org/for-patients/billing--insurance/financial-assistance/",
+     "https://www.novanthealth.org/locations/medical-centers/matthews-medical-center/your-visit/patients/"
     ],
+    "sha256_match": {
+     "fap-b044ddbbd1563c3a": null,
+     "web-8d553cdfe2207a9d": null,
+     "web-cfbde71ea491422e": null
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
+    "accepted": [],
     "rejected": [
      [
+      "eligibility.free_care_max_fpl",
+      "source text missing"
+     ],
+     [
+      "eligibility.discount_tiers",
+      "source text missing"
+     ],
+     [
       "eligibility.assistance_ceiling_fpl",
-      "quote does not state the ceiling as a percentage of the poverty level"
+      "source text missing"
+     ],
+     [
+      "eligibility.residency",
+      "source text missing"
+     ],
+     [
+      "eligibility.insured_patients_covered",
+      "source text missing"
+     ],
+     [
+      "programs.presumptive",
+      "source text missing"
+     ],
+     [
+      "apply.form_url",
+      "source text missing"
+     ],
+     [
+      "apply.documents_required",
+      "source text missing"
+     ],
+     [
+      "apply.submit_methods",
+      "source text missing"
+     ],
+     [
+      "apply.window_days_from_first_bill",
+      "source text missing"
+     ],
+     [
+      "contacts.phone",
+      "source text missing"
+     ],
+     [
+      "contacts.languages",
+      "source text missing"
      ]
     ],
-    "pruned": [
-     "programs.presumptive: 2 items not named in the trimmed quote",
-     "apply.documents_required: 1 item not named in the trimmed quote",
-     "apply.submit_methods: 2 items not named in the trimmed quote"
-    ],
-    "income_rule_verified": true,
-    "core_completeness": 1.0
+    "pruned": [],
+    "income_rule_verified": false,
+    "core_completeness": 0.0
    }
   },
   {
@@ -6822,8 +6236,8 @@
       "The applicant must be a North Carolina resident (the criteria for determining residency is attached as Appendix A to this policy)"
      ],
      "layer": "documented",
-     "quote": "The applicant must be a North Carolina resident (the criteria for determining residency is attached as Appendix A to this policy);",
-     "source_id": "fap-30675af61112eeaa",
+     "quote": "The applicant must be a North Carolina resident (the criteria for determining residency is attached as Appendix A to this policy)",
+     "source_id": "fap-9c30bd920d9996d1",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -6837,24 +6251,15 @@
     "state_programs": null
    },
    "apply": {
-    "form_url": {
-     "value": "https://www.wakemed.org/patients-and-visitors/billing-and-insurance/financial-assistance",
-     "layer": "documented",
-     "quote": "Financial Assistance Application & Instructions (.pdf)",
-     "source_id": "web-a5329620862f0341",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "form_url": null,
     "form_version": null,
     "documents_required": {
      "value": [
-      "tax_return",
-      "pay_stubs"
+      "tax_return"
      ],
      "layer": "documented",
-     "quote": "A copy of the most recent tax return (to include all copies of applicable forms, schedules, and required attachments); 2. Most recent pay stub(s) that show work history for the past 4 weeks;",
-     "source_id": "fap-30675af61112eeaa",
+     "quote": "1. A copy of the most recent tax return (to include all copies of applicable forms, schedules, and required attachments);",
+     "source_id": "fap-9c30bd920d9996d1",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -6864,7 +6269,7 @@
      "value": [
       {
        "kind": "mail",
-       "detail": "WakeMed, PO Box 14465, Raleigh, NC 27620-4465"
+       "detail": "Mail Documentation to: WakeMed PO Box 14465 Raleigh, NC 27620-4465"
       }
      ],
      "layer": "documented",
@@ -6878,7 +6283,7 @@
      "value": 240,
      "layer": "documented",
      "quote": "Completed financial assistance applications must be received within two hundred forty (240) days of the date on the first post-discharge billing statement sent by WakeMed",
-     "source_id": "fap-30675af61112eeaa",
+     "source_id": "fap-9c30bd920d9996d1",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -6895,7 +6300,7 @@
      "value": "(919) 350-8359",
      "layer": "documented",
      "quote": "WakeMed\u2019s customer service representatives are available during regular business hours at (919) 350-8359 to provide information about the policy and assist with application questions.",
-     "source_id": "fap-30675af61112eeaa",
+     "source_id": "fap-9c30bd920d9996d1",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -6904,7 +6309,7 @@
      "value": "regular business hours",
      "layer": "documented",
      "quote": "WakeMed\u2019s customer service representatives are available during regular business hours at (919) 350-8359",
-     "source_id": "fap-30675af61112eeaa",
+     "source_id": "fap-9c30bd920d9996d1",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -6915,8 +6320,8 @@
       "Spanish"
      ],
      "layer": "documented",
-     "quote": "where they are accessible to view and print in English and Spanish.",
-     "source_id": "fap-30675af61112eeaa",
+     "quote": "accessible to view and print in English and Spanish",
+     "source_id": "fap-9c30bd920d9996d1",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -6929,18 +6334,18 @@
    },
    "sources": [
     {
-     "id": "fap-30675af61112eeaa",
+     "id": "fap-9c30bd920d9996d1",
      "kind": "hospital_web",
-     "url": "https://www.wakemed.org/sites/default/files/pdf/Financial-Assistance/FAENGLISH2026.pdf",
+     "url": "https://www.wakemed.org/sites/default/files/2024-11/FinancialAssistance%20Policy.pdf",
      "title": "",
      "fetched_on": "2026-10-23",
-     "sha256": "30675af61112eeaa5516949bd238dff63e769f71ae7bdfbd821a1d04face72ce",
+     "sha256": "9c30bd920d9996d1d46d41f6ccd61075f12751de590b932a82057f97305c70b3",
      "effective_date": null
     },
     {
      "id": "fap-8e5ed1463ed14653",
      "kind": "hospital_web",
-     "url": "https://www.wakemed.org/sites/default/files/pdf/Financial-Assistance/English%20Financial%20Assistance%20Application_0.pdf",
+     "url": "https://www.wakemed.org/sites/default/files/pdf/Financial-Assistance/English%20Financial%20Assistance%20Application.pdf",
      "title": "",
      "fetched_on": "2026-10-23",
      "sha256": "8e5ed1463ed14653733ce6ca2925501ea5ea51f2bc3d392fcb788b1ae3e97d4e",
@@ -6958,17 +6363,27 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 0-300% at 100% is the free-care band, not a tier; skipped",
-    "agent dropped collections.eca_wait_days: quote is not a substring of the source"
+    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: Enrollment in Medicaid of patient or a child in their household; iv. Women, Infants and Children (WIC) program; v. SNAP ",
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: 2. Most recent pay stub(s) that show work history for the past 4 weeks; | 4. Proof of the following (as applicable): a. Permanent residency (as outlined in Appendix A); b. Disability; c. Medicai",
+    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Email: FinancialAssistance@wakemed.org Phone: (919) 350-8359 Fax: (919) 350-6968",
+    "agent dropped collections.eca_wait_days: quote is not a substring of the source",
+    "agent judge on eligibility.free_care_max_fpl: Quote is a fragment of a table ('300% Discount 100% Discount'). It does not state that 100% free care applies up to 100% FPL.",
+    "agent judge on eligibility.assistance_ceiling_fpl: Quote says patients above 300% FPL may be eligible for catastrophic assistance, so assistance is offered above 300%, not cut off there.",
+    "agent judge on apply.submit_methods: Quote gives mail, email, and fax only. The in_person entry with the Raleigh and Cary street addresses does not appear in the quote."
    ],
    "eve_verified": {
     "on": "2026-10-23",
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-9c30bd920d9996d1": true,
+     "fap-8e5ed1463ed14653": true,
+     "web-a5329620862f0341": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.residency",
-     "apply.form_url",
      "apply.documents_required",
      "apply.submit_methods",
      "apply.window_days_from_first_bill",
@@ -6978,25 +6393,29 @@
     ],
     "rejected": [
      [
+      "eligibility.free_care_max_fpl",
+      "quote does not state the free-care limit as an income limit"
+     ],
+     [
       "eligibility.assistance_ceiling_fpl",
-      "quote does not say the hospital's financial assistance reaches it"
+      "quote states the percentage as a floor (above, over, at least), not a ceiling"
      ],
      [
       "eligibility.asset_test",
       "quote does not support the asset-test value"
      ],
      [
-      "eligibility.insured_patients_covered",
-      "quote does not say whether insured patients are covered"
+      "apply.form_url",
+      "quote not found in source"
      ]
     ],
     "pruned": [
-     "programs.presumptive: none of the listed programs is named in the quote (after trimming)",
-     "apply.documents_required: 2 items not named in the trimmed quote",
-     "apply.submit_methods: 4 items not named in the trimmed quote"
+     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
+     "apply.documents_required: 4 items not named in the trimmed quote",
+     "apply.submit_methods: 3 items not named in the trimmed quote"
     ],
     "income_rule_verified": false,
-    "core_completeness": 0.67
+    "core_completeness": 0.5
    }
   },
   {
@@ -7014,119 +6433,26 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": {
-     "value": "200",
-     "layer": "documented",
-     "quote": "Income below 200% of FPL: 100% discount.",
-     "source_id": "fap-b044ddbbd1563c3a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "discount_tiers": {
-     "value": [
-      {
-       "min_fpl_exclusive": "200",
-       "max_fpl_inclusive": "250",
-       "discount_percent": 75
-      },
-      {
-       "min_fpl_exclusive": "250",
-       "max_fpl_inclusive": "300",
-       "discount_percent": 50
-      }
-     ],
-     "layer": "documented",
-     "quote": "Income between 200%-250% of FPL: 75% discount. Income between 250%-300% FPL: 50% discount.",
-     "source_id": "fap-b044ddbbd1563c3a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "free_care_max_fpl": null,
+    "discount_tiers": null,
     "assistance_ceiling_fpl": null,
     "asset_test": null,
-    "residency": {
-     "value": [
-      "All North Carolina residents and non-North Carolina residents within a Novant Health Service Area are eligible to apply for Financial Assistance."
-     ],
-     "layer": "documented",
-     "quote": "All North Carolina residents and non-North Carolina residents within a Novant Health Service Area (see attached) are eligible to apply for Financial Assistance",
-     "source_id": "fap-b044ddbbd1563c3a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "insured_patients_covered": {
-     "value": true,
-     "layer": "documented",
-     "quote": "Insured patients meeting the requirements above and any insured patients presumed to be eligible to receive Financial Assistance under this Policy will obtain a discount on the applicable patient responsibility",
-     "source_id": "fap-b044ddbbd1563c3a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "residency": null,
+    "insured_patients_covered": null,
     "min_balance": null,
     "services_excluded": null
    },
    "programs": {
-    "presumptive": {
-     "value": [
-      "homelessness",
-      "enrollment in another means-tested public assistance program"
-     ],
-     "layer": "documented",
-     "quote": "Presumptive eligibility will be extended based on certain non-income-based criteria as follows: homelessness; mental incapacitation with no one to act on the patient\u2019s behalf; enrollment in Medicaid of patient or a child in their household; enrollment in another means-tested public assistance program",
-     "source_id": "fap-b044ddbbd1563c3a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "presumptive": null,
     "state_programs": null
    },
    "apply": {
     "form_url": null,
     "form_version": null,
-    "documents_required": {
-     "value": [
-      "pay_stubs",
-      "tax_return",
-      "other"
-     ],
-     "layer": "documented",
-     "quote": "Supporting data includes proof of income documents such as W2 forms, pay stubs or the previous year\u2019s tax return.",
-     "source_id": "fap-b044ddbbd1563c3a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "documents_required": null,
     "documents_reported": null,
-    "submit_methods": {
-     "value": [
-      {
-       "kind": "mail",
-       "detail": "Novant Health, ATTN: Financial Assistance, PO BOX 11549, Winston Salem, NC 27116"
-      },
-      {
-       "kind": "portal",
-       "detail": "For NC patients, you can apply for financial assistance by signing into your MyChart account and completing the application."
-      }
-     ],
-     "layer": "documented",
-     "quote": "By Mail Download PDF and send us your completed application along with the supporting documents to: Novant Health ATTN: Financial Assistance PO BOX 11549 Winston Salem, NC 27116",
-     "source_id": "web-0949982f29b01191",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "window_days_from_first_bill": {
-     "value": 240,
-     "layer": "documented",
-     "quote": "ends on the 240th day after the individual is provided with the first billing statement for the care",
-     "source_id": "fap-b044ddbbd1563c3a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "submit_methods": null,
+    "window_days_from_first_bill": null,
     "decision_days": null,
     "decision_days_reported": null
    },
@@ -7135,42 +6461,9 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": {
-     "value": "(704) 384-0539",
-     "layer": "documented",
-     "quote": "Novant Health Presbyterian Medical Center Novant Health Matthews Medical Center Novant Health Huntersville Medical Center Novant Health Charlotte Orthopedic Hospital Novant Health Rowan Medical Center Novant Health Mint Hill Medical Center Novant Health Brunswick Medical Center Novant Health Ballantyne Medical Center (704) 384-0539",
-     "source_id": "fap-b044ddbbd1563c3a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "phone": null,
     "hours": null,
-    "languages": {
-     "value": [
-      "English",
-      "Spanish",
-      "Amharic",
-      "Arabic",
-      "Chinese",
-      "French",
-      "German",
-      "Greek",
-      "Hindi",
-      "Italian",
-      "Japanese",
-      "Portuguese",
-      "Russian",
-      "Swahili",
-      "Urdu",
-      "Vietnamese"
-     ],
-     "layer": "documented",
-     "quote": "Amharic | Arabic | Chinese | French | German | Greek | Hindi | Italian | Japanese | Portuguese | Russian | Swahili | Urdu | Vietnamese",
-     "source_id": "web-0949982f29b01191",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "languages": null
    },
    "coverage": {
     "facilities": null,
@@ -7203,34 +6496,67 @@
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 2,
+    "sources_fetched": 0,
     "sources_total": 2,
-    "sources_missing": [],
-    "accepted": [
-     "eligibility.free_care_max_fpl",
-     "eligibility.discount_tiers",
-     "eligibility.residency",
-     "eligibility.insured_patients_covered",
-     "programs.presumptive",
-     "apply.documents_required",
-     "apply.submit_methods",
-     "apply.window_days_from_first_bill",
-     "contacts.phone",
-     "contacts.languages"
+    "sources_missing": [
+     "https://www.novanthealth.org/globalassets/buttons-and-documents-ctaslinks/documents-pdfs/policy-nc-hospitals-financial-assistance.pdf",
+     "https://www.novanthealth.org/for-patients/billing--insurance/financial-assistance/"
     ],
+    "sha256_match": {
+     "fap-b044ddbbd1563c3a": null,
+     "web-0949982f29b01191": null
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
+    "accepted": [],
     "rejected": [
      [
+      "eligibility.free_care_max_fpl",
+      "source text missing"
+     ],
+     [
+      "eligibility.discount_tiers",
+      "source text missing"
+     ],
+     [
       "eligibility.assistance_ceiling_fpl",
-      "quote does not state the ceiling as a percentage of the poverty level"
+      "source text missing"
+     ],
+     [
+      "eligibility.residency",
+      "source text missing"
+     ],
+     [
+      "eligibility.insured_patients_covered",
+      "source text missing"
+     ],
+     [
+      "programs.presumptive",
+      "source text missing"
+     ],
+     [
+      "apply.documents_required",
+      "source text missing"
+     ],
+     [
+      "apply.submit_methods",
+      "source text missing"
+     ],
+     [
+      "apply.window_days_from_first_bill",
+      "source text missing"
+     ],
+     [
+      "contacts.phone",
+      "source text missing"
+     ],
+     [
+      "contacts.languages",
+      "source text missing"
      ]
     ],
-    "pruned": [
-     "programs.presumptive: 2 items not named in the trimmed quote",
-     "apply.documents_required: 1 item not named in the trimmed quote",
-     "apply.submit_methods: 2 items not named in the trimmed quote"
-    ],
-    "income_rule_verified": true,
-    "core_completeness": 0.83
+    "pruned": [],
+    "income_rule_verified": false,
+    "core_completeness": 0.0
    }
   },
   {
@@ -7370,6 +6696,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-dcd1ac5a6c7aa5c1": true,
+     "fap-65aed559dda6fe3e": true,
+     "web-d2c67f8bfff0fbae": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "apply.documents_required",
@@ -7414,127 +6746,26 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": {
-     "value": "200",
-     "layer": "documented",
-     "quote": "Income below 200% of FPL: 100% discount.",
-     "source_id": "fap-b044ddbbd1563c3a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "discount_tiers": {
-     "value": [
-      {
-       "min_fpl_exclusive": "200",
-       "max_fpl_inclusive": "250",
-       "discount_percent": 75
-      },
-      {
-       "min_fpl_exclusive": "250",
-       "max_fpl_inclusive": "300",
-       "discount_percent": 50
-      }
-     ],
-     "layer": "documented",
-     "quote": "Income between 200%-250% of FPL: 75% discount. Income between 250%-300% FPL: 50% discount.",
-     "source_id": "fap-b044ddbbd1563c3a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "free_care_max_fpl": null,
+    "discount_tiers": null,
     "assistance_ceiling_fpl": null,
     "asset_test": null,
-    "residency": {
-     "value": [
-      "All North Carolina residents and non-North Carolina residents within a Novant Health Service Area are eligible to apply for Financial Assistance."
-     ],
-     "layer": "documented",
-     "quote": "All North Carolina residents and non-North Carolina residents within a Novant Health Service Area (see attached) are eligible to apply for Financial Assistance, as defined in this Policy.",
-     "source_id": "fap-b044ddbbd1563c3a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "insured_patients_covered": {
-     "value": true,
-     "layer": "documented",
-     "quote": "Insured patients meeting the requirements above and any insured patients presumed to be eligible to receive Financial Assistance under this Policy will obtain a discount on the applicable patient responsibility (minus copays)",
-     "source_id": "fap-b044ddbbd1563c3a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "residency": null,
+    "insured_patients_covered": null,
     "min_balance": null,
     "services_excluded": null
    },
    "programs": {
-    "presumptive": {
-     "value": [
-      "homelessness"
-     ],
-     "layer": "documented",
-     "quote": "Presumptive eligibility will be extended based on certain non-income-based criteria as follows: homelessness; mental incapacitation with no one to act on the patient\u2019s behalf; enrollment in Medicaid of patient or a child in their household; enrollment in another means-tested public assistance program",
-     "source_id": "fap-b044ddbbd1563c3a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "presumptive": null,
     "state_programs": null
    },
    "apply": {
-    "form_url": {
-     "value": "https://www.novanthealth.org/globalassets/buttons-and-documents-ctaslinks/documents-pdfs/faa_app_english.pdf",
-     "layer": "documented",
-     "quote": "Mail Completed Application to: Novant Health, ATTN: Financial Assistance, PO BOX 11549, Winston Salem, NC 27116",
-     "source_id": "fap-ca5263cb0798e7ad",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "form_url": null,
     "form_version": null,
-    "documents_required": {
-     "value": [
-      "other",
-      "pay_stubs",
-      "tax_return",
-      "proof_of_income"
-     ],
-     "layer": "documented",
-     "quote": "Supporting data includes proof of income documents such as W2 forms, pay stubs or the previous year\u2019s tax return.",
-     "source_id": "fap-b044ddbbd1563c3a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "documents_required": null,
     "documents_reported": null,
-    "submit_methods": {
-     "value": [
-      {
-       "kind": "mail",
-       "detail": "Novant Health, ATTN: Financial Assistance, PO BOX 11549, Winston Salem, NC 27116"
-      },
-      {
-       "kind": "portal",
-       "detail": "For NC patients, you can apply for financial assistance by signing into your MyChart account and completing the application."
-      }
-     ],
-     "layer": "documented",
-     "quote": "Download PDF and send us your completed application along with the supporting documents to: Novant Health ATTN: Financial Assistance PO BOX 11549 Winston Salem, NC 27116",
-     "source_id": "web-93f017187bf975dc",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "window_days_from_first_bill": {
-     "value": 240,
-     "layer": "documented",
-     "quote": "Application Period - the period that begins on the date the care is provided to an individual and ends on the 240th day after the individual is provided with the first billing statement for the care.",
-     "source_id": "fap-b044ddbbd1563c3a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "submit_methods": null,
+    "window_days_from_first_bill": null,
     "decision_days": null,
     "decision_days_reported": null
    },
@@ -7543,28 +6774,9 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": {
-     "value": "(704) 384-0539",
-     "layer": "documented",
-     "quote": "Novant Health Mint Hill Medical Center Novant Health Brunswick Medical Center Novant Health Ballantyne Medical Center (704) 384-0539",
-     "source_id": "fap-b044ddbbd1563c3a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "phone": null,
     "hours": null,
-    "languages": {
-     "value": [
-      "English",
-      "Spanish"
-     ],
-     "layer": "documented",
-     "quote": "Applications are available in English and Spanish.",
-     "source_id": "fap-b044ddbbd1563c3a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "languages": null
    },
    "coverage": {
     "facilities": null,
@@ -7604,34 +6816,73 @@
    "eve_review": [],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 3,
+    "sources_fetched": 0,
     "sources_total": 3,
-    "sources_missing": [],
-    "accepted": [
-     "eligibility.free_care_max_fpl",
-     "eligibility.discount_tiers",
-     "eligibility.residency",
-     "eligibility.insured_patients_covered",
-     "programs.presumptive",
-     "apply.form_url",
-     "apply.documents_required",
-     "apply.submit_methods",
-     "apply.window_days_from_first_bill",
-     "contacts.phone",
-     "contacts.languages"
+    "sources_missing": [
+     "https://www.novanthealth.org/globalassets/buttons-and-documents-ctaslinks/documents-pdfs/policy-nc-hospitals-financial-assistance.pdf",
+     "https://www.novanthealth.org/globalassets/buttons-and-documents-ctaslinks/documents-pdfs/faa_app_english.pdf",
+     "https://www.novanthealth.org/for-patients/billing--insurance/financial-assistance/"
     ],
+    "sha256_match": {
+     "fap-b044ddbbd1563c3a": null,
+     "fap-ca5263cb0798e7ad": null,
+     "web-93f017187bf975dc": null
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
+    "accepted": [],
     "rejected": [
      [
+      "eligibility.free_care_max_fpl",
+      "source text missing"
+     ],
+     [
+      "eligibility.discount_tiers",
+      "source text missing"
+     ],
+     [
       "eligibility.assistance_ceiling_fpl",
-      "quote does not state the ceiling as a percentage of the poverty level"
+      "source text missing"
+     ],
+     [
+      "eligibility.residency",
+      "source text missing"
+     ],
+     [
+      "eligibility.insured_patients_covered",
+      "source text missing"
+     ],
+     [
+      "programs.presumptive",
+      "source text missing"
+     ],
+     [
+      "apply.form_url",
+      "source text missing"
+     ],
+     [
+      "apply.documents_required",
+      "source text missing"
+     ],
+     [
+      "apply.submit_methods",
+      "source text missing"
+     ],
+     [
+      "apply.window_days_from_first_bill",
+      "source text missing"
+     ],
+     [
+      "contacts.phone",
+      "source text missing"
+     ],
+     [
+      "contacts.languages",
+      "source text missing"
      ]
     ],
-    "pruned": [
-     "programs.presumptive: 3 items not named in the trimmed quote",
-     "apply.submit_methods: 2 items not named in the trimmed quote"
-    ],
-    "income_rule_verified": true,
-    "core_completeness": 1.0
+    "pruned": [],
+    "income_rule_verified": false,
+    "core_completeness": 0.0
    }
   },
   {
@@ -7649,114 +6900,26 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": {
-     "value": "200",
-     "layer": "documented",
-     "quote": "Income below 200% of FPL: 100% discount.",
-     "source_id": "fap-b044ddbbd1563c3a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "discount_tiers": {
-     "value": [
-      {
-       "min_fpl_exclusive": "200",
-       "max_fpl_inclusive": "250",
-       "discount_percent": 75
-      },
-      {
-       "min_fpl_exclusive": "250",
-       "max_fpl_inclusive": "300",
-       "discount_percent": 50
-      }
-     ],
-     "layer": "documented",
-     "quote": "Income between 200%-250% of FPL: 75% discount. Income between 250%-300% FPL: 50% discount.",
-     "source_id": "fap-b044ddbbd1563c3a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "free_care_max_fpl": null,
+    "discount_tiers": null,
     "assistance_ceiling_fpl": null,
     "asset_test": null,
-    "residency": {
-     "value": [
-      "All North Carolina residents and non-North Carolina residents within a Novant Health Service Area are eligible to apply for Financial Assistance."
-     ],
-     "layer": "documented",
-     "quote": "All North Carolina residents and non-North Carolina residents within a Novant Health Service Area (see attached) are eligible to apply for Financial Assistance, as defined in this Policy.",
-     "source_id": "fap-b044ddbbd1563c3a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "insured_patients_covered": {
-     "value": true,
-     "layer": "documented",
-     "quote": "Insured patients meeting the requirements above and any insured patients presumed to be eligible to receive Financial Assistance under this Policy will obtain a discount on the applicable patient responsibility",
-     "source_id": "fap-b044ddbbd1563c3a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "residency": null,
+    "insured_patients_covered": null,
     "min_balance": null,
     "services_excluded": null
    },
    "programs": {
-    "presumptive": {
-     "value": [
-      "homelessness"
-     ],
-     "layer": "documented",
-     "quote": "Presumptive eligibility will be extended based on certain non-income-based criteria as follows: homelessness; mental incapacitation with no one to act on the patient\u2019s behalf; enrollment in Medicaid of patient or a child in their household; enrollment in another means-tested public assistance program",
-     "source_id": "fap-b044ddbbd1563c3a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "presumptive": null,
     "state_programs": null
    },
    "apply": {
     "form_url": null,
     "form_version": null,
-    "documents_required": {
-     "value": [
-      "pay_stubs",
-      "tax_return",
-      "other"
-     ],
-     "layer": "documented",
-     "quote": "Supporting data includes proof of income documents such as W2 forms, pay stubs or the previous year\u2019s tax return.",
-     "source_id": "fap-b044ddbbd1563c3a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "documents_required": null,
     "documents_reported": null,
-    "submit_methods": {
-     "value": [
-      {
-       "kind": "mail",
-       "detail": "Novant Health, ATTN: Financial Assistance, PO BOX 11549, Winston Salem, NC 27116"
-      }
-     ],
-     "layer": "documented",
-     "quote": "Mail Completed Application to: Novant Health, ATTN: Financial Assistance, PO BOX 11549, Winston Salem, NC 27116",
-     "source_id": "fap-ca5263cb0798e7ad",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "window_days_from_first_bill": {
-     "value": 240,
-     "layer": "documented",
-     "quote": "Application Period - the period that begins on the date the care is provided to an individual and ends on the 240th day after the individual is provided with the first billing statement for the care.",
-     "source_id": "fap-b044ddbbd1563c3a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "submit_methods": null,
+    "window_days_from_first_bill": null,
     "decision_days": null,
     "decision_days_reported": null
    },
@@ -7765,28 +6928,9 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": {
-     "value": "(704) 384-0539",
-     "layer": "documented",
-     "quote": "Novant Health Ballantyne Medical Center (704) 384-0539",
-     "source_id": "fap-b044ddbbd1563c3a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "phone": null,
     "hours": null,
-    "languages": {
-     "value": [
-      "English",
-      "Spanish"
-     ],
-     "layer": "documented",
-     "quote": "Applications are available in English and Spanish.",
-     "source_id": "fap-b044ddbbd1563c3a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "languages": null
    },
    "coverage": {
     "facilities": null,
@@ -7828,34 +6972,69 @@
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 3,
+    "sources_fetched": 0,
     "sources_total": 3,
-    "sources_missing": [],
-    "accepted": [
-     "eligibility.free_care_max_fpl",
-     "eligibility.discount_tiers",
-     "eligibility.residency",
-     "eligibility.insured_patients_covered",
-     "programs.presumptive",
-     "apply.documents_required",
-     "apply.submit_methods",
-     "apply.window_days_from_first_bill",
-     "contacts.phone",
-     "contacts.languages"
+    "sources_missing": [
+     "https://www.novanthealth.org/globalassets/buttons-and-documents-ctaslinks/documents-pdfs/policy-nc-hospitals-financial-assistance.pdf",
+     "https://www.novanthealth.org/globalassets/buttons-and-documents-ctaslinks/documents-pdfs/faa_app_english.pdf",
+     "https://www.novanthealth.org/for-patients/billing--insurance/financial-assistance/"
     ],
+    "sha256_match": {
+     "fap-b044ddbbd1563c3a": null,
+     "fap-ca5263cb0798e7ad": null,
+     "web-94d94cac17cbb599": null
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
+    "accepted": [],
     "rejected": [
      [
+      "eligibility.free_care_max_fpl",
+      "source text missing"
+     ],
+     [
+      "eligibility.discount_tiers",
+      "source text missing"
+     ],
+     [
       "eligibility.assistance_ceiling_fpl",
-      "quote does not state the ceiling as a percentage of the poverty level"
+      "source text missing"
+     ],
+     [
+      "eligibility.residency",
+      "source text missing"
+     ],
+     [
+      "eligibility.insured_patients_covered",
+      "source text missing"
+     ],
+     [
+      "programs.presumptive",
+      "source text missing"
+     ],
+     [
+      "apply.documents_required",
+      "source text missing"
+     ],
+     [
+      "apply.submit_methods",
+      "source text missing"
+     ],
+     [
+      "apply.window_days_from_first_bill",
+      "source text missing"
+     ],
+     [
+      "contacts.phone",
+      "source text missing"
+     ],
+     [
+      "contacts.languages",
+      "source text missing"
      ]
     ],
-    "pruned": [
-     "programs.presumptive: 3 items not named in the trimmed quote",
-     "apply.documents_required: 1 item not named in the trimmed quote",
-     "apply.submit_methods: 3 items not named in the trimmed quote"
-    ],
-    "income_rule_verified": true,
-    "core_completeness": 0.83
+    "pruned": [],
+    "income_rule_verified": false,
+    "core_completeness": 0.0
    }
   },
   {
@@ -8083,6 +7262,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-397b98dc222ad68d": true,
+     "web-90d7bd2178ed5fe5": false,
+     "fap-9ff767aeafa10f69": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -8243,6 +7428,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-ab65dc0af88561ae": true,
+     "fap-71fc8bfd4458608d": true,
+     "web-7f868a91b1afdf24": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "apply.decision_days",
@@ -8396,6 +7587,11 @@
     "sources_fetched": 2,
     "sources_total": 2,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-17604b377ebc8366": true,
+     "fap-2599954cd9fe1639": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.asset_test",
@@ -8556,6 +7752,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-dcd1ac5a6c7aa5c1": true,
+     "fap-65aed559dda6fe3e": true,
+     "web-d2c67f8bfff0fbae": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "apply.documents_required",
@@ -8718,6 +7920,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-356ce1d641afd492": true,
+     "web-82f15d236c324e9b": true,
+     "web-499a7c9ab687486e": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.asset_test",
@@ -8862,6 +8070,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-356ce1d641afd492": true,
+     "web-82f15d236c324e9b": true,
+     "web-0faf89faad173019": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "apply.documents_required",
@@ -9118,6 +8332,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-6f0092bd497e9cf5": true,
+     "fap-e3afbd29ec16da4d": true,
+     "web-19ed3d61bfce3faa": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -9341,6 +8561,11 @@
     "sources_fetched": 2,
     "sources_total": 2,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-17604b377ebc8366": true,
+     "fap-2599954cd9fe1639": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.asset_test",
@@ -9538,6 +8763,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-397b98dc222ad68d": true,
+     "fap-9ff767aeafa10f69": true,
+     "web-5d618ebaf21fdf4e": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.residency",
@@ -9596,17 +8827,28 @@
    "apply": {
     "form_url": null,
     "form_version": null,
-    "documents_required": null,
+    "documents_required": {
+     "value": [
+      "pay_stubs",
+      "other"
+     ],
+     "layer": "documented",
+     "quote": "The last 3 recent payroll check stubs from each company. (Please indicate whether paid weekly or bi-weekly.)",
+     "source_id": "fap-bfa9f94d082bba5e",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "documents_reported": null,
     "submit_methods": {
      "value": [
       {
        "kind": "mail",
-       "detail": "Ashe Memorial Hospital, Attn: Financial Counselor, 200 Hospital Avenue, Jefferson, NC 28640-9244"
+       "detail": "mail the original completed application and supporting documentation to the address below: Ashe Memorial Hospital Attn: Financial Counselor 200 Hospital Avenue Jefferson, NC 28640-9244"
       }
      ],
      "layer": "documented",
-     "quote": "mail the original completed application and supporting documentation to the address below: Ashe Memorial Hospital Attn: Financial Counselor 200 Hospital Avenue Jefferson, NC 28640-9244",
+     "quote": "Please keep a copy of this application and mail the original completed application and supporting documentation to the address below:",
      "source_id": "fap-bfa9f94d082bba5e",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -9639,17 +8881,7 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "languages": {
-     "value": [
-      "Spanish"
-     ],
-     "layer": "documented",
-     "quote": "Click here to view and download a financial assistance application. For a Spanish version, please click here .",
-     "source_id": "web-3220e9ac99b68cba",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "languages": null
    },
    "coverage": {
     "facilities": null,
@@ -9687,7 +8919,10 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "agent dropped apply.documents_required: excerpt not in source: v Copy of your Social Security check or bank statement if yo"
+    "eligibility.asset_test: quote matched the source only after typography normalization",
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Income tax return for the last year. | W-2 tax statement(s)",
+    "agent judge on apply.documents_required: Quote lists only recent payroll stubs, income tax return, and W-2s. The bank statement entries are not in the quote.",
+    "agent judge on apply.submit_methods: Quote supports mailing the original application and documentation, but the mailing address in the value is not stated in the quote."
    ],
    "eve_verified": {
     "on": "2026-10-23",
@@ -9696,11 +8931,17 @@
     "sources_missing": [
      "https://www.ashememorial.org/docs/AMH_NC_MDM_FA_Policy-Jan2026.pdf"
     ],
+    "sha256_match": {
+     "fap-a7cb200d19f5814e": true,
+     "fap-bfa9f94d082bba5e": true,
+     "web-3220e9ac99b68cba": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
+     "apply.documents_required",
      "apply.submit_methods",
      "contacts.phone",
-     "contacts.hours",
-     "contacts.languages"
+     "contacts.hours"
     ],
     "rejected": [
      [
@@ -9708,9 +8949,11 @@
       "quote does not support the asset-test value"
      ]
     ],
-    "pruned": [],
+    "pruned": [
+     "apply.documents_required: 2 items not named in the trimmed quote"
+    ],
     "income_rule_verified": false,
-    "core_completeness": 0.33
+    "core_completeness": 0.5
    }
   },
   {
@@ -9843,6 +9086,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-356ce1d641afd492": true,
+     "web-82f15d236c324e9b": true,
+     "web-219317f482310b8f": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.asset_test",
@@ -10036,6 +9285,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-065fe1ebbed6cf4c": true,
+     "fap-9bf3c29f429076de": true,
+     "web-fbce377d96a323fb": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -10235,6 +9490,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-bac0bc36907b7a0b": true,
+     "fap-43a367ddd5f15d0b": true,
+     "web-53afb17f133fe85e": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.residency",
@@ -10396,6 +9657,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-356ce1d641afd492": true,
+     "web-82f15d236c324e9b": true,
+     "web-526849a4666a9974": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.asset_test",

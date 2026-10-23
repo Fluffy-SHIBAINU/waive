@@ -187,6 +187,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-993decabe3675384": true,
+     "web-cc82bd2a32ad6edb": true,
+     "fap-78c3497077e08698": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -400,6 +406,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-f3ce61dd66cbc734": true,
+     "fap-67a499e0f8d95d53": true,
+     "web-890e39a2b0eaa780": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.insured_patients_covered",
@@ -523,8 +535,24 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": null,
-    "hours": null,
+    "phone": {
+     "value": "866-804-2499",
+     "layer": "documented",
+     "quote": "To apply for financial assistance, please call us toll free at 866-804-2499 , Monday through Friday 8 am - 4:30 pm.",
+     "source_id": "web-f286a764b8655960",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": {
+     "value": "Monday through Friday 8 am - 4:30 pm",
+     "layer": "documented",
+     "quote": "To apply for financial assistance, please call us toll free at 866-804-2499 , Monday through Friday 8 am - 4:30 pm.",
+     "source_id": "web-f286a764b8655960",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "languages": {
      "value": [
       "English",
@@ -588,32 +616,31 @@
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 1,
+    "sources_fetched": 2,
     "sources_total": 3,
     "sources_missing": [
-     "https://assets.mainehealth.io/s3fs-public/2025-08/MH%20Free%20Care%20Policy%20English.pdf",
-     "https://www.mainehealth.org/patients-visitors/billing-and-financial-services/free-care"
+     "https://assets.mainehealth.io/s3fs-public/2025-08/MH%20Free%20Care%20Policy%20English.pdf"
     ],
+    "sha256_match": {
+     "fap-8312dcad97221cc4": true,
+     "fap-a2b6fd7e25e89f09": true,
+     "web-f286a764b8655960": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.insured_patients_covered",
      "apply.documents_required",
      "apply.submit_methods",
      "apply.decision_days",
+     "contacts.phone",
+     "contacts.hours",
      "contacts.languages"
     ],
     "rejected": [
      [
       "apply.form_url",
-      "source text missing"
-     ],
-     [
-      "contacts.phone",
-      "source text missing"
-     ],
-     [
-      "contacts.hours",
-      "source text missing"
+      "quote not found in source"
      ]
     ],
     "pruned": [
@@ -621,7 +648,7 @@
      "apply.submit_methods: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": true,
-    "core_completeness": 0.5
+    "core_completeness": 0.67
    }
   },
   {
@@ -824,6 +851,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-f3ce61dd66cbc734": true,
+     "web-3ffac74a1a582d55": false,
+     "fap-67a499e0f8d95d53": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.residency",
@@ -1024,6 +1057,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "web-31c96c84943b488f": true,
+     "fap-cc3b1c1b89f50f9a": true,
+     "web-5f020bbc0061ce61": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.insured_patients_covered",
@@ -1074,7 +1113,17 @@
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
     "asset_test": null,
-    "residency": null,
+    "residency": {
+     "value": [
+      "Free care is for Maine residents; New Hampshire residents treated at MaineHealth Memorial Hospital and/or associated MaineHealth physician practices may also qualify."
+     ],
+     "layer": "documented",
+     "quote": "Maine law requires that free medical care must be provided to Maine residents with income less than 200 percent of the federal poverty level. New Hampshire residents who receive care at MaineHealth Memorial Hospital and/or other associated MaineHealth physician practices may also qualify for the free care program.",
+     "source_id": "web-f286a764b8655960",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "insured_patients_covered": null,
     "min_balance": null,
     "services_excluded": null
@@ -1133,8 +1182,24 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": null,
-    "hours": null,
+    "phone": {
+     "value": "866-804-2499",
+     "layer": "documented",
+     "quote": "Phone: Call 866-804-2499 (toll-free)",
+     "source_id": "web-f286a764b8655960",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": {
+     "value": "Monday through Friday 8 am \u2013 4:30 pm",
+     "layer": "documented",
+     "quote": "Phone lines are open Monday through Friday 8 am \u2013 4:30 pm.",
+     "source_id": "web-f286a764b8655960",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "languages": {
      "value": [
       "English",
@@ -1197,35 +1262,31 @@
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 1,
+    "sources_fetched": 2,
     "sources_total": 3,
     "sources_missing": [
-     "https://assets.mainehealth.io/s3fs-public/2025-08/MH%20Free%20Care%20Policy%20English.pdf",
-     "https://www.mainehealth.org/patients-visitors/billing-and-financial-services/free-care"
+     "https://assets.mainehealth.io/s3fs-public/2025-08/MH%20Free%20Care%20Policy%20English.pdf"
     ],
+    "sha256_match": {
+     "fap-8312dcad97221cc4": true,
+     "fap-a2b6fd7e25e89f09": true,
+     "web-f286a764b8655960": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
+     "eligibility.residency",
      "apply.documents_required",
      "apply.submit_methods",
      "apply.decision_days",
+     "contacts.phone",
+     "contacts.hours",
      "contacts.languages"
     ],
     "rejected": [
      [
-      "eligibility.residency",
-      "source text missing"
-     ],
-     [
       "apply.form_url",
-      "source text missing"
-     ],
-     [
-      "contacts.phone",
-      "source text missing"
-     ],
-     [
-      "contacts.hours",
-      "source text missing"
+      "quote not found in source"
      ]
     ],
     "pruned": [
@@ -1233,7 +1294,7 @@
      "apply.submit_methods: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": true,
-    "core_completeness": 0.5
+    "core_completeness": 0.67
    }
   },
   {
@@ -1399,6 +1460,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-38d26c8705f1644e": true,
+     "fap-a0765f6d5b62807a": true,
+     "web-9937f488f737f098": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.insured_patients_covered",
@@ -1611,6 +1678,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-f3ce61dd66cbc734": true,
+     "fap-712226e5172fa7f5": true,
+     "web-0bb00795a4e70b65": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.residency",
@@ -1823,11 +1896,15 @@
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 2,
+    "sources_fetched": 3,
     "sources_total": 3,
-    "sources_missing": [
-     "https://stmarysmaine.com/wp-content/uploads/2026/08/Covenant-FreeCare-Application-Jan-2024-SML-UPDATED-BANK-STMT-R-04162026.docx"
-    ],
+    "sources_missing": [],
+    "sha256_match": {
+     "fap-cbd63648a60380a7": true,
+     "web-a7965acbde65c1ad": true,
+     "web-c41b797f1d1e0422": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -2044,6 +2121,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-f3ce61dd66cbc734": true,
+     "fap-712226e5172fa7f5": true,
+     "web-ed3d9aae1a4fc4e4": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.residency",
@@ -2185,8 +2268,24 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": null,
-    "hours": null,
+    "phone": {
+     "value": "866-804-2499",
+     "layer": "documented",
+     "quote": "Phone: Call 866-804-2499 (toll-free)",
+     "source_id": "web-f286a764b8655960",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": {
+     "value": "Monday through Friday 8 am \u2013 4:30 pm",
+     "layer": "documented",
+     "quote": "Phone lines are open Monday through Friday 8 am \u2013 4:30 pm.",
+     "source_id": "web-f286a764b8655960",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "languages": {
      "value": [
       "English",
@@ -2248,12 +2347,17 @@
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 1,
+    "sources_fetched": 2,
     "sources_total": 3,
     "sources_missing": [
-     "https://assets.mainehealth.io/s3fs-public/2025-08/MH%20Free%20Care%20Policy%20English.pdf",
-     "https://www.mainehealth.org/patients-visitors/billing-and-financial-services/free-care"
+     "https://assets.mainehealth.io/s3fs-public/2025-08/MH%20Free%20Care%20Policy%20English.pdf"
     ],
+    "sha256_match": {
+     "fap-8312dcad97221cc4": true,
+     "fap-a2b6fd7e25e89f09": true,
+     "web-f286a764b8655960": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.insured_patients_covered",
@@ -2261,27 +2365,21 @@
      "apply.documents_required",
      "apply.submit_methods",
      "apply.decision_days",
+     "contacts.phone",
+     "contacts.hours",
      "contacts.languages"
     ],
     "rejected": [
      [
       "apply.form_url",
-      "source text missing"
-     ],
-     [
-      "contacts.phone",
-      "source text missing"
-     ],
-     [
-      "contacts.hours",
-      "source text missing"
+      "quote not found in source"
      ]
     ],
     "pruned": [
      "apply.documents_required: 2 items not named in the trimmed quote"
     ],
     "income_rule_verified": true,
-    "core_completeness": 0.5
+    "core_completeness": 0.67
    }
   },
   {
@@ -2502,6 +2600,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-f3ce61dd66cbc734": true,
+     "fap-67a499e0f8d95d53": true,
+     "web-0b2edea1f226c1ba": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.residency",
@@ -2629,8 +2733,24 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": null,
-    "hours": null,
+    "phone": {
+     "value": "866-804-2499",
+     "layer": "documented",
+     "quote": "To apply for financial assistance, please call us toll free at 866-804-2499 , Monday through Friday 8 am - 4:30 pm.",
+     "source_id": "web-f286a764b8655960",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": {
+     "value": "Monday through Friday 8 am - 4:30 pm",
+     "layer": "documented",
+     "quote": "To apply for financial assistance, please call us toll free at 866-804-2499 , Monday through Friday 8 am - 4:30 pm.",
+     "source_id": "web-f286a764b8655960",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "languages": {
      "value": [
       "English",
@@ -2693,32 +2813,31 @@
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 1,
+    "sources_fetched": 2,
     "sources_total": 3,
     "sources_missing": [
-     "https://assets.mainehealth.io/s3fs-public/2025-08/MH%20Free%20Care%20Policy%20English.pdf",
-     "https://www.mainehealth.org/patients-visitors/billing-and-financial-services/free-care"
+     "https://assets.mainehealth.io/s3fs-public/2025-08/MH%20Free%20Care%20Policy%20English.pdf"
     ],
+    "sha256_match": {
+     "fap-8312dcad97221cc4": true,
+     "fap-a2b6fd7e25e89f09": true,
+     "web-f286a764b8655960": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.insured_patients_covered",
      "apply.documents_required",
      "apply.submit_methods",
      "apply.decision_days",
+     "contacts.phone",
+     "contacts.hours",
      "contacts.languages"
     ],
     "rejected": [
      [
       "apply.form_url",
-      "source text missing"
-     ],
-     [
-      "contacts.phone",
-      "source text missing"
-     ],
-     [
-      "contacts.hours",
-      "source text missing"
+      "quote not found in source"
      ]
     ],
     "pruned": [
@@ -2726,7 +2845,7 @@
      "apply.submit_methods: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": true,
-    "core_completeness": 0.5
+    "core_completeness": 0.67
    }
   },
   {
@@ -2927,11 +3046,15 @@
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 2,
+    "sources_fetched": 3,
     "sources_total": 3,
-    "sources_missing": [
-     "https://pvhme.org/wp-content/uploads/2026/07/PVH-Free-Care-Application-July-1-2026.docx"
-    ],
+    "sources_missing": [],
+    "sha256_match": {
+     "fap-290b1f6c24ed28e6": true,
+     "web-5d80534c97e04a5f": true,
+     "web-227a4535ddadaf5f": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -3076,12 +3199,15 @@
    "eve_review": [],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 1,
+    "sources_fetched": 3,
     "sources_total": 3,
-    "sources_missing": [
-     "https://www.mdihospital.org/wp-content/uploads/2026/06/MDI-Health-Financial-Assistance-Policy-Updated-7.1.2026.docx",
-     "https://www.mdihospital.org/wp-content/uploads/2026/06/Financial-Assistance-Packet-Application-2026.docx"
-    ],
+    "sources_missing": [],
+    "sha256_match": {
+     "web-948472f500b3e0af": true,
+     "web-4618cabdbd3d15e4": true,
+     "web-76734e2ea47302e7": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.residency",
@@ -3125,7 +3251,17 @@
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
     "asset_test": null,
-    "residency": null,
+    "residency": {
+     "value": [
+      "Applicants must be Maine residents."
+     ],
+     "layer": "documented",
+     "quote": "You must be a Maine resident to apply for financial assistance.",
+     "source_id": "web-93ade05840531894",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "insured_patients_covered": null,
     "min_balance": null,
     "services_excluded": null
@@ -3139,7 +3275,20 @@
     "form_version": null,
     "documents_required": null,
     "documents_reported": null,
-    "submit_methods": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "Attn: Free Care, CCH, 24 Hospital Drive, Calais, ME 04619"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Please mail to Attn: Free Care, CCH, 24 Hospital Drive, Calais, ME 04619",
+     "source_id": "web-93ade05840531894",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "window_days_from_first_bill": {
      "value": 240,
      "layer": "documented",
@@ -3219,22 +3368,24 @@
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 2,
+    "sources_fetched": 3,
     "sources_total": 3,
-    "sources_missing": [
-     "https://www.calaishospital.org/wp-content/uploads/2026/03/2026-Financial-Aid-Application-r.doc"
-    ],
+    "sources_missing": [],
+    "sha256_match": {
+     "fap-97b818dbda5857ae": true,
+     "web-93ade05840531894": true,
+     "web-ab6b5ce5a77a04b0": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
+     "eligibility.residency",
+     "apply.submit_methods",
      "apply.window_days_from_first_bill",
      "apply.decision_days",
      "contacts.phone"
     ],
     "rejected": [
-     [
-      "eligibility.residency",
-      "source text missing"
-     ],
      [
       "eligibility.insured_patients_covered",
       "quote does not say whether insured patients are covered"
@@ -3242,17 +3393,13 @@
      [
       "apply.form_url",
       "quote not found in source"
-     ],
-     [
-      "apply.submit_methods",
-      "source text missing"
      ]
     ],
     "pruned": [
      "apply.documents_required: none of the listed documents is named in the quote (after trimming)"
     ],
     "income_rule_verified": true,
-    "core_completeness": 0.33
+    "core_completeness": 0.5
    }
   },
   {
@@ -3404,6 +3551,11 @@
     "sources_fetched": 2,
     "sources_total": 2,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-10faa5b1461d0913": true,
+     "fap-aad961c319ee850e": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.residency",
@@ -3442,11 +3594,29 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": null,
+    "free_care_max_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "Household income must be at or below 200% of the current Federal Poverty Level.",
+     "source_id": "fap-3078d2adc00ea700",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
     "asset_test": null,
-    "residency": null,
+    "residency": {
+     "value": [
+      "Applicants must be considered a Maine resident, which includes individuals who live in Maine with the intent to remain indefinitely or have moved to Maine for permanent, temporary, seasonal, or other employment, or are actively seeking employment in Maine."
+     ],
+     "layer": "documented",
+     "quote": "Applicants must be considered a Maine resident, which includes individuals who: o Live in Maine with the intent to remain indefinitely; or o Have moved to Maine for permanent, temporary, seasonal, or other employment, or are actively seeking employment in Maine.",
+     "source_id": "fap-3078d2adc00ea700",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "insured_patients_covered": null,
     "min_balance": null,
     "services_excluded": null
@@ -3460,7 +3630,32 @@
     "form_version": null,
     "documents_required": null,
     "documents_reported": null,
-    "submit_methods": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "in_person",
+       "detail": "In Person"
+      },
+      {
+       "kind": "mail",
+       "detail": "Mail"
+      },
+      {
+       "kind": "fax",
+       "detail": "Fax"
+      },
+      {
+       "kind": "email",
+       "detail": "Email"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Items can be submitted In Person or by Mail, Fax, and Email.",
+     "source_id": "fap-3078d2adc00ea700",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "window_days_from_first_bill": null,
     "decision_days": null,
     "decision_days_reported": null
@@ -3473,17 +3668,17 @@
     "phone": {
      "value": "(207) 521-2227",
      "layer": "documented",
-     "quote": "please contact the Patient Financial Councilors at (207) 521-2227",
+     "quote": "please contact the Patient Financial Councilors at (207) 521-2227 or visit us at the HRH Financial Counselor at Door 7.",
      "source_id": "fap-3078d2adc00ea700",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "hours": {
-     "value": "Monday to Friday, 8:00 a.m. to 4:30 p.m.",
+     "value": "Monday to Friday from 8:00 a.m. to 4:30 p.m.",
      "layer": "documented",
      "quote": "We have customer service available to you in our Patient Financial Services department Monday to Friday from 8:00 a.m. to 4:30 p.m.",
-     "source_id": "web-1314adfee70bbf25",
+     "source_id": "web-c6d2dd3a9dc0ec7d",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -3515,43 +3710,47 @@
      "effective_date": null
     },
     {
-     "id": "web-1314adfee70bbf25",
+     "id": "web-c6d2dd3a9dc0ec7d",
      "kind": "hospital_web",
      "url": "https://houltonregional.org/patients/billing/",
      "title": "Billing | Houlton Regional Hospital",
      "fetched_on": "2026-10-23",
-     "sha256": "1314adfee70bbf250e0da1d5c8a6b3d70e5e28604e37bd84eb4db9e7ac4d242e",
+     "sha256": "c6d2dd3a9dc0ec7d8c599340bc744bde6bda72f5bfb4a57cfb03b513f64705b5",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "agent dropped eligibility.residency: judge: Quote defines Maine residency but says nothing about temporary tourists or visitors not qualifying.",
-    "agent dropped apply.documents_required: judge: Quote says 'This affidavit' replaces income proof but never names it a Zero Income Affidavit.",
-    "agent dropped apply.submit_methods: judge: Quote lists in person, mail, fax and email, but does not mention a Financial Counselor at Door 7."
+    "agent dropped apply.documents_required: excerpt not in source: Please provide your most recent tax return or pay stubs for ",
+    "agent judge on eligibility.free_care_max_fpl: The quote sets an income eligibility limit of 200% FPL but does not say that care is 100% free at that level, so it does not establish the free-care maximum."
    ],
    "eve_verified": {
     "on": "2026-10-23",
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-3078d2adc00ea700": true,
+     "fap-bdcca2be54f33153": true,
+     "web-c6d2dd3a9dc0ec7d": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.residency",
+     "apply.submit_methods",
      "contacts.phone",
      "contacts.hours"
     ],
     "rejected": [
-     [
-      "eligibility.assistance_ceiling_fpl",
-      "quote does not say the hospital's financial assistance reaches it"
-     ],
      [
       "apply.form_url",
       "quote not found in source"
      ]
     ],
     "pruned": [],
-    "income_rule_verified": false,
-    "core_completeness": 0.17
+    "income_rule_verified": true,
+    "core_completeness": 0.5
    }
   },
   {
@@ -3746,6 +3945,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-38d26c8705f1644e": true,
+     "fap-a0765f6d5b62807a": true,
+     "web-5e15da74b46720f3": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.residency",
@@ -3828,7 +4033,7 @@
     {
      "id": "web-2ae94bc7758a7c07",
      "kind": "hospital_web",
-     "url": "https://www.dech.org/financial-assistance/",
+     "url": "https://www.dech.org/financial-office/billing-information/",
      "title": "Bot Verification",
      "fetched_on": "2026-10-23",
      "sha256": "2ae94bc7758a7c07e4ec4a137ef4e5b625be6871dc53134213b34e9122775f4f",
@@ -3842,6 +4047,10 @@
     "sources_fetched": 1,
     "sources_total": 1,
     "sources_missing": [],
+    "sha256_match": {
+     "web-2ae94bc7758a7c07": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [],
     "rejected": [],
     "pruned": [],
@@ -3918,8 +4127,24 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": null,
-    "hours": null,
+    "phone": {
+     "value": "866-804-2499",
+     "layer": "documented",
+     "quote": "Phone: Call 866-804-2499 (toll-free)",
+     "source_id": "web-f286a764b8655960",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": {
+     "value": "Monday through Friday 8 am \u2013 4:30 pm",
+     "layer": "documented",
+     "quote": "Phone lines are open Monday through Friday 8 am \u2013 4:30 pm.",
+     "source_id": "web-f286a764b8655960",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "languages": null
    },
    "coverage": {
@@ -3967,36 +4192,35 @@
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 1,
+    "sources_fetched": 2,
     "sources_total": 3,
     "sources_missing": [
-     "https://assets.mainehealth.io/s3fs-public/2025-08/MH%20Free%20Care%20Policy%20English.pdf",
-     "https://www.mainehealth.org/patients-visitors/billing-and-financial-services/free-care"
+     "https://assets.mainehealth.io/s3fs-public/2025-08/MH%20Free%20Care%20Policy%20English.pdf"
     ],
+    "sha256_match": {
+     "fap-8312dcad97221cc4": true,
+     "fap-a2b6fd7e25e89f09": true,
+     "web-f286a764b8655960": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "apply.documents_required",
-     "apply.decision_days"
+     "apply.decision_days",
+     "contacts.phone",
+     "contacts.hours"
     ],
     "rejected": [
      [
       "apply.form_url",
-      "source text missing"
-     ],
-     [
-      "contacts.phone",
-      "source text missing"
-     ],
-     [
-      "contacts.hours",
-      "source text missing"
+      "quote not found in source"
      ]
     ],
     "pruned": [
      "apply.documents_required: 2 items not named in the trimmed quote"
     ],
     "income_rule_verified": true,
-    "core_completeness": 0.33
+    "core_completeness": 0.5
    }
   },
   {
@@ -4198,6 +4422,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-f3ce61dd66cbc734": true,
+     "fap-67a499e0f8d95d53": true,
+     "web-5bfeb7ae31816b38": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.insured_patients_covered",
@@ -4322,8 +4552,24 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": null,
-    "hours": null,
+    "phone": {
+     "value": "866-804-2499",
+     "layer": "documented",
+     "quote": "To apply for financial assistance, please call us toll free at 866-804-2499 , Monday through Friday 8 am - 4:30 pm.",
+     "source_id": "web-f286a764b8655960",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": {
+     "value": "Monday through Friday 8 am - 4:30 pm",
+     "layer": "documented",
+     "quote": "To apply for financial assistance, please call us toll free at 866-804-2499 , Monday through Friday 8 am - 4:30 pm.",
+     "source_id": "web-f286a764b8655960",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "languages": {
      "value": [
       "English",
@@ -4386,32 +4632,31 @@
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 1,
+    "sources_fetched": 2,
     "sources_total": 3,
     "sources_missing": [
-     "https://assets.mainehealth.io/s3fs-public/2025-08/MH%20Free%20Care%20Policy%20English.pdf",
-     "https://www.mainehealth.org/patients-visitors/billing-and-financial-services/free-care"
+     "https://assets.mainehealth.io/s3fs-public/2025-08/MH%20Free%20Care%20Policy%20English.pdf"
     ],
+    "sha256_match": {
+     "fap-8312dcad97221cc4": true,
+     "fap-a2b6fd7e25e89f09": true,
+     "web-f286a764b8655960": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.insured_patients_covered",
      "apply.documents_required",
      "apply.submit_methods",
      "apply.decision_days",
+     "contacts.phone",
+     "contacts.hours",
      "contacts.languages"
     ],
     "rejected": [
      [
       "apply.form_url",
-      "source text missing"
-     ],
-     [
-      "contacts.phone",
-      "source text missing"
-     ],
-     [
-      "contacts.hours",
-      "source text missing"
+      "quote not found in source"
      ]
     ],
     "pruned": [
@@ -4419,7 +4664,7 @@
      "apply.submit_methods: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": true,
-    "core_completeness": 0.5
+    "core_completeness": 0.67
    }
   },
   {
@@ -4449,7 +4694,17 @@
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
     "asset_test": null,
-    "residency": null,
+    "residency": {
+     "value": [
+      "Free care is for Maine residents; New Hampshire residents who receive care at MaineHealth Memorial Hospital and/or associated MaineHealth physician practices may also qualify."
+     ],
+     "layer": "documented",
+     "quote": "MaineHealth provides free care to Maine residents with income less than 200 percent of the federal poverty level New Hampshire residents who receive care at MaineHealth Memorial Hospital and/or other associated MaineHealth physician practices may also qualify for our free care program.",
+     "source_id": "web-f286a764b8655960",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
@@ -4538,8 +4793,24 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": null,
-    "hours": null,
+    "phone": {
+     "value": "866-804-2499",
+     "layer": "documented",
+     "quote": "Phone: Call 866-804-2499 (toll-free)",
+     "source_id": "web-f286a764b8655960",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": {
+     "value": "Monday through Friday 8 am \u2013 4:30 pm",
+     "layer": "documented",
+     "quote": "Phone lines are open Monday through Friday 8 am \u2013 4:30 pm.",
+     "source_id": "web-f286a764b8655960",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "languages": {
      "value": [
       "English",
@@ -4599,44 +4870,40 @@
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 1,
+    "sources_fetched": 2,
     "sources_total": 3,
     "sources_missing": [
-     "https://assets.mainehealth.io/s3fs-public/2025-08/MH%20Free%20Care%20Policy%20English.pdf",
-     "https://www.mainehealth.org/patients-visitors/billing-and-financial-services/free-care"
+     "https://assets.mainehealth.io/s3fs-public/2025-08/MH%20Free%20Care%20Policy%20English.pdf"
     ],
+    "sha256_match": {
+     "fap-8312dcad97221cc4": true,
+     "fap-a2b6fd7e25e89f09": true,
+     "web-f286a764b8655960": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
+     "eligibility.residency",
      "eligibility.insured_patients_covered",
      "programs.state_programs",
      "apply.documents_required",
      "apply.submit_methods",
      "apply.decision_days",
+     "contacts.phone",
+     "contacts.hours",
      "contacts.languages"
     ],
     "rejected": [
      [
-      "eligibility.residency",
-      "source text missing"
-     ],
-     [
       "apply.form_url",
-      "source text missing"
-     ],
-     [
-      "contacts.phone",
-      "source text missing"
-     ],
-     [
-      "contacts.hours",
-      "source text missing"
+      "quote not found in source"
      ]
     ],
     "pruned": [
      "apply.documents_required: 2 items not named in the trimmed quote"
     ],
     "income_rule_verified": true,
-    "core_completeness": 0.5
+    "core_completeness": 0.67
    }
   },
   {
@@ -4654,11 +4921,29 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": null,
+    "free_care_max_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "Household income must be at or below 200% of the current Federal Poverty Level.",
+     "source_id": "fap-3f3bb5fde3b94430",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
     "asset_test": null,
-    "residency": null,
+    "residency": {
+     "value": [
+      "Applicants must be considered a Maine resident, which includes individuals who live in Maine with the intent to remain indefinitely, or have moved to Maine for permanent, temporary, seasonal, or other employment, or are actively seeking employment in Maine."
+     ],
+     "layer": "documented",
+     "quote": "Applicants must be considered a Maine resident, which includes individuals who: o Live in Maine with the intent to remain indefinitely; or o Have moved to Maine for permanent, temporary, seasonal, or other employment, or are actively seeking employment in Maine.",
+     "source_id": "fap-3f3bb5fde3b94430",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "insured_patients_covered": null,
     "min_balance": null,
     "services_excluded": null
@@ -4670,9 +4955,44 @@
    "apply": {
     "form_url": null,
     "form_version": null,
-    "documents_required": null,
+    "documents_required": {
+     "value": [
+      "tax_return"
+     ],
+     "layer": "documented",
+     "quote": "Please provide your most recent tax return or pay stubs for the previous three (3) months.",
+     "source_id": "fap-2e7b2041496b7b57",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "documents_reported": null,
-    "submit_methods": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "in_person",
+       "detail": "In Person"
+      },
+      {
+       "kind": "mail",
+       "detail": "Mail"
+      },
+      {
+       "kind": "fax",
+       "detail": "Fax"
+      },
+      {
+       "kind": "email",
+       "detail": "Email"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Items can be submitted In Person or by Mail, Fax, and Email.",
+     "source_id": "fap-3f3bb5fde3b94430",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "window_days_from_first_bill": null,
     "decision_days": null,
     "decision_days_reported": null
@@ -4685,8 +5005,8 @@
     "phone": {
      "value": "207-834-1826",
      "layer": "documented",
-     "quote": "For more information about financial assistance, call 207-834-1826 .",
-     "source_id": "web-3a16c3cae1bb8930",
+     "quote": "Contact us at 207-834-1826",
+     "source_id": "fap-2e7b2041496b7b57",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -4719,42 +5039,44 @@
      "effective_date": null
     },
     {
-     "id": "web-3a16c3cae1bb8930",
+     "id": "web-a59c934ee5fe496e",
      "kind": "hospital_web",
      "url": "https://nmmc.org/billing-and-financial-services/",
      "title": "Billing and Financial Services - Northern Maine Medical Center",
      "fetched_on": "2026-10-23",
-     "sha256": "3a16c3cae1bb893089b97894f9a5098fba75179560cee6a146e85ea347ccda9c",
+     "sha256": "a59c934ee5fe496ed0cf3b3e1f9f534ac644ddb7e57080cea3c0665a16ab2f3b",
      "effective_date": null
     }
    ],
    "accuracy": null,
-   "eve_review": [
-    "agent dropped eligibility.residency: judge: The quote only says applicants must be Maine residents. The criteria list, intent to remain and the tourist/visitor exclusion are not in it.",
-    "agent dropped apply.documents_required: judge: The quote says 'This affidavit' without naming it a Zero Income Affidavit. The tax return and pay stub items are supported.",
-    "agent dropped apply.submit_methods: judge: The quote lists in person, mail, fax and email plus the email address. The Switchboard location and the mailing address are not in it."
-   ],
+   "eve_review": [],
    "eve_verified": {
     "on": "2026-10-23",
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-3f3bb5fde3b94430": true,
+     "fap-2e7b2041496b7b57": true,
+     "web-a59c934ee5fe496e": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.residency",
+     "apply.documents_required",
+     "apply.submit_methods",
      "contacts.phone"
     ],
     "rejected": [
-     [
-      "eligibility.assistance_ceiling_fpl",
-      "quote does not say the hospital's financial assistance reaches it"
-     ],
      [
       "apply.form_url",
       "quote not found in source"
      ]
     ],
     "pruned": [],
-    "income_rule_verified": false,
-    "core_completeness": 0.17
+    "income_rule_verified": true,
+    "core_completeness": 0.67
    }
   }
  ]

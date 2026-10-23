@@ -183,6 +183,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-f6a29f19e0315452": true,
+     "fap-b24b8ba12c1cd847": true,
+     "web-681e10d30d1d5720": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.residency",
@@ -392,6 +398,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-f6a29f19e0315452": true,
+     "fap-b24b8ba12c1cd847": true,
+     "web-b6304ba045c17093": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.insured_patients_covered",
@@ -638,6 +650,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-026658eaf35c0b6b": true,
+     "fap-479eb4eb1e9d002b": true,
+     "web-8030c0df8bf354e0": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -686,21 +704,13 @@
     "free_care_max_fpl": null,
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
-    "asset_test": {
-     "value": true,
-     "layer": "documented",
-     "quote": "To be considered for financial assistance, patients must complete an application, answer questions related to their income and assets, and provide documentation of their income and assets.",
-     "source_id": "web-790ac270a6b5af8b",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "asset_test": null,
     "residency": null,
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
      "quote": "You may qualify for free care or reduced-price care based on your family size and income, even if you have health insurance.",
-     "source_id": "web-fce2386fd5caf343",
+     "source_id": "web-d1a62b606a7d53dc",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -713,17 +723,52 @@
     "state_programs": null
    },
    "apply": {
-    "form_url": null,
+    "form_url": {
+     "value": "https://www.mrhc.org/patient-financial-services/financial-counseling/",
+     "layer": "documented",
+     "quote": "MRHC Financial Assistance Application Form and Instructions",
+     "source_id": "web-ad6271c3e131b390",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "form_version": null,
-    "documents_required": null,
+    "documents_required": {
+     "value": [
+      "tax_return"
+     ],
+     "layer": "documented",
+     "quote": "Please enclose a complete copy of your most recent Federal Income Tax Return and W2 forms.",
+     "source_id": "web-d1a62b606a7d53dc",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "documents_reported": null,
-    "submit_methods": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "Magnolia Regional Health Center, Attention: Financial Counselors, 611 Alcorn Drive, Corinth, MS 38834"
+      },
+      {
+       "kind": "fax",
+       "detail": "662.293.6225"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Mail or fax completed application with all documentation to:",
+     "source_id": "web-d1a62b606a7d53dc",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "window_days_from_first_bill": null,
     "decision_days": {
      "value": 14,
      "layer": "documented",
      "quote": "We will notify you of the final determination of eligibility and appeal rights, if applicable, within 14 calendar days of receiving a complete financial assistance application",
-     "source_id": "web-fce2386fd5caf343",
+     "source_id": "web-d1a62b606a7d53dc",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -736,10 +781,10 @@
    },
    "contacts": {
     "phone": {
-     "value": "662-293-1151",
+     "value": "(662) 293-1000",
      "layer": "documented",
-     "quote": "Call 662-293-1151 or 662-293-1078 for more information on MRHC\u2019s Financial Assistance Program.",
-     "source_id": "web-790ac270a6b5af8b",
+     "quote": "(662) 293-1000",
+     "source_id": "web-d1a62b606a7d53dc",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -748,12 +793,22 @@
      "value": "M-F 8:00 a.m. \u2013 5:00 p.m.",
      "layer": "documented",
      "quote": "Hours: M-F 8:00 a.m. \u2013 5:00 p.m.",
-     "source_id": "web-fce2386fd5caf343",
+     "source_id": "web-d1a62b606a7d53dc",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "languages": null
+    "languages": {
+     "value": [
+      "interpreter available"
+     ],
+     "layer": "documented",
+     "quote": "Do you need an interpreter? Yes No If Yes, list preferred language:",
+     "source_id": "web-d1a62b606a7d53dc",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
    },
    "coverage": {
     "facilities": null,
@@ -762,61 +817,66 @@
    },
    "sources": [
     {
-     "id": "web-2fadd65ef1b1ff21",
-     "kind": "hospital_web",
-     "url": "https://www.mrhc.org/wp-content/uploads/2022/10/PFS_505-Financial-Assistance-Policy.docx",
-     "title": "",
-     "fetched_on": "2026-10-23",
-     "sha256": "2fadd65ef1b1ff214c9a22e55b4eb023def6b1e95a8860f999e30fa2d5619f9c",
-     "effective_date": null
-    },
-    {
-     "id": "web-fce2386fd5caf343",
+     "id": "web-d1a62b606a7d53dc",
      "kind": "hospital_web",
      "url": "https://www.mrhc.org/patient-financial-services/financial-counseling/",
      "title": "Financial Counseling at Magnolia Regional Health Center of Corinth",
      "fetched_on": "2026-10-23",
-     "sha256": "fce2386fd5caf343f93cbf86e879574466404fbdf14525bf634d73e8ae1d58dd",
+     "sha256": "d1a62b606a7d53dc681cf1fa766c6426b4b1ed5383bd31ab5fd4c3e54564bdb2",
      "effective_date": null
     },
     {
-     "id": "web-790ac270a6b5af8b",
+     "id": "web-ad6271c3e131b390",
      "kind": "hospital_web",
      "url": "https://www.mrhc.org/patient-financial-services/",
      "title": "Patient Financial Services - Magnolia Regional Health Center",
      "fetched_on": "2026-10-23",
-     "sha256": "790ac270a6b5af8b95215eca7d2cbbc0fae694dc23b2b25de78df2660d2d60b3",
+     "sha256": "ad6271c3e131b3902f9d37e4547896ab2b0248afeb8cf96de6493d312a0c9901",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "agent dropped apply.documents_required: judge: Quote lists the tax return, W2s and 'Current pay stubs (3 months); or'; the phrase 'other proof of income' does not appear.",
-    "agent dropped apply.submit_methods: judge: Quote mentions mail, fax and in-person, but gives no fax number, mailing recipient or 'Attention: Financial Counselors' line."
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Current pay stubs (3 months); or | Note: You do not have to provide a Social Security number to apply for financial assistance.",
+    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Fax Number: 662.293.6225 | To submit your completed application in person: Patient Financial Services",
+    "agent judge on eligibility.asset_test: Quote mentions only the 101% FPL income threshold. It does not say assets are considered.",
+    "agent judge on apply.form_url: Quote names the application form but gives no URL.",
+    "agent judge on apply.documents_required: Quote lists tax return/W2 and pay stubs, but says no Social Security number is required, contrary to the recorded SSN item.",
+    "agent judge on apply.submit_methods: Quote gives only the fax number and names in-person submission at Patient Financial Services. It has no mailing address and no in-person address or hours.",
+    "agent judge on contacts.languages: Quote is a form question asking whether an interpreter is needed. It does not state that an interpreter is available."
    ],
    "eve_verified": {
     "on": "2026-10-23",
     "sources_fetched": 2,
-    "sources_total": 3,
-    "sources_missing": [
-     "https://www.mrhc.org/wp-content/uploads/2022/10/PFS_505-Financial-Assistance-Policy.docx"
-    ],
+    "sources_total": 2,
+    "sources_missing": [],
+    "sha256_match": {
+     "web-d1a62b606a7d53dc": true,
+     "web-ad6271c3e131b390": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
-     "eligibility.asset_test",
      "eligibility.insured_patients_covered",
+     "apply.form_url",
+     "apply.documents_required",
+     "apply.submit_methods",
      "apply.decision_days",
      "contacts.phone",
-     "contacts.hours"
+     "contacts.hours",
+     "contacts.languages"
     ],
     "rejected": [
      [
-      "apply.form_url",
-      "quote not found in source"
+      "eligibility.asset_test",
+      "quote does not support the asset-test value"
      ]
     ],
-    "pruned": [],
+    "pruned": [
+     "apply.documents_required: 2 items not named in the trimmed quote",
+     "apply.submit_methods: 1 item not named in the trimmed quote"
+    ],
     "income_rule_verified": false,
-    "core_completeness": 0.17
+    "core_completeness": 0.67
    }
   },
   {
@@ -1017,6 +1077,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-f6a29f19e0315452": true,
+     "fap-b24b8ba12c1cd847": true,
+     "web-b6304ba045c17093": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.residency",
@@ -1079,7 +1145,7 @@
    "programs": {
     "presumptive": {
      "value": [
-      "Medicaid enrolled (primary or secondary)"
+      "Medicaid"
      ],
      "layer": "documented",
      "quote": "patients who are covered under the Medicaid program either as primary or secondary are deemed to be indigent.",
@@ -1108,13 +1174,21 @@
     "phone": {
      "value": "662-779-5124",
      "layer": "documented",
-     "quote": "If you have any questions about our payment options or need financial assistance, call the Winston Medical Center Business Office at 662-779-5124.",
-     "source_id": "web-366f8bc8870b9e80",
+     "quote": "call the Winston Medical Center Business Office at 662-779-5124",
+     "source_id": "web-13d27e02c38e36f0",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "hours": null,
+    "hours": {
+     "value": "M \u2013 F | 8 AM \u2013 5 PM",
+     "layer": "documented",
+     "quote": "M \u2013 F | 8 AM \u2013 5 PM",
+     "source_id": "web-13d27e02c38e36f0",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "languages": null
    },
    "coverage": {
@@ -1126,7 +1200,7 @@
     {
      "id": "fap-bf54d405202be170",
      "kind": "hospital_web",
-     "url": "https://winstonmedical.org/wp-content/uploads/2016/07/WMC-Financial-Assistance-Program.pdf",
+     "url": "https://www.winstonmedical.org/wp-content/uploads/2016/07/WMC-Financial-Assistance-Program.pdf",
      "title": "",
      "fetched_on": "2026-10-23",
      "sha256": "bf54d405202be170d249071d60cc14c3b926c5ab4a097ee56b6d921683463ba9",
@@ -1142,17 +1216,19 @@
      "effective_date": null
     },
     {
-     "id": "web-366f8bc8870b9e80",
+     "id": "web-13d27e02c38e36f0",
      "kind": "hospital_web",
      "url": "https://winstonmedical.org/visitors-patients/pay-on-your-account/",
      "title": "Pay On Your Account - Winston Medical Center - Louisville, MS",
      "fetched_on": "2026-10-23",
-     "sha256": "366f8bc8870b9e80226340d1052c2cae14b6278a6ed6e19d61566c416e161d01",
+     "sha256": "13d27e02c38e36f02d4ebf46b6fa2669eaaf8b5cc1318ebc0068f6fb90d7bf44",
      "effective_date": null
     }
    ],
    "accuracy": null,
-   "eve_review": [],
+   "eve_review": [
+    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: call the Winston Medical Center Business Office at 662-779-5124"
+   ],
    "eve_verified": {
     "on": "2026-10-23",
     "sources_fetched": 2,
@@ -1160,19 +1236,30 @@
     "sources_missing": [
      "https://winstonmedical.org/wp-content/uploads/2018/12/WMC-Financial-Assisstance-Application.pdf"
     ],
+    "sha256_match": {
+     "fap-bf54d405202be170": true,
+     "fap-1cc38ebcc161fa9e": true,
+     "web-13d27e02c38e36f0": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.insured_patients_covered",
      "programs.presumptive",
-     "contacts.phone"
+     "contacts.phone",
+     "contacts.hours"
     ],
     "rejected": [
      [
       "apply.form_url",
       "quote not found in source"
+     ],
+     [
+      "apply.submit_methods",
+      "quote not found in source"
      ]
     ],
     "pruned": [
-     "apply.submit_methods: none of the listed channels is named in the quote (after trimming)"
+     "apply.submit_methods: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": false,
     "core_completeness": 0.17
@@ -1402,6 +1489,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-026658eaf35c0b6b": true,
+     "fap-479eb4eb1e9d002b": true,
+     "web-492da2c96f603a0a": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -1656,6 +1749,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-026658eaf35c0b6b": true,
+     "fap-479eb4eb1e9d002b": true,
+     "web-68bdde563880bea4": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -1864,6 +1963,10 @@
     "sources_fetched": 1,
     "sources_total": 1,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-33f8f17e985ce2a4": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -2080,6 +2183,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-f6a29f19e0315452": true,
+     "fap-b24b8ba12c1cd847": true,
+     "web-b6304ba045c17093": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.residency",
@@ -2302,6 +2411,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "web-5366063f1805f65f": true,
+     "fap-23f46ddd974aabc6": true,
+     "fap-eca17cbf46c62bcf": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.residency",
@@ -2348,33 +2463,28 @@
     "asset_test": {
      "value": true,
      "layer": "documented",
-     "quote": "Savings (including flexible spending and health savings accounts): Yes No Amount: $___________________",
+     "quote": "RESOURCES Checking: Yes No Amount: $___________________ Savings (including flexible spending and health savings accounts): Yes No Amount: $___________________",
      "source_id": "fap-3c769e247ebd022c",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "residency": null,
-    "insured_patients_covered": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Payment in full is required at the time of service from all patients who owe co-pays, coinsurance, have not met their deductible, or do not have insurance coverage.",
+     "source_id": "web-27c3d796d76edf32",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "min_balance": null,
     "services_excluded": null
    },
    "programs": {
     "presumptive": null,
-    "state_programs": {
-     "value": [
-      {
-       "name": "Medicaid",
-       "how_to_apply": "Use the hospital's eligibility screening services to identify coverage such as Medicaid."
-      }
-     ],
-     "layer": "documented",
-     "quote": "We also provide eligibility screening services that can help identify the availability of resources to cover medical services, such as Medicaid.",
-     "source_id": "web-63070dd0d6c9fcd7",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "state_programs": null
    },
    "apply": {
     "form_url": null,
@@ -2382,10 +2492,10 @@
     "documents_required": {
      "value": [
       "pay_stubs",
+      "other",
       "social_security_letter",
       "bank_statements",
-      "tax_return",
-      "other"
+      "tax_return"
      ],
      "layer": "documented",
      "quote": "Last 4 paystubs Copy of mortgage payment OR Letter from employer Copy of rental agreement Social Security benefits (if applicable) Other documents requested Last 3 months bank statements Copies of monthly bills Previous year\u2019s Federal Tax Return",
@@ -2395,7 +2505,20 @@
      "support_count": 0
     },
     "documents_reported": null,
-    "submit_methods": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "in_person",
+       "detail": "return the following form with requested documents to the Facility Registration Department or Financial Counselor"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Please complete and return the following form with requested documents to the Facility Registration Department or Financial Counselor to be evaluated for Financial Assistance.",
+     "source_id": "fap-3c769e247ebd022c",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "window_days_from_first_bill": null,
     "decision_days": null,
     "decision_days_reported": null
@@ -2408,8 +2531,8 @@
     "phone": {
      "value": "(601) 268-8000",
      "layer": "documented",
-     "quote": "Hattiesburg, MS 39402 P:",
-     "source_id": "web-63070dd0d6c9fcd7",
+     "quote": "(601) 268-8000",
+     "source_id": "web-53b7a3e700ec6b45",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -2424,12 +2547,12 @@
    },
    "sources": [
     {
-     "id": "web-63070dd0d6c9fcd7",
+     "id": "web-53b7a3e700ec6b45",
      "kind": "hospital_web",
      "url": "https://www.merithealthwesley.com/financial-assistance-program",
      "title": "Financial Assistance Program",
      "fetched_on": "2026-10-23",
-     "sha256": "63070dd0d6c9fcd7bdfa31b3413be3abcca6287c76c25cbef19ca04df1981af7",
+     "sha256": "53b7a3e700ec6b4533f1f35f85c99c2840192f958404c3ff7d8392c78a410e35",
      "effective_date": null
     },
     {
@@ -2442,36 +2565,45 @@
      "effective_date": null
     },
     {
-     "id": "web-db17dda325d1450c",
+     "id": "web-27c3d796d76edf32",
      "kind": "hospital_web",
-     "url": "https://www.merithealthwesley.com/financial-information",
-     "title": "Financial Information",
+     "url": "https://www.merithealthwesley.com/hospital-billing-insurance",
+     "title": "Patients & Visitors - Financial Information - Billing & Insurance",
      "fetched_on": "2026-10-23",
-     "sha256": "db17dda325d1450c8c5eae11ee5e9fe5197291dda9dc962e90cd67f70371a22c",
+     "sha256": "27c3d796d76edf322f475ff1966a60b62614fdcff87985a641eeb81db60cd920",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "agent dropped apply.submit_methods: judge: The quote says to return the form to the Registration Department or Financial Counselor but does not say this must be done in person."
+    "apply.form_url: not an absolute URL ('/Uploads/Public/Documents/all-new-documents/2023/100-ADM-120'); dropped",
+    "agent judge on eligibility.asset_test: The quote is an application form with blank asset fields (Checking, Savings) and does not state that assets are considered by the hospital.",
+    "agent judge on eligibility.insured_patients_covered: The quote says insured patients owing co-pays, coinsurance, or unmet deductibles must pay in full; it does not state insured patients are covered by assistance.",
+    "agent judge on apply.documents_required: The quote lists alternatives (mortgage copy OR employer letter, rental agreement, monthly bills) and includes items not in the value, so the value is incomplete and partly inaccurate.",
+    "agent judge on contacts.phone: The quote is only the phone number; it does not state the number is a financial assistance contact, so the field meaning is not established."
    ],
    "eve_verified": {
     "on": "2026-10-23",
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "web-53b7a3e700ec6b45": false,
+     "fap-3c769e247ebd022c": true,
+     "web-27c3d796d76edf32": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.asset_test",
-     "programs.state_programs",
+     "eligibility.insured_patients_covered",
      "apply.documents_required",
+     "apply.submit_methods",
      "contacts.phone"
     ],
     "rejected": [],
-    "pruned": [
-     "apply.documents_required: 1 item not named in the trimmed quote"
-    ],
+    "pruned": [],
     "income_rule_verified": false,
-    "core_completeness": 0.33
+    "core_completeness": 0.5
    }
   },
   {
@@ -2655,6 +2787,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-026658eaf35c0b6b": true,
+     "fap-479eb4eb1e9d002b": true,
+     "web-51fa4a53c372dd61": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -2905,6 +3043,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-026658eaf35c0b6b": true,
+     "fap-479eb4eb1e9d002b": true,
+     "web-90d69c59a098ecbc": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -3154,6 +3298,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-026658eaf35c0b6b": true,
+     "fap-a1262ae43b394a96": true,
+     "web-81b2b0620a81b924": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -3229,8 +3379,8 @@
     "phone": {
      "value": "601.849.5070",
      "layer": "documented",
-     "quote": "Magee, Mississippi 39111 P: 601.849.5070",
-     "source_id": "web-d94ce7f97414084b",
+     "quote": "P: 601.849.5070",
+     "source_id": "web-0f6540b625a17ac5",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -3263,12 +3413,12 @@
      "effective_date": null
     },
     {
-     "id": "web-d94ce7f97414084b",
+     "id": "web-0f6540b625a17ac5",
      "kind": "hospital_web",
      "url": "https://mghosp.org/financial-services/",
      "title": "Financial Services - Magee General Hospital",
      "fetched_on": "2026-10-23",
-     "sha256": "d94ce7f97414084b4b0341a39639485d9dc07d5c7e937292edad15246a2f3256",
+     "sha256": "0f6540b625a17ac5b2c03db8949f635025e2af91abfcab93288022a6aa69ee92",
      "effective_date": null
     }
    ],
@@ -3276,21 +3426,19 @@
    "eve_review": [],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 1,
+    "sources_fetched": 3,
     "sources_total": 3,
-    "sources_missing": [
-     "https://mghosp.org/wp-content/uploads/2024/01/2024-MGH-Charity-and-Financial-Policy.docx",
-     "https://mghosp.org/wp-content/uploads/2024/01/2024-MGH-Charity-FAA.docx"
-    ],
+    "sources_missing": [],
+    "sha256_match": {
+     "web-390e439c2eb9bcf5": true,
+     "web-2b23b950f589c884": true,
+     "web-0f6540b625a17ac5": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "contacts.phone"
     ],
-    "rejected": [
-     [
-      "apply.form_url",
-      "quote not found in source"
-     ]
-    ],
+    "rejected": [],
     "pruned": [],
     "income_rule_verified": false,
     "core_completeness": 0.17
@@ -3314,16 +3462,18 @@
     "free_care_max_fpl": null,
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
-    "asset_test": {
-     "value": true,
+    "asset_test": null,
+    "residency": {
+     "value": [
+      "For purposes of this policy, a Mississippi resident is an individual who is of legal age or is an emancipated minor and shall have established a home in Mississippi, is habitually present for a period of at least one hundred eighty days"
+     ],
      "layer": "documented",
-     "quote": "Eligibility for financial assistance is based on multiple factors, including insurance coverage or other sources of payment or funding for care, financial need based on income, family size, assets, and any other factors the patient requests to be considered.",
-     "source_id": "web-58d700cf49cd4abf",
+     "quote": "For purposes of this policy, a Mississippi resident is an individual who is of legal age or is an emancipated minor and shall have established a home in Mississippi, is habitually present for a period of at least one hundred eighty days",
+     "source_id": "fap-1ff3cd815d1d970b",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "residency": null,
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
@@ -3338,20 +3488,7 @@
    },
    "programs": {
     "presumptive": null,
-    "state_programs": {
-     "value": [
-      {
-       "name": "Medicaid",
-       "how_to_apply": "All financial assistance applicants are screened for Medicaid coverage and must cooperate with Medicaid representatives."
-      }
-     ],
-     "layer": "documented",
-     "quote": "All applicants will be screened for Medicaid coverage and must cooperate with Medicaid representatives to be considered for financial assistance.",
-     "source_id": "fap-1ff3cd815d1d970b",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "state_programs": null
    },
    "apply": {
     "form_url": null,
@@ -3359,13 +3496,12 @@
     "documents_required": {
      "value": [
       "tax_return",
-      "other",
       "pay_stubs",
       "bank_statements"
      ],
      "layer": "documented",
-     "quote": "(Please Provide supporting documentation of your income, i.e. prior year tax return, W2, pay stub, bank statement, etc.)",
-     "source_id": "fap-91612e8d537b1a59",
+     "quote": "prior year tax return, pay stubs representing income for a period designated, bank statements for income verification",
+     "source_id": "fap-1ff3cd815d1d970b",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -3399,9 +3535,9 @@
      "support_count": 0
     },
     "decision_days": {
-     "value": 5,
+     "value": 3,
      "layer": "documented",
-     "quote": "MRC Financial Counselor will notify patient and MRC business office of review determination within 5 business days of receipt of completed application via phone call and written notification.",
+     "quote": "Determination would typically be communicated on same day as completed application received, but may be up to 3 days.",
      "source_id": "fap-1ff3cd815d1d970b",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3417,14 +3553,24 @@
     "phone": {
      "value": "601-364-5351",
      "layer": "documented",
-     "quote": "Call MRC Financial Counselor at 601-364-5351 or 1-800-223-6672",
+     "quote": "give us a call at 601-364-5351 or 1-800-223-6672",
      "source_id": "web-58d700cf49cd4abf",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "hours": null,
-    "languages": null
+    "languages": {
+     "value": [
+      "Translations"
+     ],
+     "layer": "documented",
+     "quote": "Translation of the financial assistance policy, application, and this summary are available upon request from a Methodist Rehabilitation Financial Counselor.",
+     "source_id": "web-58d700cf49cd4abf",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
    },
    "coverage": {
     "facilities": null,
@@ -3462,28 +3608,36 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: the patient or family member must arrange for a meeting with Financial Counselor prior to admission, and submit complete",
-    "agent dropped eligibility.residency: judge: The quote only says low-income Mississippi residents; it mentions no 180-day or intent-to-stay requirement."
+    "agent dropped eligibility.asset_test: quote is not a substring of the source",
+    "agent judge on eligibility.assistance_ceiling_fpl: Quote gives an eligibility threshold (income less than 250% FPL plus inability to pay) but does not state that no assistance of any kind is offered above 250%.",
+    "agent judge on apply.submit_methods: Quote only names email and fax. The in-person meeting with a Financial Counselor is not in the quote.",
+    "agent judge on contacts.languages: Quote says translations are available on request but names no languages. The value 'Translations' is not a language."
    ],
    "eve_verified": {
     "on": "2026-10-23",
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-1ff3cd815d1d970b": true,
+     "fap-91612e8d537b1a59": true,
+     "web-58d700cf49cd4abf": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
-     "eligibility.asset_test",
+     "eligibility.residency",
      "eligibility.insured_patients_covered",
-     "programs.state_programs",
      "apply.documents_required",
      "apply.submit_methods",
      "apply.window_days_from_first_bill",
      "apply.decision_days",
-     "contacts.phone"
+     "contacts.phone",
+     "contacts.languages"
     ],
     "rejected": [
      [
-      "apply.form_url",
-      "quote not found in source"
+      "eligibility.assistance_ceiling_fpl",
+      "quote does not say the hospital's financial assistance reaches it"
      ]
     ],
     "pruned": [
@@ -3648,6 +3802,12 @@
     "sources_missing": [
      "https://www.methodisthealth.org/files/billing/ENG_Financial_Assistance_Application.pdf"
     ],
+    "sha256_match": {
+     "fap-304648bdb14dc4f4": true,
+     "fap-04eb3b64129888f0": true,
+     "web-d212c7e60c86f3ba": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.insured_patients_covered",
@@ -3685,35 +3845,8 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": {
-     "value": "200",
-     "layer": "documented",
-     "quote": "If total income is 200% or less of Federal Poverty Guideline \u2013 The paMent will qualify for 100% indigent care write-off.",
-     "source_id": "fap-f46ce0c56ee45803",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "discount_tiers": {
-     "value": [
-      {
-       "min_fpl_exclusive": "200",
-       "max_fpl_inclusive": "250",
-       "discount_percent": 75
-      },
-      {
-       "min_fpl_exclusive": "250",
-       "max_fpl_inclusive": "300",
-       "discount_percent": 50
-      }
-     ],
-     "layer": "documented",
-     "quote": "If total income is between 200%/250% then 75 % indigent care write off will be applied If total income is between 250%/300% then 50% indigent care write off will be applied",
-     "source_id": "fap-f46ce0c56ee45803",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "free_care_max_fpl": null,
+    "discount_tiers": null,
     "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": null,
@@ -3726,60 +3859,13 @@
     "state_programs": null
    },
    "apply": {
-    "form_url": {
-     "value": "https://lackeymemorialhospital.com/wp-content/uploads/2025/01/Lackey-Memorial-Hospital-Financial-Assistance-Sliding-Fee-Application.pdf",
-     "layer": "documented",
-     "quote": "BUSINESS OFFICE FORM: BO2 FINANCIAL ASSISTANCE/SLIDING FEE APPLICATION",
-     "source_id": "fap-408b453bd4197c38",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "form_url": null,
     "form_version": null,
-    "documents_required": {
-     "value": [
-      "medicaid_denial",
-      "tax_return",
-      "pay_stubs",
-      "proof_of_income",
-      "other"
-     ],
-     "layer": "documented",
-     "quote": "Medicaid denial leKer if requested by facility Most recent prior years tax returns Proof of income: Pay check stubs for last month, if receiving unemployment, provide check stub.",
-     "source_id": "fap-f46ce0c56ee45803",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "documents_required": null,
     "documents_reported": null,
-    "submit_methods": {
-     "value": [
-      {
-       "kind": "mail",
-       "detail": "Lackey Memorial Hospital, 330 North Broad Street, Forest, Mississippi 39074"
-      },
-      {
-       "kind": "in_person",
-       "detail": "Return this application and the requested information to the Business Office where services were received."
-      }
-     ],
-     "layer": "documented",
-     "quote": "Please return this application and the requested information to the Business Office where services were received.",
-     "source_id": "fap-408b453bd4197c38",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "submit_methods": null,
     "window_days_from_first_bill": null,
-    "decision_days": {
-     "value": 15,
-     "layer": "documented",
-     "quote": "A leKer will be sent to the guarantor with a list of all accounts and amounts approved / not approved within 15 days of the receipt of the completed applicaMon.",
-     "source_id": "fap-f46ce0c56ee45803",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "decision_days": null,
     "decision_days_reported": null
    },
    "collections": {
@@ -3787,15 +3873,7 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": {
-     "value": "601-469-4151",
-     "layer": "documented",
-     "quote": "601-469-4151",
-     "source_id": "web-263f91fc4dbb87ac",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "phone": null,
     "hours": null,
     "languages": null
    },
@@ -3837,30 +3915,61 @@
    "eve_review": [],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 3,
+    "sources_fetched": 0,
     "sources_total": 3,
-    "sources_missing": [],
-    "accepted": [
-     "eligibility.free_care_max_fpl",
-     "eligibility.discount_tiers",
-     "apply.form_url",
-     "apply.documents_required",
-     "apply.submit_methods",
-     "apply.decision_days",
-     "contacts.phone"
+    "sources_missing": [
+     "https://lackeymemorialhospital.com/wp-content/uploads/2024/08/Lackey-Financial-Assistance-Policy.pdf",
+     "https://lackeymemorialhospital.com/billing-information/",
+     "http://lackeymemorialhospital.com/wp-content/uploads/2025/01/Lackey-Memorial-Hospital-Financial-Assistance-Sliding-Fee-Application.pdf"
     ],
+    "sha256_match": {
+     "fap-f46ce0c56ee45803": null,
+     "web-263f91fc4dbb87ac": null,
+     "fap-408b453bd4197c38": null
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
+    "accepted": [],
     "rejected": [
      [
+      "eligibility.free_care_max_fpl",
+      "source text missing"
+     ],
+     [
+      "eligibility.discount_tiers",
+      "source text missing"
+     ],
+     [
       "eligibility.assistance_ceiling_fpl",
-      "quote does not state the ceiling as a percentage of the poverty level"
+      "source text missing"
+     ],
+     [
+      "programs.presumptive",
+      "source text missing"
+     ],
+     [
+      "apply.form_url",
+      "source text missing"
+     ],
+     [
+      "apply.documents_required",
+      "source text missing"
+     ],
+     [
+      "apply.submit_methods",
+      "source text missing"
+     ],
+     [
+      "apply.decision_days",
+      "source text missing"
+     ],
+     [
+      "contacts.phone",
+      "source text missing"
      ]
     ],
-    "pruned": [
-     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
-     "apply.documents_required: 2 items not named in the trimmed quote"
-    ],
-    "income_rule_verified": true,
-    "core_completeness": 1.0
+    "pruned": [],
+    "income_rule_verified": false,
+    "core_completeness": 0.0
    }
   },
   {
@@ -4063,6 +4172,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-f6a29f19e0315452": true,
+     "web-b6304ba045c17093": true,
+     "fap-b24b8ba12c1cd847": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.residency",
@@ -4311,6 +4426,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-026658eaf35c0b6b": true,
+     "fap-479eb4eb1e9d002b": true,
+     "web-bde6f7fb66d0a49a": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -4565,6 +4686,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-026658eaf35c0b6b": true,
+     "fap-479eb4eb1e9d002b": true,
+     "web-716012b5a22edf09": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -4789,6 +4916,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-23f46ddd974aabc6": true,
+     "fap-eca17cbf46c62bcf": true,
+     "web-5366063f1805f65f": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.residency",
@@ -5006,6 +5139,11 @@
     "sources_fetched": 2,
     "sources_total": 2,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-9d45596c64ff0807": true,
+     "web-f3c5168144ef35a8": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -5218,6 +5356,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-d84d777445165990": true,
+     "fap-fa9f5fdd4a451c07": true,
+     "web-5366063f1805f65f": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.residency",
@@ -5437,6 +5581,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-23f46ddd974aabc6": true,
+     "web-5366063f1805f65f": true,
+     "fap-eca17cbf46c62bcf": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.residency",
@@ -5482,46 +5632,62 @@
    "status": "draft",
    "eligibility": {
     "free_care_max_fpl": null,
-    "discount_tiers": null,
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "200",
+       "max_fpl_inclusive": "250",
+       "discount_percent": 95
+      },
+      {
+       "min_fpl_exclusive": "250",
+       "max_fpl_inclusive": "300",
+       "discount_percent": 90
+      },
+      {
+       "min_fpl_exclusive": "300",
+       "max_fpl_inclusive": "350",
+       "discount_percent": 85
+      },
+      {
+       "min_fpl_exclusive": "350",
+       "max_fpl_inclusive": "400",
+       "discount_percent": 80
+      }
+     ],
+     "layer": "documented",
+     "quote": "< 200% 100% 201-250% 95% 251-300% 90% 301-350% 85% 351-400% 80% > 400% Varies by Facility",
+     "source_id": "fap-026658eaf35c0b6b",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": null,
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "The Medically Underinsured patient discount applies under the following terms and conditions",
+     "quote": "Medically Underinsured patients will receive a 25% discount off the patient liability greater than $5,000.",
      "source_id": "fap-026658eaf35c0b6b",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "min_balance": null,
-    "services_excluded": null
-   },
-   "programs": {
-    "presumptive": null,
-    "state_programs": {
-     "value": [
-      {
-       "name": "Church Health (CH)",
-       "how_to_apply": "BMHCC has delegated our financial assistance process to CH, streamlining the process of relying on the CH-calculated FPL levels for our financial assistance determination."
-      },
-      {
-       "name": "Oxford Medical Ministries Clinic (OMMC)",
-       "how_to_apply": "Baptist has established partnerships with OMMC to unite our missions of providing quality health care to this community. Where applicable, the financial assistance process has been delegated to OMMC as they use the same methodology to qualify patients for their program."
-      },
-      {
-       "name": "Mission First (MF)",
-       "how_to_apply": "Baptist Jackson has partnered and aided as a benefactor, uniting our missions of providing quality health care, education and wellness programs to the underserved in our community."
-      }
-     ],
+    "min_balance": {
+     "value": "5000",
      "layer": "documented",
-     "quote": "Church Health (CH) is a healthcare ministry operating in Shelby County. Baptist has an established partnership and sponsorships with CH",
+     "quote": "any Insured patient who has incurred an out-of-pocket liability for hospital Technical Charges in excess of $5,000 for a single Encounter is deemed Medically Underinsured",
      "source_id": "fap-026658eaf35c0b6b",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
-    }
+    },
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
+    "state_programs": null
    },
    "apply": {
     "form_url": null,
@@ -5535,7 +5701,7 @@
       "other"
      ],
      "layer": "documented",
-     "quote": "Pay stubs for the last three months 2. Income tax return for the previous year 3. W2 forms for the previous year 4. State/Federal assistance documents 5. Bank statements for the last three months 6. Pension/retirement statements",
+     "quote": "1. Pay stubs for the last three months 2. Income tax return for the previous year 3. W2 forms for the previous year 4. State/Federal assistance documents 5. Bank statements for the last three months 6. Pension/retirement statements",
      "source_id": "fap-026658eaf35c0b6b",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5550,15 +5716,15 @@
       },
       {
        "kind": "fax",
-       "detail": "901-226-0772"
+       "detail": "Fax # 901-226-0772"
       },
       {
        "kind": "email",
-       "detail": "fap@bmhcc.org"
+       "detail": "Email Address: fap@bmhcc.org"
       },
       {
        "kind": "in_person",
-       "detail": "Business Office of the Baptist facility where services were received"
+       "detail": "Return this application and the requested information to the Business Office of the Baptist facility where services were received."
       }
      ],
      "layer": "documented",
@@ -5571,7 +5737,7 @@
     "window_days_from_first_bill": {
      "value": 240,
      "layer": "documented",
-     "quote": "ends on the later of 240 days after the first post-discharge billing statement",
+     "quote": "The application period begins on the date medical care is provided (or earlier if the patient choses to apply) and ends on the later of 240 days after the first post-discharge billing statement",
      "source_id": "fap-026658eaf35c0b6b",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5584,7 +5750,7 @@
     "eca_wait_days": {
      "value": 120,
      "layer": "documented",
-     "quote": "No ECA will be taken sooner than 120 days from the date of the first post-discharge bill",
+     "quote": "No ECA will be taken sooner than 120 days from the date of the first post-discharge bill and at least 30 days after the patient was sent a written notice outlining pending ECA.",
      "source_id": "fap-026658eaf35c0b6b",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5594,10 +5760,10 @@
    },
    "contacts": {
     "phone": {
-     "value": "877-348-1281",
+     "value": "(877) 348-1281",
      "layer": "documented",
-     "quote": "877-348-1281",
-     "source_id": "web-453622eb5187e812",
+     "quote": "Patients should contact the Central Business Office at (877) 348-1281 if they qualify or if they have questions about this discount.",
+     "source_id": "fap-026658eaf35c0b6b",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -5630,27 +5796,35 @@
      "effective_date": null
     },
     {
-     "id": "web-453622eb5187e812",
+     "id": "web-0929e18b0f7a0576",
      "kind": "hospital_web",
-     "url": "https://www.baptistonline.org/patients-and-visitors/financial-assistance/hospital-contact-numbers",
-     "title": "Hospital Contact Numbers at Baptist Memorial Health Care",
+     "url": "https://www.baptistonline.org/patients-and-visitors/financial-assistance",
+     "title": "Financial Assistance Policy for Baptist Memorial Health Care",
      "fetched_on": "2026-10-23",
-     "sha256": "453622eb5187e812e021e18eb16b81027dd1f55718527b9fc424f2bf0b60bc61",
+     "sha256": "0929e18b0f7a0576c308e84efec3f8e76a661d3e01c651597aa1610ec0e94cf7",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: 251-300% 90% | 301-350% 85%"
+    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: 7. Legal documents including divorce decree and/or child support and alimony",
+    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Please return this application and the requested information to the Business Office of the Baptist facility where servic"
    ],
    "eve_verified": {
     "on": "2026-10-23",
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-026658eaf35c0b6b": true,
+     "fap-479eb4eb1e9d002b": true,
+     "web-0929e18b0f7a0576": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
+     "eligibility.discount_tiers",
      "eligibility.insured_patients_covered",
-     "programs.state_programs",
+     "eligibility.min_balance",
      "apply.documents_required",
      "apply.submit_methods",
      "apply.window_days_from_first_bill",
@@ -5663,8 +5837,8 @@
       "quote not found in source"
      ],
      [
-      "eligibility.discount_tiers",
-      "value not in quote"
+      "apply.form_url",
+      "quote not found in source"
      ],
      [
       "apply.decision_days",
@@ -5674,8 +5848,8 @@
     "pruned": [
      "apply.documents_required: 1 item not named in the trimmed quote"
     ],
-    "income_rule_verified": false,
-    "core_completeness": 0.5
+    "income_rule_verified": true,
+    "core_completeness": 0.67
    }
   },
   {
@@ -5872,6 +6046,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-23f46ddd974aabc6": true,
+     "web-5366063f1805f65f": true,
+     "fap-eca17cbf46c62bcf": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.residency",
@@ -5913,54 +6093,54 @@
    "status": "draft",
    "eligibility": {
     "free_care_max_fpl": null,
-    "discount_tiers": null,
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "200",
+       "max_fpl_inclusive": "250",
+       "discount_percent": 95
+      },
+      {
+       "min_fpl_exclusive": "250",
+       "max_fpl_inclusive": "300",
+       "discount_percent": 90
+      },
+      {
+       "min_fpl_exclusive": "300",
+       "max_fpl_inclusive": "350",
+       "discount_percent": 85
+      },
+      {
+       "min_fpl_exclusive": "350",
+       "max_fpl_inclusive": "400",
+       "discount_percent": 80
+      }
+     ],
+     "layer": "documented",
+     "quote": "< 200% 100% 201-250% 95% 251-300% 90% 301-350% 85% 351-400% 80% > 400% Varies by Facility",
+     "source_id": "fap-026658eaf35c0b6b",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": null,
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "Medically Underinsured patients will receive a 25% discount off the patient liability greater than $5,000.",
+     "quote": "The Medically Underinsured patient discount applies under the following terms and conditions",
      "source_id": "fap-026658eaf35c0b6b",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "min_balance": {
-     "value": "5000",
-     "layer": "documented",
-     "quote": "any Insured patient who has incurred an out-of-pocket liability for hospital Technical Charges in excess of $5,000",
-     "source_id": "fap-026658eaf35c0b6b",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "min_balance": null,
     "services_excluded": null
    },
    "programs": {
     "presumptive": null,
-    "state_programs": {
-     "value": [
-      {
-       "name": "Church Health (CH)",
-       "how_to_apply": "Where applicable, BMHCC has delegated our financial assistance process to CH, streamlining the process of relying on the CH-calculated FPL levels for our financial assistance determination."
-      },
-      {
-       "name": "Oxford Medical Ministries Clinic (OMMC)",
-       "how_to_apply": "Where applicable, the financial assistance process has been delegated to OMMC as they use the same methodology to qualify patients for their program."
-      },
-      {
-       "name": "Mission First (MF)",
-       "how_to_apply": "Baptist Jackson has partnered and aided as a benefactor, uniting our missions of providing quality health care, education and wellness programs to the underserved in our community."
-      }
-     ],
-     "layer": "documented",
-     "quote": "Church Health (CH) is a healthcare ministry operating in Shelby County. Baptist has an established partnership and sponsorships with CH",
-     "source_id": "fap-026658eaf35c0b6b",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "state_programs": null
    },
    "apply": {
     "form_url": null,
@@ -5970,11 +6150,10 @@
       "pay_stubs",
       "tax_return",
       "bank_statements",
-      "proof_of_income",
       "other"
      ],
      "layer": "documented",
-     "quote": "Pay stubs for the last three months 2. Income tax return for the previous year 3. W2 forms for the previous year 4. State/Federal assistance documents 5. Bank statements for the last three months 6. Pension/retirement statements",
+     "quote": "1. Pay stubs for the last three months 2. Income tax return for the previous year 3. W2 forms for the previous year 4. State/Federal assistance documents 5. Bank statements for the last three months",
      "source_id": "fap-026658eaf35c0b6b",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5989,15 +6168,11 @@
       },
       {
        "kind": "fax",
-       "detail": "901-226-0772"
+       "detail": "Fax # 901-226-0772"
       },
       {
        "kind": "email",
        "detail": "fap@bmhcc.org"
-      },
-      {
-       "kind": "in_person",
-       "detail": "Business Office of the Baptist facility where services were received"
       }
      ],
      "layer": "documented",
@@ -6010,7 +6185,7 @@
     "window_days_from_first_bill": {
      "value": 240,
      "layer": "documented",
-     "quote": "ends on the later of 240 days after the first post-discharge billing statement or thirty days after the hospital",
+     "quote": "ends on the later of 240 days after the first post-discharge billing statement",
      "source_id": "fap-026658eaf35c0b6b",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -6023,7 +6198,7 @@
     "eca_wait_days": {
      "value": 120,
      "layer": "documented",
-     "quote": "No ECA will be taken sooner than 120 days from the date of the first post-discharge bill and at least 30",
+     "quote": "No ECA will be taken sooner than 120 days from the date of the first post-discharge bill",
      "source_id": "fap-026658eaf35c0b6b",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -6036,7 +6211,7 @@
      "value": "877-348-1281",
      "layer": "documented",
      "quote": "877-348-1281",
-     "source_id": "web-04a6579c03feea95",
+     "source_id": "web-cd662ceb35801dec",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -6069,28 +6244,34 @@
      "effective_date": null
     },
     {
-     "id": "web-04a6579c03feea95",
+     "id": "web-cd662ceb35801dec",
      "kind": "hospital_web",
      "url": "https://www.baptistonline.org/patients-and-visitors/financial-assistance/hospital-contact-numbers",
      "title": "Hospital Contact Numbers at Baptist Memorial Health Care",
      "fetched_on": "2026-10-23",
-     "sha256": "04a6579c03feea9520cd22368d38d103130b171b2ad1c7632d24057f99d5d8fa",
+     "sha256": "cd662ceb35801dec59dd85a3c7e020bcf393b8b4d798206873197eaf885076c1",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: 251-300% 90% | 301-350% 85% 351-400% 80%"
+    "agent judge on eligibility.free_care_max_fpl: Quote says \"< 200% 100%\", which means free care applies below 200% FPL. It does not state that 200% itself receives free care, so 200 as the highest qualifying percent is not confirmed.",
+    "agent judge on eligibility.insured_patients_covered: Quote only says the Medically Underinsured patient discount applies under terms and conditions. It does not state that insured patients are covered."
    ],
    "eve_verified": {
     "on": "2026-10-23",
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-026658eaf35c0b6b": true,
+     "fap-479eb4eb1e9d002b": true,
+     "web-cd662ceb35801dec": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
+     "eligibility.discount_tiers",
      "eligibility.insured_patients_covered",
-     "eligibility.min_balance",
-     "programs.state_programs",
      "apply.documents_required",
      "apply.submit_methods",
      "apply.window_days_from_first_bill",
@@ -6103,20 +6284,15 @@
       "quote not found in source"
      ],
      [
-      "eligibility.discount_tiers",
-      "value not in quote"
-     ],
-     [
       "apply.decision_days",
       "value not in quote"
      ]
     ],
     "pruned": [
-     "programs.presumptive: none of the listed programs is named in the quote (after trimming)",
      "apply.documents_required: 1 item not named in the trimmed quote"
     ],
-    "income_rule_verified": false,
-    "core_completeness": 0.5
+    "income_rule_verified": true,
+    "core_completeness": 0.67
    }
   }
  ]

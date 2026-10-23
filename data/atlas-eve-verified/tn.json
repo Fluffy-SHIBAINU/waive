@@ -121,6 +121,11 @@
     "sources_fetched": 2,
     "sources_total": 2,
     "sources_missing": [],
+    "sha256_match": {
+     "web-4d2340478a97605a": false,
+     "web-f8c876585c78dd96": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.assistance_ceiling_fpl",
@@ -158,15 +163,7 @@
     "free_care_max_fpl": null,
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
-    "asset_test": {
-     "value": true,
-     "layer": "documented",
-     "quote": "please provide the total amount of other resources available to you, including savings accounts, checking",
-     "source_id": "fap-297b3265e8a2e3ca",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "asset_test": null,
     "residency": null,
     "insured_patients_covered": null,
     "min_balance": null,
@@ -179,7 +176,20 @@
    "apply": {
     "form_url": null,
     "form_version": null,
-    "documents_required": null,
+    "documents_required": {
+     "value": [
+      "tax_return",
+      "bank_statements",
+      "social_security_letter",
+      "other"
+     ],
+     "layer": "documented",
+     "quote": "IRS Form W-2 Paycheck Remittance Tax Return Bank Statements Employer Verification Proof of Participation in Governmental Assistance programs such as food stamps, SNAP, AFDC or Medicaid Social Security or Unemployment Compensation Determination Letters",
+     "source_id": "fap-297b3265e8a2e3ca",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "documents_reported": null,
     "submit_methods": null,
     "window_days_from_first_bill": null,
@@ -194,8 +204,8 @@
     "phone": {
      "value": "931-450-1117",
      "layer": "documented",
-     "quote": "we invite patients to contact us directly at 931-450-1117. Our Patient Financial Care team is available to help explain costs and billing information.",
-     "source_id": "web-dc16162e426d2f7f",
+     "quote": "Phone: 931-450-1117",
+     "source_id": "fap-297b3265e8a2e3ca",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -239,17 +249,21 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "agent dropped apply.documents_required: judge: The quote is cut off at 'programs such as food'. It never names SNAP, AFDC or Medicaid, so the full listed item is not supported."
+    "agent judge on apply.documents_required: Quote lists more items including Proof of Participation in Governmental Assistance programs; value omits it but the list is otherwise matching."
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 2,
+    "sources_fetched": 3,
     "sources_total": 3,
-    "sources_missing": [
-     "https://www.unitymedicalmanchester.com/_files/ugd/e152f4_ef439b17a6de46f7b61e5df55163895c.docx?dn=Financial%20Assistance%20and%20Charity%20Care%20Policy.docx"
-    ],
+    "sources_missing": [],
+    "sha256_match": {
+     "web-579ac1cad34c0ff9": true,
+     "fap-297b3265e8a2e3ca": true,
+     "web-dc16162e426d2f7f": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
-     "eligibility.asset_test",
+     "apply.documents_required",
      "contacts.phone"
     ],
     "rejected": [
@@ -258,9 +272,11 @@
       "quote not found in source"
      ]
     ],
-    "pruned": [],
+    "pruned": [
+     "apply.documents_required: 1 item not named in the trimmed quote"
+    ],
     "income_rule_verified": false,
-    "core_completeness": 0.17
+    "core_completeness": 0.33
    }
   },
   {
@@ -294,9 +310,36 @@
    "apply": {
     "form_url": null,
     "form_version": null,
-    "documents_required": null,
+    "documents_required": {
+     "value": [
+      "pay_stubs"
+     ],
+     "layer": "documented",
+     "quote": "attach two (2) paycheck stubs from each adult member of the household who is employed",
+     "source_id": "fap-355fb051c2bc610d",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "documents_reported": null,
-    "submit_methods": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "in_person",
+       "detail": "Provide the completed and signed Financial Assistance Application, along with the supporting documentation listed below, to the Financial Counselor"
+      },
+      {
+       "kind": "phone",
+       "detail": "contact the Business Office at 865-374-3000"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Provide the completed and signed Financial Assistance Application, along with the supporting documentation listed below, to the Financial Counselor who has been assigned to your case. If you need assistance with this application, please contact the Business Office at 865-374-3000.",
+     "source_id": "fap-355fb051c2bc610d",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "window_days_from_first_bill": null,
     "decision_days": null,
     "decision_days_reported": null
@@ -309,7 +352,7 @@
     "phone": {
      "value": "865-374-3000",
      "layer": "documented",
-     "quote": "For more information about the Financial Assistance Program, please call our Financial Counselor at 865-374-3000 .",
+     "quote": "please call our Financial Counselor at 865-374-3000",
      "source_id": "web-b4634b2da2f971f8",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -354,8 +397,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "agent dropped apply.documents_required: judge: The quote has no item for verification of Social Security benefits if disabled or retired; the other three items appear.",
-    "agent dropped apply.submit_methods: judge: The quote says to provide the application to the assigned Financial Counselor but does not say this is done in person."
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: provide verification of monthly Social Security benefits. (Letter from Social Security or current bank statement) | provide a copy of the most recent tax return, (Schedule C)"
    ],
    "eve_verified": {
     "on": "2026-10-23",
@@ -364,7 +406,15 @@
     "sources_missing": [
      "https://www.covenanthealth.com/wp-content/uploads/2025/06/3500.070-Financial-Assistance-Policy-English-revised-April-2026.pdf"
     ],
+    "sha256_match": {
+     "fap-b3505f8fe92b92aa": true,
+     "fap-355fb051c2bc610d": true,
+     "web-b4634b2da2f971f8": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
+     "apply.documents_required",
+     "apply.submit_methods",
      "contacts.phone"
     ],
     "rejected": [
@@ -373,9 +423,11 @@
       "quote not found in source"
      ]
     ],
-    "pruned": [],
+    "pruned": [
+     "apply.documents_required: 3 items not named in the trimmed quote"
+    ],
     "income_rule_verified": false,
-    "core_completeness": 0.17
+    "core_completeness": 0.5
    }
   },
   {
@@ -568,6 +620,11 @@
     "sources_fetched": 2,
     "sources_total": 2,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-bd9aa1695c2b97b4": true,
+     "fap-1e5f9aa90dd62ebd": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -609,7 +666,36 @@
    "status": "draft",
    "eligibility": {
     "free_care_max_fpl": null,
-    "discount_tiers": null,
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "200",
+       "max_fpl_inclusive": "250",
+       "discount_percent": 95
+      },
+      {
+       "min_fpl_exclusive": "250",
+       "max_fpl_inclusive": "300",
+       "discount_percent": 90
+      },
+      {
+       "min_fpl_exclusive": "300",
+       "max_fpl_inclusive": "350",
+       "discount_percent": 85
+      },
+      {
+       "min_fpl_exclusive": "350",
+       "max_fpl_inclusive": "400",
+       "discount_percent": 80
+      }
+     ],
+     "layer": "documented",
+     "quote": "< 200% 100% 201-250% 95% 251-300% 90% 301-350% 85% 351-400% 80% > 400% Varies by Facility",
+     "source_id": "fap-026658eaf35c0b6b",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": null,
@@ -649,7 +735,7 @@
       "other"
      ],
      "layer": "documented",
-     "quote": "Pay stubs for the last three months 2. Income tax return for the previous year 3. W2 forms for the previous year 4. State/Federal assistance documents 5. Bank statements for the last three months 6. Pension/retirement statements",
+     "quote": "1. Pay stubs for the last three months 2. Income tax return for the previous year 3. W2 forms for the previous year 4. State/Federal assistance documents 5. Bank statements for the last three months 6. Pension/retirement statements",
      "source_id": "fap-026658eaf35c0b6b",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -664,7 +750,7 @@
       },
       {
        "kind": "fax",
-       "detail": "901-226-0772"
+       "detail": "Fax # 901-226-0772"
       },
       {
        "kind": "email",
@@ -672,7 +758,7 @@
       },
       {
        "kind": "in_person",
-       "detail": "Return application to the Business Office of the Baptist facility where services were received"
+       "detail": "Return this application and the requested information to the Business Office of the Baptist facility where services were received"
       }
      ],
      "layer": "documented",
@@ -708,7 +794,7 @@
    },
    "contacts": {
     "phone": {
-     "value": "877-348-1281",
+     "value": "(877) 348-1281",
      "layer": "documented",
      "quote": "Patients should contact the Central Business Office at (877) 348-1281 if they qualify or if they have questions about this discount.",
      "source_id": "fap-026658eaf35c0b6b",
@@ -744,26 +830,34 @@
      "effective_date": null
     },
     {
-     "id": "web-e6b873bb400baea1",
+     "id": "web-ad35610ecbfe5c6f",
      "kind": "hospital_web",
-     "url": "https://www.baptistonline.org/patients-and-visitors/financial-assistance/faq",
-     "title": "Financial Assistance FAQs | Baptist Memorial Health Care",
+     "url": "https://www.baptistonline.org/patients-and-visitors/financial-assistance",
+     "title": "Financial Assistance Policy for Baptist Memorial Health Care",
      "fetched_on": "2026-10-23",
-     "sha256": "e6b873bb400baea1d6816feab3a8f516de3d3f580f8e4f72fa660e39c6b298be",
+     "sha256": "ad35610ecbfe5c6f299c71f5007f02d9af5dedb4e5a44bb743a1aa8a09f0b699",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: 251-300% 90% | 301-350% 85% 351-400% 80%",
-    "agent dropped programs.presumptive: quote is not a substring of the source"
+    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Please return this application and the requested information to the Business Office of the Baptist facility where servic",
+    "agent judge on eligibility.free_care_max_fpl: Quote says '< 200% 100%', i.e. under 200% gets free care. It does not state that 200% itself gets 100% free care.",
+    "agent judge on programs.presumptive: Quote only says Baptist may use external scoring systems to predict presumptive charity. It does not name Medicaid or any program."
    ],
    "eve_verified": {
     "on": "2026-10-23",
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-026658eaf35c0b6b": true,
+     "fap-479eb4eb1e9d002b": true,
+     "web-ad35610ecbfe5c6f": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
+     "eligibility.discount_tiers",
      "eligibility.insured_patients_covered",
      "eligibility.min_balance",
      "apply.documents_required",
@@ -778,8 +872,8 @@
       "quote not found in source"
      ],
      [
-      "eligibility.discount_tiers",
-      "value not in quote"
+      "apply.form_url",
+      "quote not found in source"
      ],
      [
       "apply.decision_days",
@@ -787,10 +881,11 @@
      ]
     ],
     "pruned": [
+     "programs.presumptive: none of the listed programs is named in the quote (after trimming)",
      "apply.documents_required: 1 item not named in the trimmed quote"
     ],
-    "income_rule_verified": false,
-    "core_completeness": 0.5
+    "income_rule_verified": true,
+    "core_completeness": 0.67
    }
   },
   {
@@ -974,6 +1069,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-22586219afceb70d": true,
+     "fap-417150667f60a5d0": true,
+     "web-84ee36a2c9ebc230": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.insured_patients_covered",
@@ -1176,6 +1277,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-22586219afceb70d": true,
+     "fap-417150667f60a5d0": true,
+     "web-84ee36a2c9ebc230": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.insured_patients_covered",
@@ -1365,6 +1472,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-22586219afceb70d": true,
+     "fap-417150667f60a5d0": true,
+     "web-84ee36a2c9ebc230": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.insured_patients_covered",
@@ -1406,17 +1519,17 @@
     "free_care_max_fpl": null,
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
-    "asset_test": {
+    "asset_test": null,
+    "residency": null,
+    "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "Checking: Yes No Amount: $___________________ Savings (including flexible spending and health savings accounts): Yes No Amount: $___________________",
-     "source_id": "fap-3c769e247ebd022c",
+     "quote": "persons who have healthcare needs and are uninsured, underinsured, ineligible for a government program, or otherwise unable to pay for their medical care",
+     "source_id": "web-c51f54a810586e74",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "residency": null,
-    "insured_patients_covered": null,
     "min_balance": null,
     "services_excluded": null
    },
@@ -1430,33 +1543,20 @@
     "documents_required": {
      "value": [
       "pay_stubs",
+      "other",
       "social_security_letter",
       "bank_statements",
-      "tax_return",
-      "other"
+      "tax_return"
      ],
      "layer": "documented",
-     "quote": "Last 4 paystubs Copy of mortgage payment OR Letter from employer Copy of rental agreement Social Security benefits (if applicable) Other documents requested Last 3 months bank statements Copies of monthly bills Previous year's Federal Tax Return",
-     "source_id": "fap-3c769e247ebd022c",
-     "checked_on": "2026-10-23",
-     "confidence": 0.8,
-     "support_count": 0
-    },
-    "documents_reported": null,
-    "submit_methods": {
-     "value": [
-      {
-       "kind": "in_person",
-       "detail": "Return the form with requested documents to the Facility Registration Department or Financial Counselor"
-      }
-     ],
-     "layer": "documented",
-     "quote": "Please complete and return the following form with requested documents to the Facility Registration Department or Financial Counselor to be evaluated for Financial Assistance.",
-     "source_id": "fap-3c769e247ebd022c",
+     "quote": "___ Last 4 paystubs ___ Copy of mortgage payment OR ___ Letter from employer ___ Copy of rental agreement ___ Social Security benefits (if applicable) ___ Other documents requested ___ Last 3 months bank statements ___ Copies of monthly bills ___ Previous years Federal Tax Return",
+     "source_id": "fap-ea1ff5e2d318b5b0",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
+    "documents_reported": null,
+    "submit_methods": null,
     "window_days_from_first_bill": null,
     "decision_days": null,
     "decision_days_reported": null
@@ -1470,7 +1570,7 @@
      "value": "(423) 907-1200",
      "layer": "documented",
      "quote": "P: (423) 907-1200",
-     "source_id": "web-67154cb8e9324d90",
+     "source_id": "web-c51f54a810586e74",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -1485,60 +1585,64 @@
    },
    "sources": [
     {
-     "id": "web-67154cb8e9324d90",
+     "id": "web-c51f54a810586e74",
      "kind": "hospital_web",
      "url": "https://www.tennovalafollette.com/financial-assistance-program",
      "title": "Financial Assistance Program",
      "fetched_on": "2026-10-23",
-     "sha256": "67154cb8e9324d9004873ed6bb132c1eebd636e58db833834eea38a915564ef5",
+     "sha256": "c51f54a810586e7468c802b2fd2f45beed80d4ab0b7de55c07cfafa8d2a25d37",
      "effective_date": null
     },
     {
-     "id": "fap-3c769e247ebd022c",
+     "id": "fap-ea1ff5e2d318b5b0",
      "kind": "hospital_web",
-     "url": "https://www.tennovalafollette.com/Uploads/Public/Documents/all-new-documents/2023/100-ADM-1202-2023.pdf",
+     "url": "https://www.tennovalafollette.com/Uploads/Public/Documents/all-new-documents/FAP%20Application_web%20version%20Final%20w_o%20cover5_14_21.pdf",
      "title": "",
      "fetched_on": "2026-10-23",
-     "sha256": "3c769e247ebd022c4b032247e9b709ee0ca938bf80402ffc3e8a75aff5565a47",
+     "sha256": "ea1ff5e2d318b5b0bcb39604eb01e20fa55da7c0185a2f3defdd8fcda08dea9c",
      "effective_date": null
     },
     {
-     "id": "web-544323450e0a47c0",
+     "id": "web-6a54d0e4213816b4",
      "kind": "hospital_web",
      "url": "https://www.tennovalafollette.com/financial-information",
      "title": "Financial Information",
      "fetched_on": "2026-10-23",
-     "sha256": "544323450e0a47c066f96eefa671ad1ba84a949c5101efdc1c221ea0f4a4d743",
+     "sha256": "6a54d0e4213816b45bb5d7e4c7e8731c47ec2005549e3f11777606e599fd71f2",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: quote matched the source only after typography normalization",
-    "apply.form_url: not an absolute URL ('/Uploads/Public/Documents/all-new-documents/2023/100-ADM-120'); dropped"
+    "agent judge on apply.documents_required: Quote lists many documents with blanks and optional or alternative items (mortgage, rental agreement, bills, employer letter); the value presents them as a fixed required set and omits some options."
    ],
    "eve_verified": {
     "on": "2026-10-23",
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "web-c51f54a810586e74": false,
+     "fap-ea1ff5e2d318b5b0": true,
+     "web-6a54d0e4213816b4": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
-     "eligibility.asset_test",
+     "eligibility.insured_patients_covered",
      "apply.documents_required",
-     "apply.submit_methods",
      "contacts.phone"
     ],
     "rejected": [
      [
-      "eligibility.insured_patients_covered",
-      "quote does not say whether insured patients are covered"
+      "apply.form_url",
+      "quote not found in source"
      ]
     ],
     "pruned": [
-     "apply.documents_required: 1 item not named in the trimmed quote"
+     "apply.submit_methods: none of the listed channels is named in the quote (after trimming)"
     ],
     "income_rule_verified": false,
-    "core_completeness": 0.5
+    "core_completeness": 0.33
    }
   },
   {
@@ -1575,11 +1679,10 @@
     "documents_required": {
      "value": [
       "pay_stubs",
-      "proof_of_income",
       "other"
      ],
      "layer": "documented",
-     "quote": "If working, attach two (2) paycheck stubs from each adult member of the household who is employed.",
+     "quote": "attach two (2) paycheck stubs from each adult member of the household who is employed.",
      "source_id": "fap-355fb051c2bc610d",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1589,12 +1692,12 @@
     "submit_methods": {
      "value": [
       {
-       "kind": "phone",
-       "detail": "865-374-3000"
+       "kind": "in_person",
+       "detail": "Provide the completed and signed Financial Assistance Application, along with the supporting documentation listed below, to the Financial Counselor who has been assigned to your case."
       }
      ],
      "layer": "documented",
-     "quote": "If you need assistance with this application, please contact the Business Office at 865-374-3000.",
+     "quote": "Provide the completed and signed Financial Assistance Application, along with the supporting documentation listed below, to the Financial Counselor who has been assigned to your case.",
      "source_id": "fap-355fb051c2bc610d",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1612,25 +1715,14 @@
     "phone": {
      "value": "865-374-3000",
      "layer": "documented",
-     "quote": "please call our Patient Accounting Office at 865-374-3000",
+     "quote": "please call our Patient Accounting Office at 865-374-3000 .",
      "source_id": "web-cc4197b34cc0c064",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "hours": null,
-    "languages": {
-     "value": [
-      "English",
-      "Spanish"
-     ],
-     "layer": "documented",
-     "quote": "This link will take you to financial assistance information and the application (in English and Spanish).",
-     "source_id": "web-cc4197b34cc0c064",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "languages": null
    },
    "coverage": {
     "facilities": null,
@@ -1668,7 +1760,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: If disabled or retired, provide verification of monthly Social Security benefits. (Letter from Social Security or curren | Provide complete tax return for the last tax year, including all schedules and forms."
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: provide verification of monthly Social Security benefits. (Letter from Social Security or current bank statement) | Provide complete tax return for the last tax year, including all schedules and forms.",
+    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: If you need assistance with this application, please contact the Business Office at 865-374-3000."
    ],
    "eve_verified": {
     "on": "2026-10-23",
@@ -1677,11 +1770,16 @@
     "sources_missing": [
      "https://www.covenanthealth.com/wp-content/uploads/2025/06/3500.070-Financial-Assistance-Policy-English-revised-April-2026.pdf"
     ],
+    "sha256_match": {
+     "fap-b3505f8fe92b92aa": true,
+     "fap-355fb051c2bc610d": true,
+     "web-cc4197b34cc0c064": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "apply.documents_required",
      "apply.submit_methods",
-     "contacts.phone",
-     "contacts.languages"
+     "contacts.phone"
     ],
     "rejected": [
      [
@@ -1690,7 +1788,8 @@
      ]
     ],
     "pruned": [
-     "apply.documents_required: 3 items not named in the trimmed quote"
+     "apply.documents_required: 3 items not named in the trimmed quote",
+     "apply.submit_methods: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": false,
     "core_completeness": 0.5
@@ -1716,11 +1815,19 @@
     "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": null,
-    "insured_patients_covered": null,
-    "min_balance": {
-     "value": "1000",
+    "insured_patients_covered": {
+     "value": true,
      "layer": "documented",
-     "quote": "if a patient\u2019s account has an outstanding balance that exceeds $1,000, and no other party is responsible for the bill",
+     "quote": "eligibility, application, and approval processes for Financial Assistance offered to uninsured, underinsured, and medically indigent patients",
+     "source_id": "fap-139ab651917caf78",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "min_balance": {
+     "value": "5",
+     "layer": "documented",
+     "quote": "Patients receive monthly bill(s) for amounts greater than $5 that VUMC determines are their responsibility, after any insurance plan payments have been applied.",
      "source_id": "fap-139ab651917caf78",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1731,13 +1838,10 @@
    "programs": {
     "presumptive": {
      "value": [
-      "State-funded prescription programs",
-      "Homeless or received care from a homeless clinic",
-      "Participation in Women, Infants and Children programs (WIC)",
-      "Eligibility for food stamps/SNAP benefits"
+      "Medicaid"
      ],
      "layer": "documented",
-     "quote": "1. State-funded prescription programs; 2. Homeless or received care from a homeless clinic; 3. Participation in Women, Infants and Children programs (WIC); 4. Eligibility for food stamps/SNAP benefits;",
+     "quote": "Patients who are enrolled in TennCare or other state Medicaid programs are automatically qualified for a 100% discount",
      "source_id": "fap-139ab651917caf78",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1746,7 +1850,7 @@
     "state_programs": {
      "value": [
       {
-       "name": "TennCare",
+       "name": "TennCare/Medicaid",
        "how_to_apply": "Patients who are enrolled in TennCare or other state Medicaid programs are automatically qualified for a 100% discount without further investigation."
       }
      ],
@@ -1759,45 +1863,22 @@
     }
    },
    "apply": {
-    "form_url": {
-     "value": "https://www.vanderbilthealth.com/information/financial-assistance",
-     "layer": "documented",
-     "quote": "Patients may obtain Financial Assistance applications at this website https://www.vanderbilthealth.com/information/financial-assistance",
-     "source_id": "fap-139ab651917caf78",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "form_url": null,
     "form_version": null,
     "documents_required": {
      "value": [
       "tax_return",
-      "social_security_letter",
-      "pay_stubs",
       "other"
      ],
      "layer": "documented",
-     "quote": "Tax returns and supporting schedules (previous 2 years) \u2022 Social Security/Disability, W-2 or Unemployment (if applicable) \u2022 Pay Stubs* (most recent 3 months) \u2022 Food Stamp Letters* (if applicable)",
+     "quote": "Tax returns and supporting schedules (previous 2 years)",
      "source_id": "fap-670355140e8906eb",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "documents_reported": null,
-    "submit_methods": {
-     "value": [
-      {
-       "kind": "mail",
-       "detail": "Completed applications should be mailed to the address at the bottom of the Financial Assistance application."
-      }
-     ],
-     "layer": "documented",
-     "quote": "Completed applications should be mailed to the address at the bottom of the Financial Assistance application.",
-     "source_id": "fap-139ab651917caf78",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "submit_methods": null,
     "window_days_from_first_bill": {
      "value": 240,
      "layer": "documented",
@@ -1823,7 +1904,7 @@
      "value": 120,
      "layer": "documented",
      "quote": "If the balance due is unpaid or otherwise unresolved after the 120-day period, your account will be sent to a collection agency.",
-     "source_id": "web-57e3ad1cf92a9fba",
+     "source_id": "web-063867a14723190c",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -1832,7 +1913,7 @@
    },
    "contacts": {
     "phone": {
-     "value": "615-936-0910",
+     "value": "(615) 936-0910",
      "layer": "documented",
      "quote": "or by contacting customer service at (615) 936-0910.",
      "source_id": "fap-139ab651917caf78",
@@ -1880,31 +1961,41 @@
      "effective_date": null
     },
     {
-     "id": "web-57e3ad1cf92a9fba",
+     "id": "web-063867a14723190c",
      "kind": "hospital_web",
      "url": "https://www.vanderbilthealth.com/information/guide-billing",
      "title": "A Guide to Billing | Vanderbilt Health Nashville, TN",
      "fetched_on": "2026-10-23",
-     "sha256": "57e3ad1cf92a9fbac8fbb0d5ef659a1b7fd174725e398eac0da0f5bdf776d939",
+     "sha256": "063867a14723190ca067e77afffc635981c4bc7d1522b93823b6c0846a2c182a",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "agent dropped eligibility.insured_patients_covered: quote is not a substring of the source"
+    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: 2. Homeless or received care from a homeless clinic; | 3. Participation in Women, Infants and Children programs (WIC);",
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Social Security/Disability, W-2 or Unemployment (if applicable) | Pay Stubs* (most recent 3 months)",
+    "agent dropped apply.submit_methods: excerpt not in source: you can appeal the decision by emailing, mailing, or faxing ",
+    "agent judge on eligibility.insured_patients_covered: Quote says assistance is offered to uninsured, underinsured, and medically indigent patients; it does not state insured patients are covered as a boolean true.",
+    "agent judge on programs.presumptive: Quote lists TennCare/Medicaid, homeless, and WIC only; SNAP is not in the quoted text, so the value overstates the source.",
+    "agent judge on apply.decision_days: Quote says determinations are completed within thirty business days; the value 30 drops the business-day qualifier, so it is not the same as calendar days."
    ],
    "eve_verified": {
     "on": "2026-10-23",
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-139ab651917caf78": true,
+     "fap-670355140e8906eb": true,
+     "web-063867a14723190c": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
+     "eligibility.insured_patients_covered",
      "eligibility.min_balance",
      "programs.presumptive",
      "programs.state_programs",
-     "apply.form_url",
      "apply.documents_required",
-     "apply.submit_methods",
      "apply.window_days_from_first_bill",
      "apply.decision_days",
      "collections.eca_wait_days",
@@ -1926,11 +2017,11 @@
      ]
     ],
     "pruned": [
-     "programs.presumptive: 5 items not named in the trimmed quote",
-     "apply.submit_methods: 3 items not named in the trimmed quote"
+     "programs.presumptive: 3 items not named in the trimmed quote",
+     "apply.documents_required: 2 items not named in the trimmed quote"
     ],
     "income_rule_verified": false,
-    "core_completeness": 0.67
+    "core_completeness": 0.33
    }
   },
   {
@@ -1949,25 +2040,44 @@
    "status": "draft",
    "eligibility": {
     "free_care_max_fpl": null,
-    "discount_tiers": null,
-    "assistance_ceiling_fpl": null,
-    "asset_test": null,
-    "residency": {
+    "discount_tiers": {
      "value": [
-      "The patient\u2019s primary residence is outside the United States."
+      {
+       "min_fpl_exclusive": "200",
+       "max_fpl_inclusive": "250",
+       "discount_percent": 95
+      },
+      {
+       "min_fpl_exclusive": "250",
+       "max_fpl_inclusive": "300",
+       "discount_percent": 90
+      },
+      {
+       "min_fpl_exclusive": "300",
+       "max_fpl_inclusive": "350",
+       "discount_percent": 85
+      },
+      {
+       "min_fpl_exclusive": "350",
+       "max_fpl_inclusive": "400",
+       "discount_percent": 80
+      }
      ],
      "layer": "documented",
-     "quote": "The patient\u2019s primary residence is outside the United States.",
-     "source_id": "fap-0be58ba2175f730d",
+     "quote": "< 200% 100% 201-250% 95% 251-300% 90% 301-350% 85% 351-400% 80% > 400% Varies by Facility",
+     "source_id": "fap-95d6f97e32c851c1",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
+    "assistance_ceiling_fpl": null,
+    "asset_test": null,
+    "residency": null,
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "Medically underinsured patients are automatically eligible for a 25% discount off the patient liability greater than $5,000.",
-     "source_id": "fap-0be58ba2175f730d",
+     "quote": "Medically Underinsured patients will automatically receive a 25% discount off the patient liability greater than $5,000.",
+     "source_id": "fap-95d6f97e32c851c1",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -1975,8 +2085,8 @@
     "min_balance": {
      "value": "5000",
      "layer": "documented",
-     "quote": "any insured patient who has incurred an out of pocket liability for hospital (technical) charges in excess of $5,000 for a single encounter is deemed medically underinsured",
-     "source_id": "fap-0be58ba2175f730d",
+     "quote": "any Insured patient who has incurred an out-of-pocket liability for hospital Technical Charges in excess of $5,000 for a single Encounter is deemed Medically Underinsured",
+     "source_id": "fap-95d6f97e32c851c1",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -1985,28 +2095,7 @@
    },
    "programs": {
     "presumptive": null,
-    "state_programs": {
-     "value": [
-      {
-       "name": "Church Health (CH)",
-       "how_to_apply": "BMHCC has delegated our financial assistance process to CH, streamlining the process of relying on the CH-calculated FPL levels for our financial assistance determination."
-      },
-      {
-       "name": "Oxford Medical Ministries Clinic (OMMC)",
-       "how_to_apply": "The financial assistance process has been delegated to OMMC as they use the same methodology to qualify patients for their program."
-      },
-      {
-       "name": "Mission First (MF)",
-       "how_to_apply": "Baptist Jackson has partnered and aided as a benefactor uniting our missions of providing quality health care, education and wellness programs to the underserved in our community."
-      }
-     ],
-     "layer": "documented",
-     "quote": "Church Health (CH) is a healthcare ministry operating in Shelby County. Baptist has an established partnership and sponsorships with CH",
-     "source_id": "fap-0be58ba2175f730d",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "state_programs": null
    },
    "apply": {
     "form_url": null,
@@ -2015,49 +2104,19 @@
      "value": [
       "pay_stubs",
       "tax_return",
-      "bank_statements",
-      "proof_of_income",
-      "other"
+      "other",
+      "bank_statements"
      ],
      "layer": "documented",
-     "quote": "1. Pay stubs for the last three months 2. Income tax return for the previous year 3. W2 forms for the previous year 4. State/Federal assistance documents 5. Bank statements for the last three months 6. Pension/retirement statements 7. Legal documents including divorce decree and/or child support and alimony",
-     "source_id": "fap-0be58ba2175f730d",
+     "quote": "1. Pay stubs for the last three months 2. Income tax return for the previous year 3. W2 forms for the previous year 4. State/Federal assistance documents 5. Bank statements for the last three months",
+     "source_id": "fap-95d6f97e32c851c1",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "documents_reported": null,
-    "submit_methods": {
-     "value": [
-      {
-       "kind": "mail",
-       "detail": "Baptist Central Business Office, 965 Ridge Lake Blvd., Suite 315, Memphis, TN 38120"
-      },
-      {
-       "kind": "fax",
-       "detail": "Fax # 901-226-0772"
-      },
-      {
-       "kind": "email",
-       "detail": "fap@bmhcc.org"
-      }
-     ],
-     "layer": "documented",
-     "quote": "Baptist Central Business Office 965 Ridge Lake Blvd., Suite 315, Memphis, TN 38120 Fax # 901-226-0772 Email Address: fap@bmhcc.org",
-     "source_id": "fap-479eb4eb1e9d002b",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "window_days_from_first_bill": {
-     "value": 240,
-     "layer": "documented",
-     "quote": "Patients are given the opportunity to apply for financial assistance for the later of 240 days from the date of the first post-discharge billing statement",
-     "source_id": "fap-0be58ba2175f730d",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "submit_methods": null,
+    "window_days_from_first_bill": null,
     "decision_days": null,
     "decision_days_reported": null
    },
@@ -2065,8 +2124,8 @@
     "eca_wait_days": {
      "value": 121,
      "layer": "documented",
-     "quote": "No ECA will be taken sooner than 121 days from the date of the first post-discharge bill",
-     "source_id": "fap-0be58ba2175f730d",
+     "quote": "No ECA will be taken sooner than 121 days from the date of the first post-discharge bill and at least thirty days after written notice outlining pending ECA.",
+     "source_id": "fap-95d6f97e32c851c1",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -2085,21 +2144,12 @@
    },
    "sources": [
     {
-     "id": "fap-0be58ba2175f730d",
+     "id": "fap-95d6f97e32c851c1",
      "kind": "hospital_web",
-     "url": "https://www.baptistonline.org/-/media/22cfa8e5a614453689bd3d1bad4a54ce.pdf",
+     "url": "https://www.baptistonline.org/-/media/f47bbaedf7fa4e0880fcb05353f399a8.pdf",
      "title": "",
      "fetched_on": "2026-10-23",
-     "sha256": "0be58ba2175f730d159b622293d25758cb9127981ba5ad8830aaf18225d17d31",
-     "effective_date": null
-    },
-    {
-     "id": "web-878101b99f239bcf",
-     "kind": "hospital_web",
-     "url": "https://www.baptistonline.org/patients-and-visitors/financial-assistance",
-     "title": "Financial Assistance Policy for Baptist Memorial Health Care",
-     "fetched_on": "2026-10-23",
-     "sha256": "878101b99f239bcfaf9689d9efbfee97e23f891f800e91999e3de2d6fb4ab33b",
+     "sha256": "95d6f97e32c851c1fe71abad5f64baed1a6c0741a21cbec63439bcefc89dc355",
      "effective_date": null
     },
     {
@@ -2110,26 +2160,43 @@
      "fetched_on": "2026-10-23",
      "sha256": "479eb4eb1e9d002b48e32161c7db17a7a15084ecb93b5f95b4b5d986a6e7ca5e",
      "effective_date": null
+    },
+    {
+     "id": "web-db51d87bbc604968",
+     "kind": "hospital_web",
+     "url": "https://www.baptistonline.org/patients-and-visitors/financial-assistance",
+     "title": "Financial Assistance Policy for Baptist Memorial Health Care",
+     "fetched_on": "2026-10-23",
+     "sha256": "db51d87bbc6049680eaeca9f5099a7af3131fb5d6c126200ba1f764f7457f9ec",
+     "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: 251-300% 90% | 301-350% 85%",
-    "agent dropped contacts.languages: quote is not a substring of the source"
+    "contacts.languages: 2 more verbatim excerpt(s) supported this value: \u0627\u0644\u0639\u0631\u0628\u064a\u0629 [/patients-and-visitors/communication-translation#Arabic] | Espa\u00f1ol [/patients-and-visitors/communication-translation#Spanish]",
+    "agent dropped apply.submit_methods: excerpt not in source: Return the form and supporting documentation to the facility",
+    "agent dropped apply.window_days_from_first_bill: quote is not a substring of the source",
+    "agent judge on eligibility.free_care_max_fpl: Quote says \"< 200% 100%\", meaning under 200% gets free care. It does not state 200% itself gets 100% care, so 200 as the highest qualifying percent is not stated.",
+    "agent judge on eligibility.insured_patients_covered: Quote covers only Medically Underinsured patients receiving a 25% discount; it does not state that insured patients in general are covered.",
+    "agent judge on apply.documents_required: Quote lists five documents including \"State/Federal assistance documents\", which the value omits.",
+    "agent judge on contacts.languages: Quote shows only three languages (Amharic, Arabic, Spanish); the value lists 21 languages, which the quote does not support."
    ],
    "eve_verified": {
     "on": "2026-10-23",
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-95d6f97e32c851c1": true,
+     "fap-479eb4eb1e9d002b": true,
+     "web-db51d87bbc604968": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
-     "eligibility.residency",
+     "eligibility.discount_tiers",
      "eligibility.insured_patients_covered",
      "eligibility.min_balance",
-     "programs.state_programs",
      "apply.documents_required",
-     "apply.submit_methods",
-     "apply.window_days_from_first_bill",
      "collections.eca_wait_days"
     ],
     "rejected": [
@@ -2138,26 +2205,20 @@
       "quote not found in source"
      ],
      [
-      "eligibility.discount_tiers",
-      "value not in quote"
-     ],
-     [
-      "eligibility.asset_test",
-      "quote does not support the asset-test value"
-     ],
-     [
       "apply.form_url",
       "quote not found in source"
      ],
      [
       "apply.decision_days",
       "value not in quote"
+     ],
+     [
+      "contacts.languages",
+      "quote not found in source"
      ]
     ],
-    "pruned": [
-     "apply.documents_required: 1 item not named in the trimmed quote"
-    ],
-    "income_rule_verified": false,
+    "pruned": [],
+    "income_rule_verified": true,
     "core_completeness": 0.33
    }
   },
@@ -2371,6 +2432,12 @@
     "sources_missing": [
      "https://www.methodisthealth.org/files/billing/ENG_Financial_Assistance_Application.pdf"
     ],
+    "sha256_match": {
+     "fap-304648bdb14dc4f4": true,
+     "fap-04eb3b64129888f0": true,
+     "web-7b5bf8da6a5cf15d": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.insured_patients_covered",
@@ -2574,6 +2641,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-fd14684cc692480a": true,
+     "fap-7e456899116c1561": true,
+     "web-3a4fd2d41a925c09": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.residency",
@@ -2766,6 +2839,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-22586219afceb70d": true,
+     "fap-417150667f60a5d0": true,
+     "web-84ee36a2c9ebc230": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.asset_test",
@@ -2900,6 +2979,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "web-4d2340478a97605a": false,
+     "web-d1e08e647b30605a": false,
+     "web-8e10aa73acb709a2": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.insured_patients_covered",
@@ -2947,7 +3032,6 @@
     "documents_required": {
      "value": [
       "pay_stubs",
-      "proof_of_income",
       "other"
      ],
      "layer": "documented",
@@ -2961,12 +3045,12 @@
     "submit_methods": {
      "value": [
       {
-       "kind": "phone",
-       "detail": "865-374-3000"
+       "kind": "in_person",
+       "detail": "Provide the completed and signed Financial Assistance Application, along with the supporting documentation listed below, to the Financial Counselor who has been assigned to your case."
       }
      ],
      "layer": "documented",
-     "quote": "If you need assistance with this application, please contact the Business Office at 865-374-3000.",
+     "quote": "Provide the completed and signed Financial Assistance Application, along with the supporting documentation listed below, to the Financial Counselor who has been assigned to your case.",
      "source_id": "fap-355fb051c2bc610d",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2993,7 +3077,7 @@
     "hours": {
      "value": "Monday through Friday, 8 a.m. to 4:30 p.m. ET",
      "layer": "documented",
-     "quote": "Monday through Friday, 8 a.m. to 4:30 p.m. ET.",
+     "quote": "Monday through Friday, 8 a.m. to 4:30 p.m. ET",
      "source_id": "web-45da95d3cbfcf096",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3047,7 +3131,10 @@
     }
    ],
    "accuracy": null,
-   "eve_review": [],
+   "eve_review": [
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: If disabled or retired, provide verification of monthly Social Security benefits. (Letter from Social Security or curren | Provide complete tax return for the last tax year, including all schedules and forms.",
+    "agent judge on apply.documents_required: Quote lists paycheck stubs, Social Security verification, and a tax return, but never mentions food stamp verification, which the value includes."
+   ],
    "eve_verified": {
     "on": "2026-10-23",
     "sources_fetched": 2,
@@ -3055,6 +3142,12 @@
     "sources_missing": [
      "https://www.covenanthealth.com/wp-content/uploads/2025/06/3500.070-Financial-Assistance-Policy-English-revised-April-2026.pdf"
     ],
+    "sha256_match": {
+     "fap-b3505f8fe92b92aa": true,
+     "fap-355fb051c2bc610d": true,
+     "web-45da95d3cbfcf096": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "apply.documents_required",
      "apply.submit_methods",
@@ -3069,7 +3162,7 @@
      ]
     ],
     "pruned": [
-     "apply.documents_required: 2 items not named in the trimmed quote"
+     "apply.documents_required: 3 items not named in the trimmed quote"
     ],
     "income_rule_verified": false,
     "core_completeness": 0.5
@@ -3263,6 +3356,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-fd14684cc692480a": true,
+     "fap-7e456899116c1561": true,
+     "web-771c53ccee7e0eba": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -3399,6 +3498,11 @@
     "sources_fetched": 2,
     "sources_total": 2,
     "sources_missing": [],
+    "sha256_match": {
+     "web-5a1e704e3a73a644": false,
+     "web-bbbbc0d691d7444b": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "apply.submit_methods",
@@ -3620,6 +3724,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-174bfaef7b79efbc": true,
+     "web-761c6de5d8dd67d2": true,
+     "fap-5080ebf62dc2a58e": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.insured_patients_covered",
@@ -3683,9 +3793,7 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "pay_stubs",
-      "proof_of_income",
-      "other"
+      "pay_stubs"
      ],
      "layer": "documented",
      "quote": "If working, attach two (2) paycheck stubs from each adult member of the household who is employed.",
@@ -3699,11 +3807,15 @@
      "value": [
       {
        "kind": "in_person",
-       "detail": "Provide the completed and signed Financial Assistance Application, along with the supporting documentation, to the Financial Counselor who has been assigned to your case."
+       "detail": "Provide the completed and signed Financial Assistance Application, along with the supporting documentation listed below, to the Financial Counselor who has been assigned to your case."
+      },
+      {
+       "kind": "phone",
+       "detail": "If you need assistance with this application, please contact the Business Office at 865-374-3000."
       }
      ],
      "layer": "documented",
-     "quote": "Provide the completed and signed Financial Assistance Application, along with the supporting documentation listed below, to the Financial Counselor who has been assigned to your case.",
+     "quote": "Provide the completed and signed Financial Assistance Application, along with the supporting documentation listed below, to the Financial Counselor who has been assigned to your case. If you need assistance with this application, please contact the Business Office at 865-374-3000.",
      "source_id": "fap-355fb051c2bc610d",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3728,18 +3840,7 @@
      "support_count": 0
     },
     "hours": null,
-    "languages": {
-     "value": [
-      "English",
-      "Spanish"
-     ],
-     "layer": "documented",
-     "quote": "This link will take you to financial assistance information and the application (in English and Spanish).",
-     "source_id": "web-012d66ea83b18251",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "languages": null
    },
    "coverage": {
     "facilities": null,
@@ -3777,7 +3878,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Provide complete tax return for the last tax year, including all schedules and forms. | If you are receiving food stamps, provide food stamp verification."
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: If disabled or retired, provide verification of monthly Social Security benefits. (Letter from Social Security or curren | Please note that the e-file authorization form is not a tax return. We must have the official tax return, which is the 1"
    ],
    "eve_verified": {
     "on": "2026-10-23",
@@ -3786,11 +3887,16 @@
     "sources_missing": [
      "https://www.covenanthealth.com/wp-content/uploads/2025/06/3500.070-Financial-Assistance-Policy-English-revised-April-2026.pdf"
     ],
+    "sha256_match": {
+     "fap-b3505f8fe92b92aa": true,
+     "fap-355fb051c2bc610d": true,
+     "web-012d66ea83b18251": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "apply.documents_required",
      "apply.submit_methods",
-     "contacts.phone",
-     "contacts.languages"
+     "contacts.phone"
     ],
     "rejected": [
      [
@@ -3799,8 +3905,7 @@
      ]
     ],
     "pruned": [
-     "apply.documents_required: 3 items not named in the trimmed quote",
-     "apply.submit_methods: 1 item not named in the trimmed quote"
+     "apply.documents_required: 3 items not named in the trimmed quote"
     ],
     "income_rule_verified": false,
     "core_completeness": 0.5
@@ -3824,15 +3929,7 @@
     "free_care_max_fpl": null,
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
-    "asset_test": {
-     "value": true,
-     "layer": "documented",
-     "quote": "2The guidelines for determining assets include, but are not limited to, primary dwelling (and attached land), automobiles, liquid assets, investments, farm land, business property, rental property, farm and/or business equipment including livestock and crops.",
-     "source_id": "fap-355fb051c2bc610d",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "asset_test": null,
     "residency": null,
     "insured_patients_covered": null,
     "min_balance": null,
@@ -3848,7 +3945,7 @@
     "documents_required": {
      "value": [
       "pay_stubs",
-      "proof_of_income"
+      "other"
      ],
      "layer": "documented",
      "quote": "If working, attach two (2) paycheck stubs from each adult member of the household who is employed.",
@@ -3861,12 +3958,16 @@
     "submit_methods": {
      "value": [
       {
+       "kind": "in_person",
+       "detail": "Provide the completed and signed Financial Assistance Application, along with the supporting documentation listed below, to the Financial Counselor who has been assigned to your case."
+      },
+      {
        "kind": "phone",
-       "detail": "865-374-3000"
+       "detail": "contact the Business Office at 865-374-3000"
       }
      ],
      "layer": "documented",
-     "quote": "If you need assistance with this application, please contact the Business Office at 865-374-3000.",
+     "quote": "Provide the completed and signed Financial Assistance Application, along with the supporting documentation listed below, to the Financial Counselor who has been assigned to your case. If you need assistance with this application, please contact the Business Office at 865-374-3000.",
      "source_id": "fap-355fb051c2bc610d",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3884,8 +3985,8 @@
     "phone": {
      "value": "865-374-3000",
      "layer": "documented",
-     "quote": "call our Patient Accounting Office at 865-374-3000",
-     "source_id": "web-3e26fc18e9a4cade",
+     "quote": "please call our Patient Accounting Office at 865-374-3000",
+     "source_id": "web-36199461472af6f7",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -3894,7 +3995,7 @@
      "value": "Monday \u2013 Friday 8 a.m. \u2013 4:30 p.m.",
      "layer": "documented",
      "quote": "call us at 865-374-3000 or 1-800-230-1130 , Monday \u2013 Friday 8 a.m. \u2013 4:30 p.m.",
-     "source_id": "web-3e26fc18e9a4cade",
+     "source_id": "web-36199461472af6f7",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -3906,7 +4007,7 @@
      ],
      "layer": "documented",
      "quote": "This link will take you to financial assistance information and the application (in English and Spanish).",
-     "source_id": "web-3e26fc18e9a4cade",
+     "source_id": "web-36199461472af6f7",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -3937,17 +4038,21 @@
      "effective_date": null
     },
     {
-     "id": "web-3e26fc18e9a4cade",
+     "id": "web-36199461472af6f7",
      "kind": "hospital_web",
      "url": "https://www.covenanthealth.com/fort-sanders-regional/billing-and-customer-service/",
      "title": "Billing | Fort Sanders Regional",
      "fetched_on": "2026-10-23",
-     "sha256": "3e26fc18e9a4cade7f8b41bceb4d786a1715f4e682fdc5d618908bb18f77c10e",
+     "sha256": "36199461472af6f7b898476fd901c5f782b4b0633a5ee7e0c0b7f2b38f2cca74",
      "effective_date": null
     }
    ],
    "accuracy": null,
-   "eve_review": [],
+   "eve_review": [
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: If disabled or retired, provide verification of monthly Social Security benefits. (Letter from Social Security or curren | If you are receiving food stamps, provide food stamp verification.",
+    "agent judge on apply.documents_required: Quote supports paycheck stubs, Social Security benefits verification, and food stamp verification. It does not mention a tax return.",
+    "agent judge on apply.submit_methods: Quote says to provide the application to the assigned Financial Counselor and to call the Business Office for help. It does not state phone as a submission method."
+   ],
    "eve_verified": {
     "on": "2026-10-23",
     "sources_fetched": 2,
@@ -3955,15 +4060,25 @@
     "sources_missing": [
      "https://www.covenanthealth.com/wp-content/uploads/2025/06/3500.070-Financial-Assistance-Policy-English-revised-April-2026.pdf"
     ],
+    "sha256_match": {
+     "fap-b3505f8fe92b92aa": true,
+     "fap-355fb051c2bc610d": true,
+     "web-36199461472af6f7": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
-     "eligibility.asset_test",
      "apply.documents_required",
      "apply.submit_methods",
      "contacts.phone",
      "contacts.hours",
      "contacts.languages"
     ],
-    "rejected": [],
+    "rejected": [
+     [
+      "eligibility.asset_test",
+      "quote not found in source"
+     ]
+    ],
     "pruned": [
      "apply.documents_required: 2 items not named in the trimmed quote"
     ],
@@ -3987,7 +4102,290 @@
    "status": "draft",
    "eligibility": {
     "free_care_max_fpl": null,
-    "discount_tiers": null,
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "200",
+       "max_fpl_inclusive": "250",
+       "discount_percent": 95
+      },
+      {
+       "min_fpl_exclusive": "250",
+       "max_fpl_inclusive": "300",
+       "discount_percent": 90
+      },
+      {
+       "min_fpl_exclusive": "300",
+       "max_fpl_inclusive": "350",
+       "discount_percent": 85
+      },
+      {
+       "min_fpl_exclusive": "350",
+       "max_fpl_inclusive": "400",
+       "discount_percent": 80
+      }
+     ],
+     "layer": "documented",
+     "quote": "< 200% 100% 201-250% 95% 251-300% 90% 301-350% 85% 351-400% 80% > 400% Varies by Facility",
+     "source_id": "fap-0be58ba2175f730d",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "assistance_ceiling_fpl": null,
+    "asset_test": null,
+    "residency": {
+     "value": [
+      "The patient's primary residence is outside the United States."
+     ],
+     "layer": "documented",
+     "quote": "The patient's primary residence is outside the United States.",
+     "source_id": "fap-0be58ba2175f730d",
+     "checked_on": "2026-10-23",
+     "confidence": 0.8,
+     "support_count": 0
+    },
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Baptist offers financial assistance to uninsured and underinsured patients.",
+     "source_id": "web-8359a57e08e41f67",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "min_balance": {
+     "value": "5000",
+     "layer": "documented",
+     "quote": "any insured patient who has incurred an out of pocket liability for hospital (technical) charges in excess of $5,000 for a single encounter is deemed medically underinsured",
+     "source_id": "fap-0be58ba2175f730d",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
+    "state_programs": {
+     "value": [
+      {
+       "name": "Church Health (CH)",
+       "how_to_apply": "BMHCC has delegated our financial assistance process to CH, streamlining the process of relying on the CH-calculated FPL levels for our financial assistance determination."
+      },
+      {
+       "name": "Oxford Medical Ministries Clinic (OMMC)",
+       "how_to_apply": "The financial assistance process has been delegated to OMMC as they use the same methodology to qualify patients for their program."
+      },
+      {
+       "name": "Mission First (MF)",
+       "how_to_apply": "Baptist Jackson has partnered and aided as a benefactor uniting our missions of providing quality health care, education and wellness programs to the underserved in our community."
+      }
+     ],
+     "layer": "documented",
+     "quote": "Church Health (CH) is a healthcare ministry operating in Shelby County.",
+     "source_id": "fap-0be58ba2175f730d",
+     "checked_on": "2026-10-23",
+     "confidence": 0.8,
+     "support_count": 0
+    }
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "pay_stubs",
+      "tax_return",
+      "bank_statements",
+      "proof_of_income",
+      "other"
+     ],
+     "layer": "documented",
+     "quote": "1. Pay stubs for the last three months 2. Income tax return for the previous year 3. W2 forms for the previous year 4. State/Federal assistance documents 5. Bank statements for the last three months 6. Pension/retirement statements 7. Legal documents including divorce decree and/or child support and alimony",
+     "source_id": "fap-0be58ba2175f730d",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "Baptist Central Business Office, 965 Ridge Lake Blvd., Suite 315, Memphis, TN 38120"
+      },
+      {
+       "kind": "fax",
+       "detail": "901-226-0772"
+      },
+      {
+       "kind": "email",
+       "detail": "fap@bmhcc.org"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Baptist Central Business Office 965 Ridge Lake Blvd., Suite 315, Memphis, TN 38120 Fax # 901-226-0772 Email Address: fap@bmhcc.org",
+     "source_id": "fap-479eb4eb1e9d002b",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": null,
+    "decision_days": null,
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": {
+     "value": 121,
+     "layer": "documented",
+     "quote": "No ECA will be taken sooner than 121 days from the date of the first post-discharge bill",
+     "source_id": "fap-0be58ba2175f730d",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": null,
+    "hours": null,
+    "languages": null
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-0be58ba2175f730d",
+     "kind": "hospital_web",
+     "url": "https://www.baptistonline.org/-/media/22cfa8e5a614453689bd3d1bad4a54ce.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "0be58ba2175f730d159b622293d25758cb9127981ba5ad8830aaf18225d17d31",
+     "effective_date": null
+    },
+    {
+     "id": "fap-479eb4eb1e9d002b",
+     "kind": "hospital_web",
+     "url": "https://www.baptistonline.org/-/media/b603042e848c4eb2b0719e28b99a41da.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "479eb4eb1e9d002b48e32161c7db17a7a15084ecb93b5f95b4b5d986a6e7ca5e",
+     "effective_date": null
+    },
+    {
+     "id": "web-8359a57e08e41f67",
+     "kind": "hospital_web",
+     "url": "https://www.baptistonline.org/patients-and-visitors/financial-assistance/faq",
+     "title": "Financial Assistance FAQs | Baptist Memorial Health Care",
+     "fetched_on": "2026-10-23",
+     "sha256": "8359a57e08e41f674a4ca9bca71b7efb81b420a0ce260e538d462ea034725365",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "eligibility.residency: quote matched the source only after typography normalization",
+    "programs.state_programs: 2 more verbatim excerpt(s) supported this value: Oxford Medical Ministries Clinic (OMMC) is a privately funded clinic for patients who are 18-65 years old, uninsured, wo | Mission First (MF) is a healthcare ministry located in Jackson, Mississippi.",
+    "programs.state_programs: quote matched the source only after typography normalization",
+    "contacts.languages: 2 more verbatim excerpt(s) supported this value: Espa\u00f1ol [/patients-and-visitors/communication-translation#Spanish] | Ti\u1ebfng Vi\u1ec7t [/patients-and-visitors/communication-translation#Vietnamese]",
+    "agent dropped apply.window_days_from_first_bill: quote is not a substring of the source",
+    "agent judge on eligibility.free_care_max_fpl: Quote says '< 200% 100%', meaning under 200% gets free care. It does not state 200% itself is included, so 200 overstates the stated line.",
+    "agent judge on eligibility.insured_patients_covered: Quote says assistance is offered to uninsured and underinsured patients. It does not plainly state that insured patients are covered.",
+    "agent judge on programs.state_programs: Quote names the three programs and describes them, but the how_to_apply text in the value does not appear in the quote.",
+    "agent judge on contacts.languages: Quote shows only three language links (Amharic, Spanish, Vietnamese), not the full 21-language list in the value."
+   ],
+   "eve_verified": {
+    "on": "2026-10-23",
+    "sources_fetched": 3,
+    "sources_total": 3,
+    "sources_missing": [],
+    "sha256_match": {
+     "fap-0be58ba2175f730d": true,
+     "fap-479eb4eb1e9d002b": true,
+     "web-8359a57e08e41f67": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
+    "accepted": [
+     "eligibility.discount_tiers",
+     "eligibility.residency",
+     "eligibility.insured_patients_covered",
+     "eligibility.min_balance",
+     "programs.state_programs",
+     "apply.documents_required",
+     "apply.submit_methods",
+     "collections.eca_wait_days"
+    ],
+    "rejected": [
+     [
+      "eligibility.free_care_max_fpl",
+      "quote not found in source"
+     ],
+     [
+      "apply.decision_days",
+      "value not in quote"
+     ],
+     [
+      "contacts.languages",
+      "quote not found in source"
+     ]
+    ],
+    "pruned": [
+     "apply.documents_required: 1 item not named in the trimmed quote"
+    ],
+    "income_rule_verified": true,
+    "core_completeness": 0.5
+   }
+  },
+  {
+   "hospital": {
+    "ccn": "440131",
+    "name": "BAPTIST MEMORIAL HOSPITAL TIPTON",
+    "city": "COVINGTON",
+    "state": "TN",
+    "zip": "38019",
+    "phone": "901-476-2621",
+    "ownership": "Voluntary non-profit - Church",
+    "website_domain": "baptistonline.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": null,
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "200",
+       "max_fpl_inclusive": "250",
+       "discount_percent": 95
+      },
+      {
+       "min_fpl_exclusive": "250",
+       "max_fpl_inclusive": "300",
+       "discount_percent": 90
+      },
+      {
+       "min_fpl_exclusive": "300",
+       "max_fpl_inclusive": "350",
+       "discount_percent": 85
+      },
+      {
+       "min_fpl_exclusive": "350",
+       "max_fpl_inclusive": "400",
+       "discount_percent": 80
+      }
+     ],
+     "layer": "documented",
+     "quote": "< 200% 100% 201-250% 95% 251-300% 90% 301-350% 85% 351-400% 80% > 400% Varies by Facility",
+     "source_id": "fap-026658eaf35c0b6b",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": null,
@@ -4042,11 +4440,15 @@
       },
       {
        "kind": "fax",
-       "detail": "901-226-0772"
+       "detail": "Fax # 901-226-0772"
       },
       {
        "kind": "email",
-       "detail": "fap@bmhcc.org"
+       "detail": "Email Address: fap@bmhcc.org"
+      },
+      {
+       "kind": "in_person",
+       "detail": "Please return this application and the requested information to the Business Office of the Baptist facility where services were received."
       }
      ],
      "layer": "documented",
@@ -4072,7 +4474,7 @@
     "eca_wait_days": {
      "value": 120,
      "layer": "documented",
-     "quote": "No ECA will be taken sooner than 120 days from the date of the first post-discharge bill and at least 30",
+     "quote": "No ECA will be taken sooner than 120 days from the date of the first post-discharge bill and at least 30 days after the patient was sent a written notice outlining pending ECA.",
      "source_id": "fap-026658eaf35c0b6b",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4082,208 +4484,9 @@
    },
    "contacts": {
     "phone": {
-     "value": "877-348-1281",
+     "value": "(877) 348-1281",
      "layer": "documented",
-     "quote": "877-348-1281",
-     "source_id": "web-971196f4f641fac2",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "hours": null,
-    "languages": null
-   },
-   "coverage": {
-    "facilities": null,
-    "provider_list_url": null,
-    "covered_providers": null
-   },
-   "sources": [
-    {
-     "id": "fap-026658eaf35c0b6b",
-     "kind": "hospital_web",
-     "url": "https://www.baptistonline.org/-/media/d5a069c18b964a00a240803acfbf30d9.pdf?rev=49bb7c37f5c042afae2e99fcc7aeaf91",
-     "title": "",
-     "fetched_on": "2026-10-23",
-     "sha256": "026658eaf35c0b6ba269e2728e9b4c223c605e9f807f38252c99d84df6157b76",
-     "effective_date": null
-    },
-    {
-     "id": "fap-479eb4eb1e9d002b",
-     "kind": "hospital_web",
-     "url": "https://www.baptistonline.org/-/media/b603042e848c4eb2b0719e28b99a41da.pdf?rev=401a04affe0c4d06a5d0d5657b09ba4f",
-     "title": "",
-     "fetched_on": "2026-10-23",
-     "sha256": "479eb4eb1e9d002b48e32161c7db17a7a15084ecb93b5f95b4b5d986a6e7ca5e",
-     "effective_date": null
-    },
-    {
-     "id": "web-971196f4f641fac2",
-     "kind": "hospital_web",
-     "url": "https://www.baptistonline.org/patients-and-visitors/financial-assistance/hospital-contact-numbers",
-     "title": "Hospital Contact Numbers at Baptist Memorial Health Care",
-     "fetched_on": "2026-10-23",
-     "sha256": "971196f4f641fac2e0f9b13ed6ae6bec10ca2e22ed30d1887d13ee40b94c2f6a",
-     "effective_date": null
-    }
-   ],
-   "accuracy": null,
-   "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: 251-300% 90% | 301-350% 85% 351-400% 80%"
-   ],
-   "eve_verified": {
-    "on": "2026-10-23",
-    "sources_fetched": 3,
-    "sources_total": 3,
-    "sources_missing": [],
-    "accepted": [
-     "eligibility.insured_patients_covered",
-     "eligibility.min_balance",
-     "apply.documents_required",
-     "apply.submit_methods",
-     "apply.window_days_from_first_bill",
-     "collections.eca_wait_days",
-     "contacts.phone"
-    ],
-    "rejected": [
-     [
-      "eligibility.free_care_max_fpl",
-      "quote not found in source"
-     ],
-     [
-      "eligibility.discount_tiers",
-      "value not in quote"
-     ],
-     [
-      "apply.decision_days",
-      "value not in quote"
-     ]
-    ],
-    "pruned": [
-     "apply.documents_required: 1 item not named in the trimmed quote"
-    ],
-    "income_rule_verified": false,
-    "core_completeness": 0.5
-   }
-  },
-  {
-   "hospital": {
-    "ccn": "440131",
-    "name": "BAPTIST MEMORIAL HOSPITAL TIPTON",
-    "city": "COVINGTON",
-    "state": "TN",
-    "zip": "38019",
-    "phone": "901-476-2621",
-    "ownership": "Voluntary non-profit - Church",
-    "website_domain": "baptistonline.org",
-    "system": null
-   },
-   "version": 1,
-   "status": "draft",
-   "eligibility": {
-    "free_care_max_fpl": null,
-    "discount_tiers": null,
-    "assistance_ceiling_fpl": null,
-    "asset_test": null,
-    "residency": null,
-    "insured_patients_covered": {
-     "value": true,
-     "layer": "documented",
-     "quote": "Medically Underinsured patients will receive a 25% discount off the patient liability greater than $5,000",
-     "source_id": "fap-026658eaf35c0b6b",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "min_balance": {
-     "value": "5000",
-     "layer": "documented",
-     "quote": "out-of-pocket liability for hospital Technical Charges in excess of $5,000 for a single Encounter is deemed Medically Underinsured",
-     "source_id": "fap-026658eaf35c0b6b",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "services_excluded": null
-   },
-   "programs": {
-    "presumptive": null,
-    "state_programs": null
-   },
-   "apply": {
-    "form_url": null,
-    "form_version": null,
-    "documents_required": {
-     "value": [
-      "pay_stubs",
-      "tax_return",
-      "bank_statements",
-      "proof_of_income",
-      "other"
-     ],
-     "layer": "documented",
-     "quote": "Pay stubs for the last three months 2. Income tax return for the previous year 3. W2 forms for the previous year 4. State/Federal assistance documents 5. Bank statements for the last three months 6. Pension/retirement statements",
-     "source_id": "fap-026658eaf35c0b6b",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "documents_reported": null,
-    "submit_methods": {
-     "value": [
-      {
-       "kind": "mail",
-       "detail": "Baptist Central Business Office, 965 Ridge Lake Blvd., Suite 315, Memphis, TN 38120"
-      },
-      {
-       "kind": "fax",
-       "detail": "901-226-0772"
-      },
-      {
-       "kind": "email",
-       "detail": "fap@bmhcc.org"
-      },
-      {
-       "kind": "in_person",
-       "detail": "Return the form and supporting documentation to the facility where you received care."
-      }
-     ],
-     "layer": "documented",
-     "quote": "Baptist Central Business Office 965 Ridge Lake Blvd., Suite 315, Memphis, TN 38120 Fax # 901-226-0772 Email Address: fap@bmhcc.org",
-     "source_id": "fap-479eb4eb1e9d002b",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "window_days_from_first_bill": {
-     "value": 240,
-     "layer": "documented",
-     "quote": "ends on the later of 240 days after the first post-discharge billing statement",
-     "source_id": "fap-026658eaf35c0b6b",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "decision_days": null,
-    "decision_days_reported": null
-   },
-   "collections": {
-    "eca_wait_days": {
-     "value": 120,
-     "layer": "documented",
-     "quote": "No ECA will be taken sooner than 120 days from the date of the first post-discharge bill",
-     "source_id": "fap-026658eaf35c0b6b",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "collection_agencies": null
-   },
-   "contacts": {
-    "phone": {
-     "value": "877-348-1281",
-     "layer": "documented",
-     "quote": "Patients should contact the Central Business Office at (877) 348-1281 if they qualify",
+     "quote": "Patients should contact the Central Business Office at (877) 348-1281 if they qualify or if they have questions about this discount.",
      "source_id": "fap-026658eaf35c0b6b",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4317,25 +4520,35 @@
      "effective_date": null
     },
     {
-     "id": "web-210380ad0ac3c73f",
+     "id": "web-38e79ecafd18de76",
      "kind": "hospital_web",
      "url": "https://www.baptistonline.org/patients-and-visitors/financial-assistance",
      "title": "Financial Assistance Policy for Baptist Memorial Health Care",
      "fetched_on": "2026-10-23",
-     "sha256": "210380ad0ac3c73f8ee09ef8f60a51329766b84458eed8980366b96987db3a7b",
+     "sha256": "38e79ecafd18de76ef96e8bf187b794e5e64b20f1918d2873a7c46268bdd64ad",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: 251-300% 90% | 301-350% 85%"
+    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Please return this application and the requested information to the Business Office of the Baptist facility where servic",
+    "contacts.languages: 2 more verbatim excerpt(s) supported this value: \u0627\u0644\u0639\u0631\u0628\u064a\u0629 [/patients-and-visitors/communication-translation#Arabic] | Espa\u00f1ol [/patients-and-visitors/communication-translation#Spanish]",
+    "agent judge on eligibility.free_care_max_fpl: Quote says '< 200% 100%', i.e. strictly under 200% gets free care. It does not state 200% itself as the highest free-care level.",
+    "agent judge on contacts.languages: Quote shows only three languages (Amharic, Arabic, Spanish) from a list of 21 in the value; the remaining 18 are not in the quote."
    ],
    "eve_verified": {
     "on": "2026-10-23",
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-026658eaf35c0b6b": true,
+     "fap-479eb4eb1e9d002b": true,
+     "web-38e79ecafd18de76": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
+     "eligibility.discount_tiers",
      "eligibility.insured_patients_covered",
      "eligibility.min_balance",
      "apply.documents_required",
@@ -4348,10 +4561,6 @@
      [
       "eligibility.free_care_max_fpl",
       "quote not found in source"
-     ],
-     [
-      "eligibility.discount_tiers",
-      "value not in quote"
      ],
      [
       "apply.form_url",
@@ -4360,13 +4569,17 @@
      [
       "apply.decision_days",
       "value not in quote"
+     ],
+     [
+      "contacts.languages",
+      "quote not found in source"
      ]
     ],
     "pruned": [
      "apply.documents_required: 1 item not named in the trimmed quote"
     ],
-    "income_rule_verified": false,
-    "core_completeness": 0.5
+    "income_rule_verified": true,
+    "core_completeness": 0.67
    }
   },
   {
@@ -4384,15 +4597,37 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": null,
-    "discount_tiers": null,
+    "free_care_max_fpl": {
+     "value": "300",
+     "layer": "documented",
+     "quote": "100% of Estimated Patient Liability Household Income Between FPL 0-300%",
+     "source_id": "fap-139ab651917caf78",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "300",
+       "max_fpl_inclusive": "350",
+       "discount_percent": 85
+      }
+     ],
+     "layer": "documented",
+     "quote": "85% of Estimated Patient Liability Household Income Between FPL 301-350%",
+     "source_id": "fap-139ab651917caf78",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": null,
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "Underinsured patients are screened through the External Screening Process after 120-days without payment",
+     "quote": "To define eligibility, application, and approval processes for Financial Assistance offered to uninsured, underinsured, and medically indigent patients who indicate an inability to pay",
      "source_id": "fap-139ab651917caf78",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4401,7 +4636,7 @@
     "min_balance": {
      "value": "1000",
      "layer": "documented",
-     "quote": "if a patient\u2019s account has an outstanding balance that exceeds $1,000, and no other party is responsible for the bill",
+     "quote": "if a patient\u2019s account has an outstanding balance that exceeds $1,000, and no other party is responsible for the bill, VUMC submits the patient\u2019s information through an External Screening Process",
      "source_id": "fap-139ab651917caf78",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4412,12 +4647,10 @@
    "programs": {
     "presumptive": {
      "value": [
-      "State-funded prescription programs",
-      "Homeless or received care from a homeless clinic",
-      "Participation in Women, Infants and Children programs (WIC)"
+      "Medicaid"
      ],
      "layer": "documented",
-     "quote": "1. State-funded prescription programs; 2. Homeless or received care from a homeless clinic; 3. Participation in Women, Infants and Children programs (WIC);",
+     "quote": "Patients who are enrolled in TennCare or other state Medicaid programs are automatically qualified for a 100% discount",
      "source_id": "fap-139ab651917caf78",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4431,7 +4664,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Patients who are enrolled in TennCare or other state Medicaid programs are automatically qualified for a 100% discount",
+     "quote": "Patients who are enrolled in TennCare or other state Medicaid programs are automatically qualified for a 100% discount (see Appendices B and C) without further investigation.",
      "source_id": "fap-139ab651917caf78",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4439,7 +4672,15 @@
     }
    },
    "apply": {
-    "form_url": null,
+    "form_url": {
+     "value": "https://www.vanderbilthealth.com/information/financial-assistance",
+     "layer": "documented",
+     "quote": "Patients may obtain Financial Assistance applications at this website https://www.vanderbilthealth.com/information/financial-assistance",
+     "source_id": "fap-139ab651917caf78",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "form_version": null,
     "documents_required": {
      "value": [
@@ -4471,7 +4712,7 @@
     "window_days_from_first_bill": {
      "value": 240,
      "layer": "documented",
-     "quote": "extends 240 days after the date VUMC (or its agent) provides the first post-discharge billing statement to the patient",
+     "quote": "The period that begins the date of delivery of Eligible Health Services and extends 240 days after the date VUMC (or its agent) provides the first post-discharge billing statement",
      "source_id": "fap-139ab651917caf78",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4492,7 +4733,7 @@
     "eca_wait_days": {
      "value": 120,
      "layer": "documented",
-     "quote": "Patients receive billing statements or phone calls during a one hundred twenty (120) day period to remind them of their bill(s)",
+     "quote": "Patients should be encouraged to complete the application within one hundred twenty (120) days from the date VUMC sends the first \u201cpost-discharge\u201d billing statement. Extraordinary Collection Actions are not taken by VUMC.",
      "source_id": "fap-139ab651917caf78",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4548,31 +4789,38 @@
      "fetched_on": "2026-10-23",
      "sha256": "670355140e8906ebfc5b8b95607363d992d32eaf12af940179b09e3d3ad31d2e",
      "effective_date": null
-    },
-    {
-     "id": "web-e77b595f5d90f07b",
-     "kind": "hospital_web",
-     "url": "https://www.vanderbilthealth.com/information/financial-assistance",
-     "title": "Financial Assistance | Vanderbilt Health Nashville, TN",
-     "fetched_on": "2026-10-23",
-     "sha256": "e77b595f5d90f07b7eb9c1feb73353ead718974b9d3c2a2e6d65f7f9e6a8f321",
-     "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Pay Stubs* (most recent 3 months) | Food Stamp Letters* (if applicable)"
+    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Homeless or received care from a homeless clinic; | Participation in Women, Infants and Children programs (WIC); 4. Eligibility for food stamps/SNAP benefits;",
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Social Security/Disability, W-2 or Unemployment (if applicable) | Pay Stubs* (most recent 3 months)",
+    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Patients may obtain Financial Assistance applications at this website https://www.vanderbilthealth.com/information/finan | Patients may also obtain Financial Assistance applications by contacting VUMC inpatient registration locations",
+    "agent judge on eligibility.min_balance: Quote says accounts over $1,000 are sent to an External Screening Process. It does not set a minimum balance for eligibility.",
+    "agent judge on programs.state_programs: Quote says TennCare enrollees automatically qualify for 100% discount. It does not describe how to apply, which the how_to_apply value claims.",
+    "agent judge on apply.documents_required: Quote lists tax returns, Social Security/W-2/unemployment, and pay stubs only. It does not mention Food Stamp Letters.",
+    "agent judge on apply.submit_methods: Quote supports mail, phone (615) 936-0910, and inpatient registration. It does not contain the email address financial.assistance@vumc.org.",
+    "agent judge on apply.decision_days: Quote says determinations are completed within thirty (30) business days. The value 30 drops the business-day unit, so it is not calendar days.",
+    "agent judge on collections.eca_wait_days: The 120 days is the window to complete the application after the first statement, not the wait before collection actions."
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 3,
-    "sources_total": 3,
+    "sources_fetched": 2,
+    "sources_total": 2,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-139ab651917caf78": true,
+     "fap-670355140e8906eb": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
      "eligibility.insured_patients_covered",
      "eligibility.min_balance",
      "programs.presumptive",
      "programs.state_programs",
+     "apply.form_url",
      "apply.documents_required",
      "apply.submit_methods",
      "apply.window_days_from_first_bill",
@@ -4583,29 +4831,17 @@
     ],
     "rejected": [
      [
-      "eligibility.free_care_max_fpl",
-      "value not in quote"
-     ],
-     [
-      "eligibility.discount_tiers",
-      "value not in quote"
-     ],
-     [
       "eligibility.assistance_ceiling_fpl",
       "value not in quote"
-     ],
-     [
-      "apply.form_url",
-      "quote not found in source"
      ]
     ],
     "pruned": [
-     "programs.presumptive: 6 items not named in the trimmed quote",
+     "programs.presumptive: 3 items not named in the trimmed quote",
      "apply.documents_required: 2 items not named in the trimmed quote",
-     "apply.submit_methods: 2 items not named in the trimmed quote"
+     "apply.submit_methods: 3 items not named in the trimmed quote"
     ],
-    "income_rule_verified": false,
-    "core_completeness": 0.5
+    "income_rule_verified": true,
+    "core_completeness": 1.0
    }
   },
   {
@@ -4785,6 +5021,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-fd14684cc692480a": true,
+     "fap-7e456899116c1561": true,
+     "web-6537ca13c0a2296d": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.residency",
@@ -4989,6 +5231,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-fd14684cc692480a": true,
+     "fap-7e456899116c1561": true,
+     "web-3ce8918d53cf9f0c": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.residency",
@@ -5053,27 +5301,29 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "pay_stubs",
-      "proof_of_income",
-      "other"
+      "pay_stubs"
      ],
      "layer": "documented",
-     "quote": "If working, attach two (2) paycheck stubs from each adult member of the household who is employed.",
+     "quote": "attach two (2) paycheck stubs from each adult member of the household who is employed",
      "source_id": "fap-355fb051c2bc610d",
      "checked_on": "2026-10-23",
-     "confidence": 1.0,
+     "confidence": 0.8,
      "support_count": 0
     },
     "documents_reported": null,
     "submit_methods": {
      "value": [
       {
+       "kind": "in_person",
+       "detail": "Provide the completed and signed Financial Assistance Application, along with the supporting documentation listed below, to the Financial Counselor who has been assigned to your case."
+      },
+      {
        "kind": "phone",
-       "detail": "865-374-3000"
+       "detail": "contact the Business Office at 865-374-3000"
       }
      ],
      "layer": "documented",
-     "quote": "If you need assistance with this application, please contact the Business Office at 865-374-3000.",
+     "quote": "Provide the completed and signed Financial Assistance Application, along with the supporting documentation listed below, to the Financial Counselor who has been assigned to your case. If you need assistance with this application, please contact the Business Office at 865-374-3000.",
      "source_id": "fap-355fb051c2bc610d",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5091,8 +5341,8 @@
     "phone": {
      "value": "865-374-3000",
      "layer": "documented",
-     "quote": "please call our Patient Accounting Office at (865) 374-3000",
-     "source_id": "web-9d518c040c439347",
+     "quote": "please contact the Business Office at 865-374-3000",
+     "source_id": "fap-355fb051c2bc610d",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -5143,7 +5393,11 @@
     }
    ],
    "accuracy": null,
-   "eve_review": [],
+   "eve_review": [
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: provide verification of monthly Social Security benefits. (Letter from Social Security or current bank statement) | provide complete tax return for the last tax year",
+    "apply.documents_required: quote matched the source only after typography normalization",
+    "agent judge on apply.submit_methods: Quote says to provide the application to the assigned Financial Counselor but does not state in-person delivery. It gives the Business Office number only for assistance, not as a submission method."
+   ],
    "eve_verified": {
     "on": "2026-10-23",
     "sources_fetched": 2,
@@ -5151,6 +5405,12 @@
     "sources_missing": [
      "https://www.covenanthealth.com/wp-content/uploads/2025/06/3500.070-Financial-Assistance-Policy-English-revised-April-2026.pdf"
     ],
+    "sha256_match": {
+     "fap-b3505f8fe92b92aa": true,
+     "fap-355fb051c2bc610d": true,
+     "web-9d518c040c439347": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "apply.documents_required",
      "apply.submit_methods",
@@ -5164,7 +5424,7 @@
      ]
     ],
     "pruned": [
-     "apply.documents_required: 2 items not named in the trimmed quote"
+     "apply.documents_required: 3 items not named in the trimmed quote"
     ],
     "income_rule_verified": false,
     "core_completeness": 0.5
@@ -5342,6 +5602,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-22586219afceb70d": true,
+     "fap-417150667f60a5d0": true,
+     "web-b9158c72ac735622": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.assistance_ceiling_fpl",
@@ -5552,6 +5818,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-22586219afceb70d": true,
+     "fap-417150667f60a5d0": true,
+     "web-74a5cb43c83f2e21": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.asset_test",
@@ -5586,15 +5858,37 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": null,
-    "discount_tiers": null,
+    "free_care_max_fpl": {
+     "value": "300",
+     "layer": "documented",
+     "quote": "100% of Estimated Patient Liability Household Income Between FPL 0-300%",
+     "source_id": "fap-139ab651917caf78",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "300",
+       "max_fpl_inclusive": "350",
+       "discount_percent": 85
+      }
+     ],
+     "layer": "documented",
+     "quote": "100% of Estimated Patient Liability Household Income Between FPL 0-300% 85% of Estimated Patient Liability Household Income Between FPL 301-350%",
+     "source_id": "fap-139ab651917caf78",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": null,
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "Underinsured: Insured patients who receive Eligible Health Care Services that are determined to be noncovered services or to have limited benefit coverage by the Payor.",
+     "quote": "To define eligibility, application, and approval processes for Financial Assistance offered to uninsured, underinsured, and medically indigent patients",
      "source_id": "fap-139ab651917caf78",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5603,10 +5897,10 @@
     "min_balance": {
      "value": "1000",
      "layer": "documented",
-     "quote": "if a patient\u2019s account has an outstanding balance that exceeds $1,000, and no other party is responsible for the bill, VUMC submits the patient\u2019s information through an External Screening Process",
+     "quote": "if a patient's account has an outstanding balance that exceeds $1,000, and no other party is responsible for the bill, VUMC submits the patient's information through an External Screening Process",
      "source_id": "fap-139ab651917caf78",
      "checked_on": "2026-10-23",
-     "confidence": 1.0,
+     "confidence": 0.8,
      "support_count": 0
     },
     "services_excluded": null
@@ -5614,12 +5908,10 @@
    "programs": {
     "presumptive": {
      "value": [
-      "Homeless or received care from a homeless clinic",
-      "Participation in Women, Infants and Children programs (WIC)",
-      "Eligibility for food stamps/SNAP benefits"
+      "Medicaid"
      ],
      "layer": "documented",
-     "quote": "1. State-funded prescription programs; 2. Homeless or received care from a homeless clinic; 3. Participation in Women, Infants and Children programs (WIC); 4. Eligibility for food stamps/SNAP benefits",
+     "quote": "Patients who are enrolled in TennCare or other state Medicaid programs are automatically qualified for a 100% discount",
      "source_id": "fap-139ab651917caf78",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5629,7 +5921,7 @@
      "value": [
       {
        "name": "TennCare",
-       "how_to_apply": "Patients who are enrolled in TennCare or other state Medicaid programs are automatically qualified for a 100% discount without further investigation."
+       "how_to_apply": "Patients who are enrolled in TennCare or other state Medicaid programs are automatically qualified for a 100% discount (see Appendices B and C) without further investigation."
       }
      ],
      "layer": "documented",
@@ -5646,36 +5938,21 @@
     "documents_required": {
      "value": [
       "tax_return",
-      "social_security_letter",
-      "pay_stubs",
       "other"
      ],
      "layer": "documented",
-     "quote": "Tax returns and supporting schedules (previous 2 years) \u2022 Social Security/Disability, W-2 or Unemployment (if applicable) \u2022 Pay Stubs* (most recent 3 months) \u2022 Food Stamp Letters* (if applicable)",
+     "quote": "Tax returns and supporting schedules (previous 2 years)",
      "source_id": "fap-670355140e8906eb",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "documents_reported": null,
-    "submit_methods": {
-     "value": [
-      {
-       "kind": "mail",
-       "detail": "Completed applications should be mailed to the address at the bottom of the Financial Assistance application."
-      }
-     ],
-     "layer": "documented",
-     "quote": "Completed applications should be mailed to the address at the bottom of the Financial Assistance application.",
-     "source_id": "fap-139ab651917caf78",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "submit_methods": null,
     "window_days_from_first_bill": {
      "value": 240,
      "layer": "documented",
-     "quote": "extends 240 days after the date VUMC (or its agent) provides the first post-discharge billing statement",
+     "quote": "extends 240 days after the date VUMC (or its agent) provides the first post-discharge billing statement to the patient",
      "source_id": "fap-139ab651917caf78",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5693,22 +5970,14 @@
     "decision_days_reported": null
    },
    "collections": {
-    "eca_wait_days": {
-     "value": 120,
-     "layer": "documented",
-     "quote": "Patients receive billing statements or phone calls during a one hundred twenty (120) day period to remind them of their bill(s).",
-     "source_id": "fap-139ab651917caf78",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "eca_wait_days": null,
     "collection_agencies": null
    },
    "contacts": {
     "phone": {
-     "value": "(615) 936-3938",
+     "value": "(615) 444-8262",
      "layer": "documented",
-     "quote": "Phone: (615) 936-3938",
+     "quote": "Vanderbilt Wilson County Hospital (VWCH) 1411 Baddour Parkway Lebanon, TN 37087 615-444-8262",
      "source_id": "fap-139ab651917caf78",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5754,42 +6023,54 @@
      "effective_date": null
     },
     {
-     "id": "web-7b7429848c84fd86",
+     "id": "web-667404473c8bcd75",
      "kind": "hospital_web",
      "url": "https://www.vanderbilthealth.com/information/financial-assistance",
      "title": "Financial Assistance | Vanderbilt Health Nashville, TN",
      "fetched_on": "2026-10-23",
-     "sha256": "7b7429848c84fd86d4f1b88e704d3d090f7f89c00674bc782f45121af11569f6",
+     "sha256": "667404473c8bcd754e001069bfe85b3d5f954e1abc533c7fb755f35e2910ef80",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "agent dropped eligibility.discount_tiers: excerpt not in source: Household Income Between FPL 301-350% 85% of Estimated Patie"
+    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: For patients with adjusted gross income above 3.0 times but less than or equal to 3.5 times FPG for the most recent year",
+    "eligibility.assistance_ceiling_fpl: quote matched the source only after typography normalization",
+    "eligibility.min_balance: quote matched the source only after typography normalization",
+    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Homeless or received care from a homeless clinic; | Participation in Women, Infants and Children programs (WIC); 4. Eligibility for food stamps/SNAP benefits",
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Social Security/Disability, W-2 or Unemployment (if applicable) | Pay Stubs* (most recent 3 months)",
+    "agent dropped apply.submit_methods: excerpt not in source: you can appeal the decision by emailing, mailing, or faxing ",
+    "agent judge on eligibility.insured_patients_covered: Quote names uninsured, underinsured, and medically indigent patients; it does not explicitly state that insured patients are covered.",
+    "agent judge on eligibility.min_balance: Quote says accounts over $1,000 are sent to an External Screening Process; it does not state a minimum balance for assistance eligibility.",
+    "agent judge on apply.form_url: Quote gives only the path /sites/default/files/...; the host files.vanderbilthealth.com does not appear in the quote.",
+    "agent judge on apply.documents_required: Quote lists tax returns, Social Security/W-2/unemployment, and pay stubs only; the Food Stamp Letters item is not in the quote.",
+    "agent judge on apply.decision_days: Quote says determinations are completed within thirty (30) business days, not 30 calendar days."
    ],
    "eve_verified": {
     "on": "2026-10-23",
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-139ab651917caf78": true,
+     "fap-670355140e8906eb": true,
+     "web-667404473c8bcd75": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
      "eligibility.insured_patients_covered",
      "eligibility.min_balance",
      "programs.presumptive",
      "programs.state_programs",
      "apply.documents_required",
-     "apply.submit_methods",
      "apply.window_days_from_first_bill",
      "apply.decision_days",
-     "collections.eca_wait_days",
      "contacts.phone",
      "contacts.languages"
     ],
     "rejected": [
-     [
-      "eligibility.free_care_max_fpl",
-      "value not in quote"
-     ],
      [
       "eligibility.assistance_ceiling_fpl",
       "value not in quote"
@@ -5800,11 +6081,11 @@
      ]
     ],
     "pruned": [
-     "programs.presumptive: 6 items not named in the trimmed quote",
-     "apply.submit_methods: 4 items not named in the trimmed quote"
+     "programs.presumptive: 3 items not named in the trimmed quote",
+     "apply.documents_required: 2 items not named in the trimmed quote"
     ],
-    "income_rule_verified": false,
-    "core_completeness": 0.5
+    "income_rule_verified": true,
+    "core_completeness": 0.67
    }
   },
   {
@@ -5973,6 +6254,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-fd14684cc692480a": true,
+     "fap-7e456899116c1561": true,
+     "web-b9c80bfdac532f5d": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.residency",
@@ -6176,6 +6463,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-fd14684cc692480a": true,
+     "fap-7e456899116c1561": true,
+     "web-d3e3dd640006645a": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.residency",
@@ -6228,15 +6521,7 @@
     "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": null,
-    "insured_patients_covered": {
-     "value": false,
-     "layer": "documented",
-     "quote": "Financial Assistance does not apply to amounts that are covered by insurance or other funding sources.",
-     "source_id": "fap-439004d634ecf973",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "insured_patients_covered": null,
     "min_balance": null,
     "services_excluded": null
    },
@@ -6249,8 +6534,7 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "tax_return",
-      "proof_of_income"
+      "tax_return"
      ],
      "layer": "documented",
      "quote": "Most recent tax return, including W-2 forms and supporting schedules.",
@@ -6264,11 +6548,11 @@
      "value": [
       {
        "kind": "mail",
-       "detail": "Highpoint Health with Ascension Saint Thomas, Attn: Financial Counselor, PO Box 1558, Gallatin, TN 37066"
+       "detail": "Mail your complete Financial Assistance Application with documentation to: Highpoint Health with Ascension Saint Thomas, Attn: Financial Counselor, PO Box 1558, Gallatin, TN 37066"
       },
       {
        "kind": "in_person",
-       "detail": "Visit a Financial Counselor at 555 Hartsville Pike, Gallatin, TN 37066"
+       "detail": "visit a Financial Counselor at 555 Hartsville Pike, Gallatin, TN 37066"
       }
      ],
      "layer": "documented",
@@ -6279,10 +6563,10 @@
      "support_count": 0
     },
     "window_days_from_first_bill": {
-     "value": 240,
+     "value": 60,
      "layer": "documented",
-     "quote": "Application Period \u2013 the period beginning on the date care is provided and ending 240 days after the date of the first post-discharge billing statement.",
-     "source_id": "fap-6d8c913eaa92e024",
+     "quote": "Submitting a complete Financial Assistance Application with supporting documentation within 60 days from receiving service",
+     "source_id": "fap-439004d634ecf973",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -6299,15 +6583,7 @@
     "decision_days_reported": null
    },
    "collections": {
-    "eca_wait_days": {
-     "value": 120,
-     "layer": "documented",
-     "quote": "Notification Period \u2013 the period beginning on the date care is provided and ending 120 calendar days after the date of the first post-discharge billing statement.",
-     "source_id": "fap-6d8c913eaa92e024",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "eca_wait_days": null,
     "collection_agencies": null
    },
    "contacts": {
@@ -6329,7 +6605,18 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "languages": null
+    "languages": {
+     "value": [
+      "English",
+      "Spanish"
+     ],
+     "layer": "documented",
+     "quote": "Financial Assistance Application English",
+     "source_id": "fap-439004d634ecf973",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
    },
    "coverage": {
     "facilities": null,
@@ -6356,39 +6643,49 @@
      "effective_date": null
     },
     {
-     "id": "fap-6d8c913eaa92e024",
+     "id": "web-cb2c8cb8e686ffd5",
      "kind": "hospital_web",
-     "url": "https://www.highpointhealthsystem.com/docs/ahhighpointhealthlibraries/default-document-library/highpoint-health-billing-collection-policy.pdf",
-     "title": "",
+     "url": "https://www.highpointhealthsystem.com/patient-financial-assistance",
+     "title": "Patient Financial Assistance",
      "fetched_on": "2026-10-23",
-     "sha256": "6d8c913eaa92e02462a89f67c3dd9133ef10ccb157fa7d65240b1d73837dd9e3",
+     "sha256": "cb2c8cb8e686ffd50ac048eb0ec78ecf836cd458c767139f361104c24022273d",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Last 2 pay stubs or a letter from an employer verifying income (include employer\u2019s phone number and address) | Bank statements for the past 2 months",
-    "agent dropped apply.form_url: quote shorter than 8 characters"
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Last 2 pay stubs or a letter from an employer verifying income | Bank statements for the past 2 months",
+    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: please call Patient Financial Services at 615-328-6615 or visit a Financial Counselor at 555 Hartsville Pike, Gallatin, ",
+    "contacts.languages: 1 more verbatim excerpt(s) supported this value: Financial Assistance Application Spanish"
    ],
    "eve_verified": {
     "on": "2026-10-23",
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-439004d634ecf973": true,
+     "fap-cc8e8b06f3d2b348": true,
+     "web-cb2c8cb8e686ffd5": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
-     "eligibility.insured_patients_covered",
      "apply.documents_required",
      "apply.submit_methods",
      "apply.window_days_from_first_bill",
      "apply.decision_days",
-     "collections.eca_wait_days",
      "contacts.phone",
-     "contacts.hours"
+     "contacts.hours",
+     "contacts.languages"
     ],
-    "rejected": [],
+    "rejected": [
+     [
+      "apply.form_url",
+      "quote not found in source"
+     ]
+    ],
     "pruned": [
-     "apply.documents_required: 2 items not named in the trimmed quote",
-     "apply.submit_methods: 1 item not named in the trimmed quote"
+     "apply.documents_required: 2 items not named in the trimmed quote"
     ],
     "income_rule_verified": false,
     "core_completeness": 0.5
@@ -6573,6 +6870,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-fd14684cc692480a": true,
+     "fap-7e456899116c1561": true,
+     "web-11be31b7a13c3367": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -6791,6 +7094,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-22586219afceb70d": true,
+     "fap-417150667f60a5d0": true,
+     "web-84ee36a2c9ebc230": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.asset_test",
@@ -6831,17 +7140,7 @@
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
     "asset_test": null,
-    "residency": {
-     "value": [
-      "Exclusions to eligibility due to geographic determination of community are outlined in FAP Application Criteria.pdf"
-     ],
-     "layer": "documented",
-     "quote": "Exclusions to eligibility due to geographic determination of community are outlined in FAP Application Criteria.pdf",
-     "source_id": "fap-41b90b098f5cde32",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "residency": null,
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
@@ -6861,26 +7160,19 @@
    "apply": {
     "form_url": null,
     "form_version": null,
-    "documents_required": null,
-    "documents_reported": null,
-    "submit_methods": {
+    "documents_required": {
      "value": [
-      {
-       "kind": "mail",
-       "detail": "MAIL TO: Macon Community Hospital P O Box 378 Lafayette, TN 37083 Att: Financial Counselor"
-      },
-      {
-       "kind": "in_person",
-       "detail": "Completed applications shall be sent to the Financial Counselor or any available Patient Financial Services Representative located in the Business Office."
-      }
+      "medicaid_denial"
      ],
      "layer": "documented",
-     "quote": "MAIL TO: Macon Community Hospital P O Box 378 Lafayette, TN 37083 Att: Financial Counselor",
-     "source_id": "fap-e7b2224ed7794683",
+     "quote": "the patient can submit the required documents for manual application review per FAP Manual Application Document List.pdf and a copy of their Tennessee Medicaid denial letter",
+     "source_id": "fap-41b90b098f5cde32",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
+    "documents_reported": null,
+    "submit_methods": null,
     "window_days_from_first_bill": {
      "value": 240,
      "layer": "documented",
@@ -6902,32 +7194,21 @@
      "value": "615-666-2147",
      "layer": "documented",
      "quote": "305 West Locust Street, Lafayette, TN | 615-666-2147",
-     "source_id": "web-46e37f6775ed7456",
+     "source_id": "web-203f460fd56acd77",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "hours": {
-     "value": "Monday through Friday, from 8:00am until 4:30pm",
+     "value": "Monday through Friday, 8:00am to 4:30pm",
      "layer": "documented",
-     "quote": "Financial counselors are available Monday through Friday, from 8:00am until 4:30pm to discuss the application process",
-     "source_id": "web-46e37f6775ed7456",
+     "quote": "Hours are Monday through Friday, 8:00am to 4:30pm.",
+     "source_id": "web-203f460fd56acd77",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "languages": {
-     "value": [
-      "English",
-      "Spanish"
-     ],
-     "layer": "documented",
-     "quote": "an Application for Financial Assistance in English or Spanish, patients can:",
-     "source_id": "web-46e37f6775ed7456",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "languages": null
    },
    "coverage": {
     "facilities": null,
@@ -6945,15 +7226,6 @@
      "effective_date": null
     },
     {
-     "id": "web-46e37f6775ed7456",
-     "kind": "hospital_web",
-     "url": "https://maconcommunityhospital.com/for-patients/financial-assistance-guidelines/",
-     "title": "Financial Assistance Guidelines - Macon Community Hospital",
-     "fetched_on": "2026-10-23",
-     "sha256": "46e37f6775ed74561405f172ebc59affe96db27b2c631c356b9348f5d3d066eb",
-     "effective_date": null
-    },
-    {
      "id": "fap-e7b2224ed7794683",
      "kind": "hospital_web",
      "url": "https://maconcommunityhospital.com/wp-content/uploads/2024/08/FAP-Manual-Application.pdf",
@@ -6961,23 +7233,41 @@
      "fetched_on": "2026-10-23",
      "sha256": "e7b2224ed7794683ff3e8d86ea790925718ea570827c99dc766d9b710c2a2504",
      "effective_date": null
+    },
+    {
+     "id": "web-203f460fd56acd77",
+     "kind": "hospital_web",
+     "url": "https://maconcommunityhospital.com/services/business-office/",
+     "title": "Business Office - Macon Community Hospital",
+     "fetched_on": "2026-10-23",
+     "sha256": "203f460fd56acd772d5bf6c827e47fa45e697ad27be6a613cb43f1a413e013d0",
+     "effective_date": null
     }
    ],
    "accuracy": null,
-   "eve_review": [],
+   "eve_review": [
+    "agent dropped apply.submit_methods: excerpt not in source: Completed applications shall be sent to the Financial Counse",
+    "agent judge on eligibility.assistance_ceiling_fpl: Quote only says an application denied for FPL greater than 200% can be disputed; it does not state that no assistance is offered above 200%.",
+    "agent judge on eligibility.insured_patients_covered: Quote says the uninsured and patients with co-pays are included; it does not state that insured patients in general are covered.",
+    "agent judge on apply.documents_required: Quote requires the FAP Manual Application Document List plus a Tennessee Medicaid denial letter; the value omits the document list and is incomplete."
+   ],
    "eve_verified": {
     "on": "2026-10-23",
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-41b90b098f5cde32": true,
+     "fap-e7b2224ed7794683": true,
+     "web-203f460fd56acd77": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
-     "eligibility.residency",
      "eligibility.insured_patients_covered",
-     "apply.submit_methods",
+     "apply.documents_required",
      "apply.window_days_from_first_bill",
      "contacts.phone",
-     "contacts.hours",
-     "contacts.languages"
+     "contacts.hours"
     ],
     "rejected": [
      [
@@ -6985,12 +7275,8 @@
       "value not in quote"
      ],
      [
-      "eligibility.discount_tiers",
-      "value not in quote"
-     ],
-     [
-      "apply.form_url",
-      "quote not found in source"
+      "eligibility.assistance_ceiling_fpl",
+      "quote does not state the ceiling as a percentage of the poverty level"
      ]
     ],
     "pruned": [],
@@ -7167,6 +7453,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-22586219afceb70d": true,
+     "fap-417150667f60a5d0": true,
+     "web-84ee36a2c9ebc230": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.asset_test",

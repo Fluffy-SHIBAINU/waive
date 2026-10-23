@@ -21,17 +21,39 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": null,
-    "discount_tiers": null,
+    "free_care_max_fpl": {
+     "value": "201",
+     "layer": "documented",
+     "quote": "Patients approved for Financial Assistance who fall below 201% of the Federal Poverty Guidelines will receive a 100% Charity Free Care adjustment for the remaining balance .",
+     "source_id": "web-186017720eeca278",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "200",
+       "max_fpl_inclusive": "300",
+       "discount_percent": 80
+      }
+     ],
+     "layer": "documented",
+     "quote": "Patients approved for Financial Assistance who fall within 201%-300% of the Federal Poverty Guidelines will receive a partial Financial Assistance adjustment on the remaining balance i. Inpatient: 80% discount of the billable DRG ii. Outpatient: 90% discount off the total charge",
+     "source_id": "web-186017720eeca278",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": {
      "value": [
-      "Patients must be Rhode Island residents, except non-residents seeking emergency services and certain other listed conditions."
+      "Patient must be a Rhode Island resident or meet one of the conditions below, such as seeking emergency services at a Brown University Health facility."
      ],
      "layer": "documented",
      "quote": "Patient must be a Rhode Island resident or meet one of the conditions below: Non-Rhode Island Resident seeking Emergency Services at a Brown University Health Facility",
-     "source_id": "web-e73f2901241871d9",
+     "source_id": "web-186017720eeca278",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -39,8 +61,8 @@
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "Financial assistance for insured patients is available once a patient receives a bill and by application only.",
-     "source_id": "web-e73f2901241871d9",
+     "quote": "Financial assistance for insured patients is available once a patient receives a bill and by application only. Patient Responsibility must be greater than $250.00.",
+     "source_id": "web-186017720eeca278",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -49,7 +71,7 @@
      "value": "250",
      "layer": "documented",
      "quote": "Patient Responsibility must be greater than $250.00.",
-     "source_id": "web-e73f2901241871d9",
+     "source_id": "web-186017720eeca278",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -58,35 +80,232 @@
    },
    "programs": {
     "presumptive": null,
+    "state_programs": {
+     "value": [
+      {
+       "name": "MassHealth",
+       "how_to_apply": "Patients who may qualify for MassHealth must apply, and if they are denied can apply for financial assistance."
+      },
+      {
+       "name": "Rhode Island Medicaid / HealthSource Rhode Island - RIte Care",
+       "how_to_apply": "For patients who are found eligible for Rhode Island Medicaid, or Healthsource Rhode Island - Rite Care, eligibility under this FAP will be applicable retroactively six months from date of eligibility if patient does not comply with FAP documentation."
+      }
+     ],
+     "layer": "documented",
+     "quote": "Patients who may qualify for MassHealth must apply, and if they are denied can apply for financial assistance.",
+     "source_id": "web-186017720eeca278",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": null,
+    "documents_reported": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "Please mail the application and supporting documentation directly to the Patient Financial Advocate Office at the respective hospital's addresses below"
+      },
+      {
+       "kind": "in_person",
+       "detail": "Newport Hospital, Patient Advocate Office, 11 Friendship Street, Newport, RI 02840"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Please mail completed applications or deliver in person (with all documentation/information specified in the application instructions) to any of the Brown University Health hospital facility addresses listed above.",
+     "source_id": "web-186017720eeca278",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": null,
+    "decision_days": {
+     "value": 14,
+     "layer": "documented",
+     "quote": "Applications are usually processed within 14 days of receipt.",
+     "source_id": "fap-ec5248358d9d66e9",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "401-444-6966",
+     "layer": "documented",
+     "quote": "contact one of our customer service representatives at 401-444-6966",
+     "source_id": "web-84f48a5bb09fab72",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": {
+     "value": "8:00am-4:00pm, Monday through Friday",
+     "layer": "documented",
+     "quote": "please visit any of the Brown University Health hospital facility locations listed above between the hours of 8:00am-4:00pm, Monday through Friday.",
+     "source_id": "web-186017720eeca278",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "languages": null
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "web-186017720eeca278",
+     "kind": "hospital_web",
+     "url": "https://brownhealth-corporate.policystat.com/policy/token_access/404f8d95-a8e9-4104-9cfe-4ad1b8fff8bd/",
+     "title": "PolicyStat\n\n\n            \n                :: PolicyStat",
+     "fetched_on": "2026-10-23",
+     "sha256": "186017720eeca278d5a5451473ee12f3434ba15abecce3454451d5891995ddca",
+     "effective_date": null
+    },
+    {
+     "id": "fap-ec5248358d9d66e9",
+     "kind": "hospital_web",
+     "url": "https://www.brownhealth.org/sites/default/files/2026-05/Brown-University-Health-Financial-Assistance-Guidelines-and-Application-05-25-English.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "ec5248358d9d66e931c85083b23edeafe578a9400d229426b4c4a1fa2b04f94d",
+     "effective_date": null
+    },
+    {
+     "id": "web-84f48a5bb09fab72",
+     "kind": "hospital_web",
+     "url": "https://www.brownhealth.org/locations/newport-hospital/about-newport-hospital/insurance-and-billing-newport-hospital",
+     "title": "Insurance and Billing at Newport Hospital | Brown University Health",
+     "fetched_on": "2026-10-23",
+     "sha256": "84f48a5bb09fab724699d73765560d540b96a9001fc0e529f6468b56305bedf5",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "programs.state_programs: 1 more verbatim excerpt(s) supported this value: For patients who are found eligible for Rhode Island Medicaid, or Healthsource Rhode Island - Rite Care, eligibility und",
+    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Patients with active MyChart account can apply for the Financial Assistance program online at https://my.lifespan.org/my | Requests for documents to be mailed can be made by calling Brown University Health's Patient Financial Services Office a",
+    "agent dropped apply.documents_required: excerpt not in source: Applicants are asked to provide family income or \"proof of i",
+    "agent judge on eligibility.free_care_max_fpl: Quote says patients below 201% get 100% free care, so the highest qualifying percent is 200, not 201.",
+    "agent judge on eligibility.discount_tiers: Quote gives two discounts in the 201%-300% band: 80% inpatient and 90% outpatient. Value includes only the 80% tier.",
+    "agent judge on apply.submit_methods: Quote mentions mail, in-person, online, and phone, but the Newport Hospital street address (11 Friendship Street) does not appear in the quote."
+   ],
+   "eve_verified": {
+    "on": "2026-10-23",
+    "sources_fetched": 3,
+    "sources_total": 3,
+    "sources_missing": [],
+    "sha256_match": {
+     "web-186017720eeca278": false,
+     "fap-ec5248358d9d66e9": true,
+     "web-84f48a5bb09fab72": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
+    "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
+     "eligibility.residency",
+     "eligibility.insured_patients_covered",
+     "eligibility.min_balance",
+     "programs.state_programs",
+     "apply.submit_methods",
+     "apply.decision_days",
+     "contacts.phone",
+     "contacts.hours"
+    ],
+    "rejected": [
+     [
+      "eligibility.asset_test",
+      "quote does not support the asset-test value"
+     ]
+    ],
+    "pruned": [
+     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
+     "apply.submit_methods: 2 items not named in the trimmed quote"
+    ],
+    "income_rule_verified": true,
+    "core_completeness": 0.67
+   }
+  },
+  {
+   "hospital": {
+    "ccn": "410007",
+    "name": "RHODE ISLAND HOSPITAL",
+    "city": "PROVIDENCE",
+    "state": "RI",
+    "zip": "02902",
+    "phone": "401-444-4000",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "brownhealth.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": null,
+    "discount_tiers": null,
+    "assistance_ceiling_fpl": null,
+    "asset_test": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Current copies of statements for all accounts for the last three months: Most recent savings and/or checking account statements, or a copy of your recent bankbook balance. Make sure to include IRA's, money markets, CD's, etc.",
+     "source_id": "fap-ec5248358d9d66e9",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "residency": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "If you are not insured or insured for only part of your expenses, please talk with one of our financial counselors. They can help you establish a payment plan or apply for financial assistance.",
+     "source_id": "web-11514a240a806781",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
     "state_programs": null
    },
    "apply": {
-    "form_url": {
-     "value": "https://www.brownhealth.org/patients-visitors/insurance-billing-and-financial-assistance/financial-assistance",
-     "layer": "documented",
-     "quote": "Patients can visit https://www.brownhealth.org/patients-visitors/insurance-billing-and-financial-assistance/financial-assistance",
-     "source_id": "web-e73f2901241871d9",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "form_url": null,
     "form_version": null,
-    "documents_required": {
+    "documents_required": null,
+    "documents_reported": null,
+    "submit_methods": {
      "value": [
-      "other",
-      "pay_stubs",
-      "bank_statements",
-      "photo_id"
+      {
+       "kind": "mail",
+       "detail": "Please mail the application and supporting documentation directly to the Patient Financial Advocate Office at the respective hospital's addresses below"
+      },
+      {
+       "kind": "in_person",
+       "detail": "The Patient/patient's family may either schedule an appointment or walk-in to see an advocate at any location below"
+      }
      ],
      "layer": "documented",
-     "quote": "Applicants are asked to provide family income or \"proof of income\" information through as many of the following documents as may be applicable or available: W-2 forms, most recent annual tax forms (federal), most recent pay stubs (at least two (2) consecutive), copies of any savings and/or checking account statement for last three (3) months , or a copy of government issued photo identification.",
-     "source_id": "web-e73f2901241871d9",
+     "quote": "Please mail the application and supporting documentation directly to the Patient Financial Advocate Office at the respective hospital's addresses below",
+     "source_id": "fap-ec5248358d9d66e9",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "documents_reported": null,
-    "submit_methods": null,
     "window_days_from_first_bill": null,
     "decision_days": {
      "value": 14,
@@ -131,15 +350,6 @@
    },
    "sources": [
     {
-     "id": "web-e73f2901241871d9",
-     "kind": "hospital_web",
-     "url": "https://brownhealth-corporate.policystat.com/policy/token_access/404f8d95-a8e9-4104-9cfe-4ad1b8fff8bd/",
-     "title": "PolicyStat\n\n\n            \n                :: PolicyStat",
-     "fetched_on": "2026-10-23",
-     "sha256": "e73f2901241871d916d7dfc20b785d0e063d89cb051a7f0fefd27496abd3d089",
-     "effective_date": null
-    },
-    {
      "id": "fap-ec5248358d9d66e9",
      "kind": "hospital_web",
      "url": "https://www.brownhealth.org/sites/default/files/2026-05/Brown-University-Health-Financial-Assistance-Guidelines-and-Application-05-25-English.pdf",
@@ -160,226 +370,25 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: Inpatient: 80% discount of the billable DRG | Outpatient: 90% discount off the total charge",
-    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: All balances for deceased patients with no estate or balances remaining after final distribution are eligible for retroa",
-    "contacts.languages: 2 more verbatim excerpt(s) supported this value: Russian [/sites/default/files/2025-07/Brown-University-Health-Financial-Assistance-Guidelines-and-Application-07-2025-Ru | Portuguese [/sites/default/files/2025-07/Brown-University-Health-Financial-Assistance-Guidelines-and-Application-07-2025",
-    "agent dropped apply.submit_methods: judge: Mail, in-person and MyChart are stated, but the Newport street address is not in the quote; it only says 'addresses listed above'.",
-    "eligibility.discount_tiers: rejected by schema (1 validation error for ProcedureSheet); dropped"
+    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: The Patient/patient's family may either schedule an appointment or walk -in to see an advocate at any location below | Patients can also receive assistance information by calling the PFA's at (401-444-7850",
+    "agent dropped apply.documents_required: excerpt not in source: Notice of Medical Assistance or General Public Assistance de",
+    "agent judge on eligibility.insured_patients_covered: Quote addresses uninsured or partly insured patients being directed to counselors for a payment plan or assistance. It does not state that insured patients are covered.",
+    "agent judge on apply.form_url: Quote gives only the relative path /sites/default/files/...English.pdf. The brownhealth.org domain in the value does not appear in the quote.",
+    "agent judge on contacts.languages: Quote lists English, Spanish, Russian, Portuguese and Khmer, truncated after Khmer. Chinese and Haitian Creole do not appear in the quote."
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 3,
-    "sources_total": 3,
+    "sources_fetched": 2,
+    "sources_total": 2,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-ec5248358d9d66e9": true,
+     "web-11514a240a806781": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
-     "eligibility.residency",
+     "eligibility.asset_test",
      "eligibility.insured_patients_covered",
-     "eligibility.min_balance",
-     "apply.form_url",
-     "apply.documents_required",
-     "apply.decision_days",
-     "contacts.phone",
-     "contacts.hours"
-    ],
-    "rejected": [
-     [
-      "eligibility.free_care_max_fpl",
-      "value not in quote"
-     ],
-     [
-      "eligibility.asset_test",
-      "quote does not support the asset-test value"
-     ],
-     [
-      "contacts.languages",
-      "quote not found in source"
-     ]
-    ],
-    "pruned": [
-     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)"
-    ],
-    "income_rule_verified": false,
-    "core_completeness": 0.5
-   }
-  },
-  {
-   "hospital": {
-    "ccn": "410007",
-    "name": "RHODE ISLAND HOSPITAL",
-    "city": "PROVIDENCE",
-    "state": "RI",
-    "zip": "02902",
-    "phone": "401-444-4000",
-    "ownership": "Voluntary non-profit - Private",
-    "website_domain": "brownhealth.org",
-    "system": null
-   },
-   "version": 1,
-   "status": "draft",
-   "eligibility": {
-    "free_care_max_fpl": null,
-    "discount_tiers": null,
-    "assistance_ceiling_fpl": null,
-    "asset_test": null,
-    "residency": {
-     "value": [
-      "Patients must be Rhode Island residents, unless they are non-Rhode Island residents seeking Emergency Services or meet another listed exception."
-     ],
-     "layer": "documented",
-     "quote": "Patient must be a Rhode Island resident or meet one of the conditions below: Non-Rhode Island Resident seeking Emergency Services at a Brown University Health Facility",
-     "source_id": "web-931ed4bd103ae1f7",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "insured_patients_covered": {
-     "value": true,
-     "layer": "documented",
-     "quote": "Financial assistance for insured patients is available once a patient receives a bill and by application only. Patient Responsibility must be greater than $250.00.",
-     "source_id": "web-931ed4bd103ae1f7",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "min_balance": {
-     "value": "250",
-     "layer": "documented",
-     "quote": "Financial assistance for insured patients is available once a patient receives a bill and by application only. Patient Responsibility must be greater than $250.00.",
-     "source_id": "web-931ed4bd103ae1f7",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "services_excluded": null
-   },
-   "programs": {
-    "presumptive": null,
-    "state_programs": null
-   },
-   "apply": {
-    "form_url": null,
-    "form_version": null,
-    "documents_required": {
-     "value": [
-      "other",
-      "pay_stubs",
-      "bank_statements",
-      "photo_id"
-     ],
-     "layer": "documented",
-     "quote": "W-2 forms, most recent annual tax forms (federal), most recent pay stubs (at least two (2) consecutive), copies of any savings and/or checking account statement for last three (3) months , or a copy of government issued photo identification.",
-     "source_id": "web-931ed4bd103ae1f7",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "documents_reported": null,
-    "submit_methods": {
-     "value": [
-      {
-       "kind": "mail",
-       "detail": "Mail completed application to any Brown University Health hospital facility address, e.g., Rhode Island Hospital, Patient Advocate Office, 593 Eddy Street, Providence, RI 02903"
-      },
-      {
-       "kind": "in_person",
-       "detail": "Deliver in person to any Brown University Health hospital facility address"
-      }
-     ],
-     "layer": "documented",
-     "quote": "Please mail completed applications or deliver in person (with all documentation/information specified in the application instructions) to any of the Brown University Health hospital facility addresses listed above.",
-     "source_id": "web-931ed4bd103ae1f7",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "window_days_from_first_bill": null,
-    "decision_days": {
-     "value": 14,
-     "layer": "documented",
-     "quote": "Applications are usually processed within 14 days of receipt.",
-     "source_id": "fap-ec5248358d9d66e9",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "decision_days_reported": null
-   },
-   "collections": {
-    "eca_wait_days": null,
-    "collection_agencies": null
-   },
-   "contacts": {
-    "phone": {
-     "value": "401-444-6966",
-     "layer": "documented",
-     "quote": "For further assistance or questions please visit or call Brown University Health's Patient Financial Services Department at 401-444-6966.",
-     "source_id": "web-931ed4bd103ae1f7",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "hours": {
-     "value": "8:00am-4:00pm, Monday through Friday",
-     "layer": "documented",
-     "quote": "please visit any of the Brown University Health hospital facility locations listed above between the hours of 8:00am-4:00pm, Monday through Friday.",
-     "source_id": "web-931ed4bd103ae1f7",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "languages": null
-   },
-   "coverage": {
-    "facilities": null,
-    "provider_list_url": null,
-    "covered_providers": null
-   },
-   "sources": [
-    {
-     "id": "web-931ed4bd103ae1f7",
-     "kind": "hospital_web",
-     "url": "https://brownhealth-corporate.policystat.com/policy/token_access/404f8d95-a8e9-4104-9cfe-4ad1b8fff8bd/",
-     "title": "PolicyStat\n\n\n            \n                :: PolicyStat",
-     "fetched_on": "2026-10-23",
-     "sha256": "931ed4bd103ae1f7f148c06d1c0369cced72e0fe78ce79cf4e7ac8a235305c22",
-     "effective_date": null
-    },
-    {
-     "id": "fap-ec5248358d9d66e9",
-     "kind": "hospital_web",
-     "url": "https://www.brownhealth.org/sites/default/files/2026-05/Brown-University-Health-Financial-Assistance-Guidelines-and-Application-05-25-English.pdf",
-     "title": "",
-     "fetched_on": "2026-10-23",
-     "sha256": "ec5248358d9d66e931c85083b23edeafe578a9400d229426b4c4a1fa2b04f94d",
-     "effective_date": null
-    },
-    {
-     "id": "web-306ab0102d1f5581",
-     "kind": "hospital_web",
-     "url": "https://www.brownhealth.org/patients-visitors/insurance-billing-and-financial-assistance/contact-customer-service",
-     "title": "Contact Brown University Health Customer Service | Brown University Health",
-     "fetched_on": "2026-10-23",
-     "sha256": "306ab0102d1f55819ed628140a480b3a9e5012d8e22b7c74942b0fbd867dac82",
-     "effective_date": null
-    }
-   ],
-   "accuracy": null,
-   "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: Inpatient: 80% discount of the billable DRG | Outpatient: 90% discount off the total charge",
-    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: All balances for deceased patients with no estate or balances remaining after final distribution are eligible for retroa",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Patients with active MyChart account can apply for the Financial Assistance program online at | by completing the Financial Assistance Application in person, online, or over the phone with a financial counselor",
-    "eligibility.discount_tiers: rejected by schema (1 validation error for ProcedureSheet); dropped"
-   ],
-   "eve_verified": {
-    "on": "2026-10-23",
-    "sources_fetched": 3,
-    "sources_total": 3,
-    "sources_missing": [],
-    "accepted": [
-     "eligibility.residency",
-     "eligibility.insured_patients_covered",
-     "eligibility.min_balance",
-     "apply.documents_required",
      "apply.submit_methods",
      "apply.decision_days",
      "contacts.phone",
@@ -387,24 +396,19 @@
     ],
     "rejected": [
      [
-      "eligibility.free_care_max_fpl",
-      "value not in quote"
-     ],
-     [
-      "eligibility.asset_test",
-      "quote does not support the asset-test value"
-     ],
-     [
       "apply.form_url",
+      "quote not found in source"
+     ],
+     [
+      "contacts.languages",
       "quote not found in source"
      ]
     ],
     "pruned": [
-     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
-     "apply.submit_methods: 2 items not named in the trimmed quote"
+     "apply.submit_methods: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": false,
-    "core_completeness": 0.5
+    "core_completeness": 0.33
    }
   },
   {
@@ -581,6 +585,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-06396be7fe865853": true,
+     "fap-a1b6215cacdee767": true,
+     "web-9cdeb928e06713c4": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.residency",
@@ -786,6 +796,10 @@
     "sources_fetched": 1,
     "sources_total": 1,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-31e0a3b31e2ba18d": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.assistance_ceiling_fpl",
@@ -1019,6 +1033,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-4031e84dceb3e3c6": true,
+     "fap-ce0552a86f9008e7": true,
+     "web-7d3658208643e7c1": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.assistance_ceiling_fpl",
@@ -1071,21 +1091,13 @@
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "Financial assistance for insured patients is available once a patient receives a bill and by application only.",
-     "source_id": "web-ba299ddb96d76eb3",
+     "quote": "If you are not insured or insured for only part of your expenses, please talk with one of our financial advocates. They can help you establish a payment plan or apply for financial assistance.",
+     "source_id": "web-c9fe509323fb7f4c",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "min_balance": {
-     "value": "250",
-     "layer": "documented",
-     "quote": "Patient Responsibility must be greater than $250.00.",
-     "source_id": "web-ba299ddb96d76eb3",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "min_balance": null,
     "services_excluded": null
    },
    "programs": {
@@ -1097,20 +1109,35 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "other",
-      "pay_stubs",
-      "bank_statements",
-      "photo_id"
+      "photo_id",
+      "other"
      ],
      "layer": "documented",
-     "quote": "W-2 forms, most recent annual tax forms (federal), most recent pay stubs (at least two (2) consecutive), copies of any savings and/or checking account statement for last three (3) months , or a copy of government issued photo identification.",
-     "source_id": "web-ba299ddb96d76eb3",
+     "quote": "Identification - Any of the following: a state-issued driver's license, a state-issued I.D. card",
+     "source_id": "fap-ec5248358d9d66e9",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "documents_reported": null,
-    "submit_methods": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "Please mail the application and supporting documentation directly to the Patient Financial Advocate Office at the respective hospital's addresses below"
+      },
+      {
+       "kind": "in_person",
+       "detail": "The Patient/patient's family may either schedule an appointment or walk-in to see an advocate at any location below"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Please mail the application and supporting documentation directly to the Patient Financial Advocate Office at the respective hospital's addresses below",
+     "source_id": "fap-ec5248358d9d66e9",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "window_days_from_first_bill": null,
     "decision_days": {
      "value": 14,
@@ -1129,16 +1156,16 @@
    },
    "contacts": {
     "phone": {
-     "value": "401-444-6966",
+     "value": "401-793-2206",
      "layer": "documented",
-     "quote": "You or a member of your family may talk with a representative by calling the direct line at 401-444-6966 .",
+     "quote": "To set up a payment plan or to apply for financial assistance, please call 401-793-2206",
      "source_id": "web-c9fe509323fb7f4c",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "hours": {
-     "value": "9 a.m. to 4:30 p.m., Monday through Friday",
+     "value": "9 a.m. and 4:30 p.m., Monday through Friday",
      "layer": "documented",
      "quote": "Office hours are 9 a.m. and 4:30 p.m., Monday through Friday.",
      "source_id": "web-c9fe509323fb7f4c",
@@ -1154,15 +1181,6 @@
     "covered_providers": null
    },
    "sources": [
-    {
-     "id": "web-ba299ddb96d76eb3",
-     "kind": "hospital_web",
-     "url": "https://brownhealth-corporate.policystat.com/policy/token_access/404f8d95-a8e9-4104-9cfe-4ad1b8fff8bd/",
-     "title": "PolicyStat\n\n\n            \n                :: PolicyStat",
-     "fetched_on": "2026-10-23",
-     "sha256": "ba299ddb96d76eb35dbc1af34126d115dc8fabe7a8ca093c3ae71d1cb4b24ca7",
-     "effective_date": null
-    },
     {
      "id": "fap-ec5248358d9d66e9",
      "kind": "hospital_web",
@@ -1184,44 +1202,36 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: Inpatient: 80% discount of the billable DRG | Outpatient: 90% discount off the total charge",
-    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: All balances for deceased patients with no estate or balances remaining after final distribution are eligible for retroa",
-    "agent dropped eligibility.residency: judge: The quote covers RI residents and non-residents seeking emergency services; it does not mention Massachusetts transfer exceptions.",
-    "agent dropped apply.submit_methods: judge: The quote lists in person, online, phone, mail and delivery, but does not mention MyChart or a facility address.",
-    "eligibility.discount_tiers: rejected by schema (1 validation error for ProcedureSheet); dropped"
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Copies of the most recent pay stubs (for the last two consecutive pay periods) for all working family members | Copy of last year's Federal income tax return and any supporting W-2 Form(s)",
+    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: The Patient/patient's family may either schedule an appointment or walk -in to see an advocate at any location below | Patients can also receive assistance information by calling the PFA's at (401-444-7850",
+    "agent judge on eligibility.insured_patients_covered: The quote only says partly insured or uninsured patients can talk to advocates for a payment plan or assistance. It does not say insured patients are covered.",
+    "agent judge on apply.documents_required: The quote names only identification, recent pay stubs, and the last tax return with W-2s. It does not mention proof of residence, bank statements, or a Medicaid denial."
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 3,
-    "sources_total": 3,
+    "sources_fetched": 2,
+    "sources_total": 2,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-ec5248358d9d66e9": true,
+     "web-c9fe509323fb7f4c": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.insured_patients_covered",
-     "eligibility.min_balance",
      "apply.documents_required",
+     "apply.submit_methods",
      "apply.decision_days",
      "contacts.phone",
      "contacts.hours"
     ],
-    "rejected": [
-     [
-      "eligibility.free_care_max_fpl",
-      "value not in quote"
-     ],
-     [
-      "eligibility.asset_test",
-      "quote does not support the asset-test value"
-     ],
-     [
-      "apply.form_url",
-      "quote not found in source"
-     ]
-    ],
+    "rejected": [],
     "pruned": [
-     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)"
+     "apply.documents_required: 4 items not named in the trimmed quote",
+     "apply.submit_methods: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": false,
-    "core_completeness": 0.33
+    "core_completeness": 0.5
    }
   },
   {
@@ -1403,6 +1413,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-11332fbdd8f42903": true,
+     "fap-66030d848647953e": true,
+     "web-2d4a6bda45289f39": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.residency",

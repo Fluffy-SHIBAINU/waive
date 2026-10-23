@@ -966,27 +966,24 @@
     "state_programs": null
    },
    "apply": {
-    "form_url": null,
-    "form_version": null,
-    "documents_required": {
-     "value": [
-      "pay_stubs",
-      "tax_return",
-      "social_security_letter",
-      "proof_of_income",
-      "bank_statements",
-      "other"
-     ],
+    "form_url": {
+     "value": "https://www.unity-health.org/media/5ebc68648fbf4f5c85d8d9383700a8ac/faa-2026.pdf",
      "layer": "documented",
-     "quote": "[ ] Most recent pay stubs [ ] Most recent federal tax return [ ] Social Security or Disability award letters",
-     "source_id": "fap-752074230de7446e",
+     "quote": "Financial assistance application (PDF) [https://www.unity-health.org/media/5ebc68648fbf4f5c85d8d9383700a8ac/faa-2026.pdf]",
+     "source_id": "web-eaa6f48d3ea75fba",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
+    "form_version": null,
+    "documents_required": null,
     "documents_reported": null,
     "submit_methods": {
      "value": [
+      {
+       "kind": "mail",
+       "detail": "submit it back to Unity as soon as possible"
+      },
       {
        "kind": "in_person",
        "detail": "come by the Business Office at Unity Health"
@@ -1003,15 +1000,7 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "window_days_from_first_bill": {
-     "value": 14,
-     "layer": "documented",
-     "quote": "Please submit this information within 14 days along with requested income verification:",
-     "source_id": "fap-752074230de7446e",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "window_days_from_first_bill": null,
     "decision_days": null,
     "decision_days_reported": null
    },
@@ -1023,7 +1012,7 @@
     "phone": {
      "value": "(501) 380-1022",
      "layer": "documented",
-     "quote": "(501) 380-1022",
+     "quote": "Financial Counselor (501) 380-1022",
      "source_id": "fap-752074230de7446e",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1055,14 +1044,23 @@
      "fetched_on": "2026-10-23",
      "sha256": "752074230de7446e92c8bf920c07a144b11e1b55c3d1029b1b90f8f4664b4353",
      "effective_date": null
+    },
+    {
+     "id": "web-eaa6f48d3ea75fba",
+     "kind": "hospital_web",
+     "url": "https://www.unity-health.org/patients/financial-assistance/",
+     "title": "Healthcare Financial Help & Payment Options | Unity Health",
+     "fetched_on": "2026-10-23",
+     "sha256": "eaa6f48d3ea75fbaf3fbfe732f53182be08123cdd09c01bd58008bf17da3b0bb",
+     "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: [ ] Pension Benefits [ ] Bank statements (last 3 months) [ ] Brokerage Statements | [ ] Hardship letter or personal statement",
-    "agent judge on eligibility.asset_test: Quote is a form heading listing asset types and accounts. It does not state that assets are considered in eligibility.",
-    "agent judge on apply.submit_methods: Quote supports calling or visiting the Business Office, but does not contain the phone number (501) 380-1022 given as the phone detail.",
-    "agent judge on apply.window_days_from_first_bill: Quote says to submit information within 14 days but does not say the period runs from the first bill."
+    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Sincerely, Financial Counselor (501) 380-1022",
+    "agent dropped apply.documents_required: between 1 and 3 excerpts allowed",
+    "agent judge on eligibility.asset_test: Quote is a table heading listing assets convertible to cash; it does not plainly state that assets are considered for eligibility.",
+    "agent judge on apply.submit_methods: Quote supports in-person (Business Office) and phone, but nothing about mailing the application; the mail entry is unsupported."
    ]
   },
   {
@@ -1475,190 +1473,6 @@
   },
   {
    "hospital": {
-    "ccn": "040026",
-    "name": "CHI ST. VINCENT HOSPITAL HOT SPRINGS",
-    "city": "HOT SPRINGS",
-    "state": "AR",
-    "zip": "71903",
-    "phone": "501-622-1000",
-    "ownership": "Voluntary non-profit - Private",
-    "website_domain": "commonspirit.org",
-    "system": null
-   },
-   "version": 1,
-   "status": "draft",
-   "eligibility": {
-    "free_care_max_fpl": null,
-    "discount_tiers": null,
-    "assistance_ceiling_fpl": {
-     "value": "400",
-     "layer": "documented",
-     "quote": "Assistance is provided for those patients whose family income is lower than 400% of the Federal Poverty Level Guidelines.",
-     "source_id": "fap-31e338cf66f4b06d",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "asset_test": {
-     "value": true,
-     "layer": "documented",
-     "quote": "You must provide information on all assets owned by any family member. Asset verification is required to determine financial assistance.",
-     "source_id": "fap-31e338cf66f4b06d",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "residency": null,
-    "insured_patients_covered": {
-     "value": true,
-     "layer": "documented",
-     "quote": "You may qualify for free care or discounted care based on your family size and income, even if you have health insurance.",
-     "source_id": "fap-31e338cf66f4b06d",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "min_balance": null,
-    "services_excluded": null
-   },
-   "programs": {
-    "presumptive": null,
-    "state_programs": null
-   },
-   "apply": {
-    "form_url": null,
-    "form_version": null,
-    "documents_required": {
-     "value": [
-      "proof_of_income",
-      "other"
-     ],
-     "layer": "documented",
-     "quote": "Provide documentation for family income",
-     "source_id": "fap-31e338cf66f4b06d",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "documents_reported": null,
-    "submit_methods": {
-     "value": [
-      {
-       "kind": "mail",
-       "detail": "Mail completed application with all documentation to: Hot Springs, ATTN: EES - Financial Assistance Center, P.O. Box 660872. Dallas, TX 75266-0872"
-      },
-      {
-       "kind": "fax",
-       "detail": "Fax: 469-803-4627"
-      },
-      {
-       "kind": "in_person",
-       "detail": "CHI St. Vincent Hot Springs, 300 Werner St, Hot Springs, AR 71913"
-      }
-     ],
-     "layer": "documented",
-     "quote": "Mail or fax completed application with all documentation to: Hot Springs, ATTN: EES - Financial Assistance Center, P.O. Box 660872. Dallas, TX 75266-0872 Fax: 469-803-4627.",
-     "source_id": "fap-31e338cf66f4b06d",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "window_days_from_first_bill": null,
-    "decision_days": {
-     "value": 30,
-     "layer": "documented",
-     "quote": "We will notify you of the final determination of eligibility and appeal rights, if applicable, within 30 calendar days of receiving a complete financial assistance application",
-     "source_id": "fap-31e338cf66f4b06d",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "decision_days_reported": null
-   },
-   "collections": {
-    "eca_wait_days": null,
-    "collection_agencies": null
-   },
-   "contacts": {
-    "phone": {
-     "value": "844-286-5546",
-     "layer": "documented",
-     "quote": "You may obtain help for any reason, including disability and language assistance at: 844-286-5546",
-     "source_id": "fap-31e338cf66f4b06d",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "hours": null,
-    "languages": {
-     "value": [
-      "Arabic",
-      "German",
-      "English",
-      "Spanish",
-      "French",
-      "Hindi",
-      "Hmong",
-      "Japanese",
-      "Korean",
-      "Portuguese",
-      "Russian",
-      "Tagalog",
-      "Vietnamese",
-      "Simplified Chinese",
-      "Traditional Chinese"
-     ],
-     "layer": "documented",
-     "quote": "The application is available in fourteen different languages.",
-     "source_id": "web-a781df541a320e2e",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
-   },
-   "coverage": {
-    "facilities": null,
-    "provider_list_url": null,
-    "covered_providers": null
-   },
-   "sources": [
-    {
-     "id": "fap-4a91da544372be9b",
-     "kind": "hospital_web",
-     "url": "https://www.commonspirit.org/content/dam/commonspiritorg/en/chisv/soar/finance/assistance/stvincent-hot-springs-employed-fap.pdf",
-     "title": "",
-     "fetched_on": "2026-10-23",
-     "sha256": "4a91da544372be9b6b8be3f13cd5f3c0a0559231e30e4f6681988592bff983db",
-     "effective_date": null
-    },
-    {
-     "id": "fap-31e338cf66f4b06d",
-     "kind": "hospital_web",
-     "url": "https://www.commonspirit.org/content/dam/commonspiritorg/en/chisv/soar/finance/assistance/stvincent-hot-springs-financial-assistance-app-en.pdf",
-     "title": "",
-     "fetched_on": "2026-10-23",
-     "sha256": "31e338cf66f4b06de76e01187f291b247efd3620ec6170736f6161ea643dd619",
-     "effective_date": null
-    },
-    {
-     "id": "web-a781df541a320e2e",
-     "kind": "hospital_web",
-     "url": "https://www.commonspirit.org/patient-resources/stvincent-financial-assistance",
-     "title": "St. Vincent Financial Assistance",
-     "fetched_on": "2026-10-23",
-     "sha256": "a781df541a320e2e26e7dd3af7e63e58809d9a8e3a488bd6b7e35535423850d8",
-     "effective_date": null
-    }
-   ],
-   "accuracy": null,
-   "eve_review": [
-    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: Provide documentation for family assets",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: To submit your completed application in person: CHI St. Vincent Hot Springs, 300 Werner St, Hot Springs, AR 71913",
-    "agent judge on contacts.languages: Quote says the application is available in fourteen languages, but the value lists fifteen and the quote does not name any of them."
-   ]
-  },
-  {
-   "hospital": {
     "ccn": "040027",
     "name": "BAXTER HEALTH",
     "city": "MOUNTAIN HOME",
@@ -1672,7 +1486,15 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": null,
+    "free_care_max_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "0-138% of NPG 139-200% of NPG 200-300% of NPG (50% Reduction)(100% Reduction) (75% Reduction)",
+     "source_id": "fap-6757ae437ed62e1c",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "discount_tiers": {
      "value": [
       {
@@ -1687,7 +1509,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "0-138% of NPG 139-200% of NPG 200-300% of NPG",
+     "quote": "0-138% of NPG 139-200% of NPG 200-300% of NPG (50% Reduction)(100% Reduction) (75% Reduction)",
      "source_id": "fap-6757ae437ed62e1c",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1697,8 +1519,8 @@
     "asset_test": {
      "value": true,
      "layer": "documented",
-     "quote": "other eligibility criteria may also include (1) assets and liabilities, (2) most current property tax assessment",
-     "source_id": "fap-6757ae437ed62e1c",
+     "quote": "The criteria for financial assistance are based on household income, net worth, and extent of financial obligations paid to healthcare providers over the past 12 months.",
+     "source_id": "fap-ba5e552622cb980f",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -1711,9 +1533,7 @@
    "programs": {
     "presumptive": {
      "value": [
-      "homeless",
-      "physically or mentally incapacitated with no one to act on behalf",
-      "Medicaid enrolled or means tested public program"
+      "homeless"
      ],
      "layer": "documented",
      "quote": "If a patient (1) states that he or she is homeless at the time care is needed or (2) is physically or mentally incapacitated and has no one to act on his or her behalf",
@@ -1730,10 +1550,9 @@
     "documents_required": {
      "value": [
       "tax_return",
-      "proof_of_income",
+      "pay_stubs",
       "bank_statements",
-      "medicaid_denial",
-      "other"
+      "medicaid_denial"
      ],
      "layer": "documented",
      "quote": "Most Current FEDERAL TAX RETURN (complete with all attachments)",
@@ -1787,7 +1606,7 @@
    },
    "contacts": {
     "phone": {
-     "value": "800-508-1080",
+     "value": "(800) 508-1080",
      "layer": "documented",
      "quote": "(800) 508-1080",
      "source_id": "fap-6757ae437ed62e1c",
@@ -1847,16 +1666,13 @@
    "accuracy": null,
    "eve_review": [
     "eligibility.discount_tiers: 138-200% at 100% is the free-care band, not a tier; skipped",
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: (50% Reduction)(100% Reduction) (75% Reduction)",
-    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: A patient may be presumptively eligible if Baxter Health has received information from an appropriate third party, such ",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: LAST TWO BANK STATEMENTS | MEDICAID DENIAL - You must be SCREENED for Medicaid to qualify for financial assistance.",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: If you have any questions, please call your counselor at 870-508-1080",
-    "contacts.languages: 2 more verbatim excerpt(s) supported this value: CH\u00da \u00dd: N\u1ebfu b\u1ea1n n\u00f3i Ti\u1ebfng Vi\u1ec7t, c\u00f3 c\u00e1c d\u1ecbch v\u1ee5 h\u1ed7 tr\u1ee3 ng\u00f4n ng\u1eef mi\u1ec5n ph\u00ed d\u00e0nh cho b\u1ea1n. | \u6ce8\u610f\uff1a\u5982\u679c\u60a8\u4f7f\u7528\u7e41\u9ad4\u4e2d\u6587\uff0c\u60a8\u53ef\u4ee5\u514d\u8cbb\u7372\u5f97\u8a9e\u8a00\u63f4\u52a9\u670d\u52d9\u3002\u8acb\u81f4\u96fb 1-866-720-2122\u3002",
-    "agent dropped eligibility.free_care_max_fpl: quote is not a substring of the source",
-    "agent judge on programs.presumptive: Quote supports homeless and incapacitated with no one to act for them, and a third-party means-tested program. It does not say Medicaid enrollment qualifies.",
-    "agent judge on apply.documents_required: Quote lists only the federal tax return, two bank statements, and Medicaid denial/screening. Household income verification and out-of-pocket verification are not in the quote.",
-    "agent judge on apply.submit_methods: Mailing address is supported. The phone number is given only for questions to a counselor, not as a submission method.",
-    "agent judge on contacts.languages: Quote mentions only Spanish, Vietnamese, and Chinese. The other nine languages in the value do not appear in the quote."
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: LAST TWO BANK STATEMENTS | MEDICAID DENIAL - You must be SCREENED for Medicaid to qualify",
+    "contacts.languages: 2 more verbatim excerpt(s) supported this value: CH\u00da \u00dd: N\u1ebfu b\u1ea1n n\u00f3i Ti\u1ebfng Vi\u1ec7t, c\u00f3 c\u00e1c d\u1ecbch v\u1ee5 h\u1ed7 tr\u1ee3 ng\u00f4n ng\u1eef mi\u1ec5n ph\u00ed d\u00e0nh cho b\u1ea1n. | \u6ce8\u610f\uff1a\u5982\u679c\u60a8\u4f7f\u7528\u7e41\u9ad4\u4e2d\u6587\uff0c\u60a8\u53ef\u4ee5\u514d\u8cbb\u7372\u5f97\u8a9e\u8a00\u63f4\u52a9\u670d\u52d9\u3002",
+    "agent judge on eligibility.free_care_max_fpl: Quote lists tiers with percent reductions in ambiguous order; the 0-138% band reads as 50% reduction, so no explicit 100% free-care line at 200% is stated.",
+    "agent judge on programs.presumptive: Quote lists two presumptive categories: homeless and physically or mentally incapacitated with no one to act for them. Value omits the incapacitated category.",
+    "agent judge on apply.documents_required: Value includes 'last two paycheck stubs', which does not appear in the quote. Quote lists tax return, two bank statements, and Medicaid denial.",
+    "agent judge on apply.submit_methods: Mail address matches the quote, but the phone method 870-508-1080 is not in the quote.",
+    "agent judge on contacts.languages: Quote shows only Spanish, Vietnamese, and Chinese assistance notices. Value lists twelve languages not stated in the quote."
    ]
   },
   {
@@ -2089,17 +1905,17 @@
     "free_care_max_fpl": null,
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
-    "asset_test": {
+    "asset_test": null,
+    "residency": null,
+    "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "Current bank statements (past TWO months) _____Check here if you do not have a bank account.",
-     "source_id": "fap-3dc094a63324b09c",
+     "quote": "we offer a Financial Assistance Program for patients who are uninsured, underinsured, or facing unexpected medical costs",
+     "source_id": "web-edb9b75bf91084e0",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "residency": null,
-    "insured_patients_covered": null,
     "min_balance": null,
     "services_excluded": null
    },
@@ -2118,7 +1934,7 @@
       "bank_statements"
      ],
      "layer": "documented",
-     "quote": "Copy of most recent Income Tax Return. _____Please check if you are exempt from filing taxes and explain why you are exempt or your application will be denied.",
+     "quote": "_____ Copy of most recent Income Tax Return. _____Please check if you are exempt from filing taxes",
      "source_id": "fap-3dc094a63324b09c",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2129,7 +1945,7 @@
      "value": [
       {
        "kind": "mail",
-       "detail": "Arkansas Methodist Hospital, Business Office, 900 W. Kingshighway, PO Box 339, Paragould, AR 72451"
+       "detail": "Arkansas Methodist Hospital Business Office, 900 W. Kingshighway, PO Box 339, Paragould, AR 72451"
       },
       {
        "kind": "phone",
@@ -2155,7 +1971,7 @@
     "phone": {
      "value": "870-239-7129",
      "layer": "documented",
-     "quote": "ARKANSAS METHODIST MEDICAL CENTER 900 W. KINGSHIGHWAY P. O. BOX 339 PARAGOULD, AR. 72451-0339 870-239-7129",
+     "quote": "900 W. KINGSHIGHWAY P. O. BOX 339 PARAGOULD, AR. 72451-0339 870-239-7129",
      "source_id": "fap-3dc094a63324b09c",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2180,19 +1996,18 @@
      "effective_date": null
     },
     {
-     "id": "web-a64dfa2b321d0afa",
+     "id": "web-edb9b75bf91084e0",
      "kind": "hospital_web",
      "url": "https://myammc.org/plan-your-visit/",
      "title": "Plan Your Visit - Arkansas Methodist Medical Center",
      "fetched_on": "2026-10-23",
-     "sha256": "a64dfa2b321d0afa17d41c260c07216738da69a4994f5d05ad18ce730fd65cf9",
+     "sha256": "edb9b75bf91084e0237bfe968f1a9f2779ca737c57a2bc5401dcbbcfbe10914a",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Proof of Current Income. You may provide check stubs (minimum one month) or an official statement on letterhead from Emp | Completed Adult Patient Medicaid Eligibility Questionnaire (attached) _____ Current bank statements (past TWO months)",
-    "agent judge on eligibility.asset_test: The quote only asks for bank statements and a checkbox for no bank account. It never states that assets are considered."
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: _____ Proof of Current Income. You may provide check stubs (minimum one month) or an official statement on letterhead fr | _____ Current bank statements (past TWO months)"
    ]
   },
   {
@@ -2210,51 +2025,33 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": {
-     "value": "133",
-     "layer": "documented",
-     "quote": "% of Financial Assistance 100% 100% 100% 95% 90% 85% 80% 75% 70% 70% 70%",
-     "source_id": "fap-997802255a9e84b9",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "free_care_max_fpl": null,
     "discount_tiers": {
      "value": [
       {
-       "min_fpl_exclusive": "133",
-       "max_fpl_inclusive": "135",
-       "discount_percent": 95
-      },
-      {
-       "min_fpl_exclusive": "135",
-       "max_fpl_inclusive": "140",
-       "discount_percent": 90
-      },
-      {
-       "min_fpl_exclusive": "140",
-       "max_fpl_inclusive": "145",
-       "discount_percent": 85
-      },
-      {
-       "min_fpl_exclusive": "145",
-       "max_fpl_inclusive": "150",
+       "min_fpl_exclusive": "0",
+       "max_fpl_inclusive": "120",
        "discount_percent": 80
       },
       {
-       "min_fpl_exclusive": "150",
-       "max_fpl_inclusive": "175",
-       "discount_percent": 75
+       "min_fpl_exclusive": "120",
+       "max_fpl_inclusive": "200",
+       "discount_percent": 60
       },
       {
-       "min_fpl_exclusive": "175",
+       "min_fpl_exclusive": "200",
        "max_fpl_inclusive": "250",
-       "discount_percent": 70
+       "discount_percent": 40
+      },
+      {
+       "min_fpl_exclusive": "250",
+       "max_fpl_inclusive": "300",
+       "discount_percent": 20
       }
      ],
      "layer": "documented",
-     "quote": "100% 120% 133% 135% 140% 145% 150% 175% 185% 200% 250%",
-     "source_id": "fap-997802255a9e84b9",
+     "quote": "For income levels at 120% of the Poverty Guidelines an 80% discount will be given. For incomes at 200% of the Poverty Guidelines, a 60% discount will be given.",
+     "source_id": "web-17dd7026a42eb869",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -2263,8 +2060,8 @@
     "asset_test": {
      "value": true,
      "layer": "documented",
-     "quote": "Individual or family net worth. Examples include, but are not limited to: Checking Bank Statements, Savings Bank Statements, etc.",
-     "source_id": "fap-997802255a9e84b9",
+     "quote": "Other factors that will be considered when determining eligibility include, but are not limited to, investments, financial accounts, real estate, other assets, family size, net worth, employment status, earning capacity and other financial obligations.",
+     "source_id": "web-17dd7026a42eb869",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -2283,42 +2080,23 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "tax_return",
-      "bank_statements",
-      "other"
+      "medicaid_denial"
      ],
      "layer": "documented",
-     "quote": "Submission of documents for proof of financial indigence. Examples include, but are not limited to: W-2s, Income Tax forms, Check Stubs, etc.",
-     "source_id": "fap-997802255a9e84b9",
+     "quote": "Applications for financial assistance for inpatient services should be accompanied with a Medicaid denial.",
+     "source_id": "web-17dd7026a42eb869",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "documents_reported": null,
-    "submit_methods": {
-     "value": [
-      {
-       "kind": "in_person",
-       "detail": "Completed applications, along with supporting documentation, should be returned to the Financial Counselor in the OCMC Business Office at 638 California Ave. SW, Camden, AR."
-      },
-      {
-       "kind": "phone",
-       "detail": "calling 870-836-1000"
-      }
-     ],
-     "layer": "documented",
-     "quote": "Completed applications, along with supporting documentation, should be returned to the Financial Counselor in the OCMC Business Office at 638 California Ave. SW, Camden, AR.",
-     "source_id": "fap-997802255a9e84b9",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "submit_methods": null,
     "window_days_from_first_bill": null,
     "decision_days": {
      "value": 30,
      "layer": "documented",
-     "quote": "Applications for financial assistance will be reviewed within thirty (30) days of receipt of a completed application.",
-     "source_id": "fap-997802255a9e84b9",
+     "quote": "Patients will be notified in writing of the Hospital decision concerning eligibility for financial assistance within thirty (30) days of receipt of an application.",
+     "source_id": "web-17dd7026a42eb869",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -2329,8 +2107,8 @@
     "eca_wait_days": {
      "value": 120,
      "layer": "documented",
-     "quote": "fails to comply with payment terms for a period of more than one hundred twenty (120) days, the account may be turned over to a collection agency",
-     "source_id": "fap-997802255a9e84b9",
+     "quote": "In the event a patient approved for financial assistance fails to comply with payment terms for a period of more than one hundred and twenty (120) days, the account may be turned over to a collection agency",
+     "source_id": "web-17dd7026a42eb869",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -2339,10 +2117,10 @@
    },
    "contacts": {
     "phone": {
-     "value": "870-836-1000",
+     "value": "870-836-1209",
      "layer": "documented",
-     "quote": "Financial assistance information can be obtained free of charge in the OCMC Business Office or by calling 870-836-1000.",
-     "source_id": "fap-997802255a9e84b9",
+     "quote": "Please call or visit the Financial Counselor at 870-836-1209, located in the Business Office, for more information.",
+     "source_id": "web-870ad03318e48dfd",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -2357,21 +2135,12 @@
    },
    "sources": [
     {
-     "id": "fap-997802255a9e84b9",
+     "id": "web-17dd7026a42eb869",
      "kind": "hospital_web",
-     "url": "https://www.ouachitamedcenter.com/Content/Uploads/ouachitamedcenter.com/files/FinancialAssistancePolicy.pdf",
-     "title": "",
+     "url": "https://www.ouachitamedcenter.com/patients-and-visitors/billing-information/financial-assistance-policy",
+     "title": "Financial Assistance Policy | Ouachita County Medical Center",
      "fetched_on": "2026-10-23",
-     "sha256": "997802255a9e84b9b9c17395c1b0a45ed851e4d24383f7a619ef8651f0c49062",
-     "effective_date": null
-    },
-    {
-     "id": "fap-f9413fbb839c4ce0",
-     "kind": "hospital_web",
-     "url": "https://www.ouachitamedcenter.com/Content/Uploads/ouachitamedcenter.com/files/FinancialAssistancePolicy-Application.pdf",
-     "title": "",
-     "fetched_on": "2026-10-23",
-     "sha256": "f9413fbb839c4ce0541a7e445dd1ea8ec7fb292d4eaa2228751f6431723728e2",
+     "sha256": "17dd7026a42eb869406970ad2c717e24314b3a9dcc6509946b07f73a76358a90",
      "effective_date": null
     },
     {
@@ -2386,10 +2155,10 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: % of Financial Assistance 100% 100% 100% 95% 90% 85% 80% 75% 70% 70% 70%",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Individual or family net worth. Examples include, but are not limited to: Checking Bank Statements, Savings Bank Stateme | Proof of public assistance (Proof of Food Stamps & HUD)",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Financial assistance information can be obtained free of charge in the OCMC Business Office or by calling 870-836-1000.",
-    "agent judge on eligibility.free_care_max_fpl: The quote gives only the discount row (100% 100% 100% 95%...) with no FPL header, so it does not show that 133% is the highest percent of FPL receiving 100% free care."
+    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: For incomes at 250% of the Poverty Guidelines, a 40% discount will be given. For incomes at 300% of the Poverty Guidelin",
+    "apply.form_url: not an absolute URL ('/Content/Uploads/ouachitamedcenter.com/files/FinancialAssist'); dropped",
+    "agent dropped apply.submit_methods: excerpt not in source: Please call or visit the Financial Counselor at 870-836-1209",
+    "agent judge on eligibility.discount_tiers: Quote gives discounts at points (120%=80%, 200%=60%, 250%=40%, 300%=20%) but no bands; the 0% lower bound and tier ranges are not stated."
    ]
   },
   {
@@ -2618,53 +2387,171 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": null,
-    "discount_tiers": null,
+    "free_care_max_fpl": {
+     "value": "300",
+     "layer": "documented",
+     "quote": "Less than or equal to 300% of the Federal Poverty Guideline (Full FAP Assistance): Based on the information provided in the Financial Assistance application and/or through the presumptive eligibility process, a Patient or Guarantor whose Income plus Liquid Assets is less than or equal to 300% of the current Federal Poverty Guideline for his or her family size is eligible for a full discount under the FAP",
+     "source_id": "fap-c0bb3ef853bd74de",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "300",
+       "max_fpl_inclusive": "400",
+       "discount_percent": 50
+      }
+     ],
+     "layer": "documented",
+     "quote": "Between 301% and 400% of the Federal Poverty Guideline (Partial FAP Assistance): Based on the information provided in the Financial Assistance application and/or through the presumptive eligibility process, a Patient or Guarantor whose Income plus Liquid Assets is between 301% and 400% of the current Federal Poverty Guideline for his or her family size is eligible for an 50% discount",
+     "source_id": "fap-c0bb3ef853bd74de",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "assistance_ceiling_fpl": null,
-    "asset_test": null,
+    "asset_test": {
+     "value": true,
+     "layer": "documented",
+     "quote": "BH will disregard the first Five Thousand ($5,000) of liquid assets of the Household for purposes of calculating eligibility for Financial Assistance pursuant to the FAP.",
+     "source_id": "fap-c0bb3ef853bd74de",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "residency": null,
-    "insured_patients_covered": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Insured patients receiving emergency or medically necessary care that is not allowed by the patient\u2019s insurance policy may also be given a discount from gross charges that limits payment responsibility to the amounts generally billed [AGB] by each hospital.",
+     "source_id": "fap-c0bb3ef853bd74de",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "min_balance": null,
     "services_excluded": null
    },
    "programs": {
-    "presumptive": null,
+    "presumptive": {
+     "value": [
+      "homeless",
+      "deceased with no estate"
+     ],
+     "layer": "documented",
+     "quote": "Patients who are homeless and do not have a physical address may be presumptively eligible without the need for additional assessment hereunder.",
+     "source_id": "fap-c0bb3ef853bd74de",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "state_programs": null
    },
    "apply": {
-    "form_url": null,
+    "form_url": {
+     "value": "https://www.baptisthealth.com/-/media/documents/patients-and-visitors/financial-assistance/2025/october/english-application-october-2025.pdf?rev=2a7941f788214160ab9418fd6f0b0acc&hash=9AD3A6DE631CEAB522279CBAA0F7DCCC",
+     "layer": "documented",
+     "quote": "Financial Assistance Application [/-/media/documents/patients-and-visitors/financial-assistance/2025/october/english-application-october-2025.pdf?rev=2a7941f788214160ab9418fd6f0b0acc&hash=9AD3A6DE631CEAB522279CBAA0F7DCCC]",
+     "source_id": "web-d62569467f3f68ac",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "form_version": null,
     "documents_required": null,
     "documents_reported": null,
-    "submit_methods": null,
-    "window_days_from_first_bill": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "Please mail completed form and attachments to the hospital where you were treated: Baptist Health Financial Counselors"
+      },
+      {
+       "kind": "in_person",
+       "detail": "Visit the Financial Counseling office at your local Baptist Health hospital"
+      },
+      {
+       "kind": "phone",
+       "detail": "contact us at 866.273.5392 to arrange a payment plan for your balance"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Please mail completed form and attachments to the hospital where you were treated: Baptist Health Financial Counselors",
+     "source_id": "fap-5636546add2ee668",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": {
+     "value": 240,
+     "layer": "documented",
+     "quote": "There is a minimum 240-day application period during which BH will accept and process an application for assistance under this FAP.",
+     "source_id": "fap-c0bb3ef853bd74de",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "decision_days": null,
     "decision_days_reported": null
    },
    "collections": {
-    "eca_wait_days": null,
+    "eca_wait_days": {
+     "value": 120,
+     "layer": "documented",
+     "quote": "BH will not engage in any ECAs for at least 120 days from the date on which the first post-discharge billing statement was provided to Patient or Guarantor.",
+     "source_id": "fap-c0bb3ef853bd74de",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "collection_agencies": null
    },
    "contacts": {
     "phone": {
-     "value": "(479) 441-5127",
+     "value": "855.803.7367",
      "layer": "documented",
-     "quote": "Baptist Health Medical Center-Fort Smith (479) 441-5127",
-     "source_id": "web-945263e2a2cf422e",
+     "quote": "For questions about the Baptist Health Financial Assistance Program, or to discuss the application process with a representative, call 855.803.7367 .",
+     "source_id": "web-d62569467f3f68ac",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "hours": {
-     "value": "Monday \u2013 Friday 8 a.m.- 5 p.m.",
+     "value": "8:30 a.m.-4:30 p.m. Monday through Friday. Closed weekends.",
      "layer": "documented",
-     "quote": "You can email your request to hospitalestimates@baptist-health.org or call Monday \u2013 Friday 8 a.m.- 5 p.m.",
-     "source_id": "web-945263e2a2cf422e",
+     "quote": "contact your Baptist Health financial counseling office from 8:30 a.m.-4:30 p.m. Monday through Friday. Closed weekends.",
+     "source_id": "fap-5636546add2ee668",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "languages": null
+    "languages": {
+     "value": [
+      "Spanish",
+      "Arabic",
+      "Russian",
+      "French",
+      "Vietnamese",
+      "Nepali",
+      "Chinese Simplified",
+      "Korean",
+      "Ukrainian",
+      "Swahili",
+      "Haitian",
+      "Khmer",
+      "Bosnian",
+      "Hindi",
+      "Kinyarwanda"
+     ],
+     "layer": "documented",
+     "quote": "Espa\u00f1ol (Spanish)",
+     "source_id": "fap-5636546add2ee668",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
    },
    "coverage": {
     "facilities": null,
@@ -2673,35 +2560,45 @@
    },
    "sources": [
     {
-     "id": "fap-280f8ed389fad327",
+     "id": "fap-c0bb3ef853bd74de",
      "kind": "hospital_web",
-     "url": "https://www.baptisthealth.com/-/media/documents/patients-and-visitors/financial-assistance/2026/financial-assistance-policy-september-2026.pdf",
+     "url": "https://www.baptisthealth.com/-/media/documents/patients-and-visitors/financial-assistance/2026/financialassistancepolicyjan2026.pdf?hash=F9EA61FE99EB695C7C453BB2B82AB524&rev=247418ad442348ada40add9cbd9cc56b",
      "title": "",
      "fetched_on": "2026-10-23",
-     "sha256": "280f8ed389fad327bc37551a7b46a537634c9104e7d436a8323129affe59541e",
+     "sha256": "c0bb3ef853bd74deb7dc7ca25fa6579a2f49b10c36deaffe6520f68198389e07",
      "effective_date": null
     },
     {
      "id": "fap-5636546add2ee668",
      "kind": "hospital_web",
-     "url": "https://www.baptisthealth.com/-/media/documents/patients-and-visitors/financial-assistance/2025/october/english-application-october-2025.pdf",
+     "url": "https://www.baptisthealth.com/-/media/documents/patients-and-visitors/financial-assistance/2025/october/english-application-october-2025.pdf?hash=9AD3A6DE631CEAB522279CBAA0F7DCCC&rev=2a7941f788214160ab9418fd6f0b0acc",
      "title": "",
      "fetched_on": "2026-10-23",
      "sha256": "5636546add2ee668b088582d624cca8b12b596b49dfea9a023cbcccecf9b5ee0",
      "effective_date": null
     },
     {
-     "id": "web-945263e2a2cf422e",
+     "id": "web-d62569467f3f68ac",
      "kind": "hospital_web",
-     "url": "https://www.baptist-health.org/resources/billing-insurance-financial-assistance/financial-counselors",
-     "title": "Financial Counselors | Baptist Health",
+     "url": "https://www.baptisthealth.com/patients-visitors/after-your-visit/billing-information/financial-assistance",
+     "title": "Financial Assistance | Baptist Health",
      "fetched_on": "2026-10-23",
-     "sha256": "945263e2a2cf422e2ee9bb423817158a616026c94449cda71c5dacf61c06d276",
+     "sha256": "d62569467f3f68ac5a284fa1b92577d4b29b7e6400d1fd8d5b4a330a19e50e10",
      "effective_date": null
     }
    ],
    "accuracy": null,
-   "eve_review": []
+   "eve_review": [
+    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: A deceased patient who does not have an estate subject to probate and for whom no other party is responsible for payment",
+    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Please pay the remaining balance in full or contact us at 866.273.5392 to arrange a payment plan for your balance.",
+    "contacts.languages: 2 more verbatim excerpt(s) supported this value: \u0629\u064a\u0628\u0631\u0639\u0644\u0627 (Arabic) | \u03a1\u0443\u0441\u0441\u043a\u0438\u0439 (Russian)",
+    "agent dropped apply.documents_required: between 1 and 3 excerpts allowed",
+    "agent judge on eligibility.insured_patients_covered: Quote only says some insured patients with emergency or medically necessary care not allowed by insurance may get an AGB-limited discount; not general coverage.",
+    "agent judge on apply.form_url: Quote gives only the relative path /-/media/...; the baptisthealth.com domain is not stated in the quote.",
+    "agent judge on apply.submit_methods: Quote supports mail and phone (payment plan) only; the in_person visit method is not in the quote.",
+    "agent judge on apply.window_days_from_first_bill: Quote says a minimum 240-day application period but does not state it runs from the first bill.",
+    "agent judge on contacts.languages: Quote shows only Spanish, Arabic, and Russian; the recorded list of 15 languages is not supported."
+   ]
   },
   {
    "hospital": {
@@ -2738,13 +2635,10 @@
    "programs": {
     "presumptive": {
      "value": [
-      "at or below 200% of the Federal Poverty Guidelines with low propensity to pay",
-      "incarcerated or homeless",
-      "Bankruptcy accounts",
-      "Deceased patients"
+      "homeless"
      ],
      "layer": "documented",
-     "quote": "Mercy will utilize a third-party-tool to identify patients that are at or below 200% of the Federal Poverty Guidelines with low propensity to pay. Mercy will grant these patients financial assistance presumptively, without the requirement of an application.",
+     "quote": "Patients who are incarcerated or homeless and confirmed no other liable party can be billed, will be deemed 100% financial assistance.",
      "source_id": "fap-4dbed64b2b51c210",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2773,11 +2667,11 @@
       },
       {
        "kind": "fax",
-       "detail": "Fax: 417-829-4604"
+       "detail": "417-829-4604"
       },
       {
-       "kind": "phone",
-       "detail": "Mercy Health customer service 855-420-7900"
+       "kind": "portal",
+       "detail": "find an application on www.mercy.net/fa"
       }
      ],
      "layer": "documented",
@@ -2807,7 +2701,7 @@
     "phone": {
      "value": "855-420-7900",
      "layer": "documented",
-     "quote": "Mercy Health customer service 855-420-7900.",
+     "quote": "Mercy Health customer service 855-420-7900",
      "source_id": "fap-4dbed64b2b51c210",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2816,7 +2710,7 @@
     "hours": {
      "value": "Monday through Friday, during business hours as noted on the statement",
      "layer": "documented",
-     "quote": "Mercy has financial counselors and customer service representatives available to assist in setting up payment options Monday through Friday, during business hours as noted on the statement.",
+     "quote": "Monday through Friday, during business hours as noted on the statement",
      "source_id": "fap-4dbed64b2b51c210",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2853,11 +2747,10 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: Patients who are incarcerated or homeless and confirmed no other liable party can be billed, will be deemed 100% financi",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Mercy Health customer service 855-420-7900.",
-    "agent judge on eligibility.insured_patients_covered: The quote only says insured patients need not complete the Insurance Eligibility Screening before applying. It does not say insured patients are covered.",
-    "agent judge on programs.presumptive: Quote covers the 200% FPL presumptive group, incarcerated/homeless, and bankruptcy accounts, but says nothing about deceased patients.",
-    "agent judge on contacts.languages: Quote says the application is available in English and other languages prevalent in the area. Spanish is not named."
+    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Patients may request a paper application to apply for assistance at any time or find an application on www.mercy.net/fa.",
+    "contacts.languages: 1 more verbatim excerpt(s) supported this value: Financial Assistance Application (English and Spanish) below",
+    "agent judge on eligibility.insured_patients_covered: Quote only says insured patients need not complete the Insurance Eligibility Screening before applying. It does not say insured patients are covered.",
+    "agent judge on programs.presumptive: Quote covers patients who are incarcerated or homeless (with no liable party), deemed 100% assistance. Value omits 'incarcerated'."
    ]
   },
   {
@@ -2875,8 +2768,45 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": null,
-    "discount_tiers": null,
+    "free_care_max_fpl": {
+     "value": "150",
+     "layer": "documented",
+     "quote": "150% or less 151% to 175% 176% to 200% 201% to 250% 251% to 300% Over 300% % of Financial Assistance 100% 80% 60% 40% 20% 0%",
+     "source_id": "fap-35c9c6b396931298",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "150",
+       "max_fpl_inclusive": "175",
+       "discount_percent": 80
+      },
+      {
+       "min_fpl_exclusive": "175",
+       "max_fpl_inclusive": "200",
+       "discount_percent": 60
+      },
+      {
+       "min_fpl_exclusive": "200",
+       "max_fpl_inclusive": "250",
+       "discount_percent": 40
+      },
+      {
+       "min_fpl_exclusive": "250",
+       "max_fpl_inclusive": "300",
+       "discount_percent": 20
+      }
+     ],
+     "layer": "documented",
+     "quote": "150% or less 151% to 175% 176% to 200% 201% to 250% 251% to 300% Over 300%",
+     "source_id": "fap-35c9c6b396931298",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": null,
@@ -2895,12 +2825,11 @@
    "programs": {
     "presumptive": {
      "value": [
-      "The patient's payment history on accounts at JRMC.",
-      "Employment and income history documented on accounts at JRMC, including employment status documented during the registration for the current encounter.",
-      "Medicaid eligibility"
+      "Medicaid",
+      "deceased with no estate"
      ],
      "layer": "documented",
-     "quote": "The patient\u2019s payment history on accounts at JRMC.",
+     "quote": "JRMC will also consider any type of Medicaid eligibility as qualification for 100% financial assistance.",
      "source_id": "fap-35c9c6b396931298",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2915,15 +2844,13 @@
      "value": [
       "pay_stubs",
       "tax_return",
-      "photo_id",
-      "proof_of_income",
-      "social_security_letter"
+      "photo_id"
      ],
      "layer": "documented",
      "quote": "Last two pay stubs for each employed member of the household.",
      "source_id": "fap-35c9c6b396931298",
      "checked_on": "2026-10-23",
-     "confidence": 1.0,
+     "confidence": 0.8,
      "support_count": 0
     },
     "documents_reported": null,
@@ -2951,10 +2878,10 @@
    },
    "contacts": {
     "phone": {
-     "value": "870-541-7990",
+     "value": "870-541-7524",
      "layer": "documented",
-     "quote": "please contact one of our financial counselors at (870) 541-7990",
-     "source_id": "web-86ce14dbf6b5dc5d",
+     "quote": "Phone: 870-541-7524",
+     "source_id": "fap-35c9c6b396931298",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -2985,25 +2912,15 @@
      "fetched_on": "2026-10-23",
      "sha256": "972e92174857ddcb713b5afcbe56e316ceefae507384d0a6067378b9998eb87c",
      "effective_date": null
-    },
-    {
-     "id": "web-86ce14dbf6b5dc5d",
-     "kind": "hospital_web",
-     "url": "https://www.jrmc.org/patients-visitors/billing-insurance/",
-     "title": "Health Insurance - Medical Bills | Jefferson Regional",
-     "fetched_on": "2026-10-23",
-     "sha256": "86ce14dbf6b5dc5df92fe87dcf6224462682caf73fa3ff05aec00d7b61f29126",
-     "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Employment and income history documented on accounts at JRMC, including employment status documented during the registra | JRMC will also consider any type of Medicaid eligibility as qualification for 100% financial assistance.",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Proof of residency such as a driver\u2019s license, utility bill, lease agreement, etc. | Household members with no income should provide two letters from a friend or neighbor containing an explanation of how t",
-    "agent dropped eligibility.free_care_max_fpl: quote is not a substring of the source",
-    "agent dropped eligibility.discount_tiers: between 1 and 3 excerpts allowed",
-    "agent dropped eligibility.assistance_ceiling_fpl: quote is not a substring of the source",
-    "agent judge on apply.documents_required: Quote supports only three items: pay stubs, proof of residency, and friend/neighbor letters. Tax returns for self-employed and proof of Medicaid determination are not in the quote."
+    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: % of Financial Assistance 100% 80% 60% 40% 20% 0%",
+    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: Patients who are deceased and have no estate are deemed to have no income for the purpose of determining financial assis",
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Last two years tax returns for self-employed individuals. | Proof of residency such as a driver's license, utility bill, lease agreement, etc.",
+    "apply.documents_required: quote matched the source only after typography normalization",
+    "agent dropped eligibility.assistance_ceiling_fpl: quote is not a substring of the source"
    ]
   },
   {
@@ -3229,45 +3146,95 @@
     "zip": "72104",
     "phone": "501-332-1000",
     "ownership": "Voluntary non-profit - Private",
-    "website_domain": "baptist-health.org",
+    "website_domain": "baptisthealth.com",
     "system": null
    },
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": null,
-    "discount_tiers": null,
+    "free_care_max_fpl": {
+     "value": "300",
+     "layer": "documented",
+     "quote": "If your family income is less than or equal to 300% of the federal poverty level, then you may be eligible for full assistance.",
+     "source_id": "web-d62569467f3f68ac",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "300",
+       "max_fpl_inclusive": "400",
+       "discount_percent": 50
+      }
+     ],
+     "layer": "documented",
+     "quote": "If your family income is between 301% and 400% of the federal poverty level, then you may be eligible for partial assistance.",
+     "source_id": "web-d62569467f3f68ac",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "assistance_ceiling_fpl": null,
-    "asset_test": null,
+    "asset_test": {
+     "value": true,
+     "layer": "documented",
+     "quote": "BH will disregard the first Five Thousand ($5,000) of liquid assets of the Household for purposes of calculating eligibility for Financial Assistance pursuant to the FAP.",
+     "source_id": "fap-c0bb3ef853bd74de",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "residency": null,
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "For insured or non-insured, additional financial assistance discounts are available on a sliding scale based upon income levels of the current Federal Income Poverty Guidelines.",
-     "source_id": "web-9d0ac95f3d55b749",
+     "quote": "Insured patients receiving emergency or medically necessary care that is not allowed by the patient's insurance policy may also be given a discount from gross charges",
+     "source_id": "fap-c0bb3ef853bd74de",
      "checked_on": "2026-10-23",
-     "confidence": 1.0,
+     "confidence": 0.8,
      "support_count": 0
     },
     "min_balance": null,
     "services_excluded": null
    },
    "programs": {
-    "presumptive": null,
+    "presumptive": {
+     "value": [
+      "Medicaid",
+      "homeless"
+     ],
+     "layer": "documented",
+     "quote": "Patients who are homeless and do not have a physical address may be presumptively eligible without the need for additional assessment hereunder.",
+     "source_id": "fap-c0bb3ef853bd74de",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "state_programs": null
    },
    "apply": {
-    "form_url": null,
+    "form_url": {
+     "value": "https://www.baptisthealth.com/-/media/documents/patients-and-visitors/financial-assistance/2025/october/english-application-october-2025.pdf?rev=2a7941f788214160ab9418fd6f0b0acc&hash=9AD3A6DE631CEAB522279CBAA0F7DCCC",
+     "layer": "documented",
+     "quote": "Financial Assistance Application [/-/media/documents/patients-and-visitors/financial-assistance/2025/october/english-application-october-2025.pdf?rev=2a7941f788214160ab9418fd6f0b0acc&hash=9AD3A6DE631CEAB522279CBAA0F7DCCC]",
+     "source_id": "web-d62569467f3f68ac",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "form_version": null,
     "documents_required": {
      "value": [
-      "social_security_letter",
       "tax_return",
-      "pay_stubs"
+      "pay_stubs",
+      "bank_statements",
+      "other"
      ],
      "layer": "documented",
-     "quote": "Signed Application for Financial Assistance;",
-     "source_id": "web-9d0ac95f3d55b749",
+     "quote": "All pages of most recent State and Federal tax return filed or due (most recent two years if self-employed), including a copy of the W-2.",
+     "source_id": "fap-c0bb3ef853bd74de",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -3276,49 +3243,68 @@
     "submit_methods": {
      "value": [
       {
-       "kind": "mail",
-       "detail": "In writing: Patient Financial Aid Office, 11001 Executive Center Drive, Suite 100 Little Rock, 72211"
+       "kind": "in_person",
+       "detail": "Patient or Guarantor must submit a completed application in writing to the appropriate hospital personnel."
       },
       {
-       "kind": "phone",
-       "detail": "By phone: Patient Financial Services at (501) 202-3900"
+       "kind": "mail",
+       "detail": "A copy of this policy, a plain language summary, and an application form will be available upon request and free of charge by mail."
       }
      ],
      "layer": "documented",
-     "quote": "By phone: Patient Financial Services at (501) 202-3900",
-     "source_id": "web-9d0ac95f3d55b749",
+     "quote": "Patient or Guarantor must submit a completed application in writing to the appropriate hospital personnel.",
+     "source_id": "fap-c0bb3ef853bd74de",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "window_days_from_first_bill": null,
+    "window_days_from_first_bill": {
+     "value": 240,
+     "layer": "documented",
+     "quote": "There is a minimum 240-day application period during which BH will accept and process an application for assistance under this FAP.",
+     "source_id": "fap-c0bb3ef853bd74de",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "decision_days": null,
     "decision_days_reported": null
    },
    "collections": {
-    "eca_wait_days": null,
+    "eca_wait_days": {
+     "value": 120,
+     "layer": "documented",
+     "quote": "BH will not engage in any ECAs for at least 120 days from the date on which the first post-discharge billing statement was provided to Patient or Guarantor.",
+     "source_id": "fap-c0bb3ef853bd74de",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "collection_agencies": null
    },
    "contacts": {
     "phone": {
-     "value": "(501) 202-3900",
+     "value": "855.803.7367",
      "layer": "documented",
-     "quote": "Questions about the uninsured discount should be directed to Patient Financial Services at (501) 202-3900 .",
-     "source_id": "web-9d0ac95f3d55b749",
+     "quote": "For questions about the Baptist Health Financial Assistance Program, or to discuss the application process with a representative, call 855.803.7367 .",
+     "source_id": "web-d62569467f3f68ac",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "hours": {
-     "value": "8 a.m. to 5 p.m. Monday through Friday",
+    "hours": null,
+    "languages": {
+     "value": [
+      "English",
+      "Spanish"
+     ],
      "layer": "documented",
-     "quote": "Our office hours are 8 a.m. to 5 p.m. Monday through Friday.",
-     "source_id": "web-9d0ac95f3d55b749",
+     "quote": "Applications and copies of the policy are available in English and Spanish. (Other translations may be available.)",
+     "source_id": "web-d62569467f3f68ac",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
-    },
-    "languages": null
+    }
    },
    "coverage": {
     "facilities": null,
@@ -3327,21 +3313,35 @@
    },
    "sources": [
     {
-     "id": "web-9d0ac95f3d55b749",
+     "id": "fap-c0bb3ef853bd74de",
      "kind": "hospital_web",
-     "url": "https://www.baptist-health.org/resources/billing-insurance-financial-assistance/insurance-information",
-     "title": "Insurance Information | Baptist Health",
+     "url": "https://www.baptisthealth.com/-/media/documents/patients-and-visitors/financial-assistance/2026/financialassistancepolicyjan2026.pdf?hash=F9EA61FE99EB695C7C453BB2B82AB524&rev=247418ad442348ada40add9cbd9cc56b",
+     "title": "",
      "fetched_on": "2026-10-23",
-     "sha256": "9d0ac95f3d55b7490b92ddd4144a1c0d74913df3e724625db4323795f639a80f",
+     "sha256": "c0bb3ef853bd74deb7dc7ca25fa6579a2f49b10c36deaffe6520f68198389e07",
+     "effective_date": null
+    },
+    {
+     "id": "web-d62569467f3f68ac",
+     "kind": "hospital_web",
+     "url": "https://www.baptisthealth.com/patients-visitors/after-your-visit/billing-information/financial-assistance",
+     "title": "Financial Assistance | Baptist Health",
+     "fetched_on": "2026-10-23",
+     "sha256": "d62569467f3f68ac5a284fa1b92577d4b29b7e6400d1fd8d5b4a330a19e50e10",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: If applicable: Complete copy of most recent Tax Return with attachments; | If patient does not file taxes: proof of earnings (check stub, payroll record, or letter from employer);",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: In writing: Patient Financial Aid Office",
-    "agent judge on apply.documents_required: Quote lists the application, tax return (only if applicable), and proof of earnings if not filing taxes; it does not mention proof of disability from SSA benefits.",
-    "agent judge on apply.submit_methods: Quote gives phone and writing options but the written address is not stated; the value adds a street address and zip not in the quote."
+    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: Partial Assistance (50%)",
+    "eligibility.insured_patients_covered: quote matched the source only after typography normalization",
+    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: BH requires all patients, whether insured or not, to file for Medicaid or present evidence indicating ineligibility for ",
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Two most recent pay stubs and other proof of income from all income sources | Two most recent bank statements from all accounts with any supporting documentation",
+    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: A copy of this policy, a plain language summary, and an application form will be available upon request and free of char",
+    "agent judge on programs.presumptive: Quote supports only homeless patients being presumptively eligible; it says patients must file for Medicaid, so Medicaid is not presumptive.",
+    "agent judge on apply.form_url: Quote shows only the relative path /-/media/...pdf; the domain https://www.baptisthealth.com is not stated in the quote.",
+    "agent judge on apply.submit_methods: Quote says submit in writing to hospital personnel and that the policy and application are available by mail; it does not say applications can be submitted by mail.",
+    "agent judge on apply.window_days_from_first_bill: Quote says a minimum 240-day application period but does not say it runs from the first bill."
    ]
   },
   {
@@ -3599,22 +3599,14 @@
       }
      ],
      "layer": "documented",
-     "quote": "201-250% 95%",
+     "quote": "< 200% 100% 201-250% 95% 251-300% 90% 301-350% 85% 351-400% 80% > 400% Varies by Facility",
      "source_id": "fap-026658eaf35c0b6b",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "assistance_ceiling_fpl": null,
-    "asset_test": {
-     "value": false,
-     "layer": "documented",
-     "quote": "Gross income is always used for determining the patient\u2019s financial status.",
-     "source_id": "fap-026658eaf35c0b6b",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "asset_test": null,
     "residency": null,
     "insured_patients_covered": {
      "value": true,
@@ -3641,7 +3633,15 @@
     "state_programs": null
    },
    "apply": {
-    "form_url": null,
+    "form_url": {
+     "value": "https://www.baptistonline.org/-/media/project/baptist/baptist/baptistonline/united-states/documents/financial-assistance-application-nea-baptist-24.pdf?rev=959b12e088b145469f303d8b384b91c1",
+     "layer": "documented",
+     "quote": "Financial Assistance Application (NEA Baptist) [https://www.baptistonline.org/-/media/project/baptist/baptist/baptistonline/united-states/documents/financial-assistance-application-nea-baptist-24.pdf?rev=959b12e088b145469f303d8b384b91c1]",
+     "source_id": "web-b87a0f70709de93c",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "form_version": null,
     "documents_required": {
      "value": [
@@ -3667,12 +3667,12 @@
        "detail": "Please return this application and the requested information to the Business Office of the Baptist facility where services were received."
       },
       {
-       "kind": "email",
-       "detail": "FAP@BMHCC.org"
-      },
-      {
        "kind": "fax",
        "detail": "FAX #: 870-936-1062"
+      },
+      {
+       "kind": "email",
+       "detail": "Email Address: fap@bmhcc.org"
       }
      ],
      "layer": "documented",
@@ -3685,7 +3685,7 @@
     "window_days_from_first_bill": {
      "value": 240,
      "layer": "documented",
-     "quote": "ends on the later of 240 days after the first post-discharge billing statement or thirty days after the hospital",
+     "quote": "ends on the later of 240 days after the first post-discharge billing statement",
      "source_id": "fap-026658eaf35c0b6b",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3706,7 +3706,7 @@
     "eca_wait_days": {
      "value": 120,
      "layer": "documented",
-     "quote": "No ECA will be taken sooner than 120 days from the date of the first post-discharge bill and at least 30 days after the patient was sent a written notice outlining pending ECA.",
+     "quote": "No ECA will be taken sooner than 120 days from the date of the first post-discharge bill",
      "source_id": "fap-026658eaf35c0b6b",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3718,7 +3718,7 @@
     "phone": {
      "value": "877-348-1281",
      "layer": "documented",
-     "quote": "Patients should contact the Central Business Office at (877) 348-1281 if they qualify or if they have questions about this discount.",
+     "quote": "Patients should contact the Central Business Office at (877) 348-1281 if they qualify",
      "source_id": "fap-026658eaf35c0b6b",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3750,14 +3750,22 @@
      "fetched_on": "2026-10-23",
      "sha256": "c4f0efc9432c98907066b150325949871b92da5c3b3978938db8d0eeab75f544",
      "effective_date": null
+    },
+    {
+     "id": "web-b87a0f70709de93c",
+     "kind": "hospital_web",
+     "url": "https://www.baptistonline.org/patients-and-visitors/financial-assistance",
+     "title": "Financial Assistance Policy for Baptist Memorial Health Care",
+     "fetched_on": "2026-10-23",
+     "sha256": "b87a0f70709de93c75d1bd950e57768d09393eba0be2494b96b5f00b5905d167",
+     "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: 251-300% 90% | 301-350% 85% 351-400% 80%",
     "apply.documents_required: 1 more verbatim excerpt(s) supported this value: 7. Legal documents including divorce decree and/or child support and alimony",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Email Address: fap@bmhcc.org | FAX #: 870-936-1062",
-    "agent judge on eligibility.asset_test: Quote says only that gross income is always used. It does not say whether assets are considered."
+    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: FAX #: 870-936-1062 | Email Address: fap@bmhcc.org",
+    "agent judge on eligibility.free_care_max_fpl: Quote says '< 200% 100%', meaning under 200% gets free care. It does not state that 200% itself gets 100%, so 200 as the inclusive maximum is not stated."
    ]
   },
   {
@@ -3959,181 +3967,6 @@
     "agent judge on eligibility.insured_patients_covered: Quote addresses uninsured or limited-insurance patients; it does not state that insured patients are covered.",
     "agent judge on programs.presumptive: Quote supports homeless, incapacitated, and nursing-home resident categories only; 'deceased patient with no estate' and 'Medicaid eligible on prior date of service' are not in the quote.",
     "agent judge on contacts.languages: Quote says free language help is available for Spanish 'or another language'; it does not limit support to Spanish only."
-   ]
-  },
-  {
-   "hospital": {
-    "ccn": "040137",
-    "name": "ST VINCENT MEDICAL CENTER/NORTH",
-    "city": "SHERWOOD",
-    "state": "AR",
-    "zip": "72120",
-    "phone": "501-552-7100",
-    "ownership": "Voluntary non-profit - Church",
-    "website_domain": "commonspirit.org",
-    "system": null
-   },
-   "version": 1,
-   "status": "draft",
-   "eligibility": {
-    "free_care_max_fpl": null,
-    "discount_tiers": null,
-    "assistance_ceiling_fpl": {
-     "value": "400",
-     "layer": "documented",
-     "quote": "Assistance is provided for those patients whose family income is lower than 400% of the Federal Poverty Level Guidelines.",
-     "source_id": "fap-83d5c76c04943279",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "asset_test": null,
-    "residency": null,
-    "insured_patients_covered": {
-     "value": true,
-     "layer": "documented",
-     "quote": "You may qualify for free care or discounted care based on your family size and income, even if you have health insurance.",
-     "source_id": "fap-83d5c76c04943279",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "min_balance": null,
-    "services_excluded": null
-   },
-   "programs": {
-    "presumptive": null,
-    "state_programs": null
-   },
-   "apply": {
-    "form_url": null,
-    "form_version": null,
-    "documents_required": {
-     "value": [
-      "proof_of_income",
-      "other"
-     ],
-     "layer": "documented",
-     "quote": "Provide documentation for family income \u25a1 Provide documentation for family assets",
-     "source_id": "fap-83d5c76c04943279",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "documents_reported": null,
-    "submit_methods": {
-     "value": [
-      {
-       "kind": "mail",
-       "detail": "Mail completed application with all documentation to: Financial Assistance Center, ATTN: EES - Financial Assistance Center, P.O. Box 660872. Dallas, TX 75266-0872"
-      },
-      {
-       "kind": "fax",
-       "detail": "Fax: 469-803-4627"
-      },
-      {
-       "kind": "in_person",
-       "detail": "CHI St. Vincent North, 2215 Wildwood Ave, Sherwood, AR 72120"
-      }
-     ],
-     "layer": "documented",
-     "quote": "Mail or fax completed application with all documentation to: Financial Assistance Center, ATTN: EES - Financial Assistance Center, P.O. Box 660872. Dallas, TX 75266-0872 Fax: 469-803-4627.",
-     "source_id": "fap-83d5c76c04943279",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "window_days_from_first_bill": null,
-    "decision_days": {
-     "value": 30,
-     "layer": "documented",
-     "quote": "We will notify you of the final determination of eligibility and appeal rights, if applicable, within 30 calendar days of receiving a complete financial assistance application",
-     "source_id": "fap-83d5c76c04943279",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "decision_days_reported": null
-   },
-   "collections": {
-    "eca_wait_days": null,
-    "collection_agencies": null
-   },
-   "contacts": {
-    "phone": {
-     "value": "844-286-5546",
-     "layer": "documented",
-     "quote": "You may obtain help for any reason, including disability and language assistance at: 844-286-5546",
-     "source_id": "fap-83d5c76c04943279",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "hours": null,
-    "languages": {
-     "value": [
-      "Arabic",
-      "German",
-      "English",
-      "Spanish",
-      "French",
-      "Hindi",
-      "Hmong",
-      "Japanese",
-      "Korean",
-      "Portuguese (Brazil)",
-      "Russian (RU)",
-      "Tagalog",
-      "Vietnamese",
-      "Simplified Chinese",
-      "Traditional Chinese"
-     ],
-     "layer": "documented",
-     "quote": "The application is available in fourteen different languages.",
-     "source_id": "web-a781df541a320e2e",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
-   },
-   "coverage": {
-    "facilities": null,
-    "provider_list_url": null,
-    "covered_providers": null
-   },
-   "sources": [
-    {
-     "id": "fap-dd2ea05de97a9c92",
-     "kind": "hospital_web",
-     "url": "https://www.commonspirit.org/content/dam/commonspiritorg/en/chisv/soar/finance/assistance/stvincent-north-sherwood-employed-fap.pdf",
-     "title": "",
-     "fetched_on": "2026-10-23",
-     "sha256": "dd2ea05de97a9c92052f753af293493f53cbbf630efdd395b4500413cb6d0efb",
-     "effective_date": null
-    },
-    {
-     "id": "fap-83d5c76c04943279",
-     "kind": "hospital_web",
-     "url": "https://www.commonspirit.org/content/dam/commonspiritorg/en/chisv/soar/finance/assistance/stvincent-north-financial-assistance-app-en.pdf",
-     "title": "",
-     "fetched_on": "2026-10-23",
-     "sha256": "83d5c76c049432790088d23de8bd71a300df0e32cc7921480677110405ed7203",
-     "effective_date": null
-    },
-    {
-     "id": "web-a781df541a320e2e",
-     "kind": "hospital_web",
-     "url": "https://www.commonspirit.org/patient-resources/stvincent-financial-assistance",
-     "title": "St. Vincent Financial Assistance",
-     "fetched_on": "2026-10-23",
-     "sha256": "a781df541a320e2e26e7dd3af7e63e58809d9a8e3a488bd6b7e35535423850d8",
-     "effective_date": null
-    }
-   ],
-   "accuracy": null,
-   "eve_review": [
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: To submit your completed application in person: CHI St. Vincent North, 2215 Wildwood Ave, Sherwood, AR 72120",
-    "agent dropped eligibility.asset_test: quote is not a substring of the source"
    ]
   },
   {
@@ -4371,7 +4204,7 @@
      "value": "200",
      "layer": "documented",
      "quote": "< 200% 100%",
-     "source_id": "fap-95d6f97e32c851c1",
+     "source_id": "fap-026658eaf35c0b6b",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -4400,8 +4233,8 @@
       }
      ],
      "layer": "documented",
-     "quote": "201-250% 95%",
-     "source_id": "fap-95d6f97e32c851c1",
+     "quote": "< 200% 100% 201-250% 95% 251-300% 90% 301-350% 85% 351-400% 80% > 400% Varies by Facility",
+     "source_id": "fap-026658eaf35c0b6b",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -4412,8 +4245,8 @@
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "Medically Underinsured patients will automatically receive a 25% discount off the patient liability greater than $5,000.",
-     "source_id": "fap-95d6f97e32c851c1",
+     "quote": "Medically Underinsured patients will receive a 25% discount off the patient liability greater than $5,000.",
+     "source_id": "fap-026658eaf35c0b6b",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -4422,7 +4255,7 @@
      "value": "5000",
      "layer": "documented",
      "quote": "any Insured patient who has incurred an out-of-pocket liability for hospital Technical Charges in excess of $5,000 for a single Encounter is deemed Medically Underinsured",
-     "source_id": "fap-95d6f97e32c851c1",
+     "source_id": "fap-026658eaf35c0b6b",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -4435,10 +4268,10 @@
    },
    "apply": {
     "form_url": {
-     "value": "https://www.baptistonline.org/-/media/b603042e848c4eb2b0719e28b99a41da.pdf",
+     "value": "https://www.baptistonline.org/-/media/b603042e848c4eb2b0719e28b99a41da.pdf?rev=401a04affe0c4d06a5d0d5657b09ba4f",
      "layer": "documented",
      "quote": "Financial Assistance Application [https://www.baptistonline.org/-/media/b603042e848c4eb2b0719e28b99a41da.pdf?rev=401a04affe0c4d06a5d0d5657b09ba4f]",
-     "source_id": "web-19f58171218ad7a7",
+     "source_id": "web-afd87249a7669811",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -4454,19 +4287,40 @@
       "proof_of_income"
      ],
      "layer": "documented",
-     "quote": "1. Pay stubs for the last three months 2. Income tax return for the previous year 3. W2 forms for the previous year 4. State/Federal assistance documents 5. Bank statements for the last three months 6. Pension/retirement statements 7. Legal documents including divorce decree and/or child support and alimony",
-     "source_id": "fap-95d6f97e32c851c1",
+     "quote": "Pay stubs for the last three months 2. Income tax return for the previous year 3. W2 forms for the previous year 4. State/Federal assistance documents 5. Bank statements for the last three months 6. Pension/retirement statements",
+     "source_id": "fap-026658eaf35c0b6b",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "documents_reported": null,
-    "submit_methods": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "Please return this application and the requested information to the Business Office of the Baptist facility where services were received."
+      },
+      {
+       "kind": "fax",
+       "detail": "Fax # 901-226-0772"
+      },
+      {
+       "kind": "email",
+       "detail": "Email Address: fap@bmhcc.org"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Please return this application and the requested information to the Business Office of the Baptist facility where services were received.",
+     "source_id": "fap-479eb4eb1e9d002b",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "window_days_from_first_bill": {
      "value": 240,
      "layer": "documented",
-     "quote": "Patients are given the opportunity to apply for Financial Assistance for the later of 240 days from the date of the first post- discharge billing statement or thirty days after the hospital",
-     "source_id": "fap-95d6f97e32c851c1",
+     "quote": "ends on the later of 240 days after the first post-discharge billing statement or thirty days after the hospital",
+     "source_id": "fap-026658eaf35c0b6b",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -4475,7 +4329,7 @@
      "value": 30,
      "layer": "documented",
      "quote": "The review for FAP eligibility will be completed within thirty days.",
-     "source_id": "fap-95d6f97e32c851c1",
+     "source_id": "fap-026658eaf35c0b6b",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -4484,10 +4338,10 @@
    },
    "collections": {
     "eca_wait_days": {
-     "value": 121,
+     "value": 120,
      "layer": "documented",
-     "quote": "No ECA will be taken sooner than 121 days from the date of the first post-discharge bill and at least thirty days after written notice outlining pending ECA.",
-     "source_id": "fap-95d6f97e32c851c1",
+     "quote": "No ECA will be taken sooner than 120 days from the date of the first post-discharge bill",
+     "source_id": "fap-026658eaf35c0b6b",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -4496,10 +4350,10 @@
    },
    "contacts": {
     "phone": {
-     "value": "901-226-0772",
+     "value": "(877) 348-1281",
      "layer": "documented",
-     "quote": "Fax # 901-226-0772",
-     "source_id": "fap-479eb4eb1e9d002b",
+     "quote": "Patients should contact the Central Business Office at (877) 348-1281 if they qualify or if they have questions about this discount.",
+     "source_id": "fap-026658eaf35c0b6b",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -4514,40 +4368,38 @@
    },
    "sources": [
     {
-     "id": "fap-95d6f97e32c851c1",
+     "id": "fap-026658eaf35c0b6b",
      "kind": "hospital_web",
-     "url": "https://www.baptistonline.org/-/media/f47bbaedf7fa4e0880fcb05353f399a8.pdf",
+     "url": "https://www.baptistonline.org/-/media/d5a069c18b964a00a240803acfbf30d9.pdf?rev=49bb7c37f5c042afae2e99fcc7aeaf91",
      "title": "",
      "fetched_on": "2026-10-23",
-     "sha256": "95d6f97e32c851c1fe71abad5f64baed1a6c0741a21cbec63439bcefc89dc355",
+     "sha256": "026658eaf35c0b6ba269e2728e9b4c223c605e9f807f38252c99d84df6157b76",
      "effective_date": null
     },
     {
      "id": "fap-479eb4eb1e9d002b",
      "kind": "hospital_web",
-     "url": "https://www.baptistonline.org/-/media/b603042e848c4eb2b0719e28b99a41da.pdf",
+     "url": "https://www.baptistonline.org/-/media/b603042e848c4eb2b0719e28b99a41da.pdf?rev=401a04affe0c4d06a5d0d5657b09ba4f",
      "title": "",
      "fetched_on": "2026-10-23",
      "sha256": "479eb4eb1e9d002b48e32161c7db17a7a15084ecb93b5f95b4b5d986a6e7ca5e",
      "effective_date": null
     },
     {
-     "id": "web-19f58171218ad7a7",
+     "id": "web-afd87249a7669811",
      "kind": "hospital_web",
      "url": "https://www.baptistonline.org/patients-and-visitors/financial-assistance",
      "title": "Financial Assistance Policy for Baptist Memorial Health Care",
      "fetched_on": "2026-10-23",
-     "sha256": "19f58171218ad7a73a0a98e8a2b5d666350e73db87d687127d21cc34e9566715",
+     "sha256": "afd87249a766981151d3e72e6f5a403d6a6b0765e42a702195330ebae99e830d",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: 251-300% 90% | 301-350% 85% 351-400% 80%",
-    "agent dropped apply.submit_methods: excerpt not in source: Return the form and supporting documentation to the facility",
-    "agent judge on eligibility.free_care_max_fpl: Quote says less than 200% gets 100% free care, so 200 itself is excluded; the highest qualifying percent is just under 200, not 200.",
-    "agent judge on eligibility.insured_patients_covered: Quote only describes a 25% discount for Medically Underinsured patients with liability over $5,000; it does not state that insured patients are generally covered.",
-    "agent judge on contacts.phone: Quote labels 901-226-0772 as a Fax number, not a phone number."
+    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Fax # 901-226-0772 | Email Address: fap@bmhcc.org",
+    "agent judge on eligibility.free_care_max_fpl: Quote says \"< 200% 100%\", which literally means under 200%. The 201% tier start implies 200 is included, but the quote does not state it.",
+    "agent judge on eligibility.insured_patients_covered: Quote only says Medically Underinsured patients get a 25% discount on liability over $5,000. It does not state that insured patients are covered as a boolean."
    ]
   },
   {
@@ -4587,31 +4439,9 @@
     "state_programs": null
    },
    "apply": {
-    "form_url": {
-     "value": "https://www.unity-health.org/media/5ebc68648fbf4f5c85d8d9383700a8ac/faa-2026.pdf",
-     "layer": "documented",
-     "quote": "Financial assistance application (PDF) [https://www.unity-health.org/media/5ebc68648fbf4f5c85d8d9383700a8ac/faa-2026.pdf]",
-     "source_id": "web-eaa6f48d3ea75fba",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "form_url": null,
     "form_version": null,
-    "documents_required": {
-     "value": [
-      "pay_stubs",
-      "tax_return",
-      "social_security_letter",
-      "bank_statements",
-      "other"
-     ],
-     "layer": "documented",
-     "quote": "[ ] Most recent pay stubs",
-     "source_id": "fap-752074230de7446e",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "documents_required": null,
     "documents_reported": null,
     "submit_methods": {
      "value": [
@@ -4625,7 +4455,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "If you have any questions about the financial assistance program, please call or come by the Business Office at Unity Health.",
+     "quote": "please call or come by the Business Office at Unity Health.",
      "source_id": "fap-752074230de7446e",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4634,7 +4464,7 @@
     "window_days_from_first_bill": {
      "value": 14,
      "layer": "documented",
-     "quote": "Please submit this information within 14 days along with requested income verification:",
+     "quote": "Please submit this information within 14 days along with requested income verification",
      "source_id": "fap-752074230de7446e",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4649,10 +4479,10 @@
    },
    "contacts": {
     "phone": {
-     "value": "501-453-5000",
+     "value": "(501) 380-1022",
      "layer": "documented",
-     "quote": "Unity Health-Jacksonville General Information (501) 453-5000",
-     "source_id": "web-eaa6f48d3ea75fba",
+     "quote": "(501) 380-1022",
+     "source_id": "fap-752074230de7446e",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -4685,18 +4515,21 @@
      "effective_date": null
     },
     {
-     "id": "web-eaa6f48d3ea75fba",
+     "id": "web-c351420522c0aeee",
      "kind": "hospital_web",
-     "url": "https://www.unity-health.org/patients/financial-assistance/",
-     "title": "Healthcare Financial Help & Payment Options | Unity Health",
+     "url": "https://www.unity-health.org/patients/pricing/",
+     "title": "Pricing Transparency & Cost Estimates | Unity Health",
      "fetched_on": "2026-10-23",
-     "sha256": "eaa6f48d3ea75fbaf3fbfe732f53182be08123cdd09c01bd58008bf17da3b0bb",
+     "sha256": "c351420522c0aeee2a1015d531237b51a8478dc649ad229603a23c9994ba0eb9",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: [ ] Most recent federal tax return | [ ] Bank statements (last 3 months)"
+    "agent dropped apply.documents_required: between 1 and 3 excerpts allowed",
+    "agent judge on eligibility.asset_test: The quote is an application section heading listing assets convertible to cash; it does not state that assets are considered in eligibility.",
+    "agent judge on apply.submit_methods: Quote mentions calling or coming by the Business Office but does not state the phone number or the in-person detail as a list; the phone number is not in this quote.",
+    "agent judge on apply.window_days_from_first_bill: Quote says to submit information within 14 days with income verification, but does not tie the window to the first bill date."
    ]
   },
   {
@@ -4714,8 +4547,30 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": null,
-    "discount_tiers": null,
+    "free_care_max_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "0 - 200% 100% 100%",
+     "source_id": "web-847e94fff403bf31",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "200",
+       "max_fpl_inclusive": "300",
+       "discount_percent": 80
+      }
+     ],
+     "layer": "documented",
+     "quote": "II 201% - 300% 80% 70%",
+     "source_id": "web-847e94fff403bf31",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": null,
@@ -4734,14 +4589,11 @@
    "programs": {
     "presumptive": {
      "value": [
-      "Medicaid enrolled",
-      "homeless",
-      "incarcerated",
-      "deceased",
-      "bankruptcy"
+      "Medicaid",
+      "homeless"
      ],
      "layer": "documented",
-     "quote": "Mercy will utilize a third-party-tool to identify patients that are at or below 200% of the Federal Poverty Guidelines with low propensity to pay.",
+     "quote": "Patients who are incarcerated or homeless and confirmed no other liable party can be billed, will be deemed 100% financial assistance.",
      "source_id": "fap-4dbed64b2b51c210",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4754,23 +4606,37 @@
      "value": "https://www.mercy.net/content/dam/mercy/en/pdf/financial-assistance-application-mercy-and-clinic.pdf",
      "layer": "documented",
      "quote": "Complete the Mercy Hospital Aid Application : English [/content/dam/mercy/en/pdf/financial-assistance-application-mercy-and-clinic.pdf]",
-     "source_id": "web-c989591d0ca07a59",
+     "source_id": "web-847e94fff403bf31",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "form_version": null,
-    "documents_required": null,
+    "documents_required": {
+     "value": [
+      "tax_return",
+      "proof_of_income",
+      "pay_stubs",
+      "other",
+      "insurance_card"
+     ],
+     "layer": "documented",
+     "quote": "Federal Tax Return: A full copy of the most recent federal tax return, including all forms and schedules",
+     "source_id": "fap-e2169745bc9cf37f",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "documents_reported": null,
     "submit_methods": {
      "value": [
       {
        "kind": "portal",
-       "detail": "MyMercy - Once logged into your MyMercy account, under the Main Menu option, select Pay My Bill. Then choose View Balance Details, select Manage Financial Assistance. Within the Documents tab, choose Add a Document."
+       "detail": "MyMercy - Once logged into your MyMercy account, under the Main Menu option, select Pay My Bill. Then choose View Balance Details, select Manage Financial Assistance."
       },
       {
        "kind": "mail",
-       "detail": "Mercy Health, Attention: Financial Assistance Department, 2115 S Fremont Avenue, Suite 5300, Springfield, MO 65804 (Mailing address only)"
+       "detail": "Mercy Health, Attention: Financial Assistance Department, 2115 S Fremont Avenue, Suite 5300, Springfield, MO 65804"
       },
       {
        "kind": "fax",
@@ -4787,7 +4653,7 @@
     "window_days_from_first_bill": {
      "value": 240,
      "layer": "documented",
-     "quote": "patient will receive the appropriate financial discount on eligible services that were first billed to the patient in the prior 240 days from the date a completed application is submitted to Mercy",
+     "quote": "patient will receive the appropriate financial discount on eligible services that were first billed to the patient in the prior 240 days from the date a completed application is submitted",
      "source_id": "fap-4dbed64b2b51c210",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4813,8 +4679,8 @@
     "hours": {
      "value": "Monday - Friday from 7:30 a.m. - 7:00 p.m. CT",
      "layer": "documented",
-     "quote": "Our customer service team is available Monday - Friday from 7:30 a.m. - 7:00 p.m. CT at 855-420-7900.",
-     "source_id": "web-c989591d0ca07a59",
+     "quote": "Our customer service team is available Monday - Friday from 7:30 a.m. - 7:00 p.m. CT at 855-420-7900",
+     "source_id": "web-847e94fff403bf31",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -4825,7 +4691,7 @@
       "Spanish"
      ],
      "layer": "documented",
-     "quote": "The paper Financial Assistance Application and Policy are available in both English and other languages prevalent in the area",
+     "quote": "The paper Financial Assistance Application and Policy are available in both English and other languages",
      "source_id": "fap-4dbed64b2b51c210",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4857,25 +4723,27 @@
      "effective_date": null
     },
     {
-     "id": "web-c989591d0ca07a59",
+     "id": "web-847e94fff403bf31",
      "kind": "hospital_web",
      "url": "https://www.mercy.net/patients-visitors/billing/financial-assistance/",
      "title": "Financial Assistance AR, OK, Springfield & St. Louis | Mercy",
      "fetched_on": "2026-10-23",
-     "sha256": "c989591d0ca07a59835ed9ab0eba86ccaed0689161cf31f26b92f5a37b73a3b4",
+     "sha256": "847e94fff403bf31cb1e586c2d1ff771ceb793b00e2bf11c17f50a889ef53a39",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: Patients who are incarcerated or homeless and confirmed no other liable party can be billed, will be deemed 100% financi",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Mercy Health Attention: Financial Assistance Department 2115 S Fremont Avenue, Suite 5300 Springfield, MO 65804 (Mailing | Fax: 417-829-4604",
-    "agent dropped eligibility.free_care_max_fpl: quote is not a substring of the source",
-    "agent dropped eligibility.discount_tiers: quote is not a substring of the source",
-    "agent dropped apply.documents_required: between 1 and 3 excerpts allowed",
-    "agent judge on eligibility.insured_patients_covered: Quote says insured patients need not complete Insurance Eligibility Screening first; it does not say insured patients are covered by assistance.",
-    "agent judge on programs.presumptive: Quote lists presumptive criteria as 200% FPL with low propensity to pay, incarcerated/homeless with no liable party, and bankruptcy; it does not mention Medicaid enrolled or deceased.",
-    "agent judge on contacts.languages: Quote says the application and policy are available in English and other prevalent local languages; it does not name Spanish specifically."
+    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: Mercy will utilize a third-party-tool to identify patients that are at or below 200% of the Federal Poverty Guidelines w",
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Proof of Income: Provide income documentation for all household members over the age of 18 included on the application.  | please provide a copy of the most recent insurance card or contact Customer Service to update",
+    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Mercy Health Attention: Financial Assistance Department 2115 S Fremont Avenue, Suite 5300 Springfield, MO 65804 | Fax: 417-829-4604",
+    "agent judge on eligibility.discount_tiers: Quote gives 201%-300% with two percentages (80% and 70%) and no labels; it does not show that 80% alone applies to this tier.",
+    "agent judge on eligibility.insured_patients_covered: Quote only says insured patients need not complete Insurance Eligibility Screening before applying; it does not say they are covered.",
+    "agent judge on programs.presumptive: Quote names incarcerated or homeless patients and patients at or below 200% FPL via a tool; Medicaid is not named as a presumptive category.",
+    "agent judge on apply.form_url: Quote shows only the relative path /content/dam/...pdf; the full https://www.mercy.net domain does not appear in the quote.",
+    "agent judge on apply.documents_required: Quote lists tax return, proof of income, pay stubs, and insurance card; 'Medicaid Screening' does not appear.",
+    "agent judge on apply.submit_methods: Quote gives MyMercy, the mailing address, and fax, but the online detail's navigation steps (Pay My Bill, Manage Financial Assistance) are not in the quote.",
+    "agent judge on contacts.languages: Quote says the application is available in English and 'other languages'; Spanish is not named."
    ]
   },
   {
@@ -5098,8 +4966,30 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": null,
-    "discount_tiers": null,
+    "free_care_max_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "I 0 - 200% 100% 100%",
+     "source_id": "web-e85b6e1c9bad9203",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "200",
+       "max_fpl_inclusive": "300",
+       "discount_percent": 80
+      }
+     ],
+     "layer": "documented",
+     "quote": "II 201% - 300% 80% 70%",
+     "source_id": "web-e85b6e1c9bad9203",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": null,
@@ -5118,14 +5008,12 @@
    "programs": {
     "presumptive": {
      "value": [
-      "Medicaid enrolled",
-      "homeless",
+      "Medicaid",
       "incarcerated",
-      "bankruptcy",
-      "deceased"
+      "homeless"
      ],
      "layer": "documented",
-     "quote": "Patients who are incarcerated or homeless and confirmed no other liable party can be billed, will be deemed 100% financial assistance. Bankruptcy accounts upon notification of filing will be deemed 100% charitable. Deceased patients 18 years of age and over will be reviewed by Third Party Vendor",
+     "quote": "Mercy will utilize a third-party-tool to identify patients that are at or below 200% of the Federal Poverty Guidelines with low propensity to pay. Mercy will grant these patients financial assistance presumptively, without the requirement of an application.",
      "source_id": "fap-4dbed64b2b51c210",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5144,25 +5032,38 @@
      "support_count": 0
     },
     "form_version": null,
-    "documents_required": null,
+    "documents_required": {
+     "value": [
+      "tax_return",
+      "proof_of_income",
+      "other",
+      "insurance_card"
+     ],
+     "layer": "documented",
+     "quote": "Federal Tax Return: A full copy of the most recent federal tax return, including all forms and schedules",
+     "source_id": "fap-e2169745bc9cf37f",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "documents_reported": null,
     "submit_methods": {
      "value": [
       {
-       "kind": "portal",
-       "detail": "MyMercy account, under the Main Menu option, select Pay My Bill. Then choose View Balance Details, select Manage Financial Assistance."
-      },
-      {
        "kind": "mail",
-       "detail": "Mercy Health, Attention: Financial Assistance Department, 2115 S Fremont Avenue, Suite 5300, Springfield, MO 65804 (Mailing address only)"
+       "detail": "Mercy Health Attention: Financial Assistance Department 2115 S Fremont Avenue, Suite 5300 Springfield, MO 65804"
       },
       {
        "kind": "fax",
        "detail": "Fax: 417-829-4604"
+      },
+      {
+       "kind": "portal",
+       "detail": "MyMercy - Once logged into your MyMercy account, under the Main Menu option, select Pay My Bill. Then choose View Balance Details, select Manage Financial Assistance."
       }
      ],
      "layer": "documented",
-     "quote": "Once logged into your MyMercy account, under the Main Menu option, select Pay My Bill.",
+     "quote": "Mercy Health Attention: Financial Assistance Department 2115 S Fremont Avenue, Suite 5300 Springfield, MO 65804 (Mailing address only) Fax: 417-829-4604",
      "source_id": "fap-e2169745bc9cf37f",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5188,7 +5089,7 @@
     "phone": {
      "value": "855-420-7900",
      "layer": "documented",
-     "quote": "Mercy Health customer service 855-420-7900.",
+     "quote": "Mercy Health customer service 855-420-7900",
      "source_id": "fap-4dbed64b2b51c210",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5197,8 +5098,8 @@
     "hours": {
      "value": "Monday - Friday from 7:30 a.m. - 7:00 p.m. CT",
      "layer": "documented",
-     "quote": "Our customer service team is available Monday - Friday from 7:30 a.m. - 7:00 p.m. CT at 855-420-7900.",
-     "source_id": "web-847e94fff403bf31",
+     "quote": "Our customer service team is available Monday - Friday from 7:30 a.m. - 7:00 p.m. CT at 855-420-7900",
+     "source_id": "web-e85b6e1c9bad9203",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -5241,25 +5142,24 @@
      "effective_date": null
     },
     {
-     "id": "web-847e94fff403bf31",
+     "id": "web-e85b6e1c9bad9203",
      "kind": "hospital_web",
      "url": "https://www.mercy.net/patients-visitors/billing/financial-assistance/",
      "title": "Financial Assistance AR, OK, Springfield & St. Louis | Mercy",
      "fetched_on": "2026-10-23",
-     "sha256": "847e94fff403bf31cb1e586c2d1ff771ceb793b00e2bf11c17f50a889ef53a39",
+     "sha256": "e85b6e1c9bad9203fe00c2edf31b8d26e3c03d5941dc7447cfecfb94dfa046c7",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Mercy Health Attention: Financial Assistance Department 2115 S Fremont Avenue, Suite 5300 Springfield, MO 65804 (Mailing | Fax: 417-829-4604",
-    "agent dropped eligibility.free_care_max_fpl: quote is not a substring of the source",
-    "agent dropped eligibility.discount_tiers: quote is not a substring of the source",
-    "agent dropped apply.documents_required: between 1 and 3 excerpts allowed",
-    "agent judge on eligibility.insured_patients_covered: Quote only says insured patients need not complete the Insurance Eligibility Screening before applying. It does not state they are covered.",
-    "agent judge on programs.presumptive: Quote covers incarcerated/homeless, bankruptcy, and deceased patients, but says nothing about Medicaid-enrolled patients. Deceased patients are only referred for review, not deemed eligible.",
-    "agent judge on apply.submit_methods: Quote gives the MyMercy Pay My Bill path, mail address, and fax. It omits the View Balance Details and Manage Financial Assistance steps given in the value's online detail.",
-    "agent judge on contacts.languages: Quote says English and other languages prevalent in the area. Spanish is not named."
+    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: Patients who are incarcerated or homeless and confirmed no other liable party can be billed, will be deemed 100% financi",
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Proof of Income: Provide income documentation for all household members over the age of 18 included on the application.  | please provide a copy of the most recent insurance card or contact Customer Service to update",
+    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Once logged into your MyMercy account, under the Main Menu option, select Pay My Bill. Then choose View Balance Details,",
+    "agent judge on eligibility.free_care_max_fpl: Quote shows tier I as 0-200% at 100% discount; it does not explicitly say 'free care' up to 200%, though the table reads as 100% discount through 200%.",
+    "agent judge on programs.presumptive: Quote covers presumptive grants for patients at or below 200% FPL via a tool and for incarcerated or homeless patients; 'Medicaid' is not mentioned in the quote.",
+    "agent judge on apply.documents_required: Quote lists tax return, proof of income, and insurance card; 'Medicaid Screening' is not a document listed in the quote.",
+    "agent judge on contacts.languages: Quote says application and policy are available in English and other prevalent languages; it does not name Spanish specifically."
    ]
   },
   {
@@ -5280,15 +5180,7 @@
     "free_care_max_fpl": null,
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
-    "asset_test": {
-     "value": true,
-     "layer": "documented",
-     "quote": "List Bank (Checking / Savings Account) and Balance $ $ List Credit Cards including the Amount",
-     "source_id": "fap-89d024ec3a76cdff",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "asset_test": null,
     "residency": null,
     "insured_patients_covered": null,
     "min_balance": null,
@@ -5302,7 +5194,7 @@
     "form_url": {
      "value": "https://mcgeheehospital.org/wp-content/uploads/2025/03/Financial-Assistance-Application-English.pdf",
      "layer": "documented",
-     "quote": "Application Form- English [https://mcgeheehospital.org/wp-content/uploads/2025/03/Financial-Assistance-Application-English.pdf]",
+     "quote": "Application Form- English",
      "source_id": "web-4b287160792d3bca",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5311,11 +5203,11 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "other",
-      "tax_return"
+      "tax_return",
+      "other"
      ],
      "layer": "documented",
-     "quote": "NOTICE: COPIES OF THE ORIGINAL DOCUMENTATION FOR ALL INFORMATION MUST BE PROVIDED WITH THE FINANCIAL ASSISTANCE APPLICATION. YOU MUST ALSO PROVIDE A COMPLETE COPY OF YOUR CURRENT TAX RETURN INCLUDING COPIES OF ALL W-2 AND 1099 FORMS.",
+     "quote": "YOU MUST ALSO PROVIDE A COMPLETE COPY OF YOUR CURRENT TAX RETURN INCLUDING COPIES OF ALL W-2 AND 1099 FORMS.",
      "source_id": "fap-89d024ec3a76cdff",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5341,22 +5233,14 @@
     "decision_days_reported": null
    },
    "collections": {
-    "eca_wait_days": {
-     "value": 120,
-     "layer": "documented",
-     "quote": "otherwise your balance will be forwarded to collections after 4 months.",
-     "source_id": "web-4b287160792d3bca",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "eca_wait_days": null,
     "collection_agencies": null
    },
    "contacts": {
     "phone": {
      "value": "870-222-5600",
      "layer": "documented",
-     "quote": "Phone Number 870-222-5600",
+     "quote": "870-222-5600",
      "source_id": "web-4b287160792d3bca",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5369,7 +5253,7 @@
       "Spanish"
      ],
      "layer": "documented",
-     "quote": "Application Form- English [https://mcgeheehospital.org/wp-content/uploads/2025/03/Financial-Assistance-Application-English.pdf]",
+     "quote": "Application Form- English",
      "source_id": "web-4b287160792d3bca",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5403,77 +5287,12 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "contacts.languages: 1 more verbatim excerpt(s) supported this value: Application Form - Spanish [https://mcgeheehospital.org/wp-content/uploads/2025/03/Sample-Financial-Assistance-Applicati",
-    "agent judge on eligibility.asset_test: Quote shows a form listing bank and credit card balances, but does not plainly state that assets are considered for eligibility.",
-    "agent judge on collections.eca_wait_days: Quote says balance goes to collections after 4 months, which is about 120 days but is not stated as 120 days; value is an unstated conversion.",
-    "agent judge on contacts.languages: Quote links English and Spanish application forms; it does not plainly state the hospital's supported languages for contact or assistance."
+    "contacts.languages: 1 more verbatim excerpt(s) supported this value: Application Form - Spanish",
+    "agent judge on apply.form_url: Quote is only the link text 'Application Form- English'; it does not state the URL value.",
+    "agent judge on apply.documents_required: Quote requires a tax return with W-2 and 1099 copies; it does not mention a general 'tax return' item as a separate requirement beyond that, so the list is only partly supported.",
+    "agent judge on contacts.phone: Quote is the phone number alone with no indication it is the financial assistance contact; the value itself matches the quote text.",
+    "agent judge on contacts.languages: Quote shows only form link labels for English and Spanish versions; it does not state languages supported for contact."
    ]
-  },
-  {
-   "hospital": {
-    "ccn": "041309",
-    "name": "LAWRENCE MEMORIAL HOSPITAL",
-    "city": "WALNUT RIDGE",
-    "state": "AR",
-    "zip": "72476",
-    "phone": "870-886-1200",
-    "ownership": "Voluntary non-profit - Private",
-    "website_domain": "lawrencememorial.info",
-    "system": null
-   },
-   "version": 1,
-   "status": "draft",
-   "eligibility": {
-    "free_care_max_fpl": null,
-    "discount_tiers": null,
-    "assistance_ceiling_fpl": null,
-    "asset_test": null,
-    "residency": null,
-    "insured_patients_covered": null,
-    "min_balance": null,
-    "services_excluded": null
-   },
-   "programs": {
-    "presumptive": null,
-    "state_programs": null
-   },
-   "apply": {
-    "form_url": null,
-    "form_version": null,
-    "documents_required": null,
-    "documents_reported": null,
-    "submit_methods": null,
-    "window_days_from_first_bill": null,
-    "decision_days": null,
-    "decision_days_reported": null
-   },
-   "collections": {
-    "eca_wait_days": null,
-    "collection_agencies": null
-   },
-   "contacts": {
-    "phone": null,
-    "hours": null,
-    "languages": null
-   },
-   "coverage": {
-    "facilities": null,
-    "provider_list_url": null,
-    "covered_providers": null
-   },
-   "sources": [
-    {
-     "id": "web-fb0905cbcb2ec53b",
-     "kind": "hospital_web",
-     "url": "https://www.lawrencememorial.info/information-desk/admissions-and-discharge",
-     "title": "Admissions and Discharge | Lawrence Memorial Hospital",
-     "fetched_on": "2026-10-23",
-     "sha256": "fb0905cbcb2ec53b29aad943110457eea80e26c94d0a5ee24152eb3de0a4b2c7",
-     "effective_date": null
-    }
-   ],
-   "accuracy": null,
-   "eve_review": []
   },
   {
    "hospital": {
@@ -6156,7 +5975,7 @@
     {
      "id": "web-ce990d12f6981c41",
      "kind": "hospital_web",
-     "url": "https://www.ozarkhealth.net/financial-assistance",
+     "url": "https://www.ozarkhealth.net/departments/patient-accounts",
      "title": "ozarkhealth.net &mdash;  Domain welcome page for",
      "fetched_on": "2026-10-23",
      "sha256": "ce990d12f6981c411a5e89f984a785bbc973ca684647e9a0b7df41b3c785d51f",
@@ -6806,11 +6625,12 @@
    "programs": {
     "presumptive": {
      "value": [
-      "Verified dually eligible Medicare and Medicaid patients",
-      "Medicaid beneficiaries that acquire Medicaid under SLMB, Family Planning Services, and/or have exhausted days"
+      "Medicare and Medicaid dually eligible",
+      "Medicaid SLMB",
+      "Family Planning Services"
      ],
      "layer": "documented",
-     "quote": "Verified dually eligible Medicare and Medicaid patients qualify for indigent care without completing a financial assistance application.",
+     "quote": "Verified dually eligible Medicare and Medicaid patients qualify for indigent care without completing a financial assistance application. These dually eligible accounts are also eligible for inclusion on the Medicare Bad-Debt cost report. Medicaid beneficiaries that acquire Medicaid under SLMB, Family Planning Services, and/or have exhausted days automatically qualify for indigent care without completing a financial assistance application.",
      "source_id": "web-b8a4c34ab58feab9",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -6821,26 +6641,13 @@
    "apply": {
     "form_url": null,
     "form_version": null,
-    "documents_required": {
-     "value": [
-      "pay_stubs",
-      "proof_of_income",
-      "social_security_letter",
-      "tax_return"
-     ],
-     "layer": "documented",
-     "quote": "Paycheck stub showing gross income earned by all members in household for the year the sliding scale fee is being applied for.",
-     "source_id": "web-b8a4c34ab58feab9",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "documents_required": null,
     "documents_reported": null,
     "submit_methods": {
      "value": [
       {
        "kind": "in_person",
-       "detail": "returned to the Business Office Manager"
+       "detail": "returned to the Business Office Manager with all required income verifications and appropriate documentation"
       }
      ],
      "layer": "documented",
@@ -6884,10 +6691,10 @@
    },
    "contacts": {
     "phone": {
-     "value": "(870)382-4303",
+     "value": "(870) 382-4303",
      "layer": "documented",
-     "quote": "please contact our Patient Financial Services Office at: (870)382-4303 Monday through Friday from 8:00 a.m. until 4:30 p.m.",
-     "source_id": "web-f1453228ae155615",
+     "quote": "811 Highway 65 South | Dumas, Arkansas 71639 | P: (870) 382-4303",
+     "source_id": "web-b8a4c34ab58feab9",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -6895,7 +6702,7 @@
     "hours": {
      "value": "Monday through Friday from 8:00 a.m. until 4:30 p.m.",
      "layer": "documented",
-     "quote": "Monday through Friday from 8:00 a.m. until 4:30 p.m.",
+     "quote": "please contact our Patient Financial Services Office at: (870)382-4303 Monday through Friday from 8:00 a.m. until 4:30 p.m.",
      "source_id": "web-f1453228ae155615",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -6939,9 +6746,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: Medicaid beneficiaries that acquire Medicaid under SLMB, Family Planning Services, and/or have exhausted days automatica",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Unemployment check stub. | Copies of the previous year tax return for all wage-earning household members.",
-    "agent judge on apply.documents_required: Quote lists paycheck stub, unemployment stub, and prior year tax returns but does not mention Social Security check stub or letter of award; value includes unsupported items."
+    "agent dropped apply.documents_required: between 1 and 3 excerpts allowed"
    ]
   },
   {
@@ -6970,15 +6775,7 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "asset_test": {
-     "value": true,
-     "layer": "documented",
-     "quote": "Bank(s) used: Checking Balance Savings Balance",
-     "source_id": "fap-f68a26272e9b03c0",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "asset_test": null,
     "residency": null,
     "insured_patients_covered": {
      "value": true,
@@ -6993,7 +6790,17 @@
     "services_excluded": null
    },
    "programs": {
-    "presumptive": null,
+    "presumptive": {
+     "value": [
+      "deceased with no estate"
+     ],
+     "layer": "documented",
+     "quote": "Patients who are deceased and have no estate are deemed to have no income for the purpose of determining financial assistance eligibility.",
+     "source_id": "fap-423ac291e984c8a8",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "state_programs": null
    },
    "apply": {
@@ -7014,24 +6821,7 @@
      "support_count": 0
     },
     "documents_reported": null,
-    "submit_methods": {
-     "value": [
-      {
-       "kind": "mail",
-       "detail": "hand-delivered or mailed to: Bradley County Medical Center Attention: Collections Department 404 S Bradley Warren, AR 71671"
-      },
-      {
-       "kind": "in_person",
-       "detail": "hand-delivered to Bradley County Medical Center Attention: Collections Department 404 S Bradley Warren, AR 71671"
-      }
-     ],
-     "layer": "documented",
-     "quote": "The completed application, along with supporting documents indicated should be hand- delivered or mailed to: Bradley County Medical Center",
-     "source_id": "fap-423ac291e984c8a8",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "submit_methods": null,
     "window_days_from_first_bill": null,
     "decision_days": {
      "value": 30,
@@ -7052,7 +6842,7 @@
     "phone": {
      "value": "870-226-4319",
      "layer": "documented",
-     "quote": "You can pay your bills by calling Collections at 870-226-4319",
+     "quote": "You can pay your bills by calling Collections at 870-226-4319 or by stopping by the BCMC Business Center",
      "source_id": "web-1dfa37188ae5da2e",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -7098,9 +6888,10 @@
    "accuracy": null,
    "eve_review": [
     "apply.documents_required: 2 more verbatim excerpt(s) supported this value: 2) Copy of the last 3 months' bank statements (NOTE: Printed statements only are accepted.) | 3) Most recent tax return (Form 1040) (from all adults in the household)",
-    "agent judge on eligibility.asset_test: Quote only lists 'Bank(s) used: Checking Balance Savings Balance'; it does not state that assets are considered.",
-    "agent judge on apply.submit_methods: Quote gives only the hand-delivered or mailed instruction and omits the address; the 'in_person' kind is not stated separately, though it is implied by hand-delivery.",
-    "agent judge on apply.decision_days: Quote says allow 30 business days for review, which is business days, not calendar days; value 30 does not match the stated unit."
+    "agent dropped apply.submit_methods: quote is not a substring of the source",
+    "agent judge on eligibility.insured_patients_covered: Quote only describes insured patients whose coverage is insufficient for the bill; it does not state that they are covered by assistance.",
+    "agent judge on apply.documents_required: Quote lists only three documents; the fourth item (SNAP or housing benefits notification) does not appear in the quote.",
+    "agent judge on apply.decision_days: Quote says 30 business days; the value 30 drops the business-day qualifier, so it does not state 30 days as recorded."
    ]
   },
   {
@@ -7118,7 +6909,15 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": null,
+    "free_care_max_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "the FPL is 200% or lower and their ability to pay is low which will identify the patient as eligible for a 100% charity adjustment to that individual encounter",
+     "source_id": "fap-4dbed64b2b51c210",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
     "asset_test": null,
@@ -7126,7 +6925,7 @@
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "b. Insured patients are not required to complete the Insurance Eligibility Screening before applying for financial assistance",
+     "quote": "Insured patients are not required to complete the Insurance Eligibility Screening before applying for financial assistance",
      "source_id": "fap-4dbed64b2b51c210",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -7138,14 +6937,11 @@
    "programs": {
     "presumptive": {
      "value": [
-      "Medicaid enrolled",
       "homeless",
-      "incarcerated",
-      "deceased",
-      "bankruptcy"
+      "incarcerated"
      ],
      "layer": "documented",
-     "quote": "Patients who are incarcerated or homeless and confirmed no other liable party can be billed, will be deemed 100% financial assistance. Bankruptcy accounts upon notification of filing will be deemed 100% charitable. Deceased patients 18 years of age and over will be reviewed by Third Party Vendor and once determined uncollectible, will be deemed 100% charity",
+     "quote": "Patients who are incarcerated or homeless and confirmed no other liable party can be billed, will be deemed 100% financial assistance.",
      "source_id": "fap-4dbed64b2b51c210",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -7164,39 +6960,26 @@
      "support_count": 0
     },
     "form_version": null,
-    "documents_required": {
-     "value": [
-      "social_security_letter",
-      "other",
-      "tax_return",
-      "proof_of_income"
-     ],
-     "layer": "documented",
-     "quote": "Completed Financial Assistance Application (see next page)",
-     "source_id": "fap-e2169745bc9cf37f",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "documents_required": null,
     "documents_reported": null,
     "submit_methods": {
      "value": [
       {
-       "kind": "portal",
-       "detail": "MyMercy - Once logged into your MyMercy account, under the Main Menu option, select Pay My Bill. Then choose View Balance Details, select Manage Financial Assistance."
-      },
-      {
        "kind": "mail",
-       "detail": "Mercy Health, Attention: Financial Assistance Department, 2115 S Fremont Avenue, Suite 5300, Springfield, MO 65804"
+       "detail": "Mercy Health Attention Financial Assistance 2115 S Fremont Avenue, Suite 5300 Springfield, MO 65804"
       },
       {
        "kind": "fax",
        "detail": "Fax: 417-829-4604"
+      },
+      {
+       "kind": "portal",
+       "detail": "www.mercy.net/fa"
       }
      ],
      "layer": "documented",
-     "quote": "Submit your application and documents via: MyMercy",
-     "source_id": "fap-e2169745bc9cf37f",
+     "quote": "Completed applications for financial assistance can be returned to: Mercy Health Attention Financial Assistance 2115 S Fremont Avenue, Suite 5300 Springfield, MO 65804 Fax: 417-829-4604",
+     "source_id": "fap-4dbed64b2b51c210",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -7221,17 +7004,17 @@
     "phone": {
      "value": "855-420-7900",
      "layer": "documented",
-     "quote": "Mercy Health customer service 855-420-7900",
+     "quote": "may be directed to Mercy Health customer service 855-420-7900.",
      "source_id": "fap-4dbed64b2b51c210",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "hours": {
-     "value": "Monday - Friday from 7:30 a.m. - 7:00 p.m. CT",
+     "value": "Monday through Friday, during business hours as noted on the statement",
      "layer": "documented",
-     "quote": "Our customer service team is available Monday - Friday from 7:30 a.m. - 7:00 p.m. CT at 855-420-7900",
-     "source_id": "web-49bb8abcd664e896",
+     "quote": "financial counselors and customer service representatives available to assist in setting up payment options Monday through Friday, during business hours as noted on the statement.",
+     "source_id": "fap-4dbed64b2b51c210",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -7263,36 +7046,14 @@
      "fetched_on": "2026-10-23",
      "sha256": "4dbed64b2b51c210de21202ce1761b4a7402a9ec9ff650dbdf978bbd47a96afe",
      "effective_date": null
-    },
-    {
-     "id": "fap-e2169745bc9cf37f",
-     "kind": "hospital_web",
-     "url": "https://www.mercy.net/content/dam/mercy/en/pdf/financial-assistance-application-mercy-and-clinic.pdf",
-     "title": "",
-     "fetched_on": "2026-10-23",
-     "sha256": "e2169745bc9cf37f47321bb46f425edd66499b395a98fa5b74ced051eb10d24f",
-     "effective_date": null
-    },
-    {
-     "id": "web-49bb8abcd664e896",
-     "kind": "hospital_web",
-     "url": "https://www.mercy.net/patients-visitors/billing/financial-assistance/",
-     "title": "Financial Assistance AR, OK, Springfield & St. Louis | Mercy",
-     "fetched_on": "2026-10-23",
-     "sha256": "49bb8abcd664e8968e7b8ff8b1f4de3f3f67fb8608bf5fcf0ebf0a6d07d96d16",
-     "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Federal Tax Return: A full copy of the most recent federal tax return, including all forms and schedules | Proof of Income: Provide income documentation for all household members over the age of 18",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Mercy Health Attention: Financial Assistance Department 2115 S Fremont Avenue, Suite 5300 Springfield, MO 65804 | Fax: 417-829-4604",
-    "agent dropped eligibility.free_care_max_fpl: quote is not a substring of the source",
-    "agent dropped eligibility.discount_tiers: quote is not a substring of the source",
-    "agent judge on programs.presumptive: Quote covers incarcerated, homeless, bankruptcy, and deceased patients; it does not mention Medicaid enrolled as a presumptive category.",
-    "agent judge on apply.documents_required: Quote lists application, Federal Tax Return, and Proof of Income; it does not list a 'Medicaid Screening' document as required.",
-    "agent judge on apply.submit_methods: Quote lists MyMercy, mail address, and fax; the recorded online detail and mail address are not fully stated, but the mail address and fax match. Online detail text is not in the quote.",
-    "agent judge on contacts.languages: Quote says paper application is available in English and other prevalent languages; it does not explicitly state Spanish."
+    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: obtained on www.mercy.net/fa.",
+    "agent judge on eligibility.insured_patients_covered: Quote only says insured patients need not complete insurance screening before applying. It does not state that insured patients are covered.",
+    "agent judge on apply.submit_methods: Mail and fax are stated for returning applications. The online entry is only where the application is obtained ('obtained on www.mercy.net/fa'), not where it is submitted.",
+    "agent judge on contacts.languages: Quote says the application is available in English and 'other languages prevalent in the area'. Spanish is not named."
    ]
   },
   {
@@ -7466,15 +7227,7 @@
     "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": null,
-    "insured_patients_covered": {
-     "value": true,
-     "layer": "documented",
-     "quote": "Uninsured or underinsured patients should consult with our business office to determine their financial liability.",
-     "source_id": "web-77c0c823cefc45ab",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "insured_patients_covered": null,
     "min_balance": null,
     "services_excluded": null
    },
@@ -7553,8 +7306,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "agent dropped contacts.phone: quote is not a substring of the source",
-    "agent judge on eligibility.insured_patients_covered: Quote says uninsured or underinsured patients should consult the business office about liability; it does not state whether insured patients are covered."
+    "agent dropped contacts.phone: quote is not a substring of the source"
    ]
   }
  ]

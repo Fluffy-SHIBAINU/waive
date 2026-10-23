@@ -25,6 +25,26 @@ Largest: Wisconsin 105, Michigan 88, Indiana 70, Minnesota 62, Kentucky 58, Miss
 
 Snapshot: `~/waive-atlas-backup/complete-run-20261022-2332` with a SHA-256 manifest.
 
+## Final verified state (2026-10-23 06:40 UTC)
+
+The run ended when AI Gateway refused further calls at a balance of -$100.00. Everything below is measured on the final set with Waive's own code.
+
+| Metric | Value |
+|---|---|
+| Draft sheets | 1,340 across 42 states (820 built under the Sonnet 5 prompts v3 to v5, 520 Opus-era) |
+| Hospitals attempted | 1,701: 1,340 built, 183 with no official policy found, 173 behind sites that still block fetches, 6 lost to the credit cutoff |
+| Rebuild pass | 376 sheets without a verified income rule re-queued under prompt v5; 349 rebuilt, 116 now carry a free-care line and 88 a tier table |
+| Blocked-site retry | 194 re-queued with the retrying fetcher; 113 recovered |
+| Verified on refetched documents (`scripts/refetch_verify_eve.py`) | 1,039 of 1,340 sheets keep a free-care line or tier table after `trim_quotes`, `prune_lists` and `verify_sheet` |
+| Sources refetched | 3,523 fetches; 2,775 byte-identical to the SHA-256 the agent recorded, 748 changed (HTML pages that vary between fetches); 1,214 sheets had every source fetched, 25 none |
+| Documents stored | 2,091 texts in `~/waive-atlas/sources/` with `_index.jsonl` (url, recorded and fetched SHA-256, kind, chars) |
+| Quote-level review (`scripts/review_eve_drafts.py`) | 1,059 income rules pass, 1,003 review-ready, 24 with a publish-time inconsistency |
+| Review queue (`data/atlas-eve-verified/_review-queue.csv`) | 178 verified with nothing rejected, 861 verified with some fields rejected, 301 without an income rule |
+| Local database copy | `var/waive-eve.db` (SQLite): 1,340 hospitals, 1,340 version-1 draft sheets, 2,189 source rows of which 2,091 carry the fetched text, 1,340 `eve-import` review items |
+| Self-contained bundle | `~/waive-atlas/release-<stamp>/` with drafts, converted and verified sheets, all documents, the queue, this report, the SQLite file and a SHA-256 manifest |
+
+What a reviewer has for each sheet: the verified field values, the quote for each, the source URL, the document text as fetched, whether that document is byte-identical to the one the agent read, Waive's verifier verdict per field, and the judge's notes.
+
 ## What is required before any of this reaches patients
 
 Measured with Waive's own `verify_sheet` and `sheet_inconsistencies` over all 1,348 converted sheets, each source stood in by its quotes (every rule runs except substring-in-document, which the agent already enforced against the fetched text). Results are in `data/atlas-eve/_waive-verify-review.md`.

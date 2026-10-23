@@ -3355,9 +3355,7 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": null,
-    "discount_tiers": null,
-    "assistance_ceiling_fpl": {
+    "free_care_max_fpl": {
      "value": "200",
      "layer": "documented",
      "quote": "Household income must be at or below 200% of the current Federal Poverty Level.",
@@ -3366,8 +3364,20 @@
      "confidence": 1.0,
      "support_count": 0
     },
+    "discount_tiers": null,
+    "assistance_ceiling_fpl": null,
     "asset_test": null,
-    "residency": null,
+    "residency": {
+     "value": [
+      "Applicants must be considered a Maine resident, which includes individuals who live in Maine with the intent to remain indefinitely or have moved to Maine for permanent, temporary, seasonal, or other employment, or are actively seeking employment in Maine."
+     ],
+     "layer": "documented",
+     "quote": "Applicants must be considered a Maine resident, which includes individuals who: o Live in Maine with the intent to remain indefinitely; or o Have moved to Maine for permanent, temporary, seasonal, or other employment, or are actively seeking employment in Maine.",
+     "source_id": "fap-3078d2adc00ea700",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "insured_patients_covered": null,
     "min_balance": null,
     "services_excluded": null
@@ -3381,7 +3391,7 @@
      "value": "https://houltonregional.org/wp-content/uploads/2026/09/03-Financial-Assistance-Application-Packet-HRH.pdf",
      "layer": "documented",
      "quote": "Financial Assistance Application [https://houltonregional.org/wp-content/uploads/2026/09/03-Financial-Assistance-Application-Packet-HRH.pdf]",
-     "source_id": "web-1314adfee70bbf25",
+     "source_id": "web-c6d2dd3a9dc0ec7d",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -3389,7 +3399,32 @@
     "form_version": null,
     "documents_required": null,
     "documents_reported": null,
-    "submit_methods": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "in_person",
+       "detail": "In Person"
+      },
+      {
+       "kind": "mail",
+       "detail": "Mail"
+      },
+      {
+       "kind": "fax",
+       "detail": "Fax"
+      },
+      {
+       "kind": "email",
+       "detail": "Email"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Items can be submitted In Person or by Mail, Fax, and Email.",
+     "source_id": "fap-3078d2adc00ea700",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "window_days_from_first_bill": null,
     "decision_days": null,
     "decision_days_reported": null
@@ -3402,17 +3437,17 @@
     "phone": {
      "value": "(207) 521-2227",
      "layer": "documented",
-     "quote": "please contact the Patient Financial Councilors at (207) 521-2227",
+     "quote": "please contact the Patient Financial Councilors at (207) 521-2227 or visit us at the HRH Financial Counselor at Door 7.",
      "source_id": "fap-3078d2adc00ea700",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "hours": {
-     "value": "Monday to Friday, 8:00 a.m. to 4:30 p.m.",
+     "value": "Monday to Friday from 8:00 a.m. to 4:30 p.m.",
      "layer": "documented",
      "quote": "We have customer service available to you in our Patient Financial Services department Monday to Friday from 8:00 a.m. to 4:30 p.m.",
-     "source_id": "web-1314adfee70bbf25",
+     "source_id": "web-c6d2dd3a9dc0ec7d",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -3444,20 +3479,19 @@
      "effective_date": null
     },
     {
-     "id": "web-1314adfee70bbf25",
+     "id": "web-c6d2dd3a9dc0ec7d",
      "kind": "hospital_web",
      "url": "https://houltonregional.org/patients/billing/",
      "title": "Billing | Houlton Regional Hospital",
      "fetched_on": "2026-10-23",
-     "sha256": "1314adfee70bbf250e0da1d5c8a6b3d70e5e28604e37bd84eb4db9e7ac4d242e",
+     "sha256": "c6d2dd3a9dc0ec7d8c599340bc744bde6bda72f5bfb4a57cfb03b513f64705b5",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "agent dropped eligibility.residency: judge: Quote defines Maine residency but says nothing about temporary tourists or visitors not qualifying.",
-    "agent dropped apply.documents_required: judge: Quote says 'This affidavit' replaces income proof but never names it a Zero Income Affidavit.",
-    "agent dropped apply.submit_methods: judge: Quote lists in person, mail, fax and email, but does not mention a Financial Counselor at Door 7."
+    "agent dropped apply.documents_required: excerpt not in source: Please provide your most recent tax return or pay stubs for ",
+    "agent judge on eligibility.free_care_max_fpl: The quote sets an income eligibility limit of 200% FPL but does not say that care is 100% free at that level, so it does not establish the free-care maximum."
    ]
   },
   {
@@ -3727,7 +3761,7 @@
     {
      "id": "web-2ae94bc7758a7c07",
      "kind": "hospital_web",
-     "url": "https://www.dech.org/financial-assistance/",
+     "url": "https://www.dech.org/financial-office/billing-information/",
      "title": "Bot Verification",
      "fetched_on": "2026-10-23",
      "sha256": "2ae94bc7758a7c07e4ec4a137ef4e5b625be6871dc53134213b34e9122775f4f",
@@ -4522,9 +4556,7 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": null,
-    "discount_tiers": null,
-    "assistance_ceiling_fpl": {
+    "free_care_max_fpl": {
      "value": "200",
      "layer": "documented",
      "quote": "Household income must be at or below 200% of the current Federal Poverty Level.",
@@ -4533,8 +4565,20 @@
      "confidence": 1.0,
      "support_count": 0
     },
+    "discount_tiers": null,
+    "assistance_ceiling_fpl": null,
     "asset_test": null,
-    "residency": null,
+    "residency": {
+     "value": [
+      "Applicants must be considered a Maine resident, which includes individuals who live in Maine with the intent to remain indefinitely, or have moved to Maine for permanent, temporary, seasonal, or other employment, or are actively seeking employment in Maine."
+     ],
+     "layer": "documented",
+     "quote": "Applicants must be considered a Maine resident, which includes individuals who: o Live in Maine with the intent to remain indefinitely; or o Have moved to Maine for permanent, temporary, seasonal, or other employment, or are actively seeking employment in Maine.",
+     "source_id": "fap-3f3bb5fde3b94430",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "insured_patients_covered": null,
     "min_balance": null,
     "services_excluded": null
@@ -4548,15 +4592,50 @@
      "value": "https://nmmc.org/wp-content/uploads/2026/07/06-Financial-Assistance-Application-Packet-NEW.pdf",
      "layer": "documented",
      "quote": "Income Based Assistance [https://nmmc.org/wp-content/uploads/2026/07/06-Financial-Assistance-Application-Packet-NEW.pdf]",
-     "source_id": "web-3a16c3cae1bb8930",
+     "source_id": "web-a59c934ee5fe496e",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "form_version": null,
-    "documents_required": null,
+    "documents_required": {
+     "value": [
+      "tax_return"
+     ],
+     "layer": "documented",
+     "quote": "Please provide your most recent tax return or pay stubs for the previous three (3) months.",
+     "source_id": "fap-2e7b2041496b7b57",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "documents_reported": null,
-    "submit_methods": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "in_person",
+       "detail": "In Person"
+      },
+      {
+       "kind": "mail",
+       "detail": "Mail"
+      },
+      {
+       "kind": "fax",
+       "detail": "Fax"
+      },
+      {
+       "kind": "email",
+       "detail": "Email"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Items can be submitted In Person or by Mail, Fax, and Email.",
+     "source_id": "fap-3f3bb5fde3b94430",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "window_days_from_first_bill": null,
     "decision_days": null,
     "decision_days_reported": null
@@ -4569,8 +4648,8 @@
     "phone": {
      "value": "207-834-1826",
      "layer": "documented",
-     "quote": "For more information about financial assistance, call 207-834-1826 .",
-     "source_id": "web-3a16c3cae1bb8930",
+     "quote": "Contact us at 207-834-1826",
+     "source_id": "fap-2e7b2041496b7b57",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -4603,21 +4682,17 @@
      "effective_date": null
     },
     {
-     "id": "web-3a16c3cae1bb8930",
+     "id": "web-a59c934ee5fe496e",
      "kind": "hospital_web",
      "url": "https://nmmc.org/billing-and-financial-services/",
      "title": "Billing and Financial Services - Northern Maine Medical Center",
      "fetched_on": "2026-10-23",
-     "sha256": "3a16c3cae1bb893089b97894f9a5098fba75179560cee6a146e85ea347ccda9c",
+     "sha256": "a59c934ee5fe496ed0cf3b3e1f9f534ac644ddb7e57080cea3c0665a16ab2f3b",
      "effective_date": null
     }
    ],
    "accuracy": null,
-   "eve_review": [
-    "agent dropped eligibility.residency: judge: The quote only says applicants must be Maine residents. The criteria list, intent to remain and the tourist/visitor exclusion are not in it.",
-    "agent dropped apply.documents_required: judge: The quote says 'This affidavit' without naming it a Zero Income Affidavit. The tax return and pay stub items are supported.",
-    "agent dropped apply.submit_methods: judge: The quote lists in person, mail, fax and email plus the email address. The Switchboard location and the mailing address are not in it."
-   ]
+   "eve_review": []
   }
  ]
 }

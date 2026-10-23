@@ -258,20 +258,7 @@
     "form_version": null,
     "documents_required": null,
     "documents_reported": null,
-    "submit_methods": {
-     "value": [
-      {
-       "kind": "phone",
-       "detail": "financial counseling department at 303-485-4110"
-      }
-     ],
-     "layer": "documented",
-     "quote": "Please contact the financial counseling department at 303-485-4110 if you have any billing or payment questions related to your stay.",
-     "source_id": "web-6038c9244157e8f8",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "submit_methods": null,
     "window_days_from_first_bill": null,
     "decision_days": null,
     "decision_days_reported": null
@@ -285,7 +272,7 @@
      "value": "303-485-4110",
      "layer": "documented",
      "quote": "Please contact the financial counseling department at 303-485-4110 if you have any billing or payment questions related to your stay.",
-     "source_id": "web-6038c9244157e8f8",
+     "source_id": "web-bc080e1cc0faa513",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -317,7 +304,7 @@
      ],
      "layer": "documented",
      "quote": "Language Assistance Services. If you speak a language other than English, assistance services, free of change are available to you in the following languages:",
-     "source_id": "web-6038c9244157e8f8",
+     "source_id": "web-bc080e1cc0faa513",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -330,37 +317,231 @@
    },
    "sources": [
     {
-     "id": "web-1d0228afcb4f33e7",
+     "id": "web-68a199587f0f1910",
      "kind": "hospital_web",
      "url": "https://csdam.widen.net/s/7k58d7g55q/financial-assistance-policy",
      "title": "Financial-Assistance-Policy.pdf",
      "fetched_on": "2026-10-23",
-     "sha256": "1d0228afcb4f33e730f772cef91d85819c6c8d0255486139f8d96d23cf88e85c",
+     "sha256": "68a199587f0f19105ebffdf98bd8eb882b715a3a5b8fa071e6355fca8f3718a3",
      "effective_date": null
     },
     {
-     "id": "web-f7a19959e5d00c49",
+     "id": "web-d6aef92969f62fa3",
      "kind": "hospital_web",
      "url": "https://csdam.widen.net/s/667smwfksr/form_uniformapplication",
      "title": "Form_UniformApplication.pdf",
      "fetched_on": "2026-10-23",
-     "sha256": "f7a19959e5d00c4934ac634d726384ff863d05156afcf30cbbd811afcdb0e0d3",
+     "sha256": "d6aef92969f62fa37419b49d3b56191314f41e34cc04e006aee8cb69028970e8",
      "effective_date": null
     },
     {
-     "id": "web-6038c9244157e8f8",
+     "id": "web-bc080e1cc0faa513",
      "kind": "hospital_web",
      "url": "https://www.mountain.commonspirit.org/location/longmont-united-hospital/patient-guide",
      "title": "CommonSpirit Longmont United Hospital Patient Guide | CommonSpirit Health",
      "fetched_on": "2026-10-23",
-     "sha256": "6038c9244157e8f8a493082111f3c38844789e35a27b97f5a36e62e65f4b0196",
+     "sha256": "bc080e1cc0faa513a591bae589f02ef91c611c1349ccdc99170dcbef03006f09",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "agent judge on apply.submit_methods: The quote covers billing or payment questions, not applying for financial assistance, so it does not show the phone line as an application method.",
-    "agent judge on contacts.languages: The quote says assistance is available in the following languages but does not list any of them, so the 21 language values are not stated."
+    "agent judge on contacts.languages: The quote says assistance is available in the following languages but does not name any of them, so the 21 listed languages are not stated in the quote."
+   ]
+  },
+  {
+   "hospital": {
+    "ccn": "060006",
+    "name": "MONTROSE REGIONAL HEALTH",
+    "city": "MONTROSE",
+    "state": "CO",
+    "zip": "81401",
+    "phone": "970-249-2211",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "montrosehealth.com",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "40.9",
+     "layer": "documented",
+     "quote": "Patients whose family income is not more than 40.9% of the FPL are eligible to receive a 100% discount off billed charges.",
+     "source_id": "fap-127bd5b8667e7fa8",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": null,
+    "assistance_ceiling_fpl": null,
+    "asset_test": {
+     "value": true,
+     "layer": "documented",
+     "quote": "MRH will review all the patient\u2019s outstanding account receivables for prior services rendered and the patient\u2019s payment history, and consider the patient\u2019s available assets, and all other financial resources available to the patient",
+     "source_id": "fap-127bd5b8667e7fa8",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "residency": {
+     "value": [
+      "Financial assistance under this policy is available to residents of the hospital's service area."
+     ],
+     "layer": "documented",
+     "quote": "Financial assistance under this policy is available to residents of the hospital\u2019s service area.",
+     "source_id": "fap-127bd5b8667e7fa8",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Insured patients with Medicare and/or commercial insurance may apply for financial assistance as a mechanism for secondary funding.",
+     "source_id": "fap-127bd5b8667e7fa8",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": {
+     "value": [
+      "homeless",
+      "transient",
+      "Medicaid",
+      "bankruptcy"
+     ],
+     "layer": "documented",
+     "quote": "Verified resident address of a shelter/homeless, without signed financial assistance application on file",
+     "source_id": "fap-127bd5b8667e7fa8",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "state_programs": {
+     "value": [
+      {
+       "name": "CICP",
+       "how_to_apply": "Required items for application include: CICP/MISS - All household members social security numbers, dates of birth, and full legal names"
+      },
+      {
+       "name": "Medicaid",
+       "how_to_apply": "Medicaid - All household members birth certificate or passport, State issued ID with current address, 8 weeks of proof of income for all household members"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Required items for application include: CICP/MISS - All household members social security numbers, dates of birth, and full legal names",
+     "source_id": "fap-127bd5b8667e7fa8",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "social_security_letter",
+      "other",
+      "proof_of_income",
+      "bank_statements",
+      "medicaid_denial"
+     ],
+     "layer": "documented",
+     "quote": "All household members social security numbers, dates of birth, and full legal names (i.e., Driver\u2019s Licenses, Birth Certificates, Passports)",
+     "source_id": "fap-127bd5b8667e7fa8",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "phone",
+       "detail": "contacting a financial counselor at 970-252-2666 to make an appointment"
+      },
+      {
+       "kind": "in_person",
+       "detail": "Their office is on 800 South Third Street Montrose, CO 81401"
+      }
+     ],
+     "layer": "documented",
+     "quote": "by contacting a financial counselor at 970-252-2666 to make an appointment. Their office is on 800 South Third Street Montrose, CO 81401.",
+     "source_id": "fap-127bd5b8667e7fa8",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": null,
+    "decision_days": null,
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": {
+     "value": 180,
+     "layer": "documented",
+     "quote": "MRH will cease extraordinary collection practices for a period of 180 days from discharge",
+     "source_id": "fap-127bd5b8667e7fa8",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "970-252-2666",
+     "layer": "documented",
+     "quote": "contacting a financial counselor at 970-252-2666 to make an appointment",
+     "source_id": "fap-127bd5b8667e7fa8",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": null,
+    "languages": null
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-127bd5b8667e7fa8",
+     "kind": "hospital_web",
+     "url": "https://montrosehealth.com/wp-content/uploads/2024/01/financial-assistance-policy-2023.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "127bd5b8667e7fa83787b6f4c9d69fcf6b1351b82984d30278f7da3737acdf71",
+     "effective_date": null
+    },
+    {
+     "id": "fap-db8a0662253ccad0",
+     "kind": "hospital_web",
+     "url": "https://montrosehealth.com/wp-content/uploads/2025/06/UniformApplicationforPosting07012025-2.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "db8a0662253ccad0fd2ca9a775d31317da1654f23018dd27d5bbe1ef5c99a97e",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "eligibility.discount_tiers: 40.9-250% at 100% is the free-care band, not a tier; skipped",
+    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Verified \u201chomeless\u201d or \u201ctransient\u201d status, without a signed financial assistance application on file | Account is identified in official bankruptcy and there are no estate assets",
+    "programs.state_programs: 1 more verbatim excerpt(s) supported this value: Medicaid - All household members birth certificate or passport - State issued ID with current address",
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Cards or copies of cards for any current health insurance | Current bank account statements for all accounts - Copy of Medicaid Denial Letter",
+    "agent judge on eligibility.discount_tiers: Quote gives a presumptive eligibility band up to 250% FPL at amounts generally billed, not a 100% discount tier from 40.9% to 250%.",
+    "agent judge on programs.presumptive: Quote lists shelter/homeless, homeless or transient, and bankruptcy only; Medicaid is not listed as presumptive in the quote.",
+    "agent judge on programs.state_programs: Quote gives CICP and Medicaid document items but does not mention the 8 weeks of proof of income in the value.",
+    "agent judge on apply.documents_required: Quote does not mention proof of gross income for the past 30 days, which appears in the value."
    ]
   },
   {
@@ -384,8 +565,8 @@
     "asset_test": {
      "value": true,
      "layer": "documented",
-     "quote": "Adjusted Federal Poverty Level \u2013 Total household size, current income and liquid assets.",
-     "source_id": "fap-e1077ceaa46dd576",
+     "quote": "documentation that supports the offer, application for, and provision of financial assistance, including income verification and available assets, for a minimum period of seven years.",
+     "source_id": "fap-659fb69c277ab381",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -396,7 +577,7 @@
      ],
      "layer": "documented",
      "quote": "Residents of any state other than Colorado are not eligible for financial assistance without prior approval from the facility Chief Financial Officer.",
-     "source_id": "fap-e1077ceaa46dd576",
+     "source_id": "fap-659fb69c277ab381",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -405,7 +586,7 @@
      "value": true,
      "layer": "documented",
      "quote": "Insurance programs leaving a patient balance may be eligible for SLV Health financial assistance if the patient meets financial screening requirements.",
-     "source_id": "fap-e1077ceaa46dd576",
+     "source_id": "fap-659fb69c277ab381",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -418,23 +599,15 @@
     "state_programs": {
      "value": [
       {
-       "name": "Medicaid",
-       "how_to_apply": "Patient must be ineligible for Medicaid, Child Health Plan+, Colorado Indigent Care Program (where applicable), or other financial assistance programs."
-      },
-      {
-       "name": "Child Health Plan+",
-       "how_to_apply": "Patient must be ineligible for Medicaid, Child Health Plan+, Colorado Indigent Care Program (where applicable), or other financial assistance programs."
-      },
-      {
-       "name": "Colorado Indigent Care Program",
-       "how_to_apply": "Patient must be ineligible for Medicaid, Child Health Plan+, Colorado Indigent Care Program (where applicable), or other financial assistance programs."
+       "name": "Hospital Discounted Care",
+       "how_to_apply": "Visit the SLV Health website at Hospital Discounted Care | San Luis Valley Health to obtain a copy of the FAA."
       }
      ],
      "layer": "documented",
-     "quote": "Patient must be ineligible for Medicaid, Child Health Plan+, Colorado Indigent Care Program (where applicable), or other financial assistance programs.",
-     "source_id": "fap-e1077ceaa46dd576",
+     "quote": "those applicants, their payment plan will follow the HDC card provided by the State of Colorado's application.",
+     "source_id": "fap-659fb69c277ab381",
      "checked_on": "2026-10-23",
-     "confidence": 1.0,
+     "confidence": 0.8,
      "support_count": 0
     }
    },
@@ -443,15 +616,15 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "other",
       "tax_return",
+      "other",
       "pay_stubs",
       "bank_statements",
       "proof_of_income"
      ],
      "layer": "documented",
-     "quote": "Proof of Physical address (at least 2 of the following: current month\u2019s utility, water, trash, or rent/mortgage)",
-     "source_id": "fap-e1077ceaa46dd576",
+     "quote": "Income Tax Return",
+     "source_id": "fap-659fb69c277ab381",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -466,15 +639,11 @@
       {
        "kind": "portal",
        "detail": "Visit the SLV Health website at Hospital Discounted Care | San Luis Valley Health to obtain a copy of the FAA."
-      },
-      {
-       "kind": "portal",
-       "detail": "Log into the SLV Health Patient Portal at Patient Portal | San Luis Valley Health"
       }
      ],
      "layer": "documented",
-     "quote": "a) Contact the hospital financial counselor b) Visit the SLV Health website at Hospital Discounted Care | San Luis Valley Health to obtain a copy of the FAA. c) Log into the SLV Health Patient Portal at Patient Portal | San Luis Valley Health",
-     "source_id": "fap-e1077ceaa46dd576",
+     "quote": "Contact the hospital financial counselor",
+     "source_id": "fap-659fb69c277ab381",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -484,7 +653,7 @@
      "value": 30,
      "layer": "documented",
      "quote": "SLV Health will allow 15 days for processing of the application and 15 days to contact the patient with the determination in writing.",
-     "source_id": "fap-e1077ceaa46dd576",
+     "source_id": "fap-659fb69c277ab381",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -496,7 +665,7 @@
      "value": 181,
      "layer": "documented",
      "quote": "Extraordinary Collection Activities ECAs will not be initiated earlier than 181 days after the first billing statement is sent to the individual.",
-     "source_id": "fap-e1077ceaa46dd576",
+     "source_id": "fap-659fb69c277ab381",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -513,7 +682,7 @@
      ],
      "layer": "documented",
      "quote": "The FAP, FAA and PLS are available in English and Spanish.",
-     "source_id": "fap-e1077ceaa46dd576",
+     "source_id": "fap-659fb69c277ab381",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -526,20 +695,24 @@
    },
    "sources": [
     {
-     "id": "fap-e1077ceaa46dd576",
+     "id": "fap-659fb69c277ab381",
      "kind": "hospital_web",
-     "url": "https://www.sanluisvalleyhealth.org/documents/SLVH-Financial-Assistance-Policy-05.2026.pdf",
+     "url": "https://www.sanluisvalleyhealth.org/documents/SLVH-Financial-Assistance-Policy-04.28.25.pdf",
      "title": "",
      "fetched_on": "2026-10-23",
-     "sha256": "e1077ceaa46dd5760c05bf653d1096493b47c96c2e75975c532835c91c9ee552",
+     "sha256": "659fb69c277ab381e85bdb1254176f8fe544faf531fe535ba81467aadd4293a2",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Income documentation for the last 90 days | Income Tax Return b) IRS form W-2 c) Paycheck stub d) Complete bank statements (savings and checking) e) Signed attestat",
-    "agent judge on programs.state_programs: Quote is a single sentence about ineligibility for Medicaid, CHP+, CICP; it does not name these as state programs with separate how_to_apply text, and the value repeats one sentence three times.",
-    "agent judge on apply.decision_days: Quote gives 15 days for processing plus 15 days to notify the patient, which does not state a single decision period of 30 days."
+    "programs.state_programs: quote matched the source only after typography normalization",
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: IRS form W-2 | Paycheck stub",
+    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Visit the SLV Health website at Hospital Discounted Care | San Luis Valley Health to obtain a copy of the FAA.",
+    "agent judge on programs.state_programs: Quote only mentions HDC card following State of Colorado application; it does not name the program or give how to apply as recorded.",
+    "agent judge on apply.documents_required: Quote lists only three documents (Income Tax Return, W-2, Paycheck stub); value adds bank statements and signed attestation not in the quote.",
+    "agent judge on apply.submit_methods: Quote gives contact the financial counselor and a website for the FAA; it does not say the website method is 'online' as kind, and the value is only partially aligned.",
+    "agent judge on apply.decision_days: Quote gives 15 days for processing plus 15 days to notify, which is not a single 30-day decision period stated directly."
    ]
   },
   {
@@ -1106,7 +1279,15 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": null,
+    "phone": {
+     "value": "720-321-0402",
+     "layer": "documented",
+     "quote": "Please contact the financial counseling department at 720-321-0402 if you have any billing or payment questions related to your stay.",
+     "source_id": "web-63b5b44b445867d1",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "hours": null,
     "languages": null
    },
@@ -1117,12 +1298,30 @@
    },
    "sources": [
     {
-     "id": "web-1d0228afcb4f33e7",
+     "id": "web-68a199587f0f1910",
      "kind": "hospital_web",
      "url": "https://csdam.widen.net/s/7k58d7g55q/financial-assistance-policy",
      "title": "Financial-Assistance-Policy.pdf",
      "fetched_on": "2026-10-23",
-     "sha256": "1d0228afcb4f33e730f772cef91d85819c6c8d0255486139f8d96d23cf88e85c",
+     "sha256": "68a199587f0f19105ebffdf98bd8eb882b715a3a5b8fa071e6355fca8f3718a3",
+     "effective_date": null
+    },
+    {
+     "id": "web-d6aef92969f62fa3",
+     "kind": "hospital_web",
+     "url": "https://csdam.widen.net/s/667smwfksr/form_uniformapplication",
+     "title": "Form_UniformApplication.pdf",
+     "fetched_on": "2026-10-23",
+     "sha256": "d6aef92969f62fa37419b49d3b56191314f41e34cc04e006aee8cb69028970e8",
+     "effective_date": null
+    },
+    {
+     "id": "web-63b5b44b445867d1",
+     "kind": "hospital_web",
+     "url": "https://www.mountain.commonspirit.org/location/st-anthony-hospital/patient-guide",
+     "title": "CommonSpirit St. Anthony Hospital Patient Guide | CommonSpirit Health",
+     "fetched_on": "2026-10-23",
+     "sha256": "63b5b44b445867d1c18de4a8421f67a9cbf002593a193aed2b29b73a6c4fd942",
      "effective_date": null
     }
    ],
@@ -1392,21 +1591,7 @@
    "status": "draft",
    "eligibility": {
     "free_care_max_fpl": null,
-    "discount_tiers": {
-     "value": [
-      {
-       "min_fpl_exclusive": "250",
-       "max_fpl_inclusive": "350",
-       "discount_percent": 50
-      }
-     ],
-     "layer": "documented",
-     "quote": "Discounts are available to patients whose adjusted income is at or below 250% of the FPL.",
-     "source_id": "fap-d76992c98561d1f1",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "discount_tiers": null,
     "assistance_ceiling_fpl": {
      "value": "350",
      "layer": "documented",
@@ -1419,7 +1604,7 @@
     "asset_test": {
      "value": true,
      "layer": "documented",
-     "quote": "A patient\u2019s adjusted Federal Poverty Level (FPL) will be calculated using the patient\u2019s household/family income plus liquid assets and household family size.",
+     "quote": "Liquid Asset documentation for last month. This may include but is not limited to: Checking and Savings accounts, Investment accounts, Stocks, Bonds, Trust funds, Money Market accounts, and Certificates of Deposits.",
      "source_id": "fap-d76992c98561d1f1",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1427,7 +1612,7 @@
     },
     "residency": {
      "value": [
-      "Applicant must be a Colorado resident, or reside in the BCH service area as defined by eligible Boulder County zip codes."
+      "An applicant is a Colorado resident if they currently live in Colorado and intend to remain in Colorado."
      ],
      "layer": "documented",
      "quote": "Applicant must be a Colorado resident. An applicant is a Colorado resident if they currently live in Colorado and intend to remain in Colorado.",
@@ -1452,14 +1637,12 @@
     "presumptive": {
      "value": [
       "homeless",
-      "deceased with no estate",
+      "deceased",
       "incarcerated",
-      "currently eligible for Medicaid but not at date of service",
-      "eligible for Violent Crimes Victims Compensation Act or Sexual Assault Victims Compensation Act",
-      "Medicaid eligible in another state"
+      "Medicaid"
      ],
      "layer": "documented",
-     "quote": "-Individual is stated/verified to be homeless. -Individual is deceased and has no known estate able to pay the hospital debt. -Individual is incarcerated. -Individual is currently eligible for Medicaid, but was not eligible at the date of service. -Individual is eligible by the State to receive assistance under the Violent Crimes Victims Compensation Act or the Sexual Assault Victims Compensation Act.",
+     "quote": "Extraordinary circumstances may result in eligibility for presumptive financial assistance on a case-by-case basis. Some examples include: -Individual is stated/verified to be homeless. -Individual is deceased and has no known estate able to pay the hospital debt. -Individual is incarcerated. -Individual is currently eligible for Medicaid, but was not eligible at the date of service.",
      "source_id": "fap-d76992c98561d1f1",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1468,20 +1651,12 @@
     "state_programs": {
      "value": [
       {
-       "name": "Health First Colorado (Medicaid)",
-       "how_to_apply": "BCH must screen each uninsured patient for eligibility for Health First Colorado"
-      },
-      {
-       "name": "Child Health Plan Plus (CHP+)",
-       "how_to_apply": "BCH must screen each uninsured patient for eligibility for the Child Health Plan Plus (CHP+)"
-      },
-      {
-       "name": "Hospital Discounted Care (HB21-1198)",
-       "how_to_apply": "All uninsured patients and all insured patients who request to be screened for eligibility for Hospital Discounted Care"
+       "name": "HB 21-1198 Hospital Discounted Care",
+       "how_to_apply": "All uninsured patients and all insured patients who request to be screened for eligibility for Health First Colorado, the Child Health Plan Plus (CHP+), Medicare, Emergency Medicaid and Hospital Discounted Care."
       }
      ],
      "layer": "documented",
-     "quote": "BCH must screen each uninsured patient for eligibility for Health First Colorado, the Child Health Plan Plus (CHP+), Medicare, Emergency Medicaid, the Qualified Charity Care Program and Hospital Discounted Care.",
+     "quote": "House Bill (HB) 21-1198, otherwise known as Health Care Billing Requirements for Indigent Patients, establishes requirements for hospital discounted care for low-income patients.",
      "source_id": "fap-d76992c98561d1f1",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1489,16 +1664,25 @@
     }
    },
    "apply": {
-    "form_url": null,
+    "form_url": {
+     "value": "https://www.bch.org/Pay-My-Bill/FinancialAssistance.aspx",
+     "layer": "documented",
+     "quote": "The FAP, FAA, and PLS are all available on the BCH website at is available (See Addendum C for all locations), or https://www.bch.org/Pay-My-Bill/FinancialAssistance.aspx",
+     "source_id": "fap-d76992c98561d1f1",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "form_version": null,
     "documents_required": {
      "value": [
-      "proof_of_residency",
-      "proof_of_income",
-      "other"
+      "photo_id",
+      "pay_stubs",
+      "bank_statements",
+      "social_security_letter"
      ],
      "layer": "documented",
-     "quote": "1. Proof of address (identification card, driver\u2019s license, rental agreement, bank statement or utility bill)",
+     "quote": "Proof of address (identification card, driver\u2019s license, rental agreement, bank statement or utility bill)",
      "source_id": "fap-b1dcf25e2ed33a9c",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1514,10 +1698,14 @@
       {
        "kind": "email",
        "detail": "financialassistance@bch.org"
+      },
+      {
+       "kind": "phone",
+       "detail": "303-415-4718"
       }
      ],
      "layer": "documented",
-     "quote": "Please mail or email the completed application, along with all documentation to: Patient Service Center ATTN: Financial Assistance Boulder Community Health PO Box 9049 Boulder, CO 80301 Email: financialassistance@bch.org",
+     "quote": "Please mail or email the completed application, along with all documentation to: Patient Service Center ATTN: Financial Assistance Boulder Community Health PO Box 9049 Boulder, CO 80301 Email: financialassistance@bch.org Please call 303-415-4718 with any questions.",
      "source_id": "fap-b1dcf25e2ed33a9c",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1558,17 +1746,7 @@
      "support_count": 0
     },
     "hours": null,
-    "languages": {
-     "value": [
-      "English"
-     ],
-     "layer": "documented",
-     "quote": "Interpreters or other communication aids will be used, as indicated, to allow for meaningful communication with individuals, including those who have limited English proficiency, are deaf, or are hard of hearing.",
-     "source_id": "fap-d76992c98561d1f1",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "languages": null
    },
    "coverage": {
     "facilities": null,
@@ -1598,16 +1776,13 @@
    "accuracy": null,
    "eve_review": [
     "eligibility.discount_tiers: 0-250% at 100% is the free-care band, not a tier; skipped",
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: Applicants who are over the income threshold for the Qualified Charity care Program whose adjusted household income is b",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: 2. Employment income from all working non-student adults ages 18 and older. | 4. Unearned income for all household members: Social Security income, either SSI or SSDI, Short-Term Disability Income, ",
-    "agent judge on eligibility.discount_tiers: Quote gives the 250% and 350% FPL bounds but no discount percentages (100 or 50) appear in it.",
-    "agent judge on eligibility.assistance_ceiling_fpl: Quote is only the fragment 'FPL over 350%' and does not say that no assistance is offered above 350% FPL.",
-    "agent judge on eligibility.residency: Quote requires Colorado residency only; the value's alternative of BCH service area and eligible Boulder County zip codes is not in the quote.",
-    "agent judge on programs.presumptive: Quote lists five categories; the value's sixth item, 'Medicaid eligible in another state', does not appear in the quote.",
-    "agent judge on programs.state_programs: Quote mentions Hospital Discounted Care without the HB21-1198 label, and the value's 'insured patients who request to be screened' wording is not in the quote.",
-    "agent judge on apply.documents_required: Quote supports proof of address, employment income and unearned income; self-employment documentation and hardship letter do not appear in it.",
-    "agent judge on apply.window_days_from_first_bill: Quote measures 181 days from the date of applying, with date of service or discharge as the start; it does not reference the first bill.",
-    "agent judge on contacts.languages: Quote says interpreters and aids are used for limited English proficiency, deaf or hard of hearing; it does not state that English is a supported language."
+    "eligibility.discount_tiers: 250-350% at 0% is no discount; skipped",
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Employment income from all working non-student adults ages 18 and older. Please provide a copy of last month\u2019s paycheck  | Unearned income for all household members: Social Security income, either SSI or SSDI",
+    "agent judge on eligibility.discount_tiers: Quote gives the 250% and 350% bounds but states no discount percentages. The 100% and 0% values are not in the quote.",
+    "agent judge on eligibility.assistance_ceiling_fpl: Quote is only the fragment 'FPL over 350%'. It does not say assistance is withheld above 350% FPL.",
+    "agent judge on programs.state_programs: Quote names HB 21-1198 and hospital discounted care, but the how_to_apply text about who must be screened is not in the quote.",
+    "agent judge on apply.documents_required: Quote lists three document types. The value's fourth item, self-employment income with bank statements, profit and loss sheets, ledgers, logs, invoices, and receipts, is not in the quote.",
+    "agent judge on apply.window_days_from_first_bill: Quote says the date of service or discharge must be within 181 days of applying. It does not measure from the first bill."
    ]
   },
   {
@@ -1838,62 +2013,51 @@
    "status": "draft",
    "eligibility": {
     "free_care_max_fpl": null,
-    "discount_tiers": null,
-    "assistance_ceiling_fpl": {
-     "value": "250",
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "250",
+       "max_fpl_inclusive": "299",
+       "discount_percent": 10
+      },
+      {
+       "min_fpl_exclusive": "299",
+       "max_fpl_inclusive": "399",
+       "discount_percent": 20
+      }
+     ],
      "layer": "documented",
-     "quote": "for those whose incomes are less than 250 percent of the current year's federal poverty level",
-     "source_id": "web-682fa69126cecc5c",
+     "quote": "0-250% $0 copay per visit $0 copay per visit 0% copay per visit 251-299% 10% of charges 10% of charges 25% of charges 300-399% 20% of charges 20% of charges 35% of charges",
+     "source_id": "web-cdc2bb5c62f6aebe",
      "checked_on": "2026-10-23",
-     "confidence": 0.8,
+     "confidence": 1.0,
      "support_count": 0
     },
+    "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": null,
-    "insured_patients_covered": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "If an insured patient is not eligible for assistance, CommonSpirit Health Mountain Region is committed to offering reasonable payment plan options to its patients",
+     "source_id": "web-cdc2bb5c62f6aebe",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "min_balance": null,
     "services_excluded": null
    },
    "programs": {
     "presumptive": null,
-    "state_programs": {
-     "value": [
-      {
-       "name": "Colorado Indigent Care Program",
-       "how_to_apply": "Uninsured patients will be provided with financial counseling, including assistance applying for local, state, and federal health care programs such as Medicare, Medicaid and the Colorado Indigent Care Program."
-      }
-     ],
-     "layer": "documented",
-     "quote": "Uninsured patients will be provided with financial counseling, including assistance applying for local, state, and federal health care programs such as Medicare, Medicaid and the Colorado Indigent Care Program.",
-     "source_id": "web-682fa69126cecc5c",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "state_programs": null
    },
    "apply": {
     "form_url": null,
     "form_version": null,
     "documents_required": null,
     "documents_reported": null,
-    "submit_methods": {
-     "value": [
-      {
-       "kind": "phone",
-       "detail": "Denver metro area: 303-552-3024"
-      },
-      {
-       "kind": "phone",
-       "detail": "Toll-free: 888-347-3295"
-      }
-     ],
-     "layer": "documented",
-     "quote": "Denver metro area: 303-552-3024",
-     "source_id": "web-682fa69126cecc5c",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "submit_methods": null,
     "window_days_from_first_bill": null,
     "decision_days": null,
     "decision_days_reported": null
@@ -1903,17 +2067,25 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": {
-     "value": "303-552-3024",
+    "phone": null,
+    "hours": null,
+    "languages": {
+     "value": [
+      "Espa\u00f1ol",
+      "Deutsch",
+      "Fran\u00e7ais",
+      "Ti\u1ebfng Vi\u1ec7t",
+      "\u7e41\u9ad4\u4e2d\u6587",
+      "\ud55c\uad6d\uc5b4",
+      "\u0420\u0443\u0441\u0441\u043a\u0438\u0439"
+     ],
      "layer": "documented",
-     "quote": "Denver metro area: 303-552-3024",
-     "source_id": "web-682fa69126cecc5c",
+     "quote": "Espa\u00f1ol [https://csdam.widen.net/s/zffm2qczzc/spanish-non-discrimination-statement] | Deutsch [https://csdam.widen.net/s/dfwwq6g6tt/german-non-discrimination-statement] | Fran\u00e7ais",
+     "source_id": "web-cdc2bb5c62f6aebe",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
-    },
-    "hours": null,
-    "languages": null
+    }
    },
    "coverage": {
     "facilities": null,
@@ -1922,39 +2094,39 @@
    },
    "sources": [
     {
-     "id": "web-1d0228afcb4f33e7",
+     "id": "web-68a199587f0f1910",
      "kind": "hospital_web",
      "url": "https://csdam.widen.net/s/7k58d7g55q/financial-assistance-policy",
      "title": "Financial-Assistance-Policy.pdf",
      "fetched_on": "2026-10-23",
-     "sha256": "1d0228afcb4f33e730f772cef91d85819c6c8d0255486139f8d96d23cf88e85c",
+     "sha256": "68a199587f0f19105ebffdf98bd8eb882b715a3a5b8fa071e6355fca8f3718a3",
      "effective_date": null
     },
     {
-     "id": "web-f7a19959e5d00c49",
+     "id": "web-d6aef92969f62fa3",
      "kind": "hospital_web",
      "url": "https://csdam.widen.net/s/667smwfksr/form_uniformapplication",
      "title": "Form_UniformApplication.pdf",
      "fetched_on": "2026-10-23",
-     "sha256": "f7a19959e5d00c4934ac634d726384ff863d05156afcf30cbbd811afcdb0e0d3",
+     "sha256": "d6aef92969f62fa37419b49d3b56191314f41e34cc04e006aee8cb69028970e8",
      "effective_date": null
     },
     {
-     "id": "web-682fa69126cecc5c",
+     "id": "web-cdc2bb5c62f6aebe",
      "kind": "hospital_web",
-     "url": "https://www.mountain.commonspirit.org/patient-tools/billing-and-financial-services",
-     "title": "Billing and Financial Services | Make a Payment | CommonSpirit Health",
+     "url": "https://www.mountain.commonspirit.org/patient-tools/billing-and-financial-services/financial-assistance-hospital-discounted-care",
+     "title": "Financial Assistance and Hospital Discounted Care | CommonSpirit Health",
      "fetched_on": "2026-10-23",
-     "sha256": "682fa69126cecc5c492cee829006385fd2d33f08e934eba1ac7ad5d8e26e3421",
+     "sha256": "cdc2bb5c62f6aebe39fda976ee39a6126f54903a33c5e840c353d2ddd90ae46c",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.assistance_ceiling_fpl: quote matched the source only after typography normalization",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Toll-free: 888-347-3295",
-    "agent dropped contacts.languages: quote is not a substring of the source",
-    "agent judge on eligibility.assistance_ceiling_fpl: Quote gives a 250% FPL eligibility threshold but does not say assistance is entirely unavailable above 250%, as the ceiling definition requires."
+    "eligibility.discount_tiers: 0-250% at 0% is no discount; skipped",
+    "agent judge on eligibility.discount_tiers: Quote gives 251-299% at 10% and 300-399% at 20%, with 0-250% at $0. Value says 250-299 at 10% and 299-399 at 20%, so the 299/300 boundary differs. Quote also lists 25% and 35% figures.",
+    "agent judge on eligibility.insured_patients_covered: Quote only says insured patients not eligible for assistance get reasonable payment plan options. It does not state that insured patients are covered by assistance.",
+    "agent judge on contacts.languages: Quote shows only Espa\u00f1ol, Deutsch, and Fran\u00e7ais before truncating. Ti\u1ebfng Vi\u1ec7t, \u7e41\u9ad4\u4e2d\u6587, \ud55c\uad6d\uc5b4, and \u0420\u0443\u0441\u0441\u043a\u0438\u0439 do not appear in the quote."
    ]
   },
   {
@@ -1974,15 +2146,7 @@
    "eligibility": {
     "free_care_max_fpl": null,
     "discount_tiers": null,
-    "assistance_ceiling_fpl": {
-     "value": "250",
-     "layer": "documented",
-     "quote": "for those whose incomes are less than 250 percent of the current year's federal poverty level",
-     "source_id": "web-682fa69126cecc5c",
-     "checked_on": "2026-10-23",
-     "confidence": 0.8,
-     "support_count": 0
-    },
+    "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": null,
     "insured_patients_covered": null,
@@ -1991,20 +2155,7 @@
    },
    "programs": {
     "presumptive": null,
-    "state_programs": {
-     "value": [
-      {
-       "name": "Colorado Indigent Care Program",
-       "how_to_apply": "Uninsured patients will be provided with financial counseling, including assistance applying for local, state, and federal health care programs such as Medicare, Medicaid and the Colorado Indigent Care Program."
-      }
-     ],
-     "layer": "documented",
-     "quote": "Uninsured patients will be provided with financial counseling, including assistance applying for local, state, and federal health care programs such as Medicare, Medicaid and the Colorado Indigent Care Program.",
-     "source_id": "web-682fa69126cecc5c",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "state_programs": null
    },
    "apply": {
     "form_url": null,
@@ -2021,15 +2172,7 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": {
-     "value": "303-552-3024",
-     "layer": "documented",
-     "quote": "Denver metro area: 303-552-3024",
-     "source_id": "web-682fa69126cecc5c",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "phone": null,
     "hours": null,
     "languages": null
    },
@@ -2040,39 +2183,17 @@
    },
    "sources": [
     {
-     "id": "web-1d0228afcb4f33e7",
+     "id": "web-68a199587f0f1910",
      "kind": "hospital_web",
      "url": "https://csdam.widen.net/s/7k58d7g55q/financial-assistance-policy",
      "title": "Financial-Assistance-Policy.pdf",
      "fetched_on": "2026-10-23",
-     "sha256": "1d0228afcb4f33e730f772cef91d85819c6c8d0255486139f8d96d23cf88e85c",
-     "effective_date": null
-    },
-    {
-     "id": "web-f7a19959e5d00c49",
-     "kind": "hospital_web",
-     "url": "https://csdam.widen.net/s/667smwfksr/form_uniformapplication",
-     "title": "Form_UniformApplication.pdf",
-     "fetched_on": "2026-10-23",
-     "sha256": "f7a19959e5d00c4934ac634d726384ff863d05156afcf30cbbd811afcdb0e0d3",
-     "effective_date": null
-    },
-    {
-     "id": "web-682fa69126cecc5c",
-     "kind": "hospital_web",
-     "url": "https://www.mountain.commonspirit.org/patient-tools/billing-and-financial-services",
-     "title": "Billing and Financial Services | Make a Payment | CommonSpirit Health",
-     "fetched_on": "2026-10-23",
-     "sha256": "682fa69126cecc5c492cee829006385fd2d33f08e934eba1ac7ad5d8e26e3421",
+     "sha256": "68a199587f0f19105ebffdf98bd8eb882b715a3a5b8fa071e6355fca8f3718a3",
      "effective_date": null
     }
    ],
    "accuracy": null,
-   "eve_review": [
-    "eligibility.assistance_ceiling_fpl: quote matched the source only after typography normalization",
-    "agent dropped contacts.languages: quote is not a substring of the source",
-    "agent judge on programs.state_programs: Quote only says financial counseling helps apply to the Colorado Indigent Care Program; it does not describe the program itself, so the name and how_to_apply value are not fully supported as stated."
-   ]
+   "eve_review": []
   },
   {
    "hospital": {
@@ -2151,10 +2272,10 @@
       "social_security_letter"
      ],
      "layer": "documented",
-     "quote": "1. Last 3 Month's Pay Check Stubs 2. Last 3 most recent bank statements from all banking or credit union institutions 3. The previous year's tax return",
+     "quote": "1. Last 3 Month\u2019s Pay Check Stubs 2. Last 3 most recent bank statements from all banking or credit union institutions 3. The previous year\u2019s tax return 4. Current W-2 Form 5. Unemployment Benefit Letter 6. Social Security Letter",
      "source_id": "fap-bdc69568ca3a5eaf",
      "checked_on": "2026-10-23",
-     "confidence": 0.8,
+     "confidence": 1.0,
      "support_count": 0
     },
     "documents_reported": null,
@@ -2162,19 +2283,19 @@
      "value": [
       {
        "kind": "portal",
-       "detail": "ONLINE \u2013 available at https://www.uchealthbillpay.org"
+       "detail": "https://www.uchealthbillpay.org"
       },
       {
        "kind": "phone",
-       "detail": "CALL \u2013 (970) 879-1322"
+       "detail": "(970) 879-1322"
       },
       {
        "kind": "in_person",
-       "detail": "VISIT \u2013 The Financial Counseling office is located at 1024 Central Park Dr., Steamboat Springs, CO 80487"
+       "detail": "The Financial Counseling office is located at 1024 Central Park Dr., Steamboat Springs, CO 80487"
       }
      ],
      "layer": "documented",
-     "quote": "1. ONLINE \u2013 Yampa Valley Medical Center financial assistance policy is available online at the following website: https://www.uchealthbillpay.org.",
+     "quote": "ONLINE \u2013 Yampa Valley Medical Center financial assistance policy is available online at the following website: https://www.uchealthbillpay.org.",
      "source_id": "fap-bdc69568ca3a5eaf",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2214,7 +2335,7 @@
    },
    "contacts": {
     "phone": {
-     "value": "970-879-1322",
+     "value": "(970) 879-1322",
      "layer": "documented",
      "quote": "CALL \u2013 (970) 879-1322. Customer service is available Monday through Friday 8:00am to 4:30 pm (MST)",
      "source_id": "fap-bdc69568ca3a5eaf",
@@ -2225,7 +2346,7 @@
     "hours": {
      "value": "Monday - Friday 8:00am-4:30pm",
      "layer": "documented",
-     "quote": "Phone: (970) 879-1322, open Monday - Friday 8:00am-4:30pm.",
+     "quote": "VISIT \u2013 The Financial Counseling office is located at 1024 Central Park Dr., Steamboat Springs, CO 80487. Phone: (970) 879-1322, open Monday - Friday 8:00am-4:30pm",
      "source_id": "fap-bdc69568ca3a5eaf",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2237,7 +2358,7 @@
       "Spanish"
      ],
      "layer": "documented",
-     "quote": "Copies of the policy, application and plain language summary are available English and Spanish.",
+     "quote": "Click on 'Financial Assistance' to download a copy of the financial assistance policy in English or Spanish.",
      "source_id": "fap-bdc69568ca3a5eaf",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2260,6 +2381,15 @@
      "effective_date": null
     },
     {
+     "id": "web-838bbc25ca3b5b1e",
+     "kind": "hospital_web",
+     "url": "https://www.uchealth.org/billing-and-pricing/financial-assistance/",
+     "title": "Financial assistance - UCHealth",
+     "fetched_on": "2026-10-23",
+     "sha256": "838bbc25ca3b5b1e4d4aaabdee025abe8c52a7eb54c0cd6aafcc78b329497568",
+     "effective_date": null
+    },
+    {
      "id": "fap-f9c461ebfc7d3c50",
      "kind": "hospital_web",
      "url": "https://uchealth-wp-uploads.s3.amazonaws.com/wp-content/uploads/2024/07/15134941/UCHealth-UniformApplication-English.pdf",
@@ -2267,22 +2397,15 @@
      "fetched_on": "2026-10-23",
      "sha256": "f9c461ebfc7d3c5033d31c5747573e59fcd284847f8d393a57e024abb67c701f",
      "effective_date": null
-    },
-    {
-     "id": "web-f791f830c24dc1f1",
-     "kind": "hospital_web",
-     "url": "https://www.uchealth.org/billing-and-pricing/financial-assistance/",
-     "title": "Financial assistance - UCHealth",
-     "fetched_on": "2026-10-23",
-     "sha256": "f791f830c24dc1f116b5eeff7a4a082342f937f0d404b250fb8ccb63e24cb17b",
-     "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: 4. Current W-2 Form 5. Unemployment Benefit Letter 6. Social Security Letter | 8. Educational Assistance (Grant Letter) 9. Spousal Maintenance",
-    "apply.documents_required: quote matched the source only after typography normalization",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: 2. CALL \u2013 (970) 879-1322. Customer service is available Monday through Friday 8:00am to 4:30 pm (MST) | 3. VISIT \u2013 The Financial Counseling office is located at 1024 Central Park Dr., Steamboat Springs, CO 80487"
+    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: CALL \u2013 (970) 879-1322. Customer service is available Monday through Friday 8:00am to 4:30 pm | VISIT \u2013 The Financial Counseling office is located at 1024 Central Park Dr., Steamboat Springs, CO 80487",
+    "agent judge on eligibility.assistance_ceiling_fpl: Quote gives an eligibility limit (income not more than 400% FPL) but does not say no assistance of any kind is offered above 400%.",
+    "agent judge on eligibility.insured_patients_covered: Quote is a truncated fragment ('Uninsured or under-insured AND') and does not state that insured patients are covered.",
+    "agent judge on programs.state_programs: Quote names CICP but only says patients qualifying for programs must comply with requirements; it does not describe how to apply.",
+    "agent judge on contacts.languages: Quote says the policy document is available in English or Spanish; it does not state the languages of the contacts or services."
    ]
   },
   {
@@ -2511,6 +2634,199 @@
     "agent judge on eligibility.discount_tiers: Quote says 'below 150%' and 'up to a 50% discount'. It does not state 150% is inclusive, so max_fpl_inclusive:150 is not supported.",
     "agent judge on eligibility.asset_test: Quote is only a fragment listing checking, savings, and investment balances. It does not state that assets are considered.",
     "agent judge on contacts.languages: Quote is only a link to a Spanish policy document. It does not state that English is supported."
+   ]
+  },
+  {
+   "hospital": {
+    "ccn": "060065",
+    "name": "HCA HEALTHONE MOUNTAIN RIDGE",
+    "city": "THORNTON",
+    "state": "CO",
+    "zip": "80229",
+    "phone": "303-451-7800",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "healthonecares.com",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": null,
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "200",
+       "max_fpl_inclusive": "300",
+       "discount_percent": 97
+      },
+      {
+       "min_fpl_exclusive": "300",
+       "max_fpl_inclusive": "400",
+       "discount_percent": 96
+      }
+     ],
+     "layer": "documented",
+     "quote": "201% - 300% - balances capped at 3% of annual household income \u2022 301% - 400% - balances capped at 4% of annual household income",
+     "source_id": "fap-8e28c6eb7e259082",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "assistance_ceiling_fpl": null,
+    "asset_test": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Review of assets may take place during the application process where required by state law or regulation.",
+     "source_id": "fap-8e28c6eb7e259082",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "residency": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Insured Accounts with emergency services only: Additional financial relief will be available for insured patients with emergent services only.",
+     "source_id": "fap-8e28c6eb7e259082",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "min_balance": {
+     "value": "1500",
+     "layer": "documented",
+     "quote": "have an out-of-pocket patient responsibility of $1,500 or more for an individual account",
+     "source_id": "fap-8e28c6eb7e259082",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
+    "state_programs": {
+     "value": [
+      {
+       "name": "Health First Colorado (Colorado Medicaid)",
+       "how_to_apply": "See if you can get Health First Colorado (Colorado Medicaid)."
+      },
+      {
+       "name": "Child Health Plan Plus (CHP+)",
+       "how_to_apply": "The hospital must see if you qualify for Public health coverage and discount programs, like Health First Colorado, Child Health Plan Plus (CHP+), Emergency Medicaid, and hospital discounts."
+      },
+      {
+       "name": "Emergency Medicaid",
+       "how_to_apply": "The hospital must see if you qualify for Public health coverage and discount programs, like Health First Colorado, Child Health Plan Plus (CHP+), Emergency Medicaid, and hospital discounts."
+      }
+     ],
+     "layer": "documented",
+     "quote": "Public health coverage and discount programs, like Health First Colorado, Child Health Plan Plus (CHP+), Emergency Medicaid, and hospital discounts.",
+     "source_id": "web-ba93804f189240a8",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
+   },
+   "apply": {
+    "form_url": {
+     "value": "https://www.hcadam.com/api/public/content/c60ad12377934279b01e5ef126ffcde6?v=bd312592",
+     "layer": "documented",
+     "quote": "Hospital Discounted Care Uniform Application [https://www.hcadam.com/api/public/content/c60ad12377934279b01e5ef126ffcde6?v=bd312592]",
+     "source_id": "web-ba93804f189240a8",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "tax_return",
+      "other",
+      "bank_statements",
+      "pay_stubs",
+      "proof_of_income"
+     ],
+     "layer": "documented",
+     "quote": "State Income Tax Return for the most current year \u2022 Supporting W-2 \u2022 Supporting 1099's \u2022 Copies of all bank statements for last 3 months \u2022 Most recent bank and broker statements listed in the Federal Tax Return \u2022 Current credit report",
+     "source_id": "fap-8e28c6eb7e259082",
+     "checked_on": "2026-10-23",
+     "confidence": 0.8,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": null,
+    "window_days_from_first_bill": null,
+    "decision_days": {
+     "value": 21,
+     "layer": "documented",
+     "quote": "After you complete an application, the hospital must tell you if you qualify within 21 days.",
+     "source_id": "web-ba93804f189240a8",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "(866) 551-6004",
+     "layer": "documented",
+     "quote": "Contact HealthOne at (866) 551-6004 to see if you qualify.",
+     "source_id": "web-ba93804f189240a8",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": null,
+    "languages": null
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-8e28c6eb7e259082",
+     "kind": "hospital_web",
+     "url": "https://www.hcadam.com/api/public/content/8d1b85f46e9840afa9f86d4683a0d8cd?v=8d855905",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "8e28c6eb7e2590829deee668c7bb175aeb524865f72efd4619e27e032d245e25",
+     "effective_date": null
+    },
+    {
+     "id": "fap-18cf743c04f5d6c4",
+     "kind": "hospital_web",
+     "url": "https://www.hcadam.com/api/public/content/c60ad12377934279b01e5ef126ffcde6?v=bd312592",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "18cf743c04f5d6c44a544f03141de47bfd3a0fa21398b84e1307bde096d88066",
+     "effective_date": null
+    },
+    {
+     "id": "web-ba93804f189240a8",
+     "kind": "hospital_web",
+     "url": "https://www.healthonecares.com/patient-resources/patient-financial-resources/financial-assistance",
+     "title": "Financial Assistance | HCA HealthONE",
+     "fetched_on": "2026-10-23",
+     "sha256": "ba93804f189240a8a9598b9734a6bec518d145e4b90e0dc1f21b9ab41e8da435",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "programs.state_programs: 1 more verbatim excerpt(s) supported this value: See if you can get Health First Colorado (Colorado Medicaid).",
+    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: Most Recent Employer Pay Stubs \u2022 Written documentation from income sources \u2022 Proof of Medicaid Eligibility",
+    "apply.documents_required: quote matched the source only after typography normalization",
+    "agent dropped eligibility.free_care_max_fpl: quote is not a substring of the source",
+    "agent judge on eligibility.discount_tiers: Quote gives FPL bands and income-based balance caps (3% and 4% of income) but no discount_percent values of 97 or 96.",
+    "agent judge on eligibility.asset_test: Quote says asset review may occur only where required by state law or regulation, which is conditional, not a plain statement that assets are considered."
    ]
   },
   {
@@ -2986,22 +3302,14 @@
       }
      ],
      "layer": "documented",
-     "quote": "251% \u2013 350% 80%",
+     "quote": "FPL Discount </= 250% 100%",
      "source_id": "fap-dbe2afa4b8f1a3c4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "assistance_ceiling_fpl": null,
-    "asset_test": {
-     "value": true,
-     "layer": "documented",
-     "quote": "Eligibility is based on household income and assets.",
-     "source_id": "web-0a24d381e14b2e37",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "asset_test": null,
     "residency": {
      "value": [
       "Financial assistance is available for emergent or medically necessary care to all individuals who reside in the State of Colorado and have received care from Vail Health."
@@ -3029,46 +3337,66 @@
     "presumptive": {
      "value": [
       "Homelessness",
-      "Medicaid eligibility",
-      "Mental incapacitation",
-      "Enrollment in assistance programs for low income individuals"
+      "Medicaid"
      ],
      "layer": "documented",
-     "quote": "Homelessness: Self-attestation required",
+     "quote": "Presumptive eligibility may be determined based on one or more of the following: \u2022 Homelessness: Self-attestation required \u2022 Medicaid eligibility: Not active for a date of service prior to the Medicaid effective date",
      "source_id": "fap-dbe2afa4b8f1a3c4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "state_programs": null
+    "state_programs": {
+     "value": [
+      {
+       "name": "Hospital Discounted Care",
+       "how_to_apply": "Screen each uninsured patient for eligibility for Colorado's Hospital Discounted Care or financial assistance"
+      }
+     ],
+     "layer": "documented",
+     "quote": "This policy is intended to comply with Colorado House Bill 21-1198 by the way of the Hospital Discounted Care (HDC).",
+     "source_id": "fap-dbe2afa4b8f1a3c4",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
    },
    "apply": {
     "form_url": null,
     "form_version": null,
-    "documents_required": null,
+    "documents_required": {
+     "value": [
+      "photo_id",
+      "tax_return",
+      "pay_stubs",
+      "proof_of_residency"
+     ],
+     "layer": "documented",
+     "quote": "PHOTO ID/PROOF OF IDENTIFICATION \u2022 Current driver license or state identification \u2022 Current passport",
+     "source_id": "fap-5f36f60abcab16de",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "documents_reported": null,
     "submit_methods": {
      "value": [
       {
        "kind": "mail",
-       "detail": "PO Box 40,000, Vail, CO 81658 | Attn: Financial Assistance Department"
-      },
-      {
-       "kind": "email",
-       "detail": "FinancialAssistance@VailHealth.org"
-      },
-      {
-       "kind": "phone",
-       "detail": "(970) 477-3116"
+       "detail": "MAIL: PO Box 40,000, Vail, CO 81658 | Attn: Financial Assistance Department"
       },
       {
        "kind": "in_person",
-       "detail": "Call to set up an appointment (970) 477-3116"
+       "detail": "IN PERSON: Vail Health Hospital - Admissions Department: 180 South Frontage Road West, Vail, CO 81657"
+      },
+      {
+       "kind": "email",
+       "detail": "EMAIL: FinancialAssistance@VailHealth.org"
       }
      ],
      "layer": "documented",
-     "quote": "MAIL: PO Box 40,000, Vail, CO 81658 | Attn: Financial Assistance Department",
-     "source_id": "fap-dbe2afa4b8f1a3c4",
+     "quote": "EMAIL: FinancialAssistance@VailHealth.org MAIL: PO Box 40,000, Vail, CO 81658 | Attn: Financial Assistance Department IN PERSON: Vail Health Hospital - Admissions Department: 180 South Frontage Road West, Vail, CO 81657",
+     "source_id": "fap-5f36f60abcab16de",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -3076,7 +3404,7 @@
     "window_days_from_first_bill": {
      "value": 240,
      "layer": "documented",
-     "quote": "Vail Health must accept and process a financial assistance application for a period up to 240 days after Vail Health provides the first billing statement to the patient (defined as the Application Period), per 501(r)(6)",
+     "quote": "Vail Health must accept and process a financial assistance application for a period up to 240 days after Vail Health provides the first billing statement to the patient",
      "source_id": "fap-dbe2afa4b8f1a3c4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3109,7 +3437,7 @@
     "phone": {
      "value": "(970) 477-3116",
      "layer": "documented",
-     "quote": "can be reached Monday through Friday, from 8:00 AM \u2013 5:00 PM at (970) 477-3116",
+     "quote": "Our financial counselors are available to assist patients going through the financial assistance application process and can be reached Monday through Friday, from 8:00 AM \u2013 5:00 PM at (970) 477-3116.",
      "source_id": "fap-dbe2afa4b8f1a3c4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3152,22 +3480,30 @@
      "effective_date": null
     },
     {
-     "id": "web-0a24d381e14b2e37",
+     "id": "fap-5f36f60abcab16de",
+     "kind": "hospital_web",
+     "url": "https://www.vailhealth.org/wp-content/uploads/2026/04/10.22_vh_fa-application_english_r1.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "5f36f60abcab16deafbd200f401ecbd7c6ce1a33af54630e8581ef206cd31b85",
+     "effective_date": null
+    },
+    {
+     "id": "web-2e6638d982ed3f61",
      "kind": "hospital_web",
      "url": "https://www.vailhealth.org/patients-and-visitors/billing-and-insurance/",
      "title": "Billing & Insurance | Vail Health",
      "fetched_on": "2026-10-23",
-     "sha256": "0a24d381e14b2e3757672624f6370de37f70271628b5f2820c9c5f5c7071ac48",
+     "sha256": "2e6638d982ed3f614d7628c885480136e95f205465589a25555c58f7b607e49f",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: 351% \u2013 450% 60% | 451% \u2013 550% 50%",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Medicaid eligibility: Not active for a date of service prior to the Medicaid effective date | Mental incapacitation: No one to act on patient\u2019s behalf. Documentation required",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: EMAIL: FinancialAssistance@VailHealth.org | IN PERSON: Call to set up an appointment (970) 477-3116",
-    "agent judge on programs.presumptive: Quote lists only Homelessness, Medicaid eligibility, and Mental incapacitation. 'Enrollment in assistance programs for low income individuals' is not in the quote.",
-    "agent judge on apply.submit_methods: Quote supports mail, email, and in-person (call to set up). It gives no separate phone submission method, so the 'phone' entry is unsupported."
+    "eligibility.discount_tiers: 0-250% at 100% is the free-care band, not a tier; skipped",
+    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: 251% \u2013 350% 80% | 351% \u2013 450% 60% 451% \u2013 550% 50%",
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Copy of the most recent filed income tax return, if not filed copy of the most recent W-2\u2019s. \u2022 Copy of the two most rece | Copy of rent lease or a most recent mortgage statement.",
+    "agent judge on programs.state_programs: Quote only names Hospital Discounted Care under HB 21-1198; it does not state the how_to_apply screening text in the value."
    ]
   },
   {
@@ -3586,7 +3922,7 @@
      "value": "250",
      "layer": "documented",
      "quote": "Federal Poverty Levels based on total household income, with sufficient supporting documentation provided by the patient, will have a 100% Charity discount processed.",
-     "source_id": "web-c69cc0bef2c0f66e",
+     "source_id": "web-fe2c648b3f49295a",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -3596,7 +3932,7 @@
      "value": "400",
      "layer": "documented",
      "quote": "For patients whose documented income is between 251 and 400 percent of the Federal Poverty Level, we have an expanded financial assistance policy that may reduce the amount you owe.",
-     "source_id": "web-c69cc0bef2c0f66e",
+     "source_id": "web-fe2c648b3f49295a",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -3607,7 +3943,7 @@
      "value": true,
      "layer": "documented",
      "quote": "If you have health insurance: You must ask the hospital to see if you can get help with your bills.",
-     "source_id": "web-c69cc0bef2c0f66e",
+     "source_id": "web-fe2c648b3f49295a",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -3626,15 +3962,11 @@
       {
        "name": "Child Health Plan Plus (CHP+)",
        "how_to_apply": "The hospital must see if you qualify for Public health coverage and discount programs, like Health First Colorado, Child Health Plan Plus (CHP+), Emergency Medicaid, and hospital discounts."
-      },
-      {
-       "name": "Emergency Medicaid",
-       "how_to_apply": "The hospital must see if you qualify for Public health coverage and discount programs, like Health First Colorado, Child Health Plan Plus (CHP+), Emergency Medicaid, and hospital discounts."
       }
      ],
      "layer": "documented",
-     "quote": "Public health coverage and discount programs, like Health First Colorado, Child Health Plan Plus (CHP+), Emergency Medicaid, and hospital discounts.",
-     "source_id": "web-c69cc0bef2c0f66e",
+     "quote": "See if you can get Health First Colorado (Colorado Medicaid).",
+     "source_id": "web-fe2c648b3f49295a",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -3645,27 +3977,13 @@
      "value": "https://www.hcadam.com/api/public/content/c60ad12377934279b01e5ef126ffcde6?v=bd312592",
      "layer": "documented",
      "quote": "Hospital Discounted Care Uniform Application [https://www.hcadam.com/api/public/content/c60ad12377934279b01e5ef126ffcde6?v=bd312592]",
-     "source_id": "web-c69cc0bef2c0f66e",
+     "source_id": "web-fe2c648b3f49295a",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "form_version": null,
-    "documents_required": {
-     "value": [
-      "tax_return",
-      "pay_stubs",
-      "proof_of_income",
-      "bank_statements",
-      "other"
-     ],
-     "layer": "documented",
-     "quote": "the preferred income documentation will be the most current year's Federal Tax Return. Any patient/responsible party unable to provide his/her most recent Federal Tax Return may provide two pieces of supporting documentation from the following list to meet this income verification requirement:",
-     "source_id": "web-c69cc0bef2c0f66e",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "documents_required": null,
     "documents_reported": null,
     "submit_methods": null,
     "window_days_from_first_bill": null,
@@ -3673,7 +3991,7 @@
      "value": 21,
      "layer": "documented",
      "quote": "After you complete an application, the hospital must tell you if you qualify within 21 days.",
-     "source_id": "web-c69cc0bef2c0f66e",
+     "source_id": "web-fe2c648b3f49295a",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -3689,24 +4007,13 @@
      "value": "(866) 551-6004",
      "layer": "documented",
      "quote": "Contact HealthOne at (866) 551-6004 to see if you qualify.",
-     "source_id": "web-c69cc0bef2c0f66e",
+     "source_id": "web-fe2c648b3f49295a",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "hours": null,
-    "languages": {
-     "value": [
-      "Spanish",
-      "English"
-     ],
-     "layer": "documented",
-     "quote": "Espa&ntilde;ol [/patient-resources/patient-financial-resources/financial-assistance-es] | English [/patient-resources/patient-financial-resources/financial-assistance]",
-     "source_id": "web-c69cc0bef2c0f66e",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "languages": null
    },
    "coverage": {
     "facilities": null,
@@ -3715,21 +4022,40 @@
    },
    "sources": [
     {
-     "id": "web-c69cc0bef2c0f66e",
+     "id": "web-fe2c648b3f49295a",
      "kind": "hospital_web",
      "url": "https://www.healthonecares.com/patient-resources/patient-financial-resources/financial-assistance",
      "title": "Financial Assistance | HCA HealthONE",
      "fetched_on": "2026-10-23",
-     "sha256": "c69cc0bef2c0f66ea0dbee0327a3b060428790f03844a8502712a1ea990d171b",
+     "sha256": "fe2c648b3f49295a0eeebfedd9d5268c51808938f407279e73793b823dcdf1b4",
+     "effective_date": null
+    },
+    {
+     "id": "fap-18cf743c04f5d6c4",
+     "kind": "hospital_web",
+     "url": "https://www.hcadam.com/api/public/content/c60ad12377934279b01e5ef126ffcde6?v=bd312592",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "18cf743c04f5d6c44a544f03141de47bfd3a0fa21398b84e1307bde096d88066",
+     "effective_date": null
+    },
+    {
+     "id": "web-221b2d8ec507d137",
+     "kind": "hospital_web",
+     "url": "https://www.healthonecares.com/patient-resources/patient-financial-resources",
+     "title": "Patient Financial Resources | HCA HealthONE",
+     "fetched_on": "2026-10-23",
+     "sha256": "221b2d8ec507d13703fd3df48ee3a70d13961ceab0957474569e4d1f4b19c34c",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.state_programs: 1 more verbatim excerpt(s) supported this value: See if you can get Health First Colorado (Colorado Medicaid).",
-    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: State Income Tax Return for the most current year Most Recent Employer Pay Stubs Written documentation from income sourc",
-    "agent judge on eligibility.free_care_max_fpl: The quote mentions 100% charity discount for Federal Poverty Levels but never states 250 percent FPL as the free-care cutoff.",
-    "agent judge on eligibility.assistance_ceiling_fpl: The quote describes an expanded policy for 251-400% FPL that may reduce owed amounts. It does not say assistance ends above 400%."
+    "programs.state_programs: 1 more verbatim excerpt(s) supported this value: Public health coverage and discount programs, like Health First Colorado, Child Health Plan Plus (CHP+), Emergency Medic",
+    "agent dropped apply.documents_required: between 1 and 3 excerpts allowed",
+    "agent judge on eligibility.free_care_max_fpl: Quote says patients with income at FPL levels get 100% charity discount but never states the 250% threshold as the highest free-care percent; the number 250 is not stated as a limit.",
+    "agent judge on eligibility.assistance_ceiling_fpl: Quote says expanded policy covers 251 to 400 percent FPL, which implies 400 as a ceiling but does not state that no assistance is offered above 400 percent.",
+    "agent judge on eligibility.insured_patients_covered: Quote tells insured patients to ask the hospital for help with bills; it does not state that insured patients are covered by the policy in those words, though it implies it."
    ]
   },
   {
@@ -5491,7 +5817,15 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": null,
+    "free_care_max_fpl": {
+     "value": "250",
+     "layer": "documented",
+     "quote": "HDC 0\u2013250% Screen for HDC eligibility",
+     "source_id": "fap-5b8100d864da3458",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "discount_tiers": {
      "value": [
       {
@@ -5508,15 +5842,10 @@
        "min_fpl_exclusive": "350",
        "max_fpl_inclusive": "400",
        "discount_percent": 50
-      },
-      {
-       "min_fpl_exclusive": "400",
-       "max_fpl_inclusive": "10000",
-       "discount_percent": 42
       }
      ],
      "layer": "documented",
-     "quote": "FHW Charity 251\u2013300% 60% discount FHW Charity 301\u2013350% 55% discount FHW Charity 351\u2013400% 50% discount Uninsured Patients Over 400% 42% discount",
+     "quote": "FHW Charity 251\u2013300% 60% discount",
      "source_id": "fap-5b8100d864da3458",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5550,16 +5879,20 @@
     "state_programs": {
      "value": [
       {
-       "name": "Medicaid",
-       "how_to_apply": "Screen for Medicaid eligibility"
+       "name": "Health First Colorado",
+       "how_to_apply": "Public health-care coverage includes, but is not limited to, Medicare, Health First Colorado, Emergency Medicaid, and CHP+."
       },
       {
-       "name": "Hospital Discounted Care (HDC)",
-       "how_to_apply": "Screen for HDC eligibility"
+       "name": "Emergency Medicaid",
+       "how_to_apply": "Public health-care coverage includes, but is not limited to, Medicare, Health First Colorado, Emergency Medicaid, and CHP+."
+      },
+      {
+       "name": "CHP+",
+       "how_to_apply": "Public health-care coverage includes, but is not limited to, Medicare, Health First Colorado, Emergency Medicaid, and CHP+."
       }
      ],
      "layer": "documented",
-     "quote": "Medicaid 0\u2013136% Screen for Medicaid eligibility HDC 0\u2013250% Screen for HDC eligibility",
+     "quote": "Public health-care coverage includes, but is not limited to, Medicare, Health First Colorado, Emergency Medicaid, and CHP+.",
      "source_id": "fap-5b8100d864da3458",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5572,19 +5905,38 @@
     "documents_required": {
      "value": [
       "pay_stubs",
-      "tax_return",
-      "social_security_letter",
-      "other"
+      "tax_return"
      ],
      "layer": "documented",
-     "quote": "a. Paystubs for the last 30 days b. Income Tax Returns c. W-2 earnings, unemployment benefits, worker\u2019s compensation, SSDI (disabled), rental income, Social Security, veteran\u2019s payments, alimony, Child support, dividends/interest, other sources.",
+     "quote": "a. Paystubs for the last 30 days",
      "source_id": "fap-5b8100d864da3458",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "documents_reported": null,
-    "submit_methods": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "phone",
+       "detail": "(970) 858-2729"
+      },
+      {
+       "kind": "portal",
+       "detail": "Online Bill Pay"
+      },
+      {
+       "kind": "in_person",
+       "detail": "228 N. Cherry Street, Fruita, Colorado"
+      }
+     ],
+     "layer": "documented",
+     "quote": "please call 970.858.2729",
+     "source_id": "web-20b0b14de6f912d2",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "window_days_from_first_bill": null,
     "decision_days": null,
     "decision_days_reported": null
@@ -5605,8 +5957,8 @@
     "phone": {
      "value": "970.858.2729",
      "layer": "documented",
-     "quote": "please call 970.858.2729.",
-     "source_id": "web-f439d2685d769611",
+     "quote": "please call 970.858.2729",
+     "source_id": "web-20b0b14de6f912d2",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -5615,7 +5967,7 @@
      "value": "Monday \u2013 Friday 8:00 am to 4:30 pm",
      "layer": "documented",
      "quote": "We are open Monday \u2013 Friday 8:00 am to 4:30 pm.",
-     "source_id": "web-f439d2685d769611",
+     "source_id": "web-20b0b14de6f912d2",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -5647,19 +5999,23 @@
      "effective_date": null
     },
     {
-     "id": "web-f439d2685d769611",
+     "id": "web-20b0b14de6f912d2",
      "kind": "hospital_web",
      "url": "https://fhw.org/patient-resources/billing-support/",
      "title": "Billing Support Information | Family Health West",
      "fetched_on": "2026-10-23",
-     "sha256": "f439d2685d769611169706b06ff420bffcd1ca76f8dbd2f07b0577e510c90c3f",
+     "sha256": "20b0b14de6f912d2ce18f1d6a332747507c0b44dc9cd2a75ac96297140eb4d75",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: a. Family size b. Number of dependents c. Address",
-    "agent judge on eligibility.discount_tiers: Quote gives 251\u2013300%, 301\u2013350%, 351\u2013400% and 'Over 400%'. The value's upper bound of 10000 for the top tier does not appear in the quote."
+    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: FHW Charity 301\u2013350% 55% discount | FHW Charity 351\u2013400% 50% discount",
+    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: b. Income Tax Returns",
+    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: You can pay your bill online. | Our office is located at 228 N. Cherry Street, Fruita, Colorado",
+    "agent judge on eligibility.free_care_max_fpl: Quote gives an HDC 0\u2013250% screening range but does not say 250% is the highest level receiving 100% free care.",
+    "agent judge on programs.state_programs: Quote only lists public coverage types (Medicare, Health First Colorado, Emergency Medicaid, CHP+); it does not describe how to apply for any program.",
+    "agent judge on apply.submit_methods: Quote mentions calling, paying bills online, and the office address, but does not say these are methods for submitting a financial assistance application."
    ]
   },
   {
@@ -5677,11 +6033,19 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": null,
+    "free_care_max_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "< 200% of FPL 100% discount off AGB 100% discount off BAI",
+     "source_id": "fap-51370475301f62de",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "discount_tiers": {
      "value": [
       {
-       "min_fpl_exclusive": "250",
+       "min_fpl_exclusive": "200",
        "max_fpl_inclusive": "300",
        "discount_percent": 75
       },
@@ -5692,7 +6056,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "> 250% - 300% FPL 75% discount off AGB 75% discount off BAI",
+     "quote": "< 200% of FPL 100% discount off AGB 100% discount off BAI 200% - 300% FPL 75% discount off AGB 75% discount off BAI > 300% - 400% FPL 50% discount off AGB 50% discount off BAI",
      "source_id": "fap-51370475301f62de",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5710,7 +6074,7 @@
     "asset_test": {
      "value": true,
      "layer": "documented",
-     "quote": "you have an annual household income and household size that is equal to or less than 400% of the Federal Poverty Level and lack other assets to pay the Hospital\u2019s full charges",
+     "quote": "lack other assets to pay the Hospital\u2019s full charges",
      "source_id": "fap-81f055599d14a718",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5732,10 +6096,10 @@
    "programs": {
     "presumptive": {
      "value": [
-      "Medicaid enrolled"
+      "Medicaid"
      ],
      "layer": "documented",
-     "quote": "If a patient/guarantor is determined to be presumptively eligible for financial assistance based on household income, the patient/guarantor is not required to fill out an application",
+     "quote": "Prior to initiating any ECA, BH will, either directly or via a third-party vendor, determine whether the patient/guarantor is presumptively eligible for financial assistance based on household income",
      "source_id": "fap-51370475301f62de",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5749,8 +6113,8 @@
       }
      ],
      "layer": "documented",
-     "quote": "Colorado Indigent Care Program (CICP) - ended on July 1, 2025",
-     "source_id": "web-b28b66c4ad050eda",
+     "quote": "Colorado Indigent Care Program (CICP) - ended on July 1, 2025 [/patients/billing/financial-assistance/colorado-region/colorado-indigent-care-program]",
+     "source_id": "web-6435f193f7d49dea",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -5761,7 +6125,7 @@
      "value": "https://www.bannerhealth.com/-/media/files/project/bh/patients-visitors/billing/financial-assistance/2025-documents/9999-0061-bh-summary-of-financial-assistance-programs-and-application.pdf",
      "layer": "documented",
      "quote": "Application Form - English [/-/media/files/project/bh/patients-visitors/billing/financial-assistance/2025-documents/9999-0061-bh-summary-of-financial-assistance-programs-and-application.pdf]",
-     "source_id": "web-b28b66c4ad050eda",
+     "source_id": "web-6435f193f7d49dea",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -5769,13 +6133,14 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "tax_return",
       "pay_stubs",
-      "bank_statements"
+      "tax_return",
+      "social_security_letter",
+      "other"
      ],
      "layer": "documented",
-     "quote": "Prior year income tax returns,",
-     "source_id": "fap-51370475301f62de",
+     "quote": "copies of last three (3) most recent consecutive payroll stubs (patient, guarantor and spouse)",
+     "source_id": "fap-81f055599d14a718",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -5800,7 +6165,7 @@
    },
    "contacts": {
     "phone": {
-     "value": "888-264-2127",
+     "value": "(888) 264-2127",
      "layer": "documented",
      "quote": "Please contact (888) 264-2127 if you have further questions.",
      "source_id": "fap-81f055599d14a718",
@@ -5811,8 +6176,8 @@
     "hours": {
      "value": "Monday through Thursday 8 a.m. \u2013 7 p.m.; Friday 8 a.m. \u2013 5 p.m.; Saturday 8 a.m. \u2013 12 p.m. (all times are MST)",
      "layer": "documented",
-     "quote": "contact us at (888) 264-2127 Monday through Thursday 8 a.m. &ndash; 7 p.m.; Friday 8 a.m. &ndash; 5 p.m.; Saturday 8 a.m. &ndash; 12 p.m. (all times are MST)",
-     "source_id": "web-b28b66c4ad050eda",
+     "quote": "please contact us at (888) 264-2127 Monday through Thursday 8 a.m. &ndash; 7 p.m.; Friday 8 a.m. &ndash; 5 p.m.; Saturday 8 a.m. &ndash; 12 p.m. (all times are MST)",
+     "source_id": "web-6435f193f7d49dea",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -5822,7 +6187,7 @@
       "Spanish"
      ],
      "layer": "documented",
-     "quote": "Spanish translation of this Summary, the Hospital\u2019s financial assistance and billing policies, and the applications forms are available on the Banner",
+     "quote": "Spanish translation of this Summary, the Hospital\u2019s financial assistance and billing policies, and the applications forms are available on the Banner and Hospital websites",
      "source_id": "fap-81f055599d14a718",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5854,24 +6219,23 @@
      "effective_date": null
     },
     {
-     "id": "web-b28b66c4ad050eda",
+     "id": "web-6435f193f7d49dea",
      "kind": "hospital_web",
      "url": "https://www.bannerhealth.com/patients/billing/financial-assistance/colorado-region",
      "title": "Colorado Region: Financial Assistance | Banner Health",
      "fetched_on": "2026-10-23",
-     "sha256": "b28b66c4ad050eda1f1e7d04b244dcb0bbbf7b1abea9401fa73e25f9a7c574ec",
+     "sha256": "6435f193f7d49dea1378cb71500269c878f8f13b0aff17d30d862b8af72e3174",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: > 300% - 400% FPL 50% discount off AGB 50% discount off BAI",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: 3 most recent pay stubs; and/or | 3 most recent savings and checking accounts statements.",
-    "agent dropped eligibility.free_care_max_fpl: quote is not a substring of the source",
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: a copy of your prior year\u2019s federal income tax return | a copy of SSA 1099 form or reward letter",
     "agent dropped apply.submit_methods: excerpt not in source: Return to: Banner Health c/o PBM PO Box 743711, Los Angeles,",
-    "agent judge on programs.presumptive: Quote covers presumptive eligibility based on household income, but does not mention Medicaid enrollment.",
-    "agent judge on programs.state_programs: Quote says CICP ended July 1, 2025. It does not describe how to apply, so the how_to_apply value contradicts the quote.",
-    "agent judge on apply.form_url: Quote shows only the path in brackets, without the bannerhealth.com domain that the full URL value includes."
+    "agent judge on eligibility.free_care_max_fpl: Quote says '< 200% of FPL' gets 100% discount, so 200% itself is not in the free tier; the highest free-care percent is below 200, not 200.",
+    "agent judge on programs.presumptive: Quote describes presumptive eligibility based on household income but does not mention Medicaid.",
+    "agent judge on programs.state_programs: Quote says CICP ended July 1, 2025; it gives no application method, so the how_to_apply value is not supported.",
+    "agent judge on apply.documents_required: Quote lists payroll stubs, prior year tax return, and SSA 1099 or reward letter; it does not mention bank statements."
    ]
   },
   {
@@ -5915,24 +6279,7 @@
     "form_version": null,
     "documents_required": null,
     "documents_reported": null,
-    "submit_methods": {
-     "value": [
-      {
-       "kind": "phone",
-       "detail": "719-741-5762"
-      },
-      {
-       "kind": "email",
-       "detail": "jbogart@lchnh.com"
-      }
-     ],
-     "layer": "documented",
-     "quote": "Phone: 719-741-5762",
-     "source_id": "web-a9eb71bbf1b429cc",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "submit_methods": null,
     "window_days_from_first_bill": null,
     "decision_days": null,
     "decision_days_reported": null
@@ -5943,9 +6290,9 @@
    },
    "contacts": {
     "phone": {
-     "value": "719-741-5762",
+     "value": "719-743-2421",
      "layer": "documented",
-     "quote": "Phone: 719-741-5762",
+     "quote": "719-743-2421",
      "source_id": "web-a9eb71bbf1b429cc",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5968,11 +6315,20 @@
      "fetched_on": "2026-10-23",
      "sha256": "a9eb71bbf1b429cc113506b4ad1465a58054bf70f52e5239a6a17cc7d725df42",
      "effective_date": null
+    },
+    {
+     "id": "web-cfe7382cc8e2dd7e",
+     "kind": "hospital_web",
+     "url": "https://hugohospital.com/billing-faq/",
+     "title": "Billing FAQ - Lincoln Health",
+     "fetched_on": "2026-10-23",
+     "sha256": "cfe7382cc8e2dd7ed8e24b7422456bcccb225a10ea342a016f96daa664b5b47d",
+     "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Email: jbogart@lchnh.com"
+    "agent judge on contacts.phone: Quote is only the bare number 719-743-2421 with no context showing it is a financial assistance contact; it does not establish the field's meaning on its own."
    ]
   },
   {
@@ -5996,7 +6352,7 @@
     "asset_test": {
      "value": true,
      "layer": "documented",
-     "quote": "Adjusted Federal Poverty Level \u2013 Total household size, current income and liquid assets.",
+     "quote": "This predictive model incorporates public record data to calculate a socio-economic and financial capacity score that includes estimates for income, assets, and liquidity.",
      "source_id": "fap-e1077ceaa46dd576",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -6035,7 +6391,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "their payment plan will follow the HDC card provided by the State of Colorado\u2019s application.",
+     "quote": "Visit the SLV Health website at Hospital Discounted Care | San Luis Valley Health to obtain a copy of the FAA.",
      "source_id": "fap-e1077ceaa46dd576",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -6047,8 +6403,8 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "other",
       "tax_return",
+      "other",
       "pay_stubs",
       "bank_statements",
       "proof_of_income"
@@ -6141,11 +6497,10 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.state_programs: 1 more verbatim excerpt(s) supported this value: Visit the SLV Health website at Hospital Discounted Care | San Luis Valley Health to obtain a copy of the FAA.",
     "apply.documents_required: 1 more verbatim excerpt(s) supported this value: Income Tax Return b) IRS form W-2 c) Paycheck stub d) Complete bank statements (savings and checking) e) Signed attestat",
-    "agent judge on programs.state_programs: Quote mentions an HDC card from a Colorado state application, but the how_to_apply only points to the hospital's FAA website, not a state application process.",
-    "agent judge on apply.submit_methods: Quote says only to 'Contact the hospital financial counselor' with no mention of in person; the 'in_person' kind is inferred. Item a) is also cut off.",
-    "agent judge on apply.decision_days: Quote gives 15 days for processing plus 15 days to notify the patient; the total of 30 is only implied by adding them, not stated."
+    "agent judge on programs.state_programs: Quote only says to visit the website to get the FAA. It does not identify a state program or name 'Hospital Discounted Care' as one.",
+    "agent judge on apply.submit_methods: Quote says 'Contact the hospital financial counselor' but does not say in person, so the kind 'in_person' is not stated.",
+    "agent judge on apply.decision_days: Quote gives 15 days for processing plus 15 days to notify the patient. It never states a 30-day decision period; 30 is an inferred sum."
    ]
   },
   {
@@ -6168,24 +6523,8 @@
     "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": null,
-    "insured_patients_covered": {
-     "value": true,
-     "layer": "documented",
-     "quote": "Additional discounts are available for uninsured/underinsured who apply for financial assistance through our Financial Assistance Policy.",
-     "source_id": "web-02309990eca4a3ce",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "min_balance": {
-     "value": "10",
-     "layer": "documented",
-     "quote": "Is balance due after payment by all third party payors equal to or greater than 10% of Total Yearly Income?",
-     "source_id": "fap-ebfdcf9ce4cc6ef6",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "insured_patients_covered": null,
+    "min_balance": null,
     "services_excluded": null
    },
    "programs": {
@@ -6193,16 +6532,16 @@
     "state_programs": {
      "value": [
       {
-       "name": "Hospital Discounted Care (HDC)",
-       "how_to_apply": "Prior to any financial assistance being granted, Mt. San Rafael Hospital will look at other resources of payment such as Hospital Discounted Care or Medicaid/CHP+."
+       "name": "Medicaid",
+       "how_to_apply": "All FAP applicants will be checked for current Medicaid/Hospital Discounted Care eligibility."
       },
       {
-       "name": "Medicaid/CHP+",
+       "name": "CHP+",
        "how_to_apply": "Prior to any financial assistance being granted, Mt. San Rafael Hospital will look at other resources of payment such as Hospital Discounted Care or Medicaid/CHP+."
       }
      ],
      "layer": "documented",
-     "quote": "Prior to any financial assistance being granted, Mt. San Rafael Hospital will look at other resources of payment such as Hospital Discounted Care or Medicaid/CHP+.",
+     "quote": "All FAP applicants will be checked for current Medicaid/Hospital Discounted Care eligibility.",
      "source_id": "web-02309990eca4a3ce",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -6219,7 +6558,7 @@
       "proof_of_income"
      ],
      "layer": "documented",
-     "quote": "~ Photo Identification",
+     "quote": "Patients will be asked to complete a Financial Assistance Application and provide supporting documentation which may include: ~ Photo Identification ~ Family Size ~ Income Documentation",
      "source_id": "web-02309990eca4a3ce",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -6230,7 +6569,7 @@
      "value": [
       {
        "kind": "phone",
-       "detail": "Patients may call 719-845-4251 for assistance."
+       "detail": "719-845-4251"
       }
      ],
      "layer": "documented",
@@ -6265,7 +6604,7 @@
       "Spanish"
      ],
      "layer": "documented",
-     "quote": "Norma Mt. San Rafael Hospital no discriminar\u00e1 al momento de proporcionar servicio m\u00e9dico requerido a los necesitados, independientemente de su capacidad para pagar.",
+     "quote": "Norma Mt. San Rafael Hospital no discriminar\u00e1 al momento de proporcionar servicio m\u00e9dico requerido a los necesitados",
      "source_id": "web-02309990eca4a3ce",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -6308,13 +6647,12 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 0-250% at 100% is the free-care band, not a tier; skipped",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: ~ Family Size | ~ Income Documentation",
-    "agent judge on eligibility.discount_tiers: Quote shows eligibility up to 250% FPL under a sliding fee schedule but states no 100% discount percent or tier bounds beyond that.",
-    "agent judge on eligibility.insured_patients_covered: Quote says additional discounts are available to uninsured/underinsured patients. It says nothing about insured patients being covered.",
-    "agent judge on eligibility.min_balance: Quote is a question asking whether the balance after third-party payment is at least 10% of Total Yearly Income. It does not state the threshold as a fact.",
-    "agent judge on programs.state_programs: Quote only says other payment resources such as HDC or Medicaid/CHP+ are considered before aid. It does not describe these as programs or give how to apply.",
-    "agent judge on contacts.languages: Quote is a single Spanish-language sentence. It does not state that English or Spanish are the languages offered."
+    "programs.state_programs: 1 more verbatim excerpt(s) supported this value: Prior to any financial assistance being granted, Mt. San Rafael Hospital will look at other resources of payment such as",
+    "agent dropped eligibility.discount_tiers: quote is not a substring of the source",
+    "agent dropped eligibility.insured_patients_covered: quote is not a substring of the source",
+    "agent judge on apply.submit_methods: Quote gives phone 719-845-4251 for assistance, but does not say it is a submission method; it only says patients may call for assistance.",
+    "agent judge on contacts.phone: Quote gives (719) 846-9213, which differs from the recorded value of (719) 846-9213 only in format; the number matches, so this is supported in substance.",
+    "agent judge on contacts.languages: Quote is a single Spanish-language sentence about nondiscrimination; it does not state that English and Spanish are the languages offered."
    ]
   },
   {
@@ -6816,7 +7154,7 @@
      "value": [
       {
        "name": "Colorado Indigent Care Program (CICP)",
-       "how_to_apply": "Discounted care through Colorado Indigent Care Program (CICP), established in Part 1 of Article 3 of Title 25.5, C.R.S."
+       "how_to_apply": "The application process is the same process required for applicants of CICP or HDC."
       }
      ],
      "layer": "documented",
@@ -6828,46 +7166,32 @@
     }
    },
    "apply": {
-    "form_url": null,
+    "form_url": {
+     "value": "https://www.avrmc.org/docs/Uniform_Application_for_Posting_0.pdf",
+     "layer": "documented",
+     "quote": "Financial Assistance Application [/docs/Uniform_Application_for_Posting_0.pdf?sub=For%20Patients]",
+     "source_id": "web-5010898e23c37c21",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "form_version": null,
     "documents_required": {
      "value": [
       "photo_id",
       "social_security_letter",
-      "other",
       "proof_of_income"
      ],
      "layer": "documented",
-     "quote": "Driver License or ID \u2022 Social Security card if legal citizen \u2022 Dates of birth for all household members \u2022 Most current month of income includes income for any employed household member",
+     "quote": "Driver License or ID",
      "source_id": "fap-25532ca6f93012bf",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "documents_reported": null,
-    "submit_methods": {
-     "value": [
-      {
-       "kind": "phone",
-       "detail": "call 719-383-6441 or 719-383-6099"
-      }
-     ],
-     "layer": "documented",
-     "quote": "To make an appointment with a financial counselor to determine if you qualify, please call 719-383-6441 or 719-383-6099.",
-     "source_id": "web-ae71df8416670b02",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "window_days_from_first_bill": {
-     "value": 182,
-     "layer": "documented",
-     "quote": "The patient complies in supplying the necessary information to AVRMC within 182 days of requested date.",
-     "source_id": "fap-25532ca6f93012bf",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "submit_methods": null,
+    "window_days_from_first_bill": null,
     "decision_days": null,
     "decision_days_reported": null
    },
@@ -6879,8 +7203,8 @@
     "phone": {
      "value": "719-383-6441",
      "layer": "documented",
-     "quote": "please call 719-383-6441 or 719-383-6099.",
-     "source_id": "web-ae71df8416670b02",
+     "quote": "please call 719-383-6441 or 719-383-6099",
+     "source_id": "web-5010898e23c37c21",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -6892,7 +7216,7 @@
       "Spanish"
      ],
      "layer": "documented",
-     "quote": "Post the Patient\u2019s Rights developed by Colorado Department of Health Care Policy and Financing in English and Spanish conspicuously on AVRMC\u2019s website",
+     "quote": "Post the Patient\u2019s Rights developed by Colorado Department of Health Care Policy and Financing in English and Spanish conspicuously",
      "source_id": "fap-25532ca6f93012bf",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -6924,22 +7248,23 @@
      "effective_date": null
     },
     {
-     "id": "web-ae71df8416670b02",
+     "id": "web-5010898e23c37c21",
      "kind": "hospital_web",
      "url": "https://www.avrmc.org/getpage.php?name=financial-assistance-prgram",
      "title": "Financial Assistance Program/Hospital Discounted Care Program",
      "fetched_on": "2026-10-23",
-     "sha256": "ae71df8416670b022117b7b3f7db5b5cf88c2d8b409362500355c367ef9e8eca",
+     "sha256": "5010898e23c37c2138d659e141d9d2a224d86dec9e402dff8b9f4beb450f5422",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: For adult household members with no income, a letter attesting that they have no income.",
-    "agent judge on eligibility.assistance_ceiling_fpl: Quote sets an income limit of not more than 250% FPL but does not state that no assistance of any kind is offered above that level.",
-    "agent judge on eligibility.insured_patients_covered: Quote says insured patients will be screened upon request only; it does not state that insured patients are covered.",
-    "agent judge on apply.window_days_from_first_bill: Quote says 182 days of the requested date, not days from the first bill.",
-    "agent judge on contacts.languages: Quote says the Patient's Rights notice is posted in English and Spanish on the website; it does not state contact languages."
+    "programs.state_programs: 1 more verbatim excerpt(s) supported this value: The application process is the same process required for applicants of CICP or HDC.",
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Social Security card if legal citizen | Most current month of income includes income for any employed household member",
+    "agent judge on eligibility.insured_patients_covered: Quote says insured patients will be screened only upon request per HDC guidelines; it does not state they are covered, so true is not supported.",
+    "agent judge on programs.state_programs: Quote names CICP only; it does not say CICP application is the same as HDC in a way that supports the how_to_apply text as stated, and it lacks a clear standalone program description beyond the name.",
+    "agent judge on apply.form_url: Quote shows only a link label and a relative path (/docs/...pdf?sub=For%20Patients), not the full https://www.avrmc.org URL in the value.",
+    "agent judge on contacts.languages: Quote says Patient's Rights must be posted in English and Spanish; it does not state the languages for assistance contact or application help."
    ]
   },
   {

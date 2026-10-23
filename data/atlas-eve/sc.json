@@ -2237,72 +2237,6 @@
   },
   {
    "hospital": {
-    "ccn": "420051",
-    "name": "MCLEOD REGIONAL MEDICAL CENTER-PEE DEE",
-    "city": "FLORENCE",
-    "state": "SC",
-    "zip": "29506",
-    "phone": "843-777-2900",
-    "ownership": "Voluntary non-profit - Private",
-    "website_domain": "mcleodhealth.org",
-    "system": null
-   },
-   "version": 1,
-   "status": "draft",
-   "eligibility": {
-    "free_care_max_fpl": null,
-    "discount_tiers": null,
-    "assistance_ceiling_fpl": null,
-    "asset_test": null,
-    "residency": null,
-    "insured_patients_covered": null,
-    "min_balance": null,
-    "services_excluded": null
-   },
-   "programs": {
-    "presumptive": null,
-    "state_programs": null
-   },
-   "apply": {
-    "form_url": null,
-    "form_version": null,
-    "documents_required": null,
-    "documents_reported": null,
-    "submit_methods": null,
-    "window_days_from_first_bill": null,
-    "decision_days": null,
-    "decision_days_reported": null
-   },
-   "collections": {
-    "eca_wait_days": null,
-    "collection_agencies": null
-   },
-   "contacts": {
-    "phone": null,
-    "hours": null,
-    "languages": null
-   },
-   "coverage": {
-    "facilities": null,
-    "provider_list_url": null,
-    "covered_providers": null
-   },
-   "sources": [
-    {
-     "id": "web-6833dd16644c0944",
-     "kind": "hospital_web",
-     "url": "https://mcleodhealth.policystat.com/policy/20894367/latest/",
-     "title": "PolicyStat\n            :: PolicyStat",
-     "fetched_on": "2026-10-23",
-     "sha256": "6833dd16644c094417808e32fb10a4f649e71a6313ac8b8f2b4efe0a9f91c7f6",
-     "effective_date": null
-    }
-   ],
-   "accuracy": null,
-   "eve_review": []
-  },
-  {
-   "hospital": {
     "ccn": "420053",
     "name": "NEWBERRY COUNTY MEMORIAL HOSPITAL",
     "city": "NEWBERRY",
@@ -3334,17 +3268,17 @@
     "free_care_max_fpl": null,
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
-    "asset_test": {
+    "asset_test": null,
+    "residency": null,
+    "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "*The liquid asset and lump sum payment information is required to process your application.",
-     "source_id": "fap-775fbb056a5eaf50",
+     "quote": "Patients with limited or no insurance coverage can apply for financial assistance with covering the cost of their care.",
+     "source_id": "web-836c21b2bd8b8203",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "residency": null,
-    "insured_patients_covered": null,
     "min_balance": null,
     "services_excluded": null
    },
@@ -3352,14 +3286,14 @@
     "presumptive": {
      "value": [
       "State Medicaid Programs",
-      "Food Stamps (SNAP)",
-      "County and State Relief Programs (housing, utilities, food, WIC)",
+      "Food Stamps",
+      "County and State Relief Programs",
       "Homeless Patients",
-      "Deceased Patients with no confirmed estate after one year"
+      "Deceased Patients"
      ],
      "layer": "documented",
-     "quote": "State Medicaid Programs \u2014 Must be verified and entered into the system for record keeping and claim submission.",
-     "source_id": "web-e8107ec730c47080",
+     "quote": "Patients who qualify and are receiving benefits from the following programs or who are in the following categories may be presumed eligible for financial assistance: State Medicaid Programs \u2014 Must be verified and entered into the system for record keeping and claim submission. Food Stamps \u2014 The U.S. Department of Agriculture Food and Nutrition Service Food Stamp Program (SNAP)",
+     "source_id": "web-836c21b2bd8b8203",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -3367,19 +3301,27 @@
     "state_programs": null
    },
    "apply": {
-    "form_url": null,
+    "form_url": {
+     "value": "https://lexhealth.com/docs/default-source/billing---insurance-pdfs/financial-assistance-application-english.pdf?sfvrsn=83a7f0ed_9",
+     "layer": "documented",
+     "quote": "Financial Assistance Application [/docs/default-source/billing---insurance-pdfs/financial-assistance-application-english.pdf?sfvrsn=83a7f0ed_9]",
+     "source_id": "web-836c21b2bd8b8203",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "form_version": null,
     "documents_required": {
      "value": [
       "photo_id",
-      "pay_stubs",
+      "proof_of_income",
       "bank_statements",
       "proof_of_residency",
       "social_security_letter"
      ],
      "layer": "documented",
-     "quote": "Photo ID and Social Security Numbers \u2014 For all eligible household members. Income Verification \u2014 2 months\u2019 worth of paystubs. Complete Bank Statements (All Pages) \u2014 For all applicable checking and saving accounts. Rent Receipt or Current Lease Proof of Food and/or Housing Assistance (e.g., SNAP, WIC, Section 8 Housing)",
-     "source_id": "web-e8107ec730c47080",
+     "quote": "Photo ID and Social Security Numbers \u2014 For all eligible household members.",
+     "source_id": "web-836c21b2bd8b8203",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -3399,13 +3341,27 @@
      "value": "(803) 791-2490",
      "layer": "documented",
      "quote": "Problems paying a bill? Contact one of our financial counselors for help and guidance. (803) 791-2490",
-     "source_id": "web-e8107ec730c47080",
+     "source_id": "web-836c21b2bd8b8203",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "hours": null,
-    "languages": null
+    "languages": {
+     "value": [
+      "English",
+      "Spanish",
+      "Chinese",
+      "Korean",
+      "Vietnamese"
+     ],
+     "layer": "documented",
+     "quote": "Financial Assistance Application [/docs/default-source/billing---insurance-pdfs/financial-assistance-application-english.pdf?sfvrsn=83a7f0ed_9]",
+     "source_id": "web-836c21b2bd8b8203",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
    },
    "coverage": {
     "facilities": null,
@@ -3416,7 +3372,7 @@
     {
      "id": "fap-5e7c243eb6272dc9",
      "kind": "hospital_web",
-     "url": "https://www.lexhealth.com/docs/default-source/billing---insurance-pdfs/financial-assistance-policy.pdf?sfvrsn=dd2cca99_3",
+     "url": "https://lexhealth.com/docs/default-source/billing---insurance-pdfs/financial-assistance-policy.pdf?sfvrsn=dd2cca99_3",
      "title": "",
      "fetched_on": "2026-10-23",
      "sha256": "5e7c243eb6272dc93754f00958373b23ef1aefaf354fdb119620973c308d1e29",
@@ -3425,25 +3381,31 @@
     {
      "id": "fap-775fbb056a5eaf50",
      "kind": "hospital_web",
-     "url": "https://www.lexhealth.com/docs/default-source/billing---insurance-pdfs/financial-assistance-application-english.pdf?sfvrsn=83a7f0ed_9",
+     "url": "https://lexhealth.com/docs/default-source/billing---insurance-pdfs/financial-assistance-application-english.pdf?sfvrsn=83a7f0ed_9",
      "title": "",
      "fetched_on": "2026-10-23",
      "sha256": "775fbb056a5eaf5067be5982661954d589cdb6d77d5bfac3cc21782592de16af",
      "effective_date": null
     },
     {
-     "id": "web-e8107ec730c47080",
+     "id": "web-836c21b2bd8b8203",
      "kind": "hospital_web",
-     "url": "https://www.lexhealth.com/billing-insurance/financial-assistance",
+     "url": "https://lexhealth.com/billing-insurance/financial-assistance",
      "title": "Financial Assistance - Billing and Insurance | Lexington Health",
      "fetched_on": "2026-10-23",
-     "sha256": "e8107ec730c47080073ed8f85e2f09d1409cc8468648e3108ec4d3c876829400",
+     "sha256": "836c21b2bd8b8203178eae36751e1075f9b30ddad174f57c694a9abb83d76677",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Food Stamps \u2014 The U.S. Department of Agriculture Food and Nutrition Service Food Stamp Program (SNAP) | County and State Relief Programs \u2014 Financial assistance with housing, utilities, food and WIC nutrition assistance. Home"
+    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: County and State Relief Programs \u2014 Financial assistance with housing, utilities, food and WIC nutrition assistance. Home",
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Income Verification \u2014 2 months\u2019 worth of paystubs. | Complete Bank Statements (All Pages) \u2014 For all applicable checking and saving accounts.",
+    "contacts.languages: 2 more verbatim excerpt(s) supported this value: Programa de asistencia financiera [/docs/default-source/billing---insurance-pdfs/programa-de-asistencia-financiera.pdf?s | \u8d22\u52a1\u63f4\u52a9\u7533\u8bf7\u8868 [/docs/default-source/billing---insurance-pdfs/financial-assistance-program-app-ch.pdf?Status=Master&sfvrsn=8c51",
+    "agent judge on eligibility.insured_patients_covered: Quote says patients with limited or no insurance can apply. It does not state that insured patients are covered.",
+    "agent judge on apply.form_url: Quote gives only the relative path /docs/default-source/... without the lexhealth.com domain, so the full URL is not stated.",
+    "agent judge on apply.documents_required: Quote lists Photo ID, Income Verification, and Complete Bank Statements. Rent Receipt or Current Lease and Proof of Food/Housing Assistance do not appear.",
+    "agent judge on contacts.languages: Quote shows only English, Spanish (Programa), and Chinese (\u8d22\u52a1\u63f4\u52a9) document titles. Korean and Vietnamese are not stated."
    ]
   },
   {
@@ -3656,19 +3618,45 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": null,
-    "discount_tiers": null,
-    "assistance_ceiling_fpl": null,
-    "asset_test": {
-     "value": true,
+    "free_care_max_fpl": {
+     "value": "300",
      "layer": "documented",
-     "quote": "must be without substantial liquid assets (i.e. cash-on-hand)",
-     "source_id": "fap-f2b762ffc9d6fb7c",
+     "quote": "If eligible for financial assistance, patients will receive a 100% discount or free care.",
+     "source_id": "fap-1d17f2c20eb16b28",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "residency": null,
+    "discount_tiers": null,
+    "assistance_ceiling_fpl": {
+     "value": "300",
+     "layer": "documented",
+     "quote": "The patient\u2019s annual family income must be no more than 300% of the current year Federal Poverty Guidelines.",
+     "source_id": "fap-1d17f2c20eb16b28",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "asset_test": {
+     "value": true,
+     "layer": "documented",
+     "quote": "The patient must not have substantial cash assets.",
+     "source_id": "fap-1d17f2c20eb16b28",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "residency": {
+     "value": [
+      "The patient must live in the Novant Health service area."
+     ],
+     "layer": "documented",
+     "quote": "The patient must live in the Novant Health service area.",
+     "source_id": "fap-1d17f2c20eb16b28",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "insured_patients_covered": null,
     "min_balance": null,
     "services_excluded": null
@@ -3682,29 +3670,20 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "other",
       "pay_stubs",
       "tax_return",
-      "proof_of_income"
+      "other"
      ],
      "layer": "documented",
-     "quote": "Supporting data includes proof of income documents such as W2 forms, pay stubs or the previous year\u2019s tax return.",
-     "source_id": "fap-f2b762ffc9d6fb7c",
+     "quote": "Acceptable proof of income maybe but not limited to: copy of paycheck stubs, copy of last year\u2019s tax return, or letter from employer stating present salary and hours worked.",
+     "source_id": "fap-ca5263cb0798e7ad",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "documents_reported": null,
     "submit_methods": null,
-    "window_days_from_first_bill": {
-     "value": 240,
-     "layer": "documented",
-     "quote": "Application Period - the period that begins on the date the care is provided to an individual and ends on the 240th day after the individual is provided with the first billing statement for the care.",
-     "source_id": "fap-f2b762ffc9d6fb7c",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "window_days_from_first_bill": null,
     "decision_days": null,
     "decision_days_reported": null
    },
@@ -3714,10 +3693,10 @@
    },
    "contacts": {
     "phone": {
-     "value": "844-320-9170",
+     "value": "(843) 681-6122",
      "layer": "documented",
-     "quote": "Calling Customer Service toll free at 844-320-9170",
-     "source_id": "fap-f2b762ffc9d6fb7c",
+     "quote": "Novant Health Hilton Head Medical Center 625 Hospital Center Blvd., Hilton Head Island, SC 29926 (843) 784-8000",
+     "source_id": "fap-1d17f2c20eb16b28",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -3729,8 +3708,8 @@
       "Spanish"
      ],
      "layer": "documented",
-     "quote": "Applications are available in English and Spanish.",
-     "source_id": "fap-f2b762ffc9d6fb7c",
+     "quote": "You may obtain copies, in English and other languages, of the financial assistance policy, the billing and collecting patient balances policy, an application for financial assistance, and a Plain Language Summary",
+     "source_id": "fap-1d17f2c20eb16b28",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -3743,12 +3722,12 @@
    },
    "sources": [
     {
-     "id": "fap-f2b762ffc9d6fb7c",
+     "id": "fap-1d17f2c20eb16b28",
      "kind": "hospital_web",
-     "url": "https://www.novanthealth.org/globalassets/buttons-and-documents-ctaslinks/documents-pdfs/policy-sc-financial-assistance.pdf",
+     "url": "https://www.novanthealth.org/globalassets/buttons-and-documents-ctaslinks/documents-pdfs/policy-financial-assistance-sc-novant-health.pdf",
      "title": "",
      "fetched_on": "2026-10-23",
-     "sha256": "f2b762ffc9d6fb7c5bed241e2b2b291c96464d9655883b224fc05ef657f677f0",
+     "sha256": "1d17f2c20eb16b283a073181bce2eca4a9511387519d1955c09011e130277042",
      "effective_date": null
     },
     {
@@ -3761,21 +3740,23 @@
      "effective_date": null
     },
     {
-     "id": "web-37eaae78af03cb5a",
+     "id": "web-193c645ad7d2a3df",
      "kind": "hospital_web",
      "url": "https://www.novanthealth.org/for-patients/billing--insurance/financial-assistance/",
      "title": "Financial Assistance | Billing & Insurance | Novant Health",
      "fetched_on": "2026-10-23",
-     "sha256": "37eaae78af03cb5aa2bb5188d4aabc463393e6667705b71667e7beebe5953783",
+     "sha256": "193c645ad7d2a3df534a00e92b8b024cadbccca8f3ebf2fda3799d0aa4ea52d5",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: Patients without an income source should supply a letter of support stating their need for Financial Assistance consider",
-    "agent dropped eligibility.free_care_max_fpl: judge: The quote gives an income threshold of \u2264300% FPL but does not say this level qualifies for 100% free care.",
-    "agent dropped eligibility.residency: judge: The quote covers service-area residents only; it says nothing about review by Market Presidents for patients outside the area.",
-    "agent dropped apply.submit_methods: judge: The quote ends at 'send ... to:' with no address, so the PO Box detail is not supported. In-person and phone are mentioned."
+    "apply.form_url: not an absolute URL ('/globalassets/buttons-and-documents-ctaslinks/documents-pdfs'); dropped",
+    "agent dropped apply.submit_methods: excerpt not in source: Visiting the Financial Counseling office at any Novant Healt",
+    "agent judge on eligibility.free_care_max_fpl: Quote gives 100% free care for eligible patients but states no FPL percentage.",
+    "agent judge on apply.documents_required: Quote lists examples of acceptable proof of income that may be, but are not limited to, these items; it does not say they are required.",
+    "agent judge on contacts.phone: Quote gives the main hospital number (843) 784-8000; (843) 681-6122 does not appear.",
+    "agent judge on contacts.languages: Quote says copies are available 'in English and other languages'; Spanish is not named."
    ]
   },
   {
@@ -4616,72 +4597,6 @@
   },
   {
    "hospital": {
-    "ccn": "420105",
-    "name": "MCLEOD LORIS  HOSPITAL",
-    "city": "LORIS",
-    "state": "SC",
-    "zip": "29569",
-    "phone": "843-716-7000",
-    "ownership": "Voluntary non-profit - Private",
-    "website_domain": "mcleodhealth.org",
-    "system": null
-   },
-   "version": 1,
-   "status": "draft",
-   "eligibility": {
-    "free_care_max_fpl": null,
-    "discount_tiers": null,
-    "assistance_ceiling_fpl": null,
-    "asset_test": null,
-    "residency": null,
-    "insured_patients_covered": null,
-    "min_balance": null,
-    "services_excluded": null
-   },
-   "programs": {
-    "presumptive": null,
-    "state_programs": null
-   },
-   "apply": {
-    "form_url": null,
-    "form_version": null,
-    "documents_required": null,
-    "documents_reported": null,
-    "submit_methods": null,
-    "window_days_from_first_bill": null,
-    "decision_days": null,
-    "decision_days_reported": null
-   },
-   "collections": {
-    "eca_wait_days": null,
-    "collection_agencies": null
-   },
-   "contacts": {
-    "phone": null,
-    "hours": null,
-    "languages": null
-   },
-   "coverage": {
-    "facilities": null,
-    "provider_list_url": null,
-    "covered_providers": null
-   },
-   "sources": [
-    {
-     "id": "web-5c388fc93c7b7bea",
-     "kind": "hospital_web",
-     "url": "https://mcleodhealth.policystat.com/policy/20894367/",
-     "title": "PolicyStat\n            :: PolicyStat",
-     "fetched_on": "2026-10-23",
-     "sha256": "5c388fc93c7b7bea178158d8ac7eb79e63ae889f66754f45772e3603a1c10014",
-     "effective_date": null
-    }
-   ],
-   "accuracy": null,
-   "eve_review": []
-  },
-  {
-   "hospital": {
     "ccn": "420106",
     "name": "PRISMA HEALTH BAPTIST PARKRIDGE",
     "city": "COLUMBIA",
@@ -4895,72 +4810,6 @@
   },
   {
    "hospital": {
-    "ccn": "420107",
-    "name": "MCLEOD HEALTH CHERAW",
-    "city": "CHERAW",
-    "state": "SC",
-    "zip": "29520",
-    "phone": "843-537-7881",
-    "ownership": "Voluntary non-profit - Private",
-    "website_domain": "mcleodhealth.org",
-    "system": null
-   },
-   "version": 1,
-   "status": "draft",
-   "eligibility": {
-    "free_care_max_fpl": null,
-    "discount_tiers": null,
-    "assistance_ceiling_fpl": null,
-    "asset_test": null,
-    "residency": null,
-    "insured_patients_covered": null,
-    "min_balance": null,
-    "services_excluded": null
-   },
-   "programs": {
-    "presumptive": null,
-    "state_programs": null
-   },
-   "apply": {
-    "form_url": null,
-    "form_version": null,
-    "documents_required": null,
-    "documents_reported": null,
-    "submit_methods": null,
-    "window_days_from_first_bill": null,
-    "decision_days": null,
-    "decision_days_reported": null
-   },
-   "collections": {
-    "eca_wait_days": null,
-    "collection_agencies": null
-   },
-   "contacts": {
-    "phone": null,
-    "hours": null,
-    "languages": null
-   },
-   "coverage": {
-    "facilities": null,
-    "provider_list_url": null,
-    "covered_providers": null
-   },
-   "sources": [
-    {
-     "id": "web-93b44079d4c79b60",
-     "kind": "hospital_web",
-     "url": "https://mcleodhealth.policystat.com/policy/20894367/",
-     "title": "PolicyStat\n            :: PolicyStat",
-     "fetched_on": "2026-10-23",
-     "sha256": "93b44079d4c79b607661ffd0189931d502dddd836fe94d7a49aa17a163aa0d91",
-     "effective_date": null
-    }
-   ],
-   "accuracy": null,
-   "eve_review": []
-  },
-  {
-   "hospital": {
     "ccn": "420108",
     "name": "UNION MEDICAL CENTER",
     "city": "UNION",
@@ -4987,7 +4836,15 @@
     "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": null,
-    "insured_patients_covered": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Spartanburg Regional has established a Financial Assistance Program for uninsured patients and/or those with limited financial resources.",
+     "source_id": "fap-e2ebfa16026f1823",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "min_balance": null,
     "services_excluded": null
    },
@@ -5000,7 +4857,8 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "proof_of_income"
+      "proof_of_residency",
+      "tax_return"
      ],
      "layer": "documented",
      "quote": "Please provide all income documentation. Incomplete applications will be denied.",
@@ -5010,32 +4868,7 @@
      "support_count": 0
     },
     "documents_reported": null,
-    "submit_methods": {
-     "value": [
-      {
-       "kind": "mail",
-       "detail": "SRHS Patient Financial Assistance Program, Patient Financial Services, PO Box 27069, Greenville, SC 29616-2069"
-      },
-      {
-       "kind": "phone",
-       "detail": "864-596-1001"
-      },
-      {
-       "kind": "portal",
-       "detail": "MyChart account"
-      },
-      {
-       "kind": "in_person",
-       "detail": "700 North Pine Street, Spartanburg, SC 29303"
-      }
-     ],
-     "layer": "documented",
-     "quote": "Mail: P.O. Box 27069, Greenville, SC 29616-2069 In Person: 700 North Pine Street, Spartanburg, SC 29303",
-     "source_id": "fap-e2ebfa16026f1823",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "submit_methods": null,
     "window_days_from_first_bill": null,
     "decision_days": {
      "value": 30,
@@ -5092,7 +4925,10 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.form_url: not an absolute URL ('www.SpartanburgRegional.com/financialassistance'); dropped"
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: (If you are claimed on someone else\u2019s taxes please provide information below and copy of tax returns.) | you will need to submit a copy of your business and personal tax return for the most recent filing year.",
+    "agent dropped apply.submit_methods: excerpt not in source: Email: srhsfinancialassistance@srhs.com",
+    "agent judge on eligibility.free_care_max_fpl: Quote says household income up to 200% FPG qualifies for financial assistance, but does not say that level gets 100% free care.",
+    "agent judge on eligibility.insured_patients_covered: Quote says the program is for uninsured patients and/or those with limited resources; it does not state that insured patients are covered."
    ]
   },
   {
@@ -5149,12 +4985,12 @@
    },
    "sources": [
     {
-     "id": "web-b097f483e5c30031",
+     "id": "web-92fed1bd41f544b7",
      "kind": "hospital_web",
      "url": "https://mcleodhealth.policystat.com/policy/20894367/",
      "title": "PolicyStat\n            :: PolicyStat",
      "fetched_on": "2026-10-23",
-     "sha256": "b097f483e5c30031613be3b97dc88f161c6f01b61a56c0a1e9e8f329cd21be2c",
+     "sha256": "92fed1bd41f544b7c5888a994aae9a628f407dfdaa97dd8d93b3dccfa2f6194b",
      "effective_date": null
     }
    ],

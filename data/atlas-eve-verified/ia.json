@@ -184,6 +184,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-ec276fb294e1a7f3": true,
+     "fap-8cb546853b4d5aee": true,
+     "web-4b401d6b4b4aa4de": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.assistance_ceiling_fpl",
@@ -391,6 +397,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-ec276fb294e1a7f3": true,
+     "fap-8cb546853b4d5aee": true,
+     "web-2cf5255d5769a1b5": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.assistance_ceiling_fpl",
@@ -589,6 +601,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-ec276fb294e1a7f3": true,
+     "fap-8cb546853b4d5aee": true,
+     "web-2026abce446ebc0a": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.asset_test",
@@ -829,6 +847,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-174bfaef7b79efbc": true,
+     "fap-6e197ec13cbb56a1": true,
+     "web-800260088ee56c8f": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.residency",
@@ -886,11 +910,11 @@
     },
     "residency": {
      "value": [
-      "You must be a documented resident of Iowa."
+      "Patient must be a documented resident of Iowa."
      ],
      "layer": "documented",
      "quote": "You must be a documented resident of Iowa.",
-     "source_id": "web-d55eedc4e5d786fa",
+     "source_id": "web-fbbc2de618a13213",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -911,12 +935,16 @@
     "submit_methods": {
      "value": [
       {
+       "kind": "portal",
+       "detail": "Apply for Financial Assistance via MyChart"
+      },
+      {
        "kind": "mail",
-       "detail": "University of Iowa Health Care PFS \u2013 Financial Aid 3281 Ridgeway Dr. Suite 300 Coralville, IA 52241"
+       "detail": "mail the complete form and other papers to University of Iowa Health Care, PFS \u2013 Financial Aid, 3281 Ridgeway Dr. Suite 300, Coralville, IA 52241"
       },
       {
        "kind": "email",
-       "detail": "pfs-patientbilling@uiowa.edu"
+       "detail": "Email: pfs-patientbilling@uiowa.edu"
       },
       {
        "kind": "fax",
@@ -924,7 +952,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "OR you may mail, email or fax the complete form and other papers to:",
+     "quote": "Apply for Financial Assistance via MyChart OR you may mail, email or fax the complete form and other papers to:",
      "source_id": "fap-6a3a9d8028897034",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -952,24 +980,12 @@
      "value": "Monday - Friday 8 a.m. to 5 p.m.",
      "layer": "documented",
      "quote": "To make payment arrangements or discuss financial assistance\u2014Monday - Friday 8 a.m. to 5 p.m.",
-     "source_id": "web-27905a2a31aae08f",
+     "source_id": "web-c633a45c4cb59afb",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "languages": {
-     "value": [
-      "English",
-      "French",
-      "Spanish"
-     ],
-     "layer": "documented",
-     "quote": "Financial Assistance Application (English)",
-     "source_id": "web-d55eedc4e5d786fa",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "languages": null
    },
    "coverage": {
     "facilities": null,
@@ -978,12 +994,12 @@
    },
    "sources": [
     {
-     "id": "web-d55eedc4e5d786fa",
+     "id": "web-fbbc2de618a13213",
      "kind": "hospital_web",
      "url": "https://uihc.org/financial-and-billing-assistance",
      "title": "Financial and Billing Assistance | University of Iowa Health Care",
      "fetched_on": "2026-10-23",
-     "sha256": "d55eedc4e5d786fa42cbaafbdf1b96a4f2f13fc3e330227c3accc2f867cfdf91",
+     "sha256": "fbbc2de618a132133e1cef523c3b35f0735d2d727f49c9bbf116f1ccfb6de900",
      "effective_date": null
     },
     {
@@ -996,36 +1012,42 @@
      "effective_date": null
     },
     {
-     "id": "web-27905a2a31aae08f",
+     "id": "web-c633a45c4cb59afb",
      "kind": "hospital_web",
      "url": "https://uihc.org/patient-financial-resources",
      "title": "Patient Financial Resources | University of Iowa Health Care",
      "fetched_on": "2026-10-23",
-     "sha256": "27905a2a31aae08f261f27187c93d2d7cb0b160fb0999e241ad9766cde3586b3",
+     "sha256": "c633a45c4cb59afbd572491f80399ba848de9e594778ea5cac0d07710f150a66",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Email: pfs-patientbilling@uiowa.edu Fax: 319-356-2862 | Apply for Financial Assistance via MyChart",
-    "contacts.languages: 2 more verbatim excerpt(s) supported this value: Financial Assistance Application (French) | Financial Assistance Application (Spanish)",
-    "agent dropped apply.documents_required: excerpt not in source: Your signed application form with all information filled in ",
-    "agent judge on eligibility.assistance_ceiling_fpl: Quote gives an income eligibility threshold of 350% FPL but does not state that no assistance is offered above it.",
-    "agent judge on eligibility.asset_test: Quote is a form question asking whether assets exceed $25,000. It does not plainly state that assets are considered.",
-    "agent judge on apply.submit_methods: Quote supports MyChart, email, and fax, but does not contain the mailing address (3281 Ridgeway Dr., Coralville) in the mail entry."
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Your 3 most recent pay stubs for yourself, spouse if you have one, and second parent if patient is a minor | Your 2 most recent bank statements",
+    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Email: pfs-patientbilling@uiowa.edu Fax: 319-356-2862",
+    "contacts.languages: 1 more verbatim excerpt(s) supported this value: Financial Assistance Application (Spanish) [https://www.healthcare.uiowa.edu/marcom/uihc/billing/financial_support_appli",
+    "agent judge on eligibility.assistance_ceiling_fpl: Quote says income at or below 350% FPL qualifies, but does not state that no assistance of any kind is offered above 350%.",
+    "agent judge on eligibility.asset_test: Quote is a yes/no question asking whether assets exceed $25,000; it does not state that assets are considered.",
+    "agent judge on apply.documents_required: Quote lists only three documents (Medicaid letter, 3 pay stubs, 2 bank statements); the value's other four items are not in the quote.",
+    "agent judge on apply.submit_methods: Quote mentions MyChart, mail, email, and fax, but the mailing address in the value does not appear in the quote."
    ],
    "eve_verified": {
     "on": "2026-10-23",
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "web-fbbc2de618a13213": false,
+     "fap-6a3a9d8028897034": true,
+     "web-c633a45c4cb59afb": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.asset_test",
      "eligibility.residency",
      "apply.submit_methods",
      "contacts.phone",
-     "contacts.hours",
-     "contacts.languages"
+     "contacts.hours"
     ],
     "rejected": [
      [
@@ -1035,10 +1057,14 @@
      [
       "apply.form_url",
       "quote not found in source"
+     ],
+     [
+      "contacts.languages",
+      "quote not found in source"
      ]
     ],
     "pruned": [
-     "apply.submit_methods: 1 item not named in the trimmed quote"
+     "apply.documents_required: none of the listed documents is named in the quote (after trimming)"
     ],
     "income_rule_verified": false,
     "core_completeness": 0.33
@@ -1222,6 +1248,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-ec276fb294e1a7f3": true,
+     "fap-8cb546853b4d5aee": true,
+     "web-1d2398d9d14f936c": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.assistance_ceiling_fpl",
@@ -1422,6 +1454,10 @@
     "sources_fetched": 1,
     "sources_total": 1,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-47a625b08e1929af": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.asset_test",
@@ -1464,7 +1500,36 @@
    "status": "draft",
    "eligibility": {
     "free_care_max_fpl": null,
-    "discount_tiers": null,
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "200",
+       "max_fpl_inclusive": "225",
+       "discount_percent": 75
+      },
+      {
+       "min_fpl_exclusive": "225",
+       "max_fpl_inclusive": "250",
+       "discount_percent": 50
+      },
+      {
+       "min_fpl_exclusive": "250",
+       "max_fpl_inclusive": "275",
+       "discount_percent": 25
+      },
+      {
+       "min_fpl_exclusive": "275",
+       "max_fpl_inclusive": "300",
+       "discount_percent": 15
+      }
+     ],
+     "layer": "documented",
+     "quote": "0-200% 100% 201-225% 75% 226-250% 50% 251-275% 25% 276-300% 15%",
+     "source_id": "fap-3ac1f7bd8e95ab1a",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": null,
@@ -1481,7 +1546,17 @@
     "services_excluded": null
    },
    "programs": {
-    "presumptive": null,
+    "presumptive": {
+     "value": [
+      "WIC"
+     ],
+     "layer": "documented",
+     "quote": "Participation in Women Infants and Children program (WIC)",
+     "source_id": "fap-3ac1f7bd8e95ab1a",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "state_programs": {
      "value": [
       {
@@ -1490,7 +1565,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "a. Presumptive Medicaid application link: https://hhs.iowa.gov/media/5825/ download?inline=",
+     "quote": "Presumptive Medicaid application link: https://hhs.iowa.gov/media/5825/ download?inline=",
      "source_id": "fap-3ac1f7bd8e95ab1a",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1502,32 +1577,7 @@
     "form_version": null,
     "documents_required": null,
     "documents_reported": null,
-    "submit_methods": {
-     "value": [
-      {
-       "kind": "mail",
-       "detail": "GRH, Attn: Patient Financial Services, PO Box 668, West Burlington, IA 52655"
-      },
-      {
-       "kind": "in_person",
-       "detail": "At all Great River Health facilities"
-      },
-      {
-       "kind": "portal",
-       "detail": "https://www.greatriverhealth.org"
-      },
-      {
-       "kind": "phone",
-       "detail": "GRH Patient Billing Office at 888-325-6970 or 319-768-3625, Option 2"
-      }
-     ],
-     "layer": "documented",
-     "quote": "Applications are available: \u25e6 At all Great River Health facilities \u25e6 Online at https://www.greatriverhealth.org \u25e6 Mailed to you by calling: \u25aa GRH Patient Billing Office at 888-325-6970 or 319-768-3625, Option 2",
-     "source_id": "fap-3ac1f7bd8e95ab1a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "submit_methods": null,
     "window_days_from_first_bill": null,
     "decision_days": null,
     "decision_days_reported": null
@@ -1574,58 +1624,53 @@
      "effective_date": null
     },
     {
-     "id": "web-938ca013e75bdb91",
+     "id": "web-eedafc176ad2d29f",
      "kind": "hospital_web",
      "url": "https://www.greatriverhealth.org/patients-visitors/billing-financial-services/",
      "title": "Billing & financial services | Great River Health",
      "fetched_on": "2026-10-23",
-     "sha256": "938ca013e75bdb91d9edc4b6328d8d88a0943f6758697897ffbbcc42e2a3f898",
+     "sha256": "eedafc176ad2d29f553dba4d18eeb8e5c1e85f6b431e8a0675ad8bf47443f360",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: 226-250% 50% | 251-275% 25% 276-300% 15%",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: 2. Unhoused or received care from a homeless clinic | 3. Participation in Women Infants and Children program (WIC)",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: 2. Most recent tax return | 4. If uninsured, Medicaid denial letter from the Department of Human Services",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Return completed application with all required documentation by mail to: \u25e6 GRH, Attn: Patient Financial Services, PO Box",
-    "agent judge on eligibility.insured_patients_covered: Quote is a bare category phrase about insured patients with out-of-pocket expenses. It does not explicitly state that they are covered or eligible.",
-    "agent judge on programs.presumptive: Quote lists only 3 items (state-funded prescription programs, unhoused/homeless clinic, WIC). The value's other 7 items, such as food stamps, school lunch, and incarceration, do not appear.",
-    "agent judge on apply.documents_required: Quote lists items 1, 2, and 4 only. \"Proof of household income\" is absent, and the Medicaid denial letter is conditional (\"If uninsured\") in the quote but not in the value.",
-    "agent judge on apply.submit_methods: Only mail is a true submission method. In-person and online are where applications are available, and phone is how to request a mailed application, not a way to submit."
+    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Unhoused or received care from a homeless clinic | Patient is deceased with no estate",
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: 2. Most recent tax return | 3. Proof of household income in the form of, but not limited to: a. Copy of two most recent pay stubs",
+    "agent dropped apply.submit_methods: excerpt not in source: Return completed application with all required documentation",
+    "agent judge on eligibility.insured_patients_covered: Quote only says insured patients with out-of-pocket expenses are mentioned; it does not state that they are covered by the policy.",
+    "agent judge on programs.presumptive: Quote lists WIC participation, homeless/homeless clinic, and deceased with no estate, but does not list Medicaid as a presumptive category.",
+    "agent judge on apply.documents_required: Quote lists application, tax return, and pay stubs, but does not mention Social Security/pension letter, bank statement, or Medicaid denial letter in the quoted text."
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 2,
+    "sources_fetched": 3,
     "sources_total": 3,
-    "sources_missing": [
-     "https://www.greatriverhealth.org/patients-visitors/billing-financial-services/"
-    ],
+    "sources_missing": [],
+    "sha256_match": {
+     "fap-3ac1f7bd8e95ab1a": true,
+     "fap-984a17ddba6af3be": true,
+     "web-eedafc176ad2d29f": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
+     "eligibility.discount_tiers",
      "eligibility.insured_patients_covered",
+     "programs.presumptive",
      "programs.state_programs",
-     "apply.submit_methods",
      "contacts.phone"
     ],
     "rejected": [
      [
       "eligibility.free_care_max_fpl",
       "quote not found in source"
-     ],
-     [
-      "eligibility.discount_tiers",
-      "value not in quote"
-     ],
-     [
-      "apply.form_url",
-      "source text missing"
      ]
     ],
     "pruned": [
-     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
+     "programs.presumptive: 3 items not named in the trimmed quote",
      "apply.documents_required: none of the listed documents is named in the quote (after trimming)"
     ],
-    "income_rule_verified": false,
+    "income_rule_verified": true,
     "core_completeness": 0.33
    }
   },
@@ -1770,6 +1815,10 @@
     "sources_fetched": 1,
     "sources_total": 1,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-f9eb5e57891cf4c0": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.residency",
@@ -1986,6 +2035,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-f9eb5e57891cf4c0": true,
+     "fap-f9ca4407344bfb56": true,
+     "web-e93a004262aad6b9": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.residency",
@@ -2202,6 +2257,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-ec276fb294e1a7f3": true,
+     "fap-8cb546853b4d5aee": true,
+     "web-3862bd0291c9a27c": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.assistance_ceiling_fpl",
@@ -2426,6 +2487,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-f9eb5e57891cf4c0": true,
+     "fap-f9ca4407344bfb56": true,
+     "web-03b9b8f7857eac6f": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.residency",
@@ -2660,6 +2727,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-ec276fb294e1a7f3": true,
+     "fap-8cb546853b4d5aee": true,
+     "web-8902e3b128c2ef0e": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.assistance_ceiling_fpl",
@@ -2865,6 +2938,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-ec276fb294e1a7f3": true,
+     "fap-8cb546853b4d5aee": true,
+     "web-fe027c38d5e04f9e": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.assistance_ceiling_fpl",
@@ -3060,6 +3139,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-ec276fb294e1a7f3": true,
+     "fap-8cb546853b4d5aee": true,
+     "web-d53b788835fda741": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.asset_test",
@@ -3276,6 +3361,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-ec276fb294e1a7f3": true,
+     "fap-8cb546853b4d5aee": true,
+     "web-1ddbe15be0221923": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.assistance_ceiling_fpl",
@@ -3472,6 +3563,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-ec276fb294e1a7f3": true,
+     "fap-8cb546853b4d5aee": true,
+     "web-c232b06576342f02": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.asset_test",
@@ -3637,6 +3734,10 @@
     "sources_fetched": 1,
     "sources_total": 1,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-26b06f7cd865d605": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.assistance_ceiling_fpl",
@@ -3829,6 +3930,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-ec276fb294e1a7f3": true,
+     "fap-8cb546853b4d5aee": true,
+     "web-c2d2c11c2925c755": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.asset_test",
@@ -4050,6 +4157,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-174bfaef7b79efbc": true,
+     "fap-6e197ec13cbb56a1": true,
+     "web-571109e140524275": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.assistance_ceiling_fpl",
@@ -4236,6 +4349,11 @@
     "sources_fetched": 2,
     "sources_total": 2,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-325f01d82dcc8bba": true,
+     "fap-e552d9040b6309ef": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.residency",
@@ -4411,6 +4529,10 @@
     "sources_fetched": 1,
     "sources_total": 1,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-34410a57bfff38ea": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -4588,6 +4710,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-1d5c71f4aa66aad8": true,
+     "fap-c08d9a4bec5fbe5a": true,
+     "web-ecb0706475424cc2": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.assistance_ceiling_fpl",
@@ -4629,15 +4757,7 @@
     "free_care_max_fpl": null,
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
-    "asset_test": {
-     "value": true,
-     "layer": "documented",
-     "quote": "Cash on hand (including checking) $ Savings $ Stocks/Bonds/Retirement Funds $",
-     "source_id": "fap-819c9a2b2ea13d63",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "asset_test": null,
     "residency": null,
     "insured_patients_covered": null,
     "min_balance": null,
@@ -4654,31 +4774,17 @@
      "value": [
       "tax_return",
       "pay_stubs",
-      "bank_statements",
-      "proof_of_income"
+      "bank_statements"
      ],
      "layer": "documented",
-     "quote": "The Following Proof Of Income Is Required To Process Your Application: Federal Tax Returns (last year) Current Pay Stub (Responsible Party and Spouse) Current Bank Statement Other Income Source Documentation",
+     "quote": "Federal Tax Returns (last year) Current Pay Stub (Responsible Party and Spouse) Current Bank Statement",
      "source_id": "fap-819c9a2b2ea13d63",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "documents_reported": null,
-    "submit_methods": {
-     "value": [
-      {
-       "kind": "phone",
-       "detail": "712.382.1515"
-      }
-     ],
-     "layer": "documented",
-     "quote": "To learn more about financial assistance from George C. Grape Community Hospital, call 712.382.1515.",
-     "source_id": "fap-819c9a2b2ea13d63",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "submit_methods": null,
     "window_days_from_first_bill": null,
     "decision_days": null,
     "decision_days_reported": null
@@ -4691,7 +4797,7 @@
     "phone": {
      "value": "712.382.1515",
      "layer": "documented",
-     "quote": "George C. Grape Community Hospital 2959 US Hwy 275, Hamburg, IA P. 712.382.1515 F. 712.382.1503",
+     "quote": "call 712.382.1515.",
      "source_id": "fap-819c9a2b2ea13d63",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4733,20 +4839,19 @@
      "effective_date": null
     },
     {
-     "id": "web-1c07646132181497",
+     "id": "web-6533b8ac54e87c34",
      "kind": "hospital_web",
      "url": "https://www.grapehospital.com/getpage.php?name=patientinfo",
      "title": "Financial Services | Grape Hospital",
      "fetched_on": "2026-10-23",
-     "sha256": "1c076461321814974f22ee00e78365f3f505bdaec59ceefc6da9fe3cc22dc244",
+     "sha256": "6533b8ac54e87c34ec31bba5062dbcb28559cd1e46630665186abed7605bdb82",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "agent judge on eligibility.asset_test: The quote is a form listing cash, savings, and stocks/bonds fields. It does not plainly state that assets are considered.",
-    "agent judge on apply.form_url: The quote gives only the relative path /docs/FAP_web_application.pdf. The domain www.grapehospital.com does not appear in the quote.",
-    "agent judge on apply.submit_methods: The quote says to call to learn more about financial assistance. It does not say the application can be submitted by phone."
+    "agent judge on eligibility.asset_test: The quote is a truncated form label ending in '$'. It implies a net worth calculation but does not plainly state that assets are considered.",
+    "agent judge on apply.form_url: The quote gives only the relative path /docs/FAP_web_application.pdf. The domain www.grapehospital.com does not appear in the quote."
    ],
    "eve_verified": {
     "on": "2026-10-23",
@@ -4755,14 +4860,22 @@
     "sources_missing": [
      "https://www.grapehospital.com/docs/Financial_Assistance_Policy.pdf"
     ],
+    "sha256_match": {
+     "fap-624446340875c06a": true,
+     "fap-819c9a2b2ea13d63": true,
+     "web-6533b8ac54e87c34": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
-     "eligibility.asset_test",
      "apply.documents_required",
-     "apply.submit_methods",
      "contacts.phone",
      "contacts.hours"
     ],
     "rejected": [
+     [
+      "eligibility.asset_test",
+      "quote does not support the asset-test value"
+     ],
      [
       "apply.form_url",
       "quote not found in source"
@@ -4770,7 +4883,7 @@
     ],
     "pruned": [],
     "income_rule_verified": false,
-    "core_completeness": 0.5
+    "core_completeness": 0.33
    }
   },
   {
@@ -4789,7 +4902,56 @@
    "status": "draft",
    "eligibility": {
     "free_care_max_fpl": null,
-    "discount_tiers": null,
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "100",
+       "max_fpl_inclusive": "140",
+       "discount_percent": 90
+      },
+      {
+       "min_fpl_exclusive": "140",
+       "max_fpl_inclusive": "160",
+       "discount_percent": 80
+      },
+      {
+       "min_fpl_exclusive": "160",
+       "max_fpl_inclusive": "180",
+       "discount_percent": 75
+      },
+      {
+       "min_fpl_exclusive": "180",
+       "max_fpl_inclusive": "200",
+       "discount_percent": 65
+      },
+      {
+       "min_fpl_exclusive": "200",
+       "max_fpl_inclusive": "240",
+       "discount_percent": 50
+      },
+      {
+       "min_fpl_exclusive": "240",
+       "max_fpl_inclusive": "260",
+       "discount_percent": 40
+      },
+      {
+       "min_fpl_exclusive": "260",
+       "max_fpl_inclusive": "280",
+       "discount_percent": 30
+      },
+      {
+       "min_fpl_exclusive": "280",
+       "max_fpl_inclusive": "300",
+       "discount_percent": 20
+      }
+     ],
+     "layer": "documented",
+     "quote": "FPIG Amount Financial Assistance Limits* 0-100% 100% 101-140% 90% 141-160% 80% 161-180% 75% 181-200% 65% 201-240% 50% 241-260% 40% 261-280% 30% 281-300% 20%",
+     "source_id": "fap-c4d7428527bbd72b",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": null,
@@ -4827,24 +4989,7 @@
      "support_count": 0
     },
     "documents_reported": null,
-    "submit_methods": {
-     "value": [
-      {
-       "kind": "in_person",
-       "detail": "Patients and families wishing to apply may submit an application and supporting documentation to the Business Office."
-      },
-      {
-       "kind": "portal",
-       "detail": "The financial assistance application may be found on BCHC's website (www.BCHealth.org)."
-      }
-     ],
-     "layer": "documented",
-     "quote": "Patients and families wishing to apply may submit an application and supporting documentation to the Business Office. The financial assistance application may be found on BCHC's website (www.BCHealth.org).",
-     "source_id": "fap-c4d7428527bbd72b",
-     "checked_on": "2026-10-23",
-     "confidence": 0.8,
-     "support_count": 0
-    },
+    "submit_methods": null,
     "window_days_from_first_bill": {
      "value": 240,
      "layer": "documented",
@@ -4896,28 +5041,47 @@
      "fetched_on": "2026-10-23",
      "sha256": "c4d7428527bbd72b363262e8755ddcb2ea82a157026487087b025dd2cf3c12a6",
      "effective_date": null
+    },
+    {
+     "id": "fap-0c7622d156bff82e",
+     "kind": "hospital_web",
+     "url": "https://bchealth.org/wp-content/uploads/2022/03/Financial-Assistance-Application_6-18-15_website-3.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "0c7622d156bff82e2c1c4dd0127fd3187ad6de22d7310421bf0f22e93498d5f9",
+     "effective_date": null
+    },
+    {
+     "id": "web-acf45de806aaa8b8",
+     "kind": "hospital_web",
+     "url": "https://bchealth.org/about-bchc/billing-faq/",
+     "title": "Billing FAQ |",
+     "fetched_on": "2026-10-23",
+     "sha256": "acf45de806aaa8b8b9f0517c2cd4106c7b19be63d487695f96ca8a3cbe6240b3",
+     "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: 141-160% 80% | 161-180% 75%",
-    "eligibility.asset_test: quote matched the source only after typography normalization",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Homeless or received care from a homeless clinic | Participation in Women, Infants and Children programs (WIC)",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Patients may contact the Business Office for a copy of the application and to discuss any questions. The Business Office",
-    "apply.submit_methods: quote matched the source only after typography normalization",
-    "agent judge on eligibility.discount_tiers: Quote shows only three tiers (101-140% at 90%, 141-160% at 80%, 161-180% at 75%); the value's tiers above 180% FPL, including the 200% and 300% ceilings, are not stated.",
-    "agent judge on programs.presumptive: Quote lists only three presumptive programs; the value's other five (e.g., food stamps, school lunch, housing, deceased patient) do not appear in the quote.",
-    "agent judge on apply.documents_required: Quote says documentation 'may include, but is not limited to' these items, which lists examples, not required documents."
+    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Participation in Women, Infants and Children programs (WIC) | Patient is deceased with no known estate",
+    "agent dropped apply.submit_methods: excerpt not in source: Send completed application to: Business Office Buchanan Coun",
+    "agent judge on apply.documents_required: Quote says documentation 'may include, but is not limited to' these items, so it presents them as examples rather than stated requirements."
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 1,
-    "sources_total": 1,
+    "sources_fetched": 3,
+    "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-c4d7428527bbd72b": true,
+     "fap-0c7622d156bff82e": true,
+     "web-acf45de806aaa8b8": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
+     "eligibility.discount_tiers",
      "eligibility.insured_patients_covered",
      "apply.documents_required",
-     "apply.submit_methods",
      "apply.window_days_from_first_bill",
      "apply.decision_days",
      "contacts.phone"
@@ -4928,19 +5092,14 @@
       "quote not found in source"
      ],
      [
-      "eligibility.discount_tiers",
-      "value not in quote"
-     ],
-     [
       "eligibility.asset_test",
       "quote does not support the asset-test value"
      ]
     ],
     "pruned": [
-     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
-     "apply.submit_methods: 1 item not named in the trimmed quote"
+     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)"
     ],
-    "income_rule_verified": false,
+    "income_rule_verified": true,
     "core_completeness": 0.5
    }
   },
@@ -5114,6 +5273,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-80911c49c192441e": true,
+     "fap-0dfae9f40eb1a2a9": true,
+     "web-50d0942962852ac7": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.asset_test",
@@ -5281,6 +5446,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-500ec86f738d6efc": true,
+     "fap-fadf5da7070824e3": true,
+     "web-ad37e26b939a314e": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.asset_test",
@@ -5481,6 +5652,10 @@
     "sources_fetched": 1,
     "sources_total": 1,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-376b8ba78bdf2b66": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -5505,158 +5680,6 @@
     ],
     "income_rule_verified": true,
     "core_completeness": 0.83
-   }
-  },
-  {
-   "hospital": {
-    "ccn": "161344",
-    "name": "WASHINGTON COUNTY HOSPITAL AND CLINICS",
-    "city": "WASHINGTON",
-    "state": "IA",
-    "zip": "52353",
-    "phone": "319-653-5481",
-    "ownership": "Voluntary non-profit - Other",
-    "website_domain": "wchc.org",
-    "system": null
-   },
-   "version": 1,
-   "status": "draft",
-   "eligibility": {
-    "free_care_max_fpl": null,
-    "discount_tiers": null,
-    "assistance_ceiling_fpl": null,
-    "asset_test": null,
-    "residency": null,
-    "insured_patients_covered": {
-     "value": true,
-     "layer": "documented",
-     "quote": "WCHC offers a Financial Assistance Program for eligible uninsured and underinsured patients receiving medically necessary services.",
-     "source_id": "web-db3250196e21a0c5",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "min_balance": null,
-    "services_excluded": null
-   },
-   "programs": {
-    "presumptive": null,
-    "state_programs": null
-   },
-   "apply": {
-    "form_url": null,
-    "form_version": null,
-    "documents_required": {
-     "value": [
-      "tax_return"
-     ],
-     "layer": "documented",
-     "quote": "Proof of income (recent pay stubs, tax return, benefit letter)",
-     "source_id": "web-db3250196e21a0c5",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "documents_reported": null,
-    "submit_methods": {
-     "value": [
-      {
-       "kind": "mail",
-       "detail": "Washington County Hospital and Clinics, Attn: Financial Assistance, PO Box 909, Washington, IA 52353"
-      },
-      {
-       "kind": "in_person",
-       "detail": "Pick up a packet at any WCHC location"
-      }
-     ],
-     "layer": "documented",
-     "quote": "By Mail or In Person : Pick up a packet at any WCHC location or call us at (319) 863-3911 to request one by mail.",
-     "source_id": "web-db3250196e21a0c5",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "window_days_from_first_bill": null,
-    "decision_days": null,
-    "decision_days_reported": null
-   },
-   "collections": {
-    "eca_wait_days": null,
-    "collection_agencies": null
-   },
-   "contacts": {
-    "phone": {
-     "value": "(319) 863-3916",
-     "layer": "documented",
-     "quote": "(319) 863-3916",
-     "source_id": "web-db3250196e21a0c5",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "hours": {
-     "value": "Open: Monday\u2013Friday, 8:00 a.m.\u2013 4:30 p.m.",
-     "layer": "documented",
-     "quote": "Hours: Open: Monday\u2013Friday, 8:00 a.m.\u2013 4:30 p.m.",
-     "source_id": "web-db3250196e21a0c5",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "languages": null
-   },
-   "coverage": {
-    "facilities": null,
-    "provider_list_url": null,
-    "covered_providers": null
-   },
-   "sources": [
-    {
-     "id": "web-db3250196e21a0c5",
-     "kind": "hospital_web",
-     "url": "https://www.wchc.org/patients-and-visitors/for-patients/billing-and-insurance/",
-     "title": "Billing and Insurance Information | WCHC",
-     "fetched_on": "2026-10-23",
-     "sha256": "db3250196e21a0c510f611490cdf8622820ef0ceb3365b6c3e0aa3a98e66f8d8",
-     "effective_date": null
-    }
-   ],
-   "accuracy": null,
-   "eve_review": [
-    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: Photo ID (Iowa driver\u2019s license or government-issued ID)",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Fax: (319) 863-3928 | Email: patientbilling@wchc.org",
-    "agent judge on eligibility.insured_patients_covered: Quote covers eligible uninsured and underinsured patients only; it does not say insured patients are covered.",
-    "agent judge on apply.submit_methods: Quote gives fax and email but no mailing address (PO Box 909), no online submission method, and only a packet pickup for in-person.",
-    "agent judge on contacts.languages: Quote says the application form is available in English or Spanish; it does not state the languages contacts are handled in."
-   ],
-   "eve_verified": {
-    "on": "2026-10-23",
-    "sources_fetched": 1,
-    "sources_total": 1,
-    "sources_missing": [],
-    "accepted": [
-     "eligibility.insured_patients_covered",
-     "apply.documents_required",
-     "apply.submit_methods",
-     "contacts.phone",
-     "contacts.hours"
-    ],
-    "rejected": [
-     [
-      "apply.form_url",
-      "quote not found in source"
-     ],
-     [
-      "contacts.languages",
-      "quote not found in source"
-     ]
-    ],
-    "pruned": [
-     "apply.documents_required: 1 item not named in the trimmed quote",
-     "apply.submit_methods: 3 items not named in the trimmed quote"
-    ],
-    "income_rule_verified": false,
-    "core_completeness": 0.5
    }
   },
   {
@@ -5828,6 +5851,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-8a41c161af042fea": true,
+     "fap-feac9a46d2b4db00": true,
+     "web-b49f92f79e4b84b8": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -6032,6 +6061,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-19d5391bd8e00241": true,
+     "fap-51f03106195855cb": true,
+     "web-489f1f843bbba15b": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.asset_test",
@@ -6196,6 +6231,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-ec276fb294e1a7f3": true,
+     "fap-8cb546853b4d5aee": true,
+     "web-b931b400861284c2": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.assistance_ceiling_fpl",
@@ -6372,6 +6413,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-280709655a241dc6": true,
+     "fap-dbd4a123cd15abe7": true,
+     "web-a823239c427d4629": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.insured_patients_covered",
@@ -6548,6 +6595,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-98b29e708c5210dc": true,
+     "fap-bd924d342b920c9d": true,
+     "web-80e174eda643db22": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.asset_test",
@@ -6586,23 +6639,15 @@
    "eligibility": {
     "free_care_max_fpl": null,
     "discount_tiers": null,
-    "assistance_ceiling_fpl": {
-     "value": "300",
-     "layer": "documented",
-     "quote": "Included is assistance for uninsured patients with household incomes between 140% and 300% of the federal poverty guidelines who have experienced a medical hardship and owe large medical bills.",
-     "source_id": "fap-a62501e3834671aa",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": {
      "value": [
-      "Customers must be residents of Iowa to qualify for financial assistance."
+      "offer financial assistance or insurance premium support to customers that are residents of Iowa who meet our financial need criteria"
      ],
      "layer": "documented",
-     "quote": "customers that are residents of Iowa who meet our financial need criteria",
-     "source_id": "web-d8f2d68fe0704532",
+     "quote": "offer financial assistance or insurance premium support to customers that are residents of Iowa who meet our financial need criteria",
+     "source_id": "web-22bdbdd204989ae5",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -6610,8 +6655,8 @@
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "inadequate insurance coverage (high deductible health plan).",
-     "source_id": "web-d8f2d68fe0704532",
+     "quote": "inadequate insurance coverage (high deductible health plan)",
+     "source_id": "web-22bdbdd204989ae5",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -6626,15 +6671,26 @@
    "apply": {
     "form_url": null,
     "form_version": null,
-    "documents_required": null,
+    "documents_required": {
+     "value": [
+      "other",
+      "social_security_letter"
+     ],
+     "layer": "documented",
+     "quote": "provide total income earned from all sources as substantiated via a W-2 form, tax and/or social security documents, etc. applicable to the most recent tax year",
+     "source_id": "web-b3f02c92755f73cc",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "documents_reported": null,
     "submit_methods": null,
     "window_days_from_first_bill": null,
     "decision_days": {
      "value": 10,
      "layer": "documented",
-     "quote": "a review shall be completed within ten (10) business days to determine the level of assistance you might be eligible for",
-     "source_id": "web-20fc4bbc2a17bd8c",
+     "quote": "a review shall be completed within ten (10) business days to determine the level of assistance you might be eligible for based on KHC\u2019s policies/guidelines",
+     "source_id": "web-b3f02c92755f73cc",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -6659,7 +6715,7 @@
      "value": "Monday-Friday; 7:30 a.m.-4 p.m.",
      "layer": "documented",
      "quote": "(641) 842-1423 | Monday-Friday; 7:30 a.m.-4 p.m.",
-     "source_id": "web-d8f2d68fe0704532",
+     "source_id": "web-22bdbdd204989ae5",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -6673,15 +6729,6 @@
    },
    "sources": [
     {
-     "id": "web-d8f2d68fe0704532",
-     "kind": "hospital_web",
-     "url": "https://knoxvillehospital.org/billing-information-policies/financial-assistance/",
-     "title": "Financial Assistance - Knoxville Hospital & Clinics",
-     "fetched_on": "2026-10-23",
-     "sha256": "d8f2d68fe0704532f3aaf5b2238f9bffd8798d9fc85d4c7ef6beb4f6484d05c2",
-     "effective_date": null
-    },
-    {
      "id": "fap-a62501e3834671aa",
      "kind": "hospital_web",
      "url": "https://knoxvillehospital.org/wp-content/uploads/2019/02/Financial-Assistance-Policy-Plain-Language-Summary-02062019.pdf",
@@ -6691,32 +6738,46 @@
      "effective_date": null
     },
     {
-     "id": "web-20fc4bbc2a17bd8c",
+     "id": "web-22bdbdd204989ae5",
+     "kind": "hospital_web",
+     "url": "https://knoxvillehospital.org/billing-information-policies/financial-assistance/",
+     "title": "Financial Assistance - Knoxville Hospital & Clinics",
+     "fetched_on": "2026-10-23",
+     "sha256": "22bdbdd204989ae5044f2979b4b67a94605ab4cd5fca886818f0d1b3ce797a91",
+     "effective_date": null
+    },
+    {
+     "id": "web-b3f02c92755f73cc",
      "kind": "hospital_web",
      "url": "https://knoxvillehospital.org/billing-information-policies/financial-assistance-application/",
      "title": "Financial Assistance Application - Knoxville Hospital & Clinics",
      "fetched_on": "2026-10-23",
-     "sha256": "20fc4bbc2a17bd8cf951f201b4a40785a0547096ca9acb23522806d4258b46ed",
+     "sha256": "b3f02c92755f73ccc060374b50bb17340e7b350dd851de3f0b370fecc111e8f4",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: 160 to 179% 65% | 280 to 300% 35%",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: I will mail my documents. | I will fax my documents to (641) 842-7040.",
-    "agent judge on eligibility.discount_tiers: Quote gives only three tiers (134-159% at 70%, 160-179% at 65%, 280-300% at 35%). Value's 180-279% tiers are absent, and its bounds differ (133 exclusive vs 134).",
-    "agent judge on eligibility.assistance_ceiling_fpl: Quote says assistance is included for incomes between 140% and 300% FPL for a hardship group. It does not state that no assistance is offered above 300%.",
-    "agent judge on apply.window_days_from_first_bill: Quote says two weeks from obtaining the forms, not days from the first bill."
+    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: 160 to 179% 65% 180 to 199% 60% 200 to 219% 55% 220 to 239% 50% 240 to 259% 45% | 260 to 279% 40% 280 to 300% 35%",
+    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: I will upload my documents. | I will fax my documents to (641) 842-7040.",
+    "agent judge on eligibility.discount_tiers: Quote starts the first tier at 134%, not 133%. The value's min_fpl_exclusive 133 never appears in the quote, though the other bounds and percents match.",
+    "agent judge on eligibility.insured_patients_covered: Quote only mentions inadequate insurance coverage (high deductible health plan) as a situation; it does not state that insured patients are covered."
    ],
    "eve_verified": {
     "on": "2026-10-23",
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-a62501e3834671aa": true,
+     "web-22bdbdd204989ae5": true,
+     "web-b3f02c92755f73cc": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
-     "eligibility.assistance_ceiling_fpl",
      "eligibility.residency",
      "eligibility.insured_patients_covered",
+     "apply.documents_required",
      "apply.decision_days",
      "contacts.phone",
      "contacts.hours"
@@ -6727,16 +6788,15 @@
       "value not in quote"
      ],
      [
-      "apply.window_days_from_first_bill",
-      "value not in quote"
+      "apply.form_url",
+      "quote not found in source"
      ]
     ],
     "pruned": [
-     "apply.documents_required: none of the listed documents is named in the quote (after trimming)",
      "apply.submit_methods: none of the listed channels is named in the quote (after trimming)"
     ],
     "income_rule_verified": false,
-    "core_completeness": 0.17
+    "core_completeness": 0.33
    }
   },
   {
@@ -6762,7 +6822,7 @@
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "We can help you if you do not have health insurance or have health insurance but have a high deductible, not enough coverage",
+     "quote": "We can help you if you do not have health insurance or have health insurance but have a high deductible, not enough coverage when your income for a year is at, or less than HUD guidelines.",
      "source_id": "fap-49251e35814ca253",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -6804,14 +6864,24 @@
     "phone": {
      "value": "712-423-9218",
      "layer": "documented",
-     "quote": "can be reached by phone at 712-423-9218.",
+     "quote": "The Burgess Patient Financial Services staff is located in the admitting area at Burgess Health Center and can be reached by phone at 712-423-9218.",
      "source_id": "fap-49251e35814ca253",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "hours": null,
-    "languages": null
+    "languages": {
+     "value": [
+      "translated copies"
+     ],
+     "layer": "documented",
+     "quote": "These policies and translated copies of this summary are available upon request by contacting the Burgess Patient Financial Services staff at 712- 423-9218.",
+     "source_id": "fap-49251e35814ca253",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
    },
    "coverage": {
     "facilities": null,
@@ -6838,29 +6908,38 @@
      "effective_date": null
     },
     {
-     "id": "web-0d4c5ad5644026a0",
+     "id": "web-e426be779ed65b27",
      "kind": "hospital_web",
      "url": "https://www.burgesshc.org/current-patients/billing-insurance/",
      "title": "Billing & Insurance - Burgess Health Center",
      "fetched_on": "2026-10-23",
-     "sha256": "0d4c5ad5644026a0b4ccd5603033cff5afa9044cfe5b5f98c189905b48408121",
+     "sha256": "e426be779ed65b27426027163bf67e3d1577036b9cc0c16e2bc9b3e09c7fc1dc",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "agent judge on apply.documents_required: Quote is a form checklist with blank checkboxes (___) listing tax return and pay stubs; it does not plainly state these are required documents.",
-    "agent judge on apply.submit_methods: Quote only says to complete and submit an application to Patient Financial Services; it does not mention a phone submission method or the 712-423-9218 number."
+    "eligibility.asset_test: quote matched the source only after typography normalization",
+    "apply.submit_methods: quote matched the source only after typography normalization",
+    "agent judge on apply.submit_methods: Quote only says to complete and submit the application to Patient Financial Services; it does not state phone 712-423-9218 as a submission method.",
+    "agent judge on contacts.languages: Quote mentions translated copies of the summary, not a language. 'translated copies' is not a language value."
    ],
    "eve_verified": {
     "on": "2026-10-23",
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-49251e35814ca253": true,
+     "fap-1d59717df16fdcf6": true,
+     "web-e426be779ed65b27": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.insured_patients_covered",
      "apply.documents_required",
-     "contacts.phone"
+     "contacts.phone",
+     "contacts.languages"
     ],
     "rejected": [
      [
@@ -7036,6 +7115,10 @@
     "sources_fetched": 1,
     "sources_total": 1,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-ed516fef6ad2221c": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.residency",
@@ -7196,6 +7279,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-50facf45a8ffe3f7": true,
+     "fap-79175d10afdbd22e": true,
+     "web-21db4d69acb6eadd": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.asset_test",
@@ -7226,12 +7315,28 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": null,
+    "free_care_max_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "Uninsured or under insured patients whose family income is equal to or less than 200% of the Federal Poverty Guidelines area generally eligible for free emergency and medically necessary care.",
+     "source_id": "fap-acd343d59bf6a8d5",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": null,
-    "insured_patients_covered": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "provides free or discounted emergency and other medically necessary care to patients who are uninsured or under insured and qualify for assistance under its Financial Assistance Policy",
+     "source_id": "fap-acd343d59bf6a8d5",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "min_balance": null,
     "services_excluded": null
    },
@@ -7248,7 +7353,7 @@
      "value": [
       {
        "kind": "mail",
-       "detail": "Please mail the form to: Shenandoah Medical Center, Attn: Business Office, 300 Pershing Avenue, Shenandoah, IA 51601"
+       "detail": "Please mail the form to: Shenandoah Medical Center Attn: Business Office 300 Pershing Avenue Shenandoah, IA 51601"
       }
      ],
      "layer": "documented",
@@ -7268,19 +7373,19 @@
    },
    "contacts": {
     "phone": {
-     "value": "712-246-7400",
+     "value": "712-246-7201",
      "layer": "documented",
-     "quote": "1 Jack Foster Drive Shenandoah, IA 51601 712-246-7400",
-     "source_id": "web-7e67393c79240d19",
+     "quote": "Copies can also be requested via phone to the Financial Counselor at 712-246-7201.",
+     "source_id": "fap-acd343d59bf6a8d5",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "hours": {
-     "value": "Monday-Friday: 7-5:00pm",
+     "value": "8:00 am to 4:30 pm Monday thru Friday",
      "layer": "documented",
-     "quote": "Clinic Hours Monday-Friday: 7-5:00pm By Appointment Only",
-     "source_id": "web-7e67393c79240d19",
+     "quote": "To speak to a Financial Counselor directly, please call (712) 246-7201 from 8:00 am to 4:30 pm Monday thru Friday.",
+     "source_id": "web-b4aae9cd5a2fe9af",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -7290,8 +7395,8 @@
       "Spanish"
      ],
      "layer": "documented",
-     "quote": "Formulario de asistencia financiera",
-     "source_id": "web-7e67393c79240d19",
+     "quote": "Translations of these documents to Spanish are available upon request from the Patient Financial Counselor and also may be found online at www.smchospital.com.",
+     "source_id": "fap-acd343d59bf6a8d5",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -7304,21 +7409,12 @@
    },
    "sources": [
     {
-     "id": "web-bce24de90d9c2cdc",
+     "id": "fap-acd343d59bf6a8d5",
      "kind": "hospital_web",
-     "url": "https://www.smchospital.com/wp-content/uploads/2024/06/2.-Charity-Care-Policy.docx",
+     "url": "https://www.smchospital.com/wp-content/uploads/2019/05/plain-language-summary.pdf",
      "title": "",
      "fetched_on": "2026-10-23",
-     "sha256": "bce24de90d9c2cdc4b2a03d2746b1c084e35c22df8d8c86e9a479d8051729acf",
-     "effective_date": null
-    },
-    {
-     "id": "web-69e1398981060217",
-     "kind": "hospital_web",
-     "url": "https://www.smchospital.com/wp-content/uploads/2024/06/1.5-Charity-Care-Application-Update.docx",
-     "title": "",
-     "fetched_on": "2026-10-23",
-     "sha256": "69e1398981060217510b67ee0b4b88358008edec712ad0479659d28f20aac536",
+     "sha256": "acd343d59bf6a8d5784c4228f538539d81d7ac619c4677ba72029af0d213c7f1",
      "effective_date": null
     },
     {
@@ -7329,23 +7425,37 @@
      "fetched_on": "2026-10-23",
      "sha256": "7e67393c79240d191fea4e86c312906fead91c20039a990f07a6d794186c9079",
      "effective_date": null
+    },
+    {
+     "id": "web-b4aae9cd5a2fe9af",
+     "kind": "hospital_web",
+     "url": "https://www.smchospital.com/payment-options/",
+     "title": "Payment Options - Shenandoah Medical Center",
+     "fetched_on": "2026-10-23",
+     "sha256": "b4aae9cd5a2fe9af986320cdd8eb62253400a7a0ed846ede51864ebd9dc56215",
+     "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
+    "eligibility.discount_tiers: 200-300% at 100% is the free-care band, not a tier; skipped",
     "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Alternatively you may fax the form to Attn: Business Office at (712) 266-3508.",
-    "agent judge on contacts.hours: The quote says these are clinic hours that are 'By Appointment Only', a qualifier the recorded value omits.",
-    "agent judge on contacts.languages: The quote is only a Spanish-language form title. It does not state that Spanish is a supported language."
+    "agent judge on eligibility.discount_tiers: Quote says the 200%-300% FPL sliding scale discount ranges from 25% to 100%. The value records a single 100% tier, so the 25% bound is missing."
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 1,
+    "sources_fetched": 3,
     "sources_total": 3,
-    "sources_missing": [
-     "https://www.smchospital.com/wp-content/uploads/2024/06/2.-Charity-Care-Policy.docx",
-     "https://www.smchospital.com/wp-content/uploads/2024/06/1.5-Charity-Care-Application-Update.docx"
-    ],
+    "sources_missing": [],
+    "sha256_match": {
+     "fap-acd343d59bf6a8d5": true,
+     "web-7e67393c79240d19": true,
+     "web-b4aae9cd5a2fe9af": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.insured_patients_covered",
      "apply.submit_methods",
      "contacts.phone",
      "contacts.hours",
@@ -7360,8 +7470,8 @@
     "pruned": [
      "apply.submit_methods: 1 item not named in the trimmed quote"
     ],
-    "income_rule_verified": false,
-    "core_completeness": 0.33
+    "income_rule_verified": true,
+    "core_completeness": 0.5
    }
   },
   {
@@ -7379,12 +7489,28 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": null,
+    "free_care_max_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "A discount up to 100% will be extended to patients whose family income is equal to or less than 200% of federal poverty guidelines.",
+     "source_id": "web-766d7f11e6271935",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": null,
-    "insured_patients_covered": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Eligibility for financial assistance will be considered for those individuals who are uninsured, underinsured, ineligible for any government healthcare program",
+     "source_id": "web-766d7f11e6271935",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "min_balance": null,
     "services_excluded": null
    },
@@ -7420,7 +7546,15 @@
      "support_count": 0
     },
     "window_days_from_first_bill": null,
-    "decision_days": null,
+    "decision_days": {
+     "value": 30,
+     "layer": "documented",
+     "quote": "Pella Regional shall notify the patient or applicant in writing within 30 days of receipt of a completed application.",
+     "source_id": "web-766d7f11e6271935",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "decision_days_reported": null
    },
    "collections": {
@@ -7437,7 +7571,15 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "hours": null,
+    "hours": {
+     "value": "Monday \u2013Thursday 8:00 am -4:00 pm Friday -Closed",
+     "layer": "documented",
+     "quote": "Monday \u2013Thursday 8:00 am -4:00 pm Friday -Closed",
+     "source_id": "web-766d7f11e6271935",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "languages": null
    },
    "coverage": {
@@ -7482,51 +7624,39 @@
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 1,
+    "sources_fetched": 3,
     "sources_total": 3,
-    "sources_missing": [
-     "https://www.pellahealth.org/patients-visitors/billing-information/financial-assistance/financial-assistance-policy/",
-     "https://www.pellahealth.org/patients-visitors/billing-information/financial-assistance/"
-    ],
+    "sources_missing": [],
+    "sha256_match": {
+     "web-766d7f11e6271935": false,
+     "fap-54522cdfb9e724d7": true,
+     "web-bdb5c6f0cff67061": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.insured_patients_covered",
      "apply.submit_methods",
-     "contacts.phone"
+     "apply.decision_days",
+     "contacts.phone",
+     "contacts.hours"
     ],
     "rejected": [
      [
-      "eligibility.free_care_max_fpl",
-      "source text missing"
-     ],
-     [
       "eligibility.asset_test",
-      "source text missing"
-     ],
-     [
-      "eligibility.insured_patients_covered",
-      "source text missing"
-     ],
-     [
-      "programs.presumptive",
-      "source text missing"
+      "quote does not support the asset-test value"
      ],
      [
       "apply.form_url",
-      "source text missing"
-     ],
-     [
-      "apply.decision_days",
-      "source text missing"
-     ],
-     [
-      "contacts.hours",
-      "source text missing"
+      "quote not found in source"
      ]
     ],
     "pruned": [
+     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
      "apply.documents_required: none of the listed documents is named in the quote (after trimming)"
     ],
-    "income_rule_verified": false,
-    "core_completeness": 0.33
+    "income_rule_verified": true,
+    "core_completeness": 0.5
    }
   },
   {
@@ -7718,6 +7848,11 @@
     "sources_fetched": 2,
     "sources_total": 2,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-06496ce796d3a0b5": true,
+     "fap-6b0a9603a6800c18": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.assistance_ceiling_fpl",
@@ -7839,6 +7974,10 @@
     "sources_fetched": 1,
     "sources_total": 1,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-3adfe334cbb49e2c": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.insured_patients_covered",

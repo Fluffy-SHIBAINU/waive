@@ -2236,26 +2236,91 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": null,
-    "discount_tiers": null,
+    "free_care_max_fpl": {
+     "value": "125",
+     "layer": "documented",
+     "quote": "Provide Medically Necessary Care for no charge to persons with incomes at or below 125% of the FPG",
+     "source_id": "fap-bb5e6209bfd8721e",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "125",
+       "max_fpl_inclusive": "200",
+       "discount_percent": 97
+      },
+      {
+       "min_fpl_exclusive": "200",
+       "max_fpl_inclusive": "250",
+       "discount_percent": 90
+      },
+      {
+       "min_fpl_exclusive": "250",
+       "max_fpl_inclusive": "300",
+       "discount_percent": 80
+      }
+     ],
+     "layer": "documented",
+     "quote": "Category 1 (HI below 125% of FPG) Category 2 (HI 126%-200% of FPG) Patient Payment Responsibility Category 1 - 0% of AGB Category 2 - 3% of AGB",
+     "source_id": "fap-bb5e6209bfd8721e",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "assistance_ceiling_fpl": null,
     "asset_test": {
      "value": true,
      "layer": "documented",
-     "quote": "All applicants for Financial Assistance must provide proof of Household Income and Household Assets by",
-     "source_id": "fap-314c6b0428184ae5",
+     "quote": "if Qualifying Assets do not exceed an amount equal to 200% of his or her billed charges for services rendered",
+     "source_id": "fap-bb5e6209bfd8721e",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "residency": null,
-    "insured_patients_covered": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "For patients with insurance coverage, the patient pay responsibility will be the insurance co-pay, co-insurance and deductible, capped in all cases at a percentage of gross charges, up to AGB.",
+     "source_id": "fap-bb5e6209bfd8721e",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "min_balance": null,
     "services_excluded": null
    },
    "programs": {
-    "presumptive": null,
-    "state_programs": null
+    "presumptive": {
+     "value": [
+      "Medicaid",
+      "homeless",
+      "deceased with no estate"
+     ],
+     "layer": "documented",
+     "quote": "Patient deceased, with verification that there is no estate",
+     "source_id": "fap-bb5e6209bfd8721e",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "state_programs": {
+     "value": [
+      {
+       "name": "Indigent Care Trust Fund (ICTF)",
+       "how_to_apply": "Patients are expected to cooperate with Wellstar and are required to cooperate in determining their eligibility for various programs (such as the State of Georgia Indigent Care Trust Fund [ICTF] and Medicaid program) in order to qualify for financial assistance under this FAP"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Patients are expected to cooperate with Wellstar and are required to cooperate in determining their eligibility for various programs (such as the State of Georgia Indigent Care Trust Fund [ICTF] and Medicaid program) in order to qualify for financial assistance under this FAP",
+     "source_id": "fap-bb5e6209bfd8721e",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
    },
    "apply": {
     "form_url": null,
@@ -2266,8 +2331,8 @@
     "window_days_from_first_bill": {
      "value": 240,
      "layer": "documented",
-     "quote": "must have completed applications submitted within 240 days from the first post-discharge billing statement date",
-     "source_id": "fap-314c6b0428184ae5",
+     "quote": "Financial Assistance Program applications may be submitted within 240 days following the patient\u2019s post- discharge first statement.",
+     "source_id": "fap-bb5e6209bfd8721e",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -2283,13 +2348,21 @@
     "phone": {
      "value": "470-245-9998",
      "layer": "documented",
-     "quote": "30374, , Fax number: 770-792-1737 or Phone number: 470-245-9998",
-     "source_id": "fap-314c6b0428184ae5",
+     "quote": "Wellstar Financial Assistance Program (FAP) Department 470-245-9998",
+     "source_id": "fap-bb5e6209bfd8721e",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "hours": null,
+    "hours": {
+     "value": "8:00am and 4:30pm, Monday through Friday",
+     "layer": "documented",
+     "quote": "is available by request to Wellstar Business Office between the hours of 8:00am and 4:30pm, Monday through Friday at 470-245-9998",
+     "source_id": "fap-bb5e6209bfd8721e",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "languages": null
    },
    "coverage": {
@@ -2299,37 +2372,42 @@
    },
    "sources": [
     {
-     "id": "fap-3080fa8df729d6b6",
+     "id": "fap-bb5e6209bfd8721e",
      "kind": "hospital_web",
-     "url": "https://www.wellstar.org/-/media/HospitalTransparency/Wellstar2025FinancialAssistancePolicy.pdf",
+     "url": "https://www.wellstar.org/-/media/project/wellstar/org/documents/2024-hospital-transparency-information/financial-assistance-policy/financial-assistance-program-policy.pdf",
      "title": "",
      "fetched_on": "2026-10-23",
-     "sha256": "3080fa8df729d6b67b412bbfcd343546426195b265a574b814295b521b42bcef",
+     "sha256": "bb5e6209bfd8721e75c4e5faeead3861e1f059895472d44d45b530280c77176b",
      "effective_date": null
     },
     {
      "id": "fap-314c6b0428184ae5",
      "kind": "hospital_web",
-     "url": "https://www.wellstar.org/-/media/project/wellstar/org/documents/fap-application-in-languages/english-materials/fap-application-english.pdf?hash=88AAC6E242E2E717B7396A7CE959CAA7&rev=3bf118edf133468b90872dbd20466254",
+     "url": "https://www.wellstar.org/-/media/project/wellstar/org/documents/fap-application-in-languages/english-materials/fap-application-english.pdf",
      "title": "",
      "fetched_on": "2026-10-23",
      "sha256": "314c6b0428184ae569b763c85af3bdf18e9013c7a21ba02d1ed87238ba24c121",
      "effective_date": null
     },
     {
-     "id": "web-98f20481ae9d2193",
+     "id": "web-6b151fbb51fe39fd",
      "kind": "hospital_web",
      "url": "https://www.wellstar.org/for-patients/financial-assistance",
      "title": "Explore Patient Financial Assistance Program",
      "fetched_on": "2026-10-23",
-     "sha256": "98f20481ae9d2193b44427787c965362d7cae2da2d6361456614d758036100c4",
+     "sha256": "6b151fbb51fe39fdea8cdfc06e320be04bff03a5179c4d1b936fe2bb0ed06854",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "agent dropped apply.documents_required: judge: The quote says 'most recent two (2) months of bank statements' but never says 'for all household accounts'. The other items match.",
-    "agent dropped apply.submit_methods: judge: The quote says to apply via Wellstar MyChart and sign electronically. It says nothing about uploading supporting documents."
+    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: Category 3 (HI 201%-250% of FPG) Category 4 (HI 251%-300% of FPG) Patient Payment Responsibility* Category 3 - 10% of AG",
+    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Verified Homelessness | The patient qualifies for a government program with eligibility requirements that reasonably meet the qualifications for",
+    "apply.form_url: not an absolute URL ('/-/media/project/wellstar/org/documents/fap-application-in-l'); dropped",
+    "agent dropped apply.documents_required: excerpt not in source: Provide two (2) current bank statements for all checking and",
+    "agent dropped apply.submit_methods: excerpt not in source: Patients are encouraged to apply via Wellstar MyChart and el",
+    "agent dropped contacts.languages: excerpt not in source: Spanish [/-/media/project/wellstar/org/documents/fap-applica",
+    "agent judge on eligibility.discount_tiers: Quote gives Category 2 as 126%-200% at 3% of AGB, and 201%-250% at 10%, 251%-300% at 20%. Value's 97%/90%/80% discount percents (patient pays 3/10/20%) are inverted and not stated as discounts."
    ]
   },
   {
@@ -2645,12 +2723,34 @@
    "status": "draft",
    "eligibility": {
     "free_care_max_fpl": null,
-    "discount_tiers": null,
-    "assistance_ceiling_fpl": null,
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "200",
+       "max_fpl_inclusive": "325",
+       "discount_percent": 66
+      }
+     ],
+     "layer": "documented",
+     "quote": "whose household income is between 200% and 325% of the Federal Poverty Guideline, will only be charged AGB for Covered Services.",
+     "source_id": "fap-fc61b63123293599",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "assistance_ceiling_fpl": {
+     "value": "325",
+     "layer": "documented",
+     "quote": "This policy and the Financial Assistance Program for Uninsured Patients established and detailed herein apply solely to Uninsured Patients whose household income falls between 200% and 325% of the Federal Poverty Guideline.",
+     "source_id": "fap-fc61b63123293599",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "asset_test": {
      "value": true,
      "layer": "documented",
-     "quote": "(d) have personal and business assets, excluding the patient's personal residence, totaling less than $50,000.00",
+     "quote": "have personal and business assets, excluding the patient's personal residence, totaling less than $50,000.00",
      "source_id": "fap-fc61b63123293599",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2658,24 +2758,16 @@
     },
     "residency": {
      "value": [
-      "Patient must reside in Grady, Mitchell, Brooks or Thomas County, Georgia, or in a Georgia county without a hospital offering the required Covered Services."
+      "The Uninsured Patient must reside in Grady, Mitchell, Brooks or Thomas County, Georgia, or reside in a county in Georgia which does not include a hospital offering the required Covered Services."
      ],
      "layer": "documented",
-     "quote": "reside in Grady, Mitchell, Brooks or Thomas County, Georgia, or reside in a county in Georgia which does not include a hospital offering the required Covered Services",
+     "quote": "the Uninsured Patient must (a) reside in Grady, Mitchell, Brooks or Thomas County, Georgia, or reside in a county in Georgia which does not include a hospital offering the required Covered Services",
      "source_id": "fap-fc61b63123293599",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "insured_patients_covered": {
-     "value": false,
-     "layer": "documented",
-     "quote": "This policy is not available to persons who have any contractual claim or right for reimbursement or indemnification from an insurer or other third party liability",
-     "source_id": "fap-fc61b63123293599",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "insured_patients_covered": null,
     "min_balance": null,
     "services_excluded": null
    },
@@ -2687,16 +2779,50 @@
     "form_url": {
      "value": "https://www.archbold.org/documents/content/PFS-Application-Instruction-Sheet-Application.pdf",
      "layer": "documented",
-     "quote": "https://www.archbold.org/documents/content/PFS-Application-Instruction-Sheet-Application.pdf",
+     "quote": "Downloading the Application Form from the Archbold Medical Center website: https://www.archbold.org/documents/content/PFS-Application-Instruction-Sheet-Application.pdf",
      "source_id": "fap-fc61b63123293599",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "form_version": null,
-    "documents_required": null,
+    "documents_required": {
+     "value": [
+      "pay_stubs",
+      "social_security_letter",
+      "other",
+      "tax_return"
+     ],
+     "layer": "documented",
+     "quote": "Verification of income will be required in the form of pay stubs, award letters, employer statements, income tax returns, W-2's, etc.",
+     "source_id": "fap-fc61b63123293599",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "documents_reported": null,
-    "submit_methods": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "portal",
+       "detail": "Downloading the Application Form from the Archbold Medical Center website"
+      },
+      {
+       "kind": "mail",
+       "detail": "mailing or delivering it to Patient Financial Services, 920 Cairo Road, Thomasville, Georgia 31792"
+      },
+      {
+       "kind": "in_person",
+       "detail": "Obtaining an Application Form from any Archbold hospital facility admissions desk or business office"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Downloading the Application Form from the Archbold Medical Center website",
+     "source_id": "fap-fc61b63123293599",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "window_days_from_first_bill": {
      "value": 240,
      "layer": "documented",
@@ -2713,7 +2839,7 @@
     "eca_wait_days": {
      "value": 120,
      "layer": "documented",
-     "quote": "Refrain from initiating any extraordinary collection actions for at least 120",
+     "quote": "Refrain from initiating any extraordinary collection actions for at least 120 days from the date of the first post-discharge billing statement for the care",
      "source_id": "fap-fc61b63123293599",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2725,14 +2851,25 @@
     "phone": {
      "value": "229-228-8840",
      "layer": "documented",
-     "quote": "If you have questions, please call our Financial Assistance Case Manager@ 229-228-8840.",
-     "source_id": "fap-1ae674ccec174eeb",
+     "quote": "speak with a Financial Assistance Coordinator at 229-228-8840 or 1-877-269-8181, ext. 8840",
+     "source_id": "fap-fc61b63123293599",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "hours": null,
-    "languages": null
+    "languages": {
+     "value": [
+      "English",
+      "Spanish"
+     ],
+     "layer": "documented",
+     "quote": "This financial assistance policy is available in the following languages: \u2022 English \u2022 Spanish",
+     "source_id": "fap-fc61b63123293599",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
    },
    "coverage": {
     "facilities": null,
@@ -2748,25 +2885,13 @@
      "fetched_on": "2026-10-23",
      "sha256": "fc61b631232935995262a6538479f292df56244a643e378763d3538b02c2ac22",
      "effective_date": null
-    },
-    {
-     "id": "fap-1ae674ccec174eeb",
-     "kind": "hospital_web",
-     "url": "https://www.archbold.org/documents/content/PFS-Application-Instruction-Sheet-Application.pdf",
-     "title": "",
-     "fetched_on": "2026-10-23",
-     "sha256": "1ae674ccec174eeb8bad0687ea4b6c8f4c1e7d33356d1d59ca278e7e76c79ebc",
-     "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "agent dropped contacts.languages: excerpt not in source: English",
-    "agent dropped eligibility.assistance_ceiling_fpl: judge: Quote is truncated at 'falls between' and states no FPL bound; 325 does not appear.",
-    "agent dropped programs.presumptive: judge: Quote is truncated at 'patients who are' and names no categories.",
-    "agent dropped programs.state_programs: judge: Quote supports the ICTF name and the 200% FPL limit but never mentions the ICTF application form.",
-    "agent dropped apply.documents_required: judge: Quote lists only the application, tax returns and bank statements; pay stubs, residency, ID and the other items are absent.",
-    "agent dropped apply.submit_methods: judge: Quote supports fax and email only; the mailing address is not included."
+    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: John D. Archbold Memorial Hospital up to 66%",
+    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Obtaining an Application Form from any Archbold hospital facility admissions desk or business office and mailing or deli | mailing or delivering it to: Patient Financial Services 920 Cairo Road Thomasville, Georgia 31792",
+    "agent judge on eligibility.discount_tiers: Quote gives the 200%-325% AGB band and a separate 'up to 66%' with no clear link. The 66% is not tied to that band, and the exclusive/inclusive bounds are not stated."
    ]
   },
   {
@@ -3879,189 +4004,6 @@
   },
   {
    "hospital": {
-    "ccn": "110079",
-    "name": "GRADY MEMORIAL HOSPITAL",
-    "city": "ATLANTA",
-    "state": "GA",
-    "zip": "30303",
-    "phone": "404-616-1000",
-    "ownership": "Voluntary non-profit - Private",
-    "website_domain": "gradyhealth.org",
-    "system": null
-   },
-   "version": 1,
-   "status": "draft",
-   "eligibility": {
-    "free_care_max_fpl": null,
-    "discount_tiers": null,
-    "assistance_ceiling_fpl": null,
-    "asset_test": null,
-    "residency": null,
-    "insured_patients_covered": {
-     "value": true,
-     "layer": "documented",
-     "quote": "Medicare: Patient responsibility for services not covered by Medicare (including deductibles, coinsurance, and non-covered services) will be reviewed under this policy.",
-     "source_id": "fap-c678d1357243b26b",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "min_balance": null,
-    "services_excluded": null
-   },
-   "programs": {
-    "presumptive": {
-     "value": [
-      "Medicaid eligible and approved",
-      "Automated third-party presumptive eligibility software finding income at 0% to 400% FPL"
-     ],
-     "layer": "documented",
-     "quote": "All individuals who are eligible and approved for Medicaid are considered qualified for financial assistance.",
-     "source_id": "fap-c678d1357243b26b",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "state_programs": {
-     "value": [
-      {
-       "name": "Medicaid",
-       "how_to_apply": "Grady will support patients in the application process."
-      },
-      {
-       "name": "Cancer State Aid",
-       "how_to_apply": "Grady will support patients in the application process."
-      },
-      {
-       "name": "Georgia Crime Victims Compensation Program",
-       "how_to_apply": "Grady will support patients in the application process."
-      }
-     ],
-     "layer": "documented",
-     "quote": "Patients who qualify for any Federal or State assistance programs, including but not limited to Medicaid, Medicare, Cancer State Aid, Medicare Savings Programs, or the Georgia Crime Victims Compensation Program, are required to apply for and utilize those benefits prior to receiving assistance through Grady\u2019s Financial Assistance Program. Grady will support patients in the application process for these programs.",
-     "source_id": "fap-c678d1357243b26b",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
-   },
-   "apply": {
-    "form_url": {
-     "value": "https://www.gradyhealth.org/wp-content/uploads/2018/04/Grady-Financial-Assistance-Application-2.pdf",
-     "layer": "documented",
-     "quote": "Print and fill out the Financial Assistance Application Form [https://www.gradyhealth.org/wp-content/uploads/2018/04/Grady-Financial-Assistance-Application-2.pdf]",
-     "source_id": "web-0d9d7cbae7c8f407",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "form_version": null,
-    "documents_required": {
-     "value": [
-      "other",
-      "proof_of_residency",
-      "proof_of_income"
-     ],
-     "layer": "documented",
-     "quote": "When applying for financial assistance, individuals must provide the following documents: a. Proof of Identity",
-     "source_id": "fap-c678d1357243b26b",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "documents_reported": null,
-    "submit_methods": null,
-    "window_days_from_first_bill": {
-     "value": 240,
-     "layer": "documented",
-     "quote": "Patients may apply for financial assistance at any time prior to receiving services or within 240 days from the date of the first post-discharge billing statement.",
-     "source_id": "fap-c678d1357243b26b",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "decision_days": null,
-    "decision_days_reported": null
-   },
-   "collections": {
-    "eca_wait_days": null,
-    "collection_agencies": null
-   },
-   "contacts": {
-    "phone": {
-     "value": "404.616.6920",
-     "layer": "documented",
-     "quote": "Patients may request a Financial Assistance Program mail-in packet by calling 404.616.6920, and selecting option 1 to speak with a Patient Financial Counselor.",
-     "source_id": "fap-c678d1357243b26b",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "hours": {
-     "value": "Monday through Friday, 7:00 a.m. \u2013 3:30 p.m.",
-     "layer": "documented",
-     "quote": "Financial Counselors are available Monday through Friday, from 7:00 a.m. \u2013 3:30 p.m.",
-     "source_id": "fap-c678d1357243b26b",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "languages": {
-     "value": [
-      "Spanish"
-     ],
-     "layer": "documented",
-     "quote": "Spanish [https://www.gradyhealth.org/wp-content/uploads/Financial-Assistance-Program-Policy-Spanish.pdf]",
-     "source_id": "web-0d9d7cbae7c8f407",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
-   },
-   "coverage": {
-    "facilities": null,
-    "provider_list_url": null,
-    "covered_providers": null
-   },
-   "sources": [
-    {
-     "id": "fap-c678d1357243b26b",
-     "kind": "hospital_web",
-     "url": "https://www.gradyhealth.org/wp-content/uploads/Financial-Assistance-Program-Policy-1.pdf",
-     "title": "",
-     "fetched_on": "2026-10-23",
-     "sha256": "c678d1357243b26b6a257a04174c1e5fb23b84e3e4af0c78f87096d9848153b8",
-     "effective_date": null
-    },
-    {
-     "id": "fap-8c4208090b7f28fe",
-     "kind": "hospital_web",
-     "url": "https://www.gradyhealth.org/wp-content/uploads/2018/04/Grady-Financial-Assistance-Application-2.pdf",
-     "title": "",
-     "fetched_on": "2026-10-23",
-     "sha256": "8c4208090b7f28fe757c8e283086d8e7efc2e95274cabd0fe251828b6f462352",
-     "effective_date": null
-    },
-    {
-     "id": "web-0d9d7cbae7c8f407",
-     "kind": "hospital_web",
-     "url": "https://www.gradyhealth.org/financial-assistance-program/",
-     "title": "Financial Assistance Program | Grady Health",
-     "fetched_on": "2026-10-23",
-     "sha256": "0d9d7cbae7c8f40738686324181701c803de3ca857a8b0a644be021fb73f1dad",
-     "effective_date": null
-    }
-   ],
-   "accuracy": null,
-   "eve_review": [
-    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: If the automated system determines that a patient\u2019s income is between 0% and 400% of the FPL, the FPL percentage is reco",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: b. Proof of Residency | c. Proof of Income Provide all applicable proof documents:",
-    "agent dropped eligibility.residency: judge: Quote only says non-residents getting non-emergent care unrelated to an emergency admission are ineligible; it does not affirm Fulton/DeKalb eligibility or mention post-discharge care.",
-    "agent dropped apply.submit_methods: judge: Quote lacks the mail address, the in-person location, and the Hughes Spalding attribution for the email; it only says 'Mail:' and 'Delivered in person.'"
-   ]
-  },
-  {
-   "hospital": {
     "ccn": "110082",
     "name": "SAINT JOSEPH'S HOSPITAL OF ATLANTA, INC",
     "city": "ATLANTA",
@@ -4257,13 +4199,21 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": null,
+    "free_care_max_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "Georgia residents whose household income falls equal to or below 200% of the Federal Poverty Guideline may be eligible for a substantial discount of charges for their care under Archbold's separate Indigent Care Trust Fund Financial Assistance Program",
+     "source_id": "fap-991eb17cb90773b0",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": {
      "value": [
-      "Patients must be residents of Grady, Mitchell, Brooks or Thomas County, Georgia, or of a Georgia county with no hospital offering the required Covered Services."
+      "patients who are residents of Grady, Mitchell, Brooks or Thomas County, Georgia, or reside in a county in Georgia which does not include a hospital offering the required Covered Services"
      ],
      "layer": "documented",
      "quote": "patients who are residents of Grady, Mitchell, Brooks or Thomas County, Georgia, or reside in a county in Georgia which does not include a hospital offering the required Covered Services",
@@ -4272,15 +4222,7 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "insured_patients_covered": {
-     "value": false,
-     "layer": "documented",
-     "quote": "This policy is not available to persons who have any contractual claim or right for reimbursement or indemnification from an insurer or other third party liability payor.",
-     "source_id": "fap-991eb17cb90773b0",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "insured_patients_covered": null,
     "min_balance": null,
     "services_excluded": null
    },
@@ -4291,9 +4233,44 @@
    "apply": {
     "form_url": null,
     "form_version": null,
-    "documents_required": null,
+    "documents_required": {
+     "value": [
+      "tax_return",
+      "pay_stubs",
+      "bank_statements",
+      "proof_of_residency",
+      "photo_id"
+     ],
+     "layer": "documented",
+     "quote": "Federal Income Tax return(s) for your household for the most recent calendar year.",
+     "source_id": "fap-1ae674ccec174eeb",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "documents_reported": null,
-    "submit_methods": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "Account Management Services Attention: Financial Assistance Program 920 Cairo Road Thomasville, GA 31792-4255"
+      },
+      {
+       "kind": "fax",
+       "detail": "(229)584-5906"
+      },
+      {
+       "kind": "email",
+       "detail": "fap@archbold.org"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Send completed applications and all documentation to: Account Management Services Attention: Financial Assistance Program 920 Cairo Road Thomasville, GA 31792-4255",
+     "source_id": "fap-1ae674ccec174eeb",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "window_days_from_first_bill": null,
     "decision_days": null,
     "decision_days_reported": null
@@ -4303,7 +4280,15 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": null,
+    "phone": {
+     "value": "229-228-8840",
+     "layer": "documented",
+     "quote": "please call our Financial Assistance Case Manager@ 229-228-8840",
+     "source_id": "fap-1ae674ccec174eeb",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "hours": null,
     "languages": null
    },
@@ -4323,19 +4308,22 @@
      "effective_date": null
     },
     {
-     "id": "fap-ea37c188e81c3e40",
+     "id": "fap-1ae674ccec174eeb",
      "kind": "hospital_web",
-     "url": "https://www.archbold.org/documents/organizational%20and%20financial%20information/archbold%20grady/2024/102.44-Financial-Assistance-Program-Indigent-Care-Trust-Fund-revised-01.2024.pdf",
+     "url": "https://www.archbold.org/documents/content/PFS-Application-Instruction-Sheet-Application.pdf",
      "title": "",
      "fetched_on": "2026-10-23",
-     "sha256": "ea37c188e81c3e402e9f482816d64346e31299a971367b5c5f59fcfeb661cdb1",
+     "sha256": "1ae674ccec174eeb8bad0687ea4b6c8f4c1e7d33356d1d59ca278e7e76c79ebc",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "agent dropped eligibility.discount_tiers: judge: The quote gives the 200%-325% range, but the discount is 'up to 63%', a maximum rather than a fixed 63% discount.",
-    "agent dropped programs.state_programs: judge: The quote names the ICTF program and the 200% FPL threshold, but gives no application method and says residents 'may be eligible'."
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Four (4) most recent pay stubs or a statement from your employer regarding your income. | Bank Statements for all bank accounts for the last two (2) months.",
+    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Completed applications and documentation may also be faxed to (229)584-5906 or emailed to fap@archbold.org",
+    "agent dropped eligibility.discount_tiers: excerpt not in source: For the fiscal year ending 09/30/2024 the discounts will be ",
+    "agent judge on eligibility.free_care_max_fpl: Quote says residents at or below 200% FPL \"may be eligible for a substantial discount of charges,\" not 100% free care, so it does not state a free-care maximum.",
+    "agent judge on apply.documents_required: Quote lists only tax returns, pay stubs, and bank statements. \"Proof of Residency\" and \"Identification\" do not appear in the quote."
    ]
   },
   {
@@ -4353,69 +4341,128 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": null,
+    "free_care_max_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "If Family Income of a patient not enrolled in Medicaid is less than or equal to 200% of the Federal Poverty Guidelines, the patient will receive 100% charity care adjustment for Eligible Health Care Services",
+     "source_id": "fap-0e1bb40253c56386",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": null,
-    "insured_patients_covered": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "For insured patients, the adjusted Gross Charges will be used to calculate only the patient's out-of-pocket financial responsibility (e.g., copayments, deductibles and other coinsurance amounts) under the applicable health benefits plan",
+     "source_id": "fap-0e1bb40253c56386",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "min_balance": null,
     "services_excluded": null
    },
    "programs": {
-    "presumptive": null,
-    "state_programs": null
+    "presumptive": {
+     "value": [
+      "Medicaid"
+     ],
+     "layer": "documented",
+     "quote": "patients who are Medicaid beneficiaries will be deemed presumptively to qualify for 100% financial assistance for Medicaid non-covered charges for Eligible Health Care Services",
+     "source_id": "fap-0e1bb40253c56386",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "state_programs": {
+     "value": [
+      {
+       "name": "Georgia Indigent Care Trust Fund",
+       "how_to_apply": "Consistent with Indigent Care Trust Fund requirements, administered as part of the financial assistance determination process"
+      }
+     ],
+     "layer": "documented",
+     "quote": "the patient will receive 100% charity care adjustment for Eligible Health Care Services (consistent with Indigent Care Trust Fund requirements)",
+     "source_id": "fap-0e1bb40253c56386",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
    },
    "apply": {
     "form_url": null,
     "form_version": null,
     "documents_required": {
      "value": [
-      "social_security_letter",
-      "other"
+      "pay_stubs",
+      "tax_return",
+      "other",
+      "bank_statements",
+      "medicaid_denial"
      ],
      "layer": "documented",
-     "quote": "To be considered for financial assistance, you must complete our financial assistance application and provide all required financial documents as well as a copy of your Health Insurance Exchange (HIE) application confirmation.",
-     "source_id": "web-1e170f9756eb1dba",
+     "quote": "Paycheck stubs for at least the last four weeks or a statement from the employer verifying gross wages; or Most recent tax return; or IRS W-2 Form issued during the past year; or Most recent IRS Form 1040; or Most recent two months of bank statements for each checking, savings, money market or other bank or investment account; or Documentation or an attestation of all other income for the most recent two months (for example, unemployment compensation, disability, retirement, etc.); or Unemployment compensation denial letter, if applicable",
+     "source_id": "fap-0e1bb40253c56386",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "documents_reported": null,
-    "submit_methods": {
-     "value": [
-      {
-       "kind": "phone",
-       "detail": "Contact Patient Business Services at 706.596.4412"
-      }
-     ],
+    "submit_methods": null,
+    "window_days_from_first_bill": null,
+    "decision_days": {
+     "value": 30,
      "layer": "documented",
-     "quote": "you may apply for financial assistance by contacting Patient Business Services at 706.596.4412 .",
-     "source_id": "web-1e170f9756eb1dba",
+     "quote": "The application review process usually is completed within 30 days.",
+     "source_id": "fap-0e1bb40253c56386",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "window_days_from_first_bill": null,
-    "decision_days": null,
     "decision_days_reported": null
    },
    "collections": {
-    "eca_wait_days": null,
+    "eca_wait_days": {
+     "value": 120,
+     "layer": "documented",
+     "quote": "Emory Healthcare will screen underinsured patients through the External Screening Process after 120 days without payment or after initiating a financial assistance application to determine financial assistance eligibility.",
+     "source_id": "fap-0e1bb40253c56386",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "collection_agencies": null
    },
    "contacts": {
     "phone": {
      "value": "706.596.4412",
      "layer": "documented",
-     "quote": "If you think you may qualify for financial assistance, please contact our Patient Business Services at 706.596.4412 .",
+     "quote": "Please contact our Patient Business Services at 706.596.4412 for more details.",
      "source_id": "web-1e170f9756eb1dba",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "hours": null,
-    "languages": null
+    "languages": {
+     "value": [
+      "English",
+      "Spanish",
+      "Vietnamese",
+      "Korean",
+      "Chinese"
+     ],
+     "layer": "documented",
+     "quote": "These communications are available in English, Spanish, Vietnamese, Korean, and Chinese.",
+     "source_id": "fap-0e1bb40253c56386",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
    },
    "coverage": {
     "facilities": null,
@@ -4424,6 +4471,24 @@
    },
    "sources": [
     {
+     "id": "fap-0e1bb40253c56386",
+     "kind": "hospital_web",
+     "url": "https://www.emoryhealthcare.org/-/media/Project/EH/Emory/ui/pdfs/insurance/financial-assistance/emory-healthcare-financial-assistance-policy-final-04-01-2026-aod.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "0e1bb40253c5638611cd1a947700ff4464a32aeed21aef85e880e4162313a5f3",
+     "effective_date": null
+    },
+    {
+     "id": "fap-2fd3e0cbc1242bdd",
+     "kind": "hospital_web",
+     "url": "https://www.emoryhealthcare.org/-/media/Project/EH/Emory/ui/pdfs/insurance/financial-assistance/emory-financial-assistance-application-ogc-final-draft-g-bertolini-04-01-2026-aod.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "2fd3e0cbc1242bddf40b21bd3db0c788e8bf5e887cb9f5ad459ded8f1af306f1",
+     "effective_date": null
+    },
+    {
      "id": "web-1e170f9756eb1dba",
      "kind": "hospital_web",
      "url": "https://www.mystfrancis.com/pay-my-bill/billing-policies",
@@ -4431,20 +4496,15 @@
      "fetched_on": "2026-10-23",
      "sha256": "1e170f9756eb1dbaf3858758ac93c7321560c1c34154bdfc7864bf7b3be3b5f2",
      "effective_date": null
-    },
-    {
-     "id": "web-05074274bb51211e",
-     "kind": "hospital_web",
-     "url": "https://www.mystfrancis.com/pay-my-bill",
-     "title": "Online Hospital Bill Pay & Assistance",
-     "fetched_on": "2026-10-23",
-     "sha256": "05074274bb51211e9c5a74796e3fc00461da67894d984d73b909a26d16933750",
-     "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "agent dropped contacts.hours: judge: The quote gives only 'Mon. - Fri. 8:30 A.M. to 4:30 P.M.' and does not say these are walk-in Patient Business Services hours."
+    "eligibility.discount_tiers: 200-350% at 100% is the free-care band, not a tier; skipped",
+    "agent dropped apply.submit_methods: quote is not a substring of the source",
+    "agent dropped apply.window_days_from_first_bill: quote is not a substring of the source",
+    "agent judge on programs.state_programs: Quote only mentions 'Indigent Care Trust Fund requirements' in a parenthetical; it does not name a Georgia program or describe how to apply.",
+    "agent judge on apply.documents_required: Quote also lists 'Documentation or an attestation of all other income for the most recent two months', which is omitted from the recorded value."
    ]
   },
   {
@@ -5163,72 +5223,128 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": null,
-    "discount_tiers": null,
+    "free_care_max_fpl": {
+     "value": "125",
+     "layer": "documented",
+     "quote": "Provide Medically Necessary Care for no charge to persons with incomes at or below 125% of the FPG",
+     "source_id": "fap-bb5e6209bfd8721e",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "125",
+       "max_fpl_inclusive": "200",
+       "discount_percent": 97
+      },
+      {
+       "min_fpl_exclusive": "200",
+       "max_fpl_inclusive": "250",
+       "discount_percent": 90
+      },
+      {
+       "min_fpl_exclusive": "250",
+       "max_fpl_inclusive": "300",
+       "discount_percent": 80
+      }
+     ],
+     "layer": "documented",
+     "quote": "Category 1 (HI below 125% of FPG) Category 2 (HI 126%-200% of FPG) Patient Payment Responsibility Category 1 - 0% of AGB Category 2 - 3% of AGB",
+     "source_id": "fap-bb5e6209bfd8721e",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "assistance_ceiling_fpl": null,
     "asset_test": {
      "value": true,
      "layer": "documented",
-     "quote": "all applicants for Financial Assistance must provide proof of Household Income and Household Assets by",
-     "source_id": "fap-cda3b082aae6c4af",
+     "quote": "patients may be eligible for additional charitable allowances, under this FAP, based upon household income and in certain situations, if Qualifying Assets do not exceed an amount equal to 200% of his or her billed charges for services rendered",
+     "source_id": "fap-bb5e6209bfd8721e",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "residency": null,
-    "insured_patients_covered": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "For patients with insurance coverage, the patient pay responsibility will be the insurance co-pay, co-insurance and deductible, capped in all cases at a percentage of gross charges, up to AGB.",
+     "source_id": "fap-bb5e6209bfd8721e",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "min_balance": null,
     "services_excluded": null
    },
    "programs": {
-    "presumptive": null,
+    "presumptive": {
+     "value": [
+      "Medicaid",
+      "homeless",
+      "deceased with no estate"
+     ],
+     "layer": "documented",
+     "quote": "Patient deceased, with verification that there is no estate",
+     "source_id": "fap-bb5e6209bfd8721e",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "state_programs": null
    },
    "apply": {
     "form_url": null,
     "form_version": null,
-    "documents_required": {
-     "value": [
-      "tax_return",
-      "pay_stubs",
-      "bank_statements"
-     ],
-     "layer": "documented",
-     "quote": "Most recent Internal Revenue Service (IRS) Form 1040 AND IRS W-2/1099 (if applicable) issued during the past",
-     "source_id": "fap-cda3b082aae6c4af",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "documents_required": null,
     "documents_reported": null,
     "submit_methods": null,
     "window_days_from_first_bill": {
      "value": 240,
      "layer": "documented",
-     "quote": "applications submitted within 240 days from the first post-discharge billing statement date",
-     "source_id": "fap-cda3b082aae6c4af",
+     "quote": "Financial Assistance Program applications may be submitted within 240 days following the patient's post- discharge first statement.",
+     "source_id": "fap-bb5e6209bfd8721e",
      "checked_on": "2026-10-23",
-     "confidence": 1.0,
+     "confidence": 0.8,
      "support_count": 0
     },
     "decision_days": null,
     "decision_days_reported": null
    },
    "collections": {
-    "eca_wait_days": null,
+    "eca_wait_days": {
+     "value": 120,
+     "layer": "documented",
+     "quote": "Notification Period: A period of 120-days following the first post-discharge billing statement that was provided to an eligible FAP patient after individual care has been provided and the patient has left the service facility.",
+     "source_id": "fap-bb5e6209bfd8721e",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "collection_agencies": null
    },
    "contacts": {
     "phone": {
      "value": "470-245-9998",
      "layer": "documented",
-     "quote": "30374, , Fax number: 770-792-1737 or Phone number: 470-245-9998",
-     "source_id": "fap-cda3b082aae6c4af",
+     "quote": "Wellstar Financial Assistance Program (FAP) Department 470-245-9998",
+     "source_id": "fap-bb5e6209bfd8721e",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "hours": null,
+    "hours": {
+     "value": "8:00am and 4:30pm, Monday through Friday",
+     "layer": "documented",
+     "quote": "available by request to Wellstar Business Office between the hours of 8:00am and 4:30pm, Monday through Friday at 470-245-9998",
+     "source_id": "fap-bb5e6209bfd8721e",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "languages": null
    },
    "coverage": {
@@ -5238,37 +5354,43 @@
    },
    "sources": [
     {
-     "id": "fap-3080fa8df729d6b6",
+     "id": "fap-bb5e6209bfd8721e",
      "kind": "hospital_web",
-     "url": "https://www.wellstar.org/-/media/HospitalTransparency/Wellstar2025FinancialAssistancePolicy.pdf",
+     "url": "https://www.wellstar.org/-/media/project/wellstar/org/documents/2024-hospital-transparency-information/financial-assistance-policy/financial-assistance-program-policy.pdf",
      "title": "",
      "fetched_on": "2026-10-23",
-     "sha256": "3080fa8df729d6b67b412bbfcd343546426195b265a574b814295b521b42bcef",
+     "sha256": "bb5e6209bfd8721e75c4e5faeead3861e1f059895472d44d45b530280c77176b",
      "effective_date": null
     },
     {
-     "id": "fap-cda3b082aae6c4af",
+     "id": "fap-314c6b0428184ae5",
      "kind": "hospital_web",
-     "url": "https://www.wellstar.org/-/media/project/wellstar/org/documents/fap-application-in-languages/fap-application-oct-24/ld-24-01-ja41a-fap-application-english-21624-plain--004.pdf?rev=cb511d39948646e2a4200b67c1722916&hash=6981A3633B28BB94AA8270AD72E470CD",
+     "url": "https://www.wellstar.org/-/media/project/wellstar/org/documents/fap-application-in-languages/english-materials/fap-application-english.pdf?hash=88AAC6E242E2E717B7396A7CE959CAA7&rev=3bf118edf133468b90872dbd20466254",
      "title": "",
      "fetched_on": "2026-10-23",
-     "sha256": "cda3b082aae6c4af7f3cb0b12c6ce4006f27c1b3a52456858d7c96149e187f1a",
+     "sha256": "314c6b0428184ae569b763c85af3bdf18e9013c7a21ba02d1ed87238ba24c121",
      "effective_date": null
     },
     {
-     "id": "web-73aa156d33ba1b82",
+     "id": "web-3c3cfd9731a282e7",
      "kind": "hospital_web",
-     "url": "https://www.wellstar.org/for-patients/financial-assistance",
-     "title": "Explore Patient Financial Assistance Program",
+     "url": "https://www.wellstar.org/for-patients/pay-your-bill",
+     "title": "Pay Your Bill",
      "fetched_on": "2026-10-23",
-     "sha256": "73aa156d33ba1b82f20da4416d6568343746a076cf9bfe55d9c7cb5b3233c34b",
+     "sha256": "3c3cfd9731a282e7a5dd00ffce58bb6499dd59d9b95fefb5bf78c0780360fcf0",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Provide three (3) months of the most recent paycheck stubs or a statement from employer verifying gross wages AND the | most recent two (2) months of bank statements for each checking, savings, money market or other bank or investment",
-    "agent dropped apply.submit_methods: judge: The quote supports applying and e-signing via Wellstar MyChart but says nothing about uploading supporting documents."
+    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: Category 3 (HI 201%-250% of FPG) Category 4 (HI 251%-300% of FPG) Patient Payment Responsibility* Category 3 - 10% of AG",
+    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Verified Homelessness | The patient qualifies for a government program with eligibility requirements that reasonably meet the qualifications for",
+    "apply.window_days_from_first_bill: quote matched the source only after typography normalization",
+    "agent dropped programs.state_programs: quote is not a substring of the source",
+    "agent dropped apply.documents_required: excerpt not in source: Provide two (2) current bank statements for all checking and",
+    "agent dropped apply.submit_methods: excerpt not in source: Patient, or a patient's guardian or legal conservator, may a",
+    "agent judge on eligibility.discount_tiers: Quote gives tiers at 126%-200% (3%), 201%-250% (10%), 251%-300% (20%) of AGB; value's 97/90/80 discount percents and 125-200 band not stated in quote as discounts.",
+    "agent judge on programs.presumptive: Quote lists deceased with no estate, verified homelessness, and a government program meeting FAP requirements; it does not name Medicaid explicitly."
    ]
   },
   {
@@ -5315,16 +5437,16 @@
    },
    "contacts": {
     "phone": {
-     "value": "(478) 472-3100",
+     "value": "478-472-3100",
      "layer": "documented",
-     "quote": "If you have any questions about your insurance or any statement you\u2019ve received, please contact the Business Office at (478) 472-3100.",
+     "quote": "Referrals 478-472-3100",
      "source_id": "web-6a98d257508253e9",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "hours": {
-     "value": "8:30 am to 5 pm, Monday through Friday",
+     "value": "8:30 am until 5 pm, Monday through Friday",
      "layer": "documented",
      "quote": "The office is open from 8:30 am until 5 pm, Monday through Friday.",
      "source_id": "web-6a98d257508253e9",
@@ -5958,7 +6080,15 @@
    "eligibility": {
     "free_care_max_fpl": null,
     "discount_tiers": null,
-    "assistance_ceiling_fpl": null,
+    "assistance_ceiling_fpl": {
+     "value": "0",
+     "layer": "documented",
+     "quote": "Your income exceeds the income requirements noted in the guidelines of the SGMC Financial Assistance Policy;",
+     "source_id": "fap-a5dc3eb185b5ea3d",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "asset_test": null,
     "residency": null,
     "insured_patients_covered": null,
@@ -5967,14 +6097,27 @@
    },
    "programs": {
     "presumptive": null,
-    "state_programs": null
+    "state_programs": {
+     "value": [
+      {
+       "name": "Indigent Care Trust Fund",
+       "how_to_apply": "contact Patient Financial Services at (229) 333-1040 or 1 (877) 225-2071"
+      }
+     ],
+     "layer": "documented",
+     "quote": "SGMC participates in the Indigent Care Trust Fund program. Our financial assistance policies are based upon ICTF guidelines. For more information, contact Patient Financial Services at (229) 333-1040 or 1 (877) 225-2071.",
+     "source_id": "fap-a5dc3eb185b5ea3d",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
    },
    "apply": {
     "form_url": {
-     "value": "https://www.sgmc.org/wp-content/uploads/2026/10/ENGLISH-Financial-Assistance-Application_WORD-4-19.pdf",
+     "value": "https://www.sgmc.org/wp-content/uploads/2019/06/ENGLISH-Financial-Assistance-Application_WORD-4-19.pdf",
      "layer": "documented",
-     "quote": "Download a Printable Application [https://www.sgmc.org/wp-content/uploads/2026/10/ENGLISH-Financial-Assistance-Application_WORD-4-19.pdf]",
-     "source_id": "web-a294a337a9775025",
+     "quote": "SGHS Financial Assistance Application Form [https://www.sgmc.org/wp-content/uploads/2019/06/ENGLISH-Financial-Assistance-Application_WORD-4-19.pdf]",
+     "source_id": "web-7c17e33f1c3b3698",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -5982,24 +6125,7 @@
     "form_version": null,
     "documents_required": null,
     "documents_reported": null,
-    "submit_methods": {
-     "value": [
-      {
-       "kind": "email",
-       "detail": "pfs_financialcounselors@sgmc.org"
-      },
-      {
-       "kind": "portal",
-       "detail": "MyChart: https://mychart.et1024.epichosted.com/MyChart/FinancialAssistance"
-      }
-     ],
-     "layer": "documented",
-     "quote": "email the completed application to pfs_financialcounselors@sgmc.org",
-     "source_id": "web-a294a337a9775025",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "submit_methods": null,
     "window_days_from_first_bill": null,
     "decision_days": {
      "value": 2,
@@ -6020,17 +6146,17 @@
     "phone": {
      "value": "(229) 333-1040",
      "layer": "documented",
-     "quote": "please contact Patient Financial Services at (229) 333-1040.",
-     "source_id": "web-a294a337a9775025",
+     "quote": "You can contact a representative at (229) 333-1040 or call toll free 1 (877) 225-2071.",
+     "source_id": "fap-a5dc3eb185b5ea3d",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "hours": {
-     "value": "Monday \u2013 Friday 8:00am \u2013 4:30pm",
+     "value": "8 a.m. to 5 p.m. Monday through Friday",
      "layer": "documented",
-     "quote": "Monday \u2013 Friday 8:00am \u2013 4:30pm",
-     "source_id": "web-a294a337a9775025",
+     "quote": "please call Customer Service during our normal business hours of 8 a.m. to 5 p.m. Monday through Friday.",
+     "source_id": "fap-a5dc3eb185b5ea3d",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -6044,38 +6170,39 @@
    },
    "sources": [
     {
-     "id": "fap-2dcf7e3caa28b6f8",
+     "id": "fap-6cffa9cc21f858f9",
      "kind": "hospital_web",
-     "url": "https://www.sgmc.org/wp-content/uploads/2024/05/14-Financial-Assistance-policy-SPP3.006-rev-4-2024.pdf",
+     "url": "https://www.sgmc.org/wp-content/uploads/2024/04/SPP-3.006-rev-4-2024.pdf",
      "title": "",
      "fetched_on": "2026-10-23",
-     "sha256": "2dcf7e3caa28b6f85e256d45523ad5ea6d6809933605acd1b3267bb633bc4b61",
+     "sha256": "6cffa9cc21f858f9bf8a6fa3d3b4fb6067f9fe8a3ac2156804dce99a1c35cd85",
      "effective_date": null
     },
     {
      "id": "fap-a5dc3eb185b5ea3d",
      "kind": "hospital_web",
-     "url": "https://www.sgmc.org/wp-content/uploads/2026/10/ENGLISH-Financial-Assistance-Application_WORD-4-19.pdf",
+     "url": "https://www.sgmc.org/wp-content/uploads/2019/06/ENGLISH-Financial-Assistance-Application_WORD-4-19.pdf",
      "title": "",
      "fetched_on": "2026-10-23",
      "sha256": "a5dc3eb185b5ea3d3228a3d290a627c0a036b0f6819e165f3ed8a014207d42af",
      "effective_date": null
     },
     {
-     "id": "web-a294a337a9775025",
+     "id": "web-7c17e33f1c3b3698",
      "kind": "hospital_web",
      "url": "https://www.sgmc.org/patients-visitors/financial-assistance/",
      "title": "Financial Assistance - SGMC Health",
      "fetched_on": "2026-10-23",
-     "sha256": "a294a337a97750258e6ffa3c2316b79cbdfd55fb8043119d68035ac3e72c4944",
+     "sha256": "7c17e33f1c3b369818738acc095ea02cfd56dc23737244e75cc4b3692c23fd13",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Complete Your Application on MyChart [https://mychart.et1024.epichosted.com/MyChart/FinancialAssistance]",
-    "agent dropped apply.documents_required: excerpt not in source: Completed Financial Statement\n Proof of Income: 3 months of ",
-    "agent dropped programs.state_programs: judge: Medicaid caseworker and ICTF participation are quoted, but the quote gives no phone numbers or ICTF application instructions."
+    "agent dropped apply.documents_required: excerpt not in source: Proof of Identity* Proof of Residency* Proof of number of de",
+    "agent dropped apply.submit_methods: excerpt not in source: Mailing Address: South Georgia Medical Center Patient Financ",
+    "agent judge on eligibility.assistance_ceiling_fpl: Quote only says income exceeding unspecified guideline requirements is ineligible; it gives no percent of FPL ceiling.",
+    "agent judge on apply.decision_days: Quote says approval may occur within 48 hours 'in most cases'; it is a hedged approval time, not a stated decision deadline of 2 days."
    ]
   },
   {
@@ -7332,72 +7459,149 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": null,
-    "discount_tiers": null,
+    "free_care_max_fpl": {
+     "value": "125",
+     "layer": "documented",
+     "quote": "Provide Medically Necessary Care for no charge to persons with incomes at or below 125% of the FPG",
+     "source_id": "fap-bb5e6209bfd8721e",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "125",
+       "max_fpl_inclusive": "200",
+       "discount_percent": 97
+      },
+      {
+       "min_fpl_exclusive": "200",
+       "max_fpl_inclusive": "250",
+       "discount_percent": 90
+      },
+      {
+       "min_fpl_exclusive": "250",
+       "max_fpl_inclusive": "300",
+       "discount_percent": 80
+      }
+     ],
+     "layer": "documented",
+     "quote": "Category 1 (HI below 125% of FPG) Category 2 (HI 126%-200% of FPG) Patient Payment Responsibility Category 1 - 0% of AGB Category 2 - 3% of AGB",
+     "source_id": "fap-bb5e6209bfd8721e",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "assistance_ceiling_fpl": null,
     "asset_test": {
      "value": true,
      "layer": "documented",
-     "quote": "all applicants for Financial Assistance must provide proof of Household Income and Household Assets by",
-     "source_id": "fap-cda3b082aae6c4af",
+     "quote": "patients may be eligible for additional charitable allowances, under this FAP, based upon household income and in certain situations, if Qualifying Assets do not exceed an amount equal to 200% of his or her billed charges for services rendered.",
+     "source_id": "fap-bb5e6209bfd8721e",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "residency": null,
-    "insured_patients_covered": null,
-    "min_balance": null,
-    "services_excluded": null
-   },
-   "programs": {
-    "presumptive": null,
-    "state_programs": null
-   },
-   "apply": {
-    "form_url": null,
-    "form_version": null,
-    "documents_required": {
-     "value": [
-      "tax_return",
-      "pay_stubs",
-      "bank_statements"
-     ],
+    "insured_patients_covered": {
+     "value": true,
      "layer": "documented",
-     "quote": "Most recent Internal Revenue Service (IRS) Form 1040 AND IRS W-2/1099 (if applicable) issued during the past",
-     "source_id": "fap-cda3b082aae6c4af",
+     "quote": "For patients with insurance coverage, the patient pay responsibility will be the insurance co-pay, co-insurance and deductible, capped in all cases at a percentage of gross charges, up to AGB.",
+     "source_id": "fap-bb5e6209bfd8721e",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": {
+     "value": [
+      "Medicaid",
+      "homeless",
+      "deceased with no estate"
+     ],
+     "layer": "documented",
+     "quote": "Patient deceased, with verification that there is no estate",
+     "source_id": "fap-bb5e6209bfd8721e",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "state_programs": {
+     "value": [
+      {
+       "name": "Indigent Care Trust Fund (ICTF)",
+       "how_to_apply": "Patients are required to cooperate in determining their eligibility for various programs (such as the State of Georgia Indigent Care Trust Fund [ICTF] and Medicaid program) in order to qualify for financial assistance under this FAP"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Patients are expected to cooperate with Wellstar and are required to cooperate in determining their eligibility for various programs (such as the State of Georgia Indigent Care Trust Fund [ICTF] and Medicaid program) in order to qualify for financial assistance under this FAP",
+     "source_id": "fap-bb5e6209bfd8721e",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
+   },
+   "apply": {
+    "form_url": {
+     "value": "https://www.wellstar.org/-/media/project/wellstar/org/documents/fap-application-in-languages/fap-application-oct-24/ld-24-01-ja41a-fap-application-english-21624-plain--004.pdf?rev=cb511d39948646e2a4200b67c1722916&hash=6981A3633B28BB94AA8270AD72E470CD",
+     "layer": "documented",
+     "quote": "Please click here to download the application in English. [/-/media/project/wellstar/org/documents/fap-application-in-languages/fap-application-oct-24/ld-24-01-ja41a-fap-application-english-21624-plain--004.pdf?rev=cb511d39948646e2a4200b67c1722916&hash=6981A3633B28BB94AA8270AD72E470CD]",
+     "source_id": "web-5b94e60a068b4cd0",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "form_version": null,
+    "documents_required": null,
     "documents_reported": null,
     "submit_methods": null,
     "window_days_from_first_bill": {
      "value": 240,
      "layer": "documented",
-     "quote": "applications submitted within 240 days from the first post-discharge billing statement date",
-     "source_id": "fap-cda3b082aae6c4af",
+     "quote": "Financial Assistance Program applications may be submitted within 240 days following the patient's post- discharge first statement.",
+     "source_id": "fap-bb5e6209bfd8721e",
      "checked_on": "2026-10-23",
-     "confidence": 1.0,
+     "confidence": 0.8,
      "support_count": 0
     },
     "decision_days": null,
     "decision_days_reported": null
    },
    "collections": {
-    "eca_wait_days": null,
+    "eca_wait_days": {
+     "value": 120,
+     "layer": "documented",
+     "quote": "Notification Period: A period of 120-days following the first post-discharge billing statement that was provided to an eligible FAP patient after individual care has been provided and the patient has left the service facility.",
+     "source_id": "fap-bb5e6209bfd8721e",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "collection_agencies": null
    },
    "contacts": {
     "phone": {
      "value": "470-245-9998",
      "layer": "documented",
-     "quote": "Fax number: 770-792-1737 or Phone number: 470-245-9998",
-     "source_id": "fap-cda3b082aae6c4af",
+     "quote": "Wellstar Financial Assistance Program (FAP) Department 470-245-9998",
+     "source_id": "fap-bb5e6209bfd8721e",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "hours": null,
+    "hours": {
+     "value": "8:00am and 4:30pm, Monday through Friday",
+     "layer": "documented",
+     "quote": "available by request to Wellstar Business Office between the hours of 8:00am and 4:30pm, Monday through Friday at 470-245-9998",
+     "source_id": "fap-bb5e6209bfd8721e",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "languages": null
    },
    "coverage": {
@@ -7407,37 +7611,45 @@
    },
    "sources": [
     {
-     "id": "fap-3080fa8df729d6b6",
+     "id": "fap-bb5e6209bfd8721e",
      "kind": "hospital_web",
-     "url": "https://www.wellstar.org/-/media/HospitalTransparency/Wellstar2025FinancialAssistancePolicy.pdf",
+     "url": "https://www.wellstar.org/-/media/project/wellstar/org/documents/2024-hospital-transparency-information/financial-assistance-policy/financial-assistance-program-policy.pdf",
      "title": "",
      "fetched_on": "2026-10-23",
-     "sha256": "3080fa8df729d6b67b412bbfcd343546426195b265a574b814295b521b42bcef",
+     "sha256": "bb5e6209bfd8721e75c4e5faeead3861e1f059895472d44d45b530280c77176b",
      "effective_date": null
     },
     {
-     "id": "fap-cda3b082aae6c4af",
+     "id": "fap-314c6b0428184ae5",
      "kind": "hospital_web",
-     "url": "https://www.wellstar.org/-/media/project/wellstar/org/documents/fap-application-in-languages/fap-application-oct-24/ld-24-01-ja41a-fap-application-english-21624-plain--004.pdf?rev=cb511d39948646e2a4200b67c1722916&hash=6981A3633B28BB94AA8270AD72E470CD",
+     "url": "https://www.wellstar.org/-/media/project/wellstar/org/documents/fap-application-in-languages/english-materials/fap-application-english.pdf",
      "title": "",
      "fetched_on": "2026-10-23",
-     "sha256": "cda3b082aae6c4af7f3cb0b12c6ce4006f27c1b3a52456858d7c96149e187f1a",
+     "sha256": "314c6b0428184ae569b763c85af3bdf18e9013c7a21ba02d1ed87238ba24c121",
      "effective_date": null
     },
     {
-     "id": "web-887222665c3a706c",
+     "id": "web-5b94e60a068b4cd0",
      "kind": "hospital_web",
      "url": "https://www.wellstar.org/for-patients/financial-assistance",
      "title": "Explore Patient Financial Assistance Program",
      "fetched_on": "2026-10-23",
-     "sha256": "887222665c3a706c101783b8904b43bd3a50cb67a8655fb9f318ccffe7816fd2",
+     "sha256": "5b94e60a068b4cd08d934ecdfd905726efab404f30f6050319f4e119d17b7677",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Provide three (3) months of the most recent paycheck stubs or a statement from employer verifying gross wages AND the | most recent two (2) months of bank statements for each checking, savings, money market or other bank or investment",
-    "agent dropped apply.submit_methods: judge: The quote ends at 'Atlanta, GA' with no ZIP code; 30374 does not appear. The fax number is supported."
+    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: Category 3 (HI 201%-250% of FPG) Category 4 (HI 251%-300% of FPG) Patient Payment Responsibility* Category 3 - 10% of AG",
+    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Verified Homelessness | The patient qualifies for a government program with eligibility requirements that reasonably meet the qualifications for",
+    "apply.window_days_from_first_bill: quote matched the source only after typography normalization",
+    "agent dropped apply.documents_required: excerpt not in source: Provide two (2) current bank statements for all checking and",
+    "agent dropped apply.submit_methods: excerpt not in source: calling the Wellstar Single Billing Office and requesting an",
+    "agent dropped contacts.languages: excerpt not in source: Spanish [/-/media/project/wellstar/org/documents/fap-applica",
+    "agent judge on eligibility.discount_tiers: Quote gives patient payment of 3%, 10%, and 20% of AGB; the values 97, 90, and 80 discount percents do not appear in the quote and must be inferred.",
+    "agent judge on programs.presumptive: Quote names deceased with no estate and verified homelessness, but only a generic government program; Medicaid is not named as presumptive.",
+    "agent judge on apply.form_url: Quote gives only a relative path ending in the rev/hash parameters; the https://www.wellstar.org domain is not stated in the quote.",
+    "agent judge on collections.eca_wait_days: Quote defines a 120-day Notification Period after the first post-discharge statement; it does not say collection actions wait 120 days."
    ]
   },
   {
@@ -8010,7 +8222,15 @@
     "free_care_max_fpl": null,
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
-    "asset_test": null,
+    "asset_test": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Checking Account Statement Savings Account Statement",
+     "source_id": "fap-35e20bb7425689d3",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "residency": null,
     "insured_patients_covered": null,
     "min_balance": null,
@@ -8023,37 +8243,25 @@
    "apply": {
     "form_url": null,
     "form_version": null,
-    "documents_required": {
-     "value": [
-      "proof_of_residency",
-      "social_security_letter",
-      "proof_of_income",
-      "tax_return",
-      "medicaid_denial",
-      "other",
-      "bank_statements"
-     ],
-     "layer": "documented",
-     "quote": "Proof of rent/mortgage ID for everyone in the home (social security cards for those in the home under 18 years of age) Utility bills (electric, gas, water, etc.) Two (2) check stubs OR proof of income (SSI payments, Disability, etc.)",
-     "source_id": "fap-35e20bb7425689d3",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "documents_required": null,
     "documents_reported": null,
     "submit_methods": {
      "value": [
+      {
+       "kind": "fax",
+       "detail": "706-632-1504"
+      },
       {
        "kind": "email",
        "detail": "tracey.fears@blueridgemc.org"
       },
       {
-       "kind": "fax",
-       "detail": "706-632-1504"
+       "kind": "in_person",
+       "detail": "Blue Ridge Medical Center, 2855 Old Hwy 5, Blue Ridge GA 30513"
       }
      ],
      "layer": "documented",
-     "quote": "Email: tracey.fears@blueridgemc.org Fax: 706-632-1504",
+     "quote": "Fax: 706-632-1504",
      "source_id": "fap-35e20bb7425689d3",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -8071,7 +8279,7 @@
     "phone": {
      "value": "706-632-1418",
      "layer": "documented",
-     "quote": "Contact: 706-632-1418 Financial Counselors",
+     "quote": "Contact: 706-632-1418",
      "source_id": "fap-35e20bb7425689d3",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -8105,18 +8313,20 @@
      "effective_date": null
     },
     {
-     "id": "web-a42826ad7ea44cd7",
+     "id": "web-43fd25bbd939c22a",
      "kind": "hospital_web",
-     "url": "https://www.blueridgemc.org/organizational-financial-information",
-     "title": "Organizational & Financial Information | Blue Ridge Medical Center",
+     "url": "https://www.blueridgemc.org/pricetransparency",
+     "title": "Price Transparency | Blue Ridge Medical Center",
      "fetched_on": "2026-10-23",
-     "sha256": "a42826ad7ea44cd7426c40caa55d55444ccf2291b9f93242951e665b0b8c2045",
+     "sha256": "43fd25bbd939c22ac8ee046bab8909eae958710fd18a4683c233b8463ebbf5e4",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Last year's tax return, W2 or 1099 - If you are paid by cash, we either need a Wage Statement or a letter from your empl | Proof of public assistance - copy of food stamp card or eligibility letter Recent Medicaid denial if applicable Proof of"
+    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Email: tracey.fears@blueridgemc.org | Blue Ridge Medical Center 2855 Old Hwy 5 Blue Ridge GA 30513",
+    "agent dropped apply.documents_required: excerpt not in source: Proof of rent/mortgage\nID for everyone in the home (social s",
+    "agent judge on eligibility.asset_test: Quote lists 'Checking Account Statement' and 'Savings Account Statement' only; it does not state that assets are considered for eligibility."
    ]
   }
  ]

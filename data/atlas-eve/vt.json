@@ -565,12 +565,12 @@
    },
    "sources": [
     {
-     "id": "web-585fd36db173c513",
+     "id": "web-ff38fa2eeaa20e9c",
      "kind": "hospital_web",
      "url": "https://rrmc.policystat.com/policy/19088913/",
      "title": "PolicyStat\n            :: PolicyStat",
      "fetched_on": "2026-10-23",
-     "sha256": "585fd36db173c513a4feaf279cdeecb71d4f366e8336cab85a79eeb8f54a5828",
+     "sha256": "ff38fa2eeaa20e9c287086ed59911a68fd2a02a7231dfa1715dc3a8567bc753e",
      "effective_date": null
     }
    ],
@@ -1458,9 +1458,25 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": null,
+    "free_care_max_fpl": {
+     "value": "150",
+     "layer": "documented",
+     "quote": "GHC Sliding Fee Discount Free Care/Waiver of 100% of Out of Pocket Costs 40% Discount No Discount No Discount",
+     "source_id": "fap-bb6099fa6aef2971",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "discount_tiers": null,
-    "assistance_ceiling_fpl": null,
+    "assistance_ceiling_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "GHC Sliding Fee Discount Free Care/Waiver of 100% of Out of Pocket Costs 40% Discount No Discount No Discount",
+     "source_id": "fap-bb6099fa6aef2971",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "asset_test": {
      "value": false,
      "layer": "documented",
@@ -1472,7 +1488,7 @@
     },
     "residency": {
      "value": [
-      "GMC patients must be Vermont residents, or non-residents with a medical emergency, and/or be routinely cared for by a GHC primary care provider."
+      "GMC patients must be a resident of Vermont, or a non-resident who experiences a medical emergency, and/or be routinely cared for by a GHC primary care provider"
      ],
      "layer": "documented",
      "quote": "GMC patients must be a resident of Vermont, or a non-resident who experiences a medical emergency, and/or be routinely cared for by a GHC primary care provider",
@@ -1484,7 +1500,7 @@
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "patients with insurance will have the sliding fee discount applied to any and all out-of-pocket costs (co-payments, deductibles)",
+     "quote": "patients with insurance will have the sliding fee discount applied to any and all out-of-pocket costs (co-payments, deductibles), subject to legal/contractual restrictions",
      "source_id": "fap-bb6099fa6aef2971",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1495,47 +1511,14 @@
    },
    "programs": {
     "presumptive": null,
-    "state_programs": {
-     "value": [
-      {
-       "name": "Green Mountain Care programs",
-       "how_to_apply": "Gifford works with patients individually to access"
-      },
-      {
-       "name": "Dr. Dynasaur",
-       "how_to_apply": "Gifford works with patients individually to access"
-      },
-      {
-       "name": "Medicaid Pharmacy benefits",
-       "how_to_apply": "Gifford works with patients individually to access"
-      },
-      {
-       "name": "Ladies First",
-       "how_to_apply": "Gifford works with patients individually to access"
-      },
-      {
-       "name": "Woman-to-Woman Fund",
-       "how_to_apply": "Gifford works with patients individually to access"
-      },
-      {
-       "name": "Vermont Health Connect",
-       "how_to_apply": "Gifford works with patients individually to access"
-      }
-     ],
-     "layer": "documented",
-     "quote": "Access to Green Mountain Care programs Dr. Dynasaur (pregnant women and children) Medicaid Pharmacy benefits",
-     "source_id": "web-98165d81b3995cf6",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "state_programs": null
    },
    "apply": {
     "form_url": {
      "value": "https://giffordhealthcare.org/wp-content/uploads/2025/10/DFAA-Application-updated.pdf",
      "layer": "documented",
-     "quote": "Financial Assistance Application (PDF) [https://giffordhealthcare.org/wp-content/uploads/2025/10/DFAA-Application-updated.pdf]",
-     "source_id": "web-98165d81b3995cf6",
+     "quote": "Gifford Sliding Fee Discount Financial Assistance Application",
+     "source_id": "fap-e07ca50f30bacf87",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -1550,7 +1533,7 @@
       "social_security_letter"
      ],
      "layer": "documented",
-     "quote": "\u2022 Most recently filed tax return (IRS form 1040)",
+     "quote": "Most recently filed tax return (IRS form 1040)",
      "source_id": "fap-e07ca50f30bacf87",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1560,20 +1543,20 @@
     "submit_methods": {
      "value": [
       {
-       "kind": "in_person",
-       "detail": "Any Gifford Health Care location"
-      },
-      {
        "kind": "mail",
-       "detail": "Gifford Health Care, PO Box 2000, Attn: Health Connections, Randolph, VT 05060"
+       "detail": "Mail to: Gifford Health Care, PO Box 2000, Attn: Health Connections, Randolph, VT 05060"
       },
       {
        "kind": "email",
-       "detail": "HealthConnect@GiffordHealthCare.Org"
+       "detail": "Email to HealthConnect@GiffordHealthCare.Org"
+      },
+      {
+       "kind": "in_person",
+       "detail": "return to any Gifford Health Care location"
       }
      ],
      "layer": "documented",
-     "quote": "Please complete the following information and return to any Gifford Health Care location Mail to: Gifford Health Care, PO Box 2000, Attn: Health Connections, Randolph, VT 05060 or Email to HealthConnect@GiffordHealthCare.Org.",
+     "quote": "Please complete the following information and return to any Gifford Health Care location",
      "source_id": "fap-e07ca50f30bacf87",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1599,7 +1582,7 @@
     "phone": {
      "value": "802-728-2323",
      "layer": "documented",
-     "quote": "or by calling the Financial Assistance Coordinator at 802-728-2323",
+     "quote": "calling the Financial Assistance Coordinator at 802-728-2323",
      "source_id": "fap-bb6099fa6aef2971",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1633,19 +1616,25 @@
      "effective_date": null
     },
     {
-     "id": "web-98165d81b3995cf6",
+     "id": "web-438af9a28ea48ce8",
      "kind": "hospital_web",
-     "url": "https://giffordhealthcare.org/patients/financial-assistance/",
-     "title": "Gifford\u2019s Financial Assistance Program provides financial assistance to qualified patients",
+     "url": "https://giffordhealthcare.org/patients/billing/",
+     "title": "Gifford Health Care Billing info: pay a bill online, billing questions call (802) 728-2200",
      "fetched_on": "2026-10-23",
-     "sha256": "98165d81b3995cf60144675c2741afa2efd9e375e8a8a0b36cc5e7b570901f71",
+     "sha256": "438af9a28ea48ce841c36e68aa6286d9c23628015a89b01c47240b848d0aa893",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.state_programs: 2 more verbatim excerpt(s) supported this value: Ladies First (breast and cervical care) Woman-to-Woman Fund (mammograms, pap smear tests and breast exams) | Gifford\u2019s Financial Assistance Program (for uninsured and under-insured patients) Vermont Health Connect",
-    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: \u2022 Paystubs from the past 30 days \u2022 Copy of recent Bank Statement(s) \u2022 Profit and loss statement \u2022 Social Security, disab"
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Paystubs from the past 30 days | Copy of recent Bank Statement(s)",
+    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Mail to: Gifford Health Care, PO Box 2000, Attn: Health Connections, Randolph, VT 05060 or | Email to HealthConnect@GiffordHealthCare.Org.",
+    "agent dropped eligibility.discount_tiers: quote is not a substring of the source",
+    "agent judge on eligibility.free_care_max_fpl: The quote is a benefits table fragment with no FPL percentage; it does not state 150.",
+    "agent judge on eligibility.assistance_ceiling_fpl: The quote is the same table fragment with no FPL percentage; it does not state 200 or any assistance ceiling.",
+    "agent judge on programs.presumptive: Quote says presumptive eligibility is determined from individual life circumstances showing financial need; it does not state an empty list of programs.",
+    "agent judge on apply.form_url: Quote names the application form but does not contain the URL.",
+    "agent judge on apply.documents_required: Quote lists only tax return, paystubs, and bank statements; the value adds profit and loss, Social Security/disability/pension, and public assistance documents not in the quote."
    ]
   },
   {
@@ -2626,19 +2615,19 @@
     "asset_test": {
      "value": true,
      "layer": "documented",
-     "quote": "The household\u2019s income is equal to or less than the federal poverty guidelines outlined in Springfield Hospital\u2019s Medical Discount Schedule in Attachment A and liquid assets are at or below 400 percent of the federal poverty level.",
-     "source_id": "web-97dfa91605aebc95",
+     "quote": "liquid assets are at or below 400 percent of the federal poverty level",
+     "source_id": "web-d04b6c920ff16b8f",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "residency": {
      "value": [
-      "The patient or guarantor must be a resident of Vermont, or of Sullivan or Cheshire County in New Hampshire."
+      "the patient/guarantor must be a resident of the State of Vermont, or Sullivan or Cheshire Counties in New Hampshire"
      ],
      "layer": "documented",
-     "quote": "the patient/guarantor must be a resident of the State of Vermont, or Sullivan or Cheshire Counties in New Hampshire",
-     "source_id": "web-97dfa91605aebc95",
+     "quote": "the patient/guarantor must be a resident of the State of Vermont, or Sullivan or Cheshire Counties in New Hampshire.",
+     "source_id": "web-d04b6c920ff16b8f",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -2646,8 +2635,8 @@
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "Medicare Beneficiaries: Deductibles and coinsurances due from Medicare beneficiaries can be eligible for a discount under the FAP assuming the patient submits an application and qualifies.",
-     "source_id": "web-97dfa91605aebc95",
+     "quote": "Deductibles and coinsurances due from Medicare beneficiaries can be eligible for a discount under the FAP assuming the patient submits an application and qualifies.",
+     "source_id": "web-d04b6c920ff16b8f",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -2658,11 +2647,11 @@
    "programs": {
     "presumptive": {
      "value": [
-      "Medicaid beneficiaries (coinsurances)"
+      "Medicaid"
      ],
      "layer": "documented",
-     "quote": "Medicaid Beneficiaries Presumptive Eligibility: Coinsurances due from Medicaid beneficiaries qualify for FAP. A Medicaid beneficiary may not be required to complete a FAP application in order for coinsurances to qualify.",
-     "source_id": "web-97dfa91605aebc95",
+     "quote": "Medicaid Beneficiaries Presumptive Eligibility: Coinsurances due from Medicaid beneficiaries qualify for FAP. A Medicaid beneficiary may not be required to complete a FAP application",
+     "source_id": "web-d04b6c920ff16b8f",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -2670,21 +2659,13 @@
     "state_programs": {
      "value": [
       {
-       "name": "Medicaid",
-       "how_to_apply": "Springfield Hospital helps patients apply"
-      },
-      {
-       "name": "Medicare Part D",
-       "how_to_apply": "Springfield Hospital helps patients apply"
-      },
-      {
        "name": "Vermont Health Connect",
-       "how_to_apply": "Springfield Hospital helps patients apply"
+       "how_to_apply": "Springfield Hospital will assist all patients with the completion of an application for Financial Assistance and whenever possible with applications for other programs such as Medicaid, Medicare Part D, Vermont Health Connect, etc."
       }
      ],
      "layer": "documented",
-     "quote": "Springfield Hospital will assist all patients with the completion of an application for Financial Assistance and whenever possible with applications for other programs such as Medicaid, Medicare Part D, Vermont Health Connect, etc.",
-     "source_id": "web-97dfa91605aebc95",
+     "quote": "whenever possible with applications for other programs such as Medicaid, Medicare Part D, Vermont Health Connect, etc.",
+     "source_id": "web-d04b6c920ff16b8f",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -2695,20 +2676,50 @@
      "value": "https://springfieldhospital.org/wp-content/uploads/2025/07/SH-FAP-Application-Form-Revised-06302025.docx",
      "layer": "documented",
      "quote": "Financial Assistance Application- PDF [https://springfieldhospital.org/wp-content/uploads/2025/07/SH-FAP-Application-Form-Revised-06302025.docx]",
-     "source_id": "web-97dfa91605aebc95",
+     "source_id": "web-d04b6c920ff16b8f",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "form_version": null,
-    "documents_required": null,
+    "documents_required": {
+     "value": [
+      "tax_return",
+      "pay_stubs",
+      "social_security_letter",
+      "bank_statements"
+     ],
+     "layer": "documented",
+     "quote": "A complete copy of the most recent federal or state income tax return, including all supporting schedules.",
+     "source_id": "web-d04b6c920ff16b8f",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "documents_reported": null,
-    "submit_methods": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "phone",
+       "detail": "(802) 885-7081, extension 7785"
+      },
+      {
+       "kind": "in_person",
+       "detail": "main campus of Springfield Hospital, 25 Ridgewood Road, Springfield, VT 05156"
+      }
+     ],
+     "layer": "documented",
+     "quote": "A patient may obtain confidential and compassionate assistance located at the main campus of Springfield Hospital, 25 Ridgewood Road, Springfield, VT 05156 or by calling (802) 885-7081, extension 7785.",
+     "source_id": "web-d04b6c920ff16b8f",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "window_days_from_first_bill": {
      "value": 240,
      "layer": "documented",
-     "quote": "will be reversed should a complete application be received within 240 days of the first bill and the applicant is determined to be eligible for financial assistance",
-     "source_id": "web-97dfa91605aebc95",
+     "quote": "should a complete application be received within 240 days of the first bill and the applicant is determined to be eligible for financial assistance",
+     "source_id": "web-d04b6c920ff16b8f",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -2716,8 +2727,8 @@
     "decision_days": {
      "value": 30,
      "layer": "documented",
-     "quote": "A patient who applies for financial assistance will receive a written notice of the determination of Springfield Hospital within 30 days of submission of a complete, signed application and all required supporting documentation.",
-     "source_id": "web-97dfa91605aebc95",
+     "quote": "will receive a written notice of the determination of Springfield Hospital within 30 days of submission of a complete, signed application",
+     "source_id": "web-d04b6c920ff16b8f",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -2729,7 +2740,7 @@
      "value": 120,
      "layer": "documented",
      "quote": "Patient accounts may be sent to a collection agency for unpaid balances greater than 120 days from the date of the first bill and the patient has not applied for financial assistance.",
-     "source_id": "web-97dfa91605aebc95",
+     "source_id": "web-d04b6c920ff16b8f",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -2737,9 +2748,42 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": null,
+    "phone": {
+     "value": "(802) 885-7081",
+     "layer": "documented",
+     "quote": "or by calling (802) 885-7081, extension 7785",
+     "source_id": "web-d04b6c920ff16b8f",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "hours": null,
-    "languages": null
+    "languages": {
+     "value": [
+      "English",
+      "Fran\u00e7ais",
+      "Espa\u00f1ol",
+      "\u7e41\u9ad4\u4e2d\u6587",
+      "Ti\u1ebfng Vi\u1ec7t",
+      "\u0928\u0947\u092a\u093e\u0932\u0940",
+      "Srpsko-hrvats",
+      "Deutsch",
+      "Oroomiffa",
+      "Italiano",
+      "\u0627\u0644\u0639\u0631\u0628\u064a\u0629",
+      "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
+      "Tagalog",
+      "Portugu\u00eas",
+      "\u65e5\u672c\u8a9e",
+      "\u0e20\u0e32\u0e29\u0e32\u0e44\u0e17\u0e22"
+     ],
+     "layer": "documented",
+     "quote": "English | Fran\u00e7ais | Espa\u00f1ol | \u7e41\u9ad4\u4e2d\u6587 | Ti\u1ebfng Vi\u1ec7t | \u0928\u0947\u092a\u093e\u0932\u0940 | Srpsko-hrvats | Deutsch | Oroomiffa | Italiano | \u0627\u0644\u0639\u0631\u0628\u064a\u0629 | \u0420\u0443\u0441\u0441\u043a\u0438\u0439 | Tagalog| Portugu\u00eas | \u65e5\u672c\u8a9e | \u0e20\u0e32\u0e29\u0e32\u0e44\u0e17\u0e22",
+     "source_id": "web-d04b6c920ff16b8f",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
    },
    "coverage": {
     "facilities": null,
@@ -2748,38 +2792,19 @@
    },
    "sources": [
     {
-     "id": "web-97dfa91605aebc95",
+     "id": "web-d04b6c920ff16b8f",
      "kind": "hospital_web",
      "url": "https://springfieldhospital.org/financial-assistance/",
      "title": "Financial Assistance - Springfield Hospital",
      "fetched_on": "2026-10-23",
-     "sha256": "97dfa91605aebc950225348ee9740af4a7b5594dbbb96b73485670956a6b8471",
-     "effective_date": null
-    },
-    {
-     "id": "web-34f6dfb882074bf1",
-     "kind": "hospital_web",
-     "url": "https://springfieldhospital.org/wp-content/uploads/2025/07/SH-FAP-Application-Form-Revised-06302025.docx",
-     "title": "",
-     "fetched_on": "2026-10-23",
-     "sha256": "34f6dfb882074bf10009f4d897d1929fd75de5ad4dce88a7349b2f704542aee2",
-     "effective_date": null
-    },
-    {
-     "id": "web-8602f9d855d816bb",
-     "kind": "hospital_web",
-     "url": "https://springfieldhospital.org/make-a-payment-online/",
-     "title": "Make a Payment OnLine - Springfield Hospital",
-     "fetched_on": "2026-10-23",
-     "sha256": "8602f9d855d816bbb3e4773d65ce01dd2ec2b8364a4fc1eb68a824f3acd1a3d0",
+     "sha256": "d04b6c920ff16b8f4259efef7b4b2f8778811d7c5369b1cd25b3fc274273db2d",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "agent dropped apply.documents_required: judge: The quote does not mention a written letter describing extenuating circumstances.",
-    "agent dropped apply.submit_methods: judge: The quote only says to call for an appointment and bring documents; it gives no main campus address.",
-    "agent dropped contacts.phone: judge: The quote gives (802) 885-7081 extension 7785; the value omits the extension."
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: such as two recent consecutive pay stubs, statement of unemployment benefits or workers compensation benefits, statement | Two recent, consecutive monthly statements for all bank accounts or investment accounts held by any member of the househ",
+    "agent judge on programs.state_programs: Quote names Vermont Health Connect only in a list. It says assistance is given 'whenever possible', but the value's how_to_apply says the hospital 'will assist all patients', dropping that qualifier."
    ]
   },
   {

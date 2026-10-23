@@ -250,40 +250,21 @@
     "free_care_max_fpl": null,
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
-    "asset_test": {
-     "value": true,
-     "layer": "documented",
-     "quote": "[3] Savings account (bank, credit union, and etc.) [4] Certificates of Deposit [5] Stocks or bonds [6] Property including rental property",
-     "source_id": "fap-d2f247f051d151b4",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "asset_test": null,
     "residency": null,
-    "insured_patients_covered": {
-     "value": false,
-     "layer": "documented",
-     "quote": "To qualify for Financial Assistance under this Policy, the patient must: A. Be Uninsured;",
-     "source_id": "fap-d2f247f051d151b4",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "insured_patients_covered": null,
     "min_balance": null,
     "services_excluded": null
    },
    "programs": {
     "presumptive": {
      "value": [
-      "Medicaid-eligible state-funded prescription programs",
       "homeless",
       "WIC",
-      "SNAP",
-      "low income/subsidized housing",
-      "deceased with no estate or mentally incapacitated with no one to act on behalf"
+      "SNAP"
      ],
      "layer": "documented",
-     "quote": "[b] The patient is eligible for state-funded prescription programs; [c] The patient is homeless or received care from a homeless clinic; [d] The patient is eligible for assistance through the Women, Infants and Children program (WIC) [e] The patient is eligible for assistance through the Supplemental Nutrition Assistance Program (SNAP); [f] The patient is eligible for assistance through low income/subsidized housing",
+     "quote": "[c] The patient is homeless or received care from a homeless clinic; [d] The patient is eligible for assistance through the Women, Infants and Children program (WIC) [e] The patient is eligible for assistance through the Supplemental Nutrition Assistance Program (SNAP);",
      "source_id": "fap-d2f247f051d151b4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -296,7 +277,7 @@
      "value": "https://www.arh.org/wp-content/uploads/2025/10/Financial-Evaluation.pdf",
      "layer": "documented",
      "quote": "ACCESS FINANCIAL ASSISTANCE APPLICATION [https://www.arh.org/wp-content/uploads/2025/10/Financial-Evaluation.pdf]",
-     "source_id": "web-aea97a43ff1f9a2a",
+     "source_id": "web-8a2c7e60bd768efd",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -306,8 +287,7 @@
      "value": [
       "tax_return",
       "proof_of_income",
-      "other",
-      "bank_statements"
+      "other"
      ],
      "layer": "documented",
      "quote": "[1] Copy of the previous year's income tax return [2] Verification of household income [3] Savings account (bank, credit union, and etc.)",
@@ -320,20 +300,20 @@
     "submit_methods": {
      "value": [
       {
-       "kind": "mail",
-       "detail": "Completed applications, along with all required documentation, should be returned or mailed to the Revenue Cycle Manager at the applicable facility."
+       "kind": "portal",
+       "detail": "Copies of the application form and instructions are available online at http://www.arh.org/patients_visitors/financial_assistance.aspx"
       },
       {
        "kind": "in_person",
        "detail": "requesting a copy in person at any of the ARH Facilities' patient admission or registration areas"
       },
       {
-       "kind": "phone",
-       "detail": "859-226-2440"
+       "kind": "mail",
+       "detail": "requesting a free copy by mail by contacting the ARH Facilities' Collections Department"
       }
      ],
      "layer": "documented",
-     "quote": "Completed applications, along with all required documentation, should be returned or mailed to the Revenue Cycle Manager at the applicable facility.",
+     "quote": "Copies of the application form and instructions are available online at http://www.arh.org/patients _visitors/financial_ assistance.aspx , by requesting a copy in person at any of the ARH Facilities' patient admission or registration areas, or by requesting a free copy by mail by contacting the ARH Facilities' Collections Department.",
      "source_id": "fap-d2f247f051d151b4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -355,7 +335,7 @@
     "eca_wait_days": {
      "value": 120,
      "layer": "documented",
-     "quote": "If a patient does not submit a Financial Assistance application within the first 120 days from the date on which ARH issues its first, post-discharge billing statement, then ARH may begin engaging in the collection actions described below",
+     "quote": "If a patient does not submit a Financial Assistance application within the first 120 days from the date on which ARH issues its first, post-discharge billing statement, then ARH may begin engaging in the collection actions described below after issuing an ECA Initiation Notice.",
      "source_id": "fap-d2f247f051d151b4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -367,8 +347,8 @@
     "phone": {
      "value": "859-226-2440",
      "layer": "documented",
-     "quote": "Appalachian Regional Healthcare at 859-226-2440 or by mail at 2260 Executive Drive Lexington, KY 40505.",
-     "source_id": "web-aea97a43ff1f9a2a",
+     "quote": "may contact Appalachian Regional Healthcare at 859-226-2440 or by mail at 2260 Executive Drive Lexington, KY 40505.",
+     "source_id": "web-8a2c7e60bd768efd",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -401,17 +381,19 @@
      "effective_date": null
     },
     {
-     "id": "web-aea97a43ff1f9a2a",
+     "id": "web-8a2c7e60bd768efd",
      "kind": "hospital_web",
      "url": "https://www.arh.org/financial-assistance",
      "title": "Financial Assistance - Appalachian Regional Healthcare",
      "fetched_on": "2026-10-23",
-     "sha256": "aea97a43ff1f9a2ae05dec65a3b6cdc84ad4165fe3da8e0e5a1a6381fb207e7b",
+     "sha256": "8a2c7e60bd768efd8b6c9f0e30c62c6bc813c725dd0d4ca45be6ee86494f7340",
      "effective_date": null
     }
    ],
    "accuracy": null,
-   "eve_review": []
+   "eve_review": [
+    "agent dropped eligibility.asset_test: quote is not a substring of the source"
+   ]
   },
   {
    "hospital": {
@@ -837,32 +819,32 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": null,
-    "discount_tiers": null,
-    "assistance_ceiling_fpl": {
-     "value": "400",
+    "free_care_max_fpl": {
+     "value": "200",
      "layer": "documented",
-     "quote": "Assistance is provided for those patients whose family income is lower than 400% of the Federal Poverty Level Guidelines.",
-     "source_id": "fap-e22dcf7c19ff4915",
+     "quote": "Any patient whose Family Income is at or below 200% of the FPL, including, without limitation, any Uninsured or Underinsured patient, is eligible to receive Financial Assistance up to a 100% discount",
+     "source_id": "fap-174bfaef7b79efbc",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
+    "discount_tiers": null,
+    "assistance_ceiling_fpl": null,
     "asset_test": {
      "value": true,
      "layer": "documented",
-     "quote": "You must provide information on all assets owned by any family member. Asset verification is required to determine financial assistance.",
-     "source_id": "fap-e22dcf7c19ff4915",
+     "quote": "the patient must provide bank or checking account statements evidencing the patient\u2019s available resources (those convertible to cash and unnecessary for the patient\u2019s daily living)",
+     "source_id": "fap-174bfaef7b79efbc",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "residency": {
      "value": [
-      "Patients must have established residency within the CommonSpirit Entity Service Area defined by the hospital's most recent CHNA, unless the visit is urgent or emergent."
+      "Patients must have established residency within the CommonSpirit Entity Service Area as defined by the most recent Hospital Facility CHNA, unless the visit is urgent or emergent."
      ],
      "layer": "documented",
-     "quote": "have established residency within the CommonSpirit Entity Service Area as defined by the most recent Hospital Facility CHNA, unless the visit is urgent or emergent",
+     "quote": "have established residency within the CommonSpirit Entity Service Area as defined by the most recent Hospital Facility CHNA, unless the visit is urgent or emergent or occurs within a California Hospital Facility",
      "source_id": "fap-174bfaef7b79efbc",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -871,8 +853,8 @@
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "You may qualify for free care or discounted care based on your family size and income, even if you have health insurance.",
-     "source_id": "fap-e22dcf7c19ff4915",
+     "quote": "Financial Assistance is offered to insured patients to the extent allowed under the patient\u2019s insurance carrier contract.",
+     "source_id": "fap-174bfaef7b79efbc",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -889,23 +871,7 @@
     "services_excluded": null
    },
    "programs": {
-    "presumptive": {
-     "value": [
-      "Recipient of state-funded prescription programs",
-      "Homeless or received care from a homeless or free care clinic",
-      "Participation in WIC",
-      "Food stamp eligibility",
-      "Eligibility or referrals for other state or local assistance programs (e.g., Medicaid)",
-      "Low income/subsidized housing provided as a valid address",
-      "Patient is deceased with no known spouse or known estate"
-     ],
-     "layer": "documented",
-     "quote": "Recipient of state-funded prescription programs;",
-     "source_id": "fap-174bfaef7b79efbc",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "presumptive": null,
     "state_programs": null
    },
    "apply": {
@@ -913,46 +879,17 @@
     "form_version": null,
     "documents_required": null,
     "documents_reported": null,
-    "submit_methods": {
-     "value": [
-      {
-       "kind": "mail",
-       "detail": "Financial Assistance Center, ATTN: EES - Financial Assistance Center, P.O. Box 660872. Dallas, TX 75266-0872"
-      },
-      {
-       "kind": "fax",
-       "detail": "469-803-4627"
-      },
-      {
-       "kind": "in_person",
-       "detail": "CommonSpirit - Saint Joseph Hospitals Emergency Department"
-      }
-     ],
-     "layer": "documented",
-     "quote": "Mail or fax completed application with all documentation to: Financial Assistance Center, ATTN: EES - Financial Assistance Center, P.O. Box 660872. Dallas, TX 75266-0872 Fax: 469-803-4627.",
-     "source_id": "fap-e22dcf7c19ff4915",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "submit_methods": null,
     "window_days_from_first_bill": {
      "value": 240,
      "layer": "documented",
-     "quote": "(ii) 240 days from the date of the initial post-discharge bill for the EMCare received at a Hospital Facility.",
+     "quote": "240 days from the date of the initial post-discharge bill for the EMCare received at a Hospital Facility",
      "source_id": "fap-174bfaef7b79efbc",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "decision_days": {
-     "value": 30,
-     "layer": "documented",
-     "quote": "We will notify you of the final determination of eligibility and appeal rights, if applicable, within 30 calendar days of receiving a complete financial assistance application",
-     "source_id": "fap-e22dcf7c19ff4915",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "decision_days": null,
     "decision_days_reported": null
    },
    "collections": {
@@ -960,15 +897,7 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": {
-     "value": "855-715-4379",
-     "layer": "documented",
-     "quote": "You may obtain help for any reason, including disability and language assistance at: 855-715-4379",
-     "source_id": "fap-e22dcf7c19ff4915",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "phone": null,
     "hours": null,
     "languages": {
      "value": [
@@ -976,7 +905,7 @@
       "Spanish"
      ],
      "layer": "documented",
-     "quote": "Such notices and summary information shall include a contact number and shall be provided in English, Spanish, and other primary languages spoken by the population",
+     "quote": "shall be provided in English, Spanish, and other primary languages spoken by the population served by an individual Hospital Facility, as applicable.",
      "source_id": "fap-174bfaef7b79efbc",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -997,32 +926,15 @@
      "fetched_on": "2026-10-23",
      "sha256": "174bfaef7b79efbc711bdebbd9fd4c32f36f18dbeacc32c91392fd6c9b21a139",
      "effective_date": null
-    },
-    {
-     "id": "fap-e22dcf7c19ff4915",
-     "kind": "hospital_web",
-     "url": "https://www.commonspirit.org/content/dam/commonspiritorg/en/chisj/soky/finance/assistance/saint-joseph-all-financial-assistance-app-en.pdf",
-     "title": "",
-     "fetched_on": "2026-10-23",
-     "sha256": "e22dcf7c19ff49152f7a669f67ef16ef939699dbdefbf4f4df21dd5dcdea039a",
-     "effective_date": null
-    },
-    {
-     "id": "web-3286371c716784f7",
-     "kind": "hospital_web",
-     "url": "https://www.commonspirit.org/patient-resources/saint-joseph-health-financial-assistance",
-     "title": "Financial Assistance in Kentucky",
-     "fetched_on": "2026-10-23",
-     "sha256": "3286371c716784f71acc339d788ec2d36e01c7c95d2917c148d95a534673b89b",
-     "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Homeless or one who received care from a homeless or free care clinic; | Participation in Women, Infants and Children programs (WIC); \u2022 Food stamp eligibility; \u2022 Eligibility or referrals for ot",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: To submit your completed application in person: CommonSpirit - Saint Joseph Hospitals Emergency Department.",
-    "agent dropped eligibility.free_care_max_fpl: judge: The quote says patients at or below 200% FPL are eligible for 'up to' a 100% discount, so it does not plainly state 100% free care.",
-    "agent dropped apply.documents_required: judge: The quote lists only the tax return, W-2 and 3 months of pay stubs; employer statements and bank statements are not in it."
+    "eligibility.discount_tiers: 200-400% at 100% is the free-care band, not a tier; skipped",
+    "agent dropped programs.presumptive: between 1 and 3 excerpts allowed",
+    "agent dropped apply.documents_required: between 1 and 3 excerpts allowed",
+    "agent judge on eligibility.discount_tiers: Quote gives 201%-400% FPL with reduction to no more than AGB, not a 100% discount; the recorded 100% percent and tier are not stated.",
+    "agent judge on contacts.languages: Quote lists English and Spanish but also other primary languages spoken by the served population; the recorded list omits these."
    ]
   },
   {
@@ -1034,7 +946,7 @@
     "zip": "40741",
     "phone": "606-330-6000",
     "ownership": "Voluntary non-profit - Private",
-    "website_domain": "commonspirit.org",
+    "website_domain": "chisaintjosephhealth.org",
     "system": null
    },
    "version": 1,
@@ -1045,8 +957,8 @@
     "assistance_ceiling_fpl": {
      "value": "400",
      "layer": "documented",
-     "quote": "Assistance is provided for those patients whose family income is lower than 400% of the",
-     "source_id": "fap-e22dcf7c19ff4915",
+     "quote": "Assistance is provided for those patients whose family income is lower than 400% of the Federal Poverty Level Guidelines",
+     "source_id": "fap-39e20d2f3d7a55b2",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -1054,14 +966,22 @@
     "asset_test": {
      "value": true,
      "layer": "documented",
-     "quote": "You must provide information on all assets owned by any family member. Asset verification is required to",
-     "source_id": "fap-e22dcf7c19ff4915",
+     "quote": "You must provide information on all assets owned by any family member. Asset verification is required to determine financial assistance.",
+     "source_id": "fap-39e20d2f3d7a55b2",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "residency": null,
-    "insured_patients_covered": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "You may qualify for free care or discounted care based on your family size and income, even if you have health insurance.",
+     "source_id": "fap-39e20d2f3d7a55b2",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "min_balance": null,
     "services_excluded": null
    },
@@ -1074,24 +994,47 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "proof_of_income",
-      "other"
+      "tax_return",
+      "other",
+      "pay_stubs",
+      "bank_statements"
      ],
      "layer": "documented",
-     "quote": "Provide documentation for family income",
-     "source_id": "fap-e22dcf7c19ff4915",
+     "quote": "A \u201cW-2\u201d withholding statement; or",
+     "source_id": "fap-39e20d2f3d7a55b2",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "documents_reported": null,
-    "submit_methods": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "Mail or fax completed application with all documentation to: Financial Assistance Center, ATTN: EES - Financial Assistance Center, P.O. Box 660872. Dallas, TX 75266-0872"
+      },
+      {
+       "kind": "fax",
+       "detail": "Fax: 469-803-4627"
+      },
+      {
+       "kind": "in_person",
+       "detail": "To submit your completed application in person: CommonSpirit - Saint Joseph Hospital - London, 1001 St Joseph Ln, London, KY 40741"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Mail or fax completed application with all documentation to: Financial Assistance Center, ATTN: EES - Financial Assistance Center, P.O. Box 660872. Dallas, TX 75266-0872 Fax: 469-803-4627",
+     "source_id": "fap-39e20d2f3d7a55b2",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "window_days_from_first_bill": null,
     "decision_days": {
      "value": 30,
      "layer": "documented",
-     "quote": "We will notify you of the final determination of eligibility and appeal rights, if applicable, within 30 calendar days of",
-     "source_id": "fap-e22dcf7c19ff4915",
+     "quote": "We will notify you of the final determination of eligibility and appeal rights, if applicable, within 30 calendar days of receiving a complete financial assistance application",
+     "source_id": "fap-39e20d2f3d7a55b2",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -1131,29 +1074,29 @@
      "effective_date": null
     },
     {
-     "id": "fap-e22dcf7c19ff4915",
+     "id": "fap-39e20d2f3d7a55b2",
      "kind": "hospital_web",
-     "url": "https://www.commonspirit.org/content/dam/commonspiritorg/en/chisj/soky/finance/assistance/saint-joseph-all-financial-assistance-app-en.pdf",
+     "url": "https://www.commonspirit.org/content/dam/commonspiritorg/en/chisj/soky/finance/assistance/saint-joseph-london-financial-assistance-app-en.pdf",
      "title": "",
      "fetched_on": "2026-10-23",
-     "sha256": "e22dcf7c19ff49152f7a669f67ef16ef939699dbdefbf4f4df21dd5dcdea039a",
+     "sha256": "39e20d2f3d7a55b242641d3b6c4ee775437bea1ae4156b6f26285e8509231d5d",
      "effective_date": null
     },
     {
-     "id": "web-3286371c716784f7",
+     "id": "web-eef645234a84b88e",
      "kind": "hospital_web",
-     "url": "https://www.commonspirit.org/patient-resources/saint-joseph-health-financial-assistance",
-     "title": "Financial Assistance in Kentucky",
+     "url": "https://www.commonspirit.org/patient-resources/billing-and-finance",
+     "title": "Billing and finance | CommonSpirit Health",
      "fetched_on": "2026-10-23",
-     "sha256": "3286371c716784f71acc339d788ec2d36e01c7c95d2917c148d95a534673b89b",
+     "sha256": "eef645234a84b88e807cba0680febfa0799835da4a3de6e3f83e9d3856faf703",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Provide documentation for family assets | Sign and date the form",
-    "agent dropped eligibility.insured_patients_covered: judge: Quote is cut off at 'even if you'; it never says insured patients are covered.",
-    "agent dropped apply.submit_methods: judge: Mail and fax are supported, but the in-person quote ends at 'Emergency'; 'Department' is not stated."
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Current pay stubs (3 months); or | Current bank statements (showing most recent 3 months)",
+    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: To submit your completed application in person: CommonSpirit - Saint Joseph Hospital - London, 1001 St Joseph Ln, London",
+    "agent judge on apply.documents_required: Quote lists W-2, pay stubs, and bank statements only. It does not mention a tax return, which the value includes."
    ]
   },
   {
@@ -1766,38 +1709,26 @@
     "asset_test": {
      "value": true,
      "layer": "documented",
-     "quote": "[3] Savings account (bank, credit union, and etc.) [4] Certificates of Deposit [5] Stocks or bonds",
+     "quote": "Savings account (bank, credit union, and etc.) [4] Certificates of Deposit [5] Stocks or bonds [6] Property including rental property",
      "source_id": "fap-d2f247f051d151b4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "residency": null,
-    "insured_patients_covered": {
-     "value": false,
-     "layer": "documented",
-     "quote": "Financial Assistance will only be applied to self-pay balances, for individuals that do not qualify for third party benefits and are not eligible under the FAP program.",
-     "source_id": "fap-d2f247f051d151b4",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "insured_patients_covered": null,
     "min_balance": null,
     "services_excluded": null
    },
    "programs": {
     "presumptive": {
      "value": [
-      "Medicaid enrolled",
       "homeless",
       "WIC",
-      "SNAP",
-      "low income/subsidized housing",
-      "state-funded prescription programs",
-      "deceased with no estate or mentally incapacitated with no one to act on the patient's behalf"
+      "SNAP"
      ],
      "layer": "documented",
-     "quote": "[b] The patient is eligible for state-funded prescription programs; [c] The patient is homeless or received care from a homeless clinic; [d] The patient is eligible for assistance through the Women, Infants and Children program (WIC)",
+     "quote": "[c] The patient is homeless or received care from a homeless clinic; [d] The patient is eligible for assistance through the Women, Infants and Children program (WIC) [e] The patient is eligible for assistance through the Supplemental Nutrition Assistance Program (SNAP)",
      "source_id": "fap-d2f247f051d151b4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1810,7 +1741,7 @@
      "value": "https://www.arh.org/wp-content/uploads/2025/10/Financial-Evaluation.pdf",
      "layer": "documented",
      "quote": "ACCESS FINANCIAL ASSISTANCE APPLICATION [https://www.arh.org/wp-content/uploads/2025/10/Financial-Evaluation.pdf]",
-     "source_id": "web-8a2c7e60bd768efd",
+     "source_id": "web-8fda3d0df5a55617",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -1820,11 +1751,10 @@
      "value": [
       "tax_return",
       "proof_of_income",
-      "other",
-      "bank_statements"
+      "other"
      ],
      "layer": "documented",
-     "quote": "[1] Copy of the previous year's income tax return [2] Verification of household income [3] Savings account (bank, credit union, and etc.)",
+     "quote": "[1] Copy of the previous year's income tax return",
      "source_id": "fap-d2f247f051d151b4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1843,11 +1773,11 @@
       },
       {
        "kind": "mail",
-       "detail": "requesting a free copy by mail by contacting the ARH Facilities' Collections Department"
+       "detail": "Completed applications, along with all required documentation, should be returned or mailed to the Revenue Cycle Manager at the applicable facility."
       }
      ],
      "layer": "documented",
-     "quote": "Copies of the application form and instructions are available online at http://www.arh.org/patients _visitors/financial_ assistance.aspx , by requesting a copy in person at any of the ARH Facilities' patient admission or registration areas, or by requesting a free copy by mail",
+     "quote": "Copies of the application form and instructions are available online at http://www.arh.org/patients _visitors/financial_ assistance.aspx , by requesting a copy in person at any of the ARH Facilities' patient admission or registration areas",
      "source_id": "fap-d2f247f051d151b4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1882,7 +1812,7 @@
      "value": "859-226-2440",
      "layer": "documented",
      "quote": "may contact Appalachian Regional Healthcare at 859-226-2440 or by mail at 2260 Executive Drive Lexington, KY 40505.",
-     "source_id": "web-8a2c7e60bd768efd",
+     "source_id": "web-8fda3d0df5a55617",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -1906,26 +1836,30 @@
      "effective_date": null
     },
     {
-     "id": "web-8a2c7e60bd768efd",
+     "id": "web-8fda3d0df5a55617",
      "kind": "hospital_web",
      "url": "https://www.arh.org/financial-assistance",
      "title": "Financial Assistance - Appalachian Regional Healthcare",
      "fetched_on": "2026-10-23",
-     "sha256": "8a2c7e60bd768efd8b6c9f0e30c62c6bc813c725dd0d4ca45be6ee86494f7340",
+     "sha256": "8fda3d0df5a5561772e241faf552f2e21ba0cb62e11999f5d84aa1c9770c0801",
      "effective_date": null
     },
     {
-     "id": "web-0c7fa44515690f2b",
+     "id": "web-2ed532834654bc7b",
      "kind": "hospital_web",
      "url": "https://www.arh.org/price-transparency",
      "title": "Price Transparency - Appalachian Regional Healthcare",
      "fetched_on": "2026-10-23",
-     "sha256": "0c7fa44515690f2bbd4c3528ce9fe505ce5febfb9745a180cb5b9289a62cb845",
+     "sha256": "2ed532834654bc7b33aaf04687813fa057a3f5d2cd676b1cf7f33f16191304c7",
      "effective_date": null
     }
    ],
    "accuracy": null,
-   "eve_review": []
+   "eve_review": [
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: [2] Verification of household income | [3] Savings account (bank, credit union, and etc.)",
+    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Completed applications, along with all required documentation, should be returned or mailed to the Revenue Cycle Manager",
+    "agent dropped contacts.languages: quote is not a substring of the source"
+   ]
   },
   {
    "hospital": {
@@ -2134,7 +2068,7 @@
     "asset_test": {
      "value": true,
      "layer": "documented",
-     "quote": "List the balance of any bank, 401k, or IRA accounts .",
+     "quote": "List the balance of any bank, 401k, or IRA accounts . List year, make, model or all vehicles in the home",
      "source_id": "fap-e57b2849651c049f",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2179,47 +2113,20 @@
      "value": [
       "other",
       "pay_stubs",
+      "proof_of_income",
+      "social_security_letter",
       "bank_statements"
      ],
      "layer": "documented",
-     "quote": "Copy of most recent tax statement or all W2\u2019s for all members of the household. (2025)",
+     "quote": "Copy of most recent tax statement or all W2's for all members of the household. (2025)",
      "source_id": "fap-e57b2849651c049f",
      "checked_on": "2026-10-23",
-     "confidence": 1.0,
+     "confidence": 0.8,
      "support_count": 0
     },
     "documents_reported": null,
-    "submit_methods": {
-     "value": [
-      {
-       "kind": "mail",
-       "detail": "803 Poplar Street, Murray, KY 42071"
-      },
-      {
-       "kind": "in_person",
-       "detail": "MCCH, North Tower, Financial Counselor"
-      },
-      {
-       "kind": "phone",
-       "detail": "270-752-2186"
-      }
-     ],
-     "layer": "documented",
-     "quote": "Attn: Financial Counselor, MCCH, North Tower, 270-752-2186 or by mail to 803 Poplar Street, Murray, KY 42071",
-     "source_id": "fap-e57b2849651c049f",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "window_days_from_first_bill": {
-     "value": 180,
-     "layer": "documented",
-     "quote": "no later than 6 months (180 days) from the date of service or within three months from the last insurance payment",
-     "source_id": "fap-e57b2849651c049f",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "submit_methods": null,
+    "window_days_from_first_bill": null,
     "decision_days": null,
     "decision_days_reported": null
    },
@@ -2229,19 +2136,19 @@
    },
    "contacts": {
     "phone": {
-     "value": "270-762-1100",
+     "value": "270-752-2186",
      "layer": "documented",
-     "quote": "Main number: (270) 762-1100",
-     "source_id": "web-2e027590f2db9084",
+     "quote": "Attn: Financial Counselor, MCCH, North Tower, 270-752-2186",
+     "source_id": "fap-e57b2849651c049f",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "hours": {
-     "value": "Monday \u2013 Friday: 8:00 a.m. \u2013 4:30 p.m.",
+     "value": "Monday through Friday from 8:00 a.m. to 3:00 p.m.",
      "layer": "documented",
-     "quote": "By Phone: Monday \u2013 Friday: 8:00 a.m. \u2013 4:30 p.m.",
-     "source_id": "web-2e027590f2db9084",
+     "quote": "Monday through Friday from 8:00 a.m. to 3:00 p.m. to set up a time to drop off the packet in person.",
+     "source_id": "fap-e57b2849651c049f",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -2273,17 +2180,22 @@
      "effective_date": null
     },
     {
-     "id": "web-2e027590f2db9084",
+     "id": "web-3f04a97b206ba479",
      "kind": "hospital_web",
      "url": "https://www.murrayhospital.org/pay-a-bill/billing-and-insurance/",
      "title": "Billing and Insurance - Murray-Calloway County Hospital",
      "fetched_on": "2026-10-23",
-     "sha256": "2e027590f2db9084bb8e810db2908307e2f624471c7f435c3adc4bdd2ac52c37",
+     "sha256": "3f04a97b206ba479a48f9415e8f673717321cd39f23b753f4df528ca87dd0606",
      "effective_date": null
     }
    ],
    "accuracy": null,
-   "eve_review": []
+   "eve_review": [
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Copy of the year to date pay stub from all working age persons | Two most recent bank statements: For all checking and savings Accounts",
+    "apply.documents_required: quote matched the source only after typography normalization",
+    "agent dropped apply.submit_methods: excerpt not in source: Please complete and mail the information below... or call, M",
+    "agent judge on apply.documents_required: Quote supports only tax statement or W2s, year-to-date pay stub, and bank statements. Unemployment, workers comp, pension, SSI, and zero income statements are not in the quote."
+   ]
   },
   {
    "hospital": {
@@ -2303,7 +2215,15 @@
     "free_care_max_fpl": null,
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
-    "asset_test": null,
+    "asset_test": {
+     "value": true,
+     "layer": "documented",
+     "quote": "ARH will assess patient eligibility based on a review including some or all of the following information: [1] Copy of the previous year's income tax return [2] Verification of household income [3] Savings account",
+     "source_id": "fap-d2f247f051d151b4",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "residency": null,
     "insured_patients_covered": null,
     "min_balance": null,
@@ -2312,15 +2232,12 @@
    "programs": {
     "presumptive": {
      "value": [
-      "Eligible for state-funded prescription programs",
-      "Homeless or received care from a homeless clinic",
-      "Eligible for WIC",
-      "Eligible for SNAP",
-      "Eligible for low income/subsidized housing",
-      "Deceased with no estate or mentally incapacitated with no one to act on the patient's behalf"
+      "homeless",
+      "WIC",
+      "SNAP"
      ],
      "layer": "documented",
-     "quote": "[b] The patient is eligible for state-funded prescription programs;",
+     "quote": "[c] The patient is homeless or received care from a homeless clinic; [d] The patient is eligible for assistance through the Women, Infants and Children program (WIC) [e] The patient is eligible for assistance through the Supplemental Nutrition Assistance Program (SNAP);",
      "source_id": "fap-d2f247f051d151b4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2333,7 +2250,7 @@
      "value": "https://www.arh.org/wp-content/uploads/2025/10/Financial-Evaluation.pdf",
      "layer": "documented",
      "quote": "ACCESS FINANCIAL ASSISTANCE APPLICATION [https://www.arh.org/wp-content/uploads/2025/10/Financial-Evaluation.pdf]",
-     "source_id": "web-8a2c7e60bd768efd",
+     "source_id": "web-8fda3d0df5a55617",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -2342,11 +2259,12 @@
     "documents_required": {
      "value": [
       "tax_return",
-      "proof_of_income"
+      "proof_of_income",
+      "other"
      ],
      "layer": "documented",
-     "quote": "COPY OF INCOME TAX RETURN \u2013 ATTACH VERIFICATION OF HOUSEHOLD INCOME \u2013 ATTACH",
-     "source_id": "fap-5c7ae6e1838f0c26",
+     "quote": "[1] Copy of the previous year's income tax return",
+     "source_id": "fap-d2f247f051d151b4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -2355,27 +2273,47 @@
     "submit_methods": {
      "value": [
       {
-       "kind": "in_person",
-       "detail": "Return to the Revenue Cycle Manager at the applicable facility"
+       "kind": "mail",
+       "detail": "requesting a free copy by mail by contacting the ARH Facilities' Collections Department / returned or mailed to the Revenue Cycle Manager at the applicable facility"
       },
       {
-       "kind": "mail",
-       "detail": "Mail to the Revenue Cycle Manager at the applicable facility"
+       "kind": "in_person",
+       "detail": "requesting a copy in person at any of the ARH Facilities' patient admission or registration areas"
+      },
+      {
+       "kind": "portal",
+       "detail": "Copies of the application form and instructions are available online at http://www.arh.org/patients_visitors/financial_assistance.aspx"
       }
      ],
      "layer": "documented",
-     "quote": "returned or mailed to the Revenue Cycle Manager at the applicable facility.",
+     "quote": "by requesting a copy in person at any of the ARH Facilities' patient admission or registration areas, or by requesting a free copy by mail by contacting the ARH Facilities' Collections Department",
      "source_id": "fap-d2f247f051d151b4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "window_days_from_first_bill": null,
+    "window_days_from_first_bill": {
+     "value": 240,
+     "layer": "documented",
+     "quote": "A patient may apply for Financial Assistance during the patient registration process or any time after, up to 240 days from the date on which ARH issues its first, post-discharge billing statement.",
+     "source_id": "fap-d2f247f051d151b4",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "decision_days": null,
     "decision_days_reported": null
    },
    "collections": {
-    "eca_wait_days": null,
+    "eca_wait_days": {
+     "value": 120,
+     "layer": "documented",
+     "quote": "If a patient does not submit a Financial Assistance application within the first 120 days from the date on which ARH issues its first, post-discharge billing statement, then ARH may begin engaging in the collection actions",
+     "source_id": "fap-d2f247f051d151b4",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "collection_agencies": null
    },
    "contacts": {
@@ -2383,7 +2321,7 @@
      "value": "859-226-2440",
      "layer": "documented",
      "quote": "may contact Appalachian Regional Healthcare at 859-226-2440 or by mail at 2260 Executive Drive Lexington, KY 40505.",
-     "source_id": "web-8a2c7e60bd768efd",
+     "source_id": "web-8fda3d0df5a55617",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -2416,21 +2354,20 @@
      "effective_date": null
     },
     {
-     "id": "web-8a2c7e60bd768efd",
+     "id": "web-8fda3d0df5a55617",
      "kind": "hospital_web",
      "url": "https://www.arh.org/financial-assistance",
      "title": "Financial Assistance - Appalachian Regional Healthcare",
      "fetched_on": "2026-10-23",
-     "sha256": "8a2c7e60bd768efd8b6c9f0e30c62c6bc813c725dd0d4ca45be6ee86494f7340",
+     "sha256": "8fda3d0df5a5561772e241faf552f2e21ba0cb62e11999f5d84aa1c9770c0801",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: [c] The patient is homeless or received care from a homeless clinic; | [d] The patient is eligible for assistance through the Women, Infants and Children program (WIC) [e] The patient is elig",
-    "agent dropped eligibility.asset_test: judge: The quote only lists 'Savings account' as an item and does not say assets are considered for eligibility.",
-    "agent dropped apply.window_days_from_first_bill: judge: The quote is truncated at 'from the date on which ARH' and never states the first bill as the starting point.",
-    "agent dropped collections.eca_wait_days: judge: The quote concerns submitting an application within 120 days, not a wait before collection actions."
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: [2] Verification of household income | [3] Savings account (bank, credit union, and etc.)",
+    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Completed applications, along with all required documentation, should be returned or mailed to the Revenue Cycle Manager",
+    "agent judge on apply.submit_methods: Quote covers in-person and mail only. It has no online method and no arh.org financial_assistance.aspx URL, which the value includes."
    ]
   },
   {
@@ -3085,22 +3022,46 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "discount_tiers": null,
-    "assistance_ceiling_fpl": null,
-    "asset_test": {
-     "value": true,
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "150",
+       "max_fpl_inclusive": "268",
+       "discount_percent": 50
+      }
+     ],
      "layer": "documented",
-     "quote": "The resource amounts in the table above are the amount of annual household income plus any countable assets minus certain household expenses.",
+     "quote": "Free $23,475 $31,725 $39,975 $48,225 $56,475 $64,725 $72,975 $81,225 150%",
      "source_id": "fap-b4167c856a48f218",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "residency": null,
+    "assistance_ceiling_fpl": null,
+    "asset_test": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Countable resources are limited to cash, checking and savings accounts, stocks, bonds, certificates of deposit, and money market accounts.",
+     "source_id": "fap-b4167c856a48f218",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "residency": {
+     "value": [
+      "The individual is resident of Kentucky"
+     ],
+     "layer": "documented",
+     "quote": "The individual is resident of Kentucky",
+     "source_id": "fap-b4167c856a48f218",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "For patients with insurance or governmental health benefit program coverage, the discount applies to the amount of remaining patient responsibility (e.g. deductibles, co-insurance, co-pays, and other amounts not covered by the patient\u2019s plan)",
+     "quote": "For those patients eligible for financial assistance who have insurance or governmental health benefits, this limitation applies to the patient responsibility portion (i.e. deductibles and/or copays) of the bill only.",
      "source_id": "fap-b4167c856a48f218",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3115,7 +3076,7 @@
      "value": [
       {
        "name": "Disproportionate Share Hospital (DSH) Program",
-       "how_to_apply": "Submit a completed application on the Commonwealth of Kentucky form to PMC's patient financial counselors."
+       "how_to_apply": "Patients can apply for assistance under the DSH Program by submitting a completed application to PMC's patient financial counselors on a form prescribed by the Commonwealth of Kentucky."
       }
      ],
      "layer": "documented",
@@ -3137,32 +3098,9 @@
      "support_count": 0
     },
     "form_version": null,
-    "documents_required": {
-     "value": [
-      "tax_return"
-     ],
-     "layer": "documented",
-     "quote": "If over 19, copy of tax return or full time status is required",
-     "source_id": "fap-a262a08234a1337c",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "documents_required": null,
     "documents_reported": null,
-    "submit_methods": {
-     "value": [
-      {
-       "kind": "portal",
-       "detail": "https://www.pmcky.org/faf/"
-      }
-     ],
-     "layer": "documented",
-     "quote": "PMC Financial Aid Application (In-House Sliding Scale Program) \u2013 (Apply Online) [https://www.pmcky.org/faf/]",
-     "source_id": "web-a2f5202810ba855d",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "submit_methods": null,
     "window_days_from_first_bill": null,
     "decision_days": null,
     "decision_days_reported": null
@@ -3175,8 +3113,8 @@
     "phone": {
      "value": "(606) 430-3303",
      "layer": "documented",
-     "quote": "To request a free copy of the Policy and applications by mail, call PMC\u2019s patient financial counselors at (606) 430-3303.",
-     "source_id": "web-a2f5202810ba855d",
+     "quote": "by calling (606) 430-3303, or on PMC\u2019s website: www.pikevillehospital.org.",
+     "source_id": "fap-b4167c856a48f218",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -3220,7 +3158,11 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "agent dropped eligibility.residency: judge: Quote states Kentucky residency but does not attribute the requirement to the state DSH Program."
+    "eligibility.discount_tiers: 268-400% at 0% is no discount; skipped",
+    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: 50% of AGB $41,942 $56,682 $71,422 $86,162 $100,902 $115,642 $130,382 $145,122 268% | AGB $62,600 $84,600 $106,600 $128,600 $150,600 $172,600 $194,600 $216,600 400%",
+    "agent dropped apply.submit_methods: excerpt not in source: A copy of PMC\u2019s Financial Assistance Policy, the DSH Program",
+    "agent judge on eligibility.discount_tiers: Quote gives 50% for 150-268% and AGB pricing to 400%, but never states a 0% discount; the 0 for 268-400% is inferred.",
+    "agent judge on programs.state_programs: Quote mentions 'DSH Program' only; the full name 'Disproportionate Share Hospital (DSH) Program' does not appear in the quote."
    ]
   },
   {
@@ -3787,37 +3729,26 @@
     "asset_test": {
      "value": true,
      "layer": "documented",
-     "quote": "[3] Savings account (bank, credit union, and etc.)",
+     "quote": "ARH will assess patient eligibility based on a review including some or all of the following information: [1] Copy of the previous year's income tax return [2] Verification of household income [3] Savings account",
      "source_id": "fap-d2f247f051d151b4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "residency": null,
-    "insured_patients_covered": {
-     "value": false,
-     "layer": "documented",
-     "quote": "To qualify for Financial Assistance under this Policy, the patient must: A. Be Uninsured;",
-     "source_id": "fap-d2f247f051d151b4",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "insured_patients_covered": null,
     "min_balance": null,
     "services_excluded": null
    },
    "programs": {
     "presumptive": {
      "value": [
-      "Eligible for state-funded prescription programs",
-      "Homeless or received care from a homeless clinic",
-      "Eligible for WIC",
-      "Eligible for SNAP",
-      "Eligible for low income/subsidized housing",
-      "Deceased with no estate or mentally incapacitated with no one to act on patient's behalf"
+      "homeless",
+      "WIC",
+      "SNAP"
      ],
      "layer": "documented",
-     "quote": "[b] The patient is eligible for state-funded prescription programs; [c] The patient is homeless or received care from a homeless clinic;",
+     "quote": "The patient is homeless or received care from a homeless clinic;",
      "source_id": "fap-d2f247f051d151b4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3830,7 +3761,7 @@
      "value": "https://www.arh.org/wp-content/uploads/2025/10/Financial-Evaluation.pdf",
      "layer": "documented",
      "quote": "ACCESS FINANCIAL ASSISTANCE APPLICATION [https://www.arh.org/wp-content/uploads/2025/10/Financial-Evaluation.pdf]",
-     "source_id": "web-8a2c7e60bd768efd",
+     "source_id": "web-8fda3d0df5a55617",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -3839,11 +3770,12 @@
     "documents_required": {
      "value": [
       "tax_return",
-      "proof_of_income"
+      "proof_of_income",
+      "other"
      ],
      "layer": "documented",
-     "quote": "COPY OF INCOME TAX RETURN \u2013 ATTACH VERIFICATION OF HOUSEHOLD INCOME \u2013 ATTACH",
-     "source_id": "fap-5c7ae6e1838f0c26",
+     "quote": "[1] Copy of the previous year's income tax return",
+     "source_id": "fap-d2f247f051d151b4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -3853,15 +3785,19 @@
      "value": [
       {
        "kind": "mail",
-       "detail": "Mail to the Revenue Cycle Manager at the applicable facility"
+       "detail": "requesting a free copy by mail by contacting the ARH Facilities' Collections Department / returned or mailed to the Revenue Cycle Manager at the applicable facility"
       },
       {
        "kind": "in_person",
-       "detail": "Return to the Revenue Cycle Manager at the applicable facility"
+       "detail": "requesting a copy in person at any of the ARH Facilities' patient admission or registration areas"
+      },
+      {
+       "kind": "portal",
+       "detail": "Copies of the application form and instructions are available online at http://www.arh.org/patients_visitors/financial_assistance.aspx"
       }
      ],
      "layer": "documented",
-     "quote": "Completed applications, along with all required documentation, should be returned or mailed to the Revenue Cycle Manager at the applicable facility.",
+     "quote": "requesting a copy in person at any of the ARH Facilities' patient admission or registration areas, or by requesting a free copy by mail by contacting the ARH Facilities' Collections Department",
      "source_id": "fap-d2f247f051d151b4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3883,7 +3819,7 @@
     "eca_wait_days": {
      "value": 120,
      "layer": "documented",
-     "quote": "If a patient does not submit a Financial Assistance application within the first 120 days from the date on which ARH issues its first, post-discharge billing statement, then ARH may begin engaging in the collection actions described below",
+     "quote": "If a patient does not submit a Financial Assistance application within the first 120 days from the date on which ARH issues its first, post-discharge billing statement, then ARH may begin engaging in the collection actions described below after issuing an ECA Initiation Notice.",
      "source_id": "fap-d2f247f051d151b4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3896,7 +3832,7 @@
      "value": "859-226-2440",
      "layer": "documented",
      "quote": "may contact Appalachian Regional Healthcare at 859-226-2440 or by mail at 2260 Executive Drive Lexington, KY 40505.",
-     "source_id": "web-8a2c7e60bd768efd",
+     "source_id": "web-8fda3d0df5a55617",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -3929,18 +3865,21 @@
      "effective_date": null
     },
     {
-     "id": "web-8a2c7e60bd768efd",
+     "id": "web-8fda3d0df5a55617",
      "kind": "hospital_web",
      "url": "https://www.arh.org/financial-assistance",
      "title": "Financial Assistance - Appalachian Regional Healthcare",
      "fetched_on": "2026-10-23",
-     "sha256": "8a2c7e60bd768efd8b6c9f0e30c62c6bc813c725dd0d4ca45be6ee86494f7340",
+     "sha256": "8fda3d0df5a5561772e241faf552f2e21ba0cb62e11999f5d84aa1c9770c0801",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: [d] The patient is eligible for assistance through the Women, Infants and Children program (WIC) [e] The patient is elig | [f] The patient is eligible for assistance through low income/subsidized housing; or [g] The patient is deceased with no"
+    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: The patient is eligible for assistance through the Women, Infants and Children program (WIC) | The patient is eligible for assistance through the Supplemental Nutrition Assistance Program (SNAP);",
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: [2] Verification of household income | [3] Savings account (bank, credit union, and etc.)",
+    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Completed applications, along with all required documentation, should be returned or mailed to the Revenue Cycle Manager | Copies of the application form and instructions are available online at http://www.arh.org/patients _visitors/financial_",
+    "agent judge on apply.submit_methods: Mail, in-person, and online methods are stated, but the quote's online URL contains spaces ('patients _visitors/financial_ assistance.aspx'), which does not exactly match the recorded URL."
    ]
   },
   {
@@ -5116,15 +5055,7 @@
    "eligibility": {
     "free_care_max_fpl": null,
     "discount_tiers": null,
-    "assistance_ceiling_fpl": {
-     "value": "350",
-     "layer": "documented",
-     "quote": "The patient\u2019s family unit income is equal to or less than 350% of the Federal Poverty Guidelines",
-     "source_id": "fap-d73fee9532fcd921",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "assistance_ceiling_fpl": null,
     "asset_test": {
      "value": true,
      "layer": "documented",
@@ -5134,7 +5065,17 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "residency": null,
+    "residency": {
+     "value": [
+      "To be eligible for assistance for non-emergent Medically Necessary Care, a patient must also be a resident of Kentucky, Indiana, Tennessee, Ohio or Illinois."
+     ],
+     "layer": "documented",
+     "quote": "To be eligible for assistance for non-emergent Medically Necessary Care, a patient (or that patient's guarantor) must also be a resident of Kentucky, Indiana, Tennessee, Ohio or Illinois.",
+     "source_id": "fap-d73fee9532fcd921",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
@@ -5156,7 +5097,7 @@
      "value": "https://nortonhealthcare.com/wp-content/uploads/2024/03/NORTON-HEALTHCARE-APPLICATION-FOR-FINANCIAL-ASSISTANCE-effective-1-1-2023-updated-lockbox-1.pdf",
      "layer": "documented",
      "quote": "Application for Financial Assistance [https://nortonhealthcare.com/wp-content/uploads/2024/03/NORTON-HEALTHCARE-APPLICATION-FOR-FINANCIAL-ASSISTANCE-effective-1-1-2023-updated-lockbox-1.pdf]",
-     "source_id": "web-9b4a6563238d51e6",
+     "source_id": "web-4a3d285377e2fb50",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -5164,12 +5105,13 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "social_security_letter",
-      "bank_statements"
+      "bank_statements",
+      "tax_return",
+      "pay_stubs"
      ],
      "layer": "documented",
-     "quote": "To apply for financial assistance, you must submit an application and three months of bank statements for each bank account for the household.",
-     "source_id": "web-9b4a6563238d51e6",
+     "quote": "provide their last 3 months of bank statements for all checking and savings accounts.",
+     "source_id": "fap-d73fee9532fcd921",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -5188,13 +5130,21 @@
     "phone": {
      "value": "(502) 479-6300",
      "layer": "documented",
-     "quote": "call customer service at (502) 479-6300 or (800) 874-3979 to request an application to be mailed to you for free",
-     "source_id": "web-9b4a6563238d51e6",
+     "quote": "Customer Service Team: (502) 479-6300",
+     "source_id": "fap-d73fee9532fcd921",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "hours": null,
+    "hours": {
+     "value": "Monday through Friday 8 a.m. to 4 p.m. Eastern time",
+     "layer": "documented",
+     "quote": "Hospital/ Physician Billing Business Hours Monday through Friday 8 a.m. to 4 p.m. Eastern time",
+     "source_id": "web-1bfb4490961e08f3",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "languages": null
    },
    "coverage": {
@@ -5213,28 +5163,28 @@
      "effective_date": null
     },
     {
-     "id": "fap-d56438cfc05404f6",
-     "kind": "hospital_web",
-     "url": "https://nortonhealthcare.com/wp-content/uploads/2024/03/NORTON-HEALTHCARE-APPLICATION-FOR-FINANCIAL-ASSISTANCE-effective-1-1-2023-updated-lockbox-1.pdf",
-     "title": "",
-     "fetched_on": "2026-10-23",
-     "sha256": "d56438cfc05404f668b3d9a6ed49c1938f1a64a7b69da3cf958b764ace69f587",
-     "effective_date": null
-    },
-    {
-     "id": "web-9b4a6563238d51e6",
+     "id": "web-4a3d285377e2fb50",
      "kind": "hospital_web",
      "url": "https://nortonhealthcare.com/patient-resources/billing-information/financial-assistance/",
      "title": "Financial Assistance | Louisville, Ky. | Norton Healthcare",
      "fetched_on": "2026-10-23",
-     "sha256": "9b4a6563238d51e6dfd6dca02237d577f9df9b62647f3461c38db9153adf346b",
+     "sha256": "4a3d285377e2fb50da55d3e5dbe2063bbe4cd25c0920ba627a86549d428819ab",
+     "effective_date": null
+    },
+    {
+     "id": "web-1bfb4490961e08f3",
+     "kind": "hospital_web",
+     "url": "https://nortonhealthcare.com/patient-resources/billing-information/",
+     "title": "Billing Information | Louisville, Ky. | Norton Healthcare",
+     "fetched_on": "2026-10-23",
+     "sha256": "1bfb4490961e08f35908a73f0d7fcfb677151eada35c049949a5250866a45639",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "agent dropped eligibility.residency: judge: Quote lists the five states but does not limit this to non-emergent care or exempt emergency care.",
-    "agent dropped apply.submit_methods: judge: Quote mentions MyChart, online, email and mail, but omits the email address and the mailing address."
+    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: copies of your prior year\u2019s tax return, pay stubs, unemployment check documentation, Social Security check documentation",
+    "agent dropped apply.submit_methods: excerpt not in source: Apply using Norton MyChart [https://mychart.nortonhealthcare"
    ]
   },
   {
@@ -7462,7 +7412,7 @@
     "asset_test": {
      "value": true,
      "layer": "documented",
-     "quote": "Information regarding patient assets shall be requested as a part of the process of determining their financial assistance need.",
+     "quote": "Information regarding patient assets shall be requested as a part of the process of determining their financial assistance need. The following items shall be considered:",
      "source_id": "fap-0c28a18a316379dc",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -7470,7 +7420,7 @@
     },
     "residency": {
      "value": [
-      "Applicants must be residents of Kentucky."
+      "Any person seeking financial assistance shall be a resident of Kentucky."
      ],
      "layer": "documented",
      "quote": "Any person seeking financial assistance shall be a resident of Kentucky.",
@@ -7479,7 +7429,15 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "insured_patients_covered": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Patients shall be able to get financial assistance if uninsured, underinsured, not eligible for a government program, or not qualify for governmental assistance",
+     "source_id": "fap-0c28a18a316379dc",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "min_balance": null,
     "services_excluded": null
    },
@@ -7492,7 +7450,6 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "other",
       "bank_statements",
       "pay_stubs",
       "tax_return",
@@ -7500,7 +7457,7 @@
       "social_security_letter"
      ],
      "layer": "documented",
-     "quote": "All fields must be completed on application form or marked as \u201cN/A\u201d",
+     "quote": "o 3 months of bank statements for checking and saving account(s) o 3 months of employment pay stubs o Tax return information for all family members o Proof of any income source listed on form to include unemployment compensation approval/denial",
      "source_id": "fap-0c28a18a316379dc",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -7511,15 +7468,15 @@
      "value": [
       {
        "kind": "in_person",
-       "detail": "Trigg County Hospital Business Office Financial Counselor"
+       "detail": "submit a completed and supporting documents to Trigg County Hospital Business Office Financial Counselor"
       },
       {
        "kind": "mail",
-       "detail": "Trigg County Hospital Business Office, Attn: Financial Counselor, P.O. Box 312, Cadiz, KY 42211"
+       "detail": "mail to the following address: Trigg County Hospital Business Office Attn: Financial Counselor P.O. Box 312 Cadiz, KY 42211"
       }
      ],
      "layer": "documented",
-     "quote": "patient must submit a completed and supporting documents to Trigg County Hospital Business Office Financial Counselor or mail to the following address: Trigg County Hospital Business Office Attn: Financial Counselor P.O. Box 312 Cadiz, KY 42211",
+     "quote": "To apply for financial assistance, patient must submit a completed and supporting documents to Trigg County Hospital Business Office Financial Counselor or mail to the following address: Trigg County Hospital Business Office Attn: Financial Counselor P.O. Box 312 Cadiz, KY 42211",
      "source_id": "fap-0c28a18a316379dc",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -7568,7 +7525,17 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "languages": null
+    "languages": {
+     "value": [
+      "Spanish"
+     ],
+     "layer": "documented",
+     "quote": "La asistencia financiera y otra informaci\u00f3n del sitio web est\u00e1n disponibles en otros idiomas previa solicitud.",
+     "source_id": "web-5e36971054d24ea6",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
    },
    "coverage": {
     "facilities": null,
@@ -7606,8 +7573,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: o 3 months of bank statements for checking and saving account(s) o 3 months of employment pay stubs o Tax return informa | o Approval/denial of eligibility for Medicaid or other state funded medical assistance",
-    "agent dropped programs.state_programs: judge: Quote only shows a link titled 'DSH Application'. It does not spell out the program name or say where on the site to complete it."
+    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: o Approval/denial of eligibility for Medicaid or other state funded medical assistance",
+    "agent judge on contacts.languages: Quote, in Spanish, says information is available in other languages upon request; it never names Spanish, so Spanish is not stated."
    ]
   },
   {
@@ -7631,38 +7598,26 @@
     "asset_test": {
      "value": true,
      "layer": "documented",
-     "quote": "ARH will assess patient eligibility based on a review including some or all",
+     "quote": "ARH will assess patient eligibility based on a review including some or all of the following information",
      "source_id": "fap-d2f247f051d151b4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "residency": null,
-    "insured_patients_covered": {
-     "value": false,
-     "layer": "documented",
-     "quote": "To qualify for Financial Assistance under this Policy, the patient must: A. Be Uninsured;",
-     "source_id": "fap-d2f247f051d151b4",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "insured_patients_covered": null,
     "min_balance": null,
     "services_excluded": null
    },
    "programs": {
     "presumptive": {
      "value": [
-      "Prior 100% FAP determination within six months",
-      "Eligible for state-funded prescription programs",
-      "Homeless or received care from a homeless clinic",
-      "Eligible for WIC",
-      "Eligible for SNAP",
-      "Eligible for low income/subsidized housing",
-      "Deceased with no estate or mentally incapacitated with no one to act on patient's behalf"
+      "homeless",
+      "WIC",
+      "SNAP"
      ],
      "layer": "documented",
-     "quote": "[a] If ARH made a FAP eligibility determination on the patient within six (6) months of the current account/date of service at issue and such determination provided for a 100% discount",
+     "quote": "The patient is homeless or received care from a homeless clinic;",
      "source_id": "fap-d2f247f051d151b4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -7675,7 +7630,7 @@
      "value": "https://www.arh.org/wp-content/uploads/2025/10/Financial-Evaluation.pdf",
      "layer": "documented",
      "quote": "ACCESS FINANCIAL ASSISTANCE APPLICATION [https://www.arh.org/wp-content/uploads/2025/10/Financial-Evaluation.pdf]",
-     "source_id": "web-8a2c7e60bd768efd",
+     "source_id": "web-8fda3d0df5a55617",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -7684,11 +7639,12 @@
     "documents_required": {
      "value": [
       "tax_return",
-      "proof_of_income"
+      "proof_of_income",
+      "other"
      ],
      "layer": "documented",
-     "quote": "COPY OF INCOME TAX RETURN \u2013 ATTACH VERIFICATION OF HOUSEHOLD INCOME \u2013 ATTACH",
-     "source_id": "fap-5c7ae6e1838f0c26",
+     "quote": "[1] Copy of the previous year's income tax return",
+     "source_id": "fap-d2f247f051d151b4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -7698,11 +7654,15 @@
      "value": [
       {
        "kind": "mail",
-       "detail": "Mail to the Revenue Cycle Manager at the applicable facility"
+       "detail": "Completed applications, along with all required documentation, should be returned or mailed to the Revenue Cycle Manager at the applicable facility."
       },
       {
        "kind": "in_person",
-       "detail": "Return to the Revenue Cycle Manager at the applicable facility"
+       "detail": "requesting a copy in person at any of the ARH Facilities' patient admission or registration areas"
+      },
+      {
+       "kind": "portal",
+       "detail": "Copies of the application form and instructions are available online at http://www.arh.org/patients_visitors/financial_assistance.aspx"
       }
      ],
      "layer": "documented",
@@ -7728,7 +7688,7 @@
     "eca_wait_days": {
      "value": 120,
      "layer": "documented",
-     "quote": "If a patient does not submit a Financial Assistance application within the first 120 days from the date on which ARH issues its first, post-discharge billing statement, then ARH may begin engaging in the collection actions",
+     "quote": "If a patient does not submit a Financial Assistance application within the first 120 days from the date on which ARH issues its first, post-discharge billing statement, then ARH may begin engaging in the collection actions described below",
      "source_id": "fap-d2f247f051d151b4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -7740,8 +7700,8 @@
     "phone": {
      "value": "859-226-2440",
      "layer": "documented",
-     "quote": "wanting the FAP or FAP application via mail may contact Appalachian Regional Healthcare at 859-226-2440 or by mail at 2260 Executive Drive Lexington, KY 40505.",
-     "source_id": "web-8a2c7e60bd768efd",
+     "quote": "may contact Appalachian Regional Healthcare at 859-226-2440 or by mail at 2260 Executive Drive Lexington, KY 40505.",
+     "source_id": "web-8fda3d0df5a55617",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -7765,28 +7725,30 @@
      "effective_date": null
     },
     {
-     "id": "fap-5c7ae6e1838f0c26",
-     "kind": "hospital_web",
-     "url": "https://www.arh.org/wp-content/uploads/2025/10/Financial-Evaluation.pdf",
-     "title": "",
-     "fetched_on": "2026-10-23",
-     "sha256": "5c7ae6e1838f0c2652e7fc5c24c9507671ce2e6477afcf12c276f9ccea0ade7d",
-     "effective_date": null
-    },
-    {
-     "id": "web-8a2c7e60bd768efd",
+     "id": "web-8fda3d0df5a55617",
      "kind": "hospital_web",
      "url": "https://www.arh.org/financial-assistance",
      "title": "Financial Assistance - Appalachian Regional Healthcare",
      "fetched_on": "2026-10-23",
-     "sha256": "8a2c7e60bd768efd8b6c9f0e30c62c6bc813c725dd0d4ca45be6ee86494f7340",
+     "sha256": "8fda3d0df5a5561772e241faf552f2e21ba0cb62e11999f5d84aa1c9770c0801",
+     "effective_date": null
+    },
+    {
+     "id": "web-933121a64edee4d6",
+     "kind": "hospital_web",
+     "url": "https://www.arh.org/price-transparency",
+     "title": "Price Transparency - Appalachian Regional Healthcare",
+     "fetched_on": "2026-10-23",
+     "sha256": "933121a64edee4d61991bed7ed0e2a3a42e3c6e5a05248e89aadce57f7d34060",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.asset_test: 2 more verbatim excerpt(s) supported this value: [3] Savings account (bank, credit union, and etc.) | [14] Other significant assets",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: [b] The patient is eligible for state-funded prescription programs; [c] The patient is homeless or received care from a  | [e] The patient is eligible for assistance through the Supplemental Nutrition Assistance Program (SNAP); [f] The patient"
+    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: The patient is eligible for assistance through the Women, Infants and Children program (WIC) | The patient is eligible for assistance through the Supplemental Nutrition Assistance Program (SNAP);",
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: [2] Verification of household income | [3] Savings account (bank, credit union, and etc.)",
+    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: requesting a copy in person at any of the ARH Facilities' patient admission or registration areas | Copies of the application form and instructions are available online at http://www.arh.org/patients _visitors/financial_",
+    "agent judge on eligibility.asset_test: Quote says ARH assesses eligibility using 'some or all of the following information' but does not explicitly state that assets are considered; it is not clear assets are in the list."
    ]
   },
   {
@@ -7994,40 +7956,21 @@
     "free_care_max_fpl": null,
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
-    "asset_test": {
-     "value": true,
-     "layer": "documented",
-     "quote": "[3] Savings account (bank, credit union, and etc.)",
-     "source_id": "fap-d2f247f051d151b4",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "asset_test": null,
     "residency": null,
-    "insured_patients_covered": {
-     "value": false,
-     "layer": "documented",
-     "quote": "To qualify for Financial Assistance under this Policy, the patient must: A. Be Uninsured;",
-     "source_id": "fap-d2f247f051d151b4",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "insured_patients_covered": null,
     "min_balance": null,
     "services_excluded": null
    },
    "programs": {
     "presumptive": {
      "value": [
-      "Eligible for state-funded prescription programs",
-      "Homeless or received care from a homeless clinic",
-      "Eligible for WIC",
-      "Eligible for SNAP",
-      "Eligible for low income/subsidized housing",
-      "Deceased with no estate or mentally incapacitated with no one to act on patient's behalf"
+      "homeless",
+      "WIC",
+      "SNAP"
      ],
      "layer": "documented",
-     "quote": "[b] The patient is eligible for state-funded prescription programs; [c] The patient is homeless or received care from a homeless clinic; [d] The patient is eligible for assistance through the Women, Infants and Children program (WIC)",
+     "quote": "The patient is homeless or received care from a homeless clinic; [d] The patient is eligible for assistance through the Women, Infants and Children program (WIC) [e] The patient is eligible for assistance through the Supplemental Nutrition Assistance Program (SNAP)",
      "source_id": "fap-d2f247f051d151b4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -8040,7 +7983,7 @@
      "value": "https://www.arh.org/wp-content/uploads/2025/10/Financial-Evaluation.pdf",
      "layer": "documented",
      "quote": "ACCESS FINANCIAL ASSISTANCE APPLICATION [https://www.arh.org/wp-content/uploads/2025/10/Financial-Evaluation.pdf]",
-     "source_id": "web-8a2c7e60bd768efd",
+     "source_id": "web-8fda3d0df5a55617",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -8049,11 +7992,12 @@
     "documents_required": {
      "value": [
       "tax_return",
-      "proof_of_income"
+      "proof_of_income",
+      "other"
      ],
      "layer": "documented",
-     "quote": "COPY OF INCOME TAX RETURN \u2013 ATTACH VERIFICATION OF HOUSEHOLD INCOME \u2013 ATTACH",
-     "source_id": "fap-5c7ae6e1838f0c26",
+     "quote": "[1] Copy of the previous year's income tax return [2] Verification of household income [3] Savings account (bank, credit union, and etc.)",
+     "source_id": "fap-d2f247f051d151b4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -8063,11 +8007,15 @@
      "value": [
       {
        "kind": "mail",
-       "detail": "Mail to the Revenue Cycle Manager at the applicable facility"
+       "detail": "Completed applications, along with all required documentation, should be returned or mailed to the Revenue Cycle Manager at the applicable facility."
       },
       {
        "kind": "in_person",
-       "detail": "Return to the Revenue Cycle Manager at the applicable facility"
+       "detail": "requesting a copy in person at any of the ARH Facilities' patient admission or registration areas"
+      },
+      {
+       "kind": "portal",
+       "detail": "Copies of the application form and instructions are available online at http://www.arh.org/patients _visitors/financial_ assistance.aspx"
       }
      ],
      "layer": "documented",
@@ -8106,7 +8054,7 @@
      "value": "859-226-2440",
      "layer": "documented",
      "quote": "may contact Appalachian Regional Healthcare at 859-226-2440 or by mail at 2260 Executive Drive Lexington, KY 40505.",
-     "source_id": "web-8a2c7e60bd768efd",
+     "source_id": "web-8fda3d0df5a55617",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -8139,18 +8087,19 @@
      "effective_date": null
     },
     {
-     "id": "web-8a2c7e60bd768efd",
+     "id": "web-8fda3d0df5a55617",
      "kind": "hospital_web",
      "url": "https://www.arh.org/financial-assistance",
      "title": "Financial Assistance - Appalachian Regional Healthcare",
      "fetched_on": "2026-10-23",
-     "sha256": "8a2c7e60bd768efd8b6c9f0e30c62c6bc813c725dd0d4ca45be6ee86494f7340",
+     "sha256": "8fda3d0df5a5561772e241faf552f2e21ba0cb62e11999f5d84aa1c9770c0801",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: [e] The patient is eligible for assistance through the Supplemental Nutrition Assistance Program (SNAP); [f] The patient | [g] The patient is deceased with no estate or mentally incapacitated with no one to act on the patient's behalf."
+    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: requesting a copy in person at any of the ARH Facilities' patient admission or registration areas | Copies of the application form and instructions are available online at http://www.arh.org/patients _visitors/financial_",
+    "agent dropped eligibility.asset_test: quote is not a substring of the source"
    ]
   },
   {
@@ -8168,23 +8117,41 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": null,
-    "discount_tiers": null,
-    "assistance_ceiling_fpl": null,
-    "asset_test": {
-     "value": true,
+    "free_care_max_fpl": {
+     "value": "100",
      "layer": "documented",
-     "quote": "The patient\u2019s situation will be evaluated according to relevant circumstances, such as income, assets, or other resources available to the patient or the patient\u2019s family and the outstanding balance.",
+     "quote": "100% 1330 1803 2277 2750 3223 3697 4170 4643",
      "source_id": "fap-1b38afc5839046f1",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "residency": null,
+    "discount_tiers": null,
+    "assistance_ceiling_fpl": null,
+    "asset_test": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Your family unit\u2019s resources (assets) are equal to or less than 100 percent of the Disproportionate Share Hospital guidelines.",
+     "source_id": "web-87eb24c6829282ac",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "residency": {
+     "value": [
+      "Service area includes the State of Kentucky."
+     ],
+     "layer": "documented",
+     "quote": "Service area includes the State of Kentucky. CCMH reserves the right to add to or subtract from the list in its service area.",
+     "source_id": "fap-1b38afc5839046f1",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "You do not have health insurance, or you have an unpaid balance after your insurance plan has either paid or rejected a claim.",
+     "quote": "you have an unpaid balance after your insurance plan has either paid or rejected a claim",
      "source_id": "web-87eb24c6829282ac",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -8193,7 +8160,7 @@
     "min_balance": {
      "value": "50",
      "layer": "documented",
-     "quote": "The patient must have a minimum account balance of fifty dollars ($50.00) with CCMH. Multiple account balances may be combined to reach this amount.",
+     "quote": "The patient must have a minimum account balance of fifty dollars ($50.00) with CCMH.",
      "source_id": "fap-1b38afc5839046f1",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -8218,31 +8185,47 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "social_security_letter",
       "tax_return",
       "pay_stubs",
       "bank_statements",
-      "proof_of_income",
-      "other"
+      "social_security_letter",
+      "proof_of_income"
      ],
      "layer": "documented",
-     "quote": "Completed, signed and dated financial assistance form (attached)",
+     "quote": "Copy of your most recent state and federal tax return",
      "source_id": "fap-88cc14fd7a4703ec",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "documents_reported": null,
-    "submit_methods": null,
-    "window_days_from_first_bill": {
-     "value": 240,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "Patients should mail the charity/financial assistance application to CCMH, 309 11th Street, Carrollton, KY 41008, Attn: Financial Counselor."
+      },
+      {
+       "kind": "in_person",
+       "detail": "In person at any of our Patient Access/Registration Departments, Financial Counseling Department, or Business Office"
+      },
+      {
+       "kind": "portal",
+       "detail": "Online through our website (www.ccmhosp.com)"
+      },
+      {
+       "kind": "phone",
+       "detail": "Over the phone at 502-732-3258"
+      }
+     ],
      "layer": "documented",
-     "quote": "Failure to complete and return the application within 240 days of the date that CCMH first sent a post-",
+     "quote": "Patients should mail the charity/financial assistance application to CCMH, 309 11th Street, Carrollton, KY 41008, Attn: Financial Counselor.",
      "source_id": "fap-1b38afc5839046f1",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
+    "window_days_from_first_bill": null,
     "decision_days": {
      "value": 30,
      "layer": "documented",
@@ -8259,19 +8242,11 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": {
-     "value": "502-732-3258",
-     "layer": "documented",
-     "quote": "If you have any questions during the application process, you may contact the Financial Counselor at 502-732-3258.",
-     "source_id": "fap-1b38afc5839046f1",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "phone": null,
     "hours": {
      "value": "Monday through Friday, 8:00 A.M. to 4:30 P.M.",
      "layer": "documented",
-     "quote": "Financial Counselor, located at 309 11th Street, Carrollton, KY 41008, Monday through Friday, 8:00 A.M. to 4:30 P.M.",
+     "quote": "Monday through Friday, 8:00 A.M. to 4:30 P.M.",
      "source_id": "fap-1b38afc5839046f1",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -8326,11 +8301,16 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Copy of your most recent state and federal tax return o If self-employed, the last two years of tax information \u2022 Copies | Proof of other income source documented in the application \u2022 Information about your family\u2019s gross monthly income (befor",
+    "eligibility.discount_tiers: 0-100% at 100% is the free-care band, not a tier; skipped",
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Copies of the two most recent pay stubs for all wage-earners who live in the household | Copies of the two most recent bank statements including checking and savings",
+    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: In person at any of our Patient Access/Registration Departments, Financial Counseling Department, or Business Office | Over the phone at 502-732-3258",
     "contacts.languages: 1 more verbatim excerpt(s) supported this value: Financial Assistance Application Spanish [https://www.ccmhosp.com/wp-content/uploads/2026-FINANCIAL-ASSISTANCE-APPLICATI",
-    "agent dropped eligibility.free_care_max_fpl: judge: Lists income at or below 100% FPL as a criterion but never says this qualifies for free or 100% care.",
-    "agent dropped eligibility.residency: judge: Only defines the service area as including Kentucky; it does not say patients must reside there.",
-    "agent dropped apply.submit_methods: judge: Mail address is supported, but drop-off is only 'one of the locations listed above'; the hospital is not named as the drop-off site."
+    "agent dropped apply.window_days_from_first_bill: quote is not a substring of the source",
+    "agent dropped contacts.phone: quote is not a substring of the source",
+    "agent judge on eligibility.free_care_max_fpl: The quote is an unlabeled list of percentages and FPL figures. It does not plainly state that 100% free care applies up to 100% FPL.",
+    "agent judge on eligibility.discount_tiers: The value has only one 100% tier (0-100 FPL). The quote also lists 90% and 80% tiers with higher FPL bounds, which the value omits.",
+    "agent judge on apply.documents_required: The quote supports tax return, pay stubs, and bank statements only. Social Security and proof of income are not in the quote.",
+    "agent judge on apply.submit_methods: The quote lists mail, in person, and phone only. The online method (website www.ccmhosp.com) in the value does not appear in the quote."
    ]
   },
   {
@@ -8899,7 +8879,15 @@
     "free_care_max_fpl": null,
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
-    "asset_test": null,
+    "asset_test": {
+     "value": true,
+     "layer": "documented",
+     "quote": "[3] Savings account (bank, credit union, and etc.) [4] Certificates of Deposit [5] Stocks or bonds [6] Property including rental property",
+     "source_id": "fap-d2f247f051d151b4",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "residency": null,
     "insured_patients_covered": null,
     "min_balance": null,
@@ -8908,16 +8896,12 @@
    "programs": {
     "presumptive": {
      "value": [
-      "Eligible for state-funded prescription programs",
-      "Homeless or received care from a homeless clinic",
-      "Eligible for WIC",
-      "Eligible for SNAP",
-      "Eligible for low income/subsidized housing",
-      "Deceased with no estate",
-      "Mentally incapacitated with no one to act on the patient's behalf"
+      "homeless",
+      "WIC",
+      "SNAP"
      ],
      "layer": "documented",
-     "quote": "[b] The patient is eligible for state-funded prescription programs; [c] The patient is homeless or received care from a homeless clinic;",
+     "quote": "[c] The patient is homeless or received care from a homeless clinic; [d] The patient is eligible for assistance through the Women, Infants and Children program (WIC) [e] The patient is eligible for assistance through the Supplemental Nutrition Assistance Program (SNAP);",
      "source_id": "fap-d2f247f051d151b4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -8930,7 +8914,7 @@
      "value": "https://www.arh.org/wp-content/uploads/2025/10/Financial-Evaluation.pdf",
      "layer": "documented",
      "quote": "ACCESS FINANCIAL ASSISTANCE APPLICATION [https://www.arh.org/wp-content/uploads/2025/10/Financial-Evaluation.pdf]",
-     "source_id": "web-8a2c7e60bd768efd",
+     "source_id": "web-8fda3d0df5a55617",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -8942,8 +8926,8 @@
       "proof_of_income"
      ],
      "layer": "documented",
-     "quote": "COPY OF INCOME TAX RETURN \u2013 ATTACH VERIFICATION OF HOUSEHOLD INCOME \u2013 ATTACH",
-     "source_id": "fap-5c7ae6e1838f0c26",
+     "quote": "[1] Copy of the previous year's income tax return",
+     "source_id": "fap-d2f247f051d151b4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -8953,15 +8937,19 @@
      "value": [
       {
        "kind": "mail",
-       "detail": "Mail to the Revenue Cycle Manager at the applicable facility"
+       "detail": "requesting a free copy by mail by contacting the ARH Facilities' Collections Department"
       },
       {
        "kind": "in_person",
-       "detail": "Return to the Revenue Cycle Manager at the applicable facility"
+       "detail": "requesting a copy in person at any of the ARH Facilities' patient admission or registration areas"
+      },
+      {
+       "kind": "portal",
+       "detail": "available online at http://www.arh.org/patients_visitors/financial_assistance.aspx"
       }
      ],
      "layer": "documented",
-     "quote": "Completed applications, along with all required documentation, should be returned or mailed to the Revenue Cycle Manager at the applicable facility.",
+     "quote": "Copies of the application form and instructions are available online at http://www.arh.org/patients _visitors/financial_ assistance.aspx , by requesting a copy in person at any of the ARH Facilities' patient admission or registration areas, or by requesting a free copy by mail by contacting the ARH Facilities' Collections Department.",
      "source_id": "fap-d2f247f051d151b4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -8970,7 +8958,7 @@
     "window_days_from_first_bill": {
      "value": 240,
      "layer": "documented",
-     "quote": "up to 240 days from the date on which ARH issues its first, post-discharge billing statement",
+     "quote": "A patient may apply for Financial Assistance during the patient registration process or any time after, up to 240 days from the date on which ARH issues its first, post-discharge billing statement.",
      "source_id": "fap-d2f247f051d151b4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -8983,7 +8971,7 @@
     "eca_wait_days": {
      "value": 120,
      "layer": "documented",
-     "quote": "If a patient does not submit a Financial Assistance application within the first 120 days from the date on which ARH issues its first, post-discharge billing statement, then ARH may begin engaging in the collection actions",
+     "quote": "If a patient does not submit a Financial Assistance application within the first 120 days from the date on which ARH issues its first, post-discharge billing statement, then ARH may begin engaging in the collection actions described below after issuing an ECA Initiation Notice.",
      "source_id": "fap-d2f247f051d151b4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -8996,7 +8984,7 @@
      "value": "859-226-2440",
      "layer": "documented",
      "quote": "may contact Appalachian Regional Healthcare at 859-226-2440 or by mail at 2260 Executive Drive Lexington, KY 40505.",
-     "source_id": "web-8a2c7e60bd768efd",
+     "source_id": "web-8fda3d0df5a55617",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -9029,19 +9017,18 @@
      "effective_date": null
     },
     {
-     "id": "web-8a2c7e60bd768efd",
+     "id": "web-8fda3d0df5a55617",
      "kind": "hospital_web",
      "url": "https://www.arh.org/financial-assistance",
      "title": "Financial Assistance - Appalachian Regional Healthcare",
      "fetched_on": "2026-10-23",
-     "sha256": "8a2c7e60bd768efd8b6c9f0e30c62c6bc813c725dd0d4ca45be6ee86494f7340",
+     "sha256": "8fda3d0df5a5561772e241faf552f2e21ba0cb62e11999f5d84aa1c9770c0801",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: [d] The patient is eligible for assistance through the Women, Infants and Children program (WIC) [e] The patient is elig | [f] The patient is eligible for assistance through low income/subsidized housing; or [g] The patient is deceased with no",
-    "agent dropped eligibility.asset_test: judge: The quote is a bare list item naming a savings account. Without context it does not state that assets are considered for eligibility."
+    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: [2] Verification of household income"
    ]
   },
   {
@@ -9917,8 +9904,8 @@
     "assistance_ceiling_fpl": {
      "value": "400",
      "layer": "documented",
-     "quote": "Assistance is provided for those patients whose family income is lower than 400% of the",
-     "source_id": "fap-42af3a5a2d8d0a82",
+     "quote": "Assistance is provided for those patients whose family income is lower than 400% of the Federal Poverty Level Guidelines.",
+     "source_id": "fap-e22dcf7c19ff4915",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -9926,14 +9913,22 @@
     "asset_test": {
      "value": true,
      "layer": "documented",
-     "quote": "You must provide information on all assets owned by any family member. Asset verification is required to",
-     "source_id": "fap-42af3a5a2d8d0a82",
+     "quote": "You must provide information on all assets owned by any family member. Asset verification is required to determine financial assistance.",
+     "source_id": "fap-e22dcf7c19ff4915",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "residency": null,
-    "insured_patients_covered": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "You may qualify for free care or discounted care based on your family size and income, even if you have health insurance.",
+     "source_id": "fap-e22dcf7c19ff4915",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "min_balance": null,
     "services_excluded": null
    },
@@ -9946,25 +9941,47 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "proof_of_income",
+      "tax_return",
       "other",
+      "pay_stubs",
       "bank_statements"
      ],
      "layer": "documented",
-     "quote": "Provide documentation for family income",
-     "source_id": "fap-42af3a5a2d8d0a82",
+     "quote": "Last year\u2019s income tax return, including schedules if applicable; or",
+     "source_id": "fap-e22dcf7c19ff4915",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "documents_reported": null,
-    "submit_methods": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "Mail completed application with all documentation to: Financial Assistance Center, ATTN: EES - Financial Assistance Center, P.O. Box 660872. Dallas, TX 75266-0872"
+      },
+      {
+       "kind": "fax",
+       "detail": "Fax: 469-803-4627"
+      },
+      {
+       "kind": "in_person",
+       "detail": "CommonSpirit - Saint Joseph Hospitals Emergency Department"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Mail or fax completed application with all documentation to: Financial Assistance Center, ATTN: EES - Financial Assistance Center, P.O. Box 660872. Dallas, TX 75266-0872 Fax: 469-803-4627.",
+     "source_id": "fap-e22dcf7c19ff4915",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "window_days_from_first_bill": null,
     "decision_days": {
      "value": 30,
      "layer": "documented",
-     "quote": "We will notify you of the final determination of eligibility and appeal rights, if applicable, within 30 calendar days of",
-     "source_id": "fap-42af3a5a2d8d0a82",
+     "quote": "We will notify you of the final determination of eligibility and appeal rights, if applicable, within 30 calendar days of receiving a complete financial assistance application",
+     "source_id": "fap-e22dcf7c19ff4915",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -9979,8 +9996,8 @@
     "phone": {
      "value": "855-715-4379",
      "layer": "documented",
-     "quote": "Call the financial counselor of the Hospital Facility at: 855-715-4379",
-     "source_id": "fap-f78f4640f4edf1b7",
+     "quote": "You may obtain help for any reason, including disability and language assistance at: 855-715-4379",
+     "source_id": "fap-e22dcf7c19ff4915",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -9995,21 +10012,21 @@
    },
    "sources": [
     {
-     "id": "fap-f78f4640f4edf1b7",
+     "id": "fap-2a4be90be58d3fb3",
      "kind": "hospital_web",
-     "url": "https://www.commonspirit.org/content/dam/commonspiritorg/en/chisj/soky/finance/assistance/saint-joseph-hospital-berea-combined-fap-addendum-en.pdf",
+     "url": "https://www.commonspirit.org/content/dam/commonspiritorg/en/chisj/soky/finance/assistance/saint-joseph-health-berea-non-employed-fap.pdf",
      "title": "",
      "fetched_on": "2026-10-23",
-     "sha256": "f78f4640f4edf1b7962d9d318c32a02101c926bd409c4b36a93cfbff2c313da7",
+     "sha256": "2a4be90be58d3fb3dfd97f14fe8e163a5c6df3678bb89ec32a977c0c53838ee6",
      "effective_date": null
     },
     {
-     "id": "fap-42af3a5a2d8d0a82",
+     "id": "fap-e22dcf7c19ff4915",
      "kind": "hospital_web",
-     "url": "https://www.commonspirit.org/content/dam/commonspiritorg/en/chisj/soky/finance/assistance/saint-joseph-berea-financial-assistance-app-en.pdf",
+     "url": "https://www.commonspirit.org/content/dam/commonspiritorg/en/chisj/soky/finance/assistance/saint-joseph-all-financial-assistance-app-en.pdf",
      "title": "",
      "fetched_on": "2026-10-23",
-     "sha256": "42af3a5a2d8d0a8206bb88ef98ff46bb8edba99fc3e29ba177de3d107d9d487e",
+     "sha256": "e22dcf7c19ff49152f7a669f67ef16ef939699dbdefbf4f4df21dd5dcdea039a",
      "effective_date": null
     },
     {
@@ -10024,9 +10041,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Provide documentation for family assets | Current bank statements (showing most recent 3 months)",
-    "agent dropped eligibility.insured_patients_covered: judge: Quote is cut off at 'even if you' and never mentions insurance or insured patients.",
-    "agent dropped apply.submit_methods: judge: Mail and fax are supported, but the in-person address is cut off at '305 Estill St,'; 'Berea, KY 40403' is not in the quote."
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: A \u201cW-2\u201d withholding statement; or | Current pay stubs (3 months); or",
+    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: To submit your completed application in person: CommonSpirit - Saint Joseph Hospitals Emergency Department.",
+    "agent judge on apply.documents_required: Quote lists a tax return, W-2, and pay stubs but does not mention bank statements, which the value includes."
    ]
   },
   {
@@ -10050,37 +10067,27 @@
     "asset_test": {
      "value": true,
      "layer": "documented",
-     "quote": "H. ARH will assess patient eligibility based on a review including some or all of the following information:",
+     "quote": "[3] Savings account (bank, credit union, and etc.)",
      "source_id": "fap-d2f247f051d151b4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "residency": null,
-    "insured_patients_covered": {
-     "value": false,
-     "layer": "documented",
-     "quote": "To qualify for Financial Assistance under this Policy, the patient must: A. Be Uninsured;",
-     "source_id": "fap-d2f247f051d151b4",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "insured_patients_covered": null,
     "min_balance": null,
     "services_excluded": null
    },
    "programs": {
     "presumptive": {
      "value": [
-      "Eligible for state-funded prescription programs",
-      "Homeless or received care from a homeless clinic",
-      "Eligible for WIC",
-      "Eligible for SNAP",
-      "Eligible for low income/subsidized housing",
-      "Deceased with no estate or mentally incapacitated with no one to act on patient's behalf"
+      "homeless",
+      "Women, Infants and Children program (WIC)",
+      "Supplemental Nutrition Assistance Program (SNAP)",
+      "deceased with no estate"
      ],
      "layer": "documented",
-     "quote": "[b] The patient is eligible for state-funded prescription programs; [c] The patient is homeless or received care from a homeless clinic; [d] The patient is eligible for assistance through the Women, Infants and Children program (WIC)",
+     "quote": "[c] The patient is homeless or received care from a homeless clinic; [d] The patient is eligible for assistance through the Women, Infants and Children program (WIC) [e] The patient is eligible for assistance through the Supplemental Nutrition Assistance Program (SNAP);",
      "source_id": "fap-d2f247f051d151b4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -10093,7 +10100,7 @@
      "value": "https://www.arh.org/wp-content/uploads/2025/10/Financial-Evaluation.pdf",
      "layer": "documented",
      "quote": "ACCESS FINANCIAL ASSISTANCE APPLICATION [https://www.arh.org/wp-content/uploads/2025/10/Financial-Evaluation.pdf]",
-     "source_id": "web-8a2c7e60bd768efd",
+     "source_id": "web-8fda3d0df5a55617",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -10102,11 +10109,12 @@
     "documents_required": {
      "value": [
       "tax_return",
-      "proof_of_income"
+      "proof_of_income",
+      "other"
      ],
      "layer": "documented",
-     "quote": "COPY OF INCOME TAX RETURN \u2013 ATTACH VERIFICATION OF HOUSEHOLD INCOME \u2013 ATTACH",
-     "source_id": "fap-5c7ae6e1838f0c26",
+     "quote": "[1] Copy of the previous year's income tax return",
+     "source_id": "fap-d2f247f051d151b4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -10116,11 +10124,15 @@
      "value": [
       {
        "kind": "mail",
-       "detail": "Mail to the Revenue Cycle Manager at the applicable facility"
+       "detail": "Completed applications, along with all required documentation, should be returned or mailed to the Revenue Cycle Manager at the applicable facility."
       },
       {
        "kind": "in_person",
-       "detail": "Return to the Revenue Cycle Manager at the applicable facility"
+       "detail": "requesting a copy in person at any of the ARH Facilities' patient admission or registration areas"
+      },
+      {
+       "kind": "portal",
+       "detail": "Copies of the application form and instructions are available online at http://www.arh.org/patients_visitors/financial_assistance.aspx"
       }
      ],
      "layer": "documented",
@@ -10146,7 +10158,7 @@
     "eca_wait_days": {
      "value": 120,
      "layer": "documented",
-     "quote": "If a patient does not submit a Financial Assistance application within the first 120 days from the date on which ARH issues its first, post-discharge billing statement, then ARH may begin engaging in the collection actions described below",
+     "quote": "If a patient does not submit a Financial Assistance application within the first 120 days from the date on which ARH issues its first, post-discharge billing statement, then ARH may begin engaging in the collection actions described below after issuing an ECA Initiation Notice.",
      "source_id": "fap-d2f247f051d151b4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -10158,8 +10170,8 @@
     "phone": {
      "value": "859-226-2440",
      "layer": "documented",
-     "quote": "wanting the FAP or FAP application via mail may contact Appalachian Regional Healthcare at 859-226-2440 or by mail at 2260 Executive Drive Lexington, KY 40505.",
-     "source_id": "web-8a2c7e60bd768efd",
+     "quote": "Appalachian Regional Healthcare at 859-226-2440 or by mail at 2260 Executive Drive Lexington, KY 40505.",
+     "source_id": "web-8fda3d0df5a55617",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -10183,28 +10195,30 @@
      "effective_date": null
     },
     {
-     "id": "fap-5c7ae6e1838f0c26",
-     "kind": "hospital_web",
-     "url": "https://www.arh.org/wp-content/uploads/2025/10/Financial-Evaluation.pdf",
-     "title": "",
-     "fetched_on": "2026-10-23",
-     "sha256": "5c7ae6e1838f0c2652e7fc5c24c9507671ce2e6477afcf12c276f9ccea0ade7d",
-     "effective_date": null
-    },
-    {
-     "id": "web-8a2c7e60bd768efd",
+     "id": "web-8fda3d0df5a55617",
      "kind": "hospital_web",
      "url": "https://www.arh.org/financial-assistance",
      "title": "Financial Assistance - Appalachian Regional Healthcare",
      "fetched_on": "2026-10-23",
-     "sha256": "8a2c7e60bd768efd8b6c9f0e30c62c6bc813c725dd0d4ca45be6ee86494f7340",
+     "sha256": "8fda3d0df5a5561772e241faf552f2e21ba0cb62e11999f5d84aa1c9770c0801",
+     "effective_date": null
+    },
+    {
+     "id": "web-933121a64edee4d6",
+     "kind": "hospital_web",
+     "url": "https://www.arh.org/price-transparency",
+     "title": "Price Transparency - Appalachian Regional Healthcare",
+     "fetched_on": "2026-10-23",
+     "sha256": "933121a64edee4d61991bed7ed0e2a3a42e3c6e5a05248e89aadce57f7d34060",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.asset_test: 1 more verbatim excerpt(s) supported this value: [3] Savings account (bank, credit union, and etc.) [4] Certificates of Deposit [5] Stocks or bonds",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: [e] The patient is eligible for assistance through the Supplemental Nutrition Assistance Program (SNAP); [f] The patient | [g] The patient is deceased with no estate or mentally incapacitated with no one to act on the patient's behalf."
+    "eligibility.asset_test: 2 more verbatim excerpt(s) supported this value: [4] Certificates of Deposit | [14] Other significant assets",
+    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: [g] The patient is deceased with no estate or mentally incapacitated with no one to act on the patient's behalf.",
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: [2] Verification of household income | [3] Savings account (bank, credit union, and etc.)",
+    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: requesting a copy in person at any of the ARH Facilities' patient admission or registration areas | Copies of the application form and instructions are available online at http://www.arh.org/patients _visitors/financial_"
    ]
   },
   {

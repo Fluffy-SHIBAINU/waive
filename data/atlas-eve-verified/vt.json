@@ -239,6 +239,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-7f9373397365beac": true,
+     "fap-70de32f6167f7fc9": true,
+     "web-77e54e7c152fa5ec": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -502,6 +508,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-7f9373397365beac": true,
+     "fap-00ee2bc286d6d130": true,
+     "web-77e54e7c152fa5ec": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -586,12 +598,12 @@
    },
    "sources": [
     {
-     "id": "web-585fd36db173c513",
+     "id": "web-ff38fa2eeaa20e9c",
      "kind": "hospital_web",
      "url": "https://rrmc.policystat.com/policy/19088913/",
      "title": "PolicyStat\n            :: PolicyStat",
      "fetched_on": "2026-10-23",
-     "sha256": "585fd36db173c513a4feaf279cdeecb71d4f366e8336cab85a79eeb8f54a5828",
+     "sha256": "ff38fa2eeaa20e9c287086ed59911a68fd2a02a7231dfa1715dc3a8567bc753e",
      "effective_date": null
     }
    ],
@@ -604,6 +616,10 @@
     "sources_missing": [
      "https://rrmc.policystat.com/policy/19088913/"
     ],
+    "sha256_match": {
+     "web-ff38fa2eeaa20e9c": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [],
     "rejected": [],
     "pruned": [],
@@ -790,6 +806,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-fc4fbca78a4bb17a": true,
+     "fap-c9db76d58bd32a2a": true,
+     "web-76826ee01e879991": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -1041,6 +1063,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-737c469ba90ef097": true,
+     "fap-5891fe803d33b7e7": true,
+     "web-91a912ff55e8f390": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -1277,6 +1305,11 @@
     "sources_fetched": 2,
     "sources_total": 2,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-bdc3727a1c48c4fa": true,
+     "web-35ce697a60ffa280": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.residency",
@@ -1442,6 +1475,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-443bcc0573a7fdbd": true,
+     "fap-6195d4752cef29d6": true,
+     "web-8dff25a919cacf6b": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.assistance_ceiling_fpl",
@@ -1493,7 +1532,7 @@
     "asset_test": null,
     "residency": {
      "value": [
-      "GMC patients must be Vermont residents, or non-residents with a medical emergency, and/or be routinely cared for by a GHC primary care provider."
+      "GMC patients must be a resident of Vermont, or a non-resident who experiences a medical emergency, and/or be routinely cared for by a GHC primary care provider"
      ],
      "layer": "documented",
      "quote": "GMC patients must be a resident of Vermont, or a non-resident who experiences a medical emergency, and/or be routinely cared for by a GHC primary care provider",
@@ -1505,7 +1544,7 @@
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "patients with insurance will have the sliding fee discount applied to any and all out-of-pocket costs (co-payments, deductibles)",
+     "quote": "patients with insurance will have the sliding fee discount applied to any and all out-of-pocket costs (co-payments, deductibles), subject to legal/contractual restrictions",
      "source_id": "fap-bb6099fa6aef2971",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1516,50 +1555,25 @@
    },
    "programs": {
     "presumptive": null,
-    "state_programs": {
-     "value": [
-      {
-       "name": "Green Mountain Care programs",
-       "how_to_apply": "Gifford works with patients individually to access"
-      },
-      {
-       "name": "Dr. Dynasaur",
-       "how_to_apply": "Gifford works with patients individually to access"
-      },
-      {
-       "name": "Medicaid Pharmacy benefits",
-       "how_to_apply": "Gifford works with patients individually to access"
-      },
-      {
-       "name": "Ladies First",
-       "how_to_apply": "Gifford works with patients individually to access"
-      },
-      {
-       "name": "Woman-to-Woman Fund",
-       "how_to_apply": "Gifford works with patients individually to access"
-      },
-      {
-       "name": "Vermont Health Connect",
-       "how_to_apply": "Gifford works with patients individually to access"
-      }
-     ],
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": {
+     "value": "https://giffordhealthcare.org/wp-content/uploads/2025/10/DFAA-Application-updated.pdf",
      "layer": "documented",
-     "quote": "Access to Green Mountain Care programs Dr. Dynasaur (pregnant women and children) Medicaid Pharmacy benefits",
-     "source_id": "web-98165d81b3995cf6",
+     "quote": "Gifford Sliding Fee Discount Financial Assistance Application",
+     "source_id": "fap-e07ca50f30bacf87",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
-    }
-   },
-   "apply": {
-    "form_url": null,
+    },
     "form_version": null,
     "documents_required": {
      "value": [
       "tax_return"
      ],
      "layer": "documented",
-     "quote": "\u2022 Most recently filed tax return (IRS form 1040)",
+     "quote": "Most recently filed tax return (IRS form 1040)",
      "source_id": "fap-e07ca50f30bacf87",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1569,20 +1583,16 @@
     "submit_methods": {
      "value": [
       {
-       "kind": "in_person",
-       "detail": "Any Gifford Health Care location"
-      },
-      {
        "kind": "mail",
-       "detail": "Gifford Health Care, PO Box 2000, Attn: Health Connections, Randolph, VT 05060"
+       "detail": "Mail to: Gifford Health Care, PO Box 2000, Attn: Health Connections, Randolph, VT 05060"
       },
       {
-       "kind": "email",
-       "detail": "HealthConnect@GiffordHealthCare.Org"
+       "kind": "in_person",
+       "detail": "return to any Gifford Health Care location"
       }
      ],
      "layer": "documented",
-     "quote": "Please complete the following information and return to any Gifford Health Care location Mail to: Gifford Health Care, PO Box 2000, Attn: Health Connections, Randolph, VT 05060 or Email to HealthConnect@GiffordHealthCare.Org.",
+     "quote": "Please complete the following information and return to any Gifford Health Care location",
      "source_id": "fap-e07ca50f30bacf87",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1608,7 +1618,7 @@
     "phone": {
      "value": "802-728-2323",
      "layer": "documented",
-     "quote": "or by calling the Financial Assistance Coordinator at 802-728-2323",
+     "quote": "calling the Financial Assistance Coordinator at 802-728-2323",
      "source_id": "fap-bb6099fa6aef2971",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1642,29 +1652,41 @@
      "effective_date": null
     },
     {
-     "id": "web-98165d81b3995cf6",
+     "id": "web-438af9a28ea48ce8",
      "kind": "hospital_web",
-     "url": "https://giffordhealthcare.org/patients/financial-assistance/",
-     "title": "Gifford\u2019s Financial Assistance Program provides financial assistance to qualified patients",
+     "url": "https://giffordhealthcare.org/patients/billing/",
+     "title": "Gifford Health Care Billing info: pay a bill online, billing questions call (802) 728-2200",
      "fetched_on": "2026-10-23",
-     "sha256": "98165d81b3995cf60144675c2741afa2efd9e375e8a8a0b36cc5e7b570901f71",
+     "sha256": "438af9a28ea48ce841c36e68aa6286d9c23628015a89b01c47240b848d0aa893",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.state_programs: 2 more verbatim excerpt(s) supported this value: Ladies First (breast and cervical care) Woman-to-Woman Fund (mammograms, pap smear tests and breast exams) | Gifford\u2019s Financial Assistance Program (for uninsured and under-insured patients) Vermont Health Connect",
-    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: \u2022 Paystubs from the past 30 days \u2022 Copy of recent Bank Statement(s) \u2022 Profit and loss statement \u2022 Social Security, disab"
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Paystubs from the past 30 days | Copy of recent Bank Statement(s)",
+    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Mail to: Gifford Health Care, PO Box 2000, Attn: Health Connections, Randolph, VT 05060 or | Email to HealthConnect@GiffordHealthCare.Org.",
+    "agent dropped eligibility.discount_tiers: quote is not a substring of the source",
+    "agent judge on eligibility.free_care_max_fpl: The quote is a benefits table fragment with no FPL percentage; it does not state 150.",
+    "agent judge on eligibility.assistance_ceiling_fpl: The quote is the same table fragment with no FPL percentage; it does not state 200 or any assistance ceiling.",
+    "agent judge on programs.presumptive: Quote says presumptive eligibility is determined from individual life circumstances showing financial need; it does not state an empty list of programs.",
+    "agent judge on apply.form_url: Quote names the application form but does not contain the URL.",
+    "agent judge on apply.documents_required: Quote lists only tax return, paystubs, and bank statements; the value adds profit and loss, Social Security/disability/pension, and public assistance documents not in the quote."
    ],
    "eve_verified": {
     "on": "2026-10-23",
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-bb6099fa6aef2971": true,
+     "fap-e07ca50f30bacf87": true,
+     "web-438af9a28ea48ce8": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.residency",
      "eligibility.insured_patients_covered",
-     "programs.state_programs",
+     "apply.form_url",
      "apply.documents_required",
      "apply.submit_methods",
      "apply.decision_days",
@@ -1672,19 +1694,24 @@
     ],
     "rejected": [
      [
-      "eligibility.asset_test",
-      "quote does not support the asset-test value"
+      "eligibility.free_care_max_fpl",
+      "value not in quote"
      ],
      [
-      "apply.form_url",
-      "quote not found in source"
+      "eligibility.assistance_ceiling_fpl",
+      "value not in quote"
+     ],
+     [
+      "eligibility.asset_test",
+      "quote does not support the asset-test value"
      ]
     ],
     "pruned": [
-     "apply.documents_required: 4 items not named in the trimmed quote"
+     "apply.documents_required: 4 items not named in the trimmed quote",
+     "apply.submit_methods: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": false,
-    "core_completeness": 0.5
+    "core_completeness": 0.67
    }
   },
   {
@@ -1890,6 +1917,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-e7f06c5c48ed540a": true,
+     "fap-e71eb58a273ad8a4": true,
+     "web-148c4fa84574f761": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.residency",
@@ -2139,6 +2172,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-d8363097cbcbaa47": true,
+     "fap-5c1bd88f2bfd691b": true,
+     "web-33b6c34e85e0a259": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -2403,6 +2442,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-cd82cf4830233b31": true,
+     "fap-4892fa7425dd1c9b": true,
+     "web-69601a39b5b1bb04": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -2676,6 +2721,11 @@
     "sources_fetched": 2,
     "sources_total": 2,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-c47b78c38c061fd3": true,
+     "web-38ea370b673b9147": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -2726,11 +2776,11 @@
     "asset_test": null,
     "residency": {
      "value": [
-      "The patient or guarantor must be a resident of Vermont, or of Sullivan or Cheshire County in New Hampshire."
+      "the patient/guarantor must be a resident of the State of Vermont, or Sullivan or Cheshire Counties in New Hampshire"
      ],
      "layer": "documented",
-     "quote": "the patient/guarantor must be a resident of the State of Vermont, or Sullivan or Cheshire Counties in New Hampshire",
-     "source_id": "web-97dfa91605aebc95",
+     "quote": "the patient/guarantor must be a resident of the State of Vermont, or Sullivan or Cheshire Counties in New Hampshire.",
+     "source_id": "web-d04b6c920ff16b8f",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -2738,8 +2788,8 @@
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "Medicare Beneficiaries: Deductibles and coinsurances due from Medicare beneficiaries can be eligible for a discount under the FAP assuming the patient submits an application and qualifies.",
-     "source_id": "web-97dfa91605aebc95",
+     "quote": "Deductibles and coinsurances due from Medicare beneficiaries can be eligible for a discount under the FAP assuming the patient submits an application and qualifies.",
+     "source_id": "web-d04b6c920ff16b8f",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -2750,11 +2800,11 @@
    "programs": {
     "presumptive": {
      "value": [
-      "Medicaid beneficiaries (coinsurances)"
+      "Medicaid"
      ],
      "layer": "documented",
-     "quote": "Medicaid Beneficiaries Presumptive Eligibility: Coinsurances due from Medicaid beneficiaries qualify for FAP. A Medicaid beneficiary may not be required to complete a FAP application in order for coinsurances to qualify.",
-     "source_id": "web-97dfa91605aebc95",
+     "quote": "Medicaid Beneficiaries Presumptive Eligibility: Coinsurances due from Medicaid beneficiaries qualify for FAP. A Medicaid beneficiary may not be required to complete a FAP application",
+     "source_id": "web-d04b6c920ff16b8f",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -2762,21 +2812,13 @@
     "state_programs": {
      "value": [
       {
-       "name": "Medicaid",
-       "how_to_apply": "Springfield Hospital helps patients apply"
-      },
-      {
-       "name": "Medicare Part D",
-       "how_to_apply": "Springfield Hospital helps patients apply"
-      },
-      {
        "name": "Vermont Health Connect",
-       "how_to_apply": "Springfield Hospital helps patients apply"
+       "how_to_apply": "Springfield Hospital will assist all patients with the completion of an application for Financial Assistance and whenever possible with applications for other programs such as Medicaid, Medicare Part D, Vermont Health Connect, etc."
       }
      ],
      "layer": "documented",
-     "quote": "Springfield Hospital will assist all patients with the completion of an application for Financial Assistance and whenever possible with applications for other programs such as Medicaid, Medicare Part D, Vermont Health Connect, etc.",
-     "source_id": "web-97dfa91605aebc95",
+     "quote": "whenever possible with applications for other programs such as Medicaid, Medicare Part D, Vermont Health Connect, etc.",
+     "source_id": "web-d04b6c920ff16b8f",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -2785,14 +2827,41 @@
    "apply": {
     "form_url": null,
     "form_version": null,
-    "documents_required": null,
+    "documents_required": {
+     "value": [
+      "tax_return"
+     ],
+     "layer": "documented",
+     "quote": "A complete copy of the most recent federal or state income tax return, including all supporting schedules.",
+     "source_id": "web-d04b6c920ff16b8f",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "documents_reported": null,
-    "submit_methods": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "phone",
+       "detail": "(802) 885-7081, extension 7785"
+      },
+      {
+       "kind": "in_person",
+       "detail": "main campus of Springfield Hospital, 25 Ridgewood Road, Springfield, VT 05156"
+      }
+     ],
+     "layer": "documented",
+     "quote": "A patient may obtain confidential and compassionate assistance located at the main campus of Springfield Hospital, 25 Ridgewood Road, Springfield, VT 05156 or by calling (802) 885-7081, extension 7785.",
+     "source_id": "web-d04b6c920ff16b8f",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "window_days_from_first_bill": {
      "value": 240,
      "layer": "documented",
-     "quote": "will be reversed should a complete application be received within 240 days of the first bill and the applicant is determined to be eligible for financial assistance",
-     "source_id": "web-97dfa91605aebc95",
+     "quote": "should a complete application be received within 240 days of the first bill and the applicant is determined to be eligible for financial assistance",
+     "source_id": "web-d04b6c920ff16b8f",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -2800,8 +2869,8 @@
     "decision_days": {
      "value": 30,
      "layer": "documented",
-     "quote": "A patient who applies for financial assistance will receive a written notice of the determination of Springfield Hospital within 30 days of submission of a complete, signed application and all required supporting documentation.",
-     "source_id": "web-97dfa91605aebc95",
+     "quote": "will receive a written notice of the determination of Springfield Hospital within 30 days of submission of a complete, signed application",
+     "source_id": "web-d04b6c920ff16b8f",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -2813,7 +2882,7 @@
      "value": 120,
      "layer": "documented",
      "quote": "Patient accounts may be sent to a collection agency for unpaid balances greater than 120 days from the date of the first bill and the patient has not applied for financial assistance.",
-     "source_id": "web-97dfa91605aebc95",
+     "source_id": "web-d04b6c920ff16b8f",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -2821,9 +2890,42 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": null,
+    "phone": {
+     "value": "(802) 885-7081",
+     "layer": "documented",
+     "quote": "or by calling (802) 885-7081, extension 7785",
+     "source_id": "web-d04b6c920ff16b8f",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "hours": null,
-    "languages": null
+    "languages": {
+     "value": [
+      "English",
+      "Fran\u00e7ais",
+      "Espa\u00f1ol",
+      "\u7e41\u9ad4\u4e2d\u6587",
+      "Ti\u1ebfng Vi\u1ec7t",
+      "\u0928\u0947\u092a\u093e\u0932\u0940",
+      "Srpsko-hrvats",
+      "Deutsch",
+      "Oroomiffa",
+      "Italiano",
+      "\u0627\u0644\u0639\u0631\u0628\u064a\u0629",
+      "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
+      "Tagalog",
+      "Portugu\u00eas",
+      "\u65e5\u672c\u8a9e",
+      "\u0e20\u0e32\u0e29\u0e32\u0e44\u0e17\u0e22"
+     ],
+     "layer": "documented",
+     "quote": "English | Fran\u00e7ais | Espa\u00f1ol | \u7e41\u9ad4\u4e2d\u6587 | Ti\u1ebfng Vi\u1ec7t | \u0928\u0947\u092a\u093e\u0932\u0940 | Srpsko-hrvats | Deutsch | Oroomiffa | Italiano | \u0627\u0644\u0639\u0631\u0628\u064a\u0629 | \u0420\u0443\u0441\u0441\u043a\u0438\u0439 | Tagalog| Portugu\u00eas | \u65e5\u672c\u8a9e | \u0e20\u0e32\u0e29\u0e32\u0e44\u0e17\u0e22",
+     "source_id": "web-d04b6c920ff16b8f",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
    },
    "coverage": {
     "facilities": null,
@@ -2832,54 +2934,41 @@
    },
    "sources": [
     {
-     "id": "web-97dfa91605aebc95",
+     "id": "web-d04b6c920ff16b8f",
      "kind": "hospital_web",
      "url": "https://springfieldhospital.org/financial-assistance/",
      "title": "Financial Assistance - Springfield Hospital",
      "fetched_on": "2026-10-23",
-     "sha256": "97dfa91605aebc950225348ee9740af4a7b5594dbbb96b73485670956a6b8471",
-     "effective_date": null
-    },
-    {
-     "id": "web-34f6dfb882074bf1",
-     "kind": "hospital_web",
-     "url": "https://springfieldhospital.org/wp-content/uploads/2025/07/SH-FAP-Application-Form-Revised-06302025.docx",
-     "title": "",
-     "fetched_on": "2026-10-23",
-     "sha256": "34f6dfb882074bf10009f4d897d1929fd75de5ad4dce88a7349b2f704542aee2",
-     "effective_date": null
-    },
-    {
-     "id": "web-8602f9d855d816bb",
-     "kind": "hospital_web",
-     "url": "https://springfieldhospital.org/make-a-payment-online/",
-     "title": "Make a Payment OnLine - Springfield Hospital",
-     "fetched_on": "2026-10-23",
-     "sha256": "8602f9d855d816bbb3e4773d65ce01dd2ec2b8364a4fc1eb68a824f3acd1a3d0",
+     "sha256": "d04b6c920ff16b8f4259efef7b4b2f8778811d7c5369b1cd25b3fc274273db2d",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "agent dropped apply.documents_required: judge: The quote does not mention a written letter describing extenuating circumstances.",
-    "agent dropped apply.submit_methods: judge: The quote only says to call for an appointment and bring documents; it gives no main campus address.",
-    "agent dropped contacts.phone: judge: The quote gives (802) 885-7081 extension 7785; the value omits the extension."
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: such as two recent consecutive pay stubs, statement of unemployment benefits or workers compensation benefits, statement | Two recent, consecutive monthly statements for all bank accounts or investment accounts held by any member of the househ",
+    "agent judge on programs.state_programs: Quote names Vermont Health Connect only in a list. It says assistance is given 'whenever possible', but the value's how_to_apply says the hospital 'will assist all patients', dropping that qualifier."
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 2,
-    "sources_total": 3,
-    "sources_missing": [
-     "https://springfieldhospital.org/wp-content/uploads/2025/07/SH-FAP-Application-Form-Revised-06302025.docx"
-    ],
+    "sources_fetched": 1,
+    "sources_total": 1,
+    "sources_missing": [],
+    "sha256_match": {
+     "web-d04b6c920ff16b8f": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.residency",
      "eligibility.insured_patients_covered",
      "programs.presumptive",
      "programs.state_programs",
+     "apply.documents_required",
+     "apply.submit_methods",
      "apply.window_days_from_first_bill",
      "apply.decision_days",
-     "collections.eca_wait_days"
+     "collections.eca_wait_days",
+     "contacts.phone",
+     "contacts.languages"
     ],
     "rejected": [
      [
@@ -2891,9 +2980,11 @@
       "quote not found in source"
      ]
     ],
-    "pruned": [],
+    "pruned": [
+     "apply.documents_required: 3 items not named in the trimmed quote"
+    ],
     "income_rule_verified": false,
-    "core_completeness": 0.0
+    "core_completeness": 0.5
    }
   },
   {
@@ -3118,6 +3209,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-7f9373397365beac": true,
+     "fap-00ee2bc286d6d130": true,
+     "web-04bcc5b114198dfe": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",

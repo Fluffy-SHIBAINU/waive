@@ -828,13 +828,21 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": null,
+    "free_care_max_fpl": {
+     "value": "150",
+     "layer": "documented",
+     "quote": "0 to 150% 100%1 100%",
+     "source_id": "fap-4c4610b27fa58cd3",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
     "asset_test": {
      "value": true,
      "layer": "documented",
-     "quote": "Patients wishing to be considered for discounts under this policy must provide requested documentation of income, residence, assets and qualifying medical expenses in a timely manner.",
+     "quote": "The most recently published Federal Income Poverty Guidelines Poverty Guidelines | ASPE using total household income, will be used as the primary determinant, though assets will be used as described in Section III (2)(b).",
      "source_id": "fap-4c4610b27fa58cd3",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -842,7 +850,7 @@
     },
     "residency": {
      "value": [
-      "Patients must be residents of MA or NH, or non-residents who receive emergency treatment at an MGB facility."
+      "Patients must be a resident of MA, NH, or a non-resident who receives emergency treatment at an MGB facility"
      ],
      "layer": "documented",
      "quote": "Patients must be a resident of MA, NH, or a non-resident who receives emergency treatment at an MGB facility",
@@ -851,18 +859,26 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "insured_patients_covered": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "The primary reasons for discounting patient balances, including balances after insurance (co-payments, co-insurance or deductibles) include:",
+     "source_id": "fap-4c4610b27fa58cd3",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "min_balance": null,
     "services_excluded": null
    },
    "programs": {
     "presumptive": {
      "value": [
-      "Health Safety Net Full enrollees",
-      "Health Safety Net Partial enrollees"
+      "Health Safety Net Full",
+      "Health Safety Net Partial"
      ],
      "layer": "documented",
-     "quote": "patients with Health Safety Net Full and Health Safety Net Partial will be presumptively eligible for Financial Assistance",
+     "quote": "patients with Health Safety Net Full and Health Safety Net Partial will be presumptively eligible for Financial Assistance- patients will be able to seek care for eligible services (per Section III(C)) without a Financial Assistance Application.",
      "source_id": "fap-4c4610b27fa58cd3",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -875,20 +891,36 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "other",
-      "proof_of_income"
+      "proof_of_income",
+      "other"
      ],
      "layer": "documented",
-     "quote": "Complete and submit a paper application (found in the financial application section) along with ID and income verification.",
-     "source_id": "web-795633cb40341d31",
+     "quote": "Patients wishing to be considered for discounts under this policy must provide requested documentation of income, residence, assets and qualifying medical expenses in a timely manner.",
+     "source_id": "fap-4c4610b27fa58cd3",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "documents_reported": null,
     "submit_methods": null,
-    "window_days_from_first_bill": null,
-    "decision_days": null,
+    "window_days_from_first_bill": {
+     "value": 60,
+     "layer": "documented",
+     "quote": "You pay or set up a payment plan within two months of the date on your first bill.",
+     "source_id": "web-46c350c04d07640e",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days": {
+     "value": 30,
+     "layer": "documented",
+     "quote": "A final decision will be provided within 30 days of receipt of request for appeal.",
+     "source_id": "fap-4c4610b27fa58cd3",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "decision_days_reported": null
    },
    "collections": {
@@ -899,8 +931,8 @@
     "phone": {
      "value": "603-740-3234",
      "layer": "documented",
-     "quote": "Financial Counselors (available in the Business Office) 121 Broadway Dover, NH 03820 603-740-3234",
-     "source_id": "web-795633cb40341d31",
+     "quote": "121 Broadway Dover, NH 03820 603-740-3234",
+     "source_id": "web-46c350c04d07640e",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -920,7 +952,7 @@
       "Vietnamese"
      ],
      "layer": "documented",
-     "quote": "English, Arabic, Chinese, Haitian Creole, Indonesian, Khmer, Portuguese, Russian, Spanish, and Vietnamese.",
+     "quote": "The application is available in 10 languages on www.massgeneralbrigham.org: English, Arabic, Chinese, Haitian Creole, Indonesian, Khmer, Portuguese, Russian, Spanish, and Vietnamese.",
      "source_id": "fap-4c4610b27fa58cd3",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -943,22 +975,25 @@
      "effective_date": null
     },
     {
-     "id": "web-795633cb40341d31",
+     "id": "web-46c350c04d07640e",
      "kind": "hospital_web",
      "url": "https://www.massgeneralbrigham.org/en/patients-visitors/billing-insurance/billing/financial-assistance",
      "title": "Financial Assistance | Mass General Brigham",
      "fetched_on": "2026-10-23",
-     "sha256": "795633cb40341d316f4d3ef8838cb1d9be4d2263dc46cca6d1b8042459e644fb",
+     "sha256": "46c350c04d07640e7cfbbe63dc498bc69b9659136a2c585a6c3999fbdb989ddd",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "agent dropped eligibility.free_care_max_fpl: judge: The table row for 150.1-250% lists both 85% and 100% without labels, so it does not plainly show 100% free care up to 250%.",
-    "agent dropped eligibility.insured_patients_covered: judge: The quote says the bills are not for co-pays or deductibles; it does not say insured patients are excluded.",
-    "agent dropped programs.state_programs: judge: The quote only refers to state websites for 'coverage options'; it does not name Maine Medicaid.",
-    "agent dropped apply.form_url: judge: The quote contains no URL; it only says the application 'can be found here:'.",
-    "agent dropped apply.submit_methods: judge: The financial counselor visit is described as a way to get help, not a way to submit; the phone line is for calling, not plainly a submission method."
+    "eligibility.discount_tiers: 150-250% at 100% is the free-care band, not a tier; skipped",
+    "eligibility.discount_tiers: 250-300% at 0% is no discount; skipped",
+    "agent dropped programs.state_programs: excerpt not in source: If you live in Massachusetts, you may be able to get health ",
+    "agent dropped apply.form_url: quote is not a substring of the source",
+    "agent dropped apply.submit_methods: excerpt not in source: Call 617-726-3884 or use our Financial Assistance Applicatio",
+    "agent judge on eligibility.discount_tiers: Quote lists tiers 0-150% (100%), 150.1-250% (85%), 251-300% (70%), with 0% above 251-300; value's 250-300 tier at 0% and 100% for 150-250 misreads the bounds and percents.",
+    "agent judge on eligibility.insured_patients_covered: Quote only says discounting covers balances after insurance co-payments, co-insurance, or deductibles; it does not state insured patients are covered.",
+    "agent judge on apply.window_days_from_first_bill: Quote says within two months of the first bill, not 60 days; the day count is not stated."
    ]
   },
   {
@@ -1230,7 +1265,15 @@
    "eligibility": {
     "free_care_max_fpl": null,
     "discount_tiers": null,
-    "assistance_ceiling_fpl": null,
+    "assistance_ceiling_fpl": {
+     "value": "225",
+     "layer": "documented",
+     "quote": "Income limits: household incomes equal to or less than 225% of the FPL.",
+     "source_id": "fap-d68a2aeefbbf5629",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "asset_test": {
      "value": true,
      "layer": "documented",
@@ -1240,24 +1283,41 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "residency": null,
-    "insured_patients_covered": null,
-    "min_balance": null,
-    "services_excluded": null
-   },
-   "programs": {
-    "presumptive": {
+    "residency": {
      "value": [
-      "Patients granted charitable care by Elliot Health System"
+      "Charity care is only available to residents of Southern NH Health's primary and secondary service areas."
      ],
      "layer": "documented",
-     "quote": "all patients of Southern NH Health who have been granted charitable care by Elliot Health System will be considered to have applied and been awarded for charitable care at Southern NH Health.",
+     "quote": "Charity care is only available to residents of Southern NH Health\u2019s primary and secondary service areas.",
      "source_id": "fap-d68a2aeefbbf5629",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "state_programs": null
+    "insured_patients_covered": null,
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
+    "state_programs": {
+     "value": [
+      {
+       "name": "Granite Advantage Health Care Program",
+       "how_to_apply": "Examples of Local, State or Federal assistance include Medicaid, Granite Advantage Health Care Program and the health insurance exchanges."
+      },
+      {
+       "name": "NH Medicaid",
+       "how_to_apply": "Examples of Local, State or Federal assistance include Medicaid, Granite Advantage Health Care Program and the health insurance exchanges."
+      }
+     ],
+     "layer": "documented",
+     "quote": "Examples of Local, State or Federal assistance include Medicaid, Granite Advantage Health Care Program and the health insurance exchanges.",
+     "source_id": "fap-d68a2aeefbbf5629",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
    },
    "apply": {
     "form_url": {
@@ -1270,27 +1330,14 @@
      "support_count": 0
     },
     "form_version": null,
-    "documents_required": {
-     "value": [
-      "pay_stubs",
-      "tax_return",
-      "other",
-      "social_security_letter"
-     ],
-     "layer": "documented",
-     "quote": "at least two of the following proofs of income: 3 current payroll stubs, current year federal tax return, W-2 form, written documentation from employer, proof of unemployment/worker\u2019s compensation/social security or letter of support from the provider of that support.",
-     "source_id": "fap-d68a2aeefbbf5629",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "documents_required": null,
     "documents_reported": null,
     "submit_methods": null,
     "window_days_from_first_bill": null,
     "decision_days": {
      "value": 14,
      "layer": "documented",
-     "quote": "Patients will be notified within 14 working days of Southern NH Health\u2019s decision regarding the",
+     "quote": "Patients will be notified within 14 working days of Southern NH Health\u2019s decision regarding the charitable care application.",
      "source_id": "fap-d68a2aeefbbf5629",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1306,20 +1353,35 @@
     "phone": {
      "value": "603-281-6630",
      "layer": "documented",
-     "quote": "Call Financial Counseling at 603-281-6630 .",
+     "quote": "Financial Counselor phone number: 603-281-6630",
+     "source_id": "fap-f3b438712fea5ad6",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": {
+     "value": "The office is open Monday through Friday, from 8am - 4pm.",
+     "layer": "documented",
+     "quote": "The office is open Monday through Friday, from 8am - 4pm.",
      "source_id": "web-9cf0c9f42bf4dd35",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "hours": null,
     "languages": {
      "value": [
       "English",
-      "Spanish"
+      "Spanish",
+      "Arabic",
+      "Nepali",
+      "Vietnamese",
+      "Bosnian",
+      "French",
+      "Portugese",
+      "Swahili"
      ],
      "layer": "documented",
-     "quote": "Download a copy of the application in English [https://www.snhhealth.org/download_file/view/30702b12-3a09-4d23-949c-78b93acfed34/249] or Spanish [https://www.snhhealth.org/download_file/view/2351e756-6595-4561-a59c-fdf4753ca460/249] .",
+     "quote": "English Spanish Arabic Nepali Vietnamese Bosnian French Portugese Swahili",
      "source_id": "web-9cf0c9f42bf4dd35",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1362,10 +1424,10 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "agent dropped eligibility.residency: judge: The quote states the service-area restriction but not the listed NH/MA towns or discretion for others.",
-    "agent dropped programs.state_programs: judge: The program names appear, but the quote does not say a Financial Counselor will assist with applying.",
-    "agent dropped apply.submit_methods: judge: The quote supports in-person, mail and MyChart, but none of the addresses or the cashier's office location.",
-    "agent dropped contacts.hours: judge: The quote gives Mon-Fri 8am-4pm for 'the office' but does not say it is the cashier's office."
+    "agent dropped apply.documents_required: between 1 and 3 excerpts allowed",
+    "agent dropped apply.submit_methods: excerpt not in source: Please return the application and requested documents to:\nSo",
+    "agent judge on programs.state_programs: Quote only lists Medicaid, Granite Advantage and exchanges as examples of assistance; it does not state how to apply for NH Medicaid or Granite Advantage separately.",
+    "agent judge on apply.decision_days: Quote says 14 working days, not calendar days; value of 14 omits the working-days qualifier."
    ]
   },
   {
@@ -1397,7 +1459,7 @@
     },
     "residency": {
      "value": [
-      "The patient must have a primary residence in one of the towns in Exeter Hospital's listed service area and must be a U.S. citizen or have a valid green card."
+      "The patient must be a citizen of the United States or have a valid green card, and must have his or her primary residence within the Hospital's service area."
      ],
      "layer": "documented",
      "quote": "The patient must be a citizen of the United States or have a valid green card, and must have his or her primary residence within the Hospital\u2019s service area.",
@@ -1420,26 +1482,56 @@
    },
    "programs": {
     "presumptive": null,
-    "state_programs": null
+    "state_programs": {
+     "value": [
+      {
+       "name": "Health Insurance Exchange",
+       "how_to_apply": "A patient must apply for coverage through the Health Insurance Exchange and/or the New Hampshire Health Medicaid Expansion Program during open enrollment and provide proof of coverage of exemption/denial."
+      },
+      {
+       "name": "New Hampshire Health Medicaid Expansion Program",
+       "how_to_apply": "A patient must apply for coverage through the Health Insurance Exchange and/or the New Hampshire Health Medicaid Expansion Program during open enrollment and provide proof of coverage of exemption/denial."
+      }
+     ],
+     "layer": "documented",
+     "quote": "A patient must apply for coverage through the Health Insurance Exchange and/or the New Hampshire Health Medicaid Expansion Program during open enrollment and provide proof of coverage of exemption/denial.",
+     "source_id": "fap-1cce6f922c93d87e",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
    },
    "apply": {
     "form_url": {
-     "value": "http://www.exeterhospital.com/patients-and-visitors/financial-assistance/",
+     "value": "https://exeterhospital.org/-/media/files/exeter/fap-english.pdf",
      "layer": "documented",
-     "quote": "Download an application or policy at http://www.exeterhospital.com/patients-and-visitors/financial-assistance/",
-     "source_id": "fap-1cce6f922c93d87e",
+     "quote": "Financial Assistance Application [/-/media/files/exeter/fap-english.pdf]",
+     "source_id": "web-730b13a0d14ad05c",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "form_version": null,
-    "documents_required": null,
+    "documents_required": {
+     "value": [
+      "other",
+      "tax_return",
+      "bank_statements",
+      "social_security_letter"
+     ],
+     "layer": "documented",
+     "quote": "Completed and signed copy of most recent year\u2019s Federal Income Tax Return, including all schedules and W-2 forms.",
+     "source_id": "fap-1cce6f922c93d87e",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "documents_reported": null,
     "submit_methods": null,
     "window_days_from_first_bill": {
      "value": 240,
      "layer": "documented",
-     "quote": "no later than 240 days after the date of their first post-discharge billing statement",
+     "quote": "The patient must apply and supply all required documentation needed to establish eligibility for financial assistance no later than 240 days after the date of their first post-discharge billing statement.",
      "source_id": "fap-1cce6f922c93d87e",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1457,14 +1549,22 @@
     "decision_days_reported": null
    },
    "collections": {
-    "eca_wait_days": null,
+    "eca_wait_days": {
+     "value": 120,
+     "layer": "documented",
+     "quote": "An unpaid account will not be submitted to a collection agency prior to 120 days from the date of first post-discharge billing statement.",
+     "source_id": "fap-1cce6f922c93d87e",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "collection_agencies": null
    },
    "contacts": {
     "phone": {
      "value": "603-580-6627",
      "layer": "documented",
-     "quote": "they may contact the Patient Accounts Office at 603-580-6627",
+     "quote": "contacting our Patient Accounts Office at 603-580-6627",
      "source_id": "fap-1cce6f922c93d87e",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1473,7 +1573,7 @@
     "hours": {
      "value": "Monday through Friday, 9:00am \u2013 4:00pm",
      "layer": "documented",
-     "quote": "or by visiting the office at 4 Alumni Drive, Exeter, NH Monday through Friday, 9:00am \u2013 4:00pm.",
+     "quote": "Office Hours: Monday through Friday 9:00am \u2013 4:00pm",
      "source_id": "fap-1cce6f922c93d87e",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1485,7 +1585,7 @@
       "Spanish"
      ],
      "layer": "documented",
-     "quote": "the application itself in both English and Spanish. You can get other languages through our Language Line.",
+     "quote": "You can get copies of this Plain Language Summary of the Financial Assistance Policy, the Financial Assistance Policy, and the application itself in both English and Spanish.",
      "source_id": "fap-1cce6f922c93d87e",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1517,19 +1617,22 @@
      "effective_date": null
     },
     {
-     "id": "web-f74d5c7b3b64aad9",
+     "id": "web-730b13a0d14ad05c",
      "kind": "hospital_web",
      "url": "https://exeterhospital.org/patients-visitors/billing-financial-services/assistance",
      "title": "Financial Assistance | Exeter Hospital",
      "fetched_on": "2026-10-23",
-     "sha256": "f74d5c7b3b64aad9cdab3f361bca1c2fd67280d8bfb8e1634b1cefaf4b50a6c4",
+     "sha256": "730b13a0d14ad05c5fcbd549c956784a1e1502616c6af1a414376b45d6d49301",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "agent dropped apply.documents_required: judge: Quote lacks the SSA-1099 or IRS non-filing verification alternative, and it says 'completed' tax return rather than 'signed'.",
-    "agent dropped apply.submit_methods: judge: Quote introduces the submission office but gives no address and no mail method."
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Copies of three months of banking and other financial account statements (e.g. savings, checking, money market, IRA, 401 | Copies of government assistance notices (including Department of Health & Human Services).",
+    "agent dropped apply.submit_methods: excerpt not in source: 4 Alumni Drive Exeter, NH 03833 603.580.6627 Fax: 603.580.79",
+    "agent judge on eligibility.insured_patients_covered: Quote only says underinsured patients get assistance against copay, coinsurance, or deductible. It does not state that insured patients generally are covered.",
+    "agent judge on apply.form_url: Quote gives only the path /-/media/files/exeter/fap-english.pdf with no domain. The full https://exeterhospital.org URL is not in the quote.",
+    "agent judge on apply.documents_required: Quote does not list a fully completed application with signatures or proof of Exchange/Medicaid exclusion or denial. Only tax return, three months of statements, and assistance notices appear."
    ]
   },
   {
@@ -1910,8 +2013,8 @@
     "form_url": {
      "value": "https://littletonhealthcare.org/wp-content/uploads/2025/02/FAP-APPLICATION.pdf",
      "layer": "documented",
-     "quote": "Financial Assistance Application [https://littletonhealthcare.org/wp-content/uploads/2025/02/FAP-APPLICATION.pdf]",
-     "source_id": "web-3401610e74dc0141",
+     "quote": "Financial Assistance Application [https://littletonhealthcare.org/wp-content/uploads/2025/02/FAP-APPLICATION.pdf] (PDF)",
+     "source_id": "web-f0ef0ad8aabe460c",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -1939,7 +2042,7 @@
      ],
      "layer": "documented",
      "quote": "Completed applications can be sent to patientadvocate@lrhcares.org .",
-     "source_id": "web-3401610e74dc0141",
+     "source_id": "web-f0ef0ad8aabe460c",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -1956,17 +2059,17 @@
     "phone": {
      "value": "603-444-9560",
      "layer": "documented",
-     "quote": "Please call Customer Service at 603-444-9560 for more information or download the following documents:",
-     "source_id": "web-3401610e74dc0141",
+     "quote": "Financial Assistance 603-444-9560",
+     "source_id": "web-f0ef0ad8aabe460c",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "hours": {
-     "value": "Monday through Friday, 7:30 AM to 4:00 PM",
+     "value": "Monday through Friday 7:30 AM to 4:00 PM",
      "layer": "documented",
      "quote": "Hours of Operation Monday through Friday 7:30 AM to 4:00 PM",
-     "source_id": "web-3401610e74dc0141",
+     "source_id": "web-f0ef0ad8aabe460c",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -1998,19 +2101,17 @@
      "effective_date": null
     },
     {
-     "id": "web-3401610e74dc0141",
+     "id": "web-f0ef0ad8aabe460c",
      "kind": "hospital_web",
      "url": "https://littletonhealthcare.org/patients-and-visitors/my-bill/",
      "title": "My Bill Patient Financial Services Littleton Regional Healthcare",
      "fetched_on": "2026-10-23",
-     "sha256": "3401610e74dc014187b2ea22f7ad736cd117ef84d91e8478dc6c804509db82f7",
+     "sha256": "f0ef0ad8aabe460c8301680e58471a4adc70aea320a4d5fed985154fc6bee490",
      "effective_date": null
     }
    ],
    "accuracy": null,
-   "eve_review": [
-    "agent dropped programs.state_programs: judge: Quote names NH Medicaid and the DHHS website for applying, but does not contain the URL http://www.dhhs.nh.gov/dfa/medical/."
-   ]
+   "eve_review": []
   },
   {
    "hospital": {
@@ -2029,27 +2130,11 @@
    "eligibility": {
     "free_care_max_fpl": null,
     "discount_tiers": null,
-    "assistance_ceiling_fpl": {
-     "value": "300",
-     "layer": "documented",
-     "quote": "The household annual income does not exceed 300% of the Federal Poverty Guidelines based upon family size.",
-     "source_id": "web-3b714359755599f3",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "asset_test": {
-     "value": true,
-     "layer": "documented",
-     "quote": "Submit a copy of liquid assets (checking and or savings account statement, Certificates of Deposits, etc.).",
-     "source_id": "web-e9943c94fffb432f",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "assistance_ceiling_fpl": null,
+    "asset_test": null,
     "residency": {
      "value": [
-      "The patient must live within the catchment area, which includes all of New Hampshire and Vermont and Oxford County, Maine."
+      "The patient lives within our catchment area which includes all of NH and VT and Oxford County in Maine."
      ],
      "layer": "documented",
      "quote": "The patient lives within our catchment area which includes all of NH and VT and Oxford County in Maine.",
@@ -2058,24 +2143,15 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "insured_patients_covered": {
-     "value": true,
-     "layer": "documented",
-     "quote": "Patients that live in our catchment area and have Medicaid or coverage through the NH Health Protection Program will automatically qualify for Weeks Health Access for bills not covered by that insurance.",
-     "source_id": "web-3b714359755599f3",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "insured_patients_covered": null,
     "min_balance": null,
     "services_excluded": null
    },
    "programs": {
     "presumptive": {
      "value": [
-      "Medicaid enrolled (catchment area residents)",
-      "NH Health Protection Program coverage (catchment area residents)",
-      "Verified out-of-state Medicaid from a state Weeks is not enrolled to bill (emergency services)"
+      "Medicaid",
+      "NH Health Protection Program"
      ],
      "layer": "documented",
      "quote": "Patients that live in our catchment area and have Medicaid or coverage through the NH Health Protection Program will automatically qualify for Weeks Health Access for bills not covered by that insurance.",
@@ -2084,27 +2160,14 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "state_programs": {
-     "value": [
-      {
-       "name": "Medicaid",
-       "how_to_apply": "A hospital representative will assist the patient with the Medicaid application."
-      }
-     ],
-     "layer": "documented",
-     "quote": "A hospital representative will be available to assist the patient with Weeks Health Access, Medicaid or an Insurance Exchange application.",
-     "source_id": "web-3b714359755599f3",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "state_programs": null
    },
    "apply": {
     "form_url": {
      "value": "https://weeksmedical.org/wp-content/uploads/sites/2/2024/01/Financial-Assistance-Applicaiton-12-14-23.pdf",
      "layer": "documented",
-     "quote": "Financial Assistance application [https://weeksmedical.org/wp-content/uploads/sites/2/2024/01/Financial-Assistance-Applicaiton-12-14-23.pdf]",
-     "source_id": "web-e9943c94fffb432f",
+     "quote": "Complete financial forms: Financial Assistance application [https://weeksmedical.org/wp-content/uploads/sites/2/2024/01/Financial-Assistance-Applicaiton-12-14-23.pdf] (PDF)",
+     "source_id": "web-e664fb0494dd9126",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -2119,14 +2182,31 @@
       "social_security_letter"
      ],
      "layer": "documented",
-     "quote": "The patient must provide a complete copy of their most recent tax return or sign an IRS form 4506T.",
+     "quote": "The patient must provide a complete copy of their most recent tax return or sign an IRS form 4506T. (Patients who do not file a tax return must still sign the form 4506T.) A copy of W-2 forms and 1099 for last year.",
      "source_id": "web-3b714359755599f3",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "documents_reported": null,
-    "submit_methods": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "phone",
+       "detail": "603-788-5354"
+      },
+      {
+       "kind": "in_person",
+       "detail": "Business Office located at 8 Clover Lane, Whitefield, NH 03598"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Patients may also contact our Financial Counselor for assistance in filling out the application: by phone at 603-788-5354 or in person at the Business Office located at 8 Clover Lane, Whitefield, NH 03598.",
+     "source_id": "web-3b714359755599f3",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "window_days_from_first_bill": {
      "value": 240,
      "layer": "documented",
@@ -2153,9 +2233,9 @@
    },
    "contacts": {
     "phone": {
-     "value": "603-788-5354",
+     "value": "603-788-5350",
      "layer": "documented",
-     "quote": "Patients may also contact our Financial Counselor for assistance in filling out the application: by phone at 603-788-5354",
+     "quote": "A free copy of the EMTALA Policy is available upon request by calling the Business Office at 603-788-5350.",
      "source_id": "web-3b714359755599f3",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2189,19 +2269,21 @@
      "effective_date": null
     },
     {
-     "id": "web-e9943c94fffb432f",
+     "id": "web-e664fb0494dd9126",
      "kind": "hospital_web",
      "url": "https://weeksmedical.org/patients-visitors/financial-information/",
      "title": "Financial Information - Weeks Medical Center",
      "fetched_on": "2026-10-23",
-     "sha256": "e9943c94fffb432fb1e6e8be92aedc52f27f22797e8618ca63b299cf8c42463d",
+     "sha256": "e664fb0494dd91267ffc09bbae6d61bfdbbedcdc403edb10d10b7f82edb271ff",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: Patients with a verified Out of State Medicaid eligibility through a State that Weeks Medical Center is not enrolled to ",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: A copy of W-2 forms and 1099 for last year.Copies of three (3) most recent pay stubs, or a statement from your employer. | Copies of unemployment or disability compensation benefits.Copies of pension benefits Copy of current Social Security be"
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Copies of three (3) most recent pay stubs, or a statement from your employer. | Copy of current Social Security benefit statement. Copy of food stamp allocation",
+    "agent dropped eligibility.asset_test: quote is not a substring of the source",
+    "agent judge on apply.documents_required: Quote lists tax return, W-2/1099, pay stubs, Social Security statement, food stamps. It does not mention unemployment/disability, pension benefits.",
+    "agent judge on apply.window_days_from_first_bill: Quote says 240 days after the first post-discharge statement, not after the first bill."
    ]
   },
   {
@@ -3252,11 +3334,25 @@
    "status": "draft",
    "eligibility": {
     "free_care_max_fpl": null,
-    "discount_tiers": null,
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "0",
+       "max_fpl_inclusive": "400",
+       "discount_percent": 55
+      }
+     ],
+     "layer": "documented",
+     "quote": "level 1 (100% discount), or level 2 (55% discount); see Appendix D.",
+     "source_id": "fap-13c0ffea8e12971e",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "assistance_ceiling_fpl": {
      "value": "400",
      "layer": "documented",
-     "quote": "2. Have gross household income less than 400% of the current year's FPG; see Appendix D.",
+     "quote": "Have gross household income less than 400% of the current year's FPG; see Appendix D.",
      "source_id": "fap-13c0ffea8e12971e",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3265,18 +3361,18 @@
     "asset_test": {
      "value": true,
      "layer": "documented",
-     "quote": "Have gross household income including some assets at or below 400% of the",
+     "quote": "Have gross household income including some assets at or below 400% of the current year's Federal Poverty Guidelines",
      "source_id": "fap-b1bea474a3145f93",
      "checked_on": "2026-10-23",
-     "confidence": 1.0,
+     "confidence": 0.8,
      "support_count": 0
     },
     "residency": {
      "value": [
-      "Patients must be New Hampshire residents, or non-residents who experience a medical emergency."
+      "Be a resident of NH, or a non-resident who experiences a medical emergency"
      ],
      "layer": "documented",
-     "quote": "1. Be a resident of NH, or a non-resident who experiences a medical emergency",
+     "quote": "Be a resident of NH, or a non-resident who experiences a medical emergency",
      "source_id": "fap-13c0ffea8e12971e",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3285,8 +3381,8 @@
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "Access Network with out-of-pocket expenses your insurance must be active and accepted by and in-network with the",
-     "source_id": "fap-b1bea474a3145f93",
+     "quote": "B. Insured patients: 1. Insured patients will not have the AGB applied 2. The FA discount will be applied directly to the balance",
+     "source_id": "fap-13c0ffea8e12971e",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -3297,38 +3393,90 @@
    "programs": {
     "presumptive": {
      "value": [
-      "Currently eligible for NHHAN as determined by another NHHAN-participating organization",
-      "Deceased patient with no known estate",
-      "Minor patient serving as own guarantor under Minors Rights provisions"
+      "Currently eligible for the NHHAN",
+      "Patient is deceased with no known estate"
      ],
      "layer": "documented",
-     "quote": "i. Currently eligible for the NHHAN as determined by any other NHHAN-",
+     "quote": "i. Currently eligible for the NHHAN as determined by any other NHHAN- participating organization ii. Patient is deceased with no known estate",
      "source_id": "fap-13c0ffea8e12971e",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "state_programs": null
+    "state_programs": {
+     "value": [
+      {
+       "name": "New Hampshire Health Access Network (NHHAN)",
+       "how_to_apply": "As a member of the New Hampshire Health Access Network (NHHAN), the FA will use the same general application."
+      }
+     ],
+     "layer": "documented",
+     "quote": "As a member of the New Hampshire Health Access Network (NHHAN), the FA will use the same general application.",
+     "source_id": "fap-13c0ffea8e12971e",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
    },
    "apply": {
     "form_url": {
-     "value": "https://monadnockcommunityhospital.com/wp-content/uploads/2026/10/MCH-FA-Application.pdf",
+     "value": "https://monadnockcommunityhospital.com/financial-services/financial-assistance/",
      "layer": "documented",
-     "quote": "Assist patient in completing application (Download Application) [https://monadnockcommunityhospital.com/wp-content/uploads/2026/10/MCH-FA-Application.pdf]",
-     "source_id": "web-005ff830c2258538",
+     "quote": "By going online to print the FA application: https://monadnockcommunityhospital.com/fin ancial-services/financial-assistance/",
+     "source_id": "fap-b1bea474a3145f93",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "form_version": null,
-    "documents_required": null,
+    "documents_required": {
+     "value": [
+      "other",
+      "tax_return",
+      "pay_stubs",
+      "bank_statements",
+      "social_security_letter",
+      "medicaid_denial"
+     ],
+     "layer": "documented",
+     "quote": "1. A completed and signed application (all adults must sign the application)",
+     "source_id": "fap-b1bea474a3145f93",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "documents_reported": null,
-    "submit_methods": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "Monadnock Community Hospital ATTN: Financial Assistance (FA) 452 Old Street Rd Peterborough, NH 03458"
+      },
+      {
+       "kind": "fax",
+       "detail": "(603) 924-1709"
+      },
+      {
+       "kind": "email",
+       "detail": "FA@mchmail.org"
+      },
+      {
+       "kind": "in_person",
+       "detail": "drop off at the switchboard at the main entrance"
+      }
+     ],
+     "layer": "documented",
+     "quote": "you must complete the FA application and return it by mail to the address below, fax to (603) 924-1709, drop off at the switchboard at the main entrance, email to FA@mchmail.org",
+     "source_id": "fap-b1bea474a3145f93",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "window_days_from_first_bill": {
      "value": 240,
      "layer": "documented",
-     "quote": "application within 8 months of the first post-discharge statement, that has not",
-     "source_id": "fap-b1bea474a3145f93",
+     "quote": "Past dates of service may be considered eligible for FA if the first post-discharge statement was issued within 240 days of the FA application date.",
+     "source_id": "fap-13c0ffea8e12971e",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -3336,7 +3484,7 @@
     "decision_days": {
      "value": 60,
      "layer": "documented",
-     "quote": "e. Patients will be notified in writing of his/her determination within 60 days of receipt",
+     "quote": "Patients will be notified in writing of his/her determination within 60 days of receipt of the completed application.",
      "source_id": "fap-13c0ffea8e12971e",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3352,14 +3500,24 @@
     "phone": {
      "value": "(603) 924-1717",
      "layer": "documented",
-     "quote": "For assistance or to be mailed an application, please call (603) 924-1717.",
-     "source_id": "web-005ff830c2258538",
+     "quote": "By calling the FA office at: (603) 924-1717",
+     "source_id": "fap-13c0ffea8e12971e",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "hours": null,
-    "languages": null
+    "languages": {
+     "value": [
+      "other languages"
+     ],
+     "layer": "documented",
+     "quote": "Interpreter services for other languages are available",
+     "source_id": "fap-b1bea474a3145f93",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
    },
    "coverage": {
     "facilities": null,
@@ -3386,21 +3544,24 @@
      "effective_date": null
     },
     {
-     "id": "web-005ff830c2258538",
+     "id": "web-2260246e69e9ae03",
      "kind": "hospital_web",
-     "url": "https://monadnockcommunityhospital.com/financial-services/financial-assistance/",
-     "title": "Financial Assistance - Monadnock Community Hospital",
+     "url": "https://monadnockcommunityhospital.com/financial-services/billing-information-and-faqs/",
+     "title": "Billing Information and FAQ\u2019s - Monadnock Community Hospital",
      "fetched_on": "2026-10-23",
-     "sha256": "005ff830c225853862f79ea307e13a7d97146b4c1664c1a5bbdcb3b82c1cf924",
+     "sha256": "2260246e69e9ae03d087557acd801f994a4c81d02bcada708a5f91973baba9fe",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: ii. Patient is deceased with no known estate | iii. A minor patient serving as their own guarantor under applicable Minors",
-    "agent dropped programs.state_programs: judge: The quote is truncated at 'same general' and never says 'application', so the how_to_apply detail is not stated.",
-    "agent dropped apply.documents_required: judge: The quote does not mention the 4506T alternative for non-filers; the other documents match.",
-    "agent dropped apply.submit_methods: judge: The quote says 'mail to the address below' but gives no mailing address; fax, drop-off and email match."
+    "eligibility.discount_tiers: 0-400% at 100% is the free-care band, not a tier; skipped",
+    "eligibility.asset_test: quote matched the source only after typography normalization",
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: 2. A complete copy of most recent Federal Income Tax Return including all schedules and attachments | 3. Copy of all most recent W-2 and/or 1099 forms",
+    "agent judge on eligibility.discount_tiers: Quote names level 1 (100%) and level 2 (55%) but gives no FPL bounds (min 0, max 400) for either level.",
+    "agent judge on apply.form_url: Quote splits the URL as 'fin ancial', with a space; the value removes the space, so the quoted text does not match the recorded URL exactly.",
+    "agent judge on apply.documents_required: Quote lists only the application, federal tax return, and W-2/1099 forms; paycheck stubs, bank statements, Social Security statements, and Medicaid denial are not in the quote.",
+    "agent judge on apply.submit_methods: Quote says mail 'to the address below' but gives no mailing address, so the mail detail in the value is not stated in the quote."
    ]
   },
   {
@@ -3596,7 +3757,15 @@
    "eligibility": {
     "free_care_max_fpl": null,
     "discount_tiers": null,
-    "assistance_ceiling_fpl": null,
+    "assistance_ceiling_fpl": {
+     "value": "300",
+     "layer": "documented",
+     "quote": "Community Care is available to patients whose annual household income is at or below 300% of the Federal Poverty Guidelines (FPG) for 2026.",
+     "source_id": "fap-1860ba2fda8259a6",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "asset_test": {
      "value": true,
      "layer": "documented",
@@ -3606,39 +3775,68 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "residency": null,
+    "residency": {
+     "value": [
+      "Applicants must be a permanent resident of the State of New Hampshire."
+     ],
+     "layer": "documented",
+     "quote": "Applicants must be a permanent resident of the State of New Hampshire.",
+     "source_id": "fap-1860ba2fda8259a6",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "insured_patients_covered": null,
     "min_balance": null,
     "services_excluded": null
    },
    "programs": {
     "presumptive": null,
-    "state_programs": {
-     "value": [
-      {
-       "name": "NH Health Access Network",
-       "how_to_apply": "Call 1-866-557-2555; for help with the application, call Financial Counselors at 603-238-6471."
-      }
-     ],
-     "layer": "documented",
-     "quote": "To apply for the NH Health Access Network, you may call 1-866-557-2555 . If you would like assistance in completing the NHHAN application, please call our Financial Counselors to schedule an appointment at 603-238-6471 .",
-     "source_id": "web-610687ea6b8cb70a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "state_programs": null
    },
    "apply": {
     "form_url": null,
     "form_version": null,
-    "documents_required": null,
+    "documents_required": {
+     "value": [
+      "proof_of_income",
+      "other"
+     ],
+     "layer": "documented",
+     "quote": "a. Proof of Income",
+     "source_id": "fap-1860ba2fda8259a6",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "documents_reported": null,
-    "submit_methods": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "in_person",
+       "detail": "contacting the hospital's Financial Services Department"
+      },
+      {
+       "kind": "mail",
+       "detail": "Applications and copies of this policy can be mailed upon request"
+      },
+      {
+       "kind": "portal",
+       "detail": "available on SMH's website"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Patients may request Community Care at any point during their care by contacting the hospital's Financial Services Department. Applications are also made available during a patient's inpatient stay, and is available on SMH's website.",
+     "source_id": "fap-1860ba2fda8259a6",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "window_days_from_first_bill": null,
     "decision_days": {
      "value": 10,
      "layer": "documented",
-     "quote": "Applicants will be notified in writing of the final eligibility decision within 10 days",
+     "quote": "Applicants will be notified in writing of the final eligibility decision within 10 days of submitting a complete application.",
      "source_id": "fap-1860ba2fda8259a6",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3652,9 +3850,9 @@
    },
    "contacts": {
     "phone": {
-     "value": "1-866-557-2555",
+     "value": "(603) 536-1120",
      "layer": "documented",
-     "quote": "you may contact the Business Office at 1-866-557-2555 between the hours of 8:00 am-4:30 pm, Monday through Friday",
+     "quote": "CALL US: (603) 536-1120",
      "source_id": "web-610687ea6b8cb70a",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3663,7 +3861,7 @@
     "hours": {
      "value": "8:00 am-4:30 pm, Monday through Friday",
      "layer": "documented",
-     "quote": "you may contact the Business Office at 1-866-557-2555 between the hours of 8:00 am-4:30 pm, Monday through Friday",
+     "quote": "between the hours of 8:00 am-4:30 pm, Monday through Friday, to request a copy of your bill",
      "source_id": "web-610687ea6b8cb70a",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3707,9 +3905,11 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "agent dropped eligibility.residency: judge: Quote only requires permanent NH residency; it says nothing about case-by-case review of out-of-state applicants.",
-    "agent dropped apply.form_url: judge: Quote gives only http://www.spearehospital.com/, not the /patients-visitors/financial-assistance/ path.",
-    "agent dropped apply.documents_required: judge: Quote omits item b (Household Size), and item c is cut off with no mention of asset testing guidelines."
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: b. Household Size | c. For Specialty or non-emergent hospital services, applicants must provide document relevant to asset testing guideline",
+    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Applications and copies of this policy can be mailed upon request.",
+    "agent dropped programs.state_programs: excerpt not in source: To apply for the NH Health Access Network, you may call 1-86",
+    "agent judge on apply.documents_required: Quote lists Proof of Income and Household Size but also a third item, asset-testing documents for specialty or non-emergent services, which the value omits.",
+    "agent judge on apply.submit_methods: Quote does not say applications can be submitted in person; 'contacting Financial Services' does not specify in person. Mail and website options are stated."
    ]
   },
   {

@@ -897,7 +897,15 @@
      "support_count": 0
     },
     "residency": null,
-    "insured_patients_covered": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Did you have health insurance on the date of service? \u2610 No \u2610 Yes (Provide card copy with application)",
+     "source_id": "fap-d39fb64f165bfba2",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "min_balance": null,
     "services_excluded": null
    },
@@ -911,13 +919,12 @@
     "documents_required": {
      "value": [
       "pay_stubs",
-      "proof_of_income",
+      "other",
       "social_security_letter",
-      "bank_statements",
-      "insurance_card"
+      "bank_statements"
      ],
      "layer": "documented",
-     "quote": "\u2610 Employment = paystubs showing gross income for 3 or 12 months prior to the date of service \u2610 Self-Employment = Complete tax forms from most recent filing including Schedule C",
+     "quote": "Employment = paystubs showing gross income for 3 or 12 months prior to the date of service",
      "source_id": "fap-d39fb64f165bfba2",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -928,7 +935,7 @@
      "value": [
       {
        "kind": "mail",
-       "detail": "Beebe Medical, ATTN: Financial Assistance, PO Box 828790, Philadelphia, PA 19182-8790"
+       "detail": "Beebe Medical ATTN: Financial Assistance PO Box 828790 Philadelphia, PA 19182-8790"
       }
      ],
      "layer": "documented",
@@ -969,7 +976,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: \u2610 Social Security/Pension/Disability = Most recent benefit letter \u2610 Other = Proof of any other income (unemployment bene | Did you have health insurance on the date of service? \u2610 No \u2610 Yes (Provide card copy with application)"
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Self-Employment = Complete tax forms from most recent filing including Schedule C | Checking/Savings = Current 30-day statement for each account",
+    "agent judge on eligibility.insured_patients_covered: Quote only asks whether the patient had health insurance on the date of service; it does not state that insured patients are covered.",
+    "agent judge on apply.documents_required: Quote lists paystubs, tax forms, and checking/savings statements, but does not mention a Social Security/Pension/Disability benefit letter; value includes an unsupported item."
    ]
   },
   {

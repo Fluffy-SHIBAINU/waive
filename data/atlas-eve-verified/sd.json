@@ -8,6 +8,651 @@
  "sheets": [
   {
    "hospital": {
+    "ccn": "430014",
+    "name": "AVERA ST LUKES",
+    "city": "ABERDEEN",
+    "state": "SD",
+    "zip": "57401",
+    "phone": "605-622-5000",
+    "ownership": "Voluntary non-profit - Church",
+    "website_domain": "avera.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "250",
+     "layer": "documented",
+     "quote": "who have family incomes not in excess of 250% of the Federal Poverty Guidelines may be eligible to receive 100% charity care based on their",
+     "source_id": "fap-db61ff74cd6247dd",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": null,
+    "assistance_ceiling_fpl": null,
+    "asset_test": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Patient's assets will be taken into account for eligibility even if his or her income/family income is at or below 400% of the Federal Poverty Guidelines.",
+     "source_id": "fap-db61ff74cd6247dd",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "residency": {
+     "value": [
+      "A patient is considered a member of the Avera service area if their county of residence is within the Avera Marketing defined service area."
+     ],
+     "layer": "documented",
+     "quote": "A patient is considered a member of the Avera service area if their county of residence is within the Avera Marketing defined service area.",
+     "source_id": "fap-db61ff74cd6247dd",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "insured_patients_covered": null,
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": {
+     "value": [
+      "WIC"
+     ],
+     "layer": "documented",
+     "quote": "Participation in Women, Infant and Children program (WIC)",
+     "source_id": "fap-db61ff74cd6247dd",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "tax_return",
+      "pay_stubs",
+      "bank_statements"
+     ],
+     "layer": "documented",
+     "quote": "Tax Return or W-2 if most recent Tax Returns are not available. If these documents are not available, then the most recent Pay Stubs and Bank Statements will be accepted.",
+     "source_id": "fap-db61ff74cd6247dd",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "in_person",
+       "detail": "contacting the business office"
+      },
+      {
+       "kind": "portal",
+       "detail": "visiting www.avera.org to obtain all application materials"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Patients can apply for financial assistance by contacting the business office or by visiting www.avera.org to obtain all application materials.",
+     "source_id": "fap-db61ff74cd6247dd",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": {
+     "value": 240,
+     "layer": "documented",
+     "quote": "Avera organizations will allow 240 days from the first post discharge billing statement for individuals to apply for financial assistance.",
+     "source_id": "fap-db61ff74cd6247dd",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days": null,
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": {
+     "value": 120,
+     "layer": "documented",
+     "quote": "Avera organizations will allow all individuals 120 days from the first post discharge statement to apply for financial assistance before initiating any extraordinary collection activities (ECA).",
+     "source_id": "fap-db61ff74cd6247dd",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "888-370-6525",
+     "layer": "documented",
+     "quote": "please contact our customer service department at 888-370-6525.",
+     "source_id": "fap-db61ff74cd6247dd",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": null,
+    "languages": null
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-db61ff74cd6247dd",
+     "kind": "hospital_web",
+     "url": "http://www.avera.org/app/files/public/6b12ae61-682d-4d4e-83e9-9294397befb7/avera-financial-assistance-policy.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "db61ff74cd6247dd4525157d5e25bef9a3dc2c9276a35cb66d5c7458303a5c40",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Homeless or received care from a free Avera clinic | Medicaid eligible patients when the following applies:",
+    "agent judge on eligibility.discount_tiers: Quote gives the 250% lower bound and 90% discount but no 400% upper bound. The 400% figure appears only in the separate asset-test sentence.",
+    "agent judge on apply.submit_methods: Quote says patients can contact the business office or visit www.avera.org to obtain application materials. It does not state online submission."
+   ],
+   "eve_verified": {
+    "on": "2026-10-23",
+    "sources_fetched": 1,
+    "sources_total": 1,
+    "sources_missing": [],
+    "sha256_match": {
+     "fap-db61ff74cd6247dd": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
+    "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.asset_test",
+     "eligibility.residency",
+     "programs.presumptive",
+     "apply.documents_required",
+     "apply.submit_methods",
+     "apply.window_days_from_first_bill",
+     "collections.eca_wait_days",
+     "contacts.phone"
+    ],
+    "rejected": [
+     [
+      "eligibility.discount_tiers",
+      "value not in quote"
+     ],
+     [
+      "apply.decision_days",
+      "value not in quote"
+     ]
+    ],
+    "pruned": [
+     "programs.presumptive: 2 items not named in the trimmed quote"
+    ],
+    "income_rule_verified": true,
+    "core_completeness": 0.67
+   }
+  },
+  {
+   "hospital": {
+    "ccn": "430016",
+    "name": "AVERA MCKENNAN HOSPITAL & UNIVERSITY HEALTH CENTER",
+    "city": "SIOUX FALLS",
+    "state": "SD",
+    "zip": "57117",
+    "phone": "605-322-8000",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "avera.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "250",
+     "layer": "documented",
+     "quote": "who have family incomes not in excess of 250% of the Federal Poverty Guidelines may be eligible to receive 100% charity care based on their",
+     "source_id": "fap-db61ff74cd6247dd",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": null,
+    "assistance_ceiling_fpl": null,
+    "asset_test": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Patient's assets will be taken into account for eligibility even if his or her income/family income is at or below 400% of the Federal Poverty Guidelines.",
+     "source_id": "fap-db61ff74cd6247dd",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "residency": {
+     "value": [
+      "A patient is considered a member of the Avera service area if their county of residence is within the Avera Marketing defined service area."
+     ],
+     "layer": "documented",
+     "quote": "A patient is considered a member of the Avera service area if their county of residence is within the Avera Marketing defined service area.",
+     "source_id": "fap-db61ff74cd6247dd",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Charitable reductions provided by Avera to insured, under-insured and uninsured are compliant with all state and federal regulations.",
+     "source_id": "fap-db61ff74cd6247dd",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": {
+     "value": [
+      "WIC"
+     ],
+     "layer": "documented",
+     "quote": "Participation in Women, Infant and Children program (WIC)",
+     "source_id": "fap-db61ff74cd6247dd",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "tax_return",
+      "other",
+      "pay_stubs",
+      "bank_statements"
+     ],
+     "layer": "documented",
+     "quote": "Tax Return or W-2 if most recent Tax Returns are not available. If these documents are not available, then the most recent Pay Stubs and Bank Statements will be accepted.",
+     "source_id": "fap-db61ff74cd6247dd",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "in_person",
+       "detail": "contacting the business office"
+      },
+      {
+       "kind": "portal",
+       "detail": "visiting www.avera.org to obtain all application materials"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Patients can apply for financial assistance by contacting the business office or by visiting www.avera.org to obtain all application materials.",
+     "source_id": "fap-db61ff74cd6247dd",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": {
+     "value": 240,
+     "layer": "documented",
+     "quote": "Avera organizations will allow 240 days from the first post discharge billing statement for individuals to apply for financial assistance.",
+     "source_id": "fap-db61ff74cd6247dd",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days": null,
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": {
+     "value": 120,
+     "layer": "documented",
+     "quote": "Avera organizations will allow all individuals 120 days from the first post discharge statement to apply for financial assistance before initiating any extraordinary collection activities (ECA).",
+     "source_id": "fap-db61ff74cd6247dd",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "888-370-6525",
+     "layer": "documented",
+     "quote": "please contact our customer service department at 888-370-6525",
+     "source_id": "fap-db61ff74cd6247dd",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": null,
+    "languages": null
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-db61ff74cd6247dd",
+     "kind": "hospital_web",
+     "url": "http://www.avera.org/app/files/public/6b12ae61-682d-4d4e-83e9-9294397befb7/avera-financial-assistance-policy.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "db61ff74cd6247dd4525157d5e25bef9a3dc2c9276a35cb66d5c7458303a5c40",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Homeless or received care from a free Avera clinic | Medicaid eligible patients when the following applies:",
+    "agent judge on eligibility.discount_tiers: Quote gives the 250% lower bound and 90% forgiveness but never states the 400% upper bound; 400 appears only in the asset-test sentence."
+   ],
+   "eve_verified": {
+    "on": "2026-10-23",
+    "sources_fetched": 1,
+    "sources_total": 1,
+    "sources_missing": [],
+    "sha256_match": {
+     "fap-db61ff74cd6247dd": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
+    "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.asset_test",
+     "eligibility.residency",
+     "eligibility.insured_patients_covered",
+     "programs.presumptive",
+     "apply.documents_required",
+     "apply.submit_methods",
+     "apply.window_days_from_first_bill",
+     "collections.eca_wait_days",
+     "contacts.phone"
+    ],
+    "rejected": [
+     [
+      "eligibility.discount_tiers",
+      "value not in quote"
+     ],
+     [
+      "apply.decision_days",
+      "value not in quote"
+     ]
+    ],
+    "pruned": [
+     "programs.presumptive: 2 items not named in the trimmed quote"
+    ],
+    "income_rule_verified": true,
+    "core_completeness": 0.67
+   }
+  },
+  {
+   "hospital": {
+    "ccn": "430027",
+    "name": "SANFORD USD MEDICAL CENTER",
+    "city": "SIOUX FALLS",
+    "state": "SD",
+    "zip": "57117",
+    "phone": "605-333-1000",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "sanfordhealth.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "225",
+     "layer": "documented",
+     "quote": "A patient (or patient guarantor) with a household income of 225% or less of the Federal Poverty Level (FPL) is eligible for full financial assistance.",
+     "source_id": "fap-8b7147ddc15ac526",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": null,
+    "assistance_ceiling_fpl": null,
+    "asset_test": null,
+    "residency": {
+     "value": [
+      "Sanford financial assistance is available to all patients receiving emergency and medically necessary care and services at any Sanford facility, regardless of permanent residency location or immigration status."
+     ],
+     "layer": "documented",
+     "quote": "Sanford financial assistance is available to all patients receiving emergency and medically necessary care and services at any Sanford facility, regardless of permanent residency location or immigration status.",
+     "source_id": "fap-8b7147ddc15ac526",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "a patient (whether uninsured or insured by a third party) is eligible to receive full or partial financial assistance subject to the following criteria",
+     "source_id": "fap-8b7147ddc15ac526",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": {
+     "value": [
+      "Medical Assistance/Medicaid"
+     ],
+     "layer": "documented",
+     "quote": "Sanford will also consider patients who have Medical Assistance/Medicaid coverage to presumptively qualify the patient for financial assistance due to coverage income being less than our current financial assistance income guidelines.",
+     "source_id": "fap-8b7147ddc15ac526",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "state_programs": {
+     "value": [
+      {
+       "name": "Minnesota Discount Program",
+       "how_to_apply": "Minnesota residents receiving emergency and medically necessary care and services at Sanford's Minnesota hospital facilities are also eligible to apply for a discount under the policy for the Minnesota Discount Program."
+      }
+     ],
+     "layer": "documented",
+     "quote": "Minnesota residents receiving emergency and medically necessary care and services at Sanford's Minnesota hospital facilities are also eligible to apply for a discount under the policy for the Minnesota Discount Program.",
+     "source_id": "fap-8b7147ddc15ac526",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "tax_return",
+      "pay_stubs",
+      "social_security_letter",
+      "proof_of_income",
+      "other"
+     ],
+     "layer": "documented",
+     "quote": "Latest filed IRS tax return \u25aa Two most recent pay stubs of each wage earner in household \u25aa social security benefit letter \u25aa pension/retirement disbursement letter \u25aa VA benefit verification letter",
+     "source_id": "fap-8b7147ddc15ac526",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "phone",
+       "detail": "Sanford Patient Financial Services at 877.629.2999"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Patients (or the patients\u2019 guarantors) may contact Sanford Patient Financial Services at 877.629.2999",
+     "source_id": "fap-8b7147ddc15ac526",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": {
+     "value": 240,
+     "layer": "documented",
+     "quote": "extending through the 240th day after the first billing statement is sent to the patient or guarantor",
+     "source_id": "fap-8b7147ddc15ac526",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days": {
+     "value": 30,
+     "layer": "documented",
+     "quote": "Make a determination of the eligibility for financial assistance within 30 days of receipt of a completed financial assistance application.",
+     "source_id": "fap-8b7147ddc15ac526",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "877.629.2999",
+     "layer": "documented",
+     "quote": "Patients (or the patients\u2019 guarantors) may contact Sanford Patient Financial Services at 877.629.2999",
+     "source_id": "fap-8b7147ddc15ac526",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": {
+     "value": "Monday \u2013 Thursday 7am \u2013 6pm and Friday 7am \u2013 5pm",
+     "layer": "documented",
+     "quote": "Our business hours are Monday \u2013 Thursday 7am \u2013 6pm and Friday 7am \u2013 5pm.",
+     "source_id": "fap-7a8c96f4b20d7bdd",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "languages": {
+     "value": [
+      "English",
+      "Spanish"
+     ],
+     "layer": "documented",
+     "quote": "Complete the Sanford Financial Assistance Application available in English or Espa\u00f1ol.",
+     "source_id": "web-07b263953fd94b55",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-8b7147ddc15ac526",
+     "kind": "hospital_web",
+     "url": "https://www.sanfordhealth.org/-/media/org/files/patients-and-visitors/billing-insurance/financial-assistance/sanford-health-financial-assistance-policy.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "8b7147ddc15ac526e9c68387a9372322a33609a0926c0f2f577728cff0e7450a",
+     "effective_date": null
+    },
+    {
+     "id": "fap-7a8c96f4b20d7bdd",
+     "kind": "hospital_web",
+     "url": "https://www.sanfordhealth.org/-/media/org/files/patients-and-visitors/billing-insurance/2024/financial-assistance-application_2024_2024-05-06t15_38_31.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "7a8c96f4b20d7bdda6f35e5a82d86b83db5f914bf499b6c975ab9f3e451c9396",
+     "effective_date": null
+    },
+    {
+     "id": "web-07b263953fd94b55",
+     "kind": "hospital_web",
+     "url": "https://www.sanfordhealth.org/patients-and-visitors/billing-and-insurance/price-estimates",
+     "title": "Price Estimates | Sanford Health",
+     "fetched_on": "2026-10-23",
+     "sha256": "07b263953fd94b55b3c5f99129b4d3ee6170ce92f0dee2b10b74fa894e747dba",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "eligibility.discount_tiers: 225-375% at 0% is no discount; skipped",
+    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: Statements showing the value of cash or assets convertible to cash.",
+    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: The patient may also present to any registration desk or admissions location | Hard copies can be provided in person or can be mailed to the patient upon request.",
+    "agent judge on eligibility.discount_tiers: Quote gives the 226%-375% partial-assistance band but no 0% discount figure; it refers to Appendix I for the sliding scale.",
+    "agent judge on apply.submit_methods: Quote gives phone and in-person presentation, but the mail item only says hard copies can be mailed to the patient on request, not that applications are submitted by mail."
+   ],
+   "eve_verified": {
+    "on": "2026-10-23",
+    "sources_fetched": 3,
+    "sources_total": 3,
+    "sources_missing": [],
+    "sha256_match": {
+     "fap-8b7147ddc15ac526": true,
+     "fap-7a8c96f4b20d7bdd": true,
+     "web-07b263953fd94b55": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
+    "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.residency",
+     "eligibility.insured_patients_covered",
+     "programs.presumptive",
+     "programs.state_programs",
+     "apply.documents_required",
+     "apply.submit_methods",
+     "apply.window_days_from_first_bill",
+     "apply.decision_days",
+     "contacts.phone",
+     "contacts.hours",
+     "contacts.languages"
+    ],
+    "rejected": [
+     [
+      "eligibility.asset_test",
+      "quote does not support the asset-test value"
+     ]
+    ],
+    "pruned": [
+     "apply.submit_methods: 2 items not named in the trimmed quote"
+    ],
+    "income_rule_verified": true,
+    "core_completeness": 0.67
+   }
+  },
+  {
+   "hospital": {
     "ccn": "430048",
     "name": "MONUMENT HEALTH SPEARFISH HOSPITAL",
     "city": "SPEARFISH",
@@ -24,26 +669,8 @@
     "free_care_max_fpl": null,
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
-    "asset_test": {
-     "value": true,
-     "layer": "documented",
-     "quote": "Your financial assets and liabilities may also be considered when determining your ability to pay.",
-     "source_id": "web-aedf0e5f547273a0",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "residency": {
-     "value": [
-      "Monument Health offers a Financial Assistance Program to patients who live in our service area"
-     ],
-     "layer": "documented",
-     "quote": "Monument Health offers a Financial Assistance Program to patients who live in our service area that have health care needs and are uninsured, underinsured or are not eligible for a government or any other insurance programs.",
-     "source_id": "web-aedf0e5f547273a0",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "asset_test": null,
+    "residency": null,
     "insured_patients_covered": null,
     "min_balance": null,
     "services_excluded": null
@@ -67,28 +694,9 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": {
-     "value": "605-755-7500",
-     "layer": "documented",
-     "quote": "Telephone: Call 605-755-7500 to request a copy be mailed to your home.",
-     "source_id": "web-aedf0e5f547273a0",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "phone": null,
     "hours": null,
-    "languages": {
-     "value": [
-      "English",
-      "Spanish"
-     ],
-     "layer": "documented",
-     "quote": "Resources (English)",
-     "source_id": "web-aedf0e5f547273a0",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "languages": null
    },
    "coverage": {
     "facilities": null,
@@ -104,55 +712,26 @@
      "fetched_on": "2026-10-23",
      "sha256": "31fb54b5c070ec854ea89ec8a2d4a34d1b78526f78a5c68f01e404cf677a4376",
      "effective_date": null
-    },
-    {
-     "id": "fap-f82e64dbdf7adf1d",
-     "kind": "hospital_web",
-     "url": "https://monument.health/wp-content/uploads/2025/04/Financial-Assistance-Application.pdf",
-     "title": "",
-     "fetched_on": "2026-10-23",
-     "sha256": "f82e64dbdf7adf1d4e75d254db290afe28aa7c90989fc7182e0e01aed158abae",
-     "effective_date": null
-    },
-    {
-     "id": "web-aedf0e5f547273a0",
-     "kind": "hospital_web",
-     "url": "https://monument.health/financial-assistance/",
-     "title": "Financial Assistance - Monument Health",
-     "fetched_on": "2026-10-23",
-     "sha256": "aedf0e5f547273a0166068856c894071e5245df43cc4ad84091dc99a4f27ed44",
-     "effective_date": null
     }
    ],
    "accuracy": null,
-   "eve_review": [
-    "contacts.languages: 1 more verbatim excerpt(s) supported this value: Resources (Spanish)",
-    "agent dropped apply.documents_required: excerpt not in source: The employment information is fully complete for all applica",
-    "agent dropped apply.submit_methods: excerpt not in source: MyChart: With MyChart, you can securely apply for assistance",
-    "agent judge on contacts.languages: Quote only shows link labels 'Resources (English)' and 'Resources (Spanish)'; it does not state the languages offered for contact or assistance."
-   ],
+   "eve_review": [],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 2,
-    "sources_total": 3,
+    "sources_fetched": 0,
+    "sources_total": 1,
     "sources_missing": [
      "https://monument.health/wp-content/uploads/2025/01/Monument-Health-Charity-Care-Discounting-Policy.pdf"
     ],
-    "accepted": [
-     "eligibility.asset_test",
-     "eligibility.residency",
-     "contacts.phone",
-     "contacts.languages"
-    ],
-    "rejected": [
-     [
-      "apply.form_url",
-      "quote not found in source"
-     ]
-    ],
+    "sha256_match": {
+     "fap-31fb54b5c070ec85": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
+    "accepted": [],
+    "rejected": [],
     "pruned": [],
     "income_rule_verified": false,
-    "core_completeness": 0.17
+    "core_completeness": 0.0
    }
   },
   {
@@ -175,15 +754,7 @@
     "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": null,
-    "insured_patients_covered": {
-     "value": true,
-     "layer": "documented",
-     "quote": "My employer offers health insurance and I am covered by the plan.",
-     "source_id": "fap-f82e64dbdf7adf1d",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "insured_patients_covered": null,
     "min_balance": null,
     "services_excluded": null
    },
@@ -192,47 +763,11 @@
     "state_programs": null
    },
    "apply": {
-    "form_url": {
-     "value": "https://monument.health/wp-content/uploads/2025/04/Financial-Assistance-Application.pdf",
-     "layer": "documented",
-     "quote": "Financial Assistance Application",
-     "source_id": "fap-f82e64dbdf7adf1d",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "form_url": null,
     "form_version": null,
-    "documents_required": {
-     "value": [
-      "pay_stubs",
-      "other"
-     ],
-     "layer": "documented",
-     "quote": "Supporting Documents Needed: 3 mo Current and All Consecutive Pay Stubs",
-     "source_id": "fap-f82e64dbdf7adf1d",
-     "checked_on": "2026-10-23",
-     "confidence": 0.8,
-     "support_count": 0
-    },
+    "documents_required": null,
     "documents_reported": null,
-    "submit_methods": {
-     "value": [
-      {
-       "kind": "in_person",
-       "detail": "Return to any Monument Health patient registration area"
-      },
-      {
-       "kind": "mail",
-       "detail": "USPS mail all documents to PO Box 6000, Rapid City, SD 57709"
-      }
-     ],
-     "layer": "documented",
-     "quote": "Return to any Monument Health patient registration area or USPS mail all documents to PO Box 6000, Rapid City, SD 57709.",
-     "source_id": "fap-f82e64dbdf7adf1d",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "submit_methods": null,
     "window_days_from_first_bill": null,
     "decision_days": null,
     "decision_days_reported": null
@@ -242,15 +777,7 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": {
-     "value": "605-755-7500",
-     "layer": "documented",
-     "quote": "003586-20250402 PATIENT FINANCIAL ADVOCACY \u2013 Phone # 605-755-7500 Page 1 of 2",
-     "source_id": "fap-f82e64dbdf7adf1d",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "phone": null,
     "hours": null,
     "languages": null
    },
@@ -268,54 +795,228 @@
      "fetched_on": "2026-10-23",
      "sha256": "31fb54b5c070ec854ea89ec8a2d4a34d1b78526f78a5c68f01e404cf677a4376",
      "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [],
+   "eve_verified": {
+    "on": "2026-10-23",
+    "sources_fetched": 0,
+    "sources_total": 1,
+    "sources_missing": [
+     "https://monument.health/wp-content/uploads/2025/01/Monument-Health-Charity-Care-Discounting-Policy.pdf"
+    ],
+    "sha256_match": {
+     "fap-31fb54b5c070ec85": true
     },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
+    "accepted": [],
+    "rejected": [],
+    "pruned": [],
+    "income_rule_verified": false,
+    "core_completeness": 0.0
+   }
+  },
+  {
+   "hospital": {
+    "ccn": "430097",
+    "name": "SANFORD MEDICAL CENTER ABERDEEN",
+    "city": "ABERDEEN",
+    "state": "SD",
+    "zip": "57402",
+    "phone": "605-626-4200",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "sanfordhealth.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "225",
+     "layer": "documented",
+     "quote": "A patient (or patient guarantor) with a household income of 225% or less of the Federal Poverty Level (FPL) is eligible for full financial assistance.",
+     "source_id": "fap-8b7147ddc15ac526",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": null,
+    "assistance_ceiling_fpl": null,
+    "asset_test": null,
+    "residency": {
+     "value": [
+      "Sanford financial assistance is available to all patients receiving emergency and medically necessary care and services at any Sanford facility, regardless of permanent residency location or immigration status."
+     ],
+     "layer": "documented",
+     "quote": "Sanford financial assistance is available to all patients receiving emergency and medically necessary care and services at any Sanford facility, regardless of permanent residency location or immigration status.",
+     "source_id": "fap-8b7147ddc15ac526",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "a patient (whether uninsured or insured by a third party) is eligible to receive full or partial financial assistance",
+     "source_id": "fap-8b7147ddc15ac526",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": {
+     "value": [
+      "Medical Assistance/Medicaid"
+     ],
+     "layer": "documented",
+     "quote": "Sanford will also consider patients who have Medical Assistance/Medicaid coverage to presumptively qualify the patient for financial assistance due to coverage income being less than our current financial assistance income guidelines.",
+     "source_id": "fap-8b7147ddc15ac526",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "state_programs": {
+     "value": [
+      {
+       "name": "Minnesota Discount Program",
+       "how_to_apply": "Minnesota residents receiving emergency and medically necessary care and services at Sanford's Minnesota hospital facilities are also eligible to apply for a discount under the policy for the Minnesota Discount Program."
+      }
+     ],
+     "layer": "documented",
+     "quote": "Minnesota residents receiving emergency and medically necessary care and services at Sanford's Minnesota hospital facilities are also eligible to apply for a discount under the policy for the Minnesota Discount Program.",
+     "source_id": "fap-8b7147ddc15ac526",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "tax_return"
+     ],
+     "layer": "documented",
+     "quote": "Latest filed IRS tax return",
+     "source_id": "fap-8b7147ddc15ac526",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "phone",
+       "detail": "Sanford Patient Financial Services at 877.629.2999"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Patients (or the patients\u2019 guarantors) may contact Sanford Patient Financial Services at 877.629.2999",
+     "source_id": "fap-8b7147ddc15ac526",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": null,
+    "decision_days": {
+     "value": 30,
+     "layer": "documented",
+     "quote": "Make a determination of the eligibility for financial assistance within 30 days of receipt of a completed financial assistance application.",
+     "source_id": "fap-8b7147ddc15ac526",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "877.629.2999",
+     "layer": "documented",
+     "quote": "Sanford Patient Financial Services at 877.629.2999",
+     "source_id": "fap-8b7147ddc15ac526",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": null,
+    "languages": {
+     "value": [
+      "English"
+     ],
+     "layer": "documented",
+     "quote": "available free of charge, in English (or in other language that constitute the primary language of at least 5% or the 1000-person threshold of the population",
+     "source_id": "fap-8b7147ddc15ac526",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
     {
-     "id": "fap-f82e64dbdf7adf1d",
+     "id": "fap-8b7147ddc15ac526",
      "kind": "hospital_web",
-     "url": "https://monument.health/wp-content/uploads/2025/04/Financial-Assistance-Application.pdf",
+     "url": "https://www.sanfordhealth.org/-/media/org/files/patients-and-visitors/billing-insurance/financial-assistance/sanford-health-financial-assistance-policy.pdf",
      "title": "",
      "fetched_on": "2026-10-23",
-     "sha256": "f82e64dbdf7adf1d4e75d254db290afe28aa7c90989fc7182e0e01aed158abae",
-     "effective_date": null
-    },
-    {
-     "id": "web-7df64420585ac6c1",
-     "kind": "hospital_web",
-     "url": "https://monument.health/financial-information/",
-     "title": "Patient Financial Information - Monument Health",
-     "fetched_on": "2026-10-23",
-     "sha256": "7df64420585ac6c1c8d6d74934ab371aa4daf58baf01a58f9860bfe2f0c92e8f",
+     "sha256": "8b7147ddc15ac526e9c68387a9372322a33609a0926c0f2f577728cff0e7450a",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Must Provide Claimants Most Recent Federal Tax Return | a 'Letter of Explanation' on company letterhead has been included",
-    "apply.documents_required: quote matched the source only after typography normalization",
-    "agent dropped eligibility.asset_test: quote is not a substring of the source",
-    "agent judge on eligibility.insured_patients_covered: The quote is one patient's statement about employer coverage. It does not say insured patients are covered by the hospital's financial assistance.",
-    "agent judge on apply.form_url: The quote only names the \"Financial Assistance Application\" and gives no URL.",
-    "agent judge on apply.documents_required: Quote requires pay stubs and the tax return, but the letter of explanation is only said to have \"been included\" on a form, not stated as a required document."
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Two most recent pay stubs of each wage earner in household | social security benefit letter",
+    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: The patient may also present to any registration desk or admissions location",
+    "agent dropped apply.window_days_from_first_bill: quote is not a substring of the source",
+    "agent judge on contacts.languages: Quote says assistance is available in English or in other languages meeting a 5% or 1000-person threshold. It does not state English is the only language."
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 2,
-    "sources_total": 3,
-    "sources_missing": [
-     "https://monument.health/wp-content/uploads/2025/01/Monument-Health-Charity-Care-Discounting-Policy.pdf"
-    ],
+    "sources_fetched": 1,
+    "sources_total": 1,
+    "sources_missing": [],
+    "sha256_match": {
+     "fap-8b7147ddc15ac526": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.residency",
      "eligibility.insured_patients_covered",
-     "apply.form_url",
+     "programs.presumptive",
+     "programs.state_programs",
      "apply.documents_required",
      "apply.submit_methods",
-     "contacts.phone"
+     "apply.decision_days",
+     "contacts.phone",
+     "contacts.languages"
     ],
-    "rejected": [],
+    "rejected": [
+     [
+      "eligibility.asset_test",
+      "quote does not support the asset-test value"
+     ]
+    ],
     "pruned": [
-     "apply.documents_required: 1 item not named in the trimmed quote"
+     "apply.documents_required: 2 items not named in the trimmed quote",
+     "apply.submit_methods: 1 item not named in the trimmed quote"
     ],
-    "income_rule_verified": false,
+    "income_rule_verified": true,
     "core_completeness": 0.67
    }
   },
@@ -495,6 +1196,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-1ff2db73fa6800bb": true,
+     "fap-aac46b42261d6b23": true,
+     "web-1f85aa5109cf4e3d": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "programs.state_programs",
@@ -729,6 +1436,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-3ff236874dea86d6": true,
+     "fap-409a006d34debdc7": true,
+     "web-e737ee419b9d978b": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.asset_test",
@@ -884,6 +1597,10 @@
     "sources_fetched": 1,
     "sources_total": 1,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-129f4de2a628f482": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "apply.documents_required",
@@ -1099,6 +1816,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-f4c1481fa5e1e8c5": true,
+     "fap-df75674563f0ab0f": true,
+     "web-3b66fcd1991cfc38": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.residency",
@@ -1334,6 +2057,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-e06f13c6f4405bd3": true,
+     "fap-ab9dbde804cbd224": true,
+     "web-aa881d995b9758b6": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.asset_test",
@@ -1564,6 +2293,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-a0332452c78e4223": true,
+     "fap-b13272b33fa43265": true,
+     "web-199b6b52eb1e380f": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.asset_test",
@@ -1608,8 +2343,26 @@
     "free_care_max_fpl": null,
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
-    "asset_test": null,
-    "residency": null,
+    "asset_test": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Your financial assets and liabilities may also be considered when determining your ability to pay.",
+     "source_id": "web-f338f64cfa9d321f",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "residency": {
+     "value": [
+      "Monument Health offers a Financial Assistance Program to patients who live in our service area that have health care needs and are uninsured, underinsured or are not eligible for a government or any other insurance programs."
+     ],
+     "layer": "documented",
+     "quote": "Monument Health offers a Financial Assistance Program to patients who live in our service area that have health care needs and are uninsured, underinsured or are not eligible for a government or any other insurance programs.",
+     "source_id": "web-f338f64cfa9d321f",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "insured_patients_covered": null,
     "min_balance": null,
     "services_excluded": null
@@ -1619,36 +2372,22 @@
     "state_programs": null
    },
    "apply": {
-    "form_url": {
-     "value": "https://monument.health/wp-content/uploads/2025/04/Financial-Assistance-Application.pdf",
-     "layer": "documented",
-     "quote": "Financial Assistance Application",
-     "source_id": "fap-f82e64dbdf7adf1d",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "form_url": null,
     "form_version": null,
-    "documents_required": null,
-    "documents_reported": null,
-    "submit_methods": {
+    "documents_required": {
      "value": [
-      {
-       "kind": "mail",
-       "detail": "USPS mail all documents to PO Box 6000, Rapid City, SD 57709."
-      },
-      {
-       "kind": "in_person",
-       "detail": "Return to any Monument Health patient registration area"
-      }
+      "pay_stubs",
+      "proof_of_income"
      ],
      "layer": "documented",
-     "quote": "Return to any Monument Health patient registration area or USPS mail all documents to PO Box 6000, Rapid City, SD 57709.",
+     "quote": "Documented proof of all income is required and must accompany your application: HOUSEHOLD EMPLOYMENT INCOME INFORMATION Supporting Documents Needed: 3 mo Current and All Consecutive Pay Stubs",
      "source_id": "fap-f82e64dbdf7adf1d",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
+    "documents_reported": null,
+    "submit_methods": null,
     "window_days_from_first_bill": null,
     "decision_days": null,
     "decision_days_reported": null
@@ -1659,24 +2398,27 @@
    },
    "contacts": {
     "phone": {
-     "value": "605-755-2455",
+     "value": "605-755-7500",
      "layer": "documented",
-     "quote": "For more information please call us at 605-755-2455 weekdays 8 a.m. to 4:30 p.m.",
-     "source_id": "web-a26e7901d7350861",
+     "quote": "Telephone: Call 605-755-7500 to request a copy be mailed to your home.",
+     "source_id": "web-f338f64cfa9d321f",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "hours": {
-     "value": "weekdays 8 a.m. to 4:30 p.m.",
+    "hours": null,
+    "languages": {
+     "value": [
+      "English",
+      "Spanish"
+     ],
      "layer": "documented",
-     "quote": "For more information please call us at 605-755-2455 weekdays 8 a.m. to 4:30 p.m.",
-     "source_id": "web-a26e7901d7350861",
+     "quote": "Resources (English)",
+     "source_id": "web-f338f64cfa9d321f",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
-    },
-    "languages": null
+    }
    },
    "coverage": {
     "facilities": null,
@@ -1703,19 +2445,21 @@
      "effective_date": null
     },
     {
-     "id": "web-a26e7901d7350861",
+     "id": "web-f338f64cfa9d321f",
      "kind": "hospital_web",
-     "url": "https://monument.health/billing-and-payments/",
-     "title": "Billing and Payments - Monument Health",
+     "url": "https://monument.health/financial-assistance/",
+     "title": "Financial Assistance - Monument Health",
      "fetched_on": "2026-10-23",
-     "sha256": "a26e7901d73508613bc71009df02d2a22302bf5b0d0d6d53c3fddc33ebc08084",
+     "sha256": "f338f64cfa9d321f265a56fee9142b7f45a356a0acc2e59a1f95385e4d31c855",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "agent dropped apply.documents_required: excerpt not in source: The employment information is fully complete for all applica",
-    "agent judge on apply.form_url: Quote gives the form's title only; it does not state the URL value."
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: (Must Provide Claimants Most Recent Federal Tax Return) | Proof of each and all other household income sources have been included.",
+    "contacts.languages: 1 more verbatim excerpt(s) supported this value: Resources (Spanish)",
+    "agent dropped apply.submit_methods: excerpt not in source: MyChart: With MyChart, you can securely apply for assistance",
+    "agent judge on contacts.languages: Quote only shows resource labels 'Resources (English)' and 'Resources (Spanish)'; it does not state languages in which assistance is provided."
    ],
    "eve_verified": {
     "on": "2026-10-23",
@@ -1724,16 +2468,30 @@
     "sources_missing": [
      "https://monument.health/wp-content/uploads/2025/01/Monument-Health-Charity-Care-Discounting-Policy.pdf"
     ],
+    "sha256_match": {
+     "fap-31fb54b5c070ec85": true,
+     "fap-f82e64dbdf7adf1d": true,
+     "web-f338f64cfa9d321f": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
-     "apply.form_url",
-     "apply.submit_methods",
+     "eligibility.asset_test",
+     "eligibility.residency",
+     "apply.documents_required",
      "contacts.phone",
-     "contacts.hours"
+     "contacts.languages"
     ],
-    "rejected": [],
-    "pruned": [],
+    "rejected": [
+     [
+      "apply.form_url",
+      "quote not found in source"
+     ]
+    ],
+    "pruned": [
+     "apply.documents_required: 1 item not named in the trimmed quote"
+    ],
     "income_rule_verified": false,
-    "core_completeness": 0.5
+    "core_completeness": 0.33
    }
   },
   {
@@ -1773,9 +2531,27 @@
     "state_programs": null
    },
    "apply": {
-    "form_url": null,
+    "form_url": {
+     "value": "https://monument.health/wp-content/uploads/2025/04/Financial-Assistance-Application.pdf",
+     "layer": "documented",
+     "quote": "Financial Assistance Application",
+     "source_id": "fap-f82e64dbdf7adf1d",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "form_version": null,
-    "documents_required": null,
+    "documents_required": {
+     "value": [
+      "pay_stubs"
+     ],
+     "layer": "documented",
+     "quote": "Supporting Documents Needed: 3 mo Current and All Consecutive Pay Stubs",
+     "source_id": "fap-f82e64dbdf7adf1d",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "documents_reported": null,
     "submit_methods": {
      "value": [
@@ -1805,10 +2581,10 @@
    },
    "contacts": {
     "phone": {
-     "value": "605-755-2455",
+     "value": "605-755-7500",
      "layer": "documented",
-     "quote": "For more information please call us at 605-755-2455 weekdays 8 a.m. to 4:30 p.m.",
-     "source_id": "web-a26e7901d7350861",
+     "quote": "003586-20250402 PATIENT FINANCIAL ADVOCACY \u2013 Phone # 605-755-7500 Page 1 of 2",
+     "source_id": "fap-f82e64dbdf7adf1d",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -1817,7 +2593,7 @@
      "value": "weekdays 8 a.m. to 4:30 p.m.",
      "layer": "documented",
      "quote": "For more information please call us at 605-755-2455 weekdays 8 a.m. to 4:30 p.m.",
-     "source_id": "web-a26e7901d7350861",
+     "source_id": "web-30fd91e790f34d36",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -1849,20 +2625,21 @@
      "effective_date": null
     },
     {
-     "id": "web-a26e7901d7350861",
+     "id": "web-30fd91e790f34d36",
      "kind": "hospital_web",
      "url": "https://monument.health/billing-and-payments/",
      "title": "Billing and Payments - Monument Health",
      "fetched_on": "2026-10-23",
-     "sha256": "a26e7901d73508613bc71009df02d2a22302bf5b0d0d6d53c3fddc33ebc08084",
+     "sha256": "30fd91e790f34d3619c072484ace571e7996b49785edbdbed7b7d1cf568ac289",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: HOUSEHOLD EMPLOYMENT INCOME INFORMATION Supporting Documents Needed: 3 mo Current and All Consecutive Pay Stubs | OTHER HOUSEHOLD INCOME SOURCES Must Provide Copies of All Supporting Documents",
-    "agent dropped eligibility.asset_test: quote is not a substring of the source",
-    "agent judge on eligibility.insured_patients_covered: Quote says the patient is covered by an employer plan; it does not state that insured patients are covered by financial assistance."
+    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: Must Provide Most Recent Federal Tax Return \u2013 Business and Personal",
+    "agent judge on eligibility.asset_test: Quote is a form header listing cash, bank, and savings lines; it does not state that assets are considered.",
+    "agent judge on eligibility.insured_patients_covered: Quote is one patient's statement about their own employer plan; it does not state that insured patients are covered.",
+    "agent judge on apply.form_url: Quote gives only the form's name, 'Financial Assistance Application'; it contains no URL."
    ],
    "eve_verified": {
     "on": "2026-10-23",
@@ -1871,18 +2648,31 @@
     "sources_missing": [
      "https://monument.health/wp-content/uploads/2025/01/Monument-Health-Charity-Care-Discounting-Policy.pdf"
     ],
+    "sha256_match": {
+     "fap-31fb54b5c070ec85": true,
+     "fap-f82e64dbdf7adf1d": true,
+     "web-30fd91e790f34d36": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.insured_patients_covered",
+     "apply.form_url",
+     "apply.documents_required",
      "apply.submit_methods",
      "contacts.phone",
      "contacts.hours"
     ],
-    "rejected": [],
+    "rejected": [
+     [
+      "eligibility.asset_test",
+      "quote does not support the asset-test value"
+     ]
+    ],
     "pruned": [
-     "apply.documents_required: none of the listed documents is named in the quote (after trimming)"
+     "apply.documents_required: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": false,
-    "core_completeness": 0.33
+    "core_completeness": 0.67
    }
   },
   {
@@ -1908,8 +2698,8 @@
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "This includes deductibles and/or co-pay amounts.",
-     "source_id": "web-a26e7901d7350861",
+     "quote": "My employer offers health insurance and I am covered by the plan.",
+     "source_id": "fap-f82e64dbdf7adf1d",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -1922,22 +2712,14 @@
     "state_programs": null
    },
    "apply": {
-    "form_url": {
-     "value": "https://monument.health/wp-content/uploads/2025/04/Financial-Assistance-Application.pdf",
-     "layer": "documented",
-     "quote": "Financial Assistance Application",
-     "source_id": "fap-f82e64dbdf7adf1d",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "form_url": null,
     "form_version": null,
     "documents_required": {
      "value": [
-      "proof_of_income"
+      "pay_stubs"
      ],
      "layer": "documented",
-     "quote": "Documented proof of all income is required and must accompany your application:",
+     "quote": "Supporting Documents Needed: 3 mo Current and All Consecutive Pay Stubs",
      "source_id": "fap-f82e64dbdf7adf1d",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1947,12 +2729,12 @@
     "submit_methods": {
      "value": [
       {
-       "kind": "mail",
-       "detail": "USPS mail all documents to PO Box 6000, Rapid City, SD 57709"
-      },
-      {
        "kind": "in_person",
        "detail": "Return to any Monument Health patient registration area"
+      },
+      {
+       "kind": "mail",
+       "detail": "USPS mail all documents to PO Box 6000, Rapid City, SD 57709"
       }
      ],
      "layer": "documented",
@@ -1972,23 +2754,15 @@
    },
    "contacts": {
     "phone": {
-     "value": "605-755-2455",
+     "value": "605-755-7500",
      "layer": "documented",
-     "quote": "For more information please call us at 605-755-2455 weekdays 8 a.m. to 4:30 p.m.",
-     "source_id": "web-a26e7901d7350861",
+     "quote": "003586-20250402 PATIENT FINANCIAL ADVOCACY \u2013 Phone # 605-755-7500 Page 1 of 2",
+     "source_id": "fap-f82e64dbdf7adf1d",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "hours": {
-     "value": "weekdays 8 a.m. to 4:30 p.m.",
-     "layer": "documented",
-     "quote": "For more information please call us at 605-755-2455 weekdays 8 a.m. to 4:30 p.m.",
-     "source_id": "web-a26e7901d7350861",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "hours": null,
     "languages": null
    },
    "coverage": {
@@ -2016,21 +2790,21 @@
      "effective_date": null
     },
     {
-     "id": "web-a26e7901d7350861",
+     "id": "web-7df64420585ac6c1",
      "kind": "hospital_web",
-     "url": "https://monument.health/billing-and-payments/",
-     "title": "Billing and Payments - Monument Health",
+     "url": "https://monument.health/financial-information/",
+     "title": "Patient Financial Information - Monument Health",
      "fetched_on": "2026-10-23",
-     "sha256": "a26e7901d73508613bc71009df02d2a22302bf5b0d0d6d53c3fddc33ebc08084",
+     "sha256": "7df64420585ac6c1c8d6d74934ab371aa4daf58baf01a58f9860bfe2f0c92e8f",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: 3 months of current and consecutive paystubs are included. | If self-employed, the most recent federal tax returns are provided, including Schedules C, E, and F.",
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: (Must Provide Claimants Most Recent Federal Tax Return) | Must Provide Most Recent Federal Tax Return \u2013 Business and Personal",
     "agent dropped eligibility.asset_test: quote is not a substring of the source",
-    "agent judge on eligibility.insured_patients_covered: Quote only says the program includes deductibles and/or co-pay amounts; it does not state whether insured patients are covered.",
-    "agent judge on apply.form_url: Quote gives the form name 'Financial Assistance Application' but no URL; the URL itself is not stated in the quote."
+    "agent judge on eligibility.insured_patients_covered: The quote describes one patient's employer coverage. It does not state that insured patients are covered by the financial assistance program.",
+    "agent judge on apply.documents_required: The quote lists pay stubs and federal tax return only. It does not mention an insurance card, which the value includes."
    ],
    "eve_verified": {
     "on": "2026-10-23",
@@ -2039,20 +2813,24 @@
     "sources_missing": [
      "https://monument.health/wp-content/uploads/2025/01/Monument-Health-Charity-Care-Discounting-Policy.pdf"
     ],
+    "sha256_match": {
+     "fap-31fb54b5c070ec85": true,
+     "fap-f82e64dbdf7adf1d": true,
+     "web-7df64420585ac6c1": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.insured_patients_covered",
-     "apply.form_url",
      "apply.documents_required",
      "apply.submit_methods",
-     "contacts.phone",
-     "contacts.hours"
+     "contacts.phone"
     ],
     "rejected": [],
     "pruned": [
      "apply.documents_required: 2 items not named in the trimmed quote"
     ],
     "income_rule_verified": false,
-    "core_completeness": 0.67
+    "core_completeness": 0.5
    }
   },
   {
@@ -2231,6 +3009,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-23f074ddc7a0b452": true,
+     "fap-ddc49bb106f8623e": true,
+     "web-3082d817869f4b34": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -2269,8 +3053,40 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": null,
-    "discount_tiers": null,
+    "free_care_max_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "A patient (or patient guarantor) with a household income of 200% or less of the Federal Poverty Level (FPL) is eligible for full financial assistance.",
+     "source_id": "fap-00faa81ca65c64d8",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "200",
+       "max_fpl_inclusive": "250",
+       "discount_percent": 75
+      },
+      {
+       "min_fpl_exclusive": "250",
+       "max_fpl_inclusive": "300",
+       "discount_percent": 50
+      },
+      {
+       "min_fpl_exclusive": "300",
+       "max_fpl_inclusive": "350",
+       "discount_percent": 24
+      }
+     ],
+     "layer": "documented",
+     "quote": "200% or less FPL 100% 201% - 250% 75% 251% - 300% 50% 301% - 350% 24% %351% or above of FPL 0%",
+     "source_id": "fap-00faa81ca65c64d8",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "assistance_ceiling_fpl": {
      "value": "350",
      "layer": "documented",
@@ -2296,27 +3112,56 @@
     "documents_required": {
      "value": [
       "tax_return",
-      "pay_stubs"
+      "other"
      ],
      "layer": "documented",
-     "quote": "a financial assistance application must be submitted along with required documentation, such as income tax forms and pay stubs",
-     "source_id": "web-6e14bf06e7dcab02",
+     "quote": "Copy of your most recent tax return including all applicable schedules",
+     "source_id": "fap-4dae8243b9374585",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "documents_reported": null,
-    "submit_methods": null,
-    "window_days_from_first_bill": {
-     "value": 240,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "mail to PMH&HS, Patient Financial Services, PO Box 368, Viborg, SD 57070-0368"
+      },
+      {
+       "kind": "in_person",
+       "detail": "return the completed application to our office in person"
+      },
+      {
+       "kind": "fax",
+       "detail": "via fax at 605-326-5734"
+      }
+     ],
      "layer": "documented",
-     "quote": "extends through the 240th day after the first billing statement is sent to the patient or guarantor",
-     "source_id": "web-6e14bf06e7dcab02",
+     "quote": "You can return the completed application to our office in person, via fax at 605-326-5734 or mail to PMH&HS, Patient Financial Services, PO Box 368, Viborg, SD 57070-0368.",
+     "source_id": "fap-4dae8243b9374585",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "decision_days": null,
+    "window_days_from_first_bill": {
+     "value": 240,
+     "layer": "documented",
+     "quote": "The right to apply for financial assistance consideration begins on the date of service and extends through the 240th day after the first billing statement is sent to the patient or guarantor.",
+     "source_id": "fap-00faa81ca65c64d8",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days": {
+     "value": 30,
+     "layer": "documented",
+     "quote": "Make a determination of the eligibility for financial assistance within 30 days of receipt a completed Financial Assistance Application.",
+     "source_id": "fap-00faa81ca65c64d8",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "decision_days_reported": null
    },
    "collections": {
@@ -2325,15 +3170,23 @@
    },
    "contacts": {
     "phone": {
-     "value": "605.326.5161",
+     "value": "605-326-5161",
      "layer": "documented",
-     "quote": "605.326.5161 \u00b7 315 North Washington, PO Box 368, Viborg, SD 57070 \u00b7",
-     "source_id": "web-6e14bf06e7dcab02",
+     "quote": "By telephone at 605-326-5161",
+     "source_id": "fap-00faa81ca65c64d8",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "hours": null,
+    "hours": {
+     "value": "Monday through Friday from 8:00 am to 5:00 pm",
+     "layer": "documented",
+     "quote": "Our business hours are Monday through Friday from 8:00 am to 5:00 pm.",
+     "source_id": "fap-4dae8243b9374585",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "languages": {
      "value": [
       "Spanish"
@@ -2353,6 +3206,24 @@
    },
    "sources": [
     {
+     "id": "fap-00faa81ca65c64d8",
+     "kind": "hospital_web",
+     "url": "https://intuviosolutions.blob.core.windows.net/templator-uploads/Uploads/documents/45/Financial%20Assistance%20Policy%20-%20Effective%2001-01-2026.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "00faa81ca65c64d8c76d0f30d564cc840819cff1d3394f19cd75782756fb0f4d",
+     "effective_date": null
+    },
+    {
+     "id": "fap-4dae8243b9374585",
+     "kind": "hospital_web",
+     "url": "https://intuviosolutions.blob.core.windows.net/templator-uploads/Uploads/documents/45/New%20Finanical%20Assistance%20Application%20Revised%2001-01-2021.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "4dae8243b937458567cd7422a393462f47248f022e7e5a91e566c9a4bd560715",
+     "effective_date": null
+    },
+    {
      "id": "web-6e14bf06e7dcab02",
      "kind": "hospital_web",
      "url": "https://www.pioneermemorial.org/custom/financial-assistance",
@@ -2364,19 +3235,31 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "agent dropped apply.submit_methods: excerpt not in source: Patient Financial Services, PO Box 368, Viborg, SD 57070-036",
-    "agent judge on contacts.languages: Quote only says the financial assistance documents are available in Spanish. It does not say contacts or staff speak Spanish."
+    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Participation in Women, Infants and Children programs (WIG); | Patient is deceased with no known estate",
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: If your most recent tax return is not available, then we need one of the following: o Social Security Awards Letter o Pr | Provide proof of all income (ie. the last 2 paystubs for each wage earner",
+    "agent judge on programs.presumptive: Quote lists homeless, WIC, and deceased with no known estate. It does not mention Medicaid."
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 1,
-    "sources_total": 1,
+    "sources_fetched": 3,
+    "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-00faa81ca65c64d8": true,
+     "fap-4dae8243b9374585": true,
+     "web-6e14bf06e7dcab02": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
      "eligibility.assistance_ceiling_fpl",
      "apply.documents_required",
+     "apply.submit_methods",
      "apply.window_days_from_first_bill",
+     "apply.decision_days",
      "contacts.phone",
+     "contacts.hours",
      "contacts.languages"
     ],
     "rejected": [
@@ -2385,9 +3268,12 @@
       "quote not found in source"
      ]
     ],
-    "pruned": [],
-    "income_rule_verified": false,
-    "core_completeness": 0.33
+    "pruned": [
+     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
+     "apply.documents_required: 2 items not named in the trimmed quote"
+    ],
+    "income_rule_verified": true,
+    "core_completeness": 0.83
    }
   },
   {
@@ -2551,6 +3437,10 @@
     "sources_fetched": 1,
     "sources_total": 1,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-db61ff74cd6247dd": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.asset_test",
@@ -2763,6 +3653,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-e70e454f0903b11a": true,
+     "fap-fb1141cd4232e14e": true,
+     "web-28dd8ae062686486": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -2821,7 +3717,28 @@
     "form_version": null,
     "documents_required": null,
     "documents_reported": null,
-    "submit_methods": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "phone",
+       "detail": "(605)353-6223, or 1-800-529-0115 (in state only), ext. 223"
+      },
+      {
+       "kind": "portal",
+       "detail": "www.huronregional.org"
+      },
+      {
+       "kind": "in_person",
+       "detail": "HRMC Business Office"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Applications are available in both English and Spanish and may be obtained at HRMC Business Office (605)353-6223, or 1-800-529-0115 (in state only), ext. 223 or www.huronregional.org.",
+     "source_id": "fap-c197aa76a5da7eda",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "window_days_from_first_bill": {
      "value": 240,
      "layer": "documented",
@@ -2850,7 +3767,7 @@
     "phone": {
      "value": "605-353-6223",
      "layer": "documented",
-     "quote": "You are encouraged to contact them with your questions by calling 605-353-6223",
+     "quote": "You are encouraged to contact them with your questions by calling 605-353-6223 or stopping by the business office",
      "source_id": "web-a1c1e8b59a1bde97",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2914,8 +3831,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.form_url: not an absolute URL ('/Content/Uploads/huron_regional/files/Financial%20Assistance'); dropped",
-    "agent dropped apply.submit_methods: excerpt not in source: Printed applications are available in both English and Spani"
+    "agent judge on apply.submit_methods: Quote mentions obtaining applications in person, by phone, and via the website, but does not say these are methods for submitting; it says applications may be obtained there."
    ],
    "eve_verified": {
     "on": "2026-10-23",
@@ -2924,17 +3840,29 @@
     "sources_missing": [
      "https://www.huronregional.org/Content/Uploads/huron_regional/files/Financial%20Assistance%20Application.pdf"
     ],
+    "sha256_match": {
+     "fap-c197aa76a5da7eda": true,
+     "fap-afe23506d255265d": true,
+     "web-a1c1e8b59a1bde97": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
+     "apply.submit_methods",
      "apply.window_days_from_first_bill",
      "collections.eca_wait_days",
      "contacts.phone",
      "contacts.hours",
      "contacts.languages"
     ],
-    "rejected": [],
+    "rejected": [
+     [
+      "apply.form_url",
+      "quote not found in source"
+     ]
+    ],
     "pruned": [],
     "income_rule_verified": false,
-    "core_completeness": 0.17
+    "core_completeness": 0.33
    }
   },
   {
@@ -3130,6 +4058,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-3ba7273ae4ad8195": true,
+     "fap-71af4fbc02d98f71": true,
+     "web-a20bb4d17ce1bd75": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.residency",

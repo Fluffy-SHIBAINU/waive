@@ -25,29 +25,19 @@
     "assistance_ceiling_fpl": {
      "value": "400",
      "layer": "documented",
-     "quote": "Have a family income at or below 400% of the Federal Poverty Level.",
-     "source_id": "web-a4a0c97c6c23dd8d",
+     "quote": "Tener un ingreso familiar a o por debajo del 400% del Nivel Federal de Pobreza",
+     "source_id": "fap-3f1e33a39e07052d",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "asset_test": null,
-    "residency": {
-     "value": [
-      "Reside in one of the following states: Idaho, Oregon, Nevada, Utah or Washington."
-     ],
-     "layer": "documented",
-     "quote": "Reside in one of the following states: Idaho, Oregon, Nevada, Utah or Washington.",
-     "source_id": "web-a4a0c97c6c23dd8d",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "residency": null,
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "Have charges billed to their insurance, if the patient has insurance.",
-     "source_id": "web-a4a0c97c6c23dd8d",
+     "quote": "Si el paciente tiene seguro, los cargos deben haber sido facturados al seguro del paciente",
+     "source_id": "fap-3f1e33a39e07052d",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -62,19 +52,30 @@
    "apply": {
     "form_url": null,
     "form_version": null,
-    "documents_required": {
+    "documents_required": null,
+    "documents_reported": null,
+    "submit_methods": {
      "value": [
-      "other"
+      {
+       "kind": "in_person",
+       "detail": "Pregunte en el hospital de St. Luke's o en el mostrador de registro de la cl\u00ednica"
+      },
+      {
+       "kind": "portal",
+       "detail": "Descargue una aplicaci\u00f3n a trav\u00e9s del sitio web de St. Luke's vaya a www.stlukesonline.org/billing y haga clic en \"Financial Care\""
+      },
+      {
+       "kind": "mail",
+       "detail": "Solicitud por correo (sin costo alguno) St. Luke's Health System P.O. Box 2578 Boise, ID 83701-2578"
+      }
      ],
      "layer": "documented",
-     "quote": "Complete the Financial Care Application and submit all required supporting documentation.",
-     "source_id": "web-a4a0c97c6c23dd8d",
+     "quote": "Pregunte en el hospital de St. Luke\u2019s o en el mostrador de registro de la cl\u00ednica",
+     "source_id": "fap-3f1e33a39e07052d",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "documents_reported": null,
-    "submit_methods": null,
     "window_days_from_first_bill": null,
     "decision_days": null,
     "decision_days_reported": null
@@ -102,7 +103,18 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "languages": null
+    "languages": {
+     "value": [
+      "English",
+      "Spanish"
+     ],
+     "layer": "documented",
+     "quote": "disponible en ingl\u00e9s o espa\u00f1ol",
+     "source_id": "fap-3f1e33a39e07052d",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
    },
    "coverage": {
     "facilities": null,
@@ -111,12 +123,12 @@
    },
    "sources": [
     {
-     "id": "web-a4a0c97c6c23dd8d",
+     "id": "fap-3f1e33a39e07052d",
      "kind": "hospital_web",
-     "url": "https://stlukesonline.org/en/patients-visitors/billing-and-insurance/financial-assistance/",
-     "title": "Applying for Financial Assistance at St. Luke\u2019s",
+     "url": "https://assets.slhs.org/download/assets/summary-of-financial-care-policy-spanish.pdf/c7a37f021bba11f08ae65a13ab5eb113",
+     "title": "",
      "fetched_on": "2026-10-23",
-     "sha256": "a4a0c97c6c23dd8dc09c4615f5bbff5a4163f12a3ed79bd3c0edb72c886fbb68",
+     "sha256": "3f1e33a39e07052dafb0784c342cd9cfc5650301749a61e0b21d831848f66507",
      "effective_date": null
     },
     {
@@ -131,7 +143,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "agent judge on eligibility.insured_patients_covered: Quote only says charges must be billed to insurance if the patient has insurance; it does not state that insured patients are covered by assistance."
+    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Descargue una aplicaci\u00f3n a trav\u00e9s del sitio web de St. Luke\u2019s vaya a www.stlukesonline.org/billing y haga clic en \"Finan | Solicitud por correo (sin costo alguno)",
+    "agent judge on eligibility.assistance_ceiling_fpl: The quote sets an eligibility threshold (income at or below 400% FPL) but does not state that no assistance of any kind is offered above 400%.",
+    "agent judge on apply.submit_methods: The quote supports the in-person, online, and mail methods, but the mail address (P.O. Box 2578, Boise, ID 83701-2578) in the value does not appear in the quote."
    ]
   },
   {
@@ -394,24 +408,8 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": {
-     "value": "(208) 706-5999",
-     "layer": "documented",
-     "quote": "(208) 706-5999",
-     "source_id": "web-642d66c5f7632817",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "hours": {
-     "value": "Mon - Fri: 8 a.m. - 4:30 p.m.",
-     "layer": "documented",
-     "quote": "Mon - Fri: 8 a.m. - 4:30 p.m.",
-     "source_id": "web-642d66c5f7632817",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "phone": null,
+    "hours": null,
     "languages": null
    },
    "coverage": {
@@ -428,21 +426,12 @@
      "fetched_on": "2026-10-23",
      "sha256": "a4a0c97c6c23dd8dc09c4615f5bbff5a4163f12a3ed79bd3c0edb72c886fbb68",
      "effective_date": null
-    },
-    {
-     "id": "web-642d66c5f7632817",
-     "kind": "hospital_web",
-     "url": "https://stlukesonline.org/en/get-care/locations/financial-services/st-lukes-patient-financial-services-boise/",
-     "title": "St. Luke\u2019s Patient Financial Services: Boise",
-     "fetched_on": "2026-10-23",
-     "sha256": "642d66c5f7632817f198f2b2e3702245fe0b56e4e148086db7680d5ab01a865b",
-     "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "agent judge on eligibility.assistance_ceiling_fpl: Quote gives an eligibility income limit of 400% FPL but does not say no assistance of any kind is offered above that level.",
-    "agent judge on eligibility.insured_patients_covered: Quote only says charges are billed to insurance if the patient has insurance; it does not state insured patients are covered by assistance."
+    "agent judge on eligibility.assistance_ceiling_fpl: Quote gives an income eligibility threshold of 400% FPL but does not state that no assistance of any kind is offered above 400% FPL.",
+    "agent judge on apply.documents_required: Quote requires the Financial Care Application plus all required supporting documentation; the value omits the supporting documents."
    ]
   },
   {
@@ -835,65 +824,51 @@
   },
   {
    "hospital": {
-    "ccn": "131301",
-    "name": "BOUNDARY COMMUNITY HOSPITAL",
-    "city": "BONNERS FERRY",
+    "ccn": "130071",
+    "name": "ST LUKE'S NAMPA MEDICAL CENTER",
+    "city": "NAMPA",
     "state": "ID",
-    "zip": "83805",
-    "phone": "208-267-3141",
-    "ownership": "Voluntary non-profit - Other",
-    "website_domain": "boundarycommunityhospital.org",
+    "zip": "83687",
+    "phone": "208-505-2000",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "stlukesonline.org",
     "system": null
    },
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": {
-     "value": "150",
-     "layer": "documented",
-     "quote": "Sliding Fee Discount 100% 75% 50% 25% 0%",
-     "source_id": "fap-74f0761ca469a05a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "discount_tiers": {
-     "value": [
-      {
-       "min_fpl_exclusive": "150",
-       "max_fpl_inclusive": "200",
-       "discount_percent": 75
-      },
-      {
-       "min_fpl_exclusive": "200",
-       "max_fpl_inclusive": "250",
-       "discount_percent": 50
-      },
-      {
-       "min_fpl_exclusive": "250",
-       "max_fpl_inclusive": "300",
-       "discount_percent": 25
-      }
-     ],
-     "layer": "documented",
-     "quote": "151% to 200% FPL 201% to 250% FPL 251% to 300% FPL 301% and over FPL",
-     "source_id": "fap-74f0761ca469a05a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "free_care_max_fpl": null,
+    "discount_tiers": null,
     "assistance_ceiling_fpl": {
-     "value": "300",
+     "value": "400",
      "layer": "documented",
-     "quote": "If your household income is below 300% of the Federal Poverty Guidelines, you may qualify for our SFDP.",
-     "source_id": "fap-74f0761ca469a05a",
+     "quote": "Have a family income at or below 400% of the Federal Poverty Level.",
+     "source_id": "web-a4a0c97c6c23dd8d",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "asset_test": null,
-    "residency": null,
-    "insured_patients_covered": null,
+    "residency": {
+     "value": [
+      "Reside in one of the following states: Idaho, Oregon, Nevada, Utah or Washington."
+     ],
+     "layer": "documented",
+     "quote": "Reside in one of the following states: Idaho, Oregon, Nevada, Utah or Washington.",
+     "source_id": "web-a4a0c97c6c23dd8d",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Have charges billed to their insurance, if the patient has insurance.",
+     "source_id": "web-a4a0c97c6c23dd8d",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "min_balance": null,
     "services_excluded": null
    },
@@ -904,18 +879,39 @@
    "apply": {
     "form_url": null,
     "form_version": null,
-    "documents_required": null,
+    "documents_required": {
+     "value": [
+      "pay_stubs",
+      "tax_return",
+      "bank_statements",
+      "social_security_letter"
+     ],
+     "layer": "documented",
+     "quote": "Recent pay stubs (last 30 days for all household members over the age of 18)",
+     "source_id": "fap-522b79347c83ed0f",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "documents_reported": null,
     "submit_methods": {
      "value": [
       {
-       "kind": "in_person",
-       "detail": "Submit your completed application and required documentation to the PFS Office at Boundary Community Hospital, located in the Administration area on the Ground Floor of the main hospital building."
+       "kind": "mail",
+       "detail": "St. Luke\u2019s Health System Financial Care P.O. Box 2578 Boise, ID 83701"
+      },
+      {
+       "kind": "fax",
+       "detail": "(208) 706-7619 (Attention: Financial Care)"
+      },
+      {
+       "kind": "email",
+       "detail": "pfsfincare@slhs.org (Subject: Financial Care)"
       }
      ],
      "layer": "documented",
-     "quote": "Submit your completed application and required documentation to the PFS Office at Boundary Community Hospital, located in the Administration area on the Ground Floor of the main hospital building.",
-     "source_id": "fap-74f0761ca469a05a",
+     "quote": "Please mail, fax, or email your application along with all required documentation to:",
+     "source_id": "fap-522b79347c83ed0f",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -930,19 +926,19 @@
    },
    "contacts": {
     "phone": {
-     "value": "208-267-3141",
+     "value": "(208) 706-5999",
      "layer": "documented",
-     "quote": "Questions \ud83d\udcde Call (208) 267-3141 ext. 4295",
-     "source_id": "fap-74f0761ca469a05a",
+     "quote": "(208) 706-5999",
+     "source_id": "web-29604601b042deeb",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "hours": {
-     "value": "Monday \u2013 Friday, 8:00 AM \u2013 4:00 PM",
+     "value": "Mon - Fri: 8 a.m. - 4:30 p.m.",
      "layer": "documented",
-     "quote": "\ud83d\udd58 Monday \u2013 Friday, 8:00 AM \u2013 4:00 PM",
-     "source_id": "fap-74f0761ca469a05a",
+     "quote": "Mon - Fri: 8 a.m. - 4:30 p.m.",
+     "source_id": "web-29604601b042deeb",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -956,22 +952,40 @@
    },
    "sources": [
     {
-     "id": "fap-74f0761ca469a05a",
+     "id": "web-a4a0c97c6c23dd8d",
      "kind": "hospital_web",
-     "url": "https://www.boundarycommunityhospital.org/wp-content/uploads/2026/07/BCC-2026-Sliding-Scale.pdf",
+     "url": "https://stlukesonline.org/en/patients-visitors/billing-and-insurance/financial-assistance/",
+     "title": "Applying for Financial Assistance at St. Luke\u2019s",
+     "fetched_on": "2026-10-23",
+     "sha256": "a4a0c97c6c23dd8dc09c4615f5bbff5a4163f12a3ed79bd3c0edb72c886fbb68",
+     "effective_date": null
+    },
+    {
+     "id": "fap-522b79347c83ed0f",
+     "kind": "hospital_web",
+     "url": "https://assets.slhs.org/download/assets/NHSC_FCA-2024_English_08222024.pdf/b01edc300a7d11f0bc1cc244faa6f555",
      "title": "",
      "fetched_on": "2026-10-23",
-     "sha256": "74f0761ca469a05aa4fd4604f252fd89c4de1e0b2b7dd5477f48626ff6c9741d",
+     "sha256": "522b79347c83ed0fab656bba552612ee3f13dc3c095bb45e9f1e72cefd91a07d",
+     "effective_date": null
+    },
+    {
+     "id": "web-29604601b042deeb",
+     "kind": "hospital_web",
+     "url": "https://stlukesonline.org/en/get-care/locations/financial-services/st-lukes-patient-financial-services-nampa/",
+     "title": "St. Luke\u2019s Patient Financial Services: Nampa",
+     "fetched_on": "2026-10-23",
+     "sha256": "29604601b042deeb0b4a00ba41114c448bcc75f3966bc3068dd2ded2d5c3d14b",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: Sliding Fee Discount 100% 75% 50% 25% 0%",
-    "agent dropped apply.documents_required: excerpt not in source: Photo ID   Utility Bill   Federal Income Tax Return OR   Las",
-    "agent judge on eligibility.free_care_max_fpl: The quote lists discount percentages (100% 75% 50% 25% 0%) but gives no FPL figure. It does not state that 150% FPL gets free care.",
-    "agent judge on eligibility.discount_tiers: The quote gives bands (151-200, 201-250, 251-300, 301+) and percents (100, 75, 50, 25, 0) as separate lists. The pairing of each band to a percent is implied by position, not stated.",
-    "agent judge on eligibility.assistance_ceiling_fpl: The quote says those below 300% FPL 'may qualify' for SFDP. It does not state that no assistance is offered above 300%."
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Most recent federal tax return with W-2(s) | Social Security Benefit Verification letter",
+    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Fax: (208) 706-7619 (Attention: Financial Care) | Email: pfsfincare@slhs.org (Subject: Financial Care)",
+    "agent judge on eligibility.insured_patients_covered: Quote only says charges are billed to insurance for insured patients. It does not state that insured patients are covered.",
+    "agent judge on apply.documents_required: Quote lists pay stubs, tax return with W-2s and a Social Security letter only. It does not mention 3 months of bank statements.",
+    "agent judge on apply.submit_methods: Quote gives fax and email only. It mentions mailing the application but gives no mail address (the P.O. Box is absent)."
    ]
   },
   {
@@ -1042,15 +1056,7 @@
      "support_count": 0
     },
     "residency": null,
-    "insured_patients_covered": {
-     "value": true,
-     "layer": "documented",
-     "quote": "Patients who are determined eligible for medical financial assistance will not be charged more than amounts generally billed for emergency or other medically necessary care to patients with insurance.",
-     "source_id": "web-d5a8934060700aa7",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "insured_patients_covered": null,
     "min_balance": null,
     "services_excluded": null
    },
@@ -1087,16 +1093,16 @@
     "submit_methods": {
      "value": [
       {
-       "kind": "mail",
-       "detail": "via US mail upon request"
+       "kind": "portal",
+       "detail": "NCMC's website"
       },
       {
        "kind": "in_person",
        "detail": "in person from a Financial Counselor at NCMC"
       },
       {
-       "kind": "portal",
-       "detail": "obtained from NCMC's website"
+       "kind": "mail",
+       "detail": "via US mail upon request"
       }
      ],
      "layer": "documented",
@@ -1126,33 +1132,22 @@
     "phone": {
      "value": "(208) 934-9692",
      "layer": "documented",
-     "quote": "If you have questions about a bill you\u2019ve received from NCMC, please call an account representative Monday \u2013 Friday from 8:00AM \u2013 5:00PM at (208) 934-9692",
+     "quote": "please call an account representative Monday \u2013 Friday from 8:00AM \u2013 5:00PM at (208) 934-9692",
      "source_id": "web-d5a8934060700aa7",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "hours": {
-     "value": "Monday: 8 AM - 5 PM Tuesday: 8 AM - 5 PM Wednesday: 8 AM - 5 PM Thursday: 8 AM - 5 PM Friday: 8 AM - 5 PM Saturday & Sunday: Closed",
+     "value": "Monday - Friday 8:00AM - 5:00PM",
      "layer": "documented",
-     "quote": "Monday: 8 AM - 5 PM Tuesday: 8 AM - 5 PM Wednesday: 8 AM - 5 PM Thursday: 8 AM - 5 PM Friday: 8 AM - 5 PM Saturday & Sunday: Closed",
+     "quote": "please call an account representative Monday \u2013 Friday from 8:00AM \u2013 5:00PM at (208) 934-9692",
      "source_id": "web-d5a8934060700aa7",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "languages": {
-     "value": [
-      "English",
-      "Spanish"
-     ],
-     "layer": "documented",
-     "quote": "Paquete de asistencia financiera (opens in a new tab) [https://northcanyon.org/wp-content/uploads/2026/04/Financial_Application_-_Spanish.pdf]",
-     "source_id": "web-d5a8934060700aa7",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "languages": null
    },
    "coverage": {
     "facilities": null,
@@ -1170,12 +1165,12 @@
      "effective_date": null
     },
     {
-     "id": "fap-05b380c2c8263f55",
+     "id": "fap-7ebb46acc3b09c47",
      "kind": "hospital_web",
-     "url": "https://northcanyon.org/wp-content/uploads/2026/04/Financial_Application.pdf",
+     "url": "https://northcanyon.org/wp-content/uploads/2022/08/NCMC-Financial-Application.pdf",
      "title": "",
      "fetched_on": "2026-10-23",
-     "sha256": "05b380c2c8263f555ae6c3d826a3e4574cd06c670f7143e1597535be6cb2b6cd",
+     "sha256": "7ebb46acc3b09c472684e8e2e38afea79cdd5cdee48603c06bb44c7d11d2701c",
      "effective_date": null
     },
     {
@@ -1190,10 +1185,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: At 125% of the poverty guideline to 150%, 50% of the account balance will be written off and patient responsibility will | At 150% of the poverty guideline to 175%, 25% of the account balance will be written off and patient responsibility will",
-    "agent judge on eligibility.free_care_max_fpl: Quote says 'Under the poverty guideline' gets 100% write-off, not 100% FPL. The discount tier text ('At the poverty guideline to 125%') also implies 100% is not fully free.",
-    "agent judge on apply.window_days_from_first_bill: Quote says requests later than 90 days after discharge are exempt, so the window is measured from discharge, not the first bill.",
-    "agent judge on contacts.languages: Quote is only a Spanish-language packet link; it does not state English as a supported language."
+    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: At 125% of the poverty guideline to 150%, 50% of the account balance will be written off and patient responsibility will | At 150% of the poverty guideline to 175%, 25% of the account balance will be written off and patient responsibility will"
    ]
   },
   {
@@ -1225,7 +1217,7 @@
     "asset_test": null,
     "residency": {
      "value": [
-      "Reside in one of the following states: Idaho, Oregon, Nevada, Utah or Washington."
+      "Patient must reside in Idaho, Oregon, Nevada, Utah or Washington."
      ],
      "layer": "documented",
      "quote": "Reside in one of the following states: Idaho, Oregon, Nevada, Utah or Washington.",
@@ -1253,17 +1245,7 @@
    "apply": {
     "form_url": null,
     "form_version": null,
-    "documents_required": {
-     "value": [
-      "other"
-     ],
-     "layer": "documented",
-     "quote": "Complete the Financial Care Application and submit all required supporting documentation.",
-     "source_id": "web-a4a0c97c6c23dd8d",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "documents_required": null,
     "documents_reported": null,
     "submit_methods": null,
     "window_days_from_first_bill": null,
@@ -1275,24 +1257,8 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": {
-     "value": "(208) 706-5999",
-     "layer": "documented",
-     "quote": "(208) 706-5999",
-     "source_id": "web-c47163694c10c26c",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "hours": {
-     "value": "Mon - Fri: 8 a.m. - 4:30 p.m.",
-     "layer": "documented",
-     "quote": "Mon - Fri: 8 a.m. - 4:30 p.m.",
-     "source_id": "web-c47163694c10c26c",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "phone": null,
+    "hours": null,
     "languages": null
    },
    "coverage": {
@@ -1309,20 +1275,11 @@
      "fetched_on": "2026-10-23",
      "sha256": "a4a0c97c6c23dd8dc09c4615f5bbff5a4163f12a3ed79bd3c0edb72c886fbb68",
      "effective_date": null
-    },
-    {
-     "id": "web-c47163694c10c26c",
-     "kind": "hospital_web",
-     "url": "https://stlukesonline.org/en/get-care/locations/financial-services/st-lukes-patient-financial-services-jerome/",
-     "title": "St. Luke\u2019s Patient Financial Services: Jerome",
-     "fetched_on": "2026-10-23",
-     "sha256": "c47163694c10c26c66b06d6e52704dcda8e88ffd5aa035fdbadf6f8b1c9384fa",
-     "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "agent judge on eligibility.insured_patients_covered: Quote says charges must be billed to insurance for insured patients. It does not state that insured patients are covered by assistance."
+    "agent judge on eligibility.insured_patients_covered: Quote only says charges must be billed to insurance if the patient has insurance. It does not state insured patients are covered by assistance."
    ]
   },
   {
@@ -1404,24 +1361,8 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": {
-     "value": "(208) 706-5999",
-     "layer": "documented",
-     "quote": "(208) 706-5999",
-     "source_id": "web-309f07b4f72accb2",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "hours": {
-     "value": "Mon - Fri: 8 a.m. - 4:30 p.m.",
-     "layer": "documented",
-     "quote": "Mon - Fri: 8 a.m. - 4:30 p.m.",
-     "source_id": "web-309f07b4f72accb2",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "phone": null,
+    "hours": null,
     "languages": null
    },
    "coverage": {
@@ -1438,20 +1379,13 @@
      "fetched_on": "2026-10-23",
      "sha256": "a4a0c97c6c23dd8dc09c4615f5bbff5a4163f12a3ed79bd3c0edb72c886fbb68",
      "effective_date": null
-    },
-    {
-     "id": "web-309f07b4f72accb2",
-     "kind": "hospital_web",
-     "url": "https://stlukesonline.org/en/get-care/locations/financial-services/st-lukes-patient-financial-services-mountain-home/",
-     "title": "St. Luke\u2019s Patient Financial Services: Mountain Home",
-     "fetched_on": "2026-10-23",
-     "sha256": "309f07b4f72accb24c6edb9980e84f8c87e95f47347cd7a202937afe7ea47f81",
-     "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "agent judge on eligibility.insured_patients_covered: Quote only says charges are billed to insurance if the patient has insurance; it does not state insured patients are covered by assistance."
+    "agent judge on eligibility.assistance_ceiling_fpl: Quote gives 400% FPL as an income eligibility threshold but does not state that no assistance of any kind is offered above 400%.",
+    "agent judge on eligibility.insured_patients_covered: Quote only says charges must be billed to insurance if the patient has insurance; it does not state insured patients are covered.",
+    "agent judge on apply.documents_required: Quote says to complete the Financial Care Application and submit all required supporting documentation; the value omits the supporting documentation."
    ]
   },
   {
@@ -1701,8 +1635,8 @@
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "Patients must: \u25aa Receive services at an NHSC-approved location \u25aa Meet low-income criteria (insured or uninsured)",
-     "source_id": "fap-79999b50f6e69800",
+     "quote": "Financial assistance can help you if you are uninsured (meaning you don\u2019t have health insurance) or are underinsured (meaning the costs of care are a financial burden because you have a high deductible or other out-of-pocket costs).",
+     "source_id": "web-5cf76eba9fb24650",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -1719,7 +1653,7 @@
      "value": "http://new.smh-cvh.org/wp-content/uploads/2023/11/Financial-Assistance-Application-Addendum-A.pdf",
      "layer": "documented",
      "quote": "Financial Assistance Application [http://new.smh-cvh.org/wp-content/uploads/2023/11/Financial-Assistance-Application-Addendum-A.pdf]",
-     "source_id": "web-36bb25c029f9acea",
+     "source_id": "web-5cf76eba9fb24650",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -1730,7 +1664,8 @@
       "other",
       "tax_return",
       "pay_stubs",
-      "bank_statements"
+      "bank_statements",
+      "social_security_letter"
      ],
      "layer": "documented",
      "quote": "Current, valid Picture I.D.",
@@ -1744,15 +1679,15 @@
      "value": [
       {
        "kind": "mail",
-       "detail": "Mailed to: Clearwater Valley Hospital/Clinics 301 Cedar Orofino, ID 83544 OR St. Mary's Hospital/Clinics PO Box 137 701 Lewiston St. Cottonwood, ID 83522"
+       "detail": "Mailed to: Clearwater Valley Hospital/Clinics, 301 Cedar, Orofino, ID 83544 OR St. Mary's Hospital/Clinics, PO Box 137, 701 Lewiston St., Cottonwood, ID 83522"
       },
       {
        "kind": "in_person",
-       "detail": "you can drop it off at either hospital or clinics"
+       "detail": "OR you can drop it off at either hospital or clinics."
       }
      ],
      "layer": "documented",
-     "quote": "This application needs to be completed within 21 days and returned to one of the following locations:",
+     "quote": "Mailed to: OR Mailed to: Clearwater Valley Hospital/Clinics St. Mary\u2019s Hospital/Clinics",
      "source_id": "fap-e8c830a00313d73d",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1775,15 +1710,7 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": {
-     "value": "208-476-4555",
-     "layer": "documented",
-     "quote": "Please contact Financial Services Counseling at 208-476-4555 or 208-962-3251 if you have any questions.",
-     "source_id": "fap-e8c830a00313d73d",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "phone": null,
     "hours": null,
     "languages": {
      "value": [
@@ -1815,33 +1742,32 @@
     {
      "id": "fap-e8c830a00313d73d",
      "kind": "hospital_web",
-     "url": "https://smh-cvh.org/wp-content/uploads/2023/11/Financial-Assistance-Application-Addendum-A.pdf",
+     "url": "http://new.smh-cvh.org/wp-content/uploads/2023/11/Financial-Assistance-Application-Addendum-A.pdf",
      "title": "",
      "fetched_on": "2026-10-23",
      "sha256": "e8c830a00313d73da953e52bc022afe178ac2e0a012f21614d760a8dcffe5ea2",
      "effective_date": null
     },
     {
-     "id": "web-36bb25c029f9acea",
+     "id": "web-5cf76eba9fb24650",
      "kind": "hospital_web",
      "url": "https://new.smh-cvh.org/financial-assistance/",
      "title": "Financial Assistance \u2013 St. Mary\u2019s Health & Clearwater Valley Health",
      "fetched_on": "2026-10-23",
-     "sha256": "36bb25c029f9aceaa915386bce7ee7dd86f204690671a7bf098c0aeee6326da1",
+     "sha256": "5cf76eba9fb24650867cad71f1d936096e6504a90f81eaa02e6c477beaaa6edb",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 100-200% at 0% is no discount; skipped",
     "apply.documents_required: 2 more verbatim excerpt(s) supported this value: The patient\u2019s most recent filed Federal Tax Return (if tax return covers a prior calendar year, then a current W-2 form  | Current three months of employer pay stubs",
     "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: OR you can drop it off at either hospital or clinics.",
     "agent dropped eligibility.asset_test: quote is not a substring of the source",
-    "agent judge on eligibility.discount_tiers: Quote gives the 100%-200% FPL band and a nominal fee on a sliding scale, but never states a 0% discount_percent.",
-    "agent judge on apply.documents_required: Quote lists three documents (ID, tax return, pay stubs). The value adds a fourth item, bank statements, which the quote does not mention.",
-    "agent judge on apply.submit_methods: Quote mentions return to locations and drop-off, but gives no mailing addresses, so the mail detail is not stated.",
-    "agent judge on apply.window_days_from_first_bill: Quote says the application must be completed within 21 days but does not say the count runs from the first bill.",
-    "agent judge on contacts.languages: Quote says materials must be available in English and other prevalent languages, but the value lists English only."
+    "agent dropped contacts.phone: quote is not a substring of the source",
+    "agent judge on apply.documents_required: Quote supports only picture ID, federal tax return, and pay stubs. Social security, food stamps, bank statements, denial letter, and proof of assets are not in the quote.",
+    "agent judge on apply.submit_methods: Quote supports mailing and dropping off, but does not contain the street addresses or PO Box given in the value's detail fields.",
+    "agent judge on apply.window_days_from_first_bill: Quote says the application must be completed within 21 days, but does not say the window runs from the first bill.",
+    "agent judge on contacts.languages: Quote says materials must be available in English and other prevalent languages (>10% population), so the value omits the other languages."
    ]
   },
   {
@@ -2105,7 +2031,15 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": null,
+    "phone": {
+     "value": "(208) 814-7550",
+     "layer": "documented",
+     "quote": "Or, call (208) 814-7550 for estimate requests and questions.",
+     "source_id": "web-3f5c6aab9d23e4c1",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "hours": null,
     "languages": null
    },
@@ -2125,18 +2059,18 @@
      "effective_date": null
     },
     {
-     "id": "web-316c99ef44aba1e3",
+     "id": "web-3f5c6aab9d23e4c1",
      "kind": "hospital_web",
-     "url": "https://stlukesonline.org/en/patients-visitors/billing-and-insurance/paying-your-bill/",
-     "title": "Paying Your Bill - St. Luke\u2019s",
+     "url": "https://stlukesonline.org/en/patients-visitors/billing-and-insurance/",
+     "title": "Billing and Insurance",
      "fetched_on": "2026-10-23",
-     "sha256": "316c99ef44aba1e38fd1e75841046ea0899f23b04a54f28f414a86b7e17762b1",
+     "sha256": "3f5c6aab9d23e4c127a7237983206b479716cbc45c43f8ce32d7ac558548a1ec",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "agent judge on eligibility.insured_patients_covered: Quote only says charges are billed to insurance if the patient has insurance; it does not state insured patients are covered by assistance."
+    "agent judge on eligibility.insured_patients_covered: Quote only says charges are billed to insurance if the patient has insurance. It does not state that insured patients are covered by assistance."
    ]
   },
   {
@@ -2176,34 +2110,25 @@
     "asset_test": {
      "value": true,
      "layer": "documented",
-     "quote": "Eligibility for charity care will be based on income and liquid assets (those that can be converted to cash within 12 months) of all parties",
+     "quote": "Eligibility for charity care will be based on income and liquid assets (those that can be converted to cash within 12 months) of all parties who may be legally responsible for the debt.",
      "source_id": "fap-dd845b4f95ef69a4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "residency": null,
-    "insured_patients_covered": {
-     "value": true,
-     "layer": "documented",
-     "quote": "Medicare patients unable to pay their co-pay documented by a financial statement, will be adjusted off to adjustment code of Medicare (charity not turned)",
-     "source_id": "fap-dd845b4f95ef69a4",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "insured_patients_covered": null,
     "min_balance": null,
     "services_excluded": null
    },
    "programs": {
     "presumptive": {
      "value": [
-      "Medicaid eligibility",
       "homeless",
-      "deceased with no known medical indigent services"
+      "deceased with no estate"
      ],
      "layer": "documented",
-     "quote": "Older accounts that are self-pay when verified Medicaid eligibility has been determined on newer accounts.",
+     "quote": "Patient is deceased with no known medical indigent services administered by county or state. The patient has no assets at all.",
      "source_id": "fap-dd845b4f95ef69a4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2212,24 +2137,49 @@
     "state_programs": null
    },
    "apply": {
-    "form_url": null,
+    "form_url": {
+     "value": "http://binghamhealthcare.org/wp-content/uploads/2023/02/Financial-Statement-Application-Form.pdf",
+     "layer": "documented",
+     "quote": "Open application [http://binghamhealthcare.org/wp-content/uploads/2023/02/Financial-Statement-Application-Form.pdf]",
+     "source_id": "web-c8f9f20661577837",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "form_version": null,
-    "documents_required": null,
+    "documents_required": {
+     "value": [
+      "tax_return",
+      "bank_statements",
+      "pay_stubs",
+      "other"
+     ],
+     "layer": "documented",
+     "quote": "Last two years of tax returns",
+     "source_id": "web-c8f9f20661577837",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "documents_reported": null,
     "submit_methods": {
      "value": [
       {
-       "kind": "portal",
-       "detail": "This application may also be accessed on Bingham Memorial Hospital's website at www.binghammemorial.org/bmh-services/financial-services"
+       "kind": "mail",
+       "detail": "Bingham Memorial Patient Financial Advocates, 98 Poplar St., Blackfoot, ID 83221"
       },
       {
        "kind": "in_person",
-       "detail": "Patients who are in financial need are referred to a member of the Patient Financial Advocate Department"
+       "detail": "stop by 625 W. Pacific St."
+      },
+      {
+       "kind": "phone",
+       "detail": "Call (208) 782-3969"
       }
      ],
      "layer": "documented",
-     "quote": "This application may also be accessed on Bingham Memorial Hospital\u2019s website at www.binghammemorial.org/bmh-services/financial-services",
-     "source_id": "fap-dd845b4f95ef69a4",
+     "quote": "Please mail your completed application and required documentation to:",
+     "source_id": "web-c8f9f20661577837",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -2262,22 +2212,33 @@
     "phone": {
      "value": "(208) 782-3969",
      "layer": "documented",
-     "quote": "Call (208) 782-3969",
-     "source_id": "web-a3684f69eeaa9f1a",
+     "quote": "please call or text (208) 782-3969, or stop by 625 W. Pacific St.",
+     "source_id": "web-c8f9f20661577837",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "hours": {
-     "value": "Monday\u2013Friday: 8:00 a.m.\u20134:30 p.m.",
+     "value": "Monday\u2013Thursday: 8:00 a.m.\u20134:30 p.m. Friday: 8:00 a.m.\u20132:30 p.m.",
      "layer": "documented",
-     "quote": "Monday\u2013Friday: 8:00 a.m.\u20134:30 p.m.",
-     "source_id": "web-a3684f69eeaa9f1a",
+     "quote": "Monday\u2013Thursday: 8:00 a.m.\u20134:30 p.m. Friday: 8:00 a.m.\u20132:30 p.m.",
+     "source_id": "web-c8f9f20661577837",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "languages": null
+    "languages": {
+     "value": [
+      "English",
+      "Spanish"
+     ],
+     "layer": "documented",
+     "quote": "English application",
+     "source_id": "web-c8f9f20661577837",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
    },
    "coverage": {
     "facilities": null,
@@ -2304,21 +2265,24 @@
      "effective_date": null
     },
     {
-     "id": "web-a3684f69eeaa9f1a",
+     "id": "web-c8f9f20661577837",
      "kind": "hospital_web",
-     "url": "https://binghammemorial.org/billing/",
-     "title": "Billing | Bingham Memorial Hospital",
+     "url": "https://binghamhealthcare.org/financial-services/",
+     "title": "Financial Services | Bingham Healthcare",
      "fetched_on": "2026-10-23",
-     "sha256": "a3684f69eeaa9f1aec6a7566ce7859659e4c66701dc0648f79b3b9fdc5335072",
+     "sha256": "c8f9f206615778370c10ebd7ce02a0eb70178f6de0234d2e8bd824c6494e6da7",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: A patient is proven to be homeless. | Patient is deceased with no known medical indigent services administered by county or state.",
-    "agent dropped apply.documents_required: excerpt not in source: Proof of residency, including a copy of one of the following",
-    "agent judge on eligibility.insured_patients_covered: Quote only covers Medicare copay adjustments for patients unable to pay, not insured patients generally being covered by charity care.",
-    "agent judge on apply.submit_methods: Quote only supports the online method; the in_person method in the value is not stated in the quote."
+    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: A patient is proven to be homeless.",
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Last two months of bank statements (checking and savings) | Two most recent pay stubs for all adult household members, if applicable",
+    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: stop by 625 W. Pacific St. | Call (208) 782-3969",
+    "contacts.languages: 1 more verbatim excerpt(s) supported this value: Solicitud en espa\u00f1ol",
+    "agent dropped programs.state_programs: excerpt not in source: Visit www.socialsecurity.gov for information and to apply.",
+    "agent judge on apply.documents_required: Quote lists only three documents; the fourth value, 'Copies of all current monthly bills', does not appear in the quote.",
+    "agent judge on apply.submit_methods: Quote gives the mail instruction with no address, so the mailing address '98 Poplar St., Blackfoot, ID 83221' is not stated in the quote."
    ]
   },
   {
@@ -2339,7 +2303,7 @@
     "free_care_max_fpl": {
      "value": "200",
      "layer": "documented",
-     "quote": "0-200% 100%",
+     "quote": "Income Level (of FPL) Discount 0-200% 100%",
      "source_id": "fap-320b9326e51ab78f",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2369,7 +2333,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "201% to 250% 80%",
+     "quote": "0-200% 100% 201% to 250% 80% 251% to 300% 60% 301% to 350% 40% 351% to 400% 20%",
      "source_id": "fap-320b9326e51ab78f",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2379,7 +2343,7 @@
     "asset_test": {
      "value": true,
      "layer": "documented",
-     "quote": "Available assets and extraordinary circumstances will be reviewed to assist with eligibility determination for Catastrophic Charity Care",
+     "quote": "Available assets and extraordinary circumstances will be reviewed to assist with eligibility determination for Catastrophic Charity Care, including but not limited to:",
      "source_id": "fap-320b9326e51ab78f",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2403,10 +2367,7 @@
      "value": [
       "Homeless",
       "Deceased with no estate",
-      "Mentally incapacitated with no one to act on his or her behalf",
-      "Medicaid eligible but not on the date of service or for non-covered services",
-      "Enrolled in one or more governmental programs for low-income individuals having eligibility criteria at or below 400% of the Federal Poverty Guidelines",
-      "Other socio-economic factor(s) not listed above"
+      "Medicaid eligible but not on the date of service or for non-covered services"
      ],
      "layer": "documented",
      "quote": "Homeless",
@@ -2419,11 +2380,11 @@
      "value": [
       {
        "name": "Idaho State Medically Indigent (County Program)",
-       "how_to_apply": "Patients seeking Financial Assistance under this policy may be required to apply and may request assistance in applying for Medicaid, the Idaho Medically Indigent Program, or other government programs prior to submitting an Application for Financial Assistance."
+       "how_to_apply": "Attempting to determine whether a patient has third-party coverage for any part of the health care services provided, including eligibility for the Idaho State Medically Indigent (County Program)"
       }
      ],
      "layer": "documented",
-     "quote": "eligibility for the Idaho State Medically Indigent (County Program) or",
+     "quote": "including eligibility for the Idaho State Medically Indigent (County Program) or Gritman Medical Center is committed to providing access",
      "source_id": "fap-320b9326e51ab78f",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2431,21 +2392,15 @@
     }
    },
    "apply": {
-    "form_url": {
-     "value": "https://www.gritman.org/wp-content/uploads/Financial-Assistance-Instructions-Application.pdf",
-     "layer": "documented",
-     "quote": "To apply, download the financial assistance application with instructions [https://www.gritman.org/wp-content/uploads/Financial-Assistance-Instructions-Application.pdf]",
-     "source_id": "web-3a9355c8e7809b78",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "form_url": null,
     "form_version": null,
     "documents_required": {
      "value": [
-      "tax_return",
+      "proof_of_income",
       "pay_stubs",
-      "other"
+      "tax_return",
+      "bank_statements",
+      "social_security_letter"
      ],
      "layer": "documented",
      "quote": "Most recent federal tax return with W-2 (s), Signature Required",
@@ -2471,11 +2426,7 @@
       },
       {
        "kind": "in_person",
-       "detail": "220 E 5th St., Moscow, ID 83843 Second Floor, Suite 205"
-      },
-      {
-       "kind": "portal",
-       "detail": "MyChart"
+       "detail": "Patient Financial Services Department at 220 E 5th St., Moscow, ID 83843 Second Floor, Suite 205"
       }
      ],
      "layer": "documented",
@@ -2521,8 +2472,8 @@
     "phone": {
      "value": "208-883-2223",
      "layer": "documented",
-     "quote": "contact our financial counselor at 208-883-2223",
-     "source_id": "web-3a9355c8e7809b78",
+     "quote": "Calling (208) 883-2223;",
+     "source_id": "fap-320b9326e51ab78f",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -2533,7 +2484,7 @@
       "English"
      ],
      "layer": "documented",
-     "quote": "will be made available on our website: www.gritman.org/billing-assistance in English and in any other language spoken by the lesser of 1,000",
+     "quote": "will be made available on our website: www.gritman.org/billing-assistance in English and in any other language spoken by the lesser of 1,000 or 5% of the residents of the community served",
      "source_id": "fap-320b9326e51ab78f",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2565,26 +2516,24 @@
      "effective_date": null
     },
     {
-     "id": "web-3a9355c8e7809b78",
+     "id": "web-56085a6974e1de46",
      "kind": "hospital_web",
-     "url": "https://www.gritman.org/patients-visitors/billing-information/financial-assistance/",
-     "title": "Financial Assistance | Gritman Medical Center",
+     "url": "https://www.gritman.org/patients-visitors/billing-information/",
+     "title": "Patient Financial Services - Billing | Gritman Medical Center",
      "fetched_on": "2026-10-23",
-     "sha256": "3a9355c8e7809b78ffa323db378beb7c854024403f98475bff8f63163c9cf466",
+     "sha256": "56085a6974e1de468d02094f1a5e0f4e0a9702d60603be76c823bac8ad790f4d",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: 251% to 300% 60% | 301% to 350% 40%",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Deceased with no estate | Mentally incapacitated with no one to act on his or her behalf",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Recent pay stubs (last 60 days for all household members over the age of 18) | Schedule C from most recent tax filing",
+    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Deceased with no estate | Medicaid eligible but not on the date of service or for non-covered services",
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Recent pay stubs (last 60 days for all household members over the age of 18) | 3 months of Bank Statements (Most recent, showing all transactions (deposits and withdrawals) for all accounts)",
     "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: By fax to ATTN: Financial Counselor at 208-883-6517 | By mail to the Patient Financial Services Department, PO Box 8007, Moscow, ID 83843",
-    "agent judge on eligibility.discount_tiers: Quote gives only 201-250% 80%, 251-300% 60%, 301-350% 40%. The 350-400% 20% tier in the value does not appear in the quote.",
-    "agent judge on eligibility.insured_patients_covered: Quote says bad debt and government contractual shortfalls are excluded but may include copayments/deductibles. It does not state that insured patients are covered.",
-    "agent judge on programs.presumptive: Quote lists only Homeless, Deceased with no estate, and Mentally incapacitated. The value's other three categories (Medicaid eligible, 400% FPG programs, other factors) are not in the quote.",
-    "agent judge on programs.state_programs: Quote only mentions eligibility for the Idaho State Medically Indigent (County Program). The how_to_apply text in the value does not appear in the quote.",
-    "agent judge on apply.submit_methods: Quote lists only email, fax, and mail. The in-person address and MyChart online option in the value are not in the quote."
+    "agent judge on eligibility.insured_patients_covered: Quote only says assistance may include insurance co-payments or deductibles; it does not plainly state insured patients are covered.",
+    "agent judge on programs.state_programs: Quote names the Idaho program, but the how_to_apply text is a third-party coverage determination sentence, not application instructions.",
+    "agent judge on apply.documents_required: Quote supports W-2 tax return, pay stubs, and bank statements only; 'Proof of income' and Social Security letter are not in the quote.",
+    "agent judge on apply.submit_methods: Quote supports email, fax, and mail only; the in_person entry with the 220 E 5th St address is not in the quote."
    ]
   },
   {
@@ -2630,7 +2579,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "151-200% 75%",
+     "quote": "0-150% 100% 151-200% 75% 201-250% 50% 251-300% 25%",
      "source_id": "fap-744ce2ebe07faa54",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2652,29 +2601,11 @@
     "services_excluded": null
    },
    "programs": {
-    "presumptive": {
-     "value": [
-      "Presumptive Financial Assistance Eligibility"
-     ],
-     "layer": "documented",
-     "quote": "Presumptive Financial Assistance Eligibility may be considered in instances when a patient may appear eligible for discounts.",
-     "source_id": "fap-744ce2ebe07faa54",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "presumptive": null,
     "state_programs": null
    },
    "apply": {
-    "form_url": {
-     "value": "https://bonnergeneral.org/wp-content/uploads/2023/09/BGHCARES-UPDATED-091223-NHSC-update-website.pdf",
-     "layer": "documented",
-     "quote": "click HERE [https://bonnergeneral.org/wp-content/uploads/2023/09/BGHCARES-UPDATED-091223-NHSC-update-website.pdf] for an application",
-     "source_id": "web-9a7ef891d0a9c7d7",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "form_url": null,
     "form_version": null,
     "documents_required": {
      "value": [
@@ -2685,7 +2616,7 @@
       "tax_return"
      ],
      "layer": "documented",
-     "quote": "o Pay-Stubs",
+     "quote": "o Pay-Stubs o Financial Aid Award Letter(s) o Unemployment compensation o Copies of pension, Disability or other income checks or bank statements indicating type and amounts of deposits. o Copies of Federal Tax Returns or W-2/1099 forms",
      "source_id": "fap-744ce2ebe07faa54",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2712,7 +2643,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "A. In person to the Patient Financial Services department at 423 N 3rd Ave Ste 225, Sandpoint, Idaho, 83864",
+     "quote": "A. In person to the Patient Financial Services department at 423 N 3rd Ave Ste 225, Sandpoint, Idaho, 83864 B. By mail to Bonner General Health ATTN: PFS PO Box 1343, Sandpoint, Idaho, 83864 C. By email to bghcares@bonnergeneral.org D. Or by fax to (208)265-1278",
      "source_id": "fap-744ce2ebe07faa54",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2721,7 +2652,7 @@
     "window_days_from_first_bill": {
      "value": 240,
      "layer": "documented",
-     "quote": "financial assistance applications will be processed when received within 240 days",
+     "quote": "financial assistance applications will be processed when received within 240 days.",
      "source_id": "fap-744ce2ebe07faa54",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2744,10 +2675,10 @@
    },
    "contacts": {
     "phone": {
-     "value": "208-265-1158",
+     "value": "(208)265-1158",
      "layer": "documented",
-     "quote": "Phone: 208-265-1158",
-     "source_id": "web-9a7ef891d0a9c7d7",
+     "quote": "By calling the Patient Financial Services Department (208)265-1158 to have an application mailed free of charge.",
+     "source_id": "fap-744ce2ebe07faa54",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -2756,7 +2687,7 @@
      "value": "Monday through Friday, 8:00 a.m. to 4:30 p.m.",
      "layer": "documented",
      "quote": "Our office hours are Monday through Friday, 8:00 a.m. to 4:30 p.m.",
-     "source_id": "web-9a7ef891d0a9c7d7",
+     "source_id": "web-5971bc4c26b309a4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -2779,20 +2710,29 @@
      "effective_date": null
     },
     {
-     "id": "web-9a7ef891d0a9c7d7",
+     "id": "fap-b486576510d0d95b",
+     "kind": "hospital_web",
+     "url": "https://bonnergeneral.org/wp-content/uploads/2023/09/BGHCARES-UPDATED-091223-NHSC-update-website.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "b486576510d0d95b5567248340bbb3966737fd526a1ff6d6ac53bc4eb1e33acb",
+     "effective_date": null
+    },
+    {
+     "id": "web-5971bc4c26b309a4",
      "kind": "hospital_web",
      "url": "https://bonnergeneral.org/patient-billing-financial/",
      "title": "Patient Billing - Bonner General Health",
      "fetched_on": "2026-10-23",
-     "sha256": "9a7ef891d0a9c7d7a1916d4ab7c1360e267192630e0a30cd432686dffb372898",
+     "sha256": "5971bc4c26b309a497d8047db1e292bac70b92a0c37df0c850dc2dedb3c9d64f",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: 201-250% 50% | 251-300% 25%",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: o Financial Aid Award Letter(s) | o Copies of Federal Tax Returns or W-2/1099 forms",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: B. By mail to Bonner General Health ATTN: PFS PO Box 1343, Sandpoint, Idaho, 83864 | C. By email to bghcares@bonnergeneral.org"
+    "agent judge on eligibility.min_balance: Quote is an approval rule for balances over $5000 requiring CEO or CFO sign-off, not a minimum balance for eligibility.",
+    "agent judge on programs.presumptive: Quote says presumptive eligibility may be considered, so an empty list does not reflect that a presumptive program exists.",
+    "agent judge on apply.window_days_from_first_bill: Quote says applications are processed when received within 240 days but does not say the window runs from the first bill."
    ]
   }
  ]

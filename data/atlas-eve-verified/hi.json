@@ -35,10 +35,10 @@
     },
     "residency": {
      "value": [
-      "Financial Assistance shall be based on the following: State and county residency"
+      "State and county residency is a factor in determining Financial Assistance eligibility."
      ],
      "layer": "documented",
-     "quote": "a. State and county residency",
+     "quote": "Financial Assistance shall be based on the following: a. State and county residency",
      "source_id": "fap-59b810474adf8bee",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -67,7 +67,7 @@
      ],
      "layer": "documented",
      "quote": "Med-QUEST (State Medicaid) You may be eligible to get a health plan at no cost or low cost from the state during these difficult economic times. Learn how to apply by visiting the QUEST Integration website: https://medical.mybenefits.hawaii.gov",
-     "source_id": "web-77d75ecf01949bf8",
+     "source_id": "web-0584e62eab5f4bed",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -85,27 +85,14 @@
       "tax_return"
      ],
      "layer": "documented",
-     "quote": "Pay stubs, 1099s, workers' compensation documentation, social security letters, disability award letters, bank statements, brokerage statements, tax returns, life insurance policies, real estate assessments, credit bureau reports, and other documentation typically utilized to establish income levels",
+     "quote": "Pay stubs, 1099s, workers' compensation documentation, social security letters, disability award letters, bank statements, brokerage statements, tax returns, life insurance policies, real estate assessments, credit bureau reports",
      "source_id": "fap-59b810474adf8bee",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "documents_reported": null,
-    "submit_methods": {
-     "value": [
-      {
-       "kind": "portal",
-       "detail": "Apply Through MyChart (Recommended)"
-      }
-     ],
-     "layer": "documented",
-     "quote": "Apply Through MyChart (Recommended)",
-     "source_id": "web-77d75ecf01949bf8",
-     "checked_on": "2026-10-23",
-     "confidence": 0.8,
-     "support_count": 0
-    },
+    "submit_methods": null,
     "window_days_from_first_bill": null,
     "decision_days": {
      "value": 10,
@@ -133,10 +120,10 @@
      "support_count": 0
     },
     "hours": {
-     "value": "Monday \u2013 Friday 8:00 am \u2013 4:00 pm Closed on weekends and most major holidays",
+     "value": "Monday \u2013 Friday 8:00 am \u2013 4:00 pm",
      "layer": "documented",
-     "quote": "Monday \u2013 Friday 8:00 am \u2013 4:00 pm Closed on weekends and most major holidays",
-     "source_id": "web-77d75ecf01949bf8",
+     "quote": "Hours: Monday \u2013 Friday 8:00 am \u2013 4:00 pm Closed on weekends and most major holidays",
+     "source_id": "web-0584e62eab5f4bed",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -159,12 +146,12 @@
      "effective_date": null
     },
     {
-     "id": "web-77d75ecf01949bf8",
+     "id": "web-0584e62eab5f4bed",
      "kind": "hospital_web",
      "url": "https://www.queens.org/financial-resources/",
      "title": "Billing/Financial Resources \u2013 The Queen\u2032s Health Systems",
      "fetched_on": "2026-10-23",
-     "sha256": "77d75ecf01949bf85e25f7cc9abfbdddae4aa0973ef4d5476959d18bef23281a",
+     "sha256": "0584e62eab5f4bed98056437904d863b5ab640cb92735801d3f0a317ac5fbb32",
      "effective_date": null
     },
     {
@@ -180,25 +167,28 @@
    "accuracy": null,
    "eve_review": [
     "programs.presumptive: 2 more verbatim excerpt(s) supported this value: If a patient says he or she is homeless and the facility, through its own due diligence, does not find any evidence to t | If a patient dies without an estate",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: email it along with copies of the required documents [https://www.queens.org/wp-content/uploads/07-2024_Financial_Assist | You can also mail your Financial Assistance Application or visit your local Queen's medical facility registration or fin",
-    "apply.submit_methods: quote matched the source only after typography normalization",
     "contacts.languages: 2 more verbatim excerpt(s) supported this value: Samoan [https://www.queens.org/wp-content/uploads/2021/03/CharityCarePolicy_SW-16-051-SLC-approved_revised_072016_Samoan | Vietnamese [https://www.queens.org/wp-content/uploads/Financial-Assistance-Policy-Plain-Language-Summary-Vietnamese.pdf]",
-    "agent judge on programs.presumptive: Quote supports only Medicaid, homeless, and deceased without an estate. The incapacitated and government housing/low-income items are not in the quote.",
-    "agent judge on apply.decision_days: Quote says a notice is generally provided within 10 days of the counselor's decision, which is post-decision timing, not days to decide the application.",
-    "agent judge on contacts.languages: Quote names only Japanese, Samoan, and Vietnamese. Korean, Chinese, Tongan, Chuukese, Tagalog, and Ilokano are not in the quote."
+    "agent dropped apply.submit_methods: excerpt not in source: you can fill out the PDF version of the application and emai",
+    "agent judge on apply.decision_days: Quote says something is provided generally within 10 days of the counselor's decision; it does not state days to decide.",
+    "agent judge on contacts.languages: Quote shows only Japanese, Samoan, and Vietnamese; Korean, Chinese, Tongan, Chuukese, Tagalog, and Ilokano are not in the quote."
    ],
    "eve_verified": {
     "on": "2026-10-23",
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-59b810474adf8bee": true,
+     "web-0584e62eab5f4bed": false,
+     "web-cc63959aa4b8d7e7": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.asset_test",
      "eligibility.residency",
      "eligibility.insured_patients_covered",
      "programs.state_programs",
      "apply.documents_required",
-     "apply.submit_methods",
      "apply.decision_days",
      "contacts.phone",
      "contacts.hours"
@@ -214,11 +204,10 @@
      ]
     ],
     "pruned": [
-     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
-     "apply.submit_methods: 3 items not named in the trimmed quote"
+     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)"
     ],
     "income_rule_verified": false,
-    "core_completeness": 0.5
+    "core_completeness": 0.33
    }
   },
   {
@@ -236,12 +225,36 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": null,
+    "free_care_max_fpl": {
+     "value": "300",
+     "layer": "documented",
+     "quote": "300% or less of the Federal Poverty Level Zero (Full Charity)",
+     "source_id": "fap-05ba404cb6616cfd",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "discount_tiers": null,
-    "assistance_ceiling_fpl": null,
+    "assistance_ceiling_fpl": {
+     "value": "400",
+     "layer": "documented",
+     "quote": "> 400% of the Federal Poverty Level No Financial Assistance",
+     "source_id": "fap-05ba404cb6616cfd",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "asset_test": null,
     "residency": null,
-    "insured_patients_covered": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Financial Assistance may be applied to uninsured patients, as well as the patient liability for patients with insurance, including charges determined uninsured for the hospital stay, coinsurance, copayment, deductible amounts",
+     "source_id": "fap-05ba404cb6616cfd",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "min_balance": null,
     "services_excluded": null
    },
@@ -252,10 +265,49 @@
    "apply": {
     "form_url": null,
     "form_version": null,
-    "documents_required": null,
+    "documents_required": {
+     "value": [
+      "pay_stubs"
+     ],
+     "layer": "documented",
+     "quote": "Recent pay stubs from within the 6 months before or after the patient is first billed (or in preservice when Application is submitted)",
+     "source_id": "fap-05ba404cb6616cfd",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "documents_reported": null,
-    "submit_methods": null,
-    "window_days_from_first_bill": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "by email, mail or online submission"
+      },
+      {
+       "kind": "portal",
+       "detail": "by email, mail or online submission"
+      },
+      {
+       "kind": "email",
+       "detail": "by email, mail or online submission"
+      }
+     ],
+     "layer": "documented",
+     "quote": "a patient or guarantor must submit a true, accurate, and complete confidential Financial Assistance Application by email, mail or online submission within the Application Period",
+     "source_id": "fap-05ba404cb6616cfd",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": {
+     "value": 240,
+     "layer": "documented",
+     "quote": "The Application Period ends either 240 days after the date that the first post-discharge billing statement for the care is provided",
+     "source_id": "fap-05ba404cb6616cfd",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "decision_days": null,
     "decision_days_reported": null
    },
@@ -264,9 +316,27 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": null,
+    "phone": {
+     "value": "(844) 827-5047",
+     "layer": "documented",
+     "quote": "or by phone to (844) 827-5047 to receive a paper copy of this Policy and an application form",
+     "source_id": "fap-05ba404cb6616cfd",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "hours": null,
-    "languages": null
+    "languages": {
+     "value": [
+      "each language spoken by the lesser of 1,000 people or five percent of the population"
+     ],
+     "layer": "documented",
+     "quote": "Adventist Health shall ensure that this Policy is translated into each language spoken by the lesser of 1,000 people or five percent of the population that resides in each hospital's service area",
+     "source_id": "fap-05ba404cb6616cfd",
+     "checked_on": "2026-10-23",
+     "confidence": 0.8,
+     "support_count": 0
+    }
    },
    "coverage": {
     "facilities": null,
@@ -295,61 +365,39 @@
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 0,
+    "sources_fetched": 1,
     "sources_total": 1,
-    "sources_missing": [
-     "https://www.adventisthealth.org/documents/system/financial-assistance/hawaii/financial-assistance-policy-hi-english.pdf"
+    "sources_missing": [],
+    "sha256_match": {
+     "fap-05ba404cb6616cfd": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
+    "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.assistance_ceiling_fpl",
+     "eligibility.insured_patients_covered",
+     "apply.documents_required",
+     "apply.submit_methods",
+     "apply.window_days_from_first_bill",
+     "contacts.phone",
+     "contacts.languages"
     ],
-    "accepted": [],
     "rejected": [
      [
-      "eligibility.free_care_max_fpl",
-      "source text missing"
-     ],
-     [
       "eligibility.discount_tiers",
-      "source text missing"
-     ],
-     [
-      "eligibility.assistance_ceiling_fpl",
-      "source text missing"
+      "value not in quote"
      ],
      [
       "eligibility.asset_test",
-      "source text missing"
-     ],
-     [
-      "eligibility.insured_patients_covered",
-      "source text missing"
-     ],
-     [
-      "programs.presumptive",
-      "source text missing"
-     ],
-     [
-      "apply.documents_required",
-      "source text missing"
-     ],
-     [
-      "apply.submit_methods",
-      "source text missing"
-     ],
-     [
-      "apply.window_days_from_first_bill",
-      "source text missing"
-     ],
-     [
-      "contacts.phone",
-      "source text missing"
-     ],
-     [
-      "contacts.languages",
-      "source text missing"
+      "quote does not support the asset-test value"
      ]
     ],
-    "pruned": [],
-    "income_rule_verified": false,
-    "core_completeness": 0.0
+    "pruned": [
+     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
+     "apply.documents_required: 1 item not named in the trimmed quote"
+    ],
+    "income_rule_verified": true,
+    "core_completeness": 0.67
    }
   },
   {
@@ -385,20 +433,7 @@
     "form_version": null,
     "documents_required": null,
     "documents_reported": null,
-    "submit_methods": {
-     "value": [
-      {
-       "kind": "phone",
-       "detail": "Admissions Counselors at (808) 547-9789"
-      }
-     ],
-     "layer": "documented",
-     "quote": "please contact our Admissions Counselors at (808) 547-9789 , Monday through Friday",
-     "source_id": "web-8722075acd1348f2",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "submit_methods": null,
     "window_days_from_first_bill": null,
     "decision_days": null,
     "decision_days_reported": null
@@ -409,9 +444,9 @@
    },
    "contacts": {
     "phone": {
-     "value": "(808) 547-9789",
+     "value": "(844) 900-1582",
      "layer": "documented",
-     "quote": "please contact our Admissions Counselors at (808) 547-9789 , Monday through Friday.",
+     "quote": "For Billing Inquiries, call (844) 900-1582.",
      "source_id": "web-8722075acd1348f2",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -480,8 +515,8 @@
    "accuracy": null,
    "eve_review": [
     "contacts.languages: 2 more verbatim excerpt(s) supported this value: Plain Language Summary of Financial Assistance (Charity Care) Policy \u2014 Ilocano | Plain Language Summary of Financial Assistance (Charity Care) Policy \u2014 Japanese",
-    "agent judge on apply.submit_methods: Quote gives a phone number and hours for Admissions Counselors, but does not say the phone is a way to submit an application; it only says to contact them.",
-    "agent judge on contacts.languages: Quote lists only English, Ilocano, and Japanese summary titles; Korean, Simplified Chinese, and Traditional Chinese are not shown in the quote."
+    "agent judge on contacts.hours: Quote gives Monday through Friday but attaches it to Admissions Counselors at (808) 547-9789, not the recorded phone number; the hours apply to a different contact.",
+    "agent judge on contacts.languages: Quote lists only English, Ilocano, and Japanese summary titles; Korean, Simplified Chinese, and Traditional Chinese are not stated in the quote."
    ],
    "eve_verified": {
     "on": "2026-10-23",
@@ -491,8 +526,13 @@
      "https://www.kuakini.org/wps/wcm/connect/kuakinipublic/document%20library/a132e027-15d4-4586-9571-018ca6f09096",
      "https://www.kuakini.org/wps/wcm/connect/kuakinipublic/document%20library/dbc964f1-280e-4151-8fdb-c51d7c5c5333"
     ],
+    "sha256_match": {
+     "web-72c9454a1fef436e": true,
+     "web-405b07622b3538c3": true,
+     "web-8722075acd1348f2": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
-     "apply.submit_methods",
      "contacts.phone",
      "contacts.hours",
      "contacts.languages"
@@ -500,7 +540,7 @@
     "rejected": [],
     "pruned": [],
     "income_rule_verified": false,
-    "core_completeness": 0.33
+    "core_completeness": 0.17
    }
   },
   {
@@ -740,6 +780,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-ea3b663f76cdaf93": true,
+     "fap-aeed82254ca8802e": true,
+     "web-45c493b546333b24": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -798,7 +844,7 @@
     },
     "residency": {
      "value": [
-      "Financial Assistance shall be based on the following: State and county residency"
+      "Financial Assistance shall be based on the following: a. State and county residency"
      ],
      "layer": "documented",
      "quote": "Financial Assistance shall be based on the following: a. State and county residency",
@@ -821,29 +867,32 @@
    },
    "programs": {
     "presumptive": null,
-    "state_programs": null
+    "state_programs": {
+     "value": [
+      {
+       "name": "Med-QUEST (State Medicaid)",
+       "how_to_apply": "Learn how to apply by visiting the QUEST Integration website: https://medical.mybenefits.hawaii.gov"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Med-QUEST (State Medicaid) You may be eligible to get a health plan at no cost or low cost from the state during these difficult economic times. Learn how to apply by visiting the QUEST Integration website: https://medical.mybenefits.hawaii.gov",
+     "source_id": "web-0584e62eab5f4bed",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
    },
    "apply": {
     "form_url": null,
     "form_version": null,
-    "documents_required": {
-     "value": [
-      "tax_return"
-     ],
-     "layer": "documented",
-     "quote": "Pay stubs, 1099s, workers' compensation documentation, social security letters, disability award letters, bank statements, brokerage statements, tax returns, life insurance policies, real estate assessments, credit bureau reports, and other documentation",
-     "source_id": "fap-59b810474adf8bee",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "documents_required": null,
     "documents_reported": null,
     "submit_methods": null,
     "window_days_from_first_bill": null,
     "decision_days": {
      "value": 10,
      "layer": "documented",
-     "quote": "will be provided, generally within 10 days of the Financial Counselor's decision after reviewing a completed application",
+     "quote": "generally within 10 days of the Financial Counselor's decision after reviewing a completed application",
      "source_id": "fap-59b810474adf8bee",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -859,7 +908,7 @@
     "phone": {
      "value": "808-691-4210",
      "layer": "documented",
-     "quote": "please contact the Patient Financial Counseling Department at 808-691-4210.",
+     "quote": "please contact the Patient Financial Counseling Department at 808-691-4210",
      "source_id": "fap-59b810474adf8bee",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -882,33 +931,72 @@
      "fetched_on": "2026-10-23",
      "sha256": "59b810474adf8bee45f0b36f476b54bd722e6501fd5074a0b1bd240ce984497b",
      "effective_date": null
+    },
+    {
+     "id": "fap-0308ce335d415d2b",
+     "kind": "hospital_web",
+     "url": "https://www.queens.org/wp-content/uploads/TheQueensHealthSystem_FinancialAssistanceApplication.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "0308ce335d415d2b50c35e72b8cc548b7721cb713734d083eee99dfef8085a45",
+     "effective_date": null
+    },
+    {
+     "id": "web-0584e62eab5f4bed",
+     "kind": "hospital_web",
+     "url": "https://www.queens.org/financial-resources/",
+     "title": "Billing/Financial Resources \u2013 The Queen\u2032s Health Systems",
+     "fetched_on": "2026-10-23",
+     "sha256": "0584e62eab5f4bed98056437904d863b5ab640cb92735801d3f0a317ac5fbb32",
+     "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
+    "eligibility.discount_tiers: 0-100% at 100% is the free-care band, not a tier; skipped",
     "programs.presumptive: 2 more verbatim excerpt(s) supported this value: If a patient says he or she is homeless and the facility, through its own due diligence, does not find any evidence to t | If a patient dies without an estate",
-    "agent judge on programs.presumptive: Quote only shows Medicaid, homeless, and deceased without an estate. The incapacitated and government-housing/low-income categories are not in the quote."
+    "contacts.languages: 2 more verbatim excerpt(s) supported this value: Samoan [https://www.queens.org/wp-content/uploads/2021/03/CharityCarePolicy_SW-16-051-SLC-approved_revised_072016_Samoan | Vietnamese [https://www.queens.org/wp-content/uploads/Financial-Assistance-Policy-Plain-Language-Summary-Vietnamese.pdf]",
+    "agent dropped apply.submit_methods: excerpt not in source: email it along with copies of the required documents to Elev",
+    "agent judge on eligibility.discount_tiers: Quote says individuals receive a 100% or 76% discount, but gives no FPL bounds; the 0-100% FPL bound in the value is not stated.",
+    "agent judge on apply.form_url: The quoted URL is a Queen's Health System form, not North Hawaii Community Hospital; the quote does not support this hospital's form link.",
+    "agent judge on contacts.languages: Quote lists only Japanese, Samoan, and Vietnamese summary links; Korean, Chinese, Tongan, Chuukese, Tagalog, and Ilokano are not in the quote."
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 1,
-    "sources_total": 1,
-    "sources_missing": [],
+    "sources_fetched": 2,
+    "sources_total": 3,
+    "sources_missing": [
+     "https://www.queens.org/wp-content/uploads/TheQueensHealthSystem_FinancialAssistanceApplication.pdf"
+    ],
+    "sha256_match": {
+     "fap-59b810474adf8bee": true,
+     "fap-0308ce335d415d2b": true,
+     "web-0584e62eab5f4bed": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.asset_test",
      "eligibility.residency",
      "eligibility.insured_patients_covered",
-     "apply.documents_required",
+     "programs.state_programs",
      "apply.decision_days",
      "contacts.phone"
     ],
-    "rejected": [],
+    "rejected": [
+     [
+      "apply.form_url",
+      "quote not found in source"
+     ],
+     [
+      "contacts.languages",
+      "quote not found in source"
+     ]
+    ],
     "pruned": [
-     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
-     "apply.submit_methods: none of the listed channels is named in the quote (after trimming)"
+     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)"
     ],
     "income_rule_verified": false,
-    "core_completeness": 0.33
+    "core_completeness": 0.17
    }
   },
   {
@@ -940,11 +1028,11 @@
     },
     "residency": {
      "value": [
-      "Financial Assistance shall be based on the following: a. State and county residency"
+      "Financial assistance is generally determined by a sliding scale of total household income based on Federal Poverty Guidelines for US citizens and US residents or based upon the country minimum wage annualized for non-US citizens and non-US residents."
      ],
      "layer": "documented",
-     "quote": "Financial Assistance shall be based on the following: a. State and county residency",
-     "source_id": "fap-59b810474adf8bee",
+     "quote": "Financial assistance is generally determined by a sliding scale of total household income based on Federal Poverty Guidelines for US citizens and US residents or based upon the country minimum wage annualized for non-US citizens and non-US residents.",
+     "source_id": "web-8a48162b6bd46cd6",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -963,7 +1051,20 @@
    },
    "programs": {
     "presumptive": null,
-    "state_programs": null
+    "state_programs": {
+     "value": [
+      {
+       "name": "Med-QUEST (State Medicaid)",
+       "how_to_apply": "Learn how to apply by visiting the QUEST Integration website: https://medical.mybenefits.hawaii.gov"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Med-QUEST (State Medicaid) You may be eligible to get a health plan at no cost or low cost from the state during these difficult economic times. Learn how to apply by visiting the QUEST Integration website",
+     "source_id": "web-8a48162b6bd46cd6",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
    },
    "apply": {
     "form_url": null,
@@ -975,7 +1076,7 @@
     "decision_days": {
      "value": 10,
      "layer": "documented",
-     "quote": "generally within 10 days of the Financial Counselor's decision after reviewing a completed application",
+     "quote": "will be provided, generally within 10 days of the Financial Counselor's decision after reviewing a completed application",
      "source_id": "fap-59b810474adf8bee",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -989,15 +1090,23 @@
    },
    "contacts": {
     "phone": {
-     "value": "808-691-4210",
+     "value": "808-553-3127",
      "layer": "documented",
-     "quote": "please contact the Patient Financial Counseling Department at 808-691-4210.",
-     "source_id": "fap-59b810474adf8bee",
+     "quote": "Molokai General Hospital Phone Number: 808-553-3127",
+     "source_id": "web-8a48162b6bd46cd6",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "hours": null,
+    "hours": {
+     "value": "Monday \u2013 Friday 8:00 am \u2013 4:30 pm Closed on weekends and most major holidays",
+     "layer": "documented",
+     "quote": "Hours: Monday \u2013 Friday 8:00 am \u2013 4:30 pm Closed on weekends and most major holidays",
+     "source_id": "web-8a48162b6bd46cd6",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "languages": null
    },
    "coverage": {
@@ -1014,27 +1123,70 @@
      "fetched_on": "2026-10-23",
      "sha256": "59b810474adf8bee45f0b36f476b54bd722e6501fd5074a0b1bd240ce984497b",
      "effective_date": null
+    },
+    {
+     "id": "web-8a48162b6bd46cd6",
+     "kind": "hospital_web",
+     "url": "https://www.queens.org/financial-resources/",
+     "title": "Billing/Financial Resources \u2013 The Queen\u2032s Health Systems",
+     "fetched_on": "2026-10-23",
+     "sha256": "8a48162b6bd46cd6b426755d52aee035c9e84caedd01838eef6944acb35c6a4f",
+     "effective_date": null
+    },
+    {
+     "id": "fap-0308ce335d415d2b",
+     "kind": "hospital_web",
+     "url": "https://www.queens.org/wp-content/uploads/TheQueensHealthSystem_FinancialAssistanceApplication.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "0308ce335d415d2b50c35e72b8cc548b7721cb713734d083eee99dfef8085a45",
+     "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
+    "eligibility.discount_tiers: 0-100% at 100% is the free-care band, not a tier; skipped",
     "programs.presumptive: 2 more verbatim excerpt(s) supported this value: If a patient says he or she is homeless and the facility, through its own due diligence, does not find any evidence to t | If a patient dies without an estate",
-    "agent judge on programs.presumptive: Quote covers only Medicaid, homeless, and deceased without an estate; it does not mention incapacitated patients or government housing/low-income neighborhood residents.",
-    "agent judge on apply.decision_days: Quote says 'generally within 10 days of the Financial Counselor's decision,' which measures timing from the counselor's decision, not a days-to-decide window."
+    "contacts.languages: 2 more verbatim excerpt(s) supported this value: Samoan [https://www.queens.org/wp-content/uploads/2021/03/CharityCarePolicy_SW-16-051-SLC-approved_revised_072016_Samoan | Vietnamese [https://www.queens.org/wp-content/uploads/Financial-Assistance-Policy-Plain-Language-Summary-Vietnamese.pdf]",
+    "agent dropped apply.submit_methods: excerpt not in source: email it along with copies of the required documents to Elev",
+    "agent judge on eligibility.discount_tiers: Quote says only 'either a 100% or a 76% discount' with no FPL bounds, so the tier boundaries (0-100% and 100-100% FPL) are not stated.",
+    "agent judge on programs.state_programs: Quote names Med-QUEST and the QUEST Integration website but the URL https://medical.mybenefits.hawaii.gov does not appear in the quote.",
+    "agent judge on apply.decision_days: Quote says notice is given 'generally within 10 days of the Financial Counselor's decision', which measures from the decision, not days to decide an application.",
+    "agent judge on contacts.languages: Quote lists only Japanese, Samoan, and Vietnamese; the value includes six further languages not in the quote.",
+    "eligibility.discount_tiers: rejected by schema (1 validation error for ProcedureSheet); dropped"
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 1,
-    "sources_total": 1,
-    "sources_missing": [],
+    "sources_fetched": 2,
+    "sources_total": 3,
+    "sources_missing": [
+     "https://www.queens.org/wp-content/uploads/TheQueensHealthSystem_FinancialAssistanceApplication.pdf"
+    ],
+    "sha256_match": {
+     "fap-59b810474adf8bee": true,
+     "web-8a48162b6bd46cd6": false,
+     "fap-0308ce335d415d2b": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.asset_test",
      "eligibility.residency",
      "eligibility.insured_patients_covered",
+     "programs.state_programs",
      "apply.decision_days",
-     "contacts.phone"
+     "contacts.phone",
+     "contacts.hours"
     ],
-    "rejected": [],
+    "rejected": [
+     [
+      "apply.form_url",
+      "quote not found in source"
+     ],
+     [
+      "contacts.languages",
+      "quote not found in source"
+     ]
+    ],
     "pruned": [
      "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)"
     ],
@@ -1164,9 +1316,35 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": null,
-    "hours": null,
-    "languages": null
+    "phone": {
+     "value": "808.242.2495",
+     "layer": "documented",
+     "quote": "For help or questions about the Maui Health financial assistance application process or other questions, please call 808.242.2495 or 808.442.5655 .",
+     "source_id": "web-4f992e7892d0b09c",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": {
+     "value": "8:30 a.m. to 4:30 p.m Monday through Friday",
+     "layer": "documented",
+     "quote": "Financial counselors are available by telephone to provide information and assist patients 8:30 a.m. to 4:30 p.m Monday through Friday at 808.242.2495 or 808.442.5655 .",
+     "source_id": "web-4f992e7892d0b09c",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "languages": {
+     "value": [
+      "Interpreters available"
+     ],
+     "layer": "documented",
+     "quote": "Interpreters are available to you at no cost. The Maui Health financial assistance application, policy and policy summary may be available in your language.",
+     "source_id": "web-4f992e7892d0b09c",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
    },
    "coverage": {
     "facilities": null,
@@ -1212,11 +1390,15 @@
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 2,
+    "sources_fetched": 3,
     "sources_total": 3,
-    "sources_missing": [
-     "https://www.mauihealth.org/patients-and-visitors/billing-information/financial-assistance/"
-    ],
+    "sources_missing": [],
+    "sha256_match": {
+     "fap-1e2d2ebcf9bc8bf6": true,
+     "fap-9a7d9966eb6da550": true,
+     "web-4f992e7892d0b09c": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -1225,24 +1407,15 @@
      "programs.presumptive",
      "programs.state_programs",
      "apply.documents_required",
-     "apply.window_days_from_first_bill"
+     "apply.window_days_from_first_bill",
+     "contacts.phone",
+     "contacts.hours",
+     "contacts.languages"
     ],
     "rejected": [
      [
       "apply.form_url",
-      "source text missing"
-     ],
-     [
-      "contacts.phone",
-      "source text missing"
-     ],
-     [
-      "contacts.hours",
-      "source text missing"
-     ],
-     [
-      "contacts.languages",
-      "source text missing"
+      "quote not found in source"
      ]
     ],
     "pruned": [
@@ -1250,7 +1423,7 @@
      "apply.documents_required: 2 items not named in the trimmed quote"
     ],
     "income_rule_verified": true,
-    "core_completeness": 0.5
+    "core_completeness": 0.67
    }
   },
   {
@@ -1385,9 +1558,35 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": null,
-    "hours": null,
-    "languages": null
+    "phone": {
+     "value": "808.242.2495",
+     "layer": "documented",
+     "quote": "please call 808.242.2495 or 808.442.5655 .",
+     "source_id": "web-7a5b706ea2639878",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": {
+     "value": "8:30 a.m. to 4:30 p.m Monday through Friday",
+     "layer": "documented",
+     "quote": "Financial counselors are available by telephone to provide information and assist patients 8:30 a.m. to 4:30 p.m Monday through Friday at 808.242.2495 or 808.442.5655 .",
+     "source_id": "web-7a5b706ea2639878",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "languages": {
+     "value": [
+      "Interpreters are available"
+     ],
+     "layer": "documented",
+     "quote": "Interpreters are available to you at no cost. The Maui Health financial assistance application, policy and policy summary may be available in your language.",
+     "source_id": "web-7a5b706ea2639878",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
    },
    "coverage": {
     "facilities": null,
@@ -1435,11 +1634,15 @@
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 2,
+    "sources_fetched": 3,
     "sources_total": 3,
-    "sources_missing": [
-     "https://www.mauihealth.org/patients-and-visitors/billing-information/financial-assistance/"
-    ],
+    "sources_missing": [],
+    "sha256_match": {
+     "fap-1e2d2ebcf9bc8bf6": true,
+     "fap-9a7d9966eb6da550": true,
+     "web-7a5b706ea2639878": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -1449,24 +1652,15 @@
      "programs.state_programs",
      "apply.documents_required",
      "apply.window_days_from_first_bill",
-     "collections.eca_wait_days"
+     "collections.eca_wait_days",
+     "contacts.phone",
+     "contacts.hours",
+     "contacts.languages"
     ],
     "rejected": [
      [
       "apply.form_url",
-      "source text missing"
-     ],
-     [
-      "contacts.phone",
-      "source text missing"
-     ],
-     [
-      "contacts.hours",
-      "source text missing"
-     ],
-     [
-      "contacts.languages",
-      "source text missing"
+      "quote not found in source"
      ]
     ],
     "pruned": [
@@ -1474,7 +1668,7 @@
      "apply.documents_required: 2 items not named in the trimmed quote"
     ],
     "income_rule_verified": true,
-    "core_completeness": 0.5
+    "core_completeness": 0.67
    }
   }
  ]

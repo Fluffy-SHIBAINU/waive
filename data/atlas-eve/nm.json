@@ -848,8 +848,8 @@
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "Eligibility for charity will be considered for those individuals who are uninsured, underinsured, ineligible for any government health care benefit program, and who are unable to pay for their care",
-     "source_id": "fap-30986b7561bb4854",
+     "quote": "Self-pay patients at Artesia General Hospital may qualify for discounts or financial assistance based on their financial situation and the type of services received.",
+     "source_id": "web-cd7e000e83caa6f6",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -861,16 +861,16 @@
     "presumptive": {
      "value": [
       "State-funded prescription programs",
-      "Homeless or received care from a homeless clinic",
-      "Participation in Women, Infants and Children programs (WIC)",
-      "Food stamp eligibility",
-      "Subsidized school lunch program eligibility",
-      "Eligibility for other state or local assistance programs that are unfunded (e.g., Medicaid spend-down)",
-      "Low income/subsidized housing is provided as a valid address",
-      "Patient is deceased with no known estate"
+      "Homeless",
+      "Women, Infants and Children programs (WIC)",
+      "Food stamp",
+      "Subsidized school lunch program",
+      "Medicaid spend-down",
+      "Low income/subsidized housing",
+      "deceased with no known estate"
      ],
      "layer": "documented",
-     "quote": "1. State-funded prescription programs;",
+     "quote": "Presumptive eligibility may be determined on the basis of individual life circumstances that may include: 1. State-funded prescription programs; 2. Homeless or received care from a homeless clinic; 3. Participation in Women, Infants and Children programs (WIC); 4. Food stamp eligibility; 5. Subsidized school lunch program eligibility; 6. Eligibility for other state or local assistance programs that are unfunded (e.g., Medicaid spend-down); 7. Low income/subsidized housing is provided as a valid address; 8. Patient is deceased with no known estate.",
      "source_id": "fap-30986b7561bb4854",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -883,24 +883,50 @@
     "form_version": null,
     "documents_required": {
      "value": [
+      "tax_return",
       "pay_stubs",
-      "bank_statements",
-      "other"
+      "social_security_letter",
+      "bank_statements"
      ],
      "layer": "documented",
-     "quote": "Documentation may include, but is not limited to: most recent pay check stub(s), copies of bank statements, and the most recent tax filings",
-     "source_id": "fap-30986b7561bb4854",
+     "quote": "Last year\u2019s federal tax return",
+     "source_id": "web-6ba4397c49e640dd",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "documents_reported": null,
-    "submit_methods": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "phone",
+       "detail": "Call our Financial Counselor at 575-736-8120"
+      },
+      {
+       "kind": "email",
+       "detail": "Send a request to [email protected]"
+      },
+      {
+       "kind": "in_person",
+       "detail": "Visit 702 N. 13th Street, Artesia, NM 88210"
+      },
+      {
+       "kind": "portal",
+       "detail": "Apply in English or Spanish below"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Phone: Call our Financial Counselor at 575-736-8120",
+     "source_id": "web-6ba4397c49e640dd",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "window_days_from_first_bill": null,
     "decision_days": {
      "value": 30,
      "layer": "documented",
-     "quote": "AGH shall notify the patient or applicant in writing within 30 days of receipt of a completed application",
+     "quote": "AGH shall notify the patient or applicant in writing within 30 days of receipt of a completed application.",
      "source_id": "fap-30986b7561bb4854",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -916,14 +942,25 @@
     "phone": {
      "value": "575-736-8120",
      "layer": "documented",
-     "quote": "Phone: 575-736-8120",
-     "source_id": "web-cd7e000e83caa6f6",
+     "quote": "Call our Financial Counselor at 575-736-8120",
+     "source_id": "web-6ba4397c49e640dd",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "hours": null,
-    "languages": null
+    "languages": {
+     "value": [
+      "English",
+      "Spanish"
+     ],
+     "layer": "documented",
+     "quote": "Apply in English [https://nova.interlace.health/remote/public/e7a6d8d7-c6b1-4f09-8450-4872fcfbea9f?tid=21b6fcd0-d0ae-4f7e-9365-c7505877825b&eid=a8f342ae-49c8-4fdb-9956-e2b26e9f951c]",
+     "source_id": "web-6ba4397c49e640dd",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
    },
    "coverage": {
     "facilities": null,
@@ -941,6 +978,15 @@
      "effective_date": null
     },
     {
+     "id": "web-6ba4397c49e640dd",
+     "kind": "hospital_web",
+     "url": "https://artesiageneral.com/records-billing/financial-assistance/",
+     "title": "Financial Assistance | Artesia General Hospital",
+     "fetched_on": "2026-10-23",
+     "sha256": "6ba4397c49e640dd756274badf456c4166af8d58435c8b8ec44c869d7234d99e",
+     "effective_date": null
+    },
+    {
      "id": "web-cd7e000e83caa6f6",
      "kind": "hospital_web",
      "url": "https://artesiageneral.com/records-billing/billing-insurance/",
@@ -952,9 +998,132 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: 2. Homeless or received care from a homeless clinic; | 3. Participation in Women, Infants and Children programs (WIC);",
-    "agent judge on programs.presumptive: Quote lists only three items (state-funded prescription, homeless, WIC); the value includes five more items not in the quote.",
-    "agent judge on apply.documents_required: Quote says documentation 'may include, but is not limited to' these items, so they are examples, not stated as required documents."
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Two most recent paycheck stubs | Social Security check or award letter",
+    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Email: Send a request to [email protected] | In Person: Visit 702 N. 13th Street, Artesia, NM 88210",
+    "contacts.languages: 1 more verbatim excerpt(s) supported this value: Apply in Spanish [https://nova.interlace.health/remote/public/5c9cc571-e47e-4217-bf32-ee78a1442c57?tid=21b6fcd0-d0ae-4f7"
+   ]
+  },
+  {
+   "hospital": {
+    "ccn": "320063",
+    "name": "CARLSBAD MEDICAL CENTER",
+    "city": "CARLSBAD",
+    "state": "NM",
+    "zip": "88220",
+    "phone": "575-887-4570",
+    "ownership": "Voluntary non-profit - Other",
+    "website_domain": "carlsbadmedicalcenter.com",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": null,
+    "discount_tiers": null,
+    "assistance_ceiling_fpl": null,
+    "asset_test": {
+     "value": true,
+     "layer": "documented",
+     "quote": "RESOURCES Checking: Yes No Amount: $___________________ Savings (including flexible spending and health savings accounts): Yes No Amount: $___________________",
+     "source_id": "fap-3c769e247ebd022c",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "residency": null,
+    "insured_patients_covered": null,
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": {
+     "value": "https://www.carlsbadmedicalcenter.com/Uploads/Public/Documents/all-new-documents/2023/100-ADM-1202-2023.pdf",
+     "layer": "documented",
+     "quote": "Click here [/Uploads/Public/Documents/all-new-documents/2023/100-ADM-1202-2023.pdf] to download a financial assistance application.",
+     "source_id": "web-7736b62a9c9506bb",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "form_version": null,
+    "documents_required": null,
+    "documents_reported": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "in_person",
+       "detail": "Return to the Facility Registration Department or Financial Counselor"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Please complete and return the following form with requested documents to the Facility Registration Department or Financial Counselor to be evaluated for Financial Assistance.",
+     "source_id": "fap-3c769e247ebd022c",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": null,
+    "decision_days": null,
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "(575) 887-4100",
+     "layer": "documented",
+     "quote": "P: (575) 887-4100",
+     "source_id": "web-7736b62a9c9506bb",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": null,
+    "languages": null
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-3c769e247ebd022c",
+     "kind": "hospital_web",
+     "url": "https://www.carlsbadmedicalcenter.com/Uploads/Public/Documents/all-new-documents/2023/100-ADM-1202-2023.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "3c769e247ebd022c4b032247e9b709ee0ca938bf80402ffc3e8a75aff5565a47",
+     "effective_date": null
+    },
+    {
+     "id": "fap-ea1ff5e2d318b5b0",
+     "kind": "hospital_web",
+     "url": "https://www.carlsbadmedicalcenter.com/Uploads/Public/Documents/all-new-documents/FAP%20Application_web%20version%20Final%20w_o%20cover5_14_21.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "ea1ff5e2d318b5b0bcb39604eb01e20fa55da7c0185a2f3defdd8fcda08dea9c",
+     "effective_date": null
+    },
+    {
+     "id": "web-7736b62a9c9506bb",
+     "kind": "hospital_web",
+     "url": "https://www.carlsbadmedicalcenter.com/financial-assistance-program",
+     "title": "Financial Assistance Program",
+     "fetched_on": "2026-10-23",
+     "sha256": "7736b62a9c9506bbb26a652b93709af12ed33148429e19fbf561ec0befb3db3c",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "agent dropped apply.documents_required: quote is not a substring of the source"
    ]
   },
   {

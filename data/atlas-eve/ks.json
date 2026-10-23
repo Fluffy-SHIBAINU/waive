@@ -20,7 +20,15 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": null,
+    "free_care_max_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "the FPL is 200% or lower and their ability to pay is low which will identify the patient as eligible for a 100% charity adjustment to that individual encounter",
+     "source_id": "fap-4dbed64b2b51c210",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
     "asset_test": null,
@@ -40,11 +48,13 @@
    "programs": {
     "presumptive": {
      "value": [
-      "at or below 200% of the Federal Poverty Guidelines with low propensity to pay",
-      "incarcerated or homeless"
+      "low propensity to pay",
+      "incarcerated",
+      "homeless",
+      "deceased"
      ],
      "layer": "documented",
-     "quote": "Mercy will utilize a third-party-tool to identify patients that are at or below 200% of the Federal Poverty Guidelines with low propensity to pay. Mercy will grant these patients financial assistance presumptively",
+     "quote": "Patients who are incarcerated or homeless and confirmed no other liable party can be billed, will be deemed 100% financial assistance. Bankruptcy accounts upon notification of filing will be deemed 100% charitable. Deceased patients 18 years of age and over will be reviewed by Third Party Vendor",
      "source_id": "fap-4dbed64b2b51c210",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -63,22 +73,34 @@
      "support_count": 0
     },
     "form_version": null,
-    "documents_required": {
+    "documents_required": null,
+    "documents_reported": null,
+    "submit_methods": {
      "value": [
-      "social_security_letter",
-      "other",
-      "tax_return",
-      "proof_of_income"
+      {
+       "kind": "mail",
+       "detail": "Mercy Health, Attention Financial Assistance, 2115 S Fremont Avenue, Suite 5300, Springfield, MO 65804"
+      },
+      {
+       "kind": "fax",
+       "detail": "Fax: 417-829-4604"
+      },
+      {
+       "kind": "portal",
+       "detail": "find an application on www.mercy.net/fa"
+      },
+      {
+       "kind": "phone",
+       "detail": "Mercy Health customer service 844-962-7474"
+      }
      ],
      "layer": "documented",
-     "quote": "Completed Financial Assistance Application (see next page):",
-     "source_id": "fap-e2169745bc9cf37f",
+     "quote": "Completed applications for financial assistance can be returned to: Mercy Health Attention Financial Assistance 2115 S Fremont Avenue, Suite 5300 Springfield, MO 65804 Fax: 417-829-4604",
+     "source_id": "fap-4dbed64b2b51c210",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "documents_reported": null,
-    "submit_methods": null,
     "window_days_from_first_bill": {
      "value": 240,
      "layer": "documented",
@@ -112,7 +134,7 @@
       "Spanish"
      ],
      "layer": "documented",
-     "quote": "The paper Financial Assistance Application and Policy are available in both English and other languages",
+     "quote": "The paper Financial Assistance Application and Policy are available in both English and other languages prevalent in the area",
      "source_id": "fap-4dbed64b2b51c210",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -133,33 +155,201 @@
      "fetched_on": "2026-10-23",
      "sha256": "4dbed64b2b51c210de21202ce1761b4a7402a9ec9ff650dbdf978bbd47a96afe",
      "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Written applications: Patients may request a paper application to apply for assistance at any time or find an applicatio | Mercy Hospital Pittsburg: Questions about the financial assistance policy may be directed to Mercy Health customer servi",
+    "agent judge on programs.presumptive: Quote covers incarcerated/homeless, bankruptcy, and deceased patients; it does not mention low propensity to pay as a presumptive category.",
+    "agent judge on contacts.languages: Quote says paper application and policy are available in English and other prevalent languages; Spanish is not named."
+   ]
+  },
+  {
+   "hospital": {
+    "ccn": "170009",
+    "name": "SAINT JOHN HOSPITAL",
+    "city": "LEAVENWORTH",
+    "state": "KS",
+    "zip": "66048",
+    "phone": "913-680-6000",
+    "ownership": "Voluntary non-profit - Other",
+    "website_domain": "stjohnleavenworth.com",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "the income of the Patient\u2019s Family does not exceed 200% of the current Federal Poverty Level.",
+     "source_id": "fap-de067a7c6c9769bf",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
     },
+    "discount_tiers": null,
+    "assistance_ceiling_fpl": {
+     "value": "350",
+     "layer": "documented",
+     "quote": "may qualify for the Discount Payment Program if he or she has a Family Income at or below 350% of the Federal Poverty Level.",
+     "source_id": "fap-de067a7c6c9769bf",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "asset_test": null,
+    "residency": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Charity Care and discounts from the Discount Payment Program may apply to patient liability amounts, including coinsurance amounts, copayments, and deductibles.",
+     "source_id": "fap-de067a7c6c9769bf",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": {
+     "value": [
+      "Medicaid",
+      "WIC"
+     ],
+     "layer": "documented",
+     "quote": "The patient qualifies for limited benefits under the state\u2019s Medicaid program",
+     "source_id": "fap-de067a7c6c9769bf",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "pay_stubs",
+      "tax_return"
+     ],
+     "layer": "documented",
+     "quote": "documentation of income of the patient\u2019s Family shall be limited to recent pay stubs or income tax returns",
+     "source_id": "fap-de067a7c6c9769bf",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "Patient Access Department, Saint John Hospital, 3500 S. 4th Street, Leavenworth, Kansas 66044"
+      },
+      {
+       "kind": "phone",
+       "detail": "(913) 680-6314"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Completed applications should be delivered to: (913) 680-6314 Patient Access Department Saint John Hospital 3500 S. 4th Street Leavenworth, Kansas 66044",
+     "source_id": "fap-de067a7c6c9769bf",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": {
+     "value": 150,
+     "layer": "documented",
+     "quote": "A patient is expected to submit the financial assistance application promptly following care, but no later than 150 following the date of the first post-discharge statement.",
+     "source_id": "fap-de067a7c6c9769bf",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days": null,
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": {
+     "value": 150,
+     "layer": "documented",
+     "quote": "report adverse information to a consumer credit reporting agency or commence civil action against a patient for nonpayment at any time prior to 150 after the initial billing.",
+     "source_id": "fap-de067a7c6c9769bf",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "913-596-4803",
+     "layer": "documented",
+     "quote": "please call 913-596-4803 .",
+     "source_id": "web-962943754c048471",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": null,
+    "languages": {
+     "value": [
+      "non-English languages spoken by a substantial number of the patients served by the Hospital"
+     ],
+     "layer": "documented",
+     "quote": "The notice shall be provided in non- English languages spoken by a substantial number of the patients served by the Hospital.",
+     "source_id": "fap-de067a7c6c9769bf",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
     {
-     "id": "fap-e2169745bc9cf37f",
+     "id": "fap-de067a7c6c9769bf",
      "kind": "hospital_web",
-     "url": "https://www.mercy.net/content/dam/mercy/en/pdf/financial-assistance-application-mercy-and-clinic.pdf",
+     "url": "https://stjohnleavenworth.com/wp-content/uploads/2026/07/Prime-KS_FP-SJH-Patient-FAP-approved-12.18.25.pdf",
      "title": "",
      "fetched_on": "2026-10-23",
-     "sha256": "e2169745bc9cf37f47321bb46f425edd66499b395a98fa5b74ced051eb10d24f",
+     "sha256": "de067a7c6c9769bf503acfb00fb23e474324c668dd2ffe8e477dc18f87c1d831",
      "effective_date": null
     },
     {
-     "id": "web-c24641f1aee97db5",
+     "id": "web-962943754c048471",
      "kind": "hospital_web",
-     "url": "https://www.mercy.net/patients-visitors/billing/pittsburg/",
-     "title": "Pittsburg Billing & Payments | Mercy",
+     "url": "https://stjohnleavenworth.com/financial-assistance/",
+     "title": "Financial Assistance Program applies to uninsured patients",
      "fetched_on": "2026-10-23",
-     "sha256": "c24641f1aee97db54237c122d96e15cae04e91b1fc2f23ab5ffad0d9150c49c0",
+     "sha256": "962943754c048471719a92b257324867d9835271d2349111f45117ca48bb1369",
+     "effective_date": null
+    },
+    {
+     "id": "web-4969747a81dd283d",
+     "kind": "hospital_web",
+     "url": "https://stjohnleavenworth.com/billing-insurance-information/",
+     "title": "Billing & Insurance Information - Saint John Hospital",
+     "fetched_on": "2026-10-23",
+     "sha256": "4969747a81dd283d4815a461a2bf054075eae6ec052050736e1f7ed89498ef18",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: Patients who are incarcerated or homeless and confirmed no other liable party can be billed, will be deemed 100% financi",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Medicaid Screening: | Federal Tax Return: A full copy of the most recent federal tax return, including all forms and schedules",
-    "agent dropped apply.submit_methods: excerpt not in source: MyMercy",
-    "agent judge on eligibility.insured_patients_covered: Quote says insured patients are not required to complete the Insurance Eligibility Screening first; it does not state a value of true for an eligibility covered flag.",
-    "agent judge on contacts.languages: Quote says the paper application and policy are available in English and other languages; it does not specifically state Spanish."
+    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: Participation in Women, Infants and Children programs (WIC);",
+    "agent judge on eligibility.free_care_max_fpl: Quote gives a 200% FPL income limit for eligibility but never says this is the 100% free-care line.",
+    "agent judge on eligibility.assistance_ceiling_fpl: Quote says Discount Payment Program eligibility is at or below 350% FPL. It does not say no assistance is offered above 350%.",
+    "agent judge on apply.window_days_from_first_bill: Quote says 'no later than 150 following the date of the first post-discharge statement' with no time unit, so days are not stated.",
+    "agent judge on collections.eca_wait_days: Quote says 'prior to 150 after the initial billing' with no time unit, so days are not stated.",
+    "agent judge on contacts.languages: Quote refers generically to non-English languages spoken by substantial numbers of patients and names no specific languages; the value is a paraphrase, not a language list."
    ]
   },
   {
@@ -562,7 +752,7 @@
     "zip": "66606",
     "phone": "785-295-8000",
     "ownership": "Voluntary non-profit - Church",
-    "website_domain": "kutopeka.com",
+    "website_domain": "kansashealthsystem.com",
     "system": null
    },
    "version": 1,
@@ -570,7 +760,15 @@
    "eligibility": {
     "free_care_max_fpl": null,
     "discount_tiers": null,
-    "assistance_ceiling_fpl": null,
+    "assistance_ceiling_fpl": {
+     "value": "300",
+     "layer": "documented",
+     "quote": "Patients whose family income exceeds 300% of the FPG may be eligible to receive discounted rates on a case-by-case basis based on their specific circumstances, such as catastrophic illness or medical indigence, at the discretion of the Health System.",
+     "source_id": "fap-37609aeb42b3535f",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "asset_test": {
      "value": true,
      "layer": "documented",
@@ -584,8 +782,8 @@
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "Financial assistance applies to patient liability only, including but not limited to, deductibles, co-payments, and co-insurances, as determined by the patient's plan in accordance with the patient's health plan benefits",
-     "source_id": "fap-37609aeb42b3535f",
+     "quote": "Our program can assist patients, insured or uninsured, whose gross family income is from 0% to 300% of the federal poverty guidelines.",
+     "source_id": "web-e85966f12b9653eb",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -594,73 +792,29 @@
     "services_excluded": null
    },
    "programs": {
-    "presumptive": {
-     "value": [
-      "homeless",
-      "incarcerated"
-     ],
-     "layer": "documented",
-     "quote": "Patient homeless Patient incarcerated Date of incarceration:",
-     "source_id": "fap-c573fbd6b7c6a25d",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "presumptive": null,
     "state_programs": null
    },
    "apply": {
-    "form_url": null,
+    "form_url": {
+     "value": "https://www.kansashealthsystem.com/-/media/project/website/pdfs-for-download/finance-policies/financialassistanceapplicationenglish02272020.pdf",
+     "layer": "documented",
+     "quote": "English [/-/media/project/website/pdfs-for-download/finance-policies/financialassistanceapplicationenglish02272020.pdf]",
+     "source_id": "web-e85966f12b9653eb",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "form_version": null,
-    "documents_required": {
-     "value": [
-      "tax_return",
-      "pay_stubs",
-      "other"
-     ],
-     "layer": "documented",
-     "quote": "A copy of the Applicant's most recent as-filed Federal Income Tax Return (including a copy of the Applicant's W-2 Form(s)) shall be provided by the Applicant to the Financial Advisors",
-     "source_id": "fap-37609aeb42b3535f",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "documents_required": null,
     "documents_reported": null,
-    "submit_methods": {
-     "value": [
-      {
-       "kind": "phone",
-       "detail": "telephone"
-      },
-      {
-       "kind": "email",
-       "detail": "email"
-      },
-      {
-       "kind": "fax",
-       "detail": "fax"
-      },
-      {
-       "kind": "mail",
-       "detail": "written correspondence"
-      },
-      {
-       "kind": "in_person",
-       "detail": "visiting the Patient Financial Services Department"
-      }
-     ],
-     "layer": "documented",
-     "quote": "Financial assistance requests can be made by contacting the Customer Service department via telephone, email, fax, or written correspondence or by visiting the Patient Financial Services Department.",
-     "source_id": "fap-37609aeb42b3535f",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "submit_methods": null,
     "window_days_from_first_bill": null,
     "decision_days": {
-     "value": 14,
+     "value": 30,
      "layer": "documented",
-     "quote": "Requests for financial assistance will be responded to promptly in writing within 14 days of receipt of the corresponding completed application.",
-     "source_id": "fap-37609aeb42b3535f",
+     "quote": "the requestor will receive written notice within 30 days of receipt of the application and required documentation",
+     "source_id": "web-e85966f12b9653eb",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -673,16 +827,27 @@
    },
    "contacts": {
     "phone": {
-     "value": "785-295-8000",
+     "value": "913-588-7850",
      "layer": "documented",
-     "quote": "785-295-8000",
-     "source_id": "web-9b60517268566cea",
+     "quote": "Our financial counselors can help with cost or pricing estimates. Call 913-588-7850 .",
+     "source_id": "web-e85966f12b9653eb",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "hours": null,
-    "languages": null
+    "languages": {
+     "value": [
+      "English",
+      "Spanish"
+     ],
+     "layer": "documented",
+     "quote": "Asistencia Financiera [/-/media/files/pdf/financial/financial-assistance-spanish-2026.pdf]",
+     "source_id": "web-e85966f12b9653eb",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
    },
    "coverage": {
     "facilities": null,
@@ -709,22 +874,22 @@
      "effective_date": null
     },
     {
-     "id": "web-9b60517268566cea",
+     "id": "web-e85966f12b9653eb",
      "kind": "hospital_web",
-     "url": "https://kutopeka.com/patients-and-visitors/billing-and-payments/",
-     "title": "Billing and Payment Information | KU Health System",
+     "url": "https://www.kansashealthsystem.com/patient-visitor/financial/financial-assistance",
+     "title": "Financial Assistance Options For You | The University of Kansas Heath System",
      "fetched_on": "2026-10-23",
-     "sha256": "9b60517268566ceadef830cc6e6c9666620895f3aad8348477499d51c00627ad",
+     "sha256": "e85966f12b9653eb47d8bc95331746caf548e7803a55f08aaf58a15d9095248f",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 0-300% at 100% is the free-care band, not a tier; skipped",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Copies of the Applicant's two most recent payroll vouchers (i.e., check stubs) shall be provided by the Applicant to the | A credit report for the Applicant may be obtained by the Financial Advisors",
-    "agent judge on eligibility.discount_tiers: Quote gives a 0-300% FPG sliding scale but never states a 100% discount or a single tier; the sliding scale implies varying discounts.",
-    "agent judge on programs.presumptive: Quote is a form checkbox fragment listing homeless and incarcerated; it does not state these are presumptive eligibility categories.",
-    "agent judge on apply.documents_required: Tax return and pay stubs are required from the applicant, but the credit report is only something the Financial Advisors may obtain, not a document the applicant must provide."
+    "agent dropped apply.documents_required: excerpt not in source: Two most recent bank statements from all checking and saving",
+    "agent dropped apply.submit_methods: excerpt not in source: Request a financial assistance application by calling the fi",
+    "agent judge on eligibility.assistance_ceiling_fpl: Quote says discounts may be possible above 300% FPG case-by-case at discretion; it does not state a hard ceiling where no assistance is offered.",
+    "agent judge on apply.form_url: Quote is only a link label with a relative path; it does not state the full URL value as written.",
+    "agent judge on contacts.languages: Quote is only a Spanish link title; it does not state that English and Spanish are the supported languages."
    ]
   },
   {
@@ -1259,7 +1424,15 @@
    "eligibility": {
     "free_care_max_fpl": null,
     "discount_tiers": null,
-    "assistance_ceiling_fpl": null,
+    "assistance_ceiling_fpl": {
+     "value": "300",
+     "layer": "documented",
+     "quote": "The financial assistance discount is based on a sliding scale of between 0 \u2013 300% of the FPG for the current year, as follows:",
+     "source_id": "fap-37609aeb42b3535f",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "asset_test": {
      "value": true,
      "layer": "documented",
@@ -1269,12 +1442,22 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "residency": null,
+    "residency": {
+     "value": [
+      "The University of Kansas Health System offers a financial assistance program for the citizens of Kansas and other states as well."
+     ],
+     "layer": "documented",
+     "quote": "The University of Kansas Health System offers a financial assistance program for the citizens of Kansas and other states as well.",
+     "source_id": "web-f25271a7e3de8a01",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "Financial assistance applies to patient liability only, including but not limited to, deductibles, co-payments, and co-insurances, as determined by the patient's plan",
-     "source_id": "fap-37609aeb42b3535f",
+     "quote": "Our program can assist patients, insured or uninsured, whose gross family income is from 0% to 300% of the federal poverty guidelines.",
+     "source_id": "web-f25271a7e3de8a01",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -1285,9 +1468,8 @@
    "programs": {
     "presumptive": {
      "value": [
-      "Medicaid eligible but not on date of service",
-      "homeless",
-      "incarcerated"
+      "Medicaid",
+      "homeless"
      ],
      "layer": "documented",
      "quote": "Patient Medicaid eligible but not on date of service, or not eligible for non covered services",
@@ -1299,17 +1481,26 @@
     "state_programs": null
    },
    "apply": {
-    "form_url": null,
+    "form_url": {
+     "value": "https://www.kansashealthsystem.com/-/media/project/website/pdfs-for-download/finance-policies/financialassistanceapplicationenglish02272020.pdf",
+     "layer": "documented",
+     "quote": "English [/-/media/project/website/pdfs-for-download/finance-policies/financialassistanceapplicationenglish02272020.pdf]",
+     "source_id": "web-f25271a7e3de8a01",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "form_version": null,
     "documents_required": {
      "value": [
-      "tax_return",
       "pay_stubs",
-      "other"
+      "bank_statements",
+      "tax_return",
+      "social_security_letter"
      ],
      "layer": "documented",
-     "quote": "A copy of the Applicant's most recent as-filed Federal Income Tax Return (including a copy of the Applicant's W-2 Form(s)) shall be provided by the Applicant to the Financial Advisors",
-     "source_id": "fap-37609aeb42b3535f",
+     "quote": "Two most recent paystubs from your current employer(s)",
+     "source_id": "fap-c573fbd6b7c6a25d",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -1336,22 +1527,25 @@
     "phone": {
      "value": "913-588-7850",
      "layer": "documented",
-     "quote": "Call 913-588-7850 to speak with a financial counselor.",
-     "source_id": "web-ad60ae10447de286",
+     "quote": "Our financial counselors can help with cost or pricing estimates. Call 913-588-7850 .",
+     "source_id": "web-f25271a7e3de8a01",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "hours": {
-     "value": "Monday-Friday, 7:30 a.m.-5:30 p.m.",
+    "hours": null,
+    "languages": {
+     "value": [
+      "English",
+      "Spanish"
+     ],
      "layer": "documented",
-     "quote": "Contact us Monday-Friday, 7:30 a.m.-5:30 p.m., at 913-588-5820 or 877-287-6268 .",
-     "source_id": "web-ad60ae10447de286",
+     "quote": "Asistencia Financiera [/-/media/files/pdf/financial/financial-assistance-spanish-2026.pdf]",
+     "source_id": "web-f25271a7e3de8a01",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
-    },
-    "languages": null
+    }
    },
    "coverage": {
     "facilities": null,
@@ -1378,21 +1572,23 @@
      "effective_date": null
     },
     {
-     "id": "web-ad60ae10447de286",
+     "id": "web-f25271a7e3de8a01",
      "kind": "hospital_web",
-     "url": "https://www.kansashealthsystem.com/patient-visitor/financial",
-     "title": "Financial Information: Billing, Insurance, & Financial Assistance | The University Of Kansas Health System",
+     "url": "https://www.kansashealthsystem.com/patient-visitor/financial/financial-assistance",
+     "title": "Financial Assistance Options For You | The University of Kansas Heath System",
      "fetched_on": "2026-10-23",
-     "sha256": "ad60ae10447de2862fb474d296dec16f905c27d2e39716fede36a71a4b20a68e",
+     "sha256": "f25271a7e3de8a011dc543b2474d2aeac77684d545632091c3bb679ca22b55c6",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Patient homeless | Patient incarcerated Date of incarceration:",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Copies of the Applicant's two most recent payroll vouchers (i.e., check stubs) shall be provided by the Applicant to the | A credit report for the Applicant may be obtained by the Financial Advisors",
-    "agent dropped apply.submit_methods: excerpt not in source: Please send completed application and all required supportin",
-    "agent judge on apply.documents_required: The credit report is something the Financial Advisors may obtain, not a document the applicant must provide, so it does not belong in documents_required."
+    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: Patient homeless",
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Two most recent bank statements from all checking and savings accounts owned by you and/or your spouse | Last Year's Federal Tax Return (if you did not file taxes, please explain why in the letter space provided below) Recent",
+    "agent dropped apply.submit_methods: excerpt not in source: Begin the process by completing the financial assistance doc",
+    "agent judge on eligibility.residency: Quote says the program serves Kansas citizens and other states; the value is a copied sentence, not a residency flag or rule, so it does not state a usable value.",
+    "agent judge on apply.form_url: Quote is only a relative link path labeled English; it does not state the full URL given in the value.",
+    "agent judge on contacts.languages: Quote is only a Spanish-titled link to a PDF; it does not establish English as a supported language."
    ]
   },
   {
@@ -1424,7 +1620,7 @@
     "asset_test": {
      "value": true,
      "layer": "documented",
-     "quote": "have non-retirement liquid assets less than $10,000.",
+     "quote": "Annual income must be below 300% of the most recently published Federal Poverty Guidelines, and have non-retirement liquid assets less than $10,000.",
      "source_id": "fap-af3cf4529e86e9ea",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1441,7 +1637,15 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "insured_patients_covered": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "discounts from balances due involves free and discounted care based on household income, and non-retirement liquid assets and any health insurance coverage.",
+     "source_id": "fap-af3cf4529e86e9ea",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "min_balance": null,
     "services_excluded": null
    },
@@ -1456,7 +1660,9 @@
      "value": [
       "tax_return",
       "pay_stubs",
-      "social_security_letter"
+      "social_security_letter",
+      "other",
+      "bank_statements"
      ],
      "layer": "documented",
      "quote": "Most recent Federal Income Tax forms (all forms with IRS) with W2s \u2013 If you have not filed Federal Income taxes, please explain why",
@@ -1514,7 +1720,7 @@
    },
    "contacts": {
     "phone": {
-     "value": "785-354-1150",
+     "value": "(785) 354-1150",
      "layer": "documented",
      "quote": "Call a Customer Service Representative at (785) 354-1150 or (800) 637-4716.",
      "source_id": "fap-af3cf4529e86e9ea",
@@ -1525,12 +1731,11 @@
     "hours": null,
     "languages": {
      "value": [
-      "English",
       "Spanish"
      ],
      "layer": "documented",
      "quote": "Para espa\u00f1ol: 785-354-6000, opci\u00f3n 2.",
-     "source_id": "web-fbece699d464a776",
+     "source_id": "web-b85d1c9aefc086e4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -1561,22 +1766,23 @@
      "effective_date": null
     },
     {
-     "id": "web-fbece699d464a776",
+     "id": "web-b85d1c9aefc086e4",
      "kind": "hospital_web",
      "url": "https://www.stormontvail.org/billing-insurance-financial-services/financial-assistance/",
      "title": "Financial Assistance - Stormont Vail Health",
      "fetched_on": "2026-10-23",
-     "sha256": "fbece699d464a7762aea9bf2bfa75cf6da2b185671561cf88450540e72f056d3",
+     "sha256": "b85d1c9aefc086e44d410b8fc35f647ff5185cfef8f882c7c57bc92ab62710c2",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Pay stubs for the last month for you and your spouse | Social Security benefits letter/statement",
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Pay stubs for the last month for you and your spouse | Copies of most recent statement(s) for savings account",
     "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Downloading and printing a financial assistance application form from the SVH website",
     "apply.form_url: not an absolute URL ('/wp-content/uploads/6.1.24-Exhibit-A-FAP-Application.pdf'); dropped",
-    "agent judge on programs.presumptive: Quote only says a third-party propensity-to-pay vendor may be used to determine eligibility. It does not state any presumptive eligibility programs or an empty list.",
-    "agent judge on contacts.languages: Quote only shows a Spanish-language phone line (\"Para espa\u00f1ol\"). It does not state English or any other language list."
+    "agent dropped programs.presumptive: quote shorter than 8 characters",
+    "agent judge on apply.documents_required: Quote lists only tax forms, pay stubs, and savings statement; value adds Social Security letter and checking statement, which the quote does not state.",
+    "agent judge on contacts.languages: Quote gives a Spanish phone line only; it does not state that Spanish is a supported language of assistance, though it implies it."
    ]
   },
   {
@@ -1630,28 +1836,27 @@
     "services_excluded": null
    },
    "programs": {
-    "presumptive": {
-     "value": [
-      "propensity to pay software"
-     ],
-     "layer": "documented",
-     "quote": "Stormont Vail Health may utilize a third-party vendor's propensity to pay software to obtain number in household, estimated annual income, estimated net worth and other financial information to determine eligibility for financial assistance.",
-     "source_id": "fap-af3cf4529e86e9ea",
-     "checked_on": "2026-10-23",
-     "confidence": 0.8,
-     "support_count": 0
-    },
+    "presumptive": null,
     "state_programs": null
    },
    "apply": {
-    "form_url": null,
+    "form_url": {
+     "value": "https://www.stormontvail.org/wp-content/uploads/6.1.24-Exhibit-A-FAP-Application.pdf",
+     "layer": "documented",
+     "quote": "Financial Assistance Application [/wp-content/uploads/6.1.24-Exhibit-A-FAP-Application.pdf]",
+     "source_id": "web-8338ea43f19f2a4d",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "form_version": null,
     "documents_required": {
      "value": [
       "tax_return",
       "pay_stubs",
       "social_security_letter",
-      "proof_of_income"
+      "other",
+      "bank_statements"
      ],
      "layer": "documented",
      "quote": "Most recent Federal Income Tax forms (all forms with IRS) with W2s \u2013 If you have not filed Federal Income taxes, please explain why",
@@ -1669,7 +1874,7 @@
       },
       {
        "kind": "mail",
-       "detail": "calling Customer Service to have an application mailed"
+       "detail": "calling Customer Service to have an application mailed; return completed form by mail"
       },
       {
        "kind": "portal",
@@ -1699,7 +1904,7 @@
     "eca_wait_days": {
      "value": 120,
      "layer": "documented",
-     "quote": "SVH may engage in ECA. The Patient Financial Services Specialist/Supervisor, in the Patient Financial Services",
+     "quote": "If there is no payment, or financial assistance application has not been submitted by the 120th day after SVH provided the patient with the first post-discharge billing statement, SVH may engage in ECA.",
      "source_id": "fap-af3cf4529e86e9ea",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1709,10 +1914,10 @@
    },
    "contacts": {
     "phone": {
-     "value": "785-354-1150",
+     "value": "(785) 354-1150",
      "layer": "documented",
-     "quote": "please contact a Customer Service Representative at 785-354-1150 or 800-637-4716",
-     "source_id": "web-a9ddd0f1163a54c1",
+     "quote": "Call a Customer Service Representative at (785) 354-1150 or (800) 637-4716.",
+     "source_id": "fap-af3cf4529e86e9ea",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -1720,12 +1925,11 @@
     "hours": null,
     "languages": {
      "value": [
-      "English",
       "Spanish"
      ],
      "layer": "documented",
      "quote": "Para espa\u00f1ol: 785-354-6000, opci\u00f3n 2.",
-     "source_id": "web-a9ddd0f1163a54c1",
+     "source_id": "web-8338ea43f19f2a4d",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -1756,25 +1960,22 @@
      "effective_date": null
     },
     {
-     "id": "web-a9ddd0f1163a54c1",
+     "id": "web-8338ea43f19f2a4d",
      "kind": "hospital_web",
      "url": "https://www.stormontvail.org/billing-insurance-financial-services/financial-assistance/",
      "title": "Financial Assistance - Stormont Vail Health",
      "fetched_on": "2026-10-23",
-     "sha256": "a9ddd0f1163a54c10df7de7853cc37b37cff8449a923a6cc0761af45825c784e",
+     "sha256": "8338ea43f19f2a4d8774ee345769331602fdae8bbff330a1f07ab63b95631bc8",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: quote matched the source only after typography normalization",
     "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Pay stubs for the last month for you and your spouse | Social Security benefits letter/statement",
     "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Downloading and printing a financial assistance application form from the SVH website",
-    "apply.form_url: not an absolute URL ('/wp-content/uploads/6.1.24-Exhibit-A-FAP-Application.pdf'); dropped",
-    "agent judge on programs.presumptive: Quote says the hospital may use a vendor's propensity to pay software to gather financial information for eligibility. It does not describe presumptive eligibility.",
-    "agent judge on apply.documents_required: Quote lists only tax forms with W2s, pay stubs, and a Social Security letter. Disability and unemployment letters are not in the quote.",
-    "agent judge on collections.eca_wait_days: Quote only says SVH may engage in ECA and is truncated. It states no waiting period of 120 days.",
-    "agent judge on contacts.languages: Quote shows only a Spanish-language phone line (785-354-6000, option 2). It does not state English support."
+    "agent judge on apply.form_url: Quote gives only the relative path /wp-content/uploads/...; the domain https://www.stormontvail.org is not stated in the quote.",
+    "agent judge on apply.documents_required: Quote lists only tax forms with W2s, pay stubs, and Social Security letter. Savings and checking account statements are not mentioned.",
+    "agent judge on apply.submit_methods: Quote supports in-person and online download, and a mailed application. It does not say the completed form is returned by mail."
    ]
   },
   {
@@ -1792,30 +1993,56 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": null,
+    "free_care_max_fpl": {
+     "value": "275",
+     "layer": "documented",
+     "quote": "Patients who are determined to be financially indigent with a gross household income of 0% to 275% of Federal Poverty Guidelines, as updated by the U.S. Department of Health and Human Services, may be eligible for a financial assistance discount of 100% less the nominal flat fee",
+     "source_id": "fap-4a110098eac2db43",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "discount_tiers": {
      "value": [
       {
-       "min_fpl_exclusive": "0",
-       "max_fpl_inclusive": "100000",
-       "discount_percent": 30
+       "min_fpl_exclusive": "275",
+       "max_fpl_inclusive": "9999",
+       "discount_percent": 40
       }
      ],
      "layer": "documented",
-     "quote": "Uninsured patients who are not eligible for the Healthcare Assistance Program, patients who participate in a Sharing Plan, or patients who have an insurance with whom Newton Healthcare Corporation does not participate, will be given a 30% discount off Charges as financial assistance.",
-     "source_id": "web-495c3c7f7bd8a396",
+     "quote": "Patients who are determined to be medically indigent with a gross household income over 275% of Federal Poverty Guidelines may qualify for a financial assistance discount of 40% of Amounts Generally Billed (AGB).",
+     "source_id": "fap-4a110098eac2db43",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "assistance_ceiling_fpl": null,
-    "asset_test": null,
-    "residency": null,
+    "asset_test": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Twenty-five percent (25%) of the patient\u2019s assets as defined in the policy will be included in the income Eligibility determination.",
+     "source_id": "fap-4a110098eac2db43",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "residency": {
+     "value": [
+      "The Financial Assistance Program is intended to serve residents of Harvey County or those living in zip codes: 66840, 66843, 66851, 66858, 66861, 66866, 67016, 67020, 67041, 67053, 67056, 67062, 67063, 67067, 67073, 67107, 67114, 67117, 67123, 67135, 67147, 67151 and 67154, 67219, 67428, 67438, 67443, 67546, or 67522."
+     ],
+     "layer": "documented",
+     "quote": "The Financial Assistance Program is intended to serve residents of Harvey County or those living in zip codes: 66840, 66843, 66851, 66858, 66861, 66866, 67016, 67020, 67041, 67053, 67056, 67062, 67063, 67067, 67073, 67107, 67114, 67117, 67123, 67135, 67147, 67151 and 67154, 67219, 67428, 67438, 67443, 67546, or 67522.",
+     "source_id": "fap-4a110098eac2db43",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "All patients are eligible to apply for the HCA Program and payment plans with The Midland Group.",
-     "source_id": "web-495c3c7f7bd8a396",
+     "quote": "Patients who are self-pay, who have an outstanding bill (coinsurance, deductible, copayments and/or non-covered charges) after all insurance payments have been received, who have exhausted their benefits and are liable for the charge may qualify for financial assistance in this category.",
+     "source_id": "fap-4a110098eac2db43",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -1824,37 +2051,59 @@
     "services_excluded": null
    },
    "programs": {
-    "presumptive": null,
+    "presumptive": {
+     "value": [
+      "Homelessness",
+      "Women, Infants, Children programs (WIC)",
+      "Food stamp",
+      "Medicaid spenddown",
+      "deceased with no known estate"
+     ],
+     "layer": "documented",
+     "quote": "A presumptive eligibility determination in unusual or extenuating circumstances (such as homelessness) when a patient is unable to submit a complete application. Presumptive eligibility may be determined on the basis of individual life circumstances which may include, but is not limited to: \u2022 State-funded prescription programs; \u2022 Homelessness or receipt of care from a homeless shelter; \u2022 Participation in Women, Infants, Children programs (WIC); \u2022 Food stamp eligibility;",
+     "source_id": "fap-4a110098eac2db43",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "state_programs": null
    },
    "apply": {
     "form_url": {
      "value": "https://www.mynmchealth.org/wp-content/uploads/2023/08/HCA-Application-29013-3.pdf",
      "layer": "documented",
-     "quote": "Accepting HCA applications [https://www.mynmchealth.org/wp-content/uploads/2023/08/HCA-Application-29013-3.pdf] received during a 240 day Application Period",
-     "source_id": "web-495c3c7f7bd8a396",
+     "quote": "To see if you qualify for financial assistance, fill out an application",
+     "source_id": "web-e527838baa0eff76",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "form_version": null,
-    "documents_required": null,
-    "documents_reported": null,
-    "submit_methods": {
+    "documents_required": {
      "value": [
-      {
-       "kind": "mail",
-       "detail": "obtained by mail, at Admissions, at Patient Financial Services, at Health Ministries Clinic, at the Department of Children & Families"
-      }
+      "social_security_letter",
+      "other",
+      "tax_return",
+      "proof_of_residency"
      ],
      "layer": "documented",
-     "quote": "can be obtained by mail, at Admissions, at Patient Financial Services, at Health Ministries Clinic, at the Department of Children & Families",
-     "source_id": "web-495c3c7f7bd8a396",
+     "quote": "*Most recent complete Federal income tax return, including all applicable W-2, 1099, 1098, etc. or IRS Verification of Non-filing Letter",
+     "source_id": "fap-78e7635f6f05460c",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "window_days_from_first_bill": null,
+    "documents_reported": null,
+    "submit_methods": null,
+    "window_days_from_first_bill": {
+     "value": 240,
+     "layer": "documented",
+     "quote": "The hospital will continue to accept and process financial assistance applications during the 240 day period from the date of the first billing statement, as required by regulation.",
+     "source_id": "fap-4a110098eac2db43",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "decision_days": null,
     "decision_days_reported": null
    },
@@ -1862,8 +2111,8 @@
     "eca_wait_days": {
      "value": 120,
      "layer": "documented",
-     "quote": "Notifying patients/guarantors about the Healthcare Assistance Program for 120 days from date of 1st billing",
-     "source_id": "web-495c3c7f7bd8a396",
+     "quote": "ending 120 days after the hospital provides the patient/guarantor with the first billing statement",
+     "source_id": "fap-4a110098eac2db43",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -1872,16 +2121,26 @@
    },
    "contacts": {
     "phone": {
-     "value": "800.595.7868",
+     "value": "316-283-2700",
      "layer": "documented",
-     "quote": "Call The Midland Group 800.595.7868",
-     "source_id": "web-495c3c7f7bd8a396",
+     "quote": "Request to have an application mailed to you for free by calling 316-283-2700, ext. 1951.",
+     "source_id": "fap-4a110098eac2db43",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "hours": null,
-    "languages": null
+    "languages": {
+     "value": [
+      "Spanish"
+     ],
+     "layer": "documented",
+     "quote": "This summary, the Healthcare Assistance Policy, and Healthcare Assistance application are available in Spanish at the locations listed above.",
+     "source_id": "fap-4a110098eac2db43",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
    },
    "coverage": {
     "facilities": null,
@@ -1890,21 +2149,43 @@
    },
    "sources": [
     {
-     "id": "web-495c3c7f7bd8a396",
+     "id": "fap-4a110098eac2db43",
      "kind": "hospital_web",
-     "url": "https://www.mynmchealth.org/patients-and-visitors/payment-information/billing-collection-policy/",
-     "title": "Billing & Collection Policy - NMC Health",
+     "url": "https://www.mynmchealth.org/wp-content/uploads/2023/08/Compliant-Healthcare-Assistance-Program-962-40.pdf",
+     "title": "",
      "fetched_on": "2026-10-23",
-     "sha256": "495c3c7f7bd8a396ac89a4974495356a9def501426b72de354cea266f6d99080",
+     "sha256": "4a110098eac2db43037b0c7a59f3fc52f5597357d81c5468694a56b5f35c5eff",
+     "effective_date": null
+    },
+    {
+     "id": "fap-78e7635f6f05460c",
+     "kind": "hospital_web",
+     "url": "https://www.mynmchealth.org/wp-content/uploads/2023/08/HCA-Application-29013-3.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "78e7635f6f05460c57235d2fad779934296a4cf7c89804ab04f34ba5730547dc",
+     "effective_date": null
+    },
+    {
+     "id": "web-e527838baa0eff76",
+     "kind": "hospital_web",
+     "url": "https://www.mynmchealth.org/patients-and-visitors/payment-information/financial-assistance/",
+     "title": "Financial Assistance NMC Health now helps with bills",
+     "fetched_on": "2026-10-23",
+     "sha256": "e527838baa0eff7662a95f845c119dbd08b68e44b4ddcb6440cf2be988394c0c",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "agent dropped apply.window_days_from_first_bill: quote is not a substring of the source",
-    "agent judge on eligibility.discount_tiers: Quote gives a flat 30% discount for uninsured patients outside HCA, Sharing Plan, or non-participating insurance. It has no FPL bounds (0 and 100000 are absent).",
-    "agent judge on apply.submit_methods: Quote says the application 'can be obtained' by mail or at several offices. It describes obtaining the form, not submitting it.",
-    "agent judge on collections.eca_wait_days: Quote says patients are notified about the HCA Program for 120 days from first billing. That is a notification period, not a wait before collection actions."
+    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Patient is deceased with no known estate; | Patients who have Medicaid spenddown when medically necessary services are provided.",
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Proof of physical address (at least two of the following: current or prior month utility, rent, or mortgage bill) | Social Security/Disability benefits letter",
+    "agent dropped apply.submit_methods: excerpt not in source: To see if you may qualify, or to apply online through Newton",
+    "agent judge on eligibility.free_care_max_fpl: Quote says 0% to 275% FPL gets a discount of 100% less the nominal flat fee, which is not stated as 100% free care.",
+    "agent judge on eligibility.discount_tiers: Quote gives 40% of AGB above 275% FPL but no upper bound; the 9999 max_fpl_inclusive does not appear in the quote.",
+    "agent judge on apply.form_url: Quote says to fill out an application but contains no URL; the specific PDF link is not stated.",
+    "agent judge on apply.documents_required: Quote lists only tax return, proof of address, and Social Security letter; permanent resident card, cash assistance letter, and signed application are not in the quote.",
+    "agent judge on collections.eca_wait_days: Quote says a period is ending 120 days after the first billing statement; it does not state a days-before-collection-actions wait."
    ]
   },
   {
@@ -2155,11 +2436,19 @@
    "eligibility": {
     "free_care_max_fpl": null,
     "discount_tiers": null,
-    "assistance_ceiling_fpl": null,
+    "assistance_ceiling_fpl": {
+     "value": "300",
+     "layer": "documented",
+     "quote": "Patients whose family income exceeds 300% of the FPG may be eligible to receive discounted rates on a case-by-case basis based on their specific circumstances",
+     "source_id": "fap-37609aeb42b3535f",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "asset_test": {
      "value": true,
      "layer": "documented",
-     "quote": "Eligibility for financial assistance is determined by the patient's family income, assets, and family size.",
+     "quote": "Take into account the patient's available assets, and all other financial resources available to the patient",
      "source_id": "fap-37609aeb42b3535f",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2169,8 +2458,8 @@
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "Financial assistance applies to patient liability only, including but not limited to, deductibles, co-payments, and co-insurances, as determined by the patient's plan in accordance with the patient's health plan benefits",
-     "source_id": "fap-37609aeb42b3535f",
+     "quote": "Our program can assist patients, insured or uninsured, whose gross family income is from 0% to 300% of the federal poverty guidelines.",
+     "source_id": "web-b05adc252cf7f293",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -2179,73 +2468,29 @@
     "services_excluded": null
    },
    "programs": {
-    "presumptive": {
-     "value": [
-      "homeless",
-      "incarcerated"
-     ],
-     "layer": "documented",
-     "quote": "Patient homeless Patient incarcerated",
-     "source_id": "fap-c573fbd6b7c6a25d",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "presumptive": null,
     "state_programs": null
    },
    "apply": {
-    "form_url": null,
+    "form_url": {
+     "value": "https://www.kansashealthsystem.com/-/media/project/website/pdfs-for-download/finance-policies/financialassistanceapplicationenglish02272020.pdf",
+     "layer": "documented",
+     "quote": "Download the application for financial assistance, fill out the form and return by mail with supporting documentation.",
+     "source_id": "web-b05adc252cf7f293",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "form_version": null,
-    "documents_required": {
-     "value": [
-      "tax_return",
-      "pay_stubs",
-      "other"
-     ],
-     "layer": "documented",
-     "quote": "A copy of the Applicant's most recent as-filed Federal Income Tax Return (including a copy of the Applicant's W-2 Form(s)) shall be provided by the Applicant to the Financial Advisors",
-     "source_id": "fap-37609aeb42b3535f",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "documents_required": null,
     "documents_reported": null,
-    "submit_methods": {
-     "value": [
-      {
-       "kind": "phone",
-       "detail": "Financial assistance requests can be made by contacting the Customer Service department via telephone"
-      },
-      {
-       "kind": "email",
-       "detail": "email"
-      },
-      {
-       "kind": "fax",
-       "detail": "fax"
-      },
-      {
-       "kind": "mail",
-       "detail": "written correspondence"
-      },
-      {
-       "kind": "in_person",
-       "detail": "visiting the Patient Financial Services Department"
-      }
-     ],
-     "layer": "documented",
-     "quote": "Financial assistance requests can be made by contacting the Customer Service department via telephone, email, fax, or written correspondence or by visiting the Patient Financial Services Department.",
-     "source_id": "fap-37609aeb42b3535f",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "submit_methods": null,
     "window_days_from_first_bill": null,
     "decision_days": {
-     "value": 14,
+     "value": 30,
      "layer": "documented",
-     "quote": "Requests for financial assistance will be responded to promptly in writing within 14 days of receipt of the corresponding completed application.",
-     "source_id": "fap-37609aeb42b3535f",
+     "quote": "the requestor will receive written notice within 30 days of receipt of the application and required documentation",
+     "source_id": "web-b05adc252cf7f293",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -2258,24 +2503,27 @@
    },
    "contacts": {
     "phone": {
-     "value": "913-588-5820",
+     "value": "913-588-7850",
      "layer": "documented",
-     "quote": "Call us Monday-Friday, 7:30 a.m.-5:30 p.m., at 913-588-5820 or 877-287-6268.",
-     "source_id": "web-6ab09d37f59c32f2",
+     "quote": "Our financial counselors can help with cost or pricing estimates. Call 913-588-7850 .",
+     "source_id": "web-b05adc252cf7f293",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "hours": {
-     "value": "Monday-Friday, 7:30 a.m.-5:30 p.m.",
+    "hours": null,
+    "languages": {
+     "value": [
+      "English",
+      "Spanish"
+     ],
      "layer": "documented",
-     "quote": "Call us Monday-Friday, 7:30 a.m.-5:30 p.m., at 913-588-5820 or 877-287-6268.",
-     "source_id": "web-6ab09d37f59c32f2",
+     "quote": "Asistencia Financiera [/-/media/files/pdf/financial/financial-assistance-spanish-2026.pdf]",
+     "source_id": "web-b05adc252cf7f293",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
-    },
-    "languages": null
+    }
    },
    "coverage": {
     "facilities": null,
@@ -2302,20 +2550,23 @@
      "effective_date": null
     },
     {
-     "id": "web-6ab09d37f59c32f2",
+     "id": "web-b05adc252cf7f293",
      "kind": "hospital_web",
-     "url": "https://www.kansashealthsystem.com/patient-visitor/financial/patient-bills",
-     "title": "Patient Bills: Payment Options & Contact | The University of Kansas Health System",
+     "url": "https://www.kansashealthsystem.com/patient-visitor/financial/financial-assistance",
+     "title": "Financial Assistance Options For You | The University of Kansas Heath System",
      "fetched_on": "2026-10-23",
-     "sha256": "6ab09d37f59c32f282d69b81e58422ad59dd8a427e6a6ef534351be51f5e56c6",
+     "sha256": "b05adc252cf7f293bc0bb07219b65ae9ea23c0b9a2097a9910aa2dd841a02c21",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Copies of the Applicant's two most recent payroll vouchers (i.e., check stubs) shall be provided by the Applicant to the | A credit report for the Applicant may be obtained by the Financial Advisors",
-    "agent judge on programs.presumptive: Quote is a bare fragment listing 'Patient homeless' and 'Patient incarcerated' with no statement that these are presumptive eligibility categories.",
-    "agent judge on apply.documents_required: Quote says the tax return and pay stubs must be provided by the applicant, but the credit report 'may be obtained by the Financial Advisors', so it is not an applicant-required document."
+    "agent dropped programs.presumptive: quote is not a substring of the source",
+    "agent dropped apply.documents_required: excerpt not in source: Two most recent bank statements from all checking and saving",
+    "agent dropped apply.submit_methods: excerpt not in source: Begin the process by completing the financial assistance doc",
+    "agent judge on eligibility.assistance_ceiling_fpl: Quote says patients above 300% FPG 'may be eligible' for discounted rates case-by-case; this is discounts on a discretionary basis, not a statement that no assistance is offered above 300%.",
+    "agent judge on apply.form_url: Quote says to download the application and return it by mail but gives no URL; the recorded URL is not stated in the quote.",
+    "agent judge on contacts.languages: Quote is only a link labeled Asistencia Financiera to a Spanish PDF; it does not state that English is a supported language."
    ]
   },
   {
@@ -2356,12 +2607,12 @@
       },
       {
        "min_fpl_exclusive": "350",
-       "max_fpl_inclusive": "399",
+       "max_fpl_inclusive": "400",
        "discount_percent": 75
       }
      ],
      "layer": "documented",
-     "quote": "251% - 300% FPL Base = 85% write off",
+     "quote": "251% - 300% FPL Base = 85% write off 301% - 350% FPL Base = 80% write off 351% - 399% FPL Base = 75% write off",
      "source_id": "fap-02f0838acdca19c6",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2371,7 +2622,7 @@
     "asset_test": {
      "value": true,
      "layer": "documented",
-     "quote": "A Patient may not be eligible for the financial assistance described in Paragraphs 1 through 3 above if such Patient is deemed to have sufficient assets to pay pursuant to an \u201cAsset Test.\u201d",
+     "quote": "The Asset Test involves a substantive assessment of a Patient\u2019s ability to pay based on the categories of assets measured in the FAP Application.",
      "source_id": "fap-02f0838acdca19c6",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2379,7 +2630,7 @@
     },
     "residency": {
      "value": [
-      "Financial assistance described in this section is limited to Patients that live in the Community"
+      "Financial assistance described in this section is limited to Patients that live in the Community, defined by the Wichita, Kansas Metropolitan Statistical Area counties or other specified catchment areas."
      ],
      "layer": "documented",
      "quote": "Financial assistance described in this section is limited to Patients that live in the Community",
@@ -2395,13 +2646,13 @@
    "programs": {
     "presumptive": {
      "value": [
-      "eligibility for financial assistance may be determined at any point in the revenue cycle and may include the use of presumptive scoring"
+      "100% charity care"
      ],
      "layer": "documented",
-     "quote": "may include the use of presumptive scoring for a Patient with a sufficient unpaid balance within the first 240 days after the Patient's first discharge bill to determine eligibility for 100% charity care",
+     "quote": "may include the use of presumptive scoring for a Patient with a sufficient unpaid balance within the first 240 days after the Patient\u2019s first discharge bill to determine eligibility for 100% charity care",
      "source_id": "fap-02f0838acdca19c6",
      "checked_on": "2026-10-23",
-     "confidence": 0.8,
+     "confidence": 1.0,
      "support_count": 0
     },
     "state_programs": null
@@ -2411,7 +2662,7 @@
      "value": "https://ascension.forms.r1rcm.com/viachristi/fa",
      "layer": "documented",
      "quote": "Start Application [https://ascension.forms.r1rcm.com/viachristi/fa]",
-     "source_id": "web-d715e73a2ae793c2",
+     "source_id": "web-1b48659b12d4900d",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -2421,6 +2672,7 @@
      "value": [
       "pay_stubs",
       "tax_return",
+      "social_security_letter",
       "bank_statements"
      ],
      "layer": "documented",
@@ -2435,10 +2687,10 @@
     "window_days_from_first_bill": {
      "value": 240,
      "layer": "documented",
-     "quote": "submits a financial assistance application (an \"Application\") on or prior to the 240th day after the Patient's first discharge bill",
+     "quote": "submits a financial assistance application (an \u201cApplication\u201d) on or prior to the 240th day after the Patient\u2019s first discharge bill",
      "source_id": "fap-02f0838acdca19c6",
      "checked_on": "2026-10-23",
-     "confidence": 0.8,
+     "confidence": 1.0,
      "support_count": 0
     },
     "decision_days": null,
@@ -2452,8 +2704,8 @@
     "phone": {
      "value": "800-298-8347",
      "layer": "documented",
-     "quote": "Customer Service Department at 800-298-8347",
-     "source_id": "fap-02f0838acdca19c6",
+     "quote": "Customer Service: 800-298-8347",
+     "source_id": "web-1b48659b12d4900d",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -2462,7 +2714,7 @@
      "value": "Monday to Friday, 8 am to 4:30 pm",
      "layer": "documented",
      "quote": "Hours: Monday to Friday, 8 am to 4:30 pm",
-     "source_id": "web-d715e73a2ae793c2",
+     "source_id": "web-1b48659b12d4900d",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -2494,24 +2746,24 @@
      "effective_date": null
     },
     {
-     "id": "web-d715e73a2ae793c2",
+     "id": "web-1b48659b12d4900d",
      "kind": "hospital_web",
      "url": "https://healthcare.ascension.org/financial-assistance/kansas-ascension-via-christi-financial-assistance",
      "title": "Financial assistance at Ascension Via Christi in Kansas | Ascension",
      "fetched_on": "2026-10-23",
-     "sha256": "d715e73a2ae793c23f194fb8e944838acb3969f3d8a9ea0666d7daf3c06d7a8e",
+     "sha256": "1b48659b12d4900d85867946e737ae6558b28af1be07c3c5709f9f71ddcd40c9",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: 301% - 350% FPL Base = 80% write off | 351% - 399% FPL Base = 75% write off",
-    "programs.presumptive: quote matched the source only after typography normalization",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Copies of most recent yearly tax return (if self-employed, include all schedules) | Current bank statements (checking and savings accounts) from last 3 months",
-    "apply.window_days_from_first_bill: quote matched the source only after typography normalization",
-    "agent dropped apply.submit_methods: excerpt not in source: Start Application [https://ascension.forms.r1rcm.com/viachri",
-    "agent judge on eligibility.free_care_max_fpl: Quote says \"less than or equal to 2501% of the Federal Poverty Level\", not 250%. It is likely a typo, but read plainly it does not state 250.",
-    "agent judge on eligibility.discount_tiers: Quote gives 251%-300% at 85%, 301%-350% at 80%, 351%-399% at 75%. The 250 min_fpl_exclusive bound does not appear in the quote."
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Copies of most recent yearly tax return (if self-employed, include all schedules) | Social Security and/or Pension Retirement Award Letter",
+    "agent dropped apply.submit_methods: excerpt not in source: Easily apply for financial assistance online or scan the QR ",
+    "agent dropped contacts.languages: excerpt not in source: Aplicaci\u00f3n de Asistencia Financiera (PDF)",
+    "agent judge on eligibility.free_care_max_fpl: Quote says \"less than or equal to 2501% of the Federal Poverty Level\", which reads as 2501%, not 250.",
+    "agent judge on eligibility.discount_tiers: Quote gives 251-300% (85%), 301-350% (80%), and 351-399% (75%). The value's upper bound of 400 for the last tier does not appear in the quote.",
+    "agent judge on eligibility.residency: Quote only says assistance is limited to patients who live in the Community. It does not define the Community as Wichita MSA counties or catchment areas.",
+    "agent judge on apply.documents_required: Quote lists only three documents. The value also includes bank statements and Medicaid/state assistance approval/denial, which the quote does not state."
    ]
   },
   {
@@ -2983,19 +3235,7 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "languages": {
-     "value": [
-      "English",
-      "Spanish",
-      "Vietnamese"
-     ],
-     "layer": "documented",
-     "quote": "Financial Aid Form Spanish",
-     "source_id": "web-6cd6754a38bc859b",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "languages": null
    },
    "coverage": {
     "facilities": null,
@@ -3013,6 +3253,15 @@
      "effective_date": null
     },
     {
+     "id": "fap-211e65e0817db2be",
+     "kind": "hospital_web",
+     "url": "https://irp.cdn-website.com/fa377abf/files/uploaded/2021%20Financial%20Aid%20Form.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "211e65e0817db2bebcf30b05de68dfa4d1dec711d4e73a4e92e87216c6a40c1d",
+     "effective_date": null
+    },
+    {
      "id": "web-6cd6754a38bc859b",
      "kind": "hospital_web",
      "url": "https://www.kansas.surgery/financial-planning",
@@ -3025,10 +3274,7 @@
    "accuracy": null,
    "eve_review": [
     "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Staff are available to assist over the phone, (316) 634-0090, Monday through Friday 9:00am to 4:00pm.",
-    "contacts.languages: 1 more verbatim excerpt(s) supported this value: Financial Aid Form Vietnamese",
-    "agent judge on eligibility.insured_patients_covered: The quote covers uninsured patients and those with difficulty paying; it does not state that insured patients are covered.",
-    "agent judge on apply.submit_methods: The quote says the application is available in person and by mail. Phone is only staff assistance, not a stated submission method.",
-    "agent judge on contacts.languages: The quote names Spanish and Vietnamese form versions only; it does not state English or any other language list."
+    "agent judge on eligibility.insured_patients_covered: Quote says uninsured patients (and those with difficulty paying) may be reviewed; it does not state that insured patients are covered."
    ]
   },
   {
@@ -3072,7 +3318,7 @@
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "If you are insured and have questions about your coverage or your level of benefits, please contact your insurance provider.",
+     "quote": "If you are insured and have questions about your coverage or your level of benefits, please contact your insurance provider. Patients without insurance will automatically receive a 40 percent discount",
      "source_id": "fap-184a2c21b725a578",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3084,7 +3330,7 @@
    "programs": {
     "presumptive": {
      "value": [
-      "Medicaid enrolled in the last six months"
+      "Medicaid"
      ],
      "layer": "documented",
      "quote": "Patients who have been enrolled in Medicaid in the last six months automatically qualify for financial assistance for medical services that are not covered by Medicaid.",
@@ -3137,7 +3383,7 @@
      "value": [
       {
        "kind": "mail",
-       "detail": "Mail to Saint Luke's, 901 E. 104th St., Attn: Hospital CBO 6th Floor, Kansas City, MO 64131"
+       "detail": "Mail to Saint Luke\u2019s, 901 E. 104th St., Attn: Hospital CBO 6th Floor, Kansas City, MO 64131"
       },
       {
        "kind": "email",
@@ -3181,15 +3427,7 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "hours": {
-     "value": "Monday\u2013Friday, 7 a.m.\u20135 p.m.",
-     "layer": "documented",
-     "quote": "please call Saint Luke's Concierge at 816-932-5100, Monday\u2013Friday, 7 a.m.\u20135 p.m.",
-     "source_id": "web-223593584fd6ded5",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "hours": null,
     "languages": {
      "value": [
       "Arabic",
@@ -3258,11 +3496,10 @@
    "eve_review": [
     "apply.documents_required: 2 more verbatim excerpt(s) supported this value: B. Most recent W-2 form and 1099 forms E. Proof of non-filing (IRS Form 4506) | C. Two (2) most recent pay stubs",
     "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Mail to Saint Luke\u2019s, 901 E. 104th St., Attn: Hospital CBO 6th Floor, Kansas City, MO 64131, or email to slhsbilling@sai",
-    "contacts.languages: 2 more verbatim excerpt(s) supported this value: Bosanski (Bosnian) | Espa\u00f1ol (Spanish)",
-    "agent judge on eligibility.assistance_ceiling_fpl: Quote gives an income cap of $100,000 per year, not a percent of FPL. Quote does not state a FPL ceiling.",
-    "agent judge on eligibility.insured_patients_covered: Quote only tells insured patients to contact their insurance provider about coverage. It does not say insured patients are covered.",
-    "agent judge on apply.documents_required: Quote also lists written income verification from an employer (cash pay) and proof of non-filing (IRS Form 4506), which the value omits.",
-    "agent judge on contacts.languages: Quote shows only three languages (Arabic, Bosnian, Spanish). The value lists 19 languages, which the quote does not state."
+    "contacts.languages: 2 more verbatim excerpt(s) supported this value: Espa\u00f1ol (Spanish) | Ti\u1ebfng Vi\u1ec7t (Vietnamese)",
+    "agent judge on eligibility.assistance_ceiling_fpl: Quote gives an income cap of $100,000 a year, not a percent of FPL; it does not state the FPL ceiling value.",
+    "agent judge on eligibility.insured_patients_covered: Quote tells insured patients to contact their insurer and only mentions uninsured discount; it does not state insured patients are covered.",
+    "agent judge on contacts.languages: Quote shows only Arabic, Spanish, and Vietnamese language samples; it does not state the full 19-language list."
    ]
   },
   {
@@ -3308,7 +3545,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "251% - 300% FPL Base = 85% write off",
+     "quote": "251% - 300% FPL Base = 85% write off 301% - 350% FPL Base = 80% write off 351% - 399% FPL Base = 75% write off",
      "source_id": "fap-02f0838acdca19c6",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3326,7 +3563,7 @@
     },
     "residency": {
      "value": [
-      "Financial assistance described in this section is limited to Patients that live in the Community"
+      "Financial assistance described in this section is limited to Patients that live in the Community, defined by the Wichita, Kansas Metropolitan Statistical Area counties."
      ],
      "layer": "documented",
      "quote": "Financial assistance described in this section is limited to Patients that live in the Community",
@@ -3335,17 +3572,25 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "insured_patients_covered": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Uninsured and insured Patients who are not eligible for financial assistance may receive a prompt pay discount.",
+     "source_id": "fap-02f0838acdca19c6",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "min_balance": null,
     "services_excluded": null
    },
    "programs": {
     "presumptive": {
      "value": [
-      "100% charity care via presumptive scoring"
+      "Medicaid"
      ],
      "layer": "documented",
-     "quote": "may include the use of presumptive scoring for a Patient with a sufficient unpaid balance within the first 240 days after the Patient\u2019s first discharge bill to determine eligibility for 100% charity care notwithstanding Patient\u2019s failure to complete a financial assistance application",
+     "quote": "The Organization will require the uninsured to work with a financial counselor to apply for Medicaid or other public assistance programs",
      "source_id": "fap-02f0838acdca19c6",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3358,7 +3603,7 @@
      "value": "https://ascension.forms.r1rcm.com/viachristi/fa",
      "layer": "documented",
      "quote": "Start Application [https://ascension.forms.r1rcm.com/viachristi/fa]",
-     "source_id": "web-bb975b95c999e1f5",
+     "source_id": "web-d0d50998617e3eab",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -3369,8 +3614,6 @@
       "pay_stubs",
       "tax_return",
       "social_security_letter",
-      "proof_of_income",
-      "bank_statements",
       "other"
      ],
      "layer": "documented",
@@ -3385,7 +3628,7 @@
     "window_days_from_first_bill": {
      "value": 240,
      "layer": "documented",
-     "quote": "submits a financial assistance application (an \u201cApplication\u201d) on or prior to the 240th day after the Patient\u2019s first discharge bill",
+     "quote": "on or prior to the 240th day after the Patient\u2019s first discharge bill and the Application is approved by the Organization",
      "source_id": "fap-02f0838acdca19c6",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3402,8 +3645,8 @@
     "phone": {
      "value": "800-298-8347",
      "layer": "documented",
-     "quote": "Customer Service Department at 800-298-8347",
-     "source_id": "fap-02f0838acdca19c6",
+     "quote": "Customer Service: 800-298-8347",
+     "source_id": "web-d0d50998617e3eab",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -3412,12 +3655,26 @@
      "value": "Monday to Friday, 8 am to 4:30 pm",
      "layer": "documented",
      "quote": "Hours: Monday to Friday, 8 am to 4:30 pm",
-     "source_id": "web-bb975b95c999e1f5",
+     "source_id": "web-d0d50998617e3eab",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "languages": null
+    "languages": {
+     "value": [
+      "Spanish",
+      "Vietnamese",
+      "German",
+      "Lao",
+      "Chinese"
+     ],
+     "layer": "documented",
+     "quote": "Pol&iacute;tica de Asistencia Financiera (PDF)",
+     "source_id": "web-d0d50998617e3eab",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
    },
    "coverage": {
     "facilities": null,
@@ -3444,22 +3701,24 @@
      "effective_date": null
     },
     {
-     "id": "web-bb975b95c999e1f5",
+     "id": "web-d0d50998617e3eab",
      "kind": "hospital_web",
      "url": "https://healthcare.ascension.org/financial-assistance/kansas-ascension-via-christi-financial-assistance",
      "title": "Financial assistance at Ascension Via Christi in Kansas | Ascension",
      "fetched_on": "2026-10-23",
-     "sha256": "bb975b95c999e1f530b3c6753fa7e51d75d4a084ec8c58dff7d373b1f325d599",
+     "sha256": "d0d50998617e3eab33147ac4b768a2aa9adc1e0625fa2952b5ebfccc6e1395fa",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: 301% - 350% FPL Base = 80% write off | 351% - 399% FPL Base = 75% write off",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Current bank statements (checking and savings accounts) from last 3 months | proof of income and assets include",
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Copies of most recent yearly tax return (if self-employed, include all schedules) | Current bank statements (checking and savings accounts) from last 3 months",
+    "contacts.languages: 2 more verbatim excerpt(s) supported this value: Ch&iacute;nh s&aacute;ch h\u1ed7 tr\u1ee3 t&agrave;i ch&iacute;nh (PDF) | \u8d22\u52a1\u63f4\u52a9\u653f\u7b56 (PDF)",
     "agent dropped apply.submit_methods: excerpt not in source: Start Application [https://ascension.forms.r1rcm.com/viachri",
-    "agent judge on eligibility.free_care_max_fpl: Quote says \"less than or equal to 2501%\" of FPL, not 250%. The value does not match the quoted figure.",
-    "agent judge on apply.documents_required: Quote shows only a few fragments (paystubs, bank statements, proof of income and assets). It does not state the full ten-item list in the value."
+    "agent judge on eligibility.free_care_max_fpl: Quote says '2501% of FPL' (typo for 250%) for 100% charity care; the quote itself is garbled but intends 250, so value 250 is a reasonable reading. Marked unsupported due to the literal '2501%' text.",
+    "agent judge on programs.presumptive: Quote says uninsured must work with a counselor to apply for Medicaid or other public programs; it does not state presumptive eligibility.",
+    "agent judge on apply.documents_required: Quote lists paystubs, tax return, and bank statements but does not mention Social Security documents; 'Social Security' is not supported.",
+    "agent judge on contacts.languages: Quote shows links to policy PDFs in Spanish, Vietnamese, and Chinese only; German and Lao are not stated."
    ]
   },
   {
@@ -3684,34 +3943,13 @@
      "support_count": 0
     },
     "residency": null,
-    "insured_patients_covered": {
-     "value": true,
-     "layer": "documented",
-     "quote": "Rawlins County Health Center's policy offers financial assistance to those patients who are uninsured or under-insured",
-     "source_id": "web-bddca4d09789641b",
-     "checked_on": "2026-10-23",
-     "confidence": 0.8,
-     "support_count": 0
-    },
+    "insured_patients_covered": null,
     "min_balance": null,
     "services_excluded": null
    },
    "programs": {
     "presumptive": null,
-    "state_programs": {
-     "value": [
-      {
-       "name": "Kansas Medicaid Program",
-       "how_to_apply": "If the applicant appears to be eligible for Medicaid, we strongly encourage and will assist the applicant to apply for the Kansas Medicaid Program."
-      }
-     ],
-     "layer": "documented",
-     "quote": "If the applicant appears to be eligible for Medicaid, we strongly encourage and will assist the applicant to apply for the Kansas Medicaid Program.",
-     "source_id": "fap-7e96e631ae9e06a5",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "state_programs": null
    },
    "apply": {
     "form_url": null,
@@ -3723,7 +3961,6 @@
       "bank_statements",
       "other",
       "proof_of_residency",
-      "proof_of_income",
       "medicaid_denial"
      ],
      "layer": "documented",
@@ -3734,7 +3971,24 @@
      "support_count": 0
     },
     "documents_reported": null,
-    "submit_methods": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "in_person",
+       "detail": "Business Office"
+      },
+      {
+       "kind": "phone",
+       "detail": "Accounts Receivable department at 785-626-3211, Ext. 2203"
+      }
+     ],
+     "layer": "documented",
+     "quote": "If you need assistance with this application, please contact Accounts Receivable department at 785-626-3211, Ext. 2203",
+     "source_id": "web-bddca4d09789641b",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "window_days_from_first_bill": null,
     "decision_days": {
      "value": 30,
@@ -3753,9 +4007,9 @@
    },
    "contacts": {
     "phone": {
-     "value": "(785) 626 - 3211",
+     "value": "785-626-3211",
      "layer": "documented",
-     "quote": "Hospital: (785) 626 - 3211",
+     "quote": "Contact the Business Office at (785) 626-3211 option 2 for assistance",
      "source_id": "web-bddca4d09789641b",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3799,12 +4053,10 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.insured_patients_covered: quote matched the source only after typography normalization",
     "apply.documents_required: 2 more verbatim excerpt(s) supported this value: 2. Payroll stubs, Social Security checks or unemployment checks from the last 90 days | 3. Bank statements from the last 60 days",
-    "agent dropped apply.submit_methods: excerpt not in source: Please complete the following information and return to the ",
-    "agent judge on eligibility.asset_test: Quote only says household assets need not be included for outpatient or ER services. It does not state that assets are never considered overall, so false is overgeneralized.",
-    "agent judge on eligibility.insured_patients_covered: Quote says assistance is offered to uninsured or under-insured patients. It does not state that insured patients are covered, so true is not supported.",
-    "agent judge on apply.documents_required: Quote lists only three documents (tax returns, payroll stubs, bank statements). The recorded value has twelve items, and nine of them do not appear in the quote."
+    "agent judge on eligibility.asset_test: Quote only says household assets are not included for outpatient or ER services. It does not state a general asset_test value of false.",
+    "agent judge on apply.documents_required: Quote lists only three document types with time periods. The value adds many items (W-2s aside, e.g. trust fund statements, mortgage/rent statements, Medicaid denial letter) not in the quote.",
+    "agent judge on apply.submit_methods: Quote mentions only contacting Accounts Receivable by phone. It does not mention in-person submission at the Business Office."
    ]
   },
   {
@@ -4408,9 +4660,9 @@
     "free_care_max_fpl": null,
     "discount_tiers": null,
     "assistance_ceiling_fpl": {
-     "value": "100000",
+     "value": "300",
      "layer": "documented",
-     "quote": "Patients with family income over $100,000 a year are not eligible for BJC financial assistance, regardless of family size.",
+     "quote": "To be eligible for a discount, your family income must not be more than three times the Federal Poverty Level (300 percent).",
      "source_id": "fap-184a2c21b725a578",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4431,7 +4683,7 @@
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "If you are insured and have questions about your coverage or your level of benefits, please contact your insurance provider.",
+     "quote": "If you are insured and have questions about your coverage or your level of benefits, please contact your insurance provider. Patients without insurance will automatically receive a 40 percent discount on the billed charges and will be considered for assistance.",
      "source_id": "fap-184a2c21b725a578",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4443,7 +4695,7 @@
    "programs": {
     "presumptive": {
      "value": [
-      "Medicaid enrolled"
+      "Medicaid"
      ],
      "layer": "documented",
      "quote": "Patients who have been enrolled in Medicaid in the last six months automatically qualify for financial assistance for medical services that are not covered by Medicaid.",
@@ -4452,39 +4704,31 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "state_programs": null
-   },
-   "apply": {
-    "form_url": {
-     "value": "https://www.saintlukeskc.org/sites/slkc/files/2026-05/3259250-Financial%20Assistance%20Application.pdf",
-     "layer": "documented",
-     "quote": "Financial Assistance Application (PDF) [https://www.saintlukeskc.org/sites/slkc/files/2026-05/3259250-Financial%20Assistance%20Application.pdf]",
-     "source_id": "web-223593584fd6ded5",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "form_version": null,
-    "documents_required": {
+    "state_programs": {
      "value": [
-      "tax_return",
-      "other",
-      "pay_stubs",
-      "proof_of_income"
+      {
+       "name": "Illinois Hospital Uninsured Patient Discount Act",
+       "how_to_apply": "Uninsured Illinois residents receiving services at Alton Memorial Hospital, Memorial Hospital in Belleville, and Memorial Hospital in Shiloh may be eligible for additional discounts under the Illinois Hospital Uninsured Patient Discount Act."
+      }
      ],
      "layer": "documented",
-     "quote": "A. Most recent tax return D. Written income verification from an employer if paid in cash",
-     "source_id": "fap-779a0414a63dc869",
+     "quote": "Uninsured Illinois residents receiving services at Alton Memorial Hospital, Memorial Hospital in Belleville, and Memorial Hospital in Shiloh may be eligible for additional discounts under the Illinois Hospital Uninsured Patient Discount Act.",
+     "source_id": "fap-184a2c21b725a578",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
-    },
+    }
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": null,
     "documents_reported": null,
     "submit_methods": {
      "value": [
       {
        "kind": "mail",
-       "detail": "Mail to Saint Luke\u2019s, 901 E. 104th St., Attn: Hospital CBO 6th Floor, Kansas City, MO 64131"
+       "detail": "Mail to Saint Luke's, 901 E. 104th St., Attn: Hospital CBO 6th Floor, Kansas City, MO 64131"
       },
       {
        "kind": "email",
@@ -4492,11 +4736,11 @@
       },
       {
        "kind": "in_person",
-       "detail": "You may submit the form in person at the service location"
+       "detail": "submit the form in person at the service location"
       }
      ],
      "layer": "documented",
-     "quote": "You may submit the form in person at the service location or per the submission instructions below to apply for free or discounted care.",
+     "quote": "Mail to Saint Luke\u2019s, 901 E. 104th St., Attn: Hospital CBO 6th Floor, Kansas City, MO 64131, or email to slhsbilling@saintlukeskc.org.",
      "source_id": "fap-779a0414a63dc869",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4529,35 +4773,7 @@
      "support_count": 0
     },
     "hours": null,
-    "languages": {
-     "value": [
-      "Arabic",
-      "Bosnian",
-      "Simplified Chinese",
-      "Chinese",
-      "Dari",
-      "Farsi",
-      "French",
-      "Haitian",
-      "Hindi",
-      "Korean",
-      "Nepali",
-      "Pashto",
-      "Portuguese",
-      "Romanian",
-      "Russian",
-      "Somali",
-      "Swahili",
-      "Spanish",
-      "Vietnamese"
-     ],
-     "layer": "documented",
-     "quote": "\u0627\u0644\u0639\u0631\u0628\u064a\u0629 (Arabic)",
-     "source_id": "web-223593584fd6ded5",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "languages": null
    },
    "coverage": {
     "facilities": null,
@@ -4582,25 +4798,14 @@
      "fetched_on": "2026-10-23",
      "sha256": "779a0414a63dc8699910a8d74effd6a8f2ec4a13e7343fddaefe9a7eae845714",
      "effective_date": null
-    },
-    {
-     "id": "web-223593584fd6ded5",
-     "kind": "hospital_web",
-     "url": "https://www.saintlukeskc.org/patients-visitors/financial-assistance",
-     "title": "Financial Assistance | Saint Luke's",
-     "fetched_on": "2026-10-23",
-     "sha256": "223593584fd6ded5eadd130fa5a26fdd4bde3bf8911bfbd7c03aaf14a24bae87",
-     "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: B. Most recent W-2 form and 1099 forms E. Proof of non-filing (IRS Form 4506) | C. Two (2) most recent pay stubs",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Mail to Saint Luke\u2019s, 901 E. 104th St., Attn: Hospital CBO 6th Floor, Kansas City, MO 64131, or email to slhsbilling@sai",
-    "contacts.languages: 2 more verbatim excerpt(s) supported this value: Espa\u00f1ol (Spanish) | Ti\u1ebfng Vi\u1ec7t (Vietnamese)",
-    "agent judge on eligibility.assistance_ceiling_fpl: Quote gives a dollar income cap ($100,000 a year, family size ignored), not a percent of FPL. No FPL ceiling is stated.",
-    "agent judge on eligibility.insured_patients_covered: Quote only tells insured patients to contact their insurance provider about coverage. It does not state that insured patients are covered.",
-    "agent judge on contacts.languages: Quote shows only three languages (Arabic, Spanish, Vietnamese). The value lists nineteen languages, which the quote does not support."
+    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: You may submit the form in person at the service location",
+    "agent dropped apply.documents_required: excerpt not in source: A. Most recent tax return",
+    "agent judge on eligibility.residency: Quote does not state a residency rule. It mentions Kansas, Missouri, Illinois, and NHSC sites, but the value's 'regardless of where they live' phrasing is not in the quote as a limit on residency.",
+    "agent judge on eligibility.insured_patients_covered: Quote says insured patients should contact their insurer and uninsured patients get 40% discount. It does not state that insured patients are covered by assistance; value true is unsupported."
    ]
   },
   {
@@ -4787,7 +4992,15 @@
     "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": null,
-    "insured_patients_covered": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "DO YOU HAVE HEALTH INSURANCE COVERAGE AVAILABLE? YES NO IF YES, WHY NOT AVAILABLE FOR THIS DATE OF SERVICE?",
+     "source_id": "fap-7d156d238d87bf7d",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "min_balance": null,
     "services_excluded": null
    },
@@ -4799,7 +5012,7 @@
     "form_url": {
      "value": "https://irp.cdn-website.com/3e7270d1/files/uploaded/Payment_Assistance_Document_2.pdf",
      "layer": "documented",
-     "quote": "Financial Assistance Application Button [https://irp.cdn-website.com/3e7270d1/files/uploaded/Payment_Assistance_Document_2.pdf]",
+     "quote": "Financial Assistance Application",
      "source_id": "web-5ec0f1bd75e92230",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4821,7 +5034,7 @@
     "phone": {
      "value": "785-392-2122",
      "layer": "documented",
-     "quote": "Hospital 785-392-2122",
+     "quote": "785-392-2122",
      "source_id": "web-5ec0f1bd75e92230",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4867,7 +5080,9 @@
    "accuracy": null,
    "eve_review": [
     "agent dropped eligibility.asset_test: quote is not a substring of the source",
-    "agent judge on contacts.phone: The quote shows \"Hospital 785-392-2122\" which labels the number as the hospital's, but does not establish it as a financial assistance contact number."
+    "agent dropped apply.documents_required: excerpt not in source: Savings (attach copy) $ $ Checking (attach copy)",
+    "agent judge on eligibility.insured_patients_covered: Quote is a form question asking whether insurance is available; it does not state that insured patients are covered.",
+    "agent judge on apply.form_url: Quote is only the link text 'Financial Assistance Application'; it does not state the URL value."
    ]
   },
   {
@@ -4886,49 +5101,20 @@
    "status": "draft",
    "eligibility": {
     "free_care_max_fpl": {
-     "value": "150",
+     "value": "100",
      "layer": "documented",
-     "quote": "Based on patient monthly gross income within the Federal Poverty Level the amount discounted would be 100%, 85%, 75%, 50% and 25%.",
+     "quote": "100% 100% 85% 75% 50% 25% HH Size 100% 150% 200% 250% 275% 300%",
      "source_id": "fap-e6285d7eee829127",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "discount_tiers": {
-     "value": [
-      {
-       "min_fpl_exclusive": "150",
-       "max_fpl_inclusive": "200",
-       "discount_percent": 85
-      },
-      {
-       "min_fpl_exclusive": "200",
-       "max_fpl_inclusive": "250",
-       "discount_percent": 75
-      },
-      {
-       "min_fpl_exclusive": "250",
-       "max_fpl_inclusive": "275",
-       "discount_percent": 50
-      },
-      {
-       "min_fpl_exclusive": "275",
-       "max_fpl_inclusive": "300",
-       "discount_percent": 25
-      }
-     ],
-     "layer": "documented",
-     "quote": "Based on patient monthly gross income within the Federal Poverty Level the amount discounted would be 100%, 85%, 75%, 50% and 25%.",
-     "source_id": "fap-e6285d7eee829127",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "discount_tiers": null,
     "assistance_ceiling_fpl": null,
     "asset_test": {
      "value": true,
      "layer": "documented",
-     "quote": "For patients that have excessive liquid assets of significant value, financial assistance may be denied. Excessive assets may consist of the patient owning multiple homes or rentals.",
+     "quote": "the application process will review the income, the expenses, the assets and the liabilities to make the determination if the patient qualifies for Financial Assistance",
      "source_id": "fap-e6285d7eee829127",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4950,8 +5136,8 @@
    "programs": {
     "presumptive": {
      "value": [
-      "Patient is homeless and/or has received care from a homeless clinic",
-      "Patient is incarcerated"
+      "homeless",
+      "incarcerated"
      ],
      "layer": "documented",
      "quote": "Patient is homeless and/or has received care from a homeless clinic Patient is incarcerated",
@@ -4965,7 +5151,19 @@
    "apply": {
     "form_url": null,
     "form_version": null,
-    "documents_required": null,
+    "documents_required": {
+     "value": [
+      "tax_return",
+      "pay_stubs",
+      "bank_statements"
+     ],
+     "layer": "documented",
+     "quote": "the income tax return for the prior year and two or more payroll stubs. The patient may also be asked for two months of a bank statement",
+     "source_id": "fap-e6285d7eee829127",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "documents_reported": null,
     "submit_methods": {
      "value": [
@@ -5014,15 +5212,7 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": {
-     "value": "620-292-0938",
-     "layer": "documented",
-     "quote": "Financial Counselors Hospital and Clinic 620-292-0938",
-     "source_id": "web-9cdd5dd00cf49b63",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "phone": null,
     "hours": null,
     "languages": {
      "value": [
@@ -5030,7 +5220,7 @@
       "Spanish"
      ],
      "layer": "documented",
-     "quote": "The Financial Assistance information will be available in Admissions, Emergency Room, Surgery, Outpatient Waiting area, Physical Therapy, all Clinics and both Financial Counselors office. In both English and Spanish.",
+     "quote": "In both English and Spanish.",
      "source_id": "fap-e6285d7eee829127",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5051,33 +5241,14 @@
      "fetched_on": "2026-10-23",
      "sha256": "e6285d7eee829127b84239777cfdd9722f6bb2adc25b5df52bf13e2168f1e459",
      "effective_date": null
-    },
-    {
-     "id": "fap-62b5c5606061549f",
-     "kind": "hospital_web",
-     "url": "https://clarabartonhospital.com/wp-content/uploads/Copy-of-Financial-Application.updated.5.1.2025.pdf",
-     "title": "",
-     "fetched_on": "2026-10-23",
-     "sha256": "62b5c5606061549f9f6abae4ab73d9b8a169e4f53e4ca2126c4fa4491843358f",
-     "effective_date": null
-    },
-    {
-     "id": "web-9cdd5dd00cf49b63",
-     "kind": "hospital_web",
-     "url": "https://clarabartonhospital.com/billing-financial/",
-     "title": "Billing and Financial Information - Clara Barton Medical Center",
-     "fetched_on": "2026-10-23",
-     "sha256": "9cdd5dd00cf49b63b3ee9b39999edd840cdac9cbbdd279821ac27e2401774c7d",
-     "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: 100% 100% 85% 75% 50% 25% | 100% 150% 200% 250% 275% 300%",
-    "agent dropped apply.documents_required: excerpt not in source: Please attach a copy of your recent tax return along with AL",
-    "agent judge on eligibility.free_care_max_fpl: The quote lists discount percentages (100%, 85%, etc.) but never states 150% FPL as the highest free-care level.",
-    "agent judge on apply.submit_methods: The quote says the hospital mails the application to the patient; it does not say the patient can submit by mail.",
-    "agent judge on apply.window_days_from_first_bill: The 240 days run from the self pay statement date, not explicitly from the first bill."
+    "agent dropped eligibility.discount_tiers: excerpt not in source: HH Size",
+    "agent judge on eligibility.free_care_max_fpl: Quote is a jumbled table of percentages and household sizes; it does not clearly state that 100% free care applies up to 100% FPL.",
+    "agent judge on apply.submit_methods: Quote says the application is mailed to the patient for completion; it does not say applications are submitted by mail.",
+    "agent judge on apply.window_days_from_first_bill: Quote gives 240 days from the self pay statement date; it does not say this date is the first bill."
    ]
   },
   {
@@ -5141,10 +5312,10 @@
     },
     "residency": {
      "value": [
-      "Ascension Via Christi Hospital Manhattan and Wamego Health Center community is defined as Riley, Pottawatomie and Geary counties."
+      "If a patient lives outside the defined catchment area where they are seeking services, they are not eligible to apply for financial assistance."
      ],
      "layer": "documented",
-     "quote": "Ascension Via Christi Hospital Manhattan and Wamego Health Center community is defined as Riley, Pottawatomie and Geary counties.",
+     "quote": "If a patient lives outside of the defined catchment area where they are seeking services, they are not eligible to apply for financial assistance",
      "source_id": "fap-02f0838acdca19c6",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5159,24 +5330,50 @@
     "state_programs": null
    },
    "apply": {
-    "form_url": null,
+    "form_url": {
+     "value": "https://wamegohealthcenter.org/wp-content/uploads/2022/10/runningfile_kswic_english_financial-assistance-application.pdf",
+     "layer": "documented",
+     "quote": "Financial Assistance Application (PDF) [https://wamegohealthcenter.org/wp-content/uploads/2022/10/runningfile_kswic_english_financial-assistance-application.pdf]",
+     "source_id": "web-71c1c2741a8a3dd3",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "form_version": null,
-    "documents_required": null,
+    "documents_required": {
+     "value": [
+      "pay_stubs",
+      "tax_return",
+      "social_security_letter",
+      "bank_statements",
+      "other"
+     ],
+     "layer": "documented",
+     "quote": "Copies of 3 most recent paystubs from employer",
+     "source_id": "fap-da8116e972384e4d",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "documents_reported": null,
     "submit_methods": {
      "value": [
       {
        "kind": "mail",
-       "detail": "Financial Assistance/Appeals at P.O. Box 47887, Wichita, KS 67201"
+       "detail": "PO Box 47887, Wichita, KS 67201"
       },
       {
-       "kind": "phone",
-       "detail": "Customer Service Department at 800-298-8347"
+       "kind": "email",
+       "detail": "email completed application and supporting documentation"
+      },
+      {
+       "kind": "fax",
+       "detail": "fax your completed application and supporting documentation"
       }
      ],
      "layer": "documented",
-     "quote": "All request should be mailed to: Financial Assistance/Appeals at P.O. Box 47887, Wichita, KS 67201.",
-     "source_id": "fap-02f0838acdca19c6",
+     "quote": "Please print and mail, email or fax your completed application and supporting documentation to the following:",
+     "source_id": "fap-da8116e972384e4d",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -5201,14 +5398,34 @@
     "phone": {
      "value": "800-298-8347",
      "layer": "documented",
-     "quote": "contacting the Customer Service Department at 800-298-8347",
-     "source_id": "fap-02f0838acdca19c6",
+     "quote": "Hospital bills: 800-298-8347",
+     "source_id": "web-71c1c2741a8a3dd3",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "hours": null,
-    "languages": null
+    "hours": {
+     "value": "8 a.m. and 5 p.m. Monday through Friday",
+     "layer": "documented",
+     "quote": "please call which number is most appropriate for your needs between the hours of 8 a.m. and 5 p.m. Monday through Friday",
+     "source_id": "web-71c1c2741a8a3dd3",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "languages": {
+     "value": [
+      "English",
+      "Spanish",
+      "Vietnamese"
+     ],
+     "layer": "documented",
+     "quote": "POL\u00cdTICA DE FACTURACI\u00d3N Y COBRO",
+     "source_id": "web-71c1c2741a8a3dd3",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
    },
    "coverage": {
     "facilities": null,
@@ -5224,13 +5441,36 @@
      "fetched_on": "2026-10-23",
      "sha256": "02f0838acdca19c6968d82414c4e54199389af7535349cc505988faed9537f99",
      "effective_date": null
+    },
+    {
+     "id": "fap-da8116e972384e4d",
+     "kind": "hospital_web",
+     "url": "https://healthcare.ascension.org/-/media/healthcare/financial-assistance/kansas/fap-application/runningfile_kswic_english_financial-assistance-application.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "da8116e972384e4d2706d4627a205f38d1b126c48292b109e1fe3d23775da702",
+     "effective_date": null
+    },
+    {
+     "id": "web-71c1c2741a8a3dd3",
+     "kind": "hospital_web",
+     "url": "https://wamegohealthcenter.org/patients-visitors/billing-and-insurance-information/",
+     "title": "Billing and Insurance Information | Wamego Health Center",
+     "fetched_on": "2026-10-23",
+     "sha256": "71c1c2741a8a3dd3b1a59320a2cae69d431c8c19880e0e5fc2ee6aee4aa47c11",
+     "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
     "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: 301% - 350% FPL Base = 80% write off | 351% - 399% FPL Base = 75% write off",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: contacting the Customer Service Department at 800-298-8347",
-    "agent judge on eligibility.free_care_max_fpl: Quote says \"less than or equal to 2501%\" FPL, not 250. The apparent typo means the quote does not plainly state 250."
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Copies of most recent yearly tax return (if self-employed, include all schedules) | Social Security and/or Pension Retirement Award Letter",
+    "contacts.languages: 1 more verbatim excerpt(s) supported this value: CH\u00cdNH S\u00c1CH L\u1eacP H\u00d3A \u0110\u01a0N V\u00c0 THU N\u1ee2",
+    "agent dropped programs.presumptive: quote shorter than 8 characters",
+    "agent judge on eligibility.free_care_max_fpl: Quote reads \"less than or equal to 2501% of the Federal Poverty Level\", not 250%. The stated value does not appear in the quote as written.",
+    "agent judge on apply.documents_required: Quote lists paystubs, yearly tax return, and Social Security/Pension award letter only. \"bank statements\" and \"denial\" are not stated in the quote.",
+    "agent judge on apply.submit_methods: Quote says to print and mail, email, or fax, but gives no PO Box address and no email/fax detail as in the value.",
+    "agent judge on contacts.languages: Quote shows only Spanish and Vietnamese headings. Nothing in the quote states English is offered."
    ]
   },
   {
@@ -6836,10 +7076,11 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "proof_of_income"
+      "proof_of_income",
+      "other"
      ],
      "layer": "documented",
-     "quote": "Submit Completed Financial Assistance Application within 60 Days of Procedure/Discharge Including submitting documents needed to verify income, all taxable and non-taxable income will be considered.",
+     "quote": "Including submitting documents needed to verify income, all taxable and non-taxable income will be considered.",
      "source_id": "web-ae64ac0b762b9196",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -6850,7 +7091,7 @@
      "value": [
       {
        "kind": "in_person",
-       "detail": "Contact Scott County Hospital\u2019s Financial Counselor"
+       "detail": "To Apply, Contact Scott County Hospital's Financial Counselor"
       }
      ],
      "layer": "documented",
@@ -6878,9 +7119,9 @@
    },
    "contacts": {
     "phone": {
-     "value": "620-872-5811",
+     "value": "(620) 872-5811",
      "layer": "documented",
-     "quote": "please contact the Business Office by calling 620-872-5811.",
+     "quote": "Hospital: (620) 872-5811",
      "source_id": "web-ae64ac0b762b9196",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -6912,13 +7153,22 @@
      "fetched_on": "2026-10-23",
      "sha256": "ae64ac0b762b9196b08cf58699b28e7e9506c0407a19042af9776bcaae7183e8",
      "effective_date": null
+    },
+    {
+     "id": "web-e98017bff106e9ff",
+     "kind": "hospital_web",
+     "url": "https://www.scotthospital.net/getpage.php?name=Bill_Pay",
+     "title": "Bill Pay",
+     "fetched_on": "2026-10-23",
+     "sha256": "e98017bff106e9ff2c573be62263fdac6fe0382429b7b4cd28407f18d7f52b32",
+     "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "agent judge on eligibility.residency: The quote requires being an established patient of Scott City Clinic. It says nothing about residency, so it does not support this field.",
-    "agent judge on apply.submit_methods: The quote says to contact the Financial Counselor but never says in person. The in_person kind is not stated.",
-    "agent judge on apply.window_days_from_first_bill: The 60-day window is measured from Procedure/Discharge, not from the first bill, so the field's anchor is wrong."
+    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: Provide Denial Notice from Kansas Medicaid within 90 Days of Procedure/Discharge",
+    "agent judge on eligibility.residency: Quote says to be an established patient of Scott City Clinic; it does not state a residency requirement, so the value mislabels a patient-status condition as residency.",
+    "agent judge on apply.window_days_from_first_bill: Quote says within 60 days of Procedure/Discharge, not days from first bill; the anchor event differs from the field definition."
    ]
   },
   {
@@ -7408,43 +7658,13 @@
      "value": "620-272-2455",
      "layer": "documented",
      "quote": "Please contact the financial counseling department at 620-272-2455 if you have any billing or payment questions related to your stay.",
-     "source_id": "web-ab43a1846749d874",
+     "source_id": "web-53a50de171cb0497",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "hours": null,
-    "languages": {
-     "value": [
-      "Espa\u00f1ol",
-      "Deutsch",
-      "Fran\u00e7ais",
-      "Ti\u1ebfng Vi\u1ec7t",
-      "\u7e41\u9ad4\u4e2d\u6587",
-      "\ud55c\uad6d\uc5b4",
-      "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-      "\u12a0\u121b\u122d\u129b",
-      "\u0627\u0644\u0639\u0631\u0628\u064a\u0629",
-      "\u0928\u0947\u092a\u093e\u0932\u0940",
-      "Tagalog",
-      "\u65e5\u672c\u8a9e",
-      "\u0641\u0627\u0631\u0633\u06cc",
-      "\u0181\u00e0s\u0254\u0301\u0254\u0300-w\u00f9\u0256\u00f9-po-ny\u0254\u0300",
-      "Igbo asusu",
-      "\u00e8d\u00e8 Yor\u00f9b\u00e1",
-      "\u0e9e\u0eb2\u0eaa\u0eb2\u0ea5\u0eb2\u0ea7",
-      "Hmoob",
-      "Kiswahili",
-      "\u1019\u103c\u1014\u103a\u1019\u102c\u1018\u102c\u101e\u102c",
-      "Soomaali"
-     ],
-     "layer": "documented",
-     "quote": "Language Assistance Services. If you speak a language other than English, assistance services, free of change are available to you in the following languages:",
-     "source_id": "web-ab43a1846749d874",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "languages": null
    },
    "coverage": {
     "facilities": null,
@@ -7453,37 +7673,35 @@
    },
    "sources": [
     {
-     "id": "web-1d0228afcb4f33e7",
+     "id": "web-68a199587f0f1910",
      "kind": "hospital_web",
      "url": "https://csdam.widen.net/s/7k58d7g55q/financial-assistance-policy",
      "title": "Financial-Assistance-Policy.pdf",
      "fetched_on": "2026-10-23",
-     "sha256": "1d0228afcb4f33e730f772cef91d85819c6c8d0255486139f8d96d23cf88e85c",
+     "sha256": "68a199587f0f19105ebffdf98bd8eb882b715a3a5b8fa071e6355fca8f3718a3",
      "effective_date": null
     },
     {
-     "id": "web-4c5567cd842b364b",
+     "id": "web-f04e7201a90480f3",
      "kind": "hospital_web",
      "url": "https://csdam.widen.net/s/gdtvggffsh/chadm-011-process-of-applying-for-financial-assistance",
      "title": "CHADM-011-Process-of-Applying-for-Financial-Assistance.pdf",
      "fetched_on": "2026-10-23",
-     "sha256": "4c5567cd842b364bfdaeb94794fe7dd91edca7938980c8c380bc7155b25018ed",
+     "sha256": "f04e7201a90480f3dbdcb08625b26f98229fb91e83c17a13ed7d506b638b6a5d",
      "effective_date": null
     },
     {
-     "id": "web-ab43a1846749d874",
+     "id": "web-53a50de171cb0497",
      "kind": "hospital_web",
      "url": "https://www.mountain.commonspirit.org/location/bob-wilson-memorial-hospital/patient-guide",
      "title": "CommonSpirit Bob Wilson Memorial Hospital Patient Guide | CommonSpirit Health",
      "fetched_on": "2026-10-23",
-     "sha256": "ab43a1846749d87482c6418bfed1e6146b2a469b03c029ee3a33bcfc44f279d7",
+     "sha256": "53a50de171cb049739f82a6a580f3c56aeca599e9bbaaf799483cce13662bab8",
      "effective_date": null
     }
    ],
    "accuracy": null,
-   "eve_review": [
-    "agent judge on contacts.languages: Quote says assistance is available 'in the following languages' but the list itself is absent, so the 21 listed languages are not stated in the quote."
-   ]
+   "eve_review": []
   }
  ]
 }

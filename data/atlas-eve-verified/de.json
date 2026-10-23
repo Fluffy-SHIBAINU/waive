@@ -133,6 +133,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "web-8cf04c53eee9a8e8": true,
+     "fap-1953b5fa9c511b17": true,
+     "fap-de153972cd5e8aba": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.insured_patients_covered",
@@ -374,6 +380,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-611068a6b925dc33": true,
+     "fap-1a849cbf6f39f7e1": true,
+     "web-e2622440dd0cca97": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.assistance_ceiling_fpl",
@@ -612,6 +624,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-039de48106292ed4": true,
+     "fap-73bae9224442461f": true,
+     "web-862dc84b69dee24a": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -836,6 +854,11 @@
     "sources_fetched": 2,
     "sources_total": 2,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-5634a81a5da7d3a1": true,
+     "fap-2e4ad90e57b87c97": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "programs.presumptive",
@@ -885,7 +908,15 @@
     "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": null,
-    "insured_patients_covered": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Did you have health insurance on the date of service? \u2610 No \u2610 Yes (Provide card copy with application)",
+     "source_id": "fap-d39fb64f165bfba2",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "min_balance": null,
     "services_excluded": null
    },
@@ -899,10 +930,10 @@
     "documents_required": {
      "value": [
       "pay_stubs",
-      "proof_of_income"
+      "other"
      ],
      "layer": "documented",
-     "quote": "\u2610 Employment = paystubs showing gross income for 3 or 12 months prior to the date of service \u2610 Self-Employment = Complete tax forms from most recent filing including Schedule C",
+     "quote": "Employment = paystubs showing gross income for 3 or 12 months prior to the date of service",
      "source_id": "fap-d39fb64f165bfba2",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -913,7 +944,7 @@
      "value": [
       {
        "kind": "mail",
-       "detail": "Beebe Medical, ATTN: Financial Assistance, PO Box 828790, Philadelphia, PA 19182-8790"
+       "detail": "Beebe Medical ATTN: Financial Assistance PO Box 828790 Philadelphia, PA 19182-8790"
       }
      ],
      "layer": "documented",
@@ -954,14 +985,21 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: \u2610 Social Security/Pension/Disability = Most recent benefit letter \u2610 Other = Proof of any other income (unemployment bene | Did you have health insurance on the date of service? \u2610 No \u2610 Yes (Provide card copy with application)"
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Self-Employment = Complete tax forms from most recent filing including Schedule C | Checking/Savings = Current 30-day statement for each account",
+    "agent judge on eligibility.insured_patients_covered: Quote only asks whether the patient had health insurance on the date of service; it does not state that insured patients are covered.",
+    "agent judge on apply.documents_required: Quote lists paystubs, tax forms, and checking/savings statements, but does not mention a Social Security/Pension/Disability benefit letter; value includes an unsupported item."
    ],
    "eve_verified": {
     "on": "2026-10-23",
     "sources_fetched": 1,
     "sources_total": 1,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-d39fb64f165bfba2": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
+     "eligibility.insured_patients_covered",
      "apply.documents_required",
      "apply.submit_methods"
     ],
@@ -972,7 +1010,7 @@
      ]
     ],
     "pruned": [
-     "apply.documents_required: 3 items not named in the trimmed quote"
+     "apply.documents_required: 2 items not named in the trimmed quote"
     ],
     "income_rule_verified": false,
     "core_completeness": 0.33
@@ -1180,6 +1218,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-039de48106292ed4": true,
+     "fap-73bae9224442461f": true,
+     "web-fa9aa6c4f9488b7f": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",

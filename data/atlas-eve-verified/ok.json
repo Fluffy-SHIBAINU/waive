@@ -41,9 +41,7 @@
    "programs": {
     "presumptive": {
      "value": [
-      "incarcerated or homeless",
-      "Bankruptcy",
-      "Deceased patients"
+      "homeless"
      ],
      "layer": "documented",
      "quote": "Patients who are incarcerated or homeless and confirmed no other liable party can be billed, will be deemed 100% financial assistance. Bankruptcy accounts upon notification of filing will be deemed 100% charitable. Deceased patients 18 years of age and over will be reviewed by Third Party Vendor and once determined uncollectible, will be deemed 100% charity",
@@ -67,7 +65,28 @@
     "form_version": null,
     "documents_required": null,
     "documents_reported": null,
-    "submit_methods": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "Mercy Health, Attention Financial Assistance, 2115 S Fremont Avenue, Suite 5300, Springfield, MO 65804"
+      },
+      {
+       "kind": "fax",
+       "detail": "Fax: 417-829-4604"
+      },
+      {
+       "kind": "phone",
+       "detail": "Mercy Health customer service 855-420-7900"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Completed applications for financial assistance can be returned to: Mercy Health Attention Financial Assistance 2115 S Fremont Avenue, Suite 5300 Springfield, MO 65804 Fax: 417-829-4604",
+     "source_id": "fap-4dbed64b2b51c210",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "window_days_from_first_bill": {
      "value": 240,
      "layer": "documented",
@@ -88,17 +107,17 @@
     "phone": {
      "value": "855-420-7900",
      "layer": "documented",
-     "quote": "Mercy Health customer service 855-420-7900",
+     "quote": "Mercy Health customer service 855-420-7900.",
      "source_id": "fap-4dbed64b2b51c210",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "hours": {
-     "value": "Monday through Friday, 7:30 a.m. - 7 p.m. Central",
+     "value": "Monday through Friday, during business hours as noted on the statement",
      "layer": "documented",
-     "quote": "Call Customer Service at 855-420-7900 for automated bill pay 24/7 and customer support Monday through Friday, 7:30 a.m. - 7 p.m. Central.",
-     "source_id": "web-2740b9d59fc366e1",
+     "quote": "Monday through Friday, during business hours as noted on the statement",
+     "source_id": "fap-4dbed64b2b51c210",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -109,7 +128,7 @@
       "Spanish"
      ],
      "layer": "documented",
-     "quote": "The paper Financial Assistance Application and Policy are available in both English and other languages prevalent in the area",
+     "quote": "The paper Financial Assistance Application and Policy are available in both English and other languages",
      "source_id": "fap-4dbed64b2b51c210",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -130,62 +149,37 @@
      "fetched_on": "2026-10-23",
      "sha256": "4dbed64b2b51c210de21202ce1761b4a7402a9ec9ff650dbdf978bbd47a96afe",
      "effective_date": null
-    },
-    {
-     "id": "fap-e2169745bc9cf37f",
-     "kind": "hospital_web",
-     "url": "https://www.mercy.net/content/dam/mercy/en/pdf/financial-assistance-application-mercy-and-clinic.pdf",
-     "title": "",
-     "fetched_on": "2026-10-23",
-     "sha256": "e2169745bc9cf37f47321bb46f425edd66499b395a98fa5b74ced051eb10d24f",
-     "effective_date": null
-    },
-    {
-     "id": "web-2740b9d59fc366e1",
-     "kind": "hospital_web",
-     "url": "https://www.mercy.net/patients-visitors/billing/",
-     "title": "Billing & Payment | Patients & Visitors | Mercy",
-     "fetched_on": "2026-10-23",
-     "sha256": "2740b9d59fc366e1dad4ba0709cee5818ba5cb43a6af34ccb09551fa05b96b6e",
-     "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Federal Tax Return: A full copy of the most recent federal tax return, including all forms and schedules | Proof of Income: Provide income documentation for all household members over the age of 18",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Mercy Health Attention: Financial Assistance Department 2115 S Fremont Avenue, Suite 5300 Springfield, MO 65804 | Fax: 417-829-4604",
-    "agent judge on eligibility.insured_patients_covered: Quote says insured patients need not complete Insurance Eligibility Screening before applying; it does not state they are covered by financial assistance.",
-    "agent judge on apply.documents_required: Quote lists Completed Application, Federal Tax Return, and Proof of Income only; 'Medicaid Screening' is not mentioned in the quote.",
-    "agent judge on apply.submit_methods: Quote lists MyMercy, mail to Springfield MO address, and fax; the online detail path under 'Pay My Bill' and 'Documents tab' is not in the quote.",
-    "agent judge on contacts.hours: Quote gives hours Monday through Friday 7:30 a.m.-7 p.m. Central but attaches them to customer support alongside 24/7 automated bill pay; value is a reasonable match for support hours.",
-    "agent judge on contacts.languages: Quote says paper application and policy are available in English and other prevalent languages; Spanish is not explicitly named."
+    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Questions about the financial assistance policy may be directed to Mercy Health customer service 855-420-7900."
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 3,
-    "sources_total": 3,
+    "sources_fetched": 1,
+    "sources_total": 1,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-4dbed64b2b51c210": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.insured_patients_covered",
      "programs.presumptive",
      "apply.form_url",
+     "apply.submit_methods",
      "apply.window_days_from_first_bill",
      "contacts.phone",
      "contacts.hours",
      "contacts.languages"
     ],
-    "rejected": [
-     [
-      "eligibility.asset_test",
-      "quote does not support the asset-test value"
-     ]
-    ],
+    "rejected": [],
     "pruned": [
-     "apply.documents_required: none of the listed documents is named in the quote (after trimming)",
-     "apply.submit_methods: none of the listed channels is named in the quote (after trimming)"
+     "programs.presumptive: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": false,
-    "core_completeness": 0.33
+    "core_completeness": 0.5
    }
   },
   {
@@ -345,6 +339,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-189f774ecde498d9": true,
+     "fap-e4ed9227ba9d36a8": true,
+     "web-0c9805a638332118": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.residency",
@@ -559,6 +559,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-9fea844b4d45332b": true,
+     "web-d3646244c96ef303": true,
+     "fap-ca9b154ea59ad5a4": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.insured_patients_covered",
@@ -604,7 +610,15 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": null,
+    "free_care_max_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "the FPL is 200% or lower and their ability to pay is low which will identify the patient as eligible for a 100% charity adjustment to that individual encounter",
+     "source_id": "fap-4dbed64b2b51c210",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
     "asset_test": null,
@@ -624,13 +638,10 @@
    "programs": {
     "presumptive": {
      "value": [
-      "Incarcerated",
-      "Homeless",
-      "Bankruptcy",
-      "Deceased patients"
+      "low propensity to pay"
      ],
      "layer": "documented",
-     "quote": "Patients who are incarcerated or homeless and confirmed no other liable party can be billed, will be deemed 100% financial assistance. Bankruptcy accounts upon notification of filing will be deemed 100% charitable. Deceased patients 18 years of age and over will be reviewed by Third Party Vendor and once determined uncollectible, will be deemed 100% charity",
+     "quote": "Mercy will utilize a third-party-tool to identify patients that are at or below 200% of the Federal Poverty Guidelines with low propensity to pay. Mercy will grant these patients financial assistance presumptively, without the requirement of an application.",
      "source_id": "fap-4dbed64b2b51c210",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -663,7 +674,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Mercy Health Attention Financial Assistance 2115 S Fremont Avenue, Suite 5300 Springfield, MO 65804 Fax: 417-829-4604",
+     "quote": "Completed applications for financial assistance can be returned to: Mercy Health Attention Financial Assistance 2115 S Fremont Avenue, Suite 5300 Springfield, MO 65804 Fax: 417-829-4604",
      "source_id": "fap-4dbed64b2b51c210",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -735,15 +746,23 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "contacts.languages: 1 more verbatim excerpt(s) supported this value: Financial Assistance Application (English and Spanish) below:",
-    "agent judge on eligibility.insured_patients_covered: Quote only says insured patients need not complete the Insurance Eligibility Screening before applying. It does not state that insured patients are covered."
+    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: Patients who are incarcerated or homeless and confirmed no other liable party can be billed, will be deemed 100% financi",
+    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: obtained on www.mercy.net/fa",
+    "contacts.languages: 1 more verbatim excerpt(s) supported this value: Financial Assistance Application (English and Spanish) below",
+    "agent judge on eligibility.insured_patients_covered: Quote only says insured patients need not complete Insurance Eligibility Screening before applying. It does not state insured patients are covered by assistance.",
+    "agent judge on apply.submit_methods: Quote gives the mail address and fax for returning applications. The online entry at www.mercy.net/fa is only described as where the application is obtained, not submitted."
    ],
    "eve_verified": {
     "on": "2026-10-23",
     "sources_fetched": 1,
     "sources_total": 1,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-4dbed64b2b51c210": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
+     "eligibility.free_care_max_fpl",
      "eligibility.insured_patients_covered",
      "programs.presumptive",
      "apply.form_url",
@@ -754,9 +773,12 @@
      "contacts.languages"
     ],
     "rejected": [],
-    "pruned": [],
-    "income_rule_verified": false,
-    "core_completeness": 0.5
+    "pruned": [
+     "programs.presumptive: 2 items not named in the trimmed quote",
+     "apply.submit_methods: 1 item not named in the trimmed quote"
+    ],
+    "income_rule_verified": true,
+    "core_completeness": 0.67
    }
   },
   {
@@ -776,21 +798,13 @@
    "eligibility": {
     "free_care_max_fpl": null,
     "discount_tiers": null,
-    "assistance_ceiling_fpl": {
-     "value": "300",
-     "layer": "documented",
-     "quote": "Patient or responsible party\u2019s income must fall below 300% of poverty guidelines. Documentation must be submitted with the financial assistance application to show proof of this income.",
-     "source_id": "fap-897e0afc45cb6ae6",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": null,
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "Jackson County Memorial Hospital (JCMH) is committed to providing charity care to persons who have healthcare needs and are uninsured, underinsured, ineligible for a government program",
+     "quote": "Patient does not have third-party insurance coverage or access to a third party insurance plan.",
      "source_id": "fap-897e0afc45cb6ae6",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -800,27 +814,16 @@
     "services_excluded": null
    },
    "programs": {
-    "presumptive": {
-     "value": [
-      "State-funded prescription programs",
-      "Participation in Women, Infants and Children (WIC)"
-     ],
-     "layer": "documented",
-     "quote": "1. State-funded prescription programs 2. The patient is homeless or has received care from a clinic for the homeless 3. Participation in Women, Infants and Children (WIC)",
-     "source_id": "fap-897e0afc45cb6ae6",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "presumptive": null,
     "state_programs": {
      "value": [
       {
-       "name": "Oklahoma Self-pay Discount (OK Self-pay Discount)",
+       "name": "Oklahoma Self-pay Discount",
        "how_to_apply": "Patients that complete the financial assistance application process may be approved for a discount based on the estimated Medicare reimbursement for services provided"
       }
      ],
      "layer": "documented",
-     "quote": "C. Oklahoma Self-pay Discount OK Self-pay Discount -In 2006, Oklahoma House Bill 2842 established a discount program for qualified self-pay patients. Patients that complete the financial assistance application process may be approved for a discount based on the estimated Medicare reimbursement for services provided",
+     "quote": "OK Self-pay Discount -In 2006, Oklahoma House Bill 2842 established a discount program for qualified self-pay patients. Patients that complete the financial assistance application process may be approved for a discount based on the estimated Medicare reimbursement for services provided",
      "source_id": "fap-897e0afc45cb6ae6",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -830,27 +833,17 @@
    "apply": {
     "form_url": null,
     "form_version": null,
-    "documents_required": {
-     "value": [
-      "proof_of_income"
-     ],
-     "layer": "documented",
-     "quote": "Patient or responsible party\u2019s income must fall below 300% of poverty guidelines. Documentation must be submitted with the financial assistance application to show proof of this income.",
-     "source_id": "fap-897e0afc45cb6ae6",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "documents_required": null,
     "documents_reported": null,
     "submit_methods": {
      "value": [
       {
-       "kind": "in_person",
-       "detail": "personal visit with the counselor"
+       "kind": "phone",
+       "detail": "contact a Financial Counselor located in the hospital through a personal visit with the counselor or via phone at 580-379-5050"
       },
       {
-       "kind": "phone",
-       "detail": "via phone at 580-379-5050"
+       "kind": "in_person",
+       "detail": "submit the completed application and supporting documentation to a Financial Counselor in person"
       }
      ],
      "layer": "documented",
@@ -879,7 +872,17 @@
      "support_count": 0
     },
     "hours": null,
-    "languages": null
+    "languages": {
+     "value": [
+      "primary languages spoken by the population served by JCMH"
+     ],
+     "layer": "documented",
+     "quote": "Such notices and summary information shall be provided in the primary languages spoken by the population served by JCMH.",
+     "source_id": "fap-897e0afc45cb6ae6",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
    },
    "coverage": {
     "facilities": null,
@@ -906,42 +909,53 @@
      "effective_date": null
     },
     {
-     "id": "web-5555f830ea9c8178",
+     "id": "web-f3e1a548a47d6e18",
      "kind": "hospital_web",
-     "url": "https://www.jcmh.com/about-your-bill/",
+     "url": "https://www.jcmh.com/patients-visitors/billing-information/about-your-bill/",
      "title": "About Your Bill - Jackson County Memorial Hospital",
      "fetched_on": "2026-10-23",
-     "sha256": "5555f830ea9c8178bd9f3a140660be6eb91881d76e6391f84b8eda70c36f9c11",
+     "sha256": "f3e1a548a47d6e18adbc9823a72273d68be3dac16fab51fe0cc3f2f7aed7fec7",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: 4. Food stamp eligibility 5. Subsidized school lunch program eligibility 6. Eligibility for other state or local assista | 7. Low income/subsidized housing is provided as a valid address 8. Patient is deceased with no known probate",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: submit the completed application and supporting documentation to a Financial Counselor in person or via fax at 580-379-5",
-    "agent judge on eligibility.insured_patients_covered: Quote says charity care is for uninsured, underinsured, and ineligible-for-government-program persons; it does not state insured patients are covered, and the value 'true' is not a clear support."
+    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Participation in Women, Infants and Children (WIC) | Eligibility for other state or local assistance programs (i.e. Medicaid eligibility in any state)",
+    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: submit the completed application and supporting documentation to a Financial Counselor in person or via fax at 580-379-5 | The completed application will need to be submitted to a Financial Counselor in person or via fax at 580-379-5099.",
+    "agent judge on eligibility.insured_patients_covered: Quote says the patient must not have third-party insurance or access to a plan, so insured patients are not covered; value says true.",
+    "agent judge on contacts.languages: Quote names no languages; it only says notices are provided in the primary languages spoken by the population served, so the value is not a language list."
    ],
    "eve_verified": {
     "on": "2026-10-23",
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-897e0afc45cb6ae6": true,
+     "web-684129b253a9c2b4": true,
+     "web-f3e1a548a47d6e18": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
-     "eligibility.assistance_ceiling_fpl",
      "eligibility.insured_patients_covered",
-     "programs.presumptive",
      "programs.state_programs",
-     "apply.documents_required",
      "apply.submit_methods",
-     "contacts.phone"
+     "contacts.phone",
+     "contacts.languages"
     ],
-    "rejected": [],
+    "rejected": [
+     [
+      "eligibility.assistance_ceiling_fpl",
+      "quote does not say the hospital's financial assistance reaches it"
+     ]
+    ],
     "pruned": [
-     "programs.presumptive: 6 items not named in the trimmed quote",
+     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
+     "apply.documents_required: none of the listed documents is named in the quote (after trimming)",
      "apply.submit_methods: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": false,
-    "core_completeness": 0.5
+    "core_completeness": 0.33
    }
   },
   {
@@ -1159,6 +1173,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-3b7be055f7c30fcf": true,
+     "web-2cf04ce956a2c9c3": false,
+     "web-a52dc518a1237ed0": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -1382,6 +1402,10 @@
     "sources_fetched": 1,
     "sources_total": 1,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-a9e8ee398784b9d8": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.insured_patients_covered",
@@ -1539,6 +1563,10 @@
     "sources_fetched": 1,
     "sources_total": 1,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-61d36dc9a749f6b4": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.insured_patients_covered",
@@ -1746,6 +1774,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-4dbed64b2b51c210": true,
+     "fap-e2169745bc9cf37f": true,
+     "web-c989591d0ca07a59": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -1973,6 +2007,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-a9e8ee398784b9d8": true,
+     "fap-fa4a39a96287edd8": true,
+     "web-d06a7ddbd5ddf30b": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.residency",
@@ -2155,6 +2195,11 @@
     "sources_fetched": 2,
     "sources_total": 2,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-b475010c9102265a": true,
+     "fap-d42ef361be31036e": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.insured_patients_covered",
@@ -2316,6 +2361,10 @@
     "sources_fetched": 1,
     "sources_total": 1,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-61d36dc9a749f6b4": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.insured_patients_covered",
@@ -2360,18 +2409,10 @@
     "free_care_max_fpl": null,
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
-    "asset_test": {
-     "value": true,
-     "layer": "documented",
-     "quote": "3. BANK/CREDIT UNION STATEMENTS from the last 3 months on all accounts a. Checking b. Savings c. Investments, including stock and bonds d. Trust funds e. Money Market accounts f. Mutual funds",
-     "source_id": "fap-2bf34901a3832fcf",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "asset_test": null,
     "residency": {
      "value": [
-      "Proof of residency of Choctaw County for the previous year (2 required)."
+      "Proof of residency of Choctaw County for the previous year is required."
      ],
      "layer": "documented",
      "quote": "Proof of residency of Choctaw County for the previous year (2 required). i.e. phone or utility bill, rent receipts/lease, trash)",
@@ -2399,29 +2440,17 @@
    "apply": {
     "form_url": null,
     "form_version": null,
-    "documents_required": {
-     "value": [
-      "photo_id",
-      "proof_of_residency",
-      "other"
-     ],
-     "layer": "documented",
-     "quote": "1. Valid, current IDENTIFICATION a. State or Federal issued Photo I.D. (driver\u2019s license, state ID, Green Card, passport) b. Proof of residency of Choctaw County for the previous year (2 required). i.e. phone or utility bill, rent receipts/lease, trash)",
-     "source_id": "fap-2bf34901a3832fcf",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "documents_required": null,
     "documents_reported": null,
     "submit_methods": {
      "value": [
       {
        "kind": "mail",
-       "detail": "Choctaw Memorial Hospital Collections Specialist 1405 E Kirk St. Hugo, OK 74743"
+       "detail": "Mail or deliver the completed application to: Choctaw Memorial Hospital, Attn: Collections Specialist, 1405 E Kirk St, Hugo, OK 74743"
       }
      ],
      "layer": "documented",
-     "quote": "Please send your application to: Choctaw Memorial Hospital Collections Specialist 1405 E Kirk St. Hugo, OK 74743",
+     "quote": "Mail or deliver the completed application to: Choctaw Memorial Hospital Attn: Collections Specialist 1405 E Kirk St Hugo, OK 74743",
      "source_id": "fap-2bf34901a3832fcf",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2447,7 +2476,7 @@
     "phone": {
      "value": "(580) 317-9500",
      "layer": "documented",
-     "quote": "contact our Collections Specialist at (580) 317-9500",
+     "quote": "please contact our Collections Specialist at (580) 317-9500.",
      "source_id": "fap-2bf34901a3832fcf",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2492,11 +2521,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: a. Copy of complete FEDERAL TAX return from the previous year b. IRS form W2 (only if taxes have not been filed) c. Payc | 3. BANK/CREDIT UNION STATEMENTS from the last 3 months on all accounts",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Mail or deliver the completed application to: Choctaw Memorial Hospital Attn: Collections Specialist 1405 E Kirk St Hugo",
-    "agent judge on eligibility.asset_test: Quote lists bank, investment, trust, and mutual fund statements to submit but never states that assets are considered in eligibility.",
-    "agent judge on apply.documents_required: Value includes a copy of current insurance cards or a no-insurance letter, which does not appear in the quote; the other items match.",
-    "agent judge on apply.decision_days: Quote says notification within thirty (30) business days; value 30 drops the business-day qualifier, so it is not the same as calendar days."
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Copy of complete FEDERAL TAX return from the previous year b. IRS form W2 (only if taxes have not been filed) c. Paychec | BANK/CREDIT UNION STATEMENTS from the last 3 months on all accounts",
+    "agent judge on apply.documents_required: Quote supports photo ID, tax return, W2, paystubs, SSA/SSI letter and bank statements, but not proof of residency or insurance cards.",
+    "agent judge on apply.decision_days: Quote says thirty (30) business days; the value 30 drops the business-day qualifier, so it is not stated as calendar days."
    ],
    "eve_verified": {
     "on": "2026-10-23",
@@ -2505,27 +2532,34 @@
     "sources_missing": [
      "https://choctawmemorial.com/wp-content/uploads/2025/05/CHARITY-POLICY-2025.pdf"
     ],
+    "sha256_match": {
+     "fap-ed54f62831fbbfb0": true,
+     "fap-2bf34901a3832fcf": true,
+     "web-c557efdff4a750b6": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
-     "eligibility.asset_test",
      "eligibility.residency",
      "eligibility.insured_patients_covered",
-     "apply.documents_required",
      "apply.submit_methods",
      "apply.decision_days",
      "contacts.phone"
     ],
     "rejected": [
      [
+      "eligibility.asset_test",
+      "quote does not support the asset-test value"
+     ],
+     [
       "apply.form_url",
       "quote not found in source"
      ]
     ],
     "pruned": [
-     "apply.documents_required: 3 items not named in the trimmed quote",
-     "apply.submit_methods: 1 item not named in the trimmed quote"
+     "apply.documents_required: none of the listed documents is named in the quote (after trimming)"
     ],
     "income_rule_verified": false,
-    "core_completeness": 0.5
+    "core_completeness": 0.33
    }
   },
   {
@@ -2680,6 +2714,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-189f774ecde498d9": true,
+     "fap-e4ed9227ba9d36a8": true,
+     "web-54e73cf674f17480": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.residency",
@@ -2867,6 +2907,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-61d36dc9a749f6b4": true,
+     "fap-dabfa949226834e1": true,
+     "web-87039c62558f3ace": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.insured_patients_covered",
@@ -3080,6 +3126,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-6953fb6cbadd09b4": true,
+     "fap-cb9c515460686987": true,
+     "web-bfa8773ab65ea6e4": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.asset_test",
@@ -3331,6 +3383,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-a36c2093e98ca4ee": true,
+     "fap-fa4a39a96287edd8": true,
+     "web-915def580139b2c5": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.residency",
@@ -3518,6 +3576,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-189f774ecde498d9": true,
+     "fap-e4ed9227ba9d36a8": true,
+     "web-e18a4383fc61d3b0": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.residency",
@@ -3690,6 +3754,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-189f774ecde498d9": true,
+     "fap-e4ed9227ba9d36a8": true,
+     "web-56af9832414aadf5": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.residency",
@@ -3914,6 +3984,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-a36c2093e98ca4ee": true,
+     "web-d06a7ddbd5ddf30b": true,
+     "web-7793968a9e452e57": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.insured_patients_covered",
@@ -4111,6 +4187,10 @@
     "sources_fetched": 1,
     "sources_total": 1,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-4dbed64b2b51c210": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.insured_patients_covered",
@@ -4286,6 +4366,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-189f774ecde498d9": true,
+     "fap-e4ed9227ba9d36a8": true,
+     "web-b1c6af38b691988b": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.residency",
@@ -4359,13 +4445,25 @@
    "apply": {
     "form_url": null,
     "form_version": null,
-    "documents_required": null,
+    "documents_required": {
+     "value": [
+      "pay_stubs",
+      "tax_return",
+      "bank_statements"
+     ],
+     "layer": "documented",
+     "quote": "Documents verifying income may include pay stubs, tax returns, bank statements.",
+     "source_id": "fap-a48da04ec239d334",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "documents_reported": null,
     "submit_methods": {
      "value": [
       {
        "kind": "mail",
-       "detail": "Documents by mail: Central Business Office Cohesive Healthcare Management and Consulting 2510 E Independence Suite 101 Shawnee, OK 74804."
+       "detail": "Documents by mail: Central Business Office, Cohesive Healthcare Management and Consulting, 2510 E Independence Suite 101 Shawnee, OK 74804."
       }
      ],
      "layer": "documented",
@@ -4391,7 +4489,7 @@
     "eca_wait_days": {
      "value": 120,
      "layer": "documented",
-     "quote": "will not engage in extraordinary collection actions (ECA) for up to 120 days after the date of the patient's first statement.",
+     "quote": "will not engage in extraordinary collection actions (ECA) for up to 120 days after the date of the patient's first statement",
      "source_id": "fap-a48da04ec239d334",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4446,47 +4544,40 @@
      "fetched_on": "2026-10-23",
      "sha256": "08d67e19e1edcd52e0fbbe0f6f0d3b97566133879a4b2aba9b101e1bc559fc12",
      "effective_date": null
-    },
-    {
-     "id": "web-80342f35769549f6",
-     "kind": "hospital_web",
-     "url": "https://pawhuskahospital.com/contact-us/",
-     "title": "Contact Us - Pawhuska Hospital",
-     "fetched_on": "2026-10-23",
-     "sha256": "80342f35769549f6632b2b7a0554168dc9fec97717643e74bd8d92f0d4ddf9d0",
-     "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Individual is deceased and has no known estate able to pay hospital debts | Individual is incarcerated for a felony (verified on OSCN.net website)",
+    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Individual is deceased and has no known estate able to pay hospital debts | Individual has received Medicaid benefits.",
     "contacts.languages: 1 more verbatim excerpt(s) supported this value: Provide FAP and PLS in Spanish version and utilize Other Language phone line to assist Patient/Customers through the app",
-    "agent judge on programs.presumptive: Quote lists homeless, deceased with no estate, and incarcerated for a felony. It does not mention Medicaid enrollment as presumptive eligibility."
+    "agent judge on apply.documents_required: Quote says documents verifying income 'may include' pay stubs, tax returns, bank statements; these are examples, not a required list.",
+    "agent judge on contacts.languages: Quote mentions English signage and Spanish versions of FAP/PLS, but does not state that English and Spanish are the supported languages as a complete list."
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 3,
-    "sources_total": 3,
+    "sources_fetched": 2,
+    "sources_total": 2,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-a48da04ec239d334": true,
+     "web-08d67e19e1edcd52": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.asset_test",
+     "apply.documents_required",
      "apply.submit_methods",
      "apply.window_days_from_first_bill",
      "collections.eca_wait_days",
      "contacts.phone",
      "contacts.languages"
     ],
-    "rejected": [
-     [
-      "apply.form_url",
-      "quote not found in source"
-     ]
-    ],
+    "rejected": [],
     "pruned": [
      "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)"
     ],
     "income_rule_verified": false,
-    "core_completeness": 0.33
+    "core_completeness": 0.5
    }
   },
   {
@@ -4672,6 +4763,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-4dbed64b2b51c210": true,
+     "fap-e2169745bc9cf37f": true,
+     "web-2f59dd85b236789e": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -4881,6 +4978,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-11b55824af9eb3f1": true,
+     "web-2cf04ce956a2c9c3": false,
+     "web-a52dc518a1237ed0": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.residency",
@@ -5069,6 +5172,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-189f774ecde498d9": true,
+     "fap-e4ed9227ba9d36a8": true,
+     "web-4f20543dc35d7887": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.residency",
@@ -5273,6 +5382,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-4dbed64b2b51c210": true,
+     "fap-e2169745bc9cf37f": true,
+     "web-2f59dd85b236789e": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -5454,6 +5569,10 @@
     "sources_fetched": 1,
     "sources_total": 1,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-4dbed64b2b51c210": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.insured_patients_covered",
@@ -5619,6 +5738,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-5798518bbb5efc62": true,
+     "fap-b7cf6932f119b766": true,
+     "web-d9eeb6b6473322d9": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.insured_patients_covered",
@@ -5659,15 +5784,7 @@
     "free_care_max_fpl": null,
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
-    "asset_test": {
-     "value": true,
-     "layer": "documented",
-     "quote": "Checking: Yes No Amount: $___________________ Savings (including flexible spending and health savings accounts): Yes No Amount: $___________________",
-     "source_id": "fap-3c769e247ebd022c",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "asset_test": null,
     "residency": null,
     "insured_patients_covered": null,
     "min_balance": null,
@@ -5680,21 +5797,7 @@
    "apply": {
     "form_url": null,
     "form_version": null,
-    "documents_required": {
-     "value": [
-      "pay_stubs",
-      "social_security_letter",
-      "bank_statements",
-      "tax_return",
-      "other"
-     ],
-     "layer": "documented",
-     "quote": "Last 4 paystubs Copy of mortgage payment OR Letter from employer Copy of rental agreement Social Security benefits (if applicable) Other documents requested Last 3 months bank statements Copies of monthly bills Previous year\u2019s Federal Tax Return",
-     "source_id": "fap-3c769e247ebd022c",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "documents_required": null,
     "documents_reported": null,
     "submit_methods": {
      "value": [
@@ -5723,7 +5826,7 @@
      "value": "(580) 795-3384",
      "layer": "documented",
      "quote": "Madill: (580) 795-3384",
-     "source_id": "web-153652eea834a5fb",
+     "source_id": "web-e27335c356506383",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -5738,12 +5841,12 @@
    },
    "sources": [
     {
-     "id": "web-153652eea834a5fb",
+     "id": "web-e27335c356506383",
      "kind": "hospital_web",
      "url": "https://www.alliancehealthdurant.com/financial-assistance-program",
      "title": "Financial Assistance Program",
      "fetched_on": "2026-10-23",
-     "sha256": "153652eea834a5fb3f2459cbc4aa905cec6aabd72bee725a9caf300bc2041397",
+     "sha256": "e27335c35650638363af9802c2a904f20947c74c333e733095a813dbfade8a1c",
      "effective_date": null
     },
     {
@@ -5756,29 +5859,33 @@
      "effective_date": null
     },
     {
-     "id": "web-9b47fb1fd6f5b645",
+     "id": "web-6efc98a8f082259a",
      "kind": "hospital_web",
-     "url": "https://www.alliancehealthdurant.com/billing-and-registration-faq",
-     "title": "Patients & Visitors - Financial Information - Billing & Registration FAQ",
+     "url": "https://www.alliancehealthdurant.com/eligibility-services",
+     "title": "Eligibility Services | Financial Information | Patients & Visitors",
      "fetched_on": "2026-10-23",
-     "sha256": "9b47fb1fd6f5b6457105c8e00fb0784ceaf139bb80cb8ea9282f16e1f1dffbbf",
+     "sha256": "6efc98a8f082259aaa39104d3379ac106468f2118e4f65cf9f88241a12a3d371",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
     "apply.form_url: not an absolute URL ('/Uploads/Public/Documents/all-new-documents/2023/100-ADM-120'); dropped",
-    "agent judge on eligibility.asset_test: Quote shows blank Checking and Savings amount fields on a form but never states that assets are considered.",
-    "agent judge on apply.documents_required: Quote lists \"Copy of mortgage payment OR Letter from employer\" as alternatives, but the value requires both together. The remaining items appear in the quote."
+    "agent dropped apply.documents_required: quote is not a substring of the source",
+    "agent judge on eligibility.insured_patients_covered: Quote mentions a Catastrophic Care Discount for patients above a percent of income; it does not state whether insured patients are covered by financial assistance."
    ],
    "eve_verified": {
     "on": "2026-10-23",
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "web-e27335c356506383": false,
+     "fap-3c769e247ebd022c": true,
+     "web-6efc98a8f082259a": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
-     "eligibility.asset_test",
-     "apply.documents_required",
      "apply.submit_methods",
      "contacts.phone"
     ],
@@ -5788,11 +5895,9 @@
       "quote does not say whether insured patients are covered"
      ]
     ],
-    "pruned": [
-     "apply.documents_required: 1 item not named in the trimmed quote"
-    ],
+    "pruned": [],
     "income_rule_verified": false,
-    "core_completeness": 0.5
+    "core_completeness": 0.33
    }
   },
   {
@@ -5838,15 +5943,7 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": {
-     "value": "580-286-7623",
-     "layer": "documented",
-     "quote": "Main Hospital Campus 1301 E. Lincoln Rd. Idabel, Oklahoma 74745 Phone: 580-286-7623",
-     "source_id": "web-a222c5fa646e42d7",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "phone": null,
     "hours": null,
     "languages": null
    },
@@ -5864,24 +5961,6 @@
      "fetched_on": "2026-10-23",
      "sha256": "f6a83c59f78afef9ba49f76d642c7ca84e2e99797a842263819ffffb76d2b38e",
      "effective_date": null
-    },
-    {
-     "id": "web-e8a5708a0c860c52",
-     "kind": "hospital_web",
-     "url": "https://8f3eb29b-e794-4e95-b687-84d8eb426db7.filesusr.com/ugd/100e43_9b8200bc5e3d4c31a4cc5b4d01f0d0dc.docx?dn=2024%20McCurtain%20Financial%20Assistance%20Application.docx",
-     "title": "",
-     "fetched_on": "2026-10-23",
-     "sha256": "e8a5708a0c860c52ad4fc5bfed8f08e524ac73ab947c4a3a711393cc7e1e7b2b",
-     "effective_date": null
-    },
-    {
-     "id": "web-a222c5fa646e42d7",
-     "kind": "hospital_web",
-     "url": "https://www.mmhok.net/billing",
-     "title": "Billing | McCurtain Memorial",
-     "fetched_on": "2026-10-23",
-     "sha256": "a222c5fa646e42d72941196416b31da9a188a6533e91bdffdf6c5e7fb653eb75",
-     "effective_date": null
     }
    ],
    "accuracy": null,
@@ -5889,23 +5968,17 @@
    "eve_verified": {
     "on": "2026-10-23",
     "sources_fetched": 1,
-    "sources_total": 3,
-    "sources_missing": [
-     "https://8f3eb29b-e794-4e95-b687-84d8eb426db7.filesusr.com/ugd/100e43_cb93b1868eb147cdbf7cb80e6d527d99.docx?dn=78-12%20Financial%20Assistance%202024.docx",
-     "https://8f3eb29b-e794-4e95-b687-84d8eb426db7.filesusr.com/ugd/100e43_9b8200bc5e3d4c31a4cc5b4d01f0d0dc.docx?dn=2024%20McCurtain%20Financial%20Assistance%20Application.docx"
-    ],
-    "accepted": [
-     "contacts.phone"
-    ],
-    "rejected": [
-     [
-      "apply.form_url",
-      "quote not found in source"
-     ]
-    ],
+    "sources_total": 1,
+    "sources_missing": [],
+    "sha256_match": {
+     "web-f6a83c59f78afef9": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
+    "accepted": [],
+    "rejected": [],
     "pruned": [],
     "income_rule_verified": false,
-    "core_completeness": 0.17
+    "core_completeness": 0.0
    }
   }
  ]

@@ -21,25 +21,41 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": null,
-    "discount_tiers": null,
-    "assistance_ceiling_fpl": null,
-    "asset_test": null,
-    "residency": {
-     "value": [
-      "Applicants must be U.S. citizen or permanent resident residing in North Dakota or Northeastern Montana and have received care at a Trinity Health facility."
-     ],
+    "free_care_max_fpl": {
+     "value": "275",
      "layer": "documented",
-     "quote": "Applicants for Trinity Health\u2019s Financial Assistance Program must be U.S. citizen or permanent resident residing in North Dakota or Northeastern Montana and have received care at a Trinity Health facility",
+     "quote": "Household or family income must be below 275% of the Federal Poverty Income Guidelines.",
      "source_id": "fap-8a381ac8ac9f44f6",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
+    "discount_tiers": null,
+    "assistance_ceiling_fpl": null,
+    "asset_test": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Value of all secured assets will be considered including recreational vehicles, campers, extra vehicles exceeding the number of licensed drivers in the household, real estate holdings",
+     "source_id": "fap-8a381ac8ac9f44f6",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "residency": {
+     "value": [
+      "Applicants for Trinity Health's Financial Assistance Program must be U.S. citizen or permanent resident residing in North Dakota or Northeastern Montana and have received care at a Trinity Health facility."
+     ],
+     "layer": "documented",
+     "quote": "Applicants for Trinity Health's Financial Assistance Program must be U.S. citizen or permanent resident residing in North Dakota or Northeastern Montana and have received care at a Trinity Health facility",
+     "source_id": "fap-8a381ac8ac9f44f6",
+     "checked_on": "2026-10-23",
+     "confidence": 0.8,
+     "support_count": 0
+    },
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "For applicants with health insurance coverage, patients may not be eligible for financial assistance if their health insurance designates Trinity Health as out-of-network",
+     "quote": "A qualifying applicant is considered to be uninsured or under-insured, has made reasonable efforts to pursue third-party coverage",
      "source_id": "fap-8a381ac8ac9f44f6",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -51,10 +67,10 @@
    "programs": {
     "presumptive": {
      "value": [
-      "Medicaid Coverage"
+      "Medicaid"
      ],
      "layer": "documented",
-     "quote": "Medicaid Coverage: Patients with active North Dakota Medicaid coverage at the time of service may be presumptively approved for Financial Assistance without completing a Financial Assistance Application.",
+     "quote": "Patients with active North Dakota Medicaid coverage at the time of service may be presumptively approved for Financial Assistance without completing a Financial Assistance Application.",
      "source_id": "fap-8a381ac8ac9f44f6",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -75,7 +91,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Mail to: PO Box 5020, Minot ND 58702-5020 Attn: Patient Financial Services",
+     "quote": "1. Mail to: PO Box 5020, Minot ND 58702-5020 Attn: Patient Financial Services",
      "source_id": "fap-8a381ac8ac9f44f6",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -84,7 +100,7 @@
     "window_days_from_first_bill": {
      "value": 240,
      "layer": "documented",
-     "quote": "If the account has previous unpaid qualified care or services that have been written off to bad debt and not aged more than 240 days, these balances may also will be considered for approval",
+     "quote": "written notice of available assistance and a minimum 30-day deadline (or 240 days from the first post-discharge statement, whichever is later)",
      "source_id": "fap-8a381ac8ac9f44f6",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -124,7 +140,7 @@
      "support_count": 0
     },
     "hours": {
-     "value": "Monday- Friday 8:00am-4:30pm CST",
+     "value": "Monday-Friday 8:00am-4:30pm CST",
      "layer": "documented",
      "quote": "Financial Counselors are available by phone at: 701-857-5105 Monday- Friday 8:00am-4:30pm CST",
      "source_id": "fap-8a381ac8ac9f44f6",
@@ -137,7 +153,7 @@
       "English"
      ],
      "layer": "documented",
-     "quote": "Multi-lingual signs in English and any other language that constitutes the primary language of at least 5% of the population in the community",
+     "quote": "Multi-lingual signs in English and any other language that constitutes the primary language of at least 5% of the population",
      "source_id": "fap-8a381ac8ac9f44f6",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -169,32 +185,40 @@
      "effective_date": null
     },
     {
-     "id": "web-034d907f3d36c070",
+     "id": "web-c35290aafcb3e8b6",
      "kind": "hospital_web",
      "url": "https://www.trinityhealth.org/trinity-health-billing/financial-assistance/",
      "title": "Financial Assistance - Trinity Health",
      "fetched_on": "2026-10-23",
-     "sha256": "034d907f3d36c070edd09be65ea8df8789e182d261b4b442719241d65ab9b453",
+     "sha256": "c35290aafcb3e8b63ca4fbad29b00363d77311d509064ef4c1d219c140c2833a",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: One proof of (unexpired) Photo identification for all applicants over 18 | One proof of North Dakota / Northeastern Montana residency",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Deliver in Person to: Patient Financial Services, 2305 37th Ave SW, Minot, ND 58701 | Fax to: 701-857-3011, Attn: Patient Financial Services",
-    "agent judge on eligibility.insured_patients_covered: Quote says insured patients may not be eligible if insurer lists Trinity as out-of-network; it does not state insured patients are covered.",
-    "agent judge on apply.documents_required: Quote lists only three documents; value adds Medicaid letter, household income, liquid assets, and secured assets proofs not in the quote.",
-    "agent judge on apply.submit_methods: Quote lists mail, in-person, and fax only; value also includes email, which the quote does not state.",
-    "agent judge on apply.window_days_from_first_bill: Quote says 240 days applies to unpaid balances written off to bad debt and not aged more than 240 days, not a general application window from first bill.",
-    "agent judge on apply.decision_days: Quote says notification within 14-21 days, a range; value of 21 picks the upper bound without support.",
-    "agent judge on contacts.languages: Quote concerns multilingual signs for communities with 5% primary-language population; it does not state English as the supported language list."
+    "eligibility.residency: quote matched the source only after typography normalization",
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: One proof of (unexpired) Photo identification for all applicants over 18 | North Dakota Medicaid approval or denial letter if applicable",
+    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: 4. Fax to: 701-857-3011, Attn: Patient Financial Services | 5. Email to: bsfincounselors@trinityhealth.org",
+    "agent judge on eligibility.insured_patients_covered: Quote says qualifying applicants are uninsured or under-insured; it does not state that insured patients are covered, so value is an overreach.",
+    "agent judge on apply.documents_required: Quote lists only the application, photo ID, and Medicaid letter; proof of residency, income, tax return, assets, and bank statements are not in the quote.",
+    "agent judge on apply.window_days_from_first_bill: Quote gives 240 days from first post-discharge statement but as an alternative with a 30-day minimum, and says it is the later of two, so the 240 figure is not the sole window; value is incomplete.",
+    "agent judge on apply.decision_days: Quote says notification within 14-21 days, a range; value of 21 picks one bound and does not state a single decision period.",
+    "agent judge on contacts.languages: Quote refers to multilingual signs for languages spoken by at least 5% of population; it does not state English is the only language supported."
    ],
    "eve_verified": {
     "on": "2026-10-23",
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-8a381ac8ac9f44f6": true,
+     "fap-7a3d3b0889f3ea83": true,
+     "web-c35290aafcb3e8b6": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.asset_test",
      "eligibility.residency",
      "eligibility.insured_patients_covered",
      "programs.presumptive",
@@ -208,14 +232,6 @@
     ],
     "rejected": [
      [
-      "eligibility.assistance_ceiling_fpl",
-      "quote does not say the hospital's financial assistance reaches it"
-     ],
-     [
-      "eligibility.asset_test",
-      "quote does not support the asset-test value"
-     ],
-     [
       "apply.form_url",
       "quote not found in source"
      ]
@@ -224,158 +240,8 @@
      "apply.documents_required: none of the listed documents is named in the quote (after trimming)",
      "apply.submit_methods: 3 items not named in the trimmed quote"
     ],
-    "income_rule_verified": false,
-    "core_completeness": 0.33
-   }
-  },
-  {
-   "hospital": {
-    "ccn": "350011",
-    "name": "SANFORD MEDICAL CENTER FARGO",
-    "city": "FARGO",
-    "state": "ND",
-    "zip": "58122",
-    "phone": "701-234-2000",
-    "ownership": "Voluntary non-profit - Private",
-    "website_domain": "sanfordhealth.org",
-    "system": null
-   },
-   "version": 1,
-   "status": "draft",
-   "eligibility": {
-    "free_care_max_fpl": null,
-    "discount_tiers": null,
-    "assistance_ceiling_fpl": {
-     "value": "375",
-     "layer": "documented",
-     "quote": "To qualify for Financial Assistance, your household income must be at or below 375% of the federal poverty level.",
-     "source_id": "web-3d365f194c553f93",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "asset_test": null,
-    "residency": null,
-    "insured_patients_covered": null,
-    "min_balance": null,
-    "services_excluded": null
-   },
-   "programs": {
-    "presumptive": null,
-    "state_programs": null
-   },
-   "apply": {
-    "form_url": null,
-    "form_version": null,
-    "documents_required": null,
-    "documents_reported": null,
-    "submit_methods": null,
-    "window_days_from_first_bill": null,
-    "decision_days": {
-     "value": 30,
-     "layer": "documented",
-     "quote": "Your application will be reviewed and a decision will be communicated to you within 30 days.",
-     "source_id": "web-3d365f194c553f93",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "decision_days_reported": null
-   },
-   "collections": {
-    "eca_wait_days": null,
-    "collection_agencies": null
-   },
-   "contacts": {
-    "phone": {
-     "value": "1-877-629-2999",
-     "layer": "documented",
-     "quote": "1-877-629-2999",
-     "source_id": "web-3d365f194c553f93",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "hours": null,
-    "languages": {
-     "value": [
-      "Arabic",
-      "Chinese",
-      "English",
-      "French",
-      "Hindi",
-      "Laotian",
-      "Russian",
-      "Spanish",
-      "Vietnamese"
-     ],
-     "layer": "documented",
-     "quote": "\u0639\u0631\u0628\u064a [Arabic]",
-     "source_id": "web-3d365f194c553f93",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
-   },
-   "coverage": {
-    "facilities": null,
-    "provider_list_url": null,
-    "covered_providers": null
-   },
-   "sources": [
-    {
-     "id": "web-3d365f194c553f93",
-     "kind": "hospital_web",
-     "url": "https://www.sanfordhealth.org/patients-and-visitors/billing-and-insurance/financial-assistance-policy",
-     "title": "Sanford Health Financial Assistance Policy | Sanford Health",
-     "fetched_on": "2026-10-23",
-     "sha256": "3d365f194c553f93aca15b8890fe054eeaa890314ecb641d52a3df0ae0b869b6",
-     "effective_date": null
-    }
-   ],
-   "accuracy": null,
-   "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: A copy of your most recent complete tax return, including all schedules. | Copies of the two most recent pay stubs for each wage earner in the household.",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Download the application [https://www.sanfordhealth.org/-/media/org/files/patients-and-visitors/billing-insurance/2024/f | Visit the registration representative at the clinic or hospital and they will be able to provide you with an application",
-    "contacts.languages: 2 more verbatim excerpt(s) supported this value: \u4e2d\u6587 [Chinese] | Espa\u00f1ol [Spanish]",
-    "agent judge on apply.submit_methods: Quote supports online, mail, and in_person only. The phone method (contact a patient account representative) does not appear in the quote.",
-    "agent judge on contacts.languages: Quote shows only Arabic, Chinese, and Spanish. The value lists nine languages, including English, French, Hindi, Laotian, Russian, and Vietnamese, which the quote does not show."
-   ],
-   "eve_verified": {
-    "on": "2026-10-23",
-    "sources_fetched": 1,
-    "sources_total": 1,
-    "sources_missing": [],
-    "accepted": [
-     "eligibility.assistance_ceiling_fpl",
-     "apply.decision_days",
-     "contacts.phone",
-     "contacts.languages"
-    ],
-    "rejected": [
-     [
-      "eligibility.asset_test",
-      "quote does not support the asset-test value"
-     ],
-     [
-      "apply.form_url",
-      "quote not found in source"
-     ],
-     [
-      "apply.submit_methods",
-      "quote not found in source"
-     ],
-     [
-      "contacts.hours",
-      "quote not found in source"
-     ]
-    ],
-    "pruned": [
-     "apply.documents_required: none of the listed documents is named in the quote (after trimming)",
-     "apply.submit_methods: 3 items not named in the trimmed quote"
-    ],
-    "income_rule_verified": false,
-    "core_completeness": 0.17
+    "income_rule_verified": true,
+    "core_completeness": 0.5
    }
   },
   {
@@ -608,6 +474,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-a9e09e47e34836db": true,
+     "fap-c63934458ff050fc": true,
+     "web-c6eb399a7c071b53": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -777,6 +649,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-1851de801896b31b": true,
+     "web-afad283afef0a188": true,
+     "web-eefdaf5340f19906": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "apply.documents_required",
@@ -870,11 +748,13 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: 4. Two months of complete bank statements for checking and saving accounts for all household members. | 5. Verification of current income, if applicable: examples include the two most recent pay stubs, pension and retirement",
-    "agent judge on eligibility.free_care_max_fpl: Quote gives an AGI threshold ('below this threshold') for 100% assistance but states no percent of FPL.",
-    "agent judge on eligibility.insured_patients_covered: Quote caps what eligible individuals pay at insured-patient rates; it does not state that insured patients are covered by assistance.",
-    "agent judge on apply.window_days_from_first_bill: Quote is a lookback limit: balances for services within the last 240 days. It is not a count of days after the first bill.",
-    "agent judge on contacts.languages: Quote concerns multilingual signage in English and languages spoken by at least 5% of the community, not the languages offered for contact."
+    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: 2. Deliver in Person to: Mountrail County Medical Center Billing Office, 615 6th St. SE, Stanley, ND 58784 | 3. Fax to 701-628-3990, Attn: Billing Office",
+    "agent dropped apply.documents_required: excerpt not in source: 2. Approval/Denial Letter from Medicaid if applicable. 3. Co",
+    "agent dropped contacts.phone: quote is not a substring of the source",
+    "agent dropped contacts.hours: quote is not a substring of the source",
+    "agent judge on eligibility.free_care_max_fpl: Quote mentions an AGI threshold for 100% assistance but does not state the 200% FPL value.",
+    "agent judge on eligibility.insured_patients_covered: Quote says qualifying patients are uninsured or underinsured; it does not state that insured patients are covered.",
+    "agent judge on contacts.languages: Quote concerns multilingual signage in English and any language spoken by at least 5% of the community; it does not state English as the only language."
    ],
    "eve_verified": {
     "on": "2026-10-23",
@@ -884,6 +764,11 @@
      "https://www.stanleyhealth.org/wp-content/uploads/2026/01/2026-Financial-Assistance-Policy.pdf",
      "https://www.stanleyhealth.org/wp-content/uploads/2025/03/Financial-Assistance-Application_joined.pdf"
     ],
+    "sha256_match": {
+     "fap-e2f65235b11004ce": null,
+     "fap-309e605fbed361cb": null
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [],
     "rejected": [
      [
@@ -903,10 +788,6 @@
       "source text missing"
      ],
      [
-      "apply.documents_required",
-      "source text missing"
-     ],
-     [
       "apply.submit_methods",
       "source text missing"
      ],
@@ -920,14 +801,6 @@
      ],
      [
       "collections.eca_wait_days",
-      "source text missing"
-     ],
-     [
-      "contacts.phone",
-      "source text missing"
-     ],
-     [
-      "contacts.hours",
       "source text missing"
      ],
      [
@@ -1143,6 +1016,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-4fb937d0237f899d": true,
+     "fap-163a28e39f1852c5": true,
+     "web-9d8034ced1a2d83f": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -1190,11 +1069,19 @@
    "eligibility": {
     "free_care_max_fpl": null,
     "discount_tiers": null,
-    "assistance_ceiling_fpl": null,
+    "assistance_ceiling_fpl": {
+     "value": "400",
+     "layer": "documented",
+     "quote": "Assistance is provided for those patients whose family income is lower than 400% of the Federal Poverty Level Guidelines.",
+     "source_id": "fap-6e197ec13cbb56a1",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "asset_test": {
      "value": true,
      "layer": "documented",
-     "quote": "Provide us information about your family\u2019s gross monthly income (income before taxes and deductions) \u25a1 Provide documentation for family income \u25a1 Provide documentation for family assets",
+     "quote": "You must provide information on all assets owned by any family member. Asset verification is required to determine financial assistance.",
      "source_id": "fap-6e197ec13cbb56a1",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1222,40 +1109,24 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "proof_of_income",
+      "tax_return",
+      "pay_stubs",
       "other"
      ],
      "layer": "documented",
-     "quote": "Provide documentation for family income \u25a1 Provide documentation for family assets",
+     "quote": "Last year\u2019s income tax return, including schedules if applicable; or \u25cf A \"W-2\" withholding statement; or \u25cf Current pay stubs (3 months); or",
      "source_id": "fap-6e197ec13cbb56a1",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "documents_reported": null,
-    "submit_methods": {
-     "value": [
-      {
-       "kind": "mail",
-       "detail": "CommonSpirit Health Financial Assistance, PO Box 5096, Fredericksburg, VA 22403"
-      },
-      {
-       "kind": "fax",
-       "detail": "1-269-202-5498"
-      }
-     ],
-     "layer": "documented",
-     "quote": "Mail or fax completed application with all documentation to: CommonSpirit Health Financial Assistance, PO Box 5096, Fredericksburg, VA 22403 Fax: 1-269-202-5498.",
-     "source_id": "fap-6e197ec13cbb56a1",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "submit_methods": null,
     "window_days_from_first_bill": null,
     "decision_days": {
      "value": 30,
      "layer": "documented",
-     "quote": "We will notify you of the final determination of eligibility and appeal rights, if applicable, within 30 calendar days of receiving a complete financial assistance application",
+     "quote": "We will notify you of the final determination of eligibility and appeal rights, if applicable, within 30 calendar days of receiving a complete financial assistance application, including documentation of income.",
      "source_id": "fap-6e197ec13cbb56a1",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1305,44 +1176,50 @@
      "effective_date": null
     },
     {
-     "id": "web-3f475a74371a3fb2",
+     "id": "web-d40779177aef5eee",
      "kind": "hospital_web",
      "url": "https://www.chistalexiushealth.org/patients-and-visitors/financial-assistance",
      "title": "Financial Assistance | CHI St. Alexius Health",
      "fetched_on": "2026-10-23",
-     "sha256": "3f475a74371a3fb2e83c8c9973af1a7e10a03e85314c8f96dbd0f2cab9e1fb7f",
+     "sha256": "d40779177aef5eee36406f436d71939d96bd20c0ce5b96e5ff99f368b398ab01",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: To submit your completed application in person: CommonSpirit Health Hospital Emergency Department",
-    "agent judge on contacts.phone: Quote gives 866-881-0293 as the help line for disability and language assistance, not explicitly as the financial assistance contact phone."
+    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: Current bank statements (showing most recent 3 months)",
+    "agent dropped apply.submit_methods: excerpt not in source: Applications for financial assistance are available online"
    ],
    "eve_verified": {
     "on": "2026-10-23",
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-f871d1fd4db6b35e": true,
+     "fap-6e197ec13cbb56a1": true,
+     "web-d40779177aef5eee": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
+     "eligibility.assistance_ceiling_fpl",
      "eligibility.asset_test",
      "eligibility.insured_patients_covered",
      "apply.documents_required",
-     "apply.submit_methods",
      "apply.decision_days",
      "contacts.phone"
     ],
     "rejected": [
      [
-      "eligibility.assistance_ceiling_fpl",
-      "quote does not say the hospital's financial assistance reaches it"
+      "apply.form_url",
+      "quote not found in source"
      ]
     ],
     "pruned": [
-     "apply.submit_methods: 1 item not named in the trimmed quote"
+     "apply.documents_required: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": false,
-    "core_completeness": 0.5
+    "core_completeness": 0.33
    }
   },
   {
@@ -1543,6 +1420,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-8a381ac8ac9f44f6": true,
+     "fap-7a3d3b0889f3ea83": true,
+     "web-d54c64f8b0e83e77": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.residency",
@@ -1571,168 +1454,6 @@
      "apply.submit_methods: 3 items not named in the trimmed quote"
     ],
     "income_rule_verified": true,
-    "core_completeness": 0.5
-   }
-  },
-  {
-   "hospital": {
-    "ccn": "351306",
-    "name": "COOPERSTOWN MEDICAL CENTER",
-    "city": "COOPERSTOWN",
-    "state": "ND",
-    "zip": "58425",
-    "phone": "701-797-2221",
-    "ownership": "Voluntary non-profit - Private",
-    "website_domain": "dakotaregional.com",
-    "system": null
-   },
-   "version": 1,
-   "status": "draft",
-   "eligibility": {
-    "free_care_max_fpl": null,
-    "discount_tiers": null,
-    "assistance_ceiling_fpl": null,
-    "asset_test": null,
-    "residency": null,
-    "insured_patients_covered": {
-     "value": true,
-     "layer": "documented",
-     "quote": "Do you have any type of health insurance such as Medicare, Medicaid, or Commercial insurance (ex. BCBS)? If yes please specify below for each member of your household",
-     "source_id": "fap-a616ad38eb91bbcb",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "min_balance": null,
-    "services_excluded": null
-   },
-   "programs": {
-    "presumptive": null,
-    "state_programs": null
-   },
-   "apply": {
-    "form_url": null,
-    "form_version": null,
-    "documents_required": {
-     "value": [
-      "tax_return"
-     ],
-     "layer": "documented",
-     "quote": "Tax return and supporting schedules (previous year)",
-     "source_id": "fap-a616ad38eb91bbcb",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "documents_reported": null,
-    "submit_methods": {
-     "value": [
-      {
-       "kind": "in_person",
-       "detail": "Application assistance is also available at no cost on-site with the Business Office"
-      },
-      {
-       "kind": "phone",
-       "detail": "or by calling (701) 786-1700"
-      }
-     ],
-     "layer": "documented",
-     "quote": "Application assistance is also available at no cost on-site with the Business Office or by calling (701) 786-1700.",
-     "source_id": "fap-a616ad38eb91bbcb",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "window_days_from_first_bill": null,
-    "decision_days": null,
-    "decision_days_reported": null
-   },
-   "collections": {
-    "eca_wait_days": null,
-    "collection_agencies": null
-   },
-   "contacts": {
-    "phone": {
-     "value": "701-786-1700",
-     "layer": "documented",
-     "quote": "Phone: 701-786-1700",
-     "source_id": "fap-a616ad38eb91bbcb",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "hours": {
-     "value": "Clinic: Mon\u2013Fri, 9:00 AM \u2013 5:00 PM, Saturday, 9:00 AM - 12:00 PM; Admissions: 24/7 Service; Emergency Center: Always Open",
-     "layer": "documented",
-     "quote": "Clinic: Mon\u2013Fri, 9:00 AM \u2013 5:00 PM Saturday, 9:00 AM - 12:00 PM Admissions: 24/7 Service Emergency Center: Always Open",
-     "source_id": "web-8844a5ccf8d97915",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "languages": null
-   },
-   "coverage": {
-    "facilities": null,
-    "provider_list_url": null,
-    "covered_providers": null
-   },
-   "sources": [
-    {
-     "id": "web-8844a5ccf8d97915",
-     "kind": "hospital_web",
-     "url": "https://www.dakotaregional.com/patient-resources",
-     "title": "Patient Resources | Dakota Regional Medical Center & GCCC",
-     "fetched_on": "2026-10-23",
-     "sha256": "8844a5ccf8d97915019c7f9f9361ef6ac4cfee8bc1dbe96d294a3cc1016ac6a9",
-     "effective_date": null
-    },
-    {
-     "id": "fap-a616ad38eb91bbcb",
-     "kind": "hospital_web",
-     "url": "https://www.dakotaregional.com/_files/ugd/f0a0c4_b7b7c12d1d494abaa3f1bd3d1fb8d35c.pdf",
-     "title": "",
-     "fetched_on": "2026-10-23",
-     "sha256": "a616ad38eb91bbcbec986a1e0e4e0a370ad3a76134f35a05d92f4dcb0f51b983",
-     "effective_date": null
-    },
-    {
-     "id": "web-f91b9d853fe0ca9f",
-     "kind": "hospital_web",
-     "url": "https://www.dakotaregional.com/payment-policy",
-     "title": "Payment Policy | Dakota Regional Medical Center & GCCC",
-     "fetched_on": "2026-10-23",
-     "sha256": "f91b9d853fe0ca9fd2691db7bc6b19c32e554fc34a192dae7201757394561710",
-     "effective_date": null
-    }
-   ],
-   "accuracy": null,
-   "eve_review": [
-    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: Three months of most recent pay stubs (Three for each adult applying)",
-    "agent judge on eligibility.insured_patients_covered: Quote is a question asking whether patients have insurance; it does not state that insured patients are covered."
-   ],
-   "eve_verified": {
-    "on": "2026-10-23",
-    "sources_fetched": 3,
-    "sources_total": 3,
-    "sources_missing": [],
-    "accepted": [
-     "eligibility.insured_patients_covered",
-     "apply.documents_required",
-     "apply.submit_methods",
-     "contacts.phone",
-     "contacts.hours"
-    ],
-    "rejected": [
-     [
-      "apply.form_url",
-      "quote not found in source"
-     ]
-    ],
-    "pruned": [
-     "apply.documents_required: 1 item not named in the trimmed quote"
-    ],
-    "income_rule_verified": false,
     "core_completeness": 0.5
    }
   },
@@ -1783,7 +1504,7 @@
      "value": "701-322-4328",
      "layer": "documented",
      "quote": "Phone 701-322-4328",
-     "source_id": "web-556d99366876433a",
+     "source_id": "web-b63d3d0d2674d29c",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -1809,34 +1530,37 @@
     {
      "id": "fap-21fe1be65c67fdec",
      "kind": "hospital_web",
-     "url": "https://nelsoncountyhealthsystem.org/file_download/4974c55c-e756-483f-82a9-e9777c857e21",
+     "url": "https://nelsoncountyhealthsystem.org/file_download/inline/4974c55c-e756-483f-82a9-e9777c857e21",
      "title": "",
      "fetched_on": "2026-10-23",
      "sha256": "21fe1be65c67fdec4385e6832d5acbffe3e59cf201fb011d8b5e3c3530b3ea3f",
      "effective_date": null
     },
     {
-     "id": "web-556d99366876433a",
+     "id": "web-b63d3d0d2674d29c",
      "kind": "hospital_web",
      "url": "https://nelsoncountyhealthsystem.org/what-we-do/important-links/links.html",
      "title": "Important Links : Important Links : What We Do : Nelson County Health Services Foundation",
      "fetched_on": "2026-10-23",
-     "sha256": "556d99366876433a5df038f44461e2139f130e8efe604bbae4038079ba4bffa1",
+     "sha256": "b63d3d0d2674d29c156be494a348db386252d7ded3bdbbbd4966851c3abad02a",
      "effective_date": null
     }
    ],
    "accuracy": null,
-   "eve_review": [
-    "apply.form_url: not an absolute URL ('/file_download/4974c55c-e756-483f-82a9-e9777c857e21'); dropped"
-   ],
+   "eve_review": [],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 1,
+    "sources_fetched": 2,
     "sources_total": 3,
     "sources_missing": [
-     "https://nelsoncountyhealthsystem.org/file_download/inline/9f4ed9cf-7a3a-4fc8-ac9a-58b43b192e86",
-     "https://nelsoncountyhealthsystem.org/file_download/4974c55c-e756-483f-82a9-e9777c857e21"
+     "https://nelsoncountyhealthsystem.org/file_download/inline/4974c55c-e756-483f-82a9-e9777c857e21"
     ],
+    "sha256_match": {
+     "web-fbf15d8e502aa2b5": true,
+     "fap-21fe1be65c67fdec": true,
+     "web-b63d3d0d2674d29c": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "contacts.phone"
     ],
@@ -2051,6 +1775,11 @@
     "sources_fetched": 2,
     "sources_total": 2,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-6df863fb86224122": true,
+     "web-87d7eac003798a1f": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -2095,7 +1824,15 @@
    "eligibility": {
     "free_care_max_fpl": null,
     "discount_tiers": null,
-    "assistance_ceiling_fpl": null,
+    "assistance_ceiling_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "FAP-eligible patients are those that meet the income guidelines and have no insurance. A patient meets the income guidelines if they fall within 200% of the Federal Poverty Guidelines published annually.",
+     "source_id": "fap-0b8ec0fb12f1e4f9",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "asset_test": null,
     "residency": null,
     "insured_patients_covered": null,
@@ -2116,10 +1853,6 @@
       {
        "kind": "mail",
        "detail": "Northwood Deaconess Health Center Hospital Business Office PO Box 190 Northwood, ND 58267"
-      },
-      {
-       "kind": "in_person",
-       "detail": "Free paper copies of the FAP, FAP application and plan language summary of the FAP will be available upon request \u2013 both in person or by mail."
       }
      ],
      "layer": "documented",
@@ -2145,7 +1878,7 @@
     "eca_wait_days": {
      "value": 120,
      "layer": "documented",
-     "quote": "if after 120 days of the first statement the patient has made no attempt to contact the business office, NDHC will utilize a collection agency.",
+     "quote": "if after 120 days of the first statement the patient has made no attempt to contact the business office, NDHC will utilize a collection agency",
      "source_id": "fap-0b8ec0fb12f1e4f9",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2202,18 +1935,22 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Free paper copies of the FAP, FAP application and plan language summary of the FAP will be available upon request \u2013 both",
-    "agent dropped apply.documents_required: excerpt not in source: 3. Termination notice or letter from applicant\u2019s former empl",
-    "agent judge on eligibility.assistance_ceiling_fpl: Quote says patients within 200% of FPG meet income guidelines. It does not say no assistance is offered above 200%, so it does not state a ceiling.",
-    "agent judge on apply.submit_methods: Quote gives the mail address and says paper copies are available in person or by mail. It does not say applications can be submitted in person.",
-    "agent judge on apply.window_days_from_first_bill: Quote says patients have 120 days to apply but does not state the window runs from the first bill."
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Two or more current paycheck stubs | Social Security Benefit Letter (Available through the local Social Security office)",
+    "agent judge on apply.documents_required: Quote lists only three items (tax documents, paycheck stubs, Social Security letter); the value adds unemployment letter and bank statement not in the quote."
    ],
    "eve_verified": {
     "on": "2026-10-23",
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-0b8ec0fb12f1e4f9": true,
+     "fap-0fd0156590f28cad": true,
+     "web-aa9f21736f163a49": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
+     "eligibility.assistance_ceiling_fpl",
      "apply.submit_methods",
      "apply.window_days_from_first_bill",
      "collections.eca_wait_days",
@@ -2221,211 +1958,12 @@
     ],
     "rejected": [
      [
-      "eligibility.assistance_ceiling_fpl",
-      "quote does not say the hospital's financial assistance reaches it"
-     ],
-     [
-      "apply.form_url",
-      "quote not found in source"
-     ]
-    ],
-    "pruned": [],
-    "income_rule_verified": false,
-    "core_completeness": 0.33
-   }
-  },
-  {
-   "hospital": {
-    "ccn": "351314",
-    "name": "JACOBSON MEMORIAL HOSPITAL CARE CENTER",
-    "city": "ELGIN",
-    "state": "ND",
-    "zip": "58533",
-    "phone": "701-584-2792",
-    "ownership": "Voluntary non-profit - Private",
-    "website_domain": "jacobsonhospital.org",
-    "system": null
-   },
-   "version": 1,
-   "status": "draft",
-   "eligibility": {
-    "free_care_max_fpl": null,
-    "discount_tiers": null,
-    "assistance_ceiling_fpl": null,
-    "asset_test": null,
-    "residency": {
-     "value": [
-      "Prior to granting discounted services the patient/guarantor must meet the following eligibility requirements: be a current resident of JMHCC's primary service area."
-     ],
-     "layer": "documented",
-     "quote": "Prior to granting discounted services the patient/guarantor must meet the following eligibility requirements: be a current resident of JMHCC\u2019s primary service area",
-     "source_id": "fap-f127886c5abeb4b8",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "insured_patients_covered": {
-     "value": true,
-     "layer": "documented",
-     "quote": "to provide discounted services to uninsured patients or underinsured eligible patient (uninsured services) who are unable to pay for some or all of their services",
-     "source_id": "fap-f127886c5abeb4b8",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "min_balance": null,
-    "services_excluded": null
-   },
-   "programs": {
-    "presumptive": null,
-    "state_programs": {
-     "value": [
-      {
-       "name": "Medicaid",
-       "how_to_apply": ""
-      },
-      {
-       "name": "WIC",
-       "how_to_apply": ""
-      },
-      {
-       "name": "Fuel Assistance",
-       "how_to_apply": ""
-      },
-      {
-       "name": "Food Stamps",
-       "how_to_apply": ""
-      },
-      {
-       "name": "Children's Health Assistance Program",
-       "how_to_apply": ""
-      },
-      {
-       "name": "TANF (Temporary Assistance for Needy Families)",
-       "how_to_apply": ""
-      }
-     ],
-     "layer": "documented",
-     "quote": "ASSISTANCE PROGRAMS Applied Received Denied Medicaid WIC Fuel Assistance Food Stamps Children\u2019s Health Assistance Program TANF (Temporary Assistance for Needy Families)",
-     "source_id": "fap-807626e02a99bacd",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
-   },
-   "apply": {
-    "form_url": null,
-    "form_version": null,
-    "documents_required": {
-     "value": [
-      "pay_stubs",
-      "tax_return",
-      "proof_of_income",
-      "other"
-     ],
-     "layer": "documented",
-     "quote": "____Copies of last three pay stubs for all listed (year to date) income ____If self-employed, copy of last quarterly federal income tax filed ____Copy of all income tax forms filed for previous year ____Copy of all W-2s for previous year",
-     "source_id": "fap-807626e02a99bacd",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "documents_reported": null,
-    "submit_methods": null,
-    "window_days_from_first_bill": null,
-    "decision_days": {
-     "value": 90,
-     "layer": "documented",
-     "quote": "The CFO shall generally have 90-days to evaluate the application, make a determination of eligibility",
-     "source_id": "fap-f127886c5abeb4b8",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "decision_days_reported": null
-   },
-   "collections": {
-    "eca_wait_days": null,
-    "collection_agencies": null
-   },
-   "contacts": {
-    "phone": {
-     "value": "701-584-2792",
-     "layer": "documented",
-     "quote": "Jacobson Memorial Hospital Care Center 601 East St. North PO Box 367 Elgin, ND 58533 701-584-2792",
-     "source_id": "web-ea4a29193b04b3b9",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "hours": null,
-    "languages": null
-   },
-   "coverage": {
-    "facilities": null,
-    "provider_list_url": null,
-    "covered_providers": null
-   },
-   "sources": [
-    {
-     "id": "fap-f127886c5abeb4b8",
-     "kind": "hospital_web",
-     "url": "https://www.jacobsonhospital.org/_files/ugd/c0646b_3bf354ec085d4f48a5cb0b7d385bc98b.pdf",
-     "title": "",
-     "fetched_on": "2026-10-23",
-     "sha256": "f127886c5abeb4b836c2b63e9e77646400ed5ce7df16816ba33129f6dc5ec5b7",
-     "effective_date": null
-    },
-    {
-     "id": "fap-807626e02a99bacd",
-     "kind": "hospital_web",
-     "url": "https://www.jacobsonhospital.org/_files/ugd/c0646b_e673a14166fb4c2fb2eddfefc7b99840.pdf",
-     "title": "",
-     "fetched_on": "2026-10-23",
-     "sha256": "807626e02a99bacd04c5ec69143b3326ab155b86e46c6e7041d338df0640f617",
-     "effective_date": null
-    },
-    {
-     "id": "web-ea4a29193b04b3b9",
-     "kind": "hospital_web",
-     "url": "https://www.jacobsonhospital.org/resources",
-     "title": "Patient Resources | JMHCC",
-     "fetched_on": "2026-10-23",
-     "sha256": "ea4a29193b04b3b909b5d6e56da92f391087566ebe64d25039ded8e8e842abad",
-     "effective_date": null
-    }
-   ],
-   "accuracy": null,
-   "eve_review": [
-    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: ____ Proof of child support, alimony received ____ Copy of last two welfare, unemployment, worker\u2019s comp., pension, soci",
-    "agent dropped apply.submit_methods: excerpt not in source: Application forms shall be made available at the Business Of",
-    "agent judge on eligibility.insured_patients_covered: Quote covers uninsured or underinsured patients only; it does not state that insured patients are covered."
-   ],
-   "eve_verified": {
-    "on": "2026-10-23",
-    "sources_fetched": 3,
-    "sources_total": 3,
-    "sources_missing": [],
-    "accepted": [
-     "eligibility.residency",
-     "eligibility.insured_patients_covered",
-     "programs.state_programs",
-     "apply.documents_required",
-     "apply.decision_days",
-     "contacts.phone"
-    ],
-    "rejected": [
-     [
-      "eligibility.asset_test",
-      "quote does not support the asset-test value"
-     ],
-     [
       "apply.form_url",
       "quote not found in source"
      ]
     ],
     "pruned": [
-     "apply.documents_required: 1 item not named in the trimmed quote"
+     "apply.documents_required: none of the listed documents is named in the quote (after trimming)"
     ],
     "income_rule_verified": false,
     "core_completeness": 0.33
@@ -2609,6 +2147,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-174bfaef7b79efbc": true,
+     "fap-e4142b1248b8adbd": true,
+     "web-8eaa6ecdc46d9e20": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.residency",
@@ -2661,8 +2205,8 @@
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "Eligibility for charity will be considered for those individuals who are uninsured, underinsured, ineligible for any government health care program, and who are unable to pay for their care",
-     "source_id": "fap-195be1ca5caed028",
+     "quote": "PMC shall determine whether or not patients are eligible to receive charity for deductibles, co-insurance, or co-payment responsibilities.",
+     "source_id": "fap-bf959becbdd91649",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -2674,14 +2218,12 @@
     "presumptive": {
      "value": [
       "State-funded prescription programs",
-      "Homeless or received care from a homeless clinic",
-      "Participation in Women, Infants and Children programs (WIC)",
-      "Food stamp eligibility",
-      "Subsidized school lunch program eligibility"
+      "Homeless",
+      "Women, Infants and Children programs (WIC)"
      ],
      "layer": "documented",
-     "quote": "1. State-funded prescription programs; 2. Homeless or received care from a homeless clinic; 3. Participation in Women, Infants and Children programs (WIC); 4. Food stamp eligibility; 5. Subsidized school lunch program eligibility; 6. Eligibility for other state or local assistance program that are unfunded (e.g., Medicaid spend-down); 7. Low income/subsidized housing is provided as a valid address; and 8. Patient is deceased with no known estate.",
-     "source_id": "fap-195be1ca5caed028",
+     "quote": "Presumptive eligibility may be determined on the basis of individual life circumstances that may include: 1. State-funded prescription programs; 2. Homeless or received care from a homeless clinic; 3. Participation in Women, Infants and Children programs (WIC);",
+     "source_id": "fap-bf959becbdd91649",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -2691,14 +2233,25 @@
    "apply": {
     "form_url": null,
     "form_version": null,
-    "documents_required": null,
+    "documents_required": {
+     "value": [
+      "tax_return",
+      "bank_statements"
+     ],
+     "layer": "documented",
+     "quote": "As a minimum requirement the patient must furnish a copy of last year\u2019s tax return or last two month\u2019s income or a bank statement for proof of income.",
+     "source_id": "fap-bf959becbdd91649",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "documents_reported": null,
     "submit_methods": null,
     "window_days_from_first_bill": {
      "value": 240,
      "layer": "documented",
      "quote": "Accounts eligible for Charity Care are to be addressed within 240 days of first bill.",
-     "source_id": "fap-195be1ca5caed028",
+     "source_id": "fap-bf959becbdd91649",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -2707,7 +2260,7 @@
      "value": 30,
      "layer": "documented",
      "quote": "PMC shall notify the patient or applicant in writing within 30 days of receipt of a completed application.",
-     "source_id": "fap-195be1ca5caed028",
+     "source_id": "fap-bf959becbdd91649",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -2719,9 +2272,27 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": null,
+    "phone": {
+     "value": "(701) 477-3161",
+     "layer": "documented",
+     "quote": "213 2nd Ave. NE Rolla, ND 58367 (701) 477-3161",
+     "source_id": "web-7384ccb96b452d58",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "hours": null,
-    "languages": null
+    "languages": {
+     "value": [
+      "primary language spoken"
+     ],
+     "layer": "documented",
+     "quote": "Such notices and summary information shall be provided in the primary language spoken.",
+     "source_id": "fap-bf959becbdd91649",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
    },
    "coverage": {
     "facilities": null,
@@ -2730,47 +2301,72 @@
    },
    "sources": [
     {
-     "id": "fap-195be1ca5caed028",
+     "id": "fap-bf959becbdd91649",
      "kind": "hospital_web",
-     "url": "https://smphealth.org/stkateri/wp-content/uploads/2020/01/Financial-Assistance-Policy.pdf",
+     "url": "https://smphealth.org/stkateri/wp-content/uploads/2022/12/Financial-Assistance-Policy-091719-002.pdf",
      "title": "",
      "fetched_on": "2026-10-23",
-     "sha256": "195be1ca5caed02851c128513a6a694221a3788eb997127497ff04325824e073",
+     "sha256": "bf959becbdd916497de6ea7d91b3a3b71f300c144e0d1d4981c04f1e12bbcbe4",
      "effective_date": null
     },
     {
-     "id": "fap-bb02bfe2ef60ce30",
+     "id": "fap-d77f861b72b097ca",
      "kind": "hospital_web",
-     "url": "https://smphealth.org/stkateri/wp-content/uploads/2020/01/Financial-Assistance-Application.pdf",
+     "url": "https://smphealth.org/stkateri/wp-content/uploads/2022/12/Financial-Assistance-Application-002.pdf",
      "title": "",
      "fetched_on": "2026-10-23",
-     "sha256": "bb02bfe2ef60ce30d52459a3ce9f5e68eb262e3973801d0e2b9d89cc7e449bbd",
+     "sha256": "d77f861b72b097ca4d0639c1326036587d50e6d225907027a99ea0535ad02e2f",
+     "effective_date": null
+    },
+    {
+     "id": "web-7384ccb96b452d58",
+     "kind": "hospital_web",
+     "url": "https://smphealth.org/stkateri/resources/",
+     "title": "Resources - St. Kateri",
+     "fetched_on": "2026-10-23",
+     "sha256": "7384ccb96b452d588ebe3abb32564cde87ddb11af46b63d160c76f9996d1087f",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: As a minimum requirement the patient must furnish a copy of last year\u2019s tax return or last two month\u2019s income or a bank ",
-    "agent judge on eligibility.insured_patients_covered: Quote covers uninsured and underinsured patients and those ineligible for government programs; it does not plainly state that insured patients are covered."
+    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: 6. Eligibility for other state or local assistance program that are unfunded (e.g., Medicaid spend-down);",
+    "agent judge on eligibility.insured_patients_covered: Quote covers charity for deductibles, co-insurance, and co-payments but never explicitly says insured patients are covered.",
+    "agent judge on programs.presumptive: Quote lists state-funded prescription programs, homeless, WIC, and Medicaid spend-down. It does not mention food stamp eligibility.",
+    "agent judge on apply.documents_required: Quote lists alternatives (last year's tax return, or last two months' income, or a bank statement), not required documents. It omits the two-months-income option.",
+    "agent judge on contacts.languages: Quote mentions only providing notices in the primary language spoken and names no language. The value is the phrase itself, not a language."
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 2,
-    "sources_total": 2,
+    "sources_fetched": 3,
+    "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-bf959becbdd91649": true,
+     "fap-d77f861b72b097ca": true,
+     "web-7384ccb96b452d58": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.insured_patients_covered",
      "programs.presumptive",
+     "apply.documents_required",
      "apply.window_days_from_first_bill",
-     "apply.decision_days"
+     "apply.decision_days",
+     "contacts.phone",
+     "contacts.languages"
     ],
-    "rejected": [],
+    "rejected": [
+     [
+      "apply.form_url",
+      "quote not found in source"
+     ]
+    ],
     "pruned": [
-     "programs.presumptive: 3 items not named in the trimmed quote",
-     "apply.documents_required: none of the listed documents is named in the quote (after trimming)"
+     "programs.presumptive: 2 items not named in the trimmed quote"
     ],
     "income_rule_verified": false,
-    "core_completeness": 0.0
+    "core_completeness": 0.33
    }
   },
   {
@@ -2802,7 +2398,7 @@
     "asset_test": {
      "value": true,
      "layer": "documented",
-     "quote": "Provide documentation for family assets",
+     "quote": "You must provide information on all assets owned by any family member. Asset verification is required to determine financial assistance.",
      "source_id": "fap-e4142b1248b8adbd",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2830,35 +2426,19 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "proof_of_income",
+      "tax_return",
+      "pay_stubs",
       "other"
      ],
      "layer": "documented",
-     "quote": "Provide documentation for family income \u25a1 Provide documentation for family assets",
+     "quote": "Last year\u2019s income tax return, including schedules if applicable; or \u25cf A \"W-2\" withholding statement; or \u25cf Current pay stubs (3 months); or",
      "source_id": "fap-e4142b1248b8adbd",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "documents_reported": null,
-    "submit_methods": {
-     "value": [
-      {
-       "kind": "mail",
-       "detail": "Mail completed application with all documentation to: CommonSpirit Health Financial Assistance, PO Box 5096, Fredericksburg, VA 22403"
-      },
-      {
-       "kind": "fax",
-       "detail": "Fax: 1-269-202-5498"
-      }
-     ],
-     "layer": "documented",
-     "quote": "Mail or fax completed application with all documentation to: CommonSpirit Health Financial Assistance, PO Box 5096, Fredericksburg, VA 22403 Fax: 1-269-202-5498.",
-     "source_id": "fap-e4142b1248b8adbd",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "submit_methods": null,
     "window_days_from_first_bill": null,
     "decision_days": {
      "value": 30,
@@ -2913,39 +2493,50 @@
      "effective_date": null
     },
     {
-     "id": "web-06b05e447532ded4",
+     "id": "web-1a6ee2d4838684a0",
      "kind": "hospital_web",
      "url": "https://www.chistalexiushealth.org/patients-and-visitors/financial-assistance",
      "title": "Financial Assistance | CHI St. Alexius Health",
      "fetched_on": "2026-10-23",
-     "sha256": "06b05e447532ded4036ff7c1b8c9615c201be07bda5a8b43b15a937167dee175",
+     "sha256": "1a6ee2d4838684a0324311dc073fa582ef6b1a7c6d4f3cf4c9138e0ca0357047",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: To submit your completed application in person: CommonSpirit Health Hospital Emergency Department"
+    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: Current bank statements (showing most recent 3 months)",
+    "agent dropped apply.submit_methods: excerpt not in source: Apply for financial assistance [https://commonspirit.myfa.ap"
    ],
    "eve_verified": {
     "on": "2026-10-23",
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-3cffca5328ebc1c8": true,
+     "fap-e4142b1248b8adbd": true,
+     "web-1a6ee2d4838684a0": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.assistance_ceiling_fpl",
      "eligibility.asset_test",
      "eligibility.insured_patients_covered",
      "apply.documents_required",
-     "apply.submit_methods",
      "apply.decision_days",
      "contacts.phone"
     ],
-    "rejected": [],
+    "rejected": [
+     [
+      "apply.form_url",
+      "quote not found in source"
+     ]
+    ],
     "pruned": [
-     "apply.submit_methods: 1 item not named in the trimmed quote"
+     "apply.documents_required: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": false,
-    "core_completeness": 0.5
+    "core_completeness": 0.33
    }
   },
   {
@@ -3069,6 +2660,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-2b4204992eb9ea1f": true,
+     "fap-183a4bc3c5f8f8e7": true,
+     "web-74fdf3448532c90b": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "apply.window_days_from_first_bill",
@@ -3171,8 +2768,8 @@
     "phone": {
      "value": "701-352-1620",
      "layer": "documented",
-     "quote": "701-352-1620 or email dhanson@unitymedcenter.com",
-     "source_id": "web-0e6245afcb279280",
+     "quote": "If you have questions regarding any of these financial documents, please call 701-352-1620 and ask to speak to a Patient Account Representative.",
+     "source_id": "web-25ab1d399eac49ab",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -3205,26 +2802,33 @@
      "effective_date": null
     },
     {
-     "id": "web-0e6245afcb279280",
+     "id": "web-25ab1d399eac49ab",
      "kind": "hospital_web",
      "url": "https://www.unitymedcenter.com/about-us/price-transparency.html",
      "title": "Price Transparency & Financial Assistance : About Us : Unity Medical Center",
      "fetched_on": "2026-10-23",
-     "sha256": "0e6245afcb279280f360facbc8ea9137151dd51f820e0be5034f40e1e19f4060",
+     "sha256": "25ab1d399eac49ab056088b662d3c0213dbce76f9c620a5381d654e5641b61c7",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Two (2) most recent check stubs from all working household members | If Self-employed, two (2) most recent Business Account Bank Statements",
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Two (2) most recent check stubs from all working household members | A Medicaid Denial Letter or proof of application, if applicable",
     "apply.form_url: not an absolute URL ('/file_download/758ac999-64fc-4609-acfb-52be6d1c361c'); dropped",
-    "agent judge on eligibility.insured_patients_covered: Quote only says non-Medicare insured patients must pay their co-payment at time of service. It does not say insured patients are covered by assistance."
+    "agent judge on eligibility.insured_patients_covered: Quote only says insured non-Medicare patients must pay their co-payment at time of service. It does not say insured patients are covered by assistance.",
+    "agent judge on apply.documents_required: Quote lists three documents. The value's fourth item, the self-employed business bank statements, does not appear in the quote."
    ],
    "eve_verified": {
     "on": "2026-10-23",
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-aaec41a72a289396": true,
+     "fap-d3c6ee684c065a57": true,
+     "web-25ab1d399eac49ab": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.insured_patients_covered",
      "apply.documents_required",
@@ -3238,7 +2842,7 @@
      ]
     ],
     "pruned": [
-     "apply.documents_required: 1 item not named in the trimmed quote"
+     "apply.documents_required: 2 items not named in the trimmed quote"
     ],
     "income_rule_verified": false,
     "core_completeness": 0.5
@@ -3297,7 +2901,24 @@
      "support_count": 0
     },
     "documents_reported": null,
-    "submit_methods": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "portal",
+       "detail": "available at Ashley Medical Center's business office or online (www.amctoday.org)"
+      },
+      {
+       "kind": "in_person",
+       "detail": "available at Ashley Medical Center's business office"
+      }
+     ],
+     "layer": "documented",
+     "quote": "available at Ashley Medical Center\u2019s business office or online (www.amctoday.org)",
+     "source_id": "fap-b6483b3b420c7a45",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "window_days_from_first_bill": null,
     "decision_days": null,
     "decision_days_reported": null
@@ -3310,7 +2931,7 @@
     "phone": {
      "value": "701-288-3433",
      "layer": "documented",
-     "quote": "the AMC Business Office at 701-288-3433",
+     "quote": "calling the AMC Business Office at 701-288-3433 or the AMC Clinic Business Office at 701-288-3448.",
      "source_id": "fap-772770b478150f70",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3355,18 +2976,24 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "agent dropped apply.submit_methods: excerpt not in source: please contact the Ashley Medical Center (612 Center Ave N, ",
-    "agent judge on eligibility.asset_test: Quote says patients with significant assets may still be eligible; it implies assets are considered but does not plainly state assets are considered as a test. Borderline; supported leans yes.",
-    "agent judge on apply.documents_required: Quote says documents such as tax returns, pay stubs, bank statements, etc. These are examples, not a stated required list; 'etc.' makes the list non-exhaustive."
+    "agent judge on apply.documents_required: Quote says 'such as tax returns, pay stubs, bank statements, etc.', which gives examples, not a definitive required list.",
+    "agent judge on apply.submit_methods: Quote says where the application is available (business office or online), not how it is submitted."
    ],
    "eve_verified": {
     "on": "2026-10-23",
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-b6483b3b420c7a45": true,
+     "fap-772770b478150f70": true,
+     "web-1495a40a8304d6d2": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.insured_patients_covered",
      "apply.documents_required",
+     "apply.submit_methods",
      "contacts.phone"
     ],
     "rejected": [
@@ -3381,7 +3008,7 @@
     ],
     "pruned": [],
     "income_rule_verified": false,
-    "core_completeness": 0.33
+    "core_completeness": 0.5
    }
   },
   {
@@ -3417,15 +3044,50 @@
     "services_excluded": null
    },
    "programs": {
-    "presumptive": null,
+    "presumptive": {
+     "value": [
+      "deceased with no estate"
+     ],
+     "layer": "documented",
+     "quote": "Expired Patients: Patients who are deceased and have no estate are deemed to have no income for the purpose of determining Financial Assistance.",
+     "source_id": "fap-349e5b85b52a3fef",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "state_programs": null
    },
    "apply": {
     "form_url": null,
     "form_version": null,
-    "documents_required": null,
+    "documents_required": {
+     "value": [
+      "tax_return",
+      "pay_stubs",
+      "bank_statements"
+     ],
+     "layer": "documented",
+     "quote": "Medical Assistance Determination (proof of Medicaid denial required) And at least two of the three items listed below b. Previous year\u2019s tax return c. Last three months\u2019 paystubs or income verification d. Last three months\u2019 bank statements from all banking accounts",
+     "source_id": "fap-349e5b85b52a3fef",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "documents_reported": null,
-    "submit_methods": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "in_person",
+       "detail": "The completed application must be submitted to the LPH Business Office"
+      }
+     ],
+     "layer": "documented",
+     "quote": "The completed application must be submitted to the LPH Business Office with the following information",
+     "source_id": "fap-349e5b85b52a3fef",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "window_days_from_first_bill": null,
     "decision_days": {
      "value": 10,
@@ -3446,7 +3108,7 @@
     "phone": {
      "value": "701-256-6100",
      "layer": "documented",
-     "quote": "To set up a Hospital Payment Plan, patients should contact the Business Office at 701-256-6100.",
+     "quote": "please contact the Business Office at 701-265-6100",
      "source_id": "fap-349e5b85b52a3fef",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3473,32 +3135,46 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Previous year\u2019s tax return | Last three months\u2019 paystubs or income verification",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: calling the LPH Business Office at 701-256-6100, or downloading the application from the LPH website",
-    "agent judge on apply.documents_required: Quote lists only three documents. The value adds a fourth, 'Last three months' bank statements from all banking accounts', which the quote does not state."
+    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Patients may request applications at hospital or clinic registration areas, by calling the LPH Business Office at 701-25",
+    "agent judge on eligibility.free_care_max_fpl: Quote gives no percent of FPL. It says those at or below the 'minimum criteria' get 100% assistance, so the value 0 is not stated.",
+    "agent judge on apply.documents_required: Quote requires Medicaid denial proof plus at least two of three listed items. The value lists all four as required, omitting the 'at least two of three' condition.",
+    "agent judge on apply.submit_methods: Quote says only submission is in person to the Business Office. Phone and website are for requesting or downloading applications, not submitting them.",
+    "agent judge on apply.decision_days: Quote says ten (10) working days. The value 10 drops the 'working' qualifier, so it is not stated as plain days.",
+    "agent judge on contacts.phone: Quote gives 701-265-6100, while the value is 701-256-6100. The digits differ."
    ],
    "eve_verified": {
     "on": "2026-10-23",
     "sources_fetched": 1,
     "sources_total": 1,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-349e5b85b52a3fef": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.insured_patients_covered",
+     "programs.presumptive",
+     "apply.documents_required",
+     "apply.submit_methods",
      "apply.decision_days",
      "contacts.phone"
     ],
     "rejected": [
+     [
+      "eligibility.free_care_max_fpl",
+      "value not in quote"
+     ],
      [
       "eligibility.asset_test",
       "quote does not support the asset-test value"
      ]
     ],
     "pruned": [
-     "apply.documents_required: none of the listed documents is named in the quote (after trimming)",
-     "apply.submit_methods: none of the listed channels is named in the quote (after trimming)"
+     "apply.documents_required: 1 item not named in the trimmed quote",
+     "apply.submit_methods: 2 items not named in the trimmed quote"
     ],
     "income_rule_verified": false,
-    "core_completeness": 0.17
+    "core_completeness": 0.5
    }
   },
   {
@@ -3663,6 +3339,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-bd6be1c189188f75": true,
+     "fap-7dfcbe9d487eb50a": true,
+     "web-5e21682de91d7e9b": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.asset_test",
@@ -3700,16 +3382,48 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": null,
-    "discount_tiers": null,
+    "free_care_max_fpl": {
+     "value": "100",
+     "layer": "documented",
+     "quote": "% of Poverty Level 100% 170% 200% 300% Financial Aid Discount 100% 70% 45% 22%",
+     "source_id": "fap-56dcab37cf52d4d5",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "100",
+       "max_fpl_inclusive": "170",
+       "discount_percent": 70
+      },
+      {
+       "min_fpl_exclusive": "170",
+       "max_fpl_inclusive": "200",
+       "discount_percent": 45
+      },
+      {
+       "min_fpl_exclusive": "200",
+       "max_fpl_inclusive": "300",
+       "discount_percent": 22
+      }
+     ],
+     "layer": "documented",
+     "quote": "% of Poverty Level 100% 170% 200% 300% Financial Aid Discount 100% 70% 45% 22% Patient Share 0% 30% 55% 78%",
+     "source_id": "fap-56dcab37cf52d4d5",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": {
      "value": [
-      "First Care Health Center provides temporary financial assistance to patients with demonstrated and documented financial need, who reside in the First Care Health Center service area and receive primary health care services at First Care Health Center."
+      "First Care Health Center provides temporary financial assistance to patients with demonstrated and documented financial need, who reside in the First Care Health Center service area"
      ],
      "layer": "documented",
-     "quote": "First Care Health Center provides temporary financial assistance to patients with demonstrated and documented financial need, who reside in the First Care Health Center service area",
+     "quote": "who reside in the First Care Health Center service area and receive primary health care services at First Care Health Center",
      "source_id": "fap-56dcab37cf52d4d5",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3718,7 +3432,7 @@
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "Financial Assistance does not include bad debt or contractual shortfalls from government programs, but may include insurance co-payments, co-insurance, recipient liability, deductibles or a combination",
+     "quote": "Financial Assistance does not include bad debt or contractual shortfalls from government programs, but may include insurance co-payments, co-insurance, recipient liability, deductibles or a combination.",
      "source_id": "fap-56dcab37cf52d4d5",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3750,11 +3464,11 @@
      "value": [
       {
        "kind": "in_person",
-       "detail": "Applications for this assistance are available from the Business Office at First Care Health Center"
+       "detail": "applications for this assistance are available from the Business Office at First Care Health Center"
       },
       {
        "kind": "phone",
-       "detail": "701-284-7500"
+       "detail": "calling 701-284-7500"
       }
      ],
      "layer": "documented",
@@ -3784,10 +3498,10 @@
     "phone": {
      "value": "701-284-7500",
      "layer": "documented",
-     "quote": "please contact First Care Health Center's Business Office at (701) 284-7500",
+     "quote": "or by calling 701-284-7500",
      "source_id": "fap-56dcab37cf52d4d5",
      "checked_on": "2026-10-23",
-     "confidence": 0.8,
+     "confidence": 1.0,
      "support_count": 0
     },
     "hours": null,
@@ -3811,20 +3525,20 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: Financial Aid Discount 100% 70% 45% 22% | Patient Share 0% 30% 55% 78%",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: B. Copy of current wage verification (3 months paystubs/bank statements) | C. Completed Financial Assistance application",
-    "contacts.phone: quote matched the source only after typography normalization",
-    "agent judge on eligibility.free_care_max_fpl: Quote says income below 'the minimum criteria' gets 100% assistance but never gives the FPL percentage; 100 is not stated.",
-    "agent judge on eligibility.residency: Quote covers the service-area residency requirement but omits the value's clause that patients must receive primary care services at First Care.",
-    "agent judge on eligibility.insured_patients_covered: Quote only says assistance may include copayments, coinsurance and deductibles and excludes government shortfalls; it does not state insured patients are covered.",
-    "agent judge on apply.submit_methods: Quote says applications are available from the Business Office or by calling the number; it describes obtaining applications, not submitting them."
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: B. Copy of current wage verification (3 months paystubs/bank statements) | C. Completed Financial Assistance application"
    ],
    "eve_verified": {
     "on": "2026-10-23",
     "sources_fetched": 1,
     "sources_total": 1,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-56dcab37cf52d4d5": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
      "eligibility.residency",
      "eligibility.insured_patients_covered",
      "apply.documents_required",
@@ -3834,23 +3548,20 @@
     ],
     "rejected": [
      [
-      "eligibility.free_care_max_fpl",
-      "quote does not state the free-care limit as an income limit"
-     ],
-     [
-      "eligibility.discount_tiers",
-      "value not in quote"
-     ],
-     [
       "eligibility.asset_test",
       "quote does not support the asset-test value"
+     ],
+     [
+      "collections.eca_wait_days",
+      "value not in quote"
      ]
     ],
     "pruned": [
+     "programs.presumptive: none of the listed programs is named in the quote (after trimming)",
      "apply.documents_required: 2 items not named in the trimmed quote"
     ],
-    "income_rule_verified": false,
-    "core_completeness": 0.5
+    "income_rule_verified": true,
+    "core_completeness": 0.83
    }
   },
   {
@@ -4025,6 +3736,12 @@
     "sources_missing": [
      "https://smphealth.org/staloisius/wp-content/uploads/2025/02/2025-CARING-PROGRAM-APPLICATION-1.pdf"
     ],
+    "sha256_match": {
+     "fap-432efd82950bf8b8": true,
+     "fap-813adb7057ef533a": true,
+     "fap-e83f8121c8d66903": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.insured_patients_covered",
@@ -4088,21 +3805,28 @@
    "apply": {
     "form_url": null,
     "form_version": null,
-    "documents_required": null,
+    "documents_required": {
+     "value": [
+      "proof_of_income",
+      "bank_statements"
+     ],
+     "layer": "documented",
+     "quote": "Copies of the last three (3) months income for all wage earners contributing to your household income. Bank statements will be accepted as verification of income.",
+     "source_id": "fap-4cc790689c5f119a",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "documents_reported": null,
     "submit_methods": {
      "value": [
       {
        "kind": "mail",
-       "detail": "Return all applications to: Linton Regional Medical Center, 111 Elm Ave W, PO Box 850, Linton, ND 58552"
-      },
-      {
-       "kind": "phone",
-       "detail": "Phone: 701-254-4511"
+       "detail": "Return all applications to: Linton Regional Medical Center 111 Elm Ave W PO Box 850 Linton, ND 58552"
       }
      ],
      "layer": "documented",
-     "quote": "Return all applications to: Linton Regional Medical Center 111 Elm Ave W PO Box 850 Linton, ND 58552 Phone: 701-254-4511",
+     "quote": "Return all applications to: Linton Regional Medical Center 111 Elm Ave W PO Box 850 Linton, ND 58552",
      "source_id": "fap-4cc790689c5f119a",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4191,16 +3915,23 @@
    "accuracy": null,
    "eve_review": [
     "eligibility.discount_tiers: 0-200% at 100% is the free-care band, not a tier; skipped",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: 2. Copies of the last three (3) months income for all wage earners contributing to your household income. | 3. Copy of your most recent income tax return.",
-    "agent judge on eligibility.discount_tiers: Quote describes a sliding scale of up to 100% through 200% FPG, not a single flat 100% tier from 0 to 200%; the tier structure isn't stated."
+    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: Copy of your most recent income tax return.",
+    "agent judge on eligibility.discount_tiers: Quote says a sliding scale up to 100% and discounts through 200% FPG, but gives no tier breakdown; a single flat 0-200% at 100% is not stated."
    ],
    "eve_verified": {
     "on": "2026-10-23",
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-cf4b840817be993b": true,
+     "fap-4cc790689c5f119a": true,
+     "web-0545cb2d25dfca9d": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.insured_patients_covered",
+     "apply.documents_required",
      "apply.submit_methods",
      "contacts.phone",
      "contacts.languages"
@@ -4216,10 +3947,10 @@
      ]
     ],
     "pruned": [
-     "apply.documents_required: none of the listed documents is named in the quote (after trimming)"
+     "apply.documents_required: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": false,
-    "core_completeness": 0.33
+    "core_completeness": 0.5
    }
   },
   {
@@ -4266,27 +3997,16 @@
    },
    "contacts": {
     "phone": {
-     "value": "701-567-4561",
+     "value": "(701) 567-6156",
      "layer": "documented",
-     "quote": "Phone Number: 701-567-4561",
-     "source_id": "web-b23553f9d23e525d",
+     "quote": "West River Health Services Financial Counselor (Financiera Consejera) 1000 Hwy 12 Hettinger, ND 58639 (701) 567-6156",
+     "source_id": "web-d2f8d67f6133e50f",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "hours": null,
-    "languages": {
-     "value": [
-      "English",
-      "Spanish"
-     ],
-     "layer": "documented",
-     "quote": "Financial Assistance - Financiero Asistencia",
-     "source_id": "web-b23553f9d23e525d",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "languages": null
    },
    "coverage": {
     "facilities": null,
@@ -4313,20 +4033,18 @@
      "effective_date": null
     },
     {
-     "id": "web-b23553f9d23e525d",
+     "id": "web-d2f8d67f6133e50f",
      "kind": "hospital_web",
      "url": "https://www.wrhs.com/patients-visitors/financial-assistance.html",
      "title": "Financial Assistance - Financiero Asistencia",
      "fetched_on": "2026-10-23",
-     "sha256": "b23553f9d23e525d0d80b57d8382999a00f2187725e0e6f14383e23fcfd398c2",
+     "sha256": "d2f8d67f6133e50fde2375f60454d32480fcfc3e48a02775385915e2539d4a36",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "contacts.languages: 2 more verbatim excerpt(s) supported this value: Financial Assistance - Asistencia Financiera | Solicitud de asistencia financier",
-    "agent judge on apply.form_url: Quote gives only the path /images/pdf/Financial_Assistance_Application_2024MD.pdf with no domain; the full www.wrhs.com URL is not stated.",
-    "agent judge on contacts.languages: Quote shows bilingual document titles (English and Spanish wording) but does not state which languages are supported; it does not say English and Spanish are offered."
+    "apply.form_url: not an absolute URL ('/images/pdf/Financial_Assistance_Application_2024MD.pdf'); dropped"
    ],
    "eve_verified": {
     "on": "2026-10-23",
@@ -4336,16 +4054,16 @@
      "https://www.wrhs.com/images/pdf/Financial_Assistance_Policy24MD.pdf",
      "https://www.wrhs.com/images/pdf/Financial_Assistance_Application_2024MD.pdf"
     ],
+    "sha256_match": {
+     "fap-02082d332ce35102": true,
+     "fap-3fcf860107768441": true,
+     "web-d2f8d67f6133e50f": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
-     "contacts.phone",
-     "contacts.languages"
+     "contacts.phone"
     ],
-    "rejected": [
-     [
-      "apply.form_url",
-      "quote not found in source"
-     ]
-    ],
+    "rejected": [],
     "pruned": [],
     "income_rule_verified": false,
     "core_completeness": 0.17
@@ -4484,6 +4202,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-e35b7f0f18ed030e": true,
+     "fap-7d2fe60669503387": true,
+     "web-899484ba6a671874": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.insured_patients_covered",
@@ -4680,6 +4404,11 @@
     "sources_fetched": 2,
     "sources_total": 2,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-20c77b7cacf36003": true,
+     "fap-11add91d2126d723": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.residency",

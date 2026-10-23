@@ -2388,28 +2388,38 @@
     "asset_test": {
      "value": true,
      "layer": "documented",
-     "quote": "Does anyone in your household have any other assets (CD\u2019s, Stocks, HSA, property, etc.)?",
+     "quote": "submit the completed application along with at least one form of income verification and proof of assets for each household member",
      "source_id": "fap-e63d99723b360db1",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "residency": null,
-    "insured_patients_covered": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "are underinsured, and cannot afford to pay for their healthcare or member liability under their insurance program",
+     "source_id": "web-f15390ce13e79ebe",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "min_balance": null,
     "services_excluded": null
    },
    "programs": {
     "presumptive": {
      "value": [
-      "Homelessness",
-      "Deceased with no estate",
-      "Mental incapacitation without a representative",
-      "Medicaid eligibility",
-      "Enrollment in state or government assistance programs"
+      "homelessness",
+      "deceased with no estate",
+      "Medicaid",
+      "SNAP",
+      "WIC",
+      "TANF",
+      "HUD"
      ],
      "layer": "documented",
-     "quote": "These circumstances include homelessness, being deceased with no estate, mental incapacitation",
+     "quote": "These circumstances include homelessness, being deceased with no estate, mental incapacitation without a representative, Medicaid eligibility, or enrollment in state or government assistance programs.",
      "source_id": "fap-e63d99723b360db1",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2418,12 +2428,66 @@
     "state_programs": null
    },
    "apply": {
-    "form_url": null,
+    "form_url": {
+     "value": "https://www.hshs.org/getmedia/fc8fc549-210b-4285-8e5b-e627fb99b644/HSHS-FA-Application-EN.pdf",
+     "layer": "documented",
+     "quote": "HSHS Financial Assistance Application (ENG) [/getmedia/fc8fc549-210b-4285-8e5b-e627fb99b644/HSHS-FA-Application-EN.pdf]",
+     "source_id": "web-f15390ce13e79ebe",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "form_version": null,
-    "documents_required": null,
+    "documents_required": {
+     "value": [
+      "pay_stubs",
+      "tax_return",
+      "social_security_letter",
+      "bank_statements"
+     ],
+     "layer": "documented",
+     "quote": "\u2610 Employment = paystubs showing gross income for 1 or 12 months prior to the date of application, or a written verification letter from an employer \u2610 Tax Return, or W-2, or 1099 = Complete most recent tax forms from most recent filing including Schedule C for self-employment \u2610 Social Security/Pension/Disability = Most recent benefit letter \u2610 Checking/Savings = 1 month of complete (all pages) bank statement for each account",
+     "source_id": "fap-e63d99723b360db1",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "documents_reported": null,
-    "submit_methods": null,
-    "window_days_from_first_bill": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "in_person",
+       "detail": "in person"
+      },
+      {
+       "kind": "mail",
+       "detail": "by mail (listed below)"
+      },
+      {
+       "kind": "email",
+       "detail": "email (listed below)"
+      },
+      {
+       "kind": "fax",
+       "detail": "fax (513)653-4099"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Please complete this form and submit it to the hospital in person, by mail (listed below), email (listed below), MyChart (https://www.myhshs.org/myhshs/Authentication/Login?), or fax (513)653-4099 to apply for free or discounted care",
+     "source_id": "fap-e63d99723b360db1",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": {
+     "value": 90,
+     "layer": "documented",
+     "quote": "within 90 days following the date of discharge or receipt of outpatient care",
+     "source_id": "fap-e63d99723b360db1",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "decision_days": null,
     "decision_days_reported": null
    },
@@ -2435,8 +2499,8 @@
     "phone": {
      "value": "833-464-1778",
      "layer": "documented",
-     "quote": "Phone: 833-464-1778 | Fax: 217-492-2339",
-     "source_id": "web-ef71aac096c89917",
+     "quote": "Phone: 833-464-1778",
+     "source_id": "web-f15390ce13e79ebe",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -2462,12 +2526,12 @@
    },
    "sources": [
     {
-     "id": "web-6e7d88e839d62feb",
+     "id": "web-5937bae55d608679",
      "kind": "hospital_web",
      "url": "https://hshs.ellucid.com/pman/documents/view/22255/?security=d585b615bcd5146064959c161752e9985ce39ed9",
      "title": "Policy Manager - MCN Solutions",
      "fetched_on": "2026-10-23",
-     "sha256": "6e7d88e839d62feb993e0abdd70be559d31bd80b6a3508bb61d429e98c8196da",
+     "sha256": "5937bae55d60867909db50e5733c181d3844b6c82305384cfba3050411499a24",
      "effective_date": null
     },
     {
@@ -2480,21 +2544,20 @@
      "effective_date": null
     },
     {
-     "id": "web-ef71aac096c89917",
+     "id": "web-f15390ce13e79ebe",
      "kind": "hospital_web",
-     "url": "https://www.hshs.org/st-nicholas/patients-guests/patient-financial-services",
-     "title": "Patient Financial Services at HSHS St. Nicholas Hospital",
+     "url": "https://www.hshs.org/patients/billing/financial-assistance",
+     "title": "Financial Assistance | Hospital Sisters Health System (HSHS)",
      "fetched_on": "2026-10-23",
-     "sha256": "ef71aac096c899176f660f1f4c9eccf5456227f447610b3aa0a4a62f59d57670",
+     "sha256": "f15390ce13e79ebedd3cbcf524ddb543d8f04583b9c9613a7dc5bcb1d564da33",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: without a representative, Medicaid eligibility, or enrollment in state or government assistance programs.",
-    "agent dropped apply.documents_required: judge: The quote mentions paystubs but not an employer verification letter; the other items match.",
-    "agent dropped apply.submit_methods: judge: The quote lists the methods, but the mail address and email say 'listed below' and are not given in the quote.",
-    "agent dropped contacts.hours: judge: The quote gives only 'Monday - Friday, 8 a.m. - 5 p.m.'; 'closed weekends and holidays' is not stated."
+    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: \u25a1 SNAP/Food Share \u25a1WIC \u25a1TANF \u25a1HUD \u25a1Homeless \u25a1Community Clinic (_________________)",
+    "agent judge on apply.form_url: Quote gives only the relative path /getmedia/...pdf, not the full https://www.hshs.org URL.",
+    "agent judge on apply.window_days_from_first_bill: Quote measures 90 days from discharge or receipt of outpatient care, not from the first bill."
    ]
   },
   {
@@ -3604,6 +3667,11 @@
       },
       {
        "min_fpl_exclusive": "325",
+       "max_fpl_inclusive": "350",
+       "discount_percent": 75
+      },
+      {
+       "min_fpl_exclusive": "350",
        "max_fpl_inclusive": "400",
        "discount_percent": 75
       }
@@ -3618,7 +3686,7 @@
     "assistance_ceiling_fpl": {
      "value": "400",
      "layer": "documented",
-     "quote": "Have household gross income below 400% of the Federal Poverty Level issued annually by the U.S. Department of Health and Human Services",
+     "quote": "Patients whose gross household income is equal to or less than 400% of the current year\u2019s poverty guidelines Exhibit C may qualify for a Financial Assistance discount",
      "source_id": "fap-e87bbeec83de69dc",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3647,7 +3715,7 @@
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "Patients who have in network insurance or other third-party sources of payment for their health care may still qualify for Financial Assistance under this Policy for the portion of the bill that may be their own personal obligation to pay. Examples are deductibles and co-payments.",
+     "quote": "Patients who have in network insurance or other third-party sources of payment for their health care may still qualify for Financial Assistance under this Policy for the portion of the bill that may be their own personal obligation to pay.",
      "source_id": "fap-e87bbeec83de69dc",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3659,23 +3727,8 @@
    "programs": {
     "presumptive": {
      "value": [
-      "Experian Health",
-      "homeless",
-      "Medicaid enrolled"
-     ],
-     "layer": "documented",
-     "quote": "information from external sources, such as Experian Health or similar third-party vendors, or other public and private records and data sources may be used in determining whether a patient is eligible for the Financial Assistance Program without completing an application",
-     "source_id": "fap-e87bbeec83de69dc",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "state_programs": {
-     "value": [
-      {
-       "name": "BadgerCare",
-       "how_to_apply": "Comply with any other available government and financial assistance programs"
-      }
+      "Medicaid",
+      "BadgerCare"
      ],
      "layer": "documented",
      "quote": "Have exhausted any and all insurance and/or other available financial assistance programs such as Medicaid, BadgerCare, or Copay Assistance Programs",
@@ -3683,14 +3736,15 @@
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
-    }
+    },
+    "state_programs": null
    },
    "apply": {
     "form_url": {
      "value": "https://www.froedtert.com/sites/default/files/upload/docs/patients-visitors/bill/financial-assistance-application-english.pdf",
      "layer": "documented",
      "quote": "Download the application. [/sites/default/files/upload/docs/patients-visitors/bill/financial-assistance-application-english.pdf]",
-     "source_id": "web-6a4429f6b8ad9ff5",
+     "source_id": "web-4cfad6a9576e069b",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -3700,11 +3754,13 @@
      "value": [
       "tax_return",
       "proof_of_income",
+      "pay_stubs",
       "bank_statements",
+      "social_security_letter",
       "other"
      ],
      "layer": "documented",
-     "quote": "A copy of your most recent Federal Income Tax Return and W-2 forms, Schedule C tax forms if you and/or your spouse are self-employed, and any additional tax schedules filed.",
+     "quote": "A copy of your most recent Federal Income Tax Return and W-2 forms, Schedule C tax forms if you and/or your spouse are self-employed",
      "source_id": "fap-e87bbeec83de69dc",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3715,7 +3771,7 @@
     "window_days_from_first_bill": {
      "value": 240,
      "layer": "documented",
-     "quote": "ends on the 240th day after the first post- discharge billing statement for such care is provided",
+     "quote": "This period begins on the date on which emergency or other medically necessary care is provided and ends on the 240th day after the first post- discharge billing statement for such care is provided",
      "source_id": "fap-e87bbeec83de69dc",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3728,7 +3784,7 @@
     "eca_wait_days": {
      "value": 120,
      "layer": "documented",
-     "quote": "The annually determined AGB Percentage will be applied within 120 days following the end of the AGB Period",
+     "quote": "The annually determined AGB Percentage will be applied within 120 days following the end of the AGB Period that was used in calculating the AGB Percentage.",
      "source_id": "fap-e87bbeec83de69dc",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3738,10 +3794,10 @@
    },
    "contacts": {
     "phone": {
-     "value": "800-803-8155",
+     "value": "(800) 803-8155",
      "layer": "documented",
-     "quote": "Phone: (800)803-8155",
-     "source_id": "fap-e87bbeec83de69dc",
+     "quote": "For assistance or questions regarding your bill, please call (800) 803-8155.",
+     "source_id": "fap-f540d642eaa99208",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -3750,7 +3806,7 @@
      "value": "Monday through Friday, 8 a.m. \u2013 4:30 p.m.",
      "layer": "documented",
      "quote": "Financial counselors are available to assist you via phone and in person, Monday through Friday, 8 a.m. \u2013 4:30 p.m. at 414-805-6206 .",
-     "source_id": "web-6a4429f6b8ad9ff5",
+     "source_id": "web-4cfad6a9576e069b",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -3758,11 +3814,11 @@
     "languages": {
      "value": [
       "English",
-      "Espa\u00f1ol"
+      "Spanish"
      ],
      "layer": "documented",
-     "quote": "ATTENTION: If you speak another language, assistance services, free of charge, are available to you. Call: 414-805-3000",
-     "source_id": "web-6a4429f6b8ad9ff5",
+     "quote": "Read the Financial Assistance Policy - Plain Language Summary",
+     "source_id": "web-4cfad6a9576e069b",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -3793,28 +3849,27 @@
      "effective_date": null
     },
     {
-     "id": "web-6a4429f6b8ad9ff5",
+     "id": "web-4cfad6a9576e069b",
      "kind": "hospital_web",
      "url": "https://www.froedtert.com/financial-services",
      "title": "Financial Assistance Program | Froedtert & MCW",
      "fetched_on": "2026-10-23",
-     "sha256": "6a4429f6b8ad9ff5cc4120acf3cf227820a9f255a39ac98a38e41a2ebfa54814",
+     "sha256": "4cfad6a9576e069b1c026b4c4051b5bac504e3d048fd50eb816df48791c48bba",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: Percent Discount Granted 100% 100% 95% 90% 85% 80% 75% | Patients whose gross household income is equal to or less than 400% of the current year\u2019s poverty guidelines Exhibit C m",
+    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: Percent Discount Granted 100% 100% 95% 90% 85% 80% 75%",
     "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Proof of income. If married include your spouse\u2019s information, please submit one month of current pay stubs. | A recent copy of the complete bank statement for every account on which your and/or your spouse's name appears",
-    "agent dropped apply.submit_methods: excerpt not in source: Patients can also apply for Financial Assistance through MyC",
-    "agent judge on eligibility.free_care_max_fpl: Quote lists percentages (100% 100% 95%...) with no statement that 250% of FPL is the highest level receiving 100% free care.",
-    "agent judge on eligibility.discount_tiers: Quote maps 100% discount to 250% and 100% to 275%, 95% to 300%, 90% to 325%, 85% to 350%, 80% to 400%, 75%. The value's bounds and percents do not match this.",
-    "agent judge on programs.presumptive: Quote mentions only external sources such as Experian Health used for eligibility without application. Homeless and Medicaid enrolled are not stated.",
-    "agent judge on programs.state_programs: Quote names Medicaid, BadgerCare, and Copay Assistance as programs to exhaust first. It gives no how_to_apply text matching the value's 'Comply with any other available...' wording.",
-    "agent judge on apply.form_url: Quote gives only a relative path with no domain. The value's froedtert.com domain is not in the quote and does not match this hospital's name.",
-    "agent judge on apply.documents_required: Quote supports tax return/W-2, proof of income, and bank statements. It does not mention an investment statement, which the value lists as a required document.",
-    "agent judge on collections.eca_wait_days: Quote says the AGB Percentage is applied within 120 days after the AGB Period ends. It does not state a wait before collection actions.",
-    "agent judge on contacts.languages: Quote says free assistance is available for other languages and gives a phone number. It does not state English or Espa\u00f1ol as supported languages."
+    "contacts.languages: 1 more verbatim excerpt(s) supported this value: Ver la Pol\u00edtica de ayuda econ\u00f3mica \u2013 el Resumen en lenguaje sencillo",
+    "agent dropped apply.submit_methods: excerpt not in source: Please return the signed application and supporting document",
+    "agent judge on eligibility.free_care_max_fpl: Quote lists discount percentages by FPL level but never states 250% as the highest percent of FPL receiving 100% free care.",
+    "agent judge on eligibility.discount_tiers: Quote maps 100% to 100-250%, 95% to 250-275%, 90% to 275-300%, 85% to 300-325%, 80% to 325-350%, 75% to 350-400%. Value gives 95% for 100-250% and has a different tier split.",
+    "agent judge on programs.presumptive: Quote says patients must exhaust Medicaid, BadgerCare, or Copay Assistance before qualifying. It does not describe presumptive eligibility through these programs.",
+    "agent judge on apply.form_url: Quote shows only a relative path, not a full URL. The froedtert.com domain does not appear in the quote, and it conflicts with the St Joseph's hospital name.",
+    "agent judge on apply.documents_required: Quote supports tax returns/W-2s, proof of income, pay stubs, and bank statements. It does not mention Social Security or a denial document.",
+    "agent judge on collections.eca_wait_days: The 120-day figure concerns when the AGB Percentage is applied after the AGB Period, not the number of days before collection actions."
    ]
   },
   {
@@ -4505,32 +4560,30 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "residency": {
-     "value": [
-      "Were you an Illinois resident at the time of service? \u2610 No \u2610 Yes (Provide a current ID)"
-     ],
+    "residency": null,
+    "insured_patients_covered": {
+     "value": true,
      "layer": "documented",
-     "quote": "Were you an Illinois resident at the time of service? \u2610 No \u2610 Yes (Provide a current ID)",
+     "quote": "Did you have health insurance on the date of service? \u2610 No \u2610 Yes (Provide copy of card)",
      "source_id": "fap-e63d99723b360db1",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "insured_patients_covered": null,
     "min_balance": null,
     "services_excluded": null
    },
    "programs": {
     "presumptive": {
      "value": [
-      "homelessness",
-      "being deceased with no estate",
-      "mental incapacitation without a representative",
-      "Medicaid eligibility",
-      "enrollment in state or government assistance programs"
+      "Medicaid",
+      "SNAP",
+      "WIC",
+      "TANF",
+      "Homeless"
      ],
      "layer": "documented",
-     "quote": "These circumstances include homelessness, being deceased with no estate, mental incapacitation without a representative, Medicaid eligibility, or enrollment in state or government assistance programs.",
+     "quote": "In certain circumstances, patients may qualify for Presumptive assistance. These circumstances include homelessness, being deceased with no estate, mental incapacitation without a representative, Medicaid eligibility, or enrollment in state or government assistance programs.",
      "source_id": "fap-e63d99723b360db1",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4549,7 +4602,7 @@
       "bank_statements"
      ],
      "layer": "documented",
-     "quote": "\u2610 Employment = paystubs showing gross income for 1 or 12 months prior to the date of application, or a written verification letter from an employer \u2610 Tax Return, or W-2, or 1099 = Complete most recent tax forms from most recent filing including Schedule C for self-employment \u2610 Social Security/Pension/Disability = Most recent benefit letter \u2610 Checking/Savings = 1 month of complete (all pages) bank statement for each account",
+     "quote": "\u2610 Employment = paystubs showing gross income for 1 or 12 months prior to the date of application, or a written verification letter from an employer",
      "source_id": "fap-e63d99723b360db1",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4559,28 +4612,28 @@
     "submit_methods": {
      "value": [
       {
+       "kind": "in_person",
+       "detail": "submit it to the hospital in person"
+      },
+      {
        "kind": "mail",
-       "detail": "Public Benefits Department P.O. Box 13427 Springfield, IL 62791"
+       "detail": "by mail: Attention: Financial Assistance Program Public Benefits Department P.O. Box 13427 Springfield, IL 62791"
       },
       {
        "kind": "email",
        "detail": "HSHSCharityservice@Ensemblehp.com"
       },
       {
+       "kind": "fax",
+       "detail": "fax (513)653-4099"
+      },
+      {
        "kind": "portal",
        "detail": "MyChart (https://www.myhshs.org/myhshs/Authentication/Login?)"
-      },
-      {
-       "kind": "fax",
-       "detail": "(513)653-4099"
-      },
-      {
-       "kind": "in_person",
-       "detail": "submit it to the hospital in person"
       }
      ],
      "layer": "documented",
-     "quote": "Please complete this form and submit it to the hospital in person, by mail (listed below), email (listed below), MyChart (https://www.myhshs.org/myhshs/Authentication/Login?), or fax (513)653-4099 to apply for free or discounted care",
+     "quote": "Please complete this form and submit it to the hospital in person, by mail (listed below), email (listed below), MyChart (https://www.myhshs.org/myhshs/Authentication/Login?), or fax (513)653-4099 to apply for free or discounted care within 90 days",
      "source_id": "fap-e63d99723b360db1",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4606,8 +4659,8 @@
     "phone": {
      "value": "833-464-1778",
      "layer": "documented",
-     "quote": "Phone: 833-464-1778",
-     "source_id": "web-23405bf5e656d961",
+     "quote": "Phone: 833-464-1778 | Fax: 217-492-2339",
+     "source_id": "web-f1fda215975a0b4e",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -4615,8 +4668,8 @@
     "hours": {
      "value": "Monday - Friday, 8 a.m. - 5 p.m.",
      "layer": "documented",
-     "quote": "Monday - Friday, 8 a.m. - 5 p.m. Closed weekends and holidays",
-     "source_id": "web-23405bf5e656d961",
+     "quote": "Monday - Friday, 8 a.m. - 5 p.m.",
+     "source_id": "web-f1fda215975a0b4e",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -4641,12 +4694,12 @@
    },
    "sources": [
     {
-     "id": "web-7094a5d60e9d1196",
+     "id": "web-54e3136692d6a155",
      "kind": "hospital_web",
-     "url": "https://www.hshs.org/patients/billing/financial-assistance",
-     "title": "Financial Assistance | Hospital Sisters Health System (HSHS)",
+     "url": "https://hshs.ellucid.com/pman/documents/view/22255/?security=d585b615bcd5146064959c161752e9985ce39ed9",
+     "title": "Policy Manager - MCN Solutions",
      "fetched_on": "2026-10-23",
-     "sha256": "7094a5d60e9d1196e042fb6dbc080a277b9aeea2a968f537c0d7c0d988fd8fd0",
+     "sha256": "54e3136692d6a1558847a2ffdcc4b5e580278e7769b6ad00cf6eaf7cbdf7cfdf",
      "effective_date": null
     },
     {
@@ -4659,23 +4712,22 @@
      "effective_date": null
     },
     {
-     "id": "web-23405bf5e656d961",
+     "id": "web-f1fda215975a0b4e",
      "kind": "hospital_web",
      "url": "https://www.hshs.org/st-vincent/patients-guests/patient-financial-services",
      "title": "Patient Financial Services at HSHS St. Vincent Hospital",
      "fetched_on": "2026-10-23",
-     "sha256": "23405bf5e656d9617712a89bcad5e276bc6721eeb14cdb7f340d55ce15ad1a44",
+     "sha256": "f1fda215975a0b4e5b1bd30de44de96adbe21d1af535b9420ff3b6e86e33427e",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.form_url: not an absolute URL ('/getmedia/fc8fc549-210b-4285-8e5b-e627fb99b644/HSHS-FA-Appli'); dropped",
-    "agent dropped eligibility.insured_patients_covered: quote is not a substring of the source",
-    "agent judge on eligibility.asset_test: Quote says applicants must submit proof of assets for each household member; it does not state assets are considered as a value true, though it implies it. Accept as supported by implication.",
-    "agent judge on eligibility.residency: Quote is a checkbox question about Illinois residency at time of service; it does not state a residency requirement value beyond the form question wording.",
-    "agent judge on apply.submit_methods: Quote lists only in person, mail, email, MyChart, and fax; the value's mail address and email are not in the quote, and the quote does not give those details.",
-    "agent judge on apply.window_days_from_first_bill: Quote says within 90 days after discharge or receipt of outpatient care, which is measured from discharge/service, not explicitly the first bill."
+    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: \u25a1 SNAP/Food Share \u25a1WIC \u25a1TANF \u25a1HUD \u25a1Homeless \u25a1Community Clinic",
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: \u2610 Tax Return, or W-2, or 1099 = Complete most recent tax forms from most recent filing including Schedule C for self-emp | \u2610 Checking/Savings = 1 month of complete (all pages) bank statement for each account",
+    "agent judge on eligibility.insured_patients_covered: Quote is a form question asking whether the patient had insurance on the date of service; it does not state that insured patients are covered.",
+    "agent judge on apply.documents_required: Quote lists paystubs, tax return/W-2/1099, and checking/savings statements; it does not mention Social Security/Pension/Disability documents as required items.",
+    "agent judge on apply.window_days_from_first_bill: Quote says 90 days following discharge or receipt of outpatient care, which is measured from discharge/service, not clearly from the first bill."
    ]
   },
   {
@@ -6313,7 +6365,7 @@
     "asset_test": {
      "value": true,
      "layer": "documented",
-     "quote": "Balance Promedio Mensual Cuenta Cheques:____________ Nombre del Banco:_________________________________ Balance Cuenta de Ahorros:",
+     "quote": "Valor de Bienes y ra\u00edces: __________________ Balance de la Hipoteca: _____________________________",
      "source_id": "fap-3829a383d7b26a9c",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -6321,11 +6373,11 @@
     },
     "residency": {
      "value": [
-      "Covered Zip Code listing: 53503 Arena, 52515 Black Earth, 53937 Hillpoint, 53555 Lodi, 53943 Loganville, 53556 Lone Rock, 53560 Mazomanie, 53561 Merrimac, 53951 North Freedom, 53577 Plain, 53578 Prairie Du Sac, 53961 Rock Springs, 53583 Sauk City, 53588 Spring Green"
+      "Covered Zip Code listing includes Arena, Black Earth, Hillpoint, Lime Ridge, Lodi, Loganville, Lone Rock, Mazomanie, Merrimac, North Freedom, Plain, Prairie Du Sac, Rock Springs, Sauk City, and Spring Green."
      ],
      "layer": "documented",
-     "quote": "53503 Arena 52515 Black Earth 53937 Hillpoint 53555 Lodi 53943 Loganville 53556 Lone Rock 53560 Mazomanie 53561 Merrimac 53951 North Freedom 53577 Plain 53578 Prairie Du Sac 53961 Rock Springs 53583 Sauk City 53588 Spring Green",
-     "source_id": "fap-331ec6603d849be4",
+     "quote": "Sauk Prairie Healthcare Service Area Covered Zip Code listing 53503 Arena 52515 Black Earth 53937 Hillpoint",
+     "source_id": "fap-94b7c2a22181f9fa",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -6374,12 +6426,12 @@
    },
    "sources": [
     {
-     "id": "fap-331ec6603d849be4",
+     "id": "fap-94b7c2a22181f9fa",
      "kind": "hospital_web",
-     "url": "https://www.saukprairiehealthcare.org/documents/content/Atenci-n_Comunitaria_y_Pol-tica_de_Asistencia_Financiera_(Community_Care_and_Financial_Assistance)_V8_with_attachments.pdf",
+     "url": "https://www.saukprairiehealthcare.org/documents/content/Community_Care_and_Financial_Assistance_Policy_with_attachments.pdf",
      "title": "",
      "fetched_on": "2026-10-23",
-     "sha256": "331ec6603d849be4302bb8d40b8060bb11e7cf3ed25d88c421816a2479297eff",
+     "sha256": "94b7c2a22181f9fa6b2d682f32475abfb6edc61e4f446dd404fea4e9f23dbe90",
      "effective_date": null
     },
     {
@@ -6394,8 +6446,10 @@
    ],
    "accuracy": null,
    "eve_review": [
+    "eligibility.asset_test: 2 more verbatim excerpt(s) supported this value: Balance Promedio Mensual Cuenta Cheques:____________ | Balance Cuenta de Ahorros: __________________________",
     "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Recibos de pago actual/declaraci\u00f3n de desempleo | Copia de comprobante de su cuenta de cheques & ahorros",
-    "agent judge on eligibility.asset_test: Quote is a blank form line for average monthly checking balance and savings balance; it does not state that assets are considered in eligibility."
+    "agent judge on eligibility.asset_test: Quote is a blank form with asset line items (property value, mortgage balance, checking/savings balances) but does not state that assets are considered.",
+    "agent judge on apply.documents_required: Quote supports three documents (federal taxes, pay stubs/unemployment statement, checking and savings proof) but omits the mortgage statement item in the value."
    ]
   },
   {
@@ -6655,7 +6709,7 @@
     "zip": "54303",
     "phone": "920-498-4200",
     "ownership": "Voluntary non-profit - Other",
-    "website_domain": "hshs.org",
+    "website_domain": "stmgb.org",
     "system": null
    },
    "version": 1,
@@ -6667,8 +6721,8 @@
     "asset_test": {
      "value": true,
      "layer": "documented",
-     "quote": "submit the completed application along with at least one form of income verification and proof of assets for each household member",
-     "source_id": "fap-e63d99723b360db1",
+     "quote": "We look at income and cash assets, along with family size.",
+     "source_id": "web-1a75572763be8597",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -6677,8 +6731,8 @@
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "do not qualify for government programs, are underinsured, and cannot afford to pay for their healthcare or member liability under their insurance program",
-     "source_id": "web-3d1620f178d1640d",
+     "quote": "Did you have health insurance on the date of service? \u2610 No \u2610 Yes (Provide copy of card)",
+     "source_id": "fap-e63d99723b360db1",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -6690,10 +6744,12 @@
     "presumptive": {
      "value": [
       "homelessness",
-      "being deceased with no estate",
-      "mental incapacitation without a representative",
-      "Medicaid eligibility",
-      "enrollment in state or government assistance programs"
+      "deceased with no estate",
+      "Medicaid",
+      "SNAP",
+      "WIC",
+      "TANF",
+      "HUD"
      ],
      "layer": "documented",
      "quote": "These circumstances include homelessness, being deceased with no estate, mental incapacitation without a representative, Medicaid eligibility, or enrollment in state or government assistance programs.",
@@ -6705,15 +6761,7 @@
     "state_programs": null
    },
    "apply": {
-    "form_url": {
-     "value": "https://www.hshs.org/getmedia/fc8fc549-210b-4285-8e5b-e627fb99b644/HSHS-FA-Application-EN.pdf",
-     "layer": "documented",
-     "quote": "HSHS Financial Assistance Application (ENG) [/getmedia/fc8fc549-210b-4285-8e5b-e627fb99b644/HSHS-FA-Application-EN.pdf]",
-     "source_id": "web-3d1620f178d1640d",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "form_url": null,
     "form_version": null,
     "documents_required": {
      "value": [
@@ -6723,7 +6771,7 @@
       "bank_statements"
      ],
      "layer": "documented",
-     "quote": "\u2610 Employment = paystubs showing gross income for 1 or 12 months prior to the date of application, or a written verification letter from an employer \u2610 Tax Return, or W-2, or 1099 = Complete most recent tax forms from most recent filing including Schedule C for self-employment \u2610 Social Security/Pension/Disability = Most recent benefit letter \u2610 Checking/Savings = 1 month of complete (all pages) bank statement for each account",
+     "quote": "\u2610 Employment = paystubs showing gross income for 1 or 12 months prior to the date of application, or a written verification letter from an employer",
      "source_id": "fap-e63d99723b360db1",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -6733,16 +6781,12 @@
     "submit_methods": {
      "value": [
       {
-       "kind": "in_person",
-       "detail": "submit it to the hospital in person"
-      },
-      {
        "kind": "mail",
        "detail": "by mail (listed below)"
       },
       {
        "kind": "email",
-       "detail": "HSHSCharityservice@Ensemblehp.com"
+       "detail": "email (listed below)"
       },
       {
        "kind": "portal",
@@ -6751,10 +6795,14 @@
       {
        "kind": "fax",
        "detail": "fax (513)653-4099"
+      },
+      {
+       "kind": "in_person",
+       "detail": "in person"
       }
      ],
      "layer": "documented",
-     "quote": "Please complete this form and submit it to the hospital in person, by mail (listed below), email (listed below), MyChart (https://www.myhshs.org/myhshs/Authentication/Login?), or fax (513)653-4099 to apply for free or discounted care",
+     "quote": "Please complete this form and submit it to the hospital in person, by mail (listed below), email (listed below), MyChart (https://www.myhshs.org/myhshs/Authentication/Login?), or fax (513)653-4099 to apply",
      "source_id": "fap-e63d99723b360db1",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -6763,7 +6811,7 @@
     "window_days_from_first_bill": {
      "value": 90,
      "layer": "documented",
-     "quote": "to apply for free or discounted care within 90 days following the date of discharge or receipt of outpatient care",
+     "quote": "within 90 days following the date of discharge or receipt of outpatient care",
      "source_id": "fap-e63d99723b360db1",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -6778,10 +6826,10 @@
    },
    "contacts": {
     "phone": {
-     "value": "833-464-1778",
+     "value": "(920) 433-8122",
      "layer": "documented",
-     "quote": "Phone: 833-464-1778",
-     "source_id": "web-3d1620f178d1640d",
+     "quote": "contact Patient Accounts at (920) 433-8122 or (800) 211-2209",
+     "source_id": "web-1a75572763be8597",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -6793,8 +6841,8 @@
       "Spanish"
      ],
      "layer": "documented",
-     "quote": "Applications are available in English and Spanish.",
-     "source_id": "fap-e63d99723b360db1",
+     "quote": "Community Care Brochure Financial Assistance (English)",
+     "source_id": "web-1a75572763be8597",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -6807,21 +6855,12 @@
    },
    "sources": [
     {
-     "id": "web-b0d6d8233edcc349",
+     "id": "web-399edf12e27b632e",
      "kind": "hospital_web",
      "url": "https://hshs.ellucid.com/pman/documents/view/22255/?security=d585b615bcd5146064959c161752e9985ce39ed9",
      "title": "Policy Manager - MCN Solutions",
      "fetched_on": "2026-10-23",
-     "sha256": "b0d6d8233edcc349826b44dbec0e9b375274ee38696a1d3723729e3609c03466",
-     "effective_date": null
-    },
-    {
-     "id": "web-3d1620f178d1640d",
-     "kind": "hospital_web",
-     "url": "https://www.hshs.org/patients/billing/financial-assistance",
-     "title": "Financial Assistance | Hospital Sisters Health System (HSHS)",
-     "fetched_on": "2026-10-23",
-     "sha256": "3d1620f178d1640d051501243b05b2eafcebec83b93a3a4a6fb7a8252f0c8c5e",
+     "sha256": "399edf12e27b632e493b1f4acad42af183b7e97c0de57e404b2c27570f4d96eb",
      "effective_date": null
     },
     {
@@ -6832,13 +6871,25 @@
      "fetched_on": "2026-10-23",
      "sha256": "e63d99723b360db15334fb67e7934454278c60a221144fa127b4f693fdbcbe67",
      "effective_date": null
+    },
+    {
+     "id": "web-1a75572763be8597",
+     "kind": "hospital_web",
+     "url": "https://www.stmgb.org/Patients-Guests/Patient-Financial-Services/Financial-Assistance-Community-Care-Program",
+     "title": "Financial Assistance &\u00a0Community Care Program - St. Mary\u2019s Hospital Medical Center",
+     "fetched_on": "2026-10-23",
+     "sha256": "1a75572763be8597364aa5d234a55c79f4a0f1aaf2fb90a58a64dc177b0655c8",
+     "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "agent judge on apply.form_url: Quote gives only a relative path (/getmedia/...pdf) with no hshs.org domain, so the full URL is not stated.",
-    "agent judge on apply.submit_methods: Quote says email is 'listed below' and gives no address; the email HSHSCharityservice@Ensemblehp.com is not in the quote.",
-    "agent judge on apply.window_days_from_first_bill: Quote anchors the 90 days to discharge or receipt of outpatient care, not the first bill date."
+    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: \u25a1 SNAP/Food Share \u25a1WIC \u25a1TANF \u25a1HUD \u25a1Homeless \u25a1Community Clinic (_________________)",
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: \u2610 Tax Return, or W-2, or 1099 = Complete most recent tax forms from most recent filing including Schedule C for self-emp | \u2610 Checking/Savings = 1 month of complete (all pages) bank statement for each account",
+    "contacts.languages: 1 more verbatim excerpt(s) supported this value: Community Care Brochure Financial Assistance (Spanish)",
+    "agent judge on eligibility.insured_patients_covered: Quote is only an intake question asking whether the patient had insurance; it does not state that insured patients are covered.",
+    "agent judge on apply.window_days_from_first_bill: Quote says within 90 days after discharge or receipt of outpatient care, which is tied to service date, not explicitly the first bill.",
+    "agent judge on contacts.languages: Quote shows brochures in English and Spanish only as titles; it does not state these are the supported languages for assistance."
    ]
   },
   {
@@ -7221,7 +7272,7 @@
    "status": "draft",
    "eligibility": {
     "free_care_max_fpl": {
-     "value": "250",
+     "value": "100",
      "layer": "documented",
      "quote": "100% 100% 95% 90% 85% 80% 75%",
      "source_id": "fap-e87bbeec83de69dc",
@@ -7229,45 +7280,11 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "discount_tiers": {
-     "value": [
-      {
-       "min_fpl_exclusive": "100",
-       "max_fpl_inclusive": "250",
-       "discount_percent": 95
-      },
-      {
-       "min_fpl_exclusive": "250",
-       "max_fpl_inclusive": "275",
-       "discount_percent": 90
-      },
-      {
-       "min_fpl_exclusive": "275",
-       "max_fpl_inclusive": "300",
-       "discount_percent": 85
-      },
-      {
-       "min_fpl_exclusive": "300",
-       "max_fpl_inclusive": "325",
-       "discount_percent": 80
-      },
-      {
-       "min_fpl_exclusive": "325",
-       "max_fpl_inclusive": "400",
-       "discount_percent": 75
-      }
-     ],
-     "layer": "documented",
-     "quote": "100% 250% 275% 300% 325% 350% 400%",
-     "source_id": "fap-e87bbeec83de69dc",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "discount_tiers": null,
     "assistance_ceiling_fpl": {
      "value": "400",
      "layer": "documented",
-     "quote": "Patients whose gross household income is equal to or less than 400% of the current year\u2019s poverty guidelines Exhibit C may qualify for a Financial Assistance discount",
+     "quote": "Have household gross income below 400% of the Federal Poverty Level issued annually by the U.S. Department of Health and Human Services",
      "source_id": "fap-e87bbeec83de69dc",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -7276,7 +7293,7 @@
     "asset_test": {
      "value": true,
      "layer": "documented",
-     "quote": "Have available assets below the asset thresholds identified in this Policy and the attached exhibits;",
+     "quote": "Have available assets below the asset thresholds identified in this Policy and the attached exhibits",
      "source_id": "fap-e87bbeec83de69dc",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -7308,59 +7325,30 @@
    "programs": {
     "presumptive": {
      "value": [
-      "Medicaid enrolled",
-      "FQHC approved",
-      "homeless",
-      "Albrecht free clinic",
-      "Lakeshore Community Health Care",
-      "Community Outreach clinic patients"
+      "uninsured patient"
      ],
      "layer": "documented",
-     "quote": "Patients may also be eligible for Financial Assistance if they were approved for financial assistance at one of Froedtert\u2019s partner Federally Qualified Health Centers (FQHC) and are a direct referral for specialty services under the Specialty Access for the Uninsured Program (SAUP) or are a patient at the Albrecht free clinic, Lakeshore Community Health Care, or Community Outreach clinic, or were approved for Financial Assistance by Horizon Homecare and Hospice or ThedaCare.",
+     "quote": "Presumptive Eligibility - A Financial Assistance eligibility determination made by referencing specific criteria which demonstrate financial need on the part of an uninsured patient without completion of a Financial Assistance application.",
      "source_id": "fap-e87bbeec83de69dc",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "state_programs": {
-     "value": [
-      {
-       "name": "Medicaid",
-       "how_to_apply": "Comply with any other available government and financial assistance programs"
-      },
-      {
-       "name": "BadgerCare",
-       "how_to_apply": "Comply with any other available government and financial assistance programs"
-      }
-     ],
-     "layer": "documented",
-     "quote": "Have exhausted any and all insurance and/or other available financial assistance programs such as Medicaid, BadgerCare, or Copay Assistance Programs",
-     "source_id": "fap-e87bbeec83de69dc",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "state_programs": null
    },
    "apply": {
-    "form_url": {
-     "value": "https://www.froedtert.com/sites/default/files/upload/docs/patients-visitors/bill/financial-assistance-application-english.pdf",
-     "layer": "documented",
-     "quote": "Download the application. [/sites/default/files/upload/docs/patients-visitors/bill/financial-assistance-application-english.pdf]",
-     "source_id": "web-7628c82667209399",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "form_url": null,
     "form_version": null,
     "documents_required": {
      "value": [
       "tax_return",
-      "proof_of_income",
+      "other",
+      "pay_stubs",
       "bank_statements",
-      "other"
+      "social_security_letter"
      ],
      "layer": "documented",
-     "quote": "A copy of your most recent Federal Income Tax Return and W-2 forms, Schedule C tax forms if you and/or your spouse are self-employed, and any additional tax schedules filed.",
+     "quote": "A copy of your most recent Federal Income Tax Return and W-2 forms, Schedule C tax forms if you and/or your spouse are self-employed",
      "source_id": "fap-e87bbeec83de69dc",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -7371,7 +7359,7 @@
     "window_days_from_first_bill": {
      "value": 240,
      "layer": "documented",
-     "quote": "This period begins on the date on which emergency or other medically necessary care is provided and ends on the 240th day after the first post- discharge billing statement for such care is provided",
+     "quote": "ends on the 240th day after the first post- discharge billing statement for such care is provided",
      "source_id": "fap-e87bbeec83de69dc",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -7381,20 +7369,12 @@
     "decision_days_reported": null
    },
    "collections": {
-    "eca_wait_days": {
-     "value": 120,
-     "layer": "documented",
-     "quote": "The annually determined AGB Percentage will be applied within 120 days following the end of the AGB Period that was used in calculating the AGB Percentage.",
-     "source_id": "fap-e87bbeec83de69dc",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "eca_wait_days": null,
     "collection_agencies": null
    },
    "contacts": {
     "phone": {
-     "value": "800-803-8155",
+     "value": "(800)803-8155",
      "layer": "documented",
      "quote": "Phone: (800)803-8155",
      "source_id": "fap-e87bbeec83de69dc",
@@ -7402,40 +7382,8 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "hours": {
-     "value": "Monday through Friday, 8 a.m. \u2013 4:30 p.m.",
-     "layer": "documented",
-     "quote": "Financial counselors are available to assist you via phone and in person, Monday through Friday, 8 a.m. \u2013 4:30 p.m. at 414-805-6206",
-     "source_id": "web-7628c82667209399",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "languages": {
-     "value": [
-      "Espa\u00f1ol",
-      "Hmong",
-      "\u7e41\u9ad4\u4e2d\u6587",
-      "Deutsch",
-      "\u0627\u0644\u0639\u0631\u0628\u064a\u0629",
-      "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-      "\ud55c\uad6d\uc5b4",
-      "Ti\u1ebfng Vi\u1ec7t",
-      "Deitsch",
-      "\u0e9e\u0eb2\u0eaa\u0eb2\u0ea5\u0eb2\u0ea7",
-      "Fran\u00e7ais",
-      "Polski",
-      "\u0939\u093f\u0902\u0926\u0940",
-      "Shqip",
-      "Tagalog"
-     ],
-     "layer": "documented",
-     "quote": "ATTENTION: If you speak another language, assistance services, free of charge, are available to you. Call: 414-805-3000 (TTY: 1-800-947-3529 )",
-     "source_id": "web-7628c82667209399",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "hours": null,
+    "languages": null
    },
    "coverage": {
     "facilities": null,
@@ -7451,31 +7399,15 @@
      "fetched_on": "2026-10-23",
      "sha256": "e87bbeec83de69dce7744afe8e5d45b8c3c4f90429d28cf7b67365224cf69d50",
      "effective_date": null
-    },
-    {
-     "id": "fap-f540d642eaa99208",
-     "kind": "hospital_web",
-     "url": "https://www.froedtert.com/sites/default/files/upload/docs/patients-visitors/bill/financial-assistance-application-english.pdf",
-     "title": "",
-     "fetched_on": "2026-10-23",
-     "sha256": "f540d642eaa99208edeee30686d99057fbec49867936f1540bcc1353554b8c29",
-     "effective_date": null
-    },
-    {
-     "id": "web-7628c82667209399",
-     "kind": "hospital_web",
-     "url": "https://www.froedtert.com/financial-services",
-     "title": "Financial Assistance Program | Froedtert & MCW",
-     "fetched_on": "2026-10-23",
-     "sha256": "7628c82667209399824882a559aa436fb8e05a9d4394f3c45b88f474476b2ec2",
-     "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: 100% 100% 95% 90% 85% 80% 75%",
     "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Proof of income. If married include your spouse\u2019s information, please submit one month of current pay stubs. | A recent copy of the complete bank statement for every account on which your and/or your spouse's name appears",
-    "agent dropped apply.submit_methods: excerpt not in source: Patients can also apply for Financial Assistance through MyC"
+    "agent dropped eligibility.discount_tiers: quote is not a substring of the source",
+    "agent dropped apply.submit_methods: quote is not a substring of the source",
+    "agent judge on eligibility.free_care_max_fpl: Quote is only a bare list of percentages (100% 100% 95% 90% ...) with no FPL labels, so it does not state that 100% free care runs up to 100% FPL.",
+    "agent judge on apply.documents_required: Quote lists tax return, W-2s, Schedule C, pay stubs and bank statements; it never mentions a Social Security award letter, which the value includes."
    ]
   },
   {
@@ -7494,40 +7426,32 @@
    "status": "draft",
    "eligibility": {
     "free_care_max_fpl": {
-     "value": "250",
+     "value": "100",
      "layer": "documented",
-     "quote": "Percent Discount Granted 100% 100% 95% 90% 85% 80% 75%",
-     "source_id": "fap-e87bbeec83de69dc",
+     "quote": "Offers free care to families based upon family size and with income less than Federal Poverty Guideline",
+     "source_id": "fap-94bfd4365f2ae2df",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "discount_tiers": null,
-    "assistance_ceiling_fpl": {
-     "value": "400",
-     "layer": "documented",
-     "quote": "Patients whose gross household income is equal to or less than 400% of the current year\u2019s poverty guidelines Exhibit C may qualify for a Financial Assistance discount",
-     "source_id": "fap-e87bbeec83de69dc",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "assistance_ceiling_fpl": null,
     "asset_test": {
      "value": true,
      "layer": "documented",
-     "quote": "Have available assets below the asset thresholds identified in this Policy and the attached exhibits;",
-     "source_id": "fap-e87bbeec83de69dc",
+     "quote": "The decision to provide financial assistance will be based on a review of the family\u2019s income, assets and liabilities.",
+     "source_id": "fap-94bfd4365f2ae2df",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "residency": {
      "value": [
-      "Financial Assistance is available to patients who reside in the service area as defined by the zip codes in Exhibit D."
+      "Patients residing outside of Manitowoc County or residing in a foreign country are not eligible for financial assistance."
      ],
      "layer": "documented",
-     "quote": "Financial Assistance is available to patients who reside in the service area as defined by the zip codes in Exhibit D.",
-     "source_id": "fap-e87bbeec83de69dc",
+     "quote": "Patients residing outside of Manitowoc County or residing in a foreign country are not eligible for financial assistance.",
+     "source_id": "fap-94bfd4365f2ae2df",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -7535,8 +7459,8 @@
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "Patients who have in network insurance or other third-party sources of payment for their health care may still qualify for Financial Assistance under this Policy for the portion of the bill that may be their own personal obligation to pay.",
-     "source_id": "fap-e87bbeec83de69dc",
+     "quote": "Financial Assistance - Free Care Uninsured and insured patients",
+     "source_id": "fap-94bfd4365f2ae2df",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -7545,45 +7469,19 @@
     "services_excluded": null
    },
    "programs": {
-    "presumptive": {
-     "value": [
-      "Medicaid",
-      "homeless"
-     ],
-     "layer": "documented",
-     "quote": "Presumptive Eligibility - A Financial Assistance eligibility determination made by referencing specific criteria which demonstrate financial need on the part of an uninsured patient without completion of a Financial Assistance application.",
-     "source_id": "fap-e87bbeec83de69dc",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "state_programs": {
-     "value": [
-      {
-       "name": "BadgerCare",
-       "how_to_apply": "Have cooperated in seeking out and applying for other potentially available financial assistance programs; Have exhausted any and all insurance and/or other available financial assistance programs such as Medicaid, BadgerCare, or Copay Assistance Programs"
-      }
-     ],
-     "layer": "documented",
-     "quote": "Have exhausted any and all insurance and/or other available financial assistance programs such as Medicaid, BadgerCare, or Copay Assistance Programs; and",
-     "source_id": "fap-e87bbeec83de69dc",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "presumptive": null,
+    "state_programs": null
    },
    "apply": {
     "form_url": null,
     "form_version": null,
     "documents_required": {
      "value": [
-      "tax_return",
-      "pay_stubs",
-      "bank_statements"
+      "proof_of_income"
      ],
      "layer": "documented",
-     "quote": "A copy of your most recent Federal Income Tax Return and W-2 forms, Schedule C tax forms if you and/or your spouse are self-employed, and any additional tax schedules filed.",
-     "source_id": "fap-e87bbeec83de69dc",
+     "quote": "Proof of household income is required by applicant. The Community Care Coordinator may request further information/documentation to determine eligibility.",
+     "source_id": "fap-38063448ab2b6bbf",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -7592,21 +7490,17 @@
     "submit_methods": {
      "value": [
       {
-       "kind": "mail",
-       "detail": "Froedtert Patient Financial Services, Attn: Financial Assistance Team, 400 Woodland Prime Suite 103, N74W12501 Leatherwood Ct, Menomonee Falls, WI 53051-4490"
+       "kind": "in_person",
+       "detail": "submit an application and supporting documentation to the Patient Business Services office"
       },
       {
-       "kind": "fax",
-       "detail": "Fax: (414) 777-1503"
-      },
-      {
-       "kind": "email",
-       "detail": "financial.assistance@froedtert.com"
+       "kind": "portal",
+       "detail": "financial assistance application may be found on Holy Family Memorial's website"
       }
      ],
      "layer": "documented",
-     "quote": "Pl ease return the signed applic ation and suppor ting doc uments to: Froe dte rt Pa tie nt Fina ncia l Services Attn: Fina ncial Assistance Team 400 Woodla nd Prime Suite 103 N74 W12501 Le athe rwood Ct Menomonee Falls, WI 53051-4490 Phone: (800)803-8155 Fax: (414) 777-1503 fina ncial.a ssistance @froe dtert. com",
-     "source_id": "fap-e87bbeec83de69dc",
+     "quote": "Patients and families wishing to apply may submit an application and supporting documentation to the Patient Business Services office. The financial assistance application may be found on Holy Family Memorial\u2019s website.",
+     "source_id": "fap-94bfd4365f2ae2df",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -7614,8 +7508,8 @@
     "window_days_from_first_bill": {
      "value": 240,
      "layer": "documented",
-     "quote": "This period begins on the date on which emergency or other medically necessary care is provided and ends on the 240th day after the first post- discharge billing statement for such care is provided",
-     "source_id": "fap-e87bbeec83de69dc",
+     "quote": "HFM balances at a collection agency that are over 240 days from the first patient billing statement at the time of the Community Care Application/Determination are not eligible for Community Care assistance.",
+     "source_id": "fap-38063448ab2b6bbf",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -7629,41 +7523,24 @@
    },
    "contacts": {
     "phone": {
-     "value": "414-805-6206",
+     "value": "920-320-2591",
      "layer": "documented",
-     "quote": "Please contact a Financial Counselor at 414-805-6206 if you are unable to pay your bill in full at the time it is due.",
+     "quote": "Telephone: 920-320-2591",
+     "source_id": "fap-94bfd4365f2ae2df",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": {
+     "value": "Monday \u2013 Friday: 8 a.m. \u2013 4:30 p.m.",
+     "layer": "documented",
+     "quote": "Monday \u2013 Friday: 8 a.m. \u2013 4:30 p.m.",
      "source_id": "web-5c75c3c8e2a2dac6",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "hours": null,
-    "languages": {
-     "value": [
-      "Deitsch",
-      "Deutsch",
-      "English",
-      "Espa\u00f1ol",
-      "Fran\u00e7ais",
-      "Hmong",
-      "Polski",
-      "Shqip",
-      "Tagalog",
-      "Ti\u1ebfng Vi\u1ec7t",
-      "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
-      "\u0627\u0644\u0639\u0631\u0628\u064a\u0629",
-      "\u0939\u093f\u0902\u0926\u0940",
-      "\u0e9e\u0eb2\u0eaa\u0eb2\u0ea5\u0eb2\u0ea7",
-      "\u7e41\u9ad4\u4e2d\u6587",
-      "\ud55c\uad6d\uc5b4"
-     ],
-     "layer": "documented",
-     "quote": "ATTENTION: If you speak another language, assistance services, free of charge, are available to you. Call: 414-805-3000 (TTY: 1-800-947-3529)",
-     "source_id": "web-5c75c3c8e2a2dac6",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "languages": null
    },
    "coverage": {
     "facilities": null,
@@ -7672,21 +7549,21 @@
    },
    "sources": [
     {
-     "id": "fap-e87bbeec83de69dc",
+     "id": "fap-38063448ab2b6bbf",
      "kind": "hospital_web",
-     "url": "https://www.froedtert.com/sites/default/files/upload/docs/patients-visitors/bill/financial-assistance-policy-full-version-english.pdf",
+     "url": "https://www.hfmhealth.org/sites/hfmhealth/files/uploads/2018/04/CommunityCare950-343-updated-2-1-16.pdf",
      "title": "",
      "fetched_on": "2026-10-23",
-     "sha256": "e87bbeec83de69dce7744afe8e5d45b8c3c4f90429d28cf7b67365224cf69d50",
+     "sha256": "38063448ab2b6bbf0f8f7b46782f755e032f561df3c492a10e94d618252731d0",
      "effective_date": null
     },
     {
-     "id": "fap-f540d642eaa99208",
+     "id": "fap-94bfd4365f2ae2df",
      "kind": "hospital_web",
-     "url": "https://www.froedtert.com/sites/default/files/upload/docs/patients-visitors/bill/financial-assistance-application-english.pdf",
+     "url": "https://www.hfmhealth.org/sites/hfmhealth/files/uploads/2020/09/plain-language-summary-updated-092320.pdf",
      "title": "",
      "fetched_on": "2026-10-23",
-     "sha256": "f540d642eaa99208edeee30686d99057fbec49867936f1540bcc1353554b8c29",
+     "sha256": "94bfd4365f2ae2df0f0d765ed32407042f669a8a740284e17da0c46a346c2194",
      "effective_date": null
     },
     {
@@ -7701,14 +7578,10 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: Percent Discount Granted 100% 100% 95% 90% 85% 80% 75%",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Proof of income. If married include your spouse\u2019s information, please submit one month of current pay stubs. | A recent copy of the complete bank statement for every account on which your and/or your spouse's name appears; includin",
-    "agent judge on eligibility.free_care_max_fpl: The quote shows discount percentages but no FPL figure; it does not state that 250% FPL is the highest level receiving 100% free care.",
-    "agent judge on eligibility.discount_tiers: Quote maps 100%,250%,275%,300%,325%,350%,400% to discounts 100,100,95,90,85,80,75. Value shifts discounts one tier early (250 to 95) and uses inconsistent bounds.",
-    "agent judge on programs.presumptive: Quote defines presumptive eligibility generically and does not mention Medicaid or homeless status as qualifying categories.",
-    "agent judge on programs.state_programs: Quote mentions BadgerCare only as a program to exhaust first; it does not describe how to apply for BadgerCare.",
-    "agent judge on contacts.languages: Quote only says free language assistance is available and gives a phone number; it does not list the sixteen languages in the value.",
-    "eligibility.discount_tiers: rejected by schema (1 validation error for ProcedureSheet); dropped"
+    "eligibility.discount_tiers: 100-200% at 0% is no discount; skipped",
+    "agent judge on eligibility.free_care_max_fpl: Quote says free care applies to income 'less than Federal Poverty Guideline', which is below 100%, not explicitly up to and including 100%.",
+    "agent judge on eligibility.discount_tiers: Quote gives the 200% upper bound but no discount percent or 100% lower bound; the 0% discount_percent in the value does not appear in the quote.",
+    "agent judge on apply.submit_methods: Quote does not say 'in person'; it says to submit to the office. It also only says the application 'may be found' on the website, not that it can be submitted online."
    ]
   },
   {
@@ -8733,7 +8606,7 @@
    "status": "draft",
    "eligibility": {
     "free_care_max_fpl": {
-     "value": "250",
+     "value": "100",
      "layer": "documented",
      "quote": "100% 100% 95% 90% 85% 80% 75%",
      "source_id": "fap-e87bbeec83de69dc",
@@ -8741,41 +8614,7 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "discount_tiers": {
-     "value": [
-      {
-       "min_fpl_exclusive": "100",
-       "max_fpl_inclusive": "250",
-       "discount_percent": 95
-      },
-      {
-       "min_fpl_exclusive": "250",
-       "max_fpl_inclusive": "275",
-       "discount_percent": 90
-      },
-      {
-       "min_fpl_exclusive": "275",
-       "max_fpl_inclusive": "300",
-       "discount_percent": 85
-      },
-      {
-       "min_fpl_exclusive": "300",
-       "max_fpl_inclusive": "325",
-       "discount_percent": 80
-      },
-      {
-       "min_fpl_exclusive": "325",
-       "max_fpl_inclusive": "400",
-       "discount_percent": 75
-      }
-     ],
-     "layer": "documented",
-     "quote": "100% 250% 275% 300% 325% 350% 400%",
-     "source_id": "fap-e87bbeec83de69dc",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "discount_tiers": null,
     "assistance_ceiling_fpl": {
      "value": "400",
      "layer": "documented",
@@ -8788,7 +8627,7 @@
     "asset_test": {
      "value": true,
      "layer": "documented",
-     "quote": "Have available assets below the asset thresholds identified in this Policy and the attached exhibits",
+     "quote": "Financial Assistance will be denied for patients with a total outstanding balance or estimate of charges for emergency or other medically necessary care that is less than the amount of available assets.",
      "source_id": "fap-e87bbeec83de69dc",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -8820,10 +8659,10 @@
    "programs": {
     "presumptive": {
      "value": [
-      "uninsured patient"
+      "Experian Health"
      ],
      "layer": "documented",
-     "quote": "Presumptive Eligibility - A Financial Assistance eligibility determination made by referencing specific criteria which demonstrate financial need on the part of an uninsured patient without completion of a Financial Assistance application.",
+     "quote": "information from external sources, such as Experian Health or similar third-party vendors, or other public and private records and data sources may be used in determining whether a patient is eligible for the Financial Assistance Program without completing an application",
      "source_id": "fap-e87bbeec83de69dc",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -8832,12 +8671,8 @@
     "state_programs": {
      "value": [
       {
-       "name": "Medicaid",
-       "how_to_apply": "Comply with any other available government and financial assistance programs"
-      },
-      {
        "name": "BadgerCare",
-       "how_to_apply": "Comply with any other available government and financial assistance programs"
+       "how_to_apply": "Have exhausted any and all insurance and/or other available financial assistance programs such as Medicaid, BadgerCare, or Copay Assistance Programs"
       }
      ],
      "layer": "documented",
@@ -8855,10 +8690,11 @@
      "value": [
       "tax_return",
       "pay_stubs",
-      "bank_statements"
+      "bank_statements",
+      "social_security_letter"
      ],
      "layer": "documented",
-     "quote": "A copy of your most recent Federal Income Tax Return and W-2 forms, Schedule C tax forms if you and/or your spouse are self-employed, and any additional tax schedules filed.",
+     "quote": "A copy of your most recent Federal Income Tax Return and W-2 forms, Schedule C tax forms if you and/or your spouse are self-employed",
      "source_id": "fap-e87bbeec83de69dc",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -8905,23 +8741,15 @@
    },
    "contacts": {
     "phone": {
-     "value": "800-803-8155",
+     "value": "(800)803-8155",
      "layer": "documented",
-     "quote": "Questions About Your Bill? 800-803-8155",
-     "source_id": "web-27edccb9fdeebbb4",
+     "quote": "Phone: (800)803-8155",
+     "source_id": "fap-e87bbeec83de69dc",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "hours": {
-     "value": "Monday \u2013 Friday: 8 a.m. \u2013 4:30 p.m.",
-     "layer": "documented",
-     "quote": "Monday \u2013 Friday: 8 a.m. \u2013 4:30 p.m.",
-     "source_id": "web-27edccb9fdeebbb4",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "hours": null,
     "languages": null
    },
    "coverage": {
@@ -8938,33 +8766,16 @@
      "fetched_on": "2026-10-23",
      "sha256": "e87bbeec83de69dce7744afe8e5d45b8c3c4f90429d28cf7b67365224cf69d50",
      "effective_date": null
-    },
-    {
-     "id": "fap-f540d642eaa99208",
-     "kind": "hospital_web",
-     "url": "https://www.froedtert.com/sites/default/files/upload/docs/patients-visitors/bill/financial-assistance-application-english.pdf",
-     "title": "",
-     "fetched_on": "2026-10-23",
-     "sha256": "f540d642eaa99208edeee30686d99057fbec49867936f1540bcc1353554b8c29",
-     "effective_date": null
-    },
-    {
-     "id": "web-27edccb9fdeebbb4",
-     "kind": "hospital_web",
-     "url": "https://www.froedtert.com/patients-visitors/bill",
-     "title": "Billing and Insurance",
-     "fetched_on": "2026-10-23",
-     "sha256": "27edccb9fdeebbb4b5895c947a69f933aea79523c2ae7245104cb676f62aa452",
-     "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: Percent Discount Granted | 100% 100% 95% 90% 85% 80% 75%",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Proof of income. If married include your spouse\u2019s information, please submit one month of current pay stubs. | A recent copy of the complete bank statement for every account on which your and/or your spouse's name appears; includin",
-    "agent judge on eligibility.free_care_max_fpl: Quote is a bare row of percentages with no FPL labels; it does not state that 100% free care runs up to 250% FPL.",
-    "agent judge on eligibility.discount_tiers: Quote maps 100-250% to 100%, 250-275% to 95%, 275-300% to 90%, 300-325% to 85%, 325-350% to 80%, 350-400% to 75%. Value's percents are shifted one tier and its bounds differ.",
-    "agent judge on programs.state_programs: Names Medicaid and BadgerCare are in the quote, but the quote says they must be exhausted, not how to apply; the how_to_apply text is not stated."
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Proof of income. If married include your spouse\u2019s information, please submit one month of current pay stubs. | A recent copy of the complete bank statement for every account on which your and/or your spouse's name appears",
+    "agent dropped eligibility.discount_tiers: quote is not a substring of the source",
+    "agent judge on eligibility.free_care_max_fpl: Quote is an unlabeled list of percentages (100% 100% 95%...) and does not state that 100% free care applies up to 100% FPL.",
+    "agent judge on programs.presumptive: Quote says external data sources such as Experian Health or similar vendors may be used; it does not describe presumptive eligibility and the value omits the 'similar vendors' named.",
+    "agent judge on programs.state_programs: Quote lists BadgerCare only as a program that must be exhausted before assistance; it gives a prerequisite, not how to apply.",
+    "agent judge on apply.documents_required: Quote lists tax return and W-2s, pay stubs, and bank statements; it does not mention a Social Security award letter, which the value includes."
    ]
   },
   {
@@ -10604,55 +10415,13 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": {
-     "value": "250",
-     "layer": "documented",
-     "quote": "100% 100% 95% 90% 85% 80% 75%",
-     "source_id": "fap-e87bbeec83de69dc",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "discount_tiers": {
-     "value": [
-      {
-       "min_fpl_exclusive": "250",
-       "max_fpl_inclusive": "275",
-       "discount_percent": 95
-      },
-      {
-       "min_fpl_exclusive": "275",
-       "max_fpl_inclusive": "300",
-       "discount_percent": 90
-      },
-      {
-       "min_fpl_exclusive": "300",
-       "max_fpl_inclusive": "325",
-       "discount_percent": 85
-      },
-      {
-       "min_fpl_exclusive": "325",
-       "max_fpl_inclusive": "350",
-       "discount_percent": 80
-      },
-      {
-       "min_fpl_exclusive": "350",
-       "max_fpl_inclusive": "400",
-       "discount_percent": 75
-      }
-     ],
-     "layer": "documented",
-     "quote": "100% 250% 275% 300% 325% 350% 400%",
-     "source_id": "fap-e87bbeec83de69dc",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "free_care_max_fpl": null,
+    "discount_tiers": null,
     "assistance_ceiling_fpl": {
      "value": "400",
      "layer": "documented",
-     "quote": "Have household gross income below 400% of the Federal Poverty Level issued annually by the U.S. Department of Health and Human Services",
-     "source_id": "fap-e87bbeec83de69dc",
+     "quote": "Have household Modified Adjusted Gross Income below 400% of the Federal Poverty Level issued annually by the U.S. Department of Health and Human Services",
+     "source_id": "fap-89edaffd41c2538c",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -10661,18 +10430,18 @@
      "value": true,
      "layer": "documented",
      "quote": "Have available assets below the asset thresholds identified in this Policy and the attached exhibits",
-     "source_id": "fap-e87bbeec83de69dc",
+     "source_id": "fap-89edaffd41c2538c",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "residency": {
      "value": [
-      "Financial Assistance is available to patients who reside in the service area as defined by the zip codes in Exhibit D."
+      "Financial Assistance is available to patients who reside in the Froedtert Health service area as defined by the zip codes in Exhibit D."
      ],
      "layer": "documented",
-     "quote": "Financial Assistance is available to patients who reside in the service area as defined by the zip codes in Exhibit D.",
-     "source_id": "fap-e87bbeec83de69dc",
+     "quote": "Financial Assistance is available to patients who reside in the Froedtert Health service area as defined by the zip codes in Exhibit D.",
+     "source_id": "fap-89edaffd41c2538c",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -10681,7 +10450,7 @@
      "value": true,
      "layer": "documented",
      "quote": "Patients who have in network insurance or other third-party sources of payment for their health care may still qualify for Financial Assistance under this Policy for the portion of the bill that may be their own personal obligation to pay.",
-     "source_id": "fap-e87bbeec83de69dc",
+     "source_id": "fap-89edaffd41c2538c",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -10692,40 +10461,23 @@
    "programs": {
     "presumptive": {
      "value": [
-      "uninsured patients"
+      "Medicaid"
      ],
      "layer": "documented",
-     "quote": "For uninsured patients, information from external sources, such as Experian Health or similar third-party vendors, or other public and private records and data sources may be used in determining whether a patient is eligible for the Financial Assistance Program without completing an application.",
-     "source_id": "fap-e87bbeec83de69dc",
+     "quote": "Presumptive Eligibility - A Financial Assistance eligibility determination made by referencing specific criteria which demonstrate financial need on the part of an uninsured patient without completion of a Financial Assistance application.",
+     "source_id": "fap-89edaffd41c2538c",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "state_programs": {
-     "value": [
-      {
-       "name": "Medicaid",
-       "how_to_apply": "Comply with any other available government and financial assistance programs"
-      },
-      {
-       "name": "BadgerCare",
-       "how_to_apply": "Comply with any other available government and financial assistance programs"
-      }
-     ],
-     "layer": "documented",
-     "quote": "Have exhausted any and all insurance and/or other available financial assistance programs such as Medicaid, BadgerCare, or Copay Assistance Programs",
-     "source_id": "fap-e87bbeec83de69dc",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "state_programs": null
    },
    "apply": {
     "form_url": {
      "value": "https://www.froedtert.com/sites/default/files/upload/docs/patients-visitors/bill/financial-assistance-application-english.pdf",
      "layer": "documented",
      "quote": "Download the application. [/sites/default/files/upload/docs/patients-visitors/bill/financial-assistance-application-english.pdf]",
-     "source_id": "web-8bf370c197cbaecd",
+     "source_id": "web-fc6739b32b166edf",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -10735,12 +10487,13 @@
      "value": [
       "tax_return",
       "proof_of_income",
+      "pay_stubs",
       "bank_statements",
       "other"
      ],
      "layer": "documented",
-     "quote": "A copy of your most recent Federal Income Tax Return and W-2 forms, Schedule C tax forms if you and/or your spouse are self-employed, and any additional tax schedules filed.",
-     "source_id": "fap-e87bbeec83de69dc",
+     "quote": "A copy of your most recent Federal Income Tax Return and W-2 forms, Schedule C tax forms if you and/or your spouse are self-employed",
+     "source_id": "fap-89edaffd41c2538c",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -10751,7 +10504,7 @@
      "value": 240,
      "layer": "documented",
      "quote": "This period begins on the date on which emergency or other medically necessary care is provided and ends on the 240th day after the first post- discharge billing statement for such care is provided",
-     "source_id": "fap-e87bbeec83de69dc",
+     "source_id": "fap-89edaffd41c2538c",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -10760,15 +10513,23 @@
     "decision_days_reported": null
    },
    "collections": {
-    "eca_wait_days": null,
+    "eca_wait_days": {
+     "value": 120,
+     "layer": "documented",
+     "quote": "Froedtert Health will begin to apply the annually determined AGB Percentage within 120 days following the end of the AGB Period that was used in calculating the AGB Percentage.",
+     "source_id": "fap-89edaffd41c2538c",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "collection_agencies": null
    },
    "contacts": {
     "phone": {
-     "value": "800-803-8155",
+     "value": "(800)803-8155",
      "layer": "documented",
-     "quote": "Questions About Your Bill? 800-803-8155",
-     "source_id": "web-8bf370c197cbaecd",
+     "quote": "Phone: (800)803-8155",
+     "source_id": "fap-89edaffd41c2538c",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -10777,7 +10538,7 @@
      "value": "Monday through Friday, 8 a.m. \u2013 4:30 p.m.",
      "layer": "documented",
      "quote": "Financial counselors are available to assist you via phone and in person, Monday through Friday, 8 a.m. \u2013 4:30 p.m. at 414-805-6206 .",
-     "source_id": "web-8bf370c197cbaecd",
+     "source_id": "web-fc6739b32b166edf",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -10788,7 +10549,7 @@
      ],
      "layer": "documented",
      "quote": "Ver la Pol\u00edtica de ayuda econ\u00f3mica \u2013 el Resumen en lenguaje sencillo",
-     "source_id": "web-8bf370c197cbaecd",
+     "source_id": "web-fc6739b32b166edf",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -10801,12 +10562,12 @@
    },
    "sources": [
     {
-     "id": "fap-e87bbeec83de69dc",
+     "id": "fap-89edaffd41c2538c",
      "kind": "hospital_web",
-     "url": "https://www.froedtert.com/sites/default/files/upload/docs/patients-visitors/bill/financial-assistance-policy-full-version-english.pdf",
+     "url": "https://www.froedtert.com/sites/default/files/files/2024-06/financial-assistance-policy-full-version-english-June2024.pdf",
      "title": "",
      "fetched_on": "2026-10-23",
-     "sha256": "e87bbeec83de69dce7744afe8e5d45b8c3c4f90429d28cf7b67365224cf69d50",
+     "sha256": "89edaffd41c2538c389d24eecc56c6dffd0122f3a037dcd6d37831f686690717",
      "effective_date": null
     },
     {
@@ -10819,27 +10580,27 @@
      "effective_date": null
     },
     {
-     "id": "web-8bf370c197cbaecd",
+     "id": "web-fc6739b32b166edf",
      "kind": "hospital_web",
      "url": "https://www.froedtert.com/financial-services",
      "title": "Financial Assistance Program | Froedtert & MCW",
      "fetched_on": "2026-10-23",
-     "sha256": "8bf370c197cbaecdbc48672a2b4a51087deb1d3b0579ea32048e8c07711d5349",
+     "sha256": "fc6739b32b166edf280a64a1bbf93621a371815dc83b42e5f931163da5e7bfbf",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 0-250% at 100% is the free-care band, not a tier; skipped",
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: Percent Discount Granted 100% 100% 95% 90% 85% 80% 75%",
     "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Proof of income. If married include your spouse\u2019s information, please submit one month of current pay stubs. | A recent copy of the complete bank statement for every account on which your and/or your spouse's name appears",
-    "agent dropped apply.submit_methods: excerpt not in source: Patients can also apply for Financial Assistance through MyC",
-    "agent judge on eligibility.free_care_max_fpl: Quote lists only percentages (100% 100% 95%...) and never states 250 as the highest FPL with 100% free care.",
-    "agent judge on eligibility.discount_tiers: Garbled table: the 100% first bound is unexplained, and the alignment of FPL bounds to discount percents must be inferred rather than stated plainly.",
-    "agent judge on programs.state_programs: Quote names Medicaid and BadgerCare only as programs to exhaust; the how_to_apply text is not in the quote.",
-    "agent judge on apply.form_url: Quote gives only the relative path /sites/default/files/...pdf; the froedtert.com domain in the full URL is not stated.",
-    "agent judge on apply.documents_required: Quote supports tax return, proof of income, and bank statements, but contains no mention of investment statements, the fourth value item.",
-    "agent judge on contacts.languages: Quote is a Spanish-language link title; it does not state that Spanish is a language offered for assistance."
+    "agent dropped eligibility.free_care_max_fpl: quote is not a substring of the source",
+    "agent dropped eligibility.discount_tiers: quote is not a substring of the source",
+    "agent dropped apply.submit_methods: excerpt not in source: Froe dte rt Pa tie nt Fina ncia l Services Attn: Fina ncial ",
+    "agent judge on eligibility.assistance_ceiling_fpl: Quote lists an eligibility criterion (MAGI below 400% FPL) but does not say no assistance of any kind is offered above 400% FPL.",
+    "agent judge on programs.presumptive: Quote defines presumptive eligibility for uninsured patients but does not mention Medicaid.",
+    "agent judge on apply.form_url: Quote gives only a relative path (/sites/default/files/...pdf) with no domain; the full froedtert.com URL is not stated.",
+    "agent judge on apply.documents_required: Quote lists tax return/W-2, proof of income, pay stubs, and bank statements; it does not mention an investment statement.",
+    "agent judge on collections.eca_wait_days: Quote concerns when the AGB Percentage is applied (within 120 days after the AGB Period), not days before collection actions.",
+    "agent judge on contacts.languages: Quote is a Spanish-language link label; it does not state that Spanish is an available language."
    ]
   },
   {
@@ -12229,7 +11990,17 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "residency": null,
+    "residency": {
+     "value": [
+      "Were you an Illinois resident at the time of service?"
+     ],
+     "layer": "documented",
+     "quote": "Were you an Illinois resident at the time of service? \u2610 No \u2610 Yes (Provide a current ID)",
+     "source_id": "fap-e63d99723b360db1",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
@@ -12247,9 +12018,11 @@
      "value": [
       "homelessness",
       "deceased with no estate",
-      "mental incapacitation without a representative",
-      "Medicaid eligibility",
-      "enrollment in state or government assistance programs"
+      "Medicaid",
+      "SNAP",
+      "WIC",
+      "TANF",
+      "HUD"
      ],
      "layer": "documented",
      "quote": "These circumstances include homelessness, being deceased with no estate, mental incapacitation without a representative, Medicaid eligibility, or enrollment in state or government assistance programs.",
@@ -12271,7 +12044,7 @@
       "bank_statements"
      ],
      "layer": "documented",
-     "quote": "\u2610 Employment = paystubs showing gross income for 1 or 12 months prior to the date of application, or a written verification letter from an employer \u2610 Tax Return, or W-2, or 1099 = Complete most recent tax forms from most recent filing including Schedule C for self-employment",
+     "quote": "Employment = paystubs showing gross income for 1 or 12 months prior to the date of application, or a written verification letter from an employer",
      "source_id": "fap-e63d99723b360db1",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -12282,19 +12055,15 @@
      "value": [
       {
        "kind": "in_person",
-       "detail": "submit it to the hospital in person"
+       "detail": "Please complete this form and submit it to the hospital in person"
       },
       {
        "kind": "mail",
-       "detail": "by mail (Attention: Financial Assistance Program Public Benefits Department P.O. Box 13427 Springfield, IL 62791)"
+       "detail": "Attention: Financial Assistance Program P.O. Box 13427 Springfield, IL 62791"
       },
       {
        "kind": "email",
-       "detail": "email [email protected]"
-      },
-      {
-       "kind": "portal",
-       "detail": "MyChart (https://www.myhshs.org/myhshs/Authentication/Login?)"
+       "detail": "HSHSCharityservice@Ensemblehp.com"
       },
       {
        "kind": "fax",
@@ -12302,7 +12071,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Please complete this form and submit it to the hospital in person, by mail (listed below), email (listed below), MyChart (https://www.myhshs.org/myhshs/Authentication/Login?), or fax (513)653-4099 to apply for free or discounted care",
+     "quote": "Please complete this form and submit it to the hospital in person, by mail (listed below), email (listed below), MyChart (https://www.myhshs.org/myhshs/Authentication/Login?), or fax (513)653-4099 to apply",
      "source_id": "fap-e63d99723b360db1",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -12329,7 +12098,7 @@
      "value": "833-464-1778",
      "layer": "documented",
      "quote": "Phone: 833-464-1778 | Fax: 217-492-2339",
-     "source_id": "web-a31384090645b80a",
+     "source_id": "web-b6236b81909225c7",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -12337,8 +12106,8 @@
     "hours": {
      "value": "Monday - Friday, 8 a.m. - 5 p.m.",
      "layer": "documented",
-     "quote": "Hours: Monday - Friday, 8 a.m. - 5 p.m. Closed weekends and holidays",
-     "source_id": "web-a31384090645b80a",
+     "quote": "Monday - Friday, 8 a.m. - 5 p.m.",
+     "source_id": "web-b6236b81909225c7",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -12363,12 +12132,12 @@
    },
    "sources": [
     {
-     "id": "web-d004dea6010780e6",
+     "id": "web-ffab8ff2f01b46b1",
      "kind": "hospital_web",
      "url": "https://hshs.ellucid.com/pman/documents/view/22255/?security=d585b615bcd5146064959c161752e9985ce39ed9",
      "title": "Policy Manager - MCN Solutions",
      "fetched_on": "2026-10-23",
-     "sha256": "d004dea6010780e62059492a3f65020e6a2ad0b91b0884a21141777a2d6e11ff",
+     "sha256": "ffab8ff2f01b46b1843c26c4a6205dff8e3e60de2081bde50dac24cb3aa80ee8",
      "effective_date": null
     },
     {
@@ -12381,22 +12150,24 @@
      "effective_date": null
     },
     {
-     "id": "web-a31384090645b80a",
+     "id": "web-b6236b81909225c7",
      "kind": "hospital_web",
      "url": "https://www.hshs.org/st-clare/patients-guests/patient-financial-services",
      "title": "Patient Financial Services at HSHS St. Clare Hospital",
      "fetched_on": "2026-10-23",
-     "sha256": "a31384090645b80a2a51ae5e94279a5522401d637bb6e0f8a7b4454b5da5aef3",
+     "sha256": "b6236b81909225c7f923db97ce2b010dd23098627062979fbe5abf95237a1f37",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: \u2610 Social Security/Pension/Disability = Most recent benefit letter \u2610 Checking/Savings = 1 month of complete (all pages) b",
-    "agent dropped apply.form_url: quote is not a substring of the source",
-    "agent judge on eligibility.insured_patients_covered: Quote is a form question asking whether the patient had health insurance on the date of service. It does not say insured patients are covered.",
-    "agent judge on apply.submit_methods: Quote names in-person, mail, email, MyChart, and fax, but gives no mailing address or email address. The value's P.O. Box and email details are not in the quote.",
-    "agent judge on apply.window_days_from_first_bill: Quote gives 90 days from discharge or receipt of outpatient care, not from the first bill."
+    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: \u25a1 SNAP/Food Share \u25a1WIC \u25a1TANF \u25a1HUD \u25a1Homeless \u25a1Community Clinic",
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Tax Return, or W-2, or 1099 = Complete most recent tax forms from most recent filing including Schedule C for self-emplo | Checking/Savings = 1 month of complete (all pages) bank statement for each account",
+    "agent judge on eligibility.residency: Value is the form question text itself, not a residency requirement; quote is an Illinois residency checkbox question, not a stated rule.",
+    "agent judge on eligibility.insured_patients_covered: Quote is a form question asking whether the patient had insurance on the date of service; it does not state that insured patients are covered.",
+    "agent judge on apply.documents_required: Quote mentions paystubs, tax forms, and bank statements only; no Social Security/Pension/Disability benefit letter appears in the quote.",
+    "agent judge on apply.submit_methods: Quote omits the mailing address and email/fax details from the value; it also lists MyChart, which the value leaves out. Mail address is not in the quote.",
+    "agent judge on apply.window_days_from_first_bill: Quote measures 90 days from discharge or receipt of outpatient care, not from the first bill."
    ]
   },
   {
@@ -12621,26 +12392,7 @@
     "services_excluded": null
    },
    "programs": {
-    "presumptive": {
-     "value": [
-      "homeless",
-      "eligible for state or local assistance programs",
-      "eligible for a state-funded prescription medication program",
-      "deceased and without an estate",
-      "files bankruptcy",
-      "Women, Infant and Children Nutrition Program (WIC)",
-      "Supplemental Nutrition Assistance Program (SNAP)",
-      "Illinois Free Lunch and Breakfast Program",
-      "Low Income Home Energy Assistance Program (LIHEAP)",
-      "Temporary Assistance for Needy Families (TANF)"
-     ],
-     "layer": "documented",
-     "quote": "a. Patient is homeless;",
-     "source_id": "fap-d6875eacf9c4de8f",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "presumptive": null,
     "state_programs": null
    },
    "apply": {
@@ -12648,12 +12400,13 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "social_security_letter",
       "tax_return",
+      "pay_stubs",
+      "other",
       "bank_statements"
      ],
      "layer": "documented",
-     "quote": "A completed and signed Patient Financial Assistance Application.",
+     "quote": "Applicants must provide one of the following: prior year tax returns or W-2, three most recent pay stubs, letter from employer, or Form 4506-T (if W-2 not filed).",
      "source_id": "fap-d6875eacf9c4de8f",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -12664,7 +12417,7 @@
      "value": [
       {
        "kind": "in_person",
-       "detail": "in person"
+       "detail": "provide appropriate income verification(s) and any other supporting documents in person"
       },
       {
        "kind": "fax",
@@ -12709,10 +12462,10 @@
      "support_count": 0
     },
     "hours": {
-     "value": "Monday through Friday from 8:00 am \u2013 4:00 pm",
+     "value": "Monday through Friday, 8 a.m. to 4 p.m.",
      "layer": "documented",
-     "quote": "we are open Monday through Friday from 8:00 am \u2013 4:00 pm",
-     "source_id": "fap-d6875eacf9c4de8f",
+     "quote": "Our hours are Monday through Friday, 8 a.m. to 4 p.m.",
+     "source_id": "web-13b0f9f926e88514",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -12744,13 +12497,33 @@
      "fetched_on": "2026-10-23",
      "sha256": "d6875eacf9c4de8f13bbda5267260d58726efe6f03e3f59efb258342f9b04eb1",
      "effective_date": null
+    },
+    {
+     "id": "fap-5202d888c21060c3",
+     "kind": "hospital_web",
+     "url": "https://www.lafayettehospital.org/wp-content/uploads/2025/03/Financial-Assistance-Application-English-2.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "5202d888c21060c3f0d713ae78376de08e5bc203f816c8ea7b124ff224b48009",
+     "effective_date": null
+    },
+    {
+     "id": "web-13b0f9f926e88514",
+     "kind": "hospital_web",
+     "url": "https://www.lafayettehospital.org/patients/billing-and-financial-information/",
+     "title": "Billing and Financial Information \u00bb Lafayette Hospital + Clinics",
+     "fetched_on": "2026-10-23",
+     "sha256": "13b0f9f926e885149ce17925c492e1185eeee883048856aec22157befb2a6075",
+     "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: f. Patient is enrolled in one of the following assistance programs with eligibility criteria at or below two hundred per | iii. Illinois Free Lunch and Breakfast Program; iv. Low Income Home Energy Assistance Program (LIHEAP); v. Temporary Ass",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Applicants must provide one of the following: prior year tax returns or W-2, three most recent pay stubs, letter from em | Applicants may also be asked to provide bank statements.",
-    "agent dropped apply.form_url: quote is not a substring of the source"
+    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: Applicants may also be asked to provide bank statements.",
+    "agent dropped programs.presumptive: excerpt not in source: i. Women, Infant and Children Nutrition Program (WIC); ii. S",
+    "agent judge on eligibility.assistance_ceiling_fpl: Quote says patients at or below 200% FPL are eligible for discount; it does not say assistance is unavailable above 200% FPL.",
+    "agent judge on apply.documents_required: Quote says applicants provide one of the listed items; bank statements are only 'may also be asked,' not required.",
+    "agent judge on apply.submit_methods: Quote gives in-person and fax (608-776-5806) and mail, but cuts off at 'to:' so the mailing address in the value is not in the quote."
    ]
   },
   {
@@ -13737,8 +13510,8 @@
     "assistance_ceiling_fpl": {
      "value": "301",
      "layer": "documented",
-     "quote": "You may qualify if your income is at or below 301% of the Federal Policy Guidelines (see chart below).",
-     "source_id": "web-8ebebe3690ba65f4",
+     "quote": "The Community care program covers charges at Osceola Medical Center\u2019s clinic and hospital. You may qualify if your income is at or below 301% of the Federal Policy Guidelines.",
+     "source_id": "web-dc2b95849a45a83c",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -13746,22 +13519,24 @@
     "asset_test": {
      "value": true,
      "layer": "documented",
-     "quote": "You may qualify for discounted care based on your household income and assets.",
-     "source_id": "web-8ebebe3690ba65f4",
+     "quote": "70 percent up to 100 percent of your bill may be paid depending on your gross annual income, family size and asset guidelines.",
+     "source_id": "web-dc2b95849a45a83c",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "residency": null,
-    "insured_patients_covered": {
-     "value": true,
+    "residency": {
+     "value": [
+      "If you currently have no coverage and are a Wisconsin resident, please visit Access website or call 1-888-283-0012."
+     ],
      "layer": "documented",
-     "quote": "All copays will be due from the patient.",
-     "source_id": "web-8ebebe3690ba65f4",
+     "quote": "If you currently have no coverage and are a Wisconsin resident, please visit Access website [https://access.wisconsin.gov/access/] or call 1-888-283-0012.",
+     "source_id": "web-dc2b95849a45a83c",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
+    "insured_patients_covered": null,
     "min_balance": null,
     "services_excluded": null
    },
@@ -13772,21 +13547,7 @@
    "apply": {
     "form_url": null,
     "form_version": null,
-    "documents_required": {
-     "value": [
-      "tax_return",
-      "pay_stubs",
-      "bank_statements",
-      "proof_of_income",
-      "other"
-     ],
-     "layer": "documented",
-     "quote": "A copy of your most recent 1040 Federal Income Tax form. Do not include W2 forms.",
-     "source_id": "web-8ebebe3690ba65f4",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "documents_required": null,
     "documents_reported": null,
     "submit_methods": null,
     "window_days_from_first_bill": null,
@@ -13810,7 +13571,7 @@
     "hours": {
      "value": "Monday through Friday 8 a.m. to 4:30 p.m.",
      "layer": "documented",
-     "quote": "Monday through Friday 8 a.m. to 4:30 p.m.",
+     "quote": "Business Office Hours Monday through Friday 8 a.m. to 4:30 p.m.",
      "source_id": "web-e12023755c5e9415",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -13818,7 +13579,6 @@
     },
     "languages": {
      "value": [
-      "English",
       "Spanish",
       "Somali",
       "Hmong",
@@ -13836,8 +13596,8 @@
       "Chinese (Simplified)"
      ],
      "layer": "documented",
-     "quote": "English, Spanish, Somali, Hmong, German, Dutch, French, Korean, Lao, Hindi, Albanian, Tagalog, Polish, Vietnamese, Russian and Chinese (Simplified).",
-     "source_id": "web-e12023755c5e9415",
+     "quote": "The Financial Assistance Policy is available in the following languages, other than English: Spanish, Somali, Hmong, German, Dutch, French, Korean, Lao, Hindi, Albanian, Tagalog, Polish, Vietnamese, Russian and Chinese (Simplified).",
+     "source_id": "web-8ebebe3690ba65f4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -13859,6 +13619,15 @@
      "effective_date": null
     },
     {
+     "id": "web-dc2b95849a45a83c",
+     "kind": "hospital_web",
+     "url": "https://www.myomc.org/financial-policies-1/community-care-charity",
+     "title": "Community Care Charity",
+     "fetched_on": "2026-10-23",
+     "sha256": "dc2b95849a45a83c3c8c83a41e85ae1404e51403f4b316cff53a06cad3264be6",
+     "effective_date": null
+    },
+    {
      "id": "web-e12023755c5e9415",
      "kind": "hospital_web",
      "url": "https://www.myomc.org/billing-insurance",
@@ -13871,11 +13640,10 @@
    "accuracy": null,
    "eve_review": [
     "eligibility.discount_tiers: 0-301% at 100% is the free-care band, not a tier; skipped",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Records of income are to include copies of the two most recent payroll stubs. | Copies of bank statements for all checking and savings accounts for the last 30 days.",
-    "agent dropped apply.submit_methods: excerpt not in source: You can also stop by the hospital information desk or call a",
-    "agent judge on eligibility.discount_tiers: Quote gives only a 75 to 100 percent discount range with no tier bounds. Value's single 0-301% tier at 100% is not stated.",
-    "agent judge on eligibility.insured_patients_covered: Quote only says copays are due from the patient. It does not state that insured patients are covered.",
-    "agent judge on apply.documents_required: Quote lists the 1040, two payroll stubs, and 30 days of bank statements. Value adds retirement records and HSA balances, which the quote does not mention."
+    "agent dropped apply.documents_required: between 1 and 3 excerpts allowed",
+    "agent dropped apply.submit_methods: excerpt not in source: To apply, call 715-294-5637. We will mail an application to ",
+    "agent judge on eligibility.discount_tiers: Quote says 70 to 100 percent of the bill may be paid depending on income, family size and assets. It gives no tier bounds, and the 0-301% tier at 100% discount is not stated.",
+    "agent judge on eligibility.assistance_ceiling_fpl: Quote says one may qualify at or below 301% FPL for the Community care program. It does not say no assistance of any kind is offered above 301%."
    ]
   },
   {
@@ -13895,19 +13663,11 @@
    "eligibility": {
     "free_care_max_fpl": null,
     "discount_tiers": null,
-    "assistance_ceiling_fpl": {
-     "value": "400",
-     "layer": "documented",
-     "quote": "have a household income up to 400% of the Federal Poverty Level Guidelines (FPL)",
-     "source_id": "fap-e10511c72f834771",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "assistance_ceiling_fpl": null,
     "asset_test": {
      "value": true,
      "layer": "documented",
-     "quote": "Resources available other than income, e.g. home, land, vehicle(s), personal possessions.",
+     "quote": "Edgerton Hospital and Health Services reserves the right to exclude patients having assets with a value of more than six hundred percent (400%) of the Federal Poverty Level Guidelines",
      "source_id": "fap-e10511c72f834771",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -13927,7 +13687,7 @@
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "To the extent permitted by governmental or private insurers, deductibles, co-insurance, or co-payments may be eligible for consideration under Financial Assistance.",
+     "quote": "deductibles, co-insurance, or co-payments may be eligible for consideration under Financial Assistance.",
      "source_id": "fap-e10511c72f834771",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -13937,33 +13697,15 @@
     "services_excluded": null
    },
    "programs": {
-    "presumptive": {
-     "value": [
-      "homeless",
-      "eligible for state or local assistance programs",
-      "eligible for a state-funded prescription medication program",
-      "deceased and without an estate",
-      "files bankruptcy",
-      "WIC",
-      "SNAP",
-      "LIHEAP",
-      "TANF"
-     ],
-     "layer": "documented",
-     "quote": "a. Patient is homeless.",
-     "source_id": "fap-e10511c72f834771",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "presumptive": null,
     "state_programs": null
    },
    "apply": {
     "form_url": {
-     "value": "https://www.edgertonhospital.com/media/2250/community-care-application-670-822-1017.pdf",
+     "value": "https://www.edgertonhospital.com/patients-visitors/financial-assistance",
      "layer": "documented",
-     "quote": "Apply for Charity Care [/media/2250/community-care-application-670-822-1017.pdf]",
-     "source_id": "web-319787f95cc1f718",
+     "quote": "The application and instructions are available online at https://www.edgertonhospital.com/patients-visitors/financial-assistance",
+     "source_id": "fap-e10511c72f834771",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -13972,14 +13714,11 @@
     "documents_required": {
      "value": [
       "pay_stubs",
-      "proof_of_income",
-      "social_security_letter",
-      "other",
       "tax_return",
       "bank_statements"
      ],
      "layer": "documented",
-     "quote": "Complete a Financial Assistance Application and provide the following supporting documentation, as applicable: a. Proof of income for applicant (and spouse, if married).",
+     "quote": "Most recent pay stubs",
      "source_id": "fap-e10511c72f834771",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -13990,7 +13729,7 @@
      "value": [
       {
        "kind": "portal",
-       "detail": "https://www.edgertonhospital.com/patients-visitors/financial-assistance"
+       "detail": "online at https://www.edgertonhospital.com/patients-visitors/financial-assistance"
       },
       {
        "kind": "mail",
@@ -14002,7 +13741,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "The application and instructions are available online at https://www.edgertonhospital.com/patients-visitors/financial-assistance, by mail, in person at all admission/registration desks",
+     "quote": "available online at https://www.edgertonhospital.com/patients-visitors/financial-assistance, by mail, in person at all admission/registration desks",
      "source_id": "fap-e10511c72f834771",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -14026,30 +13765,22 @@
    },
    "contacts": {
     "phone": {
-     "value": "608-884-1666",
+     "value": "608-884-3441",
      "layer": "documented",
-     "quote": "Please call 608-884-1666 for information about the Hospital Expense Loan Program.",
-     "source_id": "web-319787f95cc1f718",
+     "quote": "llame a la central telef\u00f3nica principal del Hospital Edgerton al 608-884-3441 y solicite los servicios de asistencia ling\u00fc\u00edstica.",
+     "source_id": "fap-e10511c72f834771",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "hours": {
-     "value": "8 am to 4:30 pm (Monday through Friday)",
-     "layer": "documented",
-     "quote": "The office is open from 8 am to 4:30 pm (Monday through Friday).",
-     "source_id": "web-319787f95cc1f718",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "hours": null,
     "languages": {
      "value": [
       "English",
       "Spanish"
      ],
      "layer": "documented",
-     "quote": "Edgerton Hospital and Health Services has English and Spanish speaking Revenue Cycle representatives as well as the use of a Language Line to assist patients",
+     "quote": "Edgerton Hospital and Health Services has English and Spanish speaking Revenue Cycle representatives",
      "source_id": "fap-e10511c72f834771",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -14070,35 +13801,13 @@
      "fetched_on": "2026-10-23",
      "sha256": "e10511c72f834771349217d81baf68577d7cd68c4b1156155127022f109bf9ba",
      "effective_date": null
-    },
-    {
-     "id": "fap-a5b4662208b12ffa",
-     "kind": "hospital_web",
-     "url": "https://www.edgertonhospital.com/media/2250/community-care-application-670-822-1017.pdf",
-     "title": "",
-     "fetched_on": "2026-10-23",
-     "sha256": "a5b4662208b12ffa947f6b15c4274e8b14c1d7ce42d6478adf34229b3e36f89a",
-     "effective_date": null
-    },
-    {
-     "id": "web-319787f95cc1f718",
-     "kind": "hospital_web",
-     "url": "https://www.edgertonhospital.com/patients-visitors/medical-billing-information/",
-     "title": "Medical Billing Information",
-     "fetched_on": "2026-10-23",
-     "sha256": "319787f95cc1f718d270ecf8dce15c4fe268ff9d7859ade1ae41d1c39fc96125",
-     "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: Patient is enrolled in one of the following assistance programs with eligibility criteria at or below two hundred fifty ",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Bank statements - 2 most recent. | Evidence of other assets, as described in the Financial Assistance Application",
-    "agent judge on eligibility.assistance_ceiling_fpl: Quote says eligible with household income up to 400% FPL. It does not state that assistance is withheld above 400%.",
-    "agent judge on programs.presumptive: Quote supports only homeless, WIC, SNAP, LIHEAP, and TANF. Value adds state/local programs, prescription program, deceased without estate, and bankruptcy, which are not in the quote.",
-    "agent judge on apply.form_url: Quote gives only the relative path /media/2250/community-care-application-670-822-1017.pdf. The full URL with domain is not stated.",
-    "agent judge on apply.documents_required: Quote supports only proof of applicant income, bank statements, and evidence of other assets. Pay stubs, unemployment, SSI/SSDI, annuity, pension, and tax return are not in the quote.",
-    "agent judge on apply.window_days_from_first_bill: Quote says 240 days from the date of discharge or service, not from the first bill."
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Copy of the most recent federal tax return (including all applicable schedules) | Bank statements - 2 most recent.",
+    "agent dropped programs.presumptive: between 1 and 3 excerpts allowed",
+    "agent judge on apply.window_days_from_first_bill: Quote says 240 days from date of discharge or service, not from the first bill, so the reference point differs."
    ]
   },
   {
@@ -17968,80 +17677,6 @@
   },
   {
    "hospital": {
-    "ccn": "521341",
-    "name": "RICHLAND HOSPITAL",
-    "city": "RICHLAND CENTER",
-    "state": "WI",
-    "zip": "53581",
-    "phone": "608-647-6321",
-    "ownership": "Voluntary non-profit - Private",
-    "website_domain": "richlandhospital.com",
-    "system": null
-   },
-   "version": 1,
-   "status": "draft",
-   "eligibility": {
-    "free_care_max_fpl": null,
-    "discount_tiers": null,
-    "assistance_ceiling_fpl": null,
-    "asset_test": null,
-    "residency": null,
-    "insured_patients_covered": null,
-    "min_balance": null,
-    "services_excluded": null
-   },
-   "programs": {
-    "presumptive": null,
-    "state_programs": null
-   },
-   "apply": {
-    "form_url": null,
-    "form_version": null,
-    "documents_required": null,
-    "documents_reported": null,
-    "submit_methods": null,
-    "window_days_from_first_bill": null,
-    "decision_days": null,
-    "decision_days_reported": null
-   },
-   "collections": {
-    "eca_wait_days": null,
-    "collection_agencies": null
-   },
-   "contacts": {
-    "phone": {
-     "value": "608.647.1819",
-     "layer": "documented",
-     "quote": "Call a Financial Counselor at 608.647.1819",
-     "source_id": "web-2470da96f15da897",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "hours": null,
-    "languages": null
-   },
-   "coverage": {
-    "facilities": null,
-    "provider_list_url": null,
-    "covered_providers": null
-   },
-   "sources": [
-    {
-     "id": "web-2470da96f15da897",
-     "kind": "hospital_web",
-     "url": "https://www.richlandhospital.com/patients-visitors/financial-billing-information/",
-     "title": "Financial & Billing Information - The Richland Hospital, Inc.",
-     "fetched_on": "2026-10-23",
-     "sha256": "2470da96f15da8973f749561f353d9831dadd827751240fed0eadad31a066e7b",
-     "effective_date": null
-    }
-   ],
-   "accuracy": null,
-   "eve_review": []
-  },
-  {
-   "hospital": {
     "ccn": "521343",
     "name": "STOUGHTON HOSPITAL",
     "city": "STOUGHTON",
@@ -19290,8 +18925,8 @@
     "assistance_ceiling_fpl": {
      "value": "275",
      "layer": "documented",
-     "quote": "a patient or their guarantor\u2019s gross income is determined to be at or below 275% of the Federal Poverty Guidelines, they will be deemed eligible for Allina Partners Care",
-     "source_id": "fap-1e86c5c45db22bd7",
+     "quote": "your income must be at or below 275 percent of the federal poverty level",
+     "source_id": "web-8a4ccdc267686397",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -19309,8 +18944,8 @@
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "If the patient has primary insurance, the patient needs to have insurance coverage that is eligible for Allina Health network to receive ongoing financial assistance.",
-     "source_id": "fap-1e86c5c45db22bd7",
+     "quote": "Patients with insurance who receive medically necessary services that are not covered by their insurance may also be eligible for this discount.",
+     "source_id": "web-8a4ccdc267686397",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -19321,48 +18956,58 @@
    "programs": {
     "presumptive": {
      "value": [
-      "documented bankruptcy"
+      "Medicaid enrolled"
      ],
      "layer": "documented",
-     "quote": "Allina Health will consider any patient with a documented bankruptcy to be considered under the category of charity care regardless if the patient is approved for Allina Partners Care.",
+     "quote": "Allina Health may utilize third-party presumptive eligibility software to approve or deny patients for Allina Partners Care without the patient completing a full application.",
      "source_id": "fap-1e86c5c45db22bd7",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "state_programs": {
-     "value": [
-      {
-       "name": "Medical Assistance/MNCare",
-       "how_to_apply": "apply for Medical Assistance/MNCare and then provide us with their written determination letter"
-      }
-     ],
-     "layer": "documented",
-     "quote": "If anyone listed on the application is uninsured, they need to apply for Medical Assistance/MNCare and then provide us with their written determination letter.",
-     "source_id": "fap-b1ea791913a76181",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "state_programs": null
    },
    "apply": {
     "form_url": null,
     "form_version": null,
     "documents_required": {
      "value": [
+      "bank_statements",
       "pay_stubs",
       "tax_return",
-      "bank_statements"
+      "social_security_letter",
+      "insurance_card"
      ],
      "layer": "documented",
-     "quote": "Copies of the 2 most recent pay stubs or employer statement listing 2 months of pay (if employed).",
+     "quote": "Bank statements, stocks/bonds, CDs, money market accounts.",
      "source_id": "fap-b1ea791913a76181",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "documents_reported": null,
-    "submit_methods": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "email",
+       "detail": "AllinaPartnersCare@allina.com"
+      },
+      {
+       "kind": "fax",
+       "detail": "612-262-3625"
+      },
+      {
+       "kind": "mail",
+       "detail": "Allina Health Partners Care, PO Box 43, MR 10209, Minneapolis, MN 55440-0043"
+      }
+     ],
+     "layer": "documented",
+     "quote": "You may scan and email the completed application to AllinaPartnersCare@allina.com or you can fax it to 612-262-3625 or mail it to Allina Health Partners Care, PO Box 43, MR 10209, Minneapolis, MN 55440-0043.",
+     "source_id": "web-8a4ccdc267686397",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "window_days_from_first_bill": {
      "value": 240,
      "layer": "documented",
@@ -19389,36 +19034,24 @@
    },
    "contacts": {
     "phone": {
-     "value": "715-307-6022",
+     "value": "612-262-9000",
      "layer": "documented",
-     "quote": "Financial counseling 715-307-6022 715-307-6022",
-     "source_id": "web-092a82ca6c866fc8",
+     "quote": "Need help paying your bill? Call 612-262-9000 612-262-9000 .",
+     "source_id": "web-8a4ccdc267686397",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "hours": {
-     "value": "Monday - Thursday 8:00am - 4:30pm Friday 9:00am - 4:30pm",
+     "value": "Monday to Thursday: 8 a.m. to 4:30 p.m. Friday: 9 a.m. to 4:30 p.m.",
      "layer": "documented",
-     "quote": "Hours: Monday - Thursday 8:00am - 4:30pm Friday 9:00am - 4:30pm",
-     "source_id": "fap-b1ea791913a76181",
+     "quote": "Monday to Thursday: 8 a.m. to 4:30 p.m. Friday: 9 a.m. to 4:30 p.m.",
+     "source_id": "web-8a4ccdc267686397",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "languages": {
-     "value": [
-      "English",
-      "Spanish",
-      "Somali"
-     ],
-     "layer": "documented",
-     "quote": "You can download a copy of this application in English, Spanish or Somali at www.allinahealth.org/financialassistance.",
-     "source_id": "fap-b1ea791913a76181",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "languages": null
    },
    "coverage": {
     "facilities": null,
@@ -19438,27 +19071,29 @@
     {
      "id": "fap-b1ea791913a76181",
      "kind": "hospital_web",
-     "url": "https://www.allinahealth.org/customer-service/-/media/allina-health/files/customer-service/partnerscareprogramapp.pdf",
+     "url": "https://www.allinahealth.org/-/media/allina-health/files/customer-service/partnerscareprogramapp.pdf",
      "title": "",
      "fetched_on": "2026-10-23",
      "sha256": "b1ea791913a76181202271d86bbbd0922271a4a75992378f3b0d95683bc2c796",
      "effective_date": null
     },
     {
-     "id": "web-092a82ca6c866fc8",
+     "id": "web-8a4ccdc267686397",
      "kind": "hospital_web",
-     "url": "https://www.allinahealth.org/river-falls-area-hospital/contact-us",
-     "title": "Contact Us | River Falls Area Hospital | Allina Health",
+     "url": "https://www.allinahealth.org/customer-service/financial-assistance",
+     "title": "Financial Assistance | Medical Bills | Allina Health",
      "fetched_on": "2026-10-23",
-     "sha256": "092a82ca6c866fc8936f4cc0163a57fed4e13a489c4e9a4cd3c868dd801b83b8",
+     "sha256": "8a4ccdc267686397fefd760e078a5363405c25d2ce51aa76b0b68e7ad29cbe93",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Previous year\u2019s federal tax return. | Bank statements, stocks/bonds, CDs, money market accounts.",
-    "agent dropped apply.submit_methods: excerpt not in source: For patients applying electronically via MyChart/Allina Heal",
-    "agent judge on eligibility.assistance_ceiling_fpl: Quote says patients at or below 275% FPL are deemed eligible. It does not say assistance is unavailable above 275% FPL."
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Copies of the 2 most recent pay stubs or employer statement listing 2 months of pay (if employed). | Previous year\u2019s federal tax return.",
+    "agent dropped programs.state_programs: quote is not a substring of the source",
+    "agent dropped contacts.languages: quote is not a substring of the source",
+    "agent judge on programs.presumptive: Quote says presumptive eligibility software may be used, but does not state that Medicaid enrollment is the qualifying basis.",
+    "agent judge on apply.documents_required: Quote lists only bank statements, pay stubs, and tax return; it does not mention proof of benefits, insurance card copies, or the other listed items as required."
    ]
   },
   {
@@ -19681,7 +19316,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "151-275% 75%",
+     "quote": "< 150% 100%",
      "source_id": "fap-8ec7949d463bae53",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -19690,17 +19325,17 @@
     "assistance_ceiling_fpl": {
      "value": "400",
      "layer": "documented",
-     "quote": "the applicant's income should not exceed 400% of the federal poverty level in existence at the time of application",
+     "quote": "the applicant\u2019s income should not exceed 400% of the federal poverty level in existence at the time of application",
      "source_id": "fap-8ec7949d463bae53",
      "checked_on": "2026-10-23",
-     "confidence": 0.8,
+     "confidence": 1.0,
      "support_count": 0
     },
     "asset_test": {
      "value": true,
      "layer": "documented",
-     "quote": "This information may be used if your income is above 101% of the Federal Poverty Guidelines.",
-     "source_id": "fap-9a0205dc8a4f8641",
+     "quote": "Review of the patient\u2019s all financial resources available.",
+     "source_id": "fap-8ec7949d463bae53",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -19710,17 +19345,17 @@
       "Individuals must reside or have a primary care physician in RAMC's service area."
      ],
      "layer": "documented",
-     "quote": "Individuals must reside or have a primary care physician in RAMC's service area.",
+     "quote": "Individuals must reside or have a primary care physician in RAMC\u2019s service area.",
      "source_id": "fap-8ec7949d463bae53",
      "checked_on": "2026-10-23",
-     "confidence": 0.8,
+     "confidence": 1.0,
      "support_count": 0
     },
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "You may qualify for free care or reduced-price care based on your family size and income, even if you have health insurance.",
-     "source_id": "fap-9a0205dc8a4f8641",
+     "quote": "Discounts will be applied to gross charges and/or patient responsibility after insurance.",
+     "source_id": "fap-8ec7949d463bae53",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -19733,32 +19368,27 @@
      "value": [
       "Deceased No Assets",
       "Homeless",
-      "Medical Assistance approved"
+      "Medical Assistance"
      ],
      "layer": "documented",
-     "quote": "Deceased No Assets \u2013 based on the conclusion that the decedent has no assets and therefore no ability to pay. No Community Care application needs to be filled out.",
+     "quote": "Deceased No Assets \u2013 based on the conclusion that the decedent has no assets and therefore no ability to pay.",
      "source_id": "fap-8ec7949d463bae53",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "state_programs": {
-     "value": [
-      {
-       "name": "Sauk County/RAMC voucher program",
-       "how_to_apply": "Contact Sauk County Public Health or RAMC Physician's Group for more information."
-      }
-     ],
-     "layer": "documented",
-     "quote": "Some individuals who may otherwise qualify for community care may be referred to the Sauk County/RAMC voucher program for free services such as physician office visits, laboratory tests, radiology exams and discounted medications. Contact Sauk County Public Health or RAMC Physician's Group for more information.",
-     "source_id": "fap-8ec7949d463bae53",
-     "checked_on": "2026-10-23",
-     "confidence": 0.8,
-     "support_count": 0
-    }
+    "state_programs": null
    },
    "apply": {
-    "form_url": null,
+    "form_url": {
+     "value": "https://ramchealth.com/wp-content/uploads/2025/02/Community-Care-Application-2-21-25FINAL.pdf",
+     "layer": "documented",
+     "quote": "Community Care Application PDF",
+     "source_id": "web-c014b22eb3a6878a",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "form_version": null,
     "documents_required": {
      "value": [
@@ -19773,31 +19403,14 @@
      "support_count": 0
     },
     "documents_reported": null,
-    "submit_methods": {
-     "value": [
-      {
-       "kind": "mail",
-       "detail": "Mail completed application with all documentation to: Reedsburg Area Medical Center, 2000 N. Dewey Ave., Reedsburg, WI 53959"
-      },
-      {
-       "kind": "in_person",
-       "detail": "drop off the completed application with all the documentation at the same address, at the main registration desk"
-      }
-     ],
-     "layer": "documented",
-     "quote": "Mail completed application with all documentation to: Reedsburg Area Medical Center 2000 N. Dewey Ave. Reedsburg, WI 53959",
-     "source_id": "fap-9a0205dc8a4f8641",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "submit_methods": null,
     "window_days_from_first_bill": {
      "value": 240,
      "layer": "documented",
-     "quote": "All patients have 240 days from the first post-discharge bill date to apply for Community Care (the \"Application Period\").",
+     "quote": "All patients have 240 days from the first post-discharge bill date to apply for Community Care (the \u201cApplication Period\u201d)",
      "source_id": "fap-8ec7949d463bae53",
      "checked_on": "2026-10-23",
-     "confidence": 0.8,
+     "confidence": 1.0,
      "support_count": 0
     },
     "decision_days": {
@@ -19827,7 +19440,7 @@
     "phone": {
      "value": "608-524-6487",
      "layer": "documented",
-     "quote": "Questions regarding this policy or the Community Care application process can be directed to Financial Counselors, Reedsburg Area Medical Center, 2000 N Dewey Avenue, Reedsburg, WI 53959 or call 608-524-6487.",
+     "quote": "or call 608-524-6487.",
      "source_id": "fap-8ec7949d463bae53",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -19862,12 +19475,12 @@
      "effective_date": null
     },
     {
-     "id": "fap-9a0205dc8a4f8641",
+     "id": "web-73b6957121466d76",
      "kind": "hospital_web",
-     "url": "https://ramchealth.com/wp-content/uploads/2025/02/Comm-Care-Application-2025.pdf",
+     "url": "https://ramchealth.com/wp-content/uploads/2025/07/Community-Care-Application-4-9-2025.docx",
      "title": "",
      "fetched_on": "2026-10-23",
-     "sha256": "9a0205dc8a4f8641cb904d72015641aab92e19dd05974973e7d8f20d11e5279d",
+     "sha256": "73b6957121466d766b49239715cef47b7ca45f7e4a6d754e8167c479efe4d46d",
      "effective_date": null
     },
     {
@@ -19882,18 +19495,12 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: 276-400% 51%",
-    "eligibility.assistance_ceiling_fpl: quote matched the source only after typography normalization",
-    "eligibility.residency: quote matched the source only after typography normalization",
+    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: 151-275% 75% | 276-400% 51%",
     "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Homeless patients with no ability to pay; | If it has been determined that a patient has been approved for Medical Assistance, all accounts currently in AR with RAM",
-    "programs.state_programs: quote matched the source only after typography normalization",
     "apply.documents_required: quote matched the source only after typography normalization",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: To submit your completed application in person: drop off the completed application with all the documentation at the sam",
-    "apply.window_days_from_first_bill: quote matched the source only after typography normalization",
-    "agent judge on eligibility.free_care_max_fpl: Quote says \"< 150%\" gets 100%, which is exclusive and does not plainly state 150% itself as the highest free-care level.",
-    "agent judge on eligibility.asset_test: Quote says information may be used above 101% FPG; it does not state that assets are considered.",
-    "agent judge on apply.decision_days: Quote says notification within 15 business days, not 15 calendar days; the business-day qualifier is dropped.",
-    "agent judge on contacts.languages: Quote is only a Spanish-language document title; it does not state that Spanish is an offered language."
+    "agent judge on eligibility.free_care_max_fpl: Quote says \"< 150% 100%\", which is exclusive. It does not plainly state that 150% itself receives 100% free care.",
+    "agent judge on apply.form_url: Quote only says \"Community Care Application PDF\" and contains no URL.",
+    "agent judge on contacts.languages: Quote is only the Spanish-language policy title; it does not plainly state that Spanish is an offered language."
    ]
   },
   {
@@ -20136,15 +19743,7 @@
     },
     "asset_test": null,
     "residency": null,
-    "insured_patients_covered": {
-     "value": true,
-     "layer": "documented",
-     "quote": "If your insurance company does not pay your bill in full, you will receive a monthly statement notifying you of your balance.",
-     "source_id": "web-630764e3162cef1e",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "insured_patients_covered": null,
     "min_balance": null,
     "services_excluded": null
    },
@@ -20152,15 +19751,11 @@
     "presumptive": {
      "value": [
       "Deceased with no estate",
-      "Accounts uncollectible due to discharge of account by bankruptcy",
-      "Patients who are homeless at the time of registration or admission",
-      "Wisconsin Medical Assistance (WMA) approved patients",
-      "Any account returned by the collection agency determined to be uncollectible",
-      "Qualified individuals under another organization's similar Financial Assistance application process",
-      "Patients that require urgent or emergent care covered under a non-contracted Medicaid plan"
+      "homeless",
+      "Wisconsin Medical Assistance"
      ],
      "layer": "documented",
-     "quote": "1. Deceased with no estate \u2013 based on the conclusion that the decedent has no assets, and therefore no ability to pay.",
+     "quote": "Deceased with no estate \u2013 based on the conclusion that the decedent has no assets, and therefore no ability to pay.",
      "source_id": "fap-a796a51e2fa061cf",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -20169,43 +19764,23 @@
     "state_programs": null
    },
    "apply": {
-    "form_url": {
-     "value": "https://cumberlandhealthcare.com/wp-content/uploads/2024/09/FINANCIAL-ASSISTANCE-APPLICATION-2-1.pdf",
-     "layer": "documented",
-     "quote": "Financial Assistance Application [https://cumberlandhealthcare.com/wp-content/uploads/2024/09/FINANCIAL-ASSISTANCE-APPLICATION-2-1.pdf]",
-     "source_id": "web-630764e3162cef1e",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "form_url": null,
     "form_version": null,
-    "documents_required": {
-     "value": [
-      "tax_return",
-      "other",
-      "proof_of_income"
-     ],
-     "layer": "documented",
-     "quote": "Supporting documentation such as tax returns and check stubs as outlined in the Financial Assistance Application are required.",
-     "source_id": "fap-a796a51e2fa061cf",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "documents_required": null,
     "documents_reported": null,
     "submit_methods": {
      "value": [
       {
        "kind": "in_person",
-       "detail": "1705 16th Ave Cumberland, WI 54829-8601"
+       "detail": "In Person 1705 16th Ave Cumberland, WI 54829-8601"
+      },
+      {
+       "kind": "phone",
+       "detail": "Telephone (715) 822-7500"
       },
       {
        "kind": "mail",
-       "detail": "by mail to the applicable address above"
-      },
-      {
-       "kind": "portal",
-       "detail": "FA Application.pdf"
+       "detail": "Completed applications should be returned in person at the registration desk or by mail to the applicable address above."
       }
      ],
      "layer": "documented",
@@ -20227,7 +19802,7 @@
     "decision_days": {
      "value": 30,
      "layer": "documented",
-     "quote": "A letter either approving or denying a request for financial assistance will be sent to the applicant within 30 days of the receipt of a completed application.",
+     "quote": "the initial determination will be made within 30 days of receipt of the application and all supporting documentation",
      "source_id": "fap-a796a51e2fa061cf",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -20239,7 +19814,7 @@
     "eca_wait_days": {
      "value": 120,
      "layer": "documented",
-     "quote": "over a period of not less than 120 days commencing on the date of the first bill issued to the guarantor for such services, we will inform the guarantor of the availability of financial assistance",
+     "quote": "in all billing statements (at least 3) over a period of not less than 120 days commencing on the date of the first bill issued to the guarantor for such services, we will inform the guarantor of the availability of financial assistance",
      "source_id": "fap-a796a51e2fa061cf",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -20251,16 +19826,16 @@
     "phone": {
      "value": "715-822-7500",
      "layer": "documented",
-     "quote": "Telephone (715) 822-7500",
-     "source_id": "fap-a796a51e2fa061cf",
+     "quote": "Telephone: 715-822-7500",
+     "source_id": "fap-c0f01dbf114f5394",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "hours": {
-     "value": "Monday through Friday, from 7:00 am to 4:30 pm",
+     "value": "Monday: 8am - 5pm Tuesday - Thursday: 7am - 7pm Friday: 8am - 5pm Saturday: 8am - 12pm",
      "layer": "documented",
-     "quote": "You can reach us at 715-822-7100 x3227 , Monday through Friday, from 7:00 am to 4:30 pm.",
+     "quote": "Office Hours: Monday: 8am - 5pm Tuesday - Thursday: 7am - 7pm Friday: 8am - 5pm Saturday: 8am - 12pm",
      "source_id": "web-630764e3162cef1e",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -20304,11 +19879,12 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: 3. Patients who are homeless at the time of registration or admission. | 7. Patients that require urgent or emergent care covered under a non-contracted Medicaid plan will be considered presump",
-    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: A copy of the applicant's W-2, most recent tax return, or other proof of income will be required to be submitted with th",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Completed applications should be returned in person at the registration desk or by mail to the applicable address above. | Online FA Application.pdf",
+    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Patients who are homeless at the time of registration or admission. | If it has been determined that a patient has been approved for Wisconsin Medical Assistance (WMA), any accounts the pati",
+    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Telephone (715) 822-7500 | Completed applications should be returned in person at the registration desk or by mail to the applicable address above.",
     "agent dropped eligibility.free_care_max_fpl: quote is not a substring of the source",
-    "agent dropped eligibility.discount_tiers: excerpt not in source: 75% Financial Assistance (write-off) for an income level tha"
+    "agent dropped eligibility.discount_tiers: excerpt not in source: 75% Financial Assistance (write-off) for an income level tha",
+    "agent dropped apply.documents_required: excerpt not in source: Please attach the following proof of income documents: Feder",
+    "agent judge on collections.eca_wait_days: Quote describes a minimum 120-day period of billing statements for notifying about financial assistance, not a wait before collection actions."
    ]
   },
   {
@@ -20329,9 +19905,25 @@
     "free_care_max_fpl": null,
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
-    "asset_test": null,
+    "asset_test": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Please fill in the boxes below to provide us with more information on your financial accounts: Bank Account Balances (Patient and Spouse)",
+     "source_id": "fap-1edd5ac84920e615",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "residency": null,
-    "insured_patients_covered": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Financial Assistance is a Southwest Health Center, Inc. program that assists uninsured or under-insured patients with their hospital bills.",
+     "source_id": "fap-1edd5ac84920e615",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "min_balance": null,
     "services_excluded": null
    },
@@ -20340,11 +19932,36 @@
     "state_programs": null
    },
    "apply": {
-    "form_url": null,
+    "form_url": {
+     "value": "https://s3.amazonaws.com/stellar-blue-wpengine-mars-wp-media-folder/wp-media-folder-southwest-health/wp-content/uploads/2024/07/FA-English-Application-FY-2024.pdf",
+     "layer": "documented",
+     "quote": "Financial Assistance Application - English [https://s3.amazonaws.com/stellar-blue-wpengine-mars-wp-media-folder/wp-media-folder-southwest-health/wp-content/uploads/2024/07/FA-English-Application-FY-2024.pdf]",
+     "source_id": "web-1e3c77e13aa72ab3",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "form_version": null,
     "documents_required": null,
     "documents_reported": null,
-    "submit_methods": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "Southwest Health Center, Attn: Patient Financial Services, 1400 Eastside Rd. Platteville, WI 53818"
+      },
+      {
+       "kind": "in_person",
+       "detail": "1400 Eastside Rd. Platteville, WI 53818"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Please submit by mail or in person this application, along with all required documentation to: Southwest Health Center Attn: Patient Financial Services 1400 Eastside Rd. Platteville, WI 53818",
+     "source_id": "fap-1edd5ac84920e615",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "window_days_from_first_bill": null,
     "decision_days": null,
     "decision_days_reported": null
@@ -20354,8 +19971,24 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": null,
-    "hours": null,
+    "phone": {
+     "value": "(608)342-4717",
+     "layer": "documented",
+     "quote": "If you have any questions, please do not hesitate to contact us at (608)342-4717.",
+     "source_id": "fap-1edd5ac84920e615",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": {
+     "value": "Mon \u2013 Fri 11:00 am \u2013 4:00 pm",
+     "layer": "documented",
+     "quote": "Call to Make an Appointment Mon \u2013 Fri 11:00 am \u2013 4:00 pm",
+     "source_id": "web-1e3c77e13aa72ab3",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "languages": null
    },
    "coverage": {
@@ -20372,10 +20005,32 @@
      "fetched_on": "2026-10-23",
      "sha256": "118cc502c28be20765362bbc57ef8d636bdb16ad9e94f91f6bf07a92246e491e",
      "effective_date": null
+    },
+    {
+     "id": "fap-1edd5ac84920e615",
+     "kind": "hospital_web",
+     "url": "https://s3.amazonaws.com/stellar-blue-wpengine-mars-wp-media-folder/wp-media-folder-southwest-health/wp-content/uploads/2024/07/FA-English-Application-FY-2024.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "1edd5ac84920e6153853ab223c8fd3ffb7f52a2d7393f12ce5dceae639acbe35",
+     "effective_date": null
+    },
+    {
+     "id": "web-1e3c77e13aa72ab3",
+     "kind": "hospital_web",
+     "url": "https://www.southwesthealth.org/services/patient-financial-services/",
+     "title": "Patient Financial Services | Southwest Health",
+     "fetched_on": "2026-10-23",
+     "sha256": "1e3c77e13aa72ab301b401f4f8ab2beae37b9677a9e7a1e02c20c5b5021322c5",
+     "effective_date": null
     }
    ],
    "accuracy": null,
-   "eve_review": []
+   "eve_review": [
+    "agent dropped programs.state_programs: excerpt not in source: Getting access to health insurance for your family is easy. ",
+    "agent dropped apply.documents_required: between 1 and 3 excerpts allowed",
+    "agent judge on contacts.hours: The hours are stated only under 'Call to Make an Appointment', so they are appointment-call hours, not stated as general contact hours."
+   ]
   },
   {
    "hospital": {
@@ -20823,7 +20478,7 @@
     "asset_test": {
      "value": true,
      "layer": "documented",
-     "quote": "Available assets of patients will be considered in determining eligibility for financial assistance under the Financial Assistance Program.",
+     "quote": "Available assets of patients will be considered in determining eligibility for financial assistance under the Financial Assistance Program. Patients with significant assets are generally ineligible",
      "source_id": "fap-0382dfd8e6113208",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -20857,7 +20512,7 @@
      "value": [
       "Homelessness",
       "Deceased with no estate",
-      "Mental incapacitation with no one to act on patient\u2019s behalf",
+      "Mental incapacitation with no one to act on patient's behalf",
       "Medicaid eligibility, but not on date of service or for non-covered services",
       "Incarceration in a penal institution",
       "Temporary Assistance for Needy Families (TANF)",
@@ -20883,7 +20538,8 @@
      "value": [
       "tax_return",
       "pay_stubs",
-      "social_security_letter"
+      "social_security_letter",
+      "proof_of_income"
      ],
      "layer": "documented",
      "quote": "Complete IRS tax returns for the most recently completed calendar year of all responsible parties;",
@@ -20897,7 +20553,7 @@
     "window_days_from_first_bill": {
      "value": 240,
      "layer": "documented",
-     "quote": "the Application Period, which is generally 240 days from the date of the first post-discharge bill",
+     "quote": "a patient may submit a Financial Assistance Program application at any time during the Application Period, which is generally 240 days from the date of the first post-discharge bill",
      "source_id": "fap-0382dfd8e6113208",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -20920,27 +20576,16 @@
    },
    "contacts": {
     "phone": {
-     "value": "920-746-3502",
+     "value": "1 (920) 746-3502",
      "layer": "documented",
-     "quote": "our financial counselors are available to help you at 920-746-3502",
-     "source_id": "web-64497d019ab9122d",
+     "quote": "Telephone Toll Free: 1 (920) 746-3502",
+     "source_id": "fap-8233103665e4b423",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "hours": null,
-    "languages": {
-     "value": [
-      "English",
-      "Espa\u00f1ol"
-     ],
-     "layer": "documented",
-     "quote": "English Espa\u00f1ol",
-     "source_id": "web-64497d019ab9122d",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "languages": null
    },
    "coverage": {
     "facilities": null,
@@ -20981,7 +20626,8 @@
     "programs.presumptive: 2 more verbatim excerpt(s) supported this value: a. Temporary Assistance for Needy Families (TANF) b. Wisconsin Department of Health Services Housing Assistance Progra m | a. Participation in Women, Infants and Children programs (WIC) b. Supplemental Nutrition Assistance Program (SNAP) eligi",
     "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Payroll check stubs or other documentation of monthly income sources reflecting income of all responsible parties for at | Written verification from public assistance agencies, such as Medicaid or county medical, reflecting denials for eligibi",
     "agent dropped apply.submit_methods: excerpt not in source: You can apply online through the patient portal",
-    "agent judge on contacts.languages: Quote only shows the words 'English Espa\u00f1ol' with no context stating these are the supported languages for assistance."
+    "agent dropped contacts.languages: excerpt not in source: English",
+    "agent judge on apply.documents_required: Quote lists only three documents. The fourth value item (unemployment or worker's compensation denial) does not appear in the quote."
    ]
   },
   {

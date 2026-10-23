@@ -21,25 +21,31 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": null,
-    "discount_tiers": null,
-    "assistance_ceiling_fpl": null,
-    "asset_test": null,
-    "residency": {
-     "value": [
-      "Was the patient a resident of Nevada at the time of service?"
-     ],
+    "free_care_max_fpl": {
+     "value": "350",
      "layer": "documented",
-     "quote": "Was the patient a resident of Nevada at the time of service? Yes \u00a3 No \u00a3",
-     "source_id": "fap-123e2b843a41afed",
+     "quote": "the income of the Patient\u2019s Family does not exceed 350% of the Federal Poverty Level",
+     "source_id": "fap-9cf0a934d1add021",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
+    "discount_tiers": null,
+    "assistance_ceiling_fpl": {
+     "value": "450",
+     "layer": "documented",
+     "quote": "a self-pay patient qualifies for financial assistance under the Discount Payment Program if the patient\u2019s Family Income does not exceed 450% of the Federal Poverty Level",
+     "source_id": "fap-9cf0a934d1add021",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "asset_test": null,
+    "residency": null,
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "Charity Care and discounts from the Discount Payment Program may apply to patient liability amounts, including coinsurance amounts, copayments, and deductibles.",
+     "quote": "may qualify for the Discount Payment Program based on the conditions discussed in the addendum \u201cFinancial Assistance Discount Payment Program\u201d. Charity Care and discounts from the Discount Payment Program may apply to patient liability amounts, including coinsurance amounts, copayments, and deductibles.",
      "source_id": "fap-9cf0a934d1add021",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -57,14 +63,13 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "pay_stubs",
       "tax_return"
      ],
      "layer": "documented",
-     "quote": "documentation of income of the patient's Family shall be limited to recent pay stubs or income tax returns.",
-     "source_id": "fap-9cf0a934d1add021",
+     "quote": "The hospital may only request recent paystubs or income tax returns for documentation of income.",
+     "source_id": "fap-123e2b843a41afed",
      "checked_on": "2026-10-23",
-     "confidence": 0.8,
+     "confidence": 1.0,
      "support_count": 0
     },
     "documents_reported": null,
@@ -76,7 +81,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Mail completed application and supporting documents to: North Vista Hospital, Attention: Patient Financial Services 1409 E. Lake Mead Boulevard, North Las Vegas, NV 89030",
+     "quote": "Mail completed application and supporting documents to: North Vista Hospital, Attention: Patient Financial Services",
      "source_id": "fap-123e2b843a41afed",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -106,7 +111,7 @@
     "eca_wait_days": {
      "value": 150,
      "layer": "documented",
-     "quote": "commence civil action against a patient for nonpayment at any time prior to 150 days after the initial billing.",
+     "quote": "commence civil action against a patient for nonpayment at any time prior to 150 days after the initial billing",
      "source_id": "fap-9cf0a934d1add021",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -127,10 +132,10 @@
     "hours": null,
     "languages": {
      "value": [
-      "non-English languages"
+      "non-English languages spoken by a substantial number of the patients served by the Hospital"
      ],
      "layer": "documented",
-     "quote": "available in non-English languages spoken by a substantial number of the patients served by the Hospital.",
+     "quote": "available in non-English languages spoken by a substantial number of the patients served by the Hospital",
      "source_id": "fap-9cf0a934d1add021",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -162,32 +167,38 @@
      "effective_date": null
     },
     {
-     "id": "web-093f313716deecaf",
+     "id": "web-6fa67818c609fa59",
      "kind": "hospital_web",
      "url": "https://northvistahospital.com/patients-visitors/financial-assistance/",
      "title": "Financial Assistance - North Vista Hospital",
      "fetched_on": "2026-10-23",
-     "sha256": "093f313716deecafbe7a67957ec77e1f6b74e149f044b820cc0f03e4ab8edc05",
+     "sha256": "6fa67818c609fa597f394660075cfa9aad835ce31c21fa332f3d65024c9b2cec",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: a self-pay patient qualifies for financial assistance under the Discount Payment Program if the patient's Family Income ",
-    "eligibility.discount_tiers: quote matched the source only after typography normalization",
-    "eligibility.asset_test: quote matched the source only after typography normalization",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: The patient qualifies for a county-level medically indigent services program, but no payment is received by the Hospital | State-funded prescription programs; \u2022 Participation in Women, Infants and Children programs (WIC); \u2022 Food stamp eligibil",
-    "programs.presumptive: quote matched the source only after typography normalization",
-    "apply.documents_required: quote matched the source only after typography normalization",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: You may also submit the application and supporting documents in person at the same address."
+    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: Participation in Women, Infants and Children programs (WIC);",
+    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: You may also submit the application and supporting documents in person at the same address.",
+    "agent judge on eligibility.free_care_max_fpl: Quote gives a 350% FPL income limit but never says anyone at that level gets 100% free care.",
+    "agent judge on eligibility.discount_tiers: Quote gives a 30% discount but no FPL bounds; the 0-450% range in the value does not appear in the quote.",
+    "agent judge on apply.submit_methods: Quote gives mail and in-person methods but omits the street address included in the mail detail value.",
+    "agent judge on contacts.languages: Quote says translations are available in non-English languages but names no specific languages; the value just repeats the generic phrase."
    ],
    "eve_verified": {
     "on": "2026-10-23",
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-9cf0a934d1add021": true,
+     "fap-123e2b843a41afed": true,
+     "web-6fa67818c609fa59": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
-     "eligibility.residency",
+     "eligibility.free_care_max_fpl",
+     "eligibility.assistance_ceiling_fpl",
      "eligibility.insured_patients_covered",
      "apply.documents_required",
      "apply.submit_methods",
@@ -203,10 +214,6 @@
       "value not in quote"
      ],
      [
-      "eligibility.asset_test",
-      "quote does not support the asset-test value"
-     ],
-     [
       "apply.form_url",
       "quote not found in source"
      ]
@@ -215,8 +222,8 @@
      "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
      "apply.submit_methods: 1 item not named in the trimmed quote"
     ],
-    "income_rule_verified": false,
-    "core_completeness": 0.5
+    "income_rule_verified": true,
+    "core_completeness": 0.67
    }
   },
   {
@@ -278,7 +285,8 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "tax_return"
+      "tax_return",
+      "other"
      ],
      "layer": "documented",
      "quote": "Federal and state income tax returns for the prior calendar year.",
@@ -293,7 +301,7 @@
     "decision_days": {
      "value": 30,
      "layer": "documented",
-     "quote": "Once complete and submitted, an application will be reviewed within 30 business days against",
+     "quote": "Once complete and submitted, an application will be reviewed within 30 business days against University Medical Center of Southern Nevada\u2019s (UMCSN) eligibility criteria.",
      "source_id": "fap-788a06d6c0f56db0",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -353,16 +361,22 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Deceased Patients- The charges incurred by a patient who has died may still be considered eligible for FRP. | Inmates- Charges incurred by a patient who has subsequently become incarcerated may still be considered eligible for FRP",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Payroll check stubs covering the last eight weeks are required. | The most recent checking and savings account statements.",
-    "agent judge on eligibility.assistance_ceiling_fpl: The quote says patients at or below 400% FPL may be eligible for FRP. It does not state that no assistance is offered above 400% FPL.",
-    "agent judge on eligibility.asset_test: The quote is a form question asking whether the patient owns property or has assets. It does not state that assets are considered in eligibility."
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: W-2 Form(s), or other IRS income forms, included with the prior calendar year tax return filing. | Payroll check stubs covering the last eight weeks are required.",
+    "agent judge on eligibility.assistance_ceiling_fpl: Quote says patients at or below 400% FPL may be eligible for FRP. It does not say assistance stops above 400% FPL.",
+    "agent judge on eligibility.asset_test: Quote is a question asking whether the patient owns assets. It does not state that assets are considered in eligibility.",
+    "agent judge on apply.documents_required: Quote supports only federal/state tax returns, W-2s, and payroll stubs. Bank statements and Social Security award letter are not in the quote.",
+    "agent judge on apply.decision_days: Quote says applications are reviewed within 30 business days, not 30 calendar days as the value implies."
    ],
    "eve_verified": {
     "on": "2026-10-23",
     "sources_fetched": 2,
     "sources_total": 2,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-788a06d6c0f56db0": true,
+     "web-ef1181ffb9c8494b": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.assistance_ceiling_fpl",
      "eligibility.residency",
@@ -379,8 +393,7 @@
      ]
     ],
     "pruned": [
-     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
-     "apply.documents_required: 2 items not named in the trimmed quote"
+     "apply.documents_required: 3 items not named in the trimmed quote"
     ],
     "income_rule_verified": false,
     "core_completeness": 0.33
@@ -595,6 +608,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-2e43af517369849e": true,
+     "fap-664ee7be6ce2ac7d": true,
+     "web-1ac237ffbbb7b1c5": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -777,6 +796,10 @@
     "sources_fetched": 1,
     "sources_total": 1,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-ae8be56a6b3dae5d": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.insured_patients_covered",
@@ -964,6 +987,11 @@
     "sources_fetched": 2,
     "sources_total": 2,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-b86bcb3b185abed6": true,
+     "web-0a8650c8d93c1e5d": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.insured_patients_covered",
@@ -1148,6 +1176,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-51370475301f62de": true,
+     "fap-81f055599d14a718": true,
+     "web-c85bb5b4c1a64f32": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.insured_patients_covered",
@@ -1195,7 +1229,26 @@
    "status": "draft",
    "eligibility": {
     "free_care_max_fpl": null,
-    "discount_tiers": null,
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "100",
+       "max_fpl_inclusive": "170",
+       "discount_percent": 75
+      },
+      {
+       "min_fpl_exclusive": "171",
+       "max_fpl_inclusive": "250",
+       "discount_percent": 55
+      }
+     ],
+     "layer": "documented",
+     "quote": ">171% - 250% 55% >100% - 170% 75% \u2264100% 100%",
+     "source_id": "fap-2b10312ee777acb3",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": {
@@ -1213,7 +1266,7 @@
      "value": true,
      "layer": "documented",
      "quote": "If an under-insured patient is completely paying off a balance of any amount, the patient is eligible to receive a twenty-percent (20%) discount.",
-     "source_id": "web-fb102e71a57a6d24",
+     "source_id": "web-412489eb21fdc411",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -1231,11 +1284,12 @@
     "documents_required": {
      "value": [
       "pay_stubs",
+      "social_security_letter",
       "other"
      ],
      "layer": "documented",
      "quote": "All monies received within the last sixty (60) days (pay stubs, Social Security Annual Benefit Letter, Pension, Retirement or copy of check or child support payments) for all members of household.",
-     "source_id": "fap-2b10312ee777acb3",
+     "source_id": "fap-a64ded6f2ba7a44a",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -1255,7 +1309,7 @@
      "value": 14,
      "layer": "documented",
      "quote": "Please allow up to fourteen (14) days for processing of application.",
-     "source_id": "fap-2b10312ee777acb3",
+     "source_id": "fap-a64ded6f2ba7a44a",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -1279,7 +1333,7 @@
      "value": "775-463-2301",
      "layer": "documented",
      "quote": "Phone 775-463-2301",
-     "source_id": "web-fb102e71a57a6d24",
+     "source_id": "web-412489eb21fdc411",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -1323,29 +1377,35 @@
      "effective_date": null
     },
     {
-     "id": "web-fb102e71a57a6d24",
+     "id": "web-412489eb21fdc411",
      "kind": "hospital_web",
      "url": "https://slmcnv.org/financial-services/",
      "title": "Financial Services \u2013 South Lyon Medical Center",
      "fetched_on": "2026-10-23",
-     "sha256": "fb102e71a57a6d2417ed24786342556457d177683fd866ef040d9a74a1bba19f",
+     "sha256": "412489eb21fdc411e13db1b6eedab93a4f0465013b6444d109090ce23ce8b27d",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: >100% - 170% 75% | \u2264100% 100%",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Copy of last income tax return or letter explaining why you do not file. | Photo ID for all adults in the household: Valid Driver\u2019s License or Valid Identification Card, Valid Passport, or employ",
-    "agent judge on eligibility.discount_tiers: Quote gives 55% for >171%-250% and 75% for >100%-170%, but the lower bound of the first tier is 171 in the value; the >100 to 170 and 171 to 250 bounds match, so tiers are supported as stated.",
-    "agent judge on eligibility.insured_patients_covered: Quote only gives a 20% discount to under-insured patients who fully pay off a balance; it does not state insured patients are covered for assistance.",
-    "agent judge on programs.presumptive: Quote classifies ED patients without payment source as charity if no job, mailing address, residence, or insurance; it does not say Homeless is the category name."
+    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: Deceased patients without an estate or third-party coverage will be eligible for charity.",
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Copy of last income tax return or letter explaining why you do not file. OR \u2022 W-2s, 1099s for previous tax year. | Photo ID for all adults in the household: Valid Driver\u2019s License or Valid Identification Card,",
+    "agent judge on eligibility.insured_patients_covered: Quote only describes a 20% discount for under-insured patients paying off a balance; it does not state that insured patients are covered.",
+    "agent judge on apply.decision_days: Quote says allow up to fourteen days for processing; this is a processing allowance, but it is not clearly a decision deadline. Treated as supported for the processing time."
    ],
    "eve_verified": {
     "on": "2026-10-23",
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-2b10312ee777acb3": true,
+     "fap-a64ded6f2ba7a44a": true,
+     "web-412489eb21fdc411": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
+     "eligibility.discount_tiers",
      "eligibility.residency",
      "eligibility.insured_patients_covered",
      "apply.documents_required",
@@ -1359,22 +1419,14 @@
      [
       "eligibility.free_care_max_fpl",
       "quote not found in source"
-     ],
-     [
-      "eligibility.discount_tiers",
-      "value not in quote"
-     ],
-     [
-      "apply.form_url",
-      "quote not found in source"
      ]
     ],
     "pruned": [
      "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
      "apply.documents_required: 2 items not named in the trimmed quote"
     ],
-    "income_rule_verified": false,
-    "core_completeness": 0.33
+    "income_rule_verified": true,
+    "core_completeness": 0.5
    }
   }
  ]

@@ -157,6 +157,11 @@
     "sources_fetched": 2,
     "sources_total": 2,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-ddf102d7a9b98057": true,
+     "fap-9670a743adf92427": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.asset_test",
@@ -201,33 +206,28 @@
     "asset_test": {
      "value": true,
      "layer": "documented",
-     "quote": "Savings (including flexible spending and health savings accounts): Yes No Amount: $___________________",
+     "quote": "Checking: Yes No Amount: $___________________ Savings (including flexible spending and health savings accounts): Yes No Amount: $___________________",
      "source_id": "fap-3c769e247ebd022c",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "residency": null,
-    "insured_patients_covered": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "persons who have healthcare needs and are uninsured, underinsured, ineligible for a government program, or otherwise unable to pay for their medical care",
+     "source_id": "web-9cbb5de643215fe2",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "min_balance": null,
     "services_excluded": null
    },
    "programs": {
     "presumptive": null,
-    "state_programs": {
-     "value": [
-      {
-       "name": "Medicaid",
-       "how_to_apply": "Use the hospital's eligibility screening services to identify coverage such as Medicaid."
-      }
-     ],
-     "layer": "documented",
-     "quote": "We also provide eligibility screening services that can help identify the availability of resources to cover medical services, such as Medicaid.",
-     "source_id": "web-8d66a4114267849e",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "state_programs": null
    },
    "apply": {
     "form_url": null,
@@ -235,10 +235,10 @@
     "documents_required": {
      "value": [
       "pay_stubs",
+      "other",
       "social_security_letter",
       "bank_statements",
-      "tax_return",
-      "other"
+      "tax_return"
      ],
      "layer": "documented",
      "quote": "Last 4 paystubs Copy of mortgage payment OR Letter from employer Copy of rental agreement Social Security benefits (if applicable) Other documents requested Last 3 months bank statements Copies of monthly bills Previous year\u2019s Federal Tax Return",
@@ -248,7 +248,20 @@
      "support_count": 0
     },
     "documents_reported": null,
-    "submit_methods": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "in_person",
+       "detail": "return to the Facility Registration Department or Financial Counselor"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Please complete and return the following form with requested documents to the Facility Registration Department or Financial Counselor to be evaluated for Financial Assistance.",
+     "source_id": "fap-3c769e247ebd022c",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "window_days_from_first_bill": null,
     "decision_days": null,
     "decision_days_reported": null
@@ -262,16 +275,16 @@
      "value": "844-817-9800",
      "layer": "documented",
      "quote": "Please contact our Business Office, toll free, at 844-817-9800, Monday through Thursday, 8 a.m. - 6 p.m. eastern time and on Fridays 8 a.m. - 5 p.m. eastern time.",
-     "source_id": "web-ebdbcb92375a6cb1",
+     "source_id": "web-c0b31224775048e9",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "hours": {
-     "value": "Monday through Thursday, 8 a.m. - 6 p.m. eastern time; Fridays 8 a.m. - 5 p.m. eastern time",
+     "value": "Monday through Thursday, 8 a.m. - 6 p.m. eastern time and on Fridays 8 a.m. - 5 p.m. eastern time",
      "layer": "documented",
-     "quote": "Please contact our Business Office, toll free, at 844-817-9800, Monday through Thursday, 8 a.m. - 6 p.m. eastern time and on Fridays 8 a.m. - 5 p.m. eastern time.",
-     "source_id": "web-ebdbcb92375a6cb1",
+     "quote": "Monday through Thursday, 8 a.m. - 6 p.m. eastern time and on Fridays 8 a.m. - 5 p.m. eastern time.",
+     "source_id": "web-c0b31224775048e9",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -285,55 +298,63 @@
    },
    "sources": [
     {
-     "id": "web-8d66a4114267849e",
+     "id": "web-9cbb5de643215fe2",
      "kind": "hospital_web",
      "url": "https://www.nwhealthlaporte.com/financial-assistance-program",
      "title": "Financial Assistance Program",
      "fetched_on": "2026-10-23",
-     "sha256": "8d66a4114267849eda5290089a9f496a810557f2b5be42fbd3c3cfa8b6b787c1",
+     "sha256": "9cbb5de643215fe22958526b00cb9d819aca33208102880bc2f2068bc2ed406f",
      "effective_date": null
     },
     {
      "id": "fap-3c769e247ebd022c",
      "kind": "hospital_web",
-     "url": "https://www.nwhealthlaporte.com/Uploads/Public/Documents/all-new-documents/2023/100-ADM-1202-2023.pdf",
+     "url": "http://www.nwhealthlaporte.com/Uploads/Public/Documents/all-new-documents/2023/100-ADM-1202-2023.pdf",
      "title": "",
      "fetched_on": "2026-10-23",
      "sha256": "3c769e247ebd022c4b032247e9b709ee0ca938bf80402ffc3e8a75aff5565a47",
      "effective_date": null
     },
     {
-     "id": "web-ebdbcb92375a6cb1",
+     "id": "web-c0b31224775048e9",
      "kind": "hospital_web",
      "url": "https://www.nwhealthlaporte.com/hospital-billing-insurance",
      "title": "Patients & Visitors - Financial Information - Billing & Insurance",
      "fetched_on": "2026-10-23",
-     "sha256": "ebdbcb92375a6cb16d2d38802807f5532b6d2c049c8ee4f2a806d41a4414e137",
+     "sha256": "c0b31224775048e9c98cba218ce3f919263797228e305fdfe2ccb62117d936fb",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "agent dropped apply.submit_methods: judge: The quote says to return the form to Registration or a Financial Counselor but does not say it must be returned in person."
+    "apply.form_url: not an absolute URL ('/Uploads/Public/Documents/all-new-documents/2023/100-ADM-120'); dropped",
+    "agent judge on eligibility.asset_test: The quote is blank form fields asking for checking and savings amounts. It never states that assets are considered in eligibility.",
+    "agent judge on apply.documents_required: Value omits copy of mortgage or rental agreement (an OR option) and copies of monthly bills, and presents the employer letter as required when it is an OR alternative.",
+    "agent judge on apply.submit_methods: Quote says return the form to the Registration Department or Financial Counselor but does not specify in-person delivery; return could be by mail or other means."
    ],
    "eve_verified": {
     "on": "2026-10-23",
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "web-9cbb5de643215fe2": false,
+     "fap-3c769e247ebd022c": true,
+     "web-c0b31224775048e9": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.asset_test",
-     "programs.state_programs",
+     "eligibility.insured_patients_covered",
      "apply.documents_required",
+     "apply.submit_methods",
      "contacts.phone",
      "contacts.hours"
     ],
     "rejected": [],
-    "pruned": [
-     "apply.documents_required: 1 item not named in the trimmed quote"
-    ],
+    "pruned": [],
     "income_rule_verified": false,
-    "core_completeness": 0.33
+    "core_completeness": 0.5
    }
   },
   {
@@ -526,6 +547,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-ba8a572ab27fdac6": true,
+     "fap-eb023b6c0a046119": true,
+     "web-1db7dd3e28a9262b": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.insured_patients_covered",
@@ -573,10 +600,10 @@
     "asset_test": null,
     "residency": {
      "value": [
-      "For non-emergent medically necessary care, the patient or guarantor must be a resident of Kentucky, Indiana, Tennessee, Ohio or Illinois; this does not apply to emergency care."
+      "To be eligible for assistance for non-emergent Medically Necessary Care, a patient must also be a resident of Kentucky, Indiana, Tennessee, Ohio or Illinois."
      ],
      "layer": "documented",
-     "quote": "patient's guarantor) must also be a resident of Kentucky, Indiana, Tennessee, Ohio or Illinois. This residency requirement does not apply to Emergency Care.",
+     "quote": "a patient (or that patient's guarantor) must also be a resident of Kentucky, Indiana, Tennessee, Ohio or Illinois.",
      "source_id": "fap-d73fee9532fcd921",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -585,7 +612,7 @@
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "a. The patient lacks healthcare insurance or there remains an unpaid balance after their healthcare insurance plan has either paid or rejected their claim",
+     "quote": "The patient lacks healthcare insurance or there remains an unpaid balance after their healthcare insurance plan has either paid or rejected their claim",
      "source_id": "fap-d73fee9532fcd921",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -606,35 +633,14 @@
       "bank_statements"
      ],
      "layer": "documented",
-     "quote": "a. complete the Application for Financial Assistance- (see Exhibit B1); and b. provide their last 3 months of bank statements for all checking and savings accounts.",
+     "quote": "provide their last 3 months of bank statements for all checking and savings accounts.",
      "source_id": "fap-d73fee9532fcd921",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "documents_reported": null,
-    "submit_methods": {
-     "value": [
-      {
-       "kind": "mail",
-       "detail": "SBO Financial Assistance Dept. 14-7, PO Box 35070, Louisville, KY 40232-9972"
-      },
-      {
-       "kind": "fax",
-       "detail": "(502) 629-8883"
-      },
-      {
-       "kind": "email",
-       "detail": "FAP@nortonhealthcare.org"
-      }
-     ],
-     "layer": "documented",
-     "quote": "Please mail, fax or email applications and documentation to: Financial Assistance Address: SBO Financial Assistance Dept. 14-7 PO Box 35070 Louisville, KY 40232-9972 Financial Assistance Fax: (502) 629-8883 Financial Assistance Email: FAP@nortonhealthcare.org",
-     "source_id": "fap-d73fee9532fcd921",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "submit_methods": null,
     "window_days_from_first_bill": null,
     "decision_days": null,
     "decision_days_reported": null
@@ -645,23 +651,15 @@
    },
    "contacts": {
     "phone": {
-     "value": "(812) 283-2808",
+     "value": "(502) 479-6300",
      "layer": "documented",
-     "quote": "Norton Clark Hospital (812) 283-2808",
+     "quote": "Customer Service Team: (502) 479-6300",
      "source_id": "fap-d73fee9532fcd921",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "hours": {
-     "value": "Monday through Friday, 8 a.m. to 4 p.m. Eastern time (billing)",
-     "layer": "documented",
-     "quote": "Hospital/ Physician Billing Business Hours Monday through Friday 8 a.m. to 4 p.m. Eastern time",
-     "source_id": "web-1bfb4490961e08f3",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "hours": null,
     "languages": null
    },
    "coverage": {
@@ -689,47 +687,52 @@
      "effective_date": null
     },
     {
-     "id": "web-1bfb4490961e08f3",
+     "id": "web-dfdd43f7dba345a6",
      "kind": "hospital_web",
-     "url": "https://nortonhealthcare.com/patient-resources/billing-information/",
-     "title": "Billing Information | Louisville, Ky. | Norton Healthcare",
+     "url": "https://nortonhealthcare.com/patient-resources/billing-information/financial-assistance/",
+     "title": "Financial Assistance | Louisville, Ky. | Norton Healthcare",
      "fetched_on": "2026-10-23",
-     "sha256": "1bfb4490961e08f35908a73f0d7fcfb677151eada35c049949a5250866a45639",
+     "sha256": "dfdd43f7dba345a6d8eb47c59b572dd60af7ed5ab9cce62ce0b7293a15031903",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.free_care_max_fpl: 1 more verbatim excerpt(s) supported this value: c. The patient\u2019s family unit income is equal to or less than 350% of the Federal Poverty Guidelines"
+    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: such as copies of your prior year\u2019s tax return, pay stubs, unemployment check documentation, Social Security check docum",
+    "agent dropped apply.submit_methods: excerpt not in source: Apply Using Norton MyChart"
    ],
    "eve_verified": {
     "on": "2026-10-23",
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-d73fee9532fcd921": true,
+     "fap-d56438cfc05404f6": true,
+     "web-dfdd43f7dba345a6": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.residency",
      "eligibility.insured_patients_covered",
      "apply.documents_required",
-     "apply.submit_methods",
-     "contacts.phone",
-     "contacts.hours"
+     "contacts.phone"
     ],
     "rejected": [
      [
-      "eligibility.free_care_max_fpl",
-      "value not in quote"
-     ],
-     [
       "eligibility.asset_test",
       "quote does not support the asset-test value"
+     ],
+     [
+      "apply.form_url",
+      "quote not found in source"
      ]
     ],
     "pruned": [
-     "apply.documents_required: 1 item not named in the trimmed quote"
+     "apply.documents_required: 2 items not named in the trimmed quote"
     ],
     "income_rule_verified": false,
-    "core_completeness": 0.5
+    "core_completeness": 0.33
    }
   },
   {
@@ -893,6 +896,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-9aef2cd0ce5eb73a": true,
+     "fap-fbf6a89b306746a7": true,
+     "web-7e1e2c050e5336d6": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.asset_test",
@@ -1061,6 +1070,11 @@
     "sources_fetched": 2,
     "sources_total": 2,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-235f026a96770945": true,
+     "fap-592d8ad7d85604eb": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.insured_patients_covered",
@@ -1103,7 +1117,17 @@
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
     "asset_test": null,
-    "residency": null,
+    "residency": {
+     "value": [
+      "We provide assistance to low-income individuals and those with special healthcare expenses who live in our service area."
+     ],
+     "layer": "documented",
+     "quote": "We provide assistance to low-income individuals and those with special healthcare expenses who live in our service area.",
+     "source_id": "web-41e446070ccf8d5a",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "insured_patients_covered": null,
     "min_balance": null,
     "services_excluded": null
@@ -1128,10 +1152,10 @@
    },
    "contacts": {
     "phone": {
-     "value": "574.335.1360",
+     "value": "(866) 611-1514",
      "layer": "documented",
-     "quote": "please contact a financial counselor at 574.335.1360 (Mishawaka) or 574.948.4008 (Plymouth) prior to the scheduled date of your care.",
-     "source_id": "web-33ded860b0bb742b",
+     "quote": "please contact Customer Service at (866) 611-1514",
+     "source_id": "web-41e446070ccf8d5a",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -1155,38 +1179,43 @@
      "effective_date": null
     },
     {
-     "id": "web-6215552809ae922a",
+     "id": "web-41e446070ccf8d5a",
      "kind": "hospital_web",
-     "url": "https://www.sjmed.com/sites/default/files/Assets/Documents/Patients%20and%20Visitors/Billing%20and%20Assistance/Financial%20Assistance/FA%20Trinity%20Health%20Application%20-%20English.docx",
-     "title": "",
+     "url": "https://www.sjmed.com/patients-visitors/billing-and-assistance/financial-assistance",
+     "title": "Financial Assistance | Saint Joseph Health System",
      "fetched_on": "2026-10-23",
-     "sha256": "6215552809ae922ad7f6641353ba2dd68c93d95ca42609e746e78ea7405ed433",
-     "effective_date": null
-    },
-    {
-     "id": "web-33ded860b0bb742b",
-     "kind": "hospital_web",
-     "url": "https://www.sjmed.com/patients-visitors/billing-and-assistance",
-     "title": "Billing and Assistance | Saint Joseph Health System",
-     "fetched_on": "2026-10-23",
-     "sha256": "33ded860b0bb742b835288870aedddfcd5c51504bb0da40ef49e32adb2d5332c",
+     "sha256": "41e446070ccf8d5a599c2bd0f467d6a7c95168dd5f1a429921ae83d041ee11b0",
      "effective_date": null
     }
    ],
    "accuracy": null,
-   "eve_review": [],
+   "eve_review": [
+    "contacts.languages: 2 more verbatim excerpt(s) supported this value: Espa\u00f1ol [/notice-availability-language-assistance-services#Spanish] | \u4e2d\u6587 [/notice-availability-language-assistance-services#Chinese]"
+   ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 1,
-    "sources_total": 3,
-    "sources_missing": [
-     "https://www.sjmed.com/sites/default/files/Assets/Documents/Patients%20and%20Visitors/Billing%20and%20Assistance/Financial%20Assistance/Finance%20Policy%201%20-%20Financial%20Assistance%20to%20Patients_English.docx",
-     "https://www.sjmed.com/sites/default/files/Assets/Documents/Patients%20and%20Visitors/Billing%20and%20Assistance/Financial%20Assistance/FA%20Trinity%20Health%20Application%20-%20English.docx"
-    ],
+    "sources_fetched": 2,
+    "sources_total": 2,
+    "sources_missing": [],
+    "sha256_match": {
+     "web-fbf1044801c75b6f": true,
+     "web-41e446070ccf8d5a": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
+     "eligibility.residency",
      "contacts.phone"
     ],
-    "rejected": [],
+    "rejected": [
+     [
+      "apply.form_url",
+      "quote not found in source"
+     ],
+     [
+      "contacts.languages",
+      "quote not found in source"
+     ]
+    ],
     "pruned": [],
     "income_rule_verified": false,
     "core_completeness": 0.17
@@ -1422,6 +1451,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-6e38016b2eb07094": true,
+     "fap-e3a0d0b8854042ca": true,
+     "web-3cd254774c465d97": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -1458,21 +1493,21 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": null,
-    "discount_tiers": null,
-    "assistance_ceiling_fpl": null,
-    "asset_test": {
-     "value": true,
+    "free_care_max_fpl": {
+     "value": "275",
      "layer": "documented",
-     "quote": "Required financial information may include annual household income, applicable assets, household size and confirmation of application for all sources of coverage",
-     "source_id": "web-1e03b32b0cf5886d",
+     "quote": "Patients whose Gross Family Income does not exceed 275% of the Federal Poverty Guidelines (see \u201cReferences\u201d section) are eligible for free care (100 %) write-off of account balances",
+     "source_id": "fap-7edf639a9cbf55d6",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
+    "discount_tiers": null,
+    "assistance_ceiling_fpl": null,
+    "asset_test": null,
     "residency": {
      "value": [
-      "The patient must generally have an established residence in the Parkview Health Service Area (listed counties of northeastern Indiana and northwestern Ohio)."
+      "The patient must generally have an established residence in the Parkview Health Service Area to be considered for financial assistance."
      ],
      "layer": "documented",
      "quote": "The patient must generally have an established residence in the Parkview Health Service Area to be considered for financial assistance.",
@@ -1484,7 +1519,7 @@
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "If the patient has third party coverage or is eligible for coverage under COBRA, only the patient portion as indicated on the insurance",
+     "quote": "If the patient has third party coverage or is eligible for coverage under COBRA, only the patient portion as indicated on the insurance Explanation of Benefits is eligible for consideration under the Financial Assistance Policy.",
      "source_id": "fap-7edf639a9cbf55d6",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1494,30 +1529,45 @@
     "services_excluded": null
    },
    "programs": {
-    "presumptive": null,
-    "state_programs": null
-   },
-   "apply": {
-    "form_url": null,
-    "form_version": null,
-    "documents_required": {
+    "presumptive": {
      "value": [
-      "pay_stubs"
+      "Medicaid",
+      "deceased with no discoverable estate",
+      "homeless"
      ],
      "layer": "documented",
-     "quote": "Two (2) most recent pay stubs, for guarantor and spouse, showing year-to-date gross income and deductions",
-     "source_id": "fap-0313b36e4394c5a2",
+     "quote": "Presumptive Charity: Parkview Health may approve financial assistance and provide free care (100%) with less than a fully completed Financial Assistance Application if: a. Patient Gross Family Income does not exceed 165% of the Federal Poverty Guidelines. b. Patient is currently enrolled in Medicaid. c. Patient is deceased with no discoverable estate. d. Patient is homeless.",
+     "source_id": "fap-7edf639a9cbf55d6",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
+    "state_programs": {
+     "value": [
+      {
+       "name": "Hospital Care Assurance Program (HCAP)",
+       "how_to_apply": "A HCAP Financial Assistance Application can be obtained at any Ohio Parkview hospital cashier, by calling the Patient Financial Services Call Center at 260-266-6700 or toll free 855-814-0012, on Parkview.com, or request through MyChart."
+      }
+     ],
+     "layer": "documented",
+     "quote": "Parkview\u2019s Ohio hospitals are participants in Ohio\u2019s HCAP Program. Through the HCAP Program, eligible patients are entitled to receive basic, medically necessary hospital-level services free of charge.",
+     "source_id": "fap-7edf639a9cbf55d6",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": null,
     "documents_reported": null,
     "submit_methods": null,
     "window_days_from_first_bill": {
      "value": 240,
      "layer": "documented",
      "quote": "Patients must apply for financial assistance within 240 days of the date marked on their first statement for services rendered.",
-     "source_id": "web-1e03b32b0cf5886d",
+     "source_id": "web-b939c9a6b2654e90",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -1533,34 +1583,22 @@
     "phone": {
      "value": "260-266-6700",
      "layer": "documented",
-     "quote": "You can call our Patient Services Financial Call Center at 260-266-6700 or toll-free 855-814-0012.",
-     "source_id": "web-1e03b32b0cf5886d",
+     "quote": "Call 260-266-6700 or toll-free 855-814-0012.",
+     "source_id": "web-b939c9a6b2654e90",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "hours": {
-     "value": "Cashier offices 9 a.m. - 4 p.m., Monday through Friday",
+     "value": "between the hours of 9 a.m. \u2013 4 p.m., Monday thru Friday",
      "layer": "documented",
      "quote": "Visit any Parkview cashier office between the hours of 9 a.m.",
-     "source_id": "web-1e03b32b0cf5886d",
+     "source_id": "web-b939c9a6b2654e90",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "languages": {
-     "value": [
-      "English",
-      "Spanish",
-      "Burmese"
-     ],
-     "layer": "documented",
-     "quote": "Financial Assistance Application - English",
-     "source_id": "web-1e03b32b0cf5886d",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "languages": null
    },
    "coverage": {
     "facilities": null,
@@ -1578,6 +1616,15 @@
      "effective_date": null
     },
     {
+     "id": "web-b939c9a6b2654e90",
+     "kind": "hospital_web",
+     "url": "https://www.parkview.com/patients-and-visitors/billing-and-insurance/financial-assistance",
+     "title": "Financial Assistance",
+     "fetched_on": "2026-10-23",
+     "sha256": "b939c9a6b2654e90af52f5627d82e73e0d6bb81cfbbd352e32a4ea3b0a0f46e2",
+     "effective_date": null
+    },
+    {
      "id": "fap-0313b36e4394c5a2",
      "kind": "hospital_web",
      "url": "https://www.parkview.com/-/media/parkview-media/file/2024_09-september/09302024-4607-a-financial-assistance-application.ashx",
@@ -1585,56 +1632,58 @@
      "fetched_on": "2026-10-23",
      "sha256": "0313b36e4394c5a2395636d3a093b0ff33d6e3f6de91ec34ee2b3f0cae97d7ee",
      "effective_date": null
-    },
-    {
-     "id": "web-1e03b32b0cf5886d",
-     "kind": "hospital_web",
-     "url": "https://www.parkview.com/patients-and-visitors/billing-and-insurance/financial-assistance",
-     "title": "Financial Assistance",
-     "fetched_on": "2026-10-23",
-     "sha256": "1e03b32b0cf5886d2955cbca08309b32678022054ef4769588abb5218f1ad0ba",
-     "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Patient is currently enrolled in Medicaid. | c. Patient is deceased with no discoverable estate. d. Patient is homeless.",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Previous year\u2019s Federal Income Tax Return 1040 form with all applicable schedules attached. | Two (2) most recent bank statements for all personal and/or business accounts, CDs and investments in stocks",
-    "contacts.languages: 2 more verbatim excerpt(s) supported this value: Financial Assistance Application - Spanish | Financial Assistance Application - Burmese",
-    "agent dropped eligibility.free_care_max_fpl: judge: The quote is cut off at 'are eligible for' and never says the assistance at 275% FPL is 100% free care.",
-    "agent dropped programs.state_programs: judge: The quote is truncated at 'must complete a' and never names Ohio or the HCAP Financial Assistance Application form.",
-    "agent dropped apply.submit_methods: judge: The fax entry is supported, but the mail address (P.O. Box 5600, Fort Wayne, IN 46895) does not appear in the quote."
+    "programs.state_programs: 1 more verbatim excerpt(s) supported this value: A HCAP Financial Assistance Application can be obtained at any Ohio Parkview hospital cashier, by calling the Patient Fi",
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: q Two (2) most recent pay stubs, for guarantor and spouse, showing year-to-date gross income and deductions | q Previous year's Federal Income Tax Return 1040 form with all applicable schedules attached",
+    "apply.documents_required: quote matched the source only after typography normalization",
+    "contacts.languages: 2 more verbatim excerpt(s) supported this value: Financial Assistance Application - Spanish [https://parkviewhealth.bynder.com/asset/12c770a2-c1d5-49c9-b938-c759d9d7726f | Financial Assistance Application - Burmese [https://parkviewhealth.bynder.com/asset/eba7b920-47a3-4fae-b293-1fdc1236e9c7",
+    "agent dropped apply.submit_methods: excerpt not in source: Visit any Parkview cashier office between the hours of 9 a.m",
+    "agent dropped apply.decision_days: quote is not a substring of the source",
+    "agent judge on eligibility.asset_test: Quote only says retirement accounts are excluded from eligibility determination. It does not state that assets are considered.",
+    "agent judge on apply.documents_required: Quote supports only the application, pay stubs, and 1040. Bank statements and SS/VA letter or W2/1099 are not shown in the quote."
    ],
    "eve_verified": {
     "on": "2026-10-23",
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-7edf639a9cbf55d6": true,
+     "web-b939c9a6b2654e90": false,
+     "fap-0313b36e4394c5a2": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
-     "eligibility.asset_test",
+     "eligibility.free_care_max_fpl",
      "eligibility.residency",
      "eligibility.insured_patients_covered",
-     "apply.documents_required",
+     "programs.presumptive",
+     "programs.state_programs",
      "apply.window_days_from_first_bill",
      "contacts.phone",
-     "contacts.hours",
-     "contacts.languages"
+     "contacts.hours"
     ],
     "rejected": [
+     [
+      "eligibility.asset_test",
+      "quote does not support the asset-test value"
+     ],
      [
       "apply.form_url",
       "quote not found in source"
      ],
      [
-      "apply.decision_days",
+      "contacts.languages",
       "quote not found in source"
      ]
     ],
     "pruned": [
-     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
-     "apply.documents_required: 2 items not named in the trimmed quote"
+     "apply.documents_required: none of the listed documents is named in the quote (after trimming)"
     ],
-    "income_rule_verified": false,
+    "income_rule_verified": true,
     "core_completeness": 0.33
    }
   },
@@ -1868,6 +1917,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-6e38016b2eb07094": true,
+     "fap-e3a0d0b8854042ca": true,
+     "web-3cd254774c465d97": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -2056,6 +2111,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-f7700d56c54031eb": true,
+     "fap-b311155e691faacb": true,
+     "web-81fd334eb9be31d4": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -2232,6 +2293,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-1df4f179a021f3d4": true,
+     "fap-9d524f9774fbce70": true,
+     "web-3a904dea7a11cbbe": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.insured_patients_covered",
@@ -2460,6 +2527,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-ba8a572ab27fdac6": true,
+     "fap-eb023b6c0a046119": true,
+     "web-c07fc95aab011106": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.insured_patients_covered",
@@ -2624,7 +2697,19 @@
      "support_count": 0
     },
     "hours": null,
-    "languages": null
+    "languages": {
+     "value": [
+      "English",
+      "Spanish",
+      "Haitian Creole"
+     ],
+     "layer": "documented",
+     "quote": "Downloadable Financial Assistance Application (English)",
+     "source_id": "web-32f8953b4c801ce6",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
    },
    "coverage": {
     "facilities": null,
@@ -2668,11 +2753,15 @@
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 2,
+    "sources_fetched": 3,
     "sources_total": 3,
-    "sources_missing": [
-     "https://www.gshvin.org/patients-visitors/insurance-billing-and-payment/"
-    ],
+    "sources_missing": [],
+    "sha256_match": {
+     "fap-08f875cb43f71770": true,
+     "fap-097a5aaef4a3f888": true,
+     "web-32f8953b4c801ce6": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.insured_patients_covered",
@@ -2681,16 +2770,13 @@
      "apply.submit_methods",
      "apply.window_days_from_first_bill",
      "apply.decision_days",
-     "contacts.phone"
+     "contacts.phone",
+     "contacts.languages"
     ],
     "rejected": [
      [
       "apply.form_url",
-      "source text missing"
-     ],
-     [
-      "contacts.languages",
-      "source text missing"
+      "quote not found in source"
      ]
     ],
     "pruned": [
@@ -2832,6 +2918,12 @@
     "sources_missing": [
      "https://www.baptisthealth.com/-/media/documents/patients-and-visitors/financial-assistance/2026/financial-assistance-policy-september-2026.pdf?rev=a5a121ec5a3742418b841b44f3d3e941&hash=91DFBA04643D98EE0E3C30658CA996F3"
     ],
+    "sha256_match": {
+     "fap-280f8ed389fad327": true,
+     "fap-5636546add2ee668": true,
+     "web-99be41eab84622f1": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "contacts.phone",
@@ -3035,6 +3127,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-7edf639a9cbf55d6": true,
+     "fap-0313b36e4394c5a2": true,
+     "web-8b4547c81033621d": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.asset_test",
@@ -3078,25 +3176,33 @@
    "eligibility": {
     "free_care_max_fpl": null,
     "discount_tiers": null,
-    "assistance_ceiling_fpl": null,
-    "asset_test": {
-     "value": true,
+    "assistance_ceiling_fpl": {
+     "value": "200",
      "layer": "documented",
-     "quote": "Household liquid assets in excess of $5,000 will be considered income in determining a patient\u2019s income for Financial Assistance eligibility.",
+     "quote": "To be eligible for assistance under the financial assistance guidelines, a person's income shall be at or below 200% of the Federal Poverty Level (FPL) as determined by Federal Poverty Guidelines.",
      "source_id": "fap-516fb59525940b86",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "residency": {
-     "value": [
-      "Only residents of Reid Health's seven-county service area (Wayne, Fayette, Randolph, Franklin and Union in Indiana; Darke and Preble in Ohio) are eligible."
-     ],
+    "asset_test": {
+     "value": true,
      "layer": "documented",
-     "quote": "a person who lives in Reid Health\u2019s service area which consists of seven counties, across 2 states. The counties include Wayne, Fayette, Randolph, Franklin and Union in Indiana and in Ohio, Darke and Preble.",
+     "quote": "Household liquid assets in excess of $5,000 will be considered income in determining a patient's income for Financial Assistance eligibility.",
      "source_id": "fap-516fb59525940b86",
      "checked_on": "2026-10-23",
-     "confidence": 1.0,
+     "confidence": 0.8,
+     "support_count": 0
+    },
+    "residency": {
+     "value": [
+      "Only residents in Reid Health's service area are eligible, which consists of seven counties, across 2 states: Wayne, Fayette, Randolph, Franklin and Union in Indiana and in Ohio, Darke and Preble."
+     ],
+     "layer": "documented",
+     "quote": "Only residents in Reid Health's service area are eligible. Relocation for the sole purpose of receiving health care benefits does not satisfy the residency requirement.",
+     "source_id": "fap-516fb59525940b86",
+     "checked_on": "2026-10-23",
+     "confidence": 0.8,
      "support_count": 0
     },
     "insured_patients_covered": {
@@ -3113,7 +3219,24 @@
    },
    "programs": {
     "presumptive": null,
-    "state_programs": null
+    "state_programs": {
+     "value": [
+      {
+       "name": "Healthy Indiana Plan (HIP)",
+       "how_to_apply": "Learn more about HIP"
+      },
+      {
+       "name": "Hoosier Healthwise",
+       "how_to_apply": "call (765) 983-3310 to speak with a Claim Aid Specialist"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Healthy Indiana Plan (HIP):",
+     "source_id": "web-efcf001aec415bfe",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
    },
    "apply": {
     "form_url": null,
@@ -3123,18 +3246,26 @@
     "submit_methods": {
      "value": [
       {
-       "kind": "mail",
-       "detail": "Reid Health, 1100 Reid Parkway, Richmond, IN 47374"
+       "kind": "phone",
+       "detail": "Calling Customer Service at (765) 983-3184"
       }
      ],
      "layer": "documented",
-     "quote": "Return to: Reid Health 1100 Reid Parkway Richmond, IN 47374",
-     "source_id": "fap-4370fb85cddb3aac",
+     "quote": "Calling Customer Service at (765) 983-3184",
+     "source_id": "fap-516fb59525940b86",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "window_days_from_first_bill": null,
+    "window_days_from_first_bill": {
+     "value": 30,
+     "layer": "documented",
+     "quote": "A request for assistance may be made at any time but should be made no later than 30 days after service/discharge, or final bill.",
+     "source_id": "fap-516fb59525940b86",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "decision_days": null,
     "decision_days_reported": null
    },
@@ -3153,7 +3284,18 @@
      "support_count": 0
     },
     "hours": null,
-    "languages": null
+    "languages": {
+     "value": [
+      "English",
+      "Spanish"
+     ],
+     "layer": "documented",
+     "quote": "LISTA DE VERIFICACI\u00d3N DE SOLICITUD DE ASISTENCIA FINANCIERA",
+     "source_id": "fap-201e86ad962cc8fc",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
    },
    "coverage": {
     "facilities": null,
@@ -3171,15 +3313,6 @@
      "effective_date": null
     },
     {
-     "id": "fap-4370fb85cddb3aac",
-     "kind": "hospital_web",
-     "url": "https://edge.sitecorecloud.io/reidhospitac848-reidsitecorcc6f-prodc340-a0be/media/Project/reid-health/Reid-Health/docs/Patient-Resources/Billing-and-Insurance/Reid-Health-Financial-Assistance-Application-English.pdf",
-     "title": "",
-     "fetched_on": "2026-10-23",
-     "sha256": "4370fb85cddb3aacf795fa55deb10df1ab0e7a7cdbba37f262605e06eaf3485f",
-     "effective_date": null
-    },
-    {
      "id": "web-efcf001aec415bfe",
      "kind": "hospital_web",
      "url": "https://reidhealth.org/Patient-Resources/Billing-and-Insurance/Financial-Assistance",
@@ -3187,51 +3320,59 @@
      "fetched_on": "2026-10-23",
      "sha256": "efcf001aec415bfe2ba28a8fb18fc8ea605c324781e19a7aeec5dc16c691dbea",
      "effective_date": null
+    },
+    {
+     "id": "fap-201e86ad962cc8fc",
+     "kind": "hospital_web",
+     "url": "https://edge.sitecorecloud.io/reidhospitac848-reidsitecorcc6f-prodc340-a0be/media/Project/reid-health/Reid-Health/docs/Patient-Resources/Billing-and-Insurance/Reid-Health-Financial-Assistance-Application-Spanish.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "201e86ad962cc8fcdefdc4808795a6328808ef553789d0c1a862d4a2514b1723",
+     "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Patient /guarantor is on a fixed income at or below FPL but is considered over resource limits for any Medicaid program. | Patients who are currently enrolled in any state Medicaid program that have exhausted their benefits for the month are c",
-    "programs.state_programs: 1 more verbatim excerpt(s) supported this value: To speak with a Claim Aid Specialist about insurance options, please call (765) 983-3310.",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: \u2022 Most recent Federal 1040 Income Tax Return form and W2. \u2022 Pay stubs for the last 30 days. \u2022 Current Social Security Aw | \u2022 Current bank statement for all checking and/or savings accounts. \u2022 Current investor statement for all CD\u2019s/Stocks/Bond",
-    "contacts.languages: 1 more verbatim excerpt(s) supported this value: Solicitud de asistencia financiera Versi\u00f3n en espa\u00f1ol",
-    "agent dropped apply.decision_days: judge: The quote is hedged: 'we aim to respond within a defined period (often 30 days)'. It is not a firm 30-day decision period."
+    "eligibility.asset_test: quote matched the source only after typography normalization",
+    "eligibility.residency: quote matched the source only after typography normalization",
+    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: Patients who are currently enrolled in any state Medicaid program that have exhausted their benefits for the month are c",
+    "programs.presumptive: quote matched the source only after typography normalization",
+    "programs.state_programs: 1 more verbatim excerpt(s) supported this value: Hoosier Healthwise (Medicaid for low-income families, pregnant women, and children)",
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Most recent Federal 1040 Income Tax Return form and W2. | Pay stubs for the last 30 days.",
+    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Presenting to Reid Health located at 1100 Reid Parkway, Richmond, IN 47374 | Request by mail in writing to Reid Health, 1100 Reid Parkway, Richmond, IN 47374",
+    "agent judge on eligibility.residency: Quote supports only that residents of the service area are eligible. It does not list the seven counties or two states given in the value.",
+    "agent judge on programs.state_programs: Quote names HIP and Hoosier Healthwise with a HIP link only. It gives no phone number (983-3310) or Claim Aid Specialist wording for Hoosier Healthwise.",
+    "agent judge on apply.documents_required: Quote lists only Medicaid decision letter, 1040/W2, and pay stubs. Value includes many other documents not in the quote.",
+    "agent judge on apply.window_days_from_first_bill: Quote says 30 days after service/discharge or final bill, not after the first bill. Anchor point differs from the field definition.",
+    "agent judge on contacts.languages: Quote is only a Spanish-language heading (checklist title). It does not state English or that the hospital offers both languages."
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 2,
+    "sources_fetched": 3,
     "sources_total": 3,
-    "sources_missing": [
-     "https://reidhealth.org/Patient-Resources/Billing-and-Insurance/Financial-Assistance"
-    ],
+    "sources_missing": [],
+    "sha256_match": {
+     "fap-516fb59525940b86": true,
+     "web-efcf001aec415bfe": true,
+     "fap-201e86ad962cc8fc": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
+     "eligibility.assistance_ceiling_fpl",
      "eligibility.asset_test",
      "eligibility.residency",
      "eligibility.insured_patients_covered",
+     "programs.state_programs",
      "apply.submit_methods",
-     "contacts.phone"
+     "apply.window_days_from_first_bill",
+     "contacts.phone",
+     "contacts.languages"
     ],
-    "rejected": [
-     [
-      "eligibility.free_care_max_fpl",
-      "quote states an eligibility ceiling for any assistance, not a free-care band"
-     ],
-     [
-      "programs.state_programs",
-      "source text missing"
-     ],
-     [
-      "apply.form_url",
-      "source text missing"
-     ],
-     [
-      "contacts.languages",
-      "source text missing"
-     ]
-    ],
+    "rejected": [],
     "pruned": [
      "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
-     "apply.documents_required: none of the listed documents is named in the quote (after trimming)"
+     "apply.documents_required: none of the listed documents is named in the quote (after trimming)",
+     "apply.submit_methods: 2 items not named in the trimmed quote"
     ],
     "income_rule_verified": false,
     "core_completeness": 0.33
@@ -3258,24 +3399,16 @@
     "asset_test": null,
     "residency": {
      "value": [
-      "Applicants for hardship-based assistance must be Indiana residents as defined in the policy."
+      "If you are an Indiana resident, as defined in the IU Health Financial Assistance Policy, who receives care via the emergency department, direct admission from a physician's office, or transfer from another hospital, you may be eligible to receive additional assistance."
      ],
      "layer": "documented",
-     "quote": "b. Be an Indiana Resident as def ined in this Policy; and",
-     "source_id": "fap-4f0b7a13d817f487",
+     "quote": "If you are an Indiana resident, as defined in the IU Health Financial Assistance Policy, who receives care via the emergency department, direct admission from a physician\u2019s office, or transfer from another hospital, you may be eligible to receive additional assistance",
+     "source_id": "fap-ee1c8819fdca6823",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "insured_patients_covered": {
-     "value": true,
-     "layer": "documented",
-     "quote": "Financial Assistance to all qualif ying Indiana University Health (\u201cIU Health\u201d) Insured Patients and",
-     "source_id": "fap-4f0b7a13d817f487",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "insured_patients_covered": null,
     "min_balance": null,
     "services_excluded": null
    },
@@ -3288,39 +3421,45 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "pay_stubs"
+      "pay_stubs",
+      "other"
      ],
      "layer": "documented",
-     "quote": "1. Most recent three (3) months of pay stubs or Social Security Benefits;",
+     "quote": "Most recent three (3) months of pay stubs or Social Security Benefits;",
      "source_id": "fap-ee1c8819fdca6823",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "documents_reported": null,
-    "submit_methods": null,
-    "window_days_from_first_bill": null,
-    "decision_days": {
-     "value": 90,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "Indiana University Health, 1155 W. 3rd St. Bloomington, IN 47404"
+      },
+      {
+       "kind": "email",
+       "detail": "FinancialAssistance@IUHealth.org"
+      },
+      {
+       "kind": "fax",
+       "detail": "1.812.353.2032"
+      }
+     ],
      "layer": "documented",
-     "quote": "guarantor with a Financial Assistance Determination within ninety (90) days.",
-     "source_id": "fap-4f0b7a13d817f487",
+     "quote": "Return To: Indiana University Health 1155 W. 3rd St. Bloomington, IN 47404 Email: FinancialAssistance@IUHealth.org Phone: 1.888.531.3004 Fax: 1.812.353.2032",
+     "source_id": "fap-ee1c8819fdca6823",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
+    "window_days_from_first_bill": null,
+    "decision_days": null,
     "decision_days_reported": null
    },
    "collections": {
-    "eca_wait_days": {
-     "value": 120,
-     "layer": "documented",
-     "quote": "accounts may be subject to ECA as soon as one-hundred and twenty (120) days af ter receipt",
-     "source_id": "fap-4f0b7a13d817f487",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "eca_wait_days": null,
     "collection_agencies": null
    },
    "contacts": {
@@ -3343,15 +3482,6 @@
    },
    "sources": [
     {
-     "id": "fap-4f0b7a13d817f487",
-     "kind": "hospital_web",
-     "url": "https://cdn.iuhealth.org/resources/IUH-2025-Financial-Assistance-Policy_English.pdf",
-     "title": "",
-     "fetched_on": "2026-10-23",
-     "sha256": "4f0b7a13d817f487a8403f8bee3d7a0e93df01a4209f7956ccaefdae086f4a94",
-     "effective_date": null
-    },
-    {
      "id": "fap-ee1c8819fdca6823",
      "kind": "hospital_web",
      "url": "https://cdn.iuhealth.org/global/IU-Health-FAA-2023.pdf",
@@ -3363,41 +3493,41 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: b. Indiana Children's Special Health Care Services | c. Healthy Indiana Plan",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: b. Most recent three (3) statements from checking and savings accounts, certificates of deposit, stocks, bonds and | Additionally, applicants must show proof of Indiana residency and his/her primary address, which may not be a post",
-    "contacts.languages: 2 more verbatim excerpt(s) supported this value: e. Mandarin/Chinese; or | f. Spanish",
-    "agent dropped apply.submit_methods: judge: The email and fax appear, but the mail line says only 'Return To: Indiana University Health'; the street address is not in the quote.",
-    "agent dropped apply.window_days_from_first_bill: judge: Quote says up to 240 days but is cut off; it does not say the 240 days run from the first bill."
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Most recent three (3) statements from checking and savings accounts, certificates of deposit, stocks, bonds and money ma | Additionally, applicants must show proof of Indiana residency and his/her primary address",
+    "agent judge on eligibility.free_care_max_fpl: Quote shows \"200%\" with garbled text; it does not clearly state that 200% FPL is the highest percent receiving 100% free care.",
+    "agent judge on eligibility.asset_test: Quote is a form heading asking whether household has assets/resources; it does not state that assets are considered as a test value of true.",
+    "agent judge on apply.documents_required: Quote lists pay stubs, statements, and Indiana residency proof but omits the tax returns and W-2 items in the value; value adds unsupported documents."
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 2,
-    "sources_total": 2,
+    "sources_fetched": 1,
+    "sources_total": 1,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-ee1c8819fdca6823": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.residency",
-     "eligibility.insured_patients_covered",
      "apply.documents_required",
-     "apply.decision_days",
-     "collections.eca_wait_days",
+     "apply.submit_methods",
      "contacts.phone"
     ],
     "rejected": [
      [
-      "eligibility.asset_test",
-      "quote does not support the asset-test value"
+      "eligibility.free_care_max_fpl",
+      "quote not found in source"
      ],
      [
-      "contacts.languages",
-      "quote not found in source"
+      "eligibility.asset_test",
+      "quote does not support the asset-test value"
      ]
     ],
     "pruned": [
-     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
-     "apply.documents_required: 2 items not named in the trimmed quote"
+     "apply.documents_required: 3 items not named in the trimmed quote"
     ],
     "income_rule_verified": false,
-    "core_completeness": 0.33
+    "core_completeness": 0.5
    }
   },
   {
@@ -3418,22 +3548,14 @@
     "free_care_max_fpl": null,
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
-    "asset_test": {
-     "value": true,
-     "layer": "documented",
-     "quote": "The Financial Assistance Committee may evaluate the income or assets in determining f inancial Hardship.",
-     "source_id": "fap-4f0b7a13d817f487",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "asset_test": null,
     "residency": {
      "value": [
-      "Applicants for hardship-based financial assistance must be Indiana Residents as defined in the policy."
+      "If you are an Indiana resident, as defined in the IU Health Financial Assistance Policy, who receives care via the emergency department, direct admission from a physician's office, or transfer from another hospital, you may be eligible."
      ],
      "layer": "documented",
-     "quote": "b. Be an Indiana Resident as def ined in this Policy; and",
-     "source_id": "fap-4f0b7a13d817f487",
+     "quote": "If you are an Indiana resident, as defined in the IU Health Financial Assistance Policy, who receives care via the emergency department, direct admission from a physician\u2019s office, or transfer from another hospital, you may be eligible",
+     "source_id": "fap-ee1c8819fdca6823",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -3441,8 +3563,8 @@
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "The purpose of this Financial Assistance Policy is to establish consistent guidelines f or providing Financial Assistance to all qualif ying Indiana University Health (\u201cIU Health\u201d) Insured Patients and Uninsured Patients",
-     "source_id": "fap-4f0b7a13d817f487",
+     "quote": "Did any members of the household have health insurance at the time of their hospital service(s)? \u2751 Yes \u2751 No",
+     "source_id": "fap-ee1c8819fdca6823",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -3451,33 +3573,31 @@
     "services_excluded": null
    },
    "programs": {
-    "presumptive": {
-     "value": [
-      "Medicaid (any state)",
-      "Indiana Children's Special Health Care Services",
-      "Healthy Indiana Plan",
-      "Hospital Presumptive Eligibility (PE)",
-      "Eskenazi Health Advantage program"
-     ],
-     "layer": "documented",
-     "quote": "a. Medicaid (any state) b. Indiana Children's Special Health Care Services c. Healthy Indiana Plan d. Patients who are awarded Hospital Presumptive Eligibility (PE) e. Patients approved f or the Eskenazi Health Advantage program",
-     "source_id": "fap-4f0b7a13d817f487",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "presumptive": null,
     "state_programs": null
    },
    "apply": {
     "form_url": null,
     "form_version": null,
-    "documents_required": null,
+    "documents_required": {
+     "value": [
+      "pay_stubs",
+      "social_security_letter",
+      "other"
+     ],
+     "layer": "documented",
+     "quote": "Most recent three (3) months of pay stubs or Social Security Benefits;",
+     "source_id": "fap-ee1c8819fdca6823",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "documents_reported": null,
     "submit_methods": {
      "value": [
       {
        "kind": "mail",
-       "detail": "Indiana University Health, 1155 W. 3rd St., Bloomington, IN 47404"
+       "detail": "Indiana University Health, 1155 W. 3rd St. Bloomington, IN 47404"
       },
       {
        "kind": "email",
@@ -3496,56 +3616,25 @@
      "support_count": 0
     },
     "window_days_from_first_bill": null,
-    "decision_days": {
-     "value": 90,
-     "layer": "documented",
-     "quote": "guarantor with a Financial Assistance Determination within ninety (90) days.",
-     "source_id": "fap-4f0b7a13d817f487",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "decision_days": null,
     "decision_days_reported": null
    },
    "collections": {
-    "eca_wait_days": {
-     "value": 120,
-     "layer": "documented",
-     "quote": "accounts may be subject to ECA as soon as one-hundred and twenty (120) days af ter receipt",
-     "source_id": "fap-4f0b7a13d817f487",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "eca_wait_days": null,
     "collection_agencies": null
    },
    "contacts": {
     "phone": {
      "value": "1.888.531.3004",
      "layer": "documented",
-     "quote": "Email: FinancialAssistance@IUHealth.org Phone: 1.888.531.3004",
+     "quote": "Phone: 1.888.531.3004",
      "source_id": "fap-ee1c8819fdca6823",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "hours": null,
-    "languages": {
-     "value": [
-      "Arabic",
-      "Burmese",
-      "Burmese - Falam",
-      "Burmese - Hakha Chin",
-      "Mandarin/Chinese",
-      "Spanish"
-     ],
-     "layer": "documented",
-     "quote": "a. Arabic; b. Burmese; c. Burmese - Falam; d. Burmese - Hakha Chin; e. Mandarin/Chinese; or f. Spanish",
-     "source_id": "fap-4f0b7a13d817f487",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "languages": null
    },
    "coverage": {
     "facilities": null,
@@ -3553,15 +3642,6 @@
     "covered_providers": null
    },
    "sources": [
-    {
-     "id": "fap-4f0b7a13d817f487",
-     "kind": "hospital_web",
-     "url": "https://cdn.iuhealth.org/resources/IUH-2025-Financial-Assistance-Policy_English.pdf",
-     "title": "",
-     "fetched_on": "2026-10-23",
-     "sha256": "4f0b7a13d817f487a8403f8bee3d7a0e93df01a4209f7956ccaefdae086f4a94",
-     "effective_date": null
-    },
     {
      "id": "fap-ee1c8819fdca6823",
      "kind": "hospital_web",
@@ -3574,32 +3654,38 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: a. If the patient or their guarantor is f ound to have f iled a petition f or bankruptcy. | b. If the patient is deceased and f ound to have no estate.",
-    "agent dropped apply.documents_required: judge: Quote omits tax returns/W-2, cuts off before 'money market accounts', and never mentions two qualifying residency documents.",
-    "agent dropped apply.window_days_from_first_bill: judge: Quote says up to 240 days but is cut off and never names the starting point, such as the first bill."
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Most recent three (3) statements from checking and savings accounts, certificates of deposit, stocks, bonds and money ma | applicants must show proof of Indiana residency and his/her primary address",
+    "agent dropped eligibility.free_care_max_fpl: quote is not a substring of the source",
+    "agent judge on eligibility.insured_patients_covered: Quote is only a form question asking whether household members had insurance. It does not state that insured patients are covered.",
+    "agent judge on apply.documents_required: Quote supports pay stubs or Social Security benefits, bank statements, and proof of Indiana residency. It does not mention tax returns or W-2 statements."
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 2,
-    "sources_total": 2,
+    "sources_fetched": 1,
+    "sources_total": 1,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-ee1c8819fdca6823": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
-     "eligibility.asset_test",
      "eligibility.residency",
      "eligibility.insured_patients_covered",
-     "programs.presumptive",
+     "apply.documents_required",
      "apply.submit_methods",
-     "apply.decision_days",
-     "collections.eca_wait_days",
-     "contacts.phone",
-     "contacts.languages"
+     "contacts.phone"
     ],
-    "rejected": [],
+    "rejected": [
+     [
+      "eligibility.asset_test",
+      "quote does not support the asset-test value"
+     ]
+    ],
     "pruned": [
-     "programs.presumptive: 2 items not named in the trimmed quote"
+     "apply.documents_required: 3 items not named in the trimmed quote"
     ],
     "income_rule_verified": false,
-    "core_completeness": 0.33
+    "core_completeness": 0.5
    }
   },
   {
@@ -3795,6 +3881,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-6e38016b2eb07094": true,
+     "fap-e3a0d0b8854042ca": true,
+     "web-3cd254774c465d97": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -3982,6 +4074,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-0fe43de0a6f0e9da": true,
+     "fap-d9e10e4254c589d3": true,
+     "web-f49aa2a3db4b5c92": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -4028,12 +4126,22 @@
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
     "asset_test": null,
-    "residency": null,
+    "residency": {
+     "value": [
+      "To be eligible for assistance for non-emergent Medically Necessary Care, a patient must also be a resident of Kentucky, Indiana, Tennessee, Ohio or Illinois; this does not apply to Emergency Care."
+     ],
+     "layer": "documented",
+     "quote": "a patient (or that patient's guarantor) must also be a resident of Kentucky, Indiana, Tennessee, Ohio or Illinois. This residency requirement does not apply to Emergency Care.",
+     "source_id": "fap-d73fee9532fcd921",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "You do not have health insurance, or you have an unpaid balance after your insurance plan has either paid or rejected a claim.",
-     "source_id": "web-ea0c20f12a5ab175",
+     "quote": "The patient lacks healthcare insurance or there remains an unpaid balance after their healthcare insurance plan has either paid or rejected their claim",
+     "source_id": "fap-d73fee9532fcd921",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -4053,14 +4161,35 @@
       "bank_statements"
      ],
      "layer": "documented",
-     "quote": "To apply for financial assistance, you must submit an application and three months of bank statements for each bank account for the household.",
-     "source_id": "web-ea0c20f12a5ab175",
+     "quote": "provide their last 3 months of bank statements for all checking and savings accounts.",
+     "source_id": "fap-d73fee9532fcd921",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "documents_reported": null,
-    "submit_methods": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "Financial Assistance Address: SBO Financial Assistance Dept. 14-7 PO Box 35070 Louisville, KY 40232-9972"
+      },
+      {
+       "kind": "fax",
+       "detail": "Financial Assistance Fax: (502) 629-8883"
+      },
+      {
+       "kind": "email",
+       "detail": "Financial Assistance Email: FAP@nortonhealthcare.org"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Please mail, fax or email applications and documentation to: Financial Assistance Address: SBO Financial Assistance Dept. 14-7 PO Box 35070 Louisville, KY 40232-9972 Financial Assistance Fax: (502) 629-8883 Financial Assistance Email: FAP@nortonhealthcare.org",
+     "source_id": "fap-d73fee9532fcd921",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "window_days_from_first_bill": null,
     "decision_days": null,
     "decision_days_reported": null
@@ -4073,7 +4202,7 @@
     "phone": {
      "value": "(812) 801-0676",
      "layer": "documented",
-     "quote": "Norton King\u2019s Daughters\u2019 Health (812) 801-0676 -or- (812) 801-8974 -or-",
+     "quote": "Norton King\u2019s Daughters\u2019 Health (812) 801-0676 -or- (812) 801-8974 -or- (812) 801-0482",
      "source_id": "fap-d73fee9532fcd921",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4107,49 +4236,50 @@
      "effective_date": null
     },
     {
-     "id": "web-ea0c20f12a5ab175",
+     "id": "web-1bfb4490961e08f3",
      "kind": "hospital_web",
-     "url": "https://nortonhealthcare.com/patient-resources/billing-information/financial-assistance/",
-     "title": "Financial Assistance | Louisville, Ky. | Norton Healthcare",
+     "url": "https://nortonhealthcare.com/patient-resources/billing-information/",
+     "title": "Billing Information | Louisville, Ky. | Norton Healthcare",
      "fetched_on": "2026-10-23",
-     "sha256": "ea0c20f12a5ab17566553263f4cd78f96b586bd8f25f1849fc3db7f7bd9747b2",
+     "sha256": "1bfb4490961e08f35908a73f0d7fcfb677151eada35c049949a5250866a45639",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "agent dropped eligibility.residency: judge: The quote states the residency rule only for non-emergent care; it never says the rule does not apply to emergency care.",
-    "agent dropped apply.submit_methods: judge: The quote gives fax and email but no mailing address; the PO Box detail is absent."
+    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: copies of your prior year\u2019s tax return, pay stubs, unemployment check documentation, Social Security check documentation",
+    "agent judge on apply.documents_required: Value omits items the quote lists: rental property documentation, mortgage statements, real estate tax assessments, and 'etc.'",
+    "agent judge on contacts.phone: Quote gives three alternative numbers joined by '-or-' with no indication that (812) 801-0676 is the primary contact."
    ],
    "eve_verified": {
     "on": "2026-10-23",
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-d73fee9532fcd921": true,
+     "fap-d56438cfc05404f6": true,
+     "web-1bfb4490961e08f3": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
+     "eligibility.residency",
      "eligibility.insured_patients_covered",
      "apply.documents_required",
+     "apply.submit_methods",
      "contacts.phone"
     ],
     "rejected": [
      [
-      "eligibility.assistance_ceiling_fpl",
-      "quote does not say the hospital's financial assistance reaches it"
-     ],
-     [
       "eligibility.asset_test",
       "quote does not support the asset-test value"
-     ],
-     [
-      "apply.form_url",
-      "quote not found in source"
      ]
     ],
     "pruned": [
-     "apply.documents_required: 1 item not named in the trimmed quote"
+     "apply.documents_required: 4 items not named in the trimmed quote"
     ],
     "income_rule_verified": false,
-    "core_completeness": 0.33
+    "core_completeness": 0.5
    }
   },
   {
@@ -4171,7 +4301,17 @@
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
     "asset_test": null,
-    "residency": null,
+    "residency": {
+     "value": [
+      "We provide assistance to low-income individuals and those with special healthcare expenses who live in our service area."
+     ],
+     "layer": "documented",
+     "quote": "We provide assistance to low-income individuals and those with special healthcare expenses who live in our service area.",
+     "source_id": "web-41e446070ccf8d5a",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "insured_patients_covered": null,
     "min_balance": null,
     "services_excluded": null
@@ -4185,7 +4325,20 @@
     "form_version": null,
     "documents_required": null,
     "documents_reported": null,
-    "submit_methods": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "phone",
+       "detail": "(866) 611-1514"
+      }
+     ],
+     "layer": "documented",
+     "quote": "If you have questions about your bill or want to apply for financial assistance, please contact Customer Service at (866) 611-1514.",
+     "source_id": "web-41e446070ccf8d5a",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "window_days_from_first_bill": null,
     "decision_days": null,
     "decision_days_reported": null
@@ -4196,16 +4349,40 @@
    },
    "contacts": {
     "phone": {
-     "value": "574.948.4008",
+     "value": "(866) 611-1514",
      "layer": "documented",
-     "quote": "For assistance, please contact a financial counselor at 574.335.1360 (Mishawaka) or 574.948.4008 (Plymouth).",
-     "source_id": "web-33ded860b0bb742b",
+     "quote": "please contact Customer Service at (866) 611-1514",
+     "source_id": "web-41e446070ccf8d5a",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "hours": null,
-    "languages": null
+    "languages": {
+     "value": [
+      "English",
+      "Espa\u00f1ol",
+      "\u4e2d\u6587",
+      "Deutsch",
+      "\u1019\u103c\u1014\u103a\u1019\u102c",
+      "\u0627\u0644\u0639\u0631\u0628\u064a\u0629",
+      "\ud55c\uad6d\uc5b4",
+      "Vi\u1ec7t",
+      "Fran\u00e7ais",
+      "\u65e5\u672c\u8a9e",
+      "Nederlands",
+      "Tagalog",
+      "\u0420\u0423\u0421\u0421\u041a\u0418\u0419",
+      "\u0a2a\u0a70\u0a1c\u0a3e\u0a2c\u0a40",
+      "\u0939\u093f\u0902\u0926\u0940"
+     ],
+     "layer": "documented",
+     "quote": "Language Assistance:",
+     "source_id": "web-41e446070ccf8d5a",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
    },
    "coverage": {
     "facilities": null,
@@ -4232,32 +4409,45 @@
      "effective_date": null
     },
     {
-     "id": "web-33ded860b0bb742b",
+     "id": "web-41e446070ccf8d5a",
      "kind": "hospital_web",
-     "url": "https://www.sjmed.com/patients-visitors/billing-and-assistance",
-     "title": "Billing and Assistance | Saint Joseph Health System",
+     "url": "https://www.sjmed.com/patients-visitors/billing-and-assistance/financial-assistance",
+     "title": "Financial Assistance | Saint Joseph Health System",
      "fetched_on": "2026-10-23",
-     "sha256": "33ded860b0bb742b835288870aedddfcd5c51504bb0da40ef49e32adb2d5332c",
+     "sha256": "41e446070ccf8d5a599c2bd0f467d6a7c95168dd5f1a429921ae83d041ee11b0",
      "effective_date": null
     }
    ],
    "accuracy": null,
-   "eve_review": [],
+   "eve_review": [
+    "contacts.languages: 2 more verbatim excerpt(s) supported this value: English [/notice-availability-language-assistance-services#english] | Espa\u00f1ol [/notice-availability-language-assistance-services#Spanish]"
+   ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 1,
+    "sources_fetched": 3,
     "sources_total": 3,
-    "sources_missing": [
-     "https://www.sjmed.com/sites/default/files/Assets/Documents/Patients%20and%20Visitors/Billing%20and%20Assistance/Financial%20Assistance/Finance%20Policy%201%20-%20Financial%20Assistance%20to%20Patients_English.docx",
-     "https://www.sjmed.com/sites/default/files/Assets/Documents/Patients%20and%20Visitors/Billing%20and%20Assistance/Financial%20Assistance/FA%20Trinity%20Health%20Application%20-%20English.docx"
-    ],
+    "sources_missing": [],
+    "sha256_match": {
+     "web-fbf1044801c75b6f": true,
+     "web-6215552809ae922a": true,
+     "web-41e446070ccf8d5a": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
-     "contacts.phone"
+     "eligibility.residency",
+     "apply.submit_methods",
+     "contacts.phone",
+     "contacts.languages"
     ],
-    "rejected": [],
+    "rejected": [
+     [
+      "apply.form_url",
+      "quote not found in source"
+     ]
+    ],
     "pruned": [],
     "income_rule_verified": false,
-    "core_completeness": 0.17
+    "core_completeness": 0.33
    }
   },
   {
@@ -4419,6 +4609,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-31d9e57cc355c98c": true,
+     "fap-0e81427839c5c219": true,
+     "web-03ed62e9403a0f95": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.insured_patients_covered",
@@ -4595,6 +4791,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-a00a471a1c9455cf": true,
+     "fap-fbf6a89b306746a7": true,
+     "web-676f54d317035d87": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.asset_test",
@@ -4772,6 +4974,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-e2dea32fe6279d52": true,
+     "fap-fbf6a89b306746a7": true,
+     "web-8400d5b51bd2d006": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.asset_test",
@@ -4819,14 +5027,22 @@
     "free_care_max_fpl": null,
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
-    "asset_test": null,
+    "asset_test": {
+     "value": true,
+     "layer": "documented",
+     "quote": "The Financial Assistance Committee may evaluate the income or assets in determining f inancial Hardship.",
+     "source_id": "fap-4f0b7a13d817f487",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "residency": {
      "value": [
-      "If you are an Indiana resident, as defined in the IU Health Financial Assistance Policy, who receives care via the emergency department, direct admission from a physician's office, or transfer from another hospital, you may be eligible to receive additional assistance"
+      "Be an Indiana Resident as defined in this Policy, which requires domicile in Indiana and proof via an Indiana driver's license or two qualifying documents."
      ],
      "layer": "documented",
-     "quote": "If you are an Indiana resident, as defined in the IU Health Financial Assistance Policy, who receives care via the emergency department, direct admission from a physician\u2019s office, or transfer from another hospital, you may be eligible to receive additional assistance",
-     "source_id": "fap-ee1c8819fdca6823",
+     "quote": "Be an Indiana Resident as def ined in this Policy; and",
+     "source_id": "fap-4f0b7a13d817f487",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -4834,8 +5050,8 @@
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "Did any members of the household have health insurance at the time of their hospital service(s)? \u2751 Yes \u2751 No",
-     "source_id": "fap-ee1c8819fdca6823",
+     "quote": "IU Health may extend Financial Assistance via a reduction in Patient Responsibility to Insured Patients receiving Non- Covered Services",
+     "source_id": "fap-4f0b7a13d817f487",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -4853,11 +5069,12 @@
     "documents_required": {
      "value": [
       "pay_stubs",
+      "tax_return",
       "other"
      ],
      "layer": "documented",
-     "quote": "Most recent three (3) months of pay stubs or Social Security Benefits;",
-     "source_id": "fap-ee1c8819fdca6823",
+     "quote": "Most recent three (3) months of pay stubs or Social Security Benef its; ii. Most recent state and f ederal tax returns, complete with all Schedules; or iii. Most recent W-2 statement;",
+     "source_id": "fap-4f0b7a13d817f487",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -4867,15 +5084,19 @@
      "value": [
       {
        "kind": "mail",
-       "detail": "Return To: Indiana University Health, 1155 W. 3rd St., Bloomington, IN 47404"
+       "detail": "Return To: Indiana University Health 1155 W. 3rd St. Bloomington, IN 47404"
       },
       {
        "kind": "email",
-       "detail": "FinancialAssistance@IUHealth.org"
+       "detail": "Email: FinancialAssistance@IUHealth.org"
       },
       {
        "kind": "fax",
-       "detail": "1.812.353.2032"
+       "detail": "Fax: 1.812.353.2032"
+      },
+      {
+       "kind": "phone",
+       "detail": "Phone: 1.888.531.3004"
       }
      ],
      "layer": "documented",
@@ -4885,8 +5106,24 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "window_days_from_first_bill": null,
-    "decision_days": null,
+    "window_days_from_first_bill": {
+     "value": 240,
+     "layer": "documented",
+     "quote": "Patients or their guarantors may submit an Application up to two -hundred and f orty (240) days f rom the date of their initial post-discharge billing statement f rom IU Health",
+     "source_id": "fap-4f0b7a13d817f487",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days": {
+     "value": 90,
+     "layer": "documented",
+     "quote": "IU Health will inf orm patients or guarantors of the results of their Application by providing the patient or guarantor with a Financial Assistance Determination within ninety (90) days.",
+     "source_id": "fap-4f0b7a13d817f487",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "decision_days_reported": null
    },
    "collections": {
@@ -4904,7 +5141,22 @@
      "support_count": 0
     },
     "hours": null,
-    "languages": null
+    "languages": {
+     "value": [
+      "Arabic",
+      "Burmese",
+      "Burmese - Falam",
+      "Burmese - Hakha Chin",
+      "Mandarin/Chinese",
+      "Spanish"
+     ],
+     "layer": "documented",
+     "quote": "a. Arabic; b. Burmese; c. Burmese - Falam; d. Burmese - Hakha Chin; e. Mandarin/Chinese; or f. Spanish",
+     "source_id": "fap-4f0b7a13d817f487",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
    },
    "coverage": {
     "facilities": null,
@@ -4912,6 +5164,15 @@
     "covered_providers": null
    },
    "sources": [
+    {
+     "id": "fap-4f0b7a13d817f487",
+     "kind": "hospital_web",
+     "url": "https://cdn.iuhealth.org/resources/IUH-2025-Financial-Assistance-Policy_English.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "4f0b7a13d817f487a8403f8bee3d7a0e93df01a4209f7956ccaefdae086f4a94",
+     "effective_date": null
+    },
     {
      "id": "fap-ee1c8819fdca6823",
      "kind": "hospital_web",
@@ -4924,36 +5185,40 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Most recent three (3) statements from checking and savings accounts, certificates of deposit, stocks, bonds and money ma | Additionally, applicants must show proof of Indiana residency and his/her primary address",
-    "agent judge on eligibility.free_care_max_fpl: Quote reads \"1+ 0 200%\", which is garbled and does not plainly state that free care applies up to 200% FPL.",
-    "agent judge on eligibility.discount_tiers: Quote describes a discount to 5% of annual income for those above income levels with debt over 20% of income; it gives no tier bounds or percents list, so an empty array misstates it.",
-    "agent judge on eligibility.asset_test: Quote lists asset types for documentation (bank statements, CDs, stocks, bonds) but does not state that assets are considered in eligibility.",
-    "agent judge on eligibility.insured_patients_covered: Quote is an application question asking whether household members had insurance; it does not state that insured patients are covered."
+    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: Most recent three (3) statements f rom checking and savings accounts, certif icates of deposit, stocks, bonds and money ",
+    "agent dropped programs.presumptive: quote is not a substring of the source",
+    "agent dropped collections.eca_wait_days: quote is not a substring of the source",
+    "agent judge on eligibility.free_care_max_fpl: Quote says assistance is available up to full bill amount if FPL criteria met, but does not state the 200% FPL value; the criteria are listed elsewhere, not in the quote."
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 1,
-    "sources_total": 1,
+    "sources_fetched": 2,
+    "sources_total": 2,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-4f0b7a13d817f487": true,
+     "fap-ee1c8819fdca6823": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
+     "eligibility.asset_test",
      "eligibility.residency",
      "eligibility.insured_patients_covered",
      "apply.documents_required",
      "apply.submit_methods",
-     "contacts.phone"
+     "apply.window_days_from_first_bill",
+     "apply.decision_days",
+     "contacts.phone",
+     "contacts.languages"
     ],
     "rejected": [
      [
       "eligibility.free_care_max_fpl",
-      "quote not found in source"
-     ],
-     [
-      "eligibility.asset_test",
-      "quote does not support the asset-test value"
+      "value not in quote"
      ]
     ],
     "pruned": [
-     "apply.documents_required: 3 items not named in the trimmed quote"
+     "apply.documents_required: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": false,
     "core_completeness": 0.5
@@ -5189,6 +5454,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-6e38016b2eb07094": true,
+     "fap-e3a0d0b8854042ca": true,
+     "web-3cd254774c465d97": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -5393,6 +5664,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-7edf639a9cbf55d6": true,
+     "fap-0313b36e4394c5a2": true,
+     "web-acebd7a056bbef55": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.asset_test",
@@ -5580,6 +5857,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-ce57f8d8c56dd5d4": true,
+     "fap-fbf6a89b306746a7": true,
+     "web-795c718b014c1aff": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.asset_test",
@@ -5782,6 +6065,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-7edf639a9cbf55d6": true,
+     "fap-0313b36e4394c5a2": true,
+     "web-953670677b7e43dd": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.asset_test",
@@ -6036,6 +6325,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-6e38016b2eb07094": true,
+     "fap-e3a0d0b8854042ca": true,
+     "web-3cd254774c465d97": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -6227,6 +6522,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-31d9e57cc355c98c": true,
+     "fap-0e81427839c5c219": true,
+     "web-646898fecee71b34": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.insured_patients_covered",
@@ -6446,6 +6747,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-ba8a572ab27fdac6": true,
+     "fap-eb023b6c0a046119": true,
+     "web-3d96430ddb0ee703": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.insured_patients_covered",
@@ -6703,6 +7010,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-6e38016b2eb07094": true,
+     "fap-e3a0d0b8854042ca": true,
+     "web-3cd254774c465d97": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -6726,85 +7039,6 @@
   },
   {
    "hospital": {
-    "ccn": "150128",
-    "name": "COMMUNITY HOSPITAL SOUTH, INC.",
-    "city": "INDIANAPOLIS",
-    "state": "IN",
-    "zip": "46227",
-    "phone": "317-887-7000",
-    "ownership": "Voluntary non-profit - Private",
-    "website_domain": "ecommunity.com",
-    "system": null
-   },
-   "version": 1,
-   "status": "draft",
-   "eligibility": {
-    "free_care_max_fpl": null,
-    "discount_tiers": null,
-    "assistance_ceiling_fpl": null,
-    "asset_test": null,
-    "residency": null,
-    "insured_patients_covered": null,
-    "min_balance": null,
-    "services_excluded": null
-   },
-   "programs": {
-    "presumptive": null,
-    "state_programs": null
-   },
-   "apply": {
-    "form_url": null,
-    "form_version": null,
-    "documents_required": null,
-    "documents_reported": null,
-    "submit_methods": null,
-    "window_days_from_first_bill": null,
-    "decision_days": null,
-    "decision_days_reported": null
-   },
-   "collections": {
-    "eca_wait_days": null,
-    "collection_agencies": null
-   },
-   "contacts": {
-    "phone": null,
-    "hours": null,
-    "languages": null
-   },
-   "coverage": {
-    "facilities": null,
-    "provider_list_url": null,
-    "covered_providers": null
-   },
-   "sources": [
-    {
-     "id": "web-46af1331e2dbea18",
-     "kind": "hospital_web",
-     "url": "https://chnw.policystat.com/policy/14558055/",
-     "title": "PolicyStat\n            :: PolicyStat",
-     "fetched_on": "2026-10-23",
-     "sha256": "46af1331e2dbea1868b03e5aed832545bd7418484a72ff016465acd09244317e",
-     "effective_date": null
-    }
-   ],
-   "accuracy": null,
-   "eve_review": [],
-   "eve_verified": {
-    "on": "2026-10-23",
-    "sources_fetched": 0,
-    "sources_total": 1,
-    "sources_missing": [
-     "https://chnw.policystat.com/policy/14558055/"
-    ],
-    "accepted": [],
-    "rejected": [],
-    "pruned": [],
-    "income_rule_verified": false,
-    "core_completeness": 0.0
-   }
-  },
-  {
-   "hospital": {
     "ccn": "150146",
     "name": "PARKVIEW NOBLE HOSPITAL",
     "city": "KENDALLVILLE",
@@ -6818,23 +7052,33 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": null,
-    "discount_tiers": null,
-    "assistance_ceiling_fpl": null,
-    "asset_test": {
-     "value": true,
+    "free_care_max_fpl": {
+     "value": "275",
      "layer": "documented",
-     "quote": "Required financial information may include annual household income, applicable assets, household size and confirmation of application for all sources of coverage",
-     "source_id": "web-8da87996c0c71c4e",
+     "quote": "Patients whose Gross Family Income does not exceed 275% of the Federal Poverty Guidelines (see \u201cReferences\u201d section) are eligible for free care (100 %) write-off of account balances",
+     "source_id": "fap-7edf639a9cbf55d6",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "residency": null,
+    "discount_tiers": null,
+    "assistance_ceiling_fpl": null,
+    "asset_test": null,
+    "residency": {
+     "value": [
+      "The patient must generally have an established residence in the Parkview Health Service Area to be considered for financial assistance."
+     ],
+     "layer": "documented",
+     "quote": "The patient must generally have an established residence in the Parkview Health Service Area to be considered for financial assistance.",
+     "source_id": "fap-7edf639a9cbf55d6",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "If the patient has third party coverage or is eligible for coverage under COBRA, only the patient portion as indicated on the insurance",
+     "quote": "If the patient has third party coverage or is eligible for coverage under COBRA, only the patient portion as indicated on the insurance Explanation of Benefits is eligible for consideration under the Financial Assistance Policy.",
      "source_id": "fap-7edf639a9cbf55d6",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -6844,30 +7088,62 @@
     "services_excluded": null
    },
    "programs": {
-    "presumptive": null,
-    "state_programs": null
+    "presumptive": {
+     "value": [
+      "Medicaid",
+      "homeless",
+      "deceased with no discoverable estate"
+     ],
+     "layer": "documented",
+     "quote": "a. Patient Gross Family Income does not exceed 165% of the Federal Poverty Guidelines. b. Patient is currently enrolled in Medicaid. c. Patient is deceased with no discoverable estate. d. Patient is homeless.",
+     "source_id": "fap-7edf639a9cbf55d6",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "state_programs": {
+     "value": [
+      {
+       "name": "Ohio Hospital Care Assurance Program (HCAP)",
+       "how_to_apply": "A HCAP Financial Assistance Application can be obtained at any Ohio Parkview hospital cashier, by calling the Patient Financial Services Call Center at 260-266-6700 or toll free 855-814-0012, on Parkview.com, or request through MyChart."
+      }
+     ],
+     "layer": "documented",
+     "quote": "Parkview\u2019s Ohio hospitals are participants in Ohio\u2019s HCAP Program. Through the HCAP Program, eligible patients are entitled to receive basic, medically necessary hospital-level services free of charge.",
+     "source_id": "fap-7edf639a9cbf55d6",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
    },
    "apply": {
     "form_url": null,
     "form_version": null,
-    "documents_required": {
+    "documents_required": null,
+    "documents_reported": null,
+    "submit_methods": {
      "value": [
-      "pay_stubs"
+      {
+       "kind": "mail",
+       "detail": "Attention: ARS Team Patient Financial Services, Parkview Health, P.O. Box 5600, Fort Wayne, IN 46895"
+      },
+      {
+       "kind": "fax",
+       "detail": "Parkview Patient Accounting: 260-458-5811"
+      }
      ],
      "layer": "documented",
-     "quote": "Two (2) most recent pay stubs, for guarantor and spouse, showing year-to-date gross income and deductions",
+     "quote": "Return signed Financial Assistance Application and required attachments by fax to: Parkview Patient Accounting: 260-458-5811 Or mail to: Attention: ARS Team Patient Financial Services",
      "source_id": "fap-0313b36e4394c5a2",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "documents_reported": null,
-    "submit_methods": null,
     "window_days_from_first_bill": {
      "value": 240,
      "layer": "documented",
      "quote": "Patients must apply for financial assistance within 240 days of the date marked on their first statement for services rendered.",
-     "source_id": "web-8da87996c0c71c4e",
+     "source_id": "web-1755758ace9b43b4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -6883,14 +7159,14 @@
     "phone": {
      "value": "260-266-6700",
      "layer": "documented",
-     "quote": "Patient Accounting Call Center at 260-266-6700 or toll free 855-814-0012 or",
-     "source_id": "fap-7edf639a9cbf55d6",
+     "quote": "Call 260-266-6700 or toll-free 855-814-0012.",
+     "source_id": "web-1755758ace9b43b4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "hours": {
-     "value": "Cashier office 9:00 am to 4:00 pm",
+     "value": "9:00 am and 4:00 pm",
      "layer": "documented",
      "quote": "Cashier office between the hours of 9:00 am and 4:00 pm at any of the following locations:",
      "source_id": "fap-7edf639a9cbf55d6",
@@ -6898,19 +7174,7 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "languages": {
-     "value": [
-      "English",
-      "Spanish",
-      "Burmese"
-     ],
-     "layer": "documented",
-     "quote": "Financial Assistance Application - English",
-     "source_id": "web-8da87996c0c71c4e",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "languages": null
    },
    "coverage": {
     "facilities": null,
@@ -6921,7 +7185,7 @@
     {
      "id": "fap-7edf639a9cbf55d6",
      "kind": "hospital_web",
-     "url": "https://www.parkview.com/-/media/parkview-media/file/2026_08-august/08052026-4607-1-financial-assistance-policy.ashx",
+     "url": "https://parkviewhealth.bynder.com/asset/b80f14dc-7f21-4427-b5bc-c0efb4a69888/08052026-4607-1-Financial-Assistance-Policy-pdf",
      "title": "",
      "fetched_on": "2026-10-23",
      "sha256": "7edf639a9cbf55d6efb22e5cc8625d5c9bf97425349ee97e1dfd75c19bbb2a5f",
@@ -6937,54 +7201,59 @@
      "effective_date": null
     },
     {
-     "id": "web-8da87996c0c71c4e",
+     "id": "web-1755758ace9b43b4",
      "kind": "hospital_web",
      "url": "https://www.parkview.com/patients-and-visitors/billing-and-insurance/financial-assistance",
      "title": "Financial Assistance",
      "fetched_on": "2026-10-23",
-     "sha256": "8da87996c0c71c4e7ed00295a042dc12d669fc6799a3a8afcc1ead8d97fb1523",
+     "sha256": "1755758ace9b43b477cdf5a5ede861b7b0b89f60a0be076cccdb89ddee6edf25",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Patient is currently enrolled in Medicaid. | Patient is deceased with no discoverable estate. d. Patient is homeless.",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Previous year\u2019s Federal Income Tax Return 1040 form with all applicable schedules attached. | Two (2) most recent bank statements for all personal and/or business accounts, CDs and investments in stocks",
-    "contacts.languages: 2 more verbatim excerpt(s) supported this value: Financial Assistance Application - Spanish | Financial Assistance Application - Burmese",
-    "agent dropped eligibility.free_care_max_fpl: judge: Quote is truncated at 'eligible for' and never says 275% FPL patients get 100% free care rather than some other benefit.",
-    "agent dropped eligibility.residency: judge: Quote requires residence in the Service Area only; it does not list counties or exclude visitors.",
-    "agent dropped apply.submit_methods: judge: Fax is supported, but the quote gives no mail address beyond the attention line; the PO Box and city are absent."
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Two (2) most recent pay stubs, for guarantor and spouse, showing year-to-date gross income and deductions | Previous year\u2019s Federal Income Tax Return 1040 form with all applicable schedules attached",
+    "agent dropped eligibility.asset_test: quote is not a substring of the source",
+    "agent dropped apply.decision_days: quote is not a substring of the source",
+    "agent dropped contacts.languages: quote is not a substring of the source",
+    "agent judge on eligibility.insured_patients_covered: Quote only says that for insured patients, the patient portion after insurance is considered. It does not state that insured patients are covered.",
+    "agent judge on programs.state_programs: Quote names HCAP and its free-care services, but the how_to_apply details and phone numbers are not in the quote.",
+    "agent judge on apply.documents_required: Quote lists the application, pay stubs, and 1040. Bank statements, W2/1099, and Social Security/VA letters do not appear in the quote.",
+    "agent judge on apply.submit_methods: Quote gives the fax number and the mail recipient name, but the P.O. Box 5600, Fort Wayne address is not in the quote."
    ],
    "eve_verified": {
     "on": "2026-10-23",
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-7edf639a9cbf55d6": true,
+     "fap-0313b36e4394c5a2": true,
+     "web-1755758ace9b43b4": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
-     "eligibility.asset_test",
+     "eligibility.free_care_max_fpl",
+     "eligibility.residency",
      "eligibility.insured_patients_covered",
-     "apply.documents_required",
+     "programs.presumptive",
+     "programs.state_programs",
+     "apply.submit_methods",
      "apply.window_days_from_first_bill",
      "contacts.phone",
-     "contacts.hours",
-     "contacts.languages"
+     "contacts.hours"
     ],
     "rejected": [
      [
       "apply.form_url",
       "quote not found in source"
-     ],
-     [
-      "apply.decision_days",
-      "quote not found in source"
      ]
     ],
     "pruned": [
-     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
-     "apply.documents_required: 2 items not named in the trimmed quote"
+     "apply.documents_required: none of the listed documents is named in the quote (after trimming)"
     ],
-    "income_rule_verified": false,
-    "core_completeness": 0.33
+    "income_rule_verified": true,
+    "core_completeness": 0.5
    }
   },
   {
@@ -7149,6 +7418,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-790e7e393ea32516": true,
+     "fap-fbf6a89b306746a7": true,
+     "web-5b34aac52c31e01a": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.asset_test",
@@ -7197,16 +7472,24 @@
     "free_care_max_fpl": null,
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
-    "asset_test": null,
-    "residency": {
-     "value": [
-      "To be eligible for Financial Assistance due to financial Hardship or personal Hardship, a patient or guarantor must be an Indiana Resident as defined in this Policy."
-     ],
+    "asset_test": {
+     "value": true,
      "layer": "documented",
-     "quote": "b. Be an Indiana Resident as def ined in this Policy; and",
+     "quote": "There are situations where a patient or their guarantor may have signif icant income or assets available to pay for healthcare services such as a legal settlement. The Financial Assistance Committee may evaluate the income or assets in determining f inancial Hardship.",
      "source_id": "fap-4f0b7a13d817f487",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
+     "support_count": 0
+    },
+    "residency": {
+     "value": [
+      "Patient or guarantor must be an Indiana Resident, domiciled in Indiana at the time of approval and able to provide an Indiana driver's license or two qualifying documents."
+     ],
+     "layer": "documented",
+     "quote": "Indiana Resident: Any individual who was domiciled in Indiana at the time of approval and can provide an Indiana driver's license or two of the f ollowing documents",
+     "source_id": "fap-4f0b7a13d817f487",
+     "checked_on": "2026-10-23",
+     "confidence": 0.8,
      "support_count": 0
     },
     "insured_patients_covered": {
@@ -7222,45 +7505,62 @@
     "services_excluded": null
    },
    "programs": {
-    "presumptive": {
+    "presumptive": null,
+    "state_programs": {
      "value": [
-      "Medicaid (any state)",
-      "Indiana Children's Special Health Care Services",
-      "Healthy Indiana Plan",
-      "Patients approved for the Eskenazi Health Advantage program"
+      {
+       "name": "Healthy Indiana Plan",
+       "how_to_apply": "Patients found eligible for the Healthy Indiana Plan are deemed presumptively eligible for Financial Assistance."
+      },
+      {
+       "name": "Indiana Children's Special Health Care Services",
+       "how_to_apply": "Patients found eligible for Indiana Children's Special Health Care Services are deemed presumptively eligible for Financial Assistance."
+      }
      ],
      "layer": "documented",
-     "quote": "a. Medicaid (any state) b. Indiana Children's Special Health Care Services c. Healthy Indiana Plan d. Patients who are awarded Hospital Presumptive Eligibility (PE) e. Patients approved f or the Eskenazi Health Advantage program f. A state and/or f ederal program that verif ies the patient or guarantor's gross household income meets the FPL income threshold.",
+     "quote": "a. Medicaid (any state) b. Indiana Children's Special Health Care Services c. Healthy Indiana Plan d. Patients who are awarded Hospital Presumptive Eligibility (PE) e. Patients approved f or the Eskenazi Health Advantage program",
      "source_id": "fap-4f0b7a13d817f487",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
-    },
-    "state_programs": null
+    }
    },
    "apply": {
     "form_url": null,
     "form_version": null,
-    "documents_required": {
+    "documents_required": null,
+    "documents_reported": null,
+    "submit_methods": {
      "value": [
-      "pay_stubs",
-      "tax_return",
-      "other"
+      {
+       "kind": "mail",
+       "detail": "Return To: Indiana University Health, 1155 W. 3rd St., Bloomington, IN 47404"
+      },
+      {
+       "kind": "email",
+       "detail": "Email: FinancialAssistance@IUHealth.org"
+      },
+      {
+       "kind": "fax",
+       "detail": "Fax: 1.812.353.2032"
+      },
+      {
+       "kind": "phone",
+       "detail": "Phone: 1.888.531.3004"
+      }
      ],
      "layer": "documented",
-     "quote": "Most recent three (3) months of pay stubs or Social Security Benef its; ii. Most recent state and f ederal tax returns, complete with all Schedules; or iii. Most recent W-2 statement",
-     "source_id": "fap-4f0b7a13d817f487",
+     "quote": "Return To: Indiana University Health 1155 W. 3rd St. Bloomington, IN 47404 Email: FinancialAssistance@IUHealth.org Phone: 1.888.531.3004 Fax: 1.812.353.2032",
+     "source_id": "fap-ee1c8819fdca6823",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "documents_reported": null,
-    "submit_methods": null,
     "window_days_from_first_bill": null,
     "decision_days": {
      "value": 90,
      "layer": "documented",
-     "quote": "providing the patient or guarantor with a Financial Assistance Determination within ninety (90) days",
+     "quote": "IU Health will inf orm patients or guarantors of the results of their Application by providing the patient or guarantor with a Financial Assistance Determination within ninety (90) days.",
      "source_id": "fap-4f0b7a13d817f487",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -7273,16 +7573,16 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": null,
-    "hours": {
-     "value": "normal business hours",
+    "phone": {
+     "value": "1.888.531.3004",
      "layer": "documented",
-     "quote": "Make available Customer Service representatives via telephone during normal business hours.",
-     "source_id": "fap-4f0b7a13d817f487",
+     "quote": "Phone: 1.888.531.3004",
+     "source_id": "fap-ee1c8819fdca6823",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
+    "hours": null,
     "languages": {
      "value": [
       "Arabic",
@@ -7293,7 +7593,7 @@
       "Spanish"
      ],
      "layer": "documented",
-     "quote": "a. Arabic; b. Burmese; c. Burmese - Falam; d. Burmese - Hakha Chin; e. Mandarin/Chinese; or f. Spanish",
+     "quote": "Arabic; b. Burmese; c. Burmese - Falam; d. Burmese - Hakha Chin; e. Mandarin/Chinese; or f. Spanish",
      "source_id": "fap-4f0b7a13d817f487",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -7314,42 +7614,56 @@
      "fetched_on": "2026-10-23",
      "sha256": "4f0b7a13d817f487a8403f8bee3d7a0e93df01a4209f7956ccaefdae086f4a94",
      "effective_date": null
+    },
+    {
+     "id": "fap-ee1c8819fdca6823",
+     "kind": "hospital_web",
+     "url": "https://cdn.iuhealth.org/global/IU-Health-FAA-2023.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "ee1c8819fdca6823d944daf93ff14f22c57baf0780a7d11ef2f47bb2af449003",
+     "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Most recent three (3) statements f rom checking and savings accounts, certif icates of deposit, stocks, bonds and money  | If applicable, divorce/dissolution decrees and child custody order.",
+    "eligibility.residency: quote matched the source only after typography normalization",
+    "agent dropped programs.presumptive: quote is not a substring of the source",
+    "agent dropped apply.documents_required: excerpt not in source: All sources of Income for the Household or the Guarantor for",
     "agent dropped apply.window_days_from_first_bill: quote is not a substring of the source",
     "agent dropped collections.eca_wait_days: quote is not a substring of the source",
-    "agent dropped contacts.phone: quote is not a substring of the source",
-    "agent judge on contacts.hours: Quote says customer service is available during normal business hours; it does not give a value beyond that phrase, so the recorded value is only a restatement of it."
+    "agent judge on eligibility.free_care_max_fpl: The quote mentions FPL criteria and assistance 'up to the full amount' but never states the 200% FPL free-care threshold.",
+    "agent judge on programs.state_programs: Quote lists Medicaid, Children's Special Health Care Services, HIP, presumptive eligibility and Eskenazi, but does not say they are deemed presumptively eligible; value omits Medicaid and Eskenazi."
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 1,
-    "sources_total": 1,
+    "sources_fetched": 2,
+    "sources_total": 2,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-4f0b7a13d817f487": true,
+     "fap-ee1c8819fdca6823": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
+     "eligibility.asset_test",
      "eligibility.residency",
      "eligibility.insured_patients_covered",
-     "programs.presumptive",
-     "apply.documents_required",
+     "programs.state_programs",
+     "apply.submit_methods",
      "apply.decision_days",
-     "contacts.hours",
+     "contacts.phone",
      "contacts.languages"
     ],
     "rejected": [
      [
-      "eligibility.asset_test",
-      "quote does not support the asset-test value"
+      "eligibility.free_care_max_fpl",
+      "value not in quote"
      ]
     ],
-    "pruned": [
-     "programs.presumptive: 2 items not named in the trimmed quote",
-     "apply.documents_required: 1 item not named in the trimmed quote"
-    ],
+    "pruned": [],
     "income_rule_verified": false,
-    "core_completeness": 0.17
+    "core_completeness": 0.33
    }
   },
   {
@@ -7565,6 +7879,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-6e38016b2eb07094": true,
+     "fap-e3a0d0b8854042ca": true,
+     "web-3cd254774c465d97": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -7800,6 +8120,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-6e38016b2eb07094": true,
+     "fap-e3a0d0b8854042ca": true,
+     "web-3cd254774c465d97": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -7995,6 +8321,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-7edf639a9cbf55d6": true,
+     "fap-0313b36e4394c5a2": true,
+     "web-a8a53d694390aeb9": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.asset_test",
@@ -8021,85 +8353,6 @@
   },
   {
    "hospital": {
-    "ccn": "150169",
-    "name": "COMMUNITY HOSPITAL NORTH",
-    "city": "INDIANAPOLIS",
-    "state": "IN",
-    "zip": "46256",
-    "phone": "317-621-5335",
-    "ownership": "Voluntary non-profit - Private",
-    "website_domain": "ecommunity.com",
-    "system": null
-   },
-   "version": 1,
-   "status": "draft",
-   "eligibility": {
-    "free_care_max_fpl": null,
-    "discount_tiers": null,
-    "assistance_ceiling_fpl": null,
-    "asset_test": null,
-    "residency": null,
-    "insured_patients_covered": null,
-    "min_balance": null,
-    "services_excluded": null
-   },
-   "programs": {
-    "presumptive": null,
-    "state_programs": null
-   },
-   "apply": {
-    "form_url": null,
-    "form_version": null,
-    "documents_required": null,
-    "documents_reported": null,
-    "submit_methods": null,
-    "window_days_from_first_bill": null,
-    "decision_days": null,
-    "decision_days_reported": null
-   },
-   "collections": {
-    "eca_wait_days": null,
-    "collection_agencies": null
-   },
-   "contacts": {
-    "phone": null,
-    "hours": null,
-    "languages": null
-   },
-   "coverage": {
-    "facilities": null,
-    "provider_list_url": null,
-    "covered_providers": null
-   },
-   "sources": [
-    {
-     "id": "web-5c388fc93c7b7bea",
-     "kind": "hospital_web",
-     "url": "https://chnw.policystat.com/policy/14558055/",
-     "title": "PolicyStat\n            :: PolicyStat",
-     "fetched_on": "2026-10-23",
-     "sha256": "5c388fc93c7b7bea178158d8ac7eb79e63ae889f66754f45772e3603a1c10014",
-     "effective_date": null
-    }
-   ],
-   "accuracy": null,
-   "eve_review": [],
-   "eve_verified": {
-    "on": "2026-10-23",
-    "sources_fetched": 0,
-    "sources_total": 1,
-    "sources_missing": [
-     "https://chnw.policystat.com/policy/14558055/"
-    ],
-    "accepted": [],
-    "rejected": [],
-    "pruned": [],
-    "income_rule_verified": false,
-    "core_completeness": 0.0
-   }
-  },
-  {
-   "hospital": {
     "ccn": "150173",
     "name": "INDIANA UNIVERSITY HEALTH ARNETT HOSPITAL",
     "city": "LAFAYETTE",
@@ -8116,22 +8369,30 @@
     "free_care_max_fpl": null,
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
-    "asset_test": null,
-    "residency": {
-     "value": [
-      "Patients must be an Indiana Resident as defined in this Policy to be eligible for Financial Assistance due to financial or personal Hardship."
-     ],
+    "asset_test": {
+     "value": true,
      "layer": "documented",
-     "quote": "Be an Indiana Resident as def ined in this Policy; and",
+     "quote": "The Financial Assistance Committee may evaluate the income or assets in determining f inancial Hardship.",
      "source_id": "fap-4f0b7a13d817f487",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
+    "residency": {
+     "value": [
+      "Patient or guarantor must be an Indiana Resident, domiciled in Indiana at the time of approval."
+     ],
+     "layer": "documented",
+     "quote": "Indiana Resident: Any individual who was domiciled in Indiana at the time of approval and can provide an Indiana driver's license or two of the f ollowing documents",
+     "source_id": "fap-4f0b7a13d817f487",
+     "checked_on": "2026-10-23",
+     "confidence": 0.8,
+     "support_count": 0
+    },
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "establish consistent guidelines f or providing Financial Assistance to all qualif ying Indiana University Health (\u201cIU Health\u201d) Insured Patients and Uninsured Patients",
+     "quote": "An Uninsured or Underinsured patient or their guarantor may be eligible f or Financial Assistance if the Household's outstanding Patient Responsibility exceeds 5% of the patient's or their guarantor's annual household income.",
      "source_id": "fap-4f0b7a13d817f487",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -8141,22 +8402,25 @@
     "services_excluded": null
    },
    "programs": {
-    "presumptive": {
+    "presumptive": null,
+    "state_programs": {
      "value": [
-      "Medicaid (any state)",
-      "Indiana Children's Special Health Care Services",
-      "Healthy Indiana Plan",
-      "Hospital Presumptive Eligibility (PE)",
-      "Eskenazi Health Advantage program"
+      {
+       "name": "Healthy Indiana Plan",
+       "how_to_apply": "Consult with IU Health's Financial Counseling department to determine if health care coverage may be obtained from a government insurance or assistance product."
+      },
+      {
+       "name": "Indiana Children's Special Health Care Services",
+       "how_to_apply": "Consult with IU Health's Financial Counseling department to determine if health care coverage may be obtained from a government insurance or assistance product."
+      }
      ],
      "layer": "documented",
-     "quote": "a. Medicaid (any state) b. Indiana Children's Special Health Care Services c. Healthy Indiana Plan d. Patients who are awarded Hospital Presumptive Eligibility (PE) e. Patients approved f or the Eskenazi Health Advantage program",
+     "quote": "b. Indiana Children's Special Health Care Services c. Healthy Indiana Plan",
      "source_id": "fap-4f0b7a13d817f487",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
-    },
-    "state_programs": null
+    }
    },
    "apply": {
     "form_url": null,
@@ -8164,10 +8428,11 @@
     "documents_required": {
      "value": [
       "pay_stubs",
+      "tax_return",
       "other"
      ],
      "layer": "documented",
-     "quote": "All sources of Income f or the Household or the Guarantor f or the last three (3) months, including at least one of the f ollowing: i. Most recent three (3) months of pay stubs or Social Security Benef its",
+     "quote": "Most recent three (3) months of pay stubs or Social Security Benef its; ii. Most recent state and f ederal tax returns, complete with all Schedules; or iii. Most recent W-2 statement;",
      "source_id": "fap-4f0b7a13d817f487",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -8178,7 +8443,7 @@
      "value": [
       {
        "kind": "mail",
-       "detail": "Return To: Indiana University Health, 1155 W. 3rd St., Bloomington, IN 47404"
+       "detail": "Return To: Indiana University Health, 1155 W. 3rd St. Bloomington, IN 47404"
       },
       {
        "kind": "email",
@@ -8187,10 +8452,6 @@
       {
        "kind": "fax",
        "detail": "Fax: 1.812.353.2032"
-      },
-      {
-       "kind": "phone",
-       "detail": "Phone: 1.888.531.3004"
       }
      ],
      "layer": "documented",
@@ -8200,15 +8461,7 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "window_days_from_first_bill": {
-     "value": 240,
-     "layer": "documented",
-     "quote": "Patients or their guarantors may submit an Application up to two -hundred and f orty (240) days f rom the date of their initial post-discharge billing statement f rom IU Health",
-     "source_id": "fap-4f0b7a13d817f487",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "window_days_from_first_bill": null,
     "decision_days": {
      "value": 90,
      "layer": "documented",
@@ -8225,7 +8478,15 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": null,
+    "phone": {
+     "value": "1.888.531.3004",
+     "layer": "documented",
+     "quote": "Phone: 1.888.531.3004",
+     "source_id": "fap-ee1c8819fdca6823",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "hours": {
      "value": "normal business hours",
      "layer": "documented",
@@ -8235,7 +8496,22 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "languages": null
+    "languages": {
+     "value": [
+      "Arabic",
+      "Burmese",
+      "Burmese - Falam",
+      "Burmese - Hakha Chin",
+      "Mandarin/Chinese",
+      "Spanish"
+     ],
+     "layer": "documented",
+     "quote": "a. Arabic; b. Burmese; c. Burmese - Falam; d. Burmese - Hakha Chin; e. Mandarin/Chinese; or f. Spanish",
+     "source_id": "fap-4f0b7a13d817f487",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
    },
    "coverage": {
     "facilities": null,
@@ -8264,44 +8540,41 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Most recent three (3) statements f rom checking and savings accounts, certif icates of deposit, stocks, bonds and money  | If applicable, divorce/dissolution decrees and child custody order.",
+    "eligibility.residency: quote matched the source only after typography normalization",
+    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: b. Most recent three (3) statements f rom checking and savings accounts, certif icates of deposit, stocks, bonds and mon",
+    "agent dropped programs.presumptive: quote is not a substring of the source",
+    "agent dropped apply.window_days_from_first_bill: quote is not a substring of the source",
     "agent dropped collections.eca_wait_days: quote is not a substring of the source",
-    "agent dropped contacts.phone: quote is not a substring of the source",
-    "agent dropped contacts.languages: excerpt not in source: Arabic;",
-    "agent judge on eligibility.free_care_max_fpl: Quote is garbled ('1 or more 0 200%') and does not plainly state that 200% FPL is the highest level receiving 100% free care.",
-    "agent judge on eligibility.residency: Quote supports only the Indiana residency requirement; the value's added clause 'due to financial or personal Hardship' does not appear in the quote.",
-    "agent judge on apply.documents_required: Quote says income sources must include 'at least one of the following', so the value wrongly lists all three items as required."
+    "agent judge on contacts.hours: Quote says customer service is available during normal business hours; this matches the value but is not a specific schedule, so it is only loosely supported."
    ],
    "eve_verified": {
     "on": "2026-10-23",
     "sources_fetched": 2,
     "sources_total": 2,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-4f0b7a13d817f487": true,
+     "fap-ee1c8819fdca6823": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
+     "eligibility.asset_test",
      "eligibility.residency",
      "eligibility.insured_patients_covered",
-     "programs.presumptive",
+     "programs.state_programs",
      "apply.documents_required",
      "apply.submit_methods",
-     "apply.window_days_from_first_bill",
      "apply.decision_days",
-     "contacts.hours"
+     "contacts.phone",
+     "contacts.hours",
+     "contacts.languages"
     ],
-    "rejected": [
-     [
-      "eligibility.free_care_max_fpl",
-      "quote does not state the free-care limit as an income limit"
-     ],
-     [
-      "eligibility.asset_test",
-      "quote does not support the asset-test value"
-     ]
-    ],
+    "rejected": [],
     "pruned": [
      "apply.documents_required: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": false,
-    "core_completeness": 0.33
+    "core_completeness": 0.5
    }
   },
   {
@@ -8452,6 +8725,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-f38d1aaf3a6136e5": true,
+     "web-640cb09e6c017b96": false,
+     "fap-06eec7a7ffebc88c": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.asset_test",
      "eligibility.insured_patients_covered",
@@ -8641,6 +8920,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-85430e23bc73f8ef": true,
+     "fap-fbf6a89b306746a7": true,
+     "web-99185ba6d1d005f8": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.asset_test",
@@ -8892,6 +9177,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-6e38016b2eb07094": true,
+     "fap-e3a0d0b8854042ca": true,
+     "web-3cd254774c465d97": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -9059,11 +9350,15 @@
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 2,
+    "sources_fetched": 3,
     "sources_total": 3,
-    "sources_missing": [
-     "https://edge.sitecorecloud.io/unichicagomc-81nbqnb3/media/pdfs/adult-pdfs/patients-and-visitors/patients/financial-assistance-resources/patient-financial-assistance-discounts-and-collections-policy-nwi-2026rv.docx"
-    ],
+    "sources_missing": [],
+    "sha256_match": {
+     "web-6fdeba2a57cb0116": true,
+     "fap-450140559e172e67": true,
+     "web-f242506ffd470aad": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "apply.submit_methods",
@@ -9265,6 +9560,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-0fe43de0a6f0e9da": true,
+     "fap-d9e10e4254c589d3": true,
+     "web-f49aa2a3db4b5c92": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -9433,6 +9734,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-18b2ec8ed0f82dd8": true,
+     "fap-fbf6a89b306746a7": true,
+     "web-94abe1886177c49c": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.asset_test",
@@ -9624,6 +9931,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-9b0ece84bbc5d62a": true,
+     "fap-fbf6a89b306746a7": true,
+     "web-a22a5eccb649e11e": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.asset_test",
@@ -9674,29 +9987,79 @@
     "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": null,
-    "insured_patients_covered": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "This policy is intended to establish a fair and consistent method for all patients insured, under-insured and uninsured to apply for financial assistance",
+     "source_id": "fap-df76c24e1e3abef6",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "min_balance": null,
     "services_excluded": null
    },
    "programs": {
-    "presumptive": null,
-    "state_programs": null
+    "presumptive": {
+     "value": [
+      "Medicaid"
+     ],
+     "layer": "documented",
+     "quote": "Medicaid recipients who receive Medically Necessary Care not covered by Medicaid will have 100% of the Patient Responsibility for such Medically Necessary Care Automatically written off.",
+     "source_id": "fap-df76c24e1e3abef6",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "state_programs": {
+     "value": [
+      {
+       "name": "Healthy Indiana Plan (HIP)",
+       "how_to_apply": "The Financial Counselor may assist patients in applying for HIP, government-funded programs (such as Medicaid, all Medicaid Advantage Plans, the State Children's Health Insurance Program (SCHIP), or crime victim funds)"
+      }
+     ],
+     "layer": "documented",
+     "quote": "The Financial Counselor may assist patients in applying for HIP, government-funded programs (such as Medicaid, all Medicaid Advantage Plans, the State Children\u2019s Health Insurance Program (SCHIP), or crime victim funds)",
+     "source_id": "fap-df76c24e1e3abef6",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
    },
    "apply": {
     "form_url": null,
     "form_version": null,
-    "documents_required": null,
+    "documents_required": {
+     "value": [
+      "proof_of_income",
+      "other"
+     ],
+     "layer": "documented",
+     "quote": "Verification of all household income.",
+     "source_id": "fap-462e6b4f2c024bee",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "documents_reported": null,
     "submit_methods": {
      "value": [
       {
        "kind": "mail",
-       "detail": "Pulaski Memorial Hospital, Attn: Financial Counselor, P.O. Box 279, Winamac, IN 46996"
+       "detail": "Pulaski Memorial Hospital P.O. Box 279 Winamac, IN 46996"
+      },
+      {
+       "kind": "phone",
+       "detail": "574-946-2106"
+      },
+      {
+       "kind": "in_person",
+       "detail": "Applications may be picked up from the Financial Counselor"
       }
      ],
      "layer": "documented",
-     "quote": "Pulaski Memorial Hospital Attn: Financial Counselor P.O. Box 279 Winamac, IN 46996",
-     "source_id": "fap-c2805899ce53b005",
+     "quote": "Applications may be picked up from the Financial Counselor, be obtained from the hospital website, by calling Financial Services at (574) 946-2106, or by requesting my mail at:",
+     "source_id": "fap-df76c24e1e3abef6",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -9713,13 +10076,21 @@
     "phone": {
      "value": "574-946-2106",
      "layer": "documented",
-     "quote": "Financial Counselor: 574-946-2106 or Patient Accounts 574-946-2125.",
-     "source_id": "fap-c2805899ce53b005",
+     "quote": "call 574-946-2106, Monday through Friday 8:00 am to 4:30 pm",
+     "source_id": "fap-df76c24e1e3abef6",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
-    "hours": null,
+    "hours": {
+     "value": "Monday through Friday 8:00 am to 4:30 pm",
+     "layer": "documented",
+     "quote": "call 574-946-2106, Monday through Friday 8:00 am to 4:30 pm",
+     "source_id": "fap-df76c24e1e3abef6",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "languages": null
    },
    "coverage": {
@@ -9729,12 +10100,12 @@
    },
    "sources": [
     {
-     "id": "fap-c2805899ce53b005",
+     "id": "fap-df76c24e1e3abef6",
      "kind": "hospital_web",
-     "url": "https://www.pmhnet.com/wp-content/uploads/FINANCIAL-ASSISTANCE-APPLICATION-002.pdf",
+     "url": "https://www.pmhnet.com/wp-content/uploads/financial-assistance-policy-2017.pdf",
      "title": "",
      "fetched_on": "2026-10-23",
-     "sha256": "c2805899ce53b005196aba46453f6de7845239c40e20522330dcd925744a0af4",
+     "sha256": "df76c24e1e3abef68b7e9b814a67cb32c70ba5020bcf66702679cd2be6302455",
      "effective_date": null
     },
     {
@@ -9747,42 +10118,52 @@
      "effective_date": null
     },
     {
-     "id": "web-31ce5650a4db3d88",
+     "id": "web-422e7eb7f2698a2f",
      "kind": "hospital_web",
-     "url": "https://www.pmhnet.com/patients/financial/financial-aid-information/",
-     "title": "Financial Aid Information | Pulaski Memorial Hospital",
+     "url": "https://www.pmhnet.com/patients/financial/",
+     "title": "Financial | Pulaski Memorial Hospital",
      "fetched_on": "2026-10-23",
-     "sha256": "31ce5650a4db3d885696b177001a93cd1ed7771b2e884e178c1ca901f13ab453",
+     "sha256": "422e7eb7f2698a2f27ebcaed06b633ad8eaf10f0c2585bf5e583e9e91e43d36b",
      "effective_date": null
     }
    ],
    "accuracy": null,
    "eve_review": [
-    "agent dropped programs.state_programs: judge: The quote names HIP and Medicaid but says nothing about self-pay patients having to apply and provide approval or denial documentation.",
-    "agent dropped apply.documents_required: judge: The quote cuts off at 'acceptable verification that you are'. It never states 'verification of ineligibility'."
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Copy of complete tax return and W-2s from all household members | Healthy Indiana Plan (HIP)/Medicaid denial letter or acceptable verification that you are not eligible in your state of ",
+    "agent judge on apply.documents_required: Quote lists only household income verification, tax return/W-2s, and HIP/Medicaid denial letter. The Financial Statement form and signed Application form are not in the quote.",
+    "agent judge on apply.submit_methods: Quote gives the phone number and says applications can be picked up, but the mailing address (P.O. Box 279, Winamac) does not appear in the quote; it ends at 'mail at:'."
    ],
    "eve_verified": {
     "on": "2026-10-23",
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-df76c24e1e3abef6": true,
+     "fap-462e6b4f2c024bee": true,
+     "web-422e7eb7f2698a2f": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
+     "eligibility.insured_patients_covered",
+     "programs.presumptive",
+     "programs.state_programs",
+     "apply.documents_required",
      "apply.submit_methods",
-     "contacts.phone"
+     "contacts.phone",
+     "contacts.hours"
     ],
     "rejected": [
      [
       "eligibility.asset_test",
       "quote does not support the asset-test value"
-     ],
-     [
-      "apply.form_url",
-      "quote not found in source"
      ]
     ],
-    "pruned": [],
+    "pruned": [
+     "apply.documents_required: 3 items not named in the trimmed quote"
+    ],
     "income_rule_verified": false,
-    "core_completeness": 0.33
+    "core_completeness": 0.5
    }
   },
   {
@@ -9814,7 +10195,7 @@
     },
     "residency": {
      "value": [
-      "Patient or guarantor must be an Indiana Resident as defined in this Policy to be eligible for Financial Assistance due to financial Hardship."
+      "Be an Indiana Resident as defined in this Policy"
      ],
      "layer": "documented",
      "quote": "Be an Indiana Resident as def ined in this Policy; and",
@@ -9826,7 +10207,7 @@
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "The purpose of this Financial Assistance Policy is to establish consistent guidelines f or providing Financial Assistance to all qualif ying Indiana University Health (\u201cIU Health\u201d) Insured Patients and Uninsured Patients",
+     "quote": "IU Health may extend Financial Assistance via a reduction in Patient Responsibility to Insured Patients receiving Non- Covered Services",
      "source_id": "fap-4f0b7a13d817f487",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -9836,21 +10217,25 @@
     "services_excluded": null
    },
    "programs": {
-    "presumptive": {
+    "presumptive": null,
+    "state_programs": {
      "value": [
-      "Medicaid (any state)",
-      "Indiana Children's Special Health Care Services",
-      "Healthy Indiana Plan",
-      "Patients approved f or the Eskenazi Health Advantage program"
+      {
+       "name": "Healthy Indiana Plan",
+       "how_to_apply": "Patients found eligible are deemed presumptively eligible for Financial Assistance"
+      },
+      {
+       "name": "Indiana Children's Special Health Care Services",
+       "how_to_apply": "Patients found eligible are deemed presumptively eligible for Financial Assistance"
+      }
      ],
      "layer": "documented",
-     "quote": "a. Medicaid (any state) b. Indiana Children's Special Health Care Services c. Healthy Indiana Plan d. Patients who are awarded Hospital Presumptive Eligibility (PE) e. Patients approved f or the Eskenazi Health Advantage program",
+     "quote": "b. Indiana Children's Special Health Care Services c. Healthy Indiana Plan",
      "source_id": "fap-4f0b7a13d817f487",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
-    },
-    "state_programs": null
+    }
    },
    "apply": {
     "form_url": null,
@@ -9858,10 +10243,12 @@
     "documents_required": {
      "value": [
       "pay_stubs",
+      "social_security_letter",
+      "tax_return",
       "other"
      ],
      "layer": "documented",
-     "quote": "All sources of Income f or the Household or the Guarantor f or the last three (3) months, including at least one of the f ollowing: i. Most recent three (3) months of pay stubs or Social Security Benef its;",
+     "quote": "Most recent three (3) months of pay stubs or Social Security Benef its; ii. Most recent state and f ederal tax returns, complete with all Schedules; or iii. Most recent W-2 statement;",
      "source_id": "fap-4f0b7a13d817f487",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -9876,11 +10263,15 @@
       },
       {
        "kind": "email",
-       "detail": "FinancialAssistance@IUHealth.org"
+       "detail": "Email: FinancialAssistance@IUHealth.org"
       },
       {
        "kind": "fax",
-       "detail": "1.812.353.2032"
+       "detail": "Fax: 1.812.353.2032"
+      },
+      {
+       "kind": "phone",
+       "detail": "Phone: 1.888.531.3004"
       }
      ],
      "layer": "documented",
@@ -9918,14 +10309,14 @@
     "phone": {
      "value": "1.888.531.3004",
      "layer": "documented",
-     "quote": "Phone: 1.888.531.3004",
-     "source_id": "fap-ee1c8819fdca6823",
+     "quote": "Financial Counseling toll-f ree at 1-888- 531-3004.",
+     "source_id": "fap-4f0b7a13d817f487",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "hours": {
-     "value": "Customer Service representatives via telephone during normal business hours",
+     "value": "normal business hours",
      "layer": "documented",
      "quote": "Make available Customer Service representatives via telephone during normal business hours.",
      "source_id": "fap-4f0b7a13d817f487",
@@ -9977,24 +10368,28 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 0-200% at 100% is the free-care band, not a tier; skipped",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Most recent three (3) statements f rom checking and savings accounts, certif icates of deposit, stocks, bonds and money  | If applicable, divorce/dissolution decrees and child custody order.",
-    "agent dropped eligibility.min_balance: quote is not a substring of the source",
+    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: a. Medicaid (any state) b. Indiana Children's Special Health Care Services c. Healthy Indiana Plan d. Patients who are a",
+    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: Most recent three (3) statements f rom checking and savings accounts, certif icates of deposit, stocks, bonds and money ",
     "agent dropped collections.eca_wait_days: quote is not a substring of the source",
-    "agent judge on eligibility.discount_tiers: Quote gives a garbled '0 200%' range and 'full amount' for free care only. It states no partial discount tiers above the free-care line, so the 100% tier is inferred.",
-    "agent judge on eligibility.asset_test: Quote says the committee 'may evaluate the income or assets' in determining hardship. It is discretionary and either/or, not a statement that assets are considered.",
-    "agent judge on apply.documents_required: Quote lists pay stubs, bank/savings statements, and divorce decrees only. It does not mention tax returns or W-2 statements, which the value includes."
+    "agent judge on eligibility.free_care_max_fpl: Quote says patients meeting FPL criteria may be eligible for assistance up to full bill, but does not state the 200% FPL value.",
+    "agent judge on programs.state_programs: Quote only lists two state programs by name in a fragment; it does not contain the how_to_apply text stated in the value.",
+    "agent judge on contacts.hours: Quote says customer service is available during normal business hours; the value is a phrase, so it is only loosely supported. Quote does not give specific hours."
    ],
    "eve_verified": {
     "on": "2026-10-23",
     "sources_fetched": 2,
     "sources_total": 2,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-4f0b7a13d817f487": true,
+     "fap-ee1c8819fdca6823": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.asset_test",
      "eligibility.residency",
      "eligibility.insured_patients_covered",
-     "programs.presumptive",
+     "programs.state_programs",
      "apply.documents_required",
      "apply.submit_methods",
      "apply.window_days_from_first_bill",
@@ -10003,10 +10398,15 @@
      "contacts.hours",
      "contacts.languages"
     ],
-    "rejected": [],
+    "rejected": [
+     [
+      "eligibility.free_care_max_fpl",
+      "value not in quote"
+     ]
+    ],
     "pruned": [
-     "programs.presumptive: 1 item not named in the trimmed quote",
-     "apply.documents_required: 2 items not named in the trimmed quote"
+     "programs.presumptive: none of the listed programs is named in the quote (after trimming)",
+     "apply.documents_required: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": false,
     "core_completeness": 0.5
@@ -10160,6 +10560,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-d180827ac9a628cc": true,
+     "fap-fbf6a89b306746a7": true,
+     "web-64bf0c2fe171377c": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.asset_test",
@@ -10352,6 +10758,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-0fb83aba2cce6b32": true,
+     "fap-fbf6a89b306746a7": true,
+     "web-4d9a3e69ae64079c": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.asset_test",
@@ -10545,6 +10957,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-306d0333b8b2647d": true,
+     "fap-fbf6a89b306746a7": true,
+     "web-ecaf8c8ae2b5261a": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.asset_test",
@@ -10726,6 +11144,11 @@
     "sources_fetched": 2,
     "sources_total": 2,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-7edf639a9cbf55d6": true,
+     "web-7bb87cd202b51139": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.asset_test",
@@ -10774,7 +11197,7 @@
     "asset_test": {
      "value": true,
      "layer": "documented",
-     "quote": "There are situations where a patient or their guarantor may have signif icant income or assets available to pay for healthcare services such as a legal settlement. The Financial Assistance Committee may evaluate the income or assets in determining f inancial Hardship.",
+     "quote": "The Financial Assistance Committee may evaluate the income or assets in determining f inancial Hardship.",
      "source_id": "fap-4f0b7a13d817f487",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -10782,7 +11205,7 @@
     },
     "residency": {
      "value": [
-      "Patient or guarantor must be an Indiana Resident, as defined in the Policy, to be eligible for Financial Assistance due to financial or personal Hardship."
+      "To be eligible for Financial Assistance due to financial Hardship under this Policy, a patient or guarantor must be an Indiana Resident as defined in this Policy."
      ],
      "layer": "documented",
      "quote": "Be an Indiana Resident as def ined in this Policy; and",
@@ -10794,7 +11217,7 @@
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "IU Health may extend Financial Assistance via a reduction in Patient Responsibility to Insured Patients receiving Non- Covered Services",
+     "quote": "The purpose of this Financial Assistance Policy is to establish consistent guidelines f or providing Financial Assistance to all qualif ying Indiana University Health (\u201cIU Health\u201d) Insured Patients and Uninsured Patients",
      "source_id": "fap-4f0b7a13d817f487",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -10813,7 +11236,7 @@
       "Eskenazi Health Advantage program"
      ],
      "layer": "documented",
-     "quote": "a. Medicaid (any state) b. Indiana Children's Special Health Care Services c. Healthy Indiana Plan d. Patients who are awarded Hospital Presumptive Eligibility (PE) e. Patients approved f or the Eskenazi Health Advantage program",
+     "quote": "IU Health will deem patients or their guarantors presumptively eligible f or Financial Assistance if they are f ound to be eligible f or one of the f ollowing programs and the patient received Qualif ying Care, as def ined in this Policy. a. Medicaid (any state) b. Indiana Children's Special Health Care Services c. Healthy Indiana Plan d. Patients who are awarded Hospital Presumptive Eligibility (PE) e. Patients approved f or the Eskenazi Health Advantage program",
      "source_id": "fap-4f0b7a13d817f487",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -10827,7 +11250,8 @@
     "documents_required": {
      "value": [
       "pay_stubs",
-      "tax_return"
+      "tax_return",
+      "other"
      ],
      "layer": "documented",
      "quote": "All sources of Income f or the Household or the Guarantor f or the last three (3) months, including at least one of the f ollowing: i. Most recent three (3) months of pay stubs or Social Security Benef its; ii. Most recent state and f ederal tax returns, complete with all Schedules; or iii. Most recent W-2 statement",
@@ -10889,15 +11313,7 @@
    },
    "contacts": {
     "phone": null,
-    "hours": {
-     "value": "normal business hours",
-     "layer": "documented",
-     "quote": "Make available Customer Service representatives via telephone during normal business hours.",
-     "source_id": "fap-4f0b7a13d817f487",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "hours": null,
     "languages": {
      "value": [
       "Arabic",
@@ -10942,16 +11358,21 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: b. Most recent three (3) statements f rom checking and savings accounts, certif icates of deposit, stocks, bonds and mon",
+    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: Most recent three (3) statements f rom checking and savings accounts, certif icates of deposit, stocks, bonds and money ",
+    "agent dropped eligibility.discount_tiers: excerpt not in source: 1 or more 0 200%",
     "agent dropped collections.eca_wait_days: quote is not a substring of the source",
-    "agent dropped contacts.phone: quote is not a substring of the source",
-    "agent judge on eligibility.free_care_max_fpl: The quote gives no FPL percentage. It only says assistance may be available up to the full bill if FPL criteria below are met."
+    "agent dropped contacts.phone: quote is not a substring of the source"
    ],
    "eve_verified": {
     "on": "2026-10-23",
     "sources_fetched": 2,
     "sources_total": 2,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-4f0b7a13d817f487": true,
+     "fap-ee1c8819fdca6823": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.asset_test",
      "eligibility.residency",
@@ -10961,15 +11382,9 @@
      "apply.submit_methods",
      "apply.window_days_from_first_bill",
      "apply.decision_days",
-     "contacts.hours",
      "contacts.languages"
     ],
-    "rejected": [
-     [
-      "eligibility.free_care_max_fpl",
-      "value not in quote"
-     ]
-    ],
+    "rejected": [],
     "pruned": [
      "apply.documents_required: 1 item not named in the trimmed quote"
     ],
@@ -10995,22 +11410,14 @@
     "free_care_max_fpl": null,
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
-    "asset_test": {
-     "value": true,
-     "layer": "documented",
-     "quote": "The Financial Assistance Committee may evaluate the income or assets in determining f inancial Hardship.",
-     "source_id": "fap-4f0b7a13d817f487",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "asset_test": null,
     "residency": {
      "value": [
-      "Patient or guarantor must be an Indiana Resident, domiciled in Indiana at the time of approval, with proof of residency."
+      "Applicant must be an Indiana resident as defined in the IU Health Financial Assistance Policy."
      ],
      "layer": "documented",
-     "quote": "b. Be an Indiana Resident as def ined in this Policy; and",
-     "source_id": "fap-4f0b7a13d817f487",
+     "quote": "If you are an Indiana resident, as defined in the IU Health Financial Assistance Policy, who receives care via the emergency",
+     "source_id": "fap-ee1c8819fdca6823",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -11018,8 +11425,8 @@
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "IU Health may extend Financial Assistance via a reduction in Patient Responsibility to Insured Patients receiving Non- Covered Services",
-     "source_id": "fap-4f0b7a13d817f487",
+     "quote": "Did any members of the household have health insurance at the time of their hospital service(s)? \u2751 Yes \u2751 No",
+     "source_id": "fap-ee1c8819fdca6823",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -11028,21 +11435,7 @@
     "services_excluded": null
    },
    "programs": {
-    "presumptive": {
-     "value": [
-      "Medicaid (any state)",
-      "Indiana Children's Special Health Care Services",
-      "Healthy Indiana Plan",
-      "Hospital Presumptive Eligibility (PE)",
-      "Eskenazi Health Advantage program"
-     ],
-     "layer": "documented",
-     "quote": "a. Medicaid (any state) b. Indiana Children's Special Health Care Services c. Healthy Indiana Plan d. Patients who are awarded Hospital Presumptive Eligibility (PE) e. Patients approved f or the Eskenazi Health Advantage program",
-     "source_id": "fap-4f0b7a13d817f487",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "presumptive": null,
     "state_programs": null
    },
    "apply": {
@@ -11054,8 +11447,8 @@
       "other"
      ],
      "layer": "documented",
-     "quote": "All sources of Income f or the Household or the Guarantor f or the last three (3) months, including at least one of the f ollowing: i. Most recent three (3) months of pay stubs or Social Security Benef its;",
-     "source_id": "fap-4f0b7a13d817f487",
+     "quote": "Most recent three (3) months of pay stubs or Social Security Benefits;",
+     "source_id": "fap-ee1c8819fdca6823",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
@@ -11065,7 +11458,7 @@
      "value": [
       {
        "kind": "mail",
-       "detail": "Return To: Indiana University Health, 1155 W. 3rd St., Bloomington, IN 47404"
+       "detail": "Indiana University Health, 1155 W. 3rd St., Bloomington, IN 47404"
       },
       {
        "kind": "email",
@@ -11083,24 +11476,8 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "window_days_from_first_bill": {
-     "value": 240,
-     "layer": "documented",
-     "quote": "Patients or their guarantors may submit an Application up to two -hundred and f orty (240) days f rom the date of their initial post-discharge billing statement f rom IU Health",
-     "source_id": "fap-4f0b7a13d817f487",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "decision_days": {
-     "value": 90,
-     "layer": "documented",
-     "quote": "IU Health will inf orm patients or guarantors of the results of their Application by providing the patient or guarantor with a Financial Assistance Determination within ninety (90) days.",
-     "source_id": "fap-4f0b7a13d817f487",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "window_days_from_first_bill": null,
+    "decision_days": null,
     "decision_days_reported": null
    },
    "collections": {
@@ -11108,7 +11485,15 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": null,
+    "phone": {
+     "value": "1.888.531.3004",
+     "layer": "documented",
+     "quote": "Phone: 1.888.531.3004",
+     "source_id": "fap-ee1c8819fdca6823",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "hours": null,
     "languages": null
    },
@@ -11118,15 +11503,6 @@
     "covered_providers": null
    },
    "sources": [
-    {
-     "id": "fap-4f0b7a13d817f487",
-     "kind": "hospital_web",
-     "url": "https://cdn.iuhealth.org/resources/IUH-2025-Financial-Assistance-Policy_English.pdf",
-     "title": "",
-     "fetched_on": "2026-10-23",
-     "sha256": "4f0b7a13d817f487a8403f8bee3d7a0e93df01a4209f7956ccaefdae086f4a94",
-     "effective_date": null
-    },
     {
      "id": "fap-ee1c8819fdca6823",
      "kind": "hospital_web",
@@ -11139,44 +11515,42 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Most recent three (3) statements f rom checking and savings accounts, certif icates of deposit, stocks, bonds and money  | If applicable, divorce/dissolution decrees and child custody order.",
-    "contacts.languages: 2 more verbatim excerpt(s) supported this value: b. Burmese; c. Burmese - Falam; d. Burmese - Hakha Chin; | e. Mandarin/Chinese; or f. Spanish",
-    "agent dropped collections.eca_wait_days: quote is not a substring of the source",
-    "agent dropped contacts.phone: quote is not a substring of the source",
-    "agent judge on eligibility.free_care_max_fpl: The quote is garbled ('1 or more 0 200%') and does not plainly state that 200% FPL is the highest level receiving 100% free care.",
-    "agent judge on eligibility.residency: The quote only requires being an Indiana Resident as defined in the policy. It does not mention domicile at approval or proof of residency.",
-    "agent judge on apply.documents_required: The quote says applicants must provide income sources including at least one of the listed items, not all three. The value treats all three as required."
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Most recent state and federal tax returns, complete with all Schedules; or | Most recent three (3) statements from checking and savings accounts, certificates of deposit, stocks, bonds and money ma",
+    "agent judge on eligibility.free_care_max_fpl: Quote shows '1+ 0 200%' which is garbled; it does not clearly state that 200% FPL gets 100% free care, though it contains the number 200%.",
+    "agent judge on eligibility.asset_test: Quote is a form heading asking about assets/resources; it does not state that assets are considered as a test, though it implies assets are collected. Value is boolean true, not clearly stated.",
+    "agent judge on eligibility.insured_patients_covered: Quote is a form question asking whether household members had health insurance; it does not state that insured patients are covered."
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 2,
-    "sources_total": 2,
+    "sources_fetched": 1,
+    "sources_total": 1,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-ee1c8819fdca6823": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
-     "eligibility.asset_test",
      "eligibility.residency",
      "eligibility.insured_patients_covered",
-     "programs.presumptive",
      "apply.documents_required",
      "apply.submit_methods",
-     "apply.window_days_from_first_bill",
-     "apply.decision_days"
+     "contacts.phone"
     ],
     "rejected": [
      [
       "eligibility.free_care_max_fpl",
-      "quote does not state the free-care limit as an income limit"
+      "quote not found in source"
      ],
      [
-      "contacts.languages",
-      "quote not found in source"
+      "eligibility.asset_test",
+      "quote does not support the asset-test value"
      ]
     ],
     "pruned": [
-     "apply.documents_required: 1 item not named in the trimmed quote"
+     "apply.documents_required: 3 items not named in the trimmed quote"
     ],
     "income_rule_verified": false,
-    "core_completeness": 0.33
+    "core_completeness": 0.5
    }
   },
   {
@@ -11317,6 +11691,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-513a1924bc8d2f66": true,
+     "fap-fbf6a89b306746a7": true,
+     "web-9186f7470696d6be": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.asset_test",
@@ -11361,9 +11741,35 @@
     "free_care_max_fpl": null,
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
-    "asset_test": null,
-    "residency": null,
-    "insured_patients_covered": null,
+    "asset_test": {
+     "value": true,
+     "layer": "documented",
+     "quote": "CMCH may ask me for more information, if necessary to determine my eligibility, e.g. proof of assets, bank statements, HSA statements, or a denial letter issued by Medicaid",
+     "source_id": "fap-09062f8c314ffefc",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "residency": {
+     "value": [
+      "Are you a legal resident of the United States?"
+     ],
+     "layer": "documented",
+     "quote": "Are you a legal resident of the United States? ______Yes_______ No",
+     "source_id": "fap-09062f8c314ffefc",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Did you have health insurance (other than Medicaid) at the time of health care? If yes, please write down your account information and include a photocopy of your insurance card.",
+     "source_id": "fap-09062f8c314ffefc",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "min_balance": null,
     "services_excluded": null
    },
@@ -11376,11 +11782,10 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "other",
-      "proof_of_income"
+      "pay_stubs"
      ],
      "layer": "documented",
-     "quote": "please complete both pages of the enclosed application, and include requested proof of income documents",
+     "quote": "Most recent pay stubs that prove your income this year to date (at least 4 weeks of previous income) or a signed employment verification letter from your employer",
      "source_id": "fap-09062f8c314ffefc",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -11392,7 +11797,7 @@
     "decision_days": {
      "value": 30,
      "layer": "documented",
-     "quote": "You will be notified in writing of our decision within 30 business days of CMCH receiving",
+     "quote": "You will be notified in writing of our decision within 30 business days of CMCH receiving the completed application.",
      "source_id": "fap-09062f8c314ffefc",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -11405,15 +11810,7 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": {
-     "value": "260-667-5513",
-     "layer": "documented",
-     "quote": "call Cameron\u2019s Financial Services Department at (260) 667-5513",
-     "source_id": "web-985f9665b3a256b3",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "phone": null,
     "hours": null,
     "languages": null
    },
@@ -11444,25 +11841,43 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: All applicants are required to apply for Medicaid and meet all required Medicaid",
-    "agent dropped apply.form_url: quote is not a substring of the source",
-    "agent dropped eligibility.asset_test: judge: Quote only says CMCH may request more information; it does not mention assets being considered.",
-    "agent dropped apply.submit_methods: judge: Quote says to return by the envelope provided but does not state the address."
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Copy of previous year's personal and business tax return along with any payment schedule | a photocopy of your insurance card",
+    "agent dropped apply.submit_methods: excerpt not in source: contact the CMCH Patient Financial Services Department at 26",
+    "agent dropped contacts.phone: quote is not a substring of the source",
+    "agent judge on eligibility.insured_patients_covered: Quote only asks whether the patient had health insurance (other than Medicaid) and requests account info; it does not say insured patients are covered.",
+    "agent judge on apply.form_url: Quote shows only the relative path /wp-content/uploads/2025/06/CC-Application-English-Updated-002-003.pdf; the cameronhealth.com domain does not appear in the quote.",
+    "agent judge on apply.documents_required: Quote lists pay stubs, tax return, and insurance card only; it does not mention Social Security, bank statement, or denial letter."
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 2,
+    "sources_fetched": 1,
     "sources_total": 2,
-    "sources_missing": [],
-    "accepted": [
-     "apply.documents_required",
-     "apply.decision_days",
-     "contacts.phone"
+    "sources_missing": [
+     "https://cameronhealth.com/resources/financial-information/"
     ],
-    "rejected": [],
-    "pruned": [],
+    "sha256_match": {
+     "fap-09062f8c314ffefc": true,
+     "web-985f9665b3a256b3": null
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
+    "accepted": [
+     "eligibility.asset_test",
+     "eligibility.residency",
+     "eligibility.insured_patients_covered",
+     "apply.documents_required",
+     "apply.decision_days"
+    ],
+    "rejected": [
+     [
+      "apply.form_url",
+      "source text missing"
+     ]
+    ],
+    "pruned": [
+     "apply.documents_required: 5 items not named in the trimmed quote"
+    ],
     "income_rule_verified": false,
-    "core_completeness": 0.33
+    "core_completeness": 0.17
    }
   },
   {
@@ -11486,10 +11901,10 @@
     "asset_test": null,
     "residency": {
      "value": [
-      "If you are an Indiana resident, as defined in the IU Health Financial Assistance Policy, who receives care via the emergency department, direct admission from a physician's office, or transfer from another hospital, you may be eligible to receive additional assistance."
+      "If you are an Indiana resident, as defined in the IU Health Financial Assistance Policy, who receives care via the emergency department, direct admission from a physician's office, or transfer from another hospital, you may be eligible to receive additional assistance"
      ],
      "layer": "documented",
-     "quote": "If you are an Indiana resident, as defined in the IU Health Financial Assistance Policy, who receives care via the emergency department, direct admission from a physician\u2019s office, or transfer from another hospital, you may be eligible to receive additional assistance",
+     "quote": "If you are an Indiana resident, as defined in the IU Health Financial Assistance Policy, who receives care via the emergency department, direct admission from a physician\u2019s office, or transfer from another hospital, you may be eligible to receive additional assistance if paying your medical bills is a financial hardship and you apply.",
      "source_id": "fap-ee1c8819fdca6823",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -11509,10 +11924,11 @@
     "documents_required": {
      "value": [
       "pay_stubs",
+      "social_security_letter",
       "other"
      ],
      "layer": "documented",
-     "quote": "Most recent three (3) months of pay stubs or Social Security Benefits;",
+     "quote": "Most recent three (3) months of pay stubs or Social Security Benefits",
      "source_id": "fap-ee1c8819fdca6823",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -11580,16 +11996,19 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Most recent three (3) statements from checking and savings accounts, certificates of deposit, stocks, bonds and money ma | applicants must show proof of Indiana residency and his/her primary address",
-    "agent dropped eligibility.free_care_max_fpl: quote is not a substring of the source",
-    "agent judge on eligibility.asset_test: Quote lists account statements to submit but never states that assets are considered or tested.",
-    "agent judge on apply.documents_required: Quote lists pay stubs, account statements, and proof of residency only; tax returns and W-2 statement are not in the quote."
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Most recent three (3) statements from checking and savings accounts, certificates of deposit, stocks, bonds and money ma | A utility company, credit card, or other billing",
+    "agent judge on eligibility.free_care_max_fpl: Quote \"1+ 0 200%\" is garbled and does not plainly state that 200% FPL is the highest level receiving 100% free care.",
+    "agent judge on apply.documents_required: Quote lists pay stubs/Social Security, checking/savings statements, and a utility/credit card bill. It does not mention tax returns, W-2 statement, or lease."
    ],
    "eve_verified": {
     "on": "2026-10-23",
     "sources_fetched": 1,
     "sources_total": 1,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-ee1c8819fdca6823": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.residency",
      "apply.documents_required",
@@ -11598,12 +12017,16 @@
     ],
     "rejected": [
      [
+      "eligibility.free_care_max_fpl",
+      "quote not found in source"
+     ],
+     [
       "eligibility.asset_test",
       "quote does not support the asset-test value"
      ]
     ],
     "pruned": [
-     "apply.documents_required: 3 items not named in the trimmed quote"
+     "apply.documents_required: 2 items not named in the trimmed quote"
     ],
     "income_rule_verified": false,
     "core_completeness": 0.5
@@ -11767,6 +12190,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-31d9e57cc355c98c": true,
+     "fap-0e81427839c5c219": true,
+     "web-cc80a4afc9b5dd35": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.insured_patients_covered",
@@ -11788,140 +12217,6 @@
     ],
     "income_rule_verified": true,
     "core_completeness": 0.5
-   }
-  },
-  {
-   "hospital": {
-    "ccn": "151322",
-    "name": "PERRY COUNTY MEMORIAL HOSPITAL",
-    "city": "TELL CITY",
-    "state": "IN",
-    "zip": "47586",
-    "phone": "812-547-7011",
-    "ownership": "Voluntary non-profit - Other",
-    "website_domain": "pchospital.org",
-    "system": null
-   },
-   "version": 1,
-   "status": "draft",
-   "eligibility": {
-    "free_care_max_fpl": null,
-    "discount_tiers": null,
-    "assistance_ceiling_fpl": null,
-    "asset_test": {
-     "value": true,
-     "layer": "documented",
-     "quote": "In addition, determination will include the availability of all other assets (i.e. savings accounts, HRA\u2019s, etc.)",
-     "source_id": "fap-0badb030feb0d323",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "residency": null,
-    "insured_patients_covered": null,
-    "min_balance": null,
-    "services_excluded": null
-   },
-   "programs": {
-    "presumptive": null,
-    "state_programs": {
-     "value": [
-      {
-       "name": "Indiana HIP",
-       "how_to_apply": "Patients with income below 138% of FPG are encouraged to apply before receiving financial assistance; application method not stated."
-      }
-     ],
-     "layer": "documented",
-     "quote": "Any patient whose income is below 138% of the FPG, are encouraged to apply for Indiana HIP before receiving financial assistance.",
-     "source_id": "fap-0badb030feb0d323",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
-   },
-   "apply": {
-    "form_url": null,
-    "form_version": null,
-    "documents_required": null,
-    "documents_reported": null,
-    "submit_methods": null,
-    "window_days_from_first_bill": null,
-    "decision_days": null,
-    "decision_days_reported": null
-   },
-   "collections": {
-    "eca_wait_days": null,
-    "collection_agencies": null
-   },
-   "contacts": {
-    "phone": {
-     "value": "(812) 547-7011",
-     "layer": "documented",
-     "quote": "Applications may be accessed by PFS, Patient Access, from the Hospital web-site or requesting an application by phone at (812) 547-7011.",
-     "source_id": "fap-0badb030feb0d323",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "hours": null,
-    "languages": {
-     "value": [
-      "English"
-     ],
-     "layer": "documented",
-     "quote": "The Financial Assistance policy, application form, and the plain language summary are offered in English; however, the Hospital may provide assistance through use of qualified bilingual interpreter by request.",
-     "source_id": "fap-0badb030feb0d323",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
-   },
-   "coverage": {
-    "facilities": null,
-    "provider_list_url": null,
-    "covered_providers": null
-   },
-   "sources": [
-    {
-     "id": "fap-0badb030feb0d323",
-     "kind": "hospital_web",
-     "url": "https://www.pchospital.org/documents/FAP.pdf",
-     "title": "",
-     "fetched_on": "2026-10-23",
-     "sha256": "0badb030feb0d3233f5469704ab14279a7254b625e78c8d12d319ef62873116d",
-     "effective_date": null
-    },
-    {
-     "id": "fap-27fedda9cbbf3d80",
-     "kind": "hospital_web",
-     "url": "https://www.pchospital.org/documents/content/FA-APP-Updated-10282015.pdf",
-     "title": "",
-     "fetched_on": "2026-10-23",
-     "sha256": "27fedda9cbbf3d806b925c7add5fd29e49f6bd6f6fe3bd1f9e97283b17e23838",
-     "effective_date": null
-    }
-   ],
-   "accuracy": null,
-   "eve_review": [
-    "agent dropped apply.submit_methods: judge: Quote refers only to 'the address listed below' without giving the address, and never says applications may be mailed."
-   ],
-   "eve_verified": {
-    "on": "2026-10-23",
-    "sources_fetched": 1,
-    "sources_total": 2,
-    "sources_missing": [
-     "https://www.pchospital.org/documents/content/FA-APP-Updated-10282015.pdf"
-    ],
-    "accepted": [
-     "eligibility.asset_test",
-     "programs.state_programs",
-     "contacts.phone",
-     "contacts.languages"
-    ],
-    "rejected": [],
-    "pruned": [],
-    "income_rule_verified": false,
-    "core_completeness": 0.17
    }
   },
   {
@@ -12096,6 +12391,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-7edf639a9cbf55d6": true,
+     "fap-0313b36e4394c5a2": true,
+     "web-1ce1a73b515637ce": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.asset_test",
@@ -12308,6 +12609,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-6e38016b2eb07094": true,
+     "fap-e3a0d0b8854042ca": true,
+     "web-3cd254774c465d97": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
@@ -12493,6 +12800,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-1c41abcd12ffe9b3": true,
+     "fap-fbf6a89b306746a7": true,
+     "web-ecb5f3d8c634fbc6": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.asset_test",
@@ -12678,6 +12991,12 @@
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-f7700d56c54031eb": true,
+     "fap-b311155e691faacb": true,
+     "web-5a85e4b00ef6c65a": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.asset_test",
@@ -12720,10 +13039,18 @@
     "free_care_max_fpl": null,
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
-    "asset_test": null,
+    "asset_test": {
+     "value": true,
+     "layer": "documented",
+     "quote": "The Financial Assistance Committee may evaluate the income or assets in determining f inancial Hardship",
+     "source_id": "fap-4f0b7a13d817f487",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "residency": {
      "value": [
-      "Patients must be an Indiana Resident, domiciled in Indiana at the time of approval, to be eligible for Financial Assistance due to financial or personal Hardship."
+      "Be an Indiana Resident as defined in this Policy."
      ],
      "layer": "documented",
      "quote": "Be an Indiana Resident as def ined in this Policy; and",
@@ -12735,7 +13062,7 @@
     "insured_patients_covered": {
      "value": true,
      "layer": "documented",
-     "quote": "IU Health may extend Financial Assistance via a reduction in Patient Responsibility to Insured Patients receiving Non- Covered Services",
+     "quote": "providing Financial Assistance to all qualif ying Indiana University Health (\u201cIU Health\u201d) Insured Patients and Uninsured Patients",
      "source_id": "fap-4f0b7a13d817f487",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -12745,39 +13072,13 @@
     "services_excluded": null
    },
    "programs": {
-    "presumptive": {
-     "value": [
-      "Medicaid (any state)",
-      "Indiana Children's Special Health Care Services",
-      "Healthy Indiana Plan",
-      "Hospital Presumptive Eligibility (PE)",
-      "Eskenazi Health Advantage program"
-     ],
-     "layer": "documented",
-     "quote": "a. Medicaid (any state) b. Indiana Children's Special Health Care Services c. Healthy Indiana Plan d. Patients who are awarded Hospital Presumptive Eligibility (PE) e. Patients approved f or the Eskenazi Health Advantage program",
-     "source_id": "fap-4f0b7a13d817f487",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "presumptive": null,
     "state_programs": null
    },
    "apply": {
     "form_url": null,
     "form_version": null,
-    "documents_required": {
-     "value": [
-      "pay_stubs",
-      "tax_return",
-      "other"
-     ],
-     "layer": "documented",
-     "quote": "All sources of Income f or the Household or the Guarantor f or the last three (3) months, including at least one of the f ollowing: i. Most recent three (3) months of pay stubs or Social Security Benef its; ii. Most recent state and f ederal tax returns, complete with all Schedules; or iii. Most recent W-2 statement;",
-     "source_id": "fap-4f0b7a13d817f487",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "documents_required": null,
     "documents_reported": null,
     "submit_methods": {
      "value": [
@@ -12792,10 +13093,6 @@
       {
        "kind": "fax",
        "detail": "Fax: 1.812.353.2032"
-      },
-      {
-       "kind": "phone",
-       "detail": "Phone: 1.888.531.3004"
       }
      ],
      "layer": "documented",
@@ -12817,7 +13114,7 @@
     "decision_days": {
      "value": 90,
      "layer": "documented",
-     "quote": "IU Health will inf orm patients or guarantors of the results of their Application by providing the patient or guarantor with a Financial Assistance Determination within ninety (90) days.",
+     "quote": "IU Health will inf orm patients or guarantors of the results of their Application by providing the patient or guarantor with a Financial Assistance Determination within ninety (90) days",
      "source_id": "fap-4f0b7a13d817f487",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -12830,24 +13127,17 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": null,
-    "hours": null,
-    "languages": {
-     "value": [
-      "Arabic",
-      "Burmese",
-      "Burmese - Falam",
-      "Burmese - Hakha Chin",
-      "Mandarin/Chinese",
-      "Spanish"
-     ],
+    "phone": {
+     "value": "1.888.531.3004",
      "layer": "documented",
-     "quote": "a. Arabic; b. Burmese; c. Burmese - Falam; d. Burmese - Hakha Chin; e. Mandarin/Chinese; or f. Spanish",
-     "source_id": "fap-4f0b7a13d817f487",
+     "quote": "Phone: 1.888.531.3004",
+     "source_id": "fap-ee1c8819fdca6823",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
-    }
+    },
+    "hours": null,
+    "languages": null
    },
    "coverage": {
     "facilities": null,
@@ -12876,39 +13166,40 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Most recent three (3) statements f rom checking and savings accounts, certif icates of deposit, stocks, bonds and money  | If applicable, divorce/dissolution decrees and child custody order.",
+    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: a. Medicaid (any state) | e. Patients approved f or the Eskenazi Health Advantage program",
+    "agent dropped apply.documents_required: excerpt not in source: Most recent three (3) months of pay stubs or Social Security",
     "agent dropped collections.eca_wait_days: quote is not a substring of the source",
-    "agent dropped contacts.phone: quote is not a substring of the source",
-    "agent judge on eligibility.free_care_max_fpl: The quote mentions FPL criteria and assistance up to the full bill but never states 200 percent FPL as the free-care maximum.",
-    "agent judge on eligibility.residency: Quote supports only the Indiana resident requirement; the value's added domicile-at-approval condition does not appear in the quote."
+    "agent dropped contacts.languages: between 1 and 3 excerpts allowed",
+    "agent judge on eligibility.free_care_max_fpl: Quote mentions FPL criteria and assistance up to the full bill amount but never states 200% FPL as the free-care maximum.",
+    "agent judge on programs.presumptive: Quote lists Medicaid (any state) and Eskenazi Health Advantage only; it does not mention Healthy Indiana Plan."
    ],
    "eve_verified": {
     "on": "2026-10-23",
     "sources_fetched": 2,
     "sources_total": 2,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-4f0b7a13d817f487": true,
+     "fap-ee1c8819fdca6823": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
+     "eligibility.asset_test",
      "eligibility.residency",
      "eligibility.insured_patients_covered",
-     "programs.presumptive",
-     "apply.documents_required",
      "apply.submit_methods",
      "apply.window_days_from_first_bill",
      "apply.decision_days",
-     "contacts.languages"
+     "contacts.phone"
     ],
     "rejected": [
      [
       "eligibility.free_care_max_fpl",
       "value not in quote"
-     ],
-     [
-      "eligibility.asset_test",
-      "quote does not support the asset-test value"
      ]
     ],
     "pruned": [
-     "apply.documents_required: 1 item not named in the trimmed quote"
+     "programs.presumptive: none of the listed programs is named in the quote (after trimming)"
     ],
     "income_rule_verified": false,
     "core_completeness": 0.33
@@ -12929,8 +13220,35 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": null,
-    "discount_tiers": null,
+    "free_care_max_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "Patients who are part of a household where annual income is at or below 200% of the Federal Poverty Guidelines may receive free care.",
+     "source_id": "fap-701685eac902ce54",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "200",
+       "max_fpl_inclusive": "250",
+       "discount_percent": 80
+      },
+      {
+       "min_fpl_exclusive": "250",
+       "max_fpl_inclusive": "300",
+       "discount_percent": 60
+      }
+     ],
+     "layer": "documented",
+     "quote": "100% Assistance 80% Assistance 60% Assistance < 200% < 250% < 300%",
+     "source_id": "fap-701685eac902ce54",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "assistance_ceiling_fpl": null,
     "asset_test": {
      "value": true,
@@ -12942,7 +13260,15 @@
      "support_count": 0
     },
     "residency": null,
-    "insured_patients_covered": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "To provide guidelines for Financial Assistance to uninsured and underinsured individuals who need emergency or medically necessary care",
+     "source_id": "fap-701685eac902ce54",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "min_balance": null,
     "services_excluded": null
    },
@@ -12953,13 +13279,25 @@
    "apply": {
     "form_url": null,
     "form_version": null,
-    "documents_required": null,
+    "documents_required": {
+     "value": [
+      "tax_return",
+      "social_security_letter",
+      "other"
+     ],
+     "layer": "documented",
+     "quote": "Prior year tax return (all schedules), including copies of documentation of all income (W-2s, 1099s, Social Security letters, etc.)",
+     "source_id": "fap-701685eac902ce54",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "documents_reported": null,
     "submit_methods": null,
     "window_days_from_first_bill": {
      "value": 240,
      "layer": "documented",
-     "quote": "Financial Assistance Applications will be accepted by MMH up to 240 days from the date the first",
+     "quote": "Financial Assistance Applications will be accepted by MMH up to 240 days from the date the first statement.",
      "source_id": "fap-701685eac902ce54",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -12968,7 +13306,7 @@
     "decision_days": {
      "value": 30,
      "layer": "documented",
-     "quote": "processed promptly and MMH shall notify the patient or applicant in writing within 30 days of",
+     "quote": "MMH shall notify the patient or applicant in writing within 30 days of receipt of a completed application.",
      "source_id": "fap-701685eac902ce54",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -12980,7 +13318,7 @@
     "eca_wait_days": {
      "value": 120,
      "layer": "documented",
-     "quote": "statements or electronic text or email communication and at least 120 days from the first",
+     "quote": "at least 120 days from the first statement correspondence or electronic communication patients who do not qualify for financial assistance",
      "source_id": "fap-701685eac902ce54",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -12989,9 +13327,27 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": null,
+    "phone": {
+     "value": "(812) 934-6624",
+     "layer": "documented",
+     "quote": "Main line: (812) 934-6624",
+     "source_id": "web-9f7b4c2b7a8736de",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "hours": null,
-    "languages": null
+    "languages": {
+     "value": [
+      "5% or 1,000 individuals"
+     ],
+     "layer": "documented",
+     "quote": "MMH will translate and make available for each language group consisting of the lesser of 5% or 1,000 individuals of the community served.",
+     "source_id": "fap-701685eac902ce54",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
    },
    "coverage": {
     "facilities": null,
@@ -13029,35 +13385,47 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: < 200% < 250% < 300%",
-    "agent dropped eligibility.free_care_max_fpl: judge: Quote is truncated at 'at or below' and never states the 200% threshold.",
-    "agent dropped apply.documents_required: judge: Quote is truncated; 1099s and 'written verification of wages' do not appear.",
-    "agent dropped apply.submit_methods: judge: Quote shows only '1155 State Road 229 North'; the advocate, PO Box 226, Batesville and ZIP are absent."
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Two most recent pay stubs (applicable when current year income changes from previous year) for each employed household m | Award letter from Social Security or for Unemployment",
+    "agent dropped apply.submit_methods: quote is not a substring of the source",
+    "agent judge on eligibility.discount_tiers: Quote is an unlabeled run of percents and bounds; the pairing of 80% with 200-250% and 60% with 250-300% is inferred, not stated.",
+    "agent judge on eligibility.insured_patients_covered: Quote covers uninsured and underinsured individuals only; it does not state that insured patients are covered.",
+    "agent judge on apply.documents_required: Quote lists tax return, W-2s, 1099s, Social Security letters, pay stubs, wage verification, and award letters; it does not mention bank or investment statements.",
+    "agent judge on contacts.languages: Quote gives a translation threshold (lesser of 5% or 1,000 individuals), not a list of languages."
    ],
    "eve_verified": {
     "on": "2026-10-23",
     "sources_fetched": 3,
     "sources_total": 3,
     "sources_missing": [],
+    "sha256_match": {
+     "fap-701685eac902ce54": true,
+     "fap-33d359f8fe9cd029": true,
+     "web-9f7b4c2b7a8736de": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
      "eligibility.asset_test",
+     "eligibility.insured_patients_covered",
+     "apply.documents_required",
      "apply.window_days_from_first_bill",
      "apply.decision_days",
-     "collections.eca_wait_days"
+     "collections.eca_wait_days",
+     "contacts.phone",
+     "contacts.languages"
     ],
     "rejected": [
-     [
-      "eligibility.discount_tiers",
-      "value not in quote"
-     ],
      [
       "apply.form_url",
       "quote not found in source"
      ]
     ],
-    "pruned": [],
-    "income_rule_verified": false,
-    "core_completeness": 0.0
+    "pruned": [
+     "apply.documents_required: 2 items not named in the trimmed quote"
+    ],
+    "income_rule_verified": true,
+    "core_completeness": 0.67
    }
   }
  ]
