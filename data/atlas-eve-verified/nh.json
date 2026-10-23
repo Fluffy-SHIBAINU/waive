@@ -584,7 +584,7 @@
     "sha256_match": {
      "fap-95bad804c879f810": true,
      "web-3933ee81f1c18674": true,
-     "web-43eda1e399f170a1": true
+     "web-43eda1e399f170a1": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
@@ -1249,7 +1249,7 @@
     "sources_missing": [],
     "sha256_match": {
      "fap-e7f06c5c48ed540a": true,
-     "web-5e65f50bbe331bc1": true
+     "web-5e65f50bbe331bc1": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
@@ -1454,7 +1454,7 @@
     "sha256_match": {
      "fap-d68a2aeefbbf5629": true,
      "fap-f3b438712fea5ad6": true,
-     "web-9cf0c9f42bf4dd35": true
+     "web-9cf0c9f42bf4dd35": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
@@ -2941,28 +2941,12 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": {
-     "value": "225",
-     "layer": "documented",
-     "quote": "Have a household income at or below 225 percent of the U.S. Federal Poverty Guidelines",
-     "source_id": "web-62e617a8c1290c3f",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "free_care_max_fpl": null,
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": null,
-    "insured_patients_covered": {
-     "value": true,
-     "layer": "documented",
-     "quote": "This reduction applies to uninsured and insured patients who owe balances after insurance payments have been made.",
-     "source_id": "web-62e617a8c1290c3f",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "insured_patients_covered": null,
     "min_balance": null,
     "services_excluded": null
    },
@@ -2973,39 +2957,9 @@
    "apply": {
     "form_url": null,
     "form_version": null,
-    "documents_required": {
-     "value": [
-      "tax_return",
-      "pay_stubs",
-      "proof_of_income",
-      "other"
-     ],
-     "layer": "documented",
-     "quote": "Complete a copy of your most recent Federal Income Tax Return and all schedules. Include copies of last year's W-2 forms; Copies of the three most recent, paycheck stubs or a statement from the employer",
-     "source_id": "web-62e617a8c1290c3f",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "documents_required": null,
     "documents_reported": null,
-    "submit_methods": {
-     "value": [
-      {
-       "kind": "mail",
-       "detail": "Request the information in writing by USPS mail or by visiting a Concord Hospital Financial Counselor at 250 Pleasant Street, Concord, NH 03301"
-      },
-      {
-       "kind": "in_person",
-       "detail": "Request a financial assistance application at any check-in or registration area at any of our locations"
-      }
-     ],
-     "layer": "documented",
-     "quote": "Request the information in writing by USPS mail or by visiting a Concord Hospital Financial Counselor at 250 Pleasant Street, Concord, NH 03301",
-     "source_id": "web-62e617a8c1290c3f",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "submit_methods": null,
     "window_days_from_first_bill": null,
     "decision_days": null,
     "decision_days_reported": null
@@ -3015,28 +2969,9 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": {
-     "value": "(603) 227-7101",
-     "layer": "documented",
-     "quote": "calling our Financial Counseling at (603) 227-7101 or (800) 562-1542",
-     "source_id": "web-62e617a8c1290c3f",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "phone": null,
     "hours": null,
-    "languages": {
-     "value": [
-      "English",
-      "Spanish"
-     ],
-     "layer": "documented",
-     "quote": "Our financial assistance policy, application form and plain language summary can be offered in English and Spanish or any other language upon request.",
-     "source_id": "web-62e617a8c1290c3f",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "languages": null
    },
    "coverage": {
     "facilities": null,
@@ -3067,40 +3002,55 @@
    "eve_review": [],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 1,
+    "sources_fetched": 0,
     "sources_total": 2,
     "sources_missing": [
+     "https://web.archive.org/web/20260612113636/https://www.concordhospital.org/patients-visitors/billing-insurance-financial-assistance/financial-assistance-plain-language-summary/",
      "https://web.archive.org/web/20260418171029/https://www.concordhospital.org/patients-visitors/billing-insurance-financial-assistance/"
     ],
     "sha256_match": {
-     "web-62e617a8c1290c3f": false,
+     "web-62e617a8c1290c3f": null,
      "web-f994afb30994b07e": null
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
-    "accepted": [
-     "eligibility.free_care_max_fpl",
-     "eligibility.insured_patients_covered",
-     "apply.documents_required",
-     "apply.submit_methods",
-     "contacts.phone",
-     "contacts.languages"
-    ],
+    "accepted": [],
     "rejected": [
      [
+      "eligibility.free_care_max_fpl",
+      "source text missing"
+     ],
+     [
       "eligibility.assistance_ceiling_fpl",
-      "quote does not say the hospital's financial assistance reaches it"
+      "source text missing"
+     ],
+     [
+      "eligibility.insured_patients_covered",
+      "source text missing"
      ],
      [
       "apply.form_url",
-      "quote not found in source"
+      "source text missing"
+     ],
+     [
+      "apply.documents_required",
+      "source text missing"
+     ],
+     [
+      "apply.submit_methods",
+      "source text missing"
+     ],
+     [
+      "contacts.phone",
+      "source text missing"
+     ],
+     [
+      "contacts.languages",
+      "source text missing"
      ]
     ],
-    "pruned": [
-     "apply.documents_required: 2 items not named in the trimmed quote",
-     "apply.submit_methods: 2 items not named in the trimmed quote"
-    ],
-    "income_rule_verified": true,
-    "core_completeness": 0.67
+    "pruned": [],
+    "income_rule_verified": false,
+    "core_completeness": 0.0
    }
   },
   {
@@ -3485,7 +3435,7 @@
     "sha256_match": {
      "fap-ee5e1ca79d07cf00": true,
      "fap-b76de166dcbb65f3": true,
-     "web-9326187696ca647f": true
+     "web-9326187696ca647f": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
@@ -3720,7 +3670,7 @@
     "sha256_match": {
      "fap-13c0ffea8e12971e": true,
      "fap-b1bea474a3145f93": true,
-     "web-2260246e69e9ae03": true
+     "web-2260246e69e9ae03": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [

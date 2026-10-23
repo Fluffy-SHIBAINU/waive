@@ -21,7 +21,15 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": null,
+    "free_care_max_fpl": {
+     "value": "400",
+     "layer": "documented",
+     "quote": "Household income up to 400% FPL, 100% adjustment",
+     "source_id": "fap-775b04c39dbe0d0f",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
     "asset_test": null,
@@ -41,7 +49,15 @@
     "documents_reported": null,
     "submit_methods": null,
     "window_days_from_first_bill": null,
-    "decision_days": null,
+    "decision_days": {
+     "value": 5,
+     "layer": "documented",
+     "quote": "SMH shall make an eligibility determination for Uncompensated Care within five (5) business days of a complete request for an outpatient service or before discharge for an inpatient service.",
+     "source_id": "fap-775b04c39dbe0d0f",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "decision_days_reported": null
    },
    "collections": {
@@ -97,25 +113,23 @@
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 0,
+    "sources_fetched": 1,
     "sources_total": 3,
     "sources_missing": [
      "https://hpo-docs.jh.edu/cwc8yZlN",
-     "https://hpo-docs.jh.edu/kYSFXXDt",
      "https://hpo-docs.jh.edu/XQmxfYxl"
     ],
     "sha256_match": {
      "fap-0ba4546dc2757675": null,
-     "fap-775b04c39dbe0d0f": null,
+     "fap-775b04c39dbe0d0f": true,
      "fap-c80e4a95d17fe683": null
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
-    "accepted": [],
+    "accepted": [
+     "eligibility.free_care_max_fpl",
+     "apply.decision_days"
+    ],
     "rejected": [
-     [
-      "eligibility.free_care_max_fpl",
-      "source text missing"
-     ],
      [
       "eligibility.asset_test",
       "source text missing"
@@ -137,17 +151,13 @@
       "source text missing"
      ],
      [
-      "apply.decision_days",
-      "source text missing"
-     ],
-     [
       "contacts.phone",
       "source text missing"
      ]
     ],
     "pruned": [],
-    "income_rule_verified": false,
-    "core_completeness": 0.0
+    "income_rule_verified": true,
+    "core_completeness": 0.17
    }
   },
   {
@@ -359,7 +369,7 @@
     "sha256_match": {
      "fap-b95c0699bae1032f": true,
      "fap-3e2c6451a8d9f7df": true,
-     "web-8a81961bce1ae4e2": true
+     "web-8a81961bce1ae4e2": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [

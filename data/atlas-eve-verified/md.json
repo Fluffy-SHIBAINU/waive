@@ -806,7 +806,7 @@
     "sha256_match": {
      "fap-5fda37271733c4d5": true,
      "fap-145ec707358b5ba1": true,
-     "web-ad5b459443d1724c": true
+     "web-ad5b459443d1724c": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
@@ -1342,7 +1342,7 @@
     "sha256_match": {
      "fap-b95c0699bae1032f": true,
      "fap-3e2c6451a8d9f7df": true,
-     "web-393a674745993d7d": true
+     "web-393a674745993d7d": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
@@ -1734,7 +1734,7 @@
     "sha256_match": {
      "fap-b95c0699bae1032f": true,
      "fap-3e2c6451a8d9f7df": true,
-     "web-9c14e7fcd65187c8": true
+     "web-9c14e7fcd65187c8": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
@@ -2456,7 +2456,7 @@
     "sha256_match": {
      "fap-b95c0699bae1032f": true,
      "fap-3e2c6451a8d9f7df": true,
-     "web-d552355a8c697b67": true
+     "web-d552355a8c697b67": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
@@ -2662,7 +2662,7 @@
     "sha256_match": {
      "fap-71e67fc96711caf2": true,
      "fap-ed142cdb9d4be6af": true,
-     "web-82b1d6437837f325": true
+     "web-82b1d6437837f325": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
@@ -2933,7 +2933,7 @@
     "sha256_match": {
      "fap-b95c0699bae1032f": true,
      "fap-3e2c6451a8d9f7df": true,
-     "web-bb392010f28e9f17": true
+     "web-bb392010f28e9f17": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
@@ -3822,7 +3822,7 @@
     "sha256_match": {
      "fap-b95c0699bae1032f": true,
      "fap-3e2c6451a8d9f7df": true,
-     "web-de4c8b4b7beaa6dd": true
+     "web-de4c8b4b7beaa6dd": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
@@ -4656,7 +4656,7 @@
     "sha256_match": {
      "fap-b74648b9ec74010c": true,
      "fap-29704ceebb00f966": true,
-     "web-ea2c6425e2aebb68": true
+     "web-ea2c6425e2aebb68": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
@@ -5104,7 +5104,7 @@
     "sha256_match": {
      "fap-39d0566c2291ed70": true,
      "fap-7e790da8ce5166fb": true,
-     "web-42219c2dd13087b3": true
+     "web-42219c2dd13087b3": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
@@ -5173,9 +5173,41 @@
    "apply": {
     "form_url": null,
     "form_version": null,
-    "documents_required": null,
+    "documents_required": {
+     "value": [
+      "tax_return",
+      "other"
+     ],
+     "layer": "documented",
+     "quote": "1. Copy of last year\u2019s tax returns. (If married and filed separately, please provide copies of both returns.)",
+     "source_id": "fap-c80e4a95d17fe683",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "documents_reported": null,
-    "submit_methods": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "Johns Hopkins Hospital 6201 Greenleigh Avenue ATTN: Financial Assistance Liaison Middle River, MD 21220"
+      },
+      {
+       "kind": "fax",
+       "detail": "443-769-1250"
+      },
+      {
+       "kind": "portal",
+       "detail": "upload all documents to MyChart"
+      }
+     ],
+     "layer": "documented",
+     "quote": "MAILING ADDRESS: Applications will not be accepted in person. Please mail, FAX or upload all documents to MyChart.",
+     "source_id": "fap-c80e4a95d17fe683",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "window_days_from_first_bill": null,
     "decision_days": null,
     "decision_days_reported": null
@@ -5227,18 +5259,20 @@
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 0,
+    "sources_fetched": 1,
     "sources_total": 2,
     "sources_missing": [
-     "https://hpo-docs.jh.edu/cwc8yZlN",
-     "https://hpo-docs.jh.edu/XQmxfYxl"
+     "https://hpo-docs.jh.edu/cwc8yZlN"
     ],
     "sha256_match": {
      "fap-0ba4546dc2757675": null,
-     "fap-c80e4a95d17fe683": null
+     "fap-c80e4a95d17fe683": true
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
-    "accepted": [],
+    "accepted": [
+     "apply.documents_required",
+     "apply.submit_methods"
+    ],
     "rejected": [
      [
       "eligibility.free_care_max_fpl",
@@ -5257,14 +5291,6 @@
       "source text missing"
      ],
      [
-      "apply.documents_required",
-      "source text missing"
-     ],
-     [
-      "apply.submit_methods",
-      "source text missing"
-     ],
-     [
       "apply.decision_days",
       "source text missing"
      ],
@@ -5273,9 +5299,12 @@
       "source text missing"
      ]
     ],
-    "pruned": [],
+    "pruned": [
+     "apply.documents_required: 6 items not named in the trimmed quote",
+     "apply.submit_methods: 1 item not named in the trimmed quote"
+    ],
     "income_rule_verified": false,
-    "core_completeness": 0.0
+    "core_completeness": 0.33
    }
   },
   {
@@ -6333,7 +6362,7 @@
     "sha256_match": {
      "fap-b95c0699bae1032f": true,
      "fap-3e2c6451a8d9f7df": true,
-     "web-2309998853539321": true
+     "web-2309998853539321": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
@@ -6691,7 +6720,7 @@
     "sha256_match": {
      "fap-5fda37271733c4d5": true,
      "fap-145ec707358b5ba1": true,
-     "web-ad5b459443d1724c": true
+     "web-ad5b459443d1724c": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [

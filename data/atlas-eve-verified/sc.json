@@ -67,7 +67,28 @@
      "support_count": 0
     },
     "documents_reported": null,
-    "submit_methods": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "Prisma Health, Financial Assistance, P.O. Box 743904, Atlanta, GA 30374-3904"
+      },
+      {
+       "kind": "fax",
+       "detail": "(864) 522-9594"
+      },
+      {
+       "kind": "email",
+       "detail": "hospitalsponsorship@prismahealth.org"
+      }
+     ],
+     "layer": "documented",
+     "quote": "By Mail: Prisma Health Financial Assistance P.O. Box 743904 Atlanta, GA 30374-3904 By Fax: (864) 522-9594 By Email: hospitalsponsorship@prismahealth.org",
+     "source_id": "fap-8f57756871871eab",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "window_days_from_first_bill": {
      "value": 240,
      "layer": "documented",
@@ -145,7 +166,7 @@
     "sources_missing": [],
     "sha256_match": {
      "fap-ea40821120a453d1": true,
-     "fap-8f57756871871eab": false,
+     "fap-8f57756871871eab": true,
      "web-365f19874468926b": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
@@ -153,6 +174,7 @@
      "eligibility.free_care_max_fpl",
      "eligibility.residency",
      "apply.documents_required",
+     "apply.submit_methods",
      "apply.window_days_from_first_bill",
      "contacts.phone"
     ],
@@ -174,10 +196,6 @@
       "quote not found in source"
      ],
      [
-      "apply.submit_methods",
-      "quote not found in source"
-     ],
-     [
       "contacts.languages",
       "quote not found in source"
      ]
@@ -187,7 +205,7 @@
      "apply.documents_required: 3 items not named in the trimmed quote"
     ],
     "income_rule_verified": true,
-    "core_completeness": 0.5
+    "core_completeness": 0.67
    }
   },
   {
@@ -348,7 +366,7 @@
     "sha256_match": {
      "fap-e2956446c0953b78": true,
      "fap-d8ceddbefd7c39b5": true,
-     "web-e8db8726196bf926": true
+     "web-e8db8726196bf926": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
@@ -395,18 +413,65 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": null,
+    "free_care_max_fpl": {
+     "value": "250",
+     "layer": "documented",
+     "quote": "Uninsured individuals and in-network insured individuals meeting all criteria for financial assistance with an income level at or below 250% of the Federal Poverty Guideline (FPL) receive 100% adjustment on covered services.",
+     "source_id": "fap-ea40821120a453d1",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
-    "asset_test": null,
-    "residency": null,
-    "insured_patients_covered": null,
+    "asset_test": {
+     "value": true,
+     "layer": "documented",
+     "quote": "to both insured and uninsured patients who meet income and asset limit requirements",
+     "source_id": "web-6c493d709524fe00",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "residency": {
+     "value": [
+      "Applicants must be South Carolina or Tennessee residents, or persons domiciled in South Carolina or Tennessee."
+     ],
+     "layer": "documented",
+     "quote": "South Carolina or Tennessee resident, or a person domiciled in South Carolina or Tennessee.",
+     "source_id": "fap-ea40821120a453d1",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Financial assistance is available for emergency and other medically necessary care provided by Prisma Health (and certain other providers) to both insured and uninsured patients who meet income and asset limit requirements.",
+     "source_id": "web-6c493d709524fe00",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "min_balance": null,
     "services_excluded": null
    },
    "programs": {
     "presumptive": null,
-    "state_programs": null
+    "state_programs": {
+     "value": [
+      {
+       "name": "State Medicaid",
+       "how_to_apply": "A Prisma Health representative can help the patient with the application process."
+      }
+     ],
+     "layer": "documented",
+     "quote": "A representative can help the patient with the application process for state Medicaid or other hospital financial assistance.",
+     "source_id": "web-6c493d709524fe00",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
    },
    "apply": {
     "form_url": null,
@@ -414,7 +479,15 @@
     "documents_required": null,
     "documents_reported": null,
     "submit_methods": null,
-    "window_days_from_first_bill": null,
+    "window_days_from_first_bill": {
+     "value": 240,
+     "layer": "documented",
+     "quote": "An applicant has 240 days from the date of the first post discharge billing statement to apply.",
+     "source_id": "fap-ea40821120a453d1",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "decision_days": null,
     "decision_days_reported": null
    },
@@ -423,7 +496,15 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": null,
+    "phone": {
+     "value": "833-425-0404",
+     "layer": "documented",
+     "quote": "Calling Prisma Health Patient Financial Services at 833-425-0404.",
+     "source_id": "fap-ea40821120a453d1",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "hours": null,
     "languages": null
    },
@@ -473,55 +554,35 @@
     "sources_total": 3,
     "sources_missing": [],
     "sha256_match": {
-     "fap-ea40821120a453d1": false,
+     "fap-ea40821120a453d1": true,
      "fap-8f57756871871eab": false,
      "web-6c493d709524fe00": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
-    "accepted": [],
+    "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.asset_test",
+     "eligibility.residency",
+     "eligibility.insured_patients_covered",
+     "programs.state_programs",
+     "apply.window_days_from_first_bill",
+     "contacts.phone"
+    ],
     "rejected": [
      [
-      "eligibility.free_care_max_fpl",
-      "quote not found in source"
-     ],
-     [
       "eligibility.discount_tiers",
-      "quote not found in source"
-     ],
-     [
-      "eligibility.asset_test",
-      "quote not found in source"
-     ],
-     [
-      "eligibility.residency",
-      "quote not found in source"
-     ],
-     [
-      "eligibility.insured_patients_covered",
-      "quote not found in source"
-     ],
-     [
-      "programs.state_programs",
-      "quote not found in source"
+      "value not in quote"
      ],
      [
       "apply.submit_methods",
-      "quote not found in source"
-     ],
-     [
-      "apply.window_days_from_first_bill",
-      "quote not found in source"
-     ],
-     [
-      "contacts.phone",
       "quote not found in source"
      ]
     ],
     "pruned": [
      "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)"
     ],
-    "income_rule_verified": false,
-    "core_completeness": 0.0
+    "income_rule_verified": true,
+    "core_completeness": 0.33
    }
   },
   {
@@ -539,26 +600,91 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": null,
+    "free_care_max_fpl": {
+     "value": "250",
+     "layer": "documented",
+     "quote": "Uninsured individuals and in-network insured individuals meeting all criteria for financial assistance with an income level at or below 250% of the Federal Poverty Guideline (FPL) receive 100% adjustment on covered services.",
+     "source_id": "fap-ea40821120a453d1",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
-    "asset_test": null,
-    "residency": null,
-    "insured_patients_covered": null,
+    "asset_test": {
+     "value": true,
+     "layer": "documented",
+     "quote": "to both insured and uninsured patients who meet income and asset limit requirements",
+     "source_id": "web-9da21a21d66369a9",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "residency": {
+     "value": [
+      "Applicants must be South Carolina or Tennessee residents or persons domiciled in South Carolina or Tennessee."
+     ],
+     "layer": "documented",
+     "quote": "South Carolina or Tennessee resident, or a person domiciled in South Carolina or Tennessee.",
+     "source_id": "fap-ea40821120a453d1",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Financial assistance is available for emergency and other medically necessary care provided by Prisma Health (and certain other providers) to both insured and uninsured patients",
+     "source_id": "web-9da21a21d66369a9",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "min_balance": null,
     "services_excluded": null
    },
    "programs": {
     "presumptive": null,
-    "state_programs": null
+    "state_programs": {
+     "value": [
+      {
+       "name": "State Medicaid",
+       "how_to_apply": "A Prisma Health representative can help the patient with the application process."
+      }
+     ],
+     "layer": "documented",
+     "quote": "A representative can help the patient with the application process for state Medicaid or other hospital financial assistance.",
+     "source_id": "web-9da21a21d66369a9",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
    },
    "apply": {
     "form_url": null,
     "form_version": null,
-    "documents_required": null,
+    "documents_required": {
+     "value": [
+      "proof_of_income"
+     ],
+     "layer": "documented",
+     "quote": "1. One (1) month of gross income",
+     "source_id": "fap-ea40821120a453d1",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "documents_reported": null,
     "submit_methods": null,
-    "window_days_from_first_bill": null,
+    "window_days_from_first_bill": {
+     "value": 240,
+     "layer": "documented",
+     "quote": "An applicant has 240 days from the date of the first post discharge billing statement to apply.",
+     "source_id": "fap-ea40821120a453d1",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "decision_days": null,
     "decision_days_reported": null
    },
@@ -567,9 +693,29 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": null,
+    "phone": {
+     "value": "833-425-0404",
+     "layer": "documented",
+     "quote": "Calling Prisma Health Patient Financial Services at 833-425-0404.",
+     "source_id": "fap-ea40821120a453d1",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "hours": null,
-    "languages": null
+    "languages": {
+     "value": [
+      "Spanish",
+      "Arabic",
+      "Vietnamese"
+     ],
+     "layer": "documented",
+     "quote": "Financial Assistance: Plain Language Summary (Spanish)",
+     "source_id": "web-9da21a21d66369a9",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
    },
    "coverage": {
     "facilities": null,
@@ -619,55 +765,29 @@
     "sources_total": 3,
     "sources_missing": [],
     "sha256_match": {
-     "fap-ea40821120a453d1": false,
+     "fap-ea40821120a453d1": true,
      "fap-8f57756871871eab": false,
      "web-9da21a21d66369a9": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
-    "accepted": [],
+    "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.asset_test",
+     "eligibility.residency",
+     "eligibility.insured_patients_covered",
+     "programs.state_programs",
+     "apply.documents_required",
+     "apply.window_days_from_first_bill",
+     "contacts.phone",
+     "contacts.languages"
+    ],
     "rejected": [
      [
-      "eligibility.free_care_max_fpl",
-      "quote not found in source"
-     ],
-     [
       "eligibility.discount_tiers",
-      "quote not found in source"
-     ],
-     [
-      "eligibility.asset_test",
-      "quote not found in source"
-     ],
-     [
-      "eligibility.residency",
-      "quote not found in source"
-     ],
-     [
-      "eligibility.insured_patients_covered",
-      "quote not found in source"
-     ],
-     [
-      "programs.state_programs",
-      "quote not found in source"
-     ],
-     [
-      "apply.documents_required",
-      "quote not found in source"
+      "value not in quote"
      ],
      [
       "apply.submit_methods",
-      "quote not found in source"
-     ],
-     [
-      "apply.window_days_from_first_bill",
-      "quote not found in source"
-     ],
-     [
-      "contacts.phone",
-      "quote not found in source"
-     ],
-     [
-      "contacts.languages",
       "quote not found in source"
      ]
     ],
@@ -676,8 +796,8 @@
      "apply.documents_required: 3 items not named in the trimmed quote",
      "apply.submit_methods: 2 items not named in the trimmed quote"
     ],
-    "income_rule_verified": false,
-    "core_completeness": 0.0
+    "income_rule_verified": true,
+    "core_completeness": 0.5
    }
   },
   {
@@ -1248,7 +1368,7 @@
     "sha256_match": {
      "fap-e32a2a4bfd127ec0": true,
      "fap-d8ceddbefd7c39b5": true,
-     "web-e8db8726196bf926": true
+     "web-e8db8726196bf926": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
@@ -1462,11 +1582,29 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": null,
+    "free_care_max_fpl": {
+     "value": "250",
+     "layer": "documented",
+     "quote": "Uninsured individuals and in-network insured individuals meeting all criteria for financial assistance with an income level at or below 250% of the Federal Poverty Guideline (FPL) receive 100% adjustment on covered services.",
+     "source_id": "fap-ea40821120a453d1",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
     "asset_test": null,
-    "residency": null,
+    "residency": {
+     "value": [
+      "Applicants must be South Carolina or Tennessee residents or domiciled in South Carolina or Tennessee."
+     ],
+     "layer": "documented",
+     "quote": "South Carolina or Tennessee resident, or a person domiciled in South Carolina or Tennessee.",
+     "source_id": "fap-ea40821120a453d1",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "insured_patients_covered": null,
     "min_balance": null,
     "services_excluded": null
@@ -1478,10 +1616,50 @@
    "apply": {
     "form_url": null,
     "form_version": null,
-    "documents_required": null,
+    "documents_required": {
+     "value": [
+      "proof_of_residency",
+      "proof_of_income"
+     ],
+     "layer": "documented",
+     "quote": "\u2022 Proof of residency \u2022 One month\u2019s worth of gross income documentation \u2022 Tax documentation if self-employed or claiming an adult dependent.",
+     "source_id": "fap-8f57756871871eab",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "documents_reported": null,
-    "submit_methods": null,
-    "window_days_from_first_bill": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "Prisma Health Financial Assistance, P.O. Box 743904, Atlanta, GA 30374-3904"
+      },
+      {
+       "kind": "fax",
+       "detail": "(864) 522-9594"
+      },
+      {
+       "kind": "email",
+       "detail": "hospitalsponsorship@prismahealth.org"
+      }
+     ],
+     "layer": "documented",
+     "quote": "By Mail: Prisma Health Financial Assistance P.O. Box 743904 Atlanta, GA 30374-3904 By Fax: (864) 522-9594 By Email: hospitalsponsorship@prismahealth.org",
+     "source_id": "fap-8f57756871871eab",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": {
+     "value": 240,
+     "layer": "documented",
+     "quote": "An applicant has 240 days from the date of the first post discharge billing statement to apply.",
+     "source_id": "fap-ea40821120a453d1",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "decision_days": null,
     "decision_days_reported": null
    },
@@ -1490,7 +1668,15 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": null,
+    "phone": {
+     "value": "833-425-0404",
+     "layer": "documented",
+     "quote": "Calling Prisma Health Patient Financial Services at 833-425-0404.",
+     "source_id": "fap-ea40821120a453d1",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "hours": null,
     "languages": null
    },
@@ -1540,23 +1726,22 @@
     "sources_total": 3,
     "sources_missing": [],
     "sha256_match": {
-     "fap-ea40821120a453d1": false,
-     "fap-8f57756871871eab": false,
+     "fap-ea40821120a453d1": true,
+     "fap-8f57756871871eab": true,
      "web-11554b2b7e34b1f5": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
-    "accepted": [],
+    "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.residency",
+     "apply.documents_required",
+     "apply.submit_methods",
+     "apply.window_days_from_first_bill",
+     "contacts.phone"
+    ],
     "rejected": [
      [
-      "eligibility.free_care_max_fpl",
-      "quote not found in source"
-     ],
-     [
       "eligibility.asset_test",
-      "quote not found in source"
-     ],
-     [
-      "eligibility.residency",
       "quote not found in source"
      ],
      [
@@ -1568,22 +1753,6 @@
       "quote not found in source"
      ],
      [
-      "apply.documents_required",
-      "quote not found in source"
-     ],
-     [
-      "apply.submit_methods",
-      "quote not found in source"
-     ],
-     [
-      "apply.window_days_from_first_bill",
-      "quote not found in source"
-     ],
-     [
-      "contacts.phone",
-      "quote not found in source"
-     ],
-     [
       "contacts.languages",
       "quote not found in source"
      ]
@@ -1591,8 +1760,8 @@
     "pruned": [
      "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)"
     ],
-    "income_rule_verified": false,
-    "core_completeness": 0.0
+    "income_rule_verified": true,
+    "core_completeness": 0.67
    }
   },
   {
@@ -1610,12 +1779,46 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": null,
+    "free_care_max_fpl": {
+     "value": "250",
+     "layer": "documented",
+     "quote": "income level at or below 250% of the Federal Poverty Guideline (FPL) receive 100% adjustment on covered services.",
+     "source_id": "fap-3778b3b216be1f62",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
-    "asset_test": null,
-    "residency": null,
-    "insured_patients_covered": null,
+    "asset_test": {
+     "value": true,
+     "layer": "documented",
+     "quote": "to both insured and uninsured patients who meet income and asset limit requirements",
+     "source_id": "web-cd91c7cf6e5a479c",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "residency": {
+     "value": [
+      "Applicants must be South Carolina or Tennessee residents, or persons domiciled in South Carolina or Tennessee."
+     ],
+     "layer": "documented",
+     "quote": "South Carolina or Tennessee resident, or a person domiciled in South Carolina or Tennessee.",
+     "source_id": "fap-3778b3b216be1f62",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Financial assistance is available for emergency and other medically necessary care provided by Prisma Health (and certain other providers) to both insured and uninsured patients",
+     "source_id": "web-cd91c7cf6e5a479c",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "min_balance": null,
     "services_excluded": null
    },
@@ -1629,7 +1832,15 @@
     "documents_required": null,
     "documents_reported": null,
     "submit_methods": null,
-    "window_days_from_first_bill": null,
+    "window_days_from_first_bill": {
+     "value": 240,
+     "layer": "documented",
+     "quote": "An applicant has 240 days from the date of the first post discharge billing statement to apply.",
+     "source_id": "fap-3778b3b216be1f62",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "decision_days": null,
     "decision_days_reported": null
    },
@@ -1638,7 +1849,15 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": null,
+    "phone": {
+     "value": "833-425-0404",
+     "layer": "documented",
+     "quote": "Calling Prisma Health Patient Financial Services at 833-425-0404.",
+     "source_id": "fap-3778b3b216be1f62",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "hours": null,
     "languages": null
    },
@@ -1688,32 +1907,23 @@
     "sources_total": 3,
     "sources_missing": [],
     "sha256_match": {
-     "fap-3778b3b216be1f62": false,
+     "fap-3778b3b216be1f62": true,
      "fap-8f57756871871eab": false,
      "web-cd91c7cf6e5a479c": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
-    "accepted": [],
+    "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.asset_test",
+     "eligibility.residency",
+     "eligibility.insured_patients_covered",
+     "apply.window_days_from_first_bill",
+     "contacts.phone"
+    ],
     "rejected": [
      [
-      "eligibility.free_care_max_fpl",
-      "quote not found in source"
-     ],
-     [
       "eligibility.discount_tiers",
-      "quote not found in source"
-     ],
-     [
-      "eligibility.asset_test",
-      "quote not found in source"
-     ],
-     [
-      "eligibility.residency",
-      "quote not found in source"
-     ],
-     [
-      "eligibility.insured_patients_covered",
-      "quote not found in source"
+      "value not in quote"
      ],
      [
       "apply.documents_required",
@@ -1722,22 +1932,14 @@
      [
       "apply.submit_methods",
       "quote not found in source"
-     ],
-     [
-      "apply.window_days_from_first_bill",
-      "quote not found in source"
-     ],
-     [
-      "contacts.phone",
-      "quote not found in source"
      ]
     ],
     "pruned": [
      "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
      "apply.submit_methods: 2 items not named in the trimmed quote"
     ],
-    "income_rule_verified": false,
-    "core_completeness": 0.0
+    "income_rule_verified": true,
+    "core_completeness": 0.33
    }
   },
   {
@@ -2379,11 +2581,29 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": null,
+    "free_care_max_fpl": {
+     "value": "250",
+     "layer": "documented",
+     "quote": "Uninsured individuals and in-network insured individuals meeting all criteria for financial assistance with an income level at or below 250% of the Federal Poverty Guideline (FPL) receive 100% adjustment on covered services.",
+     "source_id": "fap-3778b3b216be1f62",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
     "asset_test": null,
-    "residency": null,
+    "residency": {
+     "value": [
+      "Applicants must be a South Carolina or Tennessee resident, or a person domiciled in South Carolina or Tennessee."
+     ],
+     "layer": "documented",
+     "quote": "South Carolina or Tennessee resident, or a person domiciled in South Carolina or Tennessee.",
+     "source_id": "fap-3778b3b216be1f62",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "insured_patients_covered": null,
     "min_balance": null,
     "services_excluded": null
@@ -2395,10 +2615,41 @@
    "apply": {
     "form_url": null,
     "form_version": null,
-    "documents_required": null,
+    "documents_required": {
+     "value": [
+      "pay_stubs"
+     ],
+     "layer": "documented",
+     "quote": "Two (2) most recent pay stubs",
+     "source_id": "fap-3778b3b216be1f62",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "documents_reported": null,
-    "submit_methods": null,
-    "window_days_from_first_bill": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "Prisma Health, Financial Assistance, P.O. Box 743904, Atlanta, GA 30374-3904"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Prisma Health Financial Assistance P.O. Box 743904 Atlanta, GA 30374-3904",
+     "source_id": "fap-8f57756871871eab",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": {
+     "value": 240,
+     "layer": "documented",
+     "quote": "An applicant has 240 days from the date of the first post discharge billing statement to apply.",
+     "source_id": "fap-3778b3b216be1f62",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "decision_days": null,
     "decision_days_reported": null
    },
@@ -2407,7 +2658,15 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": null,
+    "phone": {
+     "value": "833-425-0404",
+     "layer": "documented",
+     "quote": "Calling Prisma Health Patient Financial Services at 833-425-0404.",
+     "source_id": "fap-3778b3b216be1f62",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "hours": null,
     "languages": null
    },
@@ -2458,23 +2717,22 @@
     "sources_total": 3,
     "sources_missing": [],
     "sha256_match": {
-     "fap-3778b3b216be1f62": false,
-     "fap-8f57756871871eab": false,
+     "fap-3778b3b216be1f62": true,
+     "fap-8f57756871871eab": true,
      "web-de2802ea4767b7e4": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
-    "accepted": [],
+    "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.residency",
+     "apply.documents_required",
+     "apply.submit_methods",
+     "apply.window_days_from_first_bill",
+     "contacts.phone"
+    ],
     "rejected": [
      [
-      "eligibility.free_care_max_fpl",
-      "quote not found in source"
-     ],
-     [
       "eligibility.asset_test",
-      "quote not found in source"
-     ],
-     [
-      "eligibility.residency",
       "quote not found in source"
      ],
      [
@@ -2484,22 +2742,6 @@
      [
       "programs.state_programs",
       "quote not found in source"
-     ],
-     [
-      "apply.documents_required",
-      "quote not found in source"
-     ],
-     [
-      "apply.submit_methods",
-      "quote not found in source"
-     ],
-     [
-      "apply.window_days_from_first_bill",
-      "quote not found in source"
-     ],
-     [
-      "contacts.phone",
-      "quote not found in source"
      ]
     ],
     "pruned": [
@@ -2507,8 +2749,8 @@
      "apply.documents_required: 3 items not named in the trimmed quote",
      "apply.submit_methods: 2 items not named in the trimmed quote"
     ],
-    "income_rule_verified": false,
-    "core_completeness": 0.0
+    "income_rule_verified": true,
+    "core_completeness": 0.67
    }
   },
   {
@@ -3055,12 +3297,38 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": null,
+    "free_care_max_fpl": {
+     "value": "250",
+     "layer": "documented",
+     "quote": "with an income level at or below 250% of the Federal Poverty Guideline (FPL) receive 100% adjustment on covered services.",
+     "source_id": "fap-ea40821120a453d1",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
     "asset_test": null,
-    "residency": null,
-    "insured_patients_covered": null,
+    "residency": {
+     "value": [
+      "Applicants must be South Carolina or Tennessee residents or persons domiciled in South Carolina or Tennessee."
+     ],
+     "layer": "documented",
+     "quote": "South Carolina or Tennessee resident, or a person domiciled in South Carolina or Tennessee.",
+     "source_id": "fap-ea40821120a453d1",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Uninsured individuals and in-network insured individuals meeting all criteria for financial assistance with an income level at or below 250% of the Federal Poverty Guideline (FPL) receive 100% adjustment on covered services.",
+     "source_id": "fap-ea40821120a453d1",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "min_balance": null,
     "services_excluded": null
    },
@@ -3071,10 +3339,28 @@
    "apply": {
     "form_url": null,
     "form_version": null,
-    "documents_required": null,
+    "documents_required": {
+     "value": [
+      "proof_of_income"
+     ],
+     "layer": "documented",
+     "quote": "One (1) month of gross income",
+     "source_id": "fap-ea40821120a453d1",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "documents_reported": null,
     "submit_methods": null,
-    "window_days_from_first_bill": null,
+    "window_days_from_first_bill": {
+     "value": 240,
+     "layer": "documented",
+     "quote": "An applicant has 240 days from the date of the first post discharge billing statement to apply.",
+     "source_id": "fap-ea40821120a453d1",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "decision_days": null,
     "decision_days_reported": null
    },
@@ -3083,7 +3369,15 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": null,
+    "phone": {
+     "value": "833-425-0404",
+     "layer": "documented",
+     "quote": "Calling Prisma Health Patient Financial Services at 833-425-0404.",
+     "source_id": "fap-ea40821120a453d1",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "hours": null,
     "languages": null
    },
@@ -3133,43 +3427,26 @@
     "sources_total": 3,
     "sources_missing": [],
     "sha256_match": {
-     "fap-ea40821120a453d1": false,
+     "fap-ea40821120a453d1": true,
      "fap-8f57756871871eab": false,
      "web-78076e5605d514af": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
-    "accepted": [],
+    "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.residency",
+     "eligibility.insured_patients_covered",
+     "apply.documents_required",
+     "apply.window_days_from_first_bill",
+     "contacts.phone"
+    ],
     "rejected": [
      [
-      "eligibility.free_care_max_fpl",
-      "quote not found in source"
-     ],
-     [
       "eligibility.discount_tiers",
-      "quote not found in source"
-     ],
-     [
-      "eligibility.residency",
-      "quote not found in source"
-     ],
-     [
-      "eligibility.insured_patients_covered",
-      "quote not found in source"
-     ],
-     [
-      "apply.documents_required",
-      "quote not found in source"
+      "value not in quote"
      ],
      [
       "apply.submit_methods",
-      "quote not found in source"
-     ],
-     [
-      "apply.window_days_from_first_bill",
-      "quote not found in source"
-     ],
-     [
-      "contacts.phone",
       "quote not found in source"
      ]
     ],
@@ -3177,8 +3454,8 @@
      "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
      "apply.documents_required: 3 items not named in the trimmed quote"
     ],
-    "income_rule_verified": false,
-    "core_completeness": 0.0
+    "income_rule_verified": true,
+    "core_completeness": 0.5
    }
   },
   {
@@ -3355,7 +3632,28 @@
     "form_version": null,
     "documents_required": null,
     "documents_reported": null,
-    "submit_methods": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "Prisma Health, Financial Assistance, P.O. Box 743904, Atlanta, GA 30374-3904"
+      },
+      {
+       "kind": "fax",
+       "detail": "(864) 522-9594"
+      },
+      {
+       "kind": "email",
+       "detail": "hospitalsponsorship@prismahealth.org"
+      }
+     ],
+     "layer": "documented",
+     "quote": "P.O. Box 743904 Atlanta, GA 30374-3904 By Fax: (864) 522-9594 By Email: hospitalsponsorship@prismahealth.org",
+     "source_id": "fap-8f57756871871eab",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "window_days_from_first_bill": null,
     "decision_days": null,
     "decision_days_reported": null
@@ -3416,11 +3714,13 @@
     "sources_missing": [],
     "sha256_match": {
      "fap-3778b3b216be1f62": false,
-     "fap-8f57756871871eab": false,
+     "fap-8f57756871871eab": true,
      "web-649c79760f6c6dfd": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
-    "accepted": [],
+    "accepted": [
+     "apply.submit_methods"
+    ],
     "rejected": [
      [
       "eligibility.free_care_max_fpl",
@@ -3447,10 +3747,6 @@
       "quote not found in source"
      ],
      [
-      "apply.submit_methods",
-      "quote not found in source"
-     ],
-     [
       "apply.window_days_from_first_bill",
       "quote not found in source"
      ],
@@ -3463,7 +3759,7 @@
      "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)"
     ],
     "income_rule_verified": false,
-    "core_completeness": 0.0
+    "core_completeness": 0.17
    }
   },
   {
@@ -4053,11 +4349,29 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": null,
+    "free_care_max_fpl": {
+     "value": "250",
+     "layer": "documented",
+     "quote": "Uninsured individuals and in-network insured individuals meeting all criteria for financial assistance with an income level at or below 250% of the Federal Poverty Guideline (FPL) receive 100% adjustment on covered services.",
+     "source_id": "fap-ea40821120a453d1",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
     "asset_test": null,
-    "residency": null,
+    "residency": {
+     "value": [
+      "Applicants must be South Carolina or Tennessee residents or persons domiciled in South Carolina or Tennessee."
+     ],
+     "layer": "documented",
+     "quote": "South Carolina or Tennessee resident, or a person domiciled in South Carolina or Tennessee.",
+     "source_id": "fap-ea40821120a453d1",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "insured_patients_covered": null,
     "min_balance": null,
     "services_excluded": null
@@ -4072,7 +4386,15 @@
     "documents_required": null,
     "documents_reported": null,
     "submit_methods": null,
-    "window_days_from_first_bill": null,
+    "window_days_from_first_bill": {
+     "value": 240,
+     "layer": "documented",
+     "quote": "An applicant has 240 days from the date of the first post discharge billing statement to apply.",
+     "source_id": "fap-ea40821120a453d1",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "decision_days": null,
     "decision_days_reported": null
    },
@@ -4081,7 +4403,15 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": null,
+    "phone": {
+     "value": "833-425-0404",
+     "layer": "documented",
+     "quote": "Calling Prisma Health Patient Financial Services at 833-425-0404.",
+     "source_id": "fap-ea40821120a453d1",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "hours": null,
     "languages": null
    },
@@ -4132,23 +4462,20 @@
     "sources_total": 3,
     "sources_missing": [],
     "sha256_match": {
-     "fap-ea40821120a453d1": false,
+     "fap-ea40821120a453d1": true,
      "fap-8f57756871871eab": false,
      "web-e5545c1d72f527d2": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
-    "accepted": [],
+    "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.residency",
+     "apply.window_days_from_first_bill",
+     "contacts.phone"
+    ],
     "rejected": [
      [
-      "eligibility.free_care_max_fpl",
-      "quote not found in source"
-     ],
-     [
       "eligibility.asset_test",
-      "quote not found in source"
-     ],
-     [
-      "eligibility.residency",
       "quote not found in source"
      ],
      [
@@ -4168,14 +4495,6 @@
       "quote not found in source"
      ],
      [
-      "apply.window_days_from_first_bill",
-      "quote not found in source"
-     ],
-     [
-      "contacts.phone",
-      "quote not found in source"
-     ],
-     [
       "contacts.languages",
       "quote not found in source"
      ]
@@ -4184,8 +4503,8 @@
      "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
      "apply.submit_methods: 2 items not named in the trimmed quote"
     ],
-    "income_rule_verified": false,
-    "core_completeness": 0.0
+    "income_rule_verified": true,
+    "core_completeness": 0.33
    }
   },
   {

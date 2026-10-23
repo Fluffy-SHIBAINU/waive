@@ -225,7 +225,7 @@
     "sha256_match": {
      "fap-706c72a82b450132": true,
      "fap-d4526a9068243798": true,
-     "web-d31cfcc8145a3e81": true
+     "web-d31cfcc8145a3e81": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
@@ -531,38 +531,12 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": {
-     "value": "250",
-     "layer": "documented",
-     "quote": "If gross annual family income is verified to be at or below 250% of the Federal Poverty Level Guidelines (see Attachment 1), a patient may qualify for free care (a 100% discount against the patient\u2019s account balance).",
-     "source_id": "fap-11332fbdd8f42903",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "free_care_max_fpl": null,
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
     "asset_test": null,
-    "residency": {
-     "value": [
-      "Patients must live in the United States."
-     ],
-     "layer": "documented",
-     "quote": "If you live in the United States and are (a) uninsured and not eligible for any government health care benefit program",
-     "source_id": "fap-66030d848647953e",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "insured_patients_covered": {
-     "value": true,
-     "layer": "documented",
-     "quote": "For patients who have insurance, the discount will be applied to the patient\u2019s account balance that remains after payments from insurance or third-party payers are applied.",
-     "source_id": "fap-11332fbdd8f42903",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "residency": null,
+    "insured_patients_covered": null,
     "min_balance": null,
     "services_excluded": null
    },
@@ -581,71 +555,13 @@
     "decision_days_reported": null
    },
    "collections": {
-    "eca_wait_days": {
-     "value": 120,
-     "layer": "documented",
-     "quote": "will not engage in any extraordinary collection action (\u201cECA\u201d) prior to 120 days after the issuance of the first post-discharge billing statement for the care.",
-     "source_id": "fap-11332fbdd8f42903",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "eca_wait_days": null,
     "collection_agencies": null
    },
    "contacts": {
-    "phone": {
-     "value": "855-547-4584",
-     "layer": "documented",
-     "quote": "To learn more or for help completing an application, contact Patient Financial and Admitting Services at 855-547-4584.",
-     "source_id": "fap-66030d848647953e",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "hours": {
-     "value": "M-F 7:30 am \u2013 5 pm",
-     "layer": "documented",
-     "quote": "By phone: 855-547-4584 M-F 7:30 am \u2013 5 pm",
-     "source_id": "fap-66030d848647953e",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "languages": {
-     "value": [
-      "Albanian",
-      "Arabic",
-      "Bengali",
-      "Dari",
-      "Farsi",
-      "French",
-      "Greek",
-      "Gujarati",
-      "Haitian Creole",
-      "Hindi",
-      "Italian",
-      "Korean",
-      "Lao",
-      "Pashto",
-      "Polish",
-      "Portuguese (Brazil)",
-      "Russian",
-      "Simplified Chinese",
-      "Spanish (US)",
-      "Tagalog",
-      "Traditional Chinese",
-      "Turkish",
-      "Ukrainian",
-      "Urdu",
-      "Vietnamese"
-     ],
-     "layer": "documented",
-     "quote": "Albanian Arabic Bengali Dari Farsi French Greek Gujarati Haitian Creole Hindi Italian Korean Lao Pashto Polish Portuguese (Brazil) Russian Simplified Chinese Spanish (US) Tagalog Traditional Chinese Turkish Ukrainian Urdu Vietnamese",
-     "source_id": "fap-11332fbdd8f42903",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "phone": null,
+    "hours": null,
+    "languages": null
    },
    "coverage": {
     "facilities": null,
@@ -691,35 +607,61 @@
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 3,
+    "sources_fetched": 0,
     "sources_total": 3,
-    "sources_missing": [],
+    "sources_missing": [
+     "https://www.lmhospital.org/-/media/Files/YNHHS/financial-assistance-policy/2026/ENG226-YNHHS-Financial-Assistance-Program-Policyapprv-22825.ashx",
+     "https://www.lmhospital.org/-/media/Files/YNHHS/financial-assistance-policy/2025/6304/F6304_FAP_Plain_Language_Summary_and_Application_040125.ashx",
+     "https://www.lmhospital.org/patients-visitors/patients/billing-insurance/Financial-assistance"
+    ],
     "sha256_match": {
-     "fap-11332fbdd8f42903": true,
-     "fap-66030d848647953e": true,
-     "web-a19f84bece0795cf": false
+     "fap-11332fbdd8f42903": null,
+     "fap-66030d848647953e": null,
+     "web-a19f84bece0795cf": null
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
-    "accepted": [
-     "eligibility.free_care_max_fpl",
-     "eligibility.residency",
-     "eligibility.insured_patients_covered",
-     "collections.eca_wait_days",
-     "contacts.phone",
-     "contacts.hours",
-     "contacts.languages"
-    ],
+    "accepted": [],
     "rejected": [
      [
+      "eligibility.free_care_max_fpl",
+      "source text missing"
+     ],
+     [
       "eligibility.discount_tiers",
-      "value not in quote"
+      "source text missing"
+     ],
+     [
+      "eligibility.residency",
+      "source text missing"
+     ],
+     [
+      "eligibility.insured_patients_covered",
+      "source text missing"
+     ],
+     [
+      "programs.presumptive",
+      "source text missing"
+     ],
+     [
+      "collections.eca_wait_days",
+      "source text missing"
+     ],
+     [
+      "contacts.phone",
+      "source text missing"
+     ],
+     [
+      "contacts.hours",
+      "source text missing"
+     ],
+     [
+      "contacts.languages",
+      "source text missing"
      ]
     ],
-    "pruned": [
-     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)"
-    ],
-    "income_rule_verified": true,
-    "core_completeness": 0.33
+    "pruned": [],
+    "income_rule_verified": false,
+    "core_completeness": 0.0
    }
   },
   {
@@ -927,7 +869,7 @@
     "sha256_match": {
      "fap-706c72a82b450132": true,
      "fap-d4526a9068243798": true,
-     "web-d31cfcc8145a3e81": true
+     "web-d31cfcc8145a3e81": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
@@ -967,38 +909,12 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": {
-     "value": "250",
-     "layer": "documented",
-     "quote": "If gross annual family income is verified to be at or below 250% of the Federal Poverty Level Guidelines (see Attachment 1), a patient may qualify for free care (a 100% discount against the patient\u2019s account balance).",
-     "source_id": "fap-11332fbdd8f42903",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "free_care_max_fpl": null,
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
     "asset_test": null,
-    "residency": {
-     "value": [
-      "Patients must live in the United States."
-     ],
-     "layer": "documented",
-     "quote": "If you live in the United States and are (a) uninsured and",
-     "source_id": "fap-66030d848647953e",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "insured_patients_covered": {
-     "value": true,
-     "layer": "documented",
-     "quote": "For patients who have insurance, the discount will be applied to the patient\u2019s account balance that remains after payments from insurance or third-party payers are applied.",
-     "source_id": "fap-11332fbdd8f42903",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "residency": null,
+    "insured_patients_covered": null,
     "min_balance": null,
     "services_excluded": null
    },
@@ -1017,72 +933,13 @@
     "decision_days_reported": null
    },
    "collections": {
-    "eca_wait_days": {
-     "value": 120,
-     "layer": "documented",
-     "quote": "engage in any extraordinary collection action (\u201cECA\u201d) prior to 120 days after the issuance of the first",
-     "source_id": "fap-11332fbdd8f42903",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "eca_wait_days": null,
     "collection_agencies": null
    },
    "contacts": {
-    "phone": {
-     "value": "855-547-4584",
-     "layer": "documented",
-     "quote": "for help completing an application contact Patient Financial and Admitting Services at 855-547-4584",
-     "source_id": "web-22e8a5dc08f29d38",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "hours": {
-     "value": "Monday-Friday 7:30 am - 5 pm",
-     "layer": "documented",
-     "quote": "855-547-4584 M-F 7:30 am \u2013 5 pm",
-     "source_id": "fap-66030d848647953e",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "languages": {
-     "value": [
-      "English",
-      "Albanian",
-      "Arabic",
-      "Bengali",
-      "Dari",
-      "Farsi",
-      "French",
-      "Greek",
-      "Gujarati",
-      "Haitian Creole",
-      "Hindi",
-      "Italian",
-      "Korean",
-      "Lao",
-      "Pashto",
-      "Polish",
-      "Portuguese (Brazil)",
-      "Russian",
-      "Simplified Chinese",
-      "Spanish (US)",
-      "Tagalog",
-      "Traditional Chinese",
-      "Turkish",
-      "Ukrainian",
-      "Urdu",
-      "Vietnamese"
-     ],
-     "layer": "documented",
-     "quote": "The paper forms will be available in English and the",
-     "source_id": "fap-11332fbdd8f42903",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "phone": null,
+    "hours": null,
+    "languages": null
    },
    "coverage": {
     "facilities": null,
@@ -1129,36 +986,65 @@
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 3,
+    "sources_fetched": 0,
     "sources_total": 3,
-    "sources_missing": [],
+    "sources_missing": [
+     "https://www.bridgeporthospital.org/-/media/Files/YNHHS/financial-assistance-policy/2026/ENG226-YNHHS-Financial-Assistance-Program-Policyapprv-22825.ashx",
+     "https://www.bridgeporthospital.org/-/media/Files/YNHHS/financial-assistance-policy/2025/6304/F6304_FAP_Plain_Language_Summary_and_Application_040125.ashx",
+     "https://www.bridgeporthospital.org/patients-visitors/billing-insurance/Financial-assistance"
+    ],
     "sha256_match": {
-     "fap-11332fbdd8f42903": true,
-     "fap-66030d848647953e": true,
-     "web-22e8a5dc08f29d38": false
+     "fap-11332fbdd8f42903": null,
+     "fap-66030d848647953e": null,
+     "web-22e8a5dc08f29d38": null
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
-    "accepted": [
-     "eligibility.free_care_max_fpl",
-     "eligibility.residency",
-     "eligibility.insured_patients_covered",
-     "collections.eca_wait_days",
-     "contacts.phone",
-     "contacts.hours",
-     "contacts.languages"
-    ],
+    "accepted": [],
     "rejected": [
      [
+      "eligibility.free_care_max_fpl",
+      "source text missing"
+     ],
+     [
       "eligibility.discount_tiers",
-      "value not in quote"
+      "source text missing"
+     ],
+     [
+      "eligibility.residency",
+      "source text missing"
+     ],
+     [
+      "eligibility.insured_patients_covered",
+      "source text missing"
+     ],
+     [
+      "programs.presumptive",
+      "source text missing"
+     ],
+     [
+      "apply.documents_required",
+      "source text missing"
+     ],
+     [
+      "collections.eca_wait_days",
+      "source text missing"
+     ],
+     [
+      "contacts.phone",
+      "source text missing"
+     ],
+     [
+      "contacts.hours",
+      "source text missing"
+     ],
+     [
+      "contacts.languages",
+      "source text missing"
      ]
     ],
-    "pruned": [
-     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
-     "apply.documents_required: none of the listed documents is named in the quote (after trimming)"
-    ],
-    "income_rule_verified": true,
-    "core_completeness": 0.33
+    "pruned": [],
+    "income_rule_verified": false,
+    "core_completeness": 0.0
    }
   },
   {
@@ -1528,7 +1414,7 @@
     "sha256_match": {
      "fap-706c72a82b450132": true,
      "fap-d4526a9068243798": true,
-     "web-db5d7dc8c64aa508": true
+     "web-db5d7dc8c64aa508": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
@@ -1818,38 +1704,12 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": {
-     "value": "250",
-     "layer": "documented",
-     "quote": "If gross annual family income is verified to be at or below 250% of the Federal Poverty Level Guidelines (see Attachment 1), a patient may qualify for free care (a 100% discount against the patient\u2019s account balance).",
-     "source_id": "fap-11332fbdd8f42903",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "free_care_max_fpl": null,
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
     "asset_test": null,
-    "residency": {
-     "value": [
-      "Patients must live in the United States."
-     ],
-     "layer": "documented",
-     "quote": "If you live in the United States and are (a) uninsured and",
-     "source_id": "fap-66030d848647953e",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "insured_patients_covered": {
-     "value": true,
-     "layer": "documented",
-     "quote": "For patients who have insurance, the discount will be applied to the patient\u2019s account balance that remains after payments from insurance or third-party payers are applied.",
-     "source_id": "fap-11332fbdd8f42903",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "residency": null,
+    "insured_patients_covered": null,
     "min_balance": null,
     "services_excluded": null
    },
@@ -1868,71 +1728,13 @@
     "decision_days_reported": null
    },
    "collections": {
-    "eca_wait_days": {
-     "value": 120,
-     "layer": "documented",
-     "quote": "prior to 120 days after the issuance of the first",
-     "source_id": "fap-11332fbdd8f42903",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "eca_wait_days": null,
     "collection_agencies": null
    },
    "contacts": {
-    "phone": {
-     "value": "855-547-4584",
-     "layer": "documented",
-     "quote": "contact Patient Financial and Admitting Services at 855-547-4584.",
-     "source_id": "fap-66030d848647953e",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "hours": {
-     "value": "Monday-Friday 7:30 am - 5 pm",
-     "layer": "documented",
-     "quote": "855-547-4584 M-F 7:30 am \u2013 5 pm",
-     "source_id": "fap-66030d848647953e",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "languages": {
-     "value": [
-      "Albanian",
-      "Arabic",
-      "Bengali",
-      "Dari",
-      "Farsi",
-      "French",
-      "Greek",
-      "Gujarati",
-      "Haitian Creole",
-      "Hindi",
-      "Italian",
-      "Korean",
-      "Lao",
-      "Pashto",
-      "Polish",
-      "Portuguese (Brazil)",
-      "Russian",
-      "Simplified Chinese",
-      "Spanish (US)",
-      "Tagalog",
-      "Traditional Chinese",
-      "Turkish",
-      "Ukrainian",
-      "Urdu",
-      "Vietnamese"
-     ],
-     "layer": "documented",
-     "quote": "Albanian Arabic Bengali Dari Farsi French Greek Gujarati Haitian Creole Hindi Italian Korean Lao Pashto Polish Portuguese (Brazil) Russian Simplified Chinese Spanish (US) Tagalog Traditional Chinese Turkish Ukrainian Urdu Vietnamese",
-     "source_id": "fap-11332fbdd8f42903",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "phone": null,
+    "hours": null,
+    "languages": null
    },
    "coverage": {
     "facilities": null,
@@ -1978,40 +1780,69 @@
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 3,
+    "sources_fetched": 0,
     "sources_total": 3,
-    "sources_missing": [],
+    "sources_missing": [
+     "https://www.greenwichhospital.org/-/media/Files/YNHHS/financial-assistance-policy/2026/ENG226-YNHHS-Financial-Assistance-Program-Policyapprv-22825.ashx",
+     "https://www.greenwichhospital.org/-/media/Files/YNHHS/financial-assistance-policy/2025/6304/F6304_FAP_Plain_Language_Summary_and_Application_040125.ashx",
+     "https://www.greenwichhospital.org/patients-visitors/billing-insurance/Financial-assistance"
+    ],
     "sha256_match": {
-     "fap-11332fbdd8f42903": true,
-     "fap-66030d848647953e": true,
-     "web-47b3d7b9d7fd5605": false
+     "fap-11332fbdd8f42903": null,
+     "fap-66030d848647953e": null,
+     "web-47b3d7b9d7fd5605": null
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
-    "accepted": [
-     "eligibility.free_care_max_fpl",
-     "eligibility.residency",
-     "eligibility.insured_patients_covered",
-     "collections.eca_wait_days",
-     "contacts.phone",
-     "contacts.hours",
-     "contacts.languages"
-    ],
+    "accepted": [],
     "rejected": [
      [
+      "eligibility.free_care_max_fpl",
+      "source text missing"
+     ],
+     [
       "eligibility.discount_tiers",
-      "value not in quote"
+      "source text missing"
      ],
      [
       "eligibility.asset_test",
-      "quote does not support the asset-test value"
+      "source text missing"
+     ],
+     [
+      "eligibility.residency",
+      "source text missing"
+     ],
+     [
+      "eligibility.insured_patients_covered",
+      "source text missing"
+     ],
+     [
+      "programs.presumptive",
+      "source text missing"
+     ],
+     [
+      "apply.documents_required",
+      "source text missing"
+     ],
+     [
+      "collections.eca_wait_days",
+      "source text missing"
+     ],
+     [
+      "contacts.phone",
+      "source text missing"
+     ],
+     [
+      "contacts.hours",
+      "source text missing"
+     ],
+     [
+      "contacts.languages",
+      "source text missing"
      ]
     ],
-    "pruned": [
-     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
-     "apply.documents_required: none of the listed documents is named in the quote (after trimming)"
-    ],
-    "income_rule_verified": true,
-    "core_completeness": 0.33
+    "pruned": [],
+    "income_rule_verified": false,
+    "core_completeness": 0.0
    }
   },
   {
@@ -2368,38 +2199,12 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": {
-     "value": "250",
-     "layer": "documented",
-     "quote": "If gross annual family income is verified to be at or below 250% of the Federal Poverty Level Guidelines (see Attachment 1), a patient may qualify for free care (a 100% discount against the patient\u2019s account balance).",
-     "source_id": "fap-11332fbdd8f42903",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "free_care_max_fpl": null,
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
     "asset_test": null,
-    "residency": {
-     "value": [
-      "Applicants must live in the United States."
-     ],
-     "layer": "documented",
-     "quote": "If you live in the United States and are (a) uninsured and",
-     "source_id": "fap-66030d848647953e",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "insured_patients_covered": {
-     "value": true,
-     "layer": "documented",
-     "quote": "For patients who have insurance, the discount will be applied to the patient\u2019s account balance that remains after payments from insurance or third-party payers are applied.",
-     "source_id": "fap-11332fbdd8f42903",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "residency": null,
+    "insured_patients_covered": null,
     "min_balance": null,
     "services_excluded": null
    },
@@ -2418,71 +2223,13 @@
     "decision_days_reported": null
    },
    "collections": {
-    "eca_wait_days": {
-     "value": 120,
-     "layer": "documented",
-     "quote": "engage in any extraordinary collection action (\u201cECA\u201d) prior to 120 days after the issuance of the first",
-     "source_id": "fap-11332fbdd8f42903",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "eca_wait_days": null,
     "collection_agencies": null
    },
    "contacts": {
-    "phone": {
-     "value": "855-547-4584",
-     "layer": "documented",
-     "quote": "contact Patient Financial and Admitting Services at 855-547-4584",
-     "source_id": "web-78b5d82caca06cb8",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "hours": {
-     "value": "Monday-Friday 7:30 am - 5 pm",
-     "layer": "documented",
-     "quote": "855-547-4584 M-F 7:30 am \u2013 5 pm",
-     "source_id": "fap-66030d848647953e",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "languages": {
-     "value": [
-      "Albanian",
-      "Arabic",
-      "Bengali",
-      "Dari",
-      "Farsi",
-      "French",
-      "Greek",
-      "Gujarati",
-      "Haitian Creole",
-      "Hindi",
-      "Italian",
-      "Korean",
-      "Lao",
-      "Pashto",
-      "Polish",
-      "Portuguese (Brazil)",
-      "Russian",
-      "Simplified Chinese",
-      "Spanish (US)",
-      "Tagalog",
-      "Traditional Chinese",
-      "Turkish",
-      "Ukrainian",
-      "Urdu",
-      "Vietnamese"
-     ],
-     "layer": "documented",
-     "quote": "Albanian Arabic Bengali Dari Farsi French Greek Gujarati Haitian Creole Hindi Italian Korean Lao Pashto Polish Portuguese (Brazil) Russian Simplified Chinese Spanish (US) Tagalog Traditional Chinese Turkish Ukrainian Urdu Vietnamese",
-     "source_id": "fap-11332fbdd8f42903",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "phone": null,
+    "hours": null,
+    "languages": null
    },
    "coverage": {
     "facilities": null,
@@ -2529,36 +2276,65 @@
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 3,
+    "sources_fetched": 0,
     "sources_total": 3,
-    "sources_missing": [],
+    "sources_missing": [
+     "https://www.ynhh.org/-/media/Files/YNHHS/financial-assistance-policy/2026/ENG226-YNHHS-Financial-Assistance-Program-Policyapprv-22825.ashx",
+     "https://www.ynhh.org/-/media/Files/YNHHS/financial-assistance-policy/2025/6304/F6304_FAP_Plain_Language_Summary_and_Application_040125.ashx",
+     "https://www.ynhh.org/patients-visitors/billing-insurance/Financial-assistance"
+    ],
     "sha256_match": {
-     "fap-11332fbdd8f42903": true,
-     "fap-66030d848647953e": true,
-     "web-78b5d82caca06cb8": false
+     "fap-11332fbdd8f42903": null,
+     "fap-66030d848647953e": null,
+     "web-78b5d82caca06cb8": null
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
-    "accepted": [
-     "eligibility.free_care_max_fpl",
-     "eligibility.residency",
-     "eligibility.insured_patients_covered",
-     "collections.eca_wait_days",
-     "contacts.phone",
-     "contacts.hours",
-     "contacts.languages"
-    ],
+    "accepted": [],
     "rejected": [
      [
+      "eligibility.free_care_max_fpl",
+      "source text missing"
+     ],
+     [
       "eligibility.discount_tiers",
-      "value not in quote"
+      "source text missing"
+     ],
+     [
+      "eligibility.residency",
+      "source text missing"
+     ],
+     [
+      "eligibility.insured_patients_covered",
+      "source text missing"
+     ],
+     [
+      "programs.presumptive",
+      "source text missing"
+     ],
+     [
+      "apply.documents_required",
+      "source text missing"
+     ],
+     [
+      "collections.eca_wait_days",
+      "source text missing"
+     ],
+     [
+      "contacts.phone",
+      "source text missing"
+     ],
+     [
+      "contacts.hours",
+      "source text missing"
+     ],
+     [
+      "contacts.languages",
+      "source text missing"
      ]
     ],
-    "pruned": [
-     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
-     "apply.documents_required: none of the listed documents is named in the quote (after trimming)"
-    ],
-    "income_rule_verified": true,
-    "core_completeness": 0.33
+    "pruned": [],
+    "income_rule_verified": false,
+    "core_completeness": 0.0
    }
   },
   {

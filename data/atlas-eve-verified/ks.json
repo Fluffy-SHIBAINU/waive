@@ -1341,7 +1341,7 @@
     "sha256_match": {
      "fap-dbc8f9fafa7df518": true,
      "fap-4650ce3db4a6b007": true,
-     "web-9ad0e9d0044ce220": true
+     "web-9ad0e9d0044ce220": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
@@ -1384,15 +1384,7 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": {
-     "value": "150",
-     "layer": "documented",
-     "quote": "0-150% $650 copay per visit $50 copay per visit 15% of charges",
-     "source_id": "web-cdc2bb5c62f6aebe",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "free_care_max_fpl": null,
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
     "asset_test": null,
@@ -1459,6 +1451,7 @@
    ],
    "accuracy": null,
    "eve_review": [
+    "eligibility.free_care_max_fpl: the quote is a copay row with a dollar copay, not free care; left for review, not recorded",
     "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: 201-250% 20% of charges 20% of charges 35% of charges",
     "agent dropped contacts.languages: quote is not a substring of the source",
     "agent judge on eligibility.free_care_max_fpl: Quote shows a '0-150%' band with a $650 copay per visit and $50 copay, not a 100% free care statement; it does not state free care applies up to 150% FPL.",
@@ -1472,11 +1465,10 @@
     "sources_missing": [],
     "sha256_match": {
      "web-1d0228afcb4f33e7": false,
-     "web-cdc2bb5c62f6aebe": true
+     "web-cdc2bb5c62f6aebe": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
-     "eligibility.free_care_max_fpl",
      "eligibility.insured_patients_covered"
     ],
     "rejected": [
@@ -1486,8 +1478,8 @@
      ]
     ],
     "pruned": [],
-    "income_rule_verified": true,
-    "core_completeness": 0.17
+    "income_rule_verified": false,
+    "core_completeness": 0.0
    }
   },
   {
@@ -2284,7 +2276,7 @@
     "sha256_match": {
      "fap-4a110098eac2db43": true,
      "fap-78e7635f6f05460c": true,
-     "web-e527838baa0eff76": true
+     "web-e527838baa0eff76": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
@@ -2487,7 +2479,7 @@
     "sha256_match": {
      "fap-c2f255961d23421c": true,
      "fap-27a23cf7942b23ee": true,
-     "web-3484f2259b1246c5": true
+     "web-3484f2259b1246c5": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
@@ -3409,7 +3401,7 @@
     "sha256_match": {
      "fap-cb7e4ad222f200ed": true,
      "fap-211e65e0817db2be": true,
-     "web-6cd6754a38bc859b": true
+     "web-6cd6754a38bc859b": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
@@ -3638,7 +3630,7 @@
     "sha256_match": {
      "fap-184a2c21b725a578": true,
      "fap-779a0414a63dc869": true,
-     "web-223593584fd6ded5": true
+     "web-223593584fd6ded5": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
@@ -5215,7 +5207,7 @@
     "sha256_match": {
      "fap-18666c1b9926b7fa": true,
      "web-5b563d576d9d1bea": true,
-     "web-3810d0fb508c726c": true
+     "web-3810d0fb508c726c": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [

@@ -604,7 +604,7 @@
     "sha256_match": {
      "fap-738db57f691c27d1": true,
      "fap-3c5f9e4d6e48aa0f": true,
-     "web-378082c0ab26ee03": true
+     "web-378082c0ab26ee03": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
@@ -1230,7 +1230,21 @@
      "support_count": 0
     },
     "hours": null,
-    "languages": null
+    "languages": {
+     "value": [
+      "English",
+      "Spanish",
+      "Bosnian",
+      "Burmese",
+      "Swahili"
+     ],
+     "layer": "documented",
+     "quote": "Plain Language Summary (English)",
+     "source_id": "web-4f285ba679efdc6d",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
    },
    "coverage": {
     "facilities": null,
@@ -1266,14 +1280,12 @@
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 1,
+    "sources_fetched": 2,
     "sources_total": 2,
-    "sources_missing": [
-     "https://medcenterhealth.org/cfr/billing-policies/financial-assistance/financial-assistance-hospital/"
-    ],
+    "sources_missing": [],
     "sha256_match": {
      "fap-88385c1719406bb0": true,
-     "web-4f285ba679efdc6d": null
+     "web-4f285ba679efdc6d": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
@@ -1281,7 +1293,8 @@
      "eligibility.asset_test",
      "apply.documents_required",
      "apply.window_days_from_first_bill",
-     "contacts.phone"
+     "contacts.phone",
+     "contacts.languages"
     ],
     "rejected": [
      [
@@ -1290,11 +1303,7 @@
      ],
      [
       "apply.form_url",
-      "source text missing"
-     ],
-     [
-      "contacts.languages",
-      "source text missing"
+      "quote not found in source"
      ]
     ],
     "pruned": [
@@ -1463,7 +1472,7 @@
     "sha256_match": {
      "fap-6075deca5e090528": true,
      "fap-55ab1d14b8a4b8d4": true,
-     "web-1453168f67d3c0ae": true
+     "web-1453168f67d3c0ae": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
@@ -1692,7 +1701,7 @@
     "sha256_match": {
      "fap-3f6b7838fca988ca": true,
      "fap-def5c1157c8a95c4": true,
-     "web-b090f5f87242ba24": true
+     "web-b090f5f87242ba24": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
@@ -2895,7 +2904,7 @@
     "sha256_match": {
      "fap-738db57f691c27d1": true,
      "fap-3c5f9e4d6e48aa0f": true,
-     "web-378082c0ab26ee03": true
+     "web-378082c0ab26ee03": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
@@ -3090,7 +3099,7 @@
     "sha256_match": {
      "fap-6075deca5e090528": true,
      "fap-55ab1d14b8a4b8d4": true,
-     "web-1453168f67d3c0ae": true
+     "web-1453168f67d3c0ae": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
@@ -4853,7 +4862,7 @@
     "sha256_match": {
      "fap-738db57f691c27d1": true,
      "fap-3c5f9e4d6e48aa0f": true,
-     "web-378082c0ab26ee03": true
+     "web-378082c0ab26ee03": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
@@ -5446,7 +5455,7 @@
     "sha256_match": {
      "fap-d73fee9532fcd921": true,
      "web-4a3d285377e2fb50": false,
-     "web-1bfb4490961e08f3": true
+     "web-1bfb4490961e08f3": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
@@ -6513,7 +6522,7 @@
     "sha256_match": {
      "fap-ace8515b37d9bf9c": true,
      "fap-5403ab0a5ab7e89c": true,
-     "web-d2d29eae639926aa": true
+     "web-d2d29eae639926aa": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
@@ -7070,7 +7079,7 @@
     "sha256_match": {
      "fap-6075deca5e090528": true,
      "fap-55ab1d14b8a4b8d4": true,
-     "web-1453168f67d3c0ae": true
+     "web-1453168f67d3c0ae": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
@@ -8810,7 +8819,7 @@
     "sha256_match": {
      "fap-1b38afc5839046f1": true,
      "fap-88cc14fd7a4703ec": true,
-     "web-87eb24c6829282ac": true
+     "web-87eb24c6829282ac": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
@@ -9106,8 +9115,35 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": null,
-    "discount_tiers": null,
+    "free_care_max_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "Those with household incomes less than or equal to 200% of this limit may be eligible for 100% discounts of their bill.",
+     "source_id": "web-3f0ed13fce452944",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "200",
+       "max_fpl_inclusive": "300",
+       "discount_percent": 50
+      },
+      {
+       "min_fpl_exclusive": "300",
+       "max_fpl_inclusive": "400",
+       "discount_percent": 25
+      }
+     ],
+     "layer": "documented",
+     "quote": "Patients with household incomes between 201% and 300% of the federal poverty limit may be eligible for a 50% discount, and those with household incomes between 301% and 400% may be eligible for a 25% discount.",
+     "source_id": "web-3f0ed13fce452944",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": null,
@@ -9134,7 +9170,15 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": null,
+    "phone": {
+     "value": "270-745-1100",
+     "layer": "documented",
+     "quote": "270-745-1100 or 800-786-1581",
+     "source_id": "web-3f0ed13fce452944",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "hours": null,
     "languages": null
    },
@@ -9160,37 +9204,27 @@
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 0,
+    "sources_fetched": 1,
     "sources_total": 1,
-    "sources_missing": [
-     "https://medcenterhealth.org/cfr/billing-policies/financial-assistance/financial-assistance-hospital/"
-    ],
+    "sources_missing": [],
     "sha256_match": {
-     "web-3f0ed13fce452944": null
+     "web-3f0ed13fce452944": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
-    "accepted": [],
+    "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
+     "contacts.phone"
+    ],
     "rejected": [
      [
-      "eligibility.free_care_max_fpl",
-      "source text missing"
-     ],
-     [
-      "eligibility.discount_tiers",
-      "source text missing"
-     ],
-     [
       "apply.form_url",
-      "source text missing"
-     ],
-     [
-      "contacts.phone",
-      "source text missing"
+      "quote not found in source"
      ]
     ],
     "pruned": [],
-    "income_rule_verified": false,
-    "core_completeness": 0.0
+    "income_rule_verified": true,
+    "core_completeness": 0.5
    }
   },
   {
@@ -9709,14 +9743,12 @@
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 1,
+    "sources_fetched": 2,
     "sources_total": 2,
-    "sources_missing": [
-     "https://medcenterhealth.org/cfr/billing-policies/financial-assistance/financial-assistance-hospital/"
-    ],
+    "sources_missing": [],
     "sha256_match": {
      "fap-88385c1719406bb0": true,
-     "web-f3dc2ad594844626": null
+     "web-f3dc2ad594844626": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
@@ -9733,11 +9765,11 @@
      ],
      [
       "apply.form_url",
-      "source text missing"
+      "quote not found in source"
      ],
      [
       "contacts.languages",
-      "source text missing"
+      "quote not found in source"
      ]
     ],
     "pruned": [
@@ -10176,7 +10208,26 @@
    "status": "draft",
    "eligibility": {
     "free_care_max_fpl": null,
-    "discount_tiers": null,
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "200",
+       "max_fpl_inclusive": "300",
+       "discount_percent": 50
+      },
+      {
+       "min_fpl_exclusive": "300",
+       "max_fpl_inclusive": "400",
+       "discount_percent": 25
+      }
+     ],
+     "layer": "documented",
+     "quote": "Patients with household incomes between 201% and 300% of the federal poverty limit may be eligible for a 50% discount, and those with household incomes between 301% and 400% may be eligible for a 25% discount.",
+     "source_id": "web-56dd48075ddfdda6",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": null,
@@ -10222,7 +10273,15 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": null,
+    "phone": {
+     "value": "270-745-1100",
+     "layer": "documented",
+     "quote": "270-745-1100 or 800-786-1581",
+     "source_id": "web-56dd48075ddfdda6",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "hours": null,
     "languages": null
    },
@@ -10260,43 +10319,35 @@
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 1,
+    "sources_fetched": 2,
     "sources_total": 2,
-    "sources_missing": [
-     "https://medcenterhealth.org/cfr/billing-policies/financial-assistance/financial-assistance-hospital/"
-    ],
+    "sources_missing": [],
     "sha256_match": {
      "fap-88385c1719406bb0": true,
-     "web-56dd48075ddfdda6": null
+     "web-56dd48075ddfdda6": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
+     "eligibility.discount_tiers",
      "apply.documents_required",
-     "apply.window_days_from_first_bill"
+     "apply.window_days_from_first_bill",
+     "contacts.phone"
     ],
     "rejected": [
-     [
-      "eligibility.discount_tiers",
-      "source text missing"
-     ],
      [
       "eligibility.asset_test",
       "quote does not support the asset-test value"
      ],
      [
       "apply.form_url",
-      "source text missing"
-     ],
-     [
-      "contacts.phone",
-      "source text missing"
+      "quote not found in source"
      ]
     ],
     "pruned": [
      "apply.documents_required: 3 items not named in the trimmed quote"
     ],
-    "income_rule_verified": false,
-    "core_completeness": 0.17
+    "income_rule_verified": true,
+    "core_completeness": 0.5
    }
   },
   {
@@ -10923,7 +10974,15 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": null,
+    "phone": {
+     "value": "270-745-1100",
+     "layer": "documented",
+     "quote": "Customer Service 270-745-1100 or 800-786-1581",
+     "source_id": "web-ce682d67dc11d1d4",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "hours": null,
     "languages": null
    },
@@ -10961,14 +11020,12 @@
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 1,
+    "sources_fetched": 2,
     "sources_total": 2,
-    "sources_missing": [
-     "https://medcenterhealth.org/cfr/billing-policies/financial-assistance/financial-assistance-hospital/"
-    ],
+    "sources_missing": [],
     "sha256_match": {
      "fap-88385c1719406bb0": true,
-     "web-ce682d67dc11d1d4": null
+     "web-ce682d67dc11d1d4": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
@@ -10976,7 +11033,8 @@
      "eligibility.asset_test",
      "programs.presumptive",
      "apply.documents_required",
-     "apply.window_days_from_first_bill"
+     "apply.window_days_from_first_bill",
+     "contacts.phone"
     ],
     "rejected": [
      [
@@ -10985,22 +11043,18 @@
      ],
      [
       "apply.form_url",
-      "source text missing"
-     ],
-     [
-      "contacts.phone",
-      "source text missing"
+      "quote not found in source"
      ],
      [
       "contacts.languages",
-      "source text missing"
+      "quote not found in source"
      ]
     ],
     "pruned": [
      "apply.documents_required: 3 items not named in the trimmed quote"
     ],
     "income_rule_verified": true,
-    "core_completeness": 0.33
+    "core_completeness": 0.5
    }
   }
  ]
