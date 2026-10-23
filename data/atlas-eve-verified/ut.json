@@ -61,7 +61,7 @@
       "other"
      ],
      "layer": "documented",
-     "quote": "1. Bank statements 2. Proof of income for applicant (and spouse if applicable), such as the two most recent pay stubs, unemployment insurance payments stubs, or sufficient information on how patients are currently financially supporting themselves 3. Copy of most recent federal tax return",
+     "quote": "1. Bank statements 2. Proof of income for applicant (and spouse if applicable), such as the two most recent pay stubs, unemployment insurance payments stubs, or sufficient information on how patients are currently financially supporting themselves 3. Copy of most recent federal tax return || 4. Payment history of any outstanding accounts for prior healthcare services 5. Documentation of qualification for any other state funded assistance programs",
      "source_id": "fap-ecc17b157d8c5299",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -155,7 +155,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: 4. Payment history of any outstanding accounts for prior healthcare services 5. Documentation of qualification for any o",
+    "apply.documents_required: value backed by 2 verbatim spans",
     "agent dropped eligibility.discount_tiers: excerpt not in source: Uninsured patients who do not meet these income requirements",
     "agent judge on eligibility.insured_patients_covered: Quote only defines 'underinsured' as insured patients whose out-of-pocket costs exceed 10% of family income. It does not state that insured patients are covered.",
     "agent judge on programs.presumptive: Quote lists four presumptive routes, including other state or local assistance programs and Self Pay Compass. The value omits both of those."
@@ -287,7 +287,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: 300-399% 20% of charges 20% of charges 35% of charges",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
     "agent dropped contacts.languages: excerpt not in source: Espa\u00f1ol | Deutsch | Fran\u00e7ais | Ti\u1ebfng Vi\u1ec7t | \u7e41\u9ad4\u4e2d\u6587 | \ud55c\uad6d\uc5b4 | \u0420\u0443\u0441",
     "agent judge on eligibility.free_care_max_fpl: Quote gives 0-250% with '$0 copay per visit', which describes copays, not 100% free care. It does not state the free-care ceiling.",
     "agent judge on eligibility.discount_tiers: Quote shows 251-299% and 300-399% with 10% and 20%, but each row also lists 25% and 35%, so it is unclear which percent is the discount."
@@ -310,7 +310,7 @@
     "rejected": [
      [
       "eligibility.discount_tiers",
-      "value not in quote"
+      "quote states the patient's share, not a discount"
      ]
     ],
     "pruned": [],
@@ -410,7 +410,7 @@
     "sources_total": 2,
     "sources_missing": [],
     "sha256_match": {
-     "web-37e7f4932fde0211": true,
+     "web-37e7f4932fde0211": false,
      "web-8bc6d94048114f4c": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
@@ -520,7 +520,7 @@
    "accuracy": null,
    "eve_review": [
     "eligibility.discount_tiers: 0-250% at 0% is no discount; skipped",
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: 251-299% 10% of charges 10% of charges 25% of charges | 300-399% 20% of charges 20% of charges 35% of charges",
+    "eligibility.discount_tiers: value backed by 3 verbatim spans",
     "agent dropped contacts.languages: quote is not a substring of the source"
    ],
    "eve_verified": {
@@ -589,7 +589,19 @@
     "services_excluded": null
    },
    "programs": {
-    "presumptive": null,
+    "presumptive": {
+     "value": [
+      "Medicaid",
+      "WIC",
+      "homeless"
+     ],
+     "layer": "documented",
+     "quote": "Patient did not have Medicaid coverage at the time of service, but was eligible for Medicaid within twelve months of that date of service. || Patient is receiving food stamps, is participating in subsidized school lunch programs, and/or is receiving assistance from Women's, Infants, and Children's (WIC) programs. || Patient's street address is for \"homeless\" or for a local shelter.",
+     "source_id": "fap-08c86e815f1647d5",
+     "checked_on": "2026-10-23",
+     "confidence": 0.8,
+     "support_count": 0
+    },
     "state_programs": {
      "value": [
       {
@@ -619,10 +631,13 @@
     "documents_required": {
      "value": [
       "tax_return",
+      "pay_stubs",
+      "bank_statements",
+      "medicaid_denial",
       "other"
      ],
      "layer": "documented",
-     "quote": "Complete most recent Federal Tax Returns including all schedules",
+     "quote": "Complete most recent Federal Tax Returns including all schedules || If employed: Paycheck stubs for the last 2 pay periods or 2 bank statements || Denial letter from Medicaid",
      "source_id": "fap-6a1a995c8380d859",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -708,7 +723,7 @@
       "Spanish"
      ],
      "layer": "documented",
-     "quote": "Ayuda Financiera",
+     "quote": "Ayuda Financiera || El Hospital Regional de Moab es un hospital no gubernamental sin fines de lucro 501(c)3.",
      "source_id": "web-9e4ff434bf17afce",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -751,10 +766,10 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Patient is receiving food stamps, is participating in subsidized school lunch programs, and/or is receiving assistance f | Patient's street address is for \"homeless\" or for a local shelter.",
+    "programs.presumptive: value backed by 3 verbatim spans",
     "programs.presumptive: quote matched the source only after typography normalization",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: If employed: Paycheck stubs for the last 2 pay periods or 2 bank statements | Denial letter from Medicaid",
-    "contacts.languages: 1 more verbatim excerpt(s) supported this value: El Hospital Regional de Moab es un hospital no gubernamental sin fines de lucro 501(c)3.",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "contacts.languages: value backed by 2 verbatim spans",
     "agent dropped eligibility.free_care_max_fpl: quote is not a substring of the source",
     "agent judge on eligibility.discount_tiers: Quote lists percent labels and FPL thresholds (0% to 95%, 100% to 400%) but does not pair each tier's bounds with its discount percent.",
     "agent judge on programs.presumptive: Quote supports Medicaid (within twelve months), WIC/food stamps/school lunch, and homeless. It does not mention 'deceased with no estate'.",
@@ -776,6 +791,7 @@
     "accepted": [
      "eligibility.asset_test",
      "eligibility.insured_patients_covered",
+     "programs.presumptive",
      "programs.state_programs",
      "apply.documents_required",
      "apply.submit_methods",
@@ -797,8 +813,8 @@
      ]
     ],
     "pruned": [
-     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
-     "apply.documents_required: 4 items not named in the trimmed quote"
+     "programs.presumptive: 1 item not named in the trimmed quote",
+     "apply.documents_required: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": false,
     "core_completeness": 0.5
@@ -838,10 +854,12 @@
     "documents_required": {
      "value": [
       "tax_return",
-      "pay_stubs"
+      "pay_stubs",
+      "bank_statements",
+      "social_security_letter"
      ],
      "layer": "documented",
-     "quote": "Please provide the most recent tax return of you and other listed household members and the paycheck stubs from the last three pay periods.",
+     "quote": "Please provide the most recent tax return of you and other listed household members and the paycheck stubs from the last three pay periods. || Please provide the three months of bank statements and the most recent tax return of you and other listed household members. || Please provide the pension/retirement/Social Security award letter for you and other listed household members.",
      "source_id": "web-79e6888dc28160d2",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -939,7 +957,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Please provide the three months of bank statements and the most recent tax return of you and other listed household memb | Please provide the pension/retirement/Social Security award letter for you and other listed household members.",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "apply.submit_methods: quote matched the source only after typography normalization",
     "agent judge on apply.documents_required: Quote names tax return, paycheck stubs, bank statements, and Social Security/pension award letter. It does not mention proof of address."
    ],
@@ -969,7 +987,7 @@
      ]
     ],
     "pruned": [
-     "apply.documents_required: 3 items not named in the trimmed quote"
+     "apply.documents_required: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": false,
     "core_completeness": 0.5

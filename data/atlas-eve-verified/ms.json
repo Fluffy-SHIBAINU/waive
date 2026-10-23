@@ -261,10 +261,11 @@
       "State funded prescription programs",
       "Homeless or received care from a homeless clinic",
       "WIC participation",
-      "Food stamp eligibility"
+      "Food stamp eligibility",
+      "Good Samaritan Health Services Free Clinic patients"
      ],
      "layer": "documented",
-     "quote": "state funded prescription programs; homeless or received care from a homeless clinic(s); participation in Women, Infants and Children program (WIC); food stamp eligibility, and out of state Medicaid patients (when NMHS is not participating).",
+     "quote": "state funded prescription programs; homeless or received care from a homeless clinic(s); participation in Women, Infants and Children program (WIC); food stamp eligibility, and out of state Medicaid patients (when NMHS is not participating). || If the patient is a patient of the Good Samaritan Health Services Free Clinic, and the clinic provides the documentation, that patient will meet presumptive eligibility requirements.",
      "source_id": "fap-f6a29f19e0315452",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -285,10 +286,12 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "pay_stubs"
+      "pay_stubs",
+      "tax_return",
+      "bank_statements"
      ],
      "layer": "documented",
-     "quote": "Employed: Two, consecutive current pay stubs-both patient and spouse or Statement",
+     "quote": "Employed: Two, consecutive current pay stubs-both patient and spouse or Statement || ENTIRE COPY OF LAST FILED INCOME TAX RETURN || COPY OF MOST RECENT BANK STATEMENT",
      "source_id": "fap-b24b8ba12c1cd847",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -388,8 +391,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: If the patient is a patient of the Good Samaritan Health Services Free Clinic, and the clinic provides the documentation",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: ENTIRE COPY OF LAST FILED INCOME TAX RETURN | COPY OF MOST RECENT BANK STATEMENT",
+    "programs.presumptive: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent dropped eligibility.residency: judge: Quote limits the policy to the hospital service area but does not mention the 27-county area in North Mississippi and Northwest Alabama.",
     "agent dropped apply.submit_methods: judge: Quote gives the fax and email, but the mail and in-person addresses (Attn, 1494 Cliff Gookin Blvd, Tupelo) are not in the quote."
    ],
@@ -423,8 +426,7 @@
      ]
     ],
     "pruned": [
-     "programs.presumptive: 2 items not named in the trimmed quote",
-     "apply.documents_required: 2 items not named in the trimmed quote"
+     "programs.presumptive: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": true,
     "core_completeness": 0.67
@@ -592,19 +594,7 @@
      "support_count": 0
     },
     "hours": null,
-    "languages": {
-     "value": [
-      "Chinese",
-      "Spanish",
-      "Vietnamese"
-     ],
-     "layer": "documented",
-     "quote": "Documents in Other Languages \u8d22\u52a1\u63f4\u52a9\uff08\u7ca4\u8bed)",
-     "source_id": "web-8030c0df8bf354e0",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "languages": null
    },
    "coverage": {
     "facilities": null,
@@ -642,8 +632,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: When a Baptist entity is not credentialed with a patient\u2019s out-of-state Medicaid program and therefore ineligible to rec",
-    "contacts.languages: 2 more verbatim excerpt(s) supported this value: Ayuda Econ\u00f3mica (Espa\u00f1ol) | H\u1ed7 tr\u1ee3 t&agrave;i ch&iacute;nh (Ti\u1ebfng Vi\u1ec7t)"
+    "programs.presumptive: value backed by 2 verbatim spans",
+    "contacts.languages: value backed by 3 verbatim spans"
    ],
    "eve_verified": {
     "on": "2026-10-23",
@@ -665,8 +655,7 @@
      "apply.submit_methods",
      "apply.window_days_from_first_bill",
      "collections.eca_wait_days",
-     "contacts.phone",
-     "contacts.languages"
+     "contacts.phone"
     ],
     "rejected": [
      [
@@ -676,6 +665,10 @@
      [
       "apply.decision_days",
       "value not in quote"
+     ],
+     [
+      "contacts.languages",
+      "quote not found in source"
      ]
     ],
     "pruned": [
@@ -735,10 +728,12 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "tax_return"
+      "tax_return",
+      "pay_stubs",
+      "social_security_letter"
      ],
      "layer": "documented",
-     "quote": "Please enclose a complete copy of your most recent Federal Income Tax Return and W2 forms.",
+     "quote": "Please enclose a complete copy of your most recent Federal Income Tax Return and W2 forms. || Current pay stubs (3 months); or || Note: You do not have to provide a Social Security number to apply for financial assistance.",
      "source_id": "web-d1a62b606a7d53dc",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -754,10 +749,14 @@
       {
        "kind": "fax",
        "detail": "662.293.6225"
+      },
+      {
+       "kind": "in_person",
+       "detail": "Patient Financial Services, 611 Alcorn Drive. Corinth, MS 38834. Hours: M-F 8:00 a.m. \u2013 5:00 p.m."
       }
      ],
      "layer": "documented",
-     "quote": "Mail or fax completed application with all documentation to:",
+     "quote": "Mail or fax completed application with all documentation to: || Fax Number: 662.293.6225 || To submit your completed application in person: Patient Financial Services",
      "source_id": "web-d1a62b606a7d53dc",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -837,8 +836,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Current pay stubs (3 months); or | Note: You do not have to provide a Social Security number to apply for financial assistance.",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Fax Number: 662.293.6225 | To submit your completed application in person: Patient Financial Services",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 3 verbatim spans",
     "agent judge on eligibility.asset_test: Quote mentions only the 101% FPL income threshold. It does not say assets are considered.",
     "agent judge on apply.form_url: Quote names the application form but gives no URL.",
     "agent judge on apply.documents_required: Quote lists tax return/W2 and pay stubs, but says no Social Security number is required, contrary to the recorded SSN item.",
@@ -871,10 +870,7 @@
       "quote does not support the asset-test value"
      ]
     ],
-    "pruned": [
-     "apply.documents_required: 2 items not named in the trimmed quote",
-     "apply.submit_methods: 1 item not named in the trimmed quote"
-    ],
+    "pruned": [],
     "income_rule_verified": false,
     "core_completeness": 0.67
    }
@@ -1227,7 +1223,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: call the Winston Medical Center Business Office at 662-779-5124"
+    "apply.submit_methods: value backed by 2 verbatim spans"
    ],
    "eve_verified": {
     "on": "2026-10-23",
@@ -1258,9 +1254,7 @@
       "quote not found in source"
      ]
     ],
-    "pruned": [
-     "apply.submit_methods: 1 item not named in the trimmed quote"
-    ],
+    "pruned": [],
     "income_rule_verified": false,
     "core_completeness": 0.17
    }
@@ -1359,10 +1353,11 @@
       "pay_stubs",
       "proof_of_income",
       "bank_statements",
+      "tax_return",
       "other"
      ],
      "layer": "documented",
-     "quote": "Pay stubs for the last three months W2 Form for the previous year Legal documents/Child Support Bank Statements",
+     "quote": "Pay stubs for the last three months W2 Form for the previous year Legal documents/Child Support Bank Statements || Income Tax return for the previous year Federal & State Assistance Documents Pension/retirement statements",
      "source_id": "fap-479eb4eb1e9d002b",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1389,7 +1384,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Baptist Central Business Office 965 Ridge Lake Blvd., Suite 315, Memphis, TN 38120 Fax # 901-226-0772 Email Address: fap@bmhcc.org",
+     "quote": "Baptist Central Business Office 965 Ridge Lake Blvd., Suite 315, Memphis, TN 38120 Fax # 901-226-0772 Email Address: fap@bmhcc.org || Please return this application and the requested information to the Business Office of the Baptist facility where services were received.",
      "source_id": "fap-479eb4eb1e9d002b",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1430,19 +1425,7 @@
      "support_count": 0
     },
     "hours": null,
-    "languages": {
-     "value": [
-      "Spanish",
-      "Chinese",
-      "Vietnamese"
-     ],
-     "layer": "documented",
-     "quote": "Ayuda Econ\u00f3mica (Espa\u00f1ol)",
-     "source_id": "web-492da2c96f603a0a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "languages": null
    },
    "coverage": {
     "facilities": null,
@@ -1480,9 +1463,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: Income Tax return for the previous year Federal & State Assistance Documents Pension/retirement statements",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Please return this application and the requested information to the Business Office of the Baptist facility where servic",
-    "contacts.languages: 2 more verbatim excerpt(s) supported this value: \u8ca1\u52d9\u63f4\u52a9\uff08\u7e41\u9ad4\u4e2d\u6587\uff09 | H\u1ed7 tr\u1ee3 t&agrave;i ch&iacute;nh (Ti\u1ebfng Vi\u1ec7t)"
+    "apply.documents_required: value backed by 2 verbatim spans",
+    "apply.submit_methods: value backed by 2 verbatim spans",
+    "contacts.languages: value backed by 3 verbatim spans"
    ],
    "eve_verified": {
     "on": "2026-10-23",
@@ -1504,8 +1487,7 @@
      "apply.submit_methods",
      "apply.window_days_from_first_bill",
      "collections.eca_wait_days",
-     "contacts.phone",
-     "contacts.languages"
+     "contacts.phone"
     ],
     "rejected": [
      [
@@ -1515,11 +1497,15 @@
      [
       "apply.decision_days",
       "value not in quote"
+     ],
+     [
+      "contacts.languages",
+      "quote not found in source"
      ]
     ],
     "pruned": [
      "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
-     "apply.documents_required: 2 items not named in the trimmed quote"
+     "apply.documents_required: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": true,
     "core_completeness": 0.83
@@ -1617,12 +1603,14 @@
     "documents_required": {
      "value": [
       "pay_stubs",
+      "other",
       "proof_of_income",
       "bank_statements",
-      "other"
+      "tax_return",
+      "social_security_letter"
      ],
      "layer": "documented",
-     "quote": "Pay stubs for the last three months W2 Form for the previous year Legal documents/Child Support Bank Statements",
+     "quote": "Pay stubs for the last three months W2 Form for the previous year Legal documents/Child Support Bank Statements || Income Tax return for the previous year Federal & State Assistance Documents Pension/retirement statements (for SSA/Retirement",
      "source_id": "fap-479eb4eb1e9d002b",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1649,7 +1637,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Baptist Central Business Office 965 Ridge Lake Blvd., Suite 315, Memphis, TN 38120 Fax # 901-226-0772 Email Address: fap@bmhcc.org",
+     "quote": "Baptist Central Business Office 965 Ridge Lake Blvd., Suite 315, Memphis, TN 38120 Fax # 901-226-0772 Email Address: fap@bmhcc.org || Please return this application and the requested information to the Business Office of the Baptist facility where services were received.",
      "source_id": "fap-479eb4eb1e9d002b",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1690,19 +1678,7 @@
      "support_count": 0
     },
     "hours": null,
-    "languages": {
-     "value": [
-      "Chinese",
-      "Spanish",
-      "Vietnamese"
-     ],
-     "layer": "documented",
-     "quote": "Documents in Other Languages \u8d22\u52a1\u63f4\u52a9\uff08\u7ca4\u8bed)",
-     "source_id": "web-68bdde563880bea4",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "languages": null
    },
    "coverage": {
     "facilities": null,
@@ -1740,9 +1716,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: Income Tax return for the previous year Federal & State Assistance Documents Pension/retirement statements (for SSA/Reti",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Please return this application and the requested information to the Business Office of the Baptist facility where servic",
-    "contacts.languages: 2 more verbatim excerpt(s) supported this value: Ayuda Econ\u00f3mica (Espa\u00f1ol) | H\u1ed7 tr\u1ee3 t&agrave;i ch&iacute;nh (Ti\u1ebfng Vi\u1ec7t)"
+    "apply.documents_required: value backed by 2 verbatim spans",
+    "apply.submit_methods: value backed by 2 verbatim spans",
+    "contacts.languages: value backed by 3 verbatim spans"
    ],
    "eve_verified": {
     "on": "2026-10-23",
@@ -1764,8 +1740,7 @@
      "apply.submit_methods",
      "apply.window_days_from_first_bill",
      "collections.eca_wait_days",
-     "contacts.phone",
-     "contacts.languages"
+     "contacts.phone"
     ],
     "rejected": [
      [
@@ -1775,11 +1750,14 @@
      [
       "apply.decision_days",
       "value not in quote"
+     ],
+     [
+      "contacts.languages",
+      "quote not found in source"
      ]
     ],
     "pruned": [
-     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
-     "apply.documents_required: 2 items not named in the trimmed quote"
+     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)"
     ],
     "income_rule_verified": true,
     "core_completeness": 0.83
@@ -2677,12 +2655,14 @@
     "documents_required": {
      "value": [
       "pay_stubs",
+      "other",
       "proof_of_income",
       "bank_statements",
-      "other"
+      "tax_return",
+      "social_security_letter"
      ],
      "layer": "documented",
-     "quote": "Pay stubs for the last three months W2 Form for the previous year Legal documents/Child Support Bank Statements",
+     "quote": "Pay stubs for the last three months W2 Form for the previous year Legal documents/Child Support Bank Statements || Income Tax return for the previous year Federal & State Assistance Documents Pension/retirement statements (for SSA/Retirement",
      "source_id": "fap-479eb4eb1e9d002b",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2776,7 +2756,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: Income Tax return for the previous year Federal & State Assistance Documents Pension/retirement statements (for SSA/Reti",
+    "apply.documents_required: value backed by 2 verbatim spans",
     "agent dropped contacts.languages: excerpt not in source: Ayuda Econ&oacute;mica (Espa\u00f1ol)",
     "agent dropped eligibility.insured_patients_covered: judge: The quote reads as an exclusion of insured patients, with an exception only for the Medically Underinsured; it does not say insured patients are generally covered.",
     "agent dropped programs.state_programs: judge: Medicaid and ACA are named, but the quote is cut off before 'third-party vendor' and never says 'remaining uninsured'.",
@@ -2811,9 +2791,7 @@
       "value not in quote"
      ]
     ],
-    "pruned": [
-     "apply.documents_required: 2 items not named in the trimmed quote"
-    ],
+    "pruned": [],
     "income_rule_verified": true,
     "core_completeness": 0.83
    }
@@ -2944,7 +2922,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Baptist Central Business Office 965 Ridge Lake Blvd., Suite 315, Memphis, TN 38120 Fax # 901-226-0772 Email Address: fap@bmhcc.org",
+     "quote": "Baptist Central Business Office 965 Ridge Lake Blvd., Suite 315, Memphis, TN 38120 Fax # 901-226-0772 Email Address: fap@bmhcc.org || Please return this application and the requested information to the Business Office of the Baptist facility where services were received.",
      "source_id": "fap-479eb4eb1e9d002b",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2985,19 +2963,7 @@
      "support_count": 0
     },
     "hours": null,
-    "languages": {
-     "value": [
-      "Chinese",
-      "Spanish",
-      "Vietnamese"
-     ],
-     "layer": "documented",
-     "quote": "Documents in Other Languages \u8d22\u52a1\u63f4\u52a9\uff08\u7ca4\u8bed)",
-     "source_id": "web-90d69c59a098ecbc",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "languages": null
    },
    "coverage": {
     "facilities": null,
@@ -3035,8 +3001,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Please return this application and the requested information to the Business Office of the Baptist facility where servic",
-    "contacts.languages: 2 more verbatim excerpt(s) supported this value: Ayuda Econ\u00f3mica (Espa\u00f1ol) | H\u1ed7 tr\u1ee3 t&agrave;i ch&iacute;nh (Ti\u1ebfng Vi\u1ec7t)"
+    "apply.submit_methods: value backed by 2 verbatim spans",
+    "contacts.languages: value backed by 3 verbatim spans"
    ],
    "eve_verified": {
     "on": "2026-10-23",
@@ -3058,8 +3024,7 @@
      "apply.submit_methods",
      "apply.window_days_from_first_bill",
      "collections.eca_wait_days",
-     "contacts.phone",
-     "contacts.languages"
+     "contacts.phone"
     ],
     "rejected": [
      [
@@ -3069,6 +3034,10 @@
      [
       "apply.decision_days",
       "value not in quote"
+     ],
+     [
+      "contacts.languages",
+      "quote not found in source"
      ]
     ],
     "pruned": [
@@ -3240,19 +3209,7 @@
      "support_count": 0
     },
     "hours": null,
-    "languages": {
-     "value": [
-      "Spanish",
-      "Chinese",
-      "Vietnamese"
-     ],
-     "layer": "documented",
-     "quote": "Ayuda Econ\u00f3mica (Espa\u00f1ol)",
-     "source_id": "web-81b2b0620a81b924",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "languages": null
    },
    "coverage": {
     "facilities": null,
@@ -3290,7 +3247,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "contacts.languages: 2 more verbatim excerpt(s) supported this value: \u8ca1\u52d9\u63f4\u52a9\uff08\u7e41\u9ad4\u4e2d\u6587\uff09 | (Ti\u1ebfng Vi\u1ec7t) Baptist cam k\u1ebft",
+    "contacts.languages: value backed by 3 verbatim spans",
     "agent dropped programs.presumptive: judge: External scoring is supported, but the quote never mentions out-of-state Medicaid or Baptist not being credentialed."
    ],
    "eve_verified": {
@@ -3313,8 +3270,7 @@
      "apply.submit_methods",
      "apply.window_days_from_first_bill",
      "collections.eca_wait_days",
-     "contacts.phone",
-     "contacts.languages"
+     "contacts.phone"
     ],
     "rejected": [
      [
@@ -3324,6 +3280,10 @@
      [
       "apply.decision_days",
       "value not in quote"
+     ],
+     [
+      "contacts.languages",
+      "quote not found in source"
      ]
     ],
     "pruned": [
@@ -3719,10 +3679,18 @@
       {
        "kind": "mail",
        "detail": "Methodist Le Bonheur Healthcare \u2013 Self Pay Department, PO Box 172193, Memphis, TN 38187"
+      },
+      {
+       "kind": "fax",
+       "detail": "(901) 266-6474"
+      },
+      {
+       "kind": "email",
+       "detail": "PatientFinAssist@mlh.org"
       }
      ],
      "layer": "documented",
-     "quote": "Mail completed application and Proof of Income to: Methodist Le Bonheur Healthcare \u2013 Self Pay Department, PO Box 172193, Memphis, TN 38187",
+     "quote": "Mail completed application and Proof of Income to: Methodist Le Bonheur Healthcare \u2013 Self Pay Department, PO Box 172193, Memphis, TN 38187 || Fax to (901) 266-6474 6. Email: PatientFinAssist@mlh.org",
      "source_id": "fap-304648bdb14dc4f4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3793,7 +3761,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Fax to (901) 266-6474 6. Email: PatientFinAssist@mlh.org"
+    "apply.submit_methods: value backed by 2 verbatim spans"
    ],
    "eve_verified": {
     "on": "2026-10-23",
@@ -3823,9 +3791,7 @@
       "value not in quote"
      ]
     ],
-    "pruned": [
-     "apply.submit_methods: 2 items not named in the trimmed quote"
-    ],
+    "pruned": [],
     "income_rule_verified": true,
     "core_completeness": 0.83
    }
@@ -4357,10 +4323,11 @@
       "pay_stubs",
       "proof_of_income",
       "bank_statements",
+      "tax_return",
       "other"
      ],
      "layer": "documented",
-     "quote": "Pay stubs for the last three months W2 Form for the previous year Legal documents/Child Support Bank Statements",
+     "quote": "Pay stubs for the last three months W2 Form for the previous year Legal documents/Child Support Bank Statements || Income Tax return for the previous year Federal & State Assistance Documents Pension/retirement statements",
      "source_id": "fap-479eb4eb1e9d002b",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4424,19 +4391,7 @@
      "support_count": 0
     },
     "hours": null,
-    "languages": {
-     "value": [
-      "Chinese",
-      "Spanish",
-      "Vietnamese"
-     ],
-     "layer": "documented",
-     "quote": "Documents in Other Languages \u8d22\u52a1\u63f4\u52a9\uff08\u7ca4\u8bed)",
-     "source_id": "web-bde6f7fb66d0a49a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "languages": null
    },
    "coverage": {
     "facilities": null,
@@ -4474,9 +4429,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: When a Baptist entity is not credentialed with a patient\u2019s out-of-state Medicaid program and therefore ineligible to rec",
-    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: Income Tax return for the previous year Federal & State Assistance Documents Pension/retirement statements",
-    "contacts.languages: 2 more verbatim excerpt(s) supported this value: Ayuda Econ\u00f3mica (Espa\u00f1ol) | H\u1ed7 tr\u1ee3 t&agrave;i ch&iacute;nh (Ti\u1ebfng Vi\u1ec7t)"
+    "programs.presumptive: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 2 verbatim spans",
+    "contacts.languages: value backed by 3 verbatim spans"
    ],
    "eve_verified": {
     "on": "2026-10-23",
@@ -4498,8 +4453,7 @@
      "apply.submit_methods",
      "apply.window_days_from_first_bill",
      "collections.eca_wait_days",
-     "contacts.phone",
-     "contacts.languages"
+     "contacts.phone"
     ],
     "rejected": [
      [
@@ -4509,11 +4463,15 @@
      [
       "apply.decision_days",
       "value not in quote"
+     ],
+     [
+      "contacts.languages",
+      "quote not found in source"
      ]
     ],
     "pruned": [
      "programs.presumptive: none of the listed programs is named in the quote (after trimming)",
-     "apply.documents_required: 2 items not named in the trimmed quote"
+     "apply.documents_required: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": true,
     "core_completeness": 0.83
@@ -4611,12 +4569,14 @@
     "documents_required": {
      "value": [
       "pay_stubs",
+      "other",
       "proof_of_income",
       "bank_statements",
-      "other"
+      "tax_return",
+      "social_security_letter"
      ],
      "layer": "documented",
-     "quote": "Pay stubs for the last three months W2 Form for the previous year Legal documents/Child Support Bank Statements",
+     "quote": "Pay stubs for the last three months W2 Form for the previous year Legal documents/Child Support Bank Statements || Income Tax return for the previous year Federal & State Assistance Documents Pension/retirement statements (for SSA/Retirement",
      "source_id": "fap-479eb4eb1e9d002b",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4643,7 +4603,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Baptist Central Business Office 965 Ridge Lake Blvd., Suite 315, Memphis, TN 38120 Fax # 901-226-0772 Email Address: fap@bmhcc.org",
+     "quote": "Baptist Central Business Office 965 Ridge Lake Blvd., Suite 315, Memphis, TN 38120 Fax # 901-226-0772 Email Address: fap@bmhcc.org || Please return this application and the requested information to the Business Office of the Baptist facility where services were received.",
      "source_id": "fap-479eb4eb1e9d002b",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4684,19 +4644,7 @@
      "support_count": 0
     },
     "hours": null,
-    "languages": {
-     "value": [
-      "Chinese",
-      "Spanish",
-      "Vietnamese"
-     ],
-     "layer": "documented",
-     "quote": "Documents in Other Languages \u8d22\u52a1\u63f4\u52a9\uff08\u7ca4\u8bed)",
-     "source_id": "web-716012b5a22edf09",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "languages": null
    },
    "coverage": {
     "facilities": null,
@@ -4734,9 +4682,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: Income Tax return for the previous year Federal & State Assistance Documents Pension/retirement statements (for SSA/Reti",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Please return this application and the requested information to the Business Office of the Baptist facility where servic",
-    "contacts.languages: 2 more verbatim excerpt(s) supported this value: Ayuda Econ\u00f3mica (Espa\u00f1ol) | H\u1ed7 tr\u1ee3 t&agrave;i ch&iacute;nh (Ti\u1ebfng Vi\u1ec7t)"
+    "apply.documents_required: value backed by 2 verbatim spans",
+    "apply.submit_methods: value backed by 2 verbatim spans",
+    "contacts.languages: value backed by 3 verbatim spans"
    ],
    "eve_verified": {
     "on": "2026-10-23",
@@ -4758,8 +4706,7 @@
      "apply.submit_methods",
      "apply.window_days_from_first_bill",
      "collections.eca_wait_days",
-     "contacts.phone",
-     "contacts.languages"
+     "contacts.phone"
     ],
     "rejected": [
      [
@@ -4769,11 +4716,14 @@
      [
       "apply.decision_days",
       "value not in quote"
+     ],
+     [
+      "contacts.languages",
+      "quote not found in source"
      ]
     ],
     "pruned": [
-     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
-     "apply.documents_required: 2 items not named in the trimmed quote"
+     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)"
     ],
     "income_rule_verified": true,
     "core_completeness": 0.83
@@ -5758,7 +5708,7 @@
       "other"
      ],
      "layer": "documented",
-     "quote": "1. Pay stubs for the last three months 2. Income tax return for the previous year 3. W2 forms for the previous year 4. State/Federal assistance documents 5. Bank statements for the last three months 6. Pension/retirement statements",
+     "quote": "1. Pay stubs for the last three months 2. Income tax return for the previous year 3. W2 forms for the previous year 4. State/Federal assistance documents 5. Bank statements for the last three months 6. Pension/retirement statements || 7. Legal documents including divorce decree and/or child support and alimony",
      "source_id": "fap-026658eaf35c0b6b",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5785,7 +5735,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Baptist Central Business Office 965 Ridge Lake Blvd., Suite 315, Memphis, TN 38120 Fax # 901-226-0772 Email Address: fap@bmhcc.org",
+     "quote": "Baptist Central Business Office 965 Ridge Lake Blvd., Suite 315, Memphis, TN 38120 Fax # 901-226-0772 Email Address: fap@bmhcc.org || Please return this application and the requested information to the Business Office of the Baptist facility where services were received.",
      "source_id": "fap-479eb4eb1e9d002b",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5864,8 +5814,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: 7. Legal documents including divorce decree and/or child support and alimony",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Please return this application and the requested information to the Business Office of the Baptist facility where servic"
+    "apply.documents_required: value backed by 2 verbatim spans",
+    "apply.submit_methods: value backed by 2 verbatim spans"
    ],
    "eve_verified": {
     "on": "2026-10-23",

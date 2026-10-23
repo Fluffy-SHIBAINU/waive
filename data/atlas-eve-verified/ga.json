@@ -30,7 +30,31 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "discount_tiers": null,
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "125",
+       "max_fpl_inclusive": "150",
+       "discount_percent": 80
+      },
+      {
+       "min_fpl_exclusive": "150",
+       "max_fpl_inclusive": "200",
+       "discount_percent": 70
+      },
+      {
+       "min_fpl_exclusive": "200",
+       "max_fpl_inclusive": "250",
+       "discount_percent": 65
+      }
+     ],
+     "layer": "documented",
+     "quote": "Patients whose income is between 125% and 150% the Poverty Income Guidelines are eligible for an 80% adjustment of charges. || Patients whose income is between 150% and 200% the Poverty Income Guidelines are eligible for a 70% adjustment of charges. || Patients whose income is between 200% and 250% the Poverty Income Guidelines are eligible for a 65% adjustment of charges.",
+     "source_id": "fap-49530375ee8a92ea",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": null,
@@ -48,10 +72,11 @@
     "documents_required": {
      "value": [
       "tax_return",
-      "other"
+      "other",
+      "medicaid_denial"
      ],
      "layer": "documented",
-     "quote": "The most current years\u2019 federal income tax return will be used as the standard documentation for determination of household size and proof of income.",
+     "quote": "The most current years\u2019 federal income tax return will be used as the standard documentation for determination of household size and proof of income. || If no tax return is available, a \u201cVerification of Non-filing\u201d letter must be supplied for each member of the household along with proof of identity to determine household size. || A letter of denial or other appropriate documentation from Georgia Medicaid that shows ineligibility for Medicaid Coverage.",
      "source_id": "fap-49530375ee8a92ea",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -67,10 +92,14 @@
       {
        "kind": "mail",
        "detail": "HMC Attn.: Financial Counselor P.O. Box 1168 Dalton, Ga. 30720"
+      },
+      {
+       "kind": "fax",
+       "detail": "(706) 281-5613 or (706) 281-5614"
       }
      ],
      "layer": "documented",
-     "quote": "Patients should return the completed application to the Patient Account Liaison in the Cashier/Financial Counseling Office at HMC in person during office hours of 8:30 a.m.",
+     "quote": "Patients should return the completed application to the Patient Account Liaison in the Cashier/Financial Counseling Office at HMC in person during office hours of 8:30 a.m. || to 5:00 p.m., by mail at HMC Attn.: Financial Counselor P.O. Box 1168 Dalton, Ga. 30720 or by fax at (706) 281-5613 or (706) 281-5614.",
      "source_id": "fap-49530375ee8a92ea",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -148,9 +177,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: Patients whose income is between 150% and 200% the Poverty Income Guidelines are eligible for a 70% adjustment of charge | Patients whose income is between 200% and 250% the Poverty Income Guidelines are eligible for a 65% adjustment of charge",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: If no tax return is available, a \u201cVerification of Non-filing\u201d letter must be supplied for each member of the household a | A letter of denial or other appropriate documentation from Georgia Medicaid that shows ineligibility for Medicaid Covera",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: to 5:00 p.m., by mail at HMC Attn.: Financial Counselor P.O. Box 1168 Dalton, Ga. 30720 or by fax at (706) 281-5613 or (",
+    "eligibility.discount_tiers: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 2 verbatim spans",
     "agent dropped eligibility.residency: judge: Quote names the four counties only; it says nothing about considering outside applications for extenuating circumstances."
    ],
    "eve_verified": {
@@ -165,6 +194,7 @@
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
      "apply.documents_required",
      "apply.submit_methods",
      "apply.window_days_from_first_bill",
@@ -174,21 +204,15 @@
     ],
     "rejected": [
      [
-      "eligibility.discount_tiers",
-      "value not in quote"
-     ],
-     [
       "eligibility.assistance_ceiling_fpl",
       "quote states the percentage as a floor (above, over, at least), not a ceiling"
      ]
     ],
     "pruned": [
-     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
-     "apply.documents_required: 1 item not named in the trimmed quote",
-     "apply.submit_methods: 1 item not named in the trimmed quote"
+     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)"
     ],
     "income_rule_verified": true,
-    "core_completeness": 0.67
+    "core_completeness": 0.83
    }
   },
   {
@@ -1547,18 +1571,7 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "languages": {
-     "value": [
-      "English",
-      "Spanish"
-     ],
-     "layer": "documented",
-     "quote": "Please click here to download the application in English.",
-     "source_id": "web-abf233a2a328a1a5",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "languages": null
    },
    "coverage": {
     "facilities": null,
@@ -1596,7 +1609,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "contacts.languages: 1 more verbatim excerpt(s) supported this value: Spanish [/-/media/project/wellstar/org/documents/fap-application-in-languages/fap-application-oct-24/sp_fap_1doc.pdf?rev",
+    "contacts.languages: value backed by 2 verbatim spans",
     "agent dropped programs.presumptive: excerpt not in source: the patient's estimated income is at\n300% or less of the FPG",
     "agent dropped apply.documents_required: excerpt not in source: Submit a true, accurate, signed and\ncompleted application fo"
    ],
@@ -1618,13 +1631,16 @@
      "apply.submit_methods",
      "apply.window_days_from_first_bill",
      "contacts.phone",
-     "contacts.hours",
-     "contacts.languages"
+     "contacts.hours"
     ],
     "rejected": [
      [
       "eligibility.asset_test",
       "quote does not support the asset-test value"
+     ],
+     [
+      "contacts.languages",
+      "quote not found in source"
      ]
     ],
     "pruned": [],
@@ -1673,10 +1689,12 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "photo_id"
+      "photo_id",
+      "proof_of_residency",
+      "proof_of_income"
      ],
      "layer": "documented",
-     "quote": "Acceptable forms of Photo ID (government IDs only): All documents must be valid and up to date.",
+     "quote": "Acceptable forms of Photo ID (government IDs only): All documents must be valid and up to date. || Proof of Georgia Residency: Documents must be in the patient's name and no more than 30 days old. || Proof of Income \u2013 One or more of the following:",
      "source_id": "fap-4ce1b99ba70d6afc",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1688,10 +1706,18 @@
       {
        "kind": "mail",
        "detail": "Piedmont Healthcare, Customer Solutions Center, P.O. Box 571153, Atlanta, GA 30357"
+      },
+      {
+       "kind": "fax",
+       "detail": "770-916-7511"
+      },
+      {
+       "kind": "email",
+       "detail": "Assistance@piedmont.org"
       }
      ],
      "layer": "documented",
-     "quote": "Piedmont Healthcare, Customer Solutions Center \u2022 P.O. BOX 571153, Atlanta, GA 30357",
+     "quote": "Piedmont Healthcare, Customer Solutions Center \u2022 P.O. BOX 571153, Atlanta, GA 30357 || Phone: 1-855-788-1212 \u2022 Fax: 770-916-7511 \u2022 Email: Assistance@piedmont.org",
      "source_id": "fap-029de26fb39a7afa",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1762,8 +1788,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Proof of Georgia Residency: Documents must be in the patient's name and no more than 30 days old. | Proof of Income \u2013 One or more of the following:",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Phone: 1-855-788-1212 \u2022 Fax: 770-916-7511 \u2022 Email: Assistance@piedmont.org",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 2 verbatim spans",
     "agent dropped eligibility.residency: judge: The quote only requires current Georgia residency. The Alabama and South Carolina extension is not stated.",
     "agent dropped programs.presumptive: judge: The quote only states the 300% FPL limit. It does not mention Georgia residency, a third-party screening tool, or 'regardless of insurance'.",
     "agent dropped programs.state_programs: judge: The quote says PHC assists via outside vendors with Georgia Medicaid or SSA benefits. It does not mention SSI or a requirement that patients cooperate."
@@ -1787,10 +1813,7 @@
      "contacts.phone"
     ],
     "rejected": [],
-    "pruned": [
-     "apply.documents_required: 2 items not named in the trimmed quote",
-     "apply.submit_methods: 2 items not named in the trimmed quote"
-    ],
+    "pruned": [],
     "income_rule_verified": true,
     "core_completeness": 0.67
    }
@@ -1868,10 +1891,12 @@
     "documents_required": {
      "value": [
       "pay_stubs",
-      "other"
+      "other",
+      "tax_return",
+      "proof_of_residency"
      ],
      "layer": "documented",
-     "quote": "Most recent pay stubs or Supplemental Security Income (SSI provided by Social Security) \u2610 Three (3) most recent statements from checking, savings, certificates of deposit, stocks, bonds, money market, etc.",
+     "quote": "Most recent pay stubs or Supplemental Security Income (SSI provided by Social Security) \u2610 Three (3) most recent statements from checking, savings, certificates of deposit, stocks, bonds, money market, etc. || Most recent Federal Income tax forms including schedules C, D, E, & F \u2610 Most recent W2 statement or 1099 || Proof of residency in the SJ/C service area must include a state issued ID (such as a driver\u2019s",
      "source_id": "fap-00be7845c963b421",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1883,10 +1908,14 @@
       {
        "kind": "mail",
        "detail": "SJ/C Patient Accounts, 5353 Reynolds Street, Savannah, GA 31405"
+      },
+      {
+       "kind": "email",
+       "detail": "financialsolutionsadvisors@sjchs.org"
       }
      ],
      "layer": "documented",
-     "quote": "The completed application and supporting documentation can be mailed to: SJ/C Patient Accounts 5353 Reynolds Street Savannah, GA 31405",
+     "quote": "The completed application and supporting documentation can be mailed to: SJ/C Patient Accounts 5353 Reynolds Street Savannah, GA 31405 || Applications and supporting documentation may also be dropped off with the Financial Resource Coordinators at either hospital or emailed to financialsolutionsadvisors@sjchs.org",
      "source_id": "fap-00be7845c963b421",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1968,8 +1997,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Most recent Federal Income tax forms including schedules C, D, E, & F \u2610 Most recent W2 statement or 1099 | Proof of residency in the SJ/C service area must include a state issued ID (such as a driver\u2019s",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Applications and supporting documentation may also be dropped off with the Financial Resource Coordinators at either hos",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 2 verbatim spans",
     "agent dropped eligibility.residency: judge: The quote requires Service Area residency but never says the area is defined by a list of zip codes."
    ],
    "eve_verified": {
@@ -2002,8 +2031,7 @@
     ],
     "pruned": [
      "programs.presumptive: 1 item not named in the trimmed quote",
-     "apply.documents_required: 2 items not named in the trimmed quote",
-     "apply.submit_methods: 2 items not named in the trimmed quote"
+     "apply.submit_methods: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": true,
     "core_completeness": 0.67
@@ -2288,10 +2316,12 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "photo_id"
+      "photo_id",
+      "proof_of_residency",
+      "proof_of_income"
      ],
      "layer": "documented",
-     "quote": "Acceptable forms of Photo ID (government IDs only): All documents must be valid and up to date.",
+     "quote": "Acceptable forms of Photo ID (government IDs only): All documents must be valid and up to date. || Proof of Georgia Residency: Documents must be in the patient's name and no more than 30 days old. || Proof of Income \u2013 One or more of the following:",
      "source_id": "fap-4ce1b99ba70d6afc",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2332,7 +2362,7 @@
       "Spanish"
      ],
      "layer": "documented",
-     "quote": "Plain Language Summary - English",
+     "quote": "Plain Language Summary - English || Plain Language Summary - Spanish",
      "source_id": "fap-4ce1b99ba70d6afc",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2375,9 +2405,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: To qualify for financial assistance under presumptive eligibility, the patient must have a Federal Poverty Level no high",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Proof of Georgia Residency: Documents must be in the patient's name and no more than 30 days old. | Proof of Income \u2013 One or more of the following:",
-    "contacts.languages: 1 more verbatim excerpt(s) supported this value: Plain Language Summary - Spanish",
+    "programs.presumptive: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "contacts.languages: value backed by 2 verbatim spans",
     "agent dropped eligibility.residency: judge: Quote says only current Georgia residents; the Alabama and South Carolina extensions are not mentioned.",
     "agent dropped programs.state_programs: judge: Quote says 'Social Security Administration benefits'; it does not specify SSI.",
     "agent dropped apply.submit_methods: judge: Quote supports in-person admissions, but the mail address (P.O. Box 571153) is not in the quote."
@@ -2402,8 +2432,7 @@
     ],
     "rejected": [],
     "pruned": [
-     "programs.presumptive: none of the listed programs is named in the quote (after trimming)",
-     "apply.documents_required: 2 items not named in the trimmed quote"
+     "programs.presumptive: none of the listed programs is named in the quote (after trimming)"
     ],
     "income_rule_verified": true,
     "core_completeness": 0.5
@@ -2545,8 +2574,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: Category 3 (HI 201%-250% of FPG) Category 4 (HI 251%-300% of FPG) Patient Payment Responsibility* Category 3 - 10% of AG",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Verified Homelessness | The patient qualifies for a government program with eligibility requirements that reasonably meet the qualifications for",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "programs.presumptive: value backed by 3 verbatim spans",
     "apply.form_url: not an absolute URL ('/-/media/project/wellstar/org/documents/fap-application-in-l'); dropped",
     "agent dropped apply.documents_required: excerpt not in source: Provide two (2) current bank statements for all checking and",
     "agent dropped apply.submit_methods: excerpt not in source: Patients are encouraged to apply via Wellstar MyChart and el",
@@ -2653,7 +2682,20 @@
    "apply": {
     "form_url": null,
     "form_version": null,
-    "documents_required": null,
+    "documents_required": {
+     "value": [
+      "other",
+      "tax_return",
+      "pay_stubs",
+      "bank_statements"
+     ],
+     "layer": "documented",
+     "quote": "Submit a true, accurate, signed and completed application for financial assistance; and || Most recent Internal Revenue Service (IRS) Form 1040 AND IRS W-2/1099 (if applicable) issued during the past year to match IRS Form 1040 || Provide three (3) months of the most recent paycheck stubs or a statement from employer verifying gross wages AND the most recent two (2) months of bank statements",
+     "source_id": "fap-cda3b082aae6c4af",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "documents_reported": null,
     "submit_methods": {
      "value": [
@@ -2746,24 +2788,27 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Most recent Internal Revenue Service (IRS) Form 1040 AND IRS W-2/1099 (if applicable) issued during the past year to mat | Provide three (3) months of the most recent paycheck stubs or a statement from employer verifying gross wages AND the mo",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent dropped programs.presumptive: judge: The quote lacks the 'enrollment/referral from a similar program' item and the 'after collection efforts produce no payment' condition; only three criteria appear."
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 3,
+    "sources_fetched": 2,
     "sources_total": 3,
-    "sources_missing": [],
+    "sources_missing": [
+     "https://www.wellstar.org/for-patients/financial-assistance"
+    ],
     "sha256_match": {
      "fap-bb5e6209bfd8721e": true,
      "fap-cda3b082aae6c4af": true,
-     "web-50064e53d4858897": false
+     "web-50064e53d4858897": null
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.insured_patients_covered",
      "programs.state_programs",
+     "apply.documents_required",
      "apply.submit_methods",
      "apply.window_days_from_first_bill",
      "contacts.phone",
@@ -2775,11 +2820,9 @@
       "quote does not support the asset-test value"
      ]
     ],
-    "pruned": [
-     "apply.documents_required: none of the listed documents is named in the quote (after trimming)"
-    ],
+    "pruned": [],
     "income_rule_verified": true,
-    "core_completeness": 0.5
+    "core_completeness": 0.67
    }
   },
   {
@@ -2987,10 +3030,18 @@
       {
        "kind": "portal",
        "detail": "Downloading the Application Form from the Archbold Medical Center website"
+      },
+      {
+       "kind": "mail",
+       "detail": "mailing or delivering it to Patient Financial Services, 920 Cairo Road, Thomasville, Georgia 31792"
+      },
+      {
+       "kind": "in_person",
+       "detail": "Obtaining an Application Form from any Archbold hospital facility admissions desk or business office"
       }
      ],
      "layer": "documented",
-     "quote": "Downloading the Application Form from the Archbold Medical Center website",
+     "quote": "Downloading the Application Form from the Archbold Medical Center website || Obtaining an Application Form from any Archbold hospital facility admissions desk or business office and mailing or delivering it to || mailing or delivering it to: Patient Financial Services 920 Cairo Road Thomasville, Georgia 31792",
      "source_id": "fap-fc61b63123293599",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3063,7 +3114,7 @@
    "accuracy": null,
    "eve_review": [
     "eligibility.discount_tiers: 200-325% says 'up to 66%', a cap rather than a fixed discount; skipped",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Obtaining an Application Form from any Archbold hospital facility admissions desk or business office and mailing or deli | mailing or delivering it to: Patient Financial Services 920 Cairo Road Thomasville, Georgia 31792",
+    "apply.submit_methods: value backed by 3 verbatim spans",
     "agent judge on eligibility.discount_tiers: Quote gives the 200%-325% AGB band and a separate 'up to 66%' with no clear link. The 66% is not tied to that band, and the exclusive/inclusive bounds are not stated."
    ],
    "eve_verified": {
@@ -3092,9 +3143,7 @@
       "quote does not support the asset-test value"
      ]
     ],
-    "pruned": [
-     "apply.submit_methods: 2 items not named in the trimmed quote"
-    ],
+    "pruned": [],
     "income_rule_verified": false,
     "core_completeness": 0.67
    }
@@ -3324,10 +3373,11 @@
     "documents_required": {
      "value": [
       "pay_stubs",
-      "other"
+      "other",
+      "tax_return"
      ],
      "layer": "documented",
-     "quote": "A copy of the most recent pay stub with year-to-date gross pay amounts for the patient",
+     "quote": "A copy of the most recent pay stub with year-to-date gross pay amounts for the patient || Three (3) months of statements from checking, savings, certificates of deposits, stocks, bonds, money market, etc. || A copy of most recently filed Federal Income Tax return, including all schedules; and",
      "source_id": "fap-00be7845c963b421",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3411,7 +3461,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Three (3) months of statements from checking, savings, certificates of deposits, stocks, bonds, money market, etc. | A copy of most recently filed Federal Income Tax return, including all schedules; and",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent dropped eligibility.residency: judge: Quote requires Service Area residency but says nothing about the area being defined by listed zip codes.",
     "agent dropped programs.state_programs: judge: Quote mentions the Medicaid Eligibility Vendor but gives no Customer Service phone numbers.",
     "agent dropped apply.submit_methods: judge: Quote gives only the street address with no 'SJ/C Patient Accounts' or city/zip, and the email address is cut off."
@@ -3443,8 +3493,7 @@
      ]
     ],
     "pruned": [
-     "programs.presumptive: 1 item not named in the trimmed quote",
-     "apply.documents_required: 1 item not named in the trimmed quote"
+     "programs.presumptive: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": true,
     "core_completeness": 0.5
@@ -3491,10 +3540,12 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "photo_id"
+      "photo_id",
+      "proof_of_residency",
+      "proof_of_income"
      ],
      "layer": "documented",
-     "quote": "Acceptable forms of Photo ID (government IDs only): All documents must be valid and up to date.",
+     "quote": "Acceptable forms of Photo ID (government IDs only): All documents must be valid and up to date. || Proof of Georgia Residency: Documents must be in the patient's name and no more than 30 days old. || Proof of Income \u2013 One or more of the following:",
      "source_id": "fap-4ce1b99ba70d6afc",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3535,7 +3586,7 @@
       "Spanish"
      ],
      "layer": "documented",
-     "quote": "Plain Language Summary - English",
+     "quote": "Plain Language Summary - English || Plain Language Summary - Spanish",
      "source_id": "fap-4ce1b99ba70d6afc",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3578,8 +3629,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Proof of Georgia Residency: Documents must be in the patient's name and no more than 30 days old. | Proof of Income \u2013 One or more of the following:",
-    "contacts.languages: 1 more verbatim excerpt(s) supported this value: Plain Language Summary - Spanish",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "contacts.languages: value backed by 2 verbatim spans",
     "agent dropped eligibility.residency: judge: Quote only covers the extension to Alabama residents of four counties; it never states that Georgia residents qualify.",
     "agent dropped programs.presumptive: judge: Quote says only 'third-party screening tool'; 'public-record' is not stated.",
     "agent dropped programs.state_programs: judge: Quote says only that PHC assists via outside vendors; it does not mention SSI or a requirement that patients cooperate.",
@@ -3604,9 +3655,7 @@
      "contacts.languages"
     ],
     "rejected": [],
-    "pruned": [
-     "apply.documents_required: 2 items not named in the trimmed quote"
-    ],
+    "pruned": [],
     "income_rule_verified": true,
     "core_completeness": 0.5
    }
@@ -3901,8 +3950,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: the patient must have a Federal Poverty Level no higher than 300%",
-    "contacts.languages: 2 more verbatim excerpt(s) supported this value: Chinese [/-/media/files/patients-and-visitors/financial-assistance/2016-09-phc-financial-assistance-policy-chs.pdf] Fren | Haitian (Krey\u00f2le) [/-/media/files/patients-and-visitors/financial-assistance/2016-09-phc-financial-assistance-policy-hat",
+    "programs.presumptive: value backed by 2 verbatim spans",
+    "contacts.languages: value backed by 3 verbatim spans",
     "agent dropped eligibility.residency: judge: Quote only says current residents of Georgia (see Addendum B); it does not mention Alabama or South Carolina counties.",
     "agent dropped programs.state_programs: judge: Quote says PHC assists via outside vendors with GA Medicaid or SSA benefits; it does not mention SSI or a patient cooperation requirement.",
     "agent dropped apply.documents_required: judge: Quote lists photo ID, GA residency proof (30 days) and income proof headers, with no income examples and no dependents proof.",
@@ -4206,11 +4255,13 @@
      "value": [
       "pay_stubs",
       "tax_return",
+      "other",
+      "bank_statements",
       "proof_of_income",
-      "other"
+      "medicaid_denial"
      ],
      "layer": "documented",
-     "quote": "Paycheck stubs for at least the last four weeks or a statement from the employer verifying gross wages; or Most recent tax return; or IRS W-2 Form issued during the past year; or Most recent IRS Form 1040; or",
+     "quote": "Paycheck stubs for at least the last four weeks or a statement from the employer verifying gross wages; or Most recent tax return; or IRS W-2 Form issued during the past year; or Most recent IRS Form 1040; or || Most recent two months of bank statements for each checking, savings, money market or other bank or investment account; or Documentation or an attestation of all other income for the most recent two months (for example, unemployment compensation, disability, retirement, etc.); or Unemployment compensation denial letter, if applicable",
      "source_id": "fap-0e1bb40253c56386",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4221,7 +4272,7 @@
     "window_days_from_first_bill": {
      "value": 240,
      "layer": "documented",
-     "quote": "Patients will be allowed to apply for financial assistance for the later of 240 days after the",
+     "quote": "Patients will be allowed to apply for financial assistance for the later of 240 days after the || date Emory Healthcare (or its agent) provides the first post-discharge billing statement for the episode of care at issue",
      "source_id": "fap-0e1bb40253c56386",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4298,8 +4349,8 @@
    "accuracy": null,
    "eve_review": [
     "eligibility.discount_tiers: 200-350% at 100% is the free-care band, not a tier; skipped",
-    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: Most recent two months of bank statements for each checking, savings, money market or other bank or investment account; ",
-    "apply.window_days_from_first_bill: 1 more verbatim excerpt(s) supported this value: date Emory Healthcare (or its agent) provides the first post-discharge billing statement for the episode of care at issu",
+    "apply.documents_required: value backed by 2 verbatim spans",
+    "apply.window_days_from_first_bill: value backed by 2 verbatim spans",
     "apply.form_url: not an absolute URL ('/-/media/Project/EH/Emory/ui/pdfs/insurance/financial-assist'); dropped",
     "agent dropped apply.submit_methods: judge: Quote only says 'Patient Access Office at the locations listed in Appendix C'; the Midtown address is not in this quote."
    ],
@@ -4329,9 +4380,7 @@
       "quote not found in source"
      ]
     ],
-    "pruned": [
-     "apply.documents_required: 2 items not named in the trimmed quote"
-    ],
+    "pruned": [],
     "income_rule_verified": true,
     "core_completeness": 0.33
    }
@@ -4397,11 +4446,13 @@
      "value": [
       "pay_stubs",
       "tax_return",
+      "other",
+      "bank_statements",
       "proof_of_income",
-      "other"
+      "medicaid_denial"
      ],
      "layer": "documented",
-     "quote": "Paycheck stubs for at least the last four weeks or a statement from the employer verifying gross wages; or Most recent tax return; or IRS W-2 Form issued during the past year; or Most recent IRS Form 1040; or",
+     "quote": "Paycheck stubs for at least the last four weeks or a statement from the employer verifying gross wages; or Most recent tax return; or IRS W-2 Form issued during the past year; or Most recent IRS Form 1040; or || Most recent two months of bank statements for each checking, savings, money market or other bank or investment account; or || Documentation or an attestation of all other income for the most recent two months (for example, unemployment compensation, disability, retirement, etc.); or Unemployment compensation denial letter, if applicable",
      "source_id": "fap-0e1bb40253c56386",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4413,10 +4464,18 @@
       {
        "kind": "portal",
        "detail": "Electronically through the patient's MyChart account"
+      },
+      {
+       "kind": "in_person",
+       "detail": "Applicable Patient Access Office listed in Appendix C"
+      },
+      {
+       "kind": "mail",
+       "detail": "Emory Healthcare, P.O. Box 746699, Atlanta, GA 30374-6699"
       }
      ],
      "layer": "documented",
-     "quote": "(1) electronically through the patient\u2019s MyChart account, (2) to the applicable Patient Access",
+     "quote": "(1) electronically through the patient\u2019s MyChart account, (2) to the applicable Patient Access || Office at the locations listed in Appendix C, or (3) by mail to the following Emory Healthcare location: || Emory Healthcare P.O. Box 746699 Atlanta, GA 30374-6699",
      "source_id": "fap-0e1bb40253c56386",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4494,8 +4553,8 @@
    "accuracy": null,
    "eve_review": [
     "eligibility.discount_tiers: 200-350% at 100% is the free-care band, not a tier; skipped",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Most recent two months of bank statements for each checking, savings, money market or other bank or investment account;  | Documentation or an attestation of all other income for the most recent two months (for example, unemployment compensati",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Office at the locations listed in Appendix C, or (3) by mail to the following Emory Healthcare location: | Emory Healthcare P.O. Box 746699 Atlanta, GA 30374-6699",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 3 verbatim spans",
     "agent dropped programs.state_programs: judge: Quote names Medicaid and says Emory will assist; it does not mention outside vendors.",
     "agent dropped apply.window_days_from_first_bill: judge: Quote is cut off at '240 days after the' and never says the first bill; it also says 'the later of'."
    ],
@@ -4525,10 +4584,7 @@
       "quote not found in source"
      ]
     ],
-    "pruned": [
-     "apply.documents_required: 2 items not named in the trimmed quote",
-     "apply.submit_methods: 2 items not named in the trimmed quote"
-    ],
+    "pruned": [],
     "income_rule_verified": true,
     "core_completeness": 0.5
    }
@@ -4584,10 +4640,12 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "tax_return"
+      "tax_return",
+      "pay_stubs",
+      "bank_statements"
      ],
      "layer": "documented",
-     "quote": "Federal Income Tax return(s) for your household for the most recent calendar year.",
+     "quote": "Federal Income Tax return(s) for your household for the most recent calendar year. || Four (4) most recent pay stubs or a statement from your employer regarding your income. || Bank Statements for all bank accounts for the last two (2) months.",
      "source_id": "fap-1ae674ccec174eeb",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4599,10 +4657,18 @@
       {
        "kind": "mail",
        "detail": "Account Management Services Attention: Financial Assistance Program 920 Cairo Road Thomasville, GA 31792-4255"
+      },
+      {
+       "kind": "fax",
+       "detail": "(229)584-5906"
+      },
+      {
+       "kind": "email",
+       "detail": "fap@archbold.org"
       }
      ],
      "layer": "documented",
-     "quote": "Send completed applications and all documentation to: Account Management Services Attention: Financial Assistance Program 920 Cairo Road Thomasville, GA 31792-4255",
+     "quote": "Send completed applications and all documentation to: Account Management Services Attention: Financial Assistance Program 920 Cairo Road Thomasville, GA 31792-4255 || Completed applications and documentation may also be faxed to (229)584-5906 or emailed to fap@archbold.org",
      "source_id": "fap-1ae674ccec174eeb",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4656,8 +4722,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Four (4) most recent pay stubs or a statement from your employer regarding your income. | Bank Statements for all bank accounts for the last two (2) months.",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Completed applications and documentation may also be faxed to (229)584-5906 or emailed to fap@archbold.org",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 2 verbatim spans",
     "agent dropped eligibility.discount_tiers: excerpt not in source: For the fiscal year ending 09/30/2024 the discounts will be ",
     "agent judge on eligibility.free_care_max_fpl: Quote says residents at or below 200% FPL \"may be eligible for a substantial discount of charges,\" not 100% free care, so it does not state a free-care maximum.",
     "agent judge on apply.documents_required: Quote lists only tax returns, pay stubs, and bank statements. \"Proof of Residency\" and \"Identification\" do not appear in the quote."
@@ -4681,8 +4747,7 @@
     ],
     "rejected": [],
     "pruned": [
-     "apply.documents_required: 4 items not named in the trimmed quote",
-     "apply.submit_methods: 2 items not named in the trimmed quote"
+     "apply.documents_required: 2 items not named in the trimmed quote"
     ],
     "income_rule_verified": true,
     "core_completeness": 0.67
@@ -5011,19 +5076,7 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "languages": {
-     "value": [
-      "English",
-      "Spanish",
-      "Arabic"
-     ],
-     "layer": "documented",
-     "quote": "Please click here to download the application in English.",
-     "source_id": "web-e0eb5b3a78e888a8",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "languages": null
    },
    "coverage": {
     "facilities": null,
@@ -5061,8 +5114,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: The patient qualifies for a government program with eligibility requirements that reasonably meet the qualifications | The enrollment, participation or referral from a program, provider or clinic which has substantially similar approval cr",
-    "contacts.languages: 2 more verbatim excerpt(s) supported this value: Spanish [/-/media/project/wellstar/org/documents/fap-application-in-languages/fap-application-oct-24/sp_fap_1doc.pdf?rev | Arabic [/-/media/project/wellstar/org/documents/fap-application-in-languages/fap-application-oct-24/arabic_1doc.pdf?rev=",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "contacts.languages: value backed by 3 verbatim spans",
     "agent dropped apply.documents_required: quote is not a substring of the source",
     "agent dropped eligibility.discount_tiers: judge: Bounds match, but the quote gives patient responsibility (3%, 10%, 20% of AGB); 97/90/80% discounts are derived and do not appear."
    ],
@@ -5084,13 +5137,16 @@
      "apply.submit_methods",
      "apply.window_days_from_first_bill",
      "contacts.phone",
-     "contacts.hours",
-     "contacts.languages"
+     "contacts.hours"
     ],
     "rejected": [
      [
       "eligibility.asset_test",
       "quote does not support the asset-test value"
+     ],
+     [
+      "contacts.languages",
+      "quote not found in source"
      ]
     ],
     "pruned": [
@@ -5179,10 +5235,12 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "bank_statements"
+      "bank_statements",
+      "pay_stubs",
+      "tax_return"
      ],
      "layer": "documented",
-     "quote": "Most recent bank statements for personal and business checking and savings accounts",
+     "quote": "Most recent bank statements for personal and business checking and savings accounts || Recent pay stub(s) with validation of pay frequency || Current year W-2 form and/or recent year tax return",
      "source_id": "fap-5f1c87037462e0f2",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5258,7 +5316,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Recent pay stub(s) with validation of pay frequency | Current year W-2 form and/or recent year tax return",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent dropped eligibility.residency: judge: Quote lists the six states only; it says nothing about out-of-state residents or non-US citizens qualifying."
    ],
    "eve_verified": {
@@ -5283,9 +5341,7 @@
      "contacts.hours"
     ],
     "rejected": [],
-    "pruned": [
-     "apply.documents_required: 2 items not named in the trimmed quote"
-    ],
+    "pruned": [],
     "income_rule_verified": true,
     "core_completeness": 0.83
    }
@@ -5397,7 +5453,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: the patient must have a Federal Poverty Level no higher than 300%",
+    "programs.presumptive: value backed by 2 verbatim spans",
     "agent dropped eligibility.residency: judge: Quote mentions only current Georgia residents; nothing about Alabama or South Carolina counties.",
     "agent dropped programs.state_programs: judge: Quote names Medicaid and SSA benefits with outside vendors, but says nothing of required cooperation and does not specify SSI.",
     "agent dropped apply.documents_required: judge: Quote lists photo ID, Georgia residency proof and income proof; proof of dependents is not mentioned.",
@@ -5791,8 +5847,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: Category 3 (HI 201%-250% of FPG) Category 4 (HI 251%-300% of FPG) Patient Payment Responsibility* Category 3 - 10% of AG",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Verified Homelessness | The patient qualifies for a government program with eligibility requirements that reasonably meet the qualifications for",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "programs.presumptive: value backed by 3 verbatim spans",
     "apply.window_days_from_first_bill: quote matched the source only after typography normalization",
     "agent dropped programs.state_programs: quote is not a substring of the source",
     "agent dropped apply.documents_required: excerpt not in source: Provide two (2) current bank statements for all checking and",
@@ -6234,7 +6290,7 @@
       "Spanish"
      ],
      "layer": "documented",
-     "quote": "Plain Language Summary - English",
+     "quote": "Plain Language Summary - English || Plain Language Summary - Spanish",
      "source_id": "fap-4ce1b99ba70d6afc",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -6277,7 +6333,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "contacts.languages: 1 more verbatim excerpt(s) supported this value: Plain Language Summary - Spanish",
+    "contacts.languages: value backed by 2 verbatim spans",
     "agent dropped eligibility.residency: judge: Quote mentions only Georgia residents; it says nothing about Alabama or South Carolina counties.",
     "agent dropped programs.presumptive: judge: Quote supports a 300% FPL cap and third-party public-record screening, but it does not mention a Georgia residency requirement.",
     "agent dropped programs.state_programs: judge: Quote names Georgia Medicaid and SSA benefits with vendor help; it does not specify SSI or a duty to cooperate.",
@@ -6348,10 +6404,12 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "photo_id"
+      "photo_id",
+      "proof_of_residency",
+      "proof_of_income"
      ],
      "layer": "documented",
-     "quote": "Acceptable forms of Photo ID (government IDs only): All documents must be valid and up to date.",
+     "quote": "Acceptable forms of Photo ID (government IDs only): All documents must be valid and up to date. || Proof of Georgia Residency: Documents must be in the patient's name and no more than 30 days || Proof of Income \u2013 One or more of the following:",
      "source_id": "fap-4ce1b99ba70d6afc",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -6424,7 +6482,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Proof of Georgia Residency: Documents must be in the patient's name and no more than 30 days | Proof of Income \u2013 One or more of the following:",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent dropped eligibility.residency: judge: Quote only mentions current Georgia residents; nothing about Alabama or South Carolina counties.",
     "agent dropped programs.presumptive: judge: Quote covers third-party screening regardless of insurance but does not mention a 300% FPL limit.",
     "agent dropped programs.state_programs: judge: Quote says 'Social Security Administration benefits', not SSI specifically; the Medicaid entry is supported.",
@@ -6448,9 +6506,7 @@
      "contacts.phone"
     ],
     "rejected": [],
-    "pruned": [
-     "apply.documents_required: 2 items not named in the trimmed quote"
-    ],
+    "pruned": [],
     "income_rule_verified": true,
     "core_completeness": 0.5
    }
@@ -6513,10 +6569,12 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "photo_id"
+      "photo_id",
+      "proof_of_residency",
+      "proof_of_income"
      ],
      "layer": "documented",
-     "quote": "Acceptable forms of Photo ID (government IDs only): All documents must be valid and up to date.",
+     "quote": "Acceptable forms of Photo ID (government IDs only): All documents must be valid and up to date. || Proof of Georgia Residency: Documents must be in the patient's name and no more than 30 days old. || Proof of Income \u2013 One or more of the following:",
      "source_id": "fap-4ce1b99ba70d6afc",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -6589,7 +6647,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Proof of Georgia Residency: Documents must be in the patient's name and no more than 30 days old. | Proof of Income \u2013 One or more of the following:",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent dropped eligibility.residency: judge: Quote only says current Georgia residents (see Addendum B); it does not mention Alabama or South Carolina county extensions.",
     "agent dropped programs.presumptive: judge: Quote describes presumptive eligibility for Georgia residents via a third-party tool but gives no 300% FPL threshold.",
     "agent dropped apply.submit_methods: judge: In-person admissions is supported, but the quote gives no mailing address; it only says 'send any correspondence to:'."
@@ -6613,9 +6671,7 @@
      "contacts.phone"
     ],
     "rejected": [],
-    "pruned": [
-     "apply.documents_required: 2 items not named in the trimmed quote"
-    ],
+    "pruned": [],
     "income_rule_verified": true,
     "core_completeness": 0.5
    }
@@ -6739,16 +6795,15 @@
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 1,
+    "sources_fetched": 2,
     "sources_total": 3,
     "sources_missing": [
-     "https://www.sgmc.org/wp-content/uploads/2024/04/SPP-3.006-rev-4-2024.pdf",
-     "https://www.sgmc.org/patients-visitors/financial-assistance/"
+     "https://www.sgmc.org/wp-content/uploads/2024/04/SPP-3.006-rev-4-2024.pdf"
     ],
     "sha256_match": {
      "fap-6cffa9cc21f858f9": true,
      "fap-a5dc3eb185b5ea3d": true,
-     "web-7c17e33f1c3b3698": null
+     "web-7c17e33f1c3b3698": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
@@ -6763,7 +6818,7 @@
      ],
      [
       "apply.form_url",
-      "source text missing"
+      "quote not found in source"
      ],
      [
       "apply.decision_days",
@@ -7371,10 +7426,12 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "proof_of_residency"
+      "proof_of_residency",
+      "pay_stubs",
+      "tax_return"
      ],
      "layer": "documented",
-     "quote": "Patients will be required to provide proof of residency in one of the following states",
+     "quote": "Patients will be required to provide proof of residency in one of the following states || Recent pay stub(s) with validation of pay frequency || Current year W-2 form and/or recent year tax return",
      "source_id": "fap-5f1c87037462e0f2",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -7445,7 +7502,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Recent pay stub(s) with validation of pay frequency | Current year W-2 form and/or recent year tax return",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent dropped eligibility.residency: judge: Quote lists only the six states; it does not mention out-of-state or non-US citizen exceptions.",
     "agent dropped apply.submit_methods: judge: Quote says applications should be mailed but omits the address itself."
    ],
@@ -7471,9 +7528,7 @@
      "contacts.hours"
     ],
     "rejected": [],
-    "pruned": [
-     "apply.documents_required: 2 items not named in the trimmed quote"
-    ],
+    "pruned": [],
     "income_rule_verified": true,
     "core_completeness": 0.67
    }
@@ -8317,8 +8372,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: Category 3 (HI 201%-250% of FPG) Category 4 (HI 251%-300% of FPG) Patient Payment Responsibility* Category 3 - 10% of AG",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Verified Homelessness | The patient qualifies for a government program with eligibility requirements that reasonably meet the qualifications for",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "programs.presumptive: value backed by 3 verbatim spans",
     "apply.window_days_from_first_bill: quote matched the source only after typography normalization",
     "agent dropped apply.documents_required: excerpt not in source: Provide two (2) current bank statements for all checking and",
     "agent dropped apply.submit_methods: excerpt not in source: calling the Wellstar Single Billing Office and requesting an",
@@ -9016,10 +9071,14 @@
       {
        "kind": "fax",
        "detail": "706-632-1504"
+      },
+      {
+       "kind": "email",
+       "detail": "tracey.fears@blueridgemc.org"
       }
      ],
      "layer": "documented",
-     "quote": "Fax: 706-632-1504",
+     "quote": "Fax: 706-632-1504 || Email: tracey.fears@blueridgemc.org || Blue Ridge Medical Center 2855 Old Hwy 5 Blue Ridge GA 30513",
      "source_id": "fap-35e20bb7425689d3",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -9082,7 +9141,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Email: tracey.fears@blueridgemc.org | Blue Ridge Medical Center 2855 Old Hwy 5 Blue Ridge GA 30513",
+    "apply.submit_methods: value backed by 3 verbatim spans",
     "agent dropped apply.documents_required: excerpt not in source: Proof of rent/mortgage\nID for everyone in the home (social s",
     "agent judge on eligibility.asset_test: Quote lists 'Checking Account Statement' and 'Savings Account Statement' only; it does not state that assets are considered for eligibility."
    ],
@@ -9108,7 +9167,7 @@
      ]
     ],
     "pruned": [
-     "apply.submit_methods: 2 items not named in the trimmed quote"
+     "apply.submit_methods: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": false,
     "core_completeness": 0.33

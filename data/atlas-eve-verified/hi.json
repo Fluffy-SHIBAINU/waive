@@ -166,8 +166,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: If a patient says he or she is homeless and the facility, through its own due diligence, does not find any evidence to t | If a patient dies without an estate",
-    "contacts.languages: 2 more verbatim excerpt(s) supported this value: Samoan [https://www.queens.org/wp-content/uploads/2021/03/CharityCarePolicy_SW-16-051-SLC-approved_revised_072016_Samoan | Vietnamese [https://www.queens.org/wp-content/uploads/Financial-Assistance-Policy-Plain-Language-Summary-Vietnamese.pdf]",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "contacts.languages: value backed by 3 verbatim spans",
     "agent dropped apply.submit_methods: excerpt not in source: you can fill out the PDF version of the application and emai",
     "agent judge on apply.decision_days: Quote says something is provided generally within 10 days of the counselor's decision; it does not state days to decide.",
     "agent judge on contacts.languages: Quote shows only Japanese, Samoan, and Vietnamese; Korean, Chinese, Tongan, Chuukese, Tagalog, and Ilokano are not in the quote."
@@ -267,10 +267,11 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "pay_stubs"
+      "pay_stubs",
+      "tax_return"
      ],
      "layer": "documented",
-     "quote": "Recent pay stubs from within the 6 months before or after the patient is first billed (or in preservice when Application is submitted)",
+     "quote": "Recent pay stubs from within the 6 months before or after the patient is first billed (or in preservice when Application is submitted) || Copy of Federal Income Tax Return (Form 1040) for patient and spouse or domestic partner from the year the patient was first billed or 12 months prior to when the patient was first billed",
      "source_id": "fap-05ba404cb6616cfd",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -357,9 +358,9 @@
    "accuracy": null,
    "eve_review": [
     "eligibility.asset_test: quote matched the source only after typography normalization",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: The patient's medical record that documents he/she is homeless; | The patient qualifies for a public benefit program including Social Security Insurance, Unemployment Insurance Benefits,",
+    "programs.presumptive: value backed by 3 verbatim spans",
     "programs.presumptive: quote matched the source only after typography normalization",
-    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: Copy of Federal Income Tax Return (Form 1040) for patient and spouse or domestic partner from the year the patient was f",
+    "apply.documents_required: value backed by 2 verbatim spans",
     "contacts.languages: quote matched the source only after typography normalization",
     "agent judge on apply.submit_methods: Quote lists only one method (email, mail or online submission); the value splits it into three separate kinds with duplicated detail text, which the quote does not state as separate methods."
    ],
@@ -393,8 +394,7 @@
      ]
     ],
     "pruned": [
-     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
-     "apply.documents_required: 1 item not named in the trimmed quote"
+     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)"
     ],
     "income_rule_verified": true,
     "core_completeness": 0.67
@@ -471,7 +471,7 @@
       "Traditional Chinese"
      ],
      "layer": "documented",
-     "quote": "Plain Language Summary of Financial Assistance (Charity Care) Policy \u2014 English",
+     "quote": "Plain Language Summary of Financial Assistance (Charity Care) Policy \u2014 English || Plain Language Summary of Financial Assistance (Charity Care) Policy \u2014 Ilocano || Plain Language Summary of Financial Assistance (Charity Care) Policy \u2014 Japanese",
      "source_id": "web-8722075acd1348f2",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -514,7 +514,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "contacts.languages: 2 more verbatim excerpt(s) supported this value: Plain Language Summary of Financial Assistance (Charity Care) Policy \u2014 Ilocano | Plain Language Summary of Financial Assistance (Charity Care) Policy \u2014 Japanese",
+    "contacts.languages: value backed by 3 verbatim spans",
     "agent judge on contacts.hours: Quote gives Monday through Friday but attaches it to Admissions Counselors at (808) 547-9789, not the recorded phone number; the hours apply to a different contact.",
     "agent judge on contacts.languages: Quote lists only English, Ilocano, and Japanese summary titles; Korean, Simplified Chinese, and Traditional Chinese are not stated in the quote."
    ],
@@ -608,10 +608,11 @@
    "programs": {
     "presumptive": {
      "value": [
-      "Enrolled in a KP Community MFA Program"
+      "Enrolled in a KP Community MFA Program",
+      "homeless"
      ],
      "layer": "documented",
-     "quote": "Is enrolled in a Community MFA (CMFA) program",
+     "quote": "Is enrolled in a Community MFA (CMFA) program || Resides in low-income or subsidized housing. || The patient is homeless or receives of care from a homeless clinic.",
      "source_id": "fap-ea3b663f76cdaf93",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -640,10 +641,22 @@
       {
        "kind": "portal",
        "detail": "Complete the MFA application online at kp.org/mfa by filling out the \"Apply Online\" form to receive a link to submit your application."
+      },
+      {
+       "kind": "fax",
+       "detail": "Fax your completed application to 808-432-7950."
+      },
+      {
+       "kind": "mail",
+       "detail": "Mail your completed application to: Kaiser Permanente Attention: MFA Program - Business Services 3288 Moanalua Road Honolulu, HI 96819-1469"
+      },
+      {
+       "kind": "phone",
+       "detail": "Request Program Information or Apply by Telephone. Telephone Number(s): 1-808-432-7940, or 1-800-598-5928"
       }
      ],
      "layer": "documented",
-     "quote": "Complete the MFA application online at kp.org/mfa by filling out the \"Apply Online\" form to receive a link to submit your application.",
+     "quote": "Complete the MFA application online at kp.org/mfa by filling out the \"Apply Online\" form to receive a link to submit your application. || Fax your completed application to 808-432-7950. || Mail your completed application to: Kaiser Permanente Attention: MFA Program - Business Services 3288 Moanalua Road Honolulu, HI 96819-1469",
      "source_id": "fap-aeed82254ca8802e",
      "checked_on": "2026-10-23",
      "confidence": 0.8,
@@ -721,7 +734,7 @@
       "Vietnamese"
      ],
      "layer": "documented",
-     "quote": "English: If you need help in your language, language assistance is available at no cost to you, 24 hours a day, 7 days a week.",
+     "quote": "English: If you need help in your language, language assistance is available at no cost to you, 24 hours a day, 7 days a week. || Spanish: Si necesita ayuda en su idioma, contamos con asistencia de idiomas sin costo alguno para usted las 24 horas del d\u00eda, los 7 d\u00edas de la semana. || Tagalog: Kung kailangan mo ng tulong na nasa iyong wika, may available na tulong sa wika nang wala kang babayaran, 24 na oras sa isang araw, 7 araw sa isang linggo.",
      "source_id": "fap-aeed82254ca8802e",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -764,11 +777,11 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Resides in low-income or subsidized housing. | The patient is homeless or receives of care from a homeless clinic.",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Fax your completed application to 808-432-7950. | Mail your completed application to: Kaiser Permanente Attention: MFA Program - Business Services 3288 Moanalua Road Hono",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 3 verbatim spans",
     "apply.submit_methods: quote matched the source only after typography normalization",
     "apply.decision_days: quote matched the source only after typography normalization",
-    "contacts.languages: 2 more verbatim excerpt(s) supported this value: Spanish: Si necesita ayuda en su idioma, contamos con asistencia de idiomas sin costo alguno para usted las 24 horas del | Tagalog: Kung kailangan mo ng tulong na nasa iyong wika, may available na tulong sa wika nang wala kang babayaran, 24 na",
+    "contacts.languages: value backed by 3 verbatim spans",
     "agent judge on eligibility.asset_test: Quote says assets are not considered income, which is about income counting, not whether assets are considered in eligibility.",
     "agent judge on programs.presumptive: Quote lists only three presumptive categories (CMFA enrollment, low-income/subsidized housing, homeless); value has seven, including items not in the quote.",
     "agent judge on apply.submit_methods: Quote gives only online, fax, and mail; value also includes in_person and phone methods not in the quote.",
@@ -808,8 +821,8 @@
      ]
     ],
     "pruned": [
-     "programs.presumptive: 6 items not named in the trimmed quote",
-     "apply.submit_methods: 4 items not named in the trimmed quote"
+     "programs.presumptive: 5 items not named in the trimmed quote",
+     "apply.submit_methods: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": true,
     "core_completeness": 0.83
@@ -954,8 +967,8 @@
    "accuracy": null,
    "eve_review": [
     "eligibility.discount_tiers: 0-100% at 100% is the free-care band, not a tier; skipped",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: If a patient says he or she is homeless and the facility, through its own due diligence, does not find any evidence to t | If a patient dies without an estate",
-    "contacts.languages: 2 more verbatim excerpt(s) supported this value: Samoan [https://www.queens.org/wp-content/uploads/2021/03/CharityCarePolicy_SW-16-051-SLC-approved_revised_072016_Samoan | Vietnamese [https://www.queens.org/wp-content/uploads/Financial-Assistance-Policy-Plain-Language-Summary-Vietnamese.pdf]",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "contacts.languages: value backed by 3 verbatim spans",
     "agent dropped apply.submit_methods: excerpt not in source: email it along with copies of the required documents to Elev",
     "agent judge on eligibility.discount_tiers: Quote says individuals receive a 100% or 76% discount, but gives no FPL bounds; the 0-100% FPL bound in the value is not stated.",
     "agent judge on apply.form_url: The quoted URL is a Queen's Health System form, not North Hawaii Community Hospital; the quote does not support this hospital's form link.",
@@ -1146,8 +1159,8 @@
    "accuracy": null,
    "eve_review": [
     "eligibility.discount_tiers: 0-100% at 100% is the free-care band, not a tier; skipped",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: If a patient says he or she is homeless and the facility, through its own due diligence, does not find any evidence to t | If a patient dies without an estate",
-    "contacts.languages: 2 more verbatim excerpt(s) supported this value: Samoan [https://www.queens.org/wp-content/uploads/2021/03/CharityCarePolicy_SW-16-051-SLC-approved_revised_072016_Samoan | Vietnamese [https://www.queens.org/wp-content/uploads/Financial-Assistance-Policy-Plain-Language-Summary-Vietnamese.pdf]",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "contacts.languages: value backed by 3 verbatim spans",
     "agent dropped apply.submit_methods: excerpt not in source: email it along with copies of the required documents to Elev",
     "agent judge on eligibility.discount_tiers: Quote says only 'either a 100% or a 76% discount' with no FPL bounds, so the tier boundaries (0-100% and 100-100% FPL) are not stated.",
     "agent judge on programs.state_programs: Quote names Med-QUEST and the QUEST Integration website but the URL https://medical.mybenefits.hawaii.gov does not appear in the quote.",
@@ -1259,10 +1272,11 @@
    "programs": {
     "presumptive": {
      "value": [
-      "enrolled in a Community FAP (CFAP) program"
+      "enrolled in a Community FAP (CFAP) program",
+      "enrolled in a MH Community Benefit program"
      ],
      "layer": "documented",
-     "quote": "Is enrolled in a Community FAP (CFAP) program to which patients have been referred and prequalified",
+     "quote": "Is enrolled in a Community FAP (CFAP) program to which patients have been referred and prequalified || Is enrolled in a MH Community Benefit program designed to support access to care for low-income patients || Is enrolled in or is presumed to be eligible for a credible means-tested health coverage program (e.g., Medicaid, Medicare Low Income Subsidy Program, Subsidized coverage available on the Health Benefit Exchange.)",
      "source_id": "fap-1e2d2ebcf9bc8bf6",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1288,10 +1302,12 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "tax_return"
+      "tax_return",
+      "pay_stubs",
+      "social_security_letter"
      ],
      "layer": "documented",
-     "quote": "A copy of your most recent signed federal tax return or W-2, with electronic submission verification or your signature (including all pages and schedules)",
+     "quote": "A copy of your most recent signed federal tax return or W-2, with electronic submission verification or your signature (including all pages and schedules) || A copy of your 2 most recent pay stubs showing year-to-date (YTD) income || Copies of other recent documents, income-generating statements or award letters to verify additional household income",
      "source_id": "fap-9a7d9966eb6da550",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1382,8 +1398,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Is enrolled in a MH Community Benefit program designed to support access to care for low-income patients | Is enrolled in or is presumed to be eligible for a credible means-tested health coverage program (e.g., Medicaid, Medica",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: A copy of your 2 most recent pay stubs showing year-to-date (YTD) income | Copies of other recent documents, income-generating statements or award letters to verify additional household income",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent dropped apply.submit_methods: excerpt not in source: Deliver Completed Application in Person. Completed applicati",
     "agent dropped collections.eca_wait_days: quote is not a substring of the source",
     "agent judge on programs.state_programs: Quote says programs 'may include' QUEST Integration or the Marketplace, with a general healthcare.gov/phone reference not tied specifically to QUEST."
@@ -1419,8 +1435,7 @@
      ]
     ],
     "pruned": [
-     "programs.presumptive: 2 items not named in the trimmed quote",
-     "apply.documents_required: 2 items not named in the trimmed quote"
+     "programs.presumptive: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": true,
     "core_completeness": 0.67
@@ -1493,10 +1508,15 @@
      "value": [
       "Medicaid enrolled",
       "Medicare Low Income Subsidy Program",
-      "Subsidized coverage available on the Health Benefit Exchange"
+      "Subsidized coverage available on the Health Benefit Exchange",
+      "Women, Infants and Children programs",
+      "Supplemental Nutrition and Assistance programs",
+      "Low-income household energy assistance programs",
+      "free or reduced cost lunch programs",
+      "resides in low-income or subsidized housing"
      ],
      "layer": "documented",
-     "quote": "Is enrolled in or is presumed to be eligible for a credible means-tested health coverage program (e.g., Medicaid, Medicare Low Income Subsidy Program, Subsidized coverage available on the Health Benefit Exchange.).",
+     "quote": "Is enrolled in or is presumed to be eligible for a credible means-tested health coverage program (e.g., Medicaid, Medicare Low Income Subsidy Program, Subsidized coverage available on the Health Benefit Exchange.). || Is enrolled in a credible means-tested public assistance program (e.g., Women, Infants and Children programs, Supplemental Nutrition and Assistance programs, Low- income household energy assistance programs, free or reduced cost lunch programs). || Resides in low-income or subsidized housing.",
      "source_id": "fap-1e2d2ebcf9bc8bf6",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1522,10 +1542,12 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "tax_return"
+      "tax_return",
+      "pay_stubs",
+      "social_security_letter"
      ],
      "layer": "documented",
-     "quote": "A copy of your most recent signed federal tax return or W-2, with electronic submission verification or your signature (including all pages and schedules)",
+     "quote": "A copy of your most recent signed federal tax return or W-2, with electronic submission verification or your signature (including all pages and schedules) || A copy of your 2 most recent pay stubs showing year-to-date (YTD) income || Copies of other recent documents, income-generating statements or award letters to verify additional household income",
      "source_id": "fap-9a7d9966eb6da550",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1625,8 +1647,8 @@
    "accuracy": null,
    "eve_review": [
     "eligibility.asset_test: quote matched the source only after typography normalization",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Is enrolled in a credible means-tested public assistance program (e.g., Women, Infants and Children programs, Supplement | Resides in low-income or subsidized housing.",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: A copy of your 2 most recent pay stubs showing year-to-date (YTD) income | Copies of other recent documents, income-generating statements or award letters to verify additional household income",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent dropped apply.submit_methods: excerpt not in source: please mail or fax your signed, completed application with a",
     "agent judge on programs.presumptive: Quote covers Medicaid, Medicare LIS, Exchange subsidies, WIC, SNAP, energy aid, school lunch, and low-income housing, but does not mention homeless.",
     "agent judge on programs.state_programs: Quote says QUEST or the Marketplace 'may' be included and gives healthcare.gov and phone for general information, not a QUEST-specific application route.",
@@ -1664,8 +1686,7 @@
      ]
     ],
     "pruned": [
-     "programs.presumptive: 6 items not named in the trimmed quote",
-     "apply.documents_required: 2 items not named in the trimmed quote"
+     "programs.presumptive: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": true,
     "core_completeness": 0.67

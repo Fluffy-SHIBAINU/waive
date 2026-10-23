@@ -53,7 +53,7 @@
       "Household income up to 300% of FPL"
      ],
      "layer": "documented",
-     "quote": "\u2022 Homelessness; \u2022 Mental incapacitation with no one to act on the patient\u2019s behalf; \u2022 Enrollment in Medicaid of patient or a child in their household; \u2022 Enrollment in another means-tested public assistance program (including, but not limited to Women, Infants and Children Nutrition Program, Supplemental Nutrition Assistance Program); or \u2022 Patient/responsible party is determined to be eligible by a local clinic under poverty and income guidelines similar to the ones in this policy.",
+     "quote": "\u2022 Homelessness; \u2022 Mental incapacitation with no one to act on the patient\u2019s behalf; \u2022 Enrollment in Medicaid of patient or a child in their household; \u2022 Enrollment in another means-tested public assistance program (including, but not limited to Women, Infants and Children Nutrition Program, Supplemental Nutrition Assistance Program); or \u2022 Patient/responsible party is determined to be eligible by a local clinic under poverty and income guidelines similar to the ones in this policy. || Patients with household income up to 300% of FPL will be considered presumptively eligible",
      "source_id": "fap-356ce1d641afd492",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -138,7 +138,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: Patients with household income up to 300% of FPL will be considered presumptively eligible"
+    "programs.presumptive: value backed by 2 verbatim spans"
    ],
    "eve_verified": {
     "on": "2026-10-23",
@@ -454,7 +454,26 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "discount_tiers": null,
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "200",
+       "max_fpl_inclusive": "300",
+       "discount_percent": 75
+      },
+      {
+       "min_fpl_exclusive": "300",
+       "max_fpl_inclusive": "400",
+       "discount_percent": 50
+      }
+     ],
+     "layer": "documented",
+     "quote": "75% Family income is 201% to 300% of FPG || 50% Family income is 301% to 400% of FPG",
+     "source_id": "fap-350aa088e70f037f",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": null,
@@ -463,7 +482,24 @@
     "services_excluded": null
    },
    "programs": {
-    "presumptive": null,
+    "presumptive": {
+     "value": [
+      "Food stamps",
+      "State relief programs",
+      "Medicaid Family Planning",
+      "Out-of-state Medicaid",
+      "Homelessness",
+      "Electronic screening (PARO) for uninsured patients",
+      "Mental incapacitation or inability to make medical decisions",
+      "Enrollment in Medicaid of patient or child in household"
+     ],
+     "layer": "documented",
+     "quote": "\u2022 Food stamps. The U.S. Department of Agriculture Food and Nutrition Service Food Stamp Program. \u2022 State Relief Programs. || \u2022 Medicaid Family Planning \u2022 Out-state Medicaid \u2022 Local Programs. || \u2022 Homelessness. Homeless persons would also qualify for assistance. \u2022 Deceased Patients. Unpaid balances of patients who are deceased with no estate or surviving responsible party would also qualify for assistance. \u2022 Electronic Screening. Uninsured patient who meet FPG scoring through external vendor (PARO). \u2022 Mental Incapacitation or inability to make medical decisions for oneself. \u2022 Enrollment in Medicaid of patient or child in their household.",
+     "source_id": "fap-350aa088e70f037f",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "state_programs": null
    },
    "apply": {
@@ -574,8 +610,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: 50% Family income is 301% to 400% of FPG",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: \u2022 Medicaid Family Planning \u2022 Out-state Medicaid \u2022 Local Programs. | \u2022 Homelessness. Homeless persons would also qualify for assistance. \u2022 Deceased Patients. Unpaid balances of patients who",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "programs.presumptive: value backed by 3 verbatim spans",
     "agent dropped apply.window_days_from_first_bill: judge: The quote ties 240 days to when the first statement was mailed relative to the eligibility date. It does not state a window to apply after the first bill."
    ],
    "eve_verified": {
@@ -591,6 +627,8 @@
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
+     "programs.presumptive",
      "apply.documents_required",
      "apply.submit_methods",
      "contacts.phone",
@@ -598,10 +636,6 @@
      "contacts.languages"
     ],
     "rejected": [
-     [
-      "eligibility.discount_tiers",
-      "value not in quote"
-     ],
      [
       "eligibility.insured_patients_covered",
       "quote does not say whether insured patients are covered"
@@ -612,10 +646,10 @@
      ]
     ],
     "pruned": [
-     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)"
+     "programs.presumptive: 2 items not named in the trimmed quote"
     ],
     "income_rule_verified": true,
-    "core_completeness": 0.67
+    "core_completeness": 0.83
    }
   },
   {
@@ -642,7 +676,26 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "discount_tiers": null,
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "200",
+       "max_fpl_inclusive": "250",
+       "discount_percent": 75
+      },
+      {
+       "min_fpl_exclusive": "250",
+       "max_fpl_inclusive": "300",
+       "discount_percent": 50
+      }
+     ],
+     "layer": "documented",
+     "quote": "Discount of 75% of the patient\u2019s balance owed for household incomes between 201%-250% of the Federal Poverty Guideline for their household size. || Discount of 50% of the patient\u2019s balance owed for household incomes between 251% - 300% of the Federal Poverty Guideline for their household size.",
+     "source_id": "fap-17604b377ebc8366",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "assistance_ceiling_fpl": null,
     "asset_test": {
      "value": true,
@@ -699,10 +752,12 @@
     "documents_required": {
      "value": [
       "proof_of_residency",
-      "other"
+      "proof_of_income",
+      "other",
+      "tax_return"
      ],
      "layer": "documented",
-     "quote": "2. North Carolina Residency: Provide two proofs of NC residency with your current NC address (for example, driver's license, utility bill).",
+     "quote": "2. North Carolina Residency: Provide two proofs of NC residency with your current NC address (for example, driver's license, utility bill). || Provide the most recent 30 days of gross income for all adult household members 18 || 5. Assets: Provide the most recent 30 days of proof of assets for all household members (for example, bank statements, retirement accounts, investments). 6. Tax Return: Submit a copy of your most recent federal 1040 tax return including all schedules. 7. Property: If you own property other than your primary residence, provide property tax documents or proof of rental income.",
      "source_id": "fap-2599954cd9fe1639",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -714,10 +769,22 @@
       {
        "kind": "fax",
        "detail": "Secure Fax: (984) 974-6454"
+      },
+      {
+       "kind": "portal",
+       "detail": "My UNC Chart secure patient portal: myuncchart.org"
+      },
+      {
+       "kind": "mail",
+       "detail": "101 Manning Drive, Chapel Hill, NC 27514"
+      },
+      {
+       "kind": "in_person",
+       "detail": "1101 Weaver Dairy Road, Suite 106, Chapel Hill, NC 27514"
       }
      ],
      "layer": "documented",
-     "quote": "Secure Fax: (984) 974-6454",
+     "quote": "Secure Fax: (984) 974-6454 || UNC Health\u2019s secure patient portal My UNC Chart: myuncchart.org || Mail: 101 Manning Drive, Chapel Hill, NC 27514 \u2022 In Person: 1101 Weaver Dairy Road, Suite 106, Chapel Hill, NC 27514",
      "source_id": "fap-2599954cd9fe1639",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -779,9 +846,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: Discount of 50% of the patient\u2019s balance owed for household incomes between 251% - 300% of the Federal Poverty Guideline",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Provide the most recent 30 days of gross income for all adult household members 18 | 5. Assets: Provide the most recent 30 days of proof of assets for all household members (for example, bank statements, r",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: UNC Health\u2019s secure patient portal My UNC Chart: myuncchart.org | Mail: 101 Manning Drive, Chapel Hill, NC 27514 \u2022 In Person: 1101 Weaver Dairy Road, Suite 106, Chapel Hill, NC 27514",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 3 verbatim spans",
     "agent dropped programs.presumptive: judge: Quote covers mental incapacitation by attestation or legal documents; it never says 'with no one to act on the patient's behalf'.",
     "agent dropped collections.eca_wait_days: judge: Fragment is truncated and garbled; it does not clearly say collection actions wait 140 days."
    ],
@@ -797,6 +864,7 @@
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
      "eligibility.asset_test",
      "eligibility.residency",
      "eligibility.insured_patients_covered",
@@ -806,18 +874,10 @@
      "contacts.phone",
      "contacts.hours"
     ],
-    "rejected": [
-     [
-      "eligibility.discount_tiers",
-      "value not in quote"
-     ]
-    ],
-    "pruned": [
-     "apply.documents_required: 2 items not named in the trimmed quote",
-     "apply.submit_methods: 3 items not named in the trimmed quote"
-    ],
+    "rejected": [],
+    "pruned": [],
     "income_rule_verified": true,
-    "core_completeness": 0.67
+    "core_completeness": 0.83
    }
   },
   {
@@ -1142,7 +1202,36 @@
    "status": "draft",
    "eligibility": {
     "free_care_max_fpl": null,
-    "discount_tiers": null,
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "200",
+       "max_fpl_inclusive": "225",
+       "discount_percent": 90
+      },
+      {
+       "min_fpl_exclusive": "225",
+       "max_fpl_inclusive": "250",
+       "discount_percent": 80
+      },
+      {
+       "min_fpl_exclusive": "250",
+       "max_fpl_inclusive": "275",
+       "discount_percent": 70
+      },
+      {
+       "min_fpl_exclusive": "275",
+       "max_fpl_inclusive": "300",
+       "discount_percent": 60
+      }
+     ],
+     "layer": "documented",
+     "quote": "Poverty Level 0-200% 201-225% 226%-250% 251%-275% 276%-300% || Discounts 100% 90% 80% 70% 60%",
+     "source_id": "fap-c46e7184823c54df",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": null,
@@ -1151,7 +1240,17 @@
     "services_excluded": null
    },
    "programs": {
-    "presumptive": null,
+    "presumptive": {
+     "value": [
+      "Homelessness"
+     ],
+     "layer": "documented",
+     "quote": "\u2022 Homelessness \u2022 Mental incapacitation with no one to act on the patient's behalf || \u2022 Enrollment in Medicaid of patient or a child in their household \u2022 Enrollment in another means-tested public assistance program (including, but not limited to Women, Infants and Children Nutrition Program, Supplemental Nutrition Assistance Program)",
+     "source_id": "fap-c46e7184823c54df",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "state_programs": null
    },
    "apply": {
@@ -1210,7 +1309,7 @@
       "Spanish"
      ],
      "layer": "documented",
-     "quote": "8-12-25 Financial Assistance Policy ENGLISH",
+     "quote": "8-12-25 Financial Assistance Policy ENGLISH || 8-12-25 Financial Assistance Policy SPANISH",
      "source_id": "web-a6419afb16fed534",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1254,10 +1353,10 @@
    "accuracy": null,
    "eve_review": [
     "eligibility.free_care_max_fpl: owner review says 200% is a discount or assistance limit, not free care; recorded as assistance_ceiling_fpl.",
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: Discounts 100% 90% 80% 70% 60%",
-    "eligibility.assistance_ceiling_fpl: 1 more verbatim excerpt(s) supported this value: Discounts 100% 90% 80% 70% 60%",
-    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: \u2022 Enrollment in Medicaid of patient or a child in their household \u2022 Enrollment in another means-tested public assistance",
-    "contacts.languages: 1 more verbatim excerpt(s) supported this value: 8-12-25 Financial Assistance Policy SPANISH",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "eligibility.assistance_ceiling_fpl: value backed by 2 verbatim spans",
+    "programs.presumptive: value backed by 2 verbatim spans",
+    "contacts.languages: value backed by 2 verbatim spans",
     "agent dropped apply.documents_required: excerpt not in source: Most recent tax return, including W-2 forms and supporting s"
    ],
    "eve_verified": {
@@ -1272,6 +1371,8 @@
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
+     "eligibility.discount_tiers",
+     "programs.presumptive",
      "apply.submit_methods",
      "apply.decision_days",
      "contacts.phone",
@@ -1279,19 +1380,15 @@
     ],
     "rejected": [
      [
-      "eligibility.discount_tiers",
-      "value not in quote"
-     ],
-     [
       "eligibility.assistance_ceiling_fpl",
       "quote does not state the ceiling as a percentage of the poverty level"
      ]
     ],
     "pruned": [
-     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)"
+     "programs.presumptive: 3 items not named in the trimmed quote"
     ],
-    "income_rule_verified": false,
-    "core_completeness": 0.33
+    "income_rule_verified": true,
+    "core_completeness": 0.5
    }
   },
   {
@@ -1318,7 +1415,26 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "discount_tiers": null,
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "200",
+       "max_fpl_inclusive": "250",
+       "discount_percent": 75
+      },
+      {
+       "min_fpl_exclusive": "250",
+       "max_fpl_inclusive": "300",
+       "discount_percent": 50
+      }
+     ],
+     "layer": "documented",
+     "quote": "Discount of 75% of the patient\u2019s balance owed for household incomes between 201%-250% of the Federal Poverty Guideline for their household size. || Discount of 50% of the patient\u2019s balance owed for household incomes between 251% - 300% of the Federal Poverty Guideline for their household size.",
+     "source_id": "fap-17604b377ebc8366",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "assistance_ceiling_fpl": null,
     "asset_test": {
      "value": true,
@@ -1346,10 +1462,12 @@
     "presumptive": {
      "value": [
       "Homelessness",
-      "WIC enrollment"
+      "WIC enrollment",
+      "SNAP enrollment",
+      "TANF enrollment"
      ],
      "layer": "documented",
-     "quote": "A. Homelessness; B. Mental incapacitation with no one to act on the patient's behalf; C. Enrollment in Medicaid of the patient or a child in the patient's family household.",
+     "quote": "A. Homelessness; B. Mental incapacitation with no one to act on the patient's behalf; C. Enrollment in Medicaid of the patient or a child in the patient's family household. || 1. Women, Infants and Children Nutrition Program (WIC) 2. Supplemental Nutrition Assistance Program (SNAP) 3. Temporary Assistance for Needy Families (TANF)",
      "source_id": "fap-17604b377ebc8366",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1452,8 +1570,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: Discount of 50% of the patient\u2019s balance owed for household incomes between 251% - 300% of the Federal Poverty Guideline",
-    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: 1. Women, Infants and Children Nutrition Program (WIC) 2. Supplemental Nutrition Assistance Program (SNAP) 3. Temporary ",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "programs.presumptive: value backed by 2 verbatim spans",
     "agent dropped eligibility.residency: judge: Quote only says NC residents not presumptively eligible may apply; it does not state residency is required.",
     "agent dropped programs.state_programs: judge: Quote mentions Medicaid screening and the phone numbers only, not applying if eligible or providing proof of the decision.",
     "agent dropped apply.documents_required: judge: Quote does not mention birth, marriage, or death certificates for non-filers."
@@ -1470,6 +1588,7 @@
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
      "eligibility.asset_test",
      "eligibility.insured_patients_covered",
      "programs.presumptive",
@@ -1478,17 +1597,12 @@
      "contacts.phone",
      "contacts.hours"
     ],
-    "rejected": [
-     [
-      "eligibility.discount_tiers",
-      "value not in quote"
-     ]
-    ],
+    "rejected": [],
     "pruned": [
-     "programs.presumptive: 4 items not named in the trimmed quote"
+     "programs.presumptive: 2 items not named in the trimmed quote"
     ],
     "income_rule_verified": true,
-    "core_completeness": 0.5
+    "core_completeness": 0.67
    }
   },
   {
@@ -1515,7 +1629,31 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "discount_tiers": null,
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "200",
+       "max_fpl_inclusive": "300",
+       "discount_percent": 75
+      },
+      {
+       "min_fpl_exclusive": "300",
+       "max_fpl_inclusive": "400",
+       "discount_percent": 50
+      },
+      {
+       "min_fpl_exclusive": "400",
+       "max_fpl_inclusive": "500",
+       "discount_percent": 25
+      }
+     ],
+     "layer": "documented",
+     "quote": "Income Range 0-200% FPG 201-300% FPG 301-400% FPG 401-500% FPG >500% FPG || 100% 75% 50% 25% 0%",
+     "source_id": "fap-dcd1ac5a6c7aa5c1",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": null,
@@ -1532,10 +1670,12 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "bank_statements"
+      "bank_statements",
+      "pay_stubs",
+      "tax_return"
      ],
      "layer": "documented",
-     "quote": "Copies of statements from savings and checking accounts",
+     "quote": "Copies of statements from savings and checking accounts || Copies of the last two pay stubs. || Copies of the most recent state and federal income tax forms if needed",
      "source_id": "fap-dcd1ac5a6c7aa5c1",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1619,8 +1759,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: 100% 75% 50% 25% 0%",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Copies of the last two pay stubs. | Copies of the most recent state and federal income tax forms if needed",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent dropped apply.submit_methods: judge: Mail, in-person and MyChart are all supported, but the quote never calls MyChart the 'preferred method'."
    ],
    "eve_verified": {
@@ -1636,16 +1776,13 @@
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
      "apply.documents_required",
      "contacts.phone",
      "contacts.hours",
      "contacts.languages"
     ],
     "rejected": [
-     [
-      "eligibility.discount_tiers",
-      "value not in quote"
-     ],
      [
       "eligibility.asset_test",
       "quote does not support the asset-test value"
@@ -1660,11 +1797,10 @@
      ]
     ],
     "pruned": [
-     "programs.presumptive: none of the listed programs is named in the quote (after trimming)",
-     "apply.documents_required: 2 items not named in the trimmed quote"
+     "programs.presumptive: none of the listed programs is named in the quote (after trimming)"
     ],
     "income_rule_verified": true,
-    "core_completeness": 0.5
+    "core_completeness": 0.67
    }
   },
   {
@@ -2194,7 +2330,26 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "discount_tiers": null,
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "300",
+       "max_fpl_inclusive": "350",
+       "discount_percent": 50
+      },
+      {
+       "min_fpl_exclusive": "350",
+       "max_fpl_inclusive": "400",
+       "discount_percent": 25
+      }
+     ],
+     "layer": "documented",
+     "quote": "Discount of 50% for individuals with incomes between 301%-350% FPL. || Discount of 25% for individuals with incomes between 351%-400% FPL.",
+     "source_id": "fap-397b98dc222ad68d",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": null,
@@ -2253,7 +2408,7 @@
       "Spanish"
      ],
      "layer": "documented",
-     "quote": "Financial Assistance \u2014 Hospital Billing \u2014 English",
+     "quote": "Financial Assistance \u2014 Hospital Billing \u2014 English || Financial Assistance \u2014 Hospital Billing \u2014 Spanish",
      "source_id": "web-358cf89020f0ab54",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2296,8 +2451,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: Discount of 25% for individuals with incomes between 351%-400% FPL.",
-    "contacts.languages: 1 more verbatim excerpt(s) supported this value: Financial Assistance \u2014 Hospital Billing \u2014 Spanish",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "contacts.languages: value backed by 2 verbatim spans",
     "agent dropped eligibility.residency: judge: Quote covers NC and non-NC residents using their state's FPL; it does not say non-income-based charity care is limited to NC residents.",
     "agent dropped programs.presumptive: judge: Quote lists only homelessness, mental incapacitation and Medicaid enrollment; WIC/SNAP and income 0-300% FPL are absent.",
     "agent dropped programs.state_programs: judge: Quote says counselors assist with Medicaid and other programs; no 'North Carolina Medicaid' name or on-site DSS staff.",
@@ -2317,16 +2472,13 @@
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
      "eligibility.insured_patients_covered",
      "contacts.phone",
      "contacts.hours",
      "contacts.languages"
     ],
     "rejected": [
-     [
-      "eligibility.discount_tiers",
-      "value not in quote"
-     ],
      [
       "eligibility.asset_test",
       "quote does not support the asset-test value"
@@ -2338,7 +2490,7 @@
     ],
     "pruned": [],
     "income_rule_verified": true,
-    "core_completeness": 0.33
+    "core_completeness": 0.5
    }
   },
   {
@@ -2365,7 +2517,26 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "discount_tiers": null,
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "200",
+       "max_fpl_inclusive": "250",
+       "discount_percent": 75
+      },
+      {
+       "min_fpl_exclusive": "250",
+       "max_fpl_inclusive": "300",
+       "discount_percent": 50
+      }
+     ],
+     "layer": "documented",
+     "quote": "Discount of 75% of the patient\u2019s balance owed for household incomes between 201%-250% of || Discount of 50% of the patient\u2019s balance owed for household incomes between 251% - 300% of",
+     "source_id": "fap-17604b377ebc8366",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "assistance_ceiling_fpl": null,
     "asset_test": {
      "value": true,
@@ -2398,10 +2569,12 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "proof_of_residency"
+      "proof_of_residency",
+      "proof_of_income",
+      "tax_return"
      ],
      "layer": "documented",
-     "quote": "2. North Carolina Residency: Provide two proofs of NC residency with your current NC address (for",
+     "quote": "2. North Carolina Residency: Provide two proofs of NC residency with your current NC address (for || 3. Income: Provide the most recent 30 days of gross income for all adult household members 18 || 6. Tax Return: Submit a copy of your most recent federal 1040 tax return including all schedules.",
      "source_id": "fap-2599954cd9fe1639",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2413,10 +2586,18 @@
       {
        "kind": "fax",
        "detail": "Secure fax (984) 974-6454"
+      },
+      {
+       "kind": "portal",
+       "detail": "My UNC Chart secure patient portal: myuncchart.org"
+      },
+      {
+       "kind": "mail",
+       "detail": "101 Manning Drive, Chapel Hill, NC 27514"
       }
      ],
      "layer": "documented",
-     "quote": "\u2022 Secure Fax: (984) 974-6454",
+     "quote": "\u2022 Secure Fax: (984) 974-6454 || \u2022 UNC Health\u2019s secure patient portal My UNC Chart: myuncchart.org || \u2022 Mail: 101 Manning Drive, Chapel Hill, NC 27514",
      "source_id": "fap-2599954cd9fe1639",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2470,9 +2651,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: Discount of 50% of the patient\u2019s balance owed for household incomes between 251% - 300% of",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: 3. Income: Provide the most recent 30 days of gross income for all adult household members 18 | 6. Tax Return: Submit a copy of your most recent federal 1040 tax return including all schedules.",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: \u2022 UNC Health\u2019s secure patient portal My UNC Chart: myuncchart.org | \u2022 Mail: 101 Manning Drive, Chapel Hill, NC 27514",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 3 verbatim spans",
     "agent dropped eligibility.residency: judge: The quote only says NC residents may apply; it does not say residency is required to qualify.",
     "agent dropped programs.presumptive: judge: The quote says only 'Medicaid enrollment', not of a child in the household, and the WIC/SNAP/TANF examples are cut off.",
     "agent dropped programs.state_programs: judge: The quote only says uninsured patients may be eligible for NC Medicaid; screening and proof-of-decision steps are absent.",
@@ -2490,24 +2671,17 @@
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
      "eligibility.asset_test",
      "eligibility.insured_patients_covered",
      "apply.documents_required",
      "apply.submit_methods",
      "contacts.phone"
     ],
-    "rejected": [
-     [
-      "eligibility.discount_tiers",
-      "value not in quote"
-     ]
-    ],
-    "pruned": [
-     "apply.documents_required: 2 items not named in the trimmed quote",
-     "apply.submit_methods: 2 items not named in the trimmed quote"
-    ],
+    "rejected": [],
+    "pruned": [],
     "income_rule_verified": true,
-    "core_completeness": 0.67
+    "core_completeness": 0.83
    }
   },
   {
@@ -2719,7 +2893,26 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "discount_tiers": null,
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "200",
+       "max_fpl_inclusive": "250",
+       "discount_percent": 75
+      },
+      {
+       "min_fpl_exclusive": "250",
+       "max_fpl_inclusive": "300",
+       "discount_percent": 50
+      }
+     ],
+     "layer": "documented",
+     "quote": "Discount of 75% of the patient\u2019s balance owed for household incomes between 201%-250% of || Discount of 50% of the patient\u2019s balance owed for household incomes between 251% - 300% of",
+     "source_id": "fap-17604b377ebc8366",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "assistance_ceiling_fpl": null,
     "asset_test": {
      "value": true,
@@ -2745,10 +2938,11 @@
     "documents_required": {
      "value": [
       "proof_of_residency",
+      "proof_of_income",
       "other"
      ],
      "layer": "documented",
-     "quote": "2. North Carolina Residency: Provide two proofs of NC residency with your current NC address (for example, driver's license, utility bill).",
+     "quote": "2. North Carolina Residency: Provide two proofs of NC residency with your current NC address (for example, driver's license, utility bill). || 3. Income: Provide the most recent 30 days of gross income for all adult household members 18 || 5. Assets: Provide the most recent 30 days of proof of assets for all household members (for",
      "source_id": "fap-2599954cd9fe1639",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2760,10 +2954,18 @@
       {
        "kind": "fax",
        "detail": "Secure Fax: (984) 974-6454"
+      },
+      {
+       "kind": "portal",
+       "detail": "My UNC Chart secure patient portal: myuncchart.org"
+      },
+      {
+       "kind": "mail",
+       "detail": "101 Manning Drive, Chapel Hill, NC 27514"
       }
      ],
      "layer": "documented",
-     "quote": "Secure Fax: (984) 974-6454",
+     "quote": "Secure Fax: (984) 974-6454 || UNC Health\u2019s secure patient portal My UNC Chart: myuncchart.org || Mail: 101 Manning Drive, Chapel Hill, NC 27514",
      "source_id": "fap-2599954cd9fe1639",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2825,9 +3027,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: Discount of 50% of the patient\u2019s balance owed for household incomes between 251% - 300% of",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: 3. Income: Provide the most recent 30 days of gross income for all adult household members 18 | 5. Assets: Provide the most recent 30 days of proof of assets for all household members (for",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: UNC Health\u2019s secure patient portal My UNC Chart: myuncchart.org | Mail: 101 Manning Drive, Chapel Hill, NC 27514",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 3 verbatim spans",
     "agent dropped eligibility.residency: judge: The quote only says determinations are based on household income. It does not mention residency.",
     "agent dropped eligibility.insured_patients_covered: judge: The quote says assistance applies to balances but says nothing about insured patients.",
     "agent dropped programs.presumptive: judge: The quote lists only homelessness, mental incapacitation and Medicaid enrollment. WIC/SNAP/TANF enrollment is not in it.",
@@ -2846,24 +3048,17 @@
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
      "eligibility.asset_test",
      "apply.documents_required",
      "apply.submit_methods",
      "collections.eca_wait_days",
      "contacts.phone"
     ],
-    "rejected": [
-     [
-      "eligibility.discount_tiers",
-      "value not in quote"
-     ]
-    ],
-    "pruned": [
-     "apply.documents_required: 1 item not named in the trimmed quote",
-     "apply.submit_methods: 2 items not named in the trimmed quote"
-    ],
+    "rejected": [],
+    "pruned": [],
     "income_rule_verified": true,
-    "core_completeness": 0.67
+    "core_completeness": 0.83
    }
   },
   {
@@ -3042,7 +3237,26 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "discount_tiers": null,
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "200",
+       "max_fpl_inclusive": "250",
+       "discount_percent": 75
+      },
+      {
+       "min_fpl_exclusive": "250",
+       "max_fpl_inclusive": "300",
+       "discount_percent": 50
+      }
+     ],
+     "layer": "documented",
+     "quote": "Discount of 75% of the patient\u2019s balance owed for household incomes between 201%-250% of || Discount of 50% of the patient\u2019s balance owed for household incomes between 251% - 300% of",
+     "source_id": "fap-17604b377ebc8366",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "assistance_ceiling_fpl": null,
     "asset_test": {
      "value": true,
@@ -3081,10 +3295,12 @@
     "documents_required": {
      "value": [
       "proof_of_residency",
-      "other"
+      "proof_of_income",
+      "other",
+      "tax_return"
      ],
      "layer": "documented",
-     "quote": "Provide two proofs of NC residency with your current NC address (for example, driver's license, utility bill).",
+     "quote": "Provide two proofs of NC residency with your current NC address (for example, driver's license, utility bill). || Provide the most recent 30 days of gross income for all adult household members 18 years of age and older. || Provide the most recent 30 days of proof of assets for all household members (for example, bank statements, retirement accounts, investments). 6. Tax Return: Submit a copy of your most recent federal 1040 tax return including all schedules.",
      "source_id": "fap-2599954cd9fe1639",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3096,10 +3312,22 @@
       {
        "kind": "fax",
        "detail": "Secure Fax: (984) 974-6454"
+      },
+      {
+       "kind": "portal",
+       "detail": "My UNC Chart patient portal: myuncchart.org"
+      },
+      {
+       "kind": "mail",
+       "detail": "101 Manning Drive, Chapel Hill, NC 27514"
+      },
+      {
+       "kind": "in_person",
+       "detail": "1101 Weaver Dairy Road, Suite 106, Chapel Hill, NC 27514"
       }
      ],
      "layer": "documented",
-     "quote": "Secure Fax: (984) 974-6454",
+     "quote": "Secure Fax: (984) 974-6454 || UNC Health\u2019s secure patient portal My UNC Chart: myuncchart.org || Mail: 101 Manning Drive, Chapel Hill, NC 27514 \u2022 In Person: 1101 Weaver Dairy Road, Suite 106, Chapel Hill, NC 27514",
      "source_id": "fap-2599954cd9fe1639",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3169,9 +3397,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: Discount of 50% of the patient\u2019s balance owed for household incomes between 251% - 300% of",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Provide the most recent 30 days of gross income for all adult household members 18 years of age and older. | Provide the most recent 30 days of proof of assets for all household members (for example, bank statements, retirement a",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: UNC Health\u2019s secure patient portal My UNC Chart: myuncchart.org | Mail: 101 Manning Drive, Chapel Hill, NC 27514 \u2022 In Person: 1101 Weaver Dairy Road, Suite 106, Chapel Hill, NC 27514",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 3 verbatim spans",
     "agent dropped eligibility.residency: judge: Quote says NC residents may apply; it does not state that residency is required to qualify.",
     "agent dropped programs.presumptive: judge: Quote lists homelessness, Medicaid enrollment, means-tested programs and mental incapacitation; no mention of a child in household or WIC/SNAP/TANF."
    ],
@@ -3187,6 +3415,7 @@
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
      "eligibility.asset_test",
      "programs.state_programs",
      "apply.documents_required",
@@ -3197,20 +3426,13 @@
     ],
     "rejected": [
      [
-      "eligibility.discount_tiers",
-      "value not in quote"
-     ],
-     [
       "eligibility.insured_patients_covered",
       "quote does not say whether insured patients are covered"
      ]
     ],
-    "pruned": [
-     "apply.documents_required: 2 items not named in the trimmed quote",
-     "apply.submit_methods: 3 items not named in the trimmed quote"
-    ],
+    "pruned": [],
     "income_rule_verified": true,
-    "core_completeness": 0.67
+    "core_completeness": 0.83
    }
   },
   {
@@ -3405,7 +3627,20 @@
     "services_excluded": null
    },
    "programs": {
-    "presumptive": null,
+    "presumptive": {
+     "value": [
+      "Homelessness",
+      "Medicaid",
+      "WIC",
+      "SNAP"
+     ],
+     "layer": "documented",
+     "quote": "Homelessness or receipt of care from a homeless clinic or shelter; || Enrollment in Medicaid of patient or a child in their household; iv. Women, Infants and Children (WIC) program; v. SNAP benefits (Supplemental Nutritional Assistance Program",
+     "source_id": "fap-30675af61112eeaa",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "state_programs": null
    },
    "apply": {
@@ -3413,10 +3648,12 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "tax_return"
+      "tax_return",
+      "pay_stubs",
+      "medicaid_denial"
      ],
      "layer": "documented",
-     "quote": "A copy of the most recent tax return (to include all copies of applicable forms, schedules, and required attachments);",
+     "quote": "A copy of the most recent tax return (to include all copies of applicable forms, schedules, and required attachments); || Most recent pay stub(s) that show work history for the past 4 weeks; || Proof of the following (as applicable): a. Permanent residency (as outlined in Appendix A); b. Disability; c. Medicaid Denial",
      "source_id": "fap-30675af61112eeaa",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3508,8 +3745,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: Enrollment in Medicaid of patient or a child in their household; iv. Women, Infants and Children (WIC) program; v. SNAP ",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Most recent pay stub(s) that show work history for the past 4 weeks; | Proof of the following (as applicable): a. Permanent residency (as outlined in Appendix A); b. Disability; c. Medicaid D",
+    "programs.presumptive: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent dropped apply.submit_methods: excerpt not in source: Mail Documentation to: WakeMed PO Box 14465 Raleigh, NC 2762",
     "agent dropped collections.eca_wait_days: quote is not a substring of the source",
     "agent judge on eligibility.free_care_max_fpl: The quote is a table fragment showing '300%' and '100% Discount' with no clear statement of the FPL level that receives 100% free care.",
@@ -3528,6 +3765,7 @@
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.residency",
+     "programs.presumptive",
      "apply.documents_required",
      "apply.window_days_from_first_bill",
      "contacts.phone",
@@ -3552,10 +3790,7 @@
       "quote not found in source"
      ]
     ],
-    "pruned": [
-     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
-     "apply.documents_required: 2 items not named in the trimmed quote"
-    ],
+    "pruned": [],
     "income_rule_verified": false,
     "core_completeness": 0.33
    }
@@ -3584,7 +3819,31 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "discount_tiers": null,
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "200",
+       "max_fpl_inclusive": "300",
+       "discount_percent": 75
+      },
+      {
+       "min_fpl_exclusive": "300",
+       "max_fpl_inclusive": "400",
+       "discount_percent": 50
+      },
+      {
+       "min_fpl_exclusive": "400",
+       "max_fpl_inclusive": "500",
+       "discount_percent": 25
+      }
+     ],
+     "layer": "documented",
+     "quote": "FPG 201-300% FPG 301-400% FPG 401-500% FPG || * Add $5380.00 for each person in household over 8 persons 100% 75% 50% 25% 0%",
+     "source_id": "fap-dcd1ac5a6c7aa5c1",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": null,
@@ -3603,10 +3862,12 @@
      "value": [
       "proof_of_income",
       "bank_statements",
-      "other"
+      "other",
+      "pay_stubs",
+      "tax_return"
      ],
      "layer": "documented",
-     "quote": "\u2022 Income from all sources. \u2022 Copies of statements from savings and checking accounts Number of dependents.",
+     "quote": "\u2022 Income from all sources. \u2022 Copies of statements from savings and checking accounts Number of dependents. || \u2022 Copies of the last two pay stubs. Copies of the most recent state and federal income tax forms if needed but not limited to the following:",
      "source_id": "fap-dcd1ac5a6c7aa5c1",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3690,8 +3951,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: * Add $5380.00 for each person in household over 8 persons 100% 75% 50% 25% 0%",
-    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: \u2022 Copies of the last two pay stubs. Copies of the most recent state and federal income tax forms if needed but not limit",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 2 verbatim spans",
     "agent dropped programs.presumptive: judge: Quote does not mention self-pay or early-out/bad debt vendor scoring, and the Medicaid-pending line is not labeled presumptive.",
     "agent dropped apply.submit_methods: judge: Quote mentions MyChart, mail and the registration desk but does not say MyChart is the preferred method."
    ],
@@ -3708,16 +3969,13 @@
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
      "apply.documents_required",
      "contacts.phone",
      "contacts.hours",
      "contacts.languages"
     ],
     "rejected": [
-     [
-      "eligibility.discount_tiers",
-      "value not in quote"
-     ],
      [
       "eligibility.asset_test",
       "quote does not support the asset-test value"
@@ -3731,11 +3989,9 @@
       "quote not found in source"
      ]
     ],
-    "pruned": [
-     "apply.documents_required: 2 items not named in the trimmed quote"
-    ],
+    "pruned": [],
     "income_rule_verified": true,
-    "core_completeness": 0.5
+    "core_completeness": 0.67
    }
   },
   {
@@ -3930,7 +4186,7 @@
       "Homelessness"
      ],
      "layer": "documented",
-     "quote": "Homelessness; \u2022 Mental incapacitation with no one to act on the patient\u2019s behalf; \u2022 Enrollment in Medicaid of patient or a child in their household;",
+     "quote": "Homelessness; \u2022 Mental incapacitation with no one to act on the patient\u2019s behalf; \u2022 Enrollment in Medicaid of patient or a child in their household; || Enrollment in another means-tested public assistance program (including, but not limited to Women, Infants and Children Nutrition Program, Supplemental Nutrition Assistance Program); or \u2022 Patient/responsible party is determined to be eligible by a local clinic under poverty and income guidelines similar to the ones in this policy. || Patients with household income up to 300% of FPL will be considered presumptively eligible",
      "source_id": "fap-356ce1d641afd492",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3944,12 +4200,13 @@
     "documents_required": {
      "value": [
       "tax_return",
+      "other",
       "bank_statements",
-      "proof_of_income",
-      "other"
+      "pay_stubs",
+      "proof_of_income"
      ],
      "layer": "documented",
-     "quote": "Federal Income Tax Return for the most current year \u2022 State Income Tax Return for the most current year \u2022 Supporting W-2 \u2022 Supporting 1099\u2019s \u2022 Copies of all bank statements for last 3 months",
+     "quote": "Federal Income Tax Return for the most current year \u2022 State Income Tax Return for the most current year \u2022 Supporting W-2 \u2022 Supporting 1099\u2019s \u2022 Copies of all bank statements for last 3 months || Most recent bank and broker statements listed in the Federal Tax Return \u2022 Current credit report \u2022 Most Recent Employer Pay Stubs \u2022 Written documentation from income sources \u2022 Proof of Medicaid Eligibility",
      "source_id": "fap-356ce1d641afd492",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4014,8 +4271,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Enrollment in another means-tested public assistance program (including, but not limited to Women, Infants and Children  | Patients with household income up to 300% of FPL will be considered presumptively eligible",
-    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: Most recent bank and broker statements listed in the Federal Tax Return \u2022 Current credit report \u2022 Most Recent Employer P"
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 2 verbatim spans"
    ],
    "eve_verified": {
     "on": "2026-10-23",
@@ -4024,7 +4281,7 @@
     "sources_missing": [],
     "sha256_match": {
      "fap-356ce1d641afd492": true,
-     "web-82f15d236c324e9b": false,
+     "web-82f15d236c324e9b": true,
      "web-30ec344ef8886d3c": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
@@ -4041,8 +4298,7 @@
      ]
     ],
     "pruned": [
-     "programs.presumptive: 5 items not named in the trimmed quote",
-     "apply.documents_required: 1 item not named in the trimmed quote"
+     "programs.presumptive: 5 items not named in the trimmed quote"
     ],
     "income_rule_verified": true,
     "core_completeness": 0.5
@@ -4515,7 +4771,26 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "discount_tiers": null,
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "300",
+       "max_fpl_inclusive": "350",
+       "discount_percent": 50
+      },
+      {
+       "min_fpl_exclusive": "350",
+       "max_fpl_inclusive": "400",
+       "discount_percent": 25
+      }
+     ],
+     "layer": "documented",
+     "quote": "Discount of 50% for individuals with incomes between 301%-350% FPL. || Discount of 25% for individuals with incomes between 351%-400% FPL.",
+     "source_id": "fap-397b98dc222ad68d",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": null,
@@ -4532,7 +4807,17 @@
     "services_excluded": null
    },
    "programs": {
-    "presumptive": null,
+    "presumptive": {
+     "value": [
+      "Homelessness"
+     ],
+     "layer": "documented",
+     "quote": "Homelessness o Mental incapacitation with no one to act on the patient\u2019s behalf || Enrollment in Medicaid of patient or a child in their household || Enrollment in another means-tested public assistance program (including, but not limited to Women, Infants and Children Nutrition Program, Supplemental Nutrition Assistance Program)",
+     "source_id": "fap-397b98dc222ad68d",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "state_programs": null
    },
    "apply": {
@@ -4587,7 +4872,7 @@
       "Spanish"
      ],
      "layer": "documented",
-     "quote": "Financial Assistance \u2014 Hospital Billing \u2014 English",
+     "quote": "Financial Assistance \u2014 Hospital Billing \u2014 English || Financial Assistance \u2014 Hospital Billing \u2014 Spanish",
      "source_id": "web-d5235656b5ba4f84",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4630,9 +4915,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: Discount of 25% for individuals with incomes between 351%-400% FPL.",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Enrollment in Medicaid of patient or a child in their household | Enrollment in another means-tested public assistance program (including, but not limited to Women, Infants and Children ",
-    "contacts.languages: 1 more verbatim excerpt(s) supported this value: Financial Assistance \u2014 Hospital Billing \u2014 Spanish",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "contacts.languages: value backed by 2 verbatim spans",
     "agent dropped eligibility.residency: judge: The quote covers NC and non-NC residents by their state's FPL; it says nothing about non-income charity care being for NC residents only.",
     "agent dropped programs.state_programs: judge: The quote mentions financial counselors helping with Medicaid but not on-site Department of Social Services staff.",
     "agent dropped apply.submit_methods: judge: The quote gives no mailing address, no phone number for arranging fax/email, and no 'Billing tab' path in MyChart."
@@ -4650,17 +4935,15 @@
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
      "eligibility.insured_patients_covered",
+     "programs.presumptive",
      "apply.documents_required",
      "contacts.phone",
      "contacts.hours",
      "contacts.languages"
     ],
     "rejected": [
-     [
-      "eligibility.discount_tiers",
-      "value not in quote"
-     ],
      [
       "eligibility.asset_test",
       "quote does not support the asset-test value"
@@ -4671,10 +4954,10 @@
      ]
     ],
     "pruned": [
-     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)"
+     "programs.presumptive: 3 items not named in the trimmed quote"
     ],
     "income_rule_verified": true,
-    "core_completeness": 0.5
+    "core_completeness": 0.67
    }
   },
   {
@@ -5311,7 +5594,7 @@
       "Homelessness"
      ],
      "layer": "documented",
-     "quote": "1. Homelessness; 2. Mental incapacitation with no one to act on the patient\u2019s behalf; 3. Enrollment in Medicaid of patient or a child in their household;",
+     "quote": "1. Homelessness; 2. Mental incapacitation with no one to act on the patient\u2019s behalf; 3. Enrollment in Medicaid of patient or a child in their household; || 4. Enrollment in another means-tested public assistance program (including, but not limited to Women, Infants and Children Nutrition Program, Supplemental Nutrition Assistance Program).",
      "source_id": "fap-248c95e4db28a90a",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5423,7 +5706,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: 4. Enrollment in another means-tested public assistance program (including, but not limited to Women, Infants and Childr"
+    "programs.presumptive: value backed by 2 verbatim spans"
    ],
    "eve_verified": {
     "on": "2026-10-23",
@@ -6235,7 +6518,20 @@
     "services_excluded": null
    },
    "programs": {
-    "presumptive": null,
+    "presumptive": {
+     "value": [
+      "Homelessness",
+      "Medicaid",
+      "WIC",
+      "SNAP"
+     ],
+     "layer": "documented",
+     "quote": "Homelessness or receipt of care from a homeless clinic or shelter; || Enrollment in Medicaid of patient or a child in their household; iv. Women, Infants and Children (WIC) program; v. SNAP benefits (Supplemental Nutritional Assistance Program",
+     "source_id": "fap-9c30bd920d9996d1",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "state_programs": null
    },
    "apply": {
@@ -6243,10 +6539,14 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "tax_return"
+      "tax_return",
+      "pay_stubs",
+      "proof_of_residency",
+      "medicaid_denial",
+      "proof_of_income"
      ],
      "layer": "documented",
-     "quote": "1. A copy of the most recent tax return (to include all copies of applicable forms, schedules, and required attachments);",
+     "quote": "1. A copy of the most recent tax return (to include all copies of applicable forms, schedules, and required attachments); || 2. Most recent pay stub(s) that show work history for the past 4 weeks; || 4. Proof of the following (as applicable): a. Permanent residency (as outlined in Appendix A); b. Disability; c. Medicaid Denial; and d. Household Financial Income.",
      "source_id": "fap-9c30bd920d9996d1",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -6258,10 +6558,18 @@
       {
        "kind": "mail",
        "detail": "Mail Documentation to: WakeMed PO Box 14465 Raleigh, NC 27620-4465"
+      },
+      {
+       "kind": "email",
+       "detail": "Email: FinancialAssistance@wakemed.org"
+      },
+      {
+       "kind": "fax",
+       "detail": "Fax: (919) 350-6968"
       }
      ],
      "layer": "documented",
-     "quote": "Mail Documentation to: WakeMed PO Box 14465 Raleigh, NC 27620-4465",
+     "quote": "Mail Documentation to: WakeMed PO Box 14465 Raleigh, NC 27620-4465 || Email: FinancialAssistance@wakemed.org Phone: (919) 350-8359 Fax: (919) 350-6968",
      "source_id": "fap-8e5ed1463ed14653",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -6351,9 +6659,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: Enrollment in Medicaid of patient or a child in their household; iv. Women, Infants and Children (WIC) program; v. SNAP ",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: 2. Most recent pay stub(s) that show work history for the past 4 weeks; | 4. Proof of the following (as applicable): a. Permanent residency (as outlined in Appendix A); b. Disability; c. Medicai",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Email: FinancialAssistance@wakemed.org Phone: (919) 350-8359 Fax: (919) 350-6968",
+    "programs.presumptive: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 2 verbatim spans",
     "agent dropped collections.eca_wait_days: quote is not a substring of the source",
     "agent judge on eligibility.free_care_max_fpl: Quote is a fragment of a table ('300% Discount 100% Discount'). It does not state that 100% free care applies up to 100% FPL.",
     "agent judge on eligibility.assistance_ceiling_fpl: Quote says patients above 300% FPL may be eligible for catastrophic assistance, so assistance is offered above 300%, not cut off there.",
@@ -6372,6 +6680,7 @@
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.residency",
+     "programs.presumptive",
      "apply.documents_required",
      "apply.submit_methods",
      "apply.window_days_from_first_bill",
@@ -6398,9 +6707,7 @@
      ]
     ],
     "pruned": [
-     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
-     "apply.documents_required: 4 items not named in the trimmed quote",
-     "apply.submit_methods: 3 items not named in the trimmed quote"
+     "apply.submit_methods: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": false,
     "core_completeness": 0.5
@@ -6571,7 +6878,31 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "discount_tiers": null,
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "200",
+       "max_fpl_inclusive": "300",
+       "discount_percent": 75
+      },
+      {
+       "min_fpl_exclusive": "300",
+       "max_fpl_inclusive": "400",
+       "discount_percent": 50
+      },
+      {
+       "min_fpl_exclusive": "400",
+       "max_fpl_inclusive": "500",
+       "discount_percent": 25
+      }
+     ],
+     "layer": "documented",
+     "quote": "201-300% FPG 301-400% FPG 401-500% FPG >500% FPG || 100% 75% 50% 25% 0%",
+     "source_id": "fap-dcd1ac5a6c7aa5c1",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": null,
@@ -6588,10 +6919,12 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "bank_statements"
+      "bank_statements",
+      "pay_stubs",
+      "tax_return"
      ],
      "layer": "documented",
-     "quote": "Copies of statements from savings and checking accounts Number of",
+     "quote": "Copies of statements from savings and checking accounts Number of || Copies of the last two pay stubs. || Copies of the most recent state and federal income tax forms if needed",
      "source_id": "fap-dcd1ac5a6c7aa5c1",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -6675,8 +7008,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: 100% 75% 50% 25% 0%",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Copies of the last two pay stubs. | Copies of the most recent state and federal income tax forms if needed",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent dropped apply.submit_methods: judge: Mail, in-person, and MyChart are stated, but the quote never calls MyChart the 'preferred method'."
    ],
    "eve_verified": {
@@ -6692,16 +7025,13 @@
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
      "apply.documents_required",
      "contacts.phone",
      "contacts.hours",
      "contacts.languages"
     ],
     "rejected": [
-     [
-      "eligibility.discount_tiers",
-      "value not in quote"
-     ],
      [
       "eligibility.asset_test",
       "quote does not support the asset-test value"
@@ -6712,11 +7042,10 @@
      ]
     ],
     "pruned": [
-     "programs.presumptive: none of the listed programs is named in the quote (after trimming)",
-     "apply.documents_required: 2 items not named in the trimmed quote"
+     "programs.presumptive: none of the listed programs is named in the quote (after trimming)"
     ],
     "income_rule_verified": true,
-    "core_completeness": 0.5
+    "core_completeness": 0.67
    }
   },
   {
@@ -7302,7 +7631,26 @@
    "status": "draft",
    "eligibility": {
     "free_care_max_fpl": null,
-    "discount_tiers": null,
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "200",
+       "max_fpl_inclusive": "250",
+       "discount_percent": 75
+      },
+      {
+       "min_fpl_exclusive": "250",
+       "max_fpl_inclusive": "300",
+       "discount_percent": 50
+      }
+     ],
+     "layer": "documented",
+     "quote": "& DC Family size Poverty Level 0-200% 201-250% 251-300% || Discounts 100% 75% 50%",
+     "source_id": "fap-ab65dc0af88561ae",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": null,
@@ -7353,7 +7701,7 @@
       "Spanish"
      ],
      "layer": "documented",
-     "quote": "PLAIN LANGUAGE SUMMARY ENGLISH",
+     "quote": "PLAIN LANGUAGE SUMMARY ENGLISH || RESUMEN EN LENGUAJE SIMPLE",
      "source_id": "web-7f868a91b1afdf24",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -7397,9 +7745,9 @@
    "accuracy": null,
    "eve_review": [
     "eligibility.free_care_max_fpl: owner review says 200% is a discount or assistance limit, not free care; recorded as assistance_ceiling_fpl.",
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: Discounts 100% 75% 50%",
-    "eligibility.assistance_ceiling_fpl: 1 more verbatim excerpt(s) supported this value: Discounts 100% 75% 50%",
-    "contacts.languages: 1 more verbatim excerpt(s) supported this value: RESUMEN EN LENGUAJE SIMPLE",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "eligibility.assistance_ceiling_fpl: value backed by 2 verbatim spans",
+    "contacts.languages: value backed by 2 verbatim spans",
     "agent dropped programs.presumptive: judge: The quote lists 'another means-tested public assistance program' but gives no examples; WIC and SNAP do not appear.",
     "agent dropped apply.documents_required: judge: The quote lists only the tax return, pay stubs/employer letter and bank statements; the other-income and no-income items are absent.",
     "agent dropped apply.submit_methods: judge: The quote says to mail or hand deliver but gives no address or recipient."
@@ -7416,23 +7764,20 @@
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
+     "eligibility.discount_tiers",
      "apply.decision_days",
      "contacts.phone",
      "contacts.languages"
     ],
     "rejected": [
      [
-      "eligibility.discount_tiers",
-      "value not in quote"
-     ],
-     [
       "eligibility.assistance_ceiling_fpl",
       "quote does not state the ceiling as a percentage of the poverty level"
      ]
     ],
     "pruned": [],
-    "income_rule_verified": false,
-    "core_completeness": 0.17
+    "income_rule_verified": true,
+    "core_completeness": 0.33
    }
   },
   {
@@ -7459,7 +7804,26 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "discount_tiers": null,
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "200",
+       "max_fpl_inclusive": "250",
+       "discount_percent": 75
+      },
+      {
+       "min_fpl_exclusive": "250",
+       "max_fpl_inclusive": "300",
+       "discount_percent": 50
+      }
+     ],
+     "layer": "documented",
+     "quote": "Discount of 75% of the patient\u2019s balance owed for household incomes between 201%-250% of || Discount of 50% of the patient\u2019s balance owed for household incomes between 251% - 300% of",
+     "source_id": "fap-17604b377ebc8366",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "assistance_ceiling_fpl": null,
     "asset_test": {
      "value": true,
@@ -7559,7 +7923,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: Discount of 50% of the patient\u2019s balance owed for household incomes between 251% - 300% of",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
     "agent dropped programs.presumptive: judge: The quote lists only homelessness, mental incapacitation and Medicaid enrollment; WIC/SNAP/TANF is not mentioned.",
     "agent dropped programs.state_programs: judge: The quote does not mention contacting the UNC Financial Assistance Unit for screening.",
     "agent dropped apply.documents_required: judge: The quote omits the letter of support and the 1040 tax return.",
@@ -7578,21 +7942,17 @@
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
      "eligibility.asset_test",
      "eligibility.residency",
      "eligibility.insured_patients_covered",
      "collections.eca_wait_days",
      "contacts.phone"
     ],
-    "rejected": [
-     [
-      "eligibility.discount_tiers",
-      "value not in quote"
-     ]
-    ],
+    "rejected": [],
     "pruned": [],
     "income_rule_verified": true,
-    "core_completeness": 0.33
+    "core_completeness": 0.5
    }
   },
   {
@@ -7619,7 +7979,31 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "discount_tiers": null,
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "200",
+       "max_fpl_inclusive": "300",
+       "discount_percent": 75
+      },
+      {
+       "min_fpl_exclusive": "300",
+       "max_fpl_inclusive": "400",
+       "discount_percent": 50
+      },
+      {
+       "min_fpl_exclusive": "400",
+       "max_fpl_inclusive": "500",
+       "discount_percent": 25
+      }
+     ],
+     "layer": "documented",
+     "quote": "Income ranges are based on the 2025 Federal Poverty GuidelinesIncome Range 0-200% FPG 201-300% FPG 301-400% FPG 401-500% FPG >500% FPG || * Add $5380.00 for each person in household over 8 persons 100% 75% 50% 25% 0%",
+     "source_id": "fap-dcd1ac5a6c7aa5c1",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": null,
@@ -7638,10 +8022,11 @@
      "value": [
       "bank_statements",
       "proof_of_income",
-      "tax_return"
+      "tax_return",
+      "social_security_letter"
      ],
      "layer": "documented",
-     "quote": "Current Bank Statement Last Two Pays Stubs Proof of Any Other Income Listed Above (if direct deposit bank statement can be used) Copy of most recent tax return",
+     "quote": "Current Bank Statement Last Two Pays Stubs Proof of Any Other Income Listed Above (if direct deposit bank statement can be used) Copy of most recent tax return || Disability Statement-If Applied or Receiving Disability Unemployment Statement-If Applied or Receiving Unemployment Social Security Statement - If receiving Social Security",
      "source_id": "fap-65aed559dda6fe3e",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -7725,8 +8110,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: * Add $5380.00 for each person in household over 8 persons 100% 75% 50% 25% 0%",
-    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: Disability Statement-If Applied or Receiving Disability Unemployment Statement-If Applied or Receiving Unemployment Soci",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 2 verbatim spans",
     "agent dropped eligibility.assistance_ceiling_fpl: judge: Quote lists only percentages (100% 75% 50% 25% 0%) with no FPL bounds; 500% does not appear.",
     "agent dropped programs.presumptive: judge: Quote says any guarantor under 250% FPL; it does not mention self-pay status or early-out/bad debt vendor screening.",
     "agent dropped apply.submit_methods: judge: Quote supports mail, the registration desk and MyChart, but nothing says MyChart is preferred."
@@ -7744,16 +8129,13 @@
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
      "apply.documents_required",
      "contacts.phone",
      "contacts.hours",
      "contacts.languages"
     ],
     "rejected": [
-     [
-      "eligibility.discount_tiers",
-      "value not in quote"
-     ],
      [
       "eligibility.asset_test",
       "quote does not support the asset-test value"
@@ -7768,10 +8150,10 @@
      ]
     ],
     "pruned": [
-     "apply.documents_required: 2 items not named in the trimmed quote"
+     "apply.documents_required: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": true,
-    "core_completeness": 0.5
+    "core_completeness": 0.67
    }
   },
   {
@@ -7817,10 +8199,11 @@
    "programs": {
     "presumptive": {
      "value": [
-      "Homelessness"
+      "Homelessness",
+      "Household income up to 300% of FPL"
      ],
      "layer": "documented",
-     "quote": "\u2022 Homelessness; \u2022 Mental incapacitation with no one to act on the patient\u2019s behalf; \u2022 Enrollment in Medicaid of patient or a child in their household;",
+     "quote": "\u2022 Homelessness; \u2022 Mental incapacitation with no one to act on the patient\u2019s behalf; \u2022 Enrollment in Medicaid of patient or a child in their household; || \u2022 Enrollment in another means-tested public assistance program (including, but not limited to Women, Infants and Children Nutrition Program, Supplemental Nutrition Assistance Program); or \u2022 Patient/responsible party is determined to be eligible by a local clinic under poverty and income guidelines similar to the ones in this policy. || Patients with household income up to 300% of FPL will be considered presumptively eligible",
      "source_id": "fap-356ce1d641afd492",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -7834,12 +8217,13 @@
     "documents_required": {
      "value": [
       "tax_return",
+      "other",
       "bank_statements",
-      "proof_of_income",
-      "other"
+      "pay_stubs",
+      "proof_of_income"
      ],
      "layer": "documented",
-     "quote": "\u2022 Federal Income Tax Return for the most current year \u2022 State Income Tax Return for the most current year \u2022 Supporting W-2 \u2022 Supporting 1099\u2019s \u2022 Copies of all bank statements for last 3 months",
+     "quote": "\u2022 Federal Income Tax Return for the most current year \u2022 State Income Tax Return for the most current year \u2022 Supporting W-2 \u2022 Supporting 1099\u2019s \u2022 Copies of all bank statements for last 3 months || \u2022 Most recent bank and broker statements listed in the Federal Tax Return \u2022 Current credit report \u2022 Most Recent Employer Pay Stubs \u2022 Written documentation from income sources \u2022 Proof of Medicaid Eligibility",
      "source_id": "fap-356ce1d641afd492",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -7896,8 +8280,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: \u2022 Enrollment in another means-tested public assistance program (including, but not limited to Women, Infants and Childre | Patients with household income up to 300% of FPL will be considered presumptively eligible",
-    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: \u2022 Most recent bank and broker statements listed in the Federal Tax Return \u2022 Current credit report \u2022 Most Recent Employer"
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 2 verbatim spans"
    ],
    "eve_verified": {
     "on": "2026-10-23",
@@ -7906,7 +8290,7 @@
     "sources_missing": [],
     "sha256_match": {
      "fap-356ce1d641afd492": true,
-     "web-82f15d236c324e9b": false,
+     "web-82f15d236c324e9b": true,
      "web-499a7c9ab687486e": true
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
@@ -7927,8 +8311,7 @@
      ]
     ],
     "pruned": [
-     "programs.presumptive: 5 items not named in the trimmed quote",
-     "apply.documents_required: 1 item not named in the trimmed quote"
+     "programs.presumptive: 4 items not named in the trimmed quote"
     ],
     "income_rule_verified": true,
     "core_completeness": 0.33
@@ -7976,12 +8359,13 @@
     "documents_required": {
      "value": [
       "tax_return",
+      "other",
       "bank_statements",
-      "proof_of_income",
-      "other"
+      "pay_stubs",
+      "proof_of_income"
      ],
      "layer": "documented",
-     "quote": "\u2022 Federal Income Tax Return for the most current year \u2022 State Income Tax Return for the most current year \u2022 Supporting W-2 \u2022 Supporting 1099\u2019s \u2022 Copies of all bank statements for last 3 months",
+     "quote": "\u2022 Federal Income Tax Return for the most current year \u2022 State Income Tax Return for the most current year \u2022 Supporting W-2 \u2022 Supporting 1099\u2019s \u2022 Copies of all bank statements for last 3 months || \u2022 Most recent bank and broker statements listed in the Federal Tax Return \u2022 Current credit report \u2022 Most Recent Employer Pay Stubs \u2022 Written documentation from income sources \u2022 Proof of Medicaid Eligibility",
      "source_id": "fap-356ce1d641afd492",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -8046,7 +8430,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: \u2022 Most recent bank and broker statements listed in the Federal Tax Return \u2022 Current credit report \u2022 Most Recent Employer",
+    "apply.documents_required: value backed by 2 verbatim spans",
     "agent dropped programs.presumptive: judge: The quote is truncated. The WIC/SNAP examples and the 'similar poverty and income guidelines' wording for the local clinic item do not appear in it."
    ],
    "eve_verified": {
@@ -8056,7 +8440,7 @@
     "sources_missing": [],
     "sha256_match": {
      "fap-356ce1d641afd492": true,
-     "web-82f15d236c324e9b": false,
+     "web-82f15d236c324e9b": true,
      "web-0faf89faad173019": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
@@ -8071,9 +8455,7 @@
       "quote does not say whether insured patients are covered"
      ]
     ],
-    "pruned": [
-     "apply.documents_required: 1 item not named in the trimmed quote"
-    ],
+    "pruned": [],
     "income_rule_verified": true,
     "core_completeness": 0.5
    }
@@ -8378,7 +8760,26 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "discount_tiers": null,
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "200",
+       "max_fpl_inclusive": "250",
+       "discount_percent": 75
+      },
+      {
+       "min_fpl_exclusive": "250",
+       "max_fpl_inclusive": "300",
+       "discount_percent": 50
+      }
+     ],
+     "layer": "documented",
+     "quote": "Discount of 75% of the patient\u2019s balance owed for household incomes between 201%-250% of || Discount of 50% of the patient\u2019s balance owed for household incomes between 251% - 300% of",
+     "source_id": "fap-17604b377ebc8366",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "assistance_ceiling_fpl": null,
     "asset_test": {
      "value": true,
@@ -8436,10 +8837,11 @@
      "value": [
       "proof_of_residency",
       "proof_of_income",
-      "other"
+      "other",
+      "tax_return"
      ],
      "layer": "documented",
-     "quote": "2. North Carolina Residency: Provide two proofs of NC residency with your current NC address (for example, driver's license, utility bill). 3. Income: Provide the most recent 30 days of gross income for all adult household members 18",
+     "quote": "2. North Carolina Residency: Provide two proofs of NC residency with your current NC address (for example, driver's license, utility bill). 3. Income: Provide the most recent 30 days of gross income for all adult household members 18 || 4. No Income: If you do not have any income, provide a signed and dated letter of support from the person who supports your daily living needs. || 5. Assets: Provide the most recent 30 days of proof of assets for all household members (for example, bank statements, retirement accounts, investments). 6. Tax Return: Submit a copy of your most recent federal 1040 tax return including all schedules. 7. Property: If you own property other than your primary residence, provide property tax documents or proof of rental income.",
      "source_id": "fap-2599954cd9fe1639",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -8536,8 +8938,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: Discount of 50% of the patient\u2019s balance owed for household incomes between 251% - 300% of",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: 4. No Income: If you do not have any income, provide a signed and dated letter of support from the person who supports y | 5. Assets: Provide the most recent 30 days of proof of assets for all household members (for example, bank statements, r",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent dropped programs.presumptive: judge: Quote is cut off at 'including, but not limited to:'; WIC, SNAP and TANF are never named."
    ],
    "eve_verified": {
@@ -8552,6 +8954,7 @@
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
      "eligibility.asset_test",
      "eligibility.residency",
      "eligibility.insured_patients_covered",
@@ -8562,17 +8965,10 @@
      "contacts.phone",
      "contacts.hours"
     ],
-    "rejected": [
-     [
-      "eligibility.discount_tiers",
-      "value not in quote"
-     ]
-    ],
-    "pruned": [
-     "apply.documents_required: 1 item not named in the trimmed quote"
-    ],
+    "rejected": [],
+    "pruned": [],
     "income_rule_verified": true,
-    "core_completeness": 0.67
+    "core_completeness": 0.83
    }
   },
   {
@@ -8599,7 +8995,26 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "discount_tiers": null,
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "300",
+       "max_fpl_inclusive": "350",
+       "discount_percent": 50
+      },
+      {
+       "min_fpl_exclusive": "350",
+       "max_fpl_inclusive": "400",
+       "discount_percent": 25
+      }
+     ],
+     "layer": "documented",
+     "quote": "Discount of 50% for individuals with incomes between 301%-350% FPL. || Discount of 25% for individuals with incomes between 351%-400% FPL.",
+     "source_id": "fap-397b98dc222ad68d",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": {
@@ -8626,7 +9041,18 @@
     "services_excluded": null
    },
    "programs": {
-    "presumptive": null,
+    "presumptive": {
+     "value": [
+      "Homelessness",
+      "Enrollment in another means-tested public assistance program"
+     ],
+     "layer": "documented",
+     "quote": "Homelessness || Enrollment in Medicaid of patient or a child in their household || Enrollment in another means-tested public assistance program",
+     "source_id": "fap-397b98dc222ad68d",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "state_programs": null
    },
    "apply": {
@@ -8694,7 +9120,7 @@
       "Spanish"
      ],
      "layer": "documented",
-     "quote": "Charity Policy \u2013 English",
+     "quote": "Charity Policy \u2013 English || Charity Policy \u2013 Spanish",
      "source_id": "web-5d618ebaf21fdf4e",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -8737,9 +9163,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: Discount of 25% for individuals with incomes between 351%-400% FPL.",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Enrollment in Medicaid of patient or a child in their household | Enrollment in another means-tested public assistance program",
-    "contacts.languages: 1 more verbatim excerpt(s) supported this value: Charity Policy \u2013 Spanish",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "contacts.languages: value backed by 2 verbatim spans",
     "agent dropped programs.state_programs: judge: Quote only says help is given determining Medicaid eligibility and applying; it does not mention financial counselors or availability during or after care."
    ],
    "eve_verified": {
@@ -8755,8 +9181,10 @@
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
      "eligibility.residency",
      "eligibility.insured_patients_covered",
+     "programs.presumptive",
      "apply.documents_required",
      "apply.submit_methods",
      "contacts.phone",
@@ -8765,19 +9193,15 @@
     ],
     "rejected": [
      [
-      "eligibility.discount_tiers",
-      "value not in quote"
-     ],
-     [
       "eligibility.asset_test",
       "quote does not support the asset-test value"
      ]
     ],
     "pruned": [
-     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)"
+     "programs.presumptive: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": true,
-    "core_completeness": 0.67
+    "core_completeness": 0.83
    }
   },
   {
@@ -8814,10 +9238,11 @@
     "documents_required": {
      "value": [
       "pay_stubs",
+      "tax_return",
       "other"
      ],
      "layer": "documented",
-     "quote": "The last 3 recent payroll check stubs from each company. (Please indicate whether paid weekly or bi-weekly.)",
+     "quote": "The last 3 recent payroll check stubs from each company. (Please indicate whether paid weekly or bi-weekly.) || Income tax return for the last year. || W-2 tax statement(s)",
      "source_id": "fap-bfa9f94d082bba5e",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -8904,7 +9329,7 @@
    "accuracy": null,
    "eve_review": [
     "eligibility.asset_test: quote matched the source only after typography normalization",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Income tax return for the last year. | W-2 tax statement(s)",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent judge on apply.documents_required: Quote lists only recent payroll stubs, income tax return, and W-2s. The bank statement entries are not in the quote.",
     "agent judge on apply.submit_methods: Quote supports mailing the original application and documentation, but the mailing address in the value is not stated in the quote."
    ],
@@ -8934,7 +9359,7 @@
      ]
     ],
     "pruned": [
-     "apply.documents_required: 2 items not named in the trimmed quote"
+     "apply.documents_required: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": false,
     "core_completeness": 0.5
@@ -8983,10 +9408,11 @@
    "programs": {
     "presumptive": {
      "value": [
-      "Homelessness"
+      "Homelessness",
+      "Household income up to 300% of FPL"
      ],
      "layer": "documented",
-     "quote": "\u2022 Homelessness; \u2022 Mental incapacitation with no one to act on the patient\u2019s behalf; \u2022 Enrollment in Medicaid of patient or a child in their household; \u2022 Enrollment in another means-tested public assistance program (including, but not limited to Women, Infants and Children Nutrition Program, Supplemental Nutrition Assistance Program); or",
+     "quote": "\u2022 Homelessness; \u2022 Mental incapacitation with no one to act on the patient\u2019s behalf; \u2022 Enrollment in Medicaid of patient or a child in their household; \u2022 Enrollment in another means-tested public assistance program (including, but not limited to Women, Infants and Children Nutrition Program, Supplemental Nutrition Assistance Program); or || Patient/responsible party is determined to be eligible by a local clinic under poverty and income guidelines similar to the ones in this policy. || Patients with household income up to 300% of FPL will be considered presumptively eligible",
      "source_id": "fap-356ce1d641afd492",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -9063,7 +9489,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Patient/responsible party is determined to be eligible by a local clinic under poverty and income guidelines similar to  | Patients with household income up to 300% of FPL will be considered presumptively eligible"
+    "programs.presumptive: value backed by 3 verbatim spans"
    ],
    "eve_verified": {
     "on": "2026-10-23",
@@ -9072,7 +9498,7 @@
     "sources_missing": [],
     "sha256_match": {
      "fap-356ce1d641afd492": true,
-     "web-82f15d236c324e9b": false,
+     "web-82f15d236c324e9b": true,
      "web-219317f482310b8f": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
@@ -9089,7 +9515,7 @@
      ]
     ],
     "pruned": [
-     "programs.presumptive: 5 items not named in the trimmed quote"
+     "programs.presumptive: 4 items not named in the trimmed quote"
     ],
     "income_rule_verified": true,
     "core_completeness": 0.33
@@ -9563,12 +9989,13 @@
     "documents_required": {
      "value": [
       "tax_return",
+      "other",
       "bank_statements",
-      "proof_of_income",
-      "other"
+      "pay_stubs",
+      "proof_of_income"
      ],
      "layer": "documented",
-     "quote": "\u2022 Federal Income Tax Return for the most current year \u2022 State Income Tax Return for the most current year \u2022 Supporting W-2 \u2022 Supporting 1099\u2019s \u2022 Copies of all bank statements for last 3 months",
+     "quote": "\u2022 Federal Income Tax Return for the most current year \u2022 State Income Tax Return for the most current year \u2022 Supporting W-2 \u2022 Supporting 1099\u2019s \u2022 Copies of all bank statements for last 3 months || \u2022 Most recent bank and broker statements listed in the Federal Tax Return \u2022 Current credit report \u2022 Most Recent Employer Pay Stubs \u2022 Written documentation from income sources \u2022 Proof of Medicaid Eligibility",
      "source_id": "fap-356ce1d641afd492",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -9633,7 +10060,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: \u2022 Most recent bank and broker statements listed in the Federal Tax Return \u2022 Current credit report \u2022 Most Recent Employer",
+    "apply.documents_required: value backed by 2 verbatim spans",
     "agent dropped programs.presumptive: judge: Quote supports all listed criteria including 300% FPL, but gives no 'by January 1, 2026' date."
    ],
    "eve_verified": {
@@ -9643,7 +10070,7 @@
     "sources_missing": [],
     "sha256_match": {
      "fap-356ce1d641afd492": true,
-     "web-82f15d236c324e9b": false,
+     "web-82f15d236c324e9b": true,
      "web-526849a4666a9974": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
@@ -9659,9 +10086,7 @@
       "quote does not say whether insured patients are covered"
      ]
     ],
-    "pruned": [
-     "apply.documents_required: 1 item not named in the trimmed quote"
-    ],
+    "pruned": [],
     "income_rule_verified": true,
     "core_completeness": 0.5
    }

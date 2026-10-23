@@ -21,29 +21,11 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": {
-     "value": "250",
-     "layer": "documented",
-     "quote": "Uninsured individuals and in-network insured individuals meeting all criteria for financial assistance with an income level at or below 250% of the Federal Poverty Guideline (FPL) receive 100% adjustment on covered services.",
-     "source_id": "fap-ea40821120a453d1",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "free_care_max_fpl": null,
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
     "asset_test": null,
-    "residency": {
-     "value": [
-      "Applicants must be South Carolina or Tennessee residents or domiciled in South Carolina or Tennessee."
-     ],
-     "layer": "documented",
-     "quote": "South Carolina or Tennessee resident, or a person domiciled in South Carolina or Tennessee.",
-     "source_id": "fap-ea40821120a453d1",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "residency": null,
     "insured_patients_covered": null,
     "min_balance": null,
     "services_excluded": null
@@ -55,28 +37,10 @@
    "apply": {
     "form_url": null,
     "form_version": null,
-    "documents_required": {
-     "value": [
-      "proof_of_income"
-     ],
-     "layer": "documented",
-     "quote": "One (1) month of gross income",
-     "source_id": "fap-ea40821120a453d1",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "documents_required": null,
     "documents_reported": null,
     "submit_methods": null,
-    "window_days_from_first_bill": {
-     "value": 240,
-     "layer": "documented",
-     "quote": "An applicant has 240 days from the date of the first post discharge billing statement to apply.",
-     "source_id": "fap-ea40821120a453d1",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "window_days_from_first_bill": null,
     "decision_days": null,
     "decision_days_reported": null
    },
@@ -85,15 +49,7 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": {
-     "value": "833-425-0404",
-     "layer": "documented",
-     "quote": "Calling Prisma Health Patient Financial Services at 833-425-0404.",
-     "source_id": "fap-ea40821120a453d1",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "phone": null,
     "hours": null,
     "languages": null
    },
@@ -133,10 +89,10 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: 100% 79% based on AGB*",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: 3. Patients who are eligible for retro Medicaid and the claim is not paid by Medicaid. 4. Patients who are affiliated wi | Evidence from an independent third-party agency, or a predictive model indicating that the family income is less than or",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: 2. Recent checking/ savings bank statements 3. Individuals who are self-employed are required to submit the most recent  | 4. Proof of residency: i. SC or TN ID, paystub with home address",
-    "contacts.languages: 2 more verbatim excerpt(s) supported this value: Billing and Collection Policy (Burmese) [/getmedia/28c60d45-3c46-4415-bd15-c15533dd5c83/Billing-and-Collection-Policy-Bu | Billing and Collection Policy (Hindi) [/getmedia/d9ed97e3-c273-4bc9-b8be-dfe72b20fe2e/Billing-and-Collection-Policy-Hind"
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "contacts.languages: value backed by 3 verbatim spans"
    ],
    "eve_verified": {
     "on": "2026-10-23",
@@ -144,25 +100,27 @@
     "sources_total": 3,
     "sources_missing": [],
     "sha256_match": {
-     "fap-ea40821120a453d1": true,
+     "fap-ea40821120a453d1": false,
      "fap-8f57756871871eab": false,
      "web-365f19874468926b": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
-    "accepted": [
-     "eligibility.free_care_max_fpl",
-     "eligibility.residency",
-     "apply.documents_required",
-     "apply.window_days_from_first_bill",
-     "contacts.phone"
-    ],
+    "accepted": [],
     "rejected": [
      [
+      "eligibility.free_care_max_fpl",
+      "quote not found in source"
+     ],
+     [
       "eligibility.discount_tiers",
-      "value not in quote"
+      "quote not found in source"
      ],
      [
       "eligibility.asset_test",
+      "quote not found in source"
+     ],
+     [
+      "eligibility.residency",
       "quote not found in source"
      ],
      [
@@ -174,7 +132,19 @@
       "quote not found in source"
      ],
      [
+      "apply.documents_required",
+      "quote not found in source"
+     ],
+     [
       "apply.submit_methods",
+      "quote not found in source"
+     ],
+     [
+      "apply.window_days_from_first_bill",
+      "quote not found in source"
+     ],
+     [
+      "contacts.phone",
       "quote not found in source"
      ],
      [
@@ -183,11 +153,10 @@
      ]
     ],
     "pruned": [
-     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
-     "apply.documents_required: 3 items not named in the trimmed quote"
+     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)"
     ],
-    "income_rule_verified": true,
-    "core_completeness": 0.5
+    "income_rule_verified": false,
+    "core_completeness": 0.0
    }
   },
   {
@@ -250,10 +219,11 @@
     "documents_required": {
      "value": [
       "social_security_letter",
+      "bank_statements",
       "other"
      ],
      "layer": "documented",
-     "quote": "Proof of last month\u2019s household income: Check stubs, unemployment letter, Award letter from SSA, etc.",
+     "quote": "Proof of last month\u2019s household income: Check stubs, unemployment letter, Award letter from SSA, etc. || Bank statements for the last two (2) months (checking and/or savings) for all bank accounts patient and/or spouse are listed on. || If legally separated from your spouse, please provide proof of separation.",
      "source_id": "fap-d8ceddbefd7c39b5",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -335,7 +305,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Bank statements for the last two (2) months (checking and/or savings) for all bank accounts patient and/or spouse are li | If legally separated from your spouse, please provide proof of separation.",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent dropped eligibility.discount_tiers: judge: Quote gives 201-300% at 85%, but the 301-400% tier is cut off before any discount percent; 75% does not appear.",
     "agent dropped programs.presumptive: judge: Quote mentions only Category II services with an eligible FAS score; it does not say uninsured, outpatient/emergency, or under $40,000.",
     "agent dropped programs.state_programs: judge: Quote lists the program names only; it says nothing about contacting financial counselors for help applying."
@@ -373,9 +343,7 @@
       "quote not found in source"
      ]
     ],
-    "pruned": [
-     "apply.documents_required: 1 item not named in the trimmed quote"
-    ],
+    "pruned": [],
     "income_rule_verified": true,
     "core_completeness": 0.67
    }
@@ -463,8 +431,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: Effective 10/1/2026 \u2013 9/30/2027 | Allowance to give if uninsured 100% 79% based on AGB*",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: 3. Patients who are eligible for retro Medicaid and the claim is not paid by Medicaid. 4. Patients who are affiliated wi | 9. Evidence from an independent third-party agency, or a predictive model indicating that the family income is less than",
+    "eligibility.discount_tiers: value backed by 3 verbatim spans",
+    "programs.presumptive: value backed by 3 verbatim spans",
     "agent dropped apply.documents_required: judge: Quote does not mention a no-income attestation for unemployed applicants; the rest is supported."
    ],
    "eve_verified": {
@@ -539,29 +507,11 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": {
-     "value": "250",
-     "layer": "documented",
-     "quote": "Uninsured individuals and in-network insured individuals meeting all criteria for financial assistance with an income level at or below 250% of the Federal Poverty Guideline (FPL) receive 100% adjustment on covered services.",
-     "source_id": "fap-ea40821120a453d1",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "free_care_max_fpl": null,
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
     "asset_test": null,
-    "residency": {
-     "value": [
-      "Applicants must be South Carolina or Tennessee residents or persons domiciled in South Carolina or Tennessee."
-     ],
-     "layer": "documented",
-     "quote": "South Carolina or Tennessee resident, or a person domiciled in South Carolina or Tennessee.",
-     "source_id": "fap-ea40821120a453d1",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "residency": null,
     "insured_patients_covered": null,
     "min_balance": null,
     "services_excluded": null
@@ -573,28 +523,10 @@
    "apply": {
     "form_url": null,
     "form_version": null,
-    "documents_required": {
-     "value": [
-      "proof_of_income"
-     ],
-     "layer": "documented",
-     "quote": "1. One (1) month of gross income",
-     "source_id": "fap-ea40821120a453d1",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "documents_required": null,
     "documents_reported": null,
     "submit_methods": null,
-    "window_days_from_first_bill": {
-     "value": 240,
-     "layer": "documented",
-     "quote": "An applicant has 240 days from the date of the first post discharge billing statement to apply.",
-     "source_id": "fap-ea40821120a453d1",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "window_days_from_first_bill": null,
     "decision_days": null,
     "decision_days_reported": null
    },
@@ -603,15 +535,7 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": {
-     "value": "833-425-0404",
-     "layer": "documented",
-     "quote": "Calling Prisma Health Patient Financial Services at 833-425-0404.",
-     "source_id": "fap-ea40821120a453d1",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "phone": null,
     "hours": null,
     "languages": null
    },
@@ -651,11 +575,11 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: Income Level Cap >250% - Up to 400% | 100% 79% based on AGB*",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: 4. Patients who are affiliated with the AccessHealth program or referred by the Community Free Clinics who support the r | 9. Evidence from an independent third-party agency, or a predictive model indicating that the family income is less than",
-    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: 2. Recent checking/ savings bank statements 3. Individuals who are self-employed are required to submit the most recent ",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: By Fax: (864) 522-9594 By Email: hospitalsponsorship@prismahealth.org",
-    "contacts.languages: 2 more verbatim excerpt(s) supported this value: Financial Assistance: Plain Language Summary (Arabic) | Financial Assistance: Plain Language Summary (Vietnamese)"
+    "eligibility.discount_tiers: value backed by 3 verbatim spans",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 2 verbatim spans",
+    "apply.submit_methods: value backed by 2 verbatim spans",
+    "contacts.languages: value backed by 3 verbatim spans"
    ],
    "eve_verified": {
     "on": "2026-10-23",
@@ -663,25 +587,27 @@
     "sources_total": 3,
     "sources_missing": [],
     "sha256_match": {
-     "fap-ea40821120a453d1": true,
+     "fap-ea40821120a453d1": false,
      "fap-8f57756871871eab": false,
      "web-9da21a21d66369a9": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
-    "accepted": [
-     "eligibility.free_care_max_fpl",
-     "eligibility.residency",
-     "apply.documents_required",
-     "apply.window_days_from_first_bill",
-     "contacts.phone"
-    ],
+    "accepted": [],
     "rejected": [
      [
+      "eligibility.free_care_max_fpl",
+      "quote not found in source"
+     ],
+     [
       "eligibility.discount_tiers",
-      "value not in quote"
+      "quote not found in source"
      ],
      [
       "eligibility.asset_test",
+      "quote not found in source"
+     ],
+     [
+      "eligibility.residency",
       "quote not found in source"
      ],
      [
@@ -693,7 +619,19 @@
       "quote not found in source"
      ],
      [
+      "apply.documents_required",
+      "quote not found in source"
+     ],
+     [
       "apply.submit_methods",
+      "quote not found in source"
+     ],
+     [
+      "apply.window_days_from_first_bill",
+      "quote not found in source"
+     ],
+     [
+      "contacts.phone",
       "quote not found in source"
      ],
      [
@@ -702,12 +640,10 @@
      ]
     ],
     "pruned": [
-     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
-     "apply.documents_required: 3 items not named in the trimmed quote",
-     "apply.submit_methods: 2 items not named in the trimmed quote"
+     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)"
     ],
-    "income_rule_verified": true,
-    "core_completeness": 0.5
+    "income_rule_verified": false,
+    "core_completeness": 0.0
    }
   },
   {
@@ -734,7 +670,26 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "discount_tiers": null,
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "200",
+       "max_fpl_inclusive": "300",
+       "discount_percent": 81
+      },
+      {
+       "min_fpl_exclusive": "300",
+       "max_fpl_inclusive": "400",
+       "discount_percent": 81
+      }
+     ],
+     "layer": "documented",
+     "quote": "Hospital 0-200% FPG 201% - 300% FPG 301% - 400% FPG || St. Francis Downtown 100% 81% 81% 40%",
+     "source_id": "fap-b8bbfefcdefa0724",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "assistance_ceiling_fpl": null,
     "asset_test": {
      "value": true,
@@ -769,7 +724,26 @@
     "services_excluded": null
    },
    "programs": {
-    "presumptive": null,
+    "presumptive": {
+     "value": [
+      "Income below 200% FPG and self-pay",
+      "Discharged to a SNF",
+      "Deceased with no known estate or insurance",
+      "State-funded prescription programs",
+      "Homeless or received care from a homeless clinic",
+      "WIC participation",
+      "Food stamp eligibility",
+      "Subsidized school lunch program eligibility",
+      "Referred through a National Association of Free Clinics",
+      "Low income/subsidized housing as valid address"
+     ],
+     "layer": "documented",
+     "quote": "Patient\u2019s income is below 200% Federal Poverty Guidelines and considered self-pay; \u25aa Patient discharged to a SNF; \u25aa Patient is deceased with no known estate or insurance; \u25aa State-funded prescription programs; \u25aa Homeless or received care from a homeless clinic; || Participation in Women, Infants and Children programs (WIC); \u25aa Food stamp eligibility; \u25aa Subsidized school lunch program eligibility; \u25aa Eligibility for other state or local assistance programs that are unfunded (e.g., Medicaid spend-down); \u25aa Patients that are referred through a National Association of Free Clinics; || Low income/subsidized housing is provided as a valid address; or",
+     "source_id": "fap-b8bbfefcdefa0724",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "state_programs": null
    },
    "apply": {
@@ -848,9 +822,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: St. Francis Downtown 100% 81% 81% 40%",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Participation in Women, Infants and Children programs (WIC); \u25aa Food stamp eligibility; \u25aa Subsidized school lunch program | Low income/subsidized housing is provided as a valid address; or",
-    "contacts.languages: 2 more verbatim excerpt(s) supported this value: Dari [/-/media/bon-secours/patients-and-visitors/corporate/financial-assistance/hfa-policy-502/dari.pdf] French [/-/medi | Russian [/-/media/bon-secours/patients-and-visitors/corporate/financial-assistance/hfa-policy-502/russian.pdf] Spanish [",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "contacts.languages: value backed by 3 verbatim spans",
     "agent dropped apply.documents_required: judge: Quote says only 'PROVIDE COPY OF CARD' and does not specify an insurance card. The other items are supported."
    ],
    "eve_verified": {
@@ -866,27 +840,25 @@
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
      "eligibility.asset_test",
      "eligibility.residency",
      "eligibility.insured_patients_covered",
+     "programs.presumptive",
      "apply.submit_methods",
      "contacts.phone"
     ],
     "rejected": [
-     [
-      "eligibility.discount_tiers",
-      "value not in quote"
-     ],
      [
       "contacts.languages",
       "quote not found in source"
      ]
     ],
     "pruned": [
-     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)"
+     "programs.presumptive: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": true,
-    "core_completeness": 0.5
+    "core_completeness": 0.67
    }
   },
   {
@@ -967,10 +939,14 @@
       {
        "kind": "mail",
        "detail": "ATTN: Medical University of South Carolina, 1 Poston Road, Suite 300, Charleston, SC 29407"
+      },
+      {
+       "kind": "portal",
+       "detail": "https://mychart.musc.edu"
       }
      ],
      "layer": "documented",
-     "quote": "Please mail this completed form with required documentation to the following address: ATTN: MEDICAL UNIVERISTY OF SOUTH CAROLINA 1 Poston Road, Suite 300 Charleston, SC 29407",
+     "quote": "Please mail this completed form with required documentation to the following address: ATTN: MEDICAL UNIVERISTY OF SOUTH CAROLINA 1 Poston Road, Suite 300 Charleston, SC 29407 || You may also apply online at https://mychart.musc.edu",
      "source_id": "fap-11f1ea1f2b7316de",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1049,7 +1025,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: You may also apply online at https://mychart.musc.edu",
+    "apply.submit_methods: value backed by 2 verbatim spans",
     "agent dropped programs.presumptive: judge: The quote supports all items, but the 'PARO' label in the last item does not appear in the quote.",
     "agent dropped apply.window_days_from_first_bill: judge: The quote gives 240 days to apply but does not say the period runs from the first bill.",
     "agent dropped contacts.languages: judge: The quote describes cost-estimate tools being available in English and Spanish, not contact or assistance languages."
@@ -1090,8 +1066,7 @@
      ]
     ],
     "pruned": [
-     "apply.documents_required: 1 item not named in the trimmed quote",
-     "apply.submit_methods: 1 item not named in the trimmed quote"
+     "apply.documents_required: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": true,
     "core_completeness": 0.67
@@ -1121,7 +1096,26 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "discount_tiers": null,
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "200",
+       "max_fpl_inclusive": "300",
+       "discount_percent": 85
+      },
+      {
+       "min_fpl_exclusive": "300",
+       "max_fpl_inclusive": "400",
+       "discount_percent": 75
+      }
+     ],
+     "layer": "documented",
+     "quote": "Patients who can demonstrate that their total Household Financial Income is between 201%-300% FPL is eligible for a 85% discount || Patients who can demonstrate that their total Household Financial Income is at or below 301%-400% of FPL is eligible for a 75% discount",
+     "source_id": "fap-e32a2a4bfd127ec0",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": {
@@ -1161,7 +1155,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "South Carolina and Georgia Medicaid",
+     "quote": "South Carolina and Georgia Medicaid || South Carolina Office of Victim Assistance || Contact us to learn more about these programs or to start the application process.",
      "source_id": "web-e8db8726196bf926",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1174,10 +1168,11 @@
     "documents_required": {
      "value": [
       "social_security_letter",
+      "bank_statements",
       "other"
      ],
      "layer": "documented",
-     "quote": "Proof of last month\u2019s household income: Check stubs, unemployment letter, Award letter from SSA, etc.",
+     "quote": "Proof of last month\u2019s household income: Check stubs, unemployment letter, Award letter from SSA, etc. || Bank statements for the last two (2) months (checking and/or savings) for all bank accounts patient and/or spouse are listed on. || If legally separated from your spouse, please provide proof of separation.",
      "source_id": "fap-d8ceddbefd7c39b5",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1218,7 +1213,7 @@
       "Spanish"
      ],
      "layer": "documented",
-     "quote": "View the Application in English",
+     "quote": "View the Application in English || in Solicitud en espa\u00f1ol",
      "source_id": "web-e8db8726196bf926",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1261,10 +1256,10 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: Patients who can demonstrate that their total Household Financial Income is at or below 301%-400% of FPL is eligible for",
-    "programs.state_programs: 2 more verbatim excerpt(s) supported this value: South Carolina Office of Victim Assistance | Contact us to learn more about these programs or to start the application process.",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Bank statements for the last two (2) months (checking and/or savings) for all bank accounts patient and/or spouse are li | If legally separated from your spouse, please provide proof of separation.",
-    "contacts.languages: 1 more verbatim excerpt(s) supported this value: in Solicitud en espa\u00f1ol",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "programs.state_programs: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "contacts.languages: value backed by 2 verbatim spans",
     "agent dropped eligibility.assistance_ceiling_fpl: judge: Quote is a fragment mentioning income above 400% FPL; it does not say no assistance is offered above that level.",
     "agent dropped eligibility.asset_test: judge: Quote lists asset ownership files as one data component of a scoring review; it does not state that assets are tested for eligibility.",
     "agent dropped programs.presumptive: judge: Quote is truncated and gives no details on uninsured, Category II, the $40,000 limit, or the score.",
@@ -1283,6 +1278,7 @@
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
      "eligibility.residency",
      "eligibility.insured_patients_covered",
      "programs.state_programs",
@@ -1293,19 +1289,13 @@
     ],
     "rejected": [
      [
-      "eligibility.discount_tiers",
-      "value not in quote"
-     ],
-     [
       "apply.form_url",
       "quote not found in source"
      ]
     ],
-    "pruned": [
-     "apply.documents_required: 1 item not named in the trimmed quote"
-    ],
+    "pruned": [],
     "income_rule_verified": true,
-    "core_completeness": 0.5
+    "core_completeness": 0.67
    }
   },
   {
@@ -1391,9 +1381,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: 100% 77% based on AGB*",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Patients who are affiliated with the AccessHealth program or referred by the Community Free Clinics who support the regi | Evidence from an independent third-party agency, indicating that the family income is less than or equal to 250% FPL.",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: By Fax: (864) 522-9594 By Email: hospitalsponsorship@prismahealth.org"
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 2 verbatim spans"
    ],
    "eve_verified": {
     "on": "2026-10-23",
@@ -1442,8 +1432,7 @@
      ]
     ],
     "pruned": [
-     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
-     "apply.submit_methods: 2 items not named in the trimmed quote"
+     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)"
     ],
     "income_rule_verified": false,
     "core_completeness": 0.0
@@ -1464,29 +1453,11 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": {
-     "value": "250",
-     "layer": "documented",
-     "quote": "Uninsured individuals and in-network insured individuals meeting all criteria for financial assistance with an income level at or below 250% of the Federal Poverty Guideline (FPL) receive 100% adjustment on covered services.",
-     "source_id": "fap-ea40821120a453d1",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "free_care_max_fpl": null,
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
     "asset_test": null,
-    "residency": {
-     "value": [
-      "Applicants must be South Carolina or Tennessee residents or domiciled in South Carolina or Tennessee."
-     ],
-     "layer": "documented",
-     "quote": "South Carolina or Tennessee resident, or a person domiciled in South Carolina or Tennessee.",
-     "source_id": "fap-ea40821120a453d1",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "residency": null,
     "insured_patients_covered": null,
     "min_balance": null,
     "services_excluded": null
@@ -1501,15 +1472,7 @@
     "documents_required": null,
     "documents_reported": null,
     "submit_methods": null,
-    "window_days_from_first_bill": {
-     "value": 240,
-     "layer": "documented",
-     "quote": "An applicant has 240 days from the date of the first post discharge billing statement to apply.",
-     "source_id": "fap-ea40821120a453d1",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "window_days_from_first_bill": null,
     "decision_days": null,
     "decision_days_reported": null
    },
@@ -1518,15 +1481,7 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": {
-     "value": "833-425-0404",
-     "layer": "documented",
-     "quote": "Calling Prisma Health Patient Financial Services at 833-425-0404.",
-     "source_id": "fap-ea40821120a453d1",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "phone": null,
     "hours": null,
     "languages": null
    },
@@ -1566,8 +1521,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: 4. Patients who are affiliated with the AccessHealth program or referred by the Community Free Clinics who support the r | Evidence from an independent third-party agency, or a predictive model indicating that the family income is less than or",
-    "contacts.languages: 2 more verbatim excerpt(s) supported this value: Financial Assistance Application (Chinese) | Financial Assistance Application (Vietnamese)",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "contacts.languages: value backed by 3 verbatim spans",
     "agent dropped eligibility.discount_tiers: judge: Quote gives a 250\u2013400% sliding scale but only an unlabeled table fragment '100% 79% based on AGB'; it does not tie 79% to that tier."
    ],
    "eve_verified": {
@@ -1576,20 +1531,23 @@
     "sources_total": 3,
     "sources_missing": [],
     "sha256_match": {
-     "fap-ea40821120a453d1": true,
+     "fap-ea40821120a453d1": false,
      "fap-8f57756871871eab": false,
      "web-11554b2b7e34b1f5": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
-    "accepted": [
-     "eligibility.free_care_max_fpl",
-     "eligibility.residency",
-     "apply.window_days_from_first_bill",
-     "contacts.phone"
-    ],
+    "accepted": [],
     "rejected": [
      [
+      "eligibility.free_care_max_fpl",
+      "quote not found in source"
+     ],
+     [
       "eligibility.asset_test",
+      "quote not found in source"
+     ],
+     [
+      "eligibility.residency",
       "quote not found in source"
      ],
      [
@@ -1609,6 +1567,14 @@
       "quote not found in source"
      ],
      [
+      "apply.window_days_from_first_bill",
+      "quote not found in source"
+     ],
+     [
+      "contacts.phone",
+      "quote not found in source"
+     ],
+     [
       "contacts.languages",
       "quote not found in source"
      ]
@@ -1616,8 +1582,8 @@
     "pruned": [
      "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)"
     ],
-    "income_rule_verified": true,
-    "core_completeness": 0.33
+    "income_rule_verified": false,
+    "core_completeness": 0.0
    }
   },
   {
@@ -1703,9 +1669,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: 100% 77% based on AGB*",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Patients who are affiliated with the AccessHealth program or referred by the Community Free Clinics | Patients who are homeless. 5.1.6. Patients who are deceased with no estate found. 5.1.7. Patients with a recent personal",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: By Fax: (864) 522-9594 By Email: hospitalsponsorship@prismahealth.org"
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 2 verbatim spans"
    ],
    "eve_verified": {
     "on": "2026-10-23",
@@ -1758,8 +1724,7 @@
      ]
     ],
     "pruned": [
-     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
-     "apply.submit_methods: 2 items not named in the trimmed quote"
+     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)"
     ],
     "income_rule_verified": false,
     "core_completeness": 0.0
@@ -1863,18 +1828,7 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "languages": {
-     "value": [
-      "English",
-      "Spanish"
-     ],
-     "layer": "documented",
-     "quote": "CMC Financial Assistance Policy-A-English",
-     "source_id": "web-e3b1aeb9fe2a410c",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "languages": null
    },
    "coverage": {
     "facilities": null,
@@ -1912,8 +1866,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: e. Personal bankruptcy within the past 7 years; f. Incarceration in a penal institution where services are not covered b | k. Not required to file a Federal tax return for the most recently concluded calendar year; or l. In the custody of any ",
-    "contacts.languages: 1 more verbatim excerpt(s) supported this value: Poliza de Asistencia Financiera [https://www.conwaymedicalcenter.com/wp-content/uploads/2018/06/CMC-Financial-Assistance",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "contacts.languages: value backed by 2 verbatim spans",
     "agent dropped apply.documents_required: judge: Quote does not mention Schedule C for self-employed applicants. The other items appear.",
     "agent dropped apply.submit_methods: judge: Quote gives no mailing address and no Collections Dept at the main entrance. It also cuts off mid-sentence.",
     "agent dropped apply.window_days_from_first_bill: judge: Quote says twelve (12) months, not 360 days. Twelve months is about 365 days."
@@ -1935,8 +1889,7 @@
      "programs.state_programs",
      "collections.eca_wait_days",
      "contacts.phone",
-     "contacts.hours",
-     "contacts.languages"
+     "contacts.hours"
     ],
     "rejected": [
      [
@@ -1945,6 +1898,10 @@
      ],
      [
       "apply.form_url",
+      "quote not found in source"
+     ],
+     [
+      "contacts.languages",
       "quote not found in source"
      ]
     ],
@@ -2027,11 +1984,12 @@
      "value": [
       "tax_return",
       "bank_statements",
+      "social_security_letter",
       "proof_of_income",
       "other"
      ],
      "layer": "documented",
-     "quote": "\u2022 Picture ID \u2022 Most recent tax return \u2022 Proof of gross wages for the last 30 days \u2022 Most recent bank statement",
+     "quote": "\u2022 Picture ID \u2022 Most recent tax return \u2022 Proof of gross wages for the last 30 days \u2022 Most recent bank statement || \u2022 Proof of all income benefits you are receiving, including pension, social security, unemployment, disability, as well as, child support, alimony \u2022 If you are unemployed with no source of income, a statement explaining how you pay for your basic living expenses",
      "source_id": "fap-e7bb9dcc6af9c446",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2124,8 +2082,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: Up to 200% $31,300 $42,300 $53,300 $64,300 $75,300 $86,300 $97,300 $108,300 90% 10% ^ | Up to 250% $39,125 $52,875 $66,625 $80,375 $94,125 $107,875 $121,625 $135,375 85% 15% +",
-    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: \u2022 Proof of all income benefits you are receiving, including pension, social security, unemployment, disability, as well ",
+    "eligibility.discount_tiers: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 2 verbatim spans",
     "agent dropped apply.window_days_from_first_bill: judge: The quote gives 8 months after the date of service, not a number of days from the first bill."
    ],
    "eve_verified": {
@@ -2161,7 +2119,7 @@
     ],
     "pruned": [
      "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
-     "apply.documents_required: 2 items not named in the trimmed quote"
+     "apply.documents_required: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": true,
     "core_completeness": 0.67
@@ -2472,9 +2430,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Patients who are affiliated with the AccessHealth program or referred by the Community Free Clinics who support the regi | Patients with a recent personal bankruptcy. 5.1.8. Patients incarcerated in a penal institution. 5.1.9. Evidence from an",
-    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: Recent checking/ savings bank statements 2.2.3. Individuals who are self-employed are required to submit the most recent",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: By Fax: (864) 522-9594 By Email: hospitalsponsorship@prismahealth.org",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 2 verbatim spans",
+    "apply.submit_methods: value backed by 2 verbatim spans",
     "agent dropped eligibility.discount_tiers: judge: Bounds 250-400% appear, but 77% is only a detached table fragment ('100% 77% based on AGB'), not plainly tied to that tier."
    ],
    "eve_verified": {
@@ -2528,9 +2486,7 @@
      ]
     ],
     "pruned": [
-     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
-     "apply.documents_required: 3 items not named in the trimmed quote",
-     "apply.submit_methods: 2 items not named in the trimmed quote"
+     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)"
     ],
     "income_rule_verified": false,
     "core_completeness": 0.0
@@ -2579,7 +2535,17 @@
     "services_excluded": null
    },
    "programs": {
-    "presumptive": null,
+    "presumptive": {
+     "value": [
+      "Homeless patient or guarantor"
+     ],
+     "layer": "documented",
+     "quote": "Homeless patient or guarantor. Confirmation of the status may be a judgment call by clinical or Patient Financial Advocate staff. || Guarantor currently resides in a shelter of some type (Must be legal resident of South Carolina). || Information from the predictive model may be used by Self Regional Healthcare to grant presumptive eligibility",
+     "source_id": "fap-b4b1ccd3088e8b65",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "state_programs": null
    },
    "apply": {
@@ -2589,10 +2555,12 @@
      "value": [
       "photo_id",
       "proof_of_income",
-      "other"
+      "other",
+      "bank_statements",
+      "tax_return"
      ],
      "layer": "documented",
-     "quote": "Valid South Carolina and/or Governmental photo ID \u2022 Proof of income for all members in the household \u2022 Proof of current address (rent receipt, driver\u2019s license, or voter\u2019s registration)",
+     "quote": "Valid South Carolina and/or Governmental photo ID \u2022 Proof of income for all members in the household \u2022 Proof of current address (rent receipt, driver\u2019s license, or voter\u2019s registration) || Verification of all members in household including their names, relationships, and dates of birth \u2022 Monthly checking account statements or monthly savings account statements \u2022 Income verification from employer or most recent check stubs \u2022 Federal Income Tax Return || Verification of self-employment and/or proof of eligibility denial from programs such as Social Security, Department of Social Services, Workers Compensation, Child Support Service, etc. \u2022 Proof of any whole life insurance policies",
      "source_id": "fap-b4b1ccd3088e8b65",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2678,8 +2646,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Guarantor currently resides in a shelter of some type (Must be legal resident of South Carolina). | Information from the predictive model may be used by Self Regional Healthcare to grant presumptive eligibility",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Verification of all members in household including their names, relationships, and dates of birth \u2022 Monthly checking acc | Verification of self-employment and/or proof of eligibility denial from programs such as Social Security, Department of "
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans"
    ],
    "eve_verified": {
     "on": "2026-10-23",
@@ -2695,6 +2663,7 @@
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.residency",
+     "programs.presumptive",
      "apply.documents_required",
      "apply.submit_methods",
      "apply.decision_days",
@@ -2715,8 +2684,7 @@
      ]
     ],
     "pruned": [
-     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
-     "apply.documents_required: 2 items not named in the trimmed quote"
+     "programs.presumptive: 2 items not named in the trimmed quote"
     ],
     "income_rule_verified": true,
     "core_completeness": 0.67
@@ -2746,7 +2714,26 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "discount_tiers": null,
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "200",
+       "max_fpl_inclusive": "300",
+       "discount_percent": 75
+      },
+      {
+       "min_fpl_exclusive": "300",
+       "max_fpl_inclusive": "400",
+       "discount_percent": 50
+      }
+     ],
+     "layer": "documented",
+     "quote": "100% 200% 201% - 300% 301% - 400% || MAXI M U M INCOME FOR 75% WRITE OFF MAXI M U M INCOME FOR 50% WRITE OFF",
+     "source_id": "fap-9c4d38aa92e5f658",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "assistance_ceiling_fpl": null,
     "asset_test": {
      "value": true,
@@ -2771,10 +2758,12 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "photo_id"
+      "photo_id",
+      "proof_of_residency",
+      "proof_of_income"
      ],
      "layer": "documented",
-     "quote": "I. IDENTITY :( PROVIDE ONE OR MORE) - must have applicants picture",
+     "quote": "I. IDENTITY :( PROVIDE ONE OR MORE) - must have applicants picture || II. RESIDENCY: (PROVIDE ONE OR MORE) - must have current address || IV. INCOME: (PROVIDE ALL THAT APPLY)",
      "source_id": "fap-2fad69ebdb8ad7f2",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2871,8 +2860,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: MAXI M U M INCOME FOR 75% WRITE OFF MAXI M U M INCOME FOR 50% WRITE OFF",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: II. RESIDENCY: (PROVIDE ONE OR MORE) - must have current address | IV. INCOME: (PROVIDE ALL THAT APPLY)",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent dropped eligibility.residency: judge: Quote says HRMC service area with case-by-case review outside it but never names Hampton County.",
     "agent dropped programs.presumptive: judge: Quote mentions Family Planning only; 'Medicaid eligible' does not appear.",
     "agent dropped apply.submit_methods: judge: Quote supports in-person delivery and mail, but the mailing address (P.O. Box 338, Varnville) is not in the quote."
@@ -2890,6 +2879,7 @@
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
      "eligibility.asset_test",
      "apply.documents_required",
      "apply.window_days_from_first_bill",
@@ -2898,17 +2888,10 @@
      "contacts.phone",
      "contacts.hours"
     ],
-    "rejected": [
-     [
-      "eligibility.discount_tiers",
-      "value not in quote"
-     ]
-    ],
-    "pruned": [
-     "apply.documents_required: 2 items not named in the trimmed quote"
-    ],
+    "rejected": [],
+    "pruned": [],
     "income_rule_verified": true,
-    "core_completeness": 0.5
+    "core_completeness": 0.67
    }
   },
   {
@@ -2953,10 +2936,12 @@
     "documents_required": {
      "value": [
       "photo_id",
+      "proof_of_income",
+      "bank_statements",
       "social_security_letter"
      ],
      "layer": "documented",
-     "quote": "Photo ID and Social Security Numbers \u2014 For all eligible household members.",
+     "quote": "Photo ID and Social Security Numbers \u2014 For all eligible household members. || Income Verification \u2014 2 months\u2019 worth of paystubs. || Complete Bank Statements (All Pages) \u2014 For all applicable checking and saving accounts.",
      "source_id": "web-836c21b2bd8b8203",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3021,9 +3006,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: County and State Relief Programs \u2014 Financial assistance with housing, utilities, food and WIC nutrition assistance. Home",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Income Verification \u2014 2 months\u2019 worth of paystubs. | Complete Bank Statements (All Pages) \u2014 For all applicable checking and saving accounts.",
-    "contacts.languages: 2 more verbatim excerpt(s) supported this value: Programa de asistencia financiera [/docs/default-source/billing---insurance-pdfs/programa-de-asistencia-financiera.pdf?s | \u8d22\u52a1\u63f4\u52a9\u7533\u8bf7\u8868 [/docs/default-source/billing---insurance-pdfs/financial-assistance-program-app-ch.pdf?Status=Master&sfvrsn=8c51",
+    "programs.presumptive: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "contacts.languages: value backed by 3 verbatim spans",
     "agent judge on eligibility.insured_patients_covered: Quote says patients with limited or no insurance can apply. It does not state that insured patients are covered.",
     "agent judge on apply.form_url: Quote gives only the relative path /docs/default-source/... without the lexhealth.com domain, so the full URL is not stated.",
     "agent judge on apply.documents_required: Quote lists Photo ID, Income Verification, and Complete Bank Statements. Rent Receipt or Current Lease and Proof of Food/Housing Assistance do not appear.",
@@ -3059,7 +3044,7 @@
     ],
     "pruned": [
      "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
-     "apply.documents_required: 3 items not named in the trimmed quote"
+     "apply.documents_required: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": false,
     "core_completeness": 0.33
@@ -3148,9 +3133,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: Allowance to give if uninsured 100% 79% based on AGB*",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Patients who are eligible for retro Medicaid and the claim is not paid by Medicaid. 4. Patients who are affiliated with  | Patients with a recent personal bankruptcy. 8. Patients incarcerated in a penal institution. 9. Evidence from an indepen",
-    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: Recent checking/ savings bank statements 3. Individuals who are self-employed are required to submit the most recent yea"
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 2 verbatim spans"
    ],
    "eve_verified": {
     "on": "2026-10-23",
@@ -3199,8 +3184,7 @@
      ]
     ],
     "pruned": [
-     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
-     "apply.documents_required: 3 items not named in the trimmed quote"
+     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)"
     ],
     "income_rule_verified": false,
     "core_completeness": 0.0
@@ -3430,8 +3414,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: 100% 77% based on AGB*",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Patients who eligible for retro Medicaid and the claim is not paid by Medicaid. 5.1.4. Patients who are affiliated with  | 5.1.8. Patients incarcerated in a penal institution. 5.1.9. Evidence from an independent third-party agency, indicating ",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "programs.presumptive: value backed by 3 verbatim spans",
     "agent dropped apply.documents_required: judge: Quote lacks proof of residency and the no-income attestation; it lists only pay stubs, bank statements, and tax returns."
    ],
    "eve_verified": {
@@ -3770,10 +3754,10 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: 5.1.4. Patients who are affiliated with the AccessHealth program or referred by the Community Free Clinics who support t | Evidence from an independent third-party agency, indicating that the family income is less than or equal to 250% FPL.",
+    "programs.presumptive: value backed by 3 verbatim spans",
     "apply.documents_required: quote matched the source only after typography normalization",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: By Fax: (864) 522-9594 By Email: hospitalsponsorship@prismahealth.org",
-    "contacts.languages: 2 more verbatim excerpt(s) supported this value: Financial Assistance Application (Arabic) | Financial Assistance Application (Chinese)",
+    "apply.submit_methods: value backed by 2 verbatim spans",
+    "contacts.languages: value backed by 3 verbatim spans",
     "agent dropped eligibility.discount_tiers: judge: Quote describes a sliding scale from 250% to 400% FPL; the garbled '100% 77% based on AGB' does not clearly state a flat 77% discount for this tier."
    ],
    "eve_verified": {
@@ -3831,8 +3815,7 @@
      ]
     ],
     "pruned": [
-     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
-     "apply.submit_methods: 2 items not named in the trimmed quote"
+     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)"
     ],
     "income_rule_verified": false,
     "core_completeness": 0.0
@@ -4146,9 +4129,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Patients who are eligible for retro Medicaid and the claim is not paid by Medicaid. 4. Patients who are affiliated with  | Evidence from an independent third-party agency, or a predictive model indicating that the family income is less than or",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: By Fax: (864) 522-9594 By Email: hospitalsponsorship@prismahealth.org",
-    "contacts.languages: 2 more verbatim excerpt(s) supported this value: Financial Assistance Application (Arabic) | Financial Assistance Application (Chinese)",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 2 verbatim spans",
+    "contacts.languages: value backed by 3 verbatim spans",
     "agent dropped eligibility.discount_tiers: judge: Garbled table shows '100% 79% based on AGB'; unclear 79% maps to the >250\u2013400% tier or is a discount rather than an AGB-based amount."
    ],
    "eve_verified": {
@@ -4206,8 +4189,7 @@
      ]
     ],
     "pruned": [
-     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
-     "apply.submit_methods: 2 items not named in the trimmed quote"
+     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)"
     ],
     "income_rule_verified": false,
     "core_completeness": 0.0
@@ -4244,7 +4226,17 @@
    "apply": {
     "form_url": null,
     "form_version": null,
-    "documents_required": null,
+    "documents_required": {
+     "value": [
+      "tax_return"
+     ],
+     "layer": "documented",
+     "quote": "Please provide all income documentation. Incomplete applications will be denied. || (If you are claimed on someone else\u2019s taxes please provide information below and copy of tax returns.) || you will need to submit a copy of your business and personal tax return for the most recent filing year.",
+     "source_id": "fap-edd1c50ff714413f",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "documents_reported": null,
     "submit_methods": null,
     "window_days_from_first_bill": null,
@@ -4303,7 +4295,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: (If you are claimed on someone else\u2019s taxes please provide information below and copy of tax returns.) | you will need to submit a copy of your business and personal tax return for the most recent filing year.",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent dropped apply.submit_methods: excerpt not in source: Email: srhsfinancialassistance@srhs.com",
     "agent judge on eligibility.free_care_max_fpl: Quote says household income up to 200% FPG qualifies for financial assistance, but does not say that level gets 100% free care.",
     "agent judge on eligibility.insured_patients_covered: Quote says the program is for uninsured patients and/or those with limited resources; it does not state that insured patients are covered."
@@ -4319,6 +4311,7 @@
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
+     "apply.documents_required",
      "apply.decision_days",
      "contacts.phone"
     ],
@@ -4333,10 +4326,10 @@
      ]
     ],
     "pruned": [
-     "apply.documents_required: none of the listed documents is named in the quote (after trimming)"
+     "apply.documents_required: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": false,
-    "core_completeness": 0.17
+    "core_completeness": 0.33
    }
   },
   {
@@ -4853,7 +4846,17 @@
     "services_excluded": null
    },
    "programs": {
-    "presumptive": null,
+    "presumptive": {
+     "value": [
+      "Homeless patient or guarantor"
+     ],
+     "layer": "documented",
+     "quote": "Homeless patient or guarantor. || Guarantor currently resides in a shelter of some type (Must be legal resident of South Carolina). || Information from the predictive model may be used by Self Regional Healthcare to grant presumptive eligibility in cases where there is an absence of information provided directly by the patient.",
+     "source_id": "fap-b4b1ccd3088e8b65",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "state_programs": null
    },
    "apply": {
@@ -4863,10 +4866,12 @@
      "value": [
       "photo_id",
       "proof_of_income",
-      "other"
+      "other",
+      "bank_statements",
+      "tax_return"
      ],
      "layer": "documented",
-     "quote": "Valid South Carolina and/or Governmental photo ID \u2022 Proof of income for all members in the household \u2022 Proof of current address (rent receipt, driver\u2019s license, or voter\u2019s registration) \u2022 Verification of all members in household including their names, relationships, and dates of birth",
+     "quote": "Valid South Carolina and/or Governmental photo ID \u2022 Proof of income for all members in the household \u2022 Proof of current address (rent receipt, driver\u2019s license, or voter\u2019s registration) \u2022 Verification of all members in household including their names, relationships, and dates of birth || Monthly checking account statements or monthly savings account statements \u2022 Income verification from employer or most recent check stubs \u2022 Federal Income Tax Return || Verification of self-employment and/or proof of eligibility denial from programs such as Social Security, Department of Social Services, Workers Compensation, Child Support Service, etc. \u2022 Proof of any whole life insurance policies",
      "source_id": "fap-b4b1ccd3088e8b65",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4952,8 +4957,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Guarantor currently resides in a shelter of some type (Must be legal resident of South Carolina). | Information from the predictive model may be used by Self Regional Healthcare to grant presumptive eligibility in cases ",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Monthly checking account statements or monthly savings account statements \u2022 Income verification from employer or most re | Verification of self-employment and/or proof of eligibility denial from programs such as Social Security, Department of "
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans"
    ],
    "eve_verified": {
     "on": "2026-10-23",
@@ -4969,6 +4974,7 @@
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.residency",
+     "programs.presumptive",
      "apply.documents_required",
      "apply.submit_methods",
      "apply.decision_days",
@@ -4989,8 +4995,7 @@
      ]
     ],
     "pruned": [
-     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
-     "apply.documents_required: 2 items not named in the trimmed quote"
+     "programs.presumptive: 2 items not named in the trimmed quote"
     ],
     "income_rule_verified": true,
     "core_completeness": 0.67

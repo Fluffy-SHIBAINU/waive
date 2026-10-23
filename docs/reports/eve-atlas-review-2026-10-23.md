@@ -134,3 +134,6 @@ Totals: 27 discount or assistance limit, 2 cannot tell (National Jewish Health C
 | VA | 490107 | Reston Hospital Center | header | 200% | discount or assistance limit, not free care |
 | WI | 520089 | Unitypoint Health Meriter | header | 300% | discount or assistance limit, not free care |
 
+## 7. After the review fixes
+
+Redirects are now followed and each source is fetched once per run. Final verification on refetched documents: 1013 of 1,340 sheets keep an income rule. Verified data, queue, SQLite copy and bundle were regenerated from this state before merge.

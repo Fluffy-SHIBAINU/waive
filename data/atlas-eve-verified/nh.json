@@ -473,7 +473,21 @@
     "services_excluded": null
    },
    "programs": {
-    "presumptive": null,
+    "presumptive": {
+     "value": [
+      "Homeless",
+      "Deceased and without an estate",
+      "Filed for bankruptcy",
+      "Mental incapacitation with no representation",
+      "Patient liability in excess of 25% of annual income"
+     ],
+     "layer": "documented",
+     "quote": "Homeless \u25e6 Deceased and without an estate \u25e6 Filed for bankruptcy \u25e6 Mental incapacitation with no representation to act on the patient's behalf || Patient liability is in excess of 25% of their annual income \u25e6 Current Medicaid eligibility but not at the time of service or for non-covered service || Enrollment in WIC, SNAP benefits, STATE free lunch and breakfast programs, Low Income Home Emergency Assistance Program (LIHEAP)",
+     "source_id": "fap-95bad804c879f810",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "state_programs": null
    },
    "apply": {
@@ -573,7 +587,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Patient liability is in excess of 25% of their annual income \u25e6 Current Medicaid eligibility but not at the time of servi | Enrollment in WIC, SNAP benefits, STATE free lunch and breakfast programs, Low Income Home Emergency Assistance Program ",
+    "programs.presumptive: value backed by 3 verbatim spans",
     "agent dropped eligibility.residency: judge: Quote says only 'the state'; it does not name Maine or New Hampshire, and it says resident OR intention of making a home."
    ],
    "eve_verified": {
@@ -592,6 +606,7 @@
      "eligibility.discount_tiers",
      "eligibility.asset_test",
      "eligibility.insured_patients_covered",
+     "programs.presumptive",
      "apply.documents_required",
      "apply.window_days_from_first_bill",
      "collections.eca_wait_days",
@@ -605,7 +620,7 @@
      ]
     ],
     "pruned": [
-     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)"
+     "programs.presumptive: 2 items not named in the trimmed quote"
     ],
     "income_rule_verified": true,
     "core_completeness": 0.67
@@ -652,7 +667,20 @@
     "services_excluded": null
    },
    "programs": {
-    "presumptive": null,
+    "presumptive": {
+     "value": [
+      "Homelessness or receipt of care from a homeless clinic",
+      "Participating in WIC",
+      "Receiving SNAP benefits",
+      "Patient deceased with no known estate"
+     ],
+     "layer": "documented",
+     "quote": "homelessness or receipt of care from a homeless clinic; || participating in Women, Infants and Children programs (WIC); || receiving SNAP (Supplemental Nutritional Assistance Program) benefits; 4. patient deceased with no known estate.",
+     "source_id": "fap-d08fbd90378b3053",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "state_programs": null
    },
    "apply": {
@@ -669,10 +697,13 @@
     "documents_required": {
      "value": [
       "proof_of_residency",
-      "medicaid_denial"
+      "medicaid_denial",
+      "tax_return",
+      "pay_stubs",
+      "bank_statements"
      ],
      "layer": "documented",
-     "quote": "a. Proof of New Hampshire residency, except for non-residents eligible for financial assistance as described in this policy. b. Copy of denial letter from Medicaid (including Medicaid waiver programs).",
+     "quote": "a. Proof of New Hampshire residency, except for non-residents eligible for financial assistance as described in this policy. b. Copy of denial letter from Medicaid (including Medicaid waiver programs). || c. Complete copy of most current tax return including all schedules, if filed; or non- filing statement if tax return not filed in most recent tax year. d. A copy of three (3) most recent pay stubs from each income earner. || i. Copy of the most recent bank statements (checking, savings, money market, 401k, 403b, IRA accounts) from the financial institution. j. Copy(s) of mortgage statements and tax values of all real property.",
      "source_id": "fap-d08fbd90378b3053",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -774,8 +805,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: participating in Women, Infants and Children programs (WIC); | receiving SNAP (Supplemental Nutritional Assistance Program) benefits; 4. patient deceased with no known estate.",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: c. Complete copy of most current tax return including all schedules, if filed; or non- filing statement if tax return no | i. Copy of the most recent bank statements (checking, savings, money market, 401k, 403b, IRA accounts) from the financia",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent dropped eligibility.residency: judge: Quote states the NH/border-town residency requirement but says nothing about non-residents qualifying for emergencies."
    ],
    "eve_verified": {
@@ -792,6 +823,7 @@
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.insured_patients_covered",
+     "programs.presumptive",
      "apply.form_url",
      "apply.documents_required",
      "apply.submit_methods",
@@ -806,10 +838,7 @@
       "quote does not support the asset-test value"
      ]
     ],
-    "pruned": [
-     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
-     "apply.documents_required: 3 items not named in the trimmed quote"
-    ],
+    "pruned": [],
     "income_rule_verified": true,
     "core_completeness": 0.83
    }
@@ -1550,10 +1579,11 @@
     "documents_required": {
      "value": [
       "tax_return",
+      "bank_statements",
       "other"
      ],
      "layer": "documented",
-     "quote": "Completed and signed copy of most recent year\u2019s Federal Income Tax Return, including all schedules and W-2 forms.",
+     "quote": "Completed and signed copy of most recent year\u2019s Federal Income Tax Return, including all schedules and W-2 forms. || Copies of three months of banking and other financial account statements (e.g. savings, checking, money market, IRA, 401K, 403B, personal business, and pension), including all pages for all accounts. || Copies of government assistance notices (including Department of Health & Human Services).",
      "source_id": "fap-1cce6f922c93d87e",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1661,7 +1691,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Copies of three months of banking and other financial account statements (e.g. savings, checking, money market, IRA, 401 | Copies of government assistance notices (including Department of Health & Human Services).",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent dropped apply.submit_methods: excerpt not in source: 4 Alumni Drive Exeter, NH 03833 603.580.6627 Fax: 603.580.79",
     "agent judge on eligibility.insured_patients_covered: Quote only says underinsured patients get assistance against copay, coinsurance, or deductible. It does not state that insured patients generally are covered.",
     "agent judge on apply.form_url: Quote gives only the path /-/media/files/exeter/fap-english.pdf with no domain. The full https://exeterhospital.org URL is not in the quote.",
@@ -1701,7 +1731,7 @@
      ]
     ],
     "pruned": [
-     "apply.documents_required: 2 items not named in the trimmed quote"
+     "apply.documents_required: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": false,
     "core_completeness": 0.33
@@ -1827,7 +1857,7 @@
     "sources_total": 2,
     "sources_missing": [],
     "sha256_match": {
-     "web-df8460799d975e4e": true,
+     "web-df8460799d975e4e": false,
      "web-8b99f8a62f1ac610": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
@@ -1911,10 +1941,13 @@
      "value": [
       "State-funded prescription programs",
       "Homeless or received care from a homeless clinic",
-      "Participation in WIC"
+      "Participation in WIC",
+      "Food stamp eligibility",
+      "Subsidized school lunch program eligibility",
+      "Low income/subsidized housing provided as valid address"
      ],
      "layer": "documented",
-     "quote": "1. State-funded prescription programs; 2. Homeless or received care from a homeless clinic; 3. Participation in Women, Infants and Children programs (WIC);",
+     "quote": "1. State-funded prescription programs; 2. Homeless or received care from a homeless clinic; 3. Participation in Women, Infants and Children programs (WIC); || 4. Food stamp eligibility; 5. Subsidized school lunch program eligibility; 6. Eligibility for other state or local assistance programs that are unfunded (e.g. Medicaid spend-down); || 7. Low income/subsidized housing is provided as a valid address; and 8. Patient is deceased with no known estate.",
      "source_id": "fap-8e8677b3867d5fb5",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1936,10 +1969,13 @@
     "documents_required": {
      "value": [
       "pay_stubs",
+      "social_security_letter",
+      "tax_return",
+      "proof_of_income",
       "other"
      ],
      "layer": "documented",
-     "quote": "Documents required along with completed application are: \u2022 3 recent pay stubs",
+     "quote": "Documents required along with completed application are: \u2022 3 recent pay stubs || \u2022 Documentation of Income such as Investments, Child Support, Unemployment, Social Security, Workers\u2019 Compensation \u2022 Most Recent Tax Return || \u2022 Self-Attestation: if no income is reported \u2022 Family size: number of individuals in household",
      "source_id": "fap-8e8677b3867d5fb5",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2045,8 +2081,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: 4. Food stamp eligibility; 5. Subsidized school lunch program eligibility; 6. Eligibility for other state or local assis | 7. Low income/subsidized housing is provided as a valid address; and 8. Patient is deceased with no known estate.",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: \u2022 Documentation of Income such as Investments, Child Support, Unemployment, Social Security, Workers\u2019 Compensation \u2022 Mos | \u2022 Self-Attestation: if no income is reported \u2022 Family size: number of individuals in household"
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans"
    ],
    "eve_verified": {
     "on": "2026-10-23",
@@ -2075,8 +2111,7 @@
     ],
     "rejected": [],
     "pruned": [
-     "programs.presumptive: 5 items not named in the trimmed quote",
-     "apply.documents_required: 3 items not named in the trimmed quote",
+     "programs.presumptive: 2 items not named in the trimmed quote",
      "apply.submit_methods: 2 items not named in the trimmed quote"
     ],
     "income_rule_verified": true,
@@ -2297,11 +2332,13 @@
     "documents_required": {
      "value": [
       "tax_return",
+      "other",
+      "pay_stubs",
       "proof_of_income",
-      "other"
+      "social_security_letter"
      ],
      "layer": "documented",
-     "quote": "The patient must provide a complete copy of their most recent tax return or sign an IRS form 4506T. (Patients who do not file a tax return must still sign the form 4506T.) A copy of W-2 forms and 1099 for last year.",
+     "quote": "The patient must provide a complete copy of their most recent tax return or sign an IRS form 4506T. (Patients who do not file a tax return must still sign the form 4506T.) A copy of W-2 forms and 1099 for last year. || Copies of three (3) most recent pay stubs, or a statement from your employer. || Copy of current Social Security benefit statement. Copy of food stamp allocation",
      "source_id": "web-3b714359755599f3",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2399,7 +2436,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Copies of three (3) most recent pay stubs, or a statement from your employer. | Copy of current Social Security benefit statement. Copy of food stamp allocation",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent dropped eligibility.asset_test: quote is not a substring of the source",
     "agent judge on apply.documents_required: Quote lists tax return, W-2/1099, pay stubs, Social Security statement, food stamps. It does not mention unemployment/disability, pension benefits.",
     "agent judge on apply.window_days_from_first_bill: Quote says 240 days after the first post-discharge statement, not after the first bill."
@@ -2426,9 +2463,7 @@
      "contacts.phone"
     ],
     "rejected": [],
-    "pruned": [
-     "apply.documents_required: 2 items not named in the trimmed quote"
-    ],
+    "pruned": [],
     "income_rule_verified": false,
     "core_completeness": 0.67
    }
@@ -2934,12 +2969,28 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": null,
+    "free_care_max_fpl": {
+     "value": "225",
+     "layer": "documented",
+     "quote": "Have a household income at or below 225 percent of the U.S. Federal Poverty Guidelines",
+     "source_id": "web-62e617a8c1290c3f",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": null,
-    "insured_patients_covered": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "This reduction applies to uninsured and insured patients who owe balances after insurance payments have been made.",
+     "source_id": "web-62e617a8c1290c3f",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "min_balance": null,
     "services_excluded": null
    },
@@ -2950,9 +3001,39 @@
    "apply": {
     "form_url": null,
     "form_version": null,
-    "documents_required": null,
+    "documents_required": {
+     "value": [
+      "tax_return",
+      "pay_stubs",
+      "proof_of_income",
+      "other"
+     ],
+     "layer": "documented",
+     "quote": "Complete a copy of your most recent Federal Income Tax Return and all schedules. Include copies of last year's W-2 forms; Copies of the three most recent, paycheck stubs or a statement from the employer",
+     "source_id": "web-62e617a8c1290c3f",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "documents_reported": null,
-    "submit_methods": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "Request the information in writing by USPS mail or by visiting a Concord Hospital Financial Counselor at 250 Pleasant Street, Concord, NH 03301"
+      },
+      {
+       "kind": "in_person",
+       "detail": "Request a financial assistance application at any check-in or registration area at any of our locations"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Request the information in writing by USPS mail or by visiting a Concord Hospital Financial Counselor at 250 Pleasant Street, Concord, NH 03301",
+     "source_id": "web-62e617a8c1290c3f",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "window_days_from_first_bill": null,
     "decision_days": null,
     "decision_days_reported": null
@@ -2962,9 +3043,28 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": null,
+    "phone": {
+     "value": "(603) 227-7101",
+     "layer": "documented",
+     "quote": "calling our Financial Counseling at (603) 227-7101 or (800) 562-1542",
+     "source_id": "web-62e617a8c1290c3f",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "hours": null,
-    "languages": null
+    "languages": {
+     "value": [
+      "English",
+      "Spanish"
+     ],
+     "layer": "documented",
+     "quote": "Our financial assistance policy, application form and plain language summary can be offered in English and Spanish or any other language upon request.",
+     "source_id": "web-62e617a8c1290c3f",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
    },
    "coverage": {
     "facilities": null,
@@ -2995,55 +3095,40 @@
    "eve_review": [],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 0,
+    "sources_fetched": 1,
     "sources_total": 2,
     "sources_missing": [
-     "https://web.archive.org/web/20260612113636/https://www.concordhospital.org/patients-visitors/billing-insurance-financial-assistance/financial-assistance-plain-language-summary/",
      "https://web.archive.org/web/20260418171029/https://www.concordhospital.org/patients-visitors/billing-insurance-financial-assistance/"
     ],
     "sha256_match": {
-     "web-62e617a8c1290c3f": null,
+     "web-62e617a8c1290c3f": false,
      "web-f994afb30994b07e": null
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
-    "accepted": [],
+    "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.insured_patients_covered",
+     "apply.documents_required",
+     "apply.submit_methods",
+     "contacts.phone",
+     "contacts.languages"
+    ],
     "rejected": [
      [
-      "eligibility.free_care_max_fpl",
-      "source text missing"
-     ],
-     [
       "eligibility.assistance_ceiling_fpl",
-      "source text missing"
-     ],
-     [
-      "eligibility.insured_patients_covered",
-      "source text missing"
+      "quote does not say the hospital's financial assistance reaches it"
      ],
      [
       "apply.form_url",
-      "source text missing"
-     ],
-     [
-      "apply.documents_required",
-      "source text missing"
-     ],
-     [
-      "apply.submit_methods",
-      "source text missing"
-     ],
-     [
-      "contacts.phone",
-      "source text missing"
-     ],
-     [
-      "contacts.languages",
-      "source text missing"
+      "quote not found in source"
      ]
     ],
-    "pruned": [],
-    "income_rule_verified": false,
-    "core_completeness": 0.0
+    "pruned": [
+     "apply.documents_required: 2 items not named in the trimmed quote",
+     "apply.submit_methods: 2 items not named in the trimmed quote"
+    ],
+    "income_rule_verified": true,
+    "core_completeness": 0.67
    }
   },
   {
@@ -3288,7 +3373,31 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "discount_tiers": null,
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "225",
+       "max_fpl_inclusive": "250",
+       "discount_percent": 75
+      },
+      {
+       "min_fpl_exclusive": "250",
+       "max_fpl_inclusive": "275",
+       "discount_percent": 50
+      },
+      {
+       "min_fpl_exclusive": "275",
+       "max_fpl_inclusive": "300",
+       "discount_percent": 25
+      }
+     ],
+     "layer": "documented",
+     "quote": "To be eligible for 75% approval for the Valley Regional Hospital Financial Assistance Program, family income must be between 226%-250% of the Federal Poverty Income Guidelines. || To be eligible for 50% approval for the Valley Regional Hospital Financial Assistance Program, family income must be between 251%-275% of the Federal Poverty Income Guidelines. || To be eligible for 25% approval for the Valley Regional Hospital Financial Assistance Program, family income must be between 276%-300% of the Federal Poverty Income Guidelines.",
+     "source_id": "fap-ee5e1ca79d07cf00",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": {
@@ -3320,10 +3429,13 @@
       "State-funded prescription programs",
       "Homeless or received care from a homeless clinic",
       "Participation in WIC",
-      "Food stamp eligibility"
+      "Food stamp eligibility",
+      "Subsidized school lunch program eligibility",
+      "Low income/subsidized housing provided as valid address",
+      "Patient deceased with no known estate"
      ],
      "layer": "documented",
-     "quote": "1. State-funded prescription programs; 2. Homeless or received care from a homeless clinic; 3. Participation in Women, Infants and Children programs (WIC); 4. Food stamp eligibility;",
+     "quote": "1. State-funded prescription programs; 2. Homeless or received care from a homeless clinic; 3. Participation in Women, Infants and Children programs (WIC); 4. Food stamp eligibility; || 5. Subsidized school lunch program eligibility; 6. Eligibility for other state or local assistance programs that are unfunded (e.g., Medicaid spend-down, QMB); 7. Participation in other state Medicaid programs for which the hospital is not considered a participating provider; || 8. Dates of service rendered prior to any Medicaid coverage period, or if timely filing requirements were not met due to non-disclosure by the patient; 9. Low income/subsidized housing is provided as a valid address; and 10. Patient is deceased with no known estate.",
      "source_id": "fap-ee5e1ca79d07cf00",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3337,12 +3449,14 @@
     "documents_required": {
      "value": [
       "tax_return",
+      "other",
       "pay_stubs",
+      "bank_statements",
       "proof_of_income",
-      "other"
+      "social_security_letter"
      ],
      "layer": "documented",
-     "quote": "Complete copy of your most recent Federal Income Tax Return and all schedules Last year\u2019s W-2 forms Copies of the three (3) most recent, consecutive paycheck stubs or a statement from the employer.",
+     "quote": "Complete copy of your most recent Federal Income Tax Return and all schedules Last year\u2019s W-2 forms Copies of the three (3) most recent, consecutive paycheck stubs or a statement from the employer. || Copies of the three (2) most recent bank statements (e.g., savings, checking, money market, IRA, 401K, etc.) Copies of unemployment or disability compensation benefits statements Copies of pension benefits stubs || Copies of social security income (yearly benefits statements, copy of check or direct deposit) Copy of Food Stamp allocation Copies of government assistance notices (including Department of Health & Human Services and Medicaid Spend Down Letter)",
      "source_id": "fap-b76de166dcbb65f3",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3415,9 +3529,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: To be eligible for 50% approval for the Valley Regional Hospital Financial Assistance Program, family income must be bet | To be eligible for 25% approval for the Valley Regional Hospital Financial Assistance Program, family income must be bet",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: 5. Subsidized school lunch program eligibility; 6. Eligibility for other state or local assistance programs that are unf | 8. Dates of service rendered prior to any Medicaid coverage period, or if timely filing requirements were not met due to",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Copies of the three (2) most recent bank statements (e.g., savings, checking, money market, IRA, 401K, etc.) Copies of u | Copies of social security income (yearly benefits statements, copy of check or direct deposit) Copy of Food Stamp alloca",
+    "eligibility.discount_tiers: value backed by 3 verbatim spans",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent dropped apply.decision_days: judge: The 30-day notice applies only to those who qualify for 100% charity, not to all decisions."
    ],
    "eve_verified": {
@@ -3433,6 +3547,7 @@
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
      "eligibility.residency",
      "eligibility.insured_patients_covered",
      "programs.presumptive",
@@ -3441,10 +3556,6 @@
      "contacts.hours"
     ],
     "rejected": [
-     [
-      "eligibility.discount_tiers",
-      "value not in quote"
-     ],
      [
       "eligibility.assistance_ceiling_fpl",
       "quote states the percentage as a floor (above, over, at least), not a ceiling"
@@ -3455,11 +3566,10 @@
      ]
     ],
     "pruned": [
-     "programs.presumptive: 6 items not named in the trimmed quote",
-     "apply.documents_required: 2 items not named in the trimmed quote"
+     "programs.presumptive: 3 items not named in the trimmed quote"
     ],
     "income_rule_verified": true,
-    "core_completeness": 0.5
+    "core_completeness": 0.67
    }
   },
   {
@@ -3540,7 +3650,18 @@
      "support_count": 0
     },
     "form_version": null,
-    "documents_required": null,
+    "documents_required": {
+     "value": [
+      "tax_return",
+      "other"
+     ],
+     "layer": "documented",
+     "quote": "1. A completed and signed application (all adults must sign the application) || 2. A complete copy of most recent Federal Income Tax Return including all schedules and attachments || 3. Copy of all most recent W-2 and/or 1099 forms",
+     "source_id": "fap-b1bea474a3145f93",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "documents_reported": null,
     "submit_methods": {
      "value": [
@@ -3649,7 +3770,7 @@
    "eve_review": [
     "eligibility.discount_tiers: 0-400% at 100% is the free-care band, not a tier; skipped",
     "eligibility.asset_test: quote matched the source only after typography normalization",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: 2. A complete copy of most recent Federal Income Tax Return including all schedules and attachments | 3. Copy of all most recent W-2 and/or 1099 forms",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent judge on eligibility.discount_tiers: Quote names level 1 (100%) and level 2 (55%) but gives no FPL bounds (min 0, max 400) for either level.",
     "agent judge on apply.form_url: Quote splits the URL as 'fin ancial', with a space; the value removes the space, so the quoted text does not match the recorded URL exactly.",
     "agent judge on apply.documents_required: Quote lists only the application, federal tax return, and W-2/1099 forms; paycheck stubs, bank statements, Social Security statements, and Medicaid denial are not in the quote.",
@@ -3672,6 +3793,7 @@
      "eligibility.insured_patients_covered",
      "programs.state_programs",
      "apply.form_url",
+     "apply.documents_required",
      "apply.submit_methods",
      "apply.window_days_from_first_bill",
      "apply.decision_days",
@@ -3690,11 +3812,11 @@
     ],
     "pruned": [
      "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
-     "apply.documents_required: none of the listed documents is named in the quote (after trimming)",
+     "apply.documents_required: 4 items not named in the trimmed quote",
      "apply.submit_methods: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": false,
-    "core_completeness": 0.5
+    "core_completeness": 0.67
    }
   },
   {
@@ -3942,7 +4064,7 @@
       "other"
      ],
      "layer": "documented",
-     "quote": "a. Proof of Income",
+     "quote": "a. Proof of Income || b. Household Size || c. For Specialty or non-emergent hospital services, applicants must provide document relevant to asset testing guidelines",
      "source_id": "fap-1860ba2fda8259a6",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3956,12 +4078,16 @@
        "detail": "contacting the hospital's Financial Services Department"
       },
       {
+       "kind": "mail",
+       "detail": "Applications and copies of this policy can be mailed upon request"
+      },
+      {
        "kind": "portal",
        "detail": "available on SMH's website"
       }
      ],
      "layer": "documented",
-     "quote": "Patients may request Community Care at any point during their care by contacting the hospital's Financial Services Department. Applications are also made available during a patient's inpatient stay, and is available on SMH's website.",
+     "quote": "Patients may request Community Care at any point during their care by contacting the hospital's Financial Services Department. Applications are also made available during a patient's inpatient stay, and is available on SMH's website. || Applications and copies of this policy can be mailed upon request.",
      "source_id": "fap-1860ba2fda8259a6",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4040,8 +4166,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: b. Household Size | c. For Specialty or non-emergent hospital services, applicants must provide document relevant to asset testing guideline",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Applications and copies of this policy can be mailed upon request.",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 2 verbatim spans",
     "agent dropped programs.state_programs: excerpt not in source: To apply for the NH Health Access Network, you may call 1-86",
     "agent judge on apply.documents_required: Quote lists Proof of Income and Household Size but also a third item, asset-testing documents for specialty or non-emergent services, which the value omits.",
     "agent judge on apply.submit_methods: Quote does not say applications can be submitted in person; 'contacting Financial Services' does not specify in person. Mail and website options are stated."
@@ -4072,9 +4198,7 @@
       "quote does not say the hospital's financial assistance reaches it"
      ]
     ],
-    "pruned": [
-     "apply.submit_methods: 1 item not named in the trimmed quote"
-    ],
+    "pruned": [],
     "income_rule_verified": false,
     "core_completeness": 0.5
    }

@@ -103,10 +103,14 @@
       {
        "kind": "in_person",
        "detail": "advising patient financial services staff at or prior to the time of discharge that assistance is requested"
+      },
+      {
+       "kind": "phone",
+       "detail": "1-866-747-2455"
       }
      ],
      "layer": "documented",
-     "quote": "advising patient financial services staff at or prior to the time of discharge that assistance is requested, by mail, or by visiting www.providence.org/financialhelp.",
+     "quote": "advising patient financial services staff at or prior to the time of discharge that assistance is requested, by mail, or by visiting www.providence.org/financialhelp. || 1-866-747-2455 to request a copy.",
      "source_id": "fap-c6623441d6342973",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -177,7 +181,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: 1-866-747-2455 to request a copy.",
+    "apply.submit_methods: value backed by 2 verbatim spans",
     "contacts.languages: quote matched the source only after typography normalization",
     "agent judge on eligibility.asset_test: Quote only says assets will not be considered under 300% FPL (with a Medicare exception). It does not plainly state assets are considered.",
     "agent judge on programs.presumptive: Quote lists SNAP, TANF, CHIP, WIC, free lunch/breakfast, and LIHEAP-type programs but does not mention Medicaid enrollment, which the value includes.",
@@ -208,8 +212,7 @@
     ],
     "rejected": [],
     "pruned": [
-     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
-     "apply.submit_methods: 1 item not named in the trimmed quote"
+     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)"
     ],
     "income_rule_verified": true,
     "core_completeness": 0.67
@@ -282,7 +285,19 @@
     "services_excluded": null
    },
    "programs": {
-    "presumptive": null,
+    "presumptive": {
+     "value": [
+      "Medicaid",
+      "WIC",
+      "homeless"
+     ],
+     "layer": "documented",
+     "quote": "Homeless or one who received care from a homeless or free care clinic; || Participation in Women, Infants and Children programs (WIC); || Eligibility or referrals for other state or local assistance programs (e.g., Medicaid);",
+     "source_id": "fap-eec51b849d89c407",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "state_programs": null
    },
    "apply": {
@@ -368,7 +383,7 @@
    "accuracy": null,
    "eve_review": [
     "eligibility.discount_tiers: 200-400% at 100% is the free-care band, not a tier; skipped",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Participation in Women, Infants and Children programs (WIC); | Eligibility or referrals for other state or local assistance programs (e.g., Medicaid);",
+    "programs.presumptive: value backed by 3 verbatim spans",
     "agent dropped apply.documents_required: excerpt not in source: Current Form W-2; Current paystubs; or Signed letter of supp",
     "agent dropped apply.submit_methods: excerpt not in source: Applications for financial assistance are available online",
     "agent dropped contacts.phone: quote is not a substring of the source"
@@ -390,6 +405,7 @@
      "eligibility.residency",
      "eligibility.insured_patients_covered",
      "eligibility.min_balance",
+     "programs.presumptive",
      "apply.window_days_from_first_bill",
      "apply.decision_days",
      "contacts.languages"
@@ -408,9 +424,7 @@
       "quote not found in source"
      ]
     ],
-    "pruned": [
-     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)"
-    ],
+    "pruned": [],
     "income_rule_verified": true,
     "core_completeness": 0.17
    }
@@ -483,10 +497,11 @@
     "documents_required": {
      "value": [
       "tax_return",
-      "other"
+      "other",
+      "pay_stubs"
      ],
      "layer": "documented",
-     "quote": "Copy of the individual\u2019s most recently filed federal income tax return;",
+     "quote": "Copy of the individual\u2019s most recently filed federal income tax return; || Current Form W-2; || Current paystubs; or",
      "source_id": "fap-174bfaef7b79efbc",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -534,8 +549,8 @@
    "accuracy": null,
    "eve_review": [
     "eligibility.discount_tiers: 200-400% at 100% is the free-care band, not a tier; skipped",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Homeless or one who received care from a homeless or free care clinic; | Food stamp eligibility;",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Current Form W-2; | Current paystubs; or",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent judge on eligibility.discount_tiers: Quote gives 201% to under 400% FPL with balance reduced to no more than AGB, not a 100% discount. Value's 200 exclusive and 400 inclusive bounds and 100 percent do not match.",
     "agent judge on programs.presumptive: Quote supports only three items (state prescription programs, homeless or free clinic care, food stamps). Value's other four items do not appear in the quote.",
     "agent judge on apply.documents_required: Quote lists tax return, W-2, and paystubs only. The value's fourth item, Signed letter of support, does not appear in the quote."
@@ -564,8 +579,7 @@
      ]
     ],
     "pruned": [
-     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
-     "apply.documents_required: 1 item not named in the trimmed quote"
+     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)"
     ],
     "income_rule_verified": true,
     "core_completeness": 0.33
@@ -636,10 +650,16 @@
    "programs": {
     "presumptive": {
      "value": [
-      "Medicaid enrolled"
+      "Medicaid enrolled",
+      "SNAP",
+      "TANF",
+      "CHIP",
+      "WIC",
+      "free lunch or breakfast programs",
+      "low-income home energy assistance programs"
      ],
      "layer": "documented",
-     "quote": "Patients who are participating in state Medicaid programs are eligible for financial assistance.",
+     "quote": "Patients who are participating in state Medicaid programs are eligible for financial assistance. || for patients who participate in state funded FPL-qualified public assistance programs (e.g., Basic Food Supplemental Nutrition Assistance Program (SNAP) and Food Assistance Program; Temporary Assistance for Needy Families (TANF); Children's Health Insurance Program (CHIP); Women, Infants and Children Nutrition Program (WIC); free lunch or breakfast programs; and low-income home energy assistance programs)",
      "source_id": "fap-c6623441d6342973",
      "checked_on": "2026-10-23",
      "confidence": 0.8,
@@ -746,7 +766,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: for patients who participate in state funded FPL-qualified public assistance programs (e.g., Basic Food Supplemental Nut",
+    "programs.presumptive: value backed by 2 verbatim spans",
     "programs.presumptive: quote matched the source only after typography normalization",
     "agent dropped contacts.languages: quote is not a substring of the source",
     "agent judge on apply.window_days_from_first_bill: Quote gives the 240-day FAP-Eligible Time Period but does not state it runs from the first bill."
@@ -774,9 +794,7 @@
      "contacts.hours"
     ],
     "rejected": [],
-    "pruned": [
-     "programs.presumptive: 6 items not named in the trimmed quote"
-    ],
+    "pruned": [],
     "income_rule_verified": true,
     "core_completeness": 0.67
    }
@@ -846,7 +864,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: Poverty Level, Up To 300% 350% 400% Charity Discount 100% 75% 70% Patient Responsibility 0% 25% 30%",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
     "agent dropped contacts.languages: quote is not a substring of the source"
    ],
    "eve_verified": {
@@ -906,7 +924,26 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "discount_tiers": null,
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "200",
+       "max_fpl_inclusive": "250",
+       "discount_percent": 75
+      },
+      {
+       "min_fpl_exclusive": "250",
+       "max_fpl_inclusive": "300",
+       "discount_percent": 50
+      }
+     ],
+     "layer": "documented",
+     "quote": "201%-250% of the Federal Poverty Guideline, by 75% || 251%-300% of the Federal Poverty Guideline, by 50%.",
+     "source_id": "fap-95e0dacf8967e38d",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": {
@@ -949,11 +986,13 @@
     "form_version": null,
     "documents_required": {
      "value": [
+      "pay_stubs",
+      "tax_return",
       "proof_of_income",
       "other"
      ],
      "layer": "documented",
-     "quote": "A 'W-2\" withholding statement for current year",
+     "quote": "A 'W-2\" withholding statement for current year || Pay Stubs from all employment during the relevant time period || An income tax return from the most recent calendar year",
      "source_id": "fap-95e0dacf8967e38d",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -969,10 +1008,14 @@
       {
        "kind": "fax",
        "detail": "Fax 509.665.3494, attention \"Charity Care\""
+      },
+      {
+       "kind": "in_person",
+       "detail": "To submit your completed application in person please visit one of our following Patient Services areas"
       }
      ],
      "layer": "documented",
-     "quote": "Mail or fax completed application with all documentation to: Patient Services Dept. Confluence Health PO Box 361 Wenatchee WA, 98807. Fax 509.665.3494, attention \"Charity Care\".",
+     "quote": "Mail or fax completed application with all documentation to: Patient Services Dept. Confluence Health PO Box 361 Wenatchee WA, 98807. Fax 509.665.3494, attention \"Charity Care\". || To submit your completed application in person please visit one of our following Patient Services areas:",
      "source_id": "fap-7fcd0de1b8b14a90",
      "checked_on": "2026-10-23",
      "confidence": 0.8,
@@ -1069,9 +1112,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: 251%-300% of the Federal Poverty Guideline, by 50%.",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Pay Stubs from all employment during the relevant time period | An income tax return from the most recent calendar year",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: To submit your completed application in person please visit one of our following Patient Services areas:",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 2 verbatim spans",
     "apply.submit_methods: quote matched the source only after typography normalization",
     "agent dropped programs.presumptive: excerpt not in source: Is the patient currently homeless?",
     "agent judge on eligibility.asset_test: Quote says the hospital shall not require disclosure of family assets; it does not state assets are considered. Value of false is consistent but the field meaning is not stated as such.",
@@ -1091,6 +1134,7 @@
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
      "eligibility.residency",
      "eligibility.insured_patients_covered",
      "apply.form_url",
@@ -1104,10 +1148,6 @@
     ],
     "rejected": [
      [
-      "eligibility.discount_tiers",
-      "value not in quote"
-     ],
-     [
       "eligibility.asset_test",
       "quote does not support the asset-test value"
      ],
@@ -1117,11 +1157,10 @@
      ]
     ],
     "pruned": [
-     "apply.documents_required: 4 items not named in the trimmed quote",
-     "apply.submit_methods: 1 item not named in the trimmed quote"
+     "apply.documents_required: 2 items not named in the trimmed quote"
     ],
     "income_rule_verified": true,
-    "core_completeness": 0.83
+    "core_completeness": 1.0
    }
   },
   {
@@ -1189,10 +1228,13 @@
    "programs": {
     "presumptive": {
      "value": [
-      "Medicaid"
+      "Medicaid",
+      "SNAP",
+      "TANF",
+      "WIC"
      ],
      "layer": "documented",
-     "quote": "Patients who are participating in state Medicaid programs are eligible for financial assistance.",
+     "quote": "Patients who are participating in state Medicaid programs are eligible for financial assistance. || Basic Food Supplemental Nutrition Assistance Program (SNAP) and Food Assistance Program; Temporary Assistance for Needy Families (TANF); Children's Health Insurance Program (CHIP); Women, Infants and Children Nutrition Program (WIC)",
      "source_id": "fap-c6623441d6342973",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1300,7 +1342,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: Basic Food Supplemental Nutrition Assistance Program (SNAP) and Food Assistance Program; Temporary Assistance for Needy ",
+    "programs.presumptive: value backed by 2 verbatim spans",
     "agent dropped apply.submit_methods: excerpt not in source: advising patient financial services staff at or prior to the",
     "agent judge on eligibility.asset_test: Quote says assets will not be considered under 300% FPL (with a Medicare exception). It does not plainly state that assets are considered.",
     "agent judge on programs.presumptive: Quote lists Medicaid, SNAP, TANF, CHIP and WIC. The value omits CHIP.",
@@ -1333,7 +1375,6 @@
     ],
     "rejected": [],
     "pruned": [
-     "programs.presumptive: 3 items not named in the trimmed quote",
      "apply.documents_required: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": true,
@@ -1373,7 +1414,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Discounts Off Charges at 75 Percent : The PH&S sliding fee scale set forth in Attachment B will be used to determine the amount of financial assistance to be provided in the form of a discount of 75 percent for patients or guarantors with incomes between 301% and 350% of the current federal poverty level",
+     "quote": "Discounts Off Charges at 75 Percent : The PH&S sliding fee scale set forth in Attachment B will be used to determine the amount of financial assistance to be provided in the form of a discount of 75 percent for patients or guarantors with incomes between 301% and 350% of the current federal poverty level || 301-350% 75% 25%",
      "source_id": "fap-25d0e893f827364e",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1525,7 +1566,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: 301-350% 75% 25%",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
     "apply.submit_methods: quote matched the source only after typography normalization",
     "agent dropped programs.presumptive: quote is not a substring of the source"
    ],
@@ -1636,10 +1677,16 @@
    "programs": {
     "presumptive": {
      "value": [
-      "Medicaid enrolled"
+      "Medicaid enrolled",
+      "SNAP",
+      "TANF",
+      "CHIP",
+      "WIC",
+      "free lunch or breakfast programs",
+      "low-income home energy assistance programs"
      ],
      "layer": "documented",
-     "quote": "Patients who are participating in state Medicaid programs are eligible for presumptive assistance.",
+     "quote": "Patients who are participating in state Medicaid programs are eligible for presumptive assistance. || For patients who participate in state funded FPL-qualified public assistance programs (e.g., Basic Food Supplemental Nutrition Assistance Program and Food Assistance Program (SNAP); Temporary Assistance for Needy Families (TANF); Children's Health Insurance Program (CHIP); Women, Infants and Children Nutrition Program (WIC); free lunch or breakfast programs; and low-income home energy assistance programs)",
      "source_id": "fap-68fa15e6f80c35c5",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1677,7 +1724,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Mail completed application with all documentation to: Swedish Medical Center c/o Providence Regional Business Office, P.O. Box 31001-3422, Pasadena, CA 91110-3422 UNITED STATES OF AMERICA.",
+     "quote": "Mail completed application with all documentation to: Swedish Medical Center c/o Providence Regional Business Office, P.O. Box 31001-3422, Pasadena, CA 91110-3422 UNITED STATES OF AMERICA. || To submit your completed application in person: Take to your nearest Hospital Financial Counselor's Office.",
      "source_id": "fap-0a7384dc1461f30a",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1772,8 +1819,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: For patients who participate in state funded FPL-qualified public assistance programs (e.g., Basic Food Supplemental Nut",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: To submit your completed application in person: Take to your nearest Hospital Financial Counselor's Office.",
+    "programs.presumptive: value backed by 2 verbatim spans",
+    "apply.submit_methods: value backed by 2 verbatim spans",
     "agent judge on eligibility.asset_test: Quote says assets are considered only as CMS requires for Medicare cost reporting, for Medicare patients without Medicaid; it does not state an asset test for eligibility.",
     "agent judge on programs.presumptive: Only Medicaid participants are stated as presumptively eligible; the other programs are listed as qualifying programs without any presumptive designation.",
     "agent judge on apply.form_url: Quote gives only a relative path with no domain and reorders the parameters; the full swedish.org URL in the value is not stated in the quote.",
@@ -1816,9 +1863,7 @@
       "quote not found in source"
      ]
     ],
-    "pruned": [
-     "programs.presumptive: 6 items not named in the trimmed quote"
-    ],
+    "pruned": [],
     "income_rule_verified": true,
     "core_completeness": 0.83
    }
@@ -1888,10 +1933,15 @@
    "programs": {
     "presumptive": {
      "value": [
-      "Medicaid enrolled"
+      "Medicaid enrolled",
+      "Temporary Assistance for Needy Families (TANF)",
+      "Children's Health Insurance Program (CHIP)",
+      "Women, Infants and Children Nutrition Program (WIC)",
+      "free lunch or breakfast programs",
+      "low-income home energy assistance programs"
      ],
      "layer": "documented",
-     "quote": "Patients who are participating in state Medicaid programs are eligible for presumptive assistance.",
+     "quote": "Patients who are participating in state Medicaid programs are eligible for presumptive assistance. || for patients who participate in state funded FPL-qualified public assistance programs (e.g., Basic Food Supplemental Nutrition Assistance Program and Food Assistance Program (SNAP); Temporary Assistance for Needy Families (TANF); Children's Health Insurance Program (CHIP); Women, Infants and Children Nutrition Program (WIC); free lunch or breakfast programs; and low-income home energy assistance programs)",
      "source_id": "fap-68fa15e6f80c35c5",
      "checked_on": "2026-10-23",
      "confidence": 0.8,
@@ -1902,7 +1952,19 @@
    "apply": {
     "form_url": null,
     "form_version": null,
-    "documents_required": null,
+    "documents_required": {
+     "value": [
+      "other",
+      "pay_stubs",
+      "tax_return"
+     ],
+     "layer": "documented",
+     "quote": "A \"W-2\" withholding statement; or || Current pay stubs (3 months); or || Last year\u2019s income tax return, including schedules if applicable; or",
+     "source_id": "fap-0a7384dc1461f30a",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "documents_reported": null,
     "submit_methods": null,
     "window_days_from_first_bill": {
@@ -1986,9 +2048,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: for patients who participate in state funded FPL-qualified public assistance programs (e.g., Basic Food Supplemental Nut",
+    "programs.presumptive: value backed by 2 verbatim spans",
     "programs.presumptive: quote matched the source only after typography normalization",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Current pay stubs (3 months); or | Last year\u2019s income tax return, including schedules if applicable; or",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent dropped apply.submit_methods: excerpt not in source: by mail, or by visiting www.swedish.org/patients-and-visitor",
     "agent dropped contacts.languages: excerpt not in source: Arabic [/-/media/project/psjh/shared/files/financial-assista",
     "agent judge on apply.form_url: Quote gives only the relative path in brackets; the swedish.org domain and https scheme in the value do not appear in the quote.",
@@ -2012,6 +2074,7 @@
      "eligibility.asset_test",
      "eligibility.insured_patients_covered",
      "programs.presumptive",
+     "apply.documents_required",
      "apply.window_days_from_first_bill",
      "apply.decision_days",
      "contacts.phone",
@@ -2024,11 +2087,10 @@
      ]
     ],
     "pruned": [
-     "programs.presumptive: 6 items not named in the trimmed quote",
-     "apply.documents_required: none of the listed documents is named in the quote (after trimming)"
+     "programs.presumptive: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": true,
-    "core_completeness": 0.5
+    "core_completeness": 0.67
    }
   },
   {
@@ -2080,11 +2142,13 @@
     "form_version": null,
     "documents_required": {
      "value": [
+      "pay_stubs",
+      "tax_return",
       "proof_of_income",
       "other"
      ],
      "layer": "documented",
-     "quote": "A \"W-2\" withholding statement; or",
+     "quote": "A \"W-2\" withholding statement; or || Current pay stubs (3 months); or || Last year\u2019s income tax return, including schedules if applicable; or",
      "source_id": "fap-f9acf5ea29c3c92d",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2100,10 +2164,14 @@
       {
        "kind": "fax",
        "detail": "Mail or fax completed application with all documentation to: Astria Health, 1016 Tacoma Avenue, Sunnyside, WA 98944"
+      },
+      {
+       "kind": "in_person",
+       "detail": "To submit your completed application in person: Astria Health, 1016 Tacoma Avenue, Sunnyside, WA 98944"
       }
      ],
      "layer": "documented",
-     "quote": "Mail or fax completed application with all documentation to: Astria Health, 1016 Tacoma Avenue, Sunnyside, WA 98944",
+     "quote": "Mail or fax completed application with all documentation to: Astria Health, 1016 Tacoma Avenue, Sunnyside, WA 98944 || To submit your completed application in person: Astria Health, 1016 Tacoma Avenue, Sunnyside, WA 98944",
      "source_id": "fap-f9acf5ea29c3c92d",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2192,8 +2260,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Current pay stubs (3 months); or | Last year\u2019s income tax return, including schedules if applicable; or",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: To submit your completed application in person: Astria Health, 1016 Tacoma Avenue, Sunnyside, WA 98944",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 2 verbatim spans",
     "agent judge on apply.documents_required: Quote lists only the W-2, pay stubs, and income tax return. Written statements and Medicaid and unemployment approvals do not appear in the quote.",
     "agent judge on contacts.languages: Quote says documents are available in English and in the primary language of populations with limited English proficiency, so the value omits the other languages."
    ],
@@ -2225,8 +2293,7 @@
      ]
     ],
     "pruned": [
-     "apply.documents_required: 3 items not named in the trimmed quote",
-     "apply.submit_methods: 1 item not named in the trimmed quote"
+     "apply.documents_required: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": true,
     "core_completeness": 0.67
@@ -2256,7 +2323,26 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "discount_tiers": null,
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "300",
+       "max_fpl_inclusive": "350",
+       "discount_percent": 80
+      },
+      {
+       "min_fpl_exclusive": "350",
+       "max_fpl_inclusive": "400",
+       "discount_percent": 75
+      }
+     ],
+     "layer": "documented",
+     "quote": "All patients and their guarantors whose income is between 301 and 350 percent of the federal poverty level, adjusted for family size, shall be entitled to a 80 percent discount for the full amount of the patient responsibility portion of their hospital charges. || All patients and their guarantors whose income is between 351 and 400 percent of the federal poverty level, adjusted for family size, shall be entitled to a 75 percent discount for the full amount of the patient responsibility portion of their hospital charges.",
+     "source_id": "web-2041aaa43f90d706",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": null,
@@ -2286,7 +2372,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "All patients will be screened for Washington Health Exchange or Washington Medicaid prior to a charity application. Section 2(5) of SHB 1616",
+     "quote": "All patients will be screened for Washington Health Exchange or Washington Medicaid prior to a charity application. Section 2(5) of SHB 1616 || Overlake will utilize a third party vendor to screen uninsured patients to determine eligibility to health coverage. The third party vendor will interview patients and assist with an application to apply for health coverage through the Washington health benefit exchange and the Washington Medicaid program.",
      "source_id": "web-2041aaa43f90d706",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2316,10 +2402,18 @@
       {
        "kind": "phone",
        "detail": "Call us: 425.467.3740"
+      },
+      {
+       "kind": "in_person",
+       "detail": "In person: Ask for our financial counselors or at any registration desk."
+      },
+      {
+       "kind": "mail",
+       "detail": "Via Mail: Overlake Medical Center & Clinics Attn: Financial Counselors 1035 116th Ave NE Bellevue, WA 98004"
       }
      ],
      "layer": "documented",
-     "quote": "Call us: 425.467.3740 .",
+     "quote": "Call us: 425.467.3740 . || In person: Ask for our financial counselors or at any registration desk. || Via Mail: Overlake Medical Center & Clinics Attn: Financial Counselors 1035 116th Ave NE Bellevue, WA 98004",
      "source_id": "web-f511e42b8f913ebd",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2368,7 +2462,7 @@
       "Chinese"
      ],
      "layer": "documented",
-     "quote": "English Financial Assistance Application (PDF)",
+     "quote": "English Financial Assistance Application (PDF) || Spanish Financial Assistance Application (PDF) || Russian Financial Assistance Application (PDF)",
      "source_id": "web-f511e42b8f913ebd",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2411,11 +2505,11 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: All patients and their guarantors whose income is between 351 and 400 percent of the federal poverty level, adjusted for",
-    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: Is the pa ent currently homeless? \u25a1 Yes \u25a1 No",
-    "programs.state_programs: 1 more verbatim excerpt(s) supported this value: Overlake will utilize a third party vendor to screen uninsured patients to determine eligibility to health coverage. The",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: In person: Ask for our financial counselors or at any registration desk. | Via Mail: Overlake Medical Center & Clinics Attn: Financial Counselors 1035 116th Ave NE Bellevue, WA 98004",
-    "contacts.languages: 2 more verbatim excerpt(s) supported this value: Spanish Financial Assistance Application (PDF) | Russian Financial Assistance Application (PDF)",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "programs.presumptive: value backed by 2 verbatim spans",
+    "programs.state_programs: value backed by 2 verbatim spans",
+    "apply.submit_methods: value backed by 3 verbatim spans",
+    "contacts.languages: value backed by 3 verbatim spans",
     "agent judge on programs.presumptive: Quote shows only form questions asking whether the patient applied for Medicaid or is homeless; it does not state these are presumptive qualifiers.",
     "agent judge on apply.form_url: Quote gives only a relative path (/sites/default/files/...pdf); the domain overlakehospital.org is not stated in the quote.",
     "agent judge on apply.submit_methods: Quote shows only phone, in-person, and mail methods; the online via MyChart and email charitycare@overlakehospital.org methods are not in the quote.",
@@ -2434,6 +2528,7 @@
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
      "eligibility.insured_patients_covered",
      "programs.state_programs",
      "apply.documents_required",
@@ -2444,10 +2539,6 @@
      "contacts.languages"
     ],
     "rejected": [
-     [
-      "eligibility.discount_tiers",
-      "value not in quote"
-     ],
      [
       "eligibility.asset_test",
       "quote does not support the asset-test value"
@@ -2460,10 +2551,10 @@
     "pruned": [
      "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
      "apply.documents_required: 1 item not named in the trimmed quote",
-     "apply.submit_methods: 4 items not named in the trimmed quote"
+     "apply.submit_methods: 2 items not named in the trimmed quote"
     ],
     "income_rule_verified": true,
-    "core_completeness": 0.67
+    "core_completeness": 0.83
    }
   },
   {
@@ -2490,7 +2581,26 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "discount_tiers": null,
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "200",
+       "max_fpl_inclusive": "250",
+       "discount_percent": 75
+      },
+      {
+       "min_fpl_exclusive": "250",
+       "max_fpl_inclusive": "300",
+       "discount_percent": 50
+      }
+     ],
+     "layer": "documented",
+     "quote": "201% - 250% 75% Discount (Partial) || 251% - 300% 50% Discount (Partial)",
+     "source_id": "fap-2e9f90ceafe68f1a",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "assistance_ceiling_fpl": null,
     "asset_test": {
      "value": false,
@@ -2517,10 +2627,11 @@
    "programs": {
     "presumptive": {
      "value": [
-      "Enrolled in a KP Community MFA Program"
+      "Enrolled in a KP Community MFA Program",
+      "Approved for Full MFA within last 30 Days"
      ],
      "layer": "documented",
-     "quote": "Is enrolled in a Community MFA (CMFA) program to which patients have been referred and prequalified through: (1) federal, state, or local government, (2) a partnering community-based organization, or (3) at a KFHP/H sponsored community health event.",
+     "quote": "Is enrolled in a Community MFA (CMFA) program to which patients have been referred and prequalified through: (1) federal, state, or local government, (2) a partnering community-based organization, or (3) at a KFHP/H sponsored community health event. || Resides in low-income or subsidized housing. || Applied and approved for Full MFA within the last 30 days.",
      "source_id": "fap-2e9f90ceafe68f1a",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2608,9 +2719,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: 251% - 300% 50% Discount (Partial)",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
     "eligibility.asset_test: quote matched the source only after typography normalization",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Resides in low-income or subsidized housing. | Applied and approved for Full MFA within the last 30 days.",
+    "programs.presumptive: value backed by 3 verbatim spans",
     "agent dropped apply.submit_methods: excerpt not in source: Complete and Submit an Application, Appeal Request or Suppor",
     "agent judge on eligibility.asset_test: Quote explicitly says assets are not considered, so false is consistent with the quote."
    ],
@@ -2625,6 +2736,7 @@
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
      "eligibility.asset_test",
      "eligibility.insured_patients_covered",
      "programs.presumptive",
@@ -2636,19 +2748,15 @@
     ],
     "rejected": [
      [
-      "eligibility.discount_tiers",
-      "value not in quote"
-     ],
-     [
       "eligibility.assistance_ceiling_fpl",
       "quote does not say the hospital's financial assistance reaches it"
      ]
     ],
     "pruned": [
-     "programs.presumptive: 5 items not named in the trimmed quote"
+     "programs.presumptive: 4 items not named in the trimmed quote"
     ],
     "income_rule_verified": true,
-    "core_completeness": 0.5
+    "core_completeness": 0.67
    }
   },
   {
@@ -2719,7 +2827,7 @@
       "Medicaid enrolled"
      ],
      "layer": "documented",
-     "quote": "Patients who are participating in state Medicaid programs are eligible for financial assistance.",
+     "quote": "Patients who are participating in state Medicaid programs are eligible for financial assistance. || for patients who participate in state funded FPL-qualified public assistance programs (e.g., Basic Food Supplemental Nutrition Assistance Program (SNAP) and Food Assistance Program; Temporary Assistance for Needy Families (TANF); Children's Health Insurance Program (CHIP); Women, Infants and Children Nutrition Program (WIC); free lunch or breakfast programs; and low-income home energy assistance programs)",
      "source_id": "fap-c6623441d6342973",
      "checked_on": "2026-10-23",
      "confidence": 0.8,
@@ -2836,7 +2944,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: for patients who participate in state funded FPL-qualified public assistance programs (e.g., Basic Food Supplemental Nut",
+    "programs.presumptive: value backed by 2 verbatim spans",
     "programs.presumptive: quote matched the source only after typography normalization",
     "contacts.languages: quote matched the source only after typography normalization",
     "agent judge on apply.window_days_from_first_bill: Quote gives a 240-day FAP-Eligible Time Period for hospital services but does not say it runs from the first bill.",
@@ -3180,10 +3288,16 @@
    "programs": {
     "presumptive": {
      "value": [
-      "Medicaid enrolled"
+      "Medicaid enrolled",
+      "SNAP",
+      "TANF",
+      "CHIP",
+      "WIC",
+      "free lunch or breakfast programs",
+      "low-income home energy assistance programs"
      ],
      "layer": "documented",
-     "quote": "Patients who are participating in state Medicaid programs are eligible for financial assistance.",
+     "quote": "Patients who are participating in state Medicaid programs are eligible for financial assistance. || Basic Food Supplemental Nutrition Assistance Program (SNAP) and Food Assistance Program; Temporary Assistance for Needy Families (TANF); Children's Health Insurance Program (CHIP); Women, Infants and Children Nutrition Program (WIC); free lunch or breakfast programs; and low-income home energy assistance programs",
      "source_id": "fap-c6623441d6342973",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3200,7 +3314,7 @@
       "other"
      ],
      "layer": "documented",
-     "quote": "Copies of the most recent income information for each person in the household such as pay stubs, Social Security, unemployment, retirement, pensions, etc. If you\u2019re self-employed, please provide a 90-day profit and loss statement.",
+     "quote": "Copies of the most recent income information for each person in the household such as pay stubs, Social Security, unemployment, retirement, pensions, etc. If you\u2019re self-employed, please provide a 90-day profit and loss statement. || If the household is receiving financial support from family or friends, provide a letter detailing that support.",
      "source_id": "web-508f343895492088",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3313,8 +3427,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: Basic Food Supplemental Nutrition Assistance Program (SNAP) and Food Assistance Program; Temporary Assistance for Needy ",
-    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: If the household is receiving financial support from family or friends, provide a letter detailing that support.",
+    "programs.presumptive: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 2 verbatim spans",
     "agent judge on eligibility.asset_test: Quote only says assets will not be considered under 300% FPL (with a Medicare exception). It does not state that assets are considered.",
     "agent judge on apply.window_days_from_first_bill: Quote mentions a 240-day FAP-Eligible Time Period for hospital services but does not say it runs from the first bill.",
     "agent judge on contacts.languages: Quote only says translations are available in any language spoken by more than 5% of the service area population. It does not name English or Espa\u00f1ol."
@@ -3346,7 +3460,6 @@
     ],
     "rejected": [],
     "pruned": [
-     "programs.presumptive: 6 items not named in the trimmed quote",
      "apply.documents_required: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": true,
@@ -3410,11 +3523,13 @@
     "form_version": null,
     "documents_required": {
      "value": [
+      "pay_stubs",
+      "tax_return",
       "proof_of_income",
       "other"
      ],
      "layer": "documented",
-     "quote": "A \"W-2\" withholding statement; or",
+     "quote": "A \"W-2\" withholding statement; or || Current pay stubs (3 months); or || Last year\u2019s income tax return, including schedules if applicable; or",
      "source_id": "fap-4fc3acd192b48414",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3520,10 +3635,10 @@
    "accuracy": null,
    "eve_review": [
     "eligibility.discount_tiers: 0-300% at 100% is the free-care band, not a tier; skipped",
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: 301-400 % 75%",
-    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: A patient is or becomes eligible for Medicaid or as a Qualified Medicare Beneficiary within 60 days of receiving Medical",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Current pay stubs (3 months); or | Last year\u2019s income tax return, including schedules if applicable; or",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Mail to: Legacy Health PO Box 4037 Portland, OR 97208 Fax: 503-413-2753 | In person: Please stop by any Legacy Health facility.",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "programs.presumptive: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 3 verbatim spans",
     "agent dropped eligibility.min_balance: quote is not a substring of the source",
     "agent judge on programs.presumptive: Quote says patients 'is or becomes eligible for Medicaid' or QMB, not enrolled; eligibility is not the same as enrollment.",
     "agent judge on apply.form_url: Quote shows only the relative path /-/media/... with no legacyhealth.org domain, so the full URL is not stated.",
@@ -3571,8 +3686,7 @@
     ],
     "pruned": [
      "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
-     "apply.documents_required: 3 items not named in the trimmed quote",
-     "apply.submit_methods: 3 items not named in the trimmed quote"
+     "apply.documents_required: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": true,
     "core_completeness": 0.5
@@ -3653,10 +3767,16 @@
    "programs": {
     "presumptive": {
      "value": [
-      "Medicaid enrolled"
+      "Medicaid enrolled",
+      "SNAP",
+      "TANF",
+      "CHIP",
+      "WIC",
+      "free lunch or breakfast programs",
+      "low-income home energy assistance programs"
      ],
      "layer": "documented",
-     "quote": "Patients who are participating in state Medicaid programs are eligible for presumptive assistance.",
+     "quote": "Patients who are participating in state Medicaid programs are eligible for presumptive assistance. || For patients who participate in state funded FPL-qualified public assistance programs (e.g., Basic Food Supplemental Nutrition Assistance Program and Food Assistance Program (SNAP); Temporary Assistance for Needy Families (TANF); Children's Health Insurance Program (CHIP); Women, Infants and Children Nutrition Program (WIC); free lunch or breakfast programs; and low-income home energy assistance programs)",
      "source_id": "fap-68fa15e6f80c35c5",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3763,7 +3883,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: For patients who participate in state funded FPL-qualified public assistance programs (e.g., Basic Food Supplemental Nut",
+    "programs.presumptive: value backed by 2 verbatim spans",
     "agent dropped apply.submit_methods: excerpt not in source: by mail, or by visiting www.swedish.org/patients-and-visitor",
     "agent dropped contacts.languages: excerpt not in source: Arabic [/-/media/project/psjh/shared/files/financial-assista",
     "agent judge on eligibility.asset_test: Quote only says assets are not considered under 300% FPL (except Medicare cases). It does not plainly state that assets are considered.",
@@ -3800,9 +3920,7 @@
       "quote not found in source"
      ]
     ],
-    "pruned": [
-     "programs.presumptive: 6 items not named in the trimmed quote"
-    ],
+    "pruned": [],
     "income_rule_verified": true,
     "core_completeness": 0.67
    }
@@ -3878,11 +3996,13 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "proof_of_income",
-      "other"
+      "other",
+      "pay_stubs",
+      "tax_return",
+      "proof_of_income"
      ],
      "layer": "documented",
-     "quote": "A \"W-2\" withholding statement; or",
+     "quote": "A \"W-2\" withholding statement; or || Current pay stubs (3 months); or || Last year\u2019s income tax return, including schedules if applicable; or",
      "source_id": "fap-1b1246d3266b9cad",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3973,7 +4093,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Current pay stubs (3 months); or | Last year\u2019s income tax return, including schedules if applicable; or",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent dropped apply.submit_methods: excerpt not in source: by mail, or by visiting www.providence.org/financialhelp",
     "agent judge on programs.presumptive: Quote lists SNAP, TANF, CHIP, WIC, free lunch/breakfast, and LIHEAP but does not mention Medicaid enrollment, which the value includes.",
     "agent judge on apply.documents_required: Quote lists only W-2 statement, pay stubs, and last year's tax return; the employer statements and asset income statements in the value are not in the quote.",
@@ -4003,8 +4123,7 @@
     ],
     "rejected": [],
     "pruned": [
-     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
-     "apply.documents_required: 2 items not named in the trimmed quote"
+     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)"
     ],
     "income_rule_verified": true,
     "core_completeness": 0.67
@@ -4253,10 +4372,11 @@
      "value": [
       "pay_stubs",
       "proof_of_income",
+      "bank_statements",
       "other"
      ],
      "layer": "documented",
-     "quote": "Documentation of income for 3 months \u2013 current pay stubs",
+     "quote": "Documentation of income for 3 months \u2013 current pay stubs || Completed Financial Statement - attached || Copy of the last 3 months bank statements.",
      "source_id": "fap-ab7e1cec3e6deadd",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4268,10 +4388,18 @@
       {
        "kind": "phone",
        "detail": "By Telephone: 509-837-1554"
+      },
+      {
+       "kind": "mail",
+       "detail": "At our address: Astria Health, PO Box 719, Sunnyside, WA 98944"
+      },
+      {
+       "kind": "portal",
+       "detail": "On our website: https://www.astria.health"
       }
      ],
      "layer": "documented",
-     "quote": "By Telephone: 509-837-1554",
+     "quote": "By Telephone: 509-837-1554 || At our address: Astria Health, PO Box 719, Sunnyside, WA 98944 || On our website: https://www.astria.health",
      "source_id": "fap-df0972dcd167ec18",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4318,7 +4446,7 @@
       "Spanish"
      ],
      "layer": "documented",
-     "quote": "ASTRIA HEALTH FINANCIAL ASSISTANCE POLICY | ENGLISH",
+     "quote": "ASTRIA HEALTH FINANCIAL ASSISTANCE POLICY | ENGLISH || ASTRIA HEALTH FINANCIAL ASSISTANCE POLICY | SPANISH",
      "source_id": "web-cd5d5c5affe9aeaf",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4361,9 +4489,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Completed Financial Statement - attached | Copy of the last 3 months bank statements.",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: At our address: Astria Health, PO Box 719, Sunnyside, WA 98944 | On our website: https://www.astria.health",
-    "contacts.languages: 1 more verbatim excerpt(s) supported this value: ASTRIA HEALTH FINANCIAL ASSISTANCE POLICY | SPANISH"
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 3 verbatim spans",
+    "contacts.languages: value backed by 2 verbatim spans"
    ],
    "eve_verified": {
     "on": "2026-10-23",
@@ -4396,8 +4524,7 @@
      ]
     ],
     "pruned": [
-     "apply.documents_required: 4 items not named in the trimmed quote",
-     "apply.submit_methods: 2 items not named in the trimmed quote"
+     "apply.documents_required: 3 items not named in the trimmed quote"
     ],
     "income_rule_verified": true,
     "core_completeness": 0.67
@@ -4427,7 +4554,31 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "discount_tiers": null,
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "200",
+       "max_fpl_inclusive": "250",
+       "discount_percent": 75
+      },
+      {
+       "min_fpl_exclusive": "250",
+       "max_fpl_inclusive": "300",
+       "discount_percent": 50
+      },
+      {
+       "min_fpl_exclusive": "300",
+       "max_fpl_inclusive": "350",
+       "discount_percent": 25
+      }
+     ],
+     "layer": "documented",
+     "quote": "201%-250% federal poverty level will receive 75% financial assistance. || 251%-300% federal poverty level will receive 50% financial assistance. || 301%-350% federal poverty level will receive 25% financial assistance.",
+     "source_id": "fap-e316c247bf5bbfc0",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": {
@@ -4467,7 +4618,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Idaho Medicaid Contact Information 877.456.1233 (Opt. 1 for English, Opt. 5 for new benefits)",
+     "quote": "Idaho Medicaid Contact Information 877.456.1233 (Opt. 1 for English, Opt. 5 for new benefits) || Washington Medicaid Contact Information 800.562.3022",
      "source_id": "fap-7e7d26130b3388e8",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4570,8 +4721,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: 251%-300% federal poverty level will receive 50% financial assistance. | 301%-350% federal poverty level will receive 25% financial assistance.",
-    "programs.state_programs: 1 more verbatim excerpt(s) supported this value: Washington Medicaid Contact Information 800.562.3022",
+    "eligibility.discount_tiers: value backed by 3 verbatim spans",
+    "programs.state_programs: value backed by 2 verbatim spans",
     "agent dropped eligibility.asset_test: quote is not a substring of the source",
     "agent dropped programs.presumptive: excerpt not in source: Any patients who are on state assistance, are unemployed, tr",
     "agent dropped apply.documents_required: excerpt not in source: Income information such as recent pay stubs, supporting docu",
@@ -4590,6 +4741,7 @@
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
      "eligibility.residency",
      "eligibility.insured_patients_covered",
      "programs.state_programs",
@@ -4599,10 +4751,6 @@
      "contacts.hours"
     ],
     "rejected": [
-     [
-      "eligibility.discount_tiers",
-      "value not in quote"
-     ],
      [
       "apply.form_url",
       "quote not found in source"
@@ -4614,7 +4762,7 @@
     ],
     "pruned": [],
     "income_rule_verified": true,
-    "core_completeness": 0.5
+    "core_completeness": 0.67
    }
   },
   {
@@ -4676,7 +4824,18 @@
     "services_excluded": null
    },
    "programs": {
-    "presumptive": null,
+    "presumptive": {
+     "value": [
+      "Recipient of state-funded prescription programs",
+      "Participation in Women, Infants and Children programs (WIC)"
+     ],
+     "layer": "documented",
+     "quote": "Recipient of state-funded prescription programs; || Homeless or one who received care from a homeless or free care clinic; || Participation in Women, Infants and Children programs (WIC);",
+     "source_id": "fap-174bfaef7b79efbc",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "state_programs": null
    },
    "apply": {
@@ -4736,7 +4895,7 @@
    "accuracy": null,
    "eve_review": [
     "eligibility.discount_tiers: 200-400% at 100% is the free-care band, not a tier; skipped",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Homeless or one who received care from a homeless or free care clinic; | Participation in Women, Infants and Children programs (WIC);",
+    "programs.presumptive: value backed by 3 verbatim spans",
     "agent dropped apply.documents_required: between 1 and 3 excerpts allowed",
     "agent judge on eligibility.discount_tiers: Quote gives 201%-400% FPL with reduction to no more than the AGB, not a 100% discount. No 100% discount percent is stated for that tier.",
     "agent judge on programs.presumptive: Quote lists only three presumptive criteria (state prescription, homeless/free clinic, WIC). Value lists seven, including food stamps, other programs, housing, and deceased patients."
@@ -4755,6 +4914,7 @@
      "eligibility.residency",
      "eligibility.insured_patients_covered",
      "eligibility.min_balance",
+     "programs.presumptive",
      "apply.window_days_from_first_bill",
      "contacts.languages"
     ],
@@ -4765,7 +4925,7 @@
      ]
     ],
     "pruned": [
-     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)"
+     "programs.presumptive: 5 items not named in the trimmed quote"
     ],
     "income_rule_verified": true,
     "core_completeness": 0.17

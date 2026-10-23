@@ -599,8 +599,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: Gross Income Eligibility 0% - 250% FPL 251% - 550% FPL",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Uninsured patients served by Yale University student-run primary care clinics for low-income individuals, including the  | YNHHS may use prior eligibility determinations to presumptively determine that the individual is again eligible for char",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "programs.presumptive: value backed by 3 verbatim spans",
     "agent dropped programs.state_programs: judge: Quote only says coordinators help with Medicaid; no phone number or scheduling instruction is given.",
     "agent dropped apply.documents_required: judge: Quote lists pay stubs OR tax return as alternatives, not both as required.",
     "agent dropped apply.submit_methods: judge: Mail and fax match, but the in-person L+M address at 365 Montauk Ave is not in the quote."
@@ -977,10 +977,10 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: Bridgeport Hospital - 69%",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Uninsured patients served by Yale University student-run primary care clinics for low-income individuals, including the  | YNHHS may use prior eligibility determinations to presumptively determine that the individual is again eligible for char",
-    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: Step 2: Attach proof of income to your application.",
-    "contacts.languages: 1 more verbatim excerpt(s) supported this value: Albanian Arabic Bengali Dari Farsi French Greek Gujarati Haitian Creole Hindi Italian Korean Lao Pashto Polish Portugues",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 2 verbatim spans",
+    "contacts.languages: value backed by 2 verbatim spans",
     "agent dropped programs.state_programs: judge: Quote mentions coordinators helping with Medicaid but gives no phone number or scheduling instruction.",
     "agent dropped apply.submit_methods: judge: Quote gives only the fax number; the mailing address and in-person locations are not stated."
    ],
@@ -1398,7 +1398,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "contacts.languages: 2 more verbatim excerpt(s) supported this value: Espa\u00f1ol [/sites/default/files/for-patients/billing-and-financial-resources/plain-language-summary-spanish.pdf] | Polski [/sites/default/files/for-patients/billing-and-financial-resources/plain-language-summary-polish.pdf] Portugu\u00eas [",
+    "contacts.languages: value backed by 3 verbatim spans",
     "agent dropped eligibility.residency: judge: Quote only says patients residing in the Service Area; it does not mention zip codes or out-of-area emergency patients.",
     "agent dropped programs.state_programs: judge: Quote gives the website and phone but says nothing about giving the eligibility determination letter to the hospital.",
     "agent dropped apply.submit_methods: judge: Quote's mailing address is Saint Mary's Hospital, 56 Franklin Street, Waterbury; 'Trinity Health Of New England' is not in the quote.",
@@ -1772,9 +1772,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: Gross Income Eligibility 0% - 250% FPL 251% - 550% FPL",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Uninsured patients served by Yale University student-run primary care clinics for low-income individuals, including the  | YNHHS may use prior eligibility determinations to presumptively determine that the individual is again eligible for char",
-    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: Step 2: Attach proof of income to your application.",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 2 verbatim spans",
     "agent dropped programs.state_programs: judge: Quote only says agency coordinators help with Medicaid; it gives no phone number or free appointment.",
     "agent dropped apply.submit_methods: judge: Quote lacks the PO Box address and the Greenwich in-person address; only the fax number is fully stated."
    ],
@@ -2267,9 +2267,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: Gross Income Eligibility 0% - 250% FPL 251% - 550% FPL",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Uninsured patients served by Yale University student-run primary care clinics for low-income individuals, including the  | YNHHS may use prior eligibility determinations to presumptively determine that the individual is again eligible for char",
-    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: Step 2: Attach proof of income to your application.",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 2 verbatim spans",
     "agent dropped eligibility.asset_test: judge: Only defines liquid assets; it does not say assets are considered in determining eligibility.",
     "agent dropped programs.state_programs: judge: Quote mentions coordinators helping with Medicaid, but not the phone number or scheduling an appointment.",
     "agent dropped apply.submit_methods: judge: Fax number is supported, but the mailing PO Box and the in-person address do not appear in the quote."
@@ -3342,7 +3342,41 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "discount_tiers": null,
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "250",
+       "max_fpl_inclusive": "280",
+       "discount_percent": 85
+      },
+      {
+       "min_fpl_exclusive": "280",
+       "max_fpl_inclusive": "310",
+       "discount_percent": 75
+      },
+      {
+       "min_fpl_exclusive": "310",
+       "max_fpl_inclusive": "340",
+       "discount_percent": 50
+      },
+      {
+       "min_fpl_exclusive": "340",
+       "max_fpl_inclusive": "370",
+       "discount_percent": 35
+      },
+      {
+       "min_fpl_exclusive": "370",
+       "max_fpl_inclusive": "400",
+       "discount_percent": 30
+      }
+     ],
+     "layer": "documented",
+     "quote": "of 250% HHS Poverty Income Guidelines: of 280% HHS Poverty Income Guidelines: of 310% HH s Poverty Income Guidelines: of 340% HHS Poverty Income Guidelines: of 370% HHS Poverty Income Guidelines: of 400% HHS Poverty Income Guidelines: || 100% FreeCare 85% FreeCare 75% FreeCare 50% FreeCare 35% FreeCare 30% FreeCare",
+     "source_id": "fap-283c963aba532ca4",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "assistance_ceiling_fpl": null,
     "asset_test": {
      "value": true,
@@ -3367,10 +3401,13 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "photo_id"
+      "photo_id",
+      "proof_of_income",
+      "bank_statements",
+      "tax_return"
      ],
      "layer": "documented",
-     "quote": "\u2022 Valid Photo Identification along with proof of address.",
+     "quote": "\u2022 Valid Photo Identification along with proof of address. || \u2022 Proof of Income for the last 3 months. || \u2022 Three bank statements \u2022 Completed tax returns",
      "source_id": "fap-283c963aba532ca4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3472,9 +3509,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: 100% FreeCare 85% FreeCare 75% FreeCare 50% FreeCare 35% FreeCare 30% FreeCare",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: \u2022 Proof of Income for the last 3 months. | \u2022 Three bank statements \u2022 Completed tax returns",
-    "contacts.languages: 2 more verbatim excerpt(s) supported this value: Spanish Version [https://www.griffinhealth.org/wp-content/uploads/2021/08/The-Griffin-Hospital-Financial-Assistance-Poli | Polish Version [https://www.griffinhealth.org/wp-content/uploads/2021/08/The-Griffin-Hospital-Financial-Assistance-Polic",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "contacts.languages: value backed by 3 verbatim spans",
     "agent dropped eligibility.insured_patients_covered: quote is not a substring of the source",
     "agent dropped eligibility.residency: judge: Quote covers only non-emergency, medically necessary services and says residents 'can qualify'; it does not mention emergency services."
    ],
@@ -3491,6 +3528,7 @@
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
      "eligibility.asset_test",
      "apply.documents_required",
      "apply.submit_methods",
@@ -3501,10 +3539,6 @@
     ],
     "rejected": [
      [
-      "eligibility.discount_tiers",
-      "value not in quote"
-     ],
-     [
       "apply.form_url",
       "quote not found in source"
      ],
@@ -3514,11 +3548,10 @@
      ]
     ],
     "pruned": [
-     "apply.documents_required: 3 items not named in the trimmed quote",
      "apply.submit_methods: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": true,
-    "core_completeness": 0.67
+    "core_completeness": 0.83
    }
   },
   {

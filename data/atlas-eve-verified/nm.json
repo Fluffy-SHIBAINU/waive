@@ -78,10 +78,11 @@
      "value": [
       "pay_stubs",
       "proof_of_income",
+      "tax_return",
       "other"
      ],
      "layer": "documented",
-     "quote": "10.4.1 Payroll stubs showing gross income;",
+     "quote": "10.4.1 Payroll stubs showing gross income; || 10.4.4 Letter from a state or federal agency showing amount of income received from that agency; || 10.4.8 IRS Income Tax Return forms;",
      "source_id": "fap-fea3eba34ca31b31",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -187,8 +188,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Eligibility for out of state or out of area medical assistance programs; | Patient who has filed bankruptcy and whose bill has been fully discharged by the court.",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: 10.4.4 Letter from a state or federal agency showing amount of income received from that agency; | 10.4.8 IRS Income Tax Return forms;",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent dropped eligibility.discount_tiers: between 1 and 3 excerpts allowed",
     "agent judge on programs.presumptive: Quote lists only three categories (homelessness/shelter, out-of-state medical assistance, bankruptcy discharge). Deceased with no estate and SNAP are not in the quote.",
     "agent judge on programs.state_programs: Quote names only the San Juan County Indigent Health Care Program. The name 'San Juan County Indigent Fund' does not appear.",
@@ -220,7 +221,7 @@
     "rejected": [],
     "pruned": [
      "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
-     "apply.documents_required: 2 items not named in the trimmed quote"
+     "apply.documents_required: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": true,
     "core_completeness": 0.67
@@ -271,10 +272,12 @@
      "value": [
       "Patients determined to be homeless",
       "Participation in Women, Infants and Children programs (WIC)",
-      "Participation in the food stamp program"
+      "Participation in the food stamp program",
+      "Subsidized school lunch program eligibility",
+      "Personal bankruptcy"
      ],
      "layer": "documented",
-     "quote": "1. Participation or enrollment in state-funded prescription programs; 2. Patients determined to be homeless; 3. Participation in Women, Infants and Children programs (WIC); 4. Participation in the food stamp program;",
+     "quote": "1. Participation or enrollment in state-funded prescription programs; 2. Patients determined to be homeless; 3. Participation in Women, Infants and Children programs (WIC); 4. Participation in the food stamp program; || 5. Subsidized school lunch program eligibility; 6. Low income/subsidized housing is provided as a valid address; 7. Personal bankruptcy; 8. Patient is deceased with no known estate; || 9. Account balances remaining after payment has been received and applied from a sole community provider fund",
      "source_id": "fap-ada5b1150e0e963a",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -364,8 +367,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: 201% to 250% 25% | 251% to 400% 50%",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: 5. Subsidized school lunch program eligibility; 6. Low income/subsidized housing is provided as a valid address; 7. Pers | 9. Account balances remaining after payment has been received and applied from a sole community provider fund",
+    "eligibility.discount_tiers: value backed by 3 verbatim spans",
+    "programs.presumptive: value backed by 3 verbatim spans",
     "agent dropped apply.submit_methods: excerpt not in source: Please return completed application and required documentati",
     "agent judge on eligibility.discount_tiers: Quote gives 201% to 250% at 25%, but the value records 75% for that tier. The 251% to 400% tier at 50% matches.",
     "agent judge on eligibility.assistance_ceiling_fpl: Quote says only '401% or greater 100%', which does not plainly state that no assistance is offered above 400%.",
@@ -373,14 +376,12 @@
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 2,
+    "sources_fetched": 3,
     "sources_total": 3,
-    "sources_missing": [
-     "https://onbaseext.phs.org/PEL/DisplayDocument?ContentID=PEL_00228889"
-    ],
+    "sources_missing": [],
     "sha256_match": {
      "fap-ada5b1150e0e963a": true,
-     "fap-2483a7670c61bdc5": false,
+     "fap-2483a7670c61bdc5": true,
      "web-6f898c014fbd8102": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
@@ -411,7 +412,7 @@
      ]
     ],
     "pruned": [
-     "programs.presumptive: 5 items not named in the trimmed quote",
+     "programs.presumptive: 3 items not named in the trimmed quote",
      "apply.documents_required: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": true,
@@ -473,10 +474,11 @@
      "value": [
       "Patients determined to be homeless",
       "Participation in Women, Infants and Children programs (WIC)",
-      "Participation in the food stamp program"
+      "Participation in the food stamp program",
+      "Personal bankruptcy"
      ],
      "layer": "documented",
-     "quote": "2. Patients determined to be homeless; 3. Participation in Women, Infants and Children programs (WIC); 4. Participation in the food stamp program;",
+     "quote": "2. Patients determined to be homeless; 3. Participation in Women, Infants and Children programs (WIC); 4. Participation in the food stamp program; || 1. Participation or enrollment in state-funded prescription programs; || 7. Personal bankruptcy; 8. Patient is deceased with no known estate;",
      "source_id": "fap-ada5b1150e0e963a",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -576,8 +578,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: 201% to 250% 25% | 251% to 400% 50%",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: 1. Participation or enrollment in state-funded prescription programs; | 7. Personal bankruptcy; 8. Patient is deceased with no known estate;",
+    "eligibility.discount_tiers: value backed by 3 verbatim spans",
+    "programs.presumptive: value backed by 3 verbatim spans",
     "agent dropped apply.submit_methods: excerpt not in source: Please return completed application and required documentati",
     "agent judge on eligibility.assistance_ceiling_fpl: Quote only says '401% or greater 100%'. It does not state that no assistance is offered above 400%, and the 100% figure is unexplained.",
     "agent judge on programs.presumptive: Quote lists items 1, 2, 3, 4, 7 and 8 only. The value's 'school lunch' and 'low income/subsidized housing' items do not appear in the quote.",
@@ -607,7 +609,7 @@
     "rejected": [
      [
       "eligibility.discount_tiers",
-      "value not in quote"
+      "quote states the patient's share, not a discount"
      ],
      [
       "eligibility.assistance_ceiling_fpl",
@@ -619,7 +621,7 @@
      ]
     ],
     "pruned": [
-     "programs.presumptive: 5 items not named in the trimmed quote",
+     "programs.presumptive: 4 items not named in the trimmed quote",
      "apply.documents_required: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": true,
@@ -641,28 +643,12 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": {
-     "value": "200",
-     "layer": "documented",
-     "quote": "Patients whose family income is at or below 200% of the FPG are eligible to receive emergency or other medically necessary services at no charge",
-     "source_id": "fap-ada5b1150e0e963a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "free_care_max_fpl": null,
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": null,
-    "insured_patients_covered": {
-     "value": true,
-     "layer": "documented",
-     "quote": "The term \u201cunderinsured\u201d includes individuals enrolled in health insurance who are unable to pay for out-of-pocket expenses and fall below 400% of the federal poverty guidelines.",
-     "source_id": "fap-ada5b1150e0e963a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "insured_patients_covered": null,
     "min_balance": null,
     "services_excluded": null
    },
@@ -675,10 +661,11 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "tax_return"
+      "tax_return",
+      "pay_stubs"
      ],
      "layer": "documented",
-     "quote": "Prior year\u2019s tax return(s)",
+     "quote": "Prior year\u2019s tax return(s) || Minimum of two most recent pay stubs",
      "source_id": "fap-2483a7670c61bdc5",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -687,15 +674,7 @@
     "documents_reported": null,
     "submit_methods": null,
     "window_days_from_first_bill": null,
-    "decision_days": {
-     "value": 30,
-     "layer": "documented",
-     "quote": "will notify the patient or applicant in writing of its decision within 30 days of receipt of a completed application",
-     "source_id": "fap-ada5b1150e0e963a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "decision_days": null,
     "decision_days_reported": null
    },
    "collections": {
@@ -703,15 +682,7 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": {
-     "value": "505-923-6600",
-     "layer": "documented",
-     "quote": "By contacting a customer service representative at 505-923-6600.",
-     "source_id": "fap-ada5b1150e0e963a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "phone": null,
     "hours": null,
     "languages": {
      "value": [
@@ -761,54 +732,69 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: 251% to 400% 50% | Patients whose family income is above 200% but not more than 400% of the FPG are eligible to receive a discount",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Patients determined to be homeless; | Personal bankruptcy",
-    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: Minimum of two most recent pay stubs",
+    "eligibility.discount_tiers: value backed by 3 verbatim spans",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 2 verbatim spans",
     "agent dropped apply.submit_methods: excerpt not in source: To apply for financial assistance, please complete an online"
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 3,
+    "sources_fetched": 2,
     "sources_total": 3,
-    "sources_missing": [],
+    "sources_missing": [
+     "https://onbaseext.phs.org/PEL/DisplayDocument?ContentID=PEL_00176420"
+    ],
     "sha256_match": {
-     "fap-ada5b1150e0e963a": true,
+     "fap-ada5b1150e0e963a": false,
      "fap-2483a7670c61bdc5": true,
      "web-6f898c014fbd8102": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
-     "eligibility.free_care_max_fpl",
-     "eligibility.insured_patients_covered",
      "apply.documents_required",
-     "apply.decision_days",
-     "contacts.phone",
      "contacts.languages"
     ],
     "rejected": [
      [
+      "eligibility.free_care_max_fpl",
+      "source text missing"
+     ],
+     [
       "eligibility.discount_tiers",
-      "value not in quote"
+      "source text missing"
      ],
      [
       "eligibility.assistance_ceiling_fpl",
-      "value not in quote"
+      "source text missing"
      ],
      [
       "eligibility.asset_test",
-      "quote does not support the asset-test value"
+      "source text missing"
+     ],
+     [
+      "eligibility.insured_patients_covered",
+      "source text missing"
+     ],
+     [
+      "programs.presumptive",
+      "source text missing"
      ],
      [
       "apply.form_url",
       "quote not found in source"
+     ],
+     [
+      "apply.decision_days",
+      "source text missing"
+     ],
+     [
+      "contacts.phone",
+      "source text missing"
      ]
     ],
-    "pruned": [
-     "programs.presumptive: none of the listed programs is named in the quote (after trimming)",
-     "apply.documents_required: 1 item not named in the trimmed quote"
-    ],
-    "income_rule_verified": true,
-    "core_completeness": 0.5
+    "pruned": [],
+    "income_rule_verified": false,
+    "core_completeness": 0.17
    }
   },
   {
@@ -869,34 +855,19 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "tax_return"
+      "tax_return",
+      "pay_stubs",
+      "social_security_letter"
      ],
      "layer": "documented",
-     "quote": "Last year\u2019s federal tax return",
+     "quote": "Last year\u2019s federal tax return || Two most recent paycheck stubs || Social Security check or award letter",
      "source_id": "web-6ba4397c49e640dd",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
      "support_count": 0
     },
     "documents_reported": null,
-    "submit_methods": {
-     "value": [
-      {
-       "kind": "phone",
-       "detail": "Call our Financial Counselor at 575-736-8120"
-      },
-      {
-       "kind": "in_person",
-       "detail": "Visit 702 N. 13th Street, Artesia, NM 88210"
-      }
-     ],
-     "layer": "documented",
-     "quote": "Phone: Call our Financial Counselor at 575-736-8120",
-     "source_id": "web-6ba4397c49e640dd",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "submit_methods": null,
     "window_days_from_first_bill": null,
     "decision_days": {
      "value": 30,
@@ -962,9 +933,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Two most recent paycheck stubs | Social Security check or award letter",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Email: Send a request to [email protected] | In Person: Visit 702 N. 13th Street, Artesia, NM 88210",
-    "contacts.languages: 1 more verbatim excerpt(s) supported this value: Apply in Spanish [https://nova.interlace.health/remote/public/5c9cc571-e47e-4217-bf32-ee78a1442c57?tid=21b6fcd0-d0ae-4f7"
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 3 verbatim spans",
+    "contacts.languages: value backed by 2 verbatim spans"
    ],
    "eve_verified": {
     "on": "2026-10-23",
@@ -981,7 +952,6 @@
      "eligibility.asset_test",
      "programs.presumptive",
      "apply.documents_required",
-     "apply.submit_methods",
      "apply.decision_days",
      "contacts.phone"
     ],
@@ -991,16 +961,20 @@
       "quote does not say whether insured patients are covered"
      ],
      [
+      "apply.submit_methods",
+      "quote not found in source"
+     ],
+     [
       "contacts.languages",
       "quote not found in source"
      ]
     ],
     "pruned": [
-     "apply.documents_required: 3 items not named in the trimmed quote",
-     "apply.submit_methods: 2 items not named in the trimmed quote"
+     "apply.documents_required: 1 item not named in the trimmed quote",
+     "apply.submit_methods: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": false,
-    "core_completeness": 0.5
+    "core_completeness": 0.33
    }
   },
   {
@@ -1195,10 +1169,14 @@
    "programs": {
     "presumptive": {
      "value": [
-      "Medicaid enrolled"
+      "Medicaid enrolled",
+      "SNAP",
+      "TANF/NMWorks",
+      "CHIP",
+      "WIC"
      ],
      "layer": "documented",
-     "quote": "Patients who are participating in state Medicaid programs are eligible for presumptive assistance.",
+     "quote": "Patients who are participating in state Medicaid programs are eligible for presumptive assistance. || Supplemental Nutrition Assistance Program (SNAP); Temporary Assistance for Needy Families (NMWorks); Children's Health Insurance Program (CHIP); Women, Infants, and Children Program (WIC)",
      "source_id": "fap-99d1af9061ead852",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1211,11 +1189,13 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "proof_of_income",
-      "other"
+      "other",
+      "pay_stubs",
+      "tax_return",
+      "proof_of_income"
      ],
      "layer": "documented",
-     "quote": "A \"W-2\" withholding statement; or",
+     "quote": "A \"W-2\" withholding statement; or || Current pay stubs (3 months); or || Last year\u2019s income tax return, including schedules if applicable; or",
      "source_id": "fap-b772ad7272bc3623",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1227,10 +1207,14 @@
       {
        "kind": "mail",
        "detail": "Mail completed application with all documentation to: Covenant Health, Attn: Financial Assistance P.O. Box 31001-3422, Pasadena, CA 91110-3422"
+      },
+      {
+       "kind": "in_person",
+       "detail": "Take to your nearest Hospital Financial Counselor's Office"
       }
      ],
      "layer": "documented",
-     "quote": "Mail completed application with all documentation to: Covenant Health, Attn: Financial Assistance P.O. Box 31001-3422, Pasadena, CA 91110-3422 UNITED STATES OF AMERICA.",
+     "quote": "Mail completed application with all documentation to: Covenant Health, Attn: Financial Assistance P.O. Box 31001-3422, Pasadena, CA 91110-3422 UNITED STATES OF AMERICA. || To submit your completed application in person: Take to your nearest Hospital Financial Counselor's Office.",
      "source_id": "fap-b772ad7272bc3623",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1327,9 +1311,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: Supplemental Nutrition Assistance Program (SNAP); Temporary Assistance for Needy Families (NMWorks); Children's Health I",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Current pay stubs (3 months); or | Last year\u2019s income tax return, including schedules if applicable; or",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: To submit your completed application in person: Take to your nearest Hospital Financial Counselor's Office.",
+    "programs.presumptive: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 2 verbatim spans",
     "agent judge on programs.presumptive: Quote lists Medicaid, SNAP, TANF/NMWorks, CHIP and WIC only. Nothing in the quote mentions homeless status.",
     "agent judge on apply.documents_required: Quote lists W-2, pay stubs, and last year's tax return. It does not mention 3 months of pay stubs, employer/other signed statements, or asset-income statements.",
     "agent judge on apply.window_days_from_first_bill: Quote says the FAP-Eligible Time Period is 240 days but does not state that it runs from the first bill.",
@@ -1366,9 +1350,7 @@
      ]
     ],
     "pruned": [
-     "programs.presumptive: 5 items not named in the trimmed quote",
-     "apply.documents_required: 2 items not named in the trimmed quote",
-     "apply.submit_methods: 1 item not named in the trimmed quote"
+     "programs.presumptive: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": true,
     "core_completeness": 0.67
@@ -1389,27 +1371,76 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": null,
+    "free_care_max_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "Patients whose family income is at or below 200% of the FPG are eligible to receive emergency or other medically necessary services at no charge",
+     "source_id": "fap-ada5b1150e0e963a",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": null,
-    "insured_patients_covered": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "The term \u201cunderinsured\u201d includes individuals enrolled in health insurance who are unable to pay for out-of-pocket expenses and fall below 400% of the federal poverty guidelines.",
+     "source_id": "fap-ada5b1150e0e963a",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "min_balance": null,
     "services_excluded": null
    },
    "programs": {
-    "presumptive": null,
+    "presumptive": {
+     "value": [
+      "Patients determined to be homeless",
+      "Participation in Women, Infants and Children programs (WIC)",
+      "Participation in the food stamp program",
+      "Subsidized school lunch program eligibility",
+      "Personal bankruptcy"
+     ],
+     "layer": "documented",
+     "quote": "1. Participation or enrollment in state-funded prescription programs; 2. Patients determined to be homeless; 3. Participation in Women, Infants and Children programs (WIC); 4. Participation in the food stamp program; || 5. Subsidized school lunch program eligibility; 6. Low income/subsidized housing is provided as a valid address; 7. Personal bankruptcy; 8. Patient is deceased with no known estate; || 10. Patients enrolled in limited service Medicaid programs that use a defined family income at or below 200% of the Federal Poverty Guidelines",
+     "source_id": "fap-ada5b1150e0e963a",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "state_programs": null
    },
    "apply": {
     "form_url": null,
     "form_version": null,
-    "documents_required": null,
+    "documents_required": {
+     "value": [
+      "tax_return",
+      "pay_stubs"
+     ],
+     "layer": "documented",
+     "quote": "a. A completed financial assistance application b. Prior year\u2019s tax return(s) c. Minimum of two most recent pay stubs",
+     "source_id": "fap-ada5b1150e0e963a",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "documents_reported": null,
     "submit_methods": null,
     "window_days_from_first_bill": null,
-    "decision_days": null,
+    "decision_days": {
+     "value": 30,
+     "layer": "documented",
+     "quote": "will notify the patient or applicant in writing of its decision within 30 days of receipt of a completed application",
+     "source_id": "fap-ada5b1150e0e963a",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "decision_days_reported": null
    },
    "collections": {
@@ -1417,9 +1448,27 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": null,
+    "phone": {
+     "value": "505-923-6600",
+     "layer": "documented",
+     "quote": "By contacting a customer service representative at 505-923-6600.",
+     "source_id": "fap-ada5b1150e0e963a",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "hours": null,
-    "languages": null
+    "languages": {
+     "value": [
+      "primary language(s) spoken by such populations"
+     ],
+     "layer": "documented",
+     "quote": "Presbyterian accommodates all significant populations that have limited English proficiency by translating this Financial Assistance Policy, application form, and plain language summary of the policy into primary language(s) spoken by such populations.",
+     "source_id": "fap-ada5b1150e0e963a",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
    },
    "coverage": {
     "facilities": null,
@@ -1457,7 +1506,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: 5. Subsidized school lunch program eligibility; 6. Low income/subsidized housing is provided as a valid address; 7. Pers | 10. Patients enrolled in limited service Medicaid programs that use a defined family income at or below 200% of the Fede",
+    "programs.presumptive: value backed by 3 verbatim spans",
     "agent dropped apply.submit_methods: excerpt not in source: Please return completed application and required documentati",
     "agent judge on eligibility.discount_tiers: Quote gives patient-pay percentages (25% for 201-250%, 50% for 251-400%), not discount percents; the 75% and 50% discounts require inverting them.",
     "agent judge on programs.presumptive: Value lists items 1-8 only; the quote also lists item 10 (limited service Medicaid patients at or below 200% FPG), which the value omits.",
@@ -1465,63 +1514,44 @@
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 2,
+    "sources_fetched": 3,
     "sources_total": 3,
-    "sources_missing": [
-     "https://onbaseext.phs.org/PEL/DisplayDocument?ContentID=PEL_00176420"
-    ],
+    "sources_missing": [],
     "sha256_match": {
-     "fap-ada5b1150e0e963a": false,
+     "fap-ada5b1150e0e963a": true,
      "fap-2483a7670c61bdc5": true,
      "web-6f898c014fbd8102": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
-    "accepted": [],
+    "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.insured_patients_covered",
+     "programs.presumptive",
+     "apply.documents_required",
+     "apply.decision_days",
+     "contacts.phone",
+     "contacts.languages"
+    ],
     "rejected": [
      [
-      "eligibility.free_care_max_fpl",
-      "source text missing"
-     ],
-     [
       "eligibility.discount_tiers",
-      "source text missing"
+      "value not in quote"
      ],
      [
       "eligibility.assistance_ceiling_fpl",
       "quote states the percentage as a floor (above, over, at least), not a ceiling"
      ],
      [
-      "eligibility.insured_patients_covered",
-      "source text missing"
-     ],
-     [
-      "programs.presumptive",
-      "source text missing"
-     ],
-     [
       "apply.form_url",
       "quote not found in source"
-     ],
-     [
-      "apply.documents_required",
-      "source text missing"
-     ],
-     [
-      "apply.decision_days",
-      "source text missing"
-     ],
-     [
-      "contacts.phone",
-      "source text missing"
-     ],
-     [
-      "contacts.languages",
-      "source text missing"
      ]
     ],
-    "pruned": [],
-    "income_rule_verified": false,
-    "core_completeness": 0.0
+    "pruned": [
+     "programs.presumptive: 3 items not named in the trimmed quote",
+     "apply.documents_required: 1 item not named in the trimmed quote"
+    ],
+    "income_rule_verified": true,
+    "core_completeness": 0.5
    }
   },
   {
@@ -1539,27 +1569,84 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": null,
+    "free_care_max_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "Patients whose family income is at or below 200% of the FPG are eligible to receive emergency or other medically necessary services at no charge",
+     "source_id": "fap-ada5b1150e0e963a",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
     "asset_test": null,
-    "residency": null,
-    "insured_patients_covered": null,
+    "residency": {
+     "value": [
+      "Eligible residents of Bernalillo County will be referred to UNM for their care except for emergency treatment or care not available from UNM."
+     ],
+     "layer": "documented",
+     "quote": "Accordingly, eligible residents of Bernalillo County will be referred to UNM for their care except for emergency treatment or care not available from UNM.",
+     "source_id": "fap-ada5b1150e0e963a",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "The term \u201cunderinsured\u201d includes individuals enrolled in health insurance who are unable to pay for out-of-pocket expenses and fall below 400% of the federal poverty guidelines.",
+     "source_id": "fap-ada5b1150e0e963a",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "min_balance": null,
     "services_excluded": null
    },
    "programs": {
-    "presumptive": null,
+    "presumptive": {
+     "value": [
+      "Patients determined to be homeless",
+      "Participation in Women, Infants and Children programs (WIC)",
+      "Participation in the food stamp program"
+     ],
+     "layer": "documented",
+     "quote": "2. Patients determined to be homeless; || 3. Participation in Women, Infants and Children programs (WIC); || 4. Participation in the food stamp program;",
+     "source_id": "fap-ada5b1150e0e963a",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "state_programs": null
    },
    "apply": {
     "form_url": null,
     "form_version": null,
-    "documents_required": null,
+    "documents_required": {
+     "value": [
+      "tax_return",
+      "pay_stubs"
+     ],
+     "layer": "documented",
+     "quote": "a. A completed financial assistance application || b. Prior year\u2019s tax return(s) || c. Minimum of two most recent pay stubs",
+     "source_id": "fap-ada5b1150e0e963a",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "documents_reported": null,
     "submit_methods": null,
     "window_days_from_first_bill": null,
-    "decision_days": null,
+    "decision_days": {
+     "value": 30,
+     "layer": "documented",
+     "quote": "will notify the patient or applicant in writing of its decision within 30 days of receipt of a completed application",
+     "source_id": "fap-ada5b1150e0e963a",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "decision_days_reported": null
    },
    "collections": {
@@ -1567,7 +1654,15 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": null,
+    "phone": {
+     "value": "505-923-6600",
+     "layer": "documented",
+     "quote": "By contacting a customer service representative at 505-923-6600.",
+     "source_id": "fap-ada5b1150e0e963a",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "hours": null,
     "languages": null
    },
@@ -1607,9 +1702,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: 251% to 400% 50% | Patients whose family income is above 200% but not more than 400% of the FPG are eligible to receive a discount",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: 3. Participation in Women, Infants and Children programs (WIC); | 4. Participation in the food stamp program;",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: b. Prior year\u2019s tax return(s) | c. Minimum of two most recent pay stubs",
+    "eligibility.discount_tiers: value backed by 3 verbatim spans",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent dropped apply.submit_methods: excerpt not in source: Please return completed application and required documentati",
     "agent judge on eligibility.assistance_ceiling_fpl: Quote reads '401% or greater 100%', which does not plainly state that no assistance is offered above 400% FPL.",
     "agent judge on eligibility.asset_test: Quote defines 'underinsured' by insurance enrollment and FPL only; it says nothing about whether assets are considered.",
@@ -1618,71 +1713,52 @@
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 2,
+    "sources_fetched": 3,
     "sources_total": 3,
-    "sources_missing": [
-     "https://onbaseext.phs.org/PEL/DisplayDocument?ContentID=PEL_00176420"
-    ],
+    "sources_missing": [],
     "sha256_match": {
-     "fap-ada5b1150e0e963a": false,
+     "fap-ada5b1150e0e963a": true,
      "fap-2483a7670c61bdc5": true,
      "web-42bb46f242472246": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
-    "accepted": [],
+    "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.residency",
+     "eligibility.insured_patients_covered",
+     "programs.presumptive",
+     "apply.documents_required",
+     "apply.decision_days",
+     "contacts.phone"
+    ],
     "rejected": [
      [
-      "eligibility.free_care_max_fpl",
-      "source text missing"
-     ],
-     [
       "eligibility.discount_tiers",
-      "source text missing"
+      "quote states the patient's share, not a discount"
      ],
      [
       "eligibility.assistance_ceiling_fpl",
-      "source text missing"
+      "value not in quote"
      ],
      [
       "eligibility.asset_test",
-      "source text missing"
-     ],
-     [
-      "eligibility.residency",
-      "source text missing"
-     ],
-     [
-      "eligibility.insured_patients_covered",
-      "source text missing"
-     ],
-     [
-      "programs.presumptive",
-      "source text missing"
+      "quote does not support the asset-test value"
      ],
      [
       "apply.form_url",
       "quote not found in source"
      ],
      [
-      "apply.documents_required",
-      "source text missing"
-     ],
-     [
-      "apply.decision_days",
-      "source text missing"
-     ],
-     [
-      "contacts.phone",
-      "source text missing"
-     ],
-     [
       "contacts.languages",
       "quote not found in source"
      ]
     ],
-    "pruned": [],
-    "income_rule_verified": false,
-    "core_completeness": 0.0
+    "pruned": [
+     "programs.presumptive: 5 items not named in the trimmed quote",
+     "apply.documents_required: 1 item not named in the trimmed quote"
+    ],
+    "income_rule_verified": true,
+    "core_completeness": 0.5
    }
   },
   {
@@ -1736,7 +1812,18 @@
     "services_excluded": null
    },
    "programs": {
-    "presumptive": null,
+    "presumptive": {
+     "value": [
+      "Patients determined to be homeless",
+      "Participation in Women, Infants and Children programs (WIC)"
+     ],
+     "layer": "documented",
+     "quote": "1. Participation or enrollment in state-funded prescription programs; || 2. Patients determined to be homeless; || 3. Participation in Women, Infants and Children programs (WIC);",
+     "source_id": "fap-ada5b1150e0e963a",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "state_programs": null
    },
    "apply": {
@@ -1821,7 +1908,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: 2. Patients determined to be homeless; | 3. Participation in Women, Infants and Children programs (WIC);",
+    "programs.presumptive: value backed by 3 verbatim spans",
     "agent dropped apply.submit_methods: excerpt not in source: Please return completed application and required documentati",
     "agent judge on eligibility.discount_tiers: Quote lists 201% to 250% at 25% and 251% to 400% at 50%; the value records 75% and 50% discounts, and the quote does not state discount percents as discounts.",
     "agent judge on eligibility.assistance_ceiling_fpl: Quote only has a table row '401% or greater 100%'; it does not plainly say no assistance is offered above 400%, and 100% may mean full charges owed.",
@@ -1843,6 +1930,7 @@
      "eligibility.free_care_max_fpl",
      "eligibility.residency",
      "eligibility.insured_patients_covered",
+     "programs.presumptive",
      "apply.documents_required",
      "apply.decision_days",
      "contacts.phone"
@@ -1866,7 +1954,7 @@
      ]
     ],
     "pruned": [
-     "programs.presumptive: none of the listed programs is named in the quote (after trimming)",
+     "programs.presumptive: 6 items not named in the trimmed quote",
      "apply.documents_required: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": true,
@@ -1918,10 +2006,12 @@
      "value": [
       "Patients determined to be homeless",
       "Participation in Women, Infants and Children programs (WIC)",
-      "Participation in the food stamp program"
+      "Participation in the food stamp program",
+      "Subsidized school lunch program eligibility",
+      "Personal bankruptcy"
      ],
      "layer": "documented",
-     "quote": "1. Participation or enrollment in state-funded prescription programs; 2. Patients determined to be homeless; 3. Participation in Women, Infants and Children programs (WIC); 4. Participation in the food stamp program;",
+     "quote": "1. Participation or enrollment in state-funded prescription programs; 2. Patients determined to be homeless; 3. Participation in Women, Infants and Children programs (WIC); 4. Participation in the food stamp program; || 5. Subsidized school lunch program eligibility; 6. Low income/subsidized housing is provided as a valid address; 7. Personal bankruptcy; 8. Patient is deceased with no known estate; || Once determined, due to the inherent nature of the presumptive circumstances, the patient will be eligible for 100% write off of the account balance.",
      "source_id": "fap-ada5b1150e0e963a",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2019,8 +2109,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: 251% to 400% 50% | Patients whose family income is above 200% but not more than 400% of the FPG are eligible to receive a discount for emer",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: 5. Subsidized school lunch program eligibility; 6. Low income/subsidized housing is provided as a valid address; 7. Pers | Once determined, due to the inherent nature of the presumptive circumstances, the patient will be eligible for 100% writ",
+    "eligibility.discount_tiers: value backed by 3 verbatim spans",
+    "programs.presumptive: value backed by 3 verbatim spans",
     "agent dropped apply.submit_methods: excerpt not in source: Please return completed application and required documentati",
     "agent judge on eligibility.assistance_ceiling_fpl: Quote reads '401% or greater 100%' with no statement that no assistance is offered above 400%; the 100% is ambiguous."
    ],
@@ -2047,7 +2137,7 @@
     "rejected": [
      [
       "eligibility.discount_tiers",
-      "value not in quote"
+      "quote states the patient's share, not a discount"
      ],
      [
       "eligibility.assistance_ceiling_fpl",
@@ -2055,7 +2145,7 @@
      ]
     ],
     "pruned": [
-     "programs.presumptive: 5 items not named in the trimmed quote",
+     "programs.presumptive: 3 items not named in the trimmed quote",
      "apply.documents_required: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": true,
@@ -2298,10 +2388,14 @@
       {
        "kind": "portal",
        "detail": "Online at www.holycrossmedicalcenter.org"
+      },
+      {
+       "kind": "phone",
+       "detail": "By contacting a customer service representative at 575-737-3454 or a financial counselor at 575-751-5786"
       }
      ],
      "layer": "documented",
-     "quote": "Online at www.holycrossmedicalcenter.org",
+     "quote": "Online at www.holycrossmedicalcenter.org || Picked up at HCH || By contacting a customer service representative at 575-737-3454.",
      "source_id": "fap-1bec225167c15ed2",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2388,8 +2482,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: 151-200% 77% 23% | 201-250% 67% 33%",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Picked up at HCH | By contacting a customer service representative at 575-737-3454.",
+    "eligibility.discount_tiers: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 3 verbatim spans",
     "agent judge on eligibility.discount_tiers: Quote gives only 101-150% (87%), 151-200% (77%), and 201-250% (67%). The 250-300% tier at 57% is not in the quote.",
     "agent judge on eligibility.assistance_ceiling_fpl: Quote says >300% gets 0%/100% and the patient 'can qualify for self-pay discount', which implies assistance continues above 300% FPL, not that none is offered.",
     "agent judge on eligibility.min_balance: Quote gives $1,500 as a threshold below which predictive software may determine eligibility. It does not say $1,500 is a minimum balance required for assistance.",
@@ -2432,7 +2526,7 @@
      ]
     ],
     "pruned": [
-     "apply.submit_methods: 2 items not named in the trimmed quote"
+     "apply.submit_methods: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": true,
     "core_completeness": 0.67

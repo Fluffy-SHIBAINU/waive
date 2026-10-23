@@ -71,10 +71,14 @@
    "programs": {
     "presumptive": {
      "value": [
-      "Medicaid enrolled"
+      "Medicaid enrolled",
+      "SNAP",
+      "Alaska Temporary Assistance Program (ATAP)",
+      "Children's Health Insurance Program (CHIP or Denali KidCare)",
+      "Women, Infants and Children Program (WIC)"
      ],
      "layer": "documented",
-     "quote": "Patients who are participating in state Medicaid programs are eligible for presumptive assistance.",
+     "quote": "Patients who are participating in state Medicaid programs are eligible for presumptive assistance. || For patients who participate in state funded FPL-qualified public assistance programs (e.g., Supplemental Nutrition Assistance Program (SNAP); Alaska Temporary Assistance Program (ATAP); Children's Health Insurance Program (CHIP or Denali KidCare); Women, Infants and Children Program (WIC)",
      "source_id": "fap-e3440884ff6f53a6",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -173,7 +177,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: For patients who participate in state funded FPL-qualified public assistance programs (e.g., Supplemental Nutrition Assi",
+    "programs.presumptive: value backed by 2 verbatim spans",
     "agent judge on programs.presumptive: Only Medicaid participants are stated as presumptively eligible. The other programs are listed with 'e.g.' (non-exhaustive) and no presumptive wording.",
     "agent judge on apply.window_days_from_first_bill: Quote gives a 240-day FAP-Eligible Time Period but truncates before stating it runs from the first bill."
    ],
@@ -199,9 +203,7 @@
      "contacts.phone"
     ],
     "rejected": [],
-    "pruned": [
-     "programs.presumptive: 4 items not named in the trimmed quote"
-    ],
+    "pruned": [],
     "income_rule_verified": true,
     "core_completeness": 0.67
    }
@@ -230,7 +232,26 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "discount_tiers": null,
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "200",
+       "max_fpl_inclusive": "300",
+       "discount_percent": 85
+      },
+      {
+       "min_fpl_exclusive": "300",
+       "max_fpl_inclusive": "400",
+       "discount_percent": 80
+      }
+     ],
+     "layer": "documented",
+     "quote": "Patients with family income of 201%-300% will receive a balance adjustment of 85% of Gross Charges; || Patients with family income of 301%-400% will receive a balance adjustment of 80% of Gross Charges;",
+     "source_id": "fap-fec4d093f708d0a6",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": null,
@@ -256,10 +277,11 @@
     "documents_required": {
      "value": [
       "tax_return",
-      "other"
+      "other",
+      "bank_statements"
      ],
      "layer": "documented",
-     "quote": "\u25a0 Copies of the previous year\u2019s income tax return",
+     "quote": "\u25a0 Copies of the previous year\u2019s income tax return || \u25a0 Current copy of the employer\u2019s check stub || \u25a0 Copies of all bank statements for prior 3 months",
      "source_id": "fap-fec4d093f708d0a6",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -275,10 +297,14 @@
       {
        "kind": "mail",
        "detail": "Mat-Su Regional Medical Center Financial Counselor PO Box 1687 Palmer, AK 99645"
+      },
+      {
+       "kind": "portal",
+       "detail": "www.matsuregional.com/community-resources#fap"
       }
      ],
      "layer": "documented",
-     "quote": "Patients may obtain Financial Assistance applications, as well as assistance with completing the application by calling a financial counselor at (907)861-6579 or by writing to the following address.",
+     "quote": "Patients may obtain Financial Assistance applications, as well as assistance with completing the application by calling a financial counselor at (907)861-6579 or by writing to the following address. || Applications may also be found at the following website: www.matsuregional.com/community-resources#fap",
      "source_id": "fap-fec4d093f708d0a6",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -368,10 +394,10 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: Patients with family income of 301%-400% will receive a balance adjustment of 80% of Gross Charges;",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
     "eligibility.insured_patients_covered: quote matched the source only after typography normalization",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: \u25a0 Current copy of the employer\u2019s check stub | \u25a0 Copies of all bank statements for prior 3 months",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Applications may also be found at the following website: www.matsuregional.com/community-resources#fap",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 2 verbatim spans",
     "agent dropped programs.presumptive: excerpt not in source: Patients covered by out of state Medicaid where the hospital",
     "agent judge on apply.submit_methods: Quote gives the phone number and website, and says mail goes to 'the following address', but the mailing address text is not in the quote.",
     "agent judge on collections.eca_wait_days: Quote's 120 days is the window to complete the Financial Assistance Application from the first billing statement, not a wait before collection actions."
@@ -389,6 +415,7 @@
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
      "eligibility.min_balance",
      "apply.documents_required",
      "apply.submit_methods",
@@ -399,10 +426,6 @@
     ],
     "rejected": [
      [
-      "eligibility.discount_tiers",
-      "value not in quote"
-     ],
-     [
       "eligibility.asset_test",
       "quote does not support the asset-test value"
      ],
@@ -411,12 +434,9 @@
       "quote does not say whether insured patients are covered"
      ]
     ],
-    "pruned": [
-     "apply.documents_required: 1 item not named in the trimmed quote",
-     "apply.submit_methods: 1 item not named in the trimmed quote"
-    ],
+    "pruned": [],
     "income_rule_verified": true,
-    "core_completeness": 0.67
+    "core_completeness": 0.83
    }
   },
   {
@@ -468,17 +488,37 @@
    "apply": {
     "form_url": null,
     "form_version": null,
-    "documents_required": null,
+    "documents_required": {
+     "value": [
+      "bank_statements",
+      "proof_of_income",
+      "other"
+     ],
+     "layer": "documented",
+     "quote": "Financial Statement (exhibit A) || Bank statements for the last 3 months including checking, savings, certificates of deposit, etc. || Proof of Income \u2013 3 most recent pay stub indicating year-to-date earnings",
+     "source_id": "fap-1c84bcf6827af8af",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "documents_reported": null,
     "submit_methods": {
      "value": [
       {
        "kind": "in_person",
        "detail": "Turned into the Cashier or Financial Counselor offices in the main CPH Hospital location"
+      },
+      {
+       "kind": "fax",
+       "detail": "Faxed to the Cashier office at 907-714-4637"
+      },
+      {
+       "kind": "mail",
+       "detail": "Mailed to: Financial Counselor, Central Peninsula Hospital, 250 Hospital Place, Soldotna, AK 99669"
       }
      ],
      "layer": "documented",
-     "quote": "1) Turned into the Cashier or Financial Counselor offices in the main CPH Hospital location",
+     "quote": "1) Turned into the Cashier or Financial Counselor offices in the main CPH Hospital location || 2) Faxed to the Cashier office at 907-714-4637 || 3) Mailed to: Financial Counselor Central Peninsula Hospital 250 Hospital Place Soldotna, AK 99669",
      "source_id": "fap-1c84bcf6827af8af",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -557,8 +597,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Bank statements for the last 3 months including checking, savings, certificates of deposit, etc. | Proof of Income \u2013 3 most recent pay stub indicating year-to-date earnings",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: 2) Faxed to the Cashier office at 907-714-4637 | 3) Mailed to: Financial Counselor Central Peninsula Hospital 250 Hospital Place Soldotna, AK 99669",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 3 verbatim spans",
     "agent dropped eligibility.free_care_max_fpl: quote is not a substring of the source",
     "agent dropped eligibility.discount_tiers: excerpt not in source: Monthly Poverty Income Level < 201-250% ... 70% Assistance",
     "agent judge on eligibility.insured_patients_covered: Quote only covers Medicaid-eligible patients getting 100% charity on copay/coinsurance; it does not state that insured patients are generally covered.",
@@ -578,6 +618,7 @@
     "accepted": [
      "eligibility.insured_patients_covered",
      "programs.presumptive",
+     "apply.documents_required",
      "apply.submit_methods",
      "apply.window_days_from_first_bill",
      "apply.decision_days",
@@ -594,11 +635,10 @@
      ]
     ],
     "pruned": [
-     "apply.documents_required: none of the listed documents is named in the quote (after trimming)",
-     "apply.submit_methods: 2 items not named in the trimmed quote"
+     "apply.documents_required: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": false,
-    "core_completeness": 0.33
+    "core_completeness": 0.5
    }
   },
   {
@@ -658,10 +698,12 @@
    "programs": {
     "presumptive": {
      "value": [
-      "Medicaid"
+      "Medicaid",
+      "SNAP",
+      "WIC"
      ],
      "layer": "documented",
-     "quote": "Patients who are participating in state Medicaid programs are eligible for presumptive assistance.",
+     "quote": "Patients who are participating in state Medicaid programs are eligible for presumptive assistance. || For patients who participate in state funded FPL-qualified public assistance programs (e.g., Supplemental Nutrition Assistance Program (SNAP); Alaska Temporary Assistance Program (ATAP); Children's Health Insurance Program (CHIP or Denali KidCare); Women, Infants and Children Program (WIC)",
      "source_id": "fap-e3440884ff6f53a6",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -769,7 +811,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: For patients who participate in state funded FPL-qualified public assistance programs (e.g., Supplemental Nutrition Assi",
+    "programs.presumptive: value backed by 2 verbatim spans",
     "contacts.hours: quote matched the source only after typography normalization",
     "agent dropped apply.submit_methods: excerpt not in source: Mail completed application with all documentation to: Covena",
     "agent judge on eligibility.asset_test: Quote says assets are considered only as required by CMS for Medicare cost reporting, for Medicare patients without Medicaid. It does not state a general asset test.",
@@ -806,7 +848,6 @@
      ]
     ],
     "pruned": [
-     "programs.presumptive: 2 items not named in the trimmed quote",
      "apply.documents_required: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": true,
@@ -889,17 +930,38 @@
    "apply": {
     "form_url": null,
     "form_version": null,
-    "documents_required": null,
+    "documents_required": {
+     "value": [
+      "other",
+      "bank_statements",
+      "pay_stubs",
+      "tax_return"
+     ],
+     "layer": "documented",
+     "quote": "a) Brief written or typed explanation of applicant\u2019s circumstances || b) Bank statements for the last 3-months including checking, savings, certificates of deposit etc. for all household members. || c) Proof of Income \u2013 Most recent pay stubs indicating year to date earnings and/or unemployment check stubs or determination letter, or Retirement Benefit Statement, SSI, SSDI statement (or proof of deposit on bank statement). d) Last year's tax return",
+     "source_id": "fap-d51df470da4669e9",
+     "checked_on": "2026-10-23",
+     "confidence": 0.8,
+     "support_count": 0
+    },
     "documents_reported": null,
     "submit_methods": {
      "value": [
       {
        "kind": "in_person",
        "detail": "Turned into the Front Desk or Financial Counselor offices in the main lobby of SPH"
+      },
+      {
+       "kind": "fax",
+       "detail": "Faxed to registration office at 907-235-0251"
+      },
+      {
+       "kind": "email",
+       "detail": "Emailed to the Financial Navigators at PFN@sphosp.org"
       }
      ],
      "layer": "documented",
-     "quote": "a) Turned into the Front Desk or Financial Counselor offices in the main lobby of SPH",
+     "quote": "a) Turned into the Front Desk or Financial Counselor offices in the main lobby of SPH || b) Faxed to registration office at 907-235-0251 || c) Emailed to the Financial Navigators at PFN@sphosp.org",
      "source_id": "fap-d51df470da4669e9",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -978,9 +1040,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: b) Bank statements for the last 3-months including checking, savings, certificates of deposit etc. for all household mem | c) Proof of Income \u2013 Most recent pay stubs indicating year to date earnings and/or unemployment check stubs or determina",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "apply.documents_required: quote matched the source only after typography normalization",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: b) Faxed to registration office at 907-235-0251 | c) Emailed to the Financial Navigators at PFN@sphosp.org",
+    "apply.submit_methods: value backed by 3 verbatim spans",
     "agent dropped eligibility.free_care_max_fpl: quote is not a substring of the source",
     "agent dropped contacts.hours: quote is not a substring of the source",
     "agent judge on apply.submit_methods: Quote lists only in-person, fax, and email; the recorded mail method to the Homer address does not appear in the quote.",
@@ -1002,6 +1064,7 @@
      "eligibility.insured_patients_covered",
      "eligibility.min_balance",
      "programs.presumptive",
+     "apply.documents_required",
      "apply.submit_methods",
      "apply.window_days_from_first_bill",
      "apply.decision_days",
@@ -1018,11 +1081,10 @@
      ]
     ],
     "pruned": [
-     "apply.documents_required: none of the listed documents is named in the quote (after trimming)",
-     "apply.submit_methods: 3 items not named in the trimmed quote"
+     "apply.submit_methods: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": true,
-    "core_completeness": 0.5
+    "core_completeness": 0.67
    }
   }
  ]

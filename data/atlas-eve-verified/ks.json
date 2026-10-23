@@ -86,12 +86,16 @@
        "detail": "Fax: 417-829-4604"
       },
       {
+       "kind": "portal",
+       "detail": "find an application on www.mercy.net/fa"
+      },
+      {
        "kind": "phone",
        "detail": "Mercy Health customer service 844-962-7474"
       }
      ],
      "layer": "documented",
-     "quote": "Completed applications for financial assistance can be returned to: Mercy Health Attention Financial Assistance 2115 S Fremont Avenue, Suite 5300 Springfield, MO 65804 Fax: 417-829-4604",
+     "quote": "Completed applications for financial assistance can be returned to: Mercy Health Attention Financial Assistance 2115 S Fremont Avenue, Suite 5300 Springfield, MO 65804 Fax: 417-829-4604 || Written applications: Patients may request a paper application to apply for assistance at any time or find an application on www.mercy.net/fa. || Mercy Hospital Pittsburg: Questions about the financial assistance policy may be directed to Mercy Health customer service 844-962-7474.",
      "source_id": "fap-4dbed64b2b51c210",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -155,7 +159,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Written applications: Patients may request a paper application to apply for assistance at any time or find an applicatio | Mercy Hospital Pittsburg: Questions about the financial assistance policy may be directed to Mercy Health customer servi",
+    "apply.submit_methods: value backed by 3 verbatim spans",
     "agent judge on programs.presumptive: Quote covers incarcerated/homeless, bankruptcy, and deceased patients; it does not mention low propensity to pay as a presumptive category.",
     "agent judge on contacts.languages: Quote says paper application and policy are available in English and other prevalent languages; Spanish is not named."
    ],
@@ -180,8 +184,7 @@
     ],
     "rejected": [],
     "pruned": [
-     "programs.presumptive: 1 item not named in the trimmed quote",
-     "apply.submit_methods: 1 item not named in the trimmed quote"
+     "programs.presumptive: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": true,
     "core_completeness": 0.67
@@ -236,7 +239,18 @@
     "services_excluded": null
    },
    "programs": {
-    "presumptive": null,
+    "presumptive": {
+     "value": [
+      "Medicaid",
+      "WIC"
+     ],
+     "layer": "documented",
+     "quote": "The patient qualifies for limited benefits under the state\u2019s Medicaid program || Participation in Women, Infants and Children programs (WIC);",
+     "source_id": "fap-de067a7c6c9769bf",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "state_programs": null
    },
    "apply": {
@@ -356,7 +370,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: Participation in Women, Infants and Children programs (WIC);",
+    "programs.presumptive: value backed by 2 verbatim spans",
     "agent judge on eligibility.free_care_max_fpl: Quote gives a 200% FPL income limit for eligibility but never says this is the 100% free-care line.",
     "agent judge on eligibility.assistance_ceiling_fpl: Quote says Discount Payment Program eligibility is at or below 350% FPL. It does not say no assistance is offered above 350%.",
     "agent judge on apply.window_days_from_first_bill: Quote says 'no later than 150 following the date of the first post-discharge statement' with no time unit, so days are not stated.",
@@ -378,6 +392,7 @@
      "eligibility.free_care_max_fpl",
      "eligibility.assistance_ceiling_fpl",
      "eligibility.insured_patients_covered",
+     "programs.presumptive",
      "apply.documents_required",
      "apply.submit_methods",
      "apply.window_days_from_first_bill",
@@ -386,9 +401,7 @@
      "contacts.languages"
     ],
     "rejected": [],
-    "pruned": [
-     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)"
-    ],
+    "pruned": [],
     "income_rule_verified": true,
     "core_completeness": 0.67
    }
@@ -480,11 +493,13 @@
     "documents_required": {
      "value": [
       "tax_return",
+      "pay_stubs",
       "proof_of_income",
+      "social_security_letter",
       "other"
      ],
      "layer": "documented",
-     "quote": "Income Tax Return \u2013 Complete Federal Income Tax Return, with preparer\u2019s signature.",
+     "quote": "Income Tax Return \u2013 Complete Federal Income Tax Return, with preparer\u2019s signature. || Salary/Wages \u2013 Copies of pay stubs from the most recent three months from each employer. || Government Assistance \u2013 A current Social Security benefit letter; SSI Disability letter; proof of Veteran\u2019s benefits",
      "source_id": "fap-d53271e7565f1154",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -567,7 +582,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Salary/Wages \u2013 Copies of pay stubs from the most recent three months from each employer. | Government Assistance \u2013 A current Social Security benefit letter; SSI Disability letter; proof of Veteran\u2019s benefits",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent dropped apply.submit_methods: excerpt not in source: Complete this application and send to Salina Regional Health",
     "agent judge on apply.documents_required: Quote lists only three items (tax return, pay stubs, government assistance letters). Child support, DCF proof, scholarships, and other income documents are not in the quote."
    ],
@@ -599,9 +614,7 @@
       "quote states the percentage as a floor (above, over, at least), not a ceiling"
      ]
     ],
-    "pruned": [
-     "apply.documents_required: 2 items not named in the trimmed quote"
-    ],
+    "pruned": [],
     "income_rule_verified": true,
     "core_completeness": 0.67
    }
@@ -630,7 +643,31 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "discount_tiers": null,
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "130",
+       "max_fpl_inclusive": "175",
+       "discount_percent": 75
+      },
+      {
+       "min_fpl_exclusive": "175",
+       "max_fpl_inclusive": "250",
+       "discount_percent": 50
+      },
+      {
+       "min_fpl_exclusive": "250",
+       "max_fpl_inclusive": "400",
+       "discount_percent": 30
+      }
+     ],
+     "layer": "documented",
+     "quote": "75% discount if income is 131% to 175% of FPL || 50% discount if income is 176% to 250% of FPL || 30% discount if income is 251% to 400% of FPL",
+     "source_id": "web-c29e928f485bd971",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": {
@@ -690,10 +727,14 @@
       {
        "kind": "mail",
        "detail": "PO Box 8110 Hays, KS 67601"
+      },
+      {
+       "kind": "in_person",
+       "detail": "Registration Department at HaysMed at 2220 Canterbury Drive, Hays, KS"
       }
      ],
      "layer": "documented",
-     "quote": "submitting it, along with other required documents, to HaysMed, 2220 Canterbury, Hays, KS 67601.",
+     "quote": "submitting it, along with other required documents, to HaysMed, 2220 Canterbury, Hays, KS 67601. || The completed application, along with the supporting documents listed on the application, may be sent to HaysMed at PO Box 8110 Hays, KS 67601 , or it may be delivered to the Registration Department at HaysMed at 2220 Canterbury Drive, Hays, KS.",
      "source_id": "web-c29e928f485bd971",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -755,8 +796,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: 50% discount if income is 176% to 250% of FPL | 30% discount if income is 251% to 400% of FPL",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: The completed application, along with the supporting documents listed on the application, may be sent to HaysMed at PO B",
+    "eligibility.discount_tiers: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 2 verbatim spans",
     "agent judge on apply.submit_methods: Quote gives the 2220 Canterbury address for submitting but does not state that method is mail; kind 'mail' is inferred.",
     "agent judge on contacts.hours: Quote's hours are tied to the 785-623-5255 customer service center, not the 785-623-5100 phone recorded in contacts.phone.",
     "agent judge on contacts.languages: Quote is only a link to a Spanish-language application PDF; it does not state Spanish-language contact support."
@@ -775,6 +816,7 @@
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
      "eligibility.residency",
      "programs.state_programs",
      "apply.documents_required",
@@ -784,10 +826,6 @@
     ],
     "rejected": [
      [
-      "eligibility.discount_tiers",
-      "value not in quote"
-     ],
-     [
       "apply.form_url",
       "quote not found in source"
      ],
@@ -796,11 +834,9 @@
       "quote not found in source"
      ]
     ],
-    "pruned": [
-     "apply.submit_methods: 1 item not named in the trimmed quote"
-    ],
+    "pruned": [],
     "income_rule_verified": true,
-    "core_completeness": 0.67
+    "core_completeness": 0.83
    }
   },
   {
@@ -1006,7 +1042,19 @@
     "services_excluded": null
    },
    "programs": {
-    "presumptive": null,
+    "presumptive": {
+     "value": [
+      "State-funded prescription programs",
+      "Homelessness or receipt of care from homeless shelter",
+      "Participation in Women, Infants, Children programs (WIC)"
+     ],
+     "layer": "documented",
+     "quote": "State-funded prescription programs || Homelessness or receipt of care from homeless shelter || Participation in Women, Infants, Children programs (WIC)",
+     "source_id": "fap-149676b449aa8135",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "state_programs": {
      "value": [
       {
@@ -1114,7 +1162,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Homelessness or receipt of care from homeless shelter | Participation in Women, Infants, Children programs (WIC)",
+    "programs.presumptive: value backed by 3 verbatim spans",
     "agent dropped apply.documents_required: quote is not a substring of the source",
     "agent judge on programs.presumptive: Quote lists only three items (state-funded prescription, homelessness/shelter, WIC). Value adds housing, food stamps, and deceased with no estate, which the quote does not show."
    ],
@@ -1133,6 +1181,7 @@
      "eligibility.free_care_max_fpl",
      "eligibility.residency",
      "eligibility.insured_patients_covered",
+     "programs.presumptive",
      "programs.state_programs",
      "apply.submit_methods",
      "apply.window_days_from_first_bill",
@@ -1146,7 +1195,7 @@
      ]
     ],
     "pruned": [
-     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)"
+     "programs.presumptive: 3 items not named in the trimmed quote"
     ],
     "income_rule_verified": true,
     "core_completeness": 0.5
@@ -1241,7 +1290,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Patients may obtain a Financial Assistance application by requesting in writing or by contacting the business office by phone or email.",
+     "quote": "Patients may obtain a Financial Assistance application by requesting in writing or by contacting the business office by phone or email. || Assistance may be requested by phone or in person by calling or visiting the Patient Accounts department.",
      "source_id": "fap-dbc8f9fafa7df518",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1328,8 +1377,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: 175% FPL 75% Financial assistance | 200% FPL 71% Financial assistance",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Assistance may be requested by phone or in person by calling or visiting the Patient Accounts department.",
+    "eligibility.discount_tiers: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 2 verbatim spans",
     "agent judge on eligibility.discount_tiers: Quote gives the 150/175/200% bounds and percents but not the 125% lower bound; 125 appears only in the free-care quote.",
     "agent judge on apply.submit_methods: Quote supports phone, email, and in-person, but 'requesting in writing' does not state mail as a submission method."
    ],
@@ -1453,7 +1502,7 @@
    "eve_review": [
     "eligibility.free_care_max_fpl: the quote is a copay row with a dollar copay, not free care; left for review, not recorded",
     "eligibility.free_care_max_fpl: owner review: discount, not free care.",
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: 201-250% 20% of charges 20% of charges 35% of charges",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
     "agent dropped contacts.languages: quote is not a substring of the source",
     "agent judge on eligibility.free_care_max_fpl: Quote shows a '0-150%' band with a $650 copay per visit and $50 copay, not a 100% free care statement; it does not state free care applies up to 150% FPL.",
     "agent judge on eligibility.discount_tiers: Quote gives percents of charges (10%, 25%, 20%, 35%) that are ambiguous across multiple columns; it does not clearly state 10% and 20% as the partial discounts for 151-200% and 201-250%.",
@@ -1475,7 +1524,7 @@
     "rejected": [
      [
       "eligibility.discount_tiers",
-      "value not in quote"
+      "quote states the patient's share, not a discount"
      ]
     ],
     "pruned": [],
@@ -1542,10 +1591,12 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "pay_stubs"
+      "pay_stubs",
+      "bank_statements",
+      "tax_return"
      ],
      "layer": "documented",
-     "quote": "Two most recent paystubs from your current employer(s)",
+     "quote": "Two most recent paystubs from your current employer(s) || Two most recent bank statements from all checking and savings accounts owned by you and/or your spouse || Last Year's Federal Tax Return (if you did not file taxes, please explain why in the letter space provided below) Recent 401k/Retirement/CD/etc. Statements",
      "source_id": "fap-c573fbd6b7c6a25d",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1618,8 +1669,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: Patient homeless",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Two most recent bank statements from all checking and savings accounts owned by you and/or your spouse | Last Year's Federal Tax Return (if you did not file taxes, please explain why in the letter space provided below) Recent",
+    "programs.presumptive: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent dropped apply.submit_methods: excerpt not in source: Begin the process by completing the financial assistance doc",
     "agent judge on eligibility.residency: Quote says the program serves Kansas citizens and other states; the value is a copied sentence, not a residency flag or rule, so it does not state a usable value.",
     "agent judge on apply.form_url: Quote is only a relative link path labeled English; it does not state the full URL given in the value.",
@@ -1660,7 +1711,7 @@
     ],
     "pruned": [
      "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
-     "apply.documents_required: 3 items not named in the trimmed quote"
+     "apply.documents_required: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": false,
     "core_completeness": 0.33
@@ -1718,10 +1769,12 @@
     "documents_required": {
      "value": [
       "tax_return",
+      "pay_stubs",
+      "bank_statements",
       "other"
      ],
      "layer": "documented",
-     "quote": "Most recent Federal Income Tax forms (all forms with IRS) with W2s \u2013 If you have not filed Federal Income taxes, please explain why",
+     "quote": "Most recent Federal Income Tax forms (all forms with IRS) with W2s \u2013 If you have not filed Federal Income taxes, please explain why || Pay stubs for the last month for you and your spouse || Copies of most recent statement(s) for savings account",
      "source_id": "fap-7f5d1acd4ee13c5a",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1735,12 +1788,16 @@
        "detail": "visiting the hospital or clinic patient registration desks"
       },
       {
+       "kind": "portal",
+       "detail": "Downloading and printing a financial assistance application form from the SVH website"
+      },
+      {
        "kind": "mail",
        "detail": "calling Customer Service to have an application mailed"
       }
      ],
      "layer": "documented",
-     "quote": "Obtaining a paper financial assistance application form with instructions on how to complete and required documentation to submit, free of charge, by visiting the hospital or clinic patient registration desks, or by calling Customer Service to have an application mailed.",
+     "quote": "Obtaining a paper financial assistance application form with instructions on how to complete and required documentation to submit, free of charge, by visiting the hospital or clinic patient registration desks, or by calling Customer Service to have an application mailed. || Downloading and printing a financial assistance application form from the SVH website",
      "source_id": "fap-af3cf4529e86e9ea",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1829,8 +1886,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Pay stubs for the last month for you and your spouse | Copies of most recent statement(s) for savings account",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Downloading and printing a financial assistance application form from the SVH website",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 2 verbatim spans",
     "apply.form_url: not an absolute URL ('/wp-content/uploads/6.1.24-Exhibit-A-FAP-Application.pdf'); dropped",
     "agent dropped programs.presumptive: quote shorter than 8 characters",
     "agent judge on apply.documents_required: Quote lists only tax forms, pay stubs, and savings statement; value adds Social Security letter and checking statement, which the quote does not state.",
@@ -1868,8 +1925,7 @@
      ]
     ],
     "pruned": [
-     "apply.documents_required: 3 items not named in the trimmed quote",
-     "apply.submit_methods: 1 item not named in the trimmed quote"
+     "apply.documents_required: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": false,
     "core_completeness": 0.5
@@ -1919,10 +1975,12 @@
     "documents_required": {
      "value": [
       "tax_return",
+      "pay_stubs",
+      "social_security_letter",
       "other"
      ],
      "layer": "documented",
-     "quote": "Most recent Federal Income Tax forms (all forms with IRS) with W2s \u2013 If you have not filed Federal Income taxes, please explain why",
+     "quote": "Most recent Federal Income Tax forms (all forms with IRS) with W2s \u2013 If you have not filed Federal Income taxes, please explain why || Pay stubs for the last month for you and your spouse || Social Security benefits letter/statement",
      "source_id": "fap-7f5d1acd4ee13c5a",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1938,10 +1996,14 @@
       {
        "kind": "mail",
        "detail": "calling Customer Service to have an application mailed; return completed form by mail"
+      },
+      {
+       "kind": "portal",
+       "detail": "Downloading and printing a financial assistance application form from the SVH website"
       }
      ],
      "layer": "documented",
-     "quote": "Obtaining a paper financial assistance application form with instructions on how to complete and required documentation to submit, free of charge, by visiting the hospital or clinic patient registration desks, or by calling Customer Service to have an application mailed.",
+     "quote": "Obtaining a paper financial assistance application form with instructions on how to complete and required documentation to submit, free of charge, by visiting the hospital or clinic patient registration desks, or by calling Customer Service to have an application mailed. || Downloading and printing a financial assistance application form from the SVH website",
      "source_id": "fap-af3cf4529e86e9ea",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2030,8 +2092,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Pay stubs for the last month for you and your spouse | Social Security benefits letter/statement",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Downloading and printing a financial assistance application form from the SVH website",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 2 verbatim spans",
     "agent judge on apply.form_url: Quote gives only the relative path /wp-content/uploads/...; the domain https://www.stormontvail.org is not stated in the quote.",
     "agent judge on apply.documents_required: Quote lists only tax forms with W2s, pay stubs, and Social Security letter. Savings and checking account statements are not mentioned.",
     "agent judge on apply.submit_methods: Quote supports in-person and online download, and a mailed application. It does not say the completed form is returned by mail."
@@ -2071,8 +2133,7 @@
      ]
     ],
     "pruned": [
-     "apply.documents_required: 3 items not named in the trimmed quote",
-     "apply.submit_methods: 1 item not named in the trimmed quote"
+     "apply.documents_required: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": false,
     "core_completeness": 0.5
@@ -2141,10 +2202,12 @@
      "value": [
       "Homelessness",
       "Women, Infants, Children programs (WIC)",
-      "Food stamp"
+      "Food stamp",
+      "Medicaid spenddown",
+      "deceased with no known estate"
      ],
      "layer": "documented",
-     "quote": "A presumptive eligibility determination in unusual or extenuating circumstances (such as homelessness) when a patient is unable to submit a complete application. Presumptive eligibility may be determined on the basis of individual life circumstances which may include, but is not limited to: \u2022 State-funded prescription programs; \u2022 Homelessness or receipt of care from a homeless shelter; \u2022 Participation in Women, Infants, Children programs (WIC); \u2022 Food stamp eligibility;",
+     "quote": "A presumptive eligibility determination in unusual or extenuating circumstances (such as homelessness) when a patient is unable to submit a complete application. Presumptive eligibility may be determined on the basis of individual life circumstances which may include, but is not limited to: \u2022 State-funded prescription programs; \u2022 Homelessness or receipt of care from a homeless shelter; \u2022 Participation in Women, Infants, Children programs (WIC); \u2022 Food stamp eligibility; || Patient is deceased with no known estate; || Patients who have Medicaid spenddown when medically necessary services are provided.",
      "source_id": "fap-4a110098eac2db43",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2165,11 +2228,13 @@
     "form_version": null,
     "documents_required": {
      "value": [
+      "social_security_letter",
+      "other",
       "tax_return",
-      "other"
+      "proof_of_residency"
      ],
      "layer": "documented",
-     "quote": "*Most recent complete Federal income tax return, including all applicable W-2, 1099, 1098, etc. or IRS Verification of Non-filing Letter",
+     "quote": "*Most recent complete Federal income tax return, including all applicable W-2, 1099, 1098, etc. or IRS Verification of Non-filing Letter || Proof of physical address (at least two of the following: current or prior month utility, rent, or mortgage bill) || Social Security/Disability benefits letter",
      "source_id": "fap-78e7635f6f05460c",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2260,8 +2325,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Patient is deceased with no known estate; | Patients who have Medicaid spenddown when medically necessary services are provided.",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Proof of physical address (at least two of the following: current or prior month utility, rent, or mortgage bill) | Social Security/Disability benefits letter",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent dropped apply.submit_methods: excerpt not in source: To see if you may qualify, or to apply online through Newton",
     "agent judge on eligibility.free_care_max_fpl: Quote says 0% to 275% FPL gets a discount of 100% less the nominal flat fee, which is not stated as 100% free care.",
     "agent judge on eligibility.discount_tiers: Quote gives 40% of AGB above 275% FPL but no upper bound; the 9999 max_fpl_inclusive does not appear in the quote.",
@@ -2299,10 +2364,7 @@
       "value not in quote"
      ]
     ],
-    "pruned": [
-     "programs.presumptive: 2 items not named in the trimmed quote",
-     "apply.documents_required: 2 items not named in the trimmed quote"
-    ],
+    "pruned": [],
     "income_rule_verified": true,
     "core_completeness": 0.67
    }
@@ -2331,7 +2393,26 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "discount_tiers": null,
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "100",
+       "max_fpl_inclusive": "150",
+       "discount_percent": 75
+      },
+      {
+       "min_fpl_exclusive": "150",
+       "max_fpl_inclusive": "200",
+       "discount_percent": 50
+      }
+     ],
+     "layer": "documented",
+     "quote": "Between 101-150% 75% Discounted Care || Between 151-200% 50% Discounted Care",
+     "source_id": "fap-c2f255961d23421c",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": {
@@ -2366,10 +2447,12 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "proof_of_residency"
+      "proof_of_residency",
+      "tax_return",
+      "pay_stubs"
      ],
      "layer": "documented",
-     "quote": "Proof of Kansas Residency (copy of utility bill, etc.)",
+     "quote": "Proof of Kansas Residency (copy of utility bill, etc.) || Copy of most recent tax return, or not filing statement || Three most recent pay stubs from each earner in the household",
      "source_id": "fap-27a23cf7942b23ee",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2466,9 +2549,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: Between 151-200% 50% Discounted Care",
-    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: Homelessness b. Patient is deceased with no known estate c. Patient balances remain after all assets in an estate have b",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Copy of most recent tax return, or not filing statement | Three most recent pay stubs from each earner in the household",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "programs.presumptive: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent dropped apply.submit_methods: excerpt not in source: Applications can be returned to:\nMcPherson Hospital\nAttn: Fi",
     "agent judge on eligibility.assistance_ceiling_fpl: Quote is a worked example showing 290% FPL is ineligible; it does not state that assistance ends at 200% FPL."
    ],
@@ -2485,6 +2568,7 @@
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
      "eligibility.residency",
      "eligibility.insured_patients_covered",
      "apply.documents_required",
@@ -2495,10 +2579,6 @@
      "contacts.hours"
     ],
     "rejected": [
-     [
-      "eligibility.discount_tiers",
-      "value not in quote"
-     ],
      [
       "eligibility.assistance_ceiling_fpl",
       "value not in quote"
@@ -2514,10 +2594,10 @@
     ],
     "pruned": [
      "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
-     "apply.documents_required: 4 items not named in the trimmed quote"
+     "apply.documents_required: 2 items not named in the trimmed quote"
     ],
     "income_rule_verified": true,
-    "core_completeness": 0.5
+    "core_completeness": 0.67
    }
   },
   {
@@ -2739,10 +2819,12 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "pay_stubs"
+      "pay_stubs",
+      "tax_return",
+      "social_security_letter"
      ],
      "layer": "documented",
-     "quote": "Copies of 3 most recent paystubs from employer",
+     "quote": "Copies of 3 most recent paystubs from employer || Copies of most recent yearly tax return (if self-employed, include all schedules) || Social Security and/or Pension Retirement Award Letter",
      "source_id": "fap-da8116e972384e4d",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2823,7 +2905,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Copies of most recent yearly tax return (if self-employed, include all schedules) | Social Security and/or Pension Retirement Award Letter",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent dropped apply.submit_methods: excerpt not in source: Easily apply for financial assistance online or scan the QR ",
     "agent dropped contacts.languages: excerpt not in source: Aplicaci\u00f3n de Asistencia Financiera (PDF)",
     "agent judge on eligibility.free_care_max_fpl: Quote says \"less than or equal to 2501% of the Federal Poverty Level\", which reads as 2501%, not 250.",
@@ -2866,7 +2948,7 @@
      ]
     ],
     "pruned": [
-     "apply.documents_required: 3 items not named in the trimmed quote"
+     "apply.documents_required: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": false,
     "core_completeness": 0.33
@@ -2950,10 +3032,12 @@
     "documents_required": {
      "value": [
       "pay_stubs",
+      "tax_return",
+      "bank_statements",
       "other"
      ],
      "layer": "documented",
-     "quote": "Copies of 3 most recent paystubs from employer",
+     "quote": "Copies of 3 most recent paystubs from employer || Copies of most recent yearly tax return (if self-employed, include all schedules) || Current bank statements (checking and savings accounts) from last 3 months",
      "source_id": "fap-da8116e972384e4d",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3036,7 +3120,7 @@
    "eve_review": [
     "eligibility.asset_test: quote matched the source only after typography normalization",
     "programs.presumptive: quote matched the source only after typography normalization",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Copies of most recent yearly tax return (if self-employed, include all schedules) | Current bank statements (checking and savings accounts) from last 3 months",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "apply.window_days_from_first_bill: quote matched the source only after typography normalization",
     "agent dropped apply.submit_methods: excerpt not in source: Start Application [https://ascension.forms.r1rcm.com/viachri",
     "agent judge on eligibility.free_care_max_fpl: Quote says '2501% of the FPL' (a typo-like figure), not 250%; it does not clearly state 250 as the 100% free care maximum.",
@@ -3077,7 +3161,7 @@
      ]
     ],
     "pruned": [
-     "apply.documents_required: 3 items not named in the trimmed quote"
+     "apply.documents_required: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": true,
     "core_completeness": 0.5
@@ -3124,7 +3208,21 @@
     "services_excluded": null
    },
    "programs": {
-    "presumptive": null,
+    "presumptive": {
+     "value": [
+      "Medicaid enrolled with restricted benefits",
+      "county-level medically indigent services program",
+      "WIC",
+      "food stamp eligibility",
+      "subsidized school lunch program eligibility"
+     ],
+     "layer": "documented",
+     "quote": "The patient qualifies for limited benefits under the state\u2019s Medicaid program, i.e., limited pregnancy or emergency benefits, but does not have benefits for other services provided at the Hospital. || The patient qualifies for a county-level medically indigent services program but no payment is received by the Hospital. || Participation in Women, Infants and Children programs (WIC); \u2022 Food stamp eligibility; \u2022 Subsidized school lunch program eligibility",
+     "source_id": "fap-1303ef6513443a23",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "state_programs": null
    },
    "apply": {
@@ -3137,10 +3235,14 @@
       {
        "kind": "mail",
        "detail": "Providence Medical Center, Attn: Cashier, 8929 Parallel Parkway, Kansas City, KS 66112"
+      },
+      {
+       "kind": "phone",
+       "detail": "(913) 596-4803"
       }
      ],
      "layer": "documented",
-     "quote": "Completed applications should be delivered to: Providence Medical Center Attn: Cashier 8929 Parallel Parkway Kansas City, KS 66112",
+     "quote": "Completed applications should be delivered to: Providence Medical Center Attn: Cashier 8929 Parallel Parkway Kansas City, KS 66112 || (913) 596-4803",
      "source_id": "fap-1303ef6513443a23",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3229,8 +3331,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: The patient qualifies for a county-level medically indigent services program but no payment is received by the Hospital. | Participation in Women, Infants and Children programs (WIC); \u2022 Food stamp eligibility; \u2022 Subsidized school lunch program",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: (913) 596-4803",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 2 verbatim spans",
     "agent judge on eligibility.free_care_max_fpl: Quote gives a 200% FPL income limit but never says free care or 100% free care applies at that level.",
     "agent judge on programs.presumptive: Quote supports Medicaid limited benefits, county medically indigent program, WIC, food stamps, and school lunch, but nothing about low income/subsidized housing.",
     "agent judge on apply.window_days_from_first_bill: Quote says 'no later than 150 following the date of the first post-discharge statement' with no unit stated, so 'days' is not shown.",
@@ -3250,6 +3352,7 @@
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.insured_patients_covered",
+     "programs.presumptive",
      "apply.submit_methods",
      "apply.window_days_from_first_bill",
      "collections.eca_wait_days",
@@ -3258,8 +3361,7 @@
     ],
     "rejected": [],
     "pruned": [
-     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
-     "apply.submit_methods: 1 item not named in the trimmed quote"
+     "programs.presumptive: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": true,
     "core_completeness": 0.5
@@ -3315,10 +3417,14 @@
       {
        "kind": "mail",
        "detail": "available at no charge, both in person and via mail"
+      },
+      {
+       "kind": "phone",
+       "detail": "Staff are available to assist over the phone, (316) 634-0090"
       }
      ],
      "layer": "documented",
-     "quote": "The Financial Assistance Application is available at no charge, both in person and via mail.",
+     "quote": "The Financial Assistance Application is available at no charge, both in person and via mail. || Staff are available to assist over the phone, (316) 634-0090, Monday through Friday 9:00am to 4:00pm.",
      "source_id": "web-6cd6754a38bc859b",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3389,7 +3495,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Staff are available to assist over the phone, (316) 634-0090, Monday through Friday 9:00am to 4:00pm.",
+    "apply.submit_methods: value backed by 2 verbatim spans",
     "agent judge on eligibility.insured_patients_covered: Quote says uninsured patients (and those with difficulty paying) may be reviewed; it does not state that insured patients are covered."
    ],
    "eve_verified": {
@@ -3417,9 +3523,7 @@
       "quote not found in source"
      ]
     ],
-    "pruned": [
-     "apply.submit_methods: 1 item not named in the trimmed quote"
-    ],
+    "pruned": [],
     "income_rule_verified": false,
     "core_completeness": 0.33
    }
@@ -3499,10 +3603,11 @@
     "documents_required": {
      "value": [
       "tax_return",
-      "other"
+      "other",
+      "pay_stubs"
      ],
      "layer": "documented",
-     "quote": "A. Most recent tax return D. Written income verification from an employer if paid in cash",
+     "quote": "A. Most recent tax return D. Written income verification from an employer if paid in cash || B. Most recent W-2 form and 1099 forms E. Proof of non-filing (IRS Form 4506) || C. Two (2) most recent pay stubs",
      "source_id": "fap-779a0414a63dc869",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3512,12 +3617,20 @@
     "submit_methods": {
      "value": [
       {
+       "kind": "mail",
+       "detail": "Mail to Saint Luke\u2019s, 901 E. 104th St., Attn: Hospital CBO 6th Floor, Kansas City, MO 64131"
+      },
+      {
+       "kind": "email",
+       "detail": "email to slhsbilling@saintlukeskc.org"
+      },
+      {
        "kind": "in_person",
        "detail": "submit the form in person at the service location"
       }
      ],
      "layer": "documented",
-     "quote": "You may submit the form in person at the service location or per the submission instructions below to apply for free or discounted care.",
+     "quote": "You may submit the form in person at the service location or per the submission instructions below to apply for free or discounted care. || Mail to Saint Luke\u2019s, 901 E. 104th St., Attn: Hospital CBO 6th Floor, Kansas City, MO 64131, or email to slhsbilling@saintlukeskc.org.",
      "source_id": "fap-779a0414a63dc869",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3573,7 +3686,7 @@
       "Vietnamese"
      ],
      "layer": "documented",
-     "quote": "\u0627\u0644\u0639\u0631\u0628\u064a\u0629 (Arabic)",
+     "quote": "\u0627\u0644\u0639\u0631\u0628\u064a\u0629 (Arabic) || Espa\u00f1ol (Spanish) || Ti\u1ebfng Vi\u1ec7t (Vietnamese)",
      "source_id": "web-223593584fd6ded5",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3616,9 +3729,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: B. Most recent W-2 form and 1099 forms E. Proof of non-filing (IRS Form 4506) | C. Two (2) most recent pay stubs",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Mail to Saint Luke\u2019s, 901 E. 104th St., Attn: Hospital CBO 6th Floor, Kansas City, MO 64131, or email to slhsbilling@sai",
-    "contacts.languages: 2 more verbatim excerpt(s) supported this value: Espa\u00f1ol (Spanish) | Ti\u1ebfng Vi\u1ec7t (Vietnamese)",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 2 verbatim spans",
+    "contacts.languages: value backed by 3 verbatim spans",
     "agent judge on eligibility.assistance_ceiling_fpl: Quote gives an income cap of $100,000 a year, not a percent of FPL; it does not state the FPL ceiling value.",
     "agent judge on eligibility.insured_patients_covered: Quote tells insured patients to contact their insurer and only mentions uninsured discount; it does not state insured patients are covered.",
     "agent judge on contacts.languages: Quote shows only Arabic, Spanish, and Vietnamese language samples; it does not state the full 19-language list."
@@ -3655,10 +3768,7 @@
       "quote not found in source"
      ]
     ],
-    "pruned": [
-     "apply.documents_required: 1 item not named in the trimmed quote",
-     "apply.submit_methods: 2 items not named in the trimmed quote"
-    ],
+    "pruned": [],
     "income_rule_verified": false,
     "core_completeness": 0.5
    }
@@ -3739,10 +3849,11 @@
     "documents_required": {
      "value": [
       "pay_stubs",
+      "tax_return",
       "other"
      ],
      "layer": "documented",
-     "quote": "Copies of 3 most recent paystubs from employer",
+     "quote": "Copies of 3 most recent paystubs from employer || Copies of most recent yearly tax return (if self-employed, include all schedules) || Current bank statements (checking and savings accounts) from last 3 months",
      "source_id": "fap-da8116e972384e4d",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3823,8 +3934,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Copies of most recent yearly tax return (if self-employed, include all schedules) | Current bank statements (checking and savings accounts) from last 3 months",
-    "contacts.languages: 2 more verbatim excerpt(s) supported this value: Ch&iacute;nh s&aacute;ch h\u1ed7 tr\u1ee3 t&agrave;i ch&iacute;nh (PDF) | \u8d22\u52a1\u63f4\u52a9\u653f\u7b56 (PDF)",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "contacts.languages: value backed by 3 verbatim spans",
     "agent dropped apply.submit_methods: excerpt not in source: Start Application [https://ascension.forms.r1rcm.com/viachri",
     "agent judge on eligibility.free_care_max_fpl: Quote says '2501% of FPL' (typo for 250%) for 100% charity care; the quote itself is garbled but intends 250, so value 250 is a reasonable reading. Marked unsupported due to the literal '2501%' text.",
     "agent judge on programs.presumptive: Quote says uninsured must work with a counselor to apply for Medicaid or other public programs; it does not state presumptive eligibility.",
@@ -3871,7 +3982,7 @@
     ],
     "pruned": [
      "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
-     "apply.documents_required: 2 items not named in the trimmed quote"
+     "apply.documents_required: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": true,
     "core_completeness": 0.5
@@ -4124,10 +4235,12 @@
     "documents_required": {
      "value": [
       "tax_return",
+      "pay_stubs",
+      "bank_statements",
       "other"
      ],
      "layer": "documented",
-     "quote": "1. Individual or family income tax returns (include earnings statements, W-2s, 1099s, etc. for the past two years)",
+     "quote": "1. Individual or family income tax returns (include earnings statements, W-2s, 1099s, etc. for the past two years) || 2. Payroll stubs, Social Security checks or unemployment checks from the last 90 days || 3. Bank statements from the last 60 days",
      "source_id": "web-bddca4d09789641b",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4216,7 +4329,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: 2. Payroll stubs, Social Security checks or unemployment checks from the last 90 days | 3. Bank statements from the last 60 days",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent judge on eligibility.asset_test: Quote only says household assets are not included for outpatient or ER services. It does not state a general asset_test value of false.",
     "agent judge on apply.documents_required: Quote lists only three document types with time periods. The value adds many items (W-2s aside, e.g. trust fund statements, mortgage/rent statements, Medicaid denial letter) not in the quote.",
     "agent judge on apply.submit_methods: Quote mentions only contacting Accounts Receivable by phone. It does not mention in-person submission at the Business Office."
@@ -4245,7 +4358,7 @@
      ]
     ],
     "pruned": [
-     "apply.documents_required: 4 items not named in the trimmed quote"
+     "apply.documents_required: 2 items not named in the trimmed quote"
     ],
     "income_rule_verified": false,
     "core_completeness": 0.5
@@ -4335,7 +4448,24 @@
     "form_version": null,
     "documents_required": null,
     "documents_reported": null,
-    "submit_methods": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "Mercy Health, Attention: Financial Assistance Department, 2115 S Fremont Avenue, Suite 5300, Springfield, MO 65804 (Mailing address only)"
+      },
+      {
+       "kind": "fax",
+       "detail": "Fax: 417-829-4604"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Submit your application and documents via: MyMercy || Mercy Health Attention: Financial Assistance Department 2115 S Fremont Avenue, Suite 5300 Springfield, MO 65804 (Mailing address only) || Fax: 417-829-4604",
+     "source_id": "fap-e2169745bc9cf37f",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "window_days_from_first_bill": {
      "value": 240,
      "layer": "documented",
@@ -4429,7 +4559,7 @@
    "accuracy": null,
    "eve_review": [
     "eligibility.asset_test: quote matched the source only after typography normalization",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Mercy Health Attention: Financial Assistance Department 2115 S Fremont Avenue, Suite 5300 Springfield, MO 65804 (Mailing | Fax: 417-829-4604",
+    "apply.submit_methods: value backed by 3 verbatim spans",
     "contacts.languages: quote matched the source only after typography normalization",
     "apply.form_url: not an absolute URL ('/content/dam/mercy/en/pdf/financial-assistance-application-m'); dropped",
     "agent dropped apply.documents_required: between 1 and 3 excerpts allowed",
@@ -4454,6 +4584,7 @@
      "eligibility.asset_test",
      "eligibility.insured_patients_covered",
      "programs.presumptive",
+     "apply.submit_methods",
      "apply.window_days_from_first_bill",
      "collections.eca_wait_days",
      "contacts.phone",
@@ -4462,10 +4593,10 @@
     ],
     "rejected": [],
     "pruned": [
-     "apply.submit_methods: none of the listed channels is named in the quote (after trimming)"
+     "apply.submit_methods: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": true,
-    "core_completeness": 0.5
+    "core_completeness": 0.67
    }
   },
   {
@@ -4518,10 +4649,11 @@
     "documents_required": {
      "value": [
       "tax_return",
+      "pay_stubs",
       "other"
      ],
      "layer": "documented",
-     "quote": "a. Individual or family income (income tax return with copies of earnings statements \u2013 W-2 forms, 1099 forms, etc. for past 2 years)",
+     "quote": "a. Individual or family income (income tax return with copies of earnings statements \u2013 W-2 forms, 1099 forms, etc. for past 2 years) || b. Copies of most recent 90 days of payroll stubs, Social Security checks, or unemployment checks. || c. Household family size",
      "source_id": "fap-abbbae0c6d5a3c86",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4635,8 +4767,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: b. They receive care from and/or part of the Women, Infants and Children\u2019s (WIC) program. The patient or guarantor must  | c. They receive Supplemental Nutritional Assistance Program (SNAP) benefits",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: b. Copies of most recent 90 days of payroll stubs, Social Security checks, or unemployment checks. | c. Household family size",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent judge on eligibility.free_care_max_fpl: Quote says income must be 'less than 200%' of poverty level, so 200% itself is excluded; the highest qualifying percent is below 200, not 200."
    ],
    "eve_verified": {
@@ -4662,8 +4794,7 @@
     ],
     "rejected": [],
     "pruned": [
-     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
-     "apply.documents_required: 1 item not named in the trimmed quote"
+     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)"
     ],
     "income_rule_verified": true,
     "core_completeness": 0.67
@@ -4743,10 +4874,12 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "pay_stubs"
+      "pay_stubs",
+      "bank_statements",
+      "tax_return"
      ],
      "layer": "documented",
-     "quote": "a) Copy of all earning statements (pay stubs) for the last 3 months",
+     "quote": "a) Copy of all earning statements (pay stubs) for the last 3 months || b) Copy of checking and savings for last 3 months. || c) Copy of the most recent federal tax return.",
      "source_id": "fap-692f1c740fd317a6",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4758,10 +4891,14 @@
       {
        "kind": "mail",
        "detail": "Please return the application and documentation within 30 days to: Nemaha Valley Community Hospital, Attention: Business Office, 1600 Community Drive, Seneca, KS 66538"
+      },
+      {
+       "kind": "in_person",
+       "detail": "1600 Community Drive, Seneca, Kansas"
       }
      ],
      "layer": "documented",
-     "quote": "Please return the application and documentation within 30 days to:",
+     "quote": "Please return the application and documentation within 30 days to: || Nemaha Valley Community Hospital || Attention: Business Office",
      "source_id": "fap-692f1c740fd317a6",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4825,8 +4962,8 @@
    "accuracy": null,
    "eve_review": [
     "eligibility.free_care_max_fpl: owner review says 200% is a discount or assistance limit, not free care; recorded as assistance_ceiling_fpl.",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: b) Copy of checking and savings for last 3 months. | c) Copy of the most recent federal tax return.",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Nemaha Valley Community Hospital | Attention: Business Office",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 3 verbatim spans",
     "agent judge on eligibility.free_care_max_fpl: The quote says assistance is available up to 200% FPG but does not say 100% free care applies up to that level.",
     "agent judge on eligibility.asset_test: The quote is a checkbox line (Checking/Savings/CD/Other yes/no) and does not state that assets are considered.",
     "agent judge on programs.presumptive: The quote says PE Medicaid covers individuals NOT enrolled in KanCare, which contradicts the value 'Medicaid enrolled'.",
@@ -4864,8 +5001,7 @@
      ]
     ],
     "pruned": [
-     "apply.documents_required: 2 items not named in the trimmed quote",
-     "apply.submit_methods: 2 items not named in the trimmed quote"
+     "apply.submit_methods: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": false,
     "core_completeness": 0.5
@@ -4954,10 +5090,14 @@
       {
        "kind": "email",
        "detail": "email to slhsbilling@saintlukeskc.org"
+      },
+      {
+       "kind": "in_person",
+       "detail": "submit the form in person at the service location"
       }
      ],
      "layer": "documented",
-     "quote": "Mail to Saint Luke\u2019s, 901 E. 104th St., Attn: Hospital CBO 6th Floor, Kansas City, MO 64131, or email to slhsbilling@saintlukeskc.org.",
+     "quote": "Mail to Saint Luke\u2019s, 901 E. 104th St., Attn: Hospital CBO 6th Floor, Kansas City, MO 64131, or email to slhsbilling@saintlukeskc.org. || You may submit the form in person at the service location",
      "source_id": "fap-779a0414a63dc869",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5019,7 +5159,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: You may submit the form in person at the service location",
+    "apply.submit_methods: value backed by 2 verbatim spans",
     "agent dropped apply.documents_required: excerpt not in source: A. Most recent tax return",
     "agent judge on eligibility.residency: Quote does not state a residency rule. It mentions Kansas, Missouri, Illinois, and NHSC sites, but the value's 'regardless of where they live' phrasing is not in the quote as a limit on residency.",
     "agent judge on eligibility.insured_patients_covered: Quote says insured patients should contact their insurer and uninsured patients get 40% discount. It does not state that insured patients are covered by assistance; value true is unsupported."
@@ -5049,9 +5189,7 @@
       "quote does not state the ceiling as a percentage of the poverty level"
      ]
     ],
-    "pruned": [
-     "apply.submit_methods: 1 item not named in the trimmed quote"
-    ],
+    "pruned": [],
     "income_rule_verified": false,
     "core_completeness": 0.33
    }
@@ -5120,10 +5258,18 @@
       {
        "kind": "in_person",
        "detail": "Applications are located at the Registration Department and Business Office at Holton Community Hospital; Apply in person by visiting the Business Office at Holton Community Hospital"
+      },
+      {
+       "kind": "phone",
+       "detail": "Request an application by calling 785-364-2116"
+      },
+      {
+       "kind": "mail",
+       "detail": "Request an application by mail at Holton Community Hospital, 1110 Columbine Drive, Holton, KS 66436"
       }
      ],
      "layer": "documented",
-     "quote": "Applications are located at the Registration Department and Business Office at Holton Community Hospital",
+     "quote": "Applications are located at the Registration Department and Business Office at Holton Community Hospital || Request an application by calling 785-364-2116 || Request an application by mail at Holton Community Hospital, 1110 Columbine Drive, Holton, KS 66436",
      "source_id": "web-3810d0fb508c726c",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5194,7 +5340,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Request an application by calling 785-364-2116 | Request an application by mail at Holton Community Hospital, 1110 Columbine Drive, Holton, KS 66436",
+    "apply.submit_methods: value backed by 3 verbatim spans",
     "agent dropped eligibility.discount_tiers: excerpt not in source: Patients with a household income of 100% \u2013 200% of the FPL m",
     "agent dropped apply.documents_required: excerpt not in source: YES__ NO__ Did anyone in your household file an Income Tax R",
     "agent judge on apply.submit_methods: Quote covers only in-person, phone, and mail. It omits the online method and the detail text for each method."
@@ -5227,7 +5373,7 @@
      ]
     ],
     "pruned": [
-     "apply.submit_methods: 3 items not named in the trimmed quote"
+     "apply.submit_methods: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": true,
     "core_completeness": 0.5
@@ -5563,7 +5709,31 @@
    "status": "draft",
    "eligibility": {
     "free_care_max_fpl": null,
-    "discount_tiers": null,
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "250",
+       "max_fpl_inclusive": "300",
+       "discount_percent": 85
+      },
+      {
+       "min_fpl_exclusive": "300",
+       "max_fpl_inclusive": "350",
+       "discount_percent": 80
+      },
+      {
+       "min_fpl_exclusive": "350",
+       "max_fpl_inclusive": "399",
+       "discount_percent": 75
+      }
+     ],
+     "layer": "documented",
+     "quote": "251% - 300% FPL Base = 85% write off || 301% - 350% FPL Base = 80% write off || 351% - 399% FPL Base = 75% write off",
+     "source_id": "fap-02f0838acdca19c6",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": {
@@ -5591,10 +5761,12 @@
     "documents_required": {
      "value": [
       "pay_stubs",
+      "tax_return",
+      "social_security_letter",
       "other"
      ],
      "layer": "documented",
-     "quote": "Copies of 3 most recent paystubs from employer",
+     "quote": "Copies of 3 most recent paystubs from employer || Copies of most recent yearly tax return (if self-employed, include all schedules) || Social Security and/or Pension Retirement Award Letter",
      "source_id": "fap-da8116e972384e4d",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5665,7 +5837,7 @@
       "Vietnamese"
      ],
      "layer": "documented",
-     "quote": "POL\u00cdTICA DE FACTURACI\u00d3N Y COBRO",
+     "quote": "POL\u00cdTICA DE FACTURACI\u00d3N Y COBRO || CH\u00cdNH S\u00c1CH L\u1eacP H\u00d3A \u0110\u01a0N V\u00c0 THU N\u1ee2",
      "source_id": "web-71c1c2741a8a3dd3",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5708,9 +5880,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: 301% - 350% FPL Base = 80% write off | 351% - 399% FPL Base = 75% write off",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Copies of most recent yearly tax return (if self-employed, include all schedules) | Social Security and/or Pension Retirement Award Letter",
-    "contacts.languages: 1 more verbatim excerpt(s) supported this value: CH\u00cdNH S\u00c1CH L\u1eacP H\u00d3A \u0110\u01a0N V\u00c0 THU N\u1ee2",
+    "eligibility.discount_tiers: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "contacts.languages: value backed by 2 verbatim spans",
     "agent dropped programs.presumptive: quote shorter than 8 characters",
     "agent judge on eligibility.free_care_max_fpl: Quote reads \"less than or equal to 2501% of the Federal Poverty Level\", not 250%. The stated value does not appear in the quote as written.",
     "agent judge on apply.documents_required: Quote lists paystubs, yearly tax return, and Social Security/Pension award letter only. \"bank statements\" and \"denial\" are not stated in the quote.",
@@ -5729,6 +5901,7 @@
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
+     "eligibility.discount_tiers",
      "eligibility.residency",
      "apply.documents_required",
      "apply.submit_methods",
@@ -5743,10 +5916,6 @@
       "value not in quote"
      ],
      [
-      "eligibility.discount_tiers",
-      "value not in quote"
-     ],
-     [
       "eligibility.asset_test",
       "quote does not support the asset-test value"
      ],
@@ -5756,10 +5925,10 @@
      ]
     ],
     "pruned": [
-     "apply.documents_required: 3 items not named in the trimmed quote"
+     "apply.documents_required: 1 item not named in the trimmed quote"
     ],
-    "income_rule_verified": false,
-    "core_completeness": 0.5
+    "income_rule_verified": true,
+    "core_completeness": 0.67
    }
   },
   {
@@ -5812,10 +5981,12 @@
     "documents_required": {
      "value": [
       "tax_return",
+      "pay_stubs",
+      "bank_statements",
       "other"
      ],
      "layer": "documented",
-     "quote": "a. Individual or family income (income tax return with copies of earnings statements \u2013 W-2 forms, 1099 forms, etc. for past 2 years)",
+     "quote": "a. Individual or family income (income tax return with copies of earnings statements \u2013 W-2 forms, 1099 forms, etc. for past 2 years) || b. Copies of most recent 90 days of payroll stubs, Social Security checks, or unemployment checks. || c. Copies of most recent 60 days of bank statements and investment/broker statements.",
      "source_id": "fap-6f7442104eaf5d29",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5932,8 +6103,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: b. They receive care from and/or part of the Women, Infants and Children\u2019s (WIC) program. | c. They receive Supplemental Nutritional Assistance Program (SNAP) benefits",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: b. Copies of most recent 90 days of payroll stubs, Social Security checks, or unemployment checks. | c. Copies of most recent 60 days of bank statements and investment/broker statements.",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent judge on apply.documents_required: Quote lists only income tax return, 90 days of pay/benefit stubs, and 60 days of bank/investment statements; mortgage, trust fund, credit history, and collection agency items are not in the quote.",
     "agent judge on contacts.languages: Quote only mentions a Spanish version of the policy; it does not state English or that these are the supported languages."
    ],
@@ -5967,7 +6138,7 @@
     ],
     "pruned": [
      "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
-     "apply.documents_required: 3 items not named in the trimmed quote",
+     "apply.documents_required: 1 item not named in the trimmed quote",
      "apply.submit_methods: 2 items not named in the trimmed quote"
     ],
     "income_rule_verified": true,
@@ -5998,7 +6169,31 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "discount_tiers": null,
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "130",
+       "max_fpl_inclusive": "175",
+       "discount_percent": 75
+      },
+      {
+       "min_fpl_exclusive": "175",
+       "max_fpl_inclusive": "250",
+       "discount_percent": 50
+      },
+      {
+       "min_fpl_exclusive": "250",
+       "max_fpl_inclusive": "400",
+       "discount_percent": 30
+      }
+     ],
+     "layer": "documented",
+     "quote": "75% discount if income is 131% to 175% of FPL || 50% discount if income is 176% to 250% of FPL || 30% discount if income is 251% to 400% of FPL",
+     "source_id": "web-1facc501cc374ee9",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": {
@@ -6030,7 +6225,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Applicant will be screened for eligibility for any third party payor sources, such as Medicaid, and payment from any such source(s) must be exhausted before applicant will be eligible for hospital financial assistance.",
+     "quote": "Applicant will be screened for eligibility for any third party payor sources, such as Medicaid, and payment from any such source(s) must be exhausted before applicant will be eligible for hospital financial assistance. || Applicant must agree to participate in a review for qualification for coverage through any applicable public program such as Medicaid or MediKan",
      "source_id": "web-1facc501cc374ee9",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -6110,8 +6305,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: 50% discount if income is 176% to 250% of FPL | 30% discount if income is 251% to 400% of FPL",
-    "programs.state_programs: 1 more verbatim excerpt(s) supported this value: Applicant must agree to participate in a review for qualification for coverage through any applicable public program suc",
+    "eligibility.discount_tiers: value backed by 3 verbatim spans",
+    "programs.state_programs: value backed by 2 verbatim spans",
     "agent dropped apply.submit_methods: excerpt not in source: A patient/guarantor may apply for financial assistance by co",
     "agent dropped contacts.languages: quote is not a substring of the source"
    ],
@@ -6129,6 +6324,7 @@
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
      "eligibility.residency",
      "programs.state_programs",
      "apply.documents_required",
@@ -6137,17 +6333,13 @@
     ],
     "rejected": [
      [
-      "eligibility.discount_tiers",
-      "value not in quote"
-     ],
-     [
       "apply.form_url",
       "quote not found in source"
      ]
     ],
     "pruned": [],
     "income_rule_verified": true,
-    "core_completeness": 0.5
+    "core_completeness": 0.67
    }
   },
   {
@@ -6200,10 +6392,12 @@
     "documents_required": {
      "value": [
       "proof_of_income",
-      "social_security_letter"
+      "bank_statements",
+      "social_security_letter",
+      "medicaid_denial"
      ],
      "layer": "documented",
-     "quote": "i. Two Most Recent Copies of Paycheck. If patient or guarantor receives Social Security, copies of two of the most recent payments are required. Prior Year Tax Return if copies of paychecks cannot be provided.",
+     "quote": "i. Two Most Recent Copies of Paycheck. If patient or guarantor receives Social Security, copies of two of the most recent payments are required. Prior Year Tax Return if copies of paychecks cannot be provided. || iii. Two Most Recent copies of bank statements for both checking and savings accounts. || vi. Medicaid coverage denial letter if applicable.",
      "source_id": "fap-8a9df7c66dc1169a",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -6227,10 +6421,14 @@
       {
        "kind": "mail",
        "detail": "through the mail, Russell Regional Hospital, 200 S. Main St, Russell, KS 67665"
+      },
+      {
+       "kind": "email",
+       "detail": "An application can also be emailed to a patient/guarantor upon request by contacting the financial counselor at 785-483-3131"
       }
      ],
      "layer": "documented",
-     "quote": "This can be done in person, by calling the hospital at 785-483-3131 and requesting to speak to Business Office, by calling Russell Regional Hospital Physicians Clinic at 785-483-3333 and requesting to speak to billing, by visiting Russell Regional Hospital's webpage, http://www.russellhospital.org/ or through the mail, Russell Regional Hospital, 200 S. Main St, Russell, KS 67665.",
+     "quote": "This can be done in person, by calling the hospital at 785-483-3131 and requesting to speak to Business Office, by calling Russell Regional Hospital Physicians Clinic at 785-483-3333 and requesting to speak to billing, by visiting Russell Regional Hospital's webpage, http://www.russellhospital.org/ or through the mail, Russell Regional Hospital, 200 S. Main St, Russell, KS 67665. || An application can also be emailed to a patient/guarantor upon request by contacting the financial counselor at 785-483-3131.",
      "source_id": "fap-8a9df7c66dc1169a",
      "checked_on": "2026-10-23",
      "confidence": 0.8,
@@ -6329,8 +6527,8 @@
     "eligibility.free_care_max_fpl: owner review: discount, not free care.",
     "eligibility.assistance_ceiling_fpl: quote matched the source only after typography normalization",
     "eligibility.asset_test: quote matched the source only after typography normalization",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: iii. Two Most Recent copies of bank statements for both checking and savings accounts. | vi. Medicaid coverage denial letter if applicable.",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: An application can also be emailed to a patient/guarantor upon request by contacting the financial counselor at 785-483-",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 2 verbatim spans",
     "apply.submit_methods: quote matched the source only after typography normalization",
     "agent dropped eligibility.discount_tiers: excerpt not in source: Patient/guarantors' who meet Level 2, 125% of FPL, will rece",
     "agent judge on eligibility.asset_test: Quote says assets are NOT considered in the determination worksheet, so the value should be false; this matches the recorded false.",
@@ -6365,8 +6563,7 @@
      ]
     ],
     "pruned": [
-     "apply.documents_required: 3 items not named in the trimmed quote",
-     "apply.submit_methods: 1 item not named in the trimmed quote"
+     "apply.documents_required: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": false,
     "core_completeness": 0.5
@@ -6425,7 +6622,7 @@
       "other"
      ],
      "layer": "documented",
-     "quote": "Verification of income on all amounts listed below is required. Please provide documentation such as W2, Paystub, or Letter from Employer",
+     "quote": "Verification of income on all amounts listed below is required. Please provide documentation such as W2, Paystub, or Letter from Employer || Attach copy of health insurance or Medicaid correspondance of approval or denial",
      "source_id": "fap-bf572b4877425a90",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -6444,7 +6641,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Completed applications must be returned during the application period (defined below) to: Decatur Health Attn: Business Office Director PO Box 268 Oberlin, KS 67749",
+     "quote": "Completed applications must be returned during the application period (defined below) to: Decatur Health Attn: Business Office Director PO Box 268 Oberlin, KS 67749 || downloaded from decaturhealthsystems.org, or in person at the Business office or emergency room.",
      "source_id": "fap-6c15ae7e22d6537c",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -6522,10 +6719,10 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: 301-500% 15% 7.5% | 501% + 20% 10%",
+    "eligibility.discount_tiers: value backed by 3 verbatim spans",
     "eligibility.asset_test: quote matched the source only after typography normalization",
-    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: Attach copy of health insurance or Medicaid correspondance of approval or denial",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: downloaded from decaturhealthsystems.org, or in person at the Business office or emergency room.",
+    "apply.documents_required: value backed by 2 verbatim spans",
+    "apply.submit_methods: value backed by 2 verbatim spans",
     "agent judge on eligibility.discount_tiers: Quote gives 10%/5%, 15%/7.5%, and 20%/10% (income/net worth) for 151-300%, 301-500%, and 501%+. It does not state discount percents of 90, 85, or 80.",
     "agent judge on eligibility.insured_patients_covered: Quote only asks whether the patient has health insurance and has applied for Medicaid. It does not state insured patients are covered."
    ],
@@ -6861,10 +7058,12 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "tax_return"
+      "tax_return",
+      "pay_stubs",
+      "bank_statements"
      ],
      "layer": "documented",
-     "quote": "a. Individual or family income (income tax return with copies of earnings statements - W-2 forms, 1099 forms, etc. for past 2 years)",
+     "quote": "a. Individual or family income (income tax return with copies of earnings statements - W-2 forms, 1099 forms, etc. for past 2 years) || b. Copies of most recent 90 days of payroll stubs, Social Security checks, or unemployment checks. || c. Copies of most recent 60 days of bank statements and investment/broker statements.",
      "source_id": "web-19122e5ddc211c9a",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -6988,8 +7187,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: b. They receive care from and/or part of the Women, Infants and Children's (WIC) program. | c. They receive Supplemental Nutritional Assistance Program (SNAP) benefits (formerly known as food stamps).",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: b. Copies of most recent 90 days of payroll stubs, Social Security checks, or unemployment checks. | c. Copies of most recent 60 days of bank statements and investment/broker statements.",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent judge on eligibility.free_care_max_fpl: Quote says income must be 'less than 200%' of poverty level for 100% assistance, so 200% itself is excluded; the highest qualifying percent is just under 200.",
     "agent judge on programs.presumptive: Quote lists only homeless/shelter care, WIC, and SNAP. School lunch, HUD Section 8 housing, and 'wages are not enough to garnish' do not appear.",
     "agent judge on contacts.languages: Quote is a translation rule (1,000 or 5 percent, whichever is fewer, of residents), not a list of languages; the value omits the 'whichever is fewer' qualifier."
@@ -7019,8 +7218,7 @@
     ],
     "rejected": [],
     "pruned": [
-     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
-     "apply.documents_required: 2 items not named in the trimmed quote"
+     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)"
     ],
     "income_rule_verified": true,
     "core_completeness": 0.67
@@ -7175,8 +7373,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: b. Homeless | c. Food Stamp eligible",
-    "contacts.languages: 1 more verbatim excerpt(s) supported this value: Pol\u00edtica de asistencia financiera: Resumen en lenguaje sencillo",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "contacts.languages: value backed by 2 verbatim spans",
     "agent dropped apply.submit_methods: excerpt not in source: Return the completed application with supporting documents r",
     "agent dropped collections.eca_wait_days: quote is not a substring of the source",
     "agent judge on eligibility.discount_tiers: Quote gives a 138%-300% range with a 60% to 80% scale; the value records only one tier at 80%, dropping the 60% bound and the tier structure.",
@@ -7446,7 +7644,7 @@
       "other"
      ],
      "layer": "documented",
-     "quote": "Including submitting documents needed to verify income, all taxable and non-taxable income will be considered.",
+     "quote": "Including submitting documents needed to verify income, all taxable and non-taxable income will be considered. || Provide Denial Notice from Kansas Medicaid within 90 Days of Procedure/Discharge",
      "source_id": "web-ae64ac0b762b9196",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -7532,7 +7730,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: Provide Denial Notice from Kansas Medicaid within 90 Days of Procedure/Discharge",
+    "apply.documents_required: value backed by 2 verbatim spans",
     "agent judge on eligibility.residency: Quote says to be an established patient of Scott City Clinic; it does not state a residency requirement, so the value mislabels a patient-status condition as residency.",
     "agent judge on apply.window_days_from_first_bill: Quote says within 60 days of Procedure/Discharge, not days from first bill; the anchor event differs from the field definition."
    ],
@@ -7586,7 +7784,36 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "discount_tiers": null,
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "100",
+       "max_fpl_inclusive": "125",
+       "discount_percent": 85
+      },
+      {
+       "min_fpl_exclusive": "125",
+       "max_fpl_inclusive": "150",
+       "discount_percent": 70
+      },
+      {
+       "min_fpl_exclusive": "150",
+       "max_fpl_inclusive": "175",
+       "discount_percent": 55
+      },
+      {
+       "min_fpl_exclusive": "175",
+       "max_fpl_inclusive": "200",
+       "discount_percent": 50
+      }
+     ],
+     "layer": "documented",
+     "quote": "101%-125% 85% || 126%-150% 70% || 151%-175% 55% 176%-200% 50%",
+     "source_id": "fap-e92eb3b26649904c",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": null,
@@ -7623,10 +7850,13 @@
      "value": [
       "pay_stubs",
       "proof_of_income",
+      "bank_statements",
+      "tax_return",
+      "social_security_letter",
       "other"
      ],
      "layer": "documented",
-     "quote": "1. Copies of last 3 months paystubs for all employers. If self-employed, statement of 3 months income/expenses.",
+     "quote": "1. Copies of last 3 months paystubs for all employers. If self-employed, statement of 3 months income/expenses. || 4. Most current complete bank statement (includes checking, savings, CD, money market). 5. Most recently completed tax return. || 6. Social Security benefit letter verifying the benefit amount. 7. Letter of determination from Health and Human Services.",
      "source_id": "fap-e92eb3b26649904c",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -7736,8 +7966,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: 126%-150% 70% | 151%-175% 55% 176%-200% 50%",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: 4. Most current complete bank statement (includes checking, savings, CD, money market). 5. Most recently completed tax r | 6. Social Security benefit letter verifying the benefit amount. 7. Letter of determination from Health and Human Service",
+    "eligibility.discount_tiers: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent judge on eligibility.free_care_max_fpl: Quote says 'Below 100% of FPL 100%', which gives 100% discount below 100% but does not explicitly state that exactly 100% FPL gets free care.",
     "agent judge on apply.documents_required: Quote lists only items 1, 4, 5, 6 and 7. Value's 'Unemployment/Work Comp letter', 'Proof of child support/Alimony', and 'Support form' are not in the quote.",
     "agent judge on apply.window_days_from_first_bill: Quote says the period ends on the 'later of' the 240th day after first bill or another unshown date, so 240 alone is not the full window.",
@@ -7756,6 +7986,7 @@
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
      "eligibility.insured_patients_covered",
      "programs.presumptive",
      "apply.documents_required",
@@ -7767,10 +7998,6 @@
     ],
     "rejected": [
      [
-      "eligibility.discount_tiers",
-      "value not in quote"
-     ],
-     [
       "eligibility.asset_test",
       "quote does not support the asset-test value"
      ],
@@ -7779,11 +8006,9 @@
       "quote not found in source"
      ]
     ],
-    "pruned": [
-     "apply.documents_required: 3 items not named in the trimmed quote"
-    ],
+    "pruned": [],
     "income_rule_verified": true,
-    "core_completeness": 0.67
+    "core_completeness": 0.83
    }
   },
   {
@@ -7810,7 +8035,31 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "discount_tiers": null,
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "250",
+       "max_fpl_inclusive": "300",
+       "discount_percent": 75
+      },
+      {
+       "min_fpl_exclusive": "300",
+       "max_fpl_inclusive": "350",
+       "discount_percent": 50
+      },
+      {
+       "min_fpl_exclusive": "350",
+       "max_fpl_inclusive": "400",
+       "discount_percent": 25
+      }
+     ],
+     "layer": "documented",
+     "quote": "251% - 300% = 75% write off || 301% - 350% = 50% write off || 351% - 400% = 25% write off",
+     "source_id": "fap-2a4b39eca84c4368",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "assistance_ceiling_fpl": null,
     "asset_test": {
      "value": true,
@@ -7845,7 +8094,19 @@
     "services_excluded": null
    },
    "programs": {
-    "presumptive": null,
+    "presumptive": {
+     "value": [
+      "Medicaid eligible patients",
+      "Homelessness or receipt of care from a homeless shelter",
+      "Participation in Women, Infants, Children programs (WIC)"
+     ],
+     "layer": "documented",
+     "quote": "Medicaid eligible patients \u2013 verified to be eligible at the time of the application, but was not on the date of service; spenddown; or non-covered services; || Homelessness or receipt of care from a homeless shelter; || Participation in Women, Infants, Children programs (WIC);",
+     "source_id": "fap-2a4b39eca84c4368",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "state_programs": null
    },
    "apply": {
@@ -7937,8 +8198,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: 301% - 350% = 50% write off | 351% - 400% = 25% write off",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Homelessness or receipt of care from a homeless shelter; | Participation in Women, Infants, Children programs (WIC);",
+    "eligibility.discount_tiers: value backed by 3 verbatim spans",
+    "programs.presumptive: value backed by 3 verbatim spans",
     "agent dropped apply.documents_required: between 1 and 3 excerpts allowed",
     "agent dropped apply.submit_methods: quote is not a substring of the source",
     "agent judge on programs.presumptive: Quote lists only Medicaid eligible patients, homelessness or shelter care, and WIC. The value's other eight categories (bankruptcy, collections, free lunch, etc.) do not appear in the quote."
@@ -7956,9 +8217,11 @@
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
      "eligibility.asset_test",
      "eligibility.residency",
      "eligibility.insured_patients_covered",
+     "programs.presumptive",
      "apply.window_days_from_first_bill",
      "contacts.phone",
      "contacts.hours",
@@ -7966,19 +8229,15 @@
     ],
     "rejected": [
      [
-      "eligibility.discount_tiers",
-      "value not in quote"
-     ],
-     [
       "apply.form_url",
       "quote not found in source"
      ]
     ],
     "pruned": [
-     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)"
+     "programs.presumptive: 8 items not named in the trimmed quote"
     ],
     "income_rule_verified": true,
-    "core_completeness": 0.33
+    "core_completeness": 0.5
    }
   },
   {

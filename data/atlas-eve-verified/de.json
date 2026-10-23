@@ -704,10 +704,11 @@
      "value": [
       "Supplemental Nutrition Assistance Program (SNAP)",
       "State Energy Assistance Program",
-      "WIC"
+      "WIC",
+      "Maryland or Delaware Medical Assistance (Medicaid)"
      ],
      "layer": "documented",
-     "quote": "Live in a household with children enrolled in the free and reduced-cost meal program. (Applies only if enrollment required) \u2022 Receive benefits through the federal Supplemental Nutrition Assistance Program. \u2022 Receive benefits through the State\u2019s Energy Assistance Program. \u2022 Receive benefits through the federal Special Supplemental Food Program for Women, Infants, and Children.",
+     "quote": "Live in a household with children enrolled in the free and reduced-cost meal program. (Applies only if enrollment required) \u2022 Receive benefits through the federal Supplemental Nutrition Assistance Program. \u2022 Receive benefits through the State\u2019s Energy Assistance Program. \u2022 Receive benefits through the federal Special Supplemental Food Program for Women, Infants, and Children. || Enroll in the Healthcare Connection Program (HCC) through the Medical Society of Delaware. || A patient that has qualified for Maryland or Delaware Medical Assistance is deemed to automatically qualify for Financial Assistance (FA) at 100%.",
      "source_id": "fap-5634a81a5da7d3a1",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -725,7 +726,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "You may apply online for Maryland Medicaid at marylandhealthconnection.gov.",
+     "quote": "You may apply online for Maryland Medicaid at marylandhealthconnection.gov. || Delaware residents may obtain information online at dhss.delaware.gov or apply online at assist.dhss.delaware.gov.",
      "source_id": "fap-5634a81a5da7d3a1",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -751,7 +752,7 @@
       "proof_of_income"
      ],
      "layer": "documented",
-     "quote": "a. Two recent pay stubs showing current and year-to-date earnings b. Most recent tax return showing your Adjusted Gross Income or W-2 form c. Written documentation of Social Security benefits, SSI disability, VA benefits, etc.",
+     "quote": "a. Two recent pay stubs showing current and year-to-date earnings b. Most recent tax return showing your Adjusted Gross Income or W-2 form c. Written documentation of Social Security benefits, SSI disability, VA benefits, etc. || d. If no income, a letter from an independent source such as a clergy or neighbor verifying no income",
      "source_id": "fap-5634a81a5da7d3a1",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -843,9 +844,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Enroll in the Healthcare Connection Program (HCC) through the Medical Society of Delaware. | A patient that has qualified for Maryland or Delaware Medical Assistance is deemed to automatically qualify for Financia",
-    "programs.state_programs: 1 more verbatim excerpt(s) supported this value: Delaware residents may obtain information online at dhss.delaware.gov or apply online at assist.dhss.delaware.gov.",
-    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: d. If no income, a letter from an independent source such as a clergy or neighbor verifying no income",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "programs.state_programs: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 2 verbatim spans",
     "agent dropped apply.submit_methods: judge: Mail address is for requesting an application, not submitting one. In-person fragment does not say applications are submitted there.",
     "agent dropped apply.decision_days: judge: 2 business days is for a preliminary eligibility determination only, not the final decision."
    ],
@@ -882,7 +883,7 @@
      ]
     ],
     "pruned": [
-     "programs.presumptive: 3 items not named in the trimmed quote"
+     "programs.presumptive: 2 items not named in the trimmed quote"
     ],
     "income_rule_verified": true,
     "core_completeness": 0.67
@@ -930,10 +931,11 @@
     "documents_required": {
      "value": [
       "pay_stubs",
+      "bank_statements",
       "other"
      ],
      "layer": "documented",
-     "quote": "Employment = paystubs showing gross income for 3 or 12 months prior to the date of service",
+     "quote": "Employment = paystubs showing gross income for 3 or 12 months prior to the date of service || Self-Employment = Complete tax forms from most recent filing including Schedule C || Checking/Savings = Current 30-day statement for each account",
      "source_id": "fap-d39fb64f165bfba2",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -985,7 +987,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Self-Employment = Complete tax forms from most recent filing including Schedule C | Checking/Savings = Current 30-day statement for each account",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent judge on eligibility.insured_patients_covered: Quote only asks whether the patient had health insurance on the date of service; it does not state that insured patients are covered.",
     "agent judge on apply.documents_required: Quote lists paystubs, tax forms, and checking/savings statements, but does not mention a Social Security/Pension/Disability benefit letter; value includes an unsupported item."
    ],
@@ -1010,7 +1012,7 @@
      ]
     ],
     "pruned": [
-     "apply.documents_required: 2 items not named in the trimmed quote"
+     "apply.documents_required: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": false,
     "core_completeness": 0.33

@@ -59,10 +59,12 @@
    "programs": {
     "presumptive": {
      "value": [
-      "WIC"
+      "WIC",
+      "Medicaid",
+      "homeless"
      ],
      "layer": "documented",
-     "quote": "Participation in Women, Infant and Children program (WIC)",
+     "quote": "Participation in Women, Infant and Children program (WIC) || Homeless or received care from a free Avera clinic || Medicaid eligible patients when the following applies:",
      "source_id": "fap-db61ff74cd6247dd",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -161,7 +163,7 @@
    "accuracy": null,
    "eve_review": [
     "eligibility.discount_tiers: 250-400% says 'up to 90%', a cap rather than a fixed discount; skipped",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Homeless or received care from a free Avera clinic | Medicaid eligible patients when the following applies:",
+    "programs.presumptive: value backed by 3 verbatim spans",
     "agent judge on eligibility.discount_tiers: Quote gives the 250% lower bound and 90% discount but no 400% upper bound. The 400% figure appears only in the separate asset-test sentence.",
     "agent judge on apply.submit_methods: Quote says patients can contact the business office or visit www.avera.org to obtain application materials. It does not state online submission."
    ],
@@ -191,9 +193,7 @@
       "value not in quote"
      ]
     ],
-    "pruned": [
-     "programs.presumptive: 2 items not named in the trimmed quote"
-    ],
+    "pruned": [],
     "income_rule_verified": true,
     "core_completeness": 0.67
    }
@@ -259,10 +259,12 @@
    "programs": {
     "presumptive": {
      "value": [
-      "WIC"
+      "Medicaid",
+      "WIC",
+      "homeless"
      ],
      "layer": "documented",
-     "quote": "Participation in Women, Infant and Children program (WIC)",
+     "quote": "Participation in Women, Infant and Children program (WIC) || Homeless or received care from a free Avera clinic || Medicaid eligible patients when the following applies:",
      "source_id": "fap-db61ff74cd6247dd",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -362,7 +364,7 @@
    "accuracy": null,
    "eve_review": [
     "eligibility.discount_tiers: 250-400% says 'up to 90%', a cap rather than a fixed discount; skipped",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Homeless or received care from a free Avera clinic | Medicaid eligible patients when the following applies:",
+    "programs.presumptive: value backed by 3 verbatim spans",
     "agent judge on eligibility.discount_tiers: Quote gives the 250% lower bound and 90% forgiveness but never states the 400% upper bound; 400 appears only in the asset-test sentence."
    ],
    "eve_verified": {
@@ -392,9 +394,7 @@
       "value not in quote"
      ]
     ],
-    "pruned": [
-     "programs.presumptive: 2 items not named in the trimmed quote"
-    ],
+    "pruned": [],
     "income_rule_verified": true,
     "core_completeness": 0.67
    }
@@ -488,7 +488,7 @@
       "other"
      ],
      "layer": "documented",
-     "quote": "Latest filed IRS tax return \u25aa Two most recent pay stubs of each wage earner in household \u25aa social security benefit letter \u25aa pension/retirement disbursement letter \u25aa VA benefit verification letter",
+     "quote": "Latest filed IRS tax return \u25aa Two most recent pay stubs of each wage earner in household \u25aa social security benefit letter \u25aa pension/retirement disbursement letter \u25aa VA benefit verification letter || Statements showing the value of cash or assets convertible to cash.",
      "source_id": "fap-8b7147ddc15ac526",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -500,10 +500,18 @@
       {
        "kind": "phone",
        "detail": "Sanford Patient Financial Services at 877.629.2999"
+      },
+      {
+       "kind": "in_person",
+       "detail": "present to any registration desk or admissions location"
+      },
+      {
+       "kind": "mail",
+       "detail": "Hard copies can be provided in person or can be mailed to the patient upon request"
       }
      ],
      "layer": "documented",
-     "quote": "Patients (or the patients\u2019 guarantors) may contact Sanford Patient Financial Services at 877.629.2999",
+     "quote": "Patients (or the patients\u2019 guarantors) may contact Sanford Patient Financial Services at 877.629.2999 || The patient may also present to any registration desk or admissions location || Hard copies can be provided in person or can be mailed to the patient upon request.",
      "source_id": "fap-8b7147ddc15ac526",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -602,8 +610,8 @@
    "accuracy": null,
    "eve_review": [
     "eligibility.discount_tiers: 225-375% at 0% is no discount; skipped",
-    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: Statements showing the value of cash or assets convertible to cash.",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: The patient may also present to any registration desk or admissions location | Hard copies can be provided in person or can be mailed to the patient upon request.",
+    "apply.documents_required: value backed by 2 verbatim spans",
+    "apply.submit_methods: value backed by 3 verbatim spans",
     "agent judge on eligibility.discount_tiers: Quote gives the 226%-375% partial-assistance band but no 0% discount figure; it refers to Appendix I for the sliding scale.",
     "agent judge on apply.submit_methods: Quote gives phone and in-person presentation, but the mail item only says hard copies can be mailed to the patient on request, not that applications are submitted by mail."
    ],
@@ -638,9 +646,7 @@
       "quote does not support the asset-test value"
      ]
     ],
-    "pruned": [
-     "apply.submit_methods: 2 items not named in the trimmed quote"
-    ],
+    "pruned": [],
     "income_rule_verified": true,
     "core_completeness": 0.67
    }
@@ -893,10 +899,12 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "tax_return"
+      "tax_return",
+      "pay_stubs",
+      "social_security_letter"
      ],
      "layer": "documented",
-     "quote": "Latest filed IRS tax return",
+     "quote": "Latest filed IRS tax return || Two most recent pay stubs of each wage earner in household || social security benefit letter",
      "source_id": "fap-8b7147ddc15ac526",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -908,10 +916,14 @@
       {
        "kind": "phone",
        "detail": "Sanford Patient Financial Services at 877.629.2999"
+      },
+      {
+       "kind": "in_person",
+       "detail": "present to any registration desk or admissions location"
       }
      ],
      "layer": "documented",
-     "quote": "Patients (or the patients\u2019 guarantors) may contact Sanford Patient Financial Services at 877.629.2999",
+     "quote": "Patients (or the patients\u2019 guarantors) may contact Sanford Patient Financial Services at 877.629.2999 || The patient may also present to any registration desk or admissions location",
      "source_id": "fap-8b7147ddc15ac526",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -974,8 +986,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Two most recent pay stubs of each wage earner in household | social security benefit letter",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: The patient may also present to any registration desk or admissions location",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 2 verbatim spans",
     "agent dropped apply.window_days_from_first_bill: quote is not a substring of the source",
     "agent judge on contacts.languages: Quote says assistance is available in English or in other languages meeting a 5% or 1000-person threshold. It does not state English is the only language."
    ],
@@ -1006,10 +1018,7 @@
       "quote does not support the asset-test value"
      ]
     ],
-    "pruned": [
-     "apply.documents_required: 2 items not named in the trimmed quote",
-     "apply.submit_methods: 1 item not named in the trimmed quote"
-    ],
+    "pruned": [],
     "income_rule_verified": true,
     "core_completeness": 0.67
    }
@@ -1066,7 +1075,19 @@
    "apply": {
     "form_url": null,
     "form_version": null,
-    "documents_required": null,
+    "documents_required": {
+     "value": [
+      "pay_stubs",
+      "tax_return",
+      "other"
+     ],
+     "layer": "documented",
+     "quote": "Enclosed Application Signed & Dated || Copies of the two most recent pay stubs for each wage earner in the household. || Tax Return (Federal, State if applicable)",
+     "source_id": "fap-aac46b42261d6b23",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "documents_reported": null,
     "submit_methods": {
      "value": [
@@ -1176,8 +1197,8 @@
    "accuracy": null,
    "eve_review": [
     "eligibility.discount_tiers: 150-400% says 'up to 95%', a cap rather than a fixed discount; skipped",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Copies of the two most recent pay stubs for each wage earner in the household. | Tax Return (Federal, State if applicable)",
-    "contacts.languages: 1 more verbatim excerpt(s) supported this value: financial assistance application (Spanish) [https://madisonregionalhealth.org/wp-content/uploads/FinancialAssistanceAppl",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "contacts.languages: value backed by 2 verbatim spans",
     "agent judge on eligibility.discount_tiers: Quote says 'less than 400%' (exclusive), not inclusive. It gives no sliding-scale percent per tier, only 'up to 95%'.",
     "agent judge on programs.presumptive: Quote gives an example of an out-of-state Medicaid enrollee where the facility does not participate, but does not call it presumptive eligibility.",
     "agent judge on apply.documents_required: Quote lists only 3 of the 8 recorded documents (signed application, two recent pay stubs, federal/state tax return).",
@@ -1199,6 +1220,7 @@
     "accepted": [
      "eligibility.free_care_max_fpl",
      "programs.state_programs",
+     "apply.documents_required",
      "apply.submit_methods",
      "apply.window_days_from_first_bill",
      "apply.decision_days",
@@ -1222,11 +1244,11 @@
     ],
     "pruned": [
      "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
-     "apply.documents_required: none of the listed documents is named in the quote (after trimming)",
+     "apply.documents_required: 2 items not named in the trimmed quote",
      "apply.submit_methods: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": true,
-    "core_completeness": 0.5
+    "core_completeness": 0.67
    }
   },
   {
@@ -1422,7 +1444,7 @@
     "eligibility.discount_tiers: 200-250% says 'up to 80%', a cap rather than a fixed discount; skipped",
     "eligibility.discount_tiers: 250-300% says 'up to 60%', a cap rather than a fixed discount; skipped",
     "eligibility.discount_tiers: 300-350% says 'up to 40%', a cap rather than a fixed discount; skipped",
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: Patient whose family income is over 251% and below 300% of the FPL would be eligible for up to a 60% discount. | Patient whose family income is over 301% and below 350% of the FPL would be eligible for up to a 40% discount."
+    "eligibility.discount_tiers: value backed by 3 verbatim spans"
    ],
    "eve_verified": {
     "on": "2026-10-23",
@@ -1485,7 +1507,31 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "discount_tiers": null,
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "125",
+       "max_fpl_inclusive": "150",
+       "discount_percent": 75
+      },
+      {
+       "min_fpl_exclusive": "150",
+       "max_fpl_inclusive": "175",
+       "discount_percent": 50
+      },
+      {
+       "min_fpl_exclusive": "175",
+       "max_fpl_inclusive": "200",
+       "discount_percent": 35
+      }
+     ],
+     "layer": "documented",
+     "quote": "126-150% of Poverty Guidelines 75% Discount || 151-175% of Poverty Guidelines 50% Discount || 176-200% of Poverty Guidelines 35% Discount",
+     "source_id": "fap-129f4de2a628f482",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": null,
@@ -1518,10 +1564,14 @@
       {
        "kind": "in_person",
        "detail": "These documents must be turned into the Business Office located at 708 8th Street, Amour, SD 57313."
+      },
+      {
+       "kind": "phone",
+       "detail": "Business Office, and they can be contacted at 605-724-2159"
       }
      ],
      "layer": "documented",
-     "quote": "These documents must be turned into the Business Office located at 708 8th Street, Amour, SD 57313.",
+     "quote": "These documents must be turned into the Business Office located at 708 8th Street, Amour, SD 57313. || Business Office, and they can be contacted at 605-724-2159.",
      "source_id": "fap-129f4de2a628f482",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1582,8 +1632,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: 151-175% of Poverty Guidelines 50% Discount | 176-200% of Poverty Guidelines 35% Discount",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Business Office, and they can be contacted at 605-724-2159."
+    "eligibility.discount_tiers: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 2 verbatim spans"
    ],
    "eve_verified": {
     "on": "2026-10-23",
@@ -1596,6 +1646,7 @@
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
      "apply.documents_required",
      "apply.submit_methods",
      "apply.window_days_from_first_bill",
@@ -1604,21 +1655,16 @@
     ],
     "rejected": [
      [
-      "eligibility.discount_tiers",
-      "value not in quote"
-     ],
-     [
       "eligibility.asset_test",
       "quote does not support the asset-test value"
      ]
     ],
     "pruned": [
      "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
-     "apply.documents_required: 1 item not named in the trimmed quote",
-     "apply.submit_methods: 1 item not named in the trimmed quote"
+     "apply.documents_required: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": true,
-    "core_completeness": 0.67
+    "core_completeness": 0.83
    }
   },
   {
@@ -1645,7 +1691,31 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "discount_tiers": null,
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "150",
+       "max_fpl_inclusive": "200",
+       "discount_percent": 75
+      },
+      {
+       "min_fpl_exclusive": "200",
+       "max_fpl_inclusive": "250",
+       "discount_percent": 50
+      },
+      {
+       "min_fpl_exclusive": "250",
+       "max_fpl_inclusive": "300",
+       "discount_percent": 25
+      }
+     ],
+     "layer": "documented",
+     "quote": "151-200% of Poverty Guidelines 75% Discount || 201-250% of Poverty Guidelines 50% Discount || 251-300% of Poverty Guidelines 25% Discount",
+     "source_id": "fap-f4c1481fa5e1e8c5",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": {
@@ -1709,10 +1779,14 @@
       {
        "kind": "mail",
        "detail": "Please return your completed application, along with supporting documentation to the Business Office at Community Memorial Hospital."
+      },
+      {
+       "kind": "phone",
+       "detail": "(605) 775-2621"
       }
      ],
      "layer": "documented",
-     "quote": "Please return your completed application, along with supporting documentation to the Business Office at Community Memorial Hospital.",
+     "quote": "Please return your completed application, along with supporting documentation to the Business Office at Community Memorial Hospital. || Community Memorial Hospital Business Office Manager at (605) 775-2621",
      "source_id": "fap-df75674563f0ab0f",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1799,9 +1873,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: 201-250% of Poverty Guidelines 50% Discount | 251-300% of Poverty Guidelines 25% Discount",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: 2. Homeless or received care from a homeless clinic; | 7. Low income/subsidized housing is provided as a valid address; and, 8. Patient is deceased with no known estate.",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Community Memorial Hospital Business Office Manager at (605) 775-2621",
+    "eligibility.discount_tiers: value backed by 3 verbatim spans",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 2 verbatim spans",
     "agent judge on programs.presumptive: Quote shows only items 1, 2, 7, and 8. Value includes WIC, food stamp, school lunch, and other state/local program items that the quote does not show."
    ],
    "eve_verified": {
@@ -1817,6 +1891,7 @@
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
      "eligibility.residency",
      "eligibility.insured_patients_covered",
      "programs.state_programs",
@@ -1828,10 +1903,6 @@
      "contacts.hours"
     ],
     "rejected": [
-     [
-      "eligibility.discount_tiers",
-      "value not in quote"
-     ],
      [
       "eligibility.assistance_ceiling_fpl",
       "value not in quote"
@@ -1846,11 +1917,10 @@
      ]
     ],
     "pruned": [
-     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
-     "apply.submit_methods: 1 item not named in the trimmed quote"
+     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)"
     ],
     "income_rule_verified": true,
-    "core_completeness": 0.67
+    "core_completeness": 0.83
    }
   },
   {
@@ -1959,10 +2029,14 @@
       {
        "kind": "in_person",
        "detail": "drop them off at the business office"
+      },
+      {
+       "kind": "phone",
+       "detail": "Contact the business office at 605-925-4000"
       }
      ],
      "layer": "documented",
-     "quote": "Mail completed applications and forms with your most recent W-2, tax returns, pay stubs and bank statements to PO Box 370, Freeman, SD 57029 or drop them off at the business office.",
+     "quote": "Mail completed applications and forms with your most recent W-2, tax returns, pay stubs and bank statements to PO Box 370, Freeman, SD 57029 or drop them off at the business office. || Contact the business office at 605-925-4000. Let them know you\u2019re requesting financial assistance.",
      "source_id": "web-aa881d995b9758b6",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2042,8 +2116,8 @@
    "accuracy": null,
    "eve_review": [
     "eligibility.discount_tiers: 150-400% says 'up to 50%', a cap rather than a fixed discount; skipped",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Contact the business office at 605-925-4000. Let them know you\u2019re requesting financial assistance.",
-    "contacts.languages: 1 more verbatim excerpt(s) supported this value: Click here for the Spanish version [https://freemanregional.com/wp-content/uploads/2025/05/FRHSClarity.Spanish-2.pdf]",
+    "apply.submit_methods: value backed by 2 verbatim spans",
+    "contacts.languages: value backed by 2 verbatim spans",
     "agent judge on eligibility.discount_tiers: Quote gives the 150% lower bound and up to 50% forgiveness on a sliding scale, but does not state the 400% upper bound."
    ],
    "eve_verified": {
@@ -2084,8 +2158,7 @@
      ]
     ],
     "pruned": [
-     "programs.presumptive: 1 item not named in the trimmed quote",
-     "apply.submit_methods: 1 item not named in the trimmed quote"
+     "programs.presumptive: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": true,
     "core_completeness": 0.67
@@ -2162,11 +2235,12 @@
     "documents_required": {
      "value": [
       "pay_stubs",
+      "tax_return",
       "proof_of_income",
       "other"
      ],
      "layer": "documented",
-     "quote": "Documentation of income for 3 months \u2013 current pay stubs",
+     "quote": "Documentation of income for 3 months \u2013 current pay stubs || Completed Financial Statement \u2013 attached || Tax Return \u2013 including ALL pages and ALL Applicable W-2\u2019s",
      "source_id": "fap-b13272b33fa43265",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2178,10 +2252,18 @@
       {
        "kind": "phone",
        "detail": "(605) 859-2511"
+      },
+      {
+       "kind": "mail",
+       "detail": "Philip Health Services, Inc., P.O. Box 790, Philip, SD 57567"
+      },
+      {
+       "kind": "portal",
+       "detail": "www. philiphealthservices.com"
       }
      ],
      "layer": "documented",
-     "quote": "1. Telephone: (605) 859-2511",
+     "quote": "1. Telephone: (605) 859-2511 || 2. Address: Philip Health Services, Inc., P.O. Box 790, Philip, SD 57567 || 3. Website: www. philiphealthservices.com",
      "source_id": "fap-a0332452c78e4223",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2270,8 +2352,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Completed Financial Statement \u2013 attached | Tax Return \u2013 including ALL pages and ALL Applicable W-2\u2019s",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: 2. Address: Philip Health Services, Inc., P.O. Box 790, Philip, SD 57567 | 3. Website: www. philiphealthservices.com",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 3 verbatim spans",
     "agent dropped eligibility.discount_tiers: excerpt not in source: Household Size Income Household Size Income Income 100 % Wri",
     "agent dropped eligibility.assistance_ceiling_fpl: quote is not a substring of the source",
     "agent dropped programs.presumptive: quote is not a substring of the source",
@@ -2308,8 +2390,7 @@
      ]
     ],
     "pruned": [
-     "apply.documents_required: 3 items not named in the trimmed quote",
-     "apply.submit_methods: 2 items not named in the trimmed quote"
+     "apply.documents_required: 2 items not named in the trimmed quote"
     ],
     "income_rule_verified": true,
     "core_completeness": 0.67
@@ -2367,10 +2448,11 @@
     "documents_required": {
      "value": [
       "pay_stubs",
+      "tax_return",
       "proof_of_income"
      ],
      "layer": "documented",
-     "quote": "Documented proof of all income is required and must accompany your application: HOUSEHOLD EMPLOYMENT INCOME INFORMATION Supporting Documents Needed: 3 mo Current and All Consecutive Pay Stubs",
+     "quote": "Documented proof of all income is required and must accompany your application: HOUSEHOLD EMPLOYMENT INCOME INFORMATION Supporting Documents Needed: 3 mo Current and All Consecutive Pay Stubs || (Must Provide Claimants Most Recent Federal Tax Return) || Proof of each and all other household income sources have been included.",
      "source_id": "fap-f82e64dbdf7adf1d",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2403,7 +2485,7 @@
       "Spanish"
      ],
      "layer": "documented",
-     "quote": "Resources (English)",
+     "quote": "Resources (English) || Resources (Spanish)",
      "source_id": "web-f338f64cfa9d321f",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2446,8 +2528,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: (Must Provide Claimants Most Recent Federal Tax Return) | Proof of each and all other household income sources have been included.",
-    "contacts.languages: 1 more verbatim excerpt(s) supported this value: Resources (Spanish)",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "contacts.languages: value backed by 2 verbatim spans",
     "agent dropped apply.submit_methods: excerpt not in source: MyChart: With MyChart, you can securely apply for assistance",
     "agent judge on contacts.languages: Quote only shows resource labels 'Resources (English)' and 'Resources (Spanish)'; it does not state languages in which assistance is provided."
    ],
@@ -2477,9 +2559,7 @@
       "quote not found in source"
      ]
     ],
-    "pruned": [
-     "apply.documents_required: 1 item not named in the trimmed quote"
-    ],
+    "pruned": [],
     "income_rule_verified": false,
     "core_completeness": 0.33
    }
@@ -2533,10 +2613,11 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "pay_stubs"
+      "pay_stubs",
+      "tax_return"
      ],
      "layer": "documented",
-     "quote": "Supporting Documents Needed: 3 mo Current and All Consecutive Pay Stubs",
+     "quote": "Supporting Documents Needed: 3 mo Current and All Consecutive Pay Stubs || Must Provide Most Recent Federal Tax Return \u2013 Business and Personal",
      "source_id": "fap-f82e64dbdf7adf1d",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2626,7 +2707,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: Must Provide Most Recent Federal Tax Return \u2013 Business and Personal",
+    "apply.documents_required: value backed by 2 verbatim spans",
     "agent judge on eligibility.asset_test: Quote is a form header listing cash, bank, and savings lines; it does not state that assets are considered.",
     "agent judge on eligibility.insured_patients_covered: Quote is one patient's statement about their own employer plan; it does not state that insured patients are covered.",
     "agent judge on apply.form_url: Quote gives only the form's name, 'Financial Assistance Application'; it contains no URL."
@@ -2658,9 +2739,7 @@
       "quote does not support the asset-test value"
      ]
     ],
-    "pruned": [
-     "apply.documents_required: 1 item not named in the trimmed quote"
-    ],
+    "pruned": [],
     "income_rule_verified": false,
     "core_completeness": 0.67
    }
@@ -2706,10 +2785,11 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "pay_stubs"
+      "pay_stubs",
+      "tax_return"
      ],
      "layer": "documented",
-     "quote": "Supporting Documents Needed: 3 mo Current and All Consecutive Pay Stubs",
+     "quote": "Supporting Documents Needed: 3 mo Current and All Consecutive Pay Stubs || (Must Provide Claimants Most Recent Federal Tax Return) || Must Provide Most Recent Federal Tax Return \u2013 Business and Personal",
      "source_id": "fap-f82e64dbdf7adf1d",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2791,7 +2871,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: (Must Provide Claimants Most Recent Federal Tax Return) | Must Provide Most Recent Federal Tax Return \u2013 Business and Personal",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent dropped eligibility.asset_test: quote is not a substring of the source",
     "agent judge on eligibility.insured_patients_covered: The quote describes one patient's employer coverage. It does not state that insured patients are covered by the financial assistance program.",
     "agent judge on apply.documents_required: The quote lists pay stubs and federal tax return only. It does not mention an insurance card, which the value includes."
@@ -2817,7 +2897,7 @@
     ],
     "rejected": [],
     "pruned": [
-     "apply.documents_required: 2 items not named in the trimmed quote"
+     "apply.documents_required: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": false,
     "core_completeness": 0.5
@@ -2864,7 +2944,19 @@
     "services_excluded": null
    },
    "programs": {
-    "presumptive": null,
+    "presumptive": {
+     "value": [
+      "State-funded prescription programs",
+      "Homeless or received care from a homeless clinic",
+      "Participation in Women, Infants and Children programs (WIC)"
+     ],
+     "layer": "documented",
+     "quote": "1. State-funded prescription programs; || 2. Homeless or received care from a homeless clinic; || 3. Participation in Women, Infants and Children programs (WIC);",
+     "source_id": "fap-23f074ddc7a0b452",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "state_programs": null
    },
    "apply": {
@@ -2971,7 +3063,7 @@
    "eve_review": [
     "eligibility.discount_tiers: 100-200% says 'up to 50%', a cap rather than a fixed discount; skipped",
     "eligibility.discount_tiers: 200-200% at 0% is no discount; skipped",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: 2. Homeless or received care from a homeless clinic; | 3. Participation in Women, Infants and Children programs (WIC);",
+    "programs.presumptive: value backed by 3 verbatim spans",
     "apply.form_url: not an absolute URL ('/image/cache/FINANCIAL_ASSISTANCE_APPLICATION-ADMIN05MKT.pdf'); dropped",
     "agent judge on eligibility.discount_tiers: Quote gives up to 50% discount for over 100% to below 200% FPL, but for above 200% only says case-by-case discounted rates; no 0% tier stated, and the 200-200 tier is not in the quote.",
     "agent judge on eligibility.asset_test: Quote is a blank form showing bank account fields; it does not state that assets are considered.",
@@ -2994,6 +3086,7 @@
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.insured_patients_covered",
+     "programs.presumptive",
      "apply.documents_required",
      "apply.window_days_from_first_bill",
      "apply.decision_days",
@@ -3007,7 +3100,7 @@
      ]
     ],
     "pruned": [
-     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)"
+     "programs.presumptive: 5 items not named in the trimmed quote"
     ],
     "income_rule_verified": true,
     "core_completeness": 0.5
@@ -3078,7 +3171,19 @@
     "services_excluded": null
    },
    "programs": {
-    "presumptive": null,
+    "presumptive": {
+     "value": [
+      "WIC",
+      "homeless",
+      "deceased with no known estate"
+     ],
+     "layer": "documented",
+     "quote": "Homeless or received care from a homeless clinic; || Participation in Women, Infants and Children programs (WIG); || Patient is deceased with no known estate",
+     "source_id": "fap-00faa81ca65c64d8",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "state_programs": null
    },
    "apply": {
@@ -3087,10 +3192,12 @@
     "documents_required": {
      "value": [
       "tax_return",
+      "pay_stubs",
+      "social_security_letter",
       "other"
      ],
      "layer": "documented",
-     "quote": "Copy of your most recent tax return including all applicable schedules",
+     "quote": "Copy of your most recent tax return including all applicable schedules || If your most recent tax return is not available, then we need one of the following: o Social Security Awards Letter o Proof of non filing from the IRS || Provide proof of all income (ie. the last 2 paystubs for each wage earner",
      "source_id": "fap-4dae8243b9374585",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3210,8 +3317,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Participation in Women, Infants and Children programs (WIG); | Patient is deceased with no known estate",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: If your most recent tax return is not available, then we need one of the following: o Social Security Awards Letter o Pr | Provide proof of all income (ie. the last 2 paystubs for each wage earner",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent judge on programs.presumptive: Quote lists homeless, WIC, and deceased with no known estate. It does not mention Medicaid."
    ],
    "eve_verified": {
@@ -3229,6 +3336,7 @@
      "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
      "eligibility.assistance_ceiling_fpl",
+     "programs.presumptive",
      "apply.documents_required",
      "apply.submit_methods",
      "apply.window_days_from_first_bill",
@@ -3244,8 +3352,7 @@
      ]
     ],
     "pruned": [
-     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
-     "apply.documents_required: 2 items not named in the trimmed quote"
+     "programs.presumptive: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": true,
     "core_completeness": 0.83
@@ -3310,7 +3417,18 @@
     "services_excluded": null
    },
    "programs": {
-    "presumptive": null,
+    "presumptive": {
+     "value": [
+      "Homeless or received care from a free Avera clinic",
+      "Participation in Women, Infant and Children program (WIC)"
+     ],
+     "layer": "documented",
+     "quote": "Patient income below 250% Federal Poverty Guidelines and considered self-pay || Homeless or received care from a free Avera clinic || Participation in Women, Infant and Children program (WIC)",
+     "source_id": "fap-db61ff74cd6247dd",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "state_programs": null
    },
    "apply": {
@@ -3404,7 +3522,7 @@
    "accuracy": null,
    "eve_review": [
     "eligibility.discount_tiers: 250-400% says 'up to 90%', a cap rather than a fixed discount; skipped",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Homeless or received care from a free Avera clinic | Participation in Women, Infant and Children program (WIC)",
+    "programs.presumptive: value backed by 3 verbatim spans",
     "agent judge on eligibility.discount_tiers: Quote gives the 250% lower bound and 90% discount but never states the 400% upper bound, which the value requires.",
     "agent judge on programs.presumptive: Quote lists only three presumptive categories (self-pay under 250%, homeless/free clinic, WIC). Food stamps, school lunch and Medicaid in the value are not in the quote."
    ],
@@ -3422,6 +3540,7 @@
      "eligibility.asset_test",
      "eligibility.residency",
      "eligibility.insured_patients_covered",
+     "programs.presumptive",
      "apply.documents_required",
      "apply.submit_methods",
      "apply.window_days_from_first_bill",
@@ -3435,7 +3554,7 @@
      ]
     ],
     "pruned": [
-     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)"
+     "programs.presumptive: 4 items not named in the trimmed quote"
     ],
     "income_rule_verified": true,
     "core_completeness": 0.67
@@ -3506,10 +3625,18 @@
       {
        "kind": "phone",
        "detail": "605-842-7175"
+      },
+      {
+       "kind": "mail",
+       "detail": "745 East 8th Street, Winner, SD 57580"
+      },
+      {
+       "kind": "portal",
+       "detail": "www.winnerregional.org"
       }
      ],
      "layer": "documented",
-     "quote": "By telephone at 605-842-7175",
+     "quote": "By telephone at 605-842-7175 || By Mail at 745 East 8th Street, Winner, SD 57580 || By visiting www.winnerregional.org",
      "source_id": "fap-e70e454f0903b11a",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3599,8 +3726,8 @@
    "accuracy": null,
    "eve_review": [
     "eligibility.discount_tiers: 100-150% says 'up to 50%', a cap rather than a fixed discount; skipped",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Homeless or received care from a homeless clinic; | Low income/subsidized housing is provided as a valid address; and",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: By Mail at 745 East 8th Street, Winner, SD 57580 | By visiting www.winnerregional.org",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 3 verbatim spans",
     "agent judge on eligibility.discount_tiers: Quote says 'below 150%' (exclusive), but value sets max_fpl_inclusive to 150. The bound does not match.",
     "agent judge on eligibility.insured_patients_covered: Quote says the hospital will determine whether patients are eligible for help with cost-sharing. It does not state insured patients are covered.",
     "agent judge on programs.presumptive: Quote lists only three presumptive categories (state-funded prescriptions, homeless, subsidized housing). Value lists eight, including WIC, food stamps, and deceased patients.",
@@ -3635,8 +3762,7 @@
      ]
     ],
     "pruned": [
-     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
-     "apply.submit_methods: 2 items not named in the trimmed quote"
+     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)"
     ],
     "income_rule_verified": true,
     "core_completeness": 0.67
@@ -3883,10 +4009,11 @@
     "documents_required": {
      "value": [
       "proof_of_income",
+      "tax_return",
       "other"
      ],
      "layer": "documented",
-     "quote": "Proof of all income (i.e. Last two pay stubs for any wage earner contributing to household income, SS, SSI, SSDI, Public Assistance, Rental Income, Retirement, Pension, VA Benefits, Unemployment, Workers Comp, Child Support, Alimony, etc.)",
+     "quote": "Proof of all income (i.e. Last two pay stubs for any wage earner contributing to household income, SS, SSI, SSDI, Public Assistance, Rental Income, Retirement, Pension, VA Benefits, Unemployment, Workers Comp, Child Support, Alimony, etc.) || Copy of your most recent 1040 tax return, including all applicable schedules || Copy of your property tax assessment statement from county for any owned property",
      "source_id": "fap-71af4fbc02d98f71",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4000,11 +4127,11 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: Patients who qualify as Medically Indigent will receive assistance at the highest income category under the financially ",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
     "eligibility.assistance_ceiling_fpl: quote matched the source only after typography normalization",
     "eligibility.residency: quote matched the source only after typography normalization",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Copy of your most recent 1040 tax return, including all applicable schedules | Copy of your property tax assessment statement from county for any owned property",
-    "contacts.languages: 1 more verbatim excerpt(s) supported this value: Financial Assistance Policy- Spanish [https://cdphealth.com/wp-content/uploads/2021/10/Financial-Assistance-Policy-revis",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "contacts.languages: value backed by 2 verbatim spans",
     "agent dropped programs.presumptive: excerpt not in source: 6. Eligibility for other state or local assistance program t",
     "agent judge on eligibility.discount_tiers: Quote gives 90% for >150% to 175% FPL, but the 25% tier's 175-400% bounds are not stated; the 25% is only tied to Medically Indigent status, with no 400% bound.",
     "agent judge on eligibility.assistance_ceiling_fpl: Quote says income must be at or below 400% FPL plus a medical-expense test. It is a qualifying condition, not a statement that no assistance is offered above 400%.",
@@ -4056,9 +4183,7 @@
       "quote not found in source"
      ]
     ],
-    "pruned": [
-     "apply.documents_required: 1 item not named in the trimmed quote"
-    ],
+    "pruned": [],
     "income_rule_verified": true,
     "core_completeness": 0.67
    }

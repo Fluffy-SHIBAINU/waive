@@ -99,10 +99,11 @@
     "documents_required": {
      "value": [
       "pay_stubs",
+      "tax_return",
       "other"
      ],
      "layer": "documented",
-     "quote": "Recent pay stubs from within the 6 months before or after the patient is first billed (or in preservice when Application is submitted)",
+     "quote": "Recent pay stubs from within the 6 months before or after the patient is first billed (or in preservice when Application is submitted) || Copy of Federal Income Tax Return (Form 1040) for patient and spouse or domestic partner from the year the patient was first billed or 12 months prior to when the patient was first billed || A \"W-2\" withholding statement or a Form 4506-T (if W-2 not filed)",
      "source_id": "fap-7a5900fa182379a1",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -183,8 +184,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Enrolled in a state Medicaid, CHIP, Healthier Oregon, Bridge Program or any other state medical assistance program | Homeless, as documented in their medical record, or",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Copy of Federal Income Tax Return (Form 1040) for patient and spouse or domestic partner from the year the patient was f | A \"W-2\" withholding statement or a Form 4506-T (if W-2 not filed)",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent dropped apply.submit_methods: excerpt not in source: Call us at 541-296-7504 so we can help you as soon as possib",
     "agent dropped contacts.languages: quote is not a substring of the source",
     "agent judge on eligibility.insured_patients_covered: Quote only says patients owing $500 or more after insurance adjustments; it does not state that insured patients are covered.",
@@ -217,13 +218,16 @@
     ],
     "rejected": [
      [
+      "programs.presumptive",
+      "quote not found in source"
+     ],
+     [
       "apply.form_url",
       "quote not found in source"
      ]
     ],
     "pruned": [
-     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
-     "apply.documents_required: 1 item not named in the trimmed quote"
+     "programs.presumptive: 2 items not named in the trimmed quote"
     ],
     "income_rule_verified": true,
     "core_completeness": 0.67
@@ -317,7 +321,7 @@
       "Medicaid enrolled"
      ],
      "layer": "documented",
-     "quote": "A patient will be reviewed for presumptive eligibility for financial assistance Eligible Services provided by a hospital if the patient: (i) is uninsured; (ii) is enrolled in a state medical assistance program, such as the Oregon Health Plan or other Oregon Health Authority programs; or (iii) owes the hospital more than $1,500 for a single hospital encounter after all adjustments from insurance or third-party payers.",
+     "quote": "A patient will be reviewed for presumptive eligibility for financial assistance Eligible Services provided by a hospital if the patient: (i) is uninsured; (ii) is enrolled in a state medical assistance program, such as the Oregon Health Plan or other Oregon Health Authority programs; or (iii) owes the hospital more than $1,500 for a single hospital encounter after all adjustments from insurance or third-party payers. || Patient participation in other assistance programs (e.g., Supplemental Nutrition Assistance Program (SNAP); Temporary Assistance for Needy Families (TANF); Children's Health Insurance Program (CHIP); Women, Infants and Children (WIC); free lunch or breakfast programs; and low-income home energy assistance programs).",
      "source_id": "fap-731cb96f01a2a259",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -435,7 +439,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: Patient participation in other assistance programs (e.g., Supplemental Nutrition Assistance Program (SNAP); Temporary As",
+    "programs.presumptive: value backed by 2 verbatim spans",
     "agent dropped apply.submit_methods: excerpt not in source: Mail completed application with all documentation to: Provid",
     "agent judge on eligibility.assistance_ceiling_fpl: Quote says eligibility can be determined at or below 400% FPL but does not state that no assistance is offered above 400%.",
     "agent judge on eligibility.asset_test: Quote says assets are considered only as required by CMS for Medicare cost reporting, for Medicare patients, not as a general eligibility asset test.",
@@ -548,10 +552,11 @@
      "value": [
       "uninsured",
       "enrolled in a state medical assistance program",
+      "homeless",
       "eligible for Medicaid or as a Qualified Medicare Beneficiary"
      ],
      "layer": "documented",
-     "quote": "qualifying\" Medically Necessary Services means hospital based Medically Necessary Services received by patients (a) are uninsured, (b) enrolled in a state medical assistance program; or (c) will owe Legacy $1500 or more",
+     "quote": "qualifying\" Medically Necessary Services means hospital based Medically Necessary Services received by patients (a) are uninsured, (b) enrolled in a state medical assistance program; or (c) will owe Legacy $1500 or more || A patient indicates they are homeless and preliminary screening or clinical documentation confirms eligibility. || A patient is or becomes eligible for Medicaid or as a Qualified Medicare Beneficiary within 60 days of receiving Medically Necessary Service.",
      "source_id": "fap-8316e0d0c07c7862",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -676,7 +681,7 @@
    "accuracy": null,
    "eve_review": [
     "eligibility.discount_tiers: 0-300% at 100% is the free-care band, not a tier; skipped",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: A patient indicates they are homeless and preliminary screening or clinical documentation confirms eligibility. | A patient is or becomes eligible for Medicaid or as a Qualified Medicare Beneficiary within 60 days of receiving Medical",
+    "programs.presumptive: value backed by 3 verbatim spans",
     "agent dropped eligibility.min_balance: quote is not a substring of the source",
     "agent dropped apply.submit_methods: excerpt not in source: Apply through MyHealth [https://myhealth.lhs.org/MyHealth/Au",
     "agent judge on apply.form_url: Quote gives only a relative path in brackets, not the full https://www.legacyhealth.org URL stated in the value.",
@@ -717,7 +722,6 @@
      ]
     ],
     "pruned": [
-     "programs.presumptive: 1 item not named in the trimmed quote",
      "apply.documents_required: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": true,
@@ -791,7 +795,18 @@
     "services_excluded": null
    },
    "programs": {
-    "presumptive": null,
+    "presumptive": {
+     "value": [
+      "Medicaid enrolled",
+      "homeless"
+     ],
+     "layer": "documented",
+     "quote": "Patient has an active limited Medicaid plan, including Citizen Waived Medical (CWM) coverage, or a Medicare Savings Plan such as SMF, SMB, or QI-1 || Any houseless or homeless patients who are not able to be presumptively screened, who may not have enough information to screen, or who received no information back during the presumptive screening, will be automatically assumed to be under the FPL and, therefore, eligible to receive 100% presumptive charity.",
+     "source_id": "fap-dc631ce07556d2a4",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "state_programs": null
    },
    "apply": {
@@ -799,10 +814,12 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "proof_of_residency"
+      "proof_of_residency",
+      "pay_stubs",
+      "tax_return"
      ],
      "layer": "documented",
-     "quote": "Proof of residency. Provide one of the following: utility bill in your name, rental agreement, mortgage statement for your residence, copy of your driver\u2019s license or identification card.",
+     "quote": "Proof of residency. Provide one of the following: utility bill in your name, rental agreement, mortgage statement for your residence, copy of your driver\u2019s license or identification card. || Paycheck stubs for the last 3 full calendar months. If you do not have your paystubs, you may give us a letter from your employer || Income tax returns for the most recent year filed, including any schedules (such as schedule C for self-employment income).",
      "source_id": "fap-ed0d5dedd41e1cb2",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -822,10 +839,14 @@
       {
        "kind": "email",
        "detail": "sfr@ohsu.edu"
+      },
+      {
+       "kind": "in_person",
+       "detail": "Please call 503-494-8551 to determine location closest to you."
       }
      ],
      "layer": "documented",
-     "quote": "Mail: Oregon Health & Science University Patient Financial Services, RPB07 3181 SW Sam Jackson Park Road Portland, OR 97239-3098 Fax: 503-418-2377 Email: sfr@ohsu.edu",
+     "quote": "Mail: Oregon Health & Science University Patient Financial Services, RPB07 3181 SW Sam Jackson Park Road Portland, OR 97239-3098 Fax: 503-418-2377 Email: sfr@ohsu.edu || To deliver in person: Please call 503-494-8551 to determine location closest to you.",
      "source_id": "fap-ed0d5dedd41e1cb2",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -904,9 +925,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: Any houseless or homeless patients who are not able to be presumptively screened, who may not have enough information to",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Paycheck stubs for the last 3 full calendar months. If you do not have your paystubs, you may give us a letter from your | Income tax returns for the most recent year filed, including any schedules (such as schedule C for self-employment incom",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: To deliver in person: Please call 503-494-8551 to determine location closest to you.",
+    "programs.presumptive: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 2 verbatim spans",
     "apply.window_days_from_first_bill: quote matched the source only after typography normalization",
     "agent judge on eligibility.insured_patients_covered: Quote shows a commercially insured row with zero charge up to 300% FPL; it does not state that insured patients are covered generally. Value is a boolean true, which is not stated.",
     "agent judge on apply.window_days_from_first_bill: Quote says applications may be made 12 months after care, not 365 days from first bill; the anchor is provision of care, not first bill."
@@ -928,6 +949,7 @@
      "eligibility.asset_test",
      "eligibility.residency",
      "eligibility.insured_patients_covered",
+     "programs.presumptive",
      "apply.documents_required",
      "apply.submit_methods",
      "apply.decision_days",
@@ -944,11 +966,7 @@
       "value not in quote"
      ]
     ],
-    "pruned": [
-     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
-     "apply.documents_required: 2 items not named in the trimmed quote",
-     "apply.submit_methods: 1 item not named in the trimmed quote"
-    ],
+    "pruned": [],
     "income_rule_verified": true,
     "core_completeness": 0.67
    }
@@ -1011,10 +1029,11 @@
     "documents_required": {
      "value": [
       "proof_of_income",
+      "pay_stubs",
       "other"
      ],
      "layer": "documented",
-     "quote": "REMEMBER: You must include proof of income with your application.",
+     "quote": "REMEMBER: You must include proof of income with your application. || A \"W-2\" withholding statement; or || Current pay stubs (3 months); or",
      "source_id": "fap-4fc3acd192b48414",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1104,9 +1123,9 @@
    "accuracy": null,
    "eve_review": [
     "eligibility.discount_tiers: 0-300% at 100% is the free-care band, not a tier; skipped",
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: 301-400 % 75%",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: A patient is or becomes eligible for Medicaid or as a Qualified Medicare Beneficiary within 60 days | qualifying\" Medically Necessary Services means hospital based Medically Necessary Services received by patients (a) are ",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: A \"W-2\" withholding statement; or | Current pay stubs (3 months); or",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent dropped eligibility.residency: quote is not a substring of the source",
     "agent dropped eligibility.min_balance: quote is not a substring of the source",
     "agent dropped apply.submit_methods: excerpt not in source: Apply through MyHealth [https://myhealth.lhs.org/MyHealth/Au",
@@ -1153,7 +1172,7 @@
     ],
     "pruned": [
      "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
-     "apply.documents_required: 3 items not named in the trimmed quote"
+     "apply.documents_required: 2 items not named in the trimmed quote"
     ],
     "income_rule_verified": true,
     "core_completeness": 0.5
@@ -1319,10 +1338,12 @@
     "documents_required": {
      "value": [
       "proof_of_residency",
+      "pay_stubs",
+      "social_security_letter",
       "other"
      ],
      "layer": "documented",
-     "quote": "Provide one of the following: utility bill in your name, rental agreement, mortgage statement for your residence, copy of your driver\u2019s license or identification card.",
+     "quote": "Provide one of the following: utility bill in your name, rental agreement, mortgage statement for your residence, copy of your driver\u2019s license or identification card. || Paycheck stubs for the last 3 full calendar months. || Social Security, Veterans, Pension Award Letter or the equivalent",
      "source_id": "fap-e50e7d56cde4c9a1",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1334,10 +1355,22 @@
       {
        "kind": "mail",
        "detail": "Oregon Health & Science University Patient Financial Services, RPB07 3181 SW Sam Jackson Park Road Portland, OR 97239-3098"
+      },
+      {
+       "kind": "fax",
+       "detail": "503-418-2377"
+      },
+      {
+       "kind": "email",
+       "detail": "sfr@ohsu.edu"
+      },
+      {
+       "kind": "in_person",
+       "detail": "Please call 503-494-8551 to determine location closest to you."
       }
      ],
      "layer": "documented",
-     "quote": "Mail: Oregon Health & Science University Patient Financial Services, RPB07 3181 SW Sam Jackson Park Road Portland, OR 97239-3098",
+     "quote": "Mail: Oregon Health & Science University Patient Financial Services, RPB07 3181 SW Sam Jackson Park Road Portland, OR 97239-3098 || Fax: 503-418-2377 Email: sfr@ohsu.edu || To deliver in person: Please call 503-494-8551 to determine location closest to you.",
      "source_id": "fap-e50e7d56cde4c9a1",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1416,8 +1449,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Paycheck stubs for the last 3 full calendar months. | Social Security, Veterans, Pension Award Letter or the equivalent",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Fax: 503-418-2377 Email: sfr@ohsu.edu | To deliver in person: Please call 503-494-8551 to determine location closest to you.",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 3 verbatim spans",
     "agent judge on apply.documents_required: Quote covers proof of residency, paycheck stubs, and Social Security/Veterans/Pension letters only. It does not mention income tax returns or bank/credit union statements."
    ],
    "eve_verified": {
@@ -1442,8 +1475,7 @@
     ],
     "rejected": [],
     "pruned": [
-     "apply.documents_required: 3 items not named in the trimmed quote",
-     "apply.submit_methods: 3 items not named in the trimmed quote"
+     "apply.documents_required: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": false,
     "core_completeness": 0.5
@@ -1473,7 +1505,21 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "discount_tiers": null,
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "300",
+       "max_fpl_inclusive": "400",
+       "discount_percent": 75
+      }
+     ],
+     "layer": "documented",
+     "quote": "A patient/guarantor will be given partial Financial Assistance based on their income level up to 400% of Federal Poverty Guidelines based on the sliding scale schedule below: || 0-300% 100% 301-400 % 75%",
+     "source_id": "fap-8316e0d0c07c7862",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "assistance_ceiling_fpl": null,
     "asset_test": {
      "value": false,
@@ -1509,10 +1555,11 @@
     "presumptive": {
      "value": [
       "uninsured",
-      "enrolled in a state medical assistance program"
+      "enrolled in a state medical assistance program",
+      "homeless"
      ],
      "layer": "documented",
-     "quote": "qualifying\" Medically Necessary Services means hospital based Medically Necessary Services received by patients (a) are uninsured, (b) enrolled in a state medical assistance program; or (c) will owe Legacy $1500 or more for a single encounter",
+     "quote": "qualifying\" Medically Necessary Services means hospital based Medically Necessary Services received by patients (a) are uninsured, (b) enrolled in a state medical assistance program; or (c) will owe Legacy $1500 or more for a single encounter || A patient indicates they are homeless and preliminary screening or clinical documentation confirms eligibility.",
      "source_id": "fap-8316e0d0c07c7862",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1530,7 +1577,7 @@
       "other"
      ],
      "layer": "documented",
-     "quote": "A \"W-2\" withholding statement; or \u2022 Current pay stubs (3 months); or \u2022 Last year\u2019s income tax return, including schedules if applicable; or",
+     "quote": "A \"W-2\" withholding statement; or \u2022 Current pay stubs (3 months); or \u2022 Last year\u2019s income tax return, including schedules if applicable; or || \u2022 Written, signed statements from employers or others; or \u2022 Approval/denial of eligibility for Medicaid and/or state-funded medical assistance",
      "source_id": "fap-4fc3acd192b48414",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1635,9 +1682,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: 0-300% 100% 301-400 % 75%",
-    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: A patient indicates they are homeless and preliminary screening or clinical documentation confirms eligibility.",
-    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: \u2022 Written, signed statements from employers or others; or \u2022 Approval/denial of eligibility for Medicaid and/or state-fun",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "programs.presumptive: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 2 verbatim spans",
     "agent dropped apply.submit_methods: excerpt not in source: Apply through MyHealth [https://myhealth.lhs.org/MyHealth/Au"
    ],
    "eve_verified": {
@@ -1653,6 +1700,7 @@
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
      "eligibility.asset_test",
      "eligibility.insured_patients_covered",
      "eligibility.min_balance",
@@ -1666,10 +1714,6 @@
     ],
     "rejected": [
      [
-      "eligibility.discount_tiers",
-      "value not in quote"
-     ],
-     [
       "eligibility.assistance_ceiling_fpl",
       "quote does not say the hospital's financial assistance reaches it"
      ],
@@ -1679,11 +1723,10 @@
      ]
     ],
     "pruned": [
-     "programs.presumptive: 1 item not named in the trimmed quote",
      "apply.documents_required: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": true,
-    "core_completeness": 0.5
+    "core_completeness": 0.67
    }
   },
   {
@@ -1710,7 +1753,21 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "discount_tiers": null,
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "300",
+       "max_fpl_inclusive": "400",
+       "discount_percent": 75
+      }
+     ],
+     "layer": "documented",
+     "quote": "A patient/guarantor will be given partial Financial Assistance based on their income level up to 400% of Federal Poverty Guidelines based on the sliding scale schedule below: || 301-400 % 75%",
+     "source_id": "fap-8316e0d0c07c7862",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "assistance_ceiling_fpl": null,
     "asset_test": {
      "value": false,
@@ -1747,10 +1804,11 @@
      "value": [
       "uninsured",
       "enrolled in a state medical assistance program",
+      "homeless",
       "eligible for Medicaid or as a Qualified Medicare Beneficiary"
      ],
      "layer": "documented",
-     "quote": "(a) are uninsured, (b) enrolled in a state medical assistance program; or (c) will owe Legacy $1500 or more for a single encounter",
+     "quote": "(a) are uninsured, (b) enrolled in a state medical assistance program; or (c) will owe Legacy $1500 or more for a single encounter || A patient indicates they are homeless and preliminary screening or clinical documentation confirms eligibility. || A patient is or becomes eligible for Medicaid or as a Qualified Medicare Beneficiary within 60 days of receiving Medically Necessary Service.",
      "source_id": "fap-8316e0d0c07c7862",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1767,7 +1825,7 @@
       "other"
      ],
      "layer": "documented",
-     "quote": "Provide documentation for family income",
+     "quote": "Provide documentation for family income || Provide us information about your family\u2019s gross monthly income (income before taxes and deductions) || Sign and date the form",
      "source_id": "fap-4fc3acd192b48414",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1872,10 +1930,10 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: 301-400 % 75%",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: A patient indicates they are homeless and preliminary screening or clinical documentation confirms eligibility. | A patient is or becomes eligible for Medicaid or as a Qualified Medicare Beneficiary within 60 days of receiving Medical",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Provide us information about your family\u2019s gross monthly income (income before taxes and deductions) | Sign and date the form",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Mail to: Legacy Health PO Box 4037 Portland, OR 97208 | Fax: 503-413-2753",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 3 verbatim spans",
     "agent judge on apply.form_url: Quote gives only a relative path (/-/media/files/...) without the legacyhealth.org domain, so the full URL is not stated.",
     "agent judge on apply.submit_methods: Quote gives online (MyHealth), mail, and fax only; the in_person method in the value does not appear in the quote.",
     "agent judge on apply.window_days_from_first_bill: Quote says 240 days from first bill to correct deficiencies or request an appeal, not the window to apply."
@@ -1893,6 +1951,7 @@
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
      "eligibility.asset_test",
      "eligibility.insured_patients_covered",
      "eligibility.min_balance",
@@ -1905,10 +1964,6 @@
      "contacts.languages"
     ],
     "rejected": [
-     [
-      "eligibility.discount_tiers",
-      "value not in quote"
-     ],
      [
       "eligibility.assistance_ceiling_fpl",
       "quote does not say the hospital's financial assistance reaches it"
@@ -1923,11 +1978,10 @@
      ]
     ],
     "pruned": [
-     "programs.presumptive: 1 item not named in the trimmed quote",
-     "apply.submit_methods: 3 items not named in the trimmed quote"
+     "apply.submit_methods: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": true,
-    "core_completeness": 0.5
+    "core_completeness": 0.67
    }
   },
   {
@@ -2015,10 +2069,16 @@
      "value": [
       "uninsured",
       "enrolled in a state medical assistance program",
-      "Medicaid enrolled"
+      "Medicaid enrolled",
+      "SNAP",
+      "TANF",
+      "CHIP",
+      "WIC",
+      "free lunch or breakfast programs",
+      "low-income home energy assistance programs"
      ],
      "layer": "documented",
-     "quote": "A patient will be reviewed for presumptive eligibility for financial assistance Eligible Services provided by a hospital if the patient: (i) is uninsured; (ii) is enrolled in a state medical assistance program, such as the Oregon Health Plan or other Oregon Health Authority programs; or (iii) owes the hospital more than $1,500 for a single hospital encounter after all adjustments from insurance or third-party payers.",
+     "quote": "A patient will be reviewed for presumptive eligibility for financial assistance Eligible Services provided by a hospital if the patient: (i) is uninsured; (ii) is enrolled in a state medical assistance program, such as the Oregon Health Plan or other Oregon Health Authority programs; or (iii) owes the hospital more than $1,500 for a single hospital encounter after all adjustments from insurance or third-party payers. || Patient participation in other assistance programs (e.g., Supplemental Nutrition Assistance Program (SNAP); Temporary Assistance for Needy Families (TANF); Children's Health Insurance Program (CHIP); Women, Infants and Children (WIC); free lunch or breakfast programs; and low-income home energy assistance programs)",
      "source_id": "fap-731cb96f01a2a259",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2136,7 +2196,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: Patient participation in other assistance programs (e.g., Supplemental Nutrition Assistance Program (SNAP); Temporary As",
+    "programs.presumptive: value backed by 2 verbatim spans",
     "agent dropped apply.submit_methods: excerpt not in source: by mail, or by visiting www.providence.org/financialhelp",
     "agent judge on eligibility.assistance_ceiling_fpl: Quote says eligibility determination can be made at or below 400% FPL, but does not state that no assistance is offered above 400%.",
     "agent judge on eligibility.asset_test: Quote says assets are considered only as required by CMS for Medicare cost reporting, not as a general asset test for financial assistance.",
@@ -2177,7 +2237,7 @@
      ]
     ],
     "pruned": [
-     "programs.presumptive: 8 items not named in the trimmed quote"
+     "programs.presumptive: 2 items not named in the trimmed quote"
     ],
     "income_rule_verified": true,
     "core_completeness": 0.67
@@ -2465,10 +2525,12 @@
    "programs": {
     "presumptive": {
      "value": [
+      "Kid's Center Program",
+      "Medicaid SMB/SLMF Program",
       "Houseless"
      ],
      "layer": "documented",
-     "quote": "Houseless individuals automatically qualify as indigent. Patients who are enrolled in certain regional and state assistance programs automatically qualify as indigent",
+     "quote": "Houseless individuals automatically qualify as indigent. Patients who are enrolled in certain regional and state assistance programs automatically qualify as indigent || Kid's Center Program || Medicaid SMB/SLMF Program",
      "source_id": "fap-bfe1f1ca4317f9b8",
      "checked_on": "2026-10-23",
      "confidence": 0.8,
@@ -2485,7 +2547,7 @@
       "pay_stubs"
      ],
      "layer": "documented",
-     "quote": "Federal tax return (most recent tax year), including schedules if applicable; or three months of Paystubs or W-2 with date employment started",
+     "quote": "Federal tax return (most recent tax year), including schedules if applicable; or three months of Paystubs or W-2 with date employment started || Approval/denial letter of eligibility for Medicaid/or state funded medical assistance",
      "source_id": "fap-bfe1f1ca4317f9b8",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2602,10 +2664,10 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: 50% assistance for applicants within 301-350% FPL, the patient has 50% financial responsibility. | 25% assistance for applicants within 351-400% FPL, the patient has 75% financial responsibility.",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Kid's Center Program | Medicaid SMB/SLMF Program",
+    "eligibility.discount_tiers: value backed by 3 verbatim spans",
+    "programs.presumptive: value backed by 3 verbatim spans",
     "programs.presumptive: quote matched the source only after typography normalization",
-    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: Approval/denial letter of eligibility for Medicaid/or state funded medical assistance",
+    "apply.documents_required: value backed by 2 verbatim spans",
     "agent judge on programs.presumptive: Quote names only Kid's Center, Medicaid SMB/SLMF, and houseless. Tri-County Mental Health, Vaccines for Children, and VIM are not in the quote.",
     "agent judge on apply.form_url: Quote gives only a relative path. The stcharleshealthcare.org domain does not appear in the quote, so the full URL is not stated.",
     "agent judge on apply.window_days_from_first_bill: Quote gives 240 days from first bill but says 'whichever is greater' versus 12 months after payment, so 240 alone is not the stated window."
@@ -2637,7 +2699,7 @@
     "rejected": [
      [
       "eligibility.discount_tiers",
-      "value not in quote"
+      "quote states the patient's share, not a discount"
      ],
      [
       "apply.form_url",
@@ -2645,7 +2707,7 @@
      ]
     ],
     "pruned": [
-     "programs.presumptive: 5 items not named in the trimmed quote",
+     "programs.presumptive: 3 items not named in the trimmed quote",
      "apply.documents_required: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": true,
@@ -2710,7 +2772,7 @@
       "other"
      ],
      "layer": "documented",
-     "quote": "1. Three months of income verification. If a patient states that they or their spouse are unemployed or that they did not file taxes for the previous year, a wage record or other documentation may be required.",
+     "quote": "1. Three months of income verification. If a patient states that they or their spouse are unemployed or that they did not file taxes for the previous year, a wage record or other documentation may be required. || 2. Federal income tax records for the most recent filing year.. || 3. Additional supporting documentation may be requested to make a final determination regarding household size and income.",
      "source_id": "fap-66dc35ae3766a1ca",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2784,7 +2846,7 @@
    "accuracy": null,
    "eve_review": [
     "eligibility.free_care_max_fpl: owner review says 300% is a discount or assistance limit, not free care; recorded as assistance_ceiling_fpl.",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: 2. Federal income tax records for the most recent filing year.. | 3. Additional supporting documentation may be requested to make a final determination regarding household size and incom",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent dropped apply.window_days_from_first_bill: quote is not a substring of the source",
     "agent dropped contacts.phone: quote is not a substring of the source",
     "agent judge on eligibility.free_care_max_fpl: Quote says income at or below 300% FPL means you 'may not have to pay your bill,' not that care is 100% free at that level.",
@@ -2854,7 +2916,26 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "discount_tiers": null,
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "200",
+       "max_fpl_inclusive": "300",
+       "discount_percent": 75
+      },
+      {
+       "min_fpl_exclusive": "300",
+       "max_fpl_inclusive": "400",
+       "discount_percent": 50
+      }
+     ],
+     "layer": "documented",
+     "quote": "201-300% Income as a Percentage of Federal Poverty Level 75% || 301-400% Income as a Percentage of Federal Poverty Level Greater of 50% or AGB**",
+     "source_id": "fap-4f42b6fac6ab6dc4",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": null,
@@ -2885,17 +2966,44 @@
    "apply": {
     "form_url": null,
     "form_version": null,
-    "documents_required": null,
+    "documents_required": {
+     "value": [
+      "proof_of_income",
+      "other"
+     ],
+     "layer": "documented",
+     "quote": "Current year federal tax filing including all pages and schedules || Non-filing verification letter from the IRS || Most recent three (3) months wage stubs from their employer",
+     "source_id": "fap-4f42b6fac6ab6dc4",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "documents_reported": null,
     "submit_methods": {
      "value": [
       {
        "kind": "mail",
        "detail": "Mail: Salem Health, PO Box 14001, Salem, OR 97309"
+      },
+      {
+       "kind": "email",
+       "detail": "Email: financial.counselors@salemhealth.org"
+      },
+      {
+       "kind": "fax",
+       "detail": "Fax: 503-814-1998"
+      },
+      {
+       "kind": "in_person",
+       "detail": "Drop off in person: Salem Hospital, Building A information desk"
+      },
+      {
+       "kind": "portal",
+       "detail": "MyChart at www.salemhealth.org/fa-app"
       }
      ],
      "layer": "documented",
-     "quote": "Mail: Salem Health, PO Box 14001, Salem, OR 97309",
+     "quote": "Mail: Salem Health, PO Box 14001, Salem, OR 97309 || Email: financial.counselors@salemhealth.org || Fax: 503-814-1998",
      "source_id": "web-b4e975b039dd523e",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2995,9 +3103,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: 301-400% Income as a Percentage of Federal Poverty Level Greater of 50% or AGB**",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Non-filing verification letter from the IRS | Most recent three (3) months wage stubs from their employer",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Email: financial.counselors@salemhealth.org | Fax: 503-814-1998",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 3 verbatim spans",
     "agent judge on eligibility.discount_tiers: Quote gives 301-400% as 'Greater of 50% or AGB', not a flat 50%. The value omits the AGB alternative.",
     "agent judge on eligibility.asset_test: Quote says the hospital multiplies annual family income and assets by 20%, which means assets are considered. The value says false.",
     "agent judge on programs.state_programs: Quote mentions OHP and the phone number but never spells out 'Oregon Health Plan'. The expanded name is not stated in the quote.",
@@ -3019,8 +3127,10 @@
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
      "eligibility.insured_patients_covered",
      "eligibility.min_balance",
+     "apply.documents_required",
      "apply.submit_methods",
      "apply.window_days_from_first_bill",
      "apply.decision_days",
@@ -3029,10 +3139,6 @@
      "contacts.languages"
     ],
     "rejected": [
-     [
-      "eligibility.discount_tiers",
-      "value not in quote"
-     ],
      [
       "eligibility.asset_test",
       "quote does not support the asset-test value"
@@ -3048,11 +3154,10 @@
     ],
     "pruned": [
      "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
-     "apply.documents_required: none of the listed documents is named in the quote (after trimming)",
-     "apply.submit_methods: 4 items not named in the trimmed quote"
+     "apply.documents_required: 2 items not named in the trimmed quote"
     ],
     "income_rule_verified": true,
-    "core_completeness": 0.5
+    "core_completeness": 0.83
    }
   },
   {
@@ -3209,8 +3314,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: 300% - 350% 50% of patient responsibility 35% | 350% - 400% 25% of patient responsibility 35%",
-    "contacts.languages: 2 more verbatim excerpt(s) supported this value: Espa\u00f1ol Financial Assistance Application - Spanish | Other Languages Arabic (Eurbaa)",
+    "eligibility.discount_tiers: value backed by 3 verbatim spans",
+    "contacts.languages: value backed by 3 verbatim spans",
     "apply.form_url: not an absolute URL ('/sites/default/files/SAHS-FA-Trinity-Health-Application_Engl'); dropped",
     "agent dropped apply.documents_required: quote is not a substring of the source",
     "agent judge on programs.presumptive: Quote only says Trinity Health uses a predictive model to qualify patients presumptively; it does not name Medicaid enrollment or homelessness.",
@@ -3240,7 +3345,7 @@
     "rejected": [
      [
       "eligibility.discount_tiers",
-      "value not in quote"
+      "quote states the patient's share, not a discount"
      ],
      [
       "eligibility.asset_test",
@@ -3282,7 +3387,26 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "discount_tiers": null,
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "200",
+       "max_fpl_inclusive": "300",
+       "discount_percent": 75
+      },
+      {
+       "min_fpl_exclusive": "300",
+       "max_fpl_inclusive": "400",
+       "discount_percent": 50
+      }
+     ],
+     "layer": "documented",
+     "quote": "201-300% Income as a Percentage of Federal Poverty Level 75% || 301-400% Income as a Percentage of Federal Poverty Level Greater of 50% or AGB**",
+     "source_id": "fap-0a756335ac5e6d7b",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": {
@@ -3341,12 +3465,24 @@
     "submit_methods": {
      "value": [
       {
+       "kind": "portal",
+       "detail": "MyChart mobile application or website"
+      },
+      {
        "kind": "mail",
        "detail": "Santiam Hospital Financial Counselors, PO BOX 577 Stayton, OR 97383"
+      },
+      {
+       "kind": "phone",
+       "detail": "503-769-9231"
+      },
+      {
+       "kind": "email",
+       "detail": "patientaccounts@santiamhospital.org"
       }
      ],
      "layer": "documented",
-     "quote": "Requested via mail from: Santiam Hospital Financial Counselors, PO BOX 577 Stayton, OR 97383",
+     "quote": "Requested via mail from: Santiam Hospital Financial Counselors, PO BOX 577 Stayton, OR 97383 || Requested via telephone by calling 503-769-9231 || Requested via email by contacting patientaccounts@santiamhospital.org",
      "source_id": "fap-0a756335ac5e6d7b",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3444,9 +3580,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: 301-400% Income as a Percentage of Federal Poverty Level Greater of 50% or AGB**",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Non-filing verification letter from the IRS | Most recent three (3) months wage stubs from their employer",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Requested via telephone by calling 503-769-9231 | Requested via email by contacting patientaccounts@santiamhospital.org",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 3 verbatim spans",
     "agent judge on eligibility.discount_tiers: Quote gives 301-400% as 'Greater of 50% or AGB', not a flat 50%. The value's discount_percent 50 omits the AGB alternative.",
     "agent judge on eligibility.asset_test: Quote only says net worth and credit check references were removed. It does not state whether assets are considered.",
     "agent judge on programs.presumptive: Quote lists examples 'include, but are not limited to' these programs. It does not say they are presumptive eligibility programs.",
@@ -3466,6 +3602,7 @@
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
      "eligibility.residency",
      "eligibility.insured_patients_covered",
      "programs.state_programs",
@@ -3479,21 +3616,16 @@
     ],
     "rejected": [
      [
-      "eligibility.discount_tiers",
-      "value not in quote"
-     ],
-     [
       "eligibility.asset_test",
       "quote does not support the asset-test value"
      ]
     ],
     "pruned": [
      "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
-     "apply.documents_required: none of the listed documents is named in the quote (after trimming)",
-     "apply.submit_methods: 3 items not named in the trimmed quote"
+     "apply.documents_required: none of the listed documents is named in the quote (after trimming)"
     ],
     "income_rule_verified": true,
-    "core_completeness": 0.67
+    "core_completeness": 0.83
    }
   },
   {
@@ -3575,10 +3707,12 @@
     "documents_required": {
      "value": [
       "pay_stubs",
-      "other"
+      "tax_return",
+      "other",
+      "proof_of_income"
      ],
      "layer": "documented",
-     "quote": "Recent pay stubs from within the 6 months before or after the patient is first billed (or in preservice when Application is submitted)",
+     "quote": "Recent pay stubs from within the 6 months before or after the patient is first billed (or in preservice when Application is submitted) || Copy of Federal Income Tax Return (Form 1040) for patient and spouse or domestic partner from the year the patient was first billed or 12 months prior to when the patient was first billed || A \"W-2\" withholding statement or a Form 4506-T (if W-2 not filed)",
      "source_id": "fap-7a5900fa182379a1",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3651,8 +3785,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Enrolled in a state Medicaid, CHIP, Healthier Oregon, Bridge Program or any other state medical assistance program | Homeless, as documented in their medical record, or",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Copy of Federal Income Tax Return (Form 1040) for patient and spouse or domestic partner from the year the patient was f | A \"W-2\" withholding statement or a Form 4506-T (if W-2 not filed)",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent dropped apply.submit_methods: excerpt not in source: You can complete an application when you are receiving care ",
     "agent dropped contacts.phone: quote is not a substring of the source",
     "agent dropped contacts.languages: excerpt not in source: English: Application | Policy",
@@ -3687,13 +3821,16 @@
       "value not in quote"
      ],
      [
+      "programs.presumptive",
+      "quote not found in source"
+     ],
+     [
       "apply.form_url",
       "quote not found in source"
      ]
     ],
     "pruned": [
-     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
-     "apply.documents_required: 2 items not named in the trimmed quote"
+     "programs.presumptive: 2 items not named in the trimmed quote"
     ],
     "income_rule_verified": true,
     "core_completeness": 0.33
@@ -3773,10 +3910,14 @@
     "presumptive": {
      "value": [
       "uninsured",
-      "enrolled in a state medical assistance program"
+      "enrolled in a state medical assistance program",
+      "SNAP",
+      "TANF",
+      "CHIP",
+      "WIC"
      ],
      "layer": "documented",
-     "quote": "is uninsured; (ii) is enrolled in a state medical assistance program, such as the Oregon Health Plan or other Oregon Health Authority programs; or (iii) owes the hospital more than $1,500",
+     "quote": "is uninsured; (ii) is enrolled in a state medical assistance program, such as the Oregon Health Plan or other Oregon Health Authority programs; or (iii) owes the hospital more than $1,500 || Supplemental Nutrition Assistance Program (SNAP); Temporary Assistance for Needy Families (TANF); Children's Health Insurance Program (CHIP); Women, Infants and Children (WIC)",
      "source_id": "fap-731cb96f01a2a259",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3802,11 +3943,13 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "proof_of_income",
-      "other"
+      "other",
+      "pay_stubs",
+      "tax_return",
+      "proof_of_income"
      ],
      "layer": "documented",
-     "quote": "A \"W-2\" withholding statement; or",
+     "quote": "A \"W-2\" withholding statement; or || Current pay stubs (3 months); or || Last year\u2019s income tax return, including schedules if applicable; or",
      "source_id": "fap-1b1246d3266b9cad",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3905,8 +4048,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: Supplemental Nutrition Assistance Program (SNAP); Temporary Assistance for Needy Families (TANF); Children's Health Insu",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Current pay stubs (3 months); or | Last year\u2019s income tax return, including schedules if applicable; or",
+    "programs.presumptive: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent dropped apply.submit_methods: excerpt not in source: by mail, or by visiting www.providence.org/financialhelp",
     "agent judge on eligibility.assistance_ceiling_fpl: Quote says eligibility determinations can be made at or below 400% FPL but does not say no assistance is offered above 400%.",
     "agent judge on programs.presumptive: Quote supports uninsured, state medical assistance, owing over $1,500, SNAP, TANF, CHIP, and WIC but does not mention homeless.",
@@ -3948,8 +4091,7 @@
      ]
     ],
     "pruned": [
-     "programs.presumptive: 5 items not named in the trimmed quote",
-     "apply.documents_required: 2 items not named in the trimmed quote"
+     "programs.presumptive: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": true,
     "core_completeness": 0.67
@@ -4052,7 +4194,7 @@
       "proof_of_income"
      ],
      "layer": "documented",
-     "quote": "such as last year's tax returns, W-2 forms, paycheck stubs or even a letter from your employer.",
+     "quote": "such as last year's tax returns, W-2 forms, paycheck stubs or even a letter from your employer. || If you're unemployed, you can submit proof or denial of unemployment benefits.",
      "source_id": "web-21524ec2852fc300",
      "checked_on": "2026-10-23",
      "confidence": 0.8,
@@ -4154,7 +4296,7 @@
    "accuracy": null,
    "eve_review": [
     "eligibility.assistance_ceiling_fpl: quote matched the source only after typography normalization",
-    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: If you're unemployed, you can submit proof or denial of unemployment benefits.",
+    "apply.documents_required: value backed by 2 verbatim spans",
     "apply.documents_required: quote matched the source only after typography normalization",
     "contacts.hours: quote matched the source only after typography normalization",
     "agent judge on eligibility.assistance_ceiling_fpl: Quote says eligibility can be determined at or below 400% FPL, but does not state that no assistance is offered above 400%.",
@@ -4269,10 +4411,16 @@
    "programs": {
     "presumptive": {
      "value": [
-      "Medicaid enrolled"
+      "Medicaid enrolled",
+      "SNAP",
+      "TANF",
+      "CHIP",
+      "WIC",
+      "free lunch or breakfast programs",
+      "low-income home energy assistance programs"
      ],
      "layer": "documented",
-     "quote": "is enrolled in a state medical assistance program, such as the Oregon Health Plan or other Oregon Health Authority programs",
+     "quote": "is enrolled in a state medical assistance program, such as the Oregon Health Plan or other Oregon Health Authority programs || Patient participation in other assistance programs (e.g., Supplemental Nutrition Assistance Program (SNAP); Temporary Assistance for Needy Families (TANF); Children's Health Insurance Program (CHIP); Women, Infants and Children (WIC); free lunch or breakfast programs; and low-income home energy assistance programs).",
      "source_id": "fap-731cb96f01a2a259",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4285,11 +4433,13 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "proof_of_income",
-      "other"
+      "other",
+      "pay_stubs",
+      "tax_return",
+      "proof_of_income"
      ],
      "layer": "documented",
-     "quote": "A \"W-2\" withholding statement; or",
+     "quote": "A \"W-2\" withholding statement; or || Current pay stubs (3 months); or || Last year\u2019s income tax return, including schedules if applicable; or",
      "source_id": "fap-1b1246d3266b9cad",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4378,8 +4528,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: Patient participation in other assistance programs (e.g., Supplemental Nutrition Assistance Program (SNAP); Temporary As",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Current pay stubs (3 months); or | Last year\u2019s income tax return, including schedules if applicable; or",
+    "programs.presumptive: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent dropped apply.submit_methods: excerpt not in source: submit a Financial Assistance Application, which is free of ",
     "agent dropped contacts.languages: quote is not a substring of the source",
     "agent judge on eligibility.assistance_ceiling_fpl: Quote says eligibility determination can be made at or below 400% FPL, but does not say no assistance is offered above 400%.",
@@ -4419,8 +4569,7 @@
      ]
     ],
     "pruned": [
-     "programs.presumptive: 7 items not named in the trimmed quote",
-     "apply.documents_required: 2 items not named in the trimmed quote"
+     "programs.presumptive: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": true,
     "core_completeness": 0.67
@@ -4487,10 +4636,11 @@
      "value": [
       "uninsured",
       "enrolled in a state medical assistance program",
+      "homeless",
       "Medicaid or Qualified Medicare Beneficiary"
      ],
      "layer": "documented",
-     "quote": "(a) are uninsured, (b) enrolled in a state medical assistance program; or (c) will owe Legacy $1500 or more for a single encounter",
+     "quote": "(a) are uninsured, (b) enrolled in a state medical assistance program; or (c) will owe Legacy $1500 or more for a single encounter || A patient indicates they are homeless and preliminary screening or clinical documentation confirms eligibility. || A patient is or becomes eligible for Medicaid or as a Qualified Medicare Beneficiary within 60 days of receiving Medically Necessary Service.",
      "source_id": "fap-8316e0d0c07c7862",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4501,7 +4651,19 @@
    "apply": {
     "form_url": null,
     "form_version": null,
-    "documents_required": null,
+    "documents_required": {
+     "value": [
+      "pay_stubs",
+      "tax_return",
+      "other"
+     ],
+     "layer": "documented",
+     "quote": "A \"W-2\" withholding statement; or || Current pay stubs (3 months); or || Last year\u2019s income tax return, including schedules if applicable; or",
+     "source_id": "fap-4fc3acd192b48414",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "documents_reported": null,
     "submit_methods": null,
     "window_days_from_first_bill": {
@@ -4601,10 +4763,10 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: 0-300% 100% | 301-400 % 75%",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: A patient indicates they are homeless and preliminary screening or clinical documentation confirms eligibility. | A patient is or becomes eligible for Medicaid or as a Qualified Medicare Beneficiary within 60 days of receiving Medical",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Current pay stubs (3 months); or | Last year\u2019s income tax return, including schedules if applicable; or",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Mail to: Legacy Health PO Box 4037 Portland, OR 97208 Fax: 503-413-2753 | In person: Please stop by any Legacy Health facility.",
+    "eligibility.discount_tiers: value backed by 3 verbatim spans",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 3 verbatim spans",
     "agent dropped eligibility.min_balance: quote is not a substring of the source",
     "agent judge on eligibility.free_care_max_fpl: Quote says income '< 300%' FPG, which excludes exactly 300%. The 300 value is only inclusive per the separate 0-300% tier table, not this sentence.",
     "agent judge on programs.presumptive: Quote also lists presumptive eligibility for owing Legacy $1500 or more for a single encounter, which is missing from the recorded value.",
@@ -4630,6 +4792,7 @@
      "eligibility.asset_test",
      "eligibility.insured_patients_covered",
      "programs.presumptive",
+     "apply.documents_required",
      "apply.window_days_from_first_bill",
      "apply.decision_days",
      "collections.eca_wait_days",
@@ -4639,7 +4802,7 @@
     "rejected": [
      [
       "eligibility.discount_tiers",
-      "value not in quote"
+      "quote not found in source"
      ],
      [
       "apply.form_url",
@@ -4651,12 +4814,10 @@
      ]
     ],
     "pruned": [
-     "programs.presumptive: 1 item not named in the trimmed quote",
-     "apply.documents_required: none of the listed documents is named in the quote (after trimming)",
-     "apply.submit_methods: 3 items not named in the trimmed quote"
+     "apply.documents_required: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": true,
-    "core_completeness": 0.33
+    "core_completeness": 0.5
    }
   },
   {
@@ -4683,7 +4844,31 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "discount_tiers": null,
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "200",
+       "max_fpl_inclusive": "300",
+       "discount_percent": 75
+      },
+      {
+       "min_fpl_exclusive": "300",
+       "max_fpl_inclusive": "350",
+       "discount_percent": 50
+      },
+      {
+       "min_fpl_exclusive": "350",
+       "max_fpl_inclusive": "400",
+       "discount_percent": 25
+      }
+     ],
+     "layer": "documented",
+     "quote": "75% award for gross monthly household income between 201% and 300% of FPG || 50% award for gross monthly household income between 301% and 350% of FPG || 25% award for gross monthly household income between 351% and 400% of FPG",
+     "source_id": "fap-12c23401dbd1fe32",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "assistance_ceiling_fpl": null,
     "asset_test": {
      "value": false,
@@ -4710,10 +4895,11 @@
    "programs": {
     "presumptive": {
      "value": [
-      "Enrolled in a KP Community MFA Program"
+      "Enrolled in a KP Community MFA Program",
+      "Approved for Full MFA within last 30 Days"
      ],
      "layer": "documented",
-     "quote": "Is enrolled in a Community MFA (CMFA) program to which patients have been referred and prequalified",
+     "quote": "Is enrolled in a Community MFA (CMFA) program to which patients have been referred and prequalified || Resides in low-income or subsidized housing. || Applied and approved for Full MFA within the last 30 days.",
      "source_id": "fap-9f80a1b7279d78ae",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4727,10 +4913,11 @@
     "documents_required": {
      "value": [
       "pay_stubs",
+      "tax_return",
       "other"
      ],
      "layer": "documented",
-     "quote": "Recent pay stubs",
+     "quote": "Recent pay stubs || Recent W-2s, 1099 statement(s) or tax return || Written attestation/explanation",
      "source_id": "fap-12c23401dbd1fe32",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4742,10 +4929,18 @@
       {
        "kind": "portal",
        "detail": "Complete the MFA application online kp.org/mfa/nw"
+      },
+      {
+       "kind": "fax",
+       "detail": "Fax your completed application to 1-877-829-3547."
+      },
+      {
+       "kind": "mail",
+       "detail": "Mail your completed application to: 500 NE Multnomah St. Portland, OR 97232"
       }
      ],
      "layer": "documented",
-     "quote": "Complete the MFA application online kp.org/mfa/nw",
+     "quote": "Complete the MFA application online kp.org/mfa/nw || Fax your completed application to 1-877-829-3547. || Mail your completed application to: 500 NE Multnomah St. Portland, OR 97232",
      "source_id": "fap-12c23401dbd1fe32",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4809,7 +5004,7 @@
       "Spanish"
      ],
      "layer": "documented",
-     "quote": "English: If you need help in your language, language assistance is available at no cost to you",
+     "quote": "English: If you need help in your language, language assistance is available at no cost to you || Chinese:: \u5982\u679c\u60a8\u9700\u8981\u4f7f\u7528\u60a8\u7684\u8bed\u8a00\u83b7\u5f97\u5e2e\u52a9 || Spanish: Si necesita ayuda en su idioma, contamos con asistencia de idiomas sin costo",
      "source_id": "fap-12c23401dbd1fe32",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4852,13 +5047,13 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: 50% award for gross monthly household income between 301% and 350% of FPG | 25% award for gross monthly household income between 351% and 400% of FPG",
+    "eligibility.discount_tiers: value backed by 3 verbatim spans",
     "eligibility.asset_test: quote matched the source only after typography normalization",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Resides in low-income or subsidized housing. | Applied and approved for Full MFA within the last 30 days.",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Recent W-2s, 1099 statement(s) or tax return | Written attestation/explanation",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Fax your completed application to 1-877-829-3547. | Mail your completed application to: 500 NE Multnomah St. Portland, OR 97232",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 3 verbatim spans",
     "apply.decision_days: quote matched the source only after typography normalization",
-    "contacts.languages: 2 more verbatim excerpt(s) supported this value: Chinese:: \u5982\u679c\u60a8\u9700\u8981\u4f7f\u7528\u60a8\u7684\u8bed\u8a00\u83b7\u5f97\u5e2e\u52a9 | Spanish: Si necesita ayuda en su idioma, contamos con asistencia de idiomas sin costo",
+    "contacts.languages: value backed by 3 verbatim spans",
     "agent judge on eligibility.asset_test: Quote says assets are not considered income, which is not the same as stating that assets are not considered in eligibility.",
     "agent judge on programs.presumptive: Quote lists only three presumptive categories (CMFA, low-income/subsidized housing, full MFA approval within 30 days); value adds three more not in the quote.",
     "agent judge on apply.documents_required: Quote lists three documents; value adds 'Benefit verification letter from Social Security Administration' which is not in the quote.",
@@ -4878,6 +5073,7 @@
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
      "eligibility.asset_test",
      "eligibility.insured_patients_covered",
      "programs.presumptive",
@@ -4892,21 +5088,17 @@
     ],
     "rejected": [
      [
-      "eligibility.discount_tiers",
-      "value not in quote"
-     ],
-     [
       "eligibility.assistance_ceiling_fpl",
       "quote does not say the hospital's financial assistance reaches it"
      ]
     ],
     "pruned": [
-     "programs.presumptive: 5 items not named in the trimmed quote",
-     "apply.documents_required: 2 items not named in the trimmed quote",
-     "apply.submit_methods: 3 items not named in the trimmed quote"
+     "programs.presumptive: 4 items not named in the trimmed quote",
+     "apply.documents_required: 1 item not named in the trimmed quote",
+     "apply.submit_methods: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": true,
-    "core_completeness": 0.67
+    "core_completeness": 0.83
    }
   },
   {
@@ -4933,7 +5125,31 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "discount_tiers": null,
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "200",
+       "max_fpl_inclusive": "300",
+       "discount_percent": 75
+      },
+      {
+       "min_fpl_exclusive": "300",
+       "max_fpl_inclusive": "350",
+       "discount_percent": 50
+      },
+      {
+       "min_fpl_exclusive": "350",
+       "max_fpl_inclusive": "400",
+       "discount_percent": 25
+      }
+     ],
+     "layer": "documented",
+     "quote": "201% - 300% 75% Discount (Partial) || 301% - 350% 50% Discount (Partial) || 351% - 400% 25% Discount (Partial)",
+     "source_id": "fap-0030b7c2c8e78173",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "assistance_ceiling_fpl": null,
     "asset_test": {
      "value": false,
@@ -4963,7 +5179,7 @@
       "Enrolled in a KP Community MFA Program"
      ],
      "layer": "documented",
-     "quote": "Is enrolled in a Community MFA (CMFA) program",
+     "quote": "Is enrolled in a Community MFA (CMFA) program || Is enrolled in a credible government sponsored public assistance program || Resides in low-income or subsidized housing.",
      "source_id": "fap-0030b7c2c8e78173",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4981,7 +5197,7 @@
       "other"
      ],
      "layer": "documented",
-     "quote": "Patients that choose to verify their financial status by providing financial documentation may provide their most recent pay stubs or income tax return for the current tax year as proof of income.",
+     "quote": "Patients that choose to verify their financial status by providing financial documentation may provide their most recent pay stubs or income tax return for the current tax year as proof of income. || Recent W-2s, 1099 statement(s) or tax return",
      "source_id": "fap-98fd69e1adf7b880",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5064,7 +5280,7 @@
       "Vietnamese"
      ],
      "layer": "documented",
-     "quote": "English: If you need help in your language, language assistance is available at no cost to you, 24 hours a day, 7 days a week.",
+     "quote": "English: If you need help in your language, language assistance is available at no cost to you, 24 hours a day, 7 days a week. || Spanish: Si necesita ayuda en su idioma, contamos con asistencia de idiomas sin costo alguno para usted",
      "source_id": "fap-98fd69e1adf7b880",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5107,12 +5323,12 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: 301% - 350% 50% Discount (Partial) | 351% - 400% 25% Discount (Partial)",
+    "eligibility.discount_tiers: value backed by 3 verbatim spans",
     "eligibility.asset_test: quote matched the source only after typography normalization",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Is enrolled in a credible government sponsored public assistance program | Resides in low-income or subsidized housing.",
-    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: Recent W-2s, 1099 statement(s) or tax return",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 2 verbatim spans",
     "apply.decision_days: quote matched the source only after typography normalization",
-    "contacts.languages: 1 more verbatim excerpt(s) supported this value: Spanish: Si necesita ayuda en su idioma, contamos con asistencia de idiomas sin costo alguno para usted",
+    "contacts.languages: value backed by 2 verbatim spans",
     "agent dropped apply.submit_methods: excerpt not in source: Fax it \u2022 Fax your completed application to 1-877-829-3547.",
     "agent judge on eligibility.asset_test: Quote says assets are not considered income. It does not say whether assets are considered in eligibility, so value false is not stated.",
     "agent judge on programs.presumptive: Quote lists only three presumptive categories (CMFA, government assistance, low-income housing). Value adds KP Community Benefit, Full MFA approval, and homeless, which are not in the quote.",
@@ -5132,6 +5348,7 @@
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
      "eligibility.asset_test",
      "eligibility.insured_patients_covered",
      "programs.presumptive",
@@ -5145,10 +5362,6 @@
     ],
     "rejected": [
      [
-      "eligibility.discount_tiers",
-      "value not in quote"
-     ],
-     [
       "eligibility.assistance_ceiling_fpl",
       "quote does not say the hospital's financial assistance reaches it"
      ],
@@ -5161,7 +5374,7 @@
      "programs.presumptive: 6 items not named in the trimmed quote"
     ],
     "income_rule_verified": true,
-    "core_completeness": 0.5
+    "core_completeness": 0.67
    }
   },
   {
@@ -5202,10 +5415,14 @@
       {
        "kind": "mail",
        "detail": "Samaritan Health Services, Regional Business Office, PO Box 1188, Corvallis, OR 97339-1188"
+      },
+      {
+       "kind": "phone",
+       "detail": "800-640-5339"
       }
      ],
      "layer": "documented",
-     "quote": "Write to : Samaritan Health Services, Regional Business Office, PO Box 1188, Corvallis, OR 97339-1188.",
+     "quote": "Write to : Samaritan Health Services, Regional Business Office, PO Box 1188, Corvallis, OR 97339-1188. || Call : 800-640-5339",
      "source_id": "web-4c24f977ab47b43f",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5275,7 +5492,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Call : 800-640-5339",
+    "apply.submit_methods: value backed by 2 verbatim spans",
     "agent dropped apply.documents_required: between 1 and 3 excerpts allowed",
     "agent judge on apply.submit_methods: The quote lists a mailing address and a phone number but does not say they are for submitting financial assistance applications."
    ],
@@ -5287,7 +5504,7 @@
      "https://samaritanhealthservices.navexone.com/content/dotNet/noAuth/login.aspx?ReturnUrl=%2fcontent%2fdocview%2f%3fapp%3dpt%26source%3dunspecified%26docid%3d14366%26public%3dtrue&app=pt&source=unspecified&docid=14366&public=true"
     ],
     "sha256_match": {
-     "web-0159f6797f7819f4": null,
+     "web-0159f6797f7819f4": false,
      "web-4c24f977ab47b43f": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
@@ -5298,9 +5515,7 @@
      "contacts.hours"
     ],
     "rejected": [],
-    "pruned": [
-     "apply.submit_methods: 1 item not named in the trimmed quote"
-    ],
+    "pruned": [],
     "income_rule_verified": false,
     "core_completeness": 0.33
    }
@@ -5390,10 +5605,14 @@
      "value": [
       "uninsured",
       "enrolled in a state medical assistance program",
-      "Medicaid enrolled"
+      "Medicaid enrolled",
+      "SNAP",
+      "TANF",
+      "CHIP",
+      "WIC"
      ],
      "layer": "documented",
-     "quote": "A patient will be reviewed for presumptive eligibility for financial assistance Eligible Services provided by a hospital if the patient: (i) is uninsured; (ii) is enrolled in a state medical assistance program, such as the Oregon Health Plan or other Oregon Health Authority programs; or (iii) owes the hospital more than $1,500 for a single hospital encounter after all adjustments from insurance or third-party payers.",
+     "quote": "A patient will be reviewed for presumptive eligibility for financial assistance Eligible Services provided by a hospital if the patient: (i) is uninsured; (ii) is enrolled in a state medical assistance program, such as the Oregon Health Plan or other Oregon Health Authority programs; or (iii) owes the hospital more than $1,500 for a single hospital encounter after all adjustments from insurance or third-party payers. || Patient participation in other assistance programs (e.g., Supplemental Nutrition Assistance Program (SNAP); Temporary Assistance for Needy Families (TANF); Children's Health Insurance Program (CHIP); Women, Infants and Children (WIC); free lunch or breakfast programs; and low-income home energy assistance programs)",
      "source_id": "fap-731cb96f01a2a259",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5511,7 +5730,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: Patient participation in other assistance programs (e.g., Supplemental Nutrition Assistance Program (SNAP); Temporary As",
+    "programs.presumptive: value backed by 2 verbatim spans",
     "agent dropped apply.submit_methods: excerpt not in source: by mail, or by visiting www.providence.org/financialhelp",
     "agent judge on eligibility.discount_tiers: Quote gives 301% to 400% and 70% but never states the 300 lower bound, which the value's min_fpl_exclusive relies on.",
     "agent judge on eligibility.asset_test: Quote only says assets are considered for CMS Medicare cost reporting for Medicare patients without Medicaid, not as an eligibility asset test.",
@@ -5552,7 +5771,7 @@
      ]
     ],
     "pruned": [
-     "programs.presumptive: 6 items not named in the trimmed quote"
+     "programs.presumptive: 2 items not named in the trimmed quote"
     ],
     "income_rule_verified": true,
     "core_completeness": 0.67
@@ -5582,7 +5801,26 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "discount_tiers": null,
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "200",
+       "max_fpl_inclusive": "300",
+       "discount_percent": 75
+      },
+      {
+       "min_fpl_exclusive": "300",
+       "max_fpl_inclusive": "400",
+       "discount_percent": 50
+      }
+     ],
+     "layer": "documented",
+     "quote": "201-300% Income as a Percentage of Federal Poverty Level 75% || 301-400% Income as a Percentage of Federal Poverty Level Greater of 50% or AGB**",
+     "source_id": "fap-4f42b6fac6ab6dc4",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": null,
@@ -5633,10 +5871,18 @@
       {
        "kind": "portal",
        "detail": "Accessed and submitted online through Salem Health's MyChart mobile application or on our website: salemhealth.org/financialassistance"
+      },
+      {
+       "kind": "mail",
+       "detail": "Requested via mail from: Financial Counseling, Salem Health, PO BOX 14001, Salem OR 97309-9976"
+      },
+      {
+       "kind": "phone",
+       "detail": "Requested via telephone by calling 503-562-4357"
       }
      ],
      "layer": "documented",
-     "quote": "Accessed and submitted online through Salem Health\u2019s MyChart mobile application or on our website: salemhealth.org/financialassistance",
+     "quote": "Accessed and submitted online through Salem Health\u2019s MyChart mobile application or on our website: salemhealth.org/financialassistance || Requested via mail from: Financial Counseling, Salem Health, PO BOX 14001, Salem OR 97309-9976 || Requested via telephone by calling 503-562-4357",
      "source_id": "fap-4f42b6fac6ab6dc4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5736,9 +5982,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: 301-400% Income as a Percentage of Federal Poverty Level Greater of 50% or AGB**",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Non-filing verification letter from the IRS | Most recent three (3) months wage stubs from their employer",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Requested via mail from: Financial Counseling, Salem Health, PO BOX 14001, Salem OR 97309-9976 | Requested via telephone by calling 503-562-4357",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 3 verbatim spans",
     "agent judge on apply.window_days_from_first_bill: Quote says coverage begins 240 days prior to receiving the application, which is not days after the first bill; it does not state the first-bill window."
    ],
    "eve_verified": {
@@ -5754,6 +6000,7 @@
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
      "eligibility.insured_patients_covered",
      "eligibility.min_balance",
      "programs.state_programs",
@@ -5764,19 +6011,14 @@
      "contacts.hours",
      "contacts.languages"
     ],
-    "rejected": [
-     [
-      "eligibility.discount_tiers",
-      "value not in quote"
-     ]
-    ],
+    "rejected": [],
     "pruned": [
      "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
      "apply.documents_required: none of the listed documents is named in the quote (after trimming)",
-     "apply.submit_methods: 3 items not named in the trimmed quote"
+     "apply.submit_methods: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": true,
-    "core_completeness": 0.5
+    "core_completeness": 0.67
    }
   },
   {
@@ -5830,10 +6072,13 @@
    "programs": {
     "presumptive": {
      "value": [
-      "houseless"
+      "Medicaid enrolled",
+      "houseless",
+      "Kid's Center Program",
+      "Medicaid SMB/SLMF Program"
      ],
      "layer": "documented",
-     "quote": "Houseless individuals automatically qualify as indigent. Patients who are enrolled in certain regional and state assistance programs automatically qualify as indigent",
+     "quote": "Houseless individuals automatically qualify as indigent. Patients who are enrolled in certain regional and state assistance programs automatically qualify as indigent || Kid's Center Program || Medicaid SMB/SLMF Program",
      "source_id": "fap-bfe1f1ca4317f9b8",
      "checked_on": "2026-10-23",
      "confidence": 0.8,
@@ -5877,11 +6122,12 @@
      "value": [
       "tax_return",
       "pay_stubs",
+      "social_security_letter",
       "proof_of_income",
       "other"
      ],
      "layer": "documented",
-     "quote": "Federal tax return (most recent tax year), including schedules if applicable; or three months of Paystubs or W-2 with date employment started",
+     "quote": "Federal tax return (most recent tax year), including schedules if applicable; or three months of Paystubs or W-2 with date employment started || Social Security allotments || Pension allotments",
      "source_id": "fap-bfe1f1ca4317f9b8",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5998,11 +6244,11 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: 50% assistance for applicants within 301-350% FPL, the patient has 50% financial responsibility. | 25% assistance for applicants within 351-400% FPL, the patient has 75% financial responsibility.",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Kid's Center Program | Medicaid SMB/SLMF Program",
+    "eligibility.discount_tiers: value backed by 3 verbatim spans",
+    "programs.presumptive: value backed by 3 verbatim spans",
     "programs.presumptive: quote matched the source only after typography normalization",
     "programs.state_programs: quote matched the source only after typography normalization",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Social Security allotments | Pension allotments",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent judge on programs.presumptive: Quote covers houseless and enrolled-in-programs categories and names Kid's Center and SMB/SLMF only; Tri-County, Vaccines for Children, VIM and 'Medicaid enrolled' are not stated as presumptive.",
     "agent judge on programs.state_programs: Quote lists five program names but does not state how_to_apply for each; the 'automatically qualify' wording is not tied to them in the quote.",
     "agent judge on apply.form_url: Quote gives only the relative path /sites/default/files/...; the domain https://stcharleshealthcare.org is not stated in the quote.",
@@ -6036,7 +6282,7 @@
     "rejected": [
      [
       "eligibility.discount_tiers",
-      "value not in quote"
+      "quote states the patient's share, not a discount"
      ],
      [
       "apply.form_url",
@@ -6044,8 +6290,7 @@
      ]
     ],
     "pruned": [
-     "programs.presumptive: 6 items not named in the trimmed quote",
-     "apply.documents_required: 1 item not named in the trimmed quote"
+     "programs.presumptive: 3 items not named in the trimmed quote"
     ],
     "income_rule_verified": true,
     "core_completeness": 0.67
@@ -6092,10 +6337,12 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "tax_return"
+      "tax_return",
+      "proof_of_income",
+      "bank_statements"
      ],
      "layer": "documented",
-     "quote": "Most recent federal tax return.",
+     "quote": "Most recent federal tax return. || Current proof of income. || Bank statements.",
      "source_id": "web-5b0c849e469b6fb3",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -6176,21 +6423,20 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Current proof of income. | Bank statements.",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent dropped programs.state_programs: quote is not a substring of the source",
     "agent judge on apply.documents_required: Quote names only three documents (tax return, proof of income, bank statements). The value adds aid letters, transcripts, and state assistance proof, which the quote does not mention."
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 1,
+    "sources_fetched": 2,
     "sources_total": 3,
     "sources_missing": [
-     "https://samaritanhealthservices.navexone.com/content/dotNet/noAuth/login.aspx?ReturnUrl=%2fcontent%2fdocview%2f%3fdocid%3d1715%26public%3dtrue&docid=1715&public=true",
-     "https://samaritanhealthservices.navexone.com/content/dotNet/noAuth/login.aspx?ReturnUrl=%2fcontent%2fdocview%2f%3fapp%3dpt%26source%3dunspecified%26docid%3d14366%26public%3dtrue&app=pt&source=unspecified&docid=14366&public=true"
+     "https://samaritanhealthservices.navexone.com/content/dotNet/noAuth/login.aspx?ReturnUrl=%2fcontent%2fdocview%2f%3fdocid%3d1715%26public%3dtrue&docid=1715&public=true"
     ],
     "sha256_match": {
-     "web-5f1b09d8a5d30852": null,
-     "web-f7be0e795298ee8e": null,
+     "web-5f1b09d8a5d30852": false,
+     "web-f7be0e795298ee8e": false,
      "web-5b0c849e469b6fb3": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
@@ -6203,7 +6449,7 @@
     ],
     "rejected": [],
     "pruned": [
-     "apply.documents_required: 3 items not named in the trimmed quote"
+     "apply.documents_required: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": false,
     "core_completeness": 0.33
@@ -6381,7 +6627,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: 200% - 300% 75% of patient responsibility 35% | 300% - 350% 50% of patient responsibility 35%",
+    "eligibility.discount_tiers: value backed by 3 verbatim spans",
     "agent dropped apply.documents_required: quote is not a substring of the source",
     "agent judge on eligibility.discount_tiers: Quote lists 100% to 200%, 75% for 200-300%, and 50% for 300-350%. It has no 25% tier for 350-400%, which the value includes.",
     "agent judge on apply.window_days_from_first_bill: Quote says the application period runs 240 days after the day care is provided, not after the first bill."
@@ -6499,10 +6745,12 @@
     "documents_required": {
      "value": [
       "pay_stubs",
-      "other"
+      "tax_return",
+      "other",
+      "proof_of_income"
      ],
      "layer": "documented",
-     "quote": "Recent pay stubs from within the 6 months before or after the patient is first billed (or in preservice when Application is submitted)",
+     "quote": "Recent pay stubs from within the 6 months before or after the patient is first billed (or in preservice when Application is submitted) || Copy of Federal Income Tax Return (Form 1040) for patient and spouse or domestic partner from the year the patient was first billed or 12 months prior to when the patient was first billed || A \"W-2\" withholding statement or a Form 4506-T (if W-2 not filed)",
      "source_id": "fap-7a5900fa182379a1",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -6518,10 +6766,14 @@
       {
        "kind": "portal",
        "detail": "or online submission within the Application Period"
+      },
+      {
+       "kind": "phone",
+       "detail": "by phone to (844) 827-5047 to receive a paper copy of this Policy and an application form"
       }
      ],
      "layer": "documented",
-     "quote": "must Submit a true, accurate, and complete confidential Financial Assistance Application by mail or online submission within the Application Period.",
+     "quote": "must Submit a true, accurate, and complete confidential Financial Assistance Application by mail or online submission within the Application Period. || by phone to (844) 827- 5047 to receive a paper copy of this Policy and an application form",
      "source_id": "fap-7a5900fa182379a1",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -6600,10 +6852,10 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Enrolled in a state Medicaid, CHIP, Healthier Oregon, Bridge Program or any other state medical assistance program | Homeless, as documented in their medical record, or",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Copy of Federal Income Tax Return (Form 1040) for patient and spouse or domestic partner from the year the patient was f | A \"W-2\" withholding statement or a Form 4506-T (if W-2 not filed)",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: by phone to (844) 827- 5047 to receive a paper copy of this Policy and an application form",
-    "contacts.languages: 2 more verbatim excerpt(s) supported this value: Chinese (Traditional): Application [https://www.adventisthealth.org/documents/system/financial-assistance/application/fi | French: Application [https://www.adventisthealth.org/documents/system/financial-assistance/application/financial-assista",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 2 verbatim spans",
+    "contacts.languages: value backed by 3 verbatim spans",
     "agent judge on eligibility.insured_patients_covered: Quote is only a $500 balance threshold after insurance adjustments; it does not state that insured patients are covered.",
     "agent judge on programs.presumptive: Quote lists only three criteria (Uninsured, Medicaid/state program, Homeless). Value adds the $500 balance and public benefit program criteria, which the quote does not show.",
     "agent judge on apply.documents_required: Quote lists three documents. The value's fourth item (written signed statements from employers or others) does not appear in the quote.",
@@ -6637,6 +6889,10 @@
     ],
     "rejected": [
      [
+      "programs.presumptive",
+      "quote not found in source"
+     ],
+     [
       "apply.form_url",
       "quote not found in source"
      ],
@@ -6646,9 +6902,7 @@
      ]
     ],
     "pruned": [
-     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
-     "apply.documents_required: 2 items not named in the trimmed quote",
-     "apply.submit_methods: 1 item not named in the trimmed quote"
+     "programs.presumptive: 3 items not named in the trimmed quote"
     ],
     "income_rule_verified": true,
     "core_completeness": 0.83
@@ -6722,10 +6976,14 @@
       "uninsured",
       "enrolled in a state medical assistance program",
       "owes more than $1,500 for a single hospital encounter",
-      "Medicaid enrolled"
+      "Medicaid enrolled",
+      "SNAP",
+      "TANF",
+      "CHIP",
+      "WIC"
      ],
      "layer": "documented",
-     "quote": "A patient will be reviewed for presumptive eligibility for financial assistance Eligible Services provided by a hospital if the patient: (i) is uninsured; (ii) is enrolled in a state medical assistance program, such as the Oregon Health Plan or other Oregon Health Authority programs; or (iii) owes the hospital more than $1,500 for a single hospital encounter after all adjustments from insurance or third-party payers.",
+     "quote": "A patient will be reviewed for presumptive eligibility for financial assistance Eligible Services provided by a hospital if the patient: (i) is uninsured; (ii) is enrolled in a state medical assistance program, such as the Oregon Health Plan or other Oregon Health Authority programs; or (iii) owes the hospital more than $1,500 for a single hospital encounter after all adjustments from insurance or third-party payers. || Patient participation in other assistance programs (e.g., Supplemental Nutrition Assistance Program (SNAP); Temporary Assistance for Needy Families (TANF); Children's Health Insurance Program (CHIP); Women, Infants and Children (WIC); free lunch or breakfast programs; and low-income home energy assistance programs).",
      "source_id": "fap-731cb96f01a2a259",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -6843,7 +7101,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: Patient participation in other assistance programs (e.g., Supplemental Nutrition Assistance Program (SNAP); Temporary As",
+    "programs.presumptive: value backed by 2 verbatim spans",
     "agent dropped apply.submit_methods: excerpt not in source: by mail, or by visiting www.providence.org/financialhelp.",
     "agent judge on eligibility.asset_test: Assets are considered only as required by CMS for Medicare cost reporting, for Medicare patients without Medicaid. It is not a general asset test.",
     "agent judge on programs.presumptive: Quote lists uninsured, state medical assistance, and owing over $1,500, plus SNAP, TANF, CHIP, WIC. 'Medicaid enrolled' and 'homeless' do not appear in the quote.",
@@ -6881,7 +7139,7 @@
      ]
     ],
     "pruned": [
-     "programs.presumptive: 5 items not named in the trimmed quote"
+     "programs.presumptive: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": true,
     "core_completeness": 0.67
@@ -6911,7 +7169,26 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "discount_tiers": null,
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "300",
+       "max_fpl_inclusive": "350",
+       "discount_percent": 50
+      },
+      {
+       "min_fpl_exclusive": "350",
+       "max_fpl_inclusive": "400",
+       "discount_percent": 25
+      }
+     ],
+     "layer": "documented",
+     "quote": "Any patient whose Family Income is between 201% to 300% of the FPL shall receive discounted care up to 75% from their account balance || Any patient whose Family Income is between 301% to 350% of the FPL shall receive discounted care up to the greater of 50% or the Hospital Facility\u2019s AGB || Any patient whose Family Income is between 351% to 400% of the FPL shall receive discounted care up to the greater of 25% or the Hospital Facility\u2019s AGB",
+     "source_id": "fap-3ed890305c673899",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": null,
@@ -6976,10 +7253,14 @@
       {
        "kind": "fax",
        "detail": "Fax: 1-269-202-5498"
+      },
+      {
+       "kind": "in_person",
+       "detail": "CommonSpirit Health Hospital Emergency Department"
       }
      ],
      "layer": "documented",
-     "quote": "Mail or fax completed application with all documentation to: CommonSpirit Health Financial Assistance, PO Box 5096, Fredericksburg, VA 22403 Fax: 1-269-202-5498.",
+     "quote": "Mail or fax completed application with all documentation to: CommonSpirit Health Financial Assistance, PO Box 5096, Fredericksburg, VA 22403 Fax: 1-269-202-5498. || To submit your completed application in person: CommonSpirit Health Hospital Emergency Department",
      "source_id": "fap-71d77b87c8348903",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -7059,8 +7340,8 @@
    "accuracy": null,
    "eve_review": [
     "eligibility.discount_tiers: 200-300% says 'up to 75%', a cap rather than a fixed discount; skipped",
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: Any patient whose Family Income is between 301% to 350% of the FPL shall receive discounted care up to the greater of 50 | Any patient whose Family Income is between 351% to 400% of the FPL shall receive discounted care up to the greater of 25",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: To submit your completed application in person: CommonSpirit Health Hospital Emergency Department",
+    "eligibility.discount_tiers: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 2 verbatim spans",
     "agent judge on eligibility.asset_test: Quote says asset information is optional and not used to deny assistance; it does not state that assets are not considered at all.",
     "agent judge on contacts.languages: Quote shows only Arabic, German, and Spanish links; the value lists 15 languages not present in the quote."
    ],
@@ -7077,6 +7358,7 @@
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
      "eligibility.insured_patients_covered",
      "eligibility.min_balance",
      "programs.presumptive",
@@ -7087,10 +7369,6 @@
      "contacts.phone"
     ],
     "rejected": [
-     [
-      "eligibility.discount_tiers",
-      "value not in quote"
-     ],
      [
       "eligibility.assistance_ceiling_fpl",
       "quote does not say the hospital's financial assistance reaches it"
@@ -7108,11 +7386,9 @@
       "quote not found in source"
      ]
     ],
-    "pruned": [
-     "apply.submit_methods: 1 item not named in the trimmed quote"
-    ],
+    "pruned": [],
     "income_rule_verified": true,
-    "core_completeness": 0.67
+    "core_completeness": 0.83
    }
   },
   {
@@ -7199,7 +7475,7 @@
       "proof_of_income"
      ],
      "layer": "documented",
-     "quote": "This includes and is not limited to: documentation of all income sources, including three (3) months of current pay stubs and bank statements, your most recent tax returns, W-2 forms, proof of social security benefit, Supplemental Nutrition Assistance Program (SNAP), Women, Infants, and Children (WIC), housing assistance, unemployment compensation or financial aid for schooling.",
+     "quote": "This includes and is not limited to: documentation of all income sources, including three (3) months of current pay stubs and bank statements, your most recent tax returns, W-2 forms, proof of social security benefit, Supplemental Nutrition Assistance Program (SNAP), Women, Infants, and Children (WIC), housing assistance, unemployment compensation or financial aid for schooling. || If you have no income to report, then you must submit a \"letter of support\" from individuals who are paying for your basic living needs.",
      "source_id": "fap-9310fd0beffb933d",
      "checked_on": "2026-10-23",
      "confidence": 0.8,
@@ -7325,7 +7601,7 @@
    "eve_review": [
     "eligibility.free_care_max_fpl: quote matched the source only after typography normalization",
     "eligibility.asset_test: quote matched the source only after typography normalization",
-    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: If you have no income to report, then you must submit a \"letter of support\" from individuals who are paying for your bas",
+    "apply.documents_required: value backed by 2 verbatim spans",
     "apply.documents_required: quote matched the source only after typography normalization",
     "agent dropped eligibility.residency: quote is not a substring of the source",
     "agent judge on eligibility.free_care_max_fpl: Quote says income is 200% or less of FPG for an evidence finding, but does not state that 200% is the highest level receiving 100% free care.",
@@ -7476,7 +7752,7 @@
      "https://samaritanhealthservices.navexone.com/content/dotNet/noAuth/login.aspx?ReturnUrl=%2fcontent%2fdocview%2f%3fapp%3dpt%26source%3dunspecified%26docid%3d14366%26public%3dtrue&app=pt&source=unspecified&docid=14366&public=true"
     ],
     "sha256_match": {
-     "web-417198a082d34846": null,
+     "web-417198a082d34846": false,
      "web-8b1e73d96cb327e4": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
@@ -7549,10 +7825,12 @@
    "programs": {
     "presumptive": {
      "value": [
-      "Houseless individuals"
+      "Houseless individuals",
+      "Kid's Center Program",
+      "Medicaid SMB/SLMF Program"
      ],
      "layer": "documented",
-     "quote": "Houseless individuals automatically qualify as indigent. Patients who are enrolled in certain regional and state assistance programs automatically qualify as indigent",
+     "quote": "Houseless individuals automatically qualify as indigent. Patients who are enrolled in certain regional and state assistance programs automatically qualify as indigent || Kid's Center Program || Medicaid SMB/SLMF Program",
      "source_id": "fap-bfe1f1ca4317f9b8",
      "checked_on": "2026-10-23",
      "confidence": 0.8,
@@ -7571,7 +7849,7 @@
       "other"
      ],
      "layer": "documented",
-     "quote": "Federal tax return (most recent tax year), including schedules if applicable; or three months of Paystubs or W-2 with date employment started",
+     "quote": "Federal tax return (most recent tax year), including schedules if applicable; or three months of Paystubs or W-2 with date employment started || Approval letter of state public services such as TANF, basic food, WIC || Approval/denial letter of eligibility for Medicaid/or state funded medical assistance",
      "source_id": "fap-bfe1f1ca4317f9b8",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -7688,10 +7966,10 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: 50% assistance for applicants within 301-350% FPL, the patient has 50% financial responsibility. | 25% assistance for applicants within 351-400% FPL, the patient has 75% financial responsibility.",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Kid's Center Program | Medicaid SMB/SLMF Program",
+    "eligibility.discount_tiers: value backed by 3 verbatim spans",
+    "programs.presumptive: value backed by 3 verbatim spans",
     "programs.presumptive: quote matched the source only after typography normalization",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Approval letter of state public services such as TANF, basic food, WIC | Approval/denial letter of eligibility for Medicaid/or state funded medical assistance",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "apply.form_url: not an absolute URL ('/sites/default/files/Documents/Financial%20Assistance/2026/F'); dropped",
     "agent judge on programs.presumptive: Quote names only Houseless individuals, Kid's Center Program, and Medicaid SMB/SLMF Program; Tri-County Mental Health, Vaccines for Children, and VIM are not mentioned.",
     "agent judge on apply.documents_required: Quote lists only a few documents (tax return, paystubs/W-2, state service approval, Medicaid approval letter); the other value items are not in the quote.",
@@ -7724,11 +8002,11 @@
     "rejected": [
      [
       "eligibility.discount_tiers",
-      "value not in quote"
+      "quote states the patient's share, not a discount"
      ]
     ],
     "pruned": [
-     "programs.presumptive: 5 items not named in the trimmed quote",
+     "programs.presumptive: 3 items not named in the trimmed quote",
      "apply.documents_required: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": true,
@@ -7776,10 +8054,12 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "tax_return"
+      "tax_return",
+      "pay_stubs",
+      "bank_statements"
      ],
      "layer": "documented",
-     "quote": "Most recent Federal Tax Return (Complete tax returns are required for self-employed applicants)",
+     "quote": "Most recent Federal Tax Return (Complete tax returns are required for self-employed applicants) || Most recent payroll check stub and/or proof of unemployment benefits || Most recent bank statements",
      "source_id": "fap-d01560057f3d9551",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -7868,8 +8148,8 @@
    "accuracy": null,
    "eve_review": [
     "eligibility.discount_tiers: 0-200% at 100% is the free-care band, not a tier; skipped",
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: 1 To $0 54,776 Over From $31,300 62,600 Income | 75% 96,450 64,301 79,950 53,301 63,450 42,301 46,950 31,301 86,301",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Most recent payroll check stub and/or proof of unemployment benefits | Most recent bank statements",
+    "eligibility.discount_tiers: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent judge on eligibility.free_care_max_fpl: Quote says allowances follow a sliding scale from 200% up to 400% FPL. It does not state that 100% free care applies up to 200%.",
     "agent judge on eligibility.discount_tiers: Quote is a garbled table with dollar income figures and 100%/75% headings. It does not clearly state the FPL bounds or the 50% tier.",
     "agent judge on apply.submit_methods: Quote supports online and in-person availability. Email to pfs@gshealth.org is given only for questions or information, not as a way to submit an application.",
@@ -7906,9 +8186,7 @@
       "quote does not support the asset-test value"
      ]
     ],
-    "pruned": [
-     "apply.documents_required: 2 items not named in the trimmed quote"
-    ],
+    "pruned": [],
     "income_rule_verified": false,
     "core_completeness": 0.5
    }

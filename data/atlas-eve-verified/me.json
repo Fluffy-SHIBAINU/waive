@@ -69,7 +69,22 @@
     "services_excluded": null
    },
    "programs": {
-    "presumptive": null,
+    "presumptive": {
+     "value": [
+      "Homeless",
+      "Deceased and without an estate",
+      "Filed for bankruptcy",
+      "Mental incapacitation with no representation",
+      "Patient liability in excess of 25% of annual income",
+      "Minor seeking confidential services in Maine"
+     ],
+     "layer": "documented",
+     "quote": "\u25e6 Homeless \u25e6 Deceased and without an estate \u25e6 Filed for bankruptcy \u25e6 Mental incapacitation with no representation to act on the patient's behalf || \u25e6 Patient liability is in excess of 25% of their annual income \u25e6 Current Medicaid eligibility but not at the time of service or for non-covered service \u25e6 A minor seeking confidential services in the state of Maine || \u25e6 Enrollment in WIC, SNAP benefits, STATE free lunch and breakfast programs, Low Income Home Emergency Assistance Program (LIHEAP) or another community- based program providing access to medical care.",
+     "source_id": "fap-993decabe3675384",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "state_programs": {
      "value": [
       {
@@ -82,7 +97,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Individuals and households with low incomes may also be eligible for Medicaid and/or the Children\u2019s Health Insurance Program (CHIP).",
+     "quote": "Individuals and households with low incomes may also be eligible for Medicaid and/or the Children\u2019s Health Insurance Program (CHIP). || You may sign up for coverage at www.healthcare.gov",
      "source_id": "web-cc82bd2a32ad6edb",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -176,8 +191,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: \u25e6 Patient liability is in excess of 25% of their annual income \u25e6 Current Medicaid eligibility but not at the time of ser | \u25e6 Enrollment in WIC, SNAP benefits, STATE free lunch and breakfast programs, Low Income Home Emergency Assistance Progra",
-    "programs.state_programs: 1 more verbatim excerpt(s) supported this value: You may sign up for coverage at www.healthcare.gov",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "programs.state_programs: value backed by 2 verbatim spans",
     "agent dropped eligibility.residency: judge: Quote says 'resident or have the intention of making a home'; 'voluntarily' is not in the quote, and the quote uses 'or', not 'and'.",
     "agent dropped apply.documents_required: judge: Quote says an ID or other proof of residency 'may be required'; it does not list both as required.",
     "agent dropped apply.submit_methods: judge: Quote says 'apply at' the address; it does not state mail as the method."
@@ -198,6 +213,7 @@
      "eligibility.discount_tiers",
      "eligibility.asset_test",
      "eligibility.insured_patients_covered",
+     "programs.presumptive",
      "programs.state_programs",
      "apply.form_url",
      "apply.window_days_from_first_bill",
@@ -211,7 +227,7 @@
      ]
     ],
     "pruned": [
-     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)"
+     "programs.presumptive: 2 items not named in the trimmed quote"
     ],
     "income_rule_verified": true,
     "core_completeness": 0.67
@@ -490,10 +506,12 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "tax_return"
+      "tax_return",
+      "pay_stubs",
+      "social_security_letter"
      ],
      "layer": "documented",
-     "quote": "\u2022 Most recent federal tax return, if you were required to file.",
+     "quote": "\u2022 Most recent federal tax return, if you were required to file. || \u2022 Most current 4 consecutive weeks of pay stubs. Depending on your income, this may be: || \u2022 Current year's Social Security Benefit letter/pension statement, etc.",
      "source_id": "fap-a2b6fd7e25e89f09",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -509,10 +527,14 @@
       {
        "kind": "fax",
        "detail": "207-661-8043"
+      },
+      {
+       "kind": "portal",
+       "detail": "Apply and upload documents on MyChart: mychart.mainehealth.org"
       }
      ],
      "layer": "documented",
-     "quote": "Mail to: MaineHealth \u2013 PFS Attn: Financial Counseling 25 June Street Sanford, ME 04073 Fax to: 207-661-8043",
+     "quote": "Mail to: MaineHealth \u2013 PFS Attn: Financial Counseling 25 June Street Sanford, ME 04073 Fax to: 207-661-8043 || Apply and upload documents on MyChart: mychart.mainehealth.org",
      "source_id": "fap-a2b6fd7e25e89f09",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -565,7 +587,7 @@
       "Vietnamese"
      ],
      "layer": "documented",
-     "quote": "The MaineHealth Financial Assistance policy is available in English, Arabic, Chinese (Simplified), French, Portuguese, Somali,",
+     "quote": "The MaineHealth Financial Assistance policy is available in English, Arabic, Chinese (Simplified), French, Portuguese, Somali, || Spanish and Vietnamese.",
      "source_id": "fap-a2b6fd7e25e89f09",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -608,9 +630,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: \u2022 Most current 4 consecutive weeks of pay stubs. Depending on your income, this may be: | \u2022 Current year's Social Security Benefit letter/pension statement, etc.",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Apply and upload documents on MyChart: mychart.mainehealth.org",
-    "contacts.languages: 1 more verbatim excerpt(s) supported this value: Spanish and Vietnamese.",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 2 verbatim spans",
+    "contacts.languages: value backed by 2 verbatim spans",
     "agent dropped eligibility.residency: judge: Quote only says NH residents at Memorial Hospital may qualify; it does not say free care is for Maine residents.",
     "agent dropped programs.state_programs: judge: The MaineCare website (maine.gov/benefits/...) does not appear in the quote, which is cut off after 'or visit'."
    ],
@@ -643,10 +665,7 @@
       "quote not found in source"
      ]
     ],
-    "pruned": [
-     "apply.documents_required: 2 items not named in the trimmed quote",
-     "apply.submit_methods: 1 item not named in the trimmed quote"
-    ],
+    "pruned": [],
     "income_rule_verified": true,
     "core_completeness": 0.67
    }
@@ -937,7 +956,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "A Maine resident is asked to apply for MaineCare and referred to our York Hospital Patient Navigator (207) 351-2007 to assist you with this",
+     "quote": "A Maine resident is asked to apply for MaineCare and referred to our York Hospital Patient Navigator (207) 351-2007 to assist you with this || You may also apply by calling 1-800-442-6003 or visit https://mainecahc.org/consumer-assistance/need-health-coverage/",
      "source_id": "fap-cc3b1c1b89f50f9a",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -949,10 +968,11 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "tax_return"
+      "tax_return",
+      "pay_stubs"
      ],
      "layer": "documented",
-     "quote": "Applicant and household must provide 2025 completed federal tax return, W-2, or other documents showing 2025 income.",
+     "quote": "Applicant and household must provide 2025 completed federal tax return, W-2, or other documents showing 2025 income. || A Medicaid determination letter is required unless the applicant has insurance through the Marketplace/Affordable Care Act. || Year to date paystubs or pay detail report from each job",
      "source_id": "fap-cc3b1c1b89f50f9a",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1049,8 +1069,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.state_programs: 1 more verbatim excerpt(s) supported this value: You may also apply by calling 1-800-442-6003 or visit https://mainecahc.org/consumer-assistance/need-health-coverage/",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: A Medicaid determination letter is required unless the applicant has insurance through the Marketplace/Affordable Care A | Year to date paystubs or pay detail report from each job"
+    "programs.state_programs: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans"
    ],
    "eve_verified": {
     "on": "2026-10-23",
@@ -1080,7 +1100,7 @@
      ]
     ],
     "pruned": [
-     "apply.documents_required: 2 items not named in the trimmed quote"
+     "apply.documents_required: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": true,
     "core_completeness": 0.67
@@ -1137,10 +1157,12 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "tax_return"
+      "tax_return",
+      "pay_stubs",
+      "social_security_letter"
      ],
      "layer": "documented",
-     "quote": "Most recent federal tax return, if you were required to file.",
+     "quote": "Most recent federal tax return, if you were required to file. || Most current 4 consecutive weeks of pay stubs. || If self-employed, latest month\u2019s itemized profit & loss statement \u2022 Current year's Social Security Benefit letter/pension statement, etc. \u2022 Current General Assistance letter \u2022 Unemployment or compensation benefits statement for the last 4 weeks",
      "source_id": "fap-a2b6fd7e25e89f09",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1156,10 +1178,14 @@
       {
        "kind": "fax",
        "detail": "207-661-8043"
+      },
+      {
+       "kind": "portal",
+       "detail": "Apply and upload documents on MyChart: mychart.mainehealth.org"
       }
      ],
      "layer": "documented",
-     "quote": "Mail to: MaineHealth \u2013 PFS Attn: Financial Counseling 25 June Street Sanford, ME 04073 Fax to: 207-661-8043",
+     "quote": "Mail to: MaineHealth \u2013 PFS Attn: Financial Counseling 25 June Street Sanford, ME 04073 Fax to: 207-661-8043 || Apply and upload documents on MyChart: mychart.mainehealth.org",
      "source_id": "fap-a2b6fd7e25e89f09",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1255,8 +1281,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Most current 4 consecutive weeks of pay stubs. | If self-employed, latest month\u2019s itemized profit & loss statement \u2022 Current year's Social Security Benefit letter/pensio",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Apply and upload documents on MyChart: mychart.mainehealth.org",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 2 verbatim spans",
     "agent dropped eligibility.insured_patients_covered: judge: Quote is truncated ('even if you') and never mentions insurance or insured patients.",
     "agent dropped programs.state_programs: judge: MaineCare line is cut off at 'or visit'; the maine.gov URL does not appear in the quote."
    ],
@@ -1290,8 +1316,7 @@
      ]
     ],
     "pruned": [
-     "apply.documents_required: 3 items not named in the trimmed quote",
-     "apply.submit_methods: 1 item not named in the trimmed quote"
+     "apply.documents_required: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": true,
     "core_completeness": 0.67
@@ -1395,22 +1420,7 @@
      "support_count": 0
     },
     "hours": null,
-    "languages": {
-     "value": [
-      "Somali",
-      "Arabic",
-      "French",
-      "Portuguese",
-      "Spanish",
-      "Swahili"
-     ],
-     "layer": "documented",
-     "quote": "Central Maine Healthcare Financial Assistance Policy (Somali Translation)",
-     "source_id": "web-9937f488f737f098",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "languages": null
    },
    "coverage": {
     "facilities": null,
@@ -1448,8 +1458,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: \u2022 Individual is deceased and has no known estate able to pay hospital debts; \u2022 Individual is eligible by the State to re",
-    "contacts.languages: 2 more verbatim excerpt(s) supported this value: (Arabic Translation) [https://www.cmhc.org/wp-content/uploads/2025/11/Financial-Assistance-Policy-Arabic.pdf] Central Ma | (Portuguese Translation) [https://www.cmhc.org/wp-content/uploads/2025/11/Financial-Assistance-Policy-Portuguese.pdf] Ce",
+    "programs.presumptive: value backed by 2 verbatim spans",
+    "contacts.languages: value backed by 3 verbatim spans",
     "agent dropped eligibility.discount_tiers: judge: Bounds 200-250% match, but the discount is 100% minus AGB with a 55% floor, not a flat 55% discount.",
     "agent dropped eligibility.residency: judge: Quote only says aid is available to Maine residents; nothing about non-residents getting emergency care only.",
     "agent dropped programs.state_programs: judge: MaineCare and the DHHS contact appear, but the quote never says the Financial Advocate team can assist.",
@@ -1472,12 +1482,15 @@
      "apply.submit_methods",
      "apply.window_days_from_first_bill",
      "collections.eca_wait_days",
-     "contacts.phone",
-     "contacts.languages"
+     "contacts.phone"
     ],
     "rejected": [
      [
       "apply.form_url",
+      "quote not found in source"
+     ],
+     [
+      "contacts.languages",
       "quote not found in source"
      ]
     ],
@@ -1773,7 +1786,22 @@
     "services_excluded": null
    },
    "programs": {
-    "presumptive": null,
+    "presumptive": {
+     "value": [
+      "Homeless",
+      "Deceased and without an estate",
+      "Filed for bankruptcy",
+      "Mental incapacitation with no representation",
+      "Patient liability in excess of 25% of annual income",
+      "Minor seeking confidential services in Maine"
+     ],
+     "layer": "documented",
+     "quote": "\u25e6 Homeless \u25e6 Deceased and without an estate \u25e6 Filed for bankruptcy \u25e6 Mental incapacitation with no representation to act on the patient's behalf || \u25e6 Patient liability is in excess of 25% of their annual income \u25e6 Current Medicaid eligibility but not at the time of service or for non-covered service \u25e6 A minor seeking confidential services in the state of Maine || \u25e6 Enrollment in WIC, SNAP benefits, STATE free lunch and breakfast programs, Low Income Home Emergency Assistance Program (LIHEAP) or another community- based program providing access to medical care.",
+     "source_id": "fap-cbd63648a60380a7",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "state_programs": {
      "value": [
       {
@@ -1786,7 +1814,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Individuals and households with low incomes may also be eligible for Medicaid and/or the Children\u2019s Health Insurance Program (CHIP).",
+     "quote": "Individuals and households with low incomes may also be eligible for Medicaid and/or the Children\u2019s Health Insurance Program (CHIP). || You may sign up for coverage at www.healthcare.gov",
      "source_id": "web-c41b797f1d1e0422",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1890,8 +1918,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: \u25e6 Patient liability is in excess of 25% of their annual income \u25e6 Current Medicaid eligibility but not at the time of ser | \u25e6 Enrollment in WIC, SNAP benefits, STATE free lunch and breakfast programs, Low Income Home Emergency Assistance Progra",
-    "programs.state_programs: 1 more verbatim excerpt(s) supported this value: You may sign up for coverage at www.healthcare.gov",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "programs.state_programs: value backed by 2 verbatim spans",
     "agent dropped eligibility.residency: judge: Quote says only 'the state' and never names Maine or New Hampshire."
    ],
    "eve_verified": {
@@ -1910,6 +1938,7 @@
      "eligibility.discount_tiers",
      "eligibility.asset_test",
      "eligibility.insured_patients_covered",
+     "programs.presumptive",
      "programs.state_programs",
      "apply.form_url",
      "apply.documents_required",
@@ -1924,7 +1953,7 @@
      ]
     ],
     "pruned": [
-     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)"
+     "programs.presumptive: 2 items not named in the trimmed quote"
     ],
     "income_rule_verified": true,
     "core_completeness": 0.83
@@ -2207,7 +2236,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Maine residents may also apply for MaineCare by calling 1-800-442-6003 or visit maine.gov/benefits/accounts/login.html",
+     "quote": "Maine residents may also apply for MaineCare by calling 1-800-442-6003 or visit maine.gov/benefits/accounts/login.html || New Hampshire residents may also apply for NH Medicaid by calling 1-603-447-3841 or visit nheasy.nh.gov",
      "source_id": "fap-a2b6fd7e25e89f09",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2219,10 +2248,11 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "tax_return"
+      "tax_return",
+      "pay_stubs"
      ],
      "layer": "documented",
-     "quote": "Most recent federal tax return, if you were required to file.",
+     "quote": "Most recent federal tax return, if you were required to file. || Most current 4 consecutive weeks of pay stubs. || If self-employed, latest month\u2019s itemized profit & loss statement",
      "source_id": "fap-a2b6fd7e25e89f09",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2341,8 +2371,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.state_programs: 1 more verbatim excerpt(s) supported this value: New Hampshire residents may also apply for NH Medicaid by calling 1-603-447-3841 or visit nheasy.nh.gov",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Most current 4 consecutive weeks of pay stubs. | If self-employed, latest month\u2019s itemized profit & loss statement",
+    "programs.state_programs: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent dropped eligibility.residency: judge: Quote only says free care goes to Maine residents; it says nothing about New Hampshire residents or Memorial Hospital."
    ],
    "eve_verified": {
@@ -2376,7 +2406,7 @@
      ]
     ],
     "pruned": [
-     "apply.documents_required: 2 items not named in the trimmed quote"
+     "apply.documents_required: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": true,
     "core_completeness": 0.67
@@ -2688,10 +2718,11 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "tax_return"
+      "tax_return",
+      "pay_stubs"
      ],
      "layer": "documented",
-     "quote": "Most recent federal tax return, if you were required to file.",
+     "quote": "Most recent federal tax return, if you were required to file. || Most current 4 consecutive weeks of pay stubs. || If self-employed, latest month\u2019s itemized profit & loss statement",
      "source_id": "fap-a2b6fd7e25e89f09",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2707,10 +2738,14 @@
       {
        "kind": "fax",
        "detail": "207-661-8043"
+      },
+      {
+       "kind": "portal",
+       "detail": "Apply and upload documents on MyChart: mychart.mainehealth.org"
       }
      ],
      "layer": "documented",
-     "quote": "You may send your completed application form and documents to: Mail to: MaineHealth \u2013 PFS Attn: Financial Counseling 25 June Street Sanford, ME 04073 Fax to: 207-661-8043",
+     "quote": "You may send your completed application form and documents to: Mail to: MaineHealth \u2013 PFS Attn: Financial Counseling 25 June Street Sanford, ME 04073 Fax to: 207-661-8043 || Apply and upload documents on MyChart: mychart.mainehealth.org",
      "source_id": "fap-a2b6fd7e25e89f09",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2806,8 +2841,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Most current 4 consecutive weeks of pay stubs. | If self-employed, latest month\u2019s itemized profit & loss statement",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Apply and upload documents on MyChart: mychart.mainehealth.org",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 2 verbatim spans",
     "agent dropped eligibility.residency: judge: Quote mentions only Maine residents; nothing about New Hampshire residents or MaineHealth Memorial Hospital.",
     "agent dropped programs.state_programs: judge: MaineCare quote is truncated ('or visit') and never mentions a maine.gov benefits portal. The NH Medicaid entry is supported."
    ],
@@ -2841,8 +2876,7 @@
      ]
     ],
     "pruned": [
-     "apply.documents_required: 2 items not named in the trimmed quote",
-     "apply.submit_methods: 1 item not named in the trimmed quote"
+     "apply.documents_required: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": true,
     "core_completeness": 0.67
@@ -2919,10 +2953,13 @@
      "value": [
       "State-funded prescription programs",
       "Homeless or received care from a homeless clinic",
-      "Participation in WIC"
+      "Participation in WIC",
+      "Food stamp eligibility",
+      "Subsidized school lunch program eligibility",
+      "Low-income/subsidized housing provided as a valid address"
      ],
      "layer": "documented",
-     "quote": "4.1.1 State-funded prescription programs; 4.1.2 Homeless or received care from a homeless clinic; 4.1.3 Participation in Women, Infants and Children programs (WIC);",
+     "quote": "4.1.1 State-funded prescription programs; 4.1.2 Homeless or received care from a homeless clinic; 4.1.3 Participation in Women, Infants and Children programs (WIC); || 4.1.4 Food stamp eligibility; 4.1.5 Subsidized school lunch program eligibility; 4.1.6 Eligibility for other state or local assistance programs that are unfunded (e.g., Medicaid spend-down); || 4.1.7 Low-income/subsidized housing is provided as a valid address; and 4.1.8 Patient is deceased with an estate",
      "source_id": "fap-290b1f6c24ed28e6",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3042,7 +3079,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: 4.1.4 Food stamp eligibility; 4.1.5 Subsidized school lunch program eligibility; 4.1.6 Eligibility for other state or lo | 4.1.7 Low-income/subsidized housing is provided as a valid address; and 4.1.8 Patient is deceased with an estate"
+    "programs.presumptive: value backed by 3 verbatim spans"
    ],
    "eve_verified": {
     "on": "2026-10-23",
@@ -3082,7 +3119,7 @@
      ]
     ],
     "pruned": [
-     "programs.presumptive: 5 items not named in the trimmed quote"
+     "programs.presumptive: 2 items not named in the trimmed quote"
     ],
     "income_rule_verified": true,
     "core_completeness": 0.83
@@ -3273,7 +3310,18 @@
    "apply": {
     "form_url": null,
     "form_version": null,
-    "documents_required": null,
+    "documents_required": {
+     "value": [
+      "other",
+      "proof_of_income"
+     ],
+     "layer": "documented",
+     "quote": "Fully completed and signed application || Proof of all sources of income || Mainecare denial, if applicable",
+     "source_id": "fap-97b818dbda5857ae",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "documents_reported": null,
     "submit_methods": {
      "value": [
@@ -3362,7 +3410,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Proof of all sources of income | Mainecare denial, if applicable",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent dropped programs.state_programs: judge: Quote requires a MaineCare application but does not mention including a copy of the determination letter.",
     "agent dropped contacts.hours: judge: Quote says Monday-Friday 8:00 am to 4:30 pm but does not mention 'except holidays'."
    ],
@@ -3380,6 +3428,7 @@
     "accepted": [
      "eligibility.free_care_max_fpl",
      "eligibility.residency",
+     "apply.documents_required",
      "apply.submit_methods",
      "apply.window_days_from_first_bill",
      "apply.decision_days",
@@ -3395,11 +3444,9 @@
       "quote not found in source"
      ]
     ],
-    "pruned": [
-     "apply.documents_required: none of the listed documents is named in the quote (after trimming)"
-    ],
+    "pruned": [],
     "income_rule_verified": true,
-    "core_completeness": 0.5
+    "core_completeness": 0.67
    }
   },
   {
@@ -3813,10 +3860,11 @@
     "documents_required": {
      "value": [
       "proof_of_income",
-      "other"
+      "other",
+      "tax_return"
      ],
      "layer": "documented",
-     "quote": "\u2022 Proof of income for the last 13 consecutive weeks for all household adult applicants.",
+     "quote": "\u2022 Proof of income for the last 13 consecutive weeks for all household adult applicants. || \u2022 A copy of the current MaineCare decision letters for all family members on the application \u2022 A copy of the current Federal Income Tax Return is required for all adult applicants (pages 1&2 only) || \u2022 If you are self-employed, a copy of the current Federal Income Tax Return, including Schedule C, is required, and the previous quarter\u2019s Profit and Loss statement",
      "source_id": "fap-a0765f6d5b62807a",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3880,22 +3928,7 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "languages": {
-     "value": [
-      "Somali",
-      "Arabic",
-      "French",
-      "Portuguese",
-      "Spanish",
-      "Swahili"
-     ],
-     "layer": "documented",
-     "quote": "Central Maine Healthcare Financial Assistance Policy (Somali Translation)",
-     "source_id": "web-5e15da74b46720f3",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "languages": null
    },
    "coverage": {
     "facilities": null,
@@ -3933,9 +3966,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: \u2022 Individual is deceased and has no known estate able to pay hospital debts; \u2022 Individual is eligible by the State to re",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: \u2022 A copy of the current MaineCare decision letters for all family members on the application \u2022 A copy of the current Fed | \u2022 If you are self-employed, a copy of the current Federal Income Tax Return, including Schedule C, is required, and the ",
-    "contacts.languages: 2 more verbatim excerpt(s) supported this value: (Arabic Translation) [https://www.cmhc.org/wp-content/uploads/2025/11/Financial-Assistance-Policy-Arabic.pdf] Central Ma | (Spanish Translation) [https://www.cmhc.org/wp-content/uploads/2025/11/Financial-Assistance-Policy-Spanish.pdf] Central ",
+    "programs.presumptive: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "contacts.languages: value backed by 3 verbatim spans",
     "agent dropped eligibility.discount_tiers: judge: Bounds 200-250% match, but the discount is 100% minus AGB with a 55% minimum, not a flat 55%.",
     "agent dropped programs.state_programs: judge: Quote names MaineCare and the DHHS office but does not say the Financial Advocate team helps with the application.",
     "agent dropped apply.decision_days: judge: Quote says to allow a minimum of 5 weeks for processing, not a 35-day decision deadline."
@@ -3960,18 +3993,20 @@
      "apply.window_days_from_first_bill",
      "collections.eca_wait_days",
      "contacts.phone",
-     "contacts.hours",
-     "contacts.languages"
+     "contacts.hours"
     ],
     "rejected": [
      [
       "apply.form_url",
       "quote not found in source"
+     ],
+     [
+      "contacts.languages",
+      "quote not found in source"
      ]
     ],
     "pruned": [
-     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
-     "apply.documents_required: 1 item not named in the trimmed quote"
+     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)"
     ],
     "income_rule_verified": true,
     "core_completeness": 0.67
@@ -4099,10 +4134,12 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "tax_return"
+      "tax_return",
+      "pay_stubs",
+      "social_security_letter"
      ],
      "layer": "documented",
-     "quote": "Most recent federal tax return, if you were required to file.",
+     "quote": "Most recent federal tax return, if you were required to file. || Most current 4 consecutive weeks of pay stubs. Depending on your income, this may be: || Current year's Social Security Benefit letter/pension statement, etc.",
      "source_id": "fap-a2b6fd7e25e89f09",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4183,7 +4220,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Most current 4 consecutive weeks of pay stubs. Depending on your income, this may be: | Current year's Social Security Benefit letter/pension statement, etc.",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent dropped eligibility.residency: judge: Quote only mentions Maine residents; nothing about New Hampshire residents or Memorial Hospital.",
     "agent dropped eligibility.insured_patients_covered: judge: Quote is truncated ('even if you') and never mentions insurance.",
     "agent dropped programs.state_programs: judge: The MaineCare website is cut off after 'or visit'; the maine.gov URL does not appear in the quote.",
@@ -4216,9 +4253,7 @@
       "quote not found in source"
      ]
     ],
-    "pruned": [
-     "apply.documents_required: 2 items not named in the trimmed quote"
-    ],
+    "pruned": [],
     "income_rule_verified": true,
     "core_completeness": 0.5
    }
@@ -4507,10 +4542,12 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "tax_return"
+      "tax_return",
+      "pay_stubs",
+      "social_security_letter"
      ],
      "layer": "documented",
-     "quote": "Most recent federal tax return, if you were required to file.",
+     "quote": "Most recent federal tax return, if you were required to file. || Most current 4 consecutive weeks of pay stubs. || Current year's Social Security Benefit letter/pension statement, etc.",
      "source_id": "fap-a2b6fd7e25e89f09",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4526,10 +4563,14 @@
       {
        "kind": "fax",
        "detail": "207-661-8043"
+      },
+      {
+       "kind": "portal",
+       "detail": "Apply and upload documents on MyChart: mychart.mainehealth.org"
       }
      ],
      "layer": "documented",
-     "quote": "Mail to: MaineHealth \u2013 PFS Attn: Financial Counseling 25 June Street Sanford, ME 04073 Fax to: 207-661-8043",
+     "quote": "Mail to: MaineHealth \u2013 PFS Attn: Financial Counseling 25 June Street Sanford, ME 04073 Fax to: 207-661-8043 || Apply and upload documents on MyChart: mychart.mainehealth.org",
      "source_id": "fap-a2b6fd7e25e89f09",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4625,8 +4666,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Most current 4 consecutive weeks of pay stubs. | Current year's Social Security Benefit letter/pension statement, etc.",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Apply and upload documents on MyChart: mychart.mainehealth.org",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 2 verbatim spans",
     "agent dropped eligibility.residency: judge: The quote mentions only Maine residents and says nothing about New Hampshire residents or Memorial Hospital.",
     "agent dropped programs.state_programs: judge: The MaineCare quote ends at 'or visit' with no URL, so maine.gov/benefits/accounts/login.html is not supported."
    ],
@@ -4659,10 +4700,7 @@
       "quote not found in source"
      ]
     ],
-    "pruned": [
-     "apply.documents_required: 2 items not named in the trimmed quote",
-     "apply.submit_methods: 1 item not named in the trimmed quote"
-    ],
+    "pruned": [],
     "income_rule_verified": true,
     "core_completeness": 0.67
    }
@@ -4744,10 +4782,12 @@
     "documents_required": {
      "value": [
       "tax_return",
-      "pay_stubs"
+      "pay_stubs",
+      "proof_of_income",
+      "social_security_letter"
      ],
      "layer": "documented",
-     "quote": "\u2022 Most recent federal tax return, if you were required to file. \u2022 Most current 4 consecutive weeks of pay stubs.",
+     "quote": "\u2022 Most recent federal tax return, if you were required to file. \u2022 Most current 4 consecutive weeks of pay stubs. || \u2022 If self-employed, latest month\u2019s itemized profit & loss statement \u2022 Current year's Social Security Benefit letter/pension statement, etc. \u2022 Current General Assistance letter \u2022 Unemployment or compensation benefits statement for the last 4 weeks || \u2022 Other proof of income you have received in the past 4 weeks, such as child support, alimony, stipends, lottery winnings, or bonuses \u2022 No income? Provide a statement explaining your current situation and how you are being supported.",
      "source_id": "fap-a2b6fd7e25e89f09",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4866,7 +4906,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: \u2022 If self-employed, latest month\u2019s itemized profit & loss statement \u2022 Current year's Social Security Benefit letter/pens | \u2022 Other proof of income you have received in the past 4 weeks, such as child support, alimony, stipends, lottery winning"
+    "apply.documents_required: value backed by 3 verbatim spans"
    ],
    "eve_verified": {
     "on": "2026-10-23",
@@ -4899,9 +4939,7 @@
       "quote not found in source"
      ]
     ],
-    "pruned": [
-     "apply.documents_required: 2 items not named in the trimmed quote"
-    ],
+    "pruned": [],
     "income_rule_verified": true,
     "core_completeness": 0.67
    }

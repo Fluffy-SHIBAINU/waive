@@ -481,11 +481,13 @@
      "value": [
       "pay_stubs",
       "tax_return",
-      "proof_of_income",
-      "other"
+      "other",
+      "social_security_letter",
+      "bank_statements",
+      "proof_of_income"
      ],
      "layer": "documented",
-     "quote": "a) Last 2 pay stubs AND most recent filed W-2; b) Most Recent Tax Returns; c) Attestation Letter;",
+     "quote": "a) Last 2 pay stubs AND most recent filed W-2; b) Most Recent Tax Returns; c) Attestation Letter; || d) Current Benefit awards letters showing Social Security, Disability, Worker's Compensation, or Veteran's Administration benefits; e) Copies of current benefit award letters or 1099 forms showing Unemployment, Retirement*, or Pension benefits; || f) Proof of Assets which may include, but not limited to complete copies of monthly checking, savings, investments, Venmo, Chime, PayPal, holdings, and retirement accounts for most recent three months; g) Verification of self-employment status and income received:",
      "source_id": "fap-738db57f691c27d1",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -594,7 +596,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: d) Current Benefit awards letters showing Social Security, Disability, Worker's Compensation, or Veteran's Administratio | f) Proof of Assets which may include, but not limited to complete copies of monthly checking, savings, investments, Venm"
+    "apply.documents_required: value backed by 3 verbatim spans"
    ],
    "eve_verified": {
     "on": "2026-10-23",
@@ -620,9 +622,7 @@
      "contacts.languages"
     ],
     "rejected": [],
-    "pruned": [
-     "apply.documents_required: 2 items not named in the trimmed quote"
-    ],
+    "pruned": [],
     "income_rule_verified": true,
     "core_completeness": 0.67
    }
@@ -651,7 +651,26 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "discount_tiers": null,
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "200",
+       "max_fpl_inclusive": "250",
+       "discount_percent": 80
+      },
+      {
+       "min_fpl_exclusive": "250",
+       "max_fpl_inclusive": "300",
+       "discount_percent": 65
+      }
+     ],
+     "layer": "documented",
+     "quote": "201 - 250% of FPG: 80% || 251 - 300% of FPG: 65%",
+     "source_id": "web-9155e1f42b49a1a6",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": {
@@ -701,10 +720,18 @@
       {
        "kind": "phone",
        "detail": "calling the FRC team at (606) 408-4118 or (866) 408-6466"
+      },
+      {
+       "kind": "fax",
+       "detail": "sending a fax to (606) 408-6917"
+      },
+      {
+       "kind": "mail",
+       "detail": "mailing a request to the FRC team at: King\u2019s Daughters Medical Center Attn: Financial Resource Center P.O. Box 151 Ashland, KY 41105"
       }
      ],
      "layer": "documented",
-     "quote": "calling the FRC team at (606) 408-4118 or (866) 408-6466,",
+     "quote": "calling the FRC team at (606) 408-4118 or (866) 408-6466, || sending a fax to (606) 408-6917, or || mailing a request to the FRC team at: King\u2019s Daughters Medical Center",
      "source_id": "web-9155e1f42b49a1a6",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -774,8 +801,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: 251 - 300% of FPG: 65%",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: sending a fax to (606) 408-6917, or | mailing a request to the FRC team at: King\u2019s Daughters Medical Center",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "apply.submit_methods: value backed by 3 verbatim spans",
     "apply.form_url: not an absolute URL ('/financial-assistance-application'); dropped",
     "agent dropped apply.window_days_from_first_bill: quote is not a substring of the source"
    ],
@@ -791,6 +818,7 @@
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
      "eligibility.residency",
      "eligibility.insured_patients_covered",
      "apply.documents_required",
@@ -801,10 +829,6 @@
     ],
     "rejected": [
      [
-      "eligibility.discount_tiers",
-      "value not in quote"
-     ],
-     [
       "eligibility.asset_test",
       "quote does not support the asset-test value"
      ]
@@ -812,10 +836,10 @@
     "pruned": [
      "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
      "apply.documents_required: 3 items not named in the trimmed quote",
-     "apply.submit_methods: 5 items not named in the trimmed quote"
+     "apply.submit_methods: 3 items not named in the trimmed quote"
     ],
     "income_rule_verified": true,
-    "core_completeness": 0.67
+    "core_completeness": 0.83
    }
   },
   {
@@ -1025,7 +1049,19 @@
    "apply": {
     "form_url": null,
     "form_version": null,
-    "documents_required": null,
+    "documents_required": {
+     "value": [
+      "pay_stubs",
+      "bank_statements",
+      "other"
+     ],
+     "layer": "documented",
+     "quote": "A \u201cW-2\u201d withholding statement; or || Current pay stubs (3 months); or || Current bank statements (showing most recent 3 months)",
+     "source_id": "fap-39e20d2f3d7a55b2",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "documents_reported": null,
     "submit_methods": {
      "value": [
@@ -1036,10 +1072,14 @@
       {
        "kind": "fax",
        "detail": "Fax: 469-803-4627"
+      },
+      {
+       "kind": "in_person",
+       "detail": "To submit your completed application in person: CommonSpirit - Saint Joseph Hospital - London, 1001 St Joseph Ln, London, KY 40741"
       }
      ],
      "layer": "documented",
-     "quote": "Mail or fax completed application with all documentation to: Financial Assistance Center, ATTN: EES - Financial Assistance Center, P.O. Box 660872. Dallas, TX 75266-0872 Fax: 469-803-4627",
+     "quote": "Mail or fax completed application with all documentation to: Financial Assistance Center, ATTN: EES - Financial Assistance Center, P.O. Box 660872. Dallas, TX 75266-0872 Fax: 469-803-4627 || To submit your completed application in person: CommonSpirit - Saint Joseph Hospital - London, 1001 St Joseph Ln, London, KY 40741",
      "source_id": "fap-39e20d2f3d7a55b2",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1110,8 +1150,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Current pay stubs (3 months); or | Current bank statements (showing most recent 3 months)",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: To submit your completed application in person: CommonSpirit - Saint Joseph Hospital - London, 1001 St Joseph Ln, London",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 2 verbatim spans",
     "agent judge on apply.documents_required: Quote lists W-2, pay stubs, and bank statements only. It does not mention a tax return, which the value includes."
    ],
    "eve_verified": {
@@ -1129,17 +1169,17 @@
      "eligibility.assistance_ceiling_fpl",
      "eligibility.asset_test",
      "eligibility.insured_patients_covered",
+     "apply.documents_required",
      "apply.submit_methods",
      "apply.decision_days",
      "contacts.phone"
     ],
     "rejected": [],
     "pruned": [
-     "apply.documents_required: none of the listed documents is named in the quote (after trimming)",
-     "apply.submit_methods: 1 item not named in the trimmed quote"
+     "apply.documents_required: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": false,
-    "core_completeness": 0.33
+    "core_completeness": 0.5
    }
   },
   {
@@ -1166,7 +1206,26 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "discount_tiers": null,
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "200",
+       "max_fpl_inclusive": "300",
+       "discount_percent": 50
+      },
+      {
+       "min_fpl_exclusive": "300",
+       "max_fpl_inclusive": "400",
+       "discount_percent": 25
+      }
+     ],
+     "layer": "documented",
+     "quote": "Patients with Incomes greater than 200% of FPL but less than or equal to 300% of FPL will receive a 50% discount of the patient liability. || Patients with Incomes greater than 300% of FPL and less than or equal to 400% of FPL may receive a 25% discount of the patient liability.",
+     "source_id": "fap-88385c1719406bb0",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "assistance_ceiling_fpl": null,
     "asset_test": {
      "value": true,
@@ -1192,10 +1251,13 @@
     "documents_required": {
      "value": [
       "pay_stubs",
-      "social_security_letter"
+      "social_security_letter",
+      "proof_of_income",
+      "tax_return",
+      "bank_statements"
      ],
      "layer": "documented",
-     "quote": "Pay stubs (3 most recent), Social security benefits letter, alimony checks (3 most recent),",
+     "quote": "Pay stubs (3 most recent), Social security benefits letter, alimony checks (3 most recent), || Federal tax return including W-2\u2019s and all pertinent pages of the Federal tax return || Bank statements: all open bank accounts showing beginning and ending balance.",
      "source_id": "fap-88385c1719406bb0",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1259,9 +1321,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: Patients with Incomes greater than 300% of FPL and less than or equal to 400% of FPL may receive a 25% discount of the p",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Federal tax return including W-2\u2019s and all pertinent pages of the Federal tax return | Bank statements: all open bank accounts showing beginning and ending balance.",
-    "contacts.languages: 2 more verbatim excerpt(s) supported this value: Plain Language Summary (Spanish) | Financial Assistance Policy (Bosnian) [https://medcenterhealth.org/download/31768/] Financial Assistance Policy (Burmese",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "contacts.languages: value backed by 3 verbatim spans",
     "agent dropped apply.submit_methods: judge: The quote mentions mail and in-person drop-off but gives no address, PO Box or 'Customer Service' detail."
    ],
    "eve_verified": {
@@ -1278,16 +1340,13 @@
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
      "eligibility.asset_test",
      "apply.documents_required",
      "apply.window_days_from_first_bill",
      "contacts.phone"
     ],
     "rejected": [
-     [
-      "eligibility.discount_tiers",
-      "value not in quote"
-     ],
      [
       "apply.form_url",
       "source text missing"
@@ -1298,11 +1357,10 @@
      ]
     ],
     "pruned": [
-     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
-     "apply.documents_required: 3 items not named in the trimmed quote"
+     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)"
     ],
     "income_rule_verified": true,
-    "core_completeness": 0.5
+    "core_completeness": 0.67
    }
   },
   {
@@ -1512,7 +1570,21 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "discount_tiers": null,
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "200",
+       "max_fpl_inclusive": "300",
+       "discount_percent": 25
+      }
+     ],
+     "layer": "documented",
+     "quote": "Patients whose family income is above 100% but not more than 200% of the FPL are eligible to receive services at but not exceeding the amounts generally billed to commercially insured or Medicare patients. || Patients whose family income is above 200% but not more than 300% of the FPL are eligible to receive 25% discount.",
+     "source_id": "fap-3f6b7838fca988ca",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": {
@@ -1573,10 +1645,12 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "bank_statements"
+      "proof_of_income",
+      "bank_statements",
+      "tax_return"
      ],
      "layer": "documented",
-     "quote": "Copy of all pages of 3 most recent bank statement(s) \u2013 Checking, Savings (if applicable)",
+     "quote": "Copy of all pages of 3 most recent bank statement(s) \u2013 Checking, Savings (if applicable) || Copy of 1040 page of most recent income taxes (If any deductions, please included the || Proof of income (Full month of check stubs w/ YTD gross earnings)",
      "source_id": "fap-def5c1157c8a95c4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1681,8 +1755,8 @@
    "accuracy": null,
    "eve_review": [
     "eligibility.discount_tiers: 100-200% at 0% is no discount; skipped",
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: Patients whose family income is above 200% but not more than 300% of the FPL are eligible to receive 25% discount.",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Copy of 1040 page of most recent income taxes (If any deductions, please included the | Proof of income (Full month of check stubs w/ YTD gross earnings)"
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans"
    ],
    "eve_verified": {
     "on": "2026-10-23",
@@ -1697,6 +1771,7 @@
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
      "eligibility.residency",
      "eligibility.insured_patients_covered",
      "programs.presumptive",
@@ -1710,10 +1785,6 @@
     ],
     "rejected": [
      [
-      "eligibility.discount_tiers",
-      "value not in quote"
-     ],
-     [
       "eligibility.asset_test",
       "quote does not support the asset-test value"
      ],
@@ -1724,11 +1795,10 @@
     ],
     "pruned": [
      "programs.presumptive: 2 items not named in the trimmed quote",
-     "apply.documents_required: 2 items not named in the trimmed quote",
      "apply.submit_methods: 3 items not named in the trimmed quote"
     ],
     "income_rule_verified": true,
-    "core_completeness": 0.67
+    "core_completeness": 0.83
    }
   },
   {
@@ -1777,7 +1847,7 @@
       "other"
      ],
      "layer": "documented",
-     "quote": "[1] Copy of the previous year's income tax return",
+     "quote": "[1] Copy of the previous year's income tax return || [2] Verification of household income || [3] Savings account (bank, credit union, and etc.)",
      "source_id": "fap-d2f247f051d151b4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1793,10 +1863,14 @@
       {
        "kind": "in_person",
        "detail": "requesting a copy in person at any of the ARH Facilities' patient admission or registration areas"
+      },
+      {
+       "kind": "mail",
+       "detail": "Completed applications, along with all required documentation, should be returned or mailed to the Revenue Cycle Manager at the applicable facility."
       }
      ],
      "layer": "documented",
-     "quote": "Copies of the application form and instructions are available online at http://www.arh.org/patients _visitors/financial_ assistance.aspx , by requesting a copy in person at any of the ARH Facilities' patient admission or registration areas",
+     "quote": "Copies of the application form and instructions are available online at http://www.arh.org/patients _visitors/financial_ assistance.aspx , by requesting a copy in person at any of the ARH Facilities' patient admission or registration areas || Completed applications, along with all required documentation, should be returned or mailed to the Revenue Cycle Manager at the applicable facility.",
      "source_id": "fap-d2f247f051d151b4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1875,8 +1949,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: [2] Verification of household income | [3] Savings account (bank, credit union, and etc.)",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Completed applications, along with all required documentation, should be returned or mailed to the Revenue Cycle Manager",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 2 verbatim spans",
     "agent dropped contacts.languages: quote is not a substring of the source"
    ],
    "eve_verified": {
@@ -1905,8 +1979,7 @@
      ]
     ],
     "pruned": [
-     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
-     "apply.submit_methods: 1 item not named in the trimmed quote"
+     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)"
     ],
     "income_rule_verified": false,
     "core_completeness": 0.5
@@ -1988,10 +2061,14 @@
       {
        "kind": "fax",
        "detail": "469-803-4627"
+      },
+      {
+       "kind": "in_person",
+       "detail": "CommonSpirit - Saint Joseph Hospitals Emergency Department"
       }
      ],
      "layer": "documented",
-     "quote": "Mail or fax completed application with all documentation to: Financial Assistance Center, ATTN: EES - Financial Assistance Center, P.O. Box 660872. Dallas, TX 75266-0872 Fax: 469-803-4627.",
+     "quote": "Mail or fax completed application with all documentation to: Financial Assistance Center, ATTN: EES - Financial Assistance Center, P.O. Box 660872. Dallas, TX 75266-0872 Fax: 469-803-4627. || To submit your completed application in person: CommonSpirit - Saint Joseph Hospitals Emergency Department.",
      "source_id": "fap-e22dcf7c19ff4915",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2081,7 +2158,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: To submit your completed application in person: CommonSpirit - Saint Joseph Hospitals Emergency Department.",
+    "apply.submit_methods: value backed by 2 verbatim spans",
     "agent dropped programs.presumptive: between 1 and 3 excerpts allowed",
     "agent dropped apply.documents_required: between 1 and 3 excerpts allowed"
    ],
@@ -2113,9 +2190,7 @@
       "quote does not support the asset-test value"
      ]
     ],
-    "pruned": [
-     "apply.submit_methods: 1 item not named in the trimmed quote"
-    ],
+    "pruned": [],
     "income_rule_verified": true,
     "core_completeness": 0.5
    }
@@ -2176,11 +2251,13 @@
     "form_version": null,
     "documents_required": {
      "value": [
+      "pay_stubs",
       "proof_of_income",
+      "bank_statements",
       "other"
      ],
      "layer": "documented",
-     "quote": "Copy of most recent tax statement or all W2's for all members of the household. (2025)",
+     "quote": "Copy of most recent tax statement or all W2's for all members of the household. (2025) || Copy of the year to date pay stub from all working age persons || Two most recent bank statements: For all checking and savings Accounts",
      "source_id": "fap-e57b2849651c049f",
      "checked_on": "2026-10-23",
      "confidence": 0.8,
@@ -2253,7 +2330,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Copy of the year to date pay stub from all working age persons | Two most recent bank statements: For all checking and savings Accounts",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "apply.documents_required: quote matched the source only after typography normalization",
     "agent dropped apply.submit_methods: excerpt not in source: Please complete and mail the information below... or call, M",
     "agent judge on apply.documents_required: Quote supports only tax statement or W2s, year-to-date pay stub, and bank statements. Unemployment, workers comp, pension, SSI, and zero income statements are not in the quote."
@@ -2285,7 +2362,7 @@
      ]
     ],
     "pruned": [
-     "apply.documents_required: 3 items not named in the trimmed quote"
+     "apply.documents_required: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": false,
     "core_completeness": 0.33
@@ -2337,7 +2414,7 @@
       "other"
      ],
      "layer": "documented",
-     "quote": "[1] Copy of the previous year's income tax return",
+     "quote": "[1] Copy of the previous year's income tax return || [2] Verification of household income || [3] Savings account (bank, credit union, and etc.)",
      "source_id": "fap-d2f247f051d151b4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2356,7 +2433,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "by requesting a copy in person at any of the ARH Facilities' patient admission or registration areas, or by requesting a free copy by mail by contacting the ARH Facilities' Collections Department",
+     "quote": "by requesting a copy in person at any of the ARH Facilities' patient admission or registration areas, or by requesting a free copy by mail by contacting the ARH Facilities' Collections Department || Completed applications, along with all required documentation, should be returned or mailed to the Revenue Cycle Manager at the applicable facility.",
      "source_id": "fap-d2f247f051d151b4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2435,8 +2512,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: [2] Verification of household income | [3] Savings account (bank, credit union, and etc.)",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Completed applications, along with all required documentation, should be returned or mailed to the Revenue Cycle Manager",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 2 verbatim spans",
     "agent judge on apply.submit_methods: Quote covers in-person and mail only. It has no online method and no arh.org financial_assistance.aspx URL, which the value includes."
    ],
    "eve_verified": {
@@ -2772,11 +2849,13 @@
      "value": [
       "pay_stubs",
       "tax_return",
-      "proof_of_income",
-      "other"
+      "other",
+      "social_security_letter",
+      "bank_statements",
+      "proof_of_income"
      ],
      "layer": "documented",
-     "quote": "a) Last 2 pay stubs AND most recent filed W-2; b) Most Recent Tax Returns; c) Attestation Letter;",
+     "quote": "a) Last 2 pay stubs AND most recent filed W-2; b) Most Recent Tax Returns; c) Attestation Letter; || d) Current Benefit awards letters showing Social Security, Disability, Worker's Compensation, or Veteran's Administration benefits; e) Copies of current benefit award letters or 1099 forms showing Unemployment, Retirement*, or Pension benefits; || f) Proof of Assets which may include, but not limited to complete copies of monthly checking, savings, investments, Venmo, Chime, PayPal, holdings, and retirement accounts for most recent three months; g) Verification of self-employment status and income received:",
      "source_id": "fap-738db57f691c27d1",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -2885,7 +2964,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: d) Current Benefit awards letters showing Social Security, Disability, Worker's Compensation, or Veteran's Administratio | f) Proof of Assets which may include, but not limited to complete copies of monthly checking, savings, investments, Venm"
+    "apply.documents_required: value backed by 3 verbatim spans"
    ],
    "eve_verified": {
     "on": "2026-10-23",
@@ -2911,9 +2990,7 @@
      "contacts.languages"
     ],
     "rejected": [],
-    "pruned": [
-     "apply.documents_required: 2 items not named in the trimmed quote"
-    ],
+    "pruned": [],
     "income_rule_verified": true,
     "core_completeness": 0.67
    }
@@ -2943,7 +3020,15 @@
      "support_count": 0
     },
     "discount_tiers": null,
-    "assistance_ceiling_fpl": null,
+    "assistance_ceiling_fpl": {
+     "value": "300",
+     "layer": "documented",
+     "quote": "The following criteria must be met for a patient to qualify for Financial Assistance: || The patient\u2019s Family Income is at or below 300% of the Federal Poverty Guidelines",
+     "source_id": "fap-6075deca5e090528",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "asset_test": null,
     "residency": null,
     "insured_patients_covered": null,
@@ -2968,10 +3053,12 @@
     "documents_required": {
      "value": [
       "pay_stubs",
-      "tax_return"
+      "tax_return",
+      "social_security_letter",
+      "proof_of_income"
      ],
      "layer": "documented",
-     "quote": "1. Last 2(most recent) pay stubs 2. Recent filed federal tax return for all family members. If self-employed, please include entire tax return, including all schedules.",
+     "quote": "1. Last 2(most recent) pay stubs 2. Recent filed federal tax return for all family members. If self-employed, please include entire tax return, including all schedules. || 3. If unemployed, provide proof of unemployment benefits, work comp benefits, Social Security/retirement benefits, government assistance (Food Stamps, General Relief, WIC, etc.), child support, disability benefits, or letter of signed support || 4. Proof of any other income source as listed on financial assistance application form",
      "source_id": "fap-55ab1d14b8a4b8d4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3033,7 +3120,7 @@
       "Spanish"
      ],
      "layer": "documented",
-     "quote": "Billing Collection Policy - English",
+     "quote": "Billing Collection Policy - English || Resumen Del Programa De Asistencia Financiera",
      "source_id": "web-1453168f67d3c0ae",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3076,10 +3163,10 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.assistance_ceiling_fpl: 1 more verbatim excerpt(s) supported this value: The patient\u2019s Family Income is at or below 300% of the Federal Poverty Guidelines",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Homeless or one who received care from a homeless clinic \u2022 Participant in Women, Infants, and Children programs \u2022 Eligib | Reside in a zip code where the average household income does not exceed 300% of the Federal Poverty Guidelines for the c",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: 3. If unemployed, provide proof of unemployment benefits, work comp benefits, Social Security/retirement benefits, gover | 4. Proof of any other income source as listed on financial assistance application form",
-    "contacts.languages: 1 more verbatim excerpt(s) supported this value: Resumen Del Programa De Asistencia Financiera",
+    "eligibility.assistance_ceiling_fpl: value backed by 2 verbatim spans",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "contacts.languages: value backed by 2 verbatim spans",
     "agent dropped eligibility.insured_patients_covered: judge: Quote only defines 'Underinsured'; it does not state that insured patients are eligible."
    ],
    "eve_verified": {
@@ -3095,6 +3182,7 @@
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
+     "eligibility.assistance_ceiling_fpl",
      "eligibility.min_balance",
      "apply.documents_required",
      "apply.submit_methods",
@@ -3105,10 +3193,6 @@
     ],
     "rejected": [
      [
-      "eligibility.assistance_ceiling_fpl",
-      "value not in quote"
-     ],
-     [
       "eligibility.asset_test",
       "quote does not support the asset-test value"
      ],
@@ -3118,8 +3202,7 @@
      ]
     ],
     "pruned": [
-     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
-     "apply.documents_required: 2 items not named in the trimmed quote"
+     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)"
     ],
     "income_rule_verified": true,
     "core_completeness": 0.67
@@ -3141,7 +3224,21 @@
    "status": "draft",
    "eligibility": {
     "free_care_max_fpl": null,
-    "discount_tiers": null,
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "150",
+       "max_fpl_inclusive": "268",
+       "discount_percent": 50
+      }
+     ],
+     "layer": "documented",
+     "quote": "Free $23,475 $31,725 $39,975 $48,225 $56,475 $64,725 $72,975 $81,225 150% || 50% of AGB $41,942 $56,682 $71,422 $86,162 $100,902 $115,642 $130,382 $145,122 268% || AGB $62,600 $84,600 $106,600 $128,600 $150,600 $172,600 $194,600 $216,600 400%",
+     "source_id": "fap-b4167c856a48f218",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": {
@@ -3248,7 +3345,7 @@
    "accuracy": null,
    "eve_review": [
     "eligibility.discount_tiers: 268-400% at 0% is no discount; skipped",
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: 50% of AGB $41,942 $56,682 $71,422 $86,162 $100,902 $115,642 $130,382 $145,122 268% | AGB $62,600 $84,600 $106,600 $128,600 $150,600 $172,600 $194,600 $216,600 400%",
+    "eligibility.discount_tiers: value backed by 3 verbatim spans",
     "agent dropped apply.submit_methods: excerpt not in source: A copy of PMC\u2019s Financial Assistance Policy, the DSH Program",
     "agent judge on eligibility.discount_tiers: Quote gives 50% for 150-268% and AGB pricing to 400%, but never states a 0% discount; the 0 for 268-400% is inferred.",
     "agent judge on programs.state_programs: Quote mentions 'DSH Program' only; the full name 'Disproportionate Share Hospital (DSH) Program' does not appear in the quote."
@@ -3265,6 +3362,7 @@
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
+     "eligibility.discount_tiers",
      "eligibility.residency",
      "eligibility.insured_patients_covered",
      "programs.state_programs",
@@ -3276,10 +3374,6 @@
       "quote does not state the free-care limit as an income limit"
      ],
      [
-      "eligibility.discount_tiers",
-      "value not in quote"
-     ],
-     [
       "eligibility.asset_test",
       "quote does not support the asset-test value"
      ],
@@ -3289,8 +3383,8 @@
      ]
     ],
     "pruned": [],
-    "income_rule_verified": false,
-    "core_completeness": 0.17
+    "income_rule_verified": true,
+    "core_completeness": 0.33
    }
   },
   {
@@ -3362,7 +3456,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "(Call (859) 301-9090 Monday \u2013 Friday between the hours of 9 a.m. to 7 p.m.)",
+     "quote": "(Call (859) 301-9090 Monday \u2013 Friday between the hours of 9 a.m. to 7 p.m.) || The focus of the financial counselor is to secure Federal and State funding (i.e. Social Security, Disability or Medicaid) for uninsured patients.",
      "source_id": "web-c796359b5696e1a3",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3464,8 +3558,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: \u2022 Patient is eligible for a state funded prescription medication program \u2022 Patient is deceased and without an estate \u2022 P | \u2022 Patient is on military active duty \u2022 Patient receives free care from a community clinic and is referred to hospital fo",
-    "programs.state_programs: 1 more verbatim excerpt(s) supported this value: The focus of the financial counselor is to secure Federal and State funding (i.e. Social Security, Disability or Medicai",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "programs.state_programs: value backed by 2 verbatim spans",
     "agent dropped eligibility.residency: judge: Quote only says the patient need not be a Kentucky resident; it says nothing about U.S. citizenship or legal residency.",
     "agent dropped apply.submit_methods: judge: Quote lacks the mail address details, and the in-person text is cut off with no Edgewood or 'only' mention.",
     "agent dropped contacts.hours: judge: Quote is cut off after 'between the hours of' and gives no times."
@@ -3761,13 +3855,14 @@
     "form_version": null,
     "documents_required": {
      "value": [
+      "other",
       "tax_return",
       "pay_stubs",
       "proof_of_income",
-      "other"
+      "bank_statements"
      ],
      "layer": "documented",
-     "quote": "Fully completed and signed Financial Disclosure document \u25aa Completed and signed IRS form 4506-T \u25aa Copy of your most recent state and federal tax return, including W-2\u2019s and all schedules. (If self-employed, you will need to provide the last two years of your tax information.) \u25aa Copies of the two most recent pay stubs for all wage-earners who live in the household",
+     "quote": "Fully completed and signed Financial Disclosure document \u25aa Completed and signed IRS form 4506-T \u25aa Copy of your most recent state and federal tax return, including W-2\u2019s and all schedules. (If self-employed, you will need to provide the last two years of your tax information.) \u25aa Copies of the two most recent pay stubs for all wage-earners who live in the household || Proof of other income, including Social Security, disability, pensions, and any other form of income for all household members \u25aa Copies of the two most recent bank statements from all accounts || Two most recent investment statements from all accounts not covered by the above such as HSA, FSA, stocks, bonds, and CDs, excluding retirement accounts \u25aa Evidence (a letter) showing Medicaid application or lack of eligibility.",
      "source_id": "fap-5636546add2ee668",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3851,7 +3946,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Proof of other income, including Social Security, disability, pensions, and any other form of income for all household m | Two most recent investment statements from all accounts not covered by the above such as HSA, FSA, stocks, bonds, and CD",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent dropped eligibility.asset_test: judge: Quote mentions only 'Total Family resources... Sum of [A]'; it does not plainly say that assets are considered.",
     "agent dropped apply.submit_methods: judge: Quote supports mailing to 801 Eastern Bypass, Richmond, KY 40476, but does not name 'Baptist Health Financial Counselors' as the addressee."
    ],
@@ -3877,9 +3972,7 @@
      "contacts.languages"
     ],
     "rejected": [],
-    "pruned": [
-     "apply.documents_required: 1 item not named in the trimmed quote"
-    ],
+    "pruned": [],
     "income_rule_verified": true,
     "core_completeness": 0.67
    }
@@ -3930,7 +4023,7 @@
       "other"
      ],
      "layer": "documented",
-     "quote": "[1] Copy of the previous year's income tax return",
+     "quote": "[1] Copy of the previous year's income tax return || [2] Verification of household income || [3] Savings account (bank, credit union, and etc.)",
      "source_id": "fap-d2f247f051d151b4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -3946,10 +4039,14 @@
       {
        "kind": "in_person",
        "detail": "requesting a copy in person at any of the ARH Facilities' patient admission or registration areas"
+      },
+      {
+       "kind": "portal",
+       "detail": "Copies of the application form and instructions are available online at http://www.arh.org/patients_visitors/financial_assistance.aspx"
       }
      ],
      "layer": "documented",
-     "quote": "requesting a copy in person at any of the ARH Facilities' patient admission or registration areas, or by requesting a free copy by mail by contacting the ARH Facilities' Collections Department",
+     "quote": "requesting a copy in person at any of the ARH Facilities' patient admission or registration areas, or by requesting a free copy by mail by contacting the ARH Facilities' Collections Department || Completed applications, along with all required documentation, should be returned or mailed to the Revenue Cycle Manager at the applicable facility || Copies of the application form and instructions are available online at http://www.arh.org/patients _visitors/financial_ assistance.aspx",
      "source_id": "fap-d2f247f051d151b4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4028,9 +4125,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: The patient is eligible for assistance through the Women, Infants and Children program (WIC) | The patient is eligible for assistance through the Supplemental Nutrition Assistance Program (SNAP);",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: [2] Verification of household income | [3] Savings account (bank, credit union, and etc.)",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Completed applications, along with all required documentation, should be returned or mailed to the Revenue Cycle Manager | Copies of the application form and instructions are available online at http://www.arh.org/patients _visitors/financial_",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 3 verbatim spans",
     "agent judge on apply.submit_methods: Mail, in-person, and online methods are stated, but the quote's online URL contains spaces ('patients _visitors/financial_ assistance.aspx'), which does not exactly match the recorded URL."
    ],
    "eve_verified": {
@@ -4059,8 +4156,7 @@
      ]
     ],
     "pruned": [
-     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
-     "apply.submit_methods: 1 item not named in the trimmed quote"
+     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)"
     ],
     "income_rule_verified": false,
     "core_completeness": 0.5
@@ -4109,10 +4205,11 @@
      "value": [
       "pay_stubs",
       "bank_statements",
-      "other"
+      "other",
+      "tax_return"
      ],
      "layer": "documented",
-     "quote": "LAST TWO (2) PAY STUBS RECENT BANK STATEMENTS SUPPORTING VALUE",
+     "quote": "LAST TWO (2) PAY STUBS RECENT BANK STATEMENTS SUPPORTING VALUE || COPY OF MOST RECENT W2 AND 1099 FORMS || MOST RECENT TAX RETURN FORM",
      "source_id": "fap-a70e4e525619bef1",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4139,7 +4236,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "hospital in person, by mail, by electronic mail, or by fax to apply for free or discounted care",
+     "quote": "hospital in person, by mail, by electronic mail, or by fax to apply for free or discounted care || PO Box 3366, Evansville, IN 47732 || Email to: Financial.Assistance@deaconess.com Phone: 812-450-3435 Fax: 812-450-5261",
      "source_id": "fap-a70e4e525619bef1",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4229,9 +4326,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Public Assistance eligibility | Patient is deceased with no known estate",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: COPY OF MOST RECENT W2 AND 1099 FORMS | MOST RECENT TAX RETURN FORM",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: PO Box 3366, Evansville, IN 47732 | Email to: Financial.Assistance@deaconess.com Phone: 812-450-3435 Fax: 812-450-5261",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 3 verbatim spans",
     "agent dropped eligibility.insured_patients_covered: judge: The fragment describes insured patients with out-of-pocket costs but is cut off and never says they qualify for assistance.",
     "agent dropped programs.state_programs: judge: Medicaid screening and the phone numbers appear, but nothing in the quote mentions the WellFund team contacting the patient."
    ],
@@ -4266,8 +4363,7 @@
      ]
     ],
     "pruned": [
-     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
-     "apply.documents_required: 1 item not named in the trimmed quote"
+     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)"
     ],
     "income_rule_verified": true,
     "core_completeness": 0.67
@@ -4315,13 +4411,14 @@
     "documents_required": {
      "value": [
       "pay_stubs",
+      "other",
       "tax_return",
       "proof_of_income",
-      "bank_statements",
-      "other"
+      "social_security_letter",
+      "bank_statements"
      ],
      "layer": "documented",
-     "quote": "1. LAST TWO (2) PAY STUBS RECENT BANK STATEMENTS SUPPORTING VALUE 2. COPY OF MOST RECENT W2 AND 1099 FORMS 3. MOST RECENT TAX RETURN FORM 4. WRITTEN INCOME VERIFICATION FROM EMPLOYER IF PAID IN CASH.",
+     "quote": "1. LAST TWO (2) PAY STUBS RECENT BANK STATEMENTS SUPPORTING VALUE 2. COPY OF MOST RECENT W2 AND 1099 FORMS 3. MOST RECENT TAX RETURN FORM 4. WRITTEN INCOME VERIFICATION FROM EMPLOYER IF PAID IN CASH. || 5. OTHER THIRD-PARTY VERIFICATION (CHILD SUPPORT PAYMENTS; SSI AWARD LETTER)",
      "source_id": "fap-0e81427839c5c219",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4348,7 +4445,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Please complete this form and submit to the hospital in person, by mail, by electronic mail, or by fax",
+     "quote": "Please complete this form and submit to the hospital in person, by mail, by electronic mail, or by fax || Mail to: Deaconess Financial Assistance PO Box 3366, Evansville, IN 47732 || Email to: Financial.Assistance@deaconess.com Phone: 812-450-3435 Fax: 812-450-5261",
      "source_id": "fap-0e81427839c5c219",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4427,9 +4524,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Public Assistance eligibility | Patient is deceased with no known estate",
-    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: 5. OTHER THIRD-PARTY VERIFICATION (CHILD SUPPORT PAYMENTS; SSI AWARD LETTER)",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Mail to: Deaconess Financial Assistance PO Box 3366, Evansville, IN 47732 | Email to: Financial.Assistance@deaconess.com Phone: 812-450-3435 Fax: 812-450-5261",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 2 verbatim spans",
+    "apply.submit_methods: value backed by 3 verbatim spans",
     "agent dropped eligibility.insured_patients_covered: quote is not a substring of the source",
     "agent dropped programs.state_programs: judge: Quote names Medicaid and says WellFund will reach out, but gives no phone numbers (812-450-2124 / 855-365-9300)."
    ],
@@ -4459,8 +4556,7 @@
      ]
     ],
     "pruned": [
-     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
-     "apply.documents_required: 1 item not named in the trimmed quote"
+     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)"
     ],
     "income_rule_verified": true,
     "core_completeness": 0.67
@@ -4534,10 +4630,12 @@
     "documents_required": {
      "value": [
       "bank_statements",
-      "other"
+      "tax_return",
+      "other",
+      "pay_stubs"
      ],
      "layer": "documented",
-     "quote": "the patient must provide bank or checking account statements evidencing the patient\u2019s available resources",
+     "quote": "the patient must provide bank or checking account statements evidencing the patient\u2019s available resources || Copy of the individual\u2019s most recently filed federal income tax return; || Current Form W-2; \u2022 Current paystubs; or \u2022 Signed letter of support.",
      "source_id": "fap-174bfaef7b79efbc",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4553,10 +4651,14 @@
       {
        "kind": "fax",
        "detail": "859-497-5116"
+      },
+      {
+       "kind": "in_person",
+       "detail": "CommonSpirit - Saint Joseph Hospital - Mount Sterling, 225 Falcon Dr, Mt Sterling, KY 40353"
       }
      ],
      "layer": "documented",
-     "quote": "Mail or fax completed application with all documentation to: Saint Joseph Mount Sterling, ATTN: EES/MECS - Financial Assistance, P.O. Box 7. Mt. Sterling, KY 40353 Fax: 859-497-5116.",
+     "quote": "Mail or fax completed application with all documentation to: Saint Joseph Mount Sterling, ATTN: EES/MECS - Financial Assistance, P.O. Box 7. Mt. Sterling, KY 40353 Fax: 859-497-5116. || To submit your completed application in person: CommonSpirit - Saint Joseph Hospital - Mount Sterling, 225 Falcon Dr, Mt Sterling, KY 40353",
      "source_id": "fap-c6c1410e03c03fee",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -4646,8 +4748,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Copy of the individual\u2019s most recently filed federal income tax return; | Current Form W-2; \u2022 Current paystubs; or \u2022 Signed letter of support.",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: To submit your completed application in person: CommonSpirit - Saint Joseph Hospital - Mount Sterling, 225 Falcon Dr, Mt",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 2 verbatim spans",
     "agent dropped programs.presumptive: between 1 and 3 excerpts allowed"
    ],
    "eve_verified": {
@@ -4679,10 +4781,7 @@
       "quote does not support the asset-test value"
      ]
     ],
-    "pruned": [
-     "apply.documents_required: 2 items not named in the trimmed quote",
-     "apply.submit_methods: 1 item not named in the trimmed quote"
-    ],
+    "pruned": [],
     "income_rule_verified": true,
     "core_completeness": 0.67
    }
@@ -4945,7 +5044,18 @@
     "services_excluded": null
    },
    "programs": {
-    "presumptive": null,
+    "presumptive": {
+     "value": [
+      "Homeless patients",
+      "Incarcerated patients"
+     ],
+     "layer": "documented",
+     "quote": "Homeless Patients: Patients identified as meeting the hospital\u2019s definition of homelessness || Incarcerated Patients: Patients who are incarcerated in local, county, state, or federal detention facilities at the time services are provided shall be automatically approved for 100% write-off",
+     "source_id": "fap-33a7d75cc53bb7fe",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "state_programs": {
      "value": [
       {
@@ -4966,10 +5076,14 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "medicaid_denial"
+      "medicaid_denial",
+      "bank_statements",
+      "pay_stubs",
+      "tax_return",
+      "social_security_letter"
      ],
      "layer": "documented",
-     "quote": "The denial letter should be included with the application.",
+     "quote": "The denial letter should be included with the application. || a. Last 3 months of checking and savings bank account statements b. Last 2 months of pay stubs c. Most recent tax return, showing dependents || d. Benefit award letters for Social Security, Disability, Workers\u2019 Compensation and Veteran\u2019s Administrative benefits e. Proof of amount of child support f. Proof of amount for alimony g. Investment or Retirement Account statements",
      "source_id": "fap-054c32603fb0a5d2",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5063,8 +5177,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: Incarcerated Patients: Patients who are incarcerated in local, county, state, or federal detention facilities at the tim",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: a. Last 3 months of checking and savings bank account statements b. Last 2 months of pay stubs c. Most recent tax return | d. Benefit award letters for Social Security, Disability, Workers\u2019 Compensation and Veteran\u2019s Administrative benefits e."
+    "programs.presumptive: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans"
    ],
    "eve_verified": {
     "on": "2026-10-23",
@@ -5082,6 +5196,7 @@
      "eligibility.discount_tiers",
      "eligibility.asset_test",
      "eligibility.insured_patients_covered",
+     "programs.presumptive",
      "programs.state_programs",
      "apply.documents_required",
      "apply.submit_methods",
@@ -5100,8 +5215,7 @@
      ]
     ],
     "pruned": [
-     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
-     "apply.documents_required: 5 items not named in the trimmed quote"
+     "apply.documents_required: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": true,
     "core_completeness": 0.83
@@ -5131,7 +5245,21 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "discount_tiers": null,
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "300",
+       "max_fpl_inclusive": "400",
+       "discount_percent": 50
+      }
+     ],
+     "layer": "documented",
+     "quote": "Partial Assistance (50%) || If your family income is between 301% and 400% of the federal poverty level, then you may be eligible for partial assistance.",
+     "source_id": "web-99be41eab84622f1",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": null,
@@ -5150,10 +5278,11 @@
    "programs": {
     "presumptive": {
      "value": [
-      "Homeless without a physical address"
+      "Homeless without a physical address",
+      "Prior Financial Assistance eligibility determination"
      ],
      "layer": "documented",
-     "quote": "Patients who are homeless and do not have a physical address may be presumptively eligible without the need for additional assessment hereunder.",
+     "quote": "Patients who are homeless and do not have a physical address may be presumptively eligible without the need for additional assessment hereunder. || BH may also use a prior Financial Assistance eligibility determination as a presumption that an individual is eligible for Financial Assistance. || A deceased patient who does not have an estate subject to probate and for whom no other party is responsible for payment, may be considered for presumptive eligibility",
      "source_id": "fap-c0bb3ef853bd74de",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5264,8 +5393,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: If your family income is between 301% and 400% of the federal poverty level, then you may be eligible for partial assist",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: BH may also use a prior Financial Assistance eligibility determination as a presumption that an individual is eligible f | A deceased patient who does not have an estate subject to probate and for whom no other party is responsible for payment",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "programs.presumptive: value backed by 3 verbatim spans",
     "agent dropped apply.documents_required: judge: The quote never says 'two years if self-employed'; it only asks for the most recent tax return.",
     "agent dropped apply.submit_methods: judge: The quote gives mail to the hospital at 1 Trillium Way; the recipient 'Baptist Health Financial Counselors' is not named.",
     "agent dropped apply.window_days_from_first_bill: judge: The quote gives a minimum 240-day application period but does not say it runs from the first bill."
@@ -5283,6 +5412,7 @@
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
      "eligibility.insured_patients_covered",
      "programs.presumptive",
      "programs.state_programs",
@@ -5293,19 +5423,15 @@
     ],
     "rejected": [
      [
-      "eligibility.discount_tiers",
-      "value not in quote"
-     ],
-     [
       "eligibility.asset_test",
       "quote does not support the asset-test value"
      ]
     ],
     "pruned": [
-     "programs.presumptive: 2 items not named in the trimmed quote"
+     "programs.presumptive: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": true,
-    "core_completeness": 0.33
+    "core_completeness": 0.5
    }
   },
   {
@@ -5359,10 +5485,12 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "bank_statements"
+      "bank_statements",
+      "tax_return",
+      "pay_stubs"
      ],
      "layer": "documented",
-     "quote": "provide their last 3 months of bank statements for all checking and savings accounts.",
+     "quote": "provide their last 3 months of bank statements for all checking and savings accounts. || copies of your prior year\u2019s tax return, pay stubs, unemployment check documentation, Social Security check documentation",
      "source_id": "fap-d73fee9532fcd921",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5435,7 +5563,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: copies of your prior year\u2019s tax return, pay stubs, unemployment check documentation, Social Security check documentation",
+    "apply.documents_required: value backed by 2 verbatim spans",
     "agent dropped apply.submit_methods: excerpt not in source: Apply using Norton MyChart [https://mychart.nortonhealthcare"
    ],
    "eve_verified": {
@@ -5466,9 +5594,7 @@
       "quote not found in source"
      ]
     ],
-    "pruned": [
-     "apply.documents_required: 2 items not named in the trimmed quote"
-    ],
+    "pruned": [],
     "income_rule_verified": false,
     "core_completeness": 0.33
    }
@@ -5516,10 +5642,11 @@
      "value": [
       "pay_stubs",
       "bank_statements",
-      "other"
+      "other",
+      "tax_return"
      ],
      "layer": "documented",
-     "quote": "1. LAST TWO (2) PAY STUBS RECENT BANK STATEMENTS SUPPORTING VALUE",
+     "quote": "1. LAST TWO (2) PAY STUBS RECENT BANK STATEMENTS SUPPORTING VALUE || 2. COPY OF MOST RECENT W2 AND 1099 FORMS || 3. MOST RECENT TAX RETURN FORM",
      "source_id": "fap-ef00a8f129a3ae8a",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5546,7 +5673,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "submit to the hospital in person, by mail, by electronic mail, or by fax",
+     "quote": "submit to the hospital in person, by mail, by electronic mail, or by fax || PO Box 3366, Evansville, IN 47732 || Email to: Financial.Assistance@deaconess.com",
      "source_id": "fap-ef00a8f129a3ae8a",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5594,7 +5721,7 @@
       "Haitian Creole"
      ],
      "layer": "documented",
-     "quote": "Financial Assistance Application (PDF)",
+     "quote": "Financial Assistance Application (PDF) || Aplicacion de Asistencia Financiera (Spanish) (PDF) || Aplikasyon Asistans Finansye (Haitian/Creole) (PDF)",
      "source_id": "web-dde4e69347749f7c",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5637,10 +5764,10 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Food stamp eligibility | Patient is deceased with no known estate",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: 2. COPY OF MOST RECENT W2 AND 1099 FORMS | 3. MOST RECENT TAX RETURN FORM",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: PO Box 3366, Evansville, IN 47732 | Email to: Financial.Assistance@deaconess.com",
-    "contacts.languages: 2 more verbatim excerpt(s) supported this value: Aplicacion de Asistencia Financiera (Spanish) (PDF) | Aplikasyon Asistans Finansye (Haitian/Creole) (PDF)",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 3 verbatim spans",
+    "contacts.languages: value backed by 3 verbatim spans",
     "agent dropped eligibility.insured_patients_covered: judge: Quote only defines 'Underinsured' and is truncated; it does not say insured patients are eligible.",
     "agent dropped programs.state_programs: judge: Quote mentions Medicaid and the phone number, but 'They' is unnamed; 'WellFund' and 'will reach out' do not appear."
    ],
@@ -5671,8 +5798,7 @@
      ]
     ],
     "pruned": [
-     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
-     "apply.documents_required: 1 item not named in the trimmed quote"
+     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)"
     ],
     "income_rule_verified": true,
     "core_completeness": 0.67
@@ -5711,7 +5837,19 @@
     "services_excluded": null
    },
    "programs": {
-    "presumptive": null,
+    "presumptive": {
+     "value": [
+      "Homeless or received care from a homeless clinic",
+      "Participation in WIC",
+      "Patient deceased with no known estate or insurance"
+     ],
+     "layer": "documented",
+     "quote": "Homeless or received care from a homeless clinic; || Participation in Women, Infants and Children programs (WIC); || Patient is deceased with no known estate or insurance;",
+     "source_id": "fap-67ad9b8d0921ee8c",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "state_programs": null
    },
    "apply": {
@@ -5719,10 +5857,12 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "proof_of_income"
+      "proof_of_income",
+      "social_security_letter",
+      "bank_statements"
      ],
      "layer": "documented",
-     "quote": "\u2610 EMPLOYMENT = 3 OR 12 MONTH INCOME \u2610 SELF EMPLOYMENT = COMPLETE TAX FORMS INCLUDING SCHEDULE C",
+     "quote": "\u2610 EMPLOYMENT = 3 OR 12 MONTH INCOME \u2610 SELF EMPLOYMENT = COMPLETE TAX FORMS INCLUDING SCHEDULE C || \u2610 SOCIAL SECURITY = BENEFIT LETTER \u2610 OTHER= PROOF OF ANY OTHER INCOME SUCH AS DIVIDENDS, INTEREST, RENTAL INCOME || \u2610 PENSION OR DISABILITY= BENEFIT LETTER \u2610 CHECKING / SAVINGS = CURRENT 30 DAY STATEMENT FOR EACH ACCOUNT",
      "source_id": "fap-a9df4879b1e434c3",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5787,8 +5927,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Participation in Women, Infants and Children programs (WIC); | Patient is deceased with no known estate or insurance;",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: \u2610 SOCIAL SECURITY = BENEFIT LETTER \u2610 OTHER= PROOF OF ANY OTHER INCOME SUCH AS DIVIDENDS, INTEREST, RENTAL INCOME | \u2610 PENSION OR DISABILITY= BENEFIT LETTER \u2610 CHECKING / SAVINGS = CURRENT 30 DAY STATEMENT FOR EACH ACCOUNT",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent dropped eligibility.discount_tiers: judge: Bounds appear, but the table lists four unlabeled percents (100%, 79%, 79%, 40%), so mapping 79% to each tier is not explicit.",
     "agent dropped eligibility.residency: judge: Quote is truncated at 'will be'; it does not say HFA is offered or mention extenuating circumstances or PFS Manager approval.",
     "agent dropped eligibility.insured_patients_covered: judge: Truncated fragment about self-pay balances after insurance; it does not state that insured patients are eligible.",
@@ -5807,6 +5947,7 @@
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
+     "programs.presumptive",
      "apply.documents_required",
      "contacts.phone"
     ],
@@ -5816,10 +5957,7 @@
       "quote does not support the asset-test value"
      ]
     ],
-    "pruned": [
-     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
-     "apply.documents_required: 2 items not named in the trimmed quote"
-    ],
+    "pruned": [],
     "income_rule_verified": true,
     "core_completeness": 0.5
    }
@@ -5840,7 +5978,21 @@
    "status": "draft",
    "eligibility": {
     "free_care_max_fpl": null,
-    "discount_tiers": null,
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "300",
+       "max_fpl_inclusive": "400",
+       "discount_percent": 50
+      }
+     ],
+     "layer": "documented",
+     "quote": "Partial Assistance (50%) || If your family income is between 301% and 400% of the federal poverty level, then you may be eligible for partial assistance.",
+     "source_id": "web-99be41eab84622f1",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "assistance_ceiling_fpl": {
      "value": "300",
      "layer": "documented",
@@ -5865,12 +6017,14 @@
     "form_version": null,
     "documents_required": {
      "value": [
+      "other",
       "tax_return",
+      "pay_stubs",
       "proof_of_income",
-      "other"
+      "bank_statements"
      ],
      "layer": "documented",
-     "quote": "Fully completed and signed Financial Disclosure document \u25aa Completed and signed IRS form 4506-T \u25aa Copy of your most recent state and federal tax return, including W-2\u2019s and all schedules.",
+     "quote": "Fully completed and signed Financial Disclosure document \u25aa Completed and signed IRS form 4506-T \u25aa Copy of your most recent state and federal tax return, including W-2\u2019s and all schedules. || Copies of the two most recent pay stubs for all wage-earners who live in the household \u25aa Proof of other income, including Social Security, disability, pensions, and any other form of income for all household members \u25aa Copies of the two most recent bank statements from all accounts || Two most recent investment statements from all accounts not covered by the above such as HSA, FSA, stocks, bonds, and CDs, excluding retirement accounts \u25aa Evidence (a letter) showing Medicaid application or lack of eligibility.",
      "source_id": "fap-5636546add2ee668",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -5955,8 +6109,8 @@
    "accuracy": null,
    "eve_review": [
     "eligibility.free_care_max_fpl: owner review says 300% is a discount or assistance limit, not free care; recorded as assistance_ceiling_fpl.",
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: If your family income is between 301% and 400% of the federal poverty level, then you may be eligible for partial assist",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Copies of the two most recent pay stubs for all wage-earners who live in the household \u25aa Proof of other income, includin | Two most recent investment statements from all accounts not covered by the above such as HSA, FSA, stocks, bonds, and CD",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent dropped eligibility.asset_test: judge: Form fragment mentions 'Total Family resources' but does not plainly say assets are considered.",
     "agent dropped apply.submit_methods: judge: Mail and the address are supported, but the recipient 'Baptist Health Financial Counselors' is not in the quote."
    ],
@@ -5974,23 +6128,17 @@
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
+     "eligibility.discount_tiers",
      "eligibility.assistance_ceiling_fpl",
      "apply.documents_required",
      "contacts.phone",
      "contacts.hours",
      "contacts.languages"
     ],
-    "rejected": [
-     [
-      "eligibility.discount_tiers",
-      "value not in quote"
-     ]
-    ],
-    "pruned": [
-     "apply.documents_required: 2 items not named in the trimmed quote"
-    ],
-    "income_rule_verified": false,
-    "core_completeness": 0.33
+    "rejected": [],
+    "pruned": [],
+    "income_rule_verified": true,
+    "core_completeness": 0.5
    }
   },
   {
@@ -6048,12 +6196,14 @@
     "form_version": null,
     "documents_required": {
      "value": [
+      "other",
       "tax_return",
+      "pay_stubs",
       "proof_of_income",
-      "other"
+      "bank_statements"
      ],
      "layer": "documented",
-     "quote": "\u25aa Fully completed and signed Financial Disclosure document \u25aa Completed and signed IRS form 4506-T \u25aa Copy of your most recent state and federal tax return, including W-2\u2019s and all schedules.",
+     "quote": "\u25aa Fully completed and signed Financial Disclosure document \u25aa Completed and signed IRS form 4506-T \u25aa Copy of your most recent state and federal tax return, including W-2\u2019s and all schedules. || \u25aa Copies of the two most recent pay stubs for all wage-earners who live in the household \u25aa Proof of other income, including Social Security, disability, pensions, and any other form of income for all household members \u25aa Copies of the two most recent bank statements from all accounts || \u25aa Evidence (a letter) showing Medicaid application or lack of eligibility. Full cooperation with our staff or contractor will be acceptable evidence \u25aa All applications without bank statements must provide one month of receipts or check cashing service or utilities bills paid in cash \u25aa Proof of family size if not listed on tax document",
      "source_id": "fap-5636546add2ee668",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -6130,7 +6280,7 @@
    "accuracy": null,
    "eve_review": [
     "eligibility.free_care_max_fpl: owner review says 300% is a discount or assistance limit, not free care; recorded as assistance_ceiling_fpl.",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: \u25aa Copies of the two most recent pay stubs for all wage-earners who live in the household \u25aa Proof of other income, includ | \u25aa Evidence (a letter) showing Medicaid application or lack of eligibility. Full cooperation with our staff or contractor",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent dropped eligibility.asset_test: judge: The quote only names a form line, 'Total Family resources\u2026 Sum of [A]'. It does not plainly say assets are considered.",
     "agent dropped apply.submit_methods: judge: The quote supports mailing to the hospital at 3501 Kentucky Ave. The recipient 'Baptist Health Financial Counselors' is not in the quote.",
     "agent dropped contacts.hours: judge: The quote says only 'Monday through Friday. Closed weekends.' The 8:30 a.m.-4:30 p.m. times are absent."
@@ -6156,9 +6306,7 @@
      "contacts.languages"
     ],
     "rejected": [],
-    "pruned": [
-     "apply.documents_required: 2 items not named in the trimmed quote"
-    ],
+    "pruned": [],
     "income_rule_verified": true,
     "core_completeness": 0.5
    }
@@ -6403,10 +6551,12 @@
     "documents_required": {
      "value": [
       "tax_return",
+      "photo_id",
+      "medicaid_denial",
       "other"
      ],
      "layer": "documented",
-     "quote": "Supporting documentation can include but is not limited to, most recent year\u2019s tax return, a current W-2, one month of current pay-stubs, signed letter of support, etc.",
+     "quote": "Supporting documentation can include but is not limited to, most recent year\u2019s tax return, a current W-2, one month of current pay-stubs, signed letter of support, etc. || Please also provide a copy of identification for verification, as well as proof of Medicaid denial if applicable.",
      "source_id": "fap-5403ab0a5ab7e89c",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -6504,7 +6654,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: Please also provide a copy of identification for verification, as well as proof of Medicaid denial if applicable.",
+    "apply.documents_required: value backed by 2 verbatim spans",
     "agent dropped collections.eca_wait_days: judge: The quote only says monthly statements are sent until the account is 120 days old; it does not mention collection actions."
    ],
    "eve_verified": {
@@ -6546,7 +6696,7 @@
      ]
     ],
     "pruned": [
-     "apply.documents_required: 3 items not named in the trimmed quote"
+     "apply.documents_required: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": true,
     "core_completeness": 0.67
@@ -6568,7 +6718,21 @@
    "status": "draft",
    "eligibility": {
     "free_care_max_fpl": null,
-    "discount_tiers": null,
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "300",
+       "max_fpl_inclusive": "400",
+       "discount_percent": 50
+      }
+     ],
+     "layer": "documented",
+     "quote": "Partial Assistance (50%) || If your family income is between 301% and 400% of the federal poverty level, then you may be eligible for partial assistance.",
+     "source_id": "web-99be41eab84622f1",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "assistance_ceiling_fpl": {
      "value": "300",
      "layer": "documented",
@@ -6593,10 +6757,12 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "tax_return"
+      "tax_return",
+      "pay_stubs",
+      "bank_statements"
      ],
      "layer": "documented",
-     "quote": "Copy of your most recent state and federal tax return, including W-2\u2019s and all schedules.",
+     "quote": "Copy of your most recent state and federal tax return, including W-2\u2019s and all schedules. || Copies of the two most recent pay stubs for all wage-earners who live in the household || Copies of the two most recent bank statements from all accounts",
      "source_id": "fap-5636546add2ee668",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -6625,7 +6791,7 @@
     "hours": {
      "value": "8:30 a.m.-4:30 p.m. Monday through Friday; closed weekends",
      "layer": "documented",
-     "quote": "contact your Baptist Health financial counseling office from 8:30 a.m.-4:30",
+     "quote": "contact your Baptist Health financial counseling office from 8:30 a.m.-4:30 || p.m. Monday through Friday. Closed weekends.",
      "source_id": "fap-5636546add2ee668",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -6681,9 +6847,9 @@
    "accuracy": null,
    "eve_review": [
     "eligibility.free_care_max_fpl: owner review says 300% is a discount or assistance limit, not free care; recorded as assistance_ceiling_fpl.",
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: If your family income is between 301% and 400% of the federal poverty level, then you may be eligible for partial assist",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Copies of the two most recent pay stubs for all wage-earners who live in the household | Copies of the two most recent bank statements from all accounts",
-    "contacts.hours: 1 more verbatim excerpt(s) supported this value: p.m. Monday through Friday. Closed weekends.",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "contacts.hours: value backed by 2 verbatim spans",
     "agent dropped apply.submit_methods: excerpt not in source: submit your application to your local hospital's Financial C",
     "agent dropped eligibility.asset_test: judge: The quote only lists investment statements as a required document. It does not say assets are considered in eligibility."
    ],
@@ -6701,23 +6867,17 @@
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
+     "eligibility.discount_tiers",
      "eligibility.assistance_ceiling_fpl",
      "apply.documents_required",
      "contacts.phone",
      "contacts.hours",
      "contacts.languages"
     ],
-    "rejected": [
-     [
-      "eligibility.discount_tiers",
-      "value not in quote"
-     ]
-    ],
-    "pruned": [
-     "apply.documents_required: 2 items not named in the trimmed quote"
-    ],
-    "income_rule_verified": false,
-    "core_completeness": 0.33
+    "rejected": [],
+    "pruned": [],
+    "income_rule_verified": true,
+    "core_completeness": 0.5
    }
   },
   {
@@ -6775,12 +6935,13 @@
     "form_version": null,
     "documents_required": {
      "value": [
+      "other",
       "tax_return",
       "pay_stubs",
-      "other"
+      "bank_statements"
      ],
      "layer": "documented",
-     "quote": "Completed and signed IRS form 4506-T \u25aa Copy of your most recent state and federal tax return, including W-2\u2019s and all schedules. (If self-employed, you will need to provide the last two years of your tax information.) \u25aa Copies of the two most recent pay stubs for all wage-earners who live in the household",
+     "quote": "Completed and signed IRS form 4506-T \u25aa Copy of your most recent state and federal tax return, including W-2\u2019s and all schedules. (If self-employed, you will need to provide the last two years of your tax information.) \u25aa Copies of the two most recent pay stubs for all wage-earners who live in the household || Copies of the two most recent bank statements from all accounts || Evidence (a letter) showing Medicaid application or lack of eligibility.",
      "source_id": "fap-5636546add2ee668",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -6864,7 +7025,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Copies of the two most recent bank statements from all accounts | Evidence (a letter) showing Medicaid application or lack of eligibility.",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent dropped eligibility.asset_test: judge: Quote only lists investment statements as required documents; it does not say assets are considered in eligibility.",
     "agent dropped apply.submit_methods: judge: Quote says mail to the hospital at 1025 New Moody Lane; the addressee 'Baptist Health Financial Counselors' is not in the quote."
    ],
@@ -6890,9 +7051,7 @@
      "contacts.languages"
     ],
     "rejected": [],
-    "pruned": [
-     "apply.documents_required: 1 item not named in the trimmed quote"
-    ],
+    "pruned": [],
     "income_rule_verified": true,
     "core_completeness": 0.67
    }
@@ -6948,10 +7107,16 @@
    "programs": {
     "presumptive": {
      "value": [
-      "Recipient of state-funded prescription programs"
+      "Recipient of state-funded prescription programs",
+      "Homeless or received care from a homeless clinic",
+      "Participant in Women, Infants, and Children programs",
+      "Eligible for food stamps",
+      "Eligible for subsidized school lunch program",
+      "Low-income/subsidized housing provided as valid address",
+      "Deceased with no known estate"
      ],
      "layer": "documented",
-     "quote": "Presumptive eligibility may be determined based on the following: \u2022 Recipient of state-funded prescription programs",
+     "quote": "Presumptive eligibility may be determined based on the following: \u2022 Recipient of state-funded prescription programs || Homeless or one who received care from a homeless clinic \u2022 Participant in Women, Infants, and Children programs \u2022 Eligible for food stamps \u2022 Eligible for subsidized school lunch program || Eligible for other state or local assistance programs (e.g., Medicaid spenddown) \u2022 Low-income/subsidized housing is provided as a valid address \u2022 Deceased with no known estate \u2022 Reside in a zip code where the average household income does not exceed 300% of the Federal Poverty Guidelines for the current year.",
      "source_id": "fap-6075deca5e090528",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -6965,10 +7130,12 @@
     "documents_required": {
      "value": [
       "pay_stubs",
-      "tax_return"
+      "tax_return",
+      "social_security_letter",
+      "proof_of_income"
      ],
      "layer": "documented",
-     "quote": "1. Last 2(most recent) pay stubs 2. Recent filed federal tax return for all family members. If self-employed, please include entire tax return, including all schedules.",
+     "quote": "1. Last 2(most recent) pay stubs 2. Recent filed federal tax return for all family members. If self-employed, please include entire tax return, including all schedules. || 3. If unemployed, provide proof of unemployment benefits, work comp benefits, Social Security/retirement benefits, government assistance (Food Stamps, General Relief, WIC, etc.), child support, disability benefits, or letter of signed support || 4. Proof of any other income source as listed on financial assistance application form",
      "source_id": "fap-55ab1d14b8a4b8d4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -7062,8 +7229,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Homeless or one who received care from a homeless clinic \u2022 Participant in Women, Infants, and Children programs \u2022 Eligib | Eligible for other state or local assistance programs (e.g., Medicaid spenddown) \u2022 Low-income/subsidized housing is prov",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: 3. If unemployed, provide proof of unemployment benefits, work comp benefits, Social Security/retirement benefits, gover | 4. Proof of any other income source as listed on financial assistance application form"
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans"
    ],
    "eve_verified": {
     "on": "2026-10-23",
@@ -7098,8 +7265,7 @@
      ]
     ],
     "pruned": [
-     "programs.presumptive: 8 items not named in the trimmed quote",
-     "apply.documents_required: 2 items not named in the trimmed quote"
+     "programs.presumptive: 2 items not named in the trimmed quote"
     ],
     "income_rule_verified": true,
     "core_completeness": 0.67
@@ -7180,7 +7346,20 @@
     "services_excluded": null
    },
    "programs": {
-    "presumptive": null,
+    "presumptive": {
+     "value": [
+      "Recipient of state-funded prescription programs",
+      "Participation in WIC",
+      "Food stamp eligibility",
+      "Low income/subsidized housing provided as a valid address"
+     ],
+     "layer": "documented",
+     "quote": "Recipient of state-funded prescription programs; || Homeless or one who received care from a homeless or free care clinic; || Participation in Women, Infants and Children programs (WIC); \u2022 Food stamp eligibility; \u2022 Eligibility or referrals for other state or local assistance programs (e.g., Medicaid); \u2022 Low income/subsidized housing is provided as a valid address; or \u2022 Patient is deceased with no known spouse or known estate.",
+     "source_id": "fap-174bfaef7b79efbc",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "state_programs": null
    },
    "apply": {
@@ -7192,7 +7371,7 @@
       "other"
      ],
      "layer": "documented",
-     "quote": "Provide documentation for family income",
+     "quote": "Provide documentation for family income || Provide documentation for family assets || Sign and date the form",
      "source_id": "fap-6daf1f260c7fbb67",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -7208,10 +7387,14 @@
       {
        "kind": "fax",
        "detail": "469-803-4627"
+      },
+      {
+       "kind": "in_person",
+       "detail": "CommonSpirit - Saint Joseph Medical Center - East Lexington, 150 N. Eagle Creek Drive, Lexington, KY 40509"
       }
      ],
      "layer": "documented",
-     "quote": "Mail or fax completed application with all documentation to: Financial Assistance Center, ATTN: EES - Financial Assistance Center, P.O. Box 660872. Dallas, TX 75266-0872 Fax: 469-803-4627.",
+     "quote": "Mail or fax completed application with all documentation to: Financial Assistance Center, ATTN: EES - Financial Assistance Center, P.O. Box 660872. Dallas, TX 75266-0872 Fax: 469-803-4627. || To submit your completed application in person: CommonSpirit - Saint Joseph Medical Center - East Lexington, 150 N. Eagle Creek Drive, Lexington, KY 40509",
      "source_id": "fap-6daf1f260c7fbb67",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -7290,9 +7473,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Homeless or one who received care from a homeless or free care clinic; | Participation in Women, Infants and Children programs (WIC); \u2022 Food stamp eligibility; \u2022 Eligibility or referrals for ot",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Provide documentation for family assets | Sign and date the form",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: To submit your completed application in person: CommonSpirit - Saint Joseph Medical Center - East Lexington, 150 N. Eagl"
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 2 verbatim spans"
    ],
    "eve_verified": {
     "on": "2026-10-23",
@@ -7312,6 +7495,7 @@
      "eligibility.residency",
      "eligibility.insured_patients_covered",
      "eligibility.min_balance",
+     "programs.presumptive",
      "apply.documents_required",
      "apply.submit_methods",
      "apply.window_days_from_first_bill",
@@ -7320,8 +7504,7 @@
     ],
     "rejected": [],
     "pruned": [
-     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
-     "apply.submit_methods: 1 item not named in the trimmed quote"
+     "programs.presumptive: 3 items not named in the trimmed quote"
     ],
     "income_rule_verified": true,
     "core_completeness": 0.67
@@ -7481,7 +7664,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: [c] the patient is homeless or received care from a homeless clinic; | [d] the patient is eligible for assistance through the Women, Infants and Children program (WIC) [e] the patient is elig",
+    "programs.presumptive: value backed by 3 verbatim spans",
     "agent dropped eligibility.asset_test: judge: The quote is only a list item naming a savings account; it does not say assets are considered for eligibility."
    ],
    "eve_verified": {
@@ -7582,11 +7765,13 @@
     "documents_required": {
      "value": [
       "proof_of_income",
+      "other",
       "social_security_letter",
-      "other"
+      "bank_statements",
+      "insurance_card"
      ],
      "layer": "documented",
-     "quote": "\u2610 EMPLOYMENT = 3 OR 12 MONTH INCOME \u2610 SELF EMPLOYMENT = COMPLETE TAX FORMS INCLUDING SCHEDULE C \u2610 UNEMPLOYMENT = BENEFIT LETTER \u2610 CHILD SUPPORT = COURT ORDERED DOCUMENT",
+     "quote": "\u2610 EMPLOYMENT = 3 OR 12 MONTH INCOME \u2610 SELF EMPLOYMENT = COMPLETE TAX FORMS INCLUDING SCHEDULE C \u2610 UNEMPLOYMENT = BENEFIT LETTER \u2610 CHILD SUPPORT = COURT ORDERED DOCUMENT || \u2610 SOCIAL SECURITY = BENEFIT LETTER \u2610 OTHER= PROOF OF ANY OTHER INCOME SUCH AS DIVIDENDS, INTEREST, RENTAL INCOME \u2610 PENSION OR DISABILITY= BENEFIT LETTER \u2610 CHECKING / SAVINGS = CURRENT 30 DAY STATEMENT FOR EACH ACCOUNT || DID YOU HAVE HEALTH INSURANCE ON THE DATE OF SERVICE? \u2610 NO \u2610 YES (PROVIDE COPY OF CARD WITH THIS APPLICATION)",
      "source_id": "fap-a9df4879b1e434c3",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -7664,7 +7849,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: \u2610 SOCIAL SECURITY = BENEFIT LETTER \u2610 OTHER= PROOF OF ANY OTHER INCOME SUCH AS DIVIDENDS, INTEREST, RENTAL INCOME \u2610 PENSI | DID YOU HAVE HEALTH INSURANCE ON THE DATE OF SERVICE? \u2610 NO \u2610 YES (PROVIDE COPY OF CARD WITH THIS APPLICATION)",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent dropped programs.presumptive: quote is not a substring of the source",
     "agent dropped eligibility.discount_tiers: judge: The chart row has no column headers, so mapping 73% to each tier is inferred; an unexplained 40% column is also omitted."
    ],
@@ -7689,9 +7874,7 @@
      "contacts.phone"
     ],
     "rejected": [],
-    "pruned": [
-     "apply.documents_required: 2 items not named in the trimmed quote"
-    ],
+    "pruned": [],
     "income_rule_verified": true,
     "core_completeness": 0.67
    }
@@ -7758,7 +7941,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Helping you apply for Medicaid",
+     "quote": "Helping you apply for Medicaid || Determining your eligibility for KHCP",
      "source_id": "web-bf33cf6ef8b49c2b",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -7855,7 +8038,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.state_programs: 1 more verbatim excerpt(s) supported this value: Determining your eligibility for KHCP",
+    "programs.state_programs: value backed by 2 verbatim spans",
     "agent dropped apply.documents_required: judge: Quote lists only pay stubs/W-2, bank statements and proof of assets; tax returns and award letters/1099s are absent.",
     "agent dropped apply.submit_methods: judge: Mail quote gives no address or recipient; only the in-person address at 217 South Third Street appears."
    ],
@@ -7960,7 +8143,7 @@
       "proof_of_income"
      ],
      "layer": "documented",
-     "quote": "o 3 months of bank statements for checking and saving account(s) o 3 months of employment pay stubs o Tax return information for all family members o Proof of any income source listed on form to include unemployment compensation approval/denial",
+     "quote": "o 3 months of bank statements for checking and saving account(s) o 3 months of employment pay stubs o Tax return information for all family members o Proof of any income source listed on form to include unemployment compensation approval/denial || o Approval/denial of eligibility for Medicaid or other state funded medical assistance",
      "source_id": "fap-0c28a18a316379dc",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -8076,7 +8259,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: o Approval/denial of eligibility for Medicaid or other state funded medical assistance",
+    "apply.documents_required: value backed by 2 verbatim spans",
     "agent judge on contacts.languages: Quote, in Spanish, says information is available in other languages upon request; it never names Spanish, so Spanish is not stated."
    ],
    "eve_verified": {
@@ -8148,7 +8331,7 @@
       "other"
      ],
      "layer": "documented",
-     "quote": "[1] Copy of the previous year's income tax return",
+     "quote": "[1] Copy of the previous year's income tax return || [2] Verification of household income || [3] Savings account (bank, credit union, and etc.)",
      "source_id": "fap-d2f247f051d151b4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -8160,10 +8343,18 @@
       {
        "kind": "mail",
        "detail": "Completed applications, along with all required documentation, should be returned or mailed to the Revenue Cycle Manager at the applicable facility."
+      },
+      {
+       "kind": "in_person",
+       "detail": "requesting a copy in person at any of the ARH Facilities' patient admission or registration areas"
+      },
+      {
+       "kind": "portal",
+       "detail": "Copies of the application form and instructions are available online at http://www.arh.org/patients_visitors/financial_assistance.aspx"
       }
      ],
      "layer": "documented",
-     "quote": "Completed applications, along with all required documentation, should be returned or mailed to the Revenue Cycle Manager at the applicable facility.",
+     "quote": "Completed applications, along with all required documentation, should be returned or mailed to the Revenue Cycle Manager at the applicable facility. || requesting a copy in person at any of the ARH Facilities' patient admission or registration areas || Copies of the application form and instructions are available online at http://www.arh.org/patients _visitors/financial_ assistance.aspx",
      "source_id": "fap-d2f247f051d151b4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -8242,9 +8433,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: The patient is eligible for assistance through the Women, Infants and Children program (WIC) | The patient is eligible for assistance through the Supplemental Nutrition Assistance Program (SNAP);",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: [2] Verification of household income | [3] Savings account (bank, credit union, and etc.)",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: requesting a copy in person at any of the ARH Facilities' patient admission or registration areas | Copies of the application form and instructions are available online at http://www.arh.org/patients _visitors/financial_",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 3 verbatim spans",
     "agent judge on eligibility.asset_test: Quote says ARH assesses eligibility using 'some or all of the following information' but does not explicitly state that assets are considered; it is not clear assets are in the list."
    ],
    "eve_verified": {
@@ -8276,8 +8467,7 @@
      ]
     ],
     "pruned": [
-     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
-     "apply.submit_methods: 2 items not named in the trimmed quote"
+     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)"
     ],
     "income_rule_verified": false,
     "core_completeness": 0.5
@@ -8334,10 +8524,11 @@
      "value": [
       "pay_stubs",
       "bank_statements",
-      "other"
+      "other",
+      "tax_return"
      ],
      "layer": "documented",
-     "quote": "1. LAST TWO (2) PAY STUBS RECENT BANK STATEMENTS SUPPORTING VALUE",
+     "quote": "1. LAST TWO (2) PAY STUBS RECENT BANK STATEMENTS SUPPORTING VALUE || 2. COPY OF MOST RECENT W2 AND 1099 FORMS || 3. MOST RECENT TAX RETURN FORM",
      "source_id": "fap-0e81427839c5c219",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -8353,10 +8544,18 @@
       {
        "kind": "fax",
        "detail": "812-450-5261"
+      },
+      {
+       "kind": "email",
+       "detail": "Financial.Assistance@deaconess.com"
+      },
+      {
+       "kind": "portal",
+       "detail": "MyChart (balances of $1,000.00 or more)"
       }
      ],
      "layer": "documented",
-     "quote": "Mail the form, proof of income, and other necessary documents to Deaconess Financial Assistance, PO Box 3366, Evansville, IN 47732-3366 or fax to 812-450-5261.",
+     "quote": "Mail the form, proof of income, and other necessary documents to Deaconess Financial Assistance, PO Box 3366, Evansville, IN 47732-3366 or fax to 812-450-5261. || return the form, proof of income, and other necessary documents as attachments via email to Financial.Assistance@deaconess.com || Patients with a balance of $1,000.00 or more may now apply directly for financial assistance using MyChart",
      "source_id": "web-1ed838710d78b04d",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -8435,9 +8634,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Public Assistance eligibility | Patient is deceased with no known estate",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: 2. COPY OF MOST RECENT W2 AND 1099 FORMS | 3. MOST RECENT TAX RETURN FORM",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: return the form, proof of income, and other necessary documents as attachments via email to Financial.Assistance@deacone | Patients with a balance of $1,000.00 or more may now apply directly for financial assistance using MyChart",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 3 verbatim spans",
     "agent dropped programs.state_programs: judge: Quote names Medicaid and the phone numbers, but 'They' is unidentified; 'WellFund team' does not appear in the quote."
    ],
    "eve_verified": {
@@ -8467,9 +8666,7 @@
      ]
     ],
     "pruned": [
-     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
-     "apply.documents_required: 1 item not named in the trimmed quote",
-     "apply.submit_methods: 2 items not named in the trimmed quote"
+     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)"
     ],
     "income_rule_verified": true,
     "core_completeness": 0.67
@@ -8525,10 +8722,18 @@
       {
        "kind": "mail",
        "detail": "Completed applications, along with all required documentation, should be returned or mailed to the Revenue Cycle Manager at the applicable facility."
+      },
+      {
+       "kind": "in_person",
+       "detail": "requesting a copy in person at any of the ARH Facilities' patient admission or registration areas"
+      },
+      {
+       "kind": "portal",
+       "detail": "Copies of the application form and instructions are available online at http://www.arh.org/patients _visitors/financial_ assistance.aspx"
       }
      ],
      "layer": "documented",
-     "quote": "Completed applications, along with all required documentation, should be returned or mailed to the Revenue Cycle Manager at the applicable facility.",
+     "quote": "Completed applications, along with all required documentation, should be returned or mailed to the Revenue Cycle Manager at the applicable facility. || requesting a copy in person at any of the ARH Facilities' patient admission or registration areas || Copies of the application form and instructions are available online at http://www.arh.org/patients _visitors/financial_ assistance.aspx",
      "source_id": "fap-d2f247f051d151b4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -8607,7 +8812,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: requesting a copy in person at any of the ARH Facilities' patient admission or registration areas | Copies of the application form and instructions are available online at http://www.arh.org/patients _visitors/financial_",
+    "apply.submit_methods: value backed by 3 verbatim spans",
     "agent dropped eligibility.asset_test: quote is not a substring of the source"
    ],
    "eve_verified": {
@@ -8635,8 +8840,7 @@
      ]
     ],
     "pruned": [
-     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
-     "apply.submit_methods: 2 items not named in the trimmed quote"
+     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)"
     ],
     "income_rule_verified": false,
     "core_completeness": 0.5
@@ -8701,10 +8905,13 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "tax_return"
+      "tax_return",
+      "pay_stubs",
+      "bank_statements",
+      "proof_of_income"
      ],
      "layer": "documented",
-     "quote": "Copy of your most recent state and federal tax return",
+     "quote": "Copy of your most recent state and federal tax return || Copies of the two most recent pay stubs for all wage-earners who live in the household || Copies of the two most recent bank statements including checking and savings",
      "source_id": "fap-88cc14fd7a4703ec",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -8720,10 +8927,14 @@
       {
        "kind": "in_person",
        "detail": "In person at any of our Patient Access/Registration Departments, Financial Counseling Department, or Business Office"
+      },
+      {
+       "kind": "phone",
+       "detail": "Over the phone at 502-732-3258"
       }
      ],
      "layer": "documented",
-     "quote": "Patients should mail the charity/financial assistance application to CCMH, 309 11th Street, Carrollton, KY 41008, Attn: Financial Counselor.",
+     "quote": "Patients should mail the charity/financial assistance application to CCMH, 309 11th Street, Carrollton, KY 41008, Attn: Financial Counselor. || In person at any of our Patient Access/Registration Departments, Financial Counseling Department, or Business Office || Over the phone at 502-732-3258",
      "source_id": "fap-1b38afc5839046f1",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -8795,9 +9006,9 @@
    "accuracy": null,
    "eve_review": [
     "eligibility.discount_tiers: 0-100% at 100% is the free-care band, not a tier; skipped",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Copies of the two most recent pay stubs for all wage-earners who live in the household | Copies of the two most recent bank statements including checking and savings",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: In person at any of our Patient Access/Registration Departments, Financial Counseling Department, or Business Office | Over the phone at 502-732-3258",
-    "contacts.languages: 1 more verbatim excerpt(s) supported this value: Financial Assistance Application Spanish [https://www.ccmhosp.com/wp-content/uploads/2026-FINANCIAL-ASSISTANCE-APPLICATI",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 3 verbatim spans",
+    "contacts.languages: value backed by 2 verbatim spans",
     "agent dropped apply.window_days_from_first_bill: quote is not a substring of the source",
     "agent dropped contacts.phone: quote is not a substring of the source",
     "agent judge on eligibility.free_care_max_fpl: The quote is an unlabeled list of percentages and FPL figures. It does not plainly state that 100% free care applies up to 100% FPL.",
@@ -8844,8 +9055,8 @@
      ]
     ],
     "pruned": [
-     "apply.documents_required: 4 items not named in the trimmed quote",
-     "apply.submit_methods: 2 items not named in the trimmed quote"
+     "apply.documents_required: 1 item not named in the trimmed quote",
+     "apply.submit_methods: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": false,
     "core_completeness": 0.33
@@ -8920,7 +9131,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Uninsured Patients (Call (859) 301-9090 Monday \u2013 Friday between the hours of 9 a.m. to 7 p.m.)",
+     "quote": "Uninsured Patients (Call (859) 301-9090 Monday \u2013 Friday between the hours of 9 a.m. to 7 p.m.) || The focus of the financial counselor is to secure Federal and State funding (i.e. Social Security, Disability or Medicaid) for uninsured patients.",
      "source_id": "web-25c7ae2de9aa8f3f",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -8938,7 +9149,7 @@
       "proof_of_income"
      ],
      "layer": "documented",
-     "quote": "Copies (do not send originals) of proof of income, which includes your prior year tax return and your most recent pay stub. If you have an income source other than employment, such as social security, pension, unemployment, etc., please send a copy of the benefit letter stating your monthly or weekly benefit amount.",
+     "quote": "Copies (do not send originals) of proof of income, which includes your prior year tax return and your most recent pay stub. If you have an income source other than employment, such as social security, pension, unemployment, etc., please send a copy of the benefit letter stating your monthly or weekly benefit amount. || Are you Self-Employed 2 Month income/expense report || Are you claiming $0 income Zero Income Verification (attached)",
      "source_id": "fap-a8d774cba1563e9b",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -8960,12 +9171,16 @@
        "detail": "859-655-3537"
       },
       {
+       "kind": "in_person",
+       "detail": "Financial counselor's office in the registration area at St. Elizabeth Edgewood only"
+      },
+      {
        "kind": "portal",
        "detail": "Upload through St. Elizabeth MyChart account"
       }
      ],
      "layer": "documented",
-     "quote": "\u2022 Via Mail: St. Elizabeth Healthcare Attn: Self-Pay / Financial Assistance 1 Medical Village Dr. Edgewood, KY 41017 \u2022 Via Email: financialassistance@stelizabeth.com \u2022 Via Fax: 859-655-3537",
+     "quote": "\u2022 Via Mail: St. Elizabeth Healthcare Attn: Self-Pay / Financial Assistance 1 Medical Village Dr. Edgewood, KY 41017 \u2022 Via Email: financialassistance@stelizabeth.com \u2022 Via Fax: 859-655-3537 || \u2022 In Person: Drop off at the financial counselor\u2019s office in the registration area at St. Elizabeth Healthcare\u2019s Edgewood location only! || Upload completed application and income documents through your St. Elizabeth MyChart account.",
      "source_id": "fap-a8d774cba1563e9b",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -9047,10 +9262,10 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: \u2022 Patient is eligible for a state funded prescription medication program \u2022 Patient is deceased and without an estate \u2022 P | \u2022 Patient is on military active duty \u2022 Patient receives free care from a community clinic and is referred to hospital fo",
-    "programs.state_programs: 1 more verbatim excerpt(s) supported this value: The focus of the financial counselor is to secure Federal and State funding (i.e. Social Security, Disability or Medicai",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Are you Self-Employed 2 Month income/expense report | Are you claiming $0 income Zero Income Verification (attached)",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: \u2022 In Person: Drop off at the financial counselor\u2019s office in the registration area at St. Elizabeth Healthcare\u2019s Edgewoo | Upload completed application and income documents through your St. Elizabeth MyChart account.",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "programs.state_programs: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 3 verbatim spans",
     "agent dropped eligibility.residency: judge: Quote only says the patient need not be a Kentucky resident; it says nothing about citizenship or legal residency.",
     "agent dropped apply.decision_days: judge: Quote says to allow at least 30 days for processing, which is a minimum, not a decision deadline of 30 days."
    ],
@@ -9087,8 +9302,7 @@
      ]
     ],
     "pruned": [
-     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
-     "apply.submit_methods: 1 item not named in the trimmed quote"
+     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)"
     ],
     "income_rule_verified": true,
     "core_completeness": 0.83
@@ -9258,7 +9472,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Helping you apply for Medicaid",
+     "quote": "Helping you apply for Medicaid || Determining your eligibility for KHCP",
      "source_id": "web-cb1bf44ca4abcf1f",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -9270,10 +9484,14 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "medicaid_denial"
+      "medicaid_denial",
+      "pay_stubs",
+      "tax_return",
+      "bank_statements",
+      "social_security_letter"
      ],
      "layer": "documented",
-     "quote": "a Medicaid application must be filed and a coverage denial letter needs to be obtained before an application can be reviewed",
+     "quote": "a Medicaid application must be filed and a coverage denial letter needs to be obtained before an application can be reviewed || a) Last 2 pay stubs OR most recent filed W-2 for all adult household members; b) Most recent tax returns, showing dependents (form 1040) || c) Most recent bank statements (including savings accounts) d) Benefit awards letters or 1099 forms showing Social Security, Disability, Worker\u2019s Compensation, or Veterans Administration benefits;",
      "source_id": "fap-f588dfaacd017d64",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -9365,8 +9583,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.state_programs: 1 more verbatim excerpt(s) supported this value: Determining your eligibility for KHCP",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: a) Last 2 pay stubs OR most recent filed W-2 for all adult household members; b) Most recent tax returns, showing depend | c) Most recent bank statements (including savings accounts) d) Benefit awards letters or 1099 forms showing Social Secur",
+    "programs.state_programs: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent dropped apply.submit_methods: judge: The quote gives the mail address and the in-person Financial Counselor, but the mail address has no 'ATTN: Financial Counselor' line."
    ],
    "eve_verified": {
@@ -9401,9 +9619,7 @@
       "quote not found in source"
      ]
     ],
-    "pruned": [
-     "apply.documents_required: 4 items not named in the trimmed quote"
-    ],
+    "pruned": [],
     "income_rule_verified": true,
     "core_completeness": 0.5
    }
@@ -9453,7 +9669,7 @@
       "proof_of_income"
      ],
      "layer": "documented",
-     "quote": "[1] Copy of the previous year's income tax return",
+     "quote": "[1] Copy of the previous year's income tax return || [2] Verification of household income",
      "source_id": "fap-d2f247f051d151b4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -9555,7 +9771,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: [2] Verification of household income"
+    "apply.documents_required: value backed by 2 verbatim spans"
    ],
    "eve_verified": {
     "on": "2026-10-23",
@@ -9613,7 +9829,26 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "discount_tiers": null,
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "200",
+       "max_fpl_inclusive": "300",
+       "discount_percent": 50
+      },
+      {
+       "min_fpl_exclusive": "300",
+       "max_fpl_inclusive": "400",
+       "discount_percent": 25
+      }
+     ],
+     "layer": "documented",
+     "quote": "Patients with Incomes greater than 200% of FPL but less than or equal to 300% of FPL will receive a 50% discount of the patient liability. || Patients with Incomes greater than 300% of FPL and less than or equal to 400% of FPL may receive a 25% discount of the patient liability.",
+     "source_id": "fap-88385c1719406bb0",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "assistance_ceiling_fpl": null,
     "asset_test": {
      "value": true,
@@ -9639,10 +9874,13 @@
     "documents_required": {
      "value": [
       "pay_stubs",
-      "social_security_letter"
+      "social_security_letter",
+      "proof_of_income",
+      "tax_return",
+      "bank_statements"
      ],
      "layer": "documented",
-     "quote": "Pay stubs (3 most recent), Social security benefits letter, alimony checks (3 most recent),",
+     "quote": "Pay stubs (3 most recent), Social security benefits letter, alimony checks (3 most recent), || Federal tax return including W-2\u2019s and all pertinent pages of the Federal tax return as || Bank statements: all open bank accounts showing beginning and ending balance.",
      "source_id": "fap-88385c1719406bb0",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -9706,8 +9944,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: Patients with Incomes greater than 300% of FPL and less than or equal to 400% of FPL may receive a 25% discount of the p",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Federal tax return including W-2\u2019s and all pertinent pages of the Federal tax return as | Bank statements: all open bank accounts showing beginning and ending balance.",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent dropped apply.submit_methods: judge: The quote allows mail or in-person drop-off but gives no address; the Customer Service, Park Street and PO Box details are absent."
    ],
    "eve_verified": {
@@ -9724,16 +9962,13 @@
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
      "eligibility.asset_test",
      "apply.documents_required",
      "apply.window_days_from_first_bill",
      "contacts.phone"
     ],
     "rejected": [
-     [
-      "eligibility.discount_tiers",
-      "value not in quote"
-     ],
      [
       "apply.form_url",
       "source text missing"
@@ -9744,11 +9979,10 @@
      ]
     ],
     "pruned": [
-     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
-     "apply.documents_required: 3 items not named in the trimmed quote"
+     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)"
     ],
     "income_rule_verified": true,
-    "core_completeness": 0.5
+    "core_completeness": 0.67
    }
   },
   {
@@ -9775,7 +10009,26 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "discount_tiers": null,
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "200",
+       "max_fpl_inclusive": "300",
+       "discount_percent": 50
+      },
+      {
+       "min_fpl_exclusive": "300",
+       "max_fpl_inclusive": "400",
+       "discount_percent": 25
+      }
+     ],
+     "layer": "documented",
+     "quote": "Patients whose family income is above 200% but not more than 300% of the FPL are eligible to receive services at a 50% discount || Patients whose family income is above 300% but not more than 400% of the FPL are eligible to receive services at a 25% discount",
+     "source_id": "fap-c042623624c70e7e",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": null,
@@ -9811,14 +10064,15 @@
     "form_version": null,
     "documents_required": {
      "value": [
+      "social_security_letter",
       "tax_return",
+      "other",
       "bank_statements",
       "pay_stubs",
-      "proof_of_income",
-      "other"
+      "proof_of_income"
      ],
      "layer": "documented",
-     "quote": "\u2022 Completed financial assistance application \u2022 Federal income tax returns \u2022 W-2 \u2022 3 months of bank statements \u2022 Letter showing current eligibility for assistance \u2022 Current Pay Stubs",
+     "quote": "\u2022 Completed financial assistance application \u2022 Federal income tax returns \u2022 W-2 \u2022 3 months of bank statements \u2022 Letter showing current eligibility for assistance \u2022 Current Pay Stubs || \u2022 Unemployment Compensation Letter/Notice \u2022 Recent LES for Military Personnel \u2022 Divorce Decree \u2022 Copy of Student Financial Aid Application with determination notice \u2022 Food Stamp Document showing current eligibility || \u2022 Social Security Administration Benefit Letter",
      "source_id": "fap-c042623624c70e7e",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -9916,8 +10170,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: Patients whose family income is above 300% but not more than 400% of the FPL are eligible to receive services at a 25% d",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: \u2022 Unemployment Compensation Letter/Notice \u2022 Recent LES for Military Personnel \u2022 Divorce Decree \u2022 Copy of Student Financi | \u2022 Social Security Administration Benefit Letter"
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans"
    ],
    "eve_verified": {
     "on": "2026-10-23",
@@ -9932,6 +10186,7 @@
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
      "eligibility.insured_patients_covered",
      "programs.presumptive",
      "apply.documents_required",
@@ -9942,20 +10197,15 @@
     ],
     "rejected": [
      [
-      "eligibility.discount_tiers",
-      "value not in quote"
-     ],
-     [
       "eligibility.asset_test",
       "quote does not support the asset-test value"
      ]
     ],
     "pruned": [
-     "programs.presumptive: 1 item not named in the trimmed quote",
-     "apply.documents_required: 1 item not named in the trimmed quote"
+     "programs.presumptive: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": true,
-    "core_completeness": 0.67
+    "core_completeness": 0.83
    }
   },
   {
@@ -10042,7 +10292,7 @@
       "proof_of_income"
      ],
      "layer": "documented",
-     "quote": "o 3 months of employment pay stubs o SSI and/or SSD award letter o Tax return information for all family members o Proof of any income source listed on form",
+     "quote": "o 3 months of employment pay stubs o SSI and/or SSD award letter o Tax return information for all family members o Proof of any income source listed on form || o Approval/denial of eligibility for Medicaid or other state funded medical assistance o Approval/denial of eligibility for unemployment compensation",
      "source_id": "fap-7081119e23d30ddc",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -10131,7 +10381,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: o Approval/denial of eligibility for Medicaid or other state funded medical assistance o Approval/denial of eligibility ",
+    "apply.documents_required: value backed by 2 verbatim spans",
     "agent dropped programs.state_programs: judge: The quote only says 'DSH program' and an English form; it does not spell out the name or mention a Spanish form.",
     "agent dropped apply.submit_methods: judge: The quote supports in-person submission, but the mailing address (P.O. Box 410, Princeton) is not in the quote."
    ],
@@ -10197,10 +10447,13 @@
     "documents_required": {
      "value": [
       "pay_stubs",
-      "social_security_letter"
+      "social_security_letter",
+      "proof_of_income",
+      "tax_return",
+      "bank_statements"
      ],
      "layer": "documented",
-     "quote": "Pay stubs (3 most recent), Social security benefits letter, alimony checks (3 most recent),",
+     "quote": "Pay stubs (3 most recent), Social security benefits letter, alimony checks (3 most recent), || Federal tax return including W-2\u2019s and all pertinent pages of the Federal tax return as || Bank statements: all open bank accounts showing beginning and ending balance.",
      "source_id": "fap-88385c1719406bb0",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -10256,7 +10509,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Federal tax return including W-2\u2019s and all pertinent pages of the Federal tax return as | Bank statements: all open bank accounts showing beginning and ending balance.",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent dropped eligibility.free_care_max_fpl: judge: The quote is a truncated income condition (<=200% FPL) and never says these patients get 100% free care.",
     "agent dropped programs.presumptive: judge: The quote is a sentence fragment listing the programs but never says enrollees are presumptively eligible.",
     "agent dropped apply.submit_methods: judge: The quote mentions mail and in-person drop-off but gives neither the PO Box nor the street address."
@@ -10295,9 +10548,7 @@
       "source text missing"
      ]
     ],
-    "pruned": [
-     "apply.documents_required: 3 items not named in the trimmed quote"
-    ],
+    "pruned": [],
     "income_rule_verified": false,
     "core_completeness": 0.17
    }
@@ -10350,7 +10601,7 @@
       "Out-of-state Medicaid recipients"
      ],
      "layer": "documented",
-     "quote": "\u25fc Presumptive Medicaid recipients \u25fc QMB Medicaid recipients \u25fc Out-of-state Medicaid recipients",
+     "quote": "\u25fc Presumptive Medicaid recipients \u25fc QMB Medicaid recipients \u25fc Out-of-state Medicaid recipients || \u25fc Patients who are Medicaid-eligible in the month immediately prior to or following the date of service || \u25fc Patients who have been determined to be FAP-eligible within the preceding six (6) months",
      "source_id": "fap-2c1969fee3224eff",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -10368,7 +10619,7 @@
       "proof_of_income"
      ],
      "layer": "documented",
-     "quote": "A copy of your most recent tax return or a copy of your most recent pay stubs or Form W-2.",
+     "quote": "A copy of your most recent tax return or a copy of your most recent pay stubs or Form W-2. || Documentation of available financial assets including cash, bank accounts, certificate of deposits, stocks and bonds. || If you do not have a source of income, a written statement that you have no source of income. This document must be witnessed by two individuals from outside the household or immediate family.",
      "source_id": "fap-2c1969fee3224eff",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -10441,8 +10692,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: \u25fc Patients who are Medicaid-eligible in the month immediately prior to or following the date of service | \u25fc Patients who have been determined to be FAP-eligible within the preceding six (6) months",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Documentation of available financial assets including cash, bank accounts, certificate of deposits, stocks and bonds. | If you do not have a source of income, a written statement that you have no source of income. This document must be witn",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent dropped programs.state_programs: judge: Quote only names the DSH/KHCP Indigent Care program; it does not state the 100% FPL, Medicaid, or application details."
    ],
    "eve_verified": {
@@ -10535,10 +10786,11 @@
     "documents_required": {
      "value": [
       "tax_return",
+      "pay_stubs",
       "other"
      ],
      "layer": "documented",
-     "quote": "Last year\u2019s income tax return, including schedules if applicable; or",
+     "quote": "Last year\u2019s income tax return, including schedules if applicable; or || A \u201cW-2\u201d withholding statement; or || Current pay stubs (3 months); or",
      "source_id": "fap-e22dcf7c19ff4915",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -10554,10 +10806,14 @@
       {
        "kind": "fax",
        "detail": "Fax: 469-803-4627"
+      },
+      {
+       "kind": "in_person",
+       "detail": "CommonSpirit - Saint Joseph Hospitals Emergency Department"
       }
      ],
      "layer": "documented",
-     "quote": "Mail or fax completed application with all documentation to: Financial Assistance Center, ATTN: EES - Financial Assistance Center, P.O. Box 660872. Dallas, TX 75266-0872 Fax: 469-803-4627.",
+     "quote": "Mail or fax completed application with all documentation to: Financial Assistance Center, ATTN: EES - Financial Assistance Center, P.O. Box 660872. Dallas, TX 75266-0872 Fax: 469-803-4627. || To submit your completed application in person: CommonSpirit - Saint Joseph Hospitals Emergency Department.",
      "source_id": "fap-e22dcf7c19ff4915",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -10628,8 +10884,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: A \u201cW-2\u201d withholding statement; or | Current pay stubs (3 months); or",
-    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: To submit your completed application in person: CommonSpirit - Saint Joseph Hospitals Emergency Department.",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 2 verbatim spans",
     "agent judge on apply.documents_required: Quote lists a tax return, W-2, and pay stubs but does not mention bank statements, which the value includes."
    ],
    "eve_verified": {
@@ -10656,8 +10912,7 @@
     ],
     "rejected": [],
     "pruned": [
-     "apply.documents_required: 2 items not named in the trimmed quote",
-     "apply.submit_methods: 1 item not named in the trimmed quote"
+     "apply.documents_required: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": false,
     "core_completeness": 0.5
@@ -10701,7 +10956,7 @@
       "other"
      ],
      "layer": "documented",
-     "quote": "[1] Copy of the previous year's income tax return",
+     "quote": "[1] Copy of the previous year's income tax return || [2] Verification of household income || [3] Savings account (bank, credit union, and etc.)",
      "source_id": "fap-d2f247f051d151b4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -10713,10 +10968,18 @@
       {
        "kind": "mail",
        "detail": "Completed applications, along with all required documentation, should be returned or mailed to the Revenue Cycle Manager at the applicable facility."
+      },
+      {
+       "kind": "in_person",
+       "detail": "requesting a copy in person at any of the ARH Facilities' patient admission or registration areas"
+      },
+      {
+       "kind": "portal",
+       "detail": "Copies of the application form and instructions are available online at http://www.arh.org/patients_visitors/financial_assistance.aspx"
       }
      ],
      "layer": "documented",
-     "quote": "Completed applications, along with all required documentation, should be returned or mailed to the Revenue Cycle Manager at the applicable facility.",
+     "quote": "Completed applications, along with all required documentation, should be returned or mailed to the Revenue Cycle Manager at the applicable facility. || requesting a copy in person at any of the ARH Facilities' patient admission or registration areas || Copies of the application form and instructions are available online at http://www.arh.org/patients _visitors/financial_ assistance.aspx",
      "source_id": "fap-d2f247f051d151b4",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -10795,10 +11058,10 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.asset_test: 2 more verbatim excerpt(s) supported this value: [4] Certificates of Deposit | [14] Other significant assets",
-    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: [g] The patient is deceased with no estate or mentally incapacitated with no one to act on the patient's behalf.",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: [2] Verification of household income | [3] Savings account (bank, credit union, and etc.)",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: requesting a copy in person at any of the ARH Facilities' patient admission or registration areas | Copies of the application form and instructions are available online at http://www.arh.org/patients _visitors/financial_"
+    "eligibility.asset_test: value backed by 3 verbatim spans",
+    "programs.presumptive: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 3 verbatim spans"
    ],
    "eve_verified": {
     "on": "2026-10-23",
@@ -10829,8 +11092,7 @@
      ]
     ],
     "pruned": [
-     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
-     "apply.submit_methods: 2 items not named in the trimmed quote"
+     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)"
     ],
     "income_rule_verified": false,
     "core_completeness": 0.5
@@ -10860,7 +11122,26 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "discount_tiers": null,
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "200",
+       "max_fpl_inclusive": "300",
+       "discount_percent": 50
+      },
+      {
+       "min_fpl_exclusive": "300",
+       "max_fpl_inclusive": "400",
+       "discount_percent": 25
+      }
+     ],
+     "layer": "documented",
+     "quote": "Patients with Incomes greater than 200% of FPL but less than or equal to 300% of FPL will receive a 50% discount of the patient liability. || Patients with Incomes greater than 300% of FPL and less than or equal to 400% of FPL may receive a 25% discount of the patient liability.",
+     "source_id": "fap-88385c1719406bb0",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "assistance_ceiling_fpl": null,
     "asset_test": {
      "value": true,
@@ -10898,10 +11179,13 @@
     "documents_required": {
      "value": [
       "pay_stubs",
-      "social_security_letter"
+      "social_security_letter",
+      "proof_of_income",
+      "tax_return",
+      "bank_statements"
      ],
      "layer": "documented",
-     "quote": "a. Pay stubs (3 most recent), Social security benefits letter, alimony checks (3 most recent), etc.",
+     "quote": "a. Pay stubs (3 most recent), Social security benefits letter, alimony checks (3 most recent), etc. || b. Federal tax return including W-2\u2019s and all pertinent pages of the Federal tax return as determined by CFR. || c. Bank statements: all open bank accounts showing beginning and ending balance.",
      "source_id": "fap-88385c1719406bb0",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -10957,9 +11241,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: Patients with Incomes greater than 300% of FPL and less than or equal to 400% of FPL may receive a 25% discount of the p",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: b. Federal tax return including W-2\u2019s and all pertinent pages of the Federal tax return as determined by CFR. | c. Bank statements: all open bank accounts showing beginning and ending balance.",
-    "contacts.languages: 2 more verbatim excerpt(s) supported this value: Plain Language Summary (Bosnian) [https://medcenterhealth.org/wp-content/uploads/Plain-Language-Summary-Bosnian.pdf] Pla | Plain Language Summary (Swahili) [https://medcenterhealth.org/wp-content/uploads/Plain-Language-Summary-Swahili.pdf]",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "contacts.languages: value backed by 3 verbatim spans",
     "agent dropped apply.submit_methods: judge: The quote mentions mail and in-person drop-off but gives neither the PO Box nor the 800 Park Street address."
    ],
    "eve_verified": {
@@ -10976,16 +11260,13 @@
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
      "eligibility.asset_test",
      "programs.presumptive",
      "apply.documents_required",
      "apply.window_days_from_first_bill"
     ],
     "rejected": [
-     [
-      "eligibility.discount_tiers",
-      "value not in quote"
-     ],
      [
       "apply.form_url",
       "source text missing"
@@ -10999,11 +11280,9 @@
       "source text missing"
      ]
     ],
-    "pruned": [
-     "apply.documents_required: 3 items not named in the trimmed quote"
-    ],
+    "pruned": [],
     "income_rule_verified": true,
-    "core_completeness": 0.33
+    "core_completeness": 0.5
    }
   }
  ]

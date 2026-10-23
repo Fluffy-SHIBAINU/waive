@@ -92,7 +92,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Patients who may qualify for MassHealth must apply, and if they are denied can apply for financial assistance.",
+     "quote": "Patients who may qualify for MassHealth must apply, and if they are denied can apply for financial assistance. || For patients who are found eligible for Rhode Island Medicaid, or Healthsource Rhode Island - Rite Care, eligibility under this FAP will be applicable retroactively six months from date of eligibility if patient does not comply with FAP documentation.",
      "source_id": "web-186017720eeca278",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -104,24 +104,7 @@
     "form_version": null,
     "documents_required": null,
     "documents_reported": null,
-    "submit_methods": {
-     "value": [
-      {
-       "kind": "mail",
-       "detail": "Please mail the application and supporting documentation directly to the Patient Financial Advocate Office at the respective hospital's addresses below"
-      },
-      {
-       "kind": "in_person",
-       "detail": "Newport Hospital, Patient Advocate Office, 11 Friendship Street, Newport, RI 02840"
-      }
-     ],
-     "layer": "documented",
-     "quote": "Please mail completed applications or deliver in person (with all documentation/information specified in the application instructions) to any of the Brown University Health hospital facility addresses listed above.",
-     "source_id": "web-186017720eeca278",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "submit_methods": null,
     "window_days_from_first_bill": null,
     "decision_days": {
      "value": 14,
@@ -195,8 +178,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.state_programs: 1 more verbatim excerpt(s) supported this value: For patients who are found eligible for Rhode Island Medicaid, or Healthsource Rhode Island - Rite Care, eligibility und",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Patients with active MyChart account can apply for the Financial Assistance program online at https://my.lifespan.org/my | Requests for documents to be mailed can be made by calling Brown University Health's Patient Financial Services Office a",
+    "programs.state_programs: value backed by 2 verbatim spans",
+    "apply.submit_methods: value backed by 3 verbatim spans",
     "agent dropped apply.documents_required: excerpt not in source: Applicants are asked to provide family income or \"proof of i",
     "agent judge on eligibility.free_care_max_fpl: Quote says patients below 201% get 100% free care, so the highest qualifying percent is 200, not 201.",
     "agent judge on eligibility.discount_tiers: Quote gives two discounts in the 201%-300% band: 80% inpatient and 90% outpatient. Value includes only the 80% tier.",
@@ -220,7 +203,6 @@
      "eligibility.insured_patients_covered",
      "eligibility.min_balance",
      "programs.state_programs",
-     "apply.submit_methods",
      "apply.decision_days",
      "contacts.phone",
      "contacts.hours"
@@ -229,14 +211,17 @@
      [
       "eligibility.asset_test",
       "quote does not support the asset-test value"
+     ],
+     [
+      "apply.submit_methods",
+      "quote not found in source"
      ]
     ],
     "pruned": [
-     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
-     "apply.submit_methods: 2 items not named in the trimmed quote"
+     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)"
     ],
     "income_rule_verified": true,
-    "core_completeness": 0.67
+    "core_completeness": 0.5
    }
   },
   {
@@ -297,10 +282,14 @@
       {
        "kind": "in_person",
        "detail": "The Patient/patient's family may either schedule an appointment or walk-in to see an advocate at any location below"
+      },
+      {
+       "kind": "phone",
+       "detail": "Patients can also receive assistance information by calling the PFA's at (401-444-7850"
       }
      ],
      "layer": "documented",
-     "quote": "Please mail the application and supporting documentation directly to the Patient Financial Advocate Office at the respective hospital's addresses below",
+     "quote": "Please mail the application and supporting documentation directly to the Patient Financial Advocate Office at the respective hospital's addresses below || The Patient/patient's family may either schedule an appointment or walk -in to see an advocate at any location below || Patients can also receive assistance information by calling the PFA's at (401-444-7850",
      "source_id": "fap-ec5248358d9d66e9",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -370,7 +359,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: The Patient/patient's family may either schedule an appointment or walk -in to see an advocate at any location below | Patients can also receive assistance information by calling the PFA's at (401-444-7850",
+    "apply.submit_methods: value backed by 3 verbatim spans",
     "agent dropped apply.documents_required: excerpt not in source: Notice of Medical Assistance or General Public Assistance de",
     "agent judge on eligibility.insured_patients_covered: Quote addresses uninsured or partly insured patients being directed to counselors for a payment plan or assistance. It does not state that insured patients are covered.",
     "agent judge on apply.form_url: Quote gives only the relative path /sites/default/files/...English.pdf. The brownhealth.org domain in the value does not appear in the quote.",
@@ -404,9 +393,7 @@
       "quote not found in source"
      ]
     ],
-    "pruned": [
-     "apply.submit_methods: 1 item not named in the trimmed quote"
-    ],
+    "pruned": [],
     "income_rule_verified": false,
     "core_completeness": 0.33
    }
@@ -467,7 +454,7 @@
       }
      ],
      "layer": "documented",
-     "quote": "Hospital Presumptive Eligibility (HPE) Program, which allows hospital financial advocate staff to determine certain individuals as presumptively eligible for Medicaid.",
+     "quote": "Hospital Presumptive Eligibility (HPE) Program, which allows hospital financial advocate staff to determine certain individuals as presumptively eligible for Medicaid. || The Advocates then provide application and enrollment assistance to individuals and families seeking health insurance coverage through HealthSource RI.",
      "source_id": "fap-06396be7fe865853",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -479,10 +466,12 @@
     "form_version": null,
     "documents_required": {
      "value": [
-      "proof_of_residency"
+      "proof_of_residency",
+      "tax_return",
+      "bank_statements"
      ],
      "layer": "documented",
-     "quote": "i. A Rhode Island license or other government issued card with address for verification or a copy of a utility bill (to serve as proof of residency).",
+     "quote": "i. A Rhode Island license or other government issued card with address for verification or a copy of a utility bill (to serve as proof of residency). || 3. Current federal income tax return a. If patient did not file federal income tax, the patient must request a letter #1722 from the IRS which states taxes were not filed. || 4. Copies of three consecutive months of current paychecks and bank statements",
      "source_id": "fap-06396be7fe865853",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -575,9 +564,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "programs.presumptive: 1 more verbatim excerpt(s) supported this value: iii. is deceased with no known estate iv. patient is eligible for other unfunded state or local assistance programs v. p",
-    "programs.state_programs: 1 more verbatim excerpt(s) supported this value: The Advocates then provide application and enrollment assistance to individuals and families seeking health insurance co",
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: 3. Current federal income tax return a. If patient did not file federal income tax, the patient must request a letter #1 | 4. Copies of three consecutive months of current paychecks and bank statements",
+    "programs.presumptive: value backed by 2 verbatim spans",
+    "programs.state_programs: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
     "agent dropped apply.submit_methods: judge: The quote says applications go to the office at that address but does not say they are submitted by mail."
    ],
    "eve_verified": {
@@ -613,7 +602,7 @@
     ],
     "pruned": [
      "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
-     "apply.documents_required: 3 items not named in the trimmed quote"
+     "apply.documents_required: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": true,
     "core_completeness": 0.5
@@ -1110,10 +1099,12 @@
     "documents_required": {
      "value": [
       "photo_id",
+      "pay_stubs",
+      "tax_return",
       "other"
      ],
      "layer": "documented",
-     "quote": "Identification - Any of the following: a state-issued driver's license, a state-issued I.D. card",
+     "quote": "Identification - Any of the following: a state-issued driver's license, a state-issued I.D. card || Copies of the most recent pay stubs (for the last two consecutive pay periods) for all working family members || Copy of last year's Federal income tax return and any supporting W-2 Form(s)",
      "source_id": "fap-ec5248358d9d66e9",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1129,10 +1120,14 @@
       {
        "kind": "in_person",
        "detail": "The Patient/patient's family may either schedule an appointment or walk-in to see an advocate at any location below"
+      },
+      {
+       "kind": "phone",
+       "detail": "Patients can also receive assistance information by calling the PFA's at (401-444-7850"
       }
      ],
      "layer": "documented",
-     "quote": "Please mail the application and supporting documentation directly to the Patient Financial Advocate Office at the respective hospital's addresses below",
+     "quote": "Please mail the application and supporting documentation directly to the Patient Financial Advocate Office at the respective hospital's addresses below || The Patient/patient's family may either schedule an appointment or walk -in to see an advocate at any location below || Patients can also receive assistance information by calling the PFA's at (401-444-7850",
      "source_id": "fap-ec5248358d9d66e9",
      "checked_on": "2026-10-23",
      "confidence": 1.0,
@@ -1202,8 +1197,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Copies of the most recent pay stubs (for the last two consecutive pay periods) for all working family members | Copy of last year's Federal income tax return and any supporting W-2 Form(s)",
-    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: The Patient/patient's family may either schedule an appointment or walk -in to see an advocate at any location below | Patients can also receive assistance information by calling the PFA's at (401-444-7850",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 3 verbatim spans",
     "agent judge on eligibility.insured_patients_covered: The quote only says partly insured or uninsured patients can talk to advocates for a payment plan or assistance. It does not say insured patients are covered.",
     "agent judge on apply.documents_required: The quote names only identification, recent pay stubs, and the last tax return with W-2s. It does not mention proof of residence, bank statements, or a Medicaid denial."
    ],
@@ -1227,8 +1222,7 @@
     ],
     "rejected": [],
     "pruned": [
-     "apply.documents_required: 4 items not named in the trimmed quote",
-     "apply.submit_methods: 1 item not named in the trimmed quote"
+     "apply.documents_required: 2 items not named in the trimmed quote"
     ],
     "income_rule_verified": false,
     "core_completeness": 0.5
@@ -1317,9 +1311,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: Gross Income Eligibility 0% - 250% FPL 251% - 550% FPL",
-    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Uninsured patients served by Yale University student-run primary care clinics for low-income individuals, including the  | YNHHS may use prior eligibility determinations to presumptively determine that the individual is again eligible",
-    "apply.documents_required: 1 more verbatim excerpt(s) supported this value: Step 2: Attach proof of income to your application.",
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 2 verbatim spans",
     "agent dropped eligibility.asset_test: judge: Quote only defines liquid assets; it does not state that assets are considered for eligibility.",
     "agent dropped programs.state_programs: judge: Quote mentions Medicaid help from coordinators but not the phone number or a free appointment.",
     "agent dropped apply.submit_methods: judge: Quote mentions mail, fax and visiting, but not the mailing address or the Westerly location address."
