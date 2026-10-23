@@ -94,3 +94,43 @@ The quote names the income band but not what the band gets. Usually the table's 
 - The 1,003 review-ready sheets outside the buckets above read cleanly in the sample.
 - Phone fields: Waive stores "A or B" text on purpose; no change.
 - 301 sheets without an income rule stay as contact and application records.
+
+## 6. Owner decisions, applied 2026-10-23
+
+Decided on the review page and applied by `import-eve --decisions` (defaults to `data/atlas-eve/_decisions.json`). A "discount" decision removes the free-care line and records the same income limit as `assistance_ceiling_fpl` with the same quote and source, unless the sheet already records a ceiling. "Cannot tell" removes the line and adds the hospital to the rebuild list. Every decision is written into the sheet's `eve_review` notes.
+
+Totals: 27 discount or assistance limit, 2 cannot tell (National Jewish Health CO 060107, Savannah Health Services GA 110036), 1 accept (Cavalier County Memorial ND 351323; its extracted value was 0%, which stays unrecorded).
+
+| State | CCN | Hospital | Bucket | Extracted | Decision |
+|---|---|---|---|---|---|
+| AL | 010101 | Citizens Baptist Medical Center | hedged | 225% | discount or assistance limit, not free care |
+| AL | 010103 | Princeton Baptist Medical Center | hedged | 300% | discount or assistance limit, not free care |
+| AL | 010016 | Shelby Baptist Medical Center | hedged | 300% | discount or assistance limit, not free care |
+| AR | 040076 | Baptist Health Medical Center-Hot Springs County | hedged | 300% | discount or assistance limit, not free care |
+| CO | 060006 | Montrose Regional Health | held | 40.9% | discount or assistance limit, not free care |
+| CO | 060107 | National Jewish Health | held | 40% | cannot tell, rebuild |
+| GA | 110003 | Memorial Satilla Health | header | 200% | discount or assistance limit, not free care |
+| GA | 110036 | Savannah Health Services Llc Dba Memorial Health University Medical Center | header | 200% | cannot tell, rebuild |
+| IN | 150044 | Baptist Health Floyd | hedged | 300% | discount or assistance limit, not free care |
+| KS | 171315 | Nemaha Valley Community Hospital | hedged | 200% | discount or assistance limit, not free care |
+| KS | 171350 | Russell Regional Hospital | held | 70% | discount or assistance limit, not free care |
+| KS | 170023 | St. Catherine Hospital Garden City | held | 150% | discount or assistance limit, not free care |
+| KY | 180103 | Baptist Health Lexington | hedged | 300% | discount or assistance limit, not free care |
+| KY | 180130 | Baptist Health Louisville | hedged | 300% | discount or assistance limit, not free care |
+| KY | 180104 | Baptist Health Paducah | hedged | 300% | discount or assistance limit, not free care |
+| MI | 230046 | University of Michigan Health System | hedged | 300% | discount or assistance limit, not free care |
+| MN | 241372 | Madison Hospital | hedged | 200% | discount or assistance limit, not free care |
+| NC | 340020 | Central Carolina Hospital | header | 200% | discount or assistance limit, not free care |
+| NC | 341305 | Dlp Swain County Hospital Llc | header | 200% | discount or assistance limit, not free care |
+| NC | 340126 | Wilson Medical Center | header | 200% | discount or assistance limit, not free care |
+| ND | 351323 | Cavalier County Memorial Hospital Association | held | 0% | accept as free care |
+| NE | 281339 | Memorial Health Care Systems | header | 175% | discount or assistance limit, not free care |
+| NH | 300034 | Catholic Medical Center | header | 200% | discount or assistance limit, not free care |
+| OK | 370019 | Great Plains Regional Medical Center | hedged | 200% | discount or assistance limit, not free care |
+| OR | 380050 | Sky Lakes Medical Center | hedged | 300% | discount or assistance limit, not free care |
+| TN | 440006 | Tristar Skyline Medical Center | header | 200% | discount or assistance limit, not free care |
+| UT | 460042 | Lakeview Hospital | header | 200% | discount or assistance limit, not free care |
+| VA | 490118 | Henrico Doctors' Hospital | header | 200% | discount or assistance limit, not free care |
+| VA | 490107 | Reston Hospital Center | header | 200% | discount or assistance limit, not free care |
+| WI | 520089 | Unitypoint Health Meriter | header | 300% | discount or assistance limit, not free care |
+

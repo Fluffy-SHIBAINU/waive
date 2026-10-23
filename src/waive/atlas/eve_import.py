@@ -265,7 +265,10 @@ def _state_programs(
 
 
 def convert_draft(
-    draft: dict[str, Any], seed_row: dict[str, Any] | None, today: date
+    draft: dict[str, Any],
+    seed_row: dict[str, Any] | None,
+    today: date,
+    decision: dict[str, Any] | None = None,
 ) -> ImportResult:
     hospital = draft.get("hospital") or {}
     ccn = str(hospital.get("ccn", ""))
@@ -337,6 +340,36 @@ def convert_draft(
             "not free care; left for review, not recorded"
         )
         free_value = None
+    ceiling_from_decision: Decimal | None = None
+    if decision is not None:
+        verdict = str(decision.get("decision") or "")
+        note = str(decision.get("note") or "").strip()
+        tail = f" Note: {note}" if note else ""
+        if verdict == "discount":
+            if free_value is not None:
+                existing_ceiling = _decimal(val(e, "assistance_ceiling_fpl"))
+                if existing_ceiling is None:
+                    ceiling_from_decision = free_value
+                    where = "recorded as assistance_ceiling_fpl"
+                else:
+                    where = f"dropped; the sheet already records a {existing_ceiling}% ceiling"
+                notes.append(
+                    f"eligibility.free_care_max_fpl: owner review says {free_value}% is a discount "
+                    f"or assistance limit, not free care; {where}.{tail}"
+                )
+            else:
+                notes.append(
+                    f"eligibility.free_care_max_fpl: owner review: discount, not free care.{tail}"
+                )
+            free_value = None
+        elif verdict in ("hold", "unsure"):
+            label = "hold" if verdict == "hold" else "cannot tell from the document; rebuild"
+            notes.append(f"eligibility.free_care_max_fpl: owner review: {label}.{tail}")
+            free_value = None
+        elif verdict == "accept":
+            notes.append(
+                f"eligibility.free_care_max_fpl: owner review: accepted as free care.{tail}"
+            )
 
     body: dict[str, Any] = {
         "hospital": hospital_ref,
@@ -364,8 +397,11 @@ def convert_draft(
                 "eligibility.discount_tiers",
             ),
             "assistance_ceiling_fpl": _cited(
-                e.get("assistance_ceiling_fpl"),
-                _decimal(val(e, "assistance_ceiling_fpl")),
+                e.get("assistance_ceiling_fpl")
+                or (free_raw if ceiling_from_decision is not None else None),
+                _decimal(val(e, "assistance_ceiling_fpl"))
+                if val(e, "assistance_ceiling_fpl") is not None
+                else ceiling_from_decision,
                 today,
                 notes,
                 "eligibility.assistance_ceiling_fpl",
@@ -503,6 +539,14 @@ def convert_draft(
                 error = again
         result.error = str(error).replace("\n", " ")[:400]
     return result
+
+
+def load_decisions(path: Path | None) -> dict[str, dict[str, Any]]:
+    """Owner decisions from the review page, keyed by CCN: {decision: accept|hold|discount|unsure, note}."""
+    if path is None or not path.exists():
+        return {}
+    rows = json.loads(path.read_text(encoding="utf-8"))
+    return {str(r["ccn"]): r for r in rows if isinstance(r, dict) and r.get("ccn")}
 
 
 def read_drafts(draft_dir: Path, states: tuple[str, ...] | None = None) -> list[dict[str, Any]]:

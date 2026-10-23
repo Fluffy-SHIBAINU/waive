@@ -328,6 +328,11 @@ def atlas_import_eve(
     sources_dir: Path | None = typer.Option(  # noqa: B008
         None, "--sources-dir", help="Folder of <source id>.txt documents to store with the sheets"
     ),
+    decisions: Path | None = typer.Option(  # noqa: B008
+        None,
+        "--decisions",
+        help="Owner decisions JSON from the review page (defaults to <out>/_decisions.json)",
+    ),
 ) -> None:
     """Convert Eve waive-agent drafts into draft procedure sheets: validates against the schema,
     writes data/atlas-eve/<state>.json with review notes, and optionally stores them as drafts."""
@@ -335,6 +340,7 @@ def atlas_import_eve(
 
     today = datetime.now(UTC).date()
     drafts = eve_import.read_drafts(draft_dir, (state.upper(),) if state else None)
+    decided = eve_import.load_decisions(decisions or (out / "_decisions.json"))
     seeds: dict[str, dict[str, dict[str, Any]]] = {}
     results = []
     for draft in drafts:
@@ -342,7 +348,7 @@ def atlas_import_eve(
         if st not in seeds:
             seeds[st] = eve_import.load_seed(seed_dir, st)
         ccn = str((draft.get("hospital") or {}).get("ccn", ""))
-        results.append(eve_import.convert_draft(draft, seeds[st].get(ccn), today))
+        results.append(eve_import.convert_draft(draft, seeds[st].get(ccn), today, decided.get(ccn)))
     counts = eve_import.write_exports(results, out, today)
     report = eve_import.write_report(results, out, today)
     converted = sum(counts.values())
