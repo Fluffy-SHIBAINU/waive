@@ -1548,3 +1548,58 @@ def test_a_multi_span_quote_is_found_when_every_span_is() -> None:
         "0 to 200% of FPL: free care || 401% to 500% of FPL: 25% discount", document
     )
     assert not quote_found(" || ", document)
+
+
+def test_assistance_that_may_reach_up_to_100_percent_is_a_limit_not_free_care():
+    from waive.atlas.verify import CEILING_REASON, quotes_assistance_ceiling
+
+    free = "eligibility.free_care_max_fpl"
+    # Decision 7.12c-1 (owner, 2026-10-23, option B): each of these promises at most full help,
+    # and only maybe, so its income figure is a limit on assistance, not a free-care band.
+    for value, quote in (
+        (
+            400,
+            "If your gross (total) family income is no higher than 400 percent of the "
+            "[Federal Poverty Level (FPL)](https://syfphr.oshpd.ca.gov/), you may receive a "
+            "discount of up to 100 percent on the services you received.",
+        ),
+        (
+            200,
+            "If your family adjusted income is less than 200% of federal poverty guidelines, you "
+            "may be eligible for up to a 100% discount.",
+        ),
+        (
+            240,
+            "If the patient's income is between 200%-240% of the Federal Poverty Income "
+            "Guidelines they may qualify for Financial Assistance up to 100% of their hospital "
+            "and clinic bills.",
+        ),
+    ):
+        assert quotes_assistance_ceiling(quote), quote
+        docs = {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT + "\n" + quote + "\n"}
+        assert (free, CEILING_REASON) in verify_sheet(with_free_limit(value, quote), docs).rejected
+    # No "may", or free care said in so many words: still free care.
+    for value, quote in (
+        (
+            200,
+            "Any patient whose Family Income is at or below 200% of the FPL, including, without "
+            "limitation, any Uninsured or Underinsured patient, is eligible to receive Financial "
+            "Assistance up to a 100% discount from his or her account balance for eligible "
+            "services provided to the patient after payment, if any, by any third-party(ies).",
+        ),
+        (
+            150,
+            "Patients who are uninsured or underinsured and have a family income at or below 150% "
+            "of the Federal Poverty Guidelines (FPG) may receive free care (a 100% discount).",
+        ),
+        (
+            200,
+            "Patients at or below 200% of the poverty guidelines may receive free care, a discount "
+            "of up to 100% of charges.",
+        ),
+    ):
+        assert not quotes_assistance_ceiling(quote), quote
+        docs = {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT + "\n" + quote + "\n"}
+        assert not any(
+            p == free for p, _ in verify_sheet(with_free_limit(value, quote), docs).rejected
+        ), quote

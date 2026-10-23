@@ -197,11 +197,27 @@ _FREE_MARKERS = re.compile(
 )
 
 
+# Decision 7.12c-1 (owner, 2026-10-23, option B): "you may receive a discount of up to 100
+# percent" (Community Hospital of the Monterey Peninsula, 050145, at 400%), "you may be eligible
+# for up to a 100% discount" (Flagler, 100090) and "they may qualify for Financial Assistance up
+# to 100%" (Wickenburg, 031300) promise at most full help, and only maybe: an assistance limit,
+# not a free-care band. Their "100%" is the top of the help, so it is no free marker. CommonSpirit's
+# "is eligible to receive Financial Assistance up to a 100% discount" says no "may" and stays
+# free care, as CommonSpirit's own summaries say.
+_UP_TO_FULL = re.compile(r"\bup to (?:a |an )?(?:100 ?(?:%|percent)|one hundred percent)")
+_HEDGED_UP_TO_FULL = re.compile(
+    r"\bmay\b[^.;]*\bup to (?:a |an )?(?:100 ?(?:%|percent)|one hundred percent)"
+)
+
+
 def quotes_assistance_ceiling(quote: str) -> bool:
     """A free-care quote that only promises some help ("full or partial", "may qualify for
-    financial assistance") up to an income, without saying that care is free there. Its number
-    is the ceiling on all assistance, which the draft keeps in assistance_ceiling_fpl."""
+    financial assistance", "may receive … up to 100%") up to an income, without saying that care
+    is free there. Its number is the ceiling on all assistance, which the draft keeps in
+    assistance_ceiling_fpl."""
     text = normalize(quote)
+    if _HEDGED_UP_TO_FULL.search(text) and _FREE_MARKERS.search(_UP_TO_FULL.sub(" ", text)) is None:
+        return True
     return _CEILING_WORDING.search(text) is not None and _FREE_MARKERS.search(text) is None
 
 
