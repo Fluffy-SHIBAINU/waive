@@ -479,10 +479,14 @@ def write_exports(results: list[ImportResult], out_dir: Path, today: date) -> di
 
 
 def import_to_db(
-    session: Session, results: list[ImportResult], seeds: dict[str, dict[str, dict[str, Any]]]
+    session: Session,
+    results: list[ImportResult],
+    seeds: dict[str, dict[str, dict[str, Any]]],
+    sources_dir: Path | None = None,
 ) -> int:
     """Store each converted sheet as version 1 draft. Skips a CCN that already has any sheet.
-    Source text is not stored (the agent kept only the hash); a review item says so."""
+    Source text comes from `sources_dir/<source id>.txt` when present (the refetch pass writes
+    it); otherwise it is empty and the review item says so."""
     stored = 0
     for r in results:
         if r.sheet is None:
@@ -491,8 +495,15 @@ def import_to_db(
             r.notes.append("db: a sheet already exists for this CCN; not imported")
             continue
         repo.upsert_hospital(session, row_to_hospital(seeds[r.state][r.ccn]))
+        texts_stored = 0
         for doc in r.sheet.sources:
-            repo.save_source(session, doc, "", r.ccn)
+            text = ""
+            if sources_dir is not None:
+                candidate = sources_dir / f"{doc.id}.txt"
+                if candidate.exists():
+                    text = candidate.read_text(encoding="utf-8")
+                    texts_stored += 1
+            repo.save_source(session, doc, text, r.ccn)
         repo.add_sheet_version(session, r.sheet, None)
         repo.add_review_item(
             session,
@@ -500,7 +511,8 @@ def import_to_db(
             "eve-import",
             {
                 "notes": r.notes,
-                "source_text_stored": False,
+                "source_text_stored": texts_stored,
+                "sources": len(r.sheet.sources),
                 "imported_on": datetime.now(UTC).isoformat(),
             },
         )
