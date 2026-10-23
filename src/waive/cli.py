@@ -12,6 +12,7 @@ from sqlalchemy.exc import ArgumentError, SQLAlchemyError
 
 from waive.ai.client import AIClient
 from waive.atlas import repo
+from waive.atlas.eve_import import load_decisions, set_eve_websites
 from waive.atlas.metrics import atlas_metrics, national_report, write_national_report
 from waive.atlas.overlays import run_overlay
 from waive.atlas.pipeline import (
@@ -168,7 +169,9 @@ def atlas_build(
     ),
 ) -> None:
     """Discover, scout, structure, verify and publish procedure sheets. Spends Tavily credits.
-    Hospitals on the skip list (the ones the Eve agent could not build) are never built."""
+    Hospitals on the skip list (the ones the Eve agent could not build) are never built. What a
+    model reads is held to the owner's rulings on the Eve sheets (WAIVE_EVE_DECISIONS), so a
+    free-care value the owner ruled out does not come back."""
     settings = Settings()
     skip = load_skip_list(settings.scout_skip_list)
     if ccn and ccn in skip:
@@ -177,6 +180,7 @@ def atlas_build(
         # on this list and on the rebuild list.
         typer.echo(f"{ccn} is on the skip list ({EVE_SKIP}: {skip[ccn].reason}); not built")
         return
+    decisions = load_decisions(settings.eve_decisions)
     governor = make_governor(settings)
     ai = AIClient(settings, governor)
     gateway = make_tavily_gateway(settings, governor)
@@ -194,6 +198,7 @@ def atlas_build(
                     dual=dual,
                     reuse_sources=reuse_sources,
                     extract_depth=settings.scout_extract_depth,
+                    decision=decisions.get(ccn),
                 )
             ]
         else:
@@ -210,6 +215,7 @@ def atlas_build(
                 reuse_sources=reuse_sources,
                 extract_depth=settings.scout_extract_depth,
                 skip=skip,
+                decisions=decisions,
             )
     table = Table("CCN", "Hospital", "Outcome", "Version", "Notes")
     for result in results:
@@ -388,6 +394,24 @@ def atlas_import_eve(
         typer.echo(
             f"filed {filed} {EVE_SKIP} review items for the {len(skip)} hospitals on the skip list"
         )
+
+
+@atlas_app.command("eve-websites")
+def atlas_eve_websites(
+    state: str | None = typer.Option(None, "--state", help="Only this state"),
+) -> None:
+    """Set each Eve hospital's website from the domain its draft names, scored by discovery's own
+    rule on the documents already stored: 0.9 when a stored page on that site names the hospital
+    and its place, 0.6 otherwise (a rebuild then holds the sheet until an admin confirms the
+    site). A hospital that already has a website is left alone. No search, no paid calls."""
+    with session_scope(_engine(Settings())) as session:
+        found = set_eve_websites(session, state)
+    typer.echo(
+        f"websites set for {found.sure + found.unsure} Eve hospitals: {found.sure} sure (0.9), "
+        f"{found.unsure} unconfirmed (0.6); {found.already_set} already had one, "
+        f"{found.no_domain} without one in the draft, {found.refused} refused "
+        "(directory or file host)"
+    )
 
 
 @atlas_app.command("report")

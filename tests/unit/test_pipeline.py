@@ -18,7 +18,7 @@ from waive.atlas.scout import source_id_for
 from waive.atlas.skiplist import SkipEntry
 from waive.atlas.structure import DraftField, SheetDraft
 from waive.atlas.tavily_gateway import ExtractedPage, SearchHit
-from waive.atlas.verify import PATIENT_SHARE_REASON, verify_sheet
+from waive.atlas.verify import CEILING_NOT_ASSISTANCE_REASON, PATIENT_SHARE_REASON, verify_sheet
 from waive.config import Settings
 from waive.db import init_db, make_engine, session_scope
 from waive.governor import Governor, Ledger
@@ -2783,3 +2783,182 @@ def test_a_sheet_with_a_band_and_a_table_is_unchanged_by_a_ceiling():
     assert sheet.eligibility.free_care_max_fpl.value == 250
     assert len(sheet.eligibility.discount_tiers.value) == 1
     assert not any("ceiling" in note for note in notes)
+
+
+# --- the owner's rulings kept on a rebuild (task 7.12c) ------------------------------------
+
+RULING_NOTE = (
+    "eligibility.free_care_max_fpl: owner review says 250% is a discount or assistance limit, "
+    "not free care; recorded as assistance_ceiling_fpl"
+)
+RULED_AT = "2026-10-23T17:31:54.394Z"
+
+
+def owner_ruling(decision, value="250", ccn="229999"):
+    """One entry of data/atlas-eve/_decisions.json, as the review page writes it."""
+    return {
+        "ccn": ccn,
+        "decision": decision,
+        "value": value,
+        "note": "",
+        "at": RULED_AT,
+        "hospital": "St. Example Medical Center",
+        "state": "MA",
+        "bucket": "hedged",
+    }
+
+
+def test_a_discount_ruling_keeps_the_ruled_out_free_care_value_off_the_rebuilt_sheet():
+    # FakeAI reads 250 as free care; the owner ruled that 250 is a discount limit, not free care.
+    engine = make_engine_with_hospital()
+    with session_scope(engine) as session:
+        ruling = owner_ruling("discount")
+        result = build_hospital(session, FakeGateway(), FakeAI(), "229999", TODAY, decision=ruling)
+        sheet, _ = repo.latest_sheet(session, "229999")
+        assert sheet.eligibility.free_care_max_fpl is None
+        # The reading is kept, as the cited ceiling it is, and verified as one: the only field the
+        # verifier rejects is the unrelated unverifiable "hours". (The sample policy does say
+        # "free care" at 250%, so a document conflict holds this ceiling-only sheet for an admin.)
+        ceiling = sheet.eligibility.assistance_ceiling_fpl
+        assert (ceiling.value, ceiling.quote) == (250, FREE_CARE_QUOTE)
+        rejected = review_detail(session, "229999", "verification")["rejected"]
+        assert rejected == [["contacts.hours", "quote not found in source"]]
+        assert RULING_NOTE in result.notes
+        assert review_detail(session, "229999", "owner_decision") == {
+            "decision": "discount",
+            "value": "250",
+            "kept_as": "assistance_ceiling_fpl",
+            "decided_at": RULED_AT,
+        }
+        assert [item.kind for item in repo.open_review_items(session, "229999")].count(
+            "owner_decision"
+        ) == 1
+        # What the model read besides it is judged as before.
+        assert sheet.contacts.phone.value == "617-555-0100" and sheet.contacts.hours is None
+
+
+@pytest.mark.parametrize(
+    "ruling",
+    [None, owner_ruling("accept"), owner_ruling("discount", "300")],
+    ids=["no ruling", "accepted as free care", "ruled on another value"],
+)
+def test_a_build_the_ruling_does_not_touch_keeps_the_free_care_value(ruling):
+    engine = make_engine_with_hospital()
+    with session_scope(engine) as session:
+        result = build_hospital(session, FakeGateway(), FakeAI(), "229999", TODAY, decision=ruling)
+        assert (result.outcome, result.version) == ("published", 1)
+        sheet, _ = repo.latest_sheet(session, "229999")
+        assert sheet.eligibility.free_care_max_fpl.value == 250
+        assert sheet.eligibility.assistance_ceiling_fpl is None
+        assert not any("owner review" in note for note in result.notes)
+        kinds = sorted(item.kind for item in repo.open_review_items(session, "229999"))
+        assert kinds == ["verification"]
+
+
+def test_an_unsure_ruling_drops_the_value_and_files_it_as_dropped():
+    # The owner could not tell whether 250 is free care: nothing is recorded in its place, and
+    # with no income rule left the sheet waits for an admin.
+    engine = make_engine_with_hospital()
+    with session_scope(engine) as session:
+        result = build_hospital(
+            session, FakeGateway(), FakeAI(), "229999", TODAY, decision=owner_ruling("unsure")
+        )
+        sheet, _ = repo.latest_sheet(session, "229999")
+        assert sheet.eligibility.free_care_max_fpl is None
+        assert sheet.eligibility.assistance_ceiling_fpl is None
+        assert result.outcome == "held"
+        assert (
+            "eligibility.free_care_max_fpl: owner review could not tell whether 250% is free "
+            "care; not recorded"
+        ) in result.notes
+        assert review_detail(session, "229999", "owner_decision") == {
+            "decision": "unsure",
+            "value": "250",
+            "kept_as": "dropped",
+            "decided_at": RULED_AT,
+        }
+
+
+def test_the_cross_check_read_is_held_to_the_ruling_too():
+    # Both models read the ruled-out 250. Held to the ruling, both give the same ceiling and do
+    # not dispute it; the fast model's free-care reading would otherwise contradict the ceiling
+    # and send the build to the tie-break model for nothing.
+    engine = make_engine_with_hospital()
+    with session_scope(engine) as session:
+        result = build_hospital(
+            session, FakeGateway(), FakeAI(), "229999", TODAY, decision=owner_ruling("discount")
+        )
+        kinds = {item.kind for item in repo.open_review_items(session, "229999")}
+        assert "conflict" not in kinds and "tiebreak" not in kinds
+        assert not any(note.startswith("critical fields disagree") for note in result.notes)
+
+
+def test_the_tie_break_read_is_held_to_the_ruling_too():
+    # The primary read is the ruled-out 250 (kept as the ceiling), the cross-check reads a free
+    # band of 400 and disputes it, and the tie-break model reads 250 again: held to the ruling,
+    # that is the primary's ceiling, so the primary stands.
+    engine = make_engine_with_hospital()
+    with session_scope(engine) as session:
+        ai = FakeAI(free_limit_for_fast=("400", DISCOUNT_QUOTE), free_limit_for_tiebreak="250")
+        result = build_hospital(
+            session, FakeGateway(), ai, "229999", TODAY, decision=owner_ruling("discount")
+        )
+        detail = review_detail(session, "229999", "tiebreak")["eligibility.assistance_ceiling_fpl"]
+        assert detail == {
+            "primary": "250",
+            "secondary": None,
+            "tiebreak": "250",
+            "verdict": "primary",
+        }
+        assert "tie-break settled eligibility.assistance_ceiling_fpl (primary)" in result.notes
+        assert not any(note.startswith("critical fields disagree") for note in result.notes)
+        sheet, _ = repo.latest_sheet(session, "229999")
+        assert sheet.eligibility.free_care_max_fpl is None
+        assert sheet.eligibility.assistance_ceiling_fpl.value == 250
+
+
+def test_a_ceiling_the_ruling_moved_is_still_verified_like_any_other_field():
+    # 300 is quoted from a sentence about the Health Safety Net: accepted as a free-care reading
+    # (no ruling, first build), never as the hospital's own assistance ceiling. The ruling moves
+    # the value; it does not excuse it from the ceiling rules, so nothing unverified reaches the
+    # sheet.
+    def ai():
+        reads_300 = FakeAI(free_limit_for_fast="300")
+        reads_300.free_limits["reason"] = "300"
+        return reads_300
+
+    engine = make_engine_with_hospital()
+    with session_scope(engine) as session:
+        build_hospital(session, FakeGateway(), ai(), "229999", TODAY)
+        sheet, _ = repo.latest_sheet(session, "229999")
+        assert sheet.eligibility.free_care_max_fpl.value == 300
+    engine = make_engine_with_hospital()
+    with session_scope(engine) as session:
+        ruling = owner_ruling("discount", "300")
+        result = build_hospital(session, FakeGateway(), ai(), "229999", TODAY, decision=ruling)
+        sheet, _ = repo.latest_sheet(session, "229999")
+        assert sheet.eligibility.free_care_max_fpl is None
+        assert sheet.eligibility.assistance_ceiling_fpl is None
+        assert result.outcome == "held"
+        rejected = review_detail(session, "229999", "verification")["rejected"]
+        assert [CEILING_PATH, CEILING_NOT_ASSISTANCE_REASON] in rejected
+        assert review_detail(session, "229999", "owner_decision")["kept_as"] == (
+            "assistance_ceiling_fpl"
+        )
+
+
+def test_build_state_hands_each_hospital_its_own_ruling():
+    second = {**REAL_HOSPITAL, "ccn": "220010", "name": "NEW HOSPITAL"}
+    engine = make_engine_with_hospital(REAL_HOSPITAL, second)
+    decisions = {"220031": owner_ruling("discount", ccn="220031")}
+    with session_scope(engine) as session:
+        results = build_state(session, FakeGateway(), FakeAI(), "MA", TODAY, decisions=decisions)
+        assert sorted(r.ccn for r in results) == ["220010", "220031"]
+        ruled, _ = repo.latest_sheet(session, "220031")
+        other, _ = repo.latest_sheet(session, "220010")
+        assert ruled.eligibility.free_care_max_fpl is None
+        assert ruled.eligibility.assistance_ceiling_fpl.value == 250
+        assert other.eligibility.free_care_max_fpl.value == 250
+        assert [item.ccn for item in repo.open_review_items(session, kind="owner_decision")] == [
+            "220031"
+        ]

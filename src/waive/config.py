@@ -108,6 +108,11 @@ class Settings(BaseSettings):
     # never scout them, so no Tavily credit goes to them. A missing file leaves no hospital out
     # (the container image carries no data/ folder).
     scout_skip_list: Path = Path("data/atlas-eve/_skip.json")
+    # The owner's rulings on the Eve sheets' free-care values (task 7.12c): a JSON list of
+    # {ccn, decision, value, note, at, ...} from the review page. `waive atlas build` holds what a
+    # model reads on a rebuild to them, so a value the owner ruled out does not come back. A
+    # missing file is no rulings (the container image carries no data/ folder).
+    eve_decisions: Path = Path("data/atlas-eve/_decisions.json")
 
     # Phase 10: the hospital ledger. Downloads of public files land under `ledger_dir`, never in
     # the repository. The scout queue multiplies a hospital's priority by

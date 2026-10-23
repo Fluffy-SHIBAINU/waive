@@ -22,6 +22,7 @@ from waive.atlas.discover import (
     place_unconfirmed,
     rejected_domains,
 )
+from waive.atlas.eve_import import keep_owner_decision
 from waive.atlas.fetch import is_asset_host
 from waive.atlas.publish import (
     carry_over_reported,
@@ -505,6 +506,42 @@ def _ground(sheet: ProcedureSheet, texts: dict[str, str]) -> tuple[ProcedureShee
     return prune_lists(trim_quotes(sheet, texts), texts)
 
 
+def _apply_owner_decision(
+    session: Session,
+    ccn: str,
+    sheet: ProcedureSheet,
+    decision: Mapping[str, Any] | None,
+    result: BuildResult,
+) -> ProcedureSheet:
+    """The primary read held to the owner's ruling on its free-care value
+    (eve_import.keep_owner_decision), before it is grounded and verified: a value the owner ruled
+    out cannot come back on a rebuild, and one moved to the assistance ceiling is judged by the
+    ceiling rules like any other. The notes go to the result and one `owner_decision` item records
+    what was done."""
+    if decision is None:
+        return sheet
+    kept, notes = keep_owner_decision(sheet, decision)
+    if not notes:
+        return sheet
+    moved = (
+        sheet.eligibility.assistance_ceiling_fpl is None
+        and kept.eligibility.assistance_ceiling_fpl is not None
+    )
+    repo.add_review_item(
+        session,
+        ccn,
+        "owner_decision",
+        {
+            "decision": decision["decision"],
+            "value": decision["value"],
+            "kept_as": "assistance_ceiling_fpl" if moved else "dropped",
+            "decided_at": decision.get("at"),
+        },
+    )
+    result.notes.extend(notes)
+    return kept
+
+
 def _structure_and_verify(
     session: Session,
     ai: AIClient,
@@ -512,10 +549,11 @@ def _structure_and_verify(
     sources_with_text: list[tuple[SourceDoc, str]],
     today: date,
     result: BuildResult,
+    decision: Mapping[str, Any] | None = None,
 ) -> tuple[ProcedureSheet, list[str]] | None:
-    """The primary draft, trimmed to the spans the sources contain, verified and stripped of
-    rejected fields, with the reasons an admin must look first (holds). None when the structurer
-    gave nothing usable; `result` then carries the failed outcome."""
+    """The primary draft, held to the owner's ruling, trimmed to the spans the sources contain,
+    verified and stripped of rejected fields, with the reasons an admin must look first (holds).
+    None when the structurer gave nothing usable; `result` then carries the failed outcome."""
     ccn = hospital.ccn
     texts = {source.id: text for source, text in sources_with_text}
     try:
@@ -531,6 +569,7 @@ def _structure_and_verify(
         result.outcome = "failed"
         result.notes.append(f"structurer gave no usable sheet: {error}"[:ERROR_DETAIL_CHARS])
         return None
+    sheet = _apply_owner_decision(session, ccn, sheet, decision, result)
     sheet, pruned = _ground(sheet, texts)
     skipped = [*skipped, *pruned]
     report = verify_sheet(sheet, texts)
@@ -562,9 +601,12 @@ def _tiebreak(
     secondary: ProcedureSheet,
     conflicts: list[str],
     result: BuildResult,
+    decision: Mapping[str, Any] | None = None,
 ) -> tuple[ProcedureSheet, list[str]]:
     """A third model settles the critical fields the first two dispute (task 2.8j). Best effort
-    like the cross-check: when its call fails, the conflicts stand and the primary is kept."""
+    like the cross-check: when its call fails, the conflicts stand and the primary is kept. Its
+    read is held to the owner's ruling like the other two, or it could not agree with a primary
+    that was."""
     ccn = hospital.ccn
     try:
         third, _ = structure_sheet(ai, "tiebreak", hospital, sources_with_text, today)
@@ -572,6 +614,7 @@ def _tiebreak(
         repo.add_review_item(session, ccn, "tiebreak_failed", {"error": str(error)[:300]})
         result.notes.append("tie-break model gave no usable output")
         return primary, conflicts
+    third, _ = keep_owner_decision(third, decision)
     merged, remaining, detail = resolve_conflicts(primary, secondary, third, conflicts)
     texts = {source.id: text for source, text in sources_with_text}
     merged, _pruned = _ground(merged, texts)
@@ -650,6 +693,7 @@ def build_hospital(
     dual: bool = True,
     reuse_sources: bool = False,
     extract_depth: Depth = "basic",
+    decision: Mapping[str, Any] | None = None,
 ) -> BuildResult:
     row = repo.get_hospital(session, ccn)
     if row is None:
@@ -742,7 +786,9 @@ def build_hospital(
     # fails, the sheet must not go on quoting it (review of 7.16).
     detached = considered - {source.id for source, _ in [*sources_with_text, *translations]}
 
-    first_pass = _structure_and_verify(session, ai, hospital, sources_with_text, today, result)
+    first_pass = _structure_and_verify(
+        session, ai, hospital, sources_with_text, today, result, decision
+    )
     if first_pass is None:
         _hold_without(session, ccn, detached, result)
         return result
@@ -762,7 +808,7 @@ def build_hospital(
             translations = [*translations, *shared_translations]
             detached |= lent - {source.id for source, _ in [*sources_with_text, *translations]}
             second_pass = _structure_and_verify(
-                session, ai, hospital, sources_with_text, today, result
+                session, ai, hospital, sources_with_text, today, result, decision
             )
             if second_pass is None:
                 _hold_without(session, ccn, detached, result)
@@ -784,7 +830,10 @@ def build_hospital(
             result.notes.append("cross-check model gave no usable output")
         else:
             # A disagreement only counts when the cross-check's own quote verifies; an
-            # ungrounded value (for example a bare "300%") cannot veto a verified primary.
+            # ungrounded value (for example a bare "300%") cannot veto a verified primary. The
+            # cross-check is held to the owner's ruling like the primary, or it would dispute the
+            # ceiling the ruling made of a value both models read.
+            secondary, _ = keep_owner_decision(secondary, decision)
             secondary, _pruned = _ground(secondary, texts)
             ungrounded = [path for path, _ in verify_sheet(secondary, texts).rejected]
             if ungrounded:
@@ -811,6 +860,7 @@ def build_hospital(
                     secondary,
                     conflicts,
                     result,
+                    decision,
                 )
             if conflicts:
                 result.notes.append("critical fields disagree: " + ", ".join(conflicts))
@@ -884,10 +934,12 @@ def build_state(
     reuse_sources: bool = False,
     extract_depth: Depth = "basic",
     skip: Mapping[str, SkipEntry] | None = None,
+    decisions: Mapping[str, Mapping[str, Any]] | None = None,
 ) -> list[BuildResult]:
     """Build the state's hospitals that have no sheet yet (all of them with `only_missing` off).
     A hospital on the skip list (the ones Eve could not build) is never built and adds no result;
-    `limit` counts hospitals built."""
+    `limit` counts hospitals built. `decisions` are the owner's rulings by CCN: each hospital is
+    built with its own."""
     results: list[BuildResult] = []
     registry = repo.list_hospitals(session, state=state)
     hospitals = [row for row in registry if skip is None or row.ccn not in skip]
@@ -909,6 +961,7 @@ def build_state(
                     dual=dual,
                     reuse_sources=reuse_sources,
                     extract_depth=extract_depth,
+                    decision=decisions.get(row.ccn) if decisions else None,
                 )
             )
         except Exception as error:  # keep the batch going; the failure is in the report

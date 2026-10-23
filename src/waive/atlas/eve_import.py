@@ -13,12 +13,20 @@ this module reconciles:
 
 Every imported sheet is version 1 with status ``draft``. Nothing is published here: a reviewer
 runs the normal verify and publish path on the stored sources.
+
+A rebuild from the stored documents (``waive atlas build --reuse-sources``) needs two things the
+import does not leave behind. The registry rows come from the CMS seed and have no website, so
+``set_eve_websites`` sets each hospital's website from its draft, scored by discovery's own rule on
+the documents already stored (no search). And the owner's rulings on free-care values
+(``_decisions.json``) were applied once, at import; ``keep_owner_decision`` applies them again to
+whatever a model reads on a rebuild.
 """
 
 from __future__ import annotations
 
 import json
 import re
+from collections.abc import Mapping
 from dataclasses import dataclass, field
 from datetime import UTC, date, datetime
 from decimal import Decimal, InvalidOperation
@@ -29,8 +37,18 @@ from pydantic import ValidationError
 from sqlalchemy.orm import Session
 
 from waive.atlas import repo
+from waive.atlas.discover import DomainResult, host_of, is_directory, is_not_a_website, pick_domain
+from waive.atlas.publish import drop_fields
 from waive.atlas.registry import row_to_hospital
-from waive.atlas.schema import DocType, ProcedureSheet, SheetStatus, SourceKind
+from waive.atlas.schema import (
+    DocType,
+    HospitalRef,
+    ProcedureSheet,
+    SheetStatus,
+    SourceDoc,
+    SourceKind,
+)
+from waive.atlas.tavily_gateway import SearchHit
 
 DOC_KEYWORDS: tuple[tuple[DocType, tuple[str, ...]], ...] = (
     (
@@ -89,6 +107,16 @@ SUBMIT_ALIASES = {
     "call": "phone",
     "post": "mail",
 }
+
+# The review item `import_to_db` files for every sheet it stores: it marks a hospital as Eve's.
+EVE_IMPORT = "eve-import"
+# What discover.pick_domain calls sure and what it calls a guess. Never 1.0: only an admin
+# confirms a website (discover.CONFIRMED_CONFIDENCE).
+SURE_WEBSITE = 0.9
+GUESSED_WEBSITE = 0.6
+FREE_CARE_PATH = "eligibility.free_care_max_fpl"
+# The verdicts that rule a free-care value out; `accept` keeps it and anything else is not a ruling.
+RULED_OUT = ("discount", "unsure", "hold")
 
 # Colorado's Hospital Discounted Care (C.R.S. 25.5-3-501 and following) caps what a patient at or
 # below 250% FPL pays. Policies show it as a screening row, a "$0 copay" row, or a sentence about
@@ -641,7 +669,7 @@ def import_to_db(
         repo.add_review_item(
             session,
             r.ccn,
-            "eve-import",
+            EVE_IMPORT,
             {
                 "notes": r.notes,
                 "source_text_stored": texts_stored,
@@ -687,3 +715,111 @@ def write_report(results: list[ImportResult], out_dir: Path, today: date) -> Pat
     path = out_dir / "_import-report.md"
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
     return path
+
+
+@dataclass
+class EveWebsites:
+    """What `set_eve_websites` did, one count per hospital it looked at."""
+
+    sure: int = 0  # website set, at 0.9
+    unsure: int = 0  # website set, at 0.6
+    already_set: int = 0  # the registry row had a website; left alone
+    no_domain: int = 0  # the draft names no website
+    refused: int = 0  # the draft's website is a directory or a file host
+
+
+def eve_website(
+    hospital: HospitalRef, domain: str, sources: list[tuple[SourceDoc, str]]
+) -> DomainResult | None:
+    """The website a draft names, scored by discovery's own rule (discover.pick_domain) on the
+    documents already stored instead of a search: sure (0.9) when one of them is on that site and
+    passes the rule's test (a title naming the hospital on a page that names its place, or the
+    hospital's phone), otherwise a guess (0.6) that holds the rebuilt sheet until an admin
+    confirms the site. `domain` may carry "www.", a subdomain or a folder; the result is the
+    registered domain. None for an empty domain, a directory or a file host."""
+    url = f"https://{domain.strip()}"
+    host = host_of(url)
+    if not host or is_directory(host) or is_not_a_website(url):
+        return None
+    hits = [
+        SearchHit(url=source.url, title=source.title, content=text, score=0.0)
+        for source, text in sources
+        if source.url and host_of(source.url) == host
+    ]
+    picked = pick_domain(hospital, hits)
+    if picked is not None and picked.domain == host and picked.confidence == SURE_WEBSITE:
+        return picked
+    return DomainResult(host, GUESSED_WEBSITE, picked.evidence_url if picked is not None else "")
+
+
+def set_eve_websites(session: Session, state: str | None = None) -> EveWebsites:
+    """Set the registry website of every Eve hospital (one with an `eve-import` review item, open
+    or not), optionally of one state, from the website its draft names. A row that already has a
+    website is left alone, so a second run changes nothing. No search and no paid call: the
+    documents `import-eve` stored are what `eve_website` scores."""
+    counts = EveWebsites()
+    for row in repo.list_hospitals(session, state=state):
+        if not repo.review_items_of_kind(session, row.ccn, EVE_IMPORT):
+            continue
+        if row.website_domain:
+            counts.already_set += 1
+            continue
+        latest = repo.latest_sheet(session, row.ccn)
+        drafted = latest[0].hospital.website_domain if latest else None
+        if not drafted:
+            counts.no_domain += 1
+            continue
+        found = eve_website(repo.hospital_ref(row), drafted, repo.sources_for(session, row.ccn))
+        if found is None:
+            counts.refused += 1
+            continue
+        row.website_domain, row.domain_confidence = found.domain, found.confidence
+        if found.confidence == SURE_WEBSITE:
+            counts.sure += 1
+        else:
+            counts.unsure += 1
+    session.flush()
+    return counts
+
+
+def _percent_text(value: Decimal) -> str:
+    """75, 40.9: a whole percentage is written without decimals, as the policies write it."""
+    return f"{int(value) if value == value.to_integral_value() else value}"
+
+
+def keep_owner_decision(
+    sheet: ProcedureSheet, decision: Mapping[str, Any] | None
+) -> tuple[ProcedureSheet, list[str]]:
+    """`sheet` held to the owner's ruling on its free-care value, with a note for each change, by
+    the rules `convert_draft` applies when it imports a draft: `discount` moves the value to the
+    assistance ceiling (or drops it when the sheet records a ceiling already), `unsure` and `hold`
+    drop it. A rebuild asks a model again and may read the value the owner ruled out; this runs on
+    what the model proposed, before anything is verified, so it never adds a value the documents
+    do not quote. The ruling applies to the value it names: another reading of the free-care
+    limit is another claim, left to the verifier, as are `accept` and verdicts nobody defined."""
+    if decision is None:
+        return sheet, []
+    verdict = str(decision.get("decision") or "")
+    ruled = _decimal(decision.get("value"))
+    free = sheet.eligibility.free_care_max_fpl
+    if verdict not in RULED_OUT or ruled is None or free is None or free.value != ruled:
+        return sheet, []
+    percent = _percent_text(ruled)
+    kept = drop_fields(sheet, [FREE_CARE_PATH])
+    if verdict == "unsure":
+        return kept, [
+            f"{FREE_CARE_PATH}: owner review could not tell whether {percent}% is free care; "
+            "not recorded"
+        ]
+    if verdict == "hold":
+        return kept, [f"{FREE_CARE_PATH}: owner review holds {percent}%; not recorded"]
+    says = (
+        f"{FREE_CARE_PATH}: owner review says {percent}% is a discount or assistance limit, "
+        "not free care; "
+    )
+    if sheet.eligibility.assistance_ceiling_fpl is not None:
+        return kept, [says + "dropped, the sheet already records a ceiling"]
+    eligibility = kept.eligibility.model_copy(update={"assistance_ceiling_fpl": free})
+    return kept.model_copy(update={"eligibility": eligibility}), [
+        says + "recorded as assistance_ceiling_fpl"
+    ]
