@@ -178,7 +178,9 @@ class RefetchReport:
     not sent), `returned` the pages that came back, `kept` the pages stored and `stored` the
     sources stored: one per kept page and hospital that cites it. `reasons` holds the URLs that
     gave no source under why not. `gained` is the sorted (state, CCN) of every hospital that got
-    at least one source. `stopped` is the governor's message when the budget ended the run."""
+    at least one source. `stopped` is the governor's message when the budget ended the run, and
+    `failed` the name and message of any other error from Tavily that did (a timeout, an HTTP
+    429 or 5xx): the batches before it are stored and listed in `gained`."""
 
     requested: int = 0
     returned: int = 0
@@ -189,6 +191,7 @@ class RefetchReport:
     reasons: dict[str, list[str]] = field(default_factory=dict)
     gained: list[tuple[str, str]] = field(default_factory=list)
     stopped: str | None = None
+    failed: str | None = None
 
     @property
     def credits_spent(self) -> Decimal:
@@ -196,6 +199,29 @@ class RefetchReport:
 
     def reject(self, reason: str, url: str) -> None:
         self.reasons.setdefault(reason, []).append(url)
+
+
+def read_refetched(path: Path) -> list[tuple[str, str]]:
+    """The (state, CCN) pairs of an `ST CCN` list, as `merge_refetched` and the rebuild script
+    read it. A missing file is an empty list, and a line that is not two words is ignored."""
+    if not path.exists():
+        return []
+    pairs = (line.split() for line in path.read_text(encoding="utf-8").splitlines())
+    return [(words[0], words[1]) for words in pairs if len(words) == 2]
+
+
+def merge_refetched(path: Path, gained: Sequence[tuple[str, str]]) -> list[tuple[str, str]]:
+    """Add the hospitals a run gained a source for to the list at `path` and return the whole
+    list, sorted. The list is what the rebuilds read, so a run only ever adds to it: a run that
+    stopped on the budget or an error, and the rerun after it, together name every hospital, and
+    a rerun that gains nothing leaves the file as it was. A first run writes the file even when it
+    gained nothing, so the rebuilds find a list that says so."""
+    if gained or not path.exists():
+        merged = sorted({*read_refetched(path), *gained})
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text("".join(f"{state} {ccn}\n" for state, ccn in merged), encoding="utf-8")
+        return merged
+    return sorted(set(read_refetched(path)))
 
 
 def _tavily_credits(governor: Governor | None) -> Decimal:
@@ -250,11 +276,13 @@ def run_refetch(
     """Ask Tavily Extract, at the advanced depth, for the planned URLs `batch_size` at a time, and
     store each page worth keeping as a new source for every hospital that cites its URL.
 
-    A batch the governor refuses (`BudgetExceeded`) ends the run with what was stored so far; any
-    other failure propagates. Each batch is committed as soon as it is stored, so a failure
-    later in the run (a timeout at the tenth call) loses nothing that was paid for, and a rerun
-    plans only the URLs still missing. Pass the governor the gateway spends through to have the
-    report count the credits; without it they read as none."""
+    A batch the governor refuses (`BudgetExceeded`) ends the run with what was stored so far, and
+    so does any other error from the gateway (a timeout at the tenth call): the report says which,
+    and the batches before it stay stored and listed, so nothing that was paid for is lost and a
+    rerun plans only the URLs still missing. Each batch is committed as soon as it is stored, so
+    even an interrupt keeps the batches before it. Errors from the database are not caught. Pass
+    the governor the gateway spends through to have the report count the credits; without it they
+    read as none."""
     if batch_size < 1:
         raise ValueError("batch_size must be at least 1")
     report = RefetchReport(credits_before=_tavily_credits(governor))
@@ -264,6 +292,11 @@ def run_refetch(
             pages = gateway.extract(batch, purpose=PURPOSE, depth=DEPTH)
         except BudgetExceeded as error:
             report.stopped = str(error)
+            break
+        except Exception as error:
+            # Not swallowed: the report names it and the command exits non-zero. It is caught here
+            # so the caller still has the hospitals the earlier batches gained to write down.
+            report.failed = f"{type(error).__name__}: {error}"
             break
         report.requested += len(batch)
         report.returned += len(pages)

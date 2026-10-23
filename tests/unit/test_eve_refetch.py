@@ -23,7 +23,9 @@ from waive.atlas.eve_refetch import (
     TOO_SHORT,
     MissingEntry,
     load_missing,
+    merge_refetched,
     plan_refetch,
+    read_refetched,
     run_refetch,
 )
 from waive.atlas.samples import SAMPLE_POLICY_TEXT
@@ -144,13 +146,19 @@ class FakeGateway:
 
 
 class FakeTavilyClient:
-    """The client TavilyGateway wraps: Extract answers from a table in the API's own shape."""
+    """The client TavilyGateway wraps: Extract answers from a table in the API's own shape. Call
+    number `fail_at` (counting from zero) raises a network error before it answers."""
 
-    def __init__(self, texts):
+    def __init__(self, texts, *, fail_at=None):
         self.texts = texts
+        self.fail_at = fail_at
+        self.attempts = 0
         self.calls: list[tuple[list[str], str]] = []
 
     def extract(self, urls, **kwargs):
+        attempt, self.attempts = self.attempts, self.attempts + 1
+        if attempt == self.fail_at:
+            raise TimeoutError("Tavily did not answer")
         self.calls.append((list(urls), kwargs["extract_depth"]))
         results = [{"url": u, "raw_content": self.texts[u]} for u in urls if u in self.texts]
         return {"results": results}
@@ -541,22 +549,68 @@ def test_run_stops_when_the_governors_cap_would_be_passed(tmp_path):
     assert report.stopped is not None and "cap of 2 credits" in report.stopped
 
 
-def test_run_commits_each_batch_so_a_failure_later_loses_nothing_that_was_paid_for(tmp_path):
+def test_run_ends_on_any_other_error_from_tavily_names_it_and_keeps_the_batches_before_it():
+    twelve = urls(12)
+    # The second call fails; a third would be answered, and must never be asked for.
+    gateway = FakeGateway({url: policy(n) for n, url in enumerate(twelve)}, fail_at=1)
+    with session_scope(fresh_engine()) as session:
+        hospitals(session, "220010")
+        plan = plan_for(session, entry("220010", *twelve))
+        report = run_refetch(session, gateway, plan, TODAY)
+        assert sorted(texts_of(session, "220010")) == sorted(twelve[:5])
+    assert gateway.calls == [(twelve[:5], PURPOSE, "advanced")] and gateway.attempts == 2
+    assert report.failed == "TimeoutError: Tavily did not answer"
+    assert report.stopped is None  # the budget did not end it
+    assert (report.requested, report.kept, report.stored) == (5, 5, 5)
+    assert report.gained == [("MA", "220010")]
+
+
+def test_run_commits_each_batch_so_an_interrupt_later_loses_nothing_that_was_paid_for(tmp_path):
     seven = urls(7)
     engine = make_engine(f"sqlite:///{tmp_path / 'atlas.db'}")
     init_db(engine)
     with session_scope(engine) as session:
         hospitals(session, "220010")
-    gateway = FakeGateway({url: policy(n) for n, url in enumerate(seven)}, fail_at=1)
-    with pytest.raises(TimeoutError), session_scope(engine) as session:
+
+    class Interrupted(FakeGateway):
+        def extract(self, urls, **kwargs):
+            if self.calls:
+                raise KeyboardInterrupt  # not an Exception: nothing rolls the session back
+            return super().extract(urls, **kwargs)
+
+    gateway = Interrupted({url: policy(n) for n, url in enumerate(seven)})
+    with pytest.raises(KeyboardInterrupt), session_scope(engine) as session:
         run_refetch(session, gateway, plan_for(session, entry("220010", *seven)), TODAY)
-    # The scope rolled back the failure; the first batch was committed before it.
+    # The session was closed with the second batch pending; the first was committed before it.
     with session_scope(engine) as session:
         assert sorted(texts_of(session, "220010")) == seven[:5]
         # A second run asks only for what is still missing.
         plan = plan_for(session, entry("220010", *seven))
     assert plan.urls == seven[5:] and plan.already_have_text == 5
     engine.dispose()
+
+
+# The list of hospitals for the rebuilds
+
+
+def test_merge_refetched_adds_to_the_list_sorted_and_ignores_lines_that_are_not_pairs(tmp_path):
+    path = tmp_path / "var" / "eve-refetched.txt"
+    assert read_refetched(path) == []
+    # A first run writes the list, even an empty one, creating its folder.
+    assert merge_refetched(path, []) == [] and path.read_text(encoding="utf-8") == ""
+    path.write_text("RI 410001\n\nstray\nMA 220010 extra\nMA 220031\n", encoding="utf-8")
+    assert read_refetched(path) == [("RI", "410001"), ("MA", "220031")]
+    merged = merge_refetched(path, [("AL", "010001"), ("MA", "220031")])
+    assert merged == [("AL", "010001"), ("MA", "220031"), ("RI", "410001")]
+    assert path.read_text(encoding="utf-8") == "AL 010001\nMA 220031\nRI 410001\n"
+
+
+def test_merge_refetched_leaves_the_file_as_it_was_when_a_run_gained_nothing(tmp_path):
+    path = tmp_path / "eve-refetched.txt"
+    written = "RI 410001\nMA 220010\n"  # not sorted: untouched, not rewritten
+    path.write_text(written, encoding="utf-8")
+    assert merge_refetched(path, []) == [("MA", "220010"), ("RI", "410001")]
+    assert path.read_text(encoding="utf-8") == written
 
 
 def test_a_rerun_plans_only_the_pages_that_were_not_stored():
@@ -647,9 +701,9 @@ def workdir(monkeypatch, tmp_path):
     engine.dispose()
 
 
-def invoke(*args: str):
+def invoke(*args: str, status: int = 0):
     result = CliRunner().invoke(app, ["atlas", "eve-refetch", *args])
-    assert result.exit_code == 0, result.output
+    assert result.exit_code == status, result.output
     return result.output.splitlines()
 
 
@@ -707,7 +761,7 @@ def test_run_fetches_stores_and_writes_the_hospitals_that_gained_a_source(
         "refetched 1 of 2 URLs; stored 2 sources for 2 hospitals; 2 Tavily credits spent"
     )
     assert lines[2:4] == [f"not stored (1): {TOO_SHORT}", f"  {APPLICATION}"]
-    assert lines[4] == f"2 hospitals written to {out} for the rebuilds"
+    assert lines[4] == f"2 hospitals gained a source; 2 listed in {out} for the rebuilds"
     assert len(lines) == 5
     assert client.calls == [([POLICY_PDF, APPLICATION], "advanced")]
     assert out.read_text(encoding="utf-8") == "MA 220010\nRI 410001\n"
@@ -720,7 +774,7 @@ def test_run_fetches_stores_and_writes_the_hospitals_that_gained_a_source(
     assert [json.loads(line)["purpose"] for line in ledger] == [PURPOSE]
 
 
-def test_run_writes_var_eve_refetched_by_default_and_a_rerun_finds_nothing_left(
+def test_run_writes_var_eve_refetched_by_default_and_a_rerun_that_gains_nothing_keeps_it(
     workdir, monkeypatch, tmp_path
 ):
     client = FakeTavilyClient({POLICY_PDF: policy(1), APPLICATION: policy(2)})
@@ -731,27 +785,40 @@ def test_run_writes_var_eve_refetched_by_default_and_a_rerun_finds_nothing_left(
     )
     default = tmp_path / "var" / "eve-refetched.txt"
     assert default.read_text(encoding="utf-8") == "MA 220010\nRI 410001\n"
-    # Everything is stored now: nothing to ask Tavily, so no gateway is built, and the list for
-    # the rebuilds says this run gained nothing.
+    # Everything is stored now: nothing to ask Tavily, so no gateway is built. An accidental
+    # second --run gained nothing and must not empty the list the rebuilds still need.
     again = invoke("--file", "missing.json", "--run")
     assert again[0].startswith("refetch plan: 0 unique URLs for 0 hospitals (5 listed pairs, 4 ")
     assert again[1] == (
         "refetched 0 of 0 URLs; stored 0 sources for 0 hospitals; 0 Tavily credits spent"
     )
+    assert again[2] == (
+        "0 hospitals gained a source; 2 listed in var/eve-refetched.txt for the rebuilds"
+    )
     assert len(built) == 1 and len(client.calls) == 1
-    assert default.read_text(encoding="utf-8") == ""
+    assert default.read_text(encoding="utf-8") == "MA 220010\nRI 410001\n"
 
 
-def test_run_stops_at_the_credit_cap_says_so_and_still_writes_what_it_stored(
+def write_two_batches(tmp_path, urls_of):
+    """A missing-sources file whose first five URLs are 220010's and whose last two are 410001's:
+    two batches, and each hospital gains from one of them."""
+    first, second = urls_of[:5], urls_of[5:]
+    (tmp_path / "missing.json").write_text(
+        json.dumps(
+            [
+                {"ccn": "220010", "state": "MA", "name": "NEW HOSPITAL", "missing_urls": first},
+                {"ccn": "410001", "state": "RI", "name": "BAYSIDE", "missing_urls": second},
+            ]
+        )
+    )
+
+
+def test_run_stops_at_the_credit_cap_and_the_rerun_adds_to_the_list_it_wrote(
     workdir, monkeypatch, tmp_path
 ):
     monkeypatch.setenv("WAIVE_TAVILY_CREDIT_CAP", "2")
     seven = urls(7)
-    (tmp_path / "missing.json").write_text(
-        json.dumps(
-            [{"ccn": "220010", "state": "MA", "name": "NEW HOSPITAL", "missing_urls": seven}]
-        )
-    )
+    write_two_batches(tmp_path, seven)
     client = FakeTavilyClient({url: policy(n) for n, url in enumerate(seven)})
     tavily(monkeypatch, client)
     lines = invoke("--file", "missing.json", "--run", "--out", "gained.txt")
@@ -762,10 +829,49 @@ def test_run_stops_at_the_credit_cap_says_so_and_still_writes_what_it_stored(
         "stopped: Tavily cap of 2 credits would be exceeded (used 2). "
         "The sources stored so far are kept; run again for the rest."
     )
+    assert lines[3] == "1 hospitals gained a source; 1 listed in gained.txt for the rebuilds"
     assert len(client.calls) == 1
     assert (tmp_path / "gained.txt").read_text(encoding="utf-8") == "MA 220010\n"
     with session_scope(workdir) as session:
         assert sorted(texts_of(session, "220010")) == seven[:5]
+    # The rerun the command asks for, with room under the cap: it fetches the rest and adds
+    # 410001 to the list; 220010, gained by the first run, stays in it.
+    monkeypatch.setenv("WAIVE_TAVILY_CREDIT_CAP", "10")
+    rest = invoke("--file", "missing.json", "--run", "--out", "gained.txt")
+    assert rest[1] == (
+        "refetched 2 of 2 URLs; stored 2 sources for 1 hospitals; 2 Tavily credits spent"
+    )
+    assert rest[-1] == "1 hospitals gained a source; 2 listed in gained.txt for the rebuilds"
+    assert (tmp_path / "gained.txt").read_text(encoding="utf-8") == "MA 220010\nRI 410001\n"
+
+
+def test_run_that_fails_on_another_error_still_stores_and_lists_what_it_gained_and_exits_1(
+    workdir, monkeypatch, tmp_path
+):
+    seven = urls(7)
+    write_two_batches(tmp_path, seven)
+    # The second call times out after the first batch was stored.
+    client = FakeTavilyClient({url: policy(n) for n, url in enumerate(seven)}, fail_at=1)
+    tavily(monkeypatch, client)
+    lines = invoke("--file", "missing.json", "--run", "--out", "gained.txt", status=1)
+    assert lines[1] == (
+        "refetched 5 of 7 URLs; stored 5 sources for 1 hospitals; 2 Tavily credits spent"
+    )
+    assert (
+        lines[2]
+        == "failed: TimeoutError: Tavily did not answer. The sources stored before it are kept."
+    )
+    assert lines[3] == "1 hospitals gained a source; 1 listed in gained.txt for the rebuilds"
+    assert len(lines) == 4
+    assert (tmp_path / "gained.txt").read_text(encoding="utf-8") == "MA 220010\n"
+    with session_scope(workdir) as session:
+        assert sorted(texts_of(session, "220010")) == seven[:5]  # committed, and listed above
+        assert not set(seven[5:]) & set(texts_of(session, "410001"))
+    # The rerun asks only for the last two URLs and adds their hospital to the list.
+    client.fail_at = None
+    rest = invoke("--file", "missing.json", "--run", "--out", "gained.txt")
+    assert rest[0].startswith("refetch plan: 2 unique URLs for 1 hospitals (7 listed pairs, 5 ")
+    assert (tmp_path / "gained.txt").read_text(encoding="utf-8") == "MA 220010\nRI 410001\n"
 
 
 def test_run_without_a_tavily_key_says_so_before_anything_is_fetched(workdir, tmp_path):

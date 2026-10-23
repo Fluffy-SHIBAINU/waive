@@ -18,6 +18,7 @@ from waive.atlas.eve_refetch import (
     REFETCHED_LIST,
     RefetchReport,
     load_missing,
+    merge_refetched,
     plan_refetch,
     run_refetch,
 )
@@ -440,8 +441,8 @@ def atlas_eve_refetch(
     out: Path = typer.Option(  # noqa: B008
         REFETCHED_LIST,
         "--out",
-        help="With --run: the hospitals that gained a source, one 'ST CCN' per line, for the "
-        "rebuilds",
+        help="With --run: the hospitals that gained a source are added to this list, one "
+        "'ST CCN' per line, for the rebuilds",
     ),
 ) -> None:
     """Fetch the source documents of the Eve sheets that could not be downloaded, once, through
@@ -449,7 +450,10 @@ def atlas_eve_refetch(
     store each as a new source for the hospitals that cite it, so `waive atlas build
     --reuse-sources` can rebuild them from stored documents. A hospital on the skip list is never
     refetched, and a URL a hospital already has the text of is not fetched for it. The default is
-    a dry run that prints the plan; --run spends credits."""
+    a dry run that prints the plan; --run spends credits and adds the hospitals that gained a
+    source to the --out list (it never removes one, so a rerun after a stop keeps the first
+    run's hospitals). A run that ends on an error from Tavily still stores and lists what it
+    gained before it, then exits with status 1."""
     settings = Settings()
     skip = load_skip_list(settings.scout_skip_list)
     today = datetime.now(UTC).date()
@@ -481,9 +485,15 @@ def atlas_eve_refetch(
             f"stopped: {report.stopped.rstrip('.')}. "
             "The sources stored so far are kept; run again for the rest."
         )
-    out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text("".join(f"{state} {ccn}\n" for state, ccn in report.gained), encoding="utf-8")
-    typer.echo(f"{len(report.gained)} hospitals written to {out} for the rebuilds")
+    if report.failed:
+        typer.echo(f"failed: {report.failed}. The sources stored before it are kept.")
+    listed = merge_refetched(out, report.gained)
+    typer.echo(
+        f"{len(report.gained)} hospitals gained a source; {len(listed)} listed in {out} "
+        "for the rebuilds"
+    )
+    if report.failed:
+        raise typer.Exit(code=1)
 
 
 @atlas_app.command("report")
