@@ -331,7 +331,7 @@ def atlas_import_eve(
     decisions: Path | None = typer.Option(  # noqa: B008
         None,
         "--decisions",
-        help="Owner decisions JSON from the review page (defaults to <out>/_decisions.json)",
+        help="Owner decisions JSON from the review page (default data/atlas-eve/_decisions.json)",
     ),
 ) -> None:
     """Convert Eve waive-agent drafts into draft procedure sheets: validates against the schema,
@@ -340,7 +340,7 @@ def atlas_import_eve(
 
     today = datetime.now(UTC).date()
     drafts = eve_import.read_drafts(draft_dir, (state.upper(),) if state else None)
-    decided = eve_import.load_decisions(decisions or (out / "_decisions.json"))
+    decided = eve_import.load_decisions(decisions or Path("data/atlas-eve/_decisions.json"))
     seeds: dict[str, dict[str, dict[str, Any]]] = {}
     results = []
     for draft in drafts:
@@ -353,7 +353,8 @@ def atlas_import_eve(
     report = eve_import.write_report(results, out, today)
     converted = sum(counts.values())
     typer.echo(
-        f"converted {converted} of {len(results)} drafts into {len(counts)} state files under {out}; report {report}"
+        f"converted {converted} of {len(results)} drafts into {len(counts)} state files under {out}; "
+        f"{len(decided)} owner decisions applied; report {report}"
     )
     if db:
         settings = Settings()

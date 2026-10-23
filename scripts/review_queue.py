@@ -78,6 +78,9 @@ for file in sorted(p for p in SRC.glob("*.json") if not p.name.startswith("_")):
         )
 
 rows.sort(key=lambda r: (r["priority"], r["state"], r["hospital"]))
+if not rows:
+    print(f"[queue] no sheets found under {SRC}; nothing written")
+    sys.exit(0)
 with OUT.open("w", newline="") as f:
     w = csv.DictWriter(f, fieldnames=list(rows[0].keys()))
     w.writeheader()

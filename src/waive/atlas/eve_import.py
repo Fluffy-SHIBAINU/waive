@@ -95,7 +95,8 @@ SUBMIT_ALIASES = {
 # the legislation. It is a state program, not the hospital's free-care line (review decision
 # 2026-10-23). A copay row with a dollar amount is not free care anywhere.
 _HDC_QUOTE = re.compile(
-    r"\bHDC\b|hospital discounted care|legislation requires|screen for|\bCRS\b|25\.5-3-5"
+    r"\bHDC\b|hospital discounted care|discounted care program|\bCRS\b|25\.5-3-5"
+    r"|(?:legislation|law) requires hospitals to provide (?:financial assistance|discounted care)"
     r"|\$\s?0 copay",
     re.I,
 )
@@ -162,10 +163,10 @@ def _cited(
         notes.append(f"{path}: no quote or source id; dropped")
         return None
     if extra:
-        notes.append(
-            f"{path}: {len(extra)} more verbatim excerpt(s) supported this value: "
-            + " | ".join(e[:120] for e in extra)
-        )
+        # Several verbatim spans back one value (a tier table split across rows, a document list
+        # across sentences). Keep them all; `verify.quote_found` checks each span on its own.
+        quote = " || ".join([quote, *extra])
+        notes.append(f"{path}: value backed by {len(extra) + 1} verbatim spans")
     if raw.get("verification") == "normalized":
         notes.append(f"{path}: quote matched the source only after typography normalization")
     checked = raw.get("checked_on") or today.isoformat()
@@ -175,7 +176,10 @@ def _cited(
         "quote": quote,
         "source_id": raw["source_id"],
         "checked_on": checked,
-        "confidence": float(raw.get("confidence") or 1.0),
+        "confidence": float(raw["confidence"])
+        if isinstance(raw.get("confidence"), int | float)
+        and not isinstance(raw.get("confidence"), bool)
+        else 1.0,
         "support_count": 0,
     }
 
@@ -229,16 +233,24 @@ def _tiers(items: Any, notes: list[str], quote: str | None = None) -> list[dict[
                 f"eligibility.discount_tiers: {lo}-{hi}% at {pct}% is no discount; skipped"
             )
             continue
-        if quote and re.search(
-            rf"up to (?:a |an )?{int(pct) if pct == pct.to_integral_value() else pct}\s?%",
-            quote,
-            re.I,
-        ):
-            notes.append(
-                f"eligibility.discount_tiers: {lo}-{hi}% says 'up to {pct}%', a cap rather than "
-                "a fixed discount; skipped"
+        pct_text = f"{int(pct) if pct == pct.to_integral_value() else pct}"
+        if quote:
+            capped = re.search(rf"up to (?:a |an )?{pct_text}\s?%", quote, re.I) is not None
+            fixed = (
+                re.search(rf"(?<!up to )(?<!up to a )(?<!up to an )\b{pct_text}\s?%", quote, re.I)
+                is not None
             )
-            continue
+            if capped and not fixed:
+                notes.append(
+                    f"eligibility.discount_tiers: {lo}-{hi}% says 'up to {pct}%', a cap rather "
+                    "than a fixed discount; skipped"
+                )
+                continue
+            if capped and fixed:
+                notes.append(
+                    f"eligibility.discount_tiers: the quote says both 'up to {pct}%' and a fixed "
+                    f"{pct}%; {lo}-{hi}% kept, check which band is the cap"
+                )
         tiers.append({"min_fpl_exclusive": lo, "max_fpl_inclusive": hi, "discount_percent": pct})
     tiers.sort(key=lambda t: t["min_fpl_exclusive"])
     return tiers or None
@@ -286,6 +298,9 @@ def convert_draft(
 
     sources = []
     for src in draft.get("sources") or []:
+        if not isinstance(src, dict) or not src.get("id") or not src.get("sha256"):
+            result.error = f"malformed source entry in draft: {str(src)[:120]}"
+            return result
         kind = src.get("kind")
         sources.append(
             {
@@ -367,9 +382,15 @@ def convert_draft(
             notes.append(f"eligibility.free_care_max_fpl: owner review: {label}.{tail}")
             free_value = None
         elif verdict == "accept":
-            notes.append(
-                f"eligibility.free_care_max_fpl: owner review: accepted as free care.{tail}"
-            )
+            if free_value is not None:
+                notes.append(
+                    f"eligibility.free_care_max_fpl: owner review: accepted as free care.{tail}"
+                )
+            else:
+                notes.append(
+                    "eligibility.free_care_max_fpl: owner review said accept, but the extracted "
+                    f"value is not a usable free-care line and stays unrecorded.{tail}"
+                )
 
     body: dict[str, Any] = {
         "hospital": hospital_ref,
