@@ -1119,15 +1119,7 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": {
-     "value": "250",
-     "layer": "documented",
-     "quote": "0-250% $0 copay per visit $0 copay per visit 0% copay per visit",
-     "source_id": "web-cdc2bb5c62f6aebe",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "free_care_max_fpl": null,
     "discount_tiers": {
      "value": [
       {
@@ -1165,7 +1157,20 @@
    },
    "programs": {
     "presumptive": null,
-    "state_programs": null
+    "state_programs": {
+     "value": [
+      {
+       "name": "Colorado Hospital Discounted Care (income at or below 250% FPL)",
+       "how_to_apply": "Ask the hospital to screen you for Hospital Discounted Care; Colorado law requires the screening and caps what you pay."
+      }
+     ],
+     "layer": "documented",
+     "quote": "0-250% $0 copay per visit $0 copay per visit 0% copay per visit",
+     "source_id": "web-cdc2bb5c62f6aebe",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
    },
    "apply": {
     "form_url": null,
@@ -1222,6 +1227,7 @@
    ],
    "accuracy": null,
    "eve_review": [
+    "eligibility.free_care_max_fpl: 250% is Colorado Hospital Discounted Care, recorded under programs.state_programs instead of the free-care line",
     "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: 300-399% 20% of charges 20% of charges 35% of charges",
     "agent dropped contacts.languages: quote is not a substring of the source",
     "agent judge on eligibility.free_care_max_fpl: Quote gives a 0-250% range with '$0 copay per visit' but never says 100% free care; the copay wording does not state free care.",
@@ -3501,15 +3507,7 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": {
-     "value": "250",
-     "layer": "documented",
-     "quote": "The legislation requires hospitals to provide financial assistance to patients in emergent situations and whose incomes are less than 250 percent of the current year's federal poverty level.",
-     "source_id": "web-cdc2bb5c62f6aebe",
-     "checked_on": "2026-10-23",
-     "confidence": 0.8,
-     "support_count": 0
-    },
+    "free_care_max_fpl": null,
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
     "asset_test": null,
@@ -3528,7 +3526,20 @@
    },
    "programs": {
     "presumptive": null,
-    "state_programs": null
+    "state_programs": {
+     "value": [
+      {
+       "name": "Colorado Hospital Discounted Care (income at or below 250% FPL)",
+       "how_to_apply": "Ask the hospital to screen you for Hospital Discounted Care; Colorado law requires the screening and caps what you pay."
+      }
+     ],
+     "layer": "documented",
+     "quote": "The legislation requires hospitals to provide financial assistance to patients in emergent situations and whose incomes are less than 250 percent of the current year's federal poverty level.",
+     "source_id": "web-cdc2bb5c62f6aebe",
+     "checked_on": "2026-10-23",
+     "confidence": 0.8,
+     "support_count": 0
+    }
    },
    "apply": {
     "form_url": null,
@@ -3607,7 +3618,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.free_care_max_fpl: quote matched the source only after typography normalization",
+    "eligibility.free_care_max_fpl: 250% is Colorado Hospital Discounted Care, recorded under programs.state_programs instead of the free-care line",
+    "programs.state_programs: quote matched the source only after typography normalization",
     "agent dropped eligibility.discount_tiers: between 1 and 3 excerpts allowed",
     "agent judge on eligibility.free_care_max_fpl: Quote says assistance is required for incomes under 250% FPL in emergent situations; it does not state that 250% is the highest level receiving 100% free care.",
     "agent judge on eligibility.insured_patients_covered: Quote says insured patients not eligible for assistance are offered reasonable payment plans; it does not state that insured patients are covered by assistance.",
@@ -4046,15 +4058,7 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": {
-     "value": "250",
-     "layer": "documented",
-     "quote": "0-250% $0 copay per visit $0 copay per visit 0% copay per visit",
-     "source_id": "web-cdc2bb5c62f6aebe",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "free_care_max_fpl": null,
     "discount_tiers": {
      "value": [
       {
@@ -4092,7 +4096,20 @@
    },
    "programs": {
     "presumptive": null,
-    "state_programs": null
+    "state_programs": {
+     "value": [
+      {
+       "name": "Colorado Hospital Discounted Care (income at or below 250% FPL)",
+       "how_to_apply": "Ask the hospital to screen you for Hospital Discounted Care; Colorado law requires the screening and caps what you pay."
+      }
+     ],
+     "layer": "documented",
+     "quote": "0-250% $0 copay per visit $0 copay per visit 0% copay per visit",
+     "source_id": "web-cdc2bb5c62f6aebe",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
    },
    "apply": {
     "form_url": null,
@@ -4149,6 +4166,7 @@
    ],
    "accuracy": null,
    "eve_review": [
+    "eligibility.free_care_max_fpl: 250% is Colorado Hospital Discounted Care, recorded under programs.state_programs instead of the free-care line",
     "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: 300-399% 20% of charges 20% of charges 35% of charges",
     "agent dropped contacts.languages: quote is not a substring of the source",
     "agent judge on eligibility.free_care_max_fpl: Quote says \"0-250%\" next to \"$0 copay per visit\" but never states 100% free care; a copay is not clearly free care.",
@@ -5649,15 +5667,7 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": {
-     "value": "250",
-     "layer": "documented",
-     "quote": "The legislation requires hospitals to provide financial assistance to patients in emergent situations and whose incomes are less than 250 percent of the current year\u2019s federal poverty level.",
-     "source_id": "web-cdc2bb5c62f6aebe",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "free_care_max_fpl": null,
     "discount_tiers": {
      "value": [
       {
@@ -5695,7 +5705,20 @@
    },
    "programs": {
     "presumptive": null,
-    "state_programs": null
+    "state_programs": {
+     "value": [
+      {
+       "name": "Colorado Hospital Discounted Care (income at or below 250% FPL)",
+       "how_to_apply": "Ask the hospital to screen you for Hospital Discounted Care; Colorado law requires the screening and caps what you pay."
+      }
+     ],
+     "layer": "documented",
+     "quote": "The legislation requires hospitals to provide financial assistance to patients in emergent situations and whose incomes are less than 250 percent of the current year\u2019s federal poverty level.",
+     "source_id": "web-cdc2bb5c62f6aebe",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
    },
    "apply": {
     "form_url": null,
@@ -5768,6 +5791,7 @@
    ],
    "accuracy": null,
    "eve_review": [
+    "eligibility.free_care_max_fpl: 250% is Colorado Hospital Discounted Care, recorded under programs.state_programs instead of the free-care line",
     "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: 10% of charges | 300-399% 20% of charges 20% of charges 35% of charges",
     "agent judge on eligibility.free_care_max_fpl: Quote says assistance is required for patients under 250% FPL, not that 250% is the highest percent receiving 100% free care; no free-care level is stated.",
     "agent judge on eligibility.discount_tiers: Quote gives 251-299% at 10% and 300-399% at 20%, but also lists 35% of charges with no bound, and the value's tier bounds and 250/299 overlap do not match the quote cleanly.",
@@ -5790,15 +5814,7 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": {
-     "value": "250",
-     "layer": "documented",
-     "quote": "HDC 0\u2013250% Screen for HDC eligibility",
-     "source_id": "fap-5b8100d864da3458",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "free_care_max_fpl": null,
     "discount_tiers": {
      "value": [
       {
@@ -5862,6 +5878,10 @@
       {
        "name": "CHP+",
        "how_to_apply": "Public health-care coverage includes, but is not limited to, Medicare, Health First Colorado, Emergency Medicaid, and CHP+."
+      },
+      {
+       "name": "Colorado Hospital Discounted Care (income at or below 250% FPL)",
+       "how_to_apply": "Ask the hospital to screen you for Hospital Discounted Care; Colorado law requires the screening and caps what you pay."
       }
      ],
      "layer": "documented",
@@ -5983,6 +6003,7 @@
    ],
    "accuracy": null,
    "eve_review": [
+    "eligibility.free_care_max_fpl: 250% is Colorado Hospital Discounted Care, recorded under programs.state_programs instead of the free-care line",
     "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: FHW Charity 301\u2013350% 55% discount | FHW Charity 351\u2013400% 50% discount",
     "apply.documents_required: 1 more verbatim excerpt(s) supported this value: b. Income Tax Returns",
     "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: You can pay your bill online. | Our office is located at 228 N. Cherry Street, Fruita, Colorado",
@@ -7255,15 +7276,7 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": {
-     "value": "250",
-     "layer": "documented",
-     "quote": "The legislation requires hospitals to provide financial assistance to patients in emergent situations and whose incomes are less than 250 percent of the current year's federal poverty level.",
-     "source_id": "web-cdc2bb5c62f6aebe",
-     "checked_on": "2026-10-23",
-     "confidence": 0.8,
-     "support_count": 0
-    },
+    "free_care_max_fpl": null,
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
     "asset_test": null,
@@ -7282,7 +7295,20 @@
    },
    "programs": {
     "presumptive": null,
-    "state_programs": null
+    "state_programs": {
+     "value": [
+      {
+       "name": "Colorado Hospital Discounted Care (income at or below 250% FPL)",
+       "how_to_apply": "Ask the hospital to screen you for Hospital Discounted Care; Colorado law requires the screening and caps what you pay."
+      }
+     ],
+     "layer": "documented",
+     "quote": "The legislation requires hospitals to provide financial assistance to patients in emergent situations and whose incomes are less than 250 percent of the current year's federal poverty level.",
+     "source_id": "web-cdc2bb5c62f6aebe",
+     "checked_on": "2026-10-23",
+     "confidence": 0.8,
+     "support_count": 0
+    }
    },
    "apply": {
     "form_url": null,
@@ -7369,7 +7395,8 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.free_care_max_fpl: quote matched the source only after typography normalization",
+    "eligibility.free_care_max_fpl: 250% is Colorado Hospital Discounted Care, recorded under programs.state_programs instead of the free-care line",
+    "programs.state_programs: quote matched the source only after typography normalization",
     "agent dropped eligibility.discount_tiers: excerpt not in source: 251-299% | 10% of charges | 10% of charges | 25% of charges",
     "agent judge on eligibility.free_care_max_fpl: Quote says the law requires assistance for incomes under 250% FPL. It does not say 100% free care applies up to 250% FPL.",
     "agent judge on eligibility.insured_patients_covered: Quote says insured patients ineligible for assistance get payment plan options. It does not state that insured patients are covered by assistance.",

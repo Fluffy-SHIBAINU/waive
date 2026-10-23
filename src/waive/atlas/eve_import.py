@@ -90,6 +90,22 @@ SUBMIT_ALIASES = {
     "post": "mail",
 }
 
+# Colorado's Hospital Discounted Care (C.R.S. 25.5-3-501 and following) caps what a patient at or
+# below 250% FPL pays. Policies show it as a screening row, a "$0 copay" row, or a sentence about
+# the legislation. It is a state program, not the hospital's free-care line (review decision
+# 2026-10-23). A copay row with a dollar amount is not free care anywhere.
+_HDC_QUOTE = re.compile(
+    r"\bHDC\b|hospital discounted care|legislation requires|screen for|\bCRS\b|25\.5-3-5"
+    r"|\$\s?0 copay",
+    re.I,
+)
+_COPAY_ROW = re.compile(r"\$\s?[1-9]\d*\s?copay|copay per visit", re.I)
+HDC_PROGRAM = {
+    "name": "Colorado Hospital Discounted Care (income at or below 250% FPL)",
+    "how_to_apply": "Ask the hospital to screen you for Hospital Discounted Care; Colorado law "
+    "requires the screening and caps what you pay.",
+}
+
 
 @dataclass
 class ImportResult:
@@ -228,6 +244,26 @@ def _tiers(items: Any, notes: list[str], quote: str | None = None) -> list[dict[
     return tiers or None
 
 
+def _state_programs(
+    p: dict[str, Any],
+    free_raw: dict[str, Any] | None,
+    hdc_program: dict[str, Any] | None,
+    today: date,
+    notes: list[str],
+) -> dict[str, Any] | None:
+    """The agent's state programs, plus Colorado Hospital Discounted Care when the free-care quote
+    was really the HDC row: that quote and source back the program entry."""
+    raw = p.get("state_programs") if isinstance(p.get("state_programs"), dict) else None
+    items = [x for x in ((raw or {}).get("value") or []) if isinstance(x, dict) and x.get("name")]
+    if hdc_program is not None and not any(
+        "discounted care" in str(x.get("name", "")).lower() for x in items
+    ):
+        items = [*items, hdc_program]
+        if raw is None and free_raw is not None:
+            raw = {**free_raw}
+    return _cited(raw, items or None, today, notes, "programs.state_programs")
+
+
 def convert_draft(
     draft: dict[str, Any], seed_row: dict[str, Any] | None, today: date
 ) -> ImportResult:
@@ -279,6 +315,26 @@ def convert_draft(
         notes.append(
             f"eligibility.free_care_max_fpl: {free_value}% FPL is below the poverty line; "
             "left for review, not recorded"
+        )
+        free_value = None
+    free_raw = e.get("free_care_max_fpl") if isinstance(e.get("free_care_max_fpl"), dict) else None
+    free_quote = (free_raw or {}).get("quote") or ""
+    hdc_program: dict[str, Any] | None = None
+    if free_value is not None and state == "CO" and _HDC_QUOTE.search(free_quote):
+        notes.append(
+            f"eligibility.free_care_max_fpl: {free_value}% is Colorado Hospital Discounted Care, "
+            "recorded under programs.state_programs instead of the free-care line"
+        )
+        hdc_program = {**HDC_PROGRAM}
+        free_value = None
+    elif (
+        free_value is not None
+        and _COPAY_ROW.search(free_quote)
+        and not re.search(r"\$\s?0\b", free_quote)
+    ):
+        notes.append(
+            "eligibility.free_care_max_fpl: the quote is a copay row with a dollar copay, "
+            "not free care; left for review, not recorded"
         )
         free_value = None
 
@@ -349,18 +405,7 @@ def convert_draft(
                 notes,
                 "programs.presumptive",
             ),
-            "state_programs": _cited(
-                p.get("state_programs"),
-                [
-                    x
-                    for x in (val(p, "state_programs") or [])
-                    if isinstance(x, dict) and x.get("name")
-                ]
-                or None,
-                today,
-                notes,
-                "programs.state_programs",
-            ),
+            "state_programs": _state_programs(p, free_raw, hdc_program, today, notes),
         },
         "apply": {
             "form_url": _cited(

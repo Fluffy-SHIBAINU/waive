@@ -32,17 +32,7 @@ Ten correct against the document. One wrong: Family Health West (CO 061302), whe
 
 ### Colorado Hospital Discounted Care and copay tables
 
-Colorado law caps what patients at or below 250% FPL pay. Several sheets record 250% as the free-care line from a table row that says "$0 copay per visit" or from a sentence about the legislation. For Centura, CommonSpirit and Holy Cross the row reads "$0 copay", which is free care in effect. For Family Health West the row is a screening step. For St. Catherine (KS 170023) the row reads "$650 copay per visit", which is not free care at all. Decide how Waive represents the Colorado program: as the free-care line, as a state program, or both.
-
-- AL 010007 MIZELL MEMORIAL HOSPITAL: recorded 200% | quote: "If the patient’s income is under 200% of the Federal Poverty Guidelines (FPG) (Exhibit D) the patient will be approved f"
-- CO 060013 MERCY REGIONAL MEDICAL CENTER: recorded 250% | quote: "0-250% $0 copay per visit $0 copay per visit 0% copay per visit"
-- CO 060104 CENTURA HEALTH-ST ANTHONY NORTH HE: recorded 250% | quote: "The legislation requires hospitals to provide financial assistance to patients in emergent situations and whose incomes "
-- CO 060118 ST ANTHONY SUMMIT MEDICAL CENTER: recorded 250% | quote: "0-250% $0 copay per visit $0 copay per visit 0% copay per visit"
-- CO 060133 ST FRANCIS HOSPITAL - INTERQUEST: recorded 250% | quote: "The legislation requires hospitals to provide financial assistance to patients in emergent situations and whose incomes "
-- CO 061302 FAMILY HEALTH WEST HOSPITAL: recorded 250% | quote: "HDC 0–250% Screen for HDC eligibility"
-- CO 061344 ST THOMAS MORE HOSPITAL: recorded 250% | quote: "The legislation requires hospitals to provide financial assistance to patients in emergent situations and whose incomes "
-- KS 170023 ST. CATHERINE HOSPITAL - GARDEN CI: recorded 150% | quote: "0-150% $650 copay per visit $50 copay per visit 15% of charges"
-- UT 460041 HOLY CROSS HOSPITAL-DAVIS: recorded 250% | quote: "0-250% $0 copay per visit $0 copay per visit 0% copay per visit"
+Decision (owner, 2026-10-23): Colorado HDC rows are recorded as a state program, not as the free-care line. The import now moves a Colorado free-care line whose quote is an HDC screening row, a "$0 copay" row, or a sentence about the legislation into `programs.state_programs` as "Colorado Hospital Discounted Care (income at or below 250% FPL)", citing the same quote and source. Six sheets moved: Mercy Regional 060013, Centura St Anthony North 060104, St Anthony Summit 060118, St Francis Interquest 060133, Family Health West 061302, St Thomas More 061344. A copay row with a dollar amount is held for review in any state; St. Catherine KS 170023 is held.
 
 ### Table headers quoted without the benefit
 
