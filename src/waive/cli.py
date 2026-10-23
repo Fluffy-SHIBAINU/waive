@@ -325,6 +325,9 @@ def atlas_import_eve(
         False, "--db/--no-db", help="Also store each sheet as a version 1 draft in the database"
     ),
     state: str | None = typer.Option(None, "--state", help="Only this state"),
+    sources_dir: Path | None = typer.Option(  # noqa: B008
+        None, "--sources-dir", help="Folder of <source id>.txt documents to store with the sheets"
+    ),
 ) -> None:
     """Convert Eve waive-agent drafts into draft procedure sheets: validates against the schema,
     writes data/atlas-eve/<state>.json with review notes, and optionally stores them as drafts."""
@@ -349,7 +352,7 @@ def atlas_import_eve(
     if db:
         settings = Settings()
         with session_scope(_engine(settings)) as session:
-            stored = eve_import.import_to_db(session, results, seeds)
+            stored = eve_import.import_to_db(session, results, seeds, sources_dir)
             session.commit()
         typer.echo(f"stored {stored} draft sheets (version 1, status draft) with review items")
 
