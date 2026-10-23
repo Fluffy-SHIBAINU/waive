@@ -403,15 +403,7 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": {
-     "value": "300",
-     "layer": "documented",
-     "quote": "Uninsured individuals or family/households who meet three hundred percent (300%) or below of FPG will qualify for financial assistance for their financial responsibility for services that are eligible in this policy.",
-     "source_id": "fap-0d81b3f3ee402a4b",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "free_care_max_fpl": null,
     "discount_tiers": null,
     "assistance_ceiling_fpl": {
      "value": "500",
@@ -613,6 +605,7 @@
    ],
    "accuracy": null,
    "eve_review": [
+    "eligibility.free_care_max_fpl: owner review says 300% is a discount or assistance limit, not free care; dropped; the sheet already records a 500% ceiling.",
     "agent dropped contacts.languages: quote is not a substring of the source"
    ]
   },
@@ -2212,7 +2205,9 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": {
+    "free_care_max_fpl": null,
+    "discount_tiers": null,
+    "assistance_ceiling_fpl": {
      "value": "225",
      "layer": "documented",
      "quote": "If a validated financial statement application reflects an income at or below 225% of the most current Federal Poverty Level for the stated family size, the account will qualify for financial assistance in its entirety.",
@@ -2221,8 +2216,6 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "discount_tiers": null,
-    "assistance_ceiling_fpl": null,
     "asset_test": {
      "value": true,
      "layer": "documented",
@@ -2409,6 +2402,7 @@
    ],
    "accuracy": null,
    "eve_review": [
+    "eligibility.free_care_max_fpl: owner review says 225% is a discount or assistance limit, not free care; recorded as assistance_ceiling_fpl.",
     "programs.presumptive: 1 more verbatim excerpt(s) supported this value: Individuals are deemed eligible for presumptive financial assistance via Independent Eligibility Assessments that determ",
     "contacts.languages: 1 more verbatim excerpt(s) supported this value: Guarantor Financial Statement Application (GFSA) &ndash; Spanish",
     "agent dropped programs.state_programs: judge: Quote names the Act but not that screening is accepted; it says to apply for Medicaid and be denied, not to cooperate with a pending process."
@@ -2429,15 +2423,7 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": {
-     "value": "300",
-     "layer": "documented",
-     "quote": "Uninsured individuals or family/households who meet three hundred percent (300%) or below of FPG will qualify for financial assistance for their financial responsibility for services that are eligible in this policy.",
-     "source_id": "fap-0d81b3f3ee402a4b",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "free_care_max_fpl": null,
     "discount_tiers": null,
     "assistance_ceiling_fpl": {
      "value": "500",
@@ -2649,7 +2635,9 @@
     }
    ],
    "accuracy": null,
-   "eve_review": []
+   "eve_review": [
+    "eligibility.free_care_max_fpl: owner review says 300% is a discount or assistance limit, not free care; dropped; the sheet already records a 500% ceiling."
+   ]
   },
   {
    "hospital": {

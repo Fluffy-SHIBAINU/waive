@@ -1251,15 +1251,7 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": {
-     "value": "200",
-     "layer": "documented",
-     "quote": "Poverty Level 0-200% 201-225% 226%-250% 251%-275% 276%-300%",
-     "source_id": "fap-c46e7184823c54df",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "free_care_max_fpl": null,
     "discount_tiers": {
      "value": [
       {
@@ -1290,7 +1282,15 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "assistance_ceiling_fpl": null,
+    "assistance_ceiling_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "Poverty Level 0-200% 201-225% 226%-250% 251%-275% 276%-300%",
+     "source_id": "fap-c46e7184823c54df",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "asset_test": null,
     "residency": null,
     "insured_patients_covered": null,
@@ -1413,8 +1413,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.free_care_max_fpl: 1 more verbatim excerpt(s) supported this value: Discounts 100% 90% 80% 70% 60%",
+    "eligibility.free_care_max_fpl: owner review says 200% is a discount or assistance limit, not free care; recorded as assistance_ceiling_fpl.",
     "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: Discounts 100% 90% 80% 70% 60%",
+    "eligibility.assistance_ceiling_fpl: 1 more verbatim excerpt(s) supported this value: Discounts 100% 90% 80% 70% 60%",
     "programs.presumptive: 1 more verbatim excerpt(s) supported this value: \u2022 Enrollment in Medicaid of patient or a child in their household \u2022 Enrollment in another means-tested public assistance",
     "contacts.languages: 1 more verbatim excerpt(s) supported this value: 8-12-25 Financial Assistance Policy SPANISH",
     "agent dropped apply.documents_required: excerpt not in source: Most recent tax return, including W-2 forms and supporting s"
@@ -5176,15 +5177,7 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": {
-     "value": "200",
-     "layer": "documented",
-     "quote": "Poverty Level 0-200% 201-250% 251-300%",
-     "source_id": "fap-d7e3e49c10e2e606",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "free_care_max_fpl": null,
     "discount_tiers": {
      "value": [
       {
@@ -5359,6 +5352,7 @@
    ],
    "accuracy": null,
    "eve_review": [
+    "eligibility.free_care_max_fpl: owner review says 200% is a discount or assistance limit, not free care; dropped; the sheet already records a 300% ceiling.",
     "agent dropped apply.form_url: quote is not a substring of the source"
    ]
   },
@@ -7807,15 +7801,7 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": {
-     "value": "200",
-     "layer": "documented",
-     "quote": "& DC Family size Poverty Level 0-200% 201-250% 251-300%",
-     "source_id": "fap-ab65dc0af88561ae",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "free_care_max_fpl": null,
     "discount_tiers": {
      "value": [
       {
@@ -7836,7 +7822,15 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "assistance_ceiling_fpl": null,
+    "assistance_ceiling_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "& DC Family size Poverty Level 0-200% 201-250% 251-300%",
+     "source_id": "fap-ab65dc0af88561ae",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "asset_test": null,
     "residency": null,
     "insured_patients_covered": null,
@@ -7929,8 +7923,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.free_care_max_fpl: 1 more verbatim excerpt(s) supported this value: Discounts 100% 75% 50%",
+    "eligibility.free_care_max_fpl: owner review says 200% is a discount or assistance limit, not free care; recorded as assistance_ceiling_fpl.",
     "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: Discounts 100% 75% 50%",
+    "eligibility.assistance_ceiling_fpl: 1 more verbatim excerpt(s) supported this value: Discounts 100% 75% 50%",
     "contacts.languages: 1 more verbatim excerpt(s) supported this value: RESUMEN EN LENGUAJE SIMPLE",
     "agent dropped programs.presumptive: judge: The quote lists 'another means-tested public assistance program' but gives no examples; WIC and SNAP do not appear.",
     "agent dropped apply.documents_required: judge: The quote lists only the tax return, pay stubs/employer letter and bank statements; the other-income and no-income items are absent.",

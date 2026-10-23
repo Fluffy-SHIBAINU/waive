@@ -2802,7 +2802,9 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": {
+    "free_care_max_fpl": null,
+    "discount_tiers": null,
+    "assistance_ceiling_fpl": {
      "value": "300",
      "layer": "documented",
      "quote": "If your family income is less than or equal to 300% of the federal poverty level, then you may be eligible for full assistance.",
@@ -2811,8 +2813,6 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "discount_tiers": null,
-    "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": null,
     "insured_patients_covered": null,
@@ -2905,6 +2905,7 @@
    ],
    "accuracy": null,
    "eve_review": [
+    "eligibility.free_care_max_fpl: owner review says 300% is a discount or assistance limit, not free care; recorded as assistance_ceiling_fpl.",
     "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: If your family income is between 301% and 400% of the federal poverty level, then you may be eligible for partial assist",
     "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Completed and signed IRS form 4506-T | Copies of the two most recent pay stubs for all wage-earners who live in the household",
     "contacts.hours: 1 more verbatim excerpt(s) supported this value: p.m. Monday through Friday. Closed weekends.",
@@ -2925,7 +2926,7 @@
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
-     "eligibility.free_care_max_fpl",
+     "eligibility.assistance_ceiling_fpl",
      "contacts.phone",
      "contacts.hours",
      "contacts.languages"
@@ -2939,8 +2940,8 @@
     "pruned": [
      "apply.documents_required: none of the listed documents is named in the quote (after trimming)"
     ],
-    "income_rule_verified": true,
-    "core_completeness": 0.33
+    "income_rule_verified": false,
+    "core_completeness": 0.17
    }
   },
   {
@@ -3219,24 +3220,7 @@
    },
    "programs": {
     "presumptive": null,
-    "state_programs": {
-     "value": [
-      {
-       "name": "Healthy Indiana Plan (HIP)",
-       "how_to_apply": "Learn more about HIP"
-      },
-      {
-       "name": "Hoosier Healthwise",
-       "how_to_apply": "call (765) 983-3310 to speak with a Claim Aid Specialist"
-      }
-     ],
-     "layer": "documented",
-     "quote": "Healthy Indiana Plan (HIP):",
-     "source_id": "web-efcf001aec415bfe",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "state_programs": null
    },
    "apply": {
     "form_url": null,
@@ -3348,12 +3332,14 @@
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 3,
+    "sources_fetched": 2,
     "sources_total": 3,
-    "sources_missing": [],
+    "sources_missing": [
+     "https://reidhealth.org/Patient-Resources/Billing-and-Insurance/Financial-Assistance"
+    ],
     "sha256_match": {
      "fap-516fb59525940b86": true,
-     "web-efcf001aec415bfe": true,
+     "web-efcf001aec415bfe": null,
      "fap-201e86ad962cc8fc": true
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
@@ -3362,13 +3348,17 @@
      "eligibility.asset_test",
      "eligibility.residency",
      "eligibility.insured_patients_covered",
-     "programs.state_programs",
      "apply.submit_methods",
      "apply.window_days_from_first_bill",
      "contacts.phone",
      "contacts.languages"
     ],
-    "rejected": [],
+    "rejected": [
+     [
+      "programs.state_programs",
+      "source text missing"
+     ]
+    ],
     "pruned": [
      "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
      "apply.documents_required: none of the listed documents is named in the quote (after trimming)",
@@ -11850,14 +11840,12 @@
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 1,
+    "sources_fetched": 2,
     "sources_total": 2,
-    "sources_missing": [
-     "https://cameronhealth.com/resources/financial-information/"
-    ],
+    "sources_missing": [],
     "sha256_match": {
      "fap-09062f8c314ffefc": true,
-     "web-985f9665b3a256b3": null
+     "web-985f9665b3a256b3": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
@@ -11870,7 +11858,7 @@
     "rejected": [
      [
       "apply.form_url",
-      "source text missing"
+      "quote not found in source"
      ]
     ],
     "pruned": [

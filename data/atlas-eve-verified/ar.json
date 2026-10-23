@@ -1818,7 +1818,7 @@
     "sha256_match": {
      "fap-89654b710fc895d3": true,
      "fap-662ea28a0224a9b7": true,
-     "web-945263e2a2cf422e": false
+     "web-945263e2a2cf422e": true
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
@@ -3112,7 +3112,9 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": {
+    "free_care_max_fpl": null,
+    "discount_tiers": null,
+    "assistance_ceiling_fpl": {
      "value": "300",
      "layer": "documented",
      "quote": "If your family income is less than or equal to 300% of the federal poverty level, then you may be eligible for full assistance.",
@@ -3121,8 +3123,6 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "discount_tiers": null,
-    "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": null,
     "insured_patients_covered": {
@@ -3243,6 +3243,7 @@
    ],
    "accuracy": null,
    "eve_review": [
+    "eligibility.free_care_max_fpl: owner review says 300% is a discount or assistance limit, not free care; recorded as assistance_ceiling_fpl.",
     "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: Partial Assistance (50%)",
     "eligibility.insured_patients_covered: quote matched the source only after typography normalization",
     "programs.presumptive: 1 more verbatim excerpt(s) supported this value: BH requires all patients, whether insured or not, to file for Medicaid or present evidence indicating ineligibility for ",
@@ -3264,7 +3265,7 @@
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
-     "eligibility.free_care_max_fpl",
+     "eligibility.assistance_ceiling_fpl",
      "eligibility.insured_patients_covered",
      "programs.presumptive",
      "apply.documents_required",
@@ -3292,8 +3293,8 @@
      "apply.documents_required: 2 items not named in the trimmed quote",
      "apply.submit_methods: none of the listed channels is named in the quote (after trimming)"
     ],
-    "income_rule_verified": true,
-    "core_completeness": 0.5
+    "income_rule_verified": false,
+    "core_completeness": 0.33
    }
   },
   {

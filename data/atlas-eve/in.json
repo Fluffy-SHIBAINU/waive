@@ -2736,15 +2736,7 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": {
-     "value": "300",
-     "layer": "documented",
-     "quote": "If your family income is less than or equal to 300% of the federal poverty level, then you may be eligible for full assistance.",
-     "source_id": "web-99be41eab84622f1",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "free_care_max_fpl": null,
     "discount_tiers": {
      "value": [
       {
@@ -2760,7 +2752,15 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "assistance_ceiling_fpl": null,
+    "assistance_ceiling_fpl": {
+     "value": "300",
+     "layer": "documented",
+     "quote": "If your family income is less than or equal to 300% of the federal poverty level, then you may be eligible for full assistance.",
+     "source_id": "web-99be41eab84622f1",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "asset_test": null,
     "residency": null,
     "insured_patients_covered": null,
@@ -2864,6 +2864,7 @@
    ],
    "accuracy": null,
    "eve_review": [
+    "eligibility.free_care_max_fpl: owner review says 300% is a discount or assistance limit, not free care; recorded as assistance_ceiling_fpl.",
     "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: If your family income is between 301% and 400% of the federal poverty level, then you may be eligible for partial assist",
     "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Completed and signed IRS form 4506-T | Copies of the two most recent pay stubs for all wage-earners who live in the household",
     "contacts.hours: 1 more verbatim excerpt(s) supported this value: p.m. Monday through Friday. Closed weekends.",

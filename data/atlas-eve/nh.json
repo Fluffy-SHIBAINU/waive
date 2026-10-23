@@ -1650,15 +1650,7 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": {
-     "value": "200",
-     "layer": "documented",
-     "quote": "In most cases, this will apply to patients who fall between 0 - 200% of the Federal Poverty Level",
-     "source_id": "web-df8460799d975e4e",
-     "checked_on": "2026-10-22",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "free_care_max_fpl": null,
     "discount_tiers": null,
     "assistance_ceiling_fpl": {
      "value": "400",
@@ -1762,7 +1754,9 @@
     }
    ],
    "accuracy": null,
-   "eve_review": []
+   "eve_review": [
+    "eligibility.free_care_max_fpl: owner review says 200% is a discount or assistance limit, not free care; dropped; the sheet already records a 400% ceiling."
+   ]
   },
   {
    "hospital": {

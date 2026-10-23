@@ -1452,6 +1452,7 @@
    "accuracy": null,
    "eve_review": [
     "eligibility.free_care_max_fpl: the quote is a copay row with a dollar copay, not free care; left for review, not recorded",
+    "eligibility.free_care_max_fpl: owner review: discount, not free care.",
     "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: 201-250% 20% of charges 20% of charges 35% of charges",
     "agent dropped contacts.languages: quote is not a substring of the source",
     "agent judge on eligibility.free_care_max_fpl: Quote shows a '0-150%' band with a $650 copay per visit and $50 copay, not a 100% free care statement; it does not state free care applies up to 150% FPL.",
@@ -4683,7 +4684,9 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": {
+    "free_care_max_fpl": null,
+    "discount_tiers": null,
+    "assistance_ceiling_fpl": {
      "value": "200",
      "layer": "documented",
      "quote": "Financial Assistance is available to all patients up to 200% Federal Poverty Guidelines.",
@@ -4692,8 +4695,6 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "discount_tiers": null,
-    "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": {
      "value": [
@@ -4823,6 +4824,7 @@
    ],
    "accuracy": null,
    "eve_review": [
+    "eligibility.free_care_max_fpl: owner review says 200% is a discount or assistance limit, not free care; recorded as assistance_ceiling_fpl.",
     "apply.documents_required: 2 more verbatim excerpt(s) supported this value: b) Copy of checking and savings for last 3 months. | c) Copy of the most recent federal tax return.",
     "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Nemaha Valley Community Hospital | Attention: Business Office",
     "agent judge on eligibility.free_care_max_fpl: The quote says assistance is available up to 200% FPG but does not say 100% free care applies up to that level.",
@@ -4843,7 +4845,7 @@
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
-     "eligibility.free_care_max_fpl",
+     "eligibility.assistance_ceiling_fpl",
      "eligibility.residency",
      "programs.presumptive",
      "programs.state_programs",
@@ -4865,8 +4867,8 @@
      "apply.documents_required: 2 items not named in the trimmed quote",
      "apply.submit_methods: 2 items not named in the trimmed quote"
     ],
-    "income_rule_verified": true,
-    "core_completeness": 0.67
+    "income_rule_verified": false,
+    "core_completeness": 0.5
    }
   },
   {
@@ -6324,6 +6326,7 @@
    "accuracy": null,
    "eve_review": [
     "eligibility.free_care_max_fpl: 70% FPL is below the poverty line; left for review, not recorded",
+    "eligibility.free_care_max_fpl: owner review: discount, not free care.",
     "eligibility.assistance_ceiling_fpl: quote matched the source only after typography normalization",
     "eligibility.asset_test: quote matched the source only after typography normalization",
     "apply.documents_required: 2 more verbatim excerpt(s) supported this value: iii. Two Most Recent copies of bank statements for both checking and savings accounts. | vi. Medicaid coverage denial letter if applicable.",

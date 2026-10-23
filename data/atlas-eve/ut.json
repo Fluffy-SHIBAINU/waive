@@ -311,7 +311,9 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": {
+    "free_care_max_fpl": null,
+    "discount_tiers": null,
+    "assistance_ceiling_fpl": {
      "value": "200",
      "layer": "documented",
      "quote": "this will apply to patients who fall between 0 - 200% of the Federal Poverty Level",
@@ -320,8 +322,6 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "discount_tiers": null,
-    "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": null,
     "insured_patients_covered": null,
@@ -386,6 +386,7 @@
    ],
    "accuracy": null,
    "eve_review": [
+    "eligibility.free_care_max_fpl: owner review says 200% is a discount or assistance limit, not free care; recorded as assistance_ceiling_fpl.",
     "agent dropped apply.documents_required: between 1 and 3 excerpts allowed",
     "agent judge on eligibility.min_balance: Quote gives $1,500 as a threshold for patients with balances greater than it, tied to a 201-400% FPL income band, not a general minimum balance for eligibility."
    ]

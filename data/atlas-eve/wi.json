@@ -5931,15 +5931,7 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": {
-     "value": "300",
-     "layer": "documented",
-     "quote": "\u2264 300% FPG \u2264 400% FPG \u2264 600% FPG",
-     "source_id": "fap-9133928e257639dd",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "free_care_max_fpl": null,
     "discount_tiers": {
      "value": [
       {
@@ -5960,7 +5952,15 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "assistance_ceiling_fpl": null,
+    "assistance_ceiling_fpl": {
+     "value": "300",
+     "layer": "documented",
+     "quote": "\u2264 300% FPG \u2264 400% FPG \u2264 600% FPG",
+     "source_id": "fap-9133928e257639dd",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "asset_test": {
      "value": true,
      "layer": "documented",
@@ -6125,6 +6125,7 @@
    ],
    "accuracy": null,
    "eve_review": [
+    "eligibility.free_care_max_fpl: owner review says 300% is a discount or assistance limit, not free care; recorded as assistance_ceiling_fpl.",
     "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: Discount Amount 100% 80% 73%",
     "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Women, Infant, and Children Nutrition Program (WIC); | Supplemental Nutrition Assistance Program (SNAP);",
     "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Bank statements - 2 most recent. | Copy of most recent federal tax return (including all applicable schedules).",

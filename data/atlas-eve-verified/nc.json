@@ -1141,15 +1141,7 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": {
-     "value": "200",
-     "layer": "documented",
-     "quote": "Poverty Level 0-200% 201-225% 226%-250% 251%-275% 276%-300%",
-     "source_id": "fap-c46e7184823c54df",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "free_care_max_fpl": null,
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
     "asset_test": null,
@@ -1261,8 +1253,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.free_care_max_fpl: 1 more verbatim excerpt(s) supported this value: Discounts 100% 90% 80% 70% 60%",
+    "eligibility.free_care_max_fpl: owner review says 200% is a discount or assistance limit, not free care; recorded as assistance_ceiling_fpl.",
     "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: Discounts 100% 90% 80% 70% 60%",
+    "eligibility.assistance_ceiling_fpl: 1 more verbatim excerpt(s) supported this value: Discounts 100% 90% 80% 70% 60%",
     "programs.presumptive: 1 more verbatim excerpt(s) supported this value: \u2022 Enrollment in Medicaid of patient or a child in their household \u2022 Enrollment in another means-tested public assistance",
     "contacts.languages: 1 more verbatim excerpt(s) supported this value: 8-12-25 Financial Assistance Policy SPANISH",
     "agent dropped apply.documents_required: excerpt not in source: Most recent tax return, including W-2 forms and supporting s"
@@ -1279,7 +1272,6 @@
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
-     "eligibility.free_care_max_fpl",
      "apply.submit_methods",
      "apply.decision_days",
      "contacts.phone",
@@ -1289,13 +1281,17 @@
      [
       "eligibility.discount_tiers",
       "value not in quote"
+     ],
+     [
+      "eligibility.assistance_ceiling_fpl",
+      "quote does not state the ceiling as a percentage of the poverty level"
      ]
     ],
     "pruned": [
      "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)"
     ],
-    "income_rule_verified": true,
-    "core_completeness": 0.5
+    "income_rule_verified": false,
+    "core_completeness": 0.33
    }
   },
   {
@@ -4028,7 +4024,7 @@
     "sources_missing": [],
     "sha256_match": {
      "fap-356ce1d641afd492": true,
-     "web-82f15d236c324e9b": true,
+     "web-82f15d236c324e9b": false,
      "web-30ec344ef8886d3c": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
@@ -5070,15 +5066,7 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": {
-     "value": "200",
-     "layer": "documented",
-     "quote": "Poverty Level 0-200% 201-250% 251-300%",
-     "source_id": "fap-d7e3e49c10e2e606",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "free_care_max_fpl": null,
     "discount_tiers": {
      "value": [
       {
@@ -5236,6 +5224,7 @@
    ],
    "accuracy": null,
    "eve_review": [
+    "eligibility.free_care_max_fpl: owner review says 200% is a discount or assistance limit, not free care; dropped; the sheet already records a 300% ceiling.",
     "agent dropped apply.form_url: quote is not a substring of the source"
    ],
    "eve_verified": {
@@ -5250,7 +5239,6 @@
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
-     "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
      "programs.presumptive",
      "programs.state_programs",
@@ -5272,7 +5260,7 @@
      "apply.submit_methods: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": true,
-    "core_completeness": 0.83
+    "core_completeness": 0.67
    }
   },
   {
@@ -7313,15 +7301,7 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": {
-     "value": "200",
-     "layer": "documented",
-     "quote": "& DC Family size Poverty Level 0-200% 201-250% 251-300%",
-     "source_id": "fap-ab65dc0af88561ae",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "free_care_max_fpl": null,
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
     "asset_test": null,
@@ -7416,8 +7396,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.free_care_max_fpl: 1 more verbatim excerpt(s) supported this value: Discounts 100% 75% 50%",
+    "eligibility.free_care_max_fpl: owner review says 200% is a discount or assistance limit, not free care; recorded as assistance_ceiling_fpl.",
     "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: Discounts 100% 75% 50%",
+    "eligibility.assistance_ceiling_fpl: 1 more verbatim excerpt(s) supported this value: Discounts 100% 75% 50%",
     "contacts.languages: 1 more verbatim excerpt(s) supported this value: RESUMEN EN LENGUAJE SIMPLE",
     "agent dropped programs.presumptive: judge: The quote lists 'another means-tested public assistance program' but gives no examples; WIC and SNAP do not appear.",
     "agent dropped apply.documents_required: judge: The quote lists only the tax return, pay stubs/employer letter and bank statements; the other-income and no-income items are absent.",
@@ -7435,7 +7416,6 @@
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
-     "eligibility.free_care_max_fpl",
      "apply.decision_days",
      "contacts.phone",
      "contacts.languages"
@@ -7444,11 +7424,15 @@
      [
       "eligibility.discount_tiers",
       "value not in quote"
+     ],
+     [
+      "eligibility.assistance_ceiling_fpl",
+      "quote does not state the ceiling as a percentage of the poverty level"
      ]
     ],
     "pruned": [],
-    "income_rule_verified": true,
-    "core_completeness": 0.33
+    "income_rule_verified": false,
+    "core_completeness": 0.17
    }
   },
   {
@@ -7922,7 +7906,7 @@
     "sources_missing": [],
     "sha256_match": {
      "fap-356ce1d641afd492": true,
-     "web-82f15d236c324e9b": true,
+     "web-82f15d236c324e9b": false,
      "web-499a7c9ab687486e": true
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
@@ -8072,7 +8056,7 @@
     "sources_missing": [],
     "sha256_match": {
      "fap-356ce1d641afd492": true,
-     "web-82f15d236c324e9b": true,
+     "web-82f15d236c324e9b": false,
      "web-0faf89faad173019": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
@@ -9088,7 +9072,7 @@
     "sources_missing": [],
     "sha256_match": {
      "fap-356ce1d641afd492": true,
-     "web-82f15d236c324e9b": true,
+     "web-82f15d236c324e9b": false,
      "web-219317f482310b8f": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
@@ -9659,7 +9643,7 @@
     "sources_missing": [],
     "sha256_match": {
      "fap-356ce1d641afd492": true,
-     "web-82f15d236c324e9b": true,
+     "web-82f15d236c324e9b": false,
      "web-526849a4666a9974": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",

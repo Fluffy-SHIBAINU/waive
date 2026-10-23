@@ -370,7 +370,9 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": {
+    "free_care_max_fpl": null,
+    "discount_tiers": null,
+    "assistance_ceiling_fpl": {
      "value": "200",
      "layer": "documented",
      "quote": "Parameters have been established to allow for an assistance adjustment if the gross household income is at or below 200% of the federal poverty guidelines",
@@ -379,8 +381,6 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "discount_tiers": null,
-    "assistance_ceiling_fpl": null,
     "asset_test": {
      "value": true,
      "layer": "documented",
@@ -558,6 +558,7 @@
    ],
    "accuracy": null,
    "eve_review": [
+    "eligibility.free_care_max_fpl: owner review says 200% is a discount or assistance limit, not free care; recorded as assistance_ceiling_fpl.",
     "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Is Homeless or received care from a homeless clinic | Is deceased with no known estate or living spouse",
     "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Most recently filed tax return or Non-Filing Letter from the IRS | Medicaid Approval/Denial Letter",
     "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Obtain a copy of the financial assistance application at Great Plains Regional Medical Center (GPRMC) Admission Departme | Verbally, either over the phone or face to face with the Financial Assistance Representative",

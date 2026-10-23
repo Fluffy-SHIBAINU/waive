@@ -162,15 +162,13 @@
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 2,
+    "sources_fetched": 3,
     "sources_total": 3,
-    "sources_missing": [
-     "https://ubh.org/billing/"
-    ],
+    "sources_missing": [],
     "sha256_match": {
      "fap-ecc17b157d8c5299": true,
      "fap-0dc719317e89677d": true,
-     "web-1a092db94c2367f0": null
+     "web-1a092db94c2367f0": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
@@ -335,15 +333,7 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": {
-     "value": "200",
-     "layer": "documented",
-     "quote": "this will apply to patients who fall between 0 - 200% of the Federal Poverty Level",
-     "source_id": "web-37e7f4932fde0211",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "free_care_max_fpl": null,
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
     "asset_test": null,
@@ -410,6 +400,7 @@
    ],
    "accuracy": null,
    "eve_review": [
+    "eligibility.free_care_max_fpl: owner review says 200% is a discount or assistance limit, not free care; recorded as assistance_ceiling_fpl.",
     "agent dropped apply.documents_required: between 1 and 3 excerpts allowed",
     "agent judge on eligibility.min_balance: Quote gives $1,500 as a threshold for patients with balances greater than it, tied to a 201-400% FPL income band, not a general minimum balance for eligibility."
    ],
@@ -419,18 +410,22 @@
     "sources_total": 2,
     "sources_missing": [],
     "sha256_match": {
-     "web-37e7f4932fde0211": false,
+     "web-37e7f4932fde0211": true,
      "web-8bc6d94048114f4c": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
-     "eligibility.free_care_max_fpl",
      "eligibility.min_balance"
     ],
-    "rejected": [],
+    "rejected": [
+     [
+      "eligibility.assistance_ceiling_fpl",
+      "quote does not say the hospital's financial assistance reaches it"
+     ]
+    ],
     "pruned": [],
-    "income_rule_verified": true,
-    "core_completeness": 0.17
+    "income_rule_verified": false,
+    "core_completeness": 0.0
    }
   },
   {

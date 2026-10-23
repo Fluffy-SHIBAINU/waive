@@ -5810,15 +5810,7 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": {
-     "value": "300",
-     "layer": "documented",
-     "quote": "\u2264 300% FPG \u2264 400% FPG \u2264 600% FPG",
-     "source_id": "fap-9133928e257639dd",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "free_care_max_fpl": null,
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
     "asset_test": null,
@@ -5953,6 +5945,7 @@
    ],
    "accuracy": null,
    "eve_review": [
+    "eligibility.free_care_max_fpl: owner review says 300% is a discount or assistance limit, not free care; recorded as assistance_ceiling_fpl.",
     "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: Discount Amount 100% 80% 73%",
     "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Women, Infant, and Children Nutrition Program (WIC); | Supplemental Nutrition Assistance Program (SNAP);",
     "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Bank statements - 2 most recent. | Copy of most recent federal tax return (including all applicable schedules).",
@@ -5976,7 +5969,6 @@
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
-     "eligibility.free_care_max_fpl",
      "eligibility.residency",
      "eligibility.insured_patients_covered",
      "apply.documents_required",
@@ -5991,6 +5983,10 @@
       "value not in quote"
      ],
      [
+      "eligibility.assistance_ceiling_fpl",
+      "quote names a higher income limit than the ceiling"
+     ],
+     [
       "eligibility.asset_test",
       "quote does not support the asset-test value"
      ]
@@ -6000,8 +5996,8 @@
      "apply.documents_required: 3 items not named in the trimmed quote",
      "apply.submit_methods: 2 items not named in the trimmed quote"
     ],
-    "income_rule_verified": true,
-    "core_completeness": 0.67
+    "income_rule_verified": false,
+    "core_completeness": 0.5
    }
   },
   {
@@ -17977,7 +17973,7 @@
     "sha256_match": {
      "fap-7a22160901533428": true,
      "fap-77344ce9bbfd7017": true,
-     "web-5749ba4e75f66179": false
+     "web-5749ba4e75f66179": true
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [

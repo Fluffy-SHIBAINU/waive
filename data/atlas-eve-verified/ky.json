@@ -604,7 +604,7 @@
     "sha256_match": {
      "fap-738db57f691c27d1": true,
      "fap-3c5f9e4d6e48aa0f": true,
-     "web-378082c0ab26ee03": false
+     "web-378082c0ab26ee03": true
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
@@ -1230,21 +1230,7 @@
      "support_count": 0
     },
     "hours": null,
-    "languages": {
-     "value": [
-      "English",
-      "Spanish",
-      "Bosnian",
-      "Burmese",
-      "Swahili"
-     ],
-     "layer": "documented",
-     "quote": "Plain Language Summary (English)",
-     "source_id": "web-4f285ba679efdc6d",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    }
+    "languages": null
    },
    "coverage": {
     "facilities": null,
@@ -1280,12 +1266,14 @@
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 2,
+    "sources_fetched": 1,
     "sources_total": 2,
-    "sources_missing": [],
+    "sources_missing": [
+     "https://medcenterhealth.org/cfr/billing-policies/financial-assistance/financial-assistance-hospital/"
+    ],
     "sha256_match": {
      "fap-88385c1719406bb0": true,
-     "web-4f285ba679efdc6d": false
+     "web-4f285ba679efdc6d": null
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
@@ -1293,8 +1281,7 @@
      "eligibility.asset_test",
      "apply.documents_required",
      "apply.window_days_from_first_bill",
-     "contacts.phone",
-     "contacts.languages"
+     "contacts.phone"
     ],
     "rejected": [
      [
@@ -1303,7 +1290,11 @@
      ],
      [
       "apply.form_url",
-      "quote not found in source"
+      "source text missing"
+     ],
+     [
+      "contacts.languages",
+      "source text missing"
      ]
     ],
     "pruned": [
@@ -2904,7 +2895,7 @@
     "sha256_match": {
      "fap-738db57f691c27d1": true,
      "fap-3c5f9e4d6e48aa0f": true,
-     "web-378082c0ab26ee03": false
+     "web-378082c0ab26ee03": true
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
@@ -4862,7 +4853,7 @@
     "sha256_match": {
      "fap-738db57f691c27d1": true,
      "fap-3c5f9e4d6e48aa0f": true,
-     "web-378082c0ab26ee03": false
+     "web-378082c0ab26ee03": true
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
@@ -5848,7 +5839,9 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": {
+    "free_care_max_fpl": null,
+    "discount_tiers": null,
+    "assistance_ceiling_fpl": {
      "value": "300",
      "layer": "documented",
      "quote": "If your family income is less than or equal to 300% of the federal poverty level, then you may be eligible for full assistance.",
@@ -5857,8 +5850,6 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "discount_tiers": null,
-    "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": null,
     "insured_patients_covered": null,
@@ -5963,6 +5954,7 @@
    ],
    "accuracy": null,
    "eve_review": [
+    "eligibility.free_care_max_fpl: owner review says 300% is a discount or assistance limit, not free care; recorded as assistance_ceiling_fpl.",
     "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: If your family income is between 301% and 400% of the federal poverty level, then you may be eligible for partial assist",
     "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Copies of the two most recent pay stubs for all wage-earners who live in the household \u25aa Proof of other income, includin | Two most recent investment statements from all accounts not covered by the above such as HSA, FSA, stocks, bonds, and CD",
     "agent dropped eligibility.asset_test: judge: Form fragment mentions 'Total Family resources' but does not plainly say assets are considered.",
@@ -5982,7 +5974,7 @@
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
-     "eligibility.free_care_max_fpl",
+     "eligibility.assistance_ceiling_fpl",
      "apply.documents_required",
      "contacts.phone",
      "contacts.hours",
@@ -5997,8 +5989,8 @@
     "pruned": [
      "apply.documents_required: 2 items not named in the trimmed quote"
     ],
-    "income_rule_verified": true,
-    "core_completeness": 0.5
+    "income_rule_verified": false,
+    "core_completeness": 0.33
    }
   },
   {
@@ -6016,15 +6008,7 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": {
-     "value": "300",
-     "layer": "documented",
-     "quote": "If your family income is less than or equal to 300% of the federal poverty level, then you may be eligible for full assistance.",
-     "source_id": "web-99be41eab84622f1",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "free_care_max_fpl": null,
     "discount_tiers": {
      "value": [
       {
@@ -6040,7 +6024,15 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "assistance_ceiling_fpl": null,
+    "assistance_ceiling_fpl": {
+     "value": "300",
+     "layer": "documented",
+     "quote": "If your family income is less than or equal to 300% of the federal poverty level, then you may be eligible for full assistance.",
+     "source_id": "web-99be41eab84622f1",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "asset_test": null,
     "residency": null,
     "insured_patients_covered": null,
@@ -6137,6 +6129,7 @@
    ],
    "accuracy": null,
    "eve_review": [
+    "eligibility.free_care_max_fpl: owner review says 300% is a discount or assistance limit, not free care; recorded as assistance_ceiling_fpl.",
     "apply.documents_required: 2 more verbatim excerpt(s) supported this value: \u25aa Copies of the two most recent pay stubs for all wage-earners who live in the household \u25aa Proof of other income, includ | \u25aa Evidence (a letter) showing Medicaid application or lack of eligibility. Full cooperation with our staff or contractor",
     "agent dropped eligibility.asset_test: judge: The quote only names a form line, 'Total Family resources\u2026 Sum of [A]'. It does not plainly say assets are considered.",
     "agent dropped apply.submit_methods: judge: The quote supports mailing to the hospital at 3501 Kentucky Ave. The recipient 'Baptist Health Financial Counselors' is not in the quote.",
@@ -6156,8 +6149,8 @@
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
-     "eligibility.free_care_max_fpl",
      "eligibility.discount_tiers",
+     "eligibility.assistance_ceiling_fpl",
      "apply.documents_required",
      "contacts.phone",
      "contacts.languages"
@@ -6167,7 +6160,7 @@
      "apply.documents_required: 2 items not named in the trimmed quote"
     ],
     "income_rule_verified": true,
-    "core_completeness": 0.67
+    "core_completeness": 0.5
    }
   },
   {
@@ -6574,7 +6567,9 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": {
+    "free_care_max_fpl": null,
+    "discount_tiers": null,
+    "assistance_ceiling_fpl": {
      "value": "300",
      "layer": "documented",
      "quote": "If your family income is less than or equal to 300% of the federal poverty level, then you may be eligible for full assistance.",
@@ -6583,8 +6578,6 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "discount_tiers": null,
-    "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": null,
     "insured_patients_covered": null,
@@ -6687,6 +6680,7 @@
    ],
    "accuracy": null,
    "eve_review": [
+    "eligibility.free_care_max_fpl: owner review says 300% is a discount or assistance limit, not free care; recorded as assistance_ceiling_fpl.",
     "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: If your family income is between 301% and 400% of the federal poverty level, then you may be eligible for partial assist",
     "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Copies of the two most recent pay stubs for all wage-earners who live in the household | Copies of the two most recent bank statements from all accounts",
     "contacts.hours: 1 more verbatim excerpt(s) supported this value: p.m. Monday through Friday. Closed weekends.",
@@ -6707,7 +6701,7 @@
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
-     "eligibility.free_care_max_fpl",
+     "eligibility.assistance_ceiling_fpl",
      "apply.documents_required",
      "contacts.phone",
      "contacts.hours",
@@ -6722,8 +6716,8 @@
     "pruned": [
      "apply.documents_required: 2 items not named in the trimmed quote"
     ],
-    "income_rule_verified": true,
-    "core_completeness": 0.5
+    "income_rule_verified": false,
+    "core_completeness": 0.33
    }
   },
   {
@@ -9115,35 +9109,8 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": {
-     "value": "200",
-     "layer": "documented",
-     "quote": "Those with household incomes less than or equal to 200% of this limit may be eligible for 100% discounts of their bill.",
-     "source_id": "web-3f0ed13fce452944",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
-    "discount_tiers": {
-     "value": [
-      {
-       "min_fpl_exclusive": "200",
-       "max_fpl_inclusive": "300",
-       "discount_percent": 50
-      },
-      {
-       "min_fpl_exclusive": "300",
-       "max_fpl_inclusive": "400",
-       "discount_percent": 25
-      }
-     ],
-     "layer": "documented",
-     "quote": "Patients with household incomes between 201% and 300% of the federal poverty limit may be eligible for a 50% discount, and those with household incomes between 301% and 400% may be eligible for a 25% discount.",
-     "source_id": "web-3f0ed13fce452944",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "free_care_max_fpl": null,
+    "discount_tiers": null,
     "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": null,
@@ -9170,15 +9137,7 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": {
-     "value": "270-745-1100",
-     "layer": "documented",
-     "quote": "270-745-1100 or 800-786-1581",
-     "source_id": "web-3f0ed13fce452944",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "phone": null,
     "hours": null,
     "languages": null
    },
@@ -9204,27 +9163,37 @@
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 1,
+    "sources_fetched": 0,
     "sources_total": 1,
-    "sources_missing": [],
+    "sources_missing": [
+     "https://medcenterhealth.org/cfr/billing-policies/financial-assistance/financial-assistance-hospital/"
+    ],
     "sha256_match": {
-     "web-3f0ed13fce452944": false
+     "web-3f0ed13fce452944": null
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
-    "accepted": [
-     "eligibility.free_care_max_fpl",
-     "eligibility.discount_tiers",
-     "contacts.phone"
-    ],
+    "accepted": [],
     "rejected": [
      [
+      "eligibility.free_care_max_fpl",
+      "source text missing"
+     ],
+     [
+      "eligibility.discount_tiers",
+      "source text missing"
+     ],
+     [
       "apply.form_url",
-      "quote not found in source"
+      "source text missing"
+     ],
+     [
+      "contacts.phone",
+      "source text missing"
      ]
     ],
     "pruned": [],
-    "income_rule_verified": true,
-    "core_completeness": 0.5
+    "income_rule_verified": false,
+    "core_completeness": 0.0
    }
   },
   {
@@ -9743,12 +9712,14 @@
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 2,
+    "sources_fetched": 1,
     "sources_total": 2,
-    "sources_missing": [],
+    "sources_missing": [
+     "https://medcenterhealth.org/cfr/billing-policies/financial-assistance/financial-assistance-hospital/"
+    ],
     "sha256_match": {
      "fap-88385c1719406bb0": true,
-     "web-f3dc2ad594844626": false
+     "web-f3dc2ad594844626": null
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
@@ -9765,11 +9736,11 @@
      ],
      [
       "apply.form_url",
-      "quote not found in source"
+      "source text missing"
      ],
      [
       "contacts.languages",
-      "quote not found in source"
+      "source text missing"
      ]
     ],
     "pruned": [
@@ -10208,26 +10179,7 @@
    "status": "draft",
    "eligibility": {
     "free_care_max_fpl": null,
-    "discount_tiers": {
-     "value": [
-      {
-       "min_fpl_exclusive": "200",
-       "max_fpl_inclusive": "300",
-       "discount_percent": 50
-      },
-      {
-       "min_fpl_exclusive": "300",
-       "max_fpl_inclusive": "400",
-       "discount_percent": 25
-      }
-     ],
-     "layer": "documented",
-     "quote": "Patients with household incomes between 201% and 300% of the federal poverty limit may be eligible for a 50% discount, and those with household incomes between 301% and 400% may be eligible for a 25% discount.",
-     "source_id": "web-56dd48075ddfdda6",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "discount_tiers": null,
     "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": null,
@@ -10273,15 +10225,7 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": {
-     "value": "270-745-1100",
-     "layer": "documented",
-     "quote": "270-745-1100 or 800-786-1581",
-     "source_id": "web-56dd48075ddfdda6",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "phone": null,
     "hours": null,
     "languages": null
    },
@@ -10319,35 +10263,43 @@
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 2,
+    "sources_fetched": 1,
     "sources_total": 2,
-    "sources_missing": [],
+    "sources_missing": [
+     "https://medcenterhealth.org/cfr/billing-policies/financial-assistance/financial-assistance-hospital/"
+    ],
     "sha256_match": {
      "fap-88385c1719406bb0": true,
-     "web-56dd48075ddfdda6": false
+     "web-56dd48075ddfdda6": null
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
-     "eligibility.discount_tiers",
      "apply.documents_required",
-     "apply.window_days_from_first_bill",
-     "contacts.phone"
+     "apply.window_days_from_first_bill"
     ],
     "rejected": [
+     [
+      "eligibility.discount_tiers",
+      "source text missing"
+     ],
      [
       "eligibility.asset_test",
       "quote does not support the asset-test value"
      ],
      [
       "apply.form_url",
-      "quote not found in source"
+      "source text missing"
+     ],
+     [
+      "contacts.phone",
+      "source text missing"
      ]
     ],
     "pruned": [
      "apply.documents_required: 3 items not named in the trimmed quote"
     ],
-    "income_rule_verified": true,
-    "core_completeness": 0.5
+    "income_rule_verified": false,
+    "core_completeness": 0.17
    }
   },
   {
@@ -10974,15 +10926,7 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": {
-     "value": "270-745-1100",
-     "layer": "documented",
-     "quote": "Customer Service 270-745-1100 or 800-786-1581",
-     "source_id": "web-ce682d67dc11d1d4",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "phone": null,
     "hours": null,
     "languages": null
    },
@@ -11020,12 +10964,14 @@
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 2,
+    "sources_fetched": 1,
     "sources_total": 2,
-    "sources_missing": [],
+    "sources_missing": [
+     "https://medcenterhealth.org/cfr/billing-policies/financial-assistance/financial-assistance-hospital/"
+    ],
     "sha256_match": {
      "fap-88385c1719406bb0": true,
-     "web-ce682d67dc11d1d4": false
+     "web-ce682d67dc11d1d4": null
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
@@ -11033,8 +10979,7 @@
      "eligibility.asset_test",
      "programs.presumptive",
      "apply.documents_required",
-     "apply.window_days_from_first_bill",
-     "contacts.phone"
+     "apply.window_days_from_first_bill"
     ],
     "rejected": [
      [
@@ -11043,18 +10988,22 @@
      ],
      [
       "apply.form_url",
-      "quote not found in source"
+      "source text missing"
+     ],
+     [
+      "contacts.phone",
+      "source text missing"
      ],
      [
       "contacts.languages",
-      "quote not found in source"
+      "source text missing"
      ]
     ],
     "pruned": [
      "apply.documents_required: 3 items not named in the trimmed quote"
     ],
     "income_rule_verified": true,
-    "core_completeness": 0.5
+    "core_completeness": 0.33
    }
   }
  ]

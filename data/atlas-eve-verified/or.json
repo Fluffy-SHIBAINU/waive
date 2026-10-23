@@ -2667,15 +2667,7 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": {
-     "value": "300",
-     "layer": "documented",
-     "quote": "if your yearly income is less than or equal to 300% of the current Federal Poverty Guideline, you may not have to pay your bill",
-     "source_id": "web-3086412b8f598e89",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "free_care_max_fpl": null,
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
     "asset_test": null,
@@ -2791,6 +2783,7 @@
    ],
    "accuracy": null,
    "eve_review": [
+    "eligibility.free_care_max_fpl: owner review says 300% is a discount or assistance limit, not free care; recorded as assistance_ceiling_fpl.",
     "apply.documents_required: 2 more verbatim excerpt(s) supported this value: 2. Federal income tax records for the most recent filing year.. | 3. Additional supporting documentation may be requested to make a final determination regarding household size and incom",
     "agent dropped apply.window_days_from_first_bill: quote is not a substring of the source",
     "agent dropped contacts.phone: quote is not a substring of the source",
@@ -2810,7 +2803,6 @@
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
-     "eligibility.free_care_max_fpl",
      "eligibility.min_balance",
      "programs.presumptive",
      "apply.documents_required",
@@ -2818,6 +2810,10 @@
      "contacts.hours"
     ],
     "rejected": [
+     [
+      "eligibility.assistance_ceiling_fpl",
+      "quote does not say the hospital's financial assistance reaches it"
+     ],
      [
       "eligibility.asset_test",
       "quote does not support the asset-test value"
@@ -2830,8 +2826,8 @@
     "pruned": [
      "apply.submit_methods: none of the listed channels is named in the quote (after trimming)"
     ],
-    "income_rule_verified": true,
-    "core_completeness": 0.33
+    "income_rule_verified": false,
+    "core_completeness": 0.17
    }
   },
   {

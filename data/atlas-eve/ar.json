@@ -3144,15 +3144,7 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": {
-     "value": "300",
-     "layer": "documented",
-     "quote": "If your family income is less than or equal to 300% of the federal poverty level, then you may be eligible for full assistance.",
-     "source_id": "web-d62569467f3f68ac",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "free_care_max_fpl": null,
     "discount_tiers": {
      "value": [
       {
@@ -3168,7 +3160,15 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "assistance_ceiling_fpl": null,
+    "assistance_ceiling_fpl": {
+     "value": "300",
+     "layer": "documented",
+     "quote": "If your family income is less than or equal to 300% of the federal poverty level, then you may be eligible for full assistance.",
+     "source_id": "web-d62569467f3f68ac",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "asset_test": {
      "value": true,
      "layer": "documented",
@@ -3325,6 +3325,7 @@
    ],
    "accuracy": null,
    "eve_review": [
+    "eligibility.free_care_max_fpl: owner review says 300% is a discount or assistance limit, not free care; recorded as assistance_ceiling_fpl.",
     "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: Partial Assistance (50%)",
     "eligibility.insured_patients_covered: quote matched the source only after typography normalization",
     "programs.presumptive: 1 more verbatim excerpt(s) supported this value: BH requires all patients, whether insured or not, to file for Medicaid or present evidence indicating ineligibility for ",

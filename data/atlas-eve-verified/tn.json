@@ -21,15 +21,7 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": {
-     "value": "200",
-     "layer": "documented",
-     "quote": "this will apply to patients who fall between 0 - 200% of the Federal Poverty Level",
-     "source_id": "web-4d2340478a97605a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "free_care_max_fpl": null,
     "discount_tiers": null,
     "assistance_ceiling_fpl": {
      "value": "400",
@@ -115,7 +107,9 @@
     }
    ],
    "accuracy": null,
-   "eve_review": [],
+   "eve_review": [
+    "eligibility.free_care_max_fpl: owner review says 200% is a discount or assistance limit, not free care; dropped; the sheet already records a 400% ceiling."
+   ],
    "eve_verified": {
     "on": "2026-10-23",
     "sources_fetched": 2,
@@ -127,7 +121,6 @@
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
-     "eligibility.free_care_max_fpl",
      "eligibility.assistance_ceiling_fpl",
      "eligibility.min_balance",
      "apply.documents_required"
@@ -141,8 +134,8 @@
     "pruned": [
      "apply.documents_required: 2 items not named in the trimmed quote"
     ],
-    "income_rule_verified": true,
-    "core_completeness": 0.33
+    "income_rule_verified": false,
+    "core_completeness": 0.17
    }
   },
   {

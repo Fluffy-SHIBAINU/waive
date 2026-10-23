@@ -11430,7 +11430,9 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": {
+    "free_care_max_fpl": null,
+    "discount_tiers": null,
+    "assistance_ceiling_fpl": {
      "value": "200",
      "layer": "documented",
      "quote": "Income at or below 200% of Federal Poverty Guidelines (FPG) will qualify for Financial Assistance.",
@@ -11439,8 +11441,6 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "discount_tiers": null,
-    "assistance_ceiling_fpl": null,
     "asset_test": {
      "value": true,
      "layer": "documented",
@@ -11603,6 +11603,7 @@
    ],
    "accuracy": null,
    "eve_review": [
+    "eligibility.free_care_max_fpl: owner review says 200% is a discount or assistance limit, not free care; recorded as assistance_ceiling_fpl.",
     "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Documented bankruptcy. | Examples are homelessness or deceased patients with no known estate.",
     "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Mailed to Madison Healthcare Services, Attn: Business Office, 900 2nd Ave, Madison, MN 56256 | Faxed to 320-598-3470",
     "agent judge on apply.submit_methods: Quote covers only in-person, mail, and fax; the value adds an online method via the MHSMN.org website not in the quote.",

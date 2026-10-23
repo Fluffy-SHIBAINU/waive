@@ -410,15 +410,7 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": {
-     "value": "300",
-     "layer": "documented",
-     "quote": "Uninsured individuals or family/households who meet three hundred percent (300%) or below of FPG will qualify for financial assistance for their financial responsibility for services that are eligible in this policy.",
-     "source_id": "fap-0d81b3f3ee402a4b",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "free_care_max_fpl": null,
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
     "asset_test": null,
@@ -586,6 +578,7 @@
    ],
    "accuracy": null,
    "eve_review": [
+    "eligibility.free_care_max_fpl: owner review says 300% is a discount or assistance limit, not free care; dropped; the sheet already records a 500% ceiling.",
     "agent dropped contacts.languages: quote is not a substring of the source"
    ],
    "eve_verified": {
@@ -600,7 +593,6 @@
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
-     "eligibility.free_care_max_fpl",
      "eligibility.residency",
      "eligibility.insured_patients_covered",
      "programs.state_programs",
@@ -627,8 +619,8 @@
      "apply.documents_required: 1 item not named in the trimmed quote",
      "apply.submit_methods: 1 item not named in the trimmed quote"
     ],
-    "income_rule_verified": true,
-    "core_completeness": 0.83
+    "income_rule_verified": false,
+    "core_completeness": 0.67
    }
   },
   {
@@ -2319,15 +2311,7 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": {
-     "value": "225",
-     "layer": "documented",
-     "quote": "If a validated financial statement application reflects an income at or below 225% of the most current Federal Poverty Level for the stated family size, the account will qualify for financial assistance in its entirety.",
-     "source_id": "web-a7193e7be1e59e46",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "free_care_max_fpl": null,
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
     "asset_test": null,
@@ -2475,6 +2459,7 @@
    ],
    "accuracy": null,
    "eve_review": [
+    "eligibility.free_care_max_fpl: owner review says 225% is a discount or assistance limit, not free care; recorded as assistance_ceiling_fpl.",
     "programs.presumptive: 1 more verbatim excerpt(s) supported this value: Individuals are deemed eligible for presumptive financial assistance via Independent Eligibility Assessments that determ",
     "contacts.languages: 1 more verbatim excerpt(s) supported this value: Guarantor Financial Statement Application (GFSA) &ndash; Spanish",
     "agent dropped programs.state_programs: judge: Quote names the Act but not that screening is accepted; it says to apply for Medicaid and be denied, not to cooperate with a pending process."
@@ -2491,7 +2476,6 @@
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
-     "eligibility.free_care_max_fpl",
      "eligibility.residency",
      "eligibility.insured_patients_covered",
      "apply.documents_required",
@@ -2502,6 +2486,10 @@
      "contacts.hours"
     ],
     "rejected": [
+     [
+      "eligibility.assistance_ceiling_fpl",
+      "quote does not state the ceiling as a percentage of the poverty level"
+     ],
      [
       "eligibility.asset_test",
       "quote does not support the asset-test value"
@@ -2518,8 +2506,8 @@
     "pruned": [
      "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)"
     ],
-    "income_rule_verified": true,
-    "core_completeness": 0.67
+    "income_rule_verified": false,
+    "core_completeness": 0.5
    }
   },
   {
@@ -2537,15 +2525,7 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": {
-     "value": "300",
-     "layer": "documented",
-     "quote": "Uninsured individuals or family/households who meet three hundred percent (300%) or below of FPG will qualify for financial assistance for their financial responsibility for services that are eligible in this policy.",
-     "source_id": "fap-0d81b3f3ee402a4b",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "free_care_max_fpl": null,
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
     "asset_test": null,
@@ -2704,7 +2684,9 @@
     }
    ],
    "accuracy": null,
-   "eve_review": [],
+   "eve_review": [
+    "eligibility.free_care_max_fpl: owner review says 300% is a discount or assistance limit, not free care; dropped; the sheet already records a 500% ceiling."
+   ],
    "eve_verified": {
     "on": "2026-10-23",
     "sources_fetched": 3,
@@ -2717,7 +2699,6 @@
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
-     "eligibility.free_care_max_fpl",
      "eligibility.residency",
      "eligibility.insured_patients_covered",
      "programs.state_programs",
@@ -2751,8 +2732,8 @@
      "apply.documents_required: 1 item not named in the trimmed quote",
      "apply.submit_methods: 1 item not named in the trimmed quote"
     ],
-    "income_rule_verified": true,
-    "core_completeness": 0.67
+    "income_rule_verified": false,
+    "core_completeness": 0.5
    }
   },
   {
@@ -3322,7 +3303,7 @@
     "sha256_match": {
      "fap-6881cd9d2d636f43": true,
      "fap-66b18422a13db367": true,
-     "web-3b6a1eeb6fcf2088": true
+     "web-3b6a1eeb6fcf2088": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [

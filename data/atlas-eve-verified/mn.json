@@ -1103,7 +1103,7 @@
     "sha256_match": {
      "fap-1e86c5c45db22bd7": true,
      "fap-b1ea791913a76181": true,
-     "web-6f1f89c4fd399056": false
+     "web-6f1f89c4fd399056": true
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
@@ -2393,7 +2393,7 @@
     "sha256_match": {
      "fap-1e86c5c45db22bd7": true,
      "fap-b1ea791913a76181": true,
-     "web-8a4ccdc267686397": true
+     "web-8a4ccdc267686397": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
@@ -2808,8 +2808,8 @@
     "sources_missing": [],
     "sha256_match": {
      "fap-7a22160901533428": true,
-     "web-202b2547d6683dee": false,
-     "web-40563a8b97afa89e": false
+     "web-202b2547d6683dee": true,
+     "web-40563a8b97afa89e": true
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
@@ -3655,7 +3655,7 @@
     "sha256_match": {
      "fap-1e86c5c45db22bd7": true,
      "fap-b1ea791913a76181": true,
-     "web-6f1f89c4fd399056": true
+     "web-6f1f89c4fd399056": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
@@ -5522,7 +5522,7 @@
     "sha256_match": {
      "fap-7a22160901533428": true,
      "fap-fe12fbafd223a101": true,
-     "web-61d20ac37fdcf3da": true
+     "web-61d20ac37fdcf3da": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
@@ -11796,7 +11796,9 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": {
+    "free_care_max_fpl": null,
+    "discount_tiers": null,
+    "assistance_ceiling_fpl": {
      "value": "200",
      "layer": "documented",
      "quote": "Income at or below 200% of Federal Poverty Guidelines (FPG) will qualify for Financial Assistance.",
@@ -11805,8 +11807,6 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "discount_tiers": null,
-    "assistance_ceiling_fpl": null,
     "asset_test": {
      "value": true,
      "layer": "documented",
@@ -11931,6 +11931,7 @@
    ],
    "accuracy": null,
    "eve_review": [
+    "eligibility.free_care_max_fpl: owner review says 200% is a discount or assistance limit, not free care; recorded as assistance_ceiling_fpl.",
     "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Documented bankruptcy. | Examples are homelessness or deceased patients with no known estate.",
     "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: Mailed to Madison Healthcare Services, Attn: Business Office, 900 2nd Ave, Madison, MN 56256 | Faxed to 320-598-3470",
     "agent judge on apply.submit_methods: Quote covers only in-person, mail, and fax; the value adds an online method via the MHSMN.org website not in the quote.",
@@ -11950,7 +11951,7 @@
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
-     "eligibility.free_care_max_fpl",
+     "eligibility.assistance_ceiling_fpl",
      "eligibility.asset_test",
      "eligibility.residency",
      "apply.documents_required",
@@ -11968,8 +11969,8 @@
      "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
      "apply.submit_methods: 3 items not named in the trimmed quote"
     ],
-    "income_rule_verified": true,
-    "core_completeness": 0.67
+    "income_rule_verified": false,
+    "core_completeness": 0.5
    }
   },
   {
@@ -12335,7 +12336,7 @@
     "sha256_match": {
      "fap-1e86c5c45db22bd7": true,
      "fap-b1ea791913a76181": true,
-     "web-81e27c552f120585": true
+     "web-81e27c552f120585": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
