@@ -8,6 +8,7 @@ from fastapi.responses import HTMLResponse, JSONResponse
 
 from waive.atlas import repo
 from waive.atlas.schema import SheetStatus
+from waive.atlas.skiplist import EVE_SKIP, plain_reason
 from waive.db import HospitalRow, session_scope
 from waive.learning.evidence import public_flag_level, slip_cases
 from waive.ledger import web as ledger_web
@@ -31,9 +32,15 @@ def _under_review(hospital: HospitalRow) -> dict[str, str]:
 
 @router.get("/atlas", response_class=HTMLResponse)
 def atlas_list(request: Request, q: str = "", demo: bool = False) -> HTMLResponse:
-    """List hospitals; the fictional demo hospital only appears with `?demo=1`."""
+    """List hospitals; the fictional demo hospital only appears with `?demo=1`. A hospital
+    without a sheet that the Eve agent could not build reads "not scouted" with the cause."""
     deps = deps_of(request)
     with session_scope(deps.engine) as session:
+        # One query for every such hospital's cause, not one per row.
+        not_scouted = {
+            item.ccn: plain_reason(str((item.detail or {}).get("reason") or ""))
+            for item in repo.open_review_items(session, kind=EVE_SKIP)
+        }
         rows = []
         for hospital in repo.list_hospitals(session):
             if repo.is_demo(hospital.ccn) and not demo:
@@ -42,8 +49,10 @@ def atlas_list(request: Request, q: str = "", demo: bool = False) -> HTMLRespons
                 continue
             found = repo.latest_sheet(session, hospital.ccn)
             published = found is not None and found[0].status is SheetStatus.PUBLISHED
+            cause = None
             if found is None:
-                status = "none"
+                status = "not scouted" if hospital.ccn in not_scouted else "none"
+                cause = not_scouted.get(hospital.ccn)
             else:
                 status = "published" if published else "under review"
             rows.append(
@@ -54,6 +63,7 @@ def atlas_list(request: Request, q: str = "", demo: bool = False) -> HTMLRespons
                     "state": hospital.state,
                     "status": status,
                     "version": found[0].version if published else None,
+                    "cause": cause,
                 }
             )
     return render(request, "atlas_list.html", rows=rows, q=q)

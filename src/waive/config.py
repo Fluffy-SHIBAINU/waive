@@ -103,6 +103,11 @@ class Settings(BaseSettings):
     # renders pages more fully at two credits per five URLs instead of one; about nine
     # credits per hospital instead of seven.
     scout_extract_depth: Literal["basic", "advanced"] = "basic"
+    # Hospitals the Eve waive-agent tried and could not build (task 7.12b): a JSON list of
+    # {ccn, state, name, reason, urls_seen, last_tried}. The scheduler and `waive atlas build`
+    # never scout them, so no Tavily credit goes to them. A missing file leaves no hospital out
+    # (the container image carries no data/ folder).
+    scout_skip_list: Path = Path("data/atlas-eve/_skip.json")
 
     # Phase 10: the hospital ledger. Downloads of public files land under `ledger_dir`, never in
     # the repository. The scout queue multiplies a hospital's priority by

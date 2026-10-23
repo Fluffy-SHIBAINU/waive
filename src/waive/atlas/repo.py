@@ -199,10 +199,14 @@ def add_review_item(
     return row
 
 
-def open_review_items(session: Session, ccn: str | None = None) -> list[ReviewItemRow]:
+def open_review_items(
+    session: Session, ccn: str | None = None, kind: str | None = None
+) -> list[ReviewItemRow]:
     query = select(ReviewItemRow).where(ReviewItemRow.status == "open")
     if ccn:
         query = query.where(ReviewItemRow.ccn == ccn)
+    if kind:
+        query = query.where(ReviewItemRow.kind == kind)
     return list(session.scalars(query.order_by(ReviewItemRow.id)))
 
 

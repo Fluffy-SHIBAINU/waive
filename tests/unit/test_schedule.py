@@ -1,4 +1,6 @@
 import base64
+import json
+import logging
 from datetime import timedelta
 from decimal import Decimal
 
@@ -23,6 +25,7 @@ from waive.atlas.schedule import (
     scout_tick,
 )
 from waive.atlas.schema import SourceDoc, SourceKind
+from waive.atlas.skiplist import SkipEntry
 from waive.cases.vault import FieldCipher, TokenSigner, new_key
 from waive.config import Settings
 from waive.db import CaseRow, init_db, make_engine, session_scope
@@ -465,3 +468,126 @@ def test_scout_tick_passes_the_exposure_weight_to_the_run(tmp_path, monkeypatch)
     assert scout_tick(engine, settings, make_governor_for(tmp_path), FakeAI()) is not None
     assert seen["exposure_weight"] == 0.3
     assert Settings(_env_file=None).scout_exposure_weight == 0.0  # off by default
+
+
+BLOCKED = "site blocks server fetches (403)"
+
+
+def listed(*hospitals, reason=BLOCKED):
+    """A skip list naming these registry rows, as `load_skip_list` would return it."""
+    return {
+        row["ccn"]: SkipEntry(row["ccn"], row["state"], row["name"], reason) for row in hospitals
+    }
+
+
+def test_build_queue_leaves_the_hospitals_on_the_skip_list_out(caplog):
+    # 7.12b: Eve could not build these hospitals. They never enter the queue, and because they
+    # will never be scouted they stay out of the count that prices the hospitals without a sheet.
+    engine = make_engine_with_hospital(REAL, NEW)
+    with session_scope(engine) as session, caplog.at_level(logging.INFO, "waive.atlas.schedule"):
+        report = build_queue(session, TODAY, ("MA",), skip=listed(REAL))
+        assert [entry.ccn for entry in report.entries] == ["220010"]
+        assert report.skipped == {"220031": f"eve-skip: {BLOCKED}"}
+        assert report.skip_listed == 1
+        assert report.without_sheet == 1
+        assert "skip list: 1 hospitals left out of the scouting queue" in caplog.text
+        # Without the list the same hospital is queued, and no skip list is mentioned.
+        caplog.clear()
+        plain = build_queue(session, TODAY, ("MA",))
+        assert sorted(entry.ccn for entry in plain.entries) == ["220010", "220031"]
+        assert (plain.skipped, plain.skip_listed, plain.without_sheet) == ({}, 0, 2)
+        assert "skip list" not in caplog.text
+        assert build_queue(session, TODAY, ("MA",), skip={}).skip_listed == 0
+
+
+def test_a_hospital_on_the_skip_list_is_counted_once_whatever_else_would_skip_it():
+    # REAL failed this week and THIRD was scouted today; the list comes first, so the report
+    # says what is true for good. A listed CCN that is not in the registry, or not in the states
+    # asked for, is not a hospital this queue left out.
+    other_state = {**NEW, "ccn": "330010", "state": "NY", "name": "EMPIRE HOSPITAL"}
+    puerto_rico = {"ccn": "400001", "state": "PR", "name": "HOSPITAL SAN JUAN", "reason": BLOCKED}
+    engine = make_engine_with_hospital(REAL, NEW, THIRD, other_state)
+    skip = {
+        **listed(REAL, THIRD, other_state),
+        "400001": SkipEntry(**puerto_rico),
+    }
+    with session_scope(engine) as session:
+        repo.add_review_item(session, "220031", "no_documents", {"domain": None})
+        repo.save_source(session, source("fap-third", TODAY, sha="b" * 64), "text", "220045")
+        report = build_queue(session, TODAY, ("MA",), skip=skip)
+        assert [entry.ccn for entry in report.entries] == ["220010"]
+        assert report.skipped == {
+            "220031": f"eve-skip: {BLOCKED}",
+            "220045": f"eve-skip: {BLOCKED}",
+        }
+        assert report.skip_listed == 2
+        # Asked for every state, the New York hospital on the list is left out too.
+        assert build_queue(session, TODAY, skip=skip).skip_listed == 3
+
+
+def test_run_once_never_scouts_a_hospital_on_the_skip_list(tmp_path):
+    engine = make_engine_with_hospital(REAL, NEW)
+    governor = make_governor_for(tmp_path)
+    with session_scope(engine) as session:
+        report = run_once(
+            session,
+            SpendingGateway(governor),
+            FakeAI(),
+            governor,
+            TODAY,
+            daily_cap=100,
+            skip=listed(REAL),
+        )
+        assert [r.ccn for r in report.results] == ["220010"]
+        assert report.stopped == "queue empty"
+        assert repo.latest_sheet(session, "220031") is None
+        assert repo.sources_for(session, "220031") == []
+
+
+def test_scout_tick_hands_the_run_the_skip_list_named_in_the_settings(tmp_path, monkeypatch):
+    from waive.atlas import schedule
+
+    seen = {}
+
+    def fake_run_once(session, gateway, ai, governor, today, **kwargs):
+        seen.update(kwargs)
+        return RunReport(today, kwargs["daily_cap"], Decimal("0"), Decimal("0"))
+
+    monkeypatch.setattr(schedule, "run_once", fake_run_once)
+    monkeypatch.setattr(schedule, "make_tavily_gateway", lambda settings, governor: object())
+    engine = make_engine("sqlite+pysqlite:///:memory:")
+    init_db(engine)
+    path = tmp_path / "_skip.json"
+    path.write_text(
+        json.dumps(
+            [
+                {
+                    "ccn": "220031",
+                    "state": "MA",
+                    "name": "REAL GENERAL HOSPITAL",
+                    "reason": BLOCKED,
+                    "urls_seen": ["https://www.realgeneral.org/fap"],
+                    "last_tried": "2026-10-23",
+                }
+            ]
+        ),
+        encoding="utf-8",
+    )
+    settings = Settings(_env_file=None, tavily_api_key=SecretStr("t"), scout_skip_list=path)
+    assert scout_tick(engine, settings, make_governor_for(tmp_path), FakeAI()) is not None
+    assert seen["skip"] == {
+        "220031": SkipEntry(
+            "220031",
+            "MA",
+            "REAL GENERAL HOSPITAL",
+            BLOCKED,
+            ("https://www.realgeneral.org/fap",),
+            "2026-10-23",
+        )
+    }
+    # No file at the configured path (the container image has no data/): nothing is left out.
+    missing = Settings(
+        _env_file=None, tavily_api_key=SecretStr("t"), scout_skip_list=tmp_path / "none.json"
+    )
+    assert scout_tick(engine, missing, make_governor_for(tmp_path), FakeAI()) is not None
+    assert seen["skip"] == {}

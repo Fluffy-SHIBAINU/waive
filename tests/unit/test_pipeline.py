@@ -1,5 +1,6 @@
 import hashlib
 import json
+import logging
 from datetime import date
 
 import httpx
@@ -14,6 +15,7 @@ from waive.atlas.pipeline import build_hospital, build_state, clear_wrong_domain
 from waive.atlas.samples import SAMPLE_POLICY_TEXT, SAMPLE_SOURCE_ID
 from waive.atlas.schema import ProcedureSheet, SheetStatus, SourceDoc, SourceKind
 from waive.atlas.scout import source_id_for
+from waive.atlas.skiplist import SkipEntry
 from waive.atlas.structure import DraftField, SheetDraft
 from waive.atlas.tavily_gateway import ExtractedPage, SearchHit
 from waive.atlas.verify import PATIENT_SHARE_REASON, verify_sheet
@@ -841,6 +843,49 @@ def test_build_state_skips_hospitals_with_sheets_and_reports():
         assert second == []
         report = coverage_report(session, "MA")
         assert "| 220031 |" in report and "published" in report
+
+
+def test_build_state_leaves_the_hospitals_on_the_skip_list_out(caplog):
+    # 7.12b: Eve could not build this hospital; a state batch never tries it again and adds no
+    # result for it.
+    second = {**REAL_HOSPITAL, "ccn": "220010", "name": "NEW HOSPITAL"}
+    listed = {**REAL_HOSPITAL, "ccn": "220045", "name": "THIRD COMMUNITY HOSPITAL"}
+    engine = make_engine_with_hospital(REAL_HOSPITAL, second, listed)
+    skip = {
+        "220045": SkipEntry(
+            "220045", "MA", "THIRD COMMUNITY HOSPITAL", "scout found no official policy"
+        ),
+        "400001": SkipEntry("400001", "PR", "HOSPITAL SAN JUAN", "scout found no official policy"),
+    }
+    with session_scope(engine) as session, caplog.at_level(logging.INFO, "waive.atlas.pipeline"):
+        results = build_state(session, FakeGateway(), FakeAI(), "MA", TODAY, skip=skip)
+        assert sorted((r.ccn, r.outcome) for r in results) == [
+            ("220010", "published"),
+            ("220031", "published"),
+        ]
+        assert repo.latest_sheet(session, "220045") is None
+        assert "skip list: 1 hospitals in MA left out" in caplog.text
+        # Without the list it is built like the others, and nothing is said about a skip list.
+        caplog.clear()
+        later = build_state(session, FakeGateway(), FakeAI(), "MA", TODAY)
+        assert [r.ccn for r in later] == ["220045"]
+        assert "skip list" not in caplog.text
+
+
+def test_a_hospital_left_out_by_the_skip_list_does_not_use_up_the_limit(caplog):
+    # The listed hospital sorts first by name; `limit` counts hospitals built, so the next one
+    # still gets its turn.
+    listed = {**REAL_HOSPITAL, "ccn": "220010", "name": "ABBOTT LISTED HOSPITAL"}
+    engine = make_engine_with_hospital(listed, REAL_HOSPITAL)
+    skip = {
+        "220010": SkipEntry(
+            "220010", "MA", "ABBOTT LISTED HOSPITAL", "scout found no official policy"
+        )
+    }
+    with session_scope(engine) as session, caplog.at_level(logging.INFO, "waive.atlas.pipeline"):
+        results = build_state(session, FakeGateway(), FakeAI(), "ma", TODAY, limit=1, skip=skip)
+        assert [r.ccn for r in results] == ["220031"]
+        assert "skip list: 1 hospitals in MA left out" in caplog.text
 
 
 def test_coverage_report_leaves_the_fictional_demo_hospital_out():

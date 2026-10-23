@@ -1,6 +1,9 @@
+import html
+
 from waive.atlas import repo
 from waive.atlas.publish import publish_sheet
 from waive.atlas.samples import st_example_sheet
+from waive.atlas.skiplist import EVE_SKIP, SkipEntry, file_skip_items
 from waive.db import session_scope
 
 from tests.unit.test_web_app import make_client
@@ -141,3 +144,71 @@ def test_a_ceiling_only_sheet_reads_as_the_ceiling_and_never_as_free_care():
     assert ceiling["source_id"] == sheet.sources[0].id and ceiling["layer"] == "documented"
     assert data["eligibility"]["free_care_max_fpl"] is None
     assert data["eligibility"]["discount_tiers"] is None
+
+
+def test_atlas_list_says_why_a_hospital_without_a_sheet_was_not_scouted():
+    # 7.12b: Eve could not build these hospitals. The list says so in plain words instead of the
+    # bare "none"; a hospital nobody tried keeps "none", and one with a sheet keeps its status.
+    blocked = "site blocks server fetches (403)"
+    no_policy = "scout found no official policy"
+    fairbanks = {
+        **REAL_HOSPITAL,
+        "ccn": "020012",
+        "name": "FAIRBANKS MEMORIAL HOSPITAL",
+        "city": "FAIRBANKS",
+        "state": "AK",
+    }
+    kodiak = {**fairbanks, "ccn": "020013", "name": "KODIAK ISLAND HOSPITAL", "city": "KODIAK"}
+    nome = {**fairbanks, "ccn": "020014", "name": "NORTON SOUND HOSPITAL", "city": "NOME"}
+    sitka = {**fairbanks, "ccn": "020015", "name": "SITKA GENERAL HOSPITAL", "city": "SITKA"}
+    client, engine = make_client()
+    seed(engine)
+    with session_scope(engine) as session:
+        for row in (fairbanks, kodiak, nome, sitka):
+            repo.upsert_hospital(session, row)
+        skip = {
+            ccn: SkipEntry(ccn, "AK", name, reason)
+            for ccn, name, reason in (
+                ("020012", "FAIRBANKS MEMORIAL HOSPITAL", blocked),
+                ("020013", "KODIAK ISLAND HOSPITAL", no_policy),
+                ("020015", "SITKA GENERAL HOSPITAL", blocked),
+                ("220031", "REAL GENERAL HOSPITAL", blocked),  # has a published sheet
+            )
+        }
+        assert file_skip_items(session, skip) == 4
+        # Sitka's item was dealt with: the hospital is back to "none".
+        [item] = [i for i in repo.open_review_items(session, kind=EVE_SKIP) if i.ccn == "020015"]
+        repo.set_review_status(session, item.id, "resolved")
+    page = html.unescape(client.get("/atlas").text)
+    assert "FAIRBANKS, AK — not scouted (the hospital's website blocks automated reading)" in page
+    assert "KODIAK, AK — not scouted (no official financial assistance policy found online)" in page
+    assert "NOME, AK — none" in page and "SITKA, AK — none" in page
+    # Real General has a skip item too, but its sheet decides what the list says.
+    assert "WORCESTER, MA — published (version 1)" in page
+    assert page.count("not scouted") == 2
+    # The search narrows the list as before.
+    assert "not scouted" not in client.get("/atlas?q=real").text
+    assert "not scouted" in client.get("/atlas?q=fairbanks").text
+
+
+def test_atlas_list_shows_an_unfamiliar_reason_as_written_and_escaped():
+    # Only Eve's two reasons are reworded; any other is shown as written, as text and not markup.
+    # An item with no reason at all reads "not scouted" with no cause.
+    kodiak = {
+        **REAL_HOSPITAL,
+        "ccn": "020013",
+        "name": "KODIAK ISLAND HOSPITAL",
+        "city": "KODIAK",
+        "state": "AK",
+    }
+    nome = {**kodiak, "ccn": "020014", "name": "NORTON SOUND HOSPITAL", "city": "NOME"}
+    client, engine = make_client()
+    with session_scope(engine) as session:
+        repo.upsert_hospital(session, kodiak)
+        repo.upsert_hospital(session, nome)
+        repo.add_review_item(session, "020013", EVE_SKIP, {"reason": "timed out <b>twice</b>"})
+        repo.add_review_item(session, "020014", EVE_SKIP, {})
+    page = client.get("/atlas").text
+    assert "KODIAK, AK — not scouted (timed out &lt;b&gt;twice&lt;/b&gt;)</div>" in page
+    assert "<b>twice</b>" not in page
+    assert "NOME, AK — not scouted</div>" in page

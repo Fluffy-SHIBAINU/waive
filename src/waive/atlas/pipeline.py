@@ -1,6 +1,8 @@
 """End-to-end atlas build for one hospital or one state (spec §8)."""
 
+import logging
 import re
+from collections.abc import Mapping
 from dataclasses import dataclass, field
 from datetime import date
 from typing import Any, Literal
@@ -40,6 +42,7 @@ from waive.atlas.scout import (
     scout_hospital,
     store_scouted,
 )
+from waive.atlas.skiplist import SkipEntry
 from waive.atlas.structure import (
     another_kaiser_region,
     document_states,
@@ -58,6 +61,8 @@ from waive.atlas.verify import (
     verify_sheet,
 )
 from waive.db import HospitalRow, ReviewItemRow
+
+log = logging.getLogger(__name__)
 
 Outcome = Literal["published", "held", "skipped", "failed"]
 # A document that states income rules names the poverty level; one that does not cannot supply
@@ -878,9 +883,17 @@ def build_state(
     only_missing: bool = True,
     reuse_sources: bool = False,
     extract_depth: Depth = "basic",
+    skip: Mapping[str, SkipEntry] | None = None,
 ) -> list[BuildResult]:
+    """Build the state's hospitals that have no sheet yet (all of them with `only_missing` off).
+    A hospital on the skip list (the ones Eve could not build) is never built and adds no result;
+    `limit` counts hospitals built."""
     results: list[BuildResult] = []
-    for row in repo.list_hospitals(session, state=state):
+    registry = repo.list_hospitals(session, state=state)
+    hospitals = [row for row in registry if skip is None or row.ccn not in skip]
+    if left_out := len(registry) - len(hospitals):
+        log.info("skip list: %d hospitals in %s left out", left_out, state.upper())
+    for row in hospitals:
         if limit is not None and len(results) >= limit:
             break
         if only_missing and repo.latest_sheet(session, row.ccn) is not None:

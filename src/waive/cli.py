@@ -30,6 +30,7 @@ from waive.atlas.schedule import (
     run_once,
     scheduler_states,
 )
+from waive.atlas.skiplist import EVE_SKIP, SKIP_LIST, file_skip_items, load_skip_list
 from waive.atlas.tavily_gateway import make_tavily_gateway
 from waive.auth import sessions
 from waive.cases.evaluate import evaluate_corpus, write_report
@@ -166,12 +167,21 @@ def atlas_build(
         False, "--reuse-sources", help="Re-structure from stored documents; no Tavily spend"
     ),
 ) -> None:
-    """Discover, scout, structure, verify and publish procedure sheets. Spends Tavily credits."""
+    """Discover, scout, structure, verify and publish procedure sheets. Spends Tavily credits.
+    Hospitals on the skip list (the ones the Eve agent could not build) are never built."""
     settings = Settings()
+    skip = load_skip_list(settings.scout_skip_list)
+    if ccn and ccn in skip:
+        # Before any client is made, so the refusal costs nothing. It exits 0: a batch of
+        # `--state XX --ccn NNNNNN --reuse-sources` commands passes over the hospitals that are
+        # on this list and on the rebuild list.
+        typer.echo(f"{ccn} is on the skip list ({EVE_SKIP}: {skip[ccn].reason}); not built")
+        return
     governor = make_governor(settings)
     ai = AIClient(settings, governor)
     gateway = make_tavily_gateway(settings, governor)
     today = datetime.now(UTC).date()
+    left_out = 0
     with session_scope(_engine(settings)) as session:
         if ccn:
             results = [
@@ -187,6 +197,7 @@ def atlas_build(
                 )
             ]
         else:
+            left_out = sum(row.ccn in skip for row in repo.list_hospitals(session, state=state))
             results = build_state(
                 session,
                 gateway,
@@ -198,6 +209,7 @@ def atlas_build(
                 only_missing=not rebuild,
                 reuse_sources=reuse_sources,
                 extract_depth=settings.scout_extract_depth,
+                skip=skip,
             )
     table = Table("CCN", "Hospital", "Outcome", "Version", "Notes")
     for result in results:
@@ -209,6 +221,8 @@ def atlas_build(
             "; ".join(result.notes)[:120],
         )
     console.print(table)
+    if left_out:
+        console.print(f"Skip list: {left_out} hospitals in {state.upper()} left out")
     tavily_credits, _ = governor.summary()["tavily"]
     _, tf_usd = governor.summary()["token_factory"]
     console.print(f"Spend so far: {tavily_credits} Tavily credits, ${tf_usd:.4f} Token Factory")
@@ -333,9 +347,16 @@ def atlas_import_eve(
         "--decisions",
         help="Owner decisions JSON from the review page (default data/atlas-eve/_decisions.json)",
     ),
+    skip_path: Path = typer.Option(  # noqa: B008
+        SKIP_LIST,
+        "--skip",
+        help="Skip list JSON of the hospitals Eve could not build; with --db each gets an "
+        "eve-skip review item",
+    ),
 ) -> None:
     """Convert Eve waive-agent drafts into draft procedure sheets: validates against the schema,
-    writes data/atlas-eve/<state>.json with review notes, and optionally stores them as drafts."""
+    writes data/atlas-eve/<state>.json with review notes, and optionally stores them as drafts
+    (with --db also an eve-skip review item for each hospital on the skip list)."""
     from waive.atlas import eve_import
 
     today = datetime.now(UTC).date()
@@ -358,10 +379,15 @@ def atlas_import_eve(
     )
     if db:
         settings = Settings()
+        skip = load_skip_list(skip_path)
         with session_scope(_engine(settings)) as session:
             stored = eve_import.import_to_db(session, results, seeds, sources_dir)
+            filed = file_skip_items(session, skip)
             session.commit()
         typer.echo(f"stored {stored} draft sheets (version 1, status draft) with review items")
+        typer.echo(
+            f"filed {filed} {EVE_SKIP} review items for the {len(skip)} hospitals on the skip list"
+        )
 
 
 @atlas_app.command("report")
@@ -407,10 +433,11 @@ def atlas_schedule(
     """Show the scouting priority queue and today's Tavily budget; --run spends credits."""
     settings = Settings()
     governor = make_governor(settings)
+    skip = load_skip_list(settings.scout_skip_list)
     today = datetime.now(UTC).date()
     states = (state.upper(),) if state else scheduler_states(settings)
     with session_scope(_engine(settings)) as session:
-        queue = build_queue(session, today, states)
+        queue = build_queue(session, today, states, skip=skip)
         table = Table("Priority", "CCN", "Hospital", "St", "Stale", "Demand", "Accuracy", "Why")
         for entry in queue.entries[:top]:
             table.add_row(
@@ -428,7 +455,8 @@ def atlas_schedule(
         per_hospital = credits_per_hospital(settings.scout_extract_depth)
         console.print(
             f"Queue: {len(queue.entries)} hospitals in {', '.join(states) or 'all states'} "
-            f"({queue.without_sheet} without a sheet); skipped {len(queue.skipped)}; "
+            f"({queue.without_sheet} without a sheet); skipped {len(queue.skipped)} "
+            f"({queue.skip_listed} on the skip list); "
             f"unmatched bill requests {len(queue.unmatched_requests)}"
         )
         console.print(
@@ -452,6 +480,7 @@ def atlas_schedule(
             states=states,
             limit=limit,
             extract_depth=settings.scout_extract_depth,
+            skip=skip,
         )
     for result in report.results:
         console.print(f"{result.ccn} {result.name}: {result.outcome}; " + "; ".join(result.notes))

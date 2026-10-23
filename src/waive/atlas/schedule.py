@@ -5,9 +5,11 @@ Priority = staleness × demand × (1 − accuracy). Staleness is days since the 
 fetched; demand counts open cases and review items asking for this hospital; accuracy comes from
 the scoreboard. One job runs inside the app (APScheduler) and scouts at most one hospital per
 tick, never past the day's Tavily budget; the same code runs from `waive atlas schedule`.
+Hospitals on the skip list (skiplist.py: the ones Eve could not build) never enter the queue.
 """
 
 import logging
+from collections.abc import Mapping
 from dataclasses import dataclass, field
 from datetime import UTC, date, datetime, timedelta
 from decimal import Decimal
@@ -22,6 +24,7 @@ from waive.atlas import repo
 from waive.atlas.pipeline import BuildResult, build_hospital
 from waive.atlas.refresh import refresh_hospital
 from waive.atlas.schema import HospitalRef
+from waive.atlas.skiplist import EVE_SKIP, SkipEntry, load_skip_list
 from waive.atlas.tavily_gateway import Depth, TavilyGateway, make_tavily_gateway
 from waive.cases.extract import BillExtract
 from waive.cases.match import is_confident, match_hospital
@@ -91,6 +94,7 @@ class QueueReport:
     skipped: dict[str, str]
     unmatched_requests: list[dict[str, str | None]]
     without_sheet: int
+    skip_listed: int = 0
 
 
 def priority_score(staleness_days: int, demand: int, accuracy: float | None) -> float:
@@ -157,8 +161,13 @@ def _request_matches(
 
 
 def build_queue(
-    session: Session, today: date, states: tuple[str, ...] = (), exposure_weight: float = 0.0
+    session: Session,
+    today: date,
+    states: tuple[str, ...] = (),
+    exposure_weight: float = 0.0,
+    skip: Mapping[str, SkipEntry] | None = None,
 ) -> QueueReport:
+    listed = skip or {}
     hospitals = [row for row in repo.list_hospitals(session) if not repo.is_demo(row.ccn)]
     if states:
         wanted = {state.upper() for state in states}
@@ -189,7 +198,15 @@ def build_queue(
     entries: list[QueueEntry] = []
     skipped: dict[str, str] = {}
     without_sheet = 0
+    skip_listed = 0
     for row in hospitals:
+        if row.ccn in listed:
+            # The Eve agent could not build this hospital and it is never retried, so it is
+            # neither queued nor counted among the hospitals still without a sheet (that count
+            # prices the credits a full pass would take).
+            skipped[row.ccn] = f"{EVE_SKIP}: {listed[row.ccn].reason}"
+            skip_listed += 1
+            continue
         without_sheet += row.ccn not in sheeted
         if row.ccn in failures:
             skipped[row.ccn] = f"recent failure; retried after {RETRY_AFTER_DAYS} days"
@@ -231,7 +248,9 @@ def build_queue(
             )
         )
     entries.sort(key=lambda entry: (-entry.priority, entry.name))
-    return QueueReport(entries, skipped, unmatched, without_sheet)
+    if skip_listed:
+        log.info("skip list: %d hospitals left out of the scouting queue", skip_listed)
+    return QueueReport(entries, skipped, unmatched, without_sheet, skip_listed)
 
 
 @dataclass
@@ -335,8 +354,9 @@ def run_once(
     limit: int | None = None,
     extract_depth: Depth = "basic",
     exposure_weight: float = 0.0,
+    skip: Mapping[str, SkipEntry] | None = None,
 ) -> RunReport:
-    queue = build_queue(session, today, states, exposure_weight)
+    queue = build_queue(session, today, states, exposure_weight, skip)
     return run_entries(
         session,
         gateway,
@@ -363,6 +383,7 @@ def scout_tick(
         log.info("scout tick skipped: no model key or no Tavily key")
         return None
     gateway = make_tavily_gateway(settings, governor)
+    skip = load_skip_list(settings.scout_skip_list)
     today = datetime.now(UTC).date()
     with session_scope(engine) as session:
         report = run_once(
@@ -376,6 +397,7 @@ def scout_tick(
             limit=1,
             extract_depth=settings.scout_extract_depth,
             exposure_weight=settings.scout_exposure_weight,
+            skip=skip,
         )
     log.info(
         "scout tick: %d built, %s credits used today, stopped: %s",
