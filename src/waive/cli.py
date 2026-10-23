@@ -13,6 +13,14 @@ from sqlalchemy.exc import ArgumentError, SQLAlchemyError
 from waive.ai.client import AIClient
 from waive.atlas import repo
 from waive.atlas.eve_import import load_decisions, set_eve_websites
+from waive.atlas.eve_refetch import (
+    MISSING_SOURCES,
+    REFETCHED_LIST,
+    RefetchReport,
+    load_missing,
+    plan_refetch,
+    run_refetch,
+)
 from waive.atlas.metrics import atlas_metrics, national_report, write_national_report
 from waive.atlas.overlays import run_overlay
 from waive.atlas.pipeline import (
@@ -417,6 +425,65 @@ def atlas_eve_websites(
         f"{found.no_domain} without one in the draft, {found.refused} refused "
         "(directory or file host)"
     )
+
+
+@atlas_app.command("eve-refetch")
+def atlas_eve_refetch(
+    file: Path = typer.Option(  # noqa: B008
+        MISSING_SOURCES,
+        "--file",
+        help="The Eve sheets' missing sources: a JSON list of {ccn, state, name, missing_urls}",
+    ),
+    dry_run: bool = typer.Option(
+        True, "--dry-run/--run", help="Print the plan and spend nothing (default), or fetch"
+    ),
+    out: Path = typer.Option(  # noqa: B008
+        REFETCHED_LIST,
+        "--out",
+        help="With --run: the hospitals that gained a source, one 'ST CCN' per line, for the "
+        "rebuilds",
+    ),
+) -> None:
+    """Fetch the source documents of the Eve sheets that could not be downloaded, once, through
+    Tavily Extract at the advanced depth (two credits per five URLs, booked by the governor), and
+    store each as a new source for the hospitals that cite it, so `waive atlas build
+    --reuse-sources` can rebuild them from stored documents. A hospital on the skip list is never
+    refetched, and a URL a hospital already has the text of is not fetched for it. The default is
+    a dry run that prints the plan; --run spends credits."""
+    settings = Settings()
+    skip = load_skip_list(settings.scout_skip_list)
+    today = datetime.now(UTC).date()
+    report = RefetchReport()
+    with session_scope(_engine(settings)) as session:
+        plan = plan_refetch(session, load_missing(file), skip)
+        typer.echo(
+            f"refetch plan: {len(plan.urls)} unique URLs for {len(plan.ccns)} hospitals "
+            f"({plan.pairs} listed pairs, {plan.already_have_text} already have text, "
+            f"{plan.skipped_ccns} on the skip list); about {plan.estimated_credits} Tavily "
+            "credits at advanced depth"
+        )
+        if dry_run:
+            return
+        governor = make_governor(settings)
+        if plan.urls:
+            gateway = make_tavily_gateway(settings, governor)
+            report = run_refetch(session, gateway, plan, today, governor=governor)
+    typer.echo(
+        f"refetched {report.kept} of {len(plan.urls)} URLs; stored {report.stored} sources for "
+        f"{len(report.gained)} hospitals; {report.credits_spent} Tavily credits spent"
+    )
+    for reason, urls in report.reasons.items():
+        typer.echo(f"not stored ({len(urls)}): {reason}")
+        for url in urls:
+            typer.echo(f"  {url}")
+    if report.stopped:
+        typer.echo(
+            f"stopped: {report.stopped.rstrip('.')}. "
+            "The sources stored so far are kept; run again for the rest."
+        )
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text("".join(f"{state} {ccn}\n" for state, ccn in report.gained), encoding="utf-8")
+    typer.echo(f"{len(report.gained)} hospitals written to {out} for the rebuilds")
 
 
 @atlas_app.command("report")
