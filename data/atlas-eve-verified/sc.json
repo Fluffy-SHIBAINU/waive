@@ -1,0 +1,5005 @@
+{
+ "generated_on": "2026-10-23",
+ "license": "CC BY 4.0",
+ "state": "SC",
+ "status": "draft",
+ "built_by": "eve waive-agent",
+ "verified_on": "2026-10-23",
+ "sheets": [
+  {
+   "hospital": {
+    "ccn": "420009",
+    "name": "PRISMA HEALTH OCONEE MEMORIAL HOSPITAL",
+    "city": "SENECA",
+    "state": "SC",
+    "zip": "29672",
+    "phone": "864-482-3100",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "prismahealth.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": null,
+    "discount_tiers": null,
+    "assistance_ceiling_fpl": null,
+    "asset_test": null,
+    "residency": null,
+    "insured_patients_covered": null,
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": null,
+    "documents_reported": null,
+    "submit_methods": null,
+    "window_days_from_first_bill": null,
+    "decision_days": null,
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": null,
+    "hours": null,
+    "languages": null
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-ea40821120a453d1",
+     "kind": "hospital_web",
+     "url": "https://prismahealth.org/pdfs/financial-arrangements-and-assistance-policy-english-26-27",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "ea40821120a453d18239ba4f6cc003bad81a37036d71136873b7ea3a0ddc651d",
+     "effective_date": null
+    },
+    {
+     "id": "fap-8f57756871871eab",
+     "kind": "hospital_web",
+     "url": "https://prismahealth.org/pdfs/financial-assistance-application-english",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "8f57756871871eab3525914fc4e18a1a64043819453795ed05f368ac246e49ba",
+     "effective_date": null
+    },
+    {
+     "id": "web-365f19874468926b",
+     "kind": "hospital_web",
+     "url": "https://prismahealth.org/patients-and-guests/billing-and-insurance/financial-assistance",
+     "title": "Financial Assistance",
+     "fetched_on": "2026-10-23",
+     "sha256": "365f19874468926bb36715fbde13e11fcffd5c062351aad8c1348e4cb223250d",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "contacts.languages: value backed by 3 verbatim spans"
+   ],
+   "eve_verified": {
+    "on": "2026-10-23",
+    "sources_fetched": 3,
+    "sources_total": 3,
+    "sources_missing": [],
+    "sha256_match": {
+     "fap-ea40821120a453d1": false,
+     "fap-8f57756871871eab": false,
+     "web-365f19874468926b": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
+    "accepted": [],
+    "rejected": [
+     [
+      "eligibility.free_care_max_fpl",
+      "quote not found in source"
+     ],
+     [
+      "eligibility.discount_tiers",
+      "quote not found in source"
+     ],
+     [
+      "eligibility.asset_test",
+      "quote not found in source"
+     ],
+     [
+      "eligibility.residency",
+      "quote not found in source"
+     ],
+     [
+      "eligibility.insured_patients_covered",
+      "quote not found in source"
+     ],
+     [
+      "programs.state_programs",
+      "quote not found in source"
+     ],
+     [
+      "apply.documents_required",
+      "quote not found in source"
+     ],
+     [
+      "apply.submit_methods",
+      "quote not found in source"
+     ],
+     [
+      "apply.window_days_from_first_bill",
+      "quote not found in source"
+     ],
+     [
+      "contacts.phone",
+      "quote not found in source"
+     ],
+     [
+      "contacts.languages",
+      "quote not found in source"
+     ]
+    ],
+    "pruned": [
+     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)"
+    ],
+    "income_rule_verified": false,
+    "core_completeness": 0.0
+   }
+  },
+  {
+   "hospital": {
+    "ccn": "420011",
+    "name": "CANNON MEMORIAL HOSPITAL",
+    "city": "PICKENS",
+    "state": "SC",
+    "zip": "29671",
+    "phone": "864-878-4791",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "anmed.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "Patients who can demonstrate that their total Household Financial Income is at or below 200% of FPL is eligible for a 100% discount for a period of 360 days (180 retro, 180 forward).",
+     "source_id": "fap-e2956446c0953b78",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": null,
+    "assistance_ceiling_fpl": null,
+    "asset_test": null,
+    "residency": {
+     "value": [
+      "Patients must be South Carolina or Georgia residents."
+     ],
+     "layer": "documented",
+     "quote": "South Carolina and Georgia residents ONLY",
+     "source_id": "fap-e2956446c0953b78",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "AnMed follows two different processes based on patient responsibility and coverage when determining eligibility for financial assistance for uninsured and insured patients.",
+     "source_id": "fap-e2956446c0953b78",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "social_security_letter",
+      "bank_statements",
+      "other"
+     ],
+     "layer": "documented",
+     "quote": "Proof of last month\u2019s household income: Check stubs, unemployment letter, Award letter from SSA, etc. || Bank statements for the last two (2) months (checking and/or savings) for all bank accounts patient and/or spouse are listed on. || If legally separated from your spouse, please provide proof of separation.",
+     "source_id": "fap-d8ceddbefd7c39b5",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "in_person",
+       "detail": "Financial Counseling Department, 123 W.G. Acker Drive, Pickens, SC 29671"
+      },
+      {
+       "kind": "mail",
+       "detail": "AnMed, Attn: Financial Counselors, 800 N. Fant Street, Anderson, SC 29621"
+      }
+     ],
+     "layer": "documented",
+     "quote": "In Person: Financial Counseling Department, 123 W.G. Acker Drive, Pickens, SC 29671 By Mail: AnMed, Attn: Financial Counselors, 800 N. Fant Street, Anderson, SC 29621",
+     "source_id": "web-e8db8726196bf926",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": null,
+    "decision_days": null,
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "864-898-1149",
+     "layer": "documented",
+     "quote": "AnMed Cannon Phone: 864-898-1149",
+     "source_id": "web-e8db8726196bf926",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": null,
+    "languages": null
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-e2956446c0953b78",
+     "kind": "hospital_web",
+     "url": "https://anmed.org/sites/default/files/2026-04/cafa-policy-2026-04-01-cannon.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "e2956446c0953b7844e697f92e25d55459b31707178081c81589b23e170af9e6",
+     "effective_date": null
+    },
+    {
+     "id": "fap-d8ceddbefd7c39b5",
+     "kind": "hospital_web",
+     "url": "https://anmed.org/sites/default/files/2026-04/cafa-rep-forms-2026-04-01.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "d8ceddbefd7c39b5afd7b86f33d3d53339a52d8221d4eb37522067cbcc1066c1",
+     "effective_date": null
+    },
+    {
+     "id": "web-e8db8726196bf926",
+     "kind": "hospital_web",
+     "url": "https://anmed.org/patients-visitors/billing-financial-services/assistance",
+     "title": "Financial Assistance | AnMed",
+     "fetched_on": "2026-10-23",
+     "sha256": "e8db8726196bf926ef3d269abfd92cf1fb38657f78478493e78f585b17644bd8",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "agent dropped eligibility.discount_tiers: judge: Quote gives 201-300% at 85%, but the 301-400% tier is cut off before any discount percent; 75% does not appear.",
+    "agent dropped programs.presumptive: judge: Quote mentions only Category II services with an eligible FAS score; it does not say uninsured, outpatient/emergency, or under $40,000.",
+    "agent dropped programs.state_programs: judge: Quote lists the program names only; it says nothing about contacting financial counselors for help applying."
+   ],
+   "eve_verified": {
+    "on": "2026-10-23",
+    "sources_fetched": 3,
+    "sources_total": 3,
+    "sources_missing": [],
+    "sha256_match": {
+     "fap-e2956446c0953b78": true,
+     "fap-d8ceddbefd7c39b5": true,
+     "web-e8db8726196bf926": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
+    "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.residency",
+     "eligibility.insured_patients_covered",
+     "apply.documents_required",
+     "apply.submit_methods",
+     "contacts.phone"
+    ],
+    "rejected": [
+     [
+      "eligibility.assistance_ceiling_fpl",
+      "quote states the percentage as a floor (above, over, at least), not a ceiling"
+     ],
+     [
+      "apply.form_url",
+      "quote not found in source"
+     ],
+     [
+      "contacts.languages",
+      "quote not found in source"
+     ]
+    ],
+    "pruned": [],
+    "income_rule_verified": true,
+    "core_completeness": 0.67
+   }
+  },
+  {
+   "hospital": {
+    "ccn": "420015",
+    "name": "PRISMA HEALTH BAPTIST EASLEY HOSPITAL",
+    "city": "EASLEY",
+    "state": "SC",
+    "zip": "29640",
+    "phone": "864-442-7606",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "prismahealth.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": null,
+    "discount_tiers": null,
+    "assistance_ceiling_fpl": null,
+    "asset_test": null,
+    "residency": null,
+    "insured_patients_covered": null,
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": null,
+    "documents_reported": null,
+    "submit_methods": null,
+    "window_days_from_first_bill": null,
+    "decision_days": null,
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": null,
+    "hours": null,
+    "languages": null
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-ea40821120a453d1",
+     "kind": "hospital_web",
+     "url": "https://prismahealth.org/pdfs/financial-arrangements-and-assistance-policy-english-26-27",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "ea40821120a453d18239ba4f6cc003bad81a37036d71136873b7ea3a0ddc651d",
+     "effective_date": null
+    },
+    {
+     "id": "fap-8f57756871871eab",
+     "kind": "hospital_web",
+     "url": "https://prismahealth.org/pdfs/financial-assistance-application-english",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "8f57756871871eab3525914fc4e18a1a64043819453795ed05f368ac246e49ba",
+     "effective_date": null
+    },
+    {
+     "id": "web-6c493d709524fe00",
+     "kind": "hospital_web",
+     "url": "https://prismahealth.org/patients-and-guests/billing-and-insurance/financial-assistance",
+     "title": "Financial Assistance",
+     "fetched_on": "2026-10-23",
+     "sha256": "6c493d709524fe0055acb9aa71887642c64d426db557ccb6160d04c52ba23066",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "eligibility.discount_tiers: value backed by 3 verbatim spans",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "agent dropped apply.documents_required: judge: Quote does not mention a no-income attestation for unemployed applicants; the rest is supported."
+   ],
+   "eve_verified": {
+    "on": "2026-10-23",
+    "sources_fetched": 3,
+    "sources_total": 3,
+    "sources_missing": [],
+    "sha256_match": {
+     "fap-ea40821120a453d1": false,
+     "fap-8f57756871871eab": false,
+     "web-6c493d709524fe00": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
+    "accepted": [],
+    "rejected": [
+     [
+      "eligibility.free_care_max_fpl",
+      "quote not found in source"
+     ],
+     [
+      "eligibility.discount_tiers",
+      "quote not found in source"
+     ],
+     [
+      "eligibility.asset_test",
+      "quote not found in source"
+     ],
+     [
+      "eligibility.residency",
+      "quote not found in source"
+     ],
+     [
+      "eligibility.insured_patients_covered",
+      "quote not found in source"
+     ],
+     [
+      "programs.state_programs",
+      "quote not found in source"
+     ],
+     [
+      "apply.submit_methods",
+      "quote not found in source"
+     ],
+     [
+      "apply.window_days_from_first_bill",
+      "quote not found in source"
+     ],
+     [
+      "contacts.phone",
+      "quote not found in source"
+     ]
+    ],
+    "pruned": [
+     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)"
+    ],
+    "income_rule_verified": false,
+    "core_completeness": 0.0
+   }
+  },
+  {
+   "hospital": {
+    "ccn": "420018",
+    "name": "PRISMA HEALTH RICHLAND HOSPITAL",
+    "city": "COLUMBIA",
+    "state": "SC",
+    "zip": "29203",
+    "phone": "803-296-2548",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "prismahealth.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": null,
+    "discount_tiers": null,
+    "assistance_ceiling_fpl": null,
+    "asset_test": null,
+    "residency": null,
+    "insured_patients_covered": null,
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": null,
+    "documents_reported": null,
+    "submit_methods": null,
+    "window_days_from_first_bill": null,
+    "decision_days": null,
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": null,
+    "hours": null,
+    "languages": null
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-ea40821120a453d1",
+     "kind": "hospital_web",
+     "url": "https://prismahealth.org/pdfs/financial-arrangements-and-assistance-policy-english-26-27",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "ea40821120a453d18239ba4f6cc003bad81a37036d71136873b7ea3a0ddc651d",
+     "effective_date": null
+    },
+    {
+     "id": "fap-8f57756871871eab",
+     "kind": "hospital_web",
+     "url": "https://prismahealth.org/pdfs/financial-assistance-application-english",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "8f57756871871eab3525914fc4e18a1a64043819453795ed05f368ac246e49ba",
+     "effective_date": null
+    },
+    {
+     "id": "web-9da21a21d66369a9",
+     "kind": "hospital_web",
+     "url": "https://prismahealth.org/patients-and-guests/billing-and-insurance/financial-assistance",
+     "title": "Financial Assistance",
+     "fetched_on": "2026-10-23",
+     "sha256": "9da21a21d66369a996709e0a0069b2078767a1ce7f0e4c21b1bb867ffb40f554",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "eligibility.discount_tiers: value backed by 3 verbatim spans",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 2 verbatim spans",
+    "apply.submit_methods: value backed by 2 verbatim spans",
+    "contacts.languages: value backed by 3 verbatim spans"
+   ],
+   "eve_verified": {
+    "on": "2026-10-23",
+    "sources_fetched": 3,
+    "sources_total": 3,
+    "sources_missing": [],
+    "sha256_match": {
+     "fap-ea40821120a453d1": false,
+     "fap-8f57756871871eab": false,
+     "web-9da21a21d66369a9": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
+    "accepted": [],
+    "rejected": [
+     [
+      "eligibility.free_care_max_fpl",
+      "quote not found in source"
+     ],
+     [
+      "eligibility.discount_tiers",
+      "quote not found in source"
+     ],
+     [
+      "eligibility.asset_test",
+      "quote not found in source"
+     ],
+     [
+      "eligibility.residency",
+      "quote not found in source"
+     ],
+     [
+      "eligibility.insured_patients_covered",
+      "quote not found in source"
+     ],
+     [
+      "programs.state_programs",
+      "quote not found in source"
+     ],
+     [
+      "apply.documents_required",
+      "quote not found in source"
+     ],
+     [
+      "apply.submit_methods",
+      "quote not found in source"
+     ],
+     [
+      "apply.window_days_from_first_bill",
+      "quote not found in source"
+     ],
+     [
+      "contacts.phone",
+      "quote not found in source"
+     ],
+     [
+      "contacts.languages",
+      "quote not found in source"
+     ]
+    ],
+    "pruned": [
+     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)"
+    ],
+    "income_rule_verified": false,
+    "core_completeness": 0.0
+   }
+  },
+  {
+   "hospital": {
+    "ccn": "420023",
+    "name": "ST FRANCIS-DOWNTOWN",
+    "city": "GREENVILLE",
+    "state": "SC",
+    "zip": "29601",
+    "phone": "800-805-5678",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "bonsecours.com",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "Individuals with an income level at 200% FPG or below receive free care.",
+     "source_id": "fap-b8bbfefcdefa0724",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "200",
+       "max_fpl_inclusive": "300",
+       "discount_percent": 81
+      },
+      {
+       "min_fpl_exclusive": "300",
+       "max_fpl_inclusive": "400",
+       "discount_percent": 81
+      }
+     ],
+     "layer": "documented",
+     "quote": "Hospital 0-200% FPG 201% - 300% FPG 301% - 400% FPG || St. Francis Downtown 100% 81% 81% 40%",
+     "source_id": "fap-b8bbfefcdefa0724",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "assistance_ceiling_fpl": null,
+    "asset_test": {
+     "value": true,
+     "layer": "documented",
+     "quote": "BSMH may evaluate and require documented proof of any assets that are categorized as convertible to cash and unnecessary for the patient\u2019s essential daily living expenses.",
+     "source_id": "fap-b8bbfefcdefa0724",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "residency": {
+     "value": [
+      "Patients who live in the community served by BSMH facilities are offered assistance; those outside need documented extenuating circumstances approved by the PFS Manager."
+     ],
+     "layer": "documented",
+     "quote": "Patients who live in the community served by BSMH Healthcare Facilities will be offered HFA. For those patients living outside the community, extenuating circumstances must be documented and approved by the PFS Manager",
+     "source_id": "fap-b8bbfefcdefa0724",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Insured patients may also qualify for assistance, based on family income, family size, and medical needs.",
+     "source_id": "web-4132a7f5d1fddd28",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": {
+     "value": [
+      "Income below 200% FPG and self-pay",
+      "Discharged to a SNF",
+      "Deceased with no known estate or insurance",
+      "State-funded prescription programs",
+      "Homeless or received care from a homeless clinic",
+      "WIC participation",
+      "Food stamp eligibility",
+      "Subsidized school lunch program eligibility",
+      "Referred through a National Association of Free Clinics",
+      "Low income/subsidized housing as valid address"
+     ],
+     "layer": "documented",
+     "quote": "Patient\u2019s income is below 200% Federal Poverty Guidelines and considered self-pay; \u25aa Patient discharged to a SNF; \u25aa Patient is deceased with no known estate or insurance; \u25aa State-funded prescription programs; \u25aa Homeless or received care from a homeless clinic; || Participation in Women, Infants and Children programs (WIC); \u25aa Food stamp eligibility; \u25aa Subsidized school lunch program eligibility; \u25aa Eligibility for other state or local assistance programs that are unfunded (e.g., Medicaid spend-down); \u25aa Patients that are referred through a National Association of Free Clinics; || Low income/subsidized housing is provided as a valid address; or",
+     "source_id": "fap-b8bbfefcdefa0724",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": null,
+    "documents_reported": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "Bon Secours Mercy Health Financial Aid, P.O. Box 631360, Cincinnati, OH 45263-1360"
+      }
+     ],
+     "layer": "documented",
+     "quote": "MAIL COMPLETED APPLICATION AND DOCUMENTATION TO: Bon Secours Mercy Health Financial Aid, P.O. Box 631360 Cincinnati, OH 45263-1360",
+     "source_id": "fap-5eeb30e6f459a51c",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": null,
+    "decision_days": null,
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "877-342-1500",
+     "layer": "documented",
+     "quote": "Copies of the Financial Assistance Application and the FAP may be obtained for free by calling our customer service department at (Toll Free) 877-342-1500.",
+     "source_id": "web-4132a7f5d1fddd28",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": null,
+    "languages": null
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-b8bbfefcdefa0724",
+     "kind": "hospital_web",
+     "url": "https://www.bonsecours.com/-/media/bon-secours/patients-and-visitors/corporate/financial-assistance/502-bsmh-healthcare-financial-assistance-policy-effective-march-1-2024_supersede-final-clean.ashx",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "b8bbfefcdefa07242de3d05ff49676ea462af2dccc8340cef5da172c80389379",
+     "effective_date": null
+    },
+    {
+     "id": "fap-5eeb30e6f459a51c",
+     "kind": "hospital_web",
+     "url": "https://www.bonsecours.com/-/media/bon-secours/patients-and-visitors/corporate/financial-assistance/fa-applications/english-faapplication.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "5eeb30e6f459a51c6f6929ba7a5efe9c2378cbc96daecc966c9d53fa21b5ae6c",
+     "effective_date": null
+    },
+    {
+     "id": "web-4132a7f5d1fddd28",
+     "kind": "hospital_web",
+     "url": "https://www.bonsecours.com/patient-resources/financial-assistance",
+     "title": "Financial Assistance | Patient Resources | Bon Secours",
+     "fetched_on": "2026-10-23",
+     "sha256": "4132a7f5d1fddd2802101dad892a5c3cd4904d36c2950329abf25523196d1dfe",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "contacts.languages: value backed by 3 verbatim spans",
+    "agent dropped apply.documents_required: judge: Quote says only 'PROVIDE COPY OF CARD' and does not specify an insurance card. The other items are supported."
+   ],
+   "eve_verified": {
+    "on": "2026-10-23",
+    "sources_fetched": 3,
+    "sources_total": 3,
+    "sources_missing": [],
+    "sha256_match": {
+     "fap-b8bbfefcdefa0724": true,
+     "fap-5eeb30e6f459a51c": true,
+     "web-4132a7f5d1fddd28": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
+    "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
+     "eligibility.asset_test",
+     "eligibility.residency",
+     "eligibility.insured_patients_covered",
+     "programs.presumptive",
+     "apply.submit_methods",
+     "contacts.phone"
+    ],
+    "rejected": [
+     [
+      "contacts.languages",
+      "quote not found in source"
+     ]
+    ],
+    "pruned": [
+     "programs.presumptive: 1 item not named in the trimmed quote"
+    ],
+    "income_rule_verified": true,
+    "core_completeness": 0.67
+   }
+  },
+  {
+   "hospital": {
+    "ccn": "420026",
+    "name": "MUSC HEALTH COLUMBIA MEDICAL CENTER DOWNTOWN",
+    "city": "COLUMBIA",
+    "state": "SC",
+    "zip": "29204",
+    "phone": "803-256-5300",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "muschealth.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "300",
+     "layer": "documented",
+     "quote": "Percent Discount 100% 0% Household Size Yearly Income If Household Income is LESS than If Household Income is or greater than (300% of Poverty Level) (301% of Poverty Level)",
+     "source_id": "web-2eedd746a6ca0c37",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": null,
+    "assistance_ceiling_fpl": null,
+    "asset_test": null,
+    "residency": {
+     "value": [
+      "Applicants may be asked to provide proof of South Carolina residency."
+     ],
+     "layer": "documented",
+     "quote": "f. Proof of South Carolina residency",
+     "source_id": "fap-8051aed08d0f7080",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "FAP Sliding Scale for Uninsured and Insured patients",
+     "source_id": "web-2eedd746a6ca0c37",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "tax_return",
+      "pay_stubs",
+      "bank_statements",
+      "proof_of_income",
+      "proof_of_residency"
+     ],
+     "layer": "documented",
+     "quote": "a. A Financial Assistance Application b. Prior year\u2019s tax return(s) c. Minimum of two most recent pay stubs if paid bi-monthly or four if paid weekly d. Most recent bank statements for savings and checking accounts e. Other proof of income as defined by \u2018Family Income\u2019 listed in the Definitions section of this Policy. f. Proof of South Carolina residency",
+     "source_id": "fap-8051aed08d0f7080",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "ATTN: Medical University of South Carolina, 1 Poston Road, Suite 300, Charleston, SC 29407"
+      },
+      {
+       "kind": "portal",
+       "detail": "https://mychart.musc.edu"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Please mail this completed form with required documentation to the following address: ATTN: MEDICAL UNIVERISTY OF SOUTH CAROLINA 1 Poston Road, Suite 300 Charleston, SC 29407 || You may also apply online at https://mychart.musc.edu",
+     "source_id": "fap-11f1ea1f2b7316de",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": null,
+    "decision_days": null,
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": {
+     "value": 120,
+     "layer": "documented",
+     "quote": "Assuring that no ECAs are imposed for at least 120 days from the date of the first billing statement.",
+     "source_id": "fap-8051aed08d0f7080",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "843-792-2311",
+     "layer": "documented",
+     "quote": "Customer Service representatives are available Monday through Friday, from 8 a.m. to 4:30 p.m. by calling 843-792-2311 or 800-598-0624 .",
+     "source_id": "web-2eedd746a6ca0c37",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": {
+     "value": "Monday through Friday, 8 a.m. to 4:30 p.m.",
+     "layer": "documented",
+     "quote": "Customer Service representatives are available Monday through Friday, from 8 a.m. to 4:30 p.m. by calling 843-792-2311 or 800-598-0624 .",
+     "source_id": "web-2eedd746a6ca0c37",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "languages": null
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-8051aed08d0f7080",
+     "kind": "hospital_web",
+     "url": "https://muschealth.org/-/sm/health/patients-visitors/billing/f/financial-assistance-policy.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "8051aed08d0f708013894c7711cfc4708393085088482a4de336c57baa9a9994",
+     "effective_date": null
+    },
+    {
+     "id": "fap-11f1ea1f2b7316de",
+     "kind": "hospital_web",
+     "url": "https://muschealth.org/-/sm/health/patients-visitors/billing/f/financial-assistance-form.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "11f1ea1f2b7316de323fbab924ea644d51cb90fda3dee705afdb1e9fabb332fa",
+     "effective_date": null
+    },
+    {
+     "id": "web-2eedd746a6ca0c37",
+     "kind": "hospital_web",
+     "url": "https://muschealth.org/patients-visitors/billing/financial-assistance",
+     "title": "Financial Assistance | MUSC Health",
+     "fetched_on": "2026-10-23",
+     "sha256": "2eedd746a6ca0c37d934fa1a880d7b14994c8894ac358dfcab5980ebec10a82c",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "apply.submit_methods: value backed by 2 verbatim spans",
+    "agent dropped programs.presumptive: judge: The quote supports all items, but the 'PARO' label in the last item does not appear in the quote.",
+    "agent dropped apply.window_days_from_first_bill: judge: The quote gives 240 days to apply but does not say the period runs from the first bill.",
+    "agent dropped contacts.languages: judge: The quote describes cost-estimate tools being available in English and Spanish, not contact or assistance languages."
+   ],
+   "eve_verified": {
+    "on": "2026-10-23",
+    "sources_fetched": 3,
+    "sources_total": 3,
+    "sources_missing": [],
+    "sha256_match": {
+     "fap-8051aed08d0f7080": true,
+     "fap-11f1ea1f2b7316de": true,
+     "web-2eedd746a6ca0c37": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
+    "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.residency",
+     "eligibility.insured_patients_covered",
+     "apply.documents_required",
+     "apply.submit_methods",
+     "collections.eca_wait_days",
+     "contacts.phone",
+     "contacts.hours"
+    ],
+    "rejected": [
+     [
+      "eligibility.assistance_ceiling_fpl",
+      "quote states the percentage as a floor (above, over, at least), not a ceiling"
+     ],
+     [
+      "apply.form_url",
+      "quote not found in source"
+     ],
+     [
+      "apply.decision_days",
+      "value not in quote"
+     ]
+    ],
+    "pruned": [
+     "apply.documents_required: 1 item not named in the trimmed quote"
+    ],
+    "income_rule_verified": true,
+    "core_completeness": 0.67
+   }
+  },
+  {
+   "hospital": {
+    "ccn": "420027",
+    "name": "ANMED HEALTH",
+    "city": "ANDERSON",
+    "state": "SC",
+    "zip": "29621",
+    "phone": "864-512-2830",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "anmed.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "Patients who can demonstrate that their total Household Financial Income is at or below 200% of FPL is eligible for a 100% discount for a period of 360 days (180 retro, 180 forward).",
+     "source_id": "fap-e32a2a4bfd127ec0",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "200",
+       "max_fpl_inclusive": "300",
+       "discount_percent": 85
+      },
+      {
+       "min_fpl_exclusive": "300",
+       "max_fpl_inclusive": "400",
+       "discount_percent": 75
+      }
+     ],
+     "layer": "documented",
+     "quote": "Patients who can demonstrate that their total Household Financial Income is between 201%-300% FPL is eligible for a 85% discount || Patients who can demonstrate that their total Household Financial Income is at or below 301%-400% of FPL is eligible for a 75% discount",
+     "source_id": "fap-e32a2a4bfd127ec0",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "assistance_ceiling_fpl": null,
+    "asset_test": null,
+    "residency": {
+     "value": [
+      "Patients must be residents of South Carolina or Georgia."
+     ],
+     "layer": "documented",
+     "quote": "South Carolina and Georgia residents ONLY",
+     "source_id": "fap-e32a2a4bfd127ec0",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "AnMed follows two different processes based on patient responsibility and coverage when determining eligibility for financial assistance for uninsured and insured patients.",
+     "source_id": "fap-e32a2a4bfd127ec0",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
+    "state_programs": {
+     "value": [
+      {
+       "name": "South Carolina and Georgia Medicaid",
+       "how_to_apply": "Contact AnMed financial counselors to start the application process."
+      },
+      {
+       "name": "South Carolina Office of Victim Assistance",
+       "how_to_apply": "Contact AnMed financial counselors to start the application process."
+      }
+     ],
+     "layer": "documented",
+     "quote": "South Carolina and Georgia Medicaid || South Carolina Office of Victim Assistance || Contact us to learn more about these programs or to start the application process.",
+     "source_id": "web-e8db8726196bf926",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "social_security_letter",
+      "bank_statements",
+      "other"
+     ],
+     "layer": "documented",
+     "quote": "Proof of last month\u2019s household income: Check stubs, unemployment letter, Award letter from SSA, etc. || Bank statements for the last two (2) months (checking and/or savings) for all bank accounts patient and/or spouse are listed on. || If legally separated from your spouse, please provide proof of separation.",
+     "source_id": "fap-d8ceddbefd7c39b5",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": null,
+    "window_days_from_first_bill": null,
+    "decision_days": null,
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "864-512-3435",
+     "layer": "documented",
+     "quote": "Phone: 864-512-3435 or 1-800-388-3496, ext. 3435",
+     "source_id": "web-e8db8726196bf926",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": {
+     "value": "Monday \u2013 Friday, 8:00 a.m. \u2013 5:00 p.m.",
+     "layer": "documented",
+     "quote": "Hours: Monday \u2013 Friday, 8:00 a.m. \u2013 5:00 p.m.",
+     "source_id": "web-e8db8726196bf926",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "languages": {
+     "value": [
+      "English",
+      "Spanish"
+     ],
+     "layer": "documented",
+     "quote": "View the Application in English || in Solicitud en espa\u00f1ol",
+     "source_id": "web-e8db8726196bf926",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-e32a2a4bfd127ec0",
+     "kind": "hospital_web",
+     "url": "https://anmed.org/sites/default/files/2026-04/cafa-policy-2026-04-01-anmed.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "e32a2a4bfd127ec0e0b27d2be8315c95bbf41a3a02fe2c050faba1fc6086b59c",
+     "effective_date": null
+    },
+    {
+     "id": "fap-d8ceddbefd7c39b5",
+     "kind": "hospital_web",
+     "url": "https://anmed.org/sites/default/files/2026-04/cafa-rep-forms-2026-04-01.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "d8ceddbefd7c39b5afd7b86f33d3d53339a52d8221d4eb37522067cbcc1066c1",
+     "effective_date": null
+    },
+    {
+     "id": "web-e8db8726196bf926",
+     "kind": "hospital_web",
+     "url": "https://anmed.org/patients-visitors/billing-financial-services/assistance",
+     "title": "Financial Assistance | AnMed",
+     "fetched_on": "2026-10-23",
+     "sha256": "e8db8726196bf926ef3d269abfd92cf1fb38657f78478493e78f585b17644bd8",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "programs.state_programs: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "contacts.languages: value backed by 2 verbatim spans",
+    "agent dropped eligibility.assistance_ceiling_fpl: judge: Quote is a fragment mentioning income above 400% FPL; it does not say no assistance is offered above that level.",
+    "agent dropped eligibility.asset_test: judge: Quote lists asset ownership files as one data component of a scoring review; it does not state that assets are tested for eligibility.",
+    "agent dropped programs.presumptive: judge: Quote is truncated and gives no details on uninsured, Category II, the $40,000 limit, or the score.",
+    "agent dropped apply.submit_methods: judge: Mail address matches, but the in-person quote gives only '522 N. McDuffie Street'; 'Anderson, SC' is added."
+   ],
+   "eve_verified": {
+    "on": "2026-10-23",
+    "sources_fetched": 3,
+    "sources_total": 3,
+    "sources_missing": [],
+    "sha256_match": {
+     "fap-e32a2a4bfd127ec0": true,
+     "fap-d8ceddbefd7c39b5": true,
+     "web-e8db8726196bf926": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
+    "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
+     "eligibility.residency",
+     "eligibility.insured_patients_covered",
+     "programs.state_programs",
+     "apply.documents_required",
+     "contacts.phone",
+     "contacts.hours",
+     "contacts.languages"
+    ],
+    "rejected": [
+     [
+      "apply.form_url",
+      "quote not found in source"
+     ]
+    ],
+    "pruned": [],
+    "income_rule_verified": true,
+    "core_completeness": 0.67
+   }
+  },
+  {
+   "hospital": {
+    "ccn": "420033",
+    "name": "PRISMA HEALTH GREER MEMORIAL HOSPITAL",
+    "city": "SPARTANBURG",
+    "state": "SC",
+    "zip": "29306",
+    "phone": "864-848-8200",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "prismahealth.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": null,
+    "discount_tiers": null,
+    "assistance_ceiling_fpl": null,
+    "asset_test": null,
+    "residency": null,
+    "insured_patients_covered": null,
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": null,
+    "documents_reported": null,
+    "submit_methods": null,
+    "window_days_from_first_bill": null,
+    "decision_days": null,
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": null,
+    "hours": null,
+    "languages": null
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-3778b3b216be1f62",
+     "kind": "hospital_web",
+     "url": "https://prismahealth.org/pdfs/financial-arrangements-and-assistance-policy-english-25-26",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "3778b3b216be1f6274cd9204c496c699816dbfd8076c0644e884087586a66eaf",
+     "effective_date": null
+    },
+    {
+     "id": "fap-8f57756871871eab",
+     "kind": "hospital_web",
+     "url": "https://prismahealth.org/pdfs/financial-assistance-application-english",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "8f57756871871eab3525914fc4e18a1a64043819453795ed05f368ac246e49ba",
+     "effective_date": null
+    },
+    {
+     "id": "web-d701d5cdc8999b07",
+     "kind": "hospital_web",
+     "url": "https://prismahealth.org/patients-and-guests/billing-and-insurance/financial-assistance",
+     "title": "Pardon Our Interruption",
+     "fetched_on": "2026-10-23",
+     "sha256": "d701d5cdc8999b07c36c2b415553f24ed02bf0a5863e7535dc9061b5556b234f",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 2 verbatim spans"
+   ],
+   "eve_verified": {
+    "on": "2026-10-23",
+    "sources_fetched": 3,
+    "sources_total": 3,
+    "sources_missing": [],
+    "sha256_match": {
+     "fap-3778b3b216be1f62": false,
+     "fap-8f57756871871eab": false,
+     "web-d701d5cdc8999b07": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
+    "accepted": [],
+    "rejected": [
+     [
+      "eligibility.free_care_max_fpl",
+      "quote not found in source"
+     ],
+     [
+      "eligibility.discount_tiers",
+      "quote not found in source"
+     ],
+     [
+      "eligibility.residency",
+      "quote not found in source"
+     ],
+     [
+      "eligibility.insured_patients_covered",
+      "quote not found in source"
+     ],
+     [
+      "apply.documents_required",
+      "quote not found in source"
+     ],
+     [
+      "apply.submit_methods",
+      "quote not found in source"
+     ],
+     [
+      "apply.window_days_from_first_bill",
+      "quote not found in source"
+     ],
+     [
+      "contacts.phone",
+      "quote not found in source"
+     ]
+    ],
+    "pruned": [
+     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)"
+    ],
+    "income_rule_verified": false,
+    "core_completeness": 0.0
+   }
+  },
+  {
+   "hospital": {
+    "ccn": "420037",
+    "name": "PRISMA HEALTH HILLCREST HOSPITAL",
+    "city": "SIMPSONVILLE",
+    "state": "SC",
+    "zip": "29681",
+    "phone": "864-454-6100",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "prismahealth.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": null,
+    "discount_tiers": null,
+    "assistance_ceiling_fpl": null,
+    "asset_test": null,
+    "residency": null,
+    "insured_patients_covered": null,
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": null,
+    "documents_reported": null,
+    "submit_methods": null,
+    "window_days_from_first_bill": null,
+    "decision_days": null,
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": null,
+    "hours": null,
+    "languages": null
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-ea40821120a453d1",
+     "kind": "hospital_web",
+     "url": "https://prismahealth.org/pdfs/financial-arrangements-and-assistance-policy-english-26-27",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "ea40821120a453d18239ba4f6cc003bad81a37036d71136873b7ea3a0ddc651d",
+     "effective_date": null
+    },
+    {
+     "id": "fap-8f57756871871eab",
+     "kind": "hospital_web",
+     "url": "https://prismahealth.org/pdfs/financial-assistance-application-english",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "8f57756871871eab3525914fc4e18a1a64043819453795ed05f368ac246e49ba",
+     "effective_date": null
+    },
+    {
+     "id": "web-11554b2b7e34b1f5",
+     "kind": "hospital_web",
+     "url": "https://prismahealth.org/patients-and-guests/billing-and-insurance/financial-assistance",
+     "title": "Financial Assistance",
+     "fetched_on": "2026-10-23",
+     "sha256": "11554b2b7e34b1f5a06d53f944784a9ffad19805b388ac820c4522602d61d344",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "contacts.languages: value backed by 3 verbatim spans",
+    "agent dropped eligibility.discount_tiers: judge: Quote gives a 250\u2013400% sliding scale but only an unlabeled table fragment '100% 79% based on AGB'; it does not tie 79% to that tier."
+   ],
+   "eve_verified": {
+    "on": "2026-10-23",
+    "sources_fetched": 3,
+    "sources_total": 3,
+    "sources_missing": [],
+    "sha256_match": {
+     "fap-ea40821120a453d1": false,
+     "fap-8f57756871871eab": false,
+     "web-11554b2b7e34b1f5": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
+    "accepted": [],
+    "rejected": [
+     [
+      "eligibility.free_care_max_fpl",
+      "quote not found in source"
+     ],
+     [
+      "eligibility.asset_test",
+      "quote not found in source"
+     ],
+     [
+      "eligibility.residency",
+      "quote not found in source"
+     ],
+     [
+      "eligibility.insured_patients_covered",
+      "quote not found in source"
+     ],
+     [
+      "programs.state_programs",
+      "quote not found in source"
+     ],
+     [
+      "apply.documents_required",
+      "quote not found in source"
+     ],
+     [
+      "apply.submit_methods",
+      "quote not found in source"
+     ],
+     [
+      "apply.window_days_from_first_bill",
+      "quote not found in source"
+     ],
+     [
+      "contacts.phone",
+      "quote not found in source"
+     ],
+     [
+      "contacts.languages",
+      "quote not found in source"
+     ]
+    ],
+    "pruned": [
+     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)"
+    ],
+    "income_rule_verified": false,
+    "core_completeness": 0.0
+   }
+  },
+  {
+   "hospital": {
+    "ccn": "420038",
+    "name": "PRISMA HEALTH LAURENS COUNTY HOSPITAL",
+    "city": "CLINTON",
+    "state": "SC",
+    "zip": "29325",
+    "phone": "864-833-9100",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "prismahealth.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": null,
+    "discount_tiers": null,
+    "assistance_ceiling_fpl": null,
+    "asset_test": null,
+    "residency": null,
+    "insured_patients_covered": null,
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": null,
+    "documents_reported": null,
+    "submit_methods": null,
+    "window_days_from_first_bill": null,
+    "decision_days": null,
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": null,
+    "hours": null,
+    "languages": null
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-3778b3b216be1f62",
+     "kind": "hospital_web",
+     "url": "https://prismahealth.org/pdfs/financial-arrangements-and-assistance-policy-english-25-26",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "3778b3b216be1f6274cd9204c496c699816dbfd8076c0644e884087586a66eaf",
+     "effective_date": null
+    },
+    {
+     "id": "fap-8f57756871871eab",
+     "kind": "hospital_web",
+     "url": "https://prismahealth.org/pdfs/financial-assistance-application-english",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "8f57756871871eab3525914fc4e18a1a64043819453795ed05f368ac246e49ba",
+     "effective_date": null
+    },
+    {
+     "id": "web-cd91c7cf6e5a479c",
+     "kind": "hospital_web",
+     "url": "https://prismahealth.org/patients-and-guests/billing-and-insurance/financial-assistance",
+     "title": "Financial Assistance",
+     "fetched_on": "2026-10-23",
+     "sha256": "cd91c7cf6e5a479ca03e7cff218a8b27a7bb79a5f4b39b81ef9bd7ab4188f3d1",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 2 verbatim spans"
+   ],
+   "eve_verified": {
+    "on": "2026-10-23",
+    "sources_fetched": 3,
+    "sources_total": 3,
+    "sources_missing": [],
+    "sha256_match": {
+     "fap-3778b3b216be1f62": false,
+     "fap-8f57756871871eab": false,
+     "web-cd91c7cf6e5a479c": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
+    "accepted": [],
+    "rejected": [
+     [
+      "eligibility.free_care_max_fpl",
+      "quote not found in source"
+     ],
+     [
+      "eligibility.discount_tiers",
+      "quote not found in source"
+     ],
+     [
+      "eligibility.asset_test",
+      "quote not found in source"
+     ],
+     [
+      "eligibility.residency",
+      "quote not found in source"
+     ],
+     [
+      "eligibility.insured_patients_covered",
+      "quote not found in source"
+     ],
+     [
+      "apply.documents_required",
+      "quote not found in source"
+     ],
+     [
+      "apply.submit_methods",
+      "quote not found in source"
+     ],
+     [
+      "apply.window_days_from_first_bill",
+      "quote not found in source"
+     ],
+     [
+      "contacts.phone",
+      "quote not found in source"
+     ]
+    ],
+    "pruned": [
+     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)"
+    ],
+    "income_rule_verified": false,
+    "core_completeness": 0.0
+   }
+  },
+  {
+   "hospital": {
+    "ccn": "420049",
+    "name": "CONWAY MEDICAL CENTER",
+    "city": "CONWAY",
+    "state": "SC",
+    "zip": "29526",
+    "phone": "843-347-8037",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "conwaymedicalcenter.com",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "Any patient whose gross family income is at or below 200% of the FPL will be extended a full 100% charity care discount",
+     "source_id": "fap-797947022fe28fd1",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": null,
+    "assistance_ceiling_fpl": null,
+    "asset_test": null,
+    "residency": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "will be extended a full 100% charity care discount for any Uninsured Balance or Balance After Insurance on patient responsibility for Covered Services.",
+     "source_id": "fap-797947022fe28fd1",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
+    "state_programs": {
+     "value": [
+      {
+       "name": "Medicaid",
+       "how_to_apply": "Screen with on-site hospital eligibility workers at 843-234-6958 or 843-347-8183, or contact Conway DHHS at 1201 Creel Street, Conway, SC, or 1-888-549-0820."
+      }
+     ],
+     "layer": "documented",
+     "quote": "You must be screened for Medicaid and provide us with an approval or a denial. This can be done with the on-site hospital eligibility workers at 843-234-6958 or 843-347-8183. You may also contact the Conway DHHS at 1201 Creel Street, Conway, SC. or by phone at 1-888-549-0820.",
+     "source_id": "fap-52df7aa286db288b",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": null,
+    "documents_reported": null,
+    "submit_methods": null,
+    "window_days_from_first_bill": null,
+    "decision_days": null,
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": {
+     "value": 120,
+     "layer": "documented",
+     "quote": "CMC will not pursue an Extraordinary Collection Actions until 120 days after the date of the first post-discharge billing statement for the care at issue.",
+     "source_id": "fap-797947022fe28fd1",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "877-818-2963",
+     "layer": "documented",
+     "quote": "Collections Dept at 877-818-2963 (toll free), Monday through Thursday, 8 a.m. to 8 p.m. or Friday, 8 a.m. to 4 p.m.",
+     "source_id": "fap-797947022fe28fd1",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": {
+     "value": "Monday through Thursday, 8 a.m. to 8 p.m.; Friday, 8 a.m. to 4 p.m.",
+     "layer": "documented",
+     "quote": "Collections Dept at 877-818-2963 (toll free), Monday through Thursday, 8 a.m. to 8 p.m. or Friday, 8 a.m. to 4 p.m.",
+     "source_id": "fap-797947022fe28fd1",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "languages": null
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-797947022fe28fd1",
+     "kind": "hospital_web",
+     "url": "https://www.conwaymedicalcenter.com/wp-content/uploads/2023/05/financial_assistance_policy.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "797947022fe28fd166c561138f0d56fb5ef8981e1664497437b5ea279eb9c0e7",
+     "effective_date": null
+    },
+    {
+     "id": "fap-52df7aa286db288b",
+     "kind": "hospital_web",
+     "url": "https://www.conwaymedicalcenter.com/wp-content/uploads/2018/08/CMC-Financial-Assistance-Application-English-3.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "52df7aa286db288bd95173623197692e68fdc2b24d75032d826110f26cb4b140",
+     "effective_date": null
+    },
+    {
+     "id": "web-e3b1aeb9fe2a410c",
+     "kind": "hospital_web",
+     "url": "https://www.conwaymedicalcenter.com/billing-and-insurance/financial-assistance/",
+     "title": "Medical Financial Assistance | Conway Medical Center",
+     "fetched_on": "2026-10-23",
+     "sha256": "e3b1aeb9fe2a410c3fd4cd5484410cd92df7eb28a499540380ca1b10e5795d4f",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "contacts.languages: value backed by 2 verbatim spans",
+    "agent dropped apply.documents_required: judge: Quote does not mention Schedule C for self-employed applicants. The other items appear.",
+    "agent dropped apply.submit_methods: judge: Quote gives no mailing address and no Collections Dept at the main entrance. It also cuts off mid-sentence.",
+    "agent dropped apply.window_days_from_first_bill: judge: Quote says twelve (12) months, not 360 days. Twelve months is about 365 days."
+   ],
+   "eve_verified": {
+    "on": "2026-10-23",
+    "sources_fetched": 3,
+    "sources_total": 3,
+    "sources_missing": [],
+    "sha256_match": {
+     "fap-797947022fe28fd1": true,
+     "fap-52df7aa286db288b": true,
+     "web-e3b1aeb9fe2a410c": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
+    "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.insured_patients_covered",
+     "programs.state_programs",
+     "collections.eca_wait_days",
+     "contacts.phone",
+     "contacts.hours"
+    ],
+    "rejected": [
+     [
+      "eligibility.asset_test",
+      "quote does not support the asset-test value"
+     ],
+     [
+      "apply.form_url",
+      "quote not found in source"
+     ],
+     [
+      "contacts.languages",
+      "quote not found in source"
+     ]
+    ],
+    "pruned": [
+     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)"
+    ],
+    "income_rule_verified": true,
+    "core_completeness": 0.33
+   }
+  },
+  {
+   "hospital": {
+    "ccn": "420053",
+    "name": "NEWBERRY COUNTY MEMORIAL HOSPITAL",
+    "city": "NEWBERRY",
+    "state": "SC",
+    "zip": "29108",
+    "phone": "803-405-7145",
+    "ownership": "Voluntary non-profit - Other",
+    "website_domain": "newberryhealth.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "100",
+     "layer": "documented",
+     "quote": "Up to 100% $15,650 $21,150 $26,650 $32,150 $37,650 $43,150 $48,650 $54,150 100% 0%",
+     "source_id": "fap-c3f24450383dfd41",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": null,
+    "assistance_ceiling_fpl": null,
+    "asset_test": {
+     "value": true,
+     "layer": "documented",
+     "quote": "We do verify assets regarding your eligibility.",
+     "source_id": "fap-e7bb9dcc6af9c446",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "residency": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Insured patients may also apply for financial assistance to help pay for balances left after insurance.",
+     "source_id": "fap-c3f24450383dfd41",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
+    "state_programs": {
+     "value": [
+      {
+       "name": "Medicaid",
+       "how_to_apply": "Newberry Health can help eligible patients who are not signed up apply."
+      }
+     ],
+     "layer": "documented",
+     "quote": "If you are eligible for Medicaid, and you are not currently signed up, we can help you apply.",
+     "source_id": "fap-e7bb9dcc6af9c446",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "tax_return",
+      "bank_statements",
+      "social_security_letter",
+      "proof_of_income",
+      "other"
+     ],
+     "layer": "documented",
+     "quote": "\u2022 Picture ID \u2022 Most recent tax return \u2022 Proof of gross wages for the last 30 days \u2022 Most recent bank statement || \u2022 Proof of all income benefits you are receiving, including pension, social security, unemployment, disability, as well as, child support, alimony \u2022 If you are unemployed with no source of income, a statement explaining how you pay for your basic living expenses",
+     "source_id": "fap-e7bb9dcc6af9c446",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "in_person",
+       "detail": "Submit complete application with supporting documents in person"
+      },
+      {
+       "kind": "mail",
+       "detail": "Submit complete application with supporting documents by mail"
+      }
+     ],
+     "layer": "documented",
+     "quote": "To apply for financial assistance, patients must submit a complete application (including supporting documents) either in person or by mail.",
+     "source_id": "fap-c3f24450383dfd41",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": null,
+    "decision_days": null,
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "803-405-7669",
+     "layer": "documented",
+     "quote": "you can contact one of our patient support representatives at 803-405-7669 who would be happy to help or answer any questions you have.",
+     "source_id": "fap-c3f24450383dfd41",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": null,
+    "languages": {
+     "value": [
+      "English",
+      "Spanish"
+     ],
+     "layer": "documented",
+     "quote": "Newberry Health\u2019s financial assistance policy and financial assistance application are available to patients in English and Spanish.",
+     "source_id": "fap-c3f24450383dfd41",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-c3f24450383dfd41",
+     "kind": "hospital_web",
+     "url": "https://www.newberryhealth.org/uploads/docs/Financial_Assistance_Policy_and_Procedure_7.31.25.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "c3f24450383dfd41fd263ce112bc895f89010db438a51825236478d5516b7c74",
+     "effective_date": null
+    },
+    {
+     "id": "fap-e7bb9dcc6af9c446",
+     "kind": "hospital_web",
+     "url": "https://www.newberryhealth.org/uploads/docs/Financial_Assistance_Application_7.31.25.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "e7bb9dcc6af9c44686bca30382f94487704e6953729fbd14352de199e8f5959b",
+     "effective_date": null
+    },
+    {
+     "id": "web-216af4dec862f91a",
+     "kind": "hospital_web",
+     "url": "https://www.newberryhealth.org/patients-visitors/patient-financial-services",
+     "title": "Patient Financial Services | Newberry Health Hospital",
+     "fetched_on": "2026-10-23",
+     "sha256": "216af4dec862f91a2d7988df9a1cf1aaef459a8b9f2d57758f98ea10b6763773",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "eligibility.discount_tiers: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 2 verbatim spans",
+    "agent dropped apply.window_days_from_first_bill: judge: The quote gives 8 months after the date of service, not a number of days from the first bill."
+   ],
+   "eve_verified": {
+    "on": "2026-10-23",
+    "sources_fetched": 3,
+    "sources_total": 3,
+    "sources_missing": [],
+    "sha256_match": {
+     "fap-c3f24450383dfd41": true,
+     "fap-e7bb9dcc6af9c446": true,
+     "web-216af4dec862f91a": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
+    "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.asset_test",
+     "eligibility.insured_patients_covered",
+     "programs.state_programs",
+     "apply.documents_required",
+     "apply.submit_methods",
+     "contacts.phone",
+     "contacts.languages"
+    ],
+    "rejected": [
+     [
+      "eligibility.discount_tiers",
+      "value not in quote"
+     ],
+     [
+      "apply.form_url",
+      "quote not found in source"
+     ]
+    ],
+    "pruned": [
+     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
+     "apply.documents_required: 1 item not named in the trimmed quote"
+    ],
+    "income_rule_verified": true,
+    "core_completeness": 0.67
+   }
+  },
+  {
+   "hospital": {
+    "ccn": "420065",
+    "name": "BON SECOURS-ST FRANCIS XAVIER HOSPITAL",
+    "city": "CHARLESTON",
+    "state": "SC",
+    "zip": "29414",
+    "phone": "843-402-1006",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "rsfh.com",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "Individuals with an income level at 200% FPG or below receive free care.",
+     "source_id": "fap-d9f296ad04d4ae84",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "200",
+       "max_fpl_inclusive": "400",
+       "discount_percent": 74
+      }
+     ],
+     "layer": "documented",
+     "quote": "Individuals with an income level from 201% to 400% FPG receive 74% discounted care.",
+     "source_id": "fap-d9f296ad04d4ae84",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "assistance_ceiling_fpl": {
+     "value": "400",
+     "layer": "documented",
+     "quote": "HFA eligibility is based upon expanded income levels of up to 400% of FPG and is prorated on a sliding scale applicable to the respective market area.",
+     "source_id": "fap-d9f296ad04d4ae84",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "asset_test": {
+     "value": true,
+     "layer": "documented",
+     "quote": "RSFH may evaluate and require documented proof of any assets that are categorized as convertible to cash and unnecessary for the patient's essential daily living expenses.",
+     "source_id": "fap-d9f296ad04d4ae84",
+     "checked_on": "2026-10-23",
+     "confidence": 0.8,
+     "support_count": 0
+    },
+    "residency": {
+     "value": [
+      "Patients who live in the community served by RSFH Healthcare Facilities will be offered HFA."
+     ],
+     "layer": "documented",
+     "quote": "Patients who live in the community served by RSFH Healthcare Facilities will be offered HFA.",
+     "source_id": "fap-d9f296ad04d4ae84",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "It covers patients without health insurance and those with only partial insurance coverage (i.e. the uninsured and underinsured) who meet the income and other eligibility criteria described herein.",
+     "source_id": "fap-d9f296ad04d4ae84",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "proof_of_income",
+      "other"
+     ],
+     "layer": "documented",
+     "quote": "Send proof of income that applies to your household; (examples listed below)",
+     "source_id": "fap-1f2f4fae21fa0faf",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "Roper St. Francis Mount Pleasant Hospital, PO Box 602441, Charlotte, NC 28260-2441"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Please return the fully completed, signed application with required documentation to Patient Financial Services:",
+     "source_id": "fap-1f2f4fae21fa0faf",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": {
+     "value": 240,
+     "layer": "documented",
+     "quote": "accounts that are 240 days or more past the first hospital statement date will not be considered for Financial Assistance",
+     "source_id": "fap-1f2f4fae21fa0faf",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days": {
+     "value": 30,
+     "layer": "documented",
+     "quote": "We will make every effort to process the application within 30 days of receipt and notify you in writing of the outcome of your financial assistance request.",
+     "source_id": "fap-1f2f4fae21fa0faf",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "1-888-472-0043",
+     "layer": "documented",
+     "quote": "For bills with a date of service on or after August 1, 2022: 1-888-472-0043.",
+     "source_id": "fap-d9f296ad04d4ae84",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": {
+     "value": "Monday through Friday, 9:00 am to 5:00 pm",
+     "layer": "documented",
+     "quote": "Monday through Friday, 9:00 am to 5:00 pm. We will make every effort to process the application within 30 days of receipt",
+     "source_id": "fap-1f2f4fae21fa0faf",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "languages": null
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-d9f296ad04d4ae84",
+     "kind": "hospital_web",
+     "url": "https://www.rsfh.com/getContentAsset/c0ea91a1-a6fa-408e-9bcf-36a92054ccfa/7ac1fecb-c286-4874-bc71-62e245e8a59a/2026-RSFH-Financial-Assistance-Policy-English.pdf?language=en",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "d9f296ad04d4ae84046045c136c02079935c32eb027456567331e22cad6a751f",
+     "effective_date": null
+    },
+    {
+     "id": "fap-1f2f4fae21fa0faf",
+     "kind": "hospital_web",
+     "url": "https://www.rsfh.com/getContentAsset/68785ba0-91b3-49cb-94d0-9d793bfbed28/7ac1fecb-c286-4874-bc71-62e245e8a59a/2026-RSFH-Financial-Assistance-Application.pdf?language=en",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "1f2f4fae21fa0fafd299377dd5567133f2a81e17466c4c6995ccfd205b04b730",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "eligibility.asset_test: quote matched the source only after typography normalization"
+   ],
+   "eve_verified": {
+    "on": "2026-10-23",
+    "sources_fetched": 2,
+    "sources_total": 2,
+    "sources_missing": [],
+    "sha256_match": {
+     "fap-d9f296ad04d4ae84": true,
+     "fap-1f2f4fae21fa0faf": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
+    "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
+     "eligibility.assistance_ceiling_fpl",
+     "eligibility.asset_test",
+     "eligibility.residency",
+     "eligibility.insured_patients_covered",
+     "apply.documents_required",
+     "apply.submit_methods",
+     "apply.window_days_from_first_bill",
+     "apply.decision_days",
+     "contacts.phone",
+     "contacts.hours"
+    ],
+    "rejected": [],
+    "pruned": [
+     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
+     "apply.documents_required: 4 items not named in the trimmed quote",
+     "apply.submit_methods: 3 items not named in the trimmed quote"
+    ],
+    "income_rule_verified": true,
+    "core_completeness": 0.83
+   }
+  },
+  {
+   "hospital": {
+    "ccn": "420070",
+    "name": "PRISMA HEALTH TUOMEY HOSPITAL",
+    "city": "SUMTER",
+    "state": "SC",
+    "zip": "29150",
+    "phone": "803-774-8900",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "prismahealth.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": null,
+    "discount_tiers": null,
+    "assistance_ceiling_fpl": null,
+    "asset_test": null,
+    "residency": null,
+    "insured_patients_covered": null,
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": null,
+    "documents_reported": null,
+    "submit_methods": null,
+    "window_days_from_first_bill": null,
+    "decision_days": null,
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": null,
+    "hours": null,
+    "languages": null
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-3778b3b216be1f62",
+     "kind": "hospital_web",
+     "url": "https://prismahealth.org/pdfs/financial-arrangements-and-assistance-policy-english-25-26",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "3778b3b216be1f6274cd9204c496c699816dbfd8076c0644e884087586a66eaf",
+     "effective_date": null
+    },
+    {
+     "id": "fap-8f57756871871eab",
+     "kind": "hospital_web",
+     "url": "https://prismahealth.org/pdfs/financial-assistance-application-english",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "8f57756871871eab3525914fc4e18a1a64043819453795ed05f368ac246e49ba",
+     "effective_date": null
+    },
+    {
+     "id": "web-de2802ea4767b7e4",
+     "kind": "hospital_web",
+     "url": "https://prismahealth.org/patients-and-guests/billing-and-insurance/financial-assistance",
+     "title": "Financial Assistance",
+     "fetched_on": "2026-10-23",
+     "sha256": "de2802ea4767b7e42bb3bf39d2e18acb3840e2e51b2276096d75a77d57e0f027",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 2 verbatim spans",
+    "apply.submit_methods: value backed by 2 verbatim spans",
+    "agent dropped eligibility.discount_tiers: judge: Bounds 250-400% appear, but 77% is only a detached table fragment ('100% 77% based on AGB'), not plainly tied to that tier."
+   ],
+   "eve_verified": {
+    "on": "2026-10-23",
+    "sources_fetched": 3,
+    "sources_total": 3,
+    "sources_missing": [],
+    "sha256_match": {
+     "fap-3778b3b216be1f62": false,
+     "fap-8f57756871871eab": false,
+     "web-de2802ea4767b7e4": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
+    "accepted": [],
+    "rejected": [
+     [
+      "eligibility.free_care_max_fpl",
+      "quote not found in source"
+     ],
+     [
+      "eligibility.asset_test",
+      "quote not found in source"
+     ],
+     [
+      "eligibility.residency",
+      "quote not found in source"
+     ],
+     [
+      "eligibility.insured_patients_covered",
+      "quote not found in source"
+     ],
+     [
+      "programs.state_programs",
+      "quote not found in source"
+     ],
+     [
+      "apply.documents_required",
+      "quote not found in source"
+     ],
+     [
+      "apply.submit_methods",
+      "quote not found in source"
+     ],
+     [
+      "apply.window_days_from_first_bill",
+      "quote not found in source"
+     ],
+     [
+      "contacts.phone",
+      "quote not found in source"
+     ]
+    ],
+    "pruned": [
+     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)"
+    ],
+    "income_rule_verified": false,
+    "core_completeness": 0.0
+   }
+  },
+  {
+   "hospital": {
+    "ccn": "420071",
+    "name": "SELF REGIONAL HEALTHCARE",
+    "city": "GREENWOOD",
+    "state": "SC",
+    "zip": "29646",
+    "phone": "864-227-4111",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "selfregional.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "Only those persons whose gross family income is equal to or less than 200% of the current FPG may qualify for full financial assistance through the SRH Medical Financial Assistance Program.",
+     "source_id": "fap-b4b1ccd3088e8b65",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": null,
+    "assistance_ceiling_fpl": null,
+    "asset_test": null,
+    "residency": {
+     "value": [
+      "Applicants must be legal residents of the state of South Carolina."
+     ],
+     "layer": "documented",
+     "quote": "To be eligible for the Medical Financial Assistance Program you must be a legal resident of the state of South Carolina.",
+     "source_id": "fap-b4b1ccd3088e8b65",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "insured_patients_covered": null,
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": {
+     "value": [
+      "Homeless patient or guarantor"
+     ],
+     "layer": "documented",
+     "quote": "Homeless patient or guarantor. Confirmation of the status may be a judgment call by clinical or Patient Financial Advocate staff. || Guarantor currently resides in a shelter of some type (Must be legal resident of South Carolina). || Information from the predictive model may be used by Self Regional Healthcare to grant presumptive eligibility",
+     "source_id": "fap-b4b1ccd3088e8b65",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "photo_id",
+      "proof_of_income",
+      "other",
+      "bank_statements",
+      "tax_return"
+     ],
+     "layer": "documented",
+     "quote": "Valid South Carolina and/or Governmental photo ID \u2022 Proof of income for all members in the household \u2022 Proof of current address (rent receipt, driver\u2019s license, or voter\u2019s registration) || Verification of all members in household including their names, relationships, and dates of birth \u2022 Monthly checking account statements or monthly savings account statements \u2022 Income verification from employer or most recent check stubs \u2022 Federal Income Tax Return || Verification of self-employment and/or proof of eligibility denial from programs such as Social Security, Department of Social Services, Workers Compensation, Child Support Service, etc. \u2022 Proof of any whole life insurance policies",
+     "source_id": "fap-b4b1ccd3088e8b65",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "Patient Financial Advocates, Patient Access Services, 1325 Spring Street, Greenwood, SC 29646"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Return completed application to: Patient Financial Advocates Patient Access Services 1325 Spring Street Greenwood, SC 29646",
+     "source_id": "fap-283c134311c92cda",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": null,
+    "decision_days": {
+     "value": 30,
+     "layer": "documented",
+     "quote": "Determination is made within 30 days of completion of the financial assistance application and the patient is notified by letter.",
+     "source_id": "fap-b4b1ccd3088e8b65",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "(864)725-6070",
+     "layer": "documented",
+     "quote": "Main Line: (864)725-6070",
+     "source_id": "fap-b4b1ccd3088e8b65",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": null,
+    "languages": null
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-b4b1ccd3088e8b65",
+     "kind": "hospital_web",
+     "url": "https://www.selfregional.org/wp-content/uploads/compliance_financial_assistance.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "b4b1ccd3088e8b65293499226a08e11d99ea1889caad7c7c942d3a48453f4f68",
+     "effective_date": null
+    },
+    {
+     "id": "fap-283c134311c92cda",
+     "kind": "hospital_web",
+     "url": "https://www.selfregional.org/wp-content/uploads/compliance_financial_application.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "283c134311c92cda23467fea0f75375c5a38943468ce72ae22d31c72298a1a78",
+     "effective_date": null
+    },
+    {
+     "id": "web-476df395b5e42f30",
+     "kind": "hospital_web",
+     "url": "https://www.selfregional.org/billing-insurance/financial-aid-policy/",
+     "title": "Financial Aid Policy \u2013 Self Regional Healthcare",
+     "fetched_on": "2026-10-23",
+     "sha256": "476df395b5e42f30862ed8b6d1053f8ad6e9605184144af12a7cc31e48341a81",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans"
+   ],
+   "eve_verified": {
+    "on": "2026-10-23",
+    "sources_fetched": 3,
+    "sources_total": 3,
+    "sources_missing": [],
+    "sha256_match": {
+     "fap-b4b1ccd3088e8b65": true,
+     "fap-283c134311c92cda": true,
+     "web-476df395b5e42f30": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
+    "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.residency",
+     "programs.presumptive",
+     "apply.documents_required",
+     "apply.submit_methods",
+     "apply.decision_days",
+     "contacts.phone"
+    ],
+    "rejected": [
+     [
+      "eligibility.asset_test",
+      "quote does not support the asset-test value"
+     ],
+     [
+      "apply.form_url",
+      "quote not found in source"
+     ],
+     [
+      "contacts.languages",
+      "quote not found in source"
+     ]
+    ],
+    "pruned": [
+     "programs.presumptive: 2 items not named in the trimmed quote"
+    ],
+    "income_rule_verified": true,
+    "core_completeness": 0.67
+   }
+  },
+  {
+   "hospital": {
+    "ccn": "420072",
+    "name": "HAMPTON REGIONAL MEDICAL CENTER",
+    "city": "VARNVILLE",
+    "state": "SC",
+    "zip": "29944",
+    "phone": "803-943-2771",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "hamptonregional.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "Hampton Regional Medical Center will provide medically necessary care to Uninsured Patients with household income levels at or below 200% of the federal poverty level (FPL) at no cost to the patient.",
+     "source_id": "fap-9c4d38aa92e5f658",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "200",
+       "max_fpl_inclusive": "300",
+       "discount_percent": 75
+      },
+      {
+       "min_fpl_exclusive": "300",
+       "max_fpl_inclusive": "400",
+       "discount_percent": 50
+      }
+     ],
+     "layer": "documented",
+     "quote": "100% 200% 201% - 300% 301% - 400% || MAXI M U M INCOME FOR 75% WRITE OFF MAXI M U M INCOME FOR 50% WRITE OFF",
+     "source_id": "fap-9c4d38aa92e5f658",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "assistance_ceiling_fpl": null,
+    "asset_test": {
+     "value": true,
+     "layer": "documented",
+     "quote": "In evaluating a patient\u2019s need for Financial Assistance, HRMC personnel may verify proof of total household income, liabilities, and assets.",
+     "source_id": "fap-9c4d38aa92e5f658",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "residency": null,
+    "insured_patients_covered": null,
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "photo_id",
+      "proof_of_residency",
+      "proof_of_income"
+     ],
+     "layer": "documented",
+     "quote": "I. IDENTITY :( PROVIDE ONE OR MORE) - must have applicants picture || II. RESIDENCY: (PROVIDE ONE OR MORE) - must have current address || IV. INCOME: (PROVIDE ALL THAT APPLY)",
+     "source_id": "fap-2fad69ebdb8ad7f2",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": null,
+    "window_days_from_first_bill": {
+     "value": 240,
+     "layer": "documented",
+     "quote": "The Hospital will accept Financial Assistance applications up to 240 days after the first post discharge statement date.",
+     "source_id": "fap-9c4d38aa92e5f658",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days": {
+     "value": 30,
+     "layer": "documented",
+     "quote": "notified of eligibility within 30 days of receipt of a complete application and all required documentation.",
+     "source_id": "fap-9c4d38aa92e5f658",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": {
+     "value": 120,
+     "layer": "documented",
+     "quote": "If the account is not paid within 120 days from the date of the first post discharge statement, it may be placed with an outside collection agency.",
+     "source_id": "fap-9c4d38aa92e5f658",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "(803)943-2771",
+     "layer": "documented",
+     "quote": "you may call our office at (803)943-2771 (toll free: 1-800-575-1435) ext. 1213 to discuss payment options.",
+     "source_id": "web-a6a08f6664e8e2c3",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": {
+     "value": "Monday-Friday 8:30 a.m. to 4:30 p.m.",
+     "layer": "documented",
+     "quote": "Our Financial Counselor is available Monday-Friday from 8:30 a.m. to 4:30 p.m.",
+     "source_id": "web-a6a08f6664e8e2c3",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "languages": null
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-9c4d38aa92e5f658",
+     "kind": "hospital_web",
+     "url": "https://www.hamptonregional.org/docs/Uninsured_Financial_Assistance_Policy_022825.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "9c4d38aa92e5f658763190e399b53a817b8141d7d42721c7843e96af1477dbf3",
+     "effective_date": null
+    },
+    {
+     "id": "fap-2fad69ebdb8ad7f2",
+     "kind": "hospital_web",
+     "url": "https://www.hamptonregional.org/docs/Financial_Assistance_Application-FAP.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "2fad69ebdb8ad7f2b51d72b3620243bfd04f42bf7cd0dc6c3ed1aba142794ece",
+     "effective_date": null
+    },
+    {
+     "id": "web-a6a08f6664e8e2c3",
+     "kind": "hospital_web",
+     "url": "https://www.hamptonregional.org/getpage.php?name=financial_assistance",
+     "title": "Financial Assistance",
+     "fetched_on": "2026-10-23",
+     "sha256": "a6a08f6664e8e2c3b0e9aa4b61e89bc87c4f977e65efa3ca8d6a033461cd3554",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "agent dropped eligibility.residency: judge: Quote says HRMC service area with case-by-case review outside it but never names Hampton County.",
+    "agent dropped programs.presumptive: judge: Quote mentions Family Planning only; 'Medicaid eligible' does not appear.",
+    "agent dropped apply.submit_methods: judge: Quote supports in-person delivery and mail, but the mailing address (P.O. Box 338, Varnville) is not in the quote."
+   ],
+   "eve_verified": {
+    "on": "2026-10-23",
+    "sources_fetched": 3,
+    "sources_total": 3,
+    "sources_missing": [],
+    "sha256_match": {
+     "fap-9c4d38aa92e5f658": true,
+     "fap-2fad69ebdb8ad7f2": true,
+     "web-a6a08f6664e8e2c3": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
+    "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
+     "eligibility.asset_test",
+     "apply.documents_required",
+     "apply.window_days_from_first_bill",
+     "apply.decision_days",
+     "collections.eca_wait_days",
+     "contacts.phone",
+     "contacts.hours"
+    ],
+    "rejected": [],
+    "pruned": [],
+    "income_rule_verified": true,
+    "core_completeness": 0.67
+   }
+  },
+  {
+   "hospital": {
+    "ccn": "420073",
+    "name": "LEXINGTON MEDICAL CENTER",
+    "city": "WEST COLUMBIA",
+    "state": "SC",
+    "zip": "29169",
+    "phone": "803-791-2000",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "lexhealth.com",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": null,
+    "discount_tiers": null,
+    "assistance_ceiling_fpl": null,
+    "asset_test": null,
+    "residency": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Patients with limited or no insurance coverage can apply for financial assistance with covering the cost of their care.",
+     "source_id": "web-836c21b2bd8b8203",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "photo_id",
+      "proof_of_income",
+      "bank_statements",
+      "social_security_letter"
+     ],
+     "layer": "documented",
+     "quote": "Photo ID and Social Security Numbers \u2014 For all eligible household members. || Income Verification \u2014 2 months\u2019 worth of paystubs. || Complete Bank Statements (All Pages) \u2014 For all applicable checking and saving accounts.",
+     "source_id": "web-836c21b2bd8b8203",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": null,
+    "window_days_from_first_bill": null,
+    "decision_days": null,
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "(803) 791-2490",
+     "layer": "documented",
+     "quote": "Problems paying a bill? Contact one of our financial counselors for help and guidance. (803) 791-2490",
+     "source_id": "web-836c21b2bd8b8203",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": null,
+    "languages": null
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-5e7c243eb6272dc9",
+     "kind": "hospital_web",
+     "url": "https://lexhealth.com/docs/default-source/billing---insurance-pdfs/financial-assistance-policy.pdf?sfvrsn=dd2cca99_3",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "5e7c243eb6272dc93754f00958373b23ef1aefaf354fdb119620973c308d1e29",
+     "effective_date": null
+    },
+    {
+     "id": "fap-775fbb056a5eaf50",
+     "kind": "hospital_web",
+     "url": "https://lexhealth.com/docs/default-source/billing---insurance-pdfs/financial-assistance-application-english.pdf?sfvrsn=83a7f0ed_9",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "775fbb056a5eaf5067be5982661954d589cdb6d77d5bfac3cc21782592de16af",
+     "effective_date": null
+    },
+    {
+     "id": "web-836c21b2bd8b8203",
+     "kind": "hospital_web",
+     "url": "https://lexhealth.com/billing-insurance/financial-assistance",
+     "title": "Financial Assistance - Billing and Insurance | Lexington Health",
+     "fetched_on": "2026-10-23",
+     "sha256": "836c21b2bd8b8203178eae36751e1075f9b30ddad174f57c694a9abb83d76677",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "programs.presumptive: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "contacts.languages: value backed by 3 verbatim spans",
+    "agent judge on eligibility.insured_patients_covered: Quote says patients with limited or no insurance can apply. It does not state that insured patients are covered.",
+    "agent judge on apply.form_url: Quote gives only the relative path /docs/default-source/... without the lexhealth.com domain, so the full URL is not stated.",
+    "agent judge on apply.documents_required: Quote lists Photo ID, Income Verification, and Complete Bank Statements. Rent Receipt or Current Lease and Proof of Food/Housing Assistance do not appear.",
+    "agent judge on contacts.languages: Quote shows only English, Spanish (Programa), and Chinese (\u8d22\u52a1\u63f4\u52a9) document titles. Korean and Vietnamese are not stated."
+   ],
+   "eve_verified": {
+    "on": "2026-10-23",
+    "sources_fetched": 2,
+    "sources_total": 3,
+    "sources_missing": [
+     "https://lexhealth.com/docs/default-source/billing---insurance-pdfs/financial-assistance-policy.pdf?sfvrsn=dd2cca99_3"
+    ],
+    "sha256_match": {
+     "fap-5e7c243eb6272dc9": true,
+     "fap-775fbb056a5eaf50": true,
+     "web-836c21b2bd8b8203": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
+    "accepted": [
+     "eligibility.insured_patients_covered",
+     "apply.documents_required",
+     "contacts.phone"
+    ],
+    "rejected": [
+     [
+      "apply.form_url",
+      "quote not found in source"
+     ],
+     [
+      "contacts.languages",
+      "quote not found in source"
+     ]
+    ],
+    "pruned": [
+     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
+     "apply.documents_required: 1 item not named in the trimmed quote"
+    ],
+    "income_rule_verified": false,
+    "core_completeness": 0.33
+   }
+  },
+  {
+   "hospital": {
+    "ccn": "420078",
+    "name": "PRISMA HEALTH GREENVILLE MEMORIAL HOSPITAL",
+    "city": "GREENVILLE",
+    "state": "SC",
+    "zip": "29605",
+    "phone": "864-455-7000",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "prismahealth.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": null,
+    "discount_tiers": null,
+    "assistance_ceiling_fpl": null,
+    "asset_test": null,
+    "residency": null,
+    "insured_patients_covered": null,
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": null,
+    "documents_reported": null,
+    "submit_methods": null,
+    "window_days_from_first_bill": null,
+    "decision_days": null,
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": null,
+    "hours": null,
+    "languages": null
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-ea40821120a453d1",
+     "kind": "hospital_web",
+     "url": "https://prismahealth.org/pdfs/financial-arrangements-and-assistance-policy-english-26-27",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "ea40821120a453d18239ba4f6cc003bad81a37036d71136873b7ea3a0ddc651d",
+     "effective_date": null
+    },
+    {
+     "id": "fap-8f57756871871eab",
+     "kind": "hospital_web",
+     "url": "https://prismahealth.org/pdfs/financial-assistance-application-english",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "8f57756871871eab3525914fc4e18a1a64043819453795ed05f368ac246e49ba",
+     "effective_date": null
+    },
+    {
+     "id": "web-78076e5605d514af",
+     "kind": "hospital_web",
+     "url": "https://prismahealth.org/patients-and-guests/billing-and-insurance/financial-assistance",
+     "title": "Pardon Our Interruption",
+     "fetched_on": "2026-10-23",
+     "sha256": "78076e5605d514af869d9de9529430688a1faed528095e2b326a2e4df454245b",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 2 verbatim spans"
+   ],
+   "eve_verified": {
+    "on": "2026-10-23",
+    "sources_fetched": 3,
+    "sources_total": 3,
+    "sources_missing": [],
+    "sha256_match": {
+     "fap-ea40821120a453d1": false,
+     "fap-8f57756871871eab": false,
+     "web-78076e5605d514af": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
+    "accepted": [],
+    "rejected": [
+     [
+      "eligibility.free_care_max_fpl",
+      "quote not found in source"
+     ],
+     [
+      "eligibility.discount_tiers",
+      "quote not found in source"
+     ],
+     [
+      "eligibility.residency",
+      "quote not found in source"
+     ],
+     [
+      "eligibility.insured_patients_covered",
+      "quote not found in source"
+     ],
+     [
+      "apply.documents_required",
+      "quote not found in source"
+     ],
+     [
+      "apply.submit_methods",
+      "quote not found in source"
+     ],
+     [
+      "apply.window_days_from_first_bill",
+      "quote not found in source"
+     ],
+     [
+      "contacts.phone",
+      "quote not found in source"
+     ]
+    ],
+    "pruned": [
+     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)"
+    ],
+    "income_rule_verified": false,
+    "core_completeness": 0.0
+   }
+  },
+  {
+   "hospital": {
+    "ccn": "420080",
+    "name": "NOVANT HEALTH HILTON HEAD MEDICAL CENTER",
+    "city": "HILTON HEAD ISLAND",
+    "state": "SC",
+    "zip": "29926",
+    "phone": "843-681-6122",
+    "ownership": "Voluntary non-profit - Other",
+    "website_domain": "novanthealth.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": null,
+    "discount_tiers": null,
+    "assistance_ceiling_fpl": null,
+    "asset_test": null,
+    "residency": null,
+    "insured_patients_covered": null,
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": null,
+    "documents_reported": null,
+    "submit_methods": null,
+    "window_days_from_first_bill": null,
+    "decision_days": null,
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": null,
+    "hours": null,
+    "languages": null
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-1d17f2c20eb16b28",
+     "kind": "hospital_web",
+     "url": "https://www.novanthealth.org/globalassets/buttons-and-documents-ctaslinks/documents-pdfs/policy-financial-assistance-sc-novant-health.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "1d17f2c20eb16b283a073181bce2eca4a9511387519d1955c09011e130277042",
+     "effective_date": null
+    },
+    {
+     "id": "fap-ca5263cb0798e7ad",
+     "kind": "hospital_web",
+     "url": "https://www.novanthealth.org/globalassets/buttons-and-documents-ctaslinks/documents-pdfs/faa_app_english.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "ca5263cb0798e7adbfc7255a3378cd50843a94d32899e3ca29d4d391bb0922df",
+     "effective_date": null
+    },
+    {
+     "id": "web-193c645ad7d2a3df",
+     "kind": "hospital_web",
+     "url": "https://www.novanthealth.org/for-patients/billing--insurance/financial-assistance/",
+     "title": "Financial Assistance | Billing & Insurance | Novant Health",
+     "fetched_on": "2026-10-23",
+     "sha256": "193c645ad7d2a3df534a00e92b8b024cadbccca8f3ebf2fda3799d0aa4ea52d5",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "apply.form_url: not an absolute URL ('/globalassets/buttons-and-documents-ctaslinks/documents-pdfs'); dropped",
+    "agent dropped apply.submit_methods: excerpt not in source: Visiting the Financial Counseling office at any Novant Healt",
+    "agent judge on eligibility.free_care_max_fpl: Quote gives 100% free care for eligible patients but states no FPL percentage.",
+    "agent judge on apply.documents_required: Quote lists examples of acceptable proof of income that may be, but are not limited to, these items; it does not say they are required.",
+    "agent judge on contacts.phone: Quote gives the main hospital number (843) 784-8000; (843) 681-6122 does not appear.",
+    "agent judge on contacts.languages: Quote says copies are available 'in English and other languages'; Spanish is not named."
+   ],
+   "eve_verified": {
+    "on": "2026-10-23",
+    "sources_fetched": 0,
+    "sources_total": 3,
+    "sources_missing": [
+     "https://www.novanthealth.org/globalassets/buttons-and-documents-ctaslinks/documents-pdfs/policy-financial-assistance-sc-novant-health.pdf",
+     "https://www.novanthealth.org/globalassets/buttons-and-documents-ctaslinks/documents-pdfs/faa_app_english.pdf",
+     "https://www.novanthealth.org/for-patients/billing--insurance/financial-assistance/"
+    ],
+    "sha256_match": {
+     "fap-1d17f2c20eb16b28": null,
+     "fap-ca5263cb0798e7ad": null,
+     "web-193c645ad7d2a3df": null
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
+    "accepted": [],
+    "rejected": [
+     [
+      "eligibility.free_care_max_fpl",
+      "source text missing"
+     ],
+     [
+      "eligibility.assistance_ceiling_fpl",
+      "source text missing"
+     ],
+     [
+      "eligibility.asset_test",
+      "source text missing"
+     ],
+     [
+      "eligibility.residency",
+      "source text missing"
+     ],
+     [
+      "apply.documents_required",
+      "source text missing"
+     ],
+     [
+      "contacts.phone",
+      "source text missing"
+     ],
+     [
+      "contacts.languages",
+      "source text missing"
+     ]
+    ],
+    "pruned": [],
+    "income_rule_verified": false,
+    "core_completeness": 0.0
+   }
+  },
+  {
+   "hospital": {
+    "ccn": "420086",
+    "name": "PRISMA HEALTH BAPTIST",
+    "city": "COLUMBIA",
+    "state": "SC",
+    "zip": "29220",
+    "phone": "803-296-5678",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "prismahealth.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": null,
+    "discount_tiers": null,
+    "assistance_ceiling_fpl": null,
+    "asset_test": null,
+    "residency": null,
+    "insured_patients_covered": null,
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": null,
+    "documents_reported": null,
+    "submit_methods": null,
+    "window_days_from_first_bill": null,
+    "decision_days": null,
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": null,
+    "hours": null,
+    "languages": null
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-3778b3b216be1f62",
+     "kind": "hospital_web",
+     "url": "https://prismahealth.org/pdfs/financial-arrangements-and-assistance-policy-english-25-26",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "3778b3b216be1f6274cd9204c496c699816dbfd8076c0644e884087586a66eaf",
+     "effective_date": null
+    },
+    {
+     "id": "fap-8f57756871871eab",
+     "kind": "hospital_web",
+     "url": "https://prismahealth.org/pdfs/financial-assistance-application-english",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "8f57756871871eab3525914fc4e18a1a64043819453795ed05f368ac246e49ba",
+     "effective_date": null
+    },
+    {
+     "id": "web-649c79760f6c6dfd",
+     "kind": "hospital_web",
+     "url": "https://prismahealth.org/patients-and-guests/billing-and-insurance/financial-assistance",
+     "title": "Financial Assistance",
+     "fetched_on": "2026-10-23",
+     "sha256": "649c79760f6c6dfd10c446b322bdf14c6e3120046db62f73dff3fdf2eec95653",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "agent dropped apply.documents_required: judge: Quote lacks proof of residency and the no-income attestation; it lists only pay stubs, bank statements, and tax returns."
+   ],
+   "eve_verified": {
+    "on": "2026-10-23",
+    "sources_fetched": 3,
+    "sources_total": 3,
+    "sources_missing": [],
+    "sha256_match": {
+     "fap-3778b3b216be1f62": false,
+     "fap-8f57756871871eab": false,
+     "web-649c79760f6c6dfd": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
+    "accepted": [],
+    "rejected": [
+     [
+      "eligibility.free_care_max_fpl",
+      "quote not found in source"
+     ],
+     [
+      "eligibility.discount_tiers",
+      "quote not found in source"
+     ],
+     [
+      "eligibility.asset_test",
+      "quote not found in source"
+     ],
+     [
+      "eligibility.residency",
+      "quote not found in source"
+     ],
+     [
+      "eligibility.insured_patients_covered",
+      "quote not found in source"
+     ],
+     [
+      "programs.state_programs",
+      "quote not found in source"
+     ],
+     [
+      "apply.submit_methods",
+      "quote not found in source"
+     ],
+     [
+      "apply.window_days_from_first_bill",
+      "quote not found in source"
+     ],
+     [
+      "contacts.phone",
+      "quote not found in source"
+     ]
+    ],
+    "pruned": [
+     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)"
+    ],
+    "income_rule_verified": false,
+    "core_completeness": 0.0
+   }
+  },
+  {
+   "hospital": {
+    "ccn": "420087",
+    "name": "ROPER HOSPITAL",
+    "city": "CHARLESTON",
+    "state": "SC",
+    "zip": "29401",
+    "phone": "843-724-2800",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "rsfh.com",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "Individuals with an income level at 200% FPG or below receive free care.",
+     "source_id": "fap-d9f296ad04d4ae84",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "200",
+       "max_fpl_inclusive": "400",
+       "discount_percent": 74
+      }
+     ],
+     "layer": "documented",
+     "quote": "Individuals with an income level from 201% to 400% FPG receive 74% discounted care.",
+     "source_id": "fap-d9f296ad04d4ae84",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "assistance_ceiling_fpl": {
+     "value": "400",
+     "layer": "documented",
+     "quote": "HFA eligibility is based upon expanded income levels of up to 400% of FPG and is prorated on a sliding scale applicable to the respective market area.",
+     "source_id": "fap-d9f296ad04d4ae84",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "asset_test": {
+     "value": true,
+     "layer": "documented",
+     "quote": "RSFH may evaluate and require documented proof of any assets that are categorized as convertible to cash and unnecessary for the patient\u2019s essential daily living expenses.",
+     "source_id": "fap-d9f296ad04d4ae84",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "residency": {
+     "value": [
+      "Patients who live in the community served by RSFH Healthcare Facilities will be offered HFA."
+     ],
+     "layer": "documented",
+     "quote": "Patients who live in the community served by RSFH Healthcare Facilities will be offered HFA.",
+     "source_id": "fap-d9f296ad04d4ae84",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "It covers patients without health insurance and those with only partial insurance coverage (i.e. the uninsured and underinsured) who meet the income and other eligibility criteria described herein.",
+     "source_id": "fap-d9f296ad04d4ae84",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "proof_of_income"
+     ],
+     "layer": "documented",
+     "quote": "Proof of income is required with exception of patients who qualify for presumptive eligibility detailed below.",
+     "source_id": "fap-d9f296ad04d4ae84",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "Roper St. Francis Mount Pleasant Hospital Post Office Box 602441 Charlotte, NC 28260-2441"
+      },
+      {
+       "kind": "in_person",
+       "detail": "Roper Hospital, 316 Calhoun St, Charleston, SC 29401"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Mail-In Applications (for all RSFH Healthcare Facilities): Roper St. Francis Mount Pleasant Hospital Post Office Box 602441 Charlotte, NC 28260-2441",
+     "source_id": "fap-d9f296ad04d4ae84",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": null,
+    "decision_days": null,
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "1-888-472-0043",
+     "layer": "documented",
+     "quote": "For bills with a date of service on or after August 1, 2022: 1-888-472-0043.",
+     "source_id": "fap-d9f296ad04d4ae84",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": null,
+    "languages": {
+     "value": [
+      "primary language(s) spoken by such populations"
+     ],
+     "layer": "documented",
+     "quote": "RSFH also accommodates all significant populations that have limited English proficiency by translating this HFA Policy, application form, and plain language summary of the policy into the primary language(s) spoken by such populations.",
+     "source_id": "fap-d9f296ad04d4ae84",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-d9f296ad04d4ae84",
+     "kind": "hospital_web",
+     "url": "https://www.rsfh.com/getContentAsset/c0ea91a1-a6fa-408e-9bcf-36a92054ccfa/7ac1fecb-c286-4874-bc71-62e245e8a59a/2026-RSFH-Financial-Assistance-Policy-English.pdf?language=en",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "d9f296ad04d4ae84046045c136c02079935c32eb027456567331e22cad6a751f",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [],
+   "eve_verified": {
+    "on": "2026-10-23",
+    "sources_fetched": 1,
+    "sources_total": 1,
+    "sources_missing": [],
+    "sha256_match": {
+     "fap-d9f296ad04d4ae84": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
+    "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
+     "eligibility.assistance_ceiling_fpl",
+     "eligibility.asset_test",
+     "eligibility.residency",
+     "eligibility.insured_patients_covered",
+     "apply.documents_required",
+     "apply.submit_methods",
+     "contacts.phone",
+     "contacts.languages"
+    ],
+    "rejected": [],
+    "pruned": [
+     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
+     "apply.submit_methods: 1 item not named in the trimmed quote"
+    ],
+    "income_rule_verified": true,
+    "core_completeness": 0.83
+   }
+  },
+  {
+   "hospital": {
+    "ccn": "420102",
+    "name": "PRISMA HEALTH  PATEWOOD HOSPITAL",
+    "city": "GREENVILLE",
+    "state": "SC",
+    "zip": "29615",
+    "phone": "864-797-1000",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "prismahealth.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": null,
+    "discount_tiers": null,
+    "assistance_ceiling_fpl": null,
+    "asset_test": null,
+    "residency": null,
+    "insured_patients_covered": null,
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": null,
+    "documents_reported": null,
+    "submit_methods": null,
+    "window_days_from_first_bill": null,
+    "decision_days": null,
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": null,
+    "hours": null,
+    "languages": null
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-3778b3b216be1f62",
+     "kind": "hospital_web",
+     "url": "https://prismahealth.org/pdfs/financial-arrangements-and-assistance-policy-english-25-26",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "3778b3b216be1f6274cd9204c496c699816dbfd8076c0644e884087586a66eaf",
+     "effective_date": null
+    },
+    {
+     "id": "fap-8f57756871871eab",
+     "kind": "hospital_web",
+     "url": "https://prismahealth.org/pdfs/financial-assistance-application-english",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "8f57756871871eab3525914fc4e18a1a64043819453795ed05f368ac246e49ba",
+     "effective_date": null
+    },
+    {
+     "id": "web-6ea72afa1010ca70",
+     "kind": "hospital_web",
+     "url": "https://prismahealth.org/patients-and-guests/billing-and-insurance/financial-assistance",
+     "title": "Financial Assistance",
+     "fetched_on": "2026-10-23",
+     "sha256": "6ea72afa1010ca7062a64a9eaac9538ddf694b52101e35882102674432c6c281",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.documents_required: quote matched the source only after typography normalization",
+    "apply.submit_methods: value backed by 2 verbatim spans",
+    "contacts.languages: value backed by 3 verbatim spans",
+    "agent dropped eligibility.discount_tiers: judge: Quote describes a sliding scale from 250% to 400% FPL; the garbled '100% 77% based on AGB' does not clearly state a flat 77% discount for this tier."
+   ],
+   "eve_verified": {
+    "on": "2026-10-23",
+    "sources_fetched": 3,
+    "sources_total": 3,
+    "sources_missing": [],
+    "sha256_match": {
+     "fap-3778b3b216be1f62": false,
+     "fap-8f57756871871eab": false,
+     "web-6ea72afa1010ca70": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
+    "accepted": [],
+    "rejected": [
+     [
+      "eligibility.free_care_max_fpl",
+      "quote not found in source"
+     ],
+     [
+      "eligibility.asset_test",
+      "quote not found in source"
+     ],
+     [
+      "eligibility.residency",
+      "quote not found in source"
+     ],
+     [
+      "eligibility.insured_patients_covered",
+      "quote not found in source"
+     ],
+     [
+      "programs.state_programs",
+      "quote not found in source"
+     ],
+     [
+      "apply.documents_required",
+      "quote not found in source"
+     ],
+     [
+      "apply.submit_methods",
+      "quote not found in source"
+     ],
+     [
+      "apply.window_days_from_first_bill",
+      "quote not found in source"
+     ],
+     [
+      "contacts.phone",
+      "quote not found in source"
+     ],
+     [
+      "contacts.languages",
+      "quote not found in source"
+     ]
+    ],
+    "pruned": [
+     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)"
+    ],
+    "income_rule_verified": false,
+    "core_completeness": 0.0
+   }
+  },
+  {
+   "hospital": {
+    "ccn": "420104",
+    "name": "MOUNT PLEASANT HOSPITAL",
+    "city": "MOUNT PLEASANT",
+    "state": "SC",
+    "zip": "29466",
+    "phone": "843-724-2954",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "rsfh.com",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "Individuals with an income level at 200% FPG or below receive free care.",
+     "source_id": "fap-d9f296ad04d4ae84",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "200",
+       "max_fpl_inclusive": "400",
+       "discount_percent": 74
+      }
+     ],
+     "layer": "documented",
+     "quote": "Individuals with an income level from 201% to 400% FPG receive 74% discounted care.",
+     "source_id": "fap-d9f296ad04d4ae84",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "assistance_ceiling_fpl": {
+     "value": "400",
+     "layer": "documented",
+     "quote": "HFA eligibility is based upon expanded income levels of up to 400% of FPG and is prorated on a sliding scale applicable to the respective market area.",
+     "source_id": "fap-d9f296ad04d4ae84",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "asset_test": {
+     "value": true,
+     "layer": "documented",
+     "quote": "RSFH may evaluate and require documented proof of any assets that are categorized as convertible to cash and unnecessary for the patient\u2019s essential daily living expenses.",
+     "source_id": "fap-d9f296ad04d4ae84",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "residency": {
+     "value": [
+      "Patients who live in the community served by RSFH Healthcare Facilities will be offered HFA."
+     ],
+     "layer": "documented",
+     "quote": "Patients who live in the community served by RSFH Healthcare Facilities will be offered HFA.",
+     "source_id": "fap-d9f296ad04d4ae84",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "It covers patients without health insurance and those with only partial insurance coverage (i.e. the uninsured and underinsured) who meet the income and other eligibility criteria described herein.",
+     "source_id": "fap-d9f296ad04d4ae84",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "social_security_letter",
+      "proof_of_income",
+      "other"
+     ],
+     "layer": "documented",
+     "quote": "Send proof of income that applies to your household; (examples listed below) Current Social Security Benefits Letter \u2022 Workers\u2019 Compensation Income",
+     "source_id": "fap-1f2f4fae21fa0faf",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "Roper St. Francis Mount Pleasant Hospital, PO Box 602441, Charlotte, NC 28260-2441"
+      },
+      {
+       "kind": "fax",
+       "detail": "843-402-2036"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Please return the fully completed, signed application with required documentation to Patient Financial Services: Mail To: Roper St. Francis Mount Pleasant Hospital PO Box 602441 Fax: 843-402-2036",
+     "source_id": "fap-1f2f4fae21fa0faf",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": {
+     "value": 240,
+     "layer": "documented",
+     "quote": "accounts that are 240 days or more past the first hospital statement date will not be considered for Financial Assistance",
+     "source_id": "fap-1f2f4fae21fa0faf",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days": {
+     "value": 30,
+     "layer": "documented",
+     "quote": "We will make every effort to process the application within 30 days of receipt and notify you in writing of the outcome of your financial assistance request",
+     "source_id": "fap-1f2f4fae21fa0faf",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "1-888-472-0043",
+     "layer": "documented",
+     "quote": "For bills with a date of service on or after August 1, 2022: 1-888-472-0043.",
+     "source_id": "fap-d9f296ad04d4ae84",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": {
+     "value": "Monday through Friday, 9:00 am to 5:00 pm",
+     "layer": "documented",
+     "quote": "Monday through Friday, 9:00 am to 5:00 pm. We will make every effort to process the application within 30 days of receipt",
+     "source_id": "fap-1f2f4fae21fa0faf",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "languages": null
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-d9f296ad04d4ae84",
+     "kind": "hospital_web",
+     "url": "https://www.rsfh.com/getContentAsset/c0ea91a1-a6fa-408e-9bcf-36a92054ccfa/7ac1fecb-c286-4874-bc71-62e245e8a59a/2026-RSFH-Financial-Assistance-Policy-English.pdf?language=en",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "d9f296ad04d4ae84046045c136c02079935c32eb027456567331e22cad6a751f",
+     "effective_date": null
+    },
+    {
+     "id": "fap-1f2f4fae21fa0faf",
+     "kind": "hospital_web",
+     "url": "https://www.rsfh.com/getContentAsset/68785ba0-91b3-49cb-94d0-9d793bfbed28/7ac1fecb-c286-4874-bc71-62e245e8a59a/2026-RSFH-Financial-Assistance-Application.pdf?language=en",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "1f2f4fae21fa0fafd299377dd5567133f2a81e17466c4c6995ccfd205b04b730",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [],
+   "eve_verified": {
+    "on": "2026-10-23",
+    "sources_fetched": 2,
+    "sources_total": 2,
+    "sources_missing": [],
+    "sha256_match": {
+     "fap-d9f296ad04d4ae84": true,
+     "fap-1f2f4fae21fa0faf": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
+    "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
+     "eligibility.assistance_ceiling_fpl",
+     "eligibility.asset_test",
+     "eligibility.residency",
+     "eligibility.insured_patients_covered",
+     "apply.documents_required",
+     "apply.submit_methods",
+     "apply.window_days_from_first_bill",
+     "apply.decision_days",
+     "contacts.phone",
+     "contacts.hours"
+    ],
+    "rejected": [],
+    "pruned": [
+     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
+     "apply.documents_required: 3 items not named in the trimmed quote",
+     "apply.submit_methods: 2 items not named in the trimmed quote"
+    ],
+    "income_rule_verified": true,
+    "core_completeness": 0.83
+   }
+  },
+  {
+   "hospital": {
+    "ccn": "420106",
+    "name": "PRISMA HEALTH BAPTIST PARKRIDGE",
+    "city": "COLUMBIA",
+    "state": "SC",
+    "zip": "29212",
+    "phone": "803-907-7011",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "prismahealth.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": null,
+    "discount_tiers": null,
+    "assistance_ceiling_fpl": null,
+    "asset_test": null,
+    "residency": null,
+    "insured_patients_covered": null,
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": null,
+    "documents_reported": null,
+    "submit_methods": null,
+    "window_days_from_first_bill": null,
+    "decision_days": null,
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": null,
+    "hours": null,
+    "languages": null
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-ea40821120a453d1",
+     "kind": "hospital_web",
+     "url": "https://prismahealth.org/pdfs/financial-arrangements-and-assistance-policy-english-26-27",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "ea40821120a453d18239ba4f6cc003bad81a37036d71136873b7ea3a0ddc651d",
+     "effective_date": null
+    },
+    {
+     "id": "fap-8f57756871871eab",
+     "kind": "hospital_web",
+     "url": "https://prismahealth.org/pdfs/financial-assistance-application-english",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "8f57756871871eab3525914fc4e18a1a64043819453795ed05f368ac246e49ba",
+     "effective_date": null
+    },
+    {
+     "id": "web-e5545c1d72f527d2",
+     "kind": "hospital_web",
+     "url": "https://prismahealth.org/patients-and-guests/billing-and-insurance/financial-assistance",
+     "title": "Financial Assistance",
+     "fetched_on": "2026-10-23",
+     "sha256": "e5545c1d72f527d227393a7919aca9ca876283b56bf4caa29a2ea72549cf325a",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 2 verbatim spans",
+    "contacts.languages: value backed by 3 verbatim spans",
+    "agent dropped eligibility.discount_tiers: judge: Garbled table shows '100% 79% based on AGB'; unclear 79% maps to the >250\u2013400% tier or is a discount rather than an AGB-based amount."
+   ],
+   "eve_verified": {
+    "on": "2026-10-23",
+    "sources_fetched": 3,
+    "sources_total": 3,
+    "sources_missing": [],
+    "sha256_match": {
+     "fap-ea40821120a453d1": false,
+     "fap-8f57756871871eab": false,
+     "web-e5545c1d72f527d2": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
+    "accepted": [],
+    "rejected": [
+     [
+      "eligibility.free_care_max_fpl",
+      "quote not found in source"
+     ],
+     [
+      "eligibility.asset_test",
+      "quote not found in source"
+     ],
+     [
+      "eligibility.residency",
+      "quote not found in source"
+     ],
+     [
+      "eligibility.insured_patients_covered",
+      "quote not found in source"
+     ],
+     [
+      "programs.state_programs",
+      "quote not found in source"
+     ],
+     [
+      "apply.documents_required",
+      "quote not found in source"
+     ],
+     [
+      "apply.submit_methods",
+      "quote not found in source"
+     ],
+     [
+      "apply.window_days_from_first_bill",
+      "quote not found in source"
+     ],
+     [
+      "contacts.phone",
+      "quote not found in source"
+     ],
+     [
+      "contacts.languages",
+      "quote not found in source"
+     ]
+    ],
+    "pruned": [
+     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)"
+    ],
+    "income_rule_verified": false,
+    "core_completeness": 0.0
+   }
+  },
+  {
+   "hospital": {
+    "ccn": "420108",
+    "name": "UNION MEDICAL CENTER",
+    "city": "UNION",
+    "state": "SC",
+    "zip": "29379",
+    "phone": "864-301-2000",
+    "ownership": "Voluntary non-profit - Other",
+    "website_domain": "spartanburgregional.com",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": null,
+    "discount_tiers": null,
+    "assistance_ceiling_fpl": null,
+    "asset_test": null,
+    "residency": null,
+    "insured_patients_covered": null,
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "tax_return"
+     ],
+     "layer": "documented",
+     "quote": "Please provide all income documentation. Incomplete applications will be denied. || (If you are claimed on someone else\u2019s taxes please provide information below and copy of tax returns.) || you will need to submit a copy of your business and personal tax return for the most recent filing year.",
+     "source_id": "fap-edd1c50ff714413f",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": null,
+    "window_days_from_first_bill": null,
+    "decision_days": {
+     "value": 30,
+     "layer": "documented",
+     "quote": "You will receive a written decision promptly, usually within 30 days of submitting your application.",
+     "source_id": "fap-e2ebfa16026f1823",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "864-596-1001",
+     "layer": "documented",
+     "quote": "You can also apply through your MyChart account or by calling 864-596-1001.",
+     "source_id": "fap-e2ebfa16026f1823",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": null,
+    "languages": null
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-e2ebfa16026f1823",
+     "kind": "hospital_web",
+     "url": "https://www.spartanburgregional.com/sites/default/files/2025-01/SRHS-2025-Financial-Assistance-Program.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "e2ebfa16026f1823e191cb977999b467f56f377fb1c7290e1b76a790782d0d5a",
+     "effective_date": null
+    },
+    {
+     "id": "fap-edd1c50ff714413f",
+     "kind": "hospital_web",
+     "url": "https://www.spartanburgregional.com/sites/default/files/2024-05/1953%20%28Rev.%2004-24%29.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "edd1c50ff714413f86371c522003342ca890dc00cd22f83ce1e75a65de6c7511",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "agent dropped apply.submit_methods: excerpt not in source: Email: srhsfinancialassistance@srhs.com",
+    "agent judge on eligibility.free_care_max_fpl: Quote says household income up to 200% FPG qualifies for financial assistance, but does not say that level gets 100% free care.",
+    "agent judge on eligibility.insured_patients_covered: Quote says the program is for uninsured patients and/or those with limited resources; it does not state that insured patients are covered."
+   ],
+   "eve_verified": {
+    "on": "2026-10-23",
+    "sources_fetched": 2,
+    "sources_total": 2,
+    "sources_missing": [],
+    "sha256_match": {
+     "fap-e2ebfa16026f1823": true,
+     "fap-edd1c50ff714413f": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
+    "accepted": [
+     "apply.documents_required",
+     "apply.decision_days",
+     "contacts.phone"
+    ],
+    "rejected": [
+     [
+      "eligibility.free_care_max_fpl",
+      "quote states an eligibility ceiling for any assistance, not a free-care band"
+     ],
+     [
+      "eligibility.insured_patients_covered",
+      "quote does not say whether insured patients are covered"
+     ]
+    ],
+    "pruned": [
+     "apply.documents_required: 1 item not named in the trimmed quote"
+    ],
+    "income_rule_verified": false,
+    "core_completeness": 0.33
+   }
+  },
+  {
+   "hospital": {
+    "ccn": "420109",
+    "name": "MCLEOD HEALTH CLARENDON",
+    "city": "MANNING",
+    "state": "SC",
+    "zip": "29102",
+    "phone": "803-435-8463",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "mcleodhealth.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": null,
+    "discount_tiers": null,
+    "assistance_ceiling_fpl": null,
+    "asset_test": null,
+    "residency": null,
+    "insured_patients_covered": null,
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": null,
+    "documents_reported": null,
+    "submit_methods": null,
+    "window_days_from_first_bill": null,
+    "decision_days": null,
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": null,
+    "hours": null,
+    "languages": null
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "web-92fed1bd41f544b7",
+     "kind": "hospital_web",
+     "url": "https://mcleodhealth.policystat.com/policy/20894367/",
+     "title": "PolicyStat\n            :: PolicyStat",
+     "fetched_on": "2026-10-23",
+     "sha256": "92fed1bd41f544b7c5888a994aae9a628f407dfdaa97dd8d93b3dccfa2f6194b",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [],
+   "eve_verified": {
+    "on": "2026-10-23",
+    "sources_fetched": 0,
+    "sources_total": 1,
+    "sources_missing": [
+     "https://mcleodhealth.policystat.com/policy/20894367/"
+    ],
+    "sha256_match": {
+     "web-92fed1bd41f544b7": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
+    "accepted": [],
+    "rejected": [],
+    "pruned": [],
+    "income_rule_verified": false,
+    "core_completeness": 0.0
+   }
+  },
+  {
+   "hospital": {
+    "ccn": "420110",
+    "name": "ROPER ST FRANCIS HOSPITAL-BERKELEY INC",
+    "city": "SUMMERVILLE",
+    "state": "SC",
+    "zip": "29486",
+    "phone": "854-529-3002",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "rsfh.com",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "Individuals with an income level at 200% FPG or below receive free care.",
+     "source_id": "fap-d9f296ad04d4ae84",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "200",
+       "max_fpl_inclusive": "400",
+       "discount_percent": 74
+      }
+     ],
+     "layer": "documented",
+     "quote": "Individuals with an income level from 201% to 400% FPG receive 74% discounted care.",
+     "source_id": "fap-d9f296ad04d4ae84",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "assistance_ceiling_fpl": {
+     "value": "400",
+     "layer": "documented",
+     "quote": "HFA eligibility is based upon expanded income levels of up to 400% of FPG and is prorated on a sliding scale applicable to the respective market area.",
+     "source_id": "fap-d9f296ad04d4ae84",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "asset_test": {
+     "value": true,
+     "layer": "documented",
+     "quote": "RSFH may evaluate and require documented proof of any assets that are categorized as convertible to cash and unnecessary for the patient\u2019s essential daily living expenses.",
+     "source_id": "fap-d9f296ad04d4ae84",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "residency": {
+     "value": [
+      "Patients who live in the community served by RSFH Healthcare Facilities will be offered HFA."
+     ],
+     "layer": "documented",
+     "quote": "Patients who live in the community served by RSFH Healthcare Facilities will be offered HFA.",
+     "source_id": "fap-d9f296ad04d4ae84",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "It covers patients without health insurance and those with only partial insurance coverage (i.e. the uninsured and underinsured) who meet the income and other eligibility criteria described herein.",
+     "source_id": "fap-d9f296ad04d4ae84",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "proof_of_income"
+     ],
+     "layer": "documented",
+     "quote": "Proof of income is required with exception of patients who qualify for presumptive eligibility detailed below.",
+     "source_id": "fap-d9f296ad04d4ae84",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "Roper St. Francis Mount Pleasant Hospital Post Office Box 602441 Charlotte, NC 28260-2441"
+      },
+      {
+       "kind": "in_person",
+       "detail": "Bon Secours St. Francis Xavier Hospital, 2095 Henry Tecklenburg Dr, Charleston, SC 29414; Roper Hospital, 316 Calhoun St, Charleston, SC 29401; Roper Rehabilitation Hospital, 316 Calhoun St, Charleston, SC 29401; Roper St. Francis Hospital \u2013 Berkeley, 100 Callen Blvd, Summerville, SC 29486; Roper St. Francis Mount Pleasant Hospital, 3500 Highway 17 North, Mount Pleasant, SC 29466"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Mail-In Applications (for all RSFH Healthcare Facilities): Roper St. Francis Mount Pleasant Hospital Post Office Box 602441 Charlotte, NC 28260-2441",
+     "source_id": "fap-d9f296ad04d4ae84",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": null,
+    "decision_days": null,
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "1-888-472-0043",
+     "layer": "documented",
+     "quote": "For bills with a date of service on or after August 1, 2022: 1-888-472-0043.",
+     "source_id": "fap-d9f296ad04d4ae84",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": null,
+    "languages": {
+     "value": [
+      "Primary language(s) spoken by limited English proficiency populations"
+     ],
+     "layer": "documented",
+     "quote": "RSFH also accommodates all significant populations that have limited English proficiency by translating this HFA Policy, application form, and plain language summary of the policy into the primary language(s) spoken by such populations.",
+     "source_id": "fap-d9f296ad04d4ae84",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-d9f296ad04d4ae84",
+     "kind": "hospital_web",
+     "url": "https://www.rsfh.com/getContentAsset/c0ea91a1-a6fa-408e-9bcf-36a92054ccfa/7ac1fecb-c286-4874-bc71-62e245e8a59a/2026-RSFH-Financial-Assistance-Policy-English.pdf?language=en",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "d9f296ad04d4ae84046045c136c02079935c32eb027456567331e22cad6a751f",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [],
+   "eve_verified": {
+    "on": "2026-10-23",
+    "sources_fetched": 1,
+    "sources_total": 1,
+    "sources_missing": [],
+    "sha256_match": {
+     "fap-d9f296ad04d4ae84": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
+    "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
+     "eligibility.assistance_ceiling_fpl",
+     "eligibility.asset_test",
+     "eligibility.residency",
+     "eligibility.insured_patients_covered",
+     "apply.documents_required",
+     "apply.submit_methods",
+     "contacts.phone",
+     "contacts.languages"
+    ],
+    "rejected": [],
+    "pruned": [
+     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)"
+    ],
+    "income_rule_verified": true,
+    "core_completeness": 0.83
+   }
+  },
+  {
+   "hospital": {
+    "ccn": "421301",
+    "name": "ABBEVILLE AREA MEDICAL CENTER",
+    "city": "ABBEVILLE",
+    "state": "SC",
+    "zip": "29620",
+    "phone": "864-366-5011",
+    "ownership": "Voluntary non-profit - Other",
+    "website_domain": "abbevilleareamc.com",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "100",
+     "layer": "documented",
+     "quote": "Those with incomes at or below 100% of poverty will receive a full 100% discount.",
+     "source_id": "fap-40253cf7de43ebd4",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": null,
+    "assistance_ceiling_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "Those with incomes above 100% of poverty, but at or below 200% of poverty, will be charged according to the attached sliding fee schedule.",
+     "source_id": "fap-40253cf7de43ebd4",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "asset_test": null,
+    "residency": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "This policy includes those patients who may be uninsured or underinsured.",
+     "source_id": "fap-40253cf7de43ebd4",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": {
+     "value": "https://www.abbevilleareamc.com/wp-content/uploads/2025/08/08.05.2025-AAMC-Financial-Assistance-Application.pdf",
+     "layer": "documented",
+     "quote": "Financial Assistance Application",
+     "source_id": "fap-ea3637b9ce548b7d",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "social_security_letter",
+      "other"
+     ],
+     "layer": "documented",
+     "quote": "Social Security cards for all family members living in the household.",
+     "source_id": "fap-ea3637b9ce548b7d",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "Mail your completed application along with all required documents to: AAMC Community Resource Center, Attention: Patient Financial Assistance Coordinator, PO Box 887, Abbeville, SC 29620"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Return the completed application along with all required documents to: Patient Financial Assistance Coordinator Abbeville Area Healthcare Center 901 W. Greenwood St. Suite 1 in Abbeville",
+     "source_id": "fap-ea3637b9ce548b7d",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": null,
+    "decision_days": null,
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "864-366-9681",
+     "layer": "documented",
+     "quote": "Call 864-366-9681. If no one is available, leave a message and your call will be returned during the Patient Financial Assistance Coordinator\u2019s regular business hours.",
+     "source_id": "fap-ea3637b9ce548b7d",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": {
+     "value": "Tuesdays 1:15pm-4:30pm Wednesdays 8:30am-12:00pm",
+     "layer": "documented",
+     "quote": "Patient Financial Assistance Coordinator Business Hours Tuesdays 1:15pm-4:30pm Wednesdays 8:30am-12:00pm",
+     "source_id": "fap-ea3637b9ce548b7d",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "languages": null
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-40253cf7de43ebd4",
+     "kind": "hospital_web",
+     "url": "https://www.abbevilleareamc.com/wp-content/uploads/2023/03/PFS-0002-Financial-Assistance-Discount-and-Free-Care-Policy.-7.13.2022-2-002.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "40253cf7de43ebd45eff164db6e348b7116f96f8fd230e0e57ea67840d73b9ef",
+     "effective_date": null
+    },
+    {
+     "id": "fap-ea3637b9ce548b7d",
+     "kind": "hospital_web",
+     "url": "https://www.abbevilleareamc.com/wp-content/uploads/2025/08/08.05.2025-AAMC-Financial-Assistance-Application.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "ea3637b9ce548b7d8a4e068afea1ce8bded6bedac8de88bb90ccd846e2eca1c7",
+     "effective_date": null
+    },
+    {
+     "id": "web-cb6aa54e8c3fd3e4",
+     "kind": "hospital_web",
+     "url": "https://www.abbevilleareamc.com/abbeville-area-medical-center/patients-visitors/billing-information/",
+     "title": "Billing Information | Abbeville Area Medical Center",
+     "fetched_on": "2026-10-23",
+     "sha256": "cb6aa54e8c3fd3e4636234eb8d88e01b525903cd9789337a115369d3c98a015e",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "eligibility.discount_tiers: 100-200% at 0% is no discount; skipped"
+   ],
+   "eve_verified": {
+    "on": "2026-10-23",
+    "sources_fetched": 3,
+    "sources_total": 3,
+    "sources_missing": [],
+    "sha256_match": {
+     "fap-40253cf7de43ebd4": true,
+     "fap-ea3637b9ce548b7d": true,
+     "web-cb6aa54e8c3fd3e4": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
+    "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.assistance_ceiling_fpl",
+     "eligibility.insured_patients_covered",
+     "apply.form_url",
+     "apply.documents_required",
+     "apply.submit_methods",
+     "contacts.phone",
+     "contacts.hours"
+    ],
+    "rejected": [
+     [
+      "eligibility.asset_test",
+      "quote does not support the asset-test value"
+     ]
+    ],
+    "pruned": [
+     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
+     "apply.documents_required: 4 items not named in the trimmed quote",
+     "apply.submit_methods: 2 items not named in the trimmed quote"
+    ],
+    "income_rule_verified": true,
+    "core_completeness": 0.83
+   }
+  },
+  {
+   "hospital": {
+    "ccn": "421304",
+    "name": "EDGEFIELD COUNTY HEALTHCARE AN AFFILIATE OF SELF R",
+    "city": "EDGEFIELD",
+    "state": "SC",
+    "zip": "29384",
+    "phone": "803-637-3174",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "selfregional.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "Only those persons whose gross family income is equal to or less than 200% of the current FPG may qualify for full financial assistance through the SRH Medical Financial Assistance Program.",
+     "source_id": "fap-b4b1ccd3088e8b65",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": null,
+    "assistance_ceiling_fpl": null,
+    "asset_test": null,
+    "residency": {
+     "value": [
+      "Applicants must be legal residents of the state of South Carolina."
+     ],
+     "layer": "documented",
+     "quote": "To be eligible for the Medical Financial Assistance Program you must be a legal resident of the state of South Carolina.",
+     "source_id": "fap-b4b1ccd3088e8b65",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "insured_patients_covered": null,
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": {
+     "value": [
+      "Homeless patient or guarantor"
+     ],
+     "layer": "documented",
+     "quote": "Homeless patient or guarantor. || Guarantor currently resides in a shelter of some type (Must be legal resident of South Carolina). || Information from the predictive model may be used by Self Regional Healthcare to grant presumptive eligibility in cases where there is an absence of information provided directly by the patient.",
+     "source_id": "fap-b4b1ccd3088e8b65",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "photo_id",
+      "proof_of_income",
+      "other",
+      "bank_statements",
+      "tax_return"
+     ],
+     "layer": "documented",
+     "quote": "Valid South Carolina and/or Governmental photo ID \u2022 Proof of income for all members in the household \u2022 Proof of current address (rent receipt, driver\u2019s license, or voter\u2019s registration) \u2022 Verification of all members in household including their names, relationships, and dates of birth || Monthly checking account statements or monthly savings account statements \u2022 Income verification from employer or most recent check stubs \u2022 Federal Income Tax Return || Verification of self-employment and/or proof of eligibility denial from programs such as Social Security, Department of Social Services, Workers Compensation, Child Support Service, etc. \u2022 Proof of any whole life insurance policies",
+     "source_id": "fap-b4b1ccd3088e8b65",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "Patient Financial Advocates, Patient Access Services, 1325 Spring Street, Greenwood, SC 29646"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Return completed application to: Patient Financial Advocates Patient Access Services 1325 Spring Street Greenwood, SC 29646",
+     "source_id": "fap-283c134311c92cda",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": null,
+    "decision_days": {
+     "value": 30,
+     "layer": "documented",
+     "quote": "Determination is made within 30 days of completion of the financial assistance application and the patient is notified by letter.",
+     "source_id": "fap-b4b1ccd3088e8b65",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "(864)725-6070",
+     "layer": "documented",
+     "quote": "Main Line: (864)725-6070 Applications can be found at www.selfregional.org",
+     "source_id": "fap-b4b1ccd3088e8b65",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": null,
+    "languages": null
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-b4b1ccd3088e8b65",
+     "kind": "hospital_web",
+     "url": "https://www.selfregional.org/wp-content/uploads/compliance_financial_assistance.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "b4b1ccd3088e8b65293499226a08e11d99ea1889caad7c7c942d3a48453f4f68",
+     "effective_date": null
+    },
+    {
+     "id": "fap-283c134311c92cda",
+     "kind": "hospital_web",
+     "url": "https://www.selfregional.org/wp-content/uploads/compliance_financial_application.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "283c134311c92cda23467fea0f75375c5a38943468ce72ae22d31c72298a1a78",
+     "effective_date": null
+    },
+    {
+     "id": "web-476df395b5e42f30",
+     "kind": "hospital_web",
+     "url": "https://www.selfregional.org/billing-insurance/financial-aid-policy/",
+     "title": "Financial Aid Policy \u2013 Self Regional Healthcare",
+     "fetched_on": "2026-10-23",
+     "sha256": "476df395b5e42f30862ed8b6d1053f8ad6e9605184144af12a7cc31e48341a81",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans"
+   ],
+   "eve_verified": {
+    "on": "2026-10-23",
+    "sources_fetched": 3,
+    "sources_total": 3,
+    "sources_missing": [],
+    "sha256_match": {
+     "fap-b4b1ccd3088e8b65": true,
+     "fap-283c134311c92cda": true,
+     "web-476df395b5e42f30": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
+    "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.residency",
+     "programs.presumptive",
+     "apply.documents_required",
+     "apply.submit_methods",
+     "apply.decision_days",
+     "contacts.phone"
+    ],
+    "rejected": [
+     [
+      "eligibility.asset_test",
+      "quote does not support the asset-test value"
+     ],
+     [
+      "apply.form_url",
+      "quote not found in source"
+     ],
+     [
+      "contacts.languages",
+      "quote not found in source"
+     ]
+    ],
+    "pruned": [
+     "programs.presumptive: 2 items not named in the trimmed quote"
+    ],
+    "income_rule_verified": true,
+    "core_completeness": 0.67
+   }
+  }
+ ]
+}

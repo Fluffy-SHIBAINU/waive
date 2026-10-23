@@ -1,0 +1,3315 @@
+{
+ "generated_on": "2026-10-23",
+ "license": "CC BY 4.0",
+ "state": "VT",
+ "status": "draft",
+ "built_by": "eve waive-agent",
+ "verified_on": "2026-10-23",
+ "sheets": [
+  {
+   "hospital": {
+    "ccn": "470001",
+    "name": "CENTRAL VERMONT MEDICAL CENTER",
+    "city": "BARRE",
+    "state": "VT",
+    "zip": "05641",
+    "phone": "802-371-4100",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "uvmhealth.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "250",
+     "layer": "documented",
+     "quote": "Eligible patients shall receive free care (a 100% discount on self-pay balances) when their modified adjusted gross household income is at or below 250% of the federal poverty level (FPLG).",
+     "source_id": "fap-7f9373397365beac",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "250",
+       "max_fpl_inclusive": "400",
+       "discount_percent": 40
+      }
+     ],
+     "layer": "documented",
+     "quote": "Eligible uninsured patients with modified adjusted gross household income between 250% and 400% of the FPLG shall receive an additional 40% discount from the amount generally billed for the services received.",
+     "source_id": "fap-7f9373397365beac",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "assistance_ceiling_fpl": null,
+    "asset_test": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Except in cases of Catastrophic Medical Indigence (as defined below), eligibility for financial assistance is based on an income test and asset test.",
+     "source_id": "fap-7f9373397365beac",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "residency": {
+     "value": [
+      "Patients must reside within the UVMH service area unless medical services were urgent or emergent in nature."
+     ],
+     "layer": "documented",
+     "quote": "Patients must reside within the UVMH service area unless medical services were urgent or emergent in nature.",
+     "source_id": "fap-7f9373397365beac",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Eligible patients with insurance or other coverage for the services delivered and with household income between 250% and 400% of the FPLG shall receive an additional 40% discount on the patient\u2019s out-of-pocket costs",
+     "source_id": "fap-7f9373397365beac",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": {
+     "value": [
+      "Supplemental Nutrition Assistance Program (SNAP) eligibility"
+     ],
+     "layer": "documented",
+     "quote": "Presumptive eligibility may be determined based on individual life circumstances that may include: \u2022 Eligibility for other state or local assistance programs that are unfunded (e.g., Medicaid) \u2022 Supplemental Nutrition Assistance Program (SNAP) eligibility",
+     "source_id": "fap-7f9373397365beac",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": {
+     "value": "https://www.uvmhealth.org/sites/default/files/2026-01/UVMHN-VT-FAP-App-2026.pdf",
+     "layer": "documented",
+     "quote": "Mail your completed application to the address below. Please ensure you attach the required documentation to the application.",
+     "source_id": "fap-70de32f6167f7fc9",
+     "checked_on": "2026-10-22",
+     "confidence": 0.8,
+     "support_count": 0
+    },
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "tax_return",
+      "proof_of_income",
+      "other"
+     ],
+     "layer": "documented",
+     "quote": "Income: \u2022 Most recent federal income tax return \u2022 In lieu of the federal income tax return, you may submit the alternatives listed below:",
+     "source_id": "fap-70de32f6167f7fc9",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "UVMH Patient Access Department, 40 IDX Drive, Bldg. 200-22052, 111 Colchester Avenue, Burlington, VT 05401"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Mail your completed application, along with supporting documentation to the following: UVMH Patient Access Department 40 IDX Drive, Bldg. 200-22052",
+     "source_id": "fap-7f9373397365beac",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": {
+     "value": 240,
+     "layer": "documented",
+     "quote": "UVMH will refund any excess amount the patient has paid for their care within the 240 days prior to the receipt of a complete application.",
+     "source_id": "fap-7f9373397365beac",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days": {
+     "value": 30,
+     "layer": "documented",
+     "quote": "Within 30 calendar days following receipt of an application for financial assistance, UVMH will notify the patient in writing as to whether the application is approved or denied",
+     "source_id": "fap-7f9373397365beac",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "(802) 847-8000 or (800) 639-2719 or (802) 371-4600 option 1, option 1",
+     "layer": "documented",
+     "quote": "Customer Service: (802) 847-8000 or (800) 639-2719 or (802) 371-4600 option 1, option 1",
+     "source_id": "fap-7f9373397365beac",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": null,
+    "languages": {
+     "value": [
+      "Arabic",
+      "Bosnian",
+      "Burmese",
+      "Dari",
+      "French",
+      "Haitian Creole",
+      "Kinyarwanda",
+      "Kirundi",
+      "Lingala",
+      "Mandarin",
+      "Nepali",
+      "Pashto",
+      "Portuguese",
+      "Somali",
+      "Spanish",
+      "Swahili",
+      "Ukrainian",
+      "Vietnamese"
+     ],
+     "layer": "documented",
+     "quote": "Translations for UVMH Vermont Partners shall include the top 14 languages identified by the Vermont Office of Racial Equity 2023 Language Access Report.",
+     "source_id": "fap-7f9373397365beac",
+     "checked_on": "2026-10-22",
+     "confidence": 0.8,
+     "support_count": 0
+    }
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-7f9373397365beac",
+     "kind": "hospital_web",
+     "url": "https://www.uvmhealth.org/sites/default/files/2026-01/PAS1A-Financial-Assistance-Policy-2026.pdf",
+     "title": "",
+     "fetched_on": "2026-10-22",
+     "sha256": "7f9373397365beac510626527e4874f828d1b697064d6eff18654c73d082f6dd",
+     "effective_date": null
+    },
+    {
+     "id": "fap-70de32f6167f7fc9",
+     "kind": "hospital_web",
+     "url": "https://www.uvmhealth.org/sites/default/files/2026-01/UVMHN-VT-FAP-App-2026.pdf",
+     "title": "",
+     "fetched_on": "2026-10-22",
+     "sha256": "70de32f6167f7fc9a81d901437069cf192a9a0e4e99e301d99dbf274f63b9a5d",
+     "effective_date": null
+    },
+    {
+     "id": "web-77e54e7c152fa5ec",
+     "kind": "hospital_web",
+     "url": "https://www.uvmhealth.org/patients-visitors/billing-insurance/financial-assistance",
+     "title": "Financial Assistance | University of Vermont Health",
+     "fetched_on": "2026-10-22",
+     "sha256": "77e54e7c152fa5ec6495134fdc43a4ebc09e608e749ee8acd879b4e6e63b4a81",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "apply.form_url: quote matched the source only after typography normalization",
+    "contacts.languages: quote matched the source only after typography normalization"
+   ],
+   "eve_verified": {
+    "on": "2026-10-23",
+    "sources_fetched": 3,
+    "sources_total": 3,
+    "sources_missing": [],
+    "sha256_match": {
+     "fap-7f9373397365beac": true,
+     "fap-70de32f6167f7fc9": true,
+     "web-77e54e7c152fa5ec": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
+    "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
+     "eligibility.asset_test",
+     "eligibility.residency",
+     "eligibility.insured_patients_covered",
+     "programs.presumptive",
+     "apply.form_url",
+     "apply.documents_required",
+     "apply.submit_methods",
+     "apply.window_days_from_first_bill",
+     "apply.decision_days",
+     "contacts.phone",
+     "contacts.languages"
+    ],
+    "rejected": [
+     [
+      "eligibility.assistance_ceiling_fpl",
+      "quote does not say the hospital's financial assistance reaches it"
+     ]
+    ],
+    "pruned": [
+     "programs.presumptive: 4 items not named in the trimmed quote",
+     "apply.documents_required: 3 items not named in the trimmed quote",
+     "apply.submit_methods: 1 item not named in the trimmed quote"
+    ],
+    "income_rule_verified": true,
+    "core_completeness": 1.0
+   }
+  },
+  {
+   "hospital": {
+    "ccn": "470003",
+    "name": "UNIV. OF VERMONT - FLETCHER ALLEN HEALTH CARE",
+    "city": "BURLINGTON",
+    "state": "VT",
+    "zip": "05401",
+    "phone": "802-847-0000",
+    "ownership": "Voluntary non-profit - Other",
+    "website_domain": "uvmhealth.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "250",
+     "layer": "documented",
+     "quote": "Eligible patients shall receive free care (a 100% discount on self-pay balances) when their modified adjusted gross household income is at or below 250% of the federal poverty level (FPLG).",
+     "source_id": "fap-7f9373397365beac",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "250",
+       "max_fpl_inclusive": "400",
+       "discount_percent": 40
+      }
+     ],
+     "layer": "documented",
+     "quote": "Eligible uninsured patients with modified adjusted gross household income between 250% and 400% of the FPLG shall receive an additional 40% discount from the amount generally billed for the services received.",
+     "source_id": "fap-7f9373397365beac",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "assistance_ceiling_fpl": null,
+    "asset_test": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Except in cases of Catastrophic Medical Indigence (as defined below), eligibility for financial assistance is based on an income test and asset test.",
+     "source_id": "fap-7f9373397365beac",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "residency": {
+     "value": [
+      "Patients must reside within the UVMH service area unless medical services were urgent or emergent in nature."
+     ],
+     "layer": "documented",
+     "quote": "Patients must reside within the UVMH service area unless medical services were urgent or emergent in nature.",
+     "source_id": "fap-7f9373397365beac",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "For eligible patients who are insured, the award shall be based on a discount on the patient\u2019s out-of- pocket costs.",
+     "source_id": "fap-7f9373397365beac",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": {
+     "value": "https://www.uvmhealth.org/sites/default/files/2025-02/uvmhn-fap-application_UVMMC-CVMC-PMC.pdf",
+     "layer": "documented",
+     "quote": "Please mail your completed application to the UVMHN partner where you primarily receive your care. Please ensure you attach the required documentation to the application.",
+     "source_id": "fap-00ee2bc286d6d130",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "tax_return",
+      "proof_of_income",
+      "bank_statements",
+      "other"
+     ],
+     "layer": "documented",
+     "quote": "Income documents required if applicable Assets documents required if applicable \u2022 Most recent Federal Tax Return \u2022 Bank Statements",
+     "source_id": "fap-00ee2bc286d6d130",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "fax",
+       "detail": "802-847-7618"
+      },
+      {
+       "kind": "phone",
+       "detail": "802-847-8000 or 800-639-2719"
+      }
+     ],
+     "layer": "documented",
+     "quote": "You may fax the completed forms to 802-847-7618.",
+     "source_id": "web-77e54e7c152fa5ec",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": {
+     "value": 240,
+     "layer": "documented",
+     "quote": "UVMH will refund any excess amount the patient has paid for their care within the 240 days prior to the receipt of a complete application.",
+     "source_id": "fap-7f9373397365beac",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days": {
+     "value": 30,
+     "layer": "documented",
+     "quote": "Within 30 calendar days following receipt of an application for financial assistance, UVMH will notify the patient in writing as to whether the application is approved or denied",
+     "source_id": "fap-7f9373397365beac",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "802-847-8000 or 800-639-2719",
+     "layer": "documented",
+     "quote": "Customer Service: (802) 847-8000 or (800) 639-2719",
+     "source_id": "fap-7f9373397365beac",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": {
+     "value": "Monday through Friday, 7:30 am \u2013 4:00 pm",
+     "layer": "documented",
+     "quote": "Patients may call (802) 388-8808 option 5, Monday through Friday, 7:30 am \u2013 4:00 pm",
+     "source_id": "fap-7f9373397365beac",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "languages": {
+     "value": [
+      "Arabic",
+      "Bosnian",
+      "Burmese",
+      "Dari",
+      "French",
+      "Haitian Creole",
+      "Kinyarwanda",
+      "Kirundi",
+      "Lingala",
+      "Mandarin",
+      "Nepali",
+      "Pashto",
+      "Portuguese",
+      "Somali",
+      "Spanish",
+      "Swahili",
+      "Ukrainian",
+      "Vietnamese"
+     ],
+     "layer": "documented",
+     "quote": "Translations for individuals with limited English proficiency will be provided for populations with >1,000 individuals or 5% of the service area community.",
+     "source_id": "fap-7f9373397365beac",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    }
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-7f9373397365beac",
+     "kind": "hospital_web",
+     "url": "https://www.uvmhealth.org/sites/default/files/2026-01/PAS1A-Financial-Assistance-Policy-2026.pdf",
+     "title": "",
+     "fetched_on": "2026-10-22",
+     "sha256": "7f9373397365beac510626527e4874f828d1b697064d6eff18654c73d082f6dd",
+     "effective_date": null
+    },
+    {
+     "id": "fap-00ee2bc286d6d130",
+     "kind": "hospital_web",
+     "url": "https://www.uvmhealth.org/sites/default/files/2025-02/uvmhn-fap-application_UVMMC-CVMC-PMC.pdf",
+     "title": "",
+     "fetched_on": "2026-10-22",
+     "sha256": "00ee2bc286d6d130a3f08b30f01fdfdea77db567a4752a4be86d05a97854c301",
+     "effective_date": null
+    },
+    {
+     "id": "web-77e54e7c152fa5ec",
+     "kind": "hospital_web",
+     "url": "https://www.uvmhealth.org/patients-visitors/billing-insurance/financial-assistance",
+     "title": "Financial Assistance | University of Vermont Health",
+     "fetched_on": "2026-10-22",
+     "sha256": "77e54e7c152fa5ec6495134fdc43a4ebc09e608e749ee8acd879b4e6e63b4a81",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [],
+   "eve_verified": {
+    "on": "2026-10-23",
+    "sources_fetched": 3,
+    "sources_total": 3,
+    "sources_missing": [],
+    "sha256_match": {
+     "fap-7f9373397365beac": true,
+     "fap-00ee2bc286d6d130": true,
+     "web-77e54e7c152fa5ec": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
+    "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
+     "eligibility.asset_test",
+     "eligibility.residency",
+     "eligibility.insured_patients_covered",
+     "apply.form_url",
+     "apply.documents_required",
+     "apply.submit_methods",
+     "apply.window_days_from_first_bill",
+     "apply.decision_days",
+     "contacts.phone",
+     "contacts.hours",
+     "contacts.languages"
+    ],
+    "rejected": [
+     [
+      "eligibility.assistance_ceiling_fpl",
+      "quote does not say the hospital's financial assistance reaches it"
+     ]
+    ],
+    "pruned": [
+     "programs.presumptive: none of the listed programs is named in the quote (after trimming)",
+     "apply.documents_required: 3 items not named in the trimmed quote",
+     "apply.submit_methods: 1 item not named in the trimmed quote"
+    ],
+    "income_rule_verified": true,
+    "core_completeness": 1.0
+   }
+  },
+  {
+   "hospital": {
+    "ccn": "470005",
+    "name": "RUTLAND REGIONAL MEDICAL CENTER",
+    "city": "RUTLAND",
+    "state": "VT",
+    "zip": "05701",
+    "phone": "802-775-7111",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "rrmc.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": null,
+    "discount_tiers": null,
+    "assistance_ceiling_fpl": null,
+    "asset_test": null,
+    "residency": null,
+    "insured_patients_covered": null,
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": null,
+    "documents_reported": null,
+    "submit_methods": null,
+    "window_days_from_first_bill": null,
+    "decision_days": null,
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": null,
+    "hours": null,
+    "languages": null
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "web-ff38fa2eeaa20e9c",
+     "kind": "hospital_web",
+     "url": "https://rrmc.policystat.com/policy/19088913/",
+     "title": "PolicyStat\n            :: PolicyStat",
+     "fetched_on": "2026-10-23",
+     "sha256": "ff38fa2eeaa20e9c287086ed59911a68fd2a02a7231dfa1715dc3a8567bc753e",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [],
+   "eve_verified": {
+    "on": "2026-10-23",
+    "sources_fetched": 0,
+    "sources_total": 1,
+    "sources_missing": [
+     "https://rrmc.policystat.com/policy/19088913/"
+    ],
+    "sha256_match": {
+     "web-ff38fa2eeaa20e9c": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
+    "accepted": [],
+    "rejected": [],
+    "pruned": [],
+    "income_rule_verified": false,
+    "core_completeness": 0.0
+   }
+  },
+  {
+   "hospital": {
+    "ccn": "470011",
+    "name": "BRATTLEBORO MEMORIAL HOSPITAL",
+    "city": "BRATTLEBORO",
+    "state": "VT",
+    "zip": "05301",
+    "phone": "802-257-0341",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "bmhvt.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "250",
+     "layer": "documented",
+     "quote": "Financial Assistance is granted at 100 percent of eligible balances for income at or below 250 percent of FPG",
+     "source_id": "web-76826ee01e879991",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "250",
+       "max_fpl_inclusive": "300",
+       "discount_percent": 75
+      },
+      {
+       "min_fpl_exclusive": "300",
+       "max_fpl_inclusive": "350",
+       "discount_percent": 50
+      },
+      {
+       "min_fpl_exclusive": "350",
+       "max_fpl_inclusive": "400",
+       "discount_percent": 40
+      }
+     ],
+     "layer": "documented",
+     "quote": "75 percent for income between 250-300 percent of FPG, 50 percent for income between 300-350 percent of FPG, and 40 percent for income between 350-400 percent of FPG.",
+     "source_id": "web-76826ee01e879991",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "assistance_ceiling_fpl": null,
+    "asset_test": null,
+    "residency": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Insured patients: Insured patients shall have a discount applied to their out-of-pocket expenses.",
+     "source_id": "fap-fc4fbca78a4bb17a",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": {
+     "value": [
+      "Supplemental Security Income (SSI) eligibility",
+      "Food Stamp eligibility",
+      "Fuel assistance eligibility",
+      "Participation in WIC",
+      "Incarcerated with no health care coverage"
+     ],
+     "layer": "documented",
+     "quote": "Eligibility for other state or local assistance programs that are unfunded (e.g., Medicaid spend-down); \u25aa Supplemental Security Income (SSI) eligibility; \u25aa Food Stamp eligibility; \u25aa Fuel assistance eligibility; \u25aa Participation in Women, Infants and Children programs (WIC); or \u25aa Patient is incarcerated with no health care coverage.",
+     "source_id": "fap-fc4fbca78a4bb17a",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": {
+     "value": "https://www.bmhvt.org/wp-content/uploads/Financial-Assistance-Application_Sept-2026.pdf",
+     "layer": "documented",
+     "quote": "You can also access a Financial Assistance Program Application by following this link .",
+     "source_id": "web-76826ee01e879991",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "form_version": null,
+    "documents_required": null,
+    "documents_reported": null,
+    "submit_methods": null,
+    "window_days_from_first_bill": {
+     "value": 240,
+     "layer": "documented",
+     "quote": "Patients have 240 days from receipt of the first bill to apply for financial assistance.",
+     "source_id": "web-76826ee01e879991",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days": {
+     "value": 30,
+     "layer": "documented",
+     "quote": "Financial Assistance applications will be processed within thirty (30) days of the date of their receipt in our Business Office.",
+     "source_id": "web-76826ee01e879991",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "802-257-8814",
+     "layer": "documented",
+     "quote": "If you have any questions regarding our financial assistance programs, please contact our Financial Assistance Advocate at 802-257-8814",
+     "source_id": "web-76826ee01e879991",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": null,
+    "languages": null
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-fc4fbca78a4bb17a",
+     "kind": "hospital_web",
+     "url": "https://www.bmhvt.org/wp-content/uploads/PATIENT-FINANCIAL-ASSISTANCE-POLICY-updated-08.15.26.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "fc4fbca78a4bb17ac7921dea3c98f0fe180d85eaf91820e2e9c6270a0d58d73a",
+     "effective_date": null
+    },
+    {
+     "id": "fap-c9db76d58bd32a2a",
+     "kind": "hospital_web",
+     "url": "https://www.bmhvt.org/wp-content/uploads/Financial-Assistance-Application_Sept-2026.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "c9db76d58bd32a2aef860f5be1f54eeca1b90a61a5724f214256da90ba9e93a1",
+     "effective_date": null
+    },
+    {
+     "id": "web-76826ee01e879991",
+     "kind": "hospital_web",
+     "url": "https://www.bmhvt.org/patients-visitors/patient-information/pfs/charityfree_care/",
+     "title": "Financial Assistance Program - Brattleboro Memorial Hospital",
+     "fetched_on": "2026-10-23",
+     "sha256": "76826ee01e8799913094c09aa89943922deb48f201b34c949e7f8eb871d38f36",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "agent dropped eligibility.assistance_ceiling_fpl: judge: Quote caps only the catastrophic program at 600% FPL; it does not say no assistance of any kind is offered above 600%.",
+    "agent dropped eligibility.residency: judge: Quote only gives the out-of-state exception for emergent services; it does not state the Vermont living/working/school requirement.",
+    "agent dropped apply.documents_required: judge: Quote mentions only bank and investment statements; the tax return, paystub and income documentation item is absent.",
+    "agent dropped apply.submit_methods: judge: Quote supports mail and drop-off, but the mailing address (17 Belmont Ave, etc.) is not in the quote."
+   ],
+   "eve_verified": {
+    "on": "2026-10-23",
+    "sources_fetched": 3,
+    "sources_total": 3,
+    "sources_missing": [],
+    "sha256_match": {
+     "fap-fc4fbca78a4bb17a": true,
+     "fap-c9db76d58bd32a2a": true,
+     "web-76826ee01e879991": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
+    "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
+     "eligibility.insured_patients_covered",
+     "programs.presumptive",
+     "apply.form_url",
+     "apply.window_days_from_first_bill",
+     "apply.decision_days",
+     "contacts.phone"
+    ],
+    "rejected": [
+     [
+      "eligibility.asset_test",
+      "quote does not support the asset-test value"
+     ]
+    ],
+    "pruned": [
+     "programs.presumptive: 1 item not named in the trimmed quote"
+    ],
+    "income_rule_verified": true,
+    "core_completeness": 0.67
+   }
+  },
+  {
+   "hospital": {
+    "ccn": "470012",
+    "name": "SOUTHWESTERN VERMONT MEDICAL CENTER",
+    "city": "BENNINGTON",
+    "state": "VT",
+    "zip": "05201",
+    "phone": "802-442-6361",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "svmc.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "250",
+     "layer": "documented",
+     "quote": "For insured patients whose household income is at or below 250% of FPL, we will waive (i.e., 100% discount) all out-of-pocket costs for emergency and medically necessary services rendered (i.e., the care is free).",
+     "source_id": "fap-737c469ba90ef097",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "250",
+       "max_fpl_inclusive": "300",
+       "discount_percent": 75
+      },
+      {
+       "min_fpl_exclusive": "300",
+       "max_fpl_inclusive": "400",
+       "discount_percent": 70
+      }
+     ],
+     "layer": "documented",
+     "quote": "Family Size <=250% FPL 251%-300% 300%-400% FPL 100% Discount 75% Discount 70% Discount",
+     "source_id": "fap-737c469ba90ef097",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "assistance_ceiling_fpl": {
+     "value": "600",
+     "layer": "documented",
+     "quote": "To be eligible for catastrophic financial assistance, a patient's household income must be equal to or less than 600% FPL.",
+     "source_id": "fap-737c469ba90ef097",
+     "checked_on": "2026-10-22",
+     "confidence": 0.8,
+     "support_count": 0
+    },
+    "asset_test": null,
+    "residency": {
+     "value": [
+      "To be eligible for general or catastrophic financial assistance, a patient must, at the time services are rendered, be a Vermont resident or a resident of Rensselaer (NY), Washington (NY) and Berkshire (MA) counties."
+     ],
+     "layer": "documented",
+     "quote": "a patient must, at the time services are rendered, be a Vermont resident as defined in the \"Definitions\" section of this policy or a resident of the following counties located outside of Vermont Rensselaer (NY), Washington (NY) and Berkshire (MA).",
+     "source_id": "fap-737c469ba90ef097",
+     "checked_on": "2026-10-22",
+     "confidence": 0.8,
+     "support_count": 0
+    },
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Insured patients: Insured patients shall have a discount applied to their out-of-pocket expenses.",
+     "source_id": "fap-737c469ba90ef097",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": {
+     "value": "https://svmc.org/sites/default/files/2026-07/2026%20SVMC%20Financial%20Assistance%20Application.pdf",
+     "layer": "documented",
+     "quote": "Financial Assistance Application",
+     "source_id": "fap-5891fe803d33b7e7",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "tax_return",
+      "pay_stubs"
+     ],
+     "layer": "documented",
+     "quote": "1. Copy of prior year Federal Tax Return* 2. Copy of prior year State Tax Return 3. Copy of Business Tax Return (If applicable) 4. Copies of 2 most recent pay stubs or written verification from employer",
+     "source_id": "fap-5891fe803d33b7e7",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "SVMC 100 Hospital Drive, Box 52, Bennington, VT 05201"
+      },
+      {
+       "kind": "in_person",
+       "detail": "Bring in forms in person"
+      },
+      {
+       "kind": "phone",
+       "detail": "Call (802) 447-4500 for help completing forms"
+      }
+     ],
+     "layer": "documented",
+     "quote": "You can either bring in our forms in person or mail them to the address above. Should you require any help in completing these forms, please call (802) 447-4500.",
+     "source_id": "fap-5891fe803d33b7e7",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": {
+     "value": 365,
+     "layer": "documented",
+     "quote": "The application period begins on the date a billing statement for the patient balance of care is first presented and ends 365 days later.",
+     "source_id": "fap-737c469ba90ef097",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days": {
+     "value": 30,
+     "layer": "documented",
+     "quote": "SVMC will issue a written decision to the applicant no later than 30 calendar days after receiving the financial assistance application.",
+     "source_id": "fap-737c469ba90ef097",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "(802) 447-4500",
+     "layer": "documented",
+     "quote": "Patients can call (802) 447-4500 to request a free paper copy of this policy and the financial assistance application.",
+     "source_id": "fap-737c469ba90ef097",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": {
+     "value": "Monday to Friday, 8 am to 4:30 pm",
+     "layer": "documented",
+     "quote": "Office hours : Monday to Friday, 8 am to 4:30 pm",
+     "source_id": "web-91a912ff55e8f390",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "languages": {
+     "value": [
+      "English",
+      "Spanish"
+     ],
+     "layer": "documented",
+     "quote": "ATENCI\u00d3N: si habla ingl\u00e9s, tendr\u00e1 a su disposici\u00f3n servicios gratuitos de asistencia ling\u00fc\u00edstica.",
+     "source_id": "fap-737c469ba90ef097",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    }
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-737c469ba90ef097",
+     "kind": "hospital_web",
+     "url": "https://svmc.org/sites/default/files/2025-02/svmc-financial-assistance-program-policy.pdf",
+     "title": "",
+     "fetched_on": "2026-10-22",
+     "sha256": "737c469ba90ef09747ad54ad52531017675a7a89f23d075a511263ae4a79d32a",
+     "effective_date": null
+    },
+    {
+     "id": "fap-5891fe803d33b7e7",
+     "kind": "hospital_web",
+     "url": "https://svmc.org/sites/default/files/2026-07/2026%20SVMC%20Financial%20Assistance%20Application.pdf",
+     "title": "",
+     "fetched_on": "2026-10-22",
+     "sha256": "5891fe803d33b7e7a6fd058c5dd3d3567eaff7a63894d0d72bc22f2542397936",
+     "effective_date": null
+    },
+    {
+     "id": "web-91a912ff55e8f390",
+     "kind": "hospital_web",
+     "url": "https://svmc.org/patients-visitors/billing-insurance",
+     "title": "Billing and Insurance | Patients & Visitors | Southwestern Vermont Medical Center",
+     "fetched_on": "2026-10-22",
+     "sha256": "91a912ff55e8f390e73cc4c40acaaefc0976fb802c7ffa8ff646e75906b42299",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "eligibility.assistance_ceiling_fpl: quote matched the source only after typography normalization",
+    "eligibility.asset_test: quote matched the source only after typography normalization",
+    "eligibility.residency: quote matched the source only after typography normalization"
+   ],
+   "eve_verified": {
+    "on": "2026-10-23",
+    "sources_fetched": 3,
+    "sources_total": 3,
+    "sources_missing": [],
+    "sha256_match": {
+     "fap-737c469ba90ef097": true,
+     "fap-5891fe803d33b7e7": true,
+     "web-91a912ff55e8f390": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
+    "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
+     "eligibility.assistance_ceiling_fpl",
+     "eligibility.residency",
+     "eligibility.insured_patients_covered",
+     "apply.form_url",
+     "apply.documents_required",
+     "apply.submit_methods",
+     "apply.window_days_from_first_bill",
+     "apply.decision_days",
+     "contacts.phone",
+     "contacts.hours",
+     "contacts.languages"
+    ],
+    "rejected": [
+     [
+      "eligibility.asset_test",
+      "quote does not support the asset-test value"
+     ]
+    ],
+    "pruned": [
+     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
+     "apply.documents_required: 3 items not named in the trimmed quote"
+    ],
+    "income_rule_verified": true,
+    "core_completeness": 1.0
+   }
+  },
+  {
+   "hospital": {
+    "ccn": "470024",
+    "name": "NORTHWESTERN MEDICAL CENTER INC",
+    "city": "SAINT ALBANS",
+    "state": "VT",
+    "zip": "05478",
+    "phone": "802-524-5911",
+    "ownership": "Voluntary non-profit - Other",
+    "website_domain": "northwesternmedicalcenter.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "250",
+     "layer": "documented",
+     "quote": "Free care is granted to eligible patients whose household income is at or below 250% of the Federal Poverty Guidelines (FPLG).",
+     "source_id": "fap-bdc3727a1c48c4fa",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": null,
+    "assistance_ceiling_fpl": null,
+    "asset_test": null,
+    "residency": {
+     "value": [
+      "Financial assistance is available to all individuals who receive emergent care, and to individuals with a primary residence in Vermont (people who live in Vermont for longer than six months a year), who meet certain income and asset guidelines."
+     ],
+     "layer": "documented",
+     "quote": "Financial assistance is available to all individuals who receive emergent care, and to individuals with a primary residence in Vermont (people who live in Vermont for longer than six months a year), who meet certain income and asset guidelines.",
+     "source_id": "web-35ce697a60ffa280",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Similarly, for insured patients, in no event will the amount from which the financial assistance discount is taken be more than the charge allowed by the patient\u2019s insurance carrier.",
+     "source_id": "fap-bdc3727a1c48c4fa",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": {
+     "value": [
+      "Medicaid enrolled"
+     ],
+     "layer": "documented",
+     "quote": "Patients who have Medicaid coverage and have balances due for service dates up to twelve months prior to the effective date of their coverage, will be granted 100% financial assistance on such balances without further review or documentation from the patient.",
+     "source_id": "fap-bdc3727a1c48c4fa",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "state_programs": {
+     "value": [
+      {
+       "name": "NOTCH Collaboration",
+       "how_to_apply": "NMC is working in collaboration with the Northern Tier Center for Health (NOTCH), our local FQHC, in qualifying their patients for financial assistance for services performed at NMC. NOTCH will forward the patient's applications with supporting documentation to NMC."
+      }
+     ],
+     "layer": "documented",
+     "quote": "NMC is working in collaboration with the Northern Tier Center for Health (NOTCH), our local FQHC, in qualifying their patients for financial assistance for services performed at NMC.",
+     "source_id": "fap-bdc3727a1c48c4fa",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    }
+   },
+   "apply": {
+    "form_url": {
+     "value": "https://www.northwesternmedicalcenter.org/patients-visitors/pay-an-nmc-bill/free-care-discount-policy/",
+     "layer": "documented",
+     "quote": "Northwestern Medical Center\u2019s website will include our Patient Financial Assistance policy, plain language summary, and application here; https://www.northwesternmedicalcenter.org/patients-visitors/pay-an-nmc-bill/free- care-discount-policy/",
+     "source_id": "fap-bdc3727a1c48c4fa",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "pay_stubs",
+      "tax_return",
+      "proof_of_income",
+      "social_security_letter",
+      "other"
+     ],
+     "layer": "documented",
+     "quote": "Income, by reviewing sources such as a W-2, a recent pay stub showing year-to-date totals, tax returns, unemployment statements, notices of social security and retirement benefits, or a profit and loss statement.",
+     "source_id": "fap-bdc3727a1c48c4fa",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "Northwestern Medical Center C/O Patient Financial Services 133 Fairfield Street St. Albans, VT 05478"
+      },
+      {
+       "kind": "email",
+       "detail": "Pfscustomerservice@nmcinc.org"
+      },
+      {
+       "kind": "in_person",
+       "detail": "Patient Financial Services department in person"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Patients and/or guarantors can apply for financial assistance by submitting a completed application with all required documentation to Patient Financial Services department in person, via email or the U.S. Postal Services at the address below.",
+     "source_id": "fap-bdc3727a1c48c4fa",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": {
+     "value": 240,
+     "layer": "documented",
+     "quote": "Northwestern Medical Center will accept and process a financial assistance application for a period up to 240 days after NMC provides the first billing statement to the patient.",
+     "source_id": "fap-bdc3727a1c48c4fa",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days": {
+     "value": 30,
+     "layer": "documented",
+     "quote": "Northwestern Medical Center will issue a written decision to the applicant no later than 30 calendar days after receiving the financial assistance application.",
+     "source_id": "fap-bdc3727a1c48c4fa",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "802-524-1048",
+     "layer": "documented",
+     "quote": "Pfscustomerservice@nmcinc.org 802-524-1048",
+     "source_id": "fap-bdc3727a1c48c4fa",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": null,
+    "languages": {
+     "value": [
+      "English"
+     ],
+     "layer": "documented",
+     "quote": "Northwestern Medical Center provides free language services to persons whose primary language is not English.",
+     "source_id": "fap-bdc3727a1c48c4fa",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    }
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-bdc3727a1c48c4fa",
+     "kind": "hospital_web",
+     "url": "https://www.northwesternmedicalcenter.org/wp-content/uploads/2026/04/Financial-Assistance-Program-Policy-UPDATE-2026.pdf",
+     "title": "",
+     "fetched_on": "2026-10-22",
+     "sha256": "bdc3727a1c48c4fa897b53623108f6ad8562cabb71ab06750b3657c916b59d01",
+     "effective_date": null
+    },
+    {
+     "id": "web-35ce697a60ffa280",
+     "kind": "hospital_web",
+     "url": "https://www.northwesternmedicalcenter.org/patients-visitors/financial-assistance/",
+     "title": "Financial assistance - Northwestern Medical Center",
+     "fetched_on": "2026-10-22",
+     "sha256": "35ce697a60ffa2806c8bafc3101570d732a89f4981c42ea945e8bc3ec0957792",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "agent dropped eligibility.discount_tiers: quote is not a substring of the source"
+   ],
+   "eve_verified": {
+    "on": "2026-10-23",
+    "sources_fetched": 2,
+    "sources_total": 2,
+    "sources_missing": [],
+    "sha256_match": {
+     "fap-bdc3727a1c48c4fa": true,
+     "web-35ce697a60ffa280": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
+    "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.residency",
+     "eligibility.insured_patients_covered",
+     "programs.presumptive",
+     "programs.state_programs",
+     "apply.form_url",
+     "apply.documents_required",
+     "apply.submit_methods",
+     "apply.window_days_from_first_bill",
+     "apply.decision_days",
+     "contacts.phone",
+     "contacts.languages"
+    ],
+    "rejected": [
+     [
+      "eligibility.assistance_ceiling_fpl",
+      "quote does not say the hospital's financial assistance reaches it"
+     ],
+     [
+      "eligibility.asset_test",
+      "quote does not support the asset-test value"
+     ]
+    ],
+    "pruned": [
+     "apply.documents_required: 1 item not named in the trimmed quote"
+    ],
+    "income_rule_verified": true,
+    "core_completeness": 0.83
+   }
+  },
+  {
+   "hospital": {
+    "ccn": "471300",
+    "name": "GRACE COTTAGE HOSPITAL",
+    "city": "TOWNSHEND",
+    "state": "VT",
+    "zip": "05353",
+    "phone": "802-365-7920",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "gracecottage.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "250",
+     "layer": "documented",
+     "quote": "For uninsured patients whose household income is at or below 250% of FPL, we will waive (i.e., 100% discount) the amount generally billed for emergency and medically necessary services rendered (i.e., the care is free).",
+     "source_id": "fap-443bcc0573a7fdbd",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "250",
+       "max_fpl_inclusive": "300",
+       "discount_percent": 80
+      },
+      {
+       "min_fpl_exclusive": "300",
+       "max_fpl_inclusive": "350",
+       "discount_percent": 60
+      },
+      {
+       "min_fpl_exclusive": "350",
+       "max_fpl_inclusive": "400",
+       "discount_percent": 40
+      }
+     ],
+     "layer": "documented",
+     "quote": "For insured patients whose household income is between 250% FPL and 300% FPL, we will discount all out-of-pocket costs for emergency and medically necessary services rendered by 80%. || For insured patients whose household income is between 300% FPL and 350% FPL, we will discount all out-of-pocket costs for emergency and medically necessary services rendered by 60%. || For insured patients whose household income is between 350% FPL and 400% FPL, we will discount all out-of-pocket costs for emergency and medically necessary services rendered by 40%.",
+     "source_id": "fap-443bcc0573a7fdbd",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "assistance_ceiling_fpl": {
+     "value": "600",
+     "layer": "documented",
+     "quote": "To be eligible for catastrophic financial assistance, a patient\u2019s household income must be equal to or less than 600% FPL.",
+     "source_id": "fap-443bcc0573a7fdbd",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "asset_test": null,
+    "residency": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Insured patients: Insured patients shall have a discount applied to their out-of-pocket expenses.",
+     "source_id": "fap-443bcc0573a7fdbd",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": {
+     "value": [
+      "SSI eligibility",
+      "Food Stamp eligibility",
+      "Fuel assistance eligibility",
+      "WIC participation",
+      "Incarcerated with no health care coverage"
+     ],
+     "layer": "documented",
+     "quote": "Eligibility for other state or local assistance programs that are unfunded (e.g., Medicaid spend-down). || Supplemental Security Income (SSI) eligibility. \u2022 Food Stamp eligibility. \u2022 Fuel assistance eligibility. \u2022 Participation in Women, Infants and Children programs (WIC); or \u2022 Patients are incarcerated with no health care coverage.",
+     "source_id": "fap-443bcc0573a7fdbd",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "other",
+      "pay_stubs",
+      "proof_of_income"
+     ],
+     "layer": "documented",
+     "quote": "Please provide a copy of your most recent tax filing. || If you cannot provide a tax return, please provide alternative documentation such as paystubs, SS Benefit statement, pension benefit statement, bank statement, profit & loss statement, documentation of public assistance, letter from an employer or a self-attestation letter. || If you are unemployed and there is no income coming into the household a written letter explaining is required.",
+     "source_id": "fap-6195d4752cef29d6",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "Jocelyne Smith, CAC, Patient Resource Advocate, Grace Cottage, P.O. Box 216, Townshend, VT 05353"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Submit the form and required financial items to our Resource Advocate || Jocelyne Smith, CAC Patient Resource Advocate Grace Cottage P.O. Box 216 Townshend, VT 05353",
+     "source_id": "web-8dff25a919cacf6b",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": {
+     "value": 365,
+     "layer": "documented",
+     "quote": "The application period begins on the date a billing statement for the patient balance of care is first presented and ends 365 days later.",
+     "source_id": "fap-443bcc0573a7fdbd",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days": null,
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "(802)365-3770",
+     "layer": "documented",
+     "quote": "The office can be reached via telephone (802)365-3770",
+     "source_id": "fap-443bcc0573a7fdbd",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": null,
+    "languages": null
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-443bcc0573a7fdbd",
+     "kind": "hospital_web",
+     "url": "https://gracecottage.org/wp-content/uploads/2026/05/Financial-Assistance-Policy-with-Income-Guideline-updated-May-2026.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "443bcc0573a7fdbdc5744144ad97e2bb1b8ca1ab8f666dc1c87116d1414488c9",
+     "effective_date": null
+    },
+    {
+     "id": "fap-6195d4752cef29d6",
+     "kind": "hospital_web",
+     "url": "https://gracecottage.org/wp-content/uploads/2024/08/Financial-Assistance-Application-Updated-8-16-24.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "6195d4752cef29d6909b1c41ce85aade83da0656015368cffddd889e1196254a",
+     "effective_date": null
+    },
+    {
+     "id": "web-8dff25a919cacf6b",
+     "kind": "hospital_web",
+     "url": "https://gracecottage.org/patients-visitors/billing-and-insurance/financial-assistance/",
+     "title": "Financial Assistance - Grace Cottage Hospital",
+     "fetched_on": "2026-10-23",
+     "sha256": "8dff25a919cacf6b2904a9978b36aa5e81d50d91f5bde01152e735723d4969a9",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "eligibility.discount_tiers: value backed by 3 verbatim spans",
+    "programs.presumptive: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 2 verbatim spans",
+    "agent dropped eligibility.residency: judge: Quote only says the patient must be a Vermont resident at time of service; the living/working/school, undocumented and housing details are not in it."
+   ],
+   "eve_verified": {
+    "on": "2026-10-23",
+    "sources_fetched": 3,
+    "sources_total": 3,
+    "sources_missing": [],
+    "sha256_match": {
+     "fap-443bcc0573a7fdbd": true,
+     "fap-6195d4752cef29d6": true,
+     "web-8dff25a919cacf6b": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
+    "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
+     "eligibility.assistance_ceiling_fpl",
+     "eligibility.insured_patients_covered",
+     "programs.presumptive",
+     "apply.documents_required",
+     "apply.submit_methods",
+     "apply.window_days_from_first_bill",
+     "contacts.phone"
+    ],
+    "rejected": [
+     [
+      "apply.form_url",
+      "quote not found in source"
+     ],
+     [
+      "apply.decision_days",
+      "value not in quote"
+     ]
+    ],
+    "pruned": [
+     "programs.presumptive: 1 item not named in the trimmed quote"
+    ],
+    "income_rule_verified": true,
+    "core_completeness": 0.83
+   }
+  },
+  {
+   "hospital": {
+    "ccn": "471301",
+    "name": "GIFFORD MEDICAL CENTER",
+    "city": "RANDOLPH",
+    "state": "VT",
+    "zip": "05060",
+    "phone": "802-728-4441",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "giffordhealthcare.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": null,
+    "discount_tiers": null,
+    "assistance_ceiling_fpl": null,
+    "asset_test": null,
+    "residency": {
+     "value": [
+      "GMC patients must be a resident of Vermont, or a non-resident who experiences a medical emergency, and/or be routinely cared for by a GHC primary care provider"
+     ],
+     "layer": "documented",
+     "quote": "GMC patients must be a resident of Vermont, or a non-resident who experiences a medical emergency, and/or be routinely cared for by a GHC primary care provider",
+     "source_id": "fap-bb6099fa6aef2971",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "patients with insurance will have the sliding fee discount applied to any and all out-of-pocket costs (co-payments, deductibles), subject to legal/contractual restrictions",
+     "source_id": "fap-bb6099fa6aef2971",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": {
+     "value": "https://giffordhealthcare.org/wp-content/uploads/2025/10/DFAA-Application-updated.pdf",
+     "layer": "documented",
+     "quote": "Gifford Sliding Fee Discount Financial Assistance Application",
+     "source_id": "fap-e07ca50f30bacf87",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "tax_return",
+      "pay_stubs",
+      "bank_statements"
+     ],
+     "layer": "documented",
+     "quote": "Most recently filed tax return (IRS form 1040) || Paystubs from the past 30 days || Copy of recent Bank Statement(s)",
+     "source_id": "fap-e07ca50f30bacf87",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "Mail to: Gifford Health Care, PO Box 2000, Attn: Health Connections, Randolph, VT 05060"
+      },
+      {
+       "kind": "email",
+       "detail": "Email to HealthConnect@GiffordHealthCare.Org"
+      },
+      {
+       "kind": "in_person",
+       "detail": "return to any Gifford Health Care location"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Please complete the following information and return to any Gifford Health Care location || Mail to: Gifford Health Care, PO Box 2000, Attn: Health Connections, Randolph, VT 05060 or || Email to HealthConnect@GiffordHealthCare.Org.",
+     "source_id": "fap-e07ca50f30bacf87",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": null,
+    "decision_days": {
+     "value": 30,
+     "layer": "documented",
+     "quote": "Patients will receive a written notice of determination within 30 days of submission of the written application and supporting documentation.",
+     "source_id": "fap-bb6099fa6aef2971",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "802-728-2323",
+     "layer": "documented",
+     "quote": "calling the Financial Assistance Coordinator at 802-728-2323",
+     "source_id": "fap-bb6099fa6aef2971",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": null,
+    "languages": null
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-bb6099fa6aef2971",
+     "kind": "hospital_web",
+     "url": "https://giffordhealthcare.org/wp-content/uploads/2024/08/FS-107-Financial-Assistance-for-Healthcare-Services-2024-August-Revision.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "bb6099fa6aef29716a9ae83f02bf8f9add06ed217991f2587670ce3c419fa9cd",
+     "effective_date": null
+    },
+    {
+     "id": "fap-e07ca50f30bacf87",
+     "kind": "hospital_web",
+     "url": "https://giffordhealthcare.org/wp-content/uploads/2025/10/DFAA-Application-updated.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "e07ca50f30bacf8715b318d5ec899ad7888b9d9137b2cb7e106a7a2b052fb36b",
+     "effective_date": null
+    },
+    {
+     "id": "web-438af9a28ea48ce8",
+     "kind": "hospital_web",
+     "url": "https://giffordhealthcare.org/patients/billing/",
+     "title": "Gifford Health Care Billing info: pay a bill online, billing questions call (802) 728-2200",
+     "fetched_on": "2026-10-23",
+     "sha256": "438af9a28ea48ce841c36e68aa6286d9c23628015a89b01c47240b848d0aa893",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 3 verbatim spans",
+    "agent dropped eligibility.discount_tiers: quote is not a substring of the source",
+    "agent judge on eligibility.free_care_max_fpl: The quote is a benefits table fragment with no FPL percentage; it does not state 150.",
+    "agent judge on eligibility.assistance_ceiling_fpl: The quote is the same table fragment with no FPL percentage; it does not state 200 or any assistance ceiling.",
+    "agent judge on programs.presumptive: Quote says presumptive eligibility is determined from individual life circumstances showing financial need; it does not state an empty list of programs.",
+    "agent judge on apply.form_url: Quote names the application form but does not contain the URL.",
+    "agent judge on apply.documents_required: Quote lists only tax return, paystubs, and bank statements; the value adds profit and loss, Social Security/disability/pension, and public assistance documents not in the quote."
+   ],
+   "eve_verified": {
+    "on": "2026-10-23",
+    "sources_fetched": 3,
+    "sources_total": 3,
+    "sources_missing": [],
+    "sha256_match": {
+     "fap-bb6099fa6aef2971": true,
+     "fap-e07ca50f30bacf87": true,
+     "web-438af9a28ea48ce8": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
+    "accepted": [
+     "eligibility.residency",
+     "eligibility.insured_patients_covered",
+     "apply.form_url",
+     "apply.documents_required",
+     "apply.submit_methods",
+     "apply.decision_days",
+     "contacts.phone"
+    ],
+    "rejected": [
+     [
+      "eligibility.free_care_max_fpl",
+      "value not in quote"
+     ],
+     [
+      "eligibility.assistance_ceiling_fpl",
+      "value not in quote"
+     ],
+     [
+      "eligibility.asset_test",
+      "quote does not support the asset-test value"
+     ]
+    ],
+    "pruned": [
+     "apply.documents_required: 2 items not named in the trimmed quote"
+    ],
+    "income_rule_verified": false,
+    "core_completeness": 0.67
+   }
+  },
+  {
+   "hospital": {
+    "ccn": "471302",
+    "name": "MT ASCUTNEY HOSPITAL",
+    "city": "WINDSOR",
+    "state": "VT",
+    "zip": "05089",
+    "phone": "802-674-6711",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "mtascutneyhospital.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "250",
+     "layer": "documented",
+     "quote": "For uninsured patients whose household income is at or below 250% of FPL, we will waive (i.e., 100% discount) the amount generally billed for emergency and medically necessary services rendered",
+     "source_id": "fap-e7f06c5c48ed540a",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": null,
+    "assistance_ceiling_fpl": null,
+    "asset_test": null,
+    "residency": {
+     "value": [
+      "To be eligible for general or catastrophic financial assistance, a patient must, at the time services are rendered, be a Vermont resident or New Hampshire resident"
+     ],
+     "layer": "documented",
+     "quote": "To be eligible for general or catastrophic financial assistance, a patient must, at the time services are rendered, be a Vermont resident or New Hampshire resident",
+     "source_id": "fap-e7f06c5c48ed540a",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Insured patients: Insured patients shall have a discount applied to their out-of-pocket expenses.",
+     "source_id": "fap-e7f06c5c48ed540a",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "min_balance": {
+     "value": "1000",
+     "layer": "documented",
+     "quote": "a patient\u2019s verbal attestation of income and assets, in lieu of a written income verification, may be accepted with respect to one (1) account only, provided that the balance on such account is less than $1,000",
+     "source_id": "fap-e7f06c5c48ed540a",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": {
+     "value": "https://www.dartmouth-hitchcock.org/sites/default/files/2026-10/financial-assistance-application-en_0.pdf",
+     "layer": "documented",
+     "quote": "Financial Assistance Application",
+     "source_id": "fap-e71eb58a273ad8a4",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "tax_return",
+      "other"
+     ],
+     "layer": "documented",
+     "quote": "Income: Complete copy of your most recent Federal Income Tax Return and all schedules and forms (e.g. 1040, 1099, etc.)",
+     "source_id": "fap-e71eb58a273ad8a4",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "Dartmouth Hitchcock Medical Center, One Medical Center Drive, PFS: Level 3 FAA, Lebanon, NH 03756"
+      },
+      {
+       "kind": "fax",
+       "detail": "603-640-1913"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Completed applications should be returned to the address below: Dartmouth Hitchcock Medical Center One Medical Center Drive PFS: Level 3 FAA Lebanon, NH 03756 Fax: 603-640-1913",
+     "source_id": "fap-e71eb58a273ad8a4",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": null,
+    "decision_days": {
+     "value": 30,
+     "layer": "documented",
+     "quote": "DH will process a financial application and notify the patient of a decision in writing within 30 days of receipt of the completed application.",
+     "source_id": "fap-e7f06c5c48ed540a",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": {
+     "value": 120,
+     "layer": "documented",
+     "quote": "Presumptive screening is used, without respect to outstanding balance, on eligible accounts greater than 120 days after statements, after notices to collect the debt and prior to referral of the account to an outside collection agency",
+     "source_id": "fap-e7f06c5c48ed540a",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "844-808-0730",
+     "layer": "documented",
+     "quote": "Toll-free: 844-808-0730",
+     "source_id": "web-148c4fa84574f761",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": {
+     "value": "9 am \u2013 4:30 pm, Monday \u2013 Friday",
+     "layer": "documented",
+     "quote": "Office hours are 9 am \u2013 4:30 pm, Monday \u2013 Friday.",
+     "source_id": "fap-e71eb58a273ad8a4",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "languages": {
+     "value": [
+      "Provided in the primary languages spoken by the population serviced by Dartmouth Health"
+     ],
+     "layer": "documented",
+     "quote": "Provided in the primary languages spoken by the population serviced by Dartmouth Health; translation services are utilized as needed",
+     "source_id": "fap-e7f06c5c48ed540a",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    }
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-e7f06c5c48ed540a",
+     "kind": "hospital_web",
+     "url": "https://www.dartmouth-hitchcock.org/sites/default/files/2026-10/financial-assistance-healthcare-services-policy-en.pdf",
+     "title": "",
+     "fetched_on": "2026-10-22",
+     "sha256": "e7f06c5c48ed540a29da57f882882c1e18e2ff4a081fffe71bea1510865431da",
+     "effective_date": null
+    },
+    {
+     "id": "fap-e71eb58a273ad8a4",
+     "kind": "hospital_web",
+     "url": "https://www.dartmouth-hitchcock.org/sites/default/files/2026-10/financial-assistance-application-en_0.pdf",
+     "title": "",
+     "fetched_on": "2026-10-22",
+     "sha256": "e71eb58a273ad8a4238b987e28db3315cc812d0f09451bcea12df8d846c6b30f",
+     "effective_date": null
+    },
+    {
+     "id": "web-148c4fa84574f761",
+     "kind": "hospital_web",
+     "url": "https://www.mtascutneyhospital.org/your-visit/billing-financial-assistance",
+     "title": "Billing and Financial Assistance | Your Visit | Mt. Ascutney Hospital and Health Center",
+     "fetched_on": "2026-10-22",
+     "sha256": "148c4fa84574f761f97c31ed104aad81179a4ff4a8d09a57fef652840e59f79c",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "agent dropped eligibility.discount_tiers: quote is not a substring of the source",
+    "agent dropped programs.presumptive: quote is not a substring of the source"
+   ],
+   "eve_verified": {
+    "on": "2026-10-23",
+    "sources_fetched": 3,
+    "sources_total": 3,
+    "sources_missing": [],
+    "sha256_match": {
+     "fap-e7f06c5c48ed540a": true,
+     "fap-e71eb58a273ad8a4": true,
+     "web-148c4fa84574f761": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
+    "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.residency",
+     "eligibility.insured_patients_covered",
+     "eligibility.min_balance",
+     "apply.form_url",
+     "apply.documents_required",
+     "apply.submit_methods",
+     "apply.decision_days",
+     "collections.eca_wait_days",
+     "contacts.phone",
+     "contacts.hours",
+     "contacts.languages"
+    ],
+    "rejected": [
+     [
+      "eligibility.assistance_ceiling_fpl",
+      "quote does not say the hospital's financial assistance reaches it"
+     ],
+     [
+      "eligibility.asset_test",
+      "quote does not support the asset-test value"
+     ]
+    ],
+    "pruned": [
+     "apply.documents_required: 1 item not named in the trimmed quote",
+     "apply.submit_methods: 1 item not named in the trimmed quote"
+    ],
+    "income_rule_verified": true,
+    "core_completeness": 0.83
+   }
+  },
+  {
+   "hospital": {
+    "ccn": "471303",
+    "name": "NORTHEASTERN VERMONT REGIONAL HOSPITAL",
+    "city": "SAINT JOHNSBURY",
+    "state": "VT",
+    "zip": "05819",
+    "phone": "802-748-7400",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "nvrh.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "250",
+     "layer": "documented",
+     "quote": "FPLG <=0%-250% 251%-300% 301%-350% 351%-400% Grant 100% 70% 60% 50%",
+     "source_id": "fap-d8363097cbcbaa47",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "250",
+       "max_fpl_inclusive": "300",
+       "discount_percent": 70
+      },
+      {
+       "min_fpl_exclusive": "300",
+       "max_fpl_inclusive": "350",
+       "discount_percent": 60
+      },
+      {
+       "min_fpl_exclusive": "350",
+       "max_fpl_inclusive": "400",
+       "discount_percent": 50
+      }
+     ],
+     "layer": "documented",
+     "quote": "FPLG <=0%-250% 251%-300% 301%-350% 351%-400% Grant 100% 70% 60% 50%",
+     "source_id": "fap-d8363097cbcbaa47",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "assistance_ceiling_fpl": null,
+    "asset_test": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Each individual/household residing in Vermont or New Hampshire is allowed liquid assets equal to 400% of the federal poverty level. If assets are below this guideline, the patient passes the asset test.",
+     "source_id": "fap-d8363097cbcbaa47",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "residency": {
+     "value": [
+      "To be eligible for general or catastrophic financial assistance, a patient must, at the time services are rendered, be a Vermont or New Hampshire resident"
+     ],
+     "layer": "documented",
+     "quote": "To be eligible for general or catastrophic financial assistance, a patient must, at the time services are rendered, be a Vermont or New Hampshire resident as defined in the \u201cDefinitions\u201d section of this policy.",
+     "source_id": "fap-d8363097cbcbaa47",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Insured Patients: Insured patients shall have a discount applied to their out-of-pocket expenses.",
+     "source_id": "fap-d8363097cbcbaa47",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": {
+     "value": "https://nvrh.org/wp-content/uploads/2024/08/2024-PA.APPL-PRIMARY-INS-2.pdf",
+     "layer": "documented",
+     "quote": "2024 Patient Assistance Application Patients with Primary Insurance",
+     "source_id": "fap-5c1bd88f2bfd691b",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "tax_return",
+      "proof_of_income",
+      "other"
+     ],
+     "layer": "documented",
+     "quote": "Proof of Income: 1. Complete copy of most current tax return",
+     "source_id": "fap-5c1bd88f2bfd691b",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "NVRH Attention: PA, PO Box 905, St. Johnsbury, VT 05819"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Mail the completed application with proof of income and documentation to: NVRH Attention: PA PO Box 905 St. Johnsbury, VT 05819",
+     "source_id": "fap-5c1bd88f2bfd691b",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": {
+     "value": 240,
+     "layer": "documented",
+     "quote": "NVRH will process applications submitted by individuals during the application period which begins on the date a billing statement for the patient balance of care is presented and ends 240 days later.",
+     "source_id": "fap-d8363097cbcbaa47",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days": {
+     "value": 30,
+     "layer": "documented",
+     "quote": "NVRH shall process completed applications within 30 days of receipt.",
+     "source_id": "fap-d8363097cbcbaa47",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "802 748-7518",
+     "layer": "documented",
+     "quote": "If you have questions about which medical providers and services are covered by our policy please call the Financial Assistance office at 802 748-7518.",
+     "source_id": "fap-d8363097cbcbaa47",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": null,
+    "languages": {
+     "value": [
+      "English",
+      "non-English languages via interpreters"
+     ],
+     "layer": "documented",
+     "quote": "We provide free language services to persons whose primary language is not English. This includes qualified interpreters and written information in non-English languages.",
+     "source_id": "fap-d8363097cbcbaa47",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    }
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-d8363097cbcbaa47",
+     "kind": "hospital_web",
+     "url": "https://nvrh.org/wp-content/uploads/2024/06/Patient-Assistance-Policy-2024-Final-05.13.24.pdf",
+     "title": "",
+     "fetched_on": "2026-10-22",
+     "sha256": "d8363097cbcbaa479dffc34b2a741f3bde762a14d9fe998be3d8173761671fcd",
+     "effective_date": null
+    },
+    {
+     "id": "fap-5c1bd88f2bfd691b",
+     "kind": "hospital_web",
+     "url": "https://nvrh.org/wp-content/uploads/2024/08/2024-PA.APPL-PRIMARY-INS-2.pdf",
+     "title": "",
+     "fetched_on": "2026-10-22",
+     "sha256": "5c1bd88f2bfd691b063dad6ae7c4a37c1d1771e1e2eee539035c5607ef316bb2",
+     "effective_date": null
+    },
+    {
+     "id": "web-33b6c34e85e0a259",
+     "kind": "hospital_web",
+     "url": "https://nvrh.org/patients-visitors/billing-financial/",
+     "title": "Billing & Financial - Northeastern Vermont Regional Hospital",
+     "fetched_on": "2026-10-22",
+     "sha256": "33b6c34e85e0a259ba210adce10cde18eec0b6f02682ab9b42643374549e27f2",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "agent dropped programs.presumptive: quote is not a substring of the source",
+    "agent dropped collections.eca_wait_days: quote is not a substring of the source"
+   ],
+   "eve_verified": {
+    "on": "2026-10-23",
+    "sources_fetched": 3,
+    "sources_total": 3,
+    "sources_missing": [],
+    "sha256_match": {
+     "fap-d8363097cbcbaa47": true,
+     "fap-5c1bd88f2bfd691b": true,
+     "web-33b6c34e85e0a259": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
+    "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
+     "eligibility.asset_test",
+     "eligibility.residency",
+     "eligibility.insured_patients_covered",
+     "apply.form_url",
+     "apply.documents_required",
+     "apply.submit_methods",
+     "apply.window_days_from_first_bill",
+     "apply.decision_days",
+     "contacts.phone",
+     "contacts.languages"
+    ],
+    "rejected": [
+     [
+      "eligibility.assistance_ceiling_fpl",
+      "quote does not say the hospital's financial assistance reaches it"
+     ]
+    ],
+    "pruned": [
+     "apply.documents_required: 3 items not named in the trimmed quote",
+     "apply.submit_methods: 1 item not named in the trimmed quote"
+    ],
+    "income_rule_verified": true,
+    "core_completeness": 1.0
+   }
+  },
+  {
+   "hospital": {
+    "ccn": "471304",
+    "name": "NORTH COUNTRY HOSPITAL AND HEALTH CENTER",
+    "city": "NEWPORT",
+    "state": "VT",
+    "zip": "05855",
+    "phone": "802-334-7331",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "northcountryhospital.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "250",
+     "layer": "documented",
+     "quote": "You could get free care (pay $0) if your household income is below 250% of the Federal Poverty Level.",
+     "source_id": "fap-4892fa7425dd1c9b",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "250",
+       "max_fpl_inclusive": "400",
+       "discount_percent": 40
+      }
+     ],
+     "layer": "documented",
+     "quote": "For insured patients whose household income is between 250% FPL and 400% FPL, we will discount all out-of-pocket costs for emergency and medically necessary services rendered by 40%.",
+     "source_id": "fap-cd82cf4830233b31",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "assistance_ceiling_fpl": {
+     "value": "600",
+     "layer": "documented",
+     "quote": "To be eligible for catastrophic financial assistance, a patient\u2019s household income must be equal to or less than 600% FPL.",
+     "source_id": "fap-cd82cf4830233b31",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "asset_test": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Asset test: To be eligible for general patient financial assistance, a patient\u2019s household must not have liquid assets which have a combined value of 400% FPL (THIS IS THE MINIMUM) or more for the applicable household size.",
+     "source_id": "fap-cd82cf4830233b31",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "residency": {
+     "value": [
+      "To be eligible for general or catastrophic financial assistance, a patient must, at the time services are rendered, be a Vermont resident as defined in the policy."
+     ],
+     "layer": "documented",
+     "quote": "To be eligible for general or catastrophic financial assistance, a patient must, at the time services are rendered, be a Vermont resident as defined in the \u201cDefinitions\u201d section of this policy",
+     "source_id": "fap-cd82cf4830233b31",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Insured patients: Insured patients shall have a discount applied to their out-of-pocket expenses.",
+     "source_id": "fap-cd82cf4830233b31",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
+    "state_programs": {
+     "value": [
+      {
+       "name": "Vermont Health Connect",
+       "how_to_apply": "You can apply online at https://portal.healthconnect.vermont.gov/ or by phone through Vermont Health Connect by calling 1-855-899-9600."
+      }
+     ],
+     "layer": "documented",
+     "quote": "Applicants are asked to apply for Medical Health care benefits through Vermont Health Connect. You can apply online at https://portal.healthconnect.vermont.gov/ or by phone through Vermont Health Connect by calling 1-855-899-9600.",
+     "source_id": "web-69601a39b5b1bb04",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    }
+   },
+   "apply": {
+    "form_url": {
+     "value": "https://northcountryhospital.org/",
+     "layer": "documented",
+     "quote": "o Online: https://northcountryhospital.org/.",
+     "source_id": "fap-4892fa7425dd1c9b",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "tax_return",
+      "pay_stubs",
+      "proof_of_income",
+      "other"
+     ],
+     "layer": "documented",
+     "quote": "A patient may provide their most recent state or federal income tax return, or in lieu of submitting a tax return, they may provide paystubs, documentation of public assistance, or other documentation accepted as valid documentation of income",
+     "source_id": "fap-cd82cf4830233b31",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "Mail it to: North Country Hospital Attention: Financial Navigator 189 Prouty Drive Newport, VT 05855"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Drop it off at: 189 Prouty Drive, Newport, Vermont",
+     "source_id": "fap-4892fa7425dd1c9b",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": {
+     "value": 365,
+     "layer": "documented",
+     "quote": "If you apply after you get services, you must do this within 365 days, (one-year) of getting the first bill.",
+     "source_id": "fap-4892fa7425dd1c9b",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days": {
+     "value": 30,
+     "layer": "documented",
+     "quote": "North Country Hospital will issue a written decision to the applicant no later than 30 calendar days after receiving the financial assistance application.",
+     "source_id": "fap-cd82cf4830233b31",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "(802) 334-3210 ext. 4204",
+     "layer": "documented",
+     "quote": "By Phone: Patients can call (802) 334-3210 ext. 4204 to request a free paper copy of this policy and the financial assistance application.",
+     "source_id": "fap-cd82cf4830233b31",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": {
+     "value": "8:00 am to 4:30 pm, Monday through Friday",
+     "layer": "documented",
+     "quote": "Please call our Financial Counselors at (802) 334-3210 ext. 4204- 8:00 am to 4:30 pm, Monday through Friday.",
+     "source_id": "web-69601a39b5b1bb04",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "languages": {
+     "value": [
+      "English",
+      "non-English languages"
+     ],
+     "layer": "documented",
+     "quote": "We provide free language services to persons whose primary language is not English. This includes qualified interpreters and written information in non-English languages.",
+     "source_id": "fap-cd82cf4830233b31",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    }
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-cd82cf4830233b31",
+     "kind": "hospital_web",
+     "url": "https://northcountryhospital.org/wp-content/uploads/NCH-Financial-Aid-Policy-48-2024.pdf",
+     "title": "",
+     "fetched_on": "2026-10-22",
+     "sha256": "cd82cf4830233b313e089aa7f3f0a11d3f8c6f6d7fa34246f9259675a764c8b9",
+     "effective_date": null
+    },
+    {
+     "id": "fap-4892fa7425dd1c9b",
+     "kind": "hospital_web",
+     "url": "https://northcountryhospital.org/wp-content/uploads/NCH-Financial-Assistance-Summary-Act-119-8-2024a.pdf",
+     "title": "",
+     "fetched_on": "2026-10-22",
+     "sha256": "4892fa7425dd1c9bec0d81daa9de4fc4519834a3dac444613b096dd77faaf380",
+     "effective_date": null
+    },
+    {
+     "id": "web-69601a39b5b1bb04",
+     "kind": "hospital_web",
+     "url": "https://northcountryhospital.org/payment-policies/",
+     "title": "Payment Policies - North Country Hospital",
+     "fetched_on": "2026-10-22",
+     "sha256": "69601a39b5b1bb04706a5839397e2f034cd97a32b5c8167a8f0503c03f98c2a5",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "agent dropped programs.presumptive: quote is not a substring of the source"
+   ],
+   "eve_verified": {
+    "on": "2026-10-23",
+    "sources_fetched": 3,
+    "sources_total": 3,
+    "sources_missing": [],
+    "sha256_match": {
+     "fap-cd82cf4830233b31": true,
+     "fap-4892fa7425dd1c9b": true,
+     "web-69601a39b5b1bb04": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
+    "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
+     "eligibility.assistance_ceiling_fpl",
+     "eligibility.asset_test",
+     "eligibility.residency",
+     "eligibility.insured_patients_covered",
+     "programs.state_programs",
+     "apply.form_url",
+     "apply.documents_required",
+     "apply.submit_methods",
+     "apply.window_days_from_first_bill",
+     "apply.decision_days",
+     "contacts.phone",
+     "contacts.hours",
+     "contacts.languages"
+    ],
+    "rejected": [],
+    "pruned": [
+     "apply.documents_required: 2 items not named in the trimmed quote",
+     "apply.submit_methods: 3 items not named in the trimmed quote"
+    ],
+    "income_rule_verified": true,
+    "core_completeness": 1.0
+   }
+  },
+  {
+   "hospital": {
+    "ccn": "471305",
+    "name": "COPLEY HOSPITAL",
+    "city": "MORRISVILLE",
+    "state": "VT",
+    "zip": "05661",
+    "phone": "802-888-4231",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "copleyvt.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "300",
+     "layer": "documented",
+     "quote": "FPL Up to 300% 301%- 350% 351%- 400% 401% - 600% Discount 100% 75% 50% Excess of 20% of household income",
+     "source_id": "fap-c47b78c38c061fd3",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "300",
+       "max_fpl_inclusive": "350",
+       "discount_percent": 75
+      },
+      {
+       "min_fpl_exclusive": "350",
+       "max_fpl_inclusive": "400",
+       "discount_percent": 50
+      }
+     ],
+     "layer": "documented",
+     "quote": "FPL Up to 300% 301%- 350% 351%- 400% 401% - 600% Discount 100% 75% 50% Excess of 20% of household income",
+     "source_id": "fap-c47b78c38c061fd3",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "assistance_ceiling_fpl": null,
+    "asset_test": null,
+    "residency": {
+     "value": [
+      "Any individual, regardless of citizenship and including undocumented immigrants, who resides in Vermont, is employed by a Vermont employer, or attends school in Vermont, with no durational requirement for residency."
+     ],
+     "layer": "documented",
+     "quote": "Any individual, regardless of citizenship and including undocumented immigrants, who resides in Vermont, is employed by a Vermont employer to deliver services for the employer in this State in the normal course of the employee\u2019s employment, or attends school in Vermont, or combination of these.",
+     "source_id": "fap-c47b78c38c061fd3",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Insured and uninsured patients shall have a discount applied to the total amount owed for medically necessary services rendered up to 400% of the FPL and based on the chart below:",
+     "source_id": "fap-c47b78c38c061fd3",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
+    "state_programs": {
+     "value": [
+      {
+       "name": "Vermont Health Connect",
+       "how_to_apply": "Visit the Vermont Health Connect website or call (855) 899-9600 (toll free), or get assistance from Copley's Certified Application Counselor (CAC) by appointment."
+      },
+      {
+       "name": "Green Mountain Care",
+       "how_to_apply": "Contact a Copley Patient Financial Counselor at 802.888.8336 for help applying."
+      },
+      {
+       "name": "Ladies First",
+       "how_to_apply": "Contact a Copley Patient Financial Counselor at 802.888.8336 for help applying."
+      },
+      {
+       "name": "3SquaresVT",
+       "how_to_apply": "Contact a Copley Patient Financial Counselor at 802.888.8336 for help applying."
+      },
+      {
+       "name": "Vermont WIC",
+       "how_to_apply": "Contact a Copley Patient Financial Counselor at 802.888.8336 for help applying."
+      }
+     ],
+     "layer": "documented",
+     "quote": "Copley\u2019s Financial Counselors can help you apply for other government assistance programs, including: Green Mountain Care Ladies First 3SquaresVT (formerly food stamps) Vermont WIC",
+     "source_id": "web-38ea370b673b9147",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    }
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "tax_return",
+      "proof_of_income"
+     ],
+     "layer": "documented",
+     "quote": "A patient is requested to provide their most recent federal or state income tax return as proof of income along with their financial assistance application.",
+     "source_id": "fap-c47b78c38c061fd3",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "in_person",
+       "detail": "Submit complete application with all requested documentation to the Patient Financial Services department in person"
+      },
+      {
+       "kind": "mail",
+       "detail": "Copley Hospital Patient Financial Services, Attn: Financial Counseling, 528 Washington Highway, Morrisville, VT 05661"
+      },
+      {
+       "kind": "email",
+       "detail": "Submit complete application with all requested documentation via email"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Patients and guarantors can apply for financial assistance by submitting a complete application with all requested documentation to the Patient Financial Services department in person or via mail or email.",
+     "source_id": "fap-c47b78c38c061fd3",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": {
+     "value": 240,
+     "layer": "documented",
+     "quote": "An application for Financial Assistance can be submitted any time from the date that care is provided through the 240th day after the patient or guarantor receives the first post-discharge billing statement",
+     "source_id": "fap-c47b78c38c061fd3",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days": {
+     "value": 30,
+     "layer": "documented",
+     "quote": "Copley Hospital will issue a decision to the applicant no later than 30 days after receiving the financial assistance application.",
+     "source_id": "fap-c47b78c38c061fd3",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": {
+     "value": 120,
+     "layer": "documented",
+     "quote": "outstanding balances in good standing (less than 120 days outstanding) will be placed on hold during the application review process",
+     "source_id": "fap-c47b78c38c061fd3",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "802-888-8338",
+     "layer": "documented",
+     "quote": "By phone: Patients can call 802-888-8338 to request a free paper copy of this policy, a plain language summary and the Financial Assistance application.",
+     "source_id": "fap-c47b78c38c061fd3",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": {
+     "value": "Monday through Friday, 8:00am-4:30pm",
+     "layer": "documented",
+     "quote": "Monday through Friday, 8:00am-4:30pm",
+     "source_id": "web-38ea370b673b9147",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "languages": {
+     "value": [
+      "Fran\u00e7ais",
+      "Espa\u00f1ol",
+      "\u4e2d\u6587",
+      "Ti\u1ebfng Vi\u1ec7t",
+      "\u0928\u0947\u092a\u093e\u0932\u0940",
+      "Srpsko-hrvatski",
+      "Deutsche",
+      "Cushite",
+      "Italiano",
+      "\u0627\u0644\u0639\u0631\u0628\u064a\u0629"
+     ],
+     "layer": "documented",
+     "quote": "Fran\u00e7ais | Espa\u00f1ol | \u4e2d\u6587 Ti\u1ebfng Vi\u1ec7t | \u0928\u0947\u092a\u093e\u0932\u0940 | Srpsko-hrvatski Deutsche | Cushite | Italiano | \u0627\u0644\u0639\u0631\u0628\u064a\u0629",
+     "source_id": "web-38ea370b673b9147",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    }
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-c47b78c38c061fd3",
+     "kind": "hospital_web",
+     "url": "https://www.copleyvt.org/wp-content/uploads/2024/09/Copley-Hospital-Financial-Assistance-Program-Policy-07-01-2024.pdf",
+     "title": "",
+     "fetched_on": "2026-10-22",
+     "sha256": "c47b78c38c061fd39579f8f9e8e4c8127b24fd26f4826a65a2545eebe1527533",
+     "effective_date": null
+    },
+    {
+     "id": "web-38ea370b673b9147",
+     "kind": "hospital_web",
+     "url": "https://www.copleyvt.org/for-patients-and-visitors/billing-and-insurance/assistance-programs/",
+     "title": "Free or Discounted Care | Financial Assistance | Insurance",
+     "fetched_on": "2026-10-22",
+     "sha256": "38ea370b673b9147ba50ac4da0ea43b9b03b462ed71b38b851ba0e2af33f4259",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "agent dropped eligibility.assistance_ceiling_fpl: quote is not a substring of the source",
+    "agent dropped apply.form_url: quote is not a substring of the source"
+   ],
+   "eve_verified": {
+    "on": "2026-10-23",
+    "sources_fetched": 2,
+    "sources_total": 2,
+    "sources_missing": [],
+    "sha256_match": {
+     "fap-c47b78c38c061fd3": true,
+     "web-38ea370b673b9147": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
+    "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
+     "eligibility.residency",
+     "eligibility.insured_patients_covered",
+     "programs.state_programs",
+     "apply.documents_required",
+     "apply.submit_methods",
+     "apply.window_days_from_first_bill",
+     "apply.decision_days",
+     "collections.eca_wait_days",
+     "contacts.phone",
+     "contacts.hours",
+     "contacts.languages"
+    ],
+    "rejected": [
+     [
+      "eligibility.asset_test",
+      "quote does not support the asset-test value"
+     ]
+    ],
+    "pruned": [
+     "programs.presumptive: none of the listed programs is named in the quote (after trimming)",
+     "apply.documents_required: 2 items not named in the trimmed quote"
+    ],
+    "income_rule_verified": true,
+    "core_completeness": 0.83
+   }
+  },
+  {
+   "hospital": {
+    "ccn": "471306",
+    "name": "SPRINGFIELD HOSPITAL",
+    "city": "SPRINGFIELD",
+    "state": "VT",
+    "zip": "05156",
+    "phone": "802-885-2151",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "springfieldhospital.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": null,
+    "discount_tiers": null,
+    "assistance_ceiling_fpl": null,
+    "asset_test": null,
+    "residency": {
+     "value": [
+      "the patient/guarantor must be a resident of the State of Vermont, or Sullivan or Cheshire Counties in New Hampshire"
+     ],
+     "layer": "documented",
+     "quote": "the patient/guarantor must be a resident of the State of Vermont, or Sullivan or Cheshire Counties in New Hampshire.",
+     "source_id": "web-d04b6c920ff16b8f",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Deductibles and coinsurances due from Medicare beneficiaries can be eligible for a discount under the FAP assuming the patient submits an application and qualifies.",
+     "source_id": "web-d04b6c920ff16b8f",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": {
+     "value": [
+      "Medicaid"
+     ],
+     "layer": "documented",
+     "quote": "Medicaid Beneficiaries Presumptive Eligibility: Coinsurances due from Medicaid beneficiaries qualify for FAP. A Medicaid beneficiary may not be required to complete a FAP application",
+     "source_id": "web-d04b6c920ff16b8f",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "state_programs": {
+     "value": [
+      {
+       "name": "Vermont Health Connect",
+       "how_to_apply": "Springfield Hospital will assist all patients with the completion of an application for Financial Assistance and whenever possible with applications for other programs such as Medicaid, Medicare Part D, Vermont Health Connect, etc."
+      }
+     ],
+     "layer": "documented",
+     "quote": "whenever possible with applications for other programs such as Medicaid, Medicare Part D, Vermont Health Connect, etc.",
+     "source_id": "web-d04b6c920ff16b8f",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "tax_return",
+      "pay_stubs",
+      "social_security_letter",
+      "bank_statements"
+     ],
+     "layer": "documented",
+     "quote": "A complete copy of the most recent federal or state income tax return, including all supporting schedules. || such as two recent consecutive pay stubs, statement of unemployment benefits or workers compensation benefits, statement of any public assistance, Social Security benefit statement || Two recent, consecutive monthly statements for all bank accounts or investment accounts held by any member of the household.",
+     "source_id": "web-d04b6c920ff16b8f",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "phone",
+       "detail": "(802) 885-7081, extension 7785"
+      },
+      {
+       "kind": "in_person",
+       "detail": "main campus of Springfield Hospital, 25 Ridgewood Road, Springfield, VT 05156"
+      }
+     ],
+     "layer": "documented",
+     "quote": "A patient may obtain confidential and compassionate assistance located at the main campus of Springfield Hospital, 25 Ridgewood Road, Springfield, VT 05156 or by calling (802) 885-7081, extension 7785.",
+     "source_id": "web-d04b6c920ff16b8f",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": {
+     "value": 240,
+     "layer": "documented",
+     "quote": "should a complete application be received within 240 days of the first bill and the applicant is determined to be eligible for financial assistance",
+     "source_id": "web-d04b6c920ff16b8f",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days": {
+     "value": 30,
+     "layer": "documented",
+     "quote": "will receive a written notice of the determination of Springfield Hospital within 30 days of submission of a complete, signed application",
+     "source_id": "web-d04b6c920ff16b8f",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": {
+     "value": 120,
+     "layer": "documented",
+     "quote": "Patient accounts may be sent to a collection agency for unpaid balances greater than 120 days from the date of the first bill and the patient has not applied for financial assistance.",
+     "source_id": "web-d04b6c920ff16b8f",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "(802) 885-7081",
+     "layer": "documented",
+     "quote": "or by calling (802) 885-7081, extension 7785",
+     "source_id": "web-d04b6c920ff16b8f",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": null,
+    "languages": {
+     "value": [
+      "English",
+      "Fran\u00e7ais",
+      "Espa\u00f1ol",
+      "\u7e41\u9ad4\u4e2d\u6587",
+      "Ti\u1ebfng Vi\u1ec7t",
+      "\u0928\u0947\u092a\u093e\u0932\u0940",
+      "Srpsko-hrvats",
+      "Deutsch",
+      "Oroomiffa",
+      "Italiano",
+      "\u0627\u0644\u0639\u0631\u0628\u064a\u0629",
+      "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
+      "Tagalog",
+      "Portugu\u00eas",
+      "\u65e5\u672c\u8a9e",
+      "\u0e20\u0e32\u0e29\u0e32\u0e44\u0e17\u0e22"
+     ],
+     "layer": "documented",
+     "quote": "English | Fran\u00e7ais | Espa\u00f1ol | \u7e41\u9ad4\u4e2d\u6587 | Ti\u1ebfng Vi\u1ec7t | \u0928\u0947\u092a\u093e\u0932\u0940 | Srpsko-hrvats | Deutsch | Oroomiffa | Italiano | \u0627\u0644\u0639\u0631\u0628\u064a\u0629 | \u0420\u0443\u0441\u0441\u043a\u0438\u0439 | Tagalog| Portugu\u00eas | \u65e5\u672c\u8a9e | \u0e20\u0e32\u0e29\u0e32\u0e44\u0e17\u0e22",
+     "source_id": "web-d04b6c920ff16b8f",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "web-d04b6c920ff16b8f",
+     "kind": "hospital_web",
+     "url": "https://springfieldhospital.org/financial-assistance/",
+     "title": "Financial Assistance - Springfield Hospital",
+     "fetched_on": "2026-10-23",
+     "sha256": "d04b6c920ff16b8f4259efef7b4b2f8778811d7c5369b1cd25b3fc274273db2d",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "agent judge on programs.state_programs: Quote names Vermont Health Connect only in a list. It says assistance is given 'whenever possible', but the value's how_to_apply says the hospital 'will assist all patients', dropping that qualifier."
+   ],
+   "eve_verified": {
+    "on": "2026-10-23",
+    "sources_fetched": 1,
+    "sources_total": 1,
+    "sources_missing": [],
+    "sha256_match": {
+     "web-d04b6c920ff16b8f": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
+    "accepted": [
+     "eligibility.residency",
+     "eligibility.insured_patients_covered",
+     "programs.presumptive",
+     "programs.state_programs",
+     "apply.documents_required",
+     "apply.submit_methods",
+     "apply.window_days_from_first_bill",
+     "apply.decision_days",
+     "collections.eca_wait_days",
+     "contacts.phone",
+     "contacts.languages"
+    ],
+    "rejected": [
+     [
+      "eligibility.asset_test",
+      "quote does not support the asset-test value"
+     ],
+     [
+      "apply.form_url",
+      "quote not found in source"
+     ]
+    ],
+    "pruned": [],
+    "income_rule_verified": false,
+    "core_completeness": 0.5
+   }
+  },
+  {
+   "hospital": {
+    "ccn": "471307",
+    "name": "PORTER HOSPITAL INC",
+    "city": "MIDDLEBURY",
+    "state": "VT",
+    "zip": "05753",
+    "phone": "802-388-4701",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "uvmhealth.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "250",
+     "layer": "documented",
+     "quote": "Eligible patients shall receive free care (a 100% discount on self-pay balances) when their modified adjusted gross household income is at or below 250% of the federal poverty level (FPLG).",
+     "source_id": "fap-7f9373397365beac",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "250",
+       "max_fpl_inclusive": "400",
+       "discount_percent": 40
+      }
+     ],
+     "layer": "documented",
+     "quote": "Eligible uninsured patients with modified adjusted gross household income between 250% and 400% of the FPLG shall receive an additional 40% discount from the amount generally billed for the services received.",
+     "source_id": "fap-7f9373397365beac",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "assistance_ceiling_fpl": null,
+    "asset_test": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Except in cases of Catastrophic Medical Indigence (as defined below), eligibility for financial assistance is based on an income test and asset test.",
+     "source_id": "fap-7f9373397365beac",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "residency": {
+     "value": [
+      "Patients must reside within the UVMH service area unless medical services were urgent or emergent in nature."
+     ],
+     "layer": "documented",
+     "quote": "Patients must reside within the UVMH service area unless medical services were urgent or emergent in nature. Scheduled services for patients residing outside of the UVMH service area are not eligible for financial assistance.",
+     "source_id": "fap-7f9373397365beac",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Eligible patients with insurance or other coverage for the services delivered and with household income between 250% and 400% of the FPLG shall receive an additional 40% discount on the patient's out-of-pocket costs",
+     "source_id": "fap-7f9373397365beac",
+     "checked_on": "2026-10-22",
+     "confidence": 0.8,
+     "support_count": 0
+    },
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": {
+     "value": "https://www.uvmhealth.org/sites/default/files/2025-02/uvmhn-fap-application_UVMMC-CVMC-PMC.pdf",
+     "layer": "documented",
+     "quote": "Financial Assistance Program customerservice@uvmhealth.org Need Help Completing the Application: Call us at 800-639-2719",
+     "source_id": "fap-00ee2bc286d6d130",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "tax_return",
+      "proof_of_income",
+      "bank_statements",
+      "other"
+     ],
+     "layer": "documented",
+     "quote": "Income documents required if applicable Assets documents required if applicable \u2022 Most recent Federal Tax Return \u2022 Bank Statements",
+     "source_id": "fap-00ee2bc286d6d130",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "Porter Medical Center, Patient Financial Services Dept, 115 Porter Drive, Middlebury, VT 05753"
+      },
+      {
+       "kind": "fax",
+       "detail": "802-388-5696"
+      },
+      {
+       "kind": "phone",
+       "detail": "802-847-8000 or 800-639-2719"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Porter Medical Center Patient Financial Services Dept 115 Porter Drive Middlebury, VT 05753 Fax # 802-388-5696",
+     "source_id": "fap-00ee2bc286d6d130",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": {
+     "value": 240,
+     "layer": "documented",
+     "quote": "UVMH will refund any excess amount the patient has paid for their care within the 240 days prior to the receipt of a complete application.",
+     "source_id": "fap-7f9373397365beac",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days": {
+     "value": 30,
+     "layer": "documented",
+     "quote": "Within 30 calendar days following receipt of an application for financial assistance, UVMH will notify the patient in writing as to whether the application is approved or denied",
+     "source_id": "fap-7f9373397365beac",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "(802) 847-8000 or (800) 639-2719",
+     "layer": "documented",
+     "quote": "Customer Service: (802) 847-8000 or (800) 639-2719",
+     "source_id": "fap-7f9373397365beac",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": {
+     "value": "Patients may call (802) 388-8808 option 5, Monday through Friday, 7:30 am \u2013 4:00 pm",
+     "layer": "documented",
+     "quote": "Patients may call (802) 388-8808 option 5, Monday through Friday, 7:30 am \u2013 4:00 pm",
+     "source_id": "fap-7f9373397365beac",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "languages": {
+     "value": [
+      "top 14 languages identified by the Vermont Office of Racial Equity 2023 Language Access Report"
+     ],
+     "layer": "documented",
+     "quote": "translations for UVMH Vermont Partners shall include the top 14 languages identified by the Vermont Office of Racial Equity 2023 Language Access Report",
+     "source_id": "fap-7f9373397365beac",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    }
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-7f9373397365beac",
+     "kind": "hospital_web",
+     "url": "https://www.uvmhealth.org/sites/default/files/2026-01/PAS1A-Financial-Assistance-Policy-2026.pdf",
+     "title": "",
+     "fetched_on": "2026-10-22",
+     "sha256": "7f9373397365beac510626527e4874f828d1b697064d6eff18654c73d082f6dd",
+     "effective_date": null
+    },
+    {
+     "id": "fap-00ee2bc286d6d130",
+     "kind": "hospital_web",
+     "url": "https://www.uvmhealth.org/sites/default/files/2025-02/uvmhn-fap-application_UVMMC-CVMC-PMC.pdf",
+     "title": "",
+     "fetched_on": "2026-10-22",
+     "sha256": "00ee2bc286d6d130a3f08b30f01fdfdea77db567a4752a4be86d05a97854c301",
+     "effective_date": null
+    },
+    {
+     "id": "web-04bcc5b114198dfe",
+     "kind": "hospital_web",
+     "url": "https://www.uvmhealth.org/locations/financial-services-uvm-health-porter-medical-center",
+     "title": "Financial Services, UVM Health - Porter Medical Center | University of Vermont Health",
+     "fetched_on": "2026-10-22",
+     "sha256": "04bcc5b114198dfeee3672ad737746a3c349b8725a1f6dc922c1d39eccc351da",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "eligibility.insured_patients_covered: quote matched the source only after typography normalization"
+   ],
+   "eve_verified": {
+    "on": "2026-10-23",
+    "sources_fetched": 3,
+    "sources_total": 3,
+    "sources_missing": [],
+    "sha256_match": {
+     "fap-7f9373397365beac": true,
+     "fap-00ee2bc286d6d130": true,
+     "web-04bcc5b114198dfe": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
+    "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
+     "eligibility.asset_test",
+     "eligibility.residency",
+     "eligibility.insured_patients_covered",
+     "apply.form_url",
+     "apply.documents_required",
+     "apply.submit_methods",
+     "apply.window_days_from_first_bill",
+     "apply.decision_days",
+     "contacts.phone",
+     "contacts.hours",
+     "contacts.languages"
+    ],
+    "rejected": [
+     [
+      "eligibility.assistance_ceiling_fpl",
+      "quote does not say the hospital's financial assistance reaches it"
+     ]
+    ],
+    "pruned": [
+     "programs.presumptive: none of the listed programs is named in the quote (after trimming)",
+     "apply.documents_required: 3 items not named in the trimmed quote"
+    ],
+    "income_rule_verified": true,
+    "core_completeness": 1.0
+   }
+  }
+ ]
+}

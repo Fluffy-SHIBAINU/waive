@@ -1,0 +1,1385 @@
+{
+ "generated_on": "2026-10-23",
+ "license": "CC BY 4.0",
+ "state": "RI",
+ "status": "draft",
+ "built_by": "eve waive-agent",
+ "verified_on": "2026-10-23",
+ "sheets": [
+  {
+   "hospital": {
+    "ccn": "410006",
+    "name": "NEWPORT HOSPITAL",
+    "city": "NEWPORT",
+    "state": "RI",
+    "zip": "02840",
+    "phone": "401-846-6400",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "brownhealth.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "201",
+     "layer": "documented",
+     "quote": "Patients approved for Financial Assistance who fall below 201% of the Federal Poverty Guidelines will receive a 100% Charity Free Care adjustment for the remaining balance .",
+     "source_id": "web-186017720eeca278",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "200",
+       "max_fpl_inclusive": "300",
+       "discount_percent": 80
+      }
+     ],
+     "layer": "documented",
+     "quote": "Patients approved for Financial Assistance who fall within 201%-300% of the Federal Poverty Guidelines will receive a partial Financial Assistance adjustment on the remaining balance i. Inpatient: 80% discount of the billable DRG ii. Outpatient: 90% discount off the total charge",
+     "source_id": "web-186017720eeca278",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "assistance_ceiling_fpl": null,
+    "asset_test": null,
+    "residency": {
+     "value": [
+      "Patient must be a Rhode Island resident or meet one of the conditions below, such as seeking emergency services at a Brown University Health facility."
+     ],
+     "layer": "documented",
+     "quote": "Patient must be a Rhode Island resident or meet one of the conditions below: Non-Rhode Island Resident seeking Emergency Services at a Brown University Health Facility",
+     "source_id": "web-186017720eeca278",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Financial assistance for insured patients is available once a patient receives a bill and by application only. Patient Responsibility must be greater than $250.00.",
+     "source_id": "web-186017720eeca278",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "min_balance": {
+     "value": "250",
+     "layer": "documented",
+     "quote": "Patient Responsibility must be greater than $250.00.",
+     "source_id": "web-186017720eeca278",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
+    "state_programs": {
+     "value": [
+      {
+       "name": "MassHealth",
+       "how_to_apply": "Patients who may qualify for MassHealth must apply, and if they are denied can apply for financial assistance."
+      },
+      {
+       "name": "Rhode Island Medicaid / HealthSource Rhode Island - RIte Care",
+       "how_to_apply": "For patients who are found eligible for Rhode Island Medicaid, or Healthsource Rhode Island - Rite Care, eligibility under this FAP will be applicable retroactively six months from date of eligibility if patient does not comply with FAP documentation."
+      }
+     ],
+     "layer": "documented",
+     "quote": "Patients who may qualify for MassHealth must apply, and if they are denied can apply for financial assistance. || For patients who are found eligible for Rhode Island Medicaid, or Healthsource Rhode Island - Rite Care, eligibility under this FAP will be applicable retroactively six months from date of eligibility if patient does not comply with FAP documentation.",
+     "source_id": "web-186017720eeca278",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": null,
+    "documents_reported": null,
+    "submit_methods": null,
+    "window_days_from_first_bill": null,
+    "decision_days": {
+     "value": 14,
+     "layer": "documented",
+     "quote": "Applications are usually processed within 14 days of receipt.",
+     "source_id": "fap-ec5248358d9d66e9",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "401-444-6966",
+     "layer": "documented",
+     "quote": "contact one of our customer service representatives at 401-444-6966",
+     "source_id": "web-84f48a5bb09fab72",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": {
+     "value": "8:00am-4:00pm, Monday through Friday",
+     "layer": "documented",
+     "quote": "please visit any of the Brown University Health hospital facility locations listed above between the hours of 8:00am-4:00pm, Monday through Friday.",
+     "source_id": "web-186017720eeca278",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "languages": null
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "web-186017720eeca278",
+     "kind": "hospital_web",
+     "url": "https://brownhealth-corporate.policystat.com/policy/token_access/404f8d95-a8e9-4104-9cfe-4ad1b8fff8bd/",
+     "title": "PolicyStat\n\n\n            \n                :: PolicyStat",
+     "fetched_on": "2026-10-23",
+     "sha256": "186017720eeca278d5a5451473ee12f3434ba15abecce3454451d5891995ddca",
+     "effective_date": null
+    },
+    {
+     "id": "fap-ec5248358d9d66e9",
+     "kind": "hospital_web",
+     "url": "https://www.brownhealth.org/sites/default/files/2026-05/Brown-University-Health-Financial-Assistance-Guidelines-and-Application-05-25-English.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "ec5248358d9d66e931c85083b23edeafe578a9400d229426b4c4a1fa2b04f94d",
+     "effective_date": null
+    },
+    {
+     "id": "web-84f48a5bb09fab72",
+     "kind": "hospital_web",
+     "url": "https://www.brownhealth.org/locations/newport-hospital/about-newport-hospital/insurance-and-billing-newport-hospital",
+     "title": "Insurance and Billing at Newport Hospital | Brown University Health",
+     "fetched_on": "2026-10-23",
+     "sha256": "84f48a5bb09fab724699d73765560d540b96a9001fc0e529f6468b56305bedf5",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "programs.state_programs: value backed by 2 verbatim spans",
+    "apply.submit_methods: value backed by 3 verbatim spans",
+    "agent dropped apply.documents_required: excerpt not in source: Applicants are asked to provide family income or \"proof of i",
+    "agent judge on eligibility.free_care_max_fpl: Quote says patients below 201% get 100% free care, so the highest qualifying percent is 200, not 201.",
+    "agent judge on eligibility.discount_tiers: Quote gives two discounts in the 201%-300% band: 80% inpatient and 90% outpatient. Value includes only the 80% tier.",
+    "agent judge on apply.submit_methods: Quote mentions mail, in-person, online, and phone, but the Newport Hospital street address (11 Friendship Street) does not appear in the quote."
+   ],
+   "eve_verified": {
+    "on": "2026-10-23",
+    "sources_fetched": 3,
+    "sources_total": 3,
+    "sources_missing": [],
+    "sha256_match": {
+     "web-186017720eeca278": false,
+     "fap-ec5248358d9d66e9": true,
+     "web-84f48a5bb09fab72": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
+    "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
+     "eligibility.residency",
+     "eligibility.insured_patients_covered",
+     "eligibility.min_balance",
+     "programs.state_programs",
+     "apply.decision_days",
+     "contacts.phone",
+     "contacts.hours"
+    ],
+    "rejected": [
+     [
+      "eligibility.asset_test",
+      "quote does not support the asset-test value"
+     ],
+     [
+      "apply.submit_methods",
+      "quote not found in source"
+     ]
+    ],
+    "pruned": [
+     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)"
+    ],
+    "income_rule_verified": true,
+    "core_completeness": 0.5
+   }
+  },
+  {
+   "hospital": {
+    "ccn": "410007",
+    "name": "RHODE ISLAND HOSPITAL",
+    "city": "PROVIDENCE",
+    "state": "RI",
+    "zip": "02902",
+    "phone": "401-444-4000",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "brownhealth.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": null,
+    "discount_tiers": null,
+    "assistance_ceiling_fpl": null,
+    "asset_test": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Current copies of statements for all accounts for the last three months: Most recent savings and/or checking account statements, or a copy of your recent bankbook balance. Make sure to include IRA's, money markets, CD's, etc.",
+     "source_id": "fap-ec5248358d9d66e9",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "residency": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "If you are not insured or insured for only part of your expenses, please talk with one of our financial counselors. They can help you establish a payment plan or apply for financial assistance.",
+     "source_id": "web-11514a240a806781",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": null,
+    "documents_reported": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "Please mail the application and supporting documentation directly to the Patient Financial Advocate Office at the respective hospital's addresses below"
+      },
+      {
+       "kind": "in_person",
+       "detail": "The Patient/patient's family may either schedule an appointment or walk-in to see an advocate at any location below"
+      },
+      {
+       "kind": "phone",
+       "detail": "Patients can also receive assistance information by calling the PFA's at (401-444-7850"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Please mail the application and supporting documentation directly to the Patient Financial Advocate Office at the respective hospital's addresses below || The Patient/patient's family may either schedule an appointment or walk -in to see an advocate at any location below || Patients can also receive assistance information by calling the PFA's at (401-444-7850",
+     "source_id": "fap-ec5248358d9d66e9",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": null,
+    "decision_days": {
+     "value": 14,
+     "layer": "documented",
+     "quote": "Applications are usually processed within 14 days of receipt.",
+     "source_id": "fap-ec5248358d9d66e9",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "401-444-7850",
+     "layer": "documented",
+     "quote": "For more information, please call 401-444-7850, Monday through Friday, 9 a.m. to 4:30 p.m.",
+     "source_id": "web-11514a240a806781",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": {
+     "value": "Monday through Friday, 9 a.m. to 4:30 p.m.",
+     "layer": "documented",
+     "quote": "For more information, please call 401-444-7850, Monday through Friday, 9 a.m. to 4:30 p.m.",
+     "source_id": "web-11514a240a806781",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "languages": null
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-ec5248358d9d66e9",
+     "kind": "hospital_web",
+     "url": "https://www.brownhealth.org/sites/default/files/2026-05/Brown-University-Health-Financial-Assistance-Guidelines-and-Application-05-25-English.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "ec5248358d9d66e931c85083b23edeafe578a9400d229426b4c4a1fa2b04f94d",
+     "effective_date": null
+    },
+    {
+     "id": "web-11514a240a806781",
+     "kind": "hospital_web",
+     "url": "https://www.brownhealth.org/patients-visitors/insurance-billing-and-financial-assistance/financial-assistance",
+     "title": "Financial Assistance | Brown University Health",
+     "fetched_on": "2026-10-23",
+     "sha256": "11514a240a806781bd74ecc61a360a5145b6ac10e9e9a0a62f47bc42be37c936",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "apply.submit_methods: value backed by 3 verbatim spans",
+    "agent dropped apply.documents_required: excerpt not in source: Notice of Medical Assistance or General Public Assistance de",
+    "agent judge on eligibility.insured_patients_covered: Quote addresses uninsured or partly insured patients being directed to counselors for a payment plan or assistance. It does not state that insured patients are covered.",
+    "agent judge on apply.form_url: Quote gives only the relative path /sites/default/files/...English.pdf. The brownhealth.org domain in the value does not appear in the quote.",
+    "agent judge on contacts.languages: Quote lists English, Spanish, Russian, Portuguese and Khmer, truncated after Khmer. Chinese and Haitian Creole do not appear in the quote."
+   ],
+   "eve_verified": {
+    "on": "2026-10-23",
+    "sources_fetched": 2,
+    "sources_total": 2,
+    "sources_missing": [],
+    "sha256_match": {
+     "fap-ec5248358d9d66e9": true,
+     "web-11514a240a806781": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
+    "accepted": [
+     "eligibility.asset_test",
+     "eligibility.insured_patients_covered",
+     "apply.submit_methods",
+     "apply.decision_days",
+     "contacts.phone",
+     "contacts.hours"
+    ],
+    "rejected": [
+     [
+      "apply.form_url",
+      "quote not found in source"
+     ],
+     [
+      "contacts.languages",
+      "quote not found in source"
+     ]
+    ],
+    "pruned": [],
+    "income_rule_verified": false,
+    "core_completeness": 0.33
+   }
+  },
+  {
+   "hospital": {
+    "ccn": "410008",
+    "name": "SOUTH COUNTY HOSPITAL INC",
+    "city": "WAKEFIELD",
+    "state": "RI",
+    "zip": "02879",
+    "phone": "401-782-8000",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "southcountyhealth.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "Financial Assistance will be given to patients with gross family income equal to or below 200% of the FPL, adjusted for family size, provided such patients are not eligible for other private or public health coverage and do not exceed the assets protection threshold. Financial Assistance Program (Charity Care) \u2014 Page 4 4 b) If approved, the hospital will apply 100 percentage discount",
+     "source_id": "fap-06396be7fe865853",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": null,
+    "assistance_ceiling_fpl": null,
+    "asset_test": null,
+    "residency": {
+     "value": [
+      "Applicants must be Rhode Island residents (primary residence in Rhode Island, regardless of citizenship or immigration status)."
+     ],
+     "layer": "documented",
+     "quote": "Individuals whose primary residence is within the state of Rhode Island, regardless of citizenship or immigration status.",
+     "source_id": "web-9cdeb928e06713c4",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "insured_patients_covered": null,
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
+    "state_programs": {
+     "value": [
+      {
+       "name": "Medicaid via Hospital Presumptive Eligibility (HPE) Program",
+       "how_to_apply": "Hospital financial advocate staff can determine presumptive Medicaid eligibility."
+      },
+      {
+       "name": "HealthSource RI health insurance coverage",
+       "how_to_apply": "Patient Financial Advocates (Certified Application Counselors) provide application and enrollment assistance."
+      }
+     ],
+     "layer": "documented",
+     "quote": "Hospital Presumptive Eligibility (HPE) Program, which allows hospital financial advocate staff to determine certain individuals as presumptively eligible for Medicaid. || The Advocates then provide application and enrollment assistance to individuals and families seeking health insurance coverage through HealthSource RI.",
+     "source_id": "fap-06396be7fe865853",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "proof_of_residency",
+      "tax_return",
+      "bank_statements"
+     ],
+     "layer": "documented",
+     "quote": "i. A Rhode Island license or other government issued card with address for verification or a copy of a utility bill (to serve as proof of residency). || 3. Current federal income tax return a. If patient did not file federal income tax, the patient must request a letter #1722 from the IRS which states taxes were not filed. || 4. Copies of three consecutive months of current paychecks and bank statements",
+     "source_id": "fap-06396be7fe865853",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": null,
+    "window_days_from_first_bill": null,
+    "decision_days": {
+     "value": 30,
+     "layer": "documented",
+     "quote": "Requests for financial assistance shall be processed promptly and South County Health shall notify the applicant in writing within 30 days of receipt of a completed application.",
+     "source_id": "fap-06396be7fe865853",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "(401) 788-1383",
+     "layer": "documented",
+     "quote": "An advocate can be reached by calling (401) 788-1383 .",
+     "source_id": "web-9cdeb928e06713c4",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": {
+     "value": "Monday \u2013 Friday: 9:00 a.m. to 4:00 p.m. (Billing Customer Service)",
+     "layer": "documented",
+     "quote": "CUSTOMER SERVICE HOURS: Monday \u2013 Friday: 9:00 a.m. to 4:00 p.m.",
+     "source_id": "web-9cdeb928e06713c4",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "languages": {
+     "value": [
+      "Spanish",
+      "Italian",
+      "French"
+     ],
+     "layer": "documented",
+     "quote": "Currently the notices and summary information is translated in Spanish, Italian, and French despite the fact that the population threshold has not been met.",
+     "source_id": "fap-06396be7fe865853",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-06396be7fe865853",
+     "kind": "hospital_web",
+     "url": "https://stdidsouthcountyhealprod.blob.core.windows.net/southcountyhealth/documents/Financial-Assistance-For-Website-rev-2024.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "06396be7fe86585344fcd441248da7fec25f1b0fc7f8762d96017c68cfaa4f02",
+     "effective_date": null
+    },
+    {
+     "id": "fap-a1b6215cacdee767",
+     "kind": "hospital_web",
+     "url": "https://stdidsouthcountyhealprod.blob.core.windows.net/southcountyhealth/documents/Application-for-Hospital-Financial-Aid.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "a1b6215cacdee76793eae227be091be64abd251fff480d787e84a88ba9c3cacb",
+     "effective_date": null
+    },
+    {
+     "id": "web-9cdeb928e06713c4",
+     "kind": "hospital_web",
+     "url": "https://www.southcountyhealth.org/patients-visitors/patient-resources-tools/financial-assistance",
+     "title": "South County Health | Patient Financial Assistance Program | South\u2026",
+     "fetched_on": "2026-10-23",
+     "sha256": "9cdeb928e06713c4974347448f5b80f4acef9c10132d02db5e869ac47adbd243",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "programs.presumptive: value backed by 2 verbatim spans",
+    "programs.state_programs: value backed by 2 verbatim spans",
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "agent dropped apply.submit_methods: judge: The quote says applications go to the office at that address but does not say they are submitted by mail."
+   ],
+   "eve_verified": {
+    "on": "2026-10-23",
+    "sources_fetched": 3,
+    "sources_total": 3,
+    "sources_missing": [],
+    "sha256_match": {
+     "fap-06396be7fe865853": true,
+     "fap-a1b6215cacdee767": true,
+     "web-9cdeb928e06713c4": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
+    "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.residency",
+     "programs.state_programs",
+     "apply.documents_required",
+     "apply.decision_days",
+     "contacts.phone",
+     "contacts.hours",
+     "contacts.languages"
+    ],
+    "rejected": [
+     [
+      "eligibility.asset_test",
+      "quote does not support the asset-test value"
+     ],
+     [
+      "apply.form_url",
+      "quote not found in source"
+     ]
+    ],
+    "pruned": [
+     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
+     "apply.documents_required: 1 item not named in the trimmed quote"
+    ],
+    "income_rule_verified": true,
+    "core_completeness": 0.5
+   }
+  },
+  {
+   "hospital": {
+    "ccn": "410010",
+    "name": "WOMEN & INFANTS HOSPITAL OF RHODE ISLAND",
+    "city": "PROVIDENCE",
+    "state": "RI",
+    "zip": "02905",
+    "phone": "401-274-1100",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "womenandinfants.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "Full financial assistance will be granted to patients whose gross family income is less than or equal to 200% of the Federal Poverty Levels (FPL), adjusted for family size",
+     "source_id": "fap-31e0a3b31e2ba18d",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": null,
+    "assistance_ceiling_fpl": {
+     "value": "300",
+     "layer": "documented",
+     "quote": "Patients with gross income between 201% and 300% of the FPL and who do not exceed the assets protection threshold are also eligible for financial assistance for a portion of the medical bill",
+     "source_id": "fap-31e0a3b31e2ba18d",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "asset_test": null,
+    "residency": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "This policy will be uniformly applied to any patients having no insurance or inadequate health insurance.",
+     "source_id": "fap-31e0a3b31e2ba18d",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
+    "state_programs": {
+     "value": [
+      {
+       "name": "RItecare",
+       "how_to_apply": "must cooperate with CNE by providing the information and documentation necessary to apply for other existing financial resources that may be available to pay for his or her health care, such as Medicare, Medicaid, RItecare, third party liability, etc."
+      }
+     ],
+     "layer": "documented",
+     "quote": "must cooperate with CNE by providing the information and documentation necessary to apply for other existing financial resources that may be available to pay for his or her health care, such as Medicare, Medicaid, RItecare, third party liability, etc.",
+     "source_id": "fap-31e0a3b31e2ba18d",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    }
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "tax_return",
+      "proof_of_income",
+      "pay_stubs",
+      "other"
+     ],
+     "layer": "documented",
+     "quote": "1. Tax return with supporting documentation for the most recent year filed. 2. Income Records* (see detailed explanation below) 3. Current pay stubs (minimum of 4 weeks)",
+     "source_id": "fap-31e0a3b31e2ba18d",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "individuals may request Financial Assistance documents by mail, by calling (401) 921-7200, or in-person at any of the CNE Hospital locations"
+      },
+      {
+       "kind": "in_person",
+       "detail": "in-person at any of the CNE Hospital locations"
+      },
+      {
+       "kind": "phone",
+       "detail": "by calling (401) 921-7200"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Additionally, individuals may request Financial Assistance documents by mail, by calling (401) 921-7200, or in-person at any of the CNE Hospital locations.",
+     "source_id": "fap-31e0a3b31e2ba18d",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": {
+     "value": 240,
+     "layer": "documented",
+     "quote": "CNE allows individuals up to 240 days from the date the individual is provided with the first post-discharge billing statement to apply for financial assistance",
+     "source_id": "fap-31e0a3b31e2ba18d",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days": null,
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": {
+     "value": 120,
+     "layer": "documented",
+     "quote": "All patients, insured and uninsured, will also be notified of the FAP through the patient billing statement process for 120 days after the first post-discharge billing statement for care",
+     "source_id": "fap-31e0a3b31e2ba18d",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "(401) 921-7200",
+     "layer": "documented",
+     "quote": "individuals may, at no charge, request documents by mail, by calling (401) 921-7200",
+     "source_id": "fap-31e0a3b31e2ba18d",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": null,
+    "languages": {
+     "value": [
+      "languages other than those already provided"
+     ],
+     "layer": "documented",
+     "quote": "CNE will make every effort to ensure that policies are clearly communicated to patients whose primary languages are languages other than those already provided.",
+     "source_id": "fap-31e0a3b31e2ba18d",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    }
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-31e0a3b31e2ba18d",
+     "kind": "hospital_web",
+     "url": "https://www.carenewengland.org/hubfs/CNE-FIN%20102%20Financial%20Assistance%20Policy%2002.28.24_english.pdf",
+     "title": "",
+     "fetched_on": "2026-10-22",
+     "sha256": "31e0a3b31e2ba18dc2ad6ca31609de80540bc68c3793afe5746cba5d59509fce",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "eligibility.discount_tiers: 200-300% at 0% is no discount; skipped"
+   ],
+   "eve_verified": {
+    "on": "2026-10-23",
+    "sources_fetched": 1,
+    "sources_total": 1,
+    "sources_missing": [],
+    "sha256_match": {
+     "fap-31e0a3b31e2ba18d": true
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
+    "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.assistance_ceiling_fpl",
+     "eligibility.insured_patients_covered",
+     "programs.state_programs",
+     "apply.documents_required",
+     "apply.submit_methods",
+     "apply.window_days_from_first_bill",
+     "collections.eca_wait_days",
+     "contacts.phone",
+     "contacts.languages"
+    ],
+    "rejected": [
+     [
+      "eligibility.asset_test",
+      "quote does not support the asset-test value"
+     ]
+    ],
+    "pruned": [
+     "apply.documents_required: 3 items not named in the trimmed quote"
+    ],
+    "income_rule_verified": true,
+    "core_completeness": 0.67
+   }
+  },
+  {
+   "hospital": {
+    "ccn": "410011",
+    "name": "LANDMARK MEDICAL CENTER",
+    "city": "WOONSOCKET",
+    "state": "RI",
+    "zip": "02895",
+    "phone": "401-769-4100",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "landmarkmedical.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "350",
+     "layer": "documented",
+     "quote": "the patient\u2019s Family income does not exceed 350% of the Federal Poverty Level",
+     "source_id": "fap-4031e84dceb3e3c6",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": null,
+    "assistance_ceiling_fpl": {
+     "value": "450",
+     "layer": "documented",
+     "quote": "A self-pay patient qualifies for the Discount Payment Program if the patient\u2019s Family Income does not exceed 450% of the current Federal Poverty Level.",
+     "source_id": "fap-4031e84dceb3e3c6",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "asset_test": null,
+    "residency": {
+     "value": [
+      "Was the patient a resident of Rhode Island at the time of service?"
+     ],
+     "layer": "documented",
+     "quote": "(1) Was the patient a resident of Rhode Island at the time of service? Yes \u00a3 No \u00a3",
+     "source_id": "fap-ce0552a86f9008e7",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "A patient who has third party coverage or whose injury is a compensable injury for purposes of workers\u2019 compensation, automobile insurance, or other insurance as determined and documented by the hospital may qualify for the Discount Payment Program",
+     "source_id": "fap-4031e84dceb3e3c6",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": {
+     "value": [
+      "State-funded prescription programs",
+      "Women, Infants and Children programs (WIC)",
+      "Food stamp eligibility"
+     ],
+     "layer": "documented",
+     "quote": "The patient is eligible for programs including, but not limited to: \u2022 State-funded prescription programs; \u2022 Participation in Women, Infants and Children programs (WIC); \u2022 Food stamp eligibility;",
+     "source_id": "fap-4031e84dceb3e3c6",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": {
+     "value": "https://landmarkmedical.org/wp-content/uploads/2024/11/LMC_FAP-Application-Instructions-Form_ENGLISH.pdf",
+     "layer": "documented",
+     "quote": "Financial Assistance Application Form Instructions This is an application for financial assistance at Landmark Medical Center.",
+     "source_id": "fap-ce0552a86f9008e7",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "pay_stubs",
+      "tax_return"
+     ],
+     "layer": "documented",
+     "quote": "The hospital may only request recent paystubs or income tax returns for documentation of income.",
+     "source_id": "fap-ce0552a86f9008e7",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "Landmark Medical Center, Attention: Patient Financial Services, 66 Ford Road, Suite 220, Denville, NJ 07834"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Mail completed application and supporting documents to: Landmark Medical Center, Attention: Patient Financial Services 66 Ford Road, Suite 220, Denville, NJ 07834",
+     "source_id": "fap-ce0552a86f9008e7",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": {
+     "value": 240,
+     "layer": "documented",
+     "quote": "A patient is expected to submit the financial assistance application promptly following care, but no later than two hundred forty (240) days following the date of the first post-discharge statement.",
+     "source_id": "fap-4031e84dceb3e3c6",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days": {
+     "value": 30,
+     "layer": "documented",
+     "quote": "We will notify you of the final determination of eligibility and appeal rights, if applicable, within 30 days of receiving a complete application and supporting documents.",
+     "source_id": "fap-ce0552a86f9008e7",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": {
+     "value": 150,
+     "layer": "documented",
+     "quote": "report adverse information to a consumer credit reporting agency or commence civil action against a patient for nonpayment at any time prior to 150 days after the initial billing.",
+     "source_id": "fap-4031e84dceb3e3c6",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "973-983-1777",
+     "layer": "documented",
+     "quote": "For further information or a financial assistance application, please contact us: 973-983-1777",
+     "source_id": "fap-4031e84dceb3e3c6",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": null,
+    "languages": {
+     "value": [
+      "non-English languages spoken by a substantial number of the patients served by the Hospital"
+     ],
+     "layer": "documented",
+     "quote": "The Financial Assistance Policy documents are available in non-English languages spoken by a substantial number of the patients served by the Hospital.",
+     "source_id": "fap-4031e84dceb3e3c6",
+     "checked_on": "2026-10-22",
+     "confidence": 1.0,
+     "support_count": 0
+    }
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-4031e84dceb3e3c6",
+     "kind": "hospital_web",
+     "url": "https://landmarkmedical.org/wp-content/uploads/2024/04/Prime-RI_NFP-LMC-Patient-FAP_2024.pdf",
+     "title": "",
+     "fetched_on": "2026-10-22",
+     "sha256": "4031e84dceb3e3c64a6c89f08deccb148143b780a39309759458eca9631ee6f4",
+     "effective_date": null
+    },
+    {
+     "id": "fap-ce0552a86f9008e7",
+     "kind": "hospital_web",
+     "url": "https://landmarkmedical.org/wp-content/uploads/2024/11/LMC_FAP-Application-Instructions-Form_ENGLISH.pdf",
+     "title": "",
+     "fetched_on": "2026-10-22",
+     "sha256": "ce0552a86f9008e764c4bf8e3136fcd3ce976695fb0bb84783c1694d3e62ffcd",
+     "effective_date": null
+    },
+    {
+     "id": "web-7d3658208643e7c1",
+     "kind": "hospital_web",
+     "url": "https://landmarkmedical.org/patients-visitors/patients-guide/about-your-hospital-bill/",
+     "title": "About Your Hospital Bill | Landmark Medical Center Guide",
+     "fetched_on": "2026-10-22",
+     "sha256": "7d3658208643e7c11118e0638d7f04ed0af1d1c7e40bbbd40fd4b3a3e760d5e1",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [],
+   "eve_verified": {
+    "on": "2026-10-23",
+    "sources_fetched": 3,
+    "sources_total": 3,
+    "sources_missing": [],
+    "sha256_match": {
+     "fap-4031e84dceb3e3c6": true,
+     "fap-ce0552a86f9008e7": true,
+     "web-7d3658208643e7c1": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
+    "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.assistance_ceiling_fpl",
+     "eligibility.residency",
+     "eligibility.insured_patients_covered",
+     "programs.presumptive",
+     "apply.form_url",
+     "apply.documents_required",
+     "apply.submit_methods",
+     "apply.window_days_from_first_bill",
+     "apply.decision_days",
+     "collections.eca_wait_days",
+     "contacts.phone",
+     "contacts.languages"
+    ],
+    "rejected": [
+     [
+      "eligibility.asset_test",
+      "quote does not support the asset-test value"
+     ]
+    ],
+    "pruned": [
+     "programs.presumptive: 4 items not named in the trimmed quote",
+     "apply.submit_methods: 1 item not named in the trimmed quote"
+    ],
+    "income_rule_verified": true,
+    "core_completeness": 0.83
+   }
+  },
+  {
+   "hospital": {
+    "ccn": "410012",
+    "name": "THE MIRIAM HOSPITAL",
+    "city": "PROVIDENCE",
+    "state": "RI",
+    "zip": "02906",
+    "phone": "401-793-2500",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "brownhealth.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": null,
+    "discount_tiers": null,
+    "assistance_ceiling_fpl": null,
+    "asset_test": null,
+    "residency": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "If you are not insured or insured for only part of your expenses, please talk with one of our financial advocates. They can help you establish a payment plan or apply for financial assistance.",
+     "source_id": "web-c9fe509323fb7f4c",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "photo_id",
+      "pay_stubs",
+      "tax_return",
+      "other"
+     ],
+     "layer": "documented",
+     "quote": "Identification - Any of the following: a state-issued driver's license, a state-issued I.D. card || Copies of the most recent pay stubs (for the last two consecutive pay periods) for all working family members || Copy of last year's Federal income tax return and any supporting W-2 Form(s)",
+     "source_id": "fap-ec5248358d9d66e9",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "Please mail the application and supporting documentation directly to the Patient Financial Advocate Office at the respective hospital's addresses below"
+      },
+      {
+       "kind": "in_person",
+       "detail": "The Patient/patient's family may either schedule an appointment or walk-in to see an advocate at any location below"
+      },
+      {
+       "kind": "phone",
+       "detail": "Patients can also receive assistance information by calling the PFA's at (401-444-7850"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Please mail the application and supporting documentation directly to the Patient Financial Advocate Office at the respective hospital's addresses below || The Patient/patient's family may either schedule an appointment or walk -in to see an advocate at any location below || Patients can also receive assistance information by calling the PFA's at (401-444-7850",
+     "source_id": "fap-ec5248358d9d66e9",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": null,
+    "decision_days": {
+     "value": 14,
+     "layer": "documented",
+     "quote": "Applications are usually processed within 14 days of receipt.",
+     "source_id": "fap-ec5248358d9d66e9",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "401-793-2206",
+     "layer": "documented",
+     "quote": "To set up a payment plan or to apply for financial assistance, please call 401-793-2206",
+     "source_id": "web-c9fe509323fb7f4c",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": {
+     "value": "9 a.m. and 4:30 p.m., Monday through Friday",
+     "layer": "documented",
+     "quote": "Office hours are 9 a.m. and 4:30 p.m., Monday through Friday.",
+     "source_id": "web-c9fe509323fb7f4c",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "languages": null
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-ec5248358d9d66e9",
+     "kind": "hospital_web",
+     "url": "https://www.brownhealth.org/sites/default/files/2026-05/Brown-University-Health-Financial-Assistance-Guidelines-and-Application-05-25-English.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "ec5248358d9d66e931c85083b23edeafe578a9400d229426b4c4a1fa2b04f94d",
+     "effective_date": null
+    },
+    {
+     "id": "web-c9fe509323fb7f4c",
+     "kind": "hospital_web",
+     "url": "https://www.brownhealth.org/locations/miriam-hospital/patients-visitors/billing-procedures-and-insurance-information",
+     "title": "Billing Procedures and Insurance Information at The Miriam Hospital | Brown University Health",
+     "fetched_on": "2026-10-23",
+     "sha256": "c9fe509323fb7f4c44742c80e1e72847e44f8852d40006d1f981c07d2838cca7",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "apply.documents_required: value backed by 3 verbatim spans",
+    "apply.submit_methods: value backed by 3 verbatim spans",
+    "agent judge on eligibility.insured_patients_covered: The quote only says partly insured or uninsured patients can talk to advocates for a payment plan or assistance. It does not say insured patients are covered.",
+    "agent judge on apply.documents_required: The quote names only identification, recent pay stubs, and the last tax return with W-2s. It does not mention proof of residence, bank statements, or a Medicaid denial."
+   ],
+   "eve_verified": {
+    "on": "2026-10-23",
+    "sources_fetched": 2,
+    "sources_total": 2,
+    "sources_missing": [],
+    "sha256_match": {
+     "fap-ec5248358d9d66e9": true,
+     "web-c9fe509323fb7f4c": false
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
+    "accepted": [
+     "eligibility.insured_patients_covered",
+     "apply.documents_required",
+     "apply.submit_methods",
+     "apply.decision_days",
+     "contacts.phone",
+     "contacts.hours"
+    ],
+    "rejected": [],
+    "pruned": [
+     "apply.documents_required: 2 items not named in the trimmed quote"
+    ],
+    "income_rule_verified": false,
+    "core_completeness": 0.5
+   }
+  },
+  {
+   "hospital": {
+    "ccn": "410013",
+    "name": "WESTERLY HOSPITAL",
+    "city": "WESTERLY",
+    "state": "RI",
+    "zip": "02891",
+    "phone": "401-596-6000",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "westerlyhospital.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": null,
+    "discount_tiers": null,
+    "assistance_ceiling_fpl": null,
+    "asset_test": null,
+    "residency": null,
+    "insured_patients_covered": null,
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": null,
+    "documents_reported": null,
+    "submit_methods": null,
+    "window_days_from_first_bill": null,
+    "decision_days": null,
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": null,
+    "hours": null,
+    "languages": null
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-11332fbdd8f42903",
+     "kind": "hospital_web",
+     "url": "https://www.westerlyhospital.org/-/media/Files/YNHHS/financial-assistance-policy/2026/ENG226-YNHHS-Financial-Assistance-Program-Policyapprv-22825.ashx",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "11332fbdd8f42903fa37794fa8a6870d22b25647aef288bcde8f25e87aeb61ee",
+     "effective_date": null
+    },
+    {
+     "id": "fap-66030d848647953e",
+     "kind": "hospital_web",
+     "url": "https://www.westerlyhospital.org/-/media/Files/YNHHS/financial-assistance-policy/2025/6304/F6304_FAP_Plain_Language_Summary_and_Application_040125.ashx",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "66030d848647953e840b594a79b5863e4644a9dee52e4123f29cec6bb97c17de",
+     "effective_date": null
+    },
+    {
+     "id": "web-2d4a6bda45289f39",
+     "kind": "hospital_web",
+     "url": "https://www.westerlyhospital.org/patients-visitors/billing-insurance/Financial-assistance",
+     "title": "Financial Assistance Programs - Westerly Hospital",
+     "fetched_on": "2026-10-23",
+     "sha256": "2d4a6bda45289f39331248b751c5dcbe661b9a713bb76def92dac52747f58a57",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "eligibility.discount_tiers: value backed by 2 verbatim spans",
+    "programs.presumptive: value backed by 3 verbatim spans",
+    "apply.documents_required: value backed by 2 verbatim spans",
+    "agent dropped eligibility.asset_test: judge: Quote only defines liquid assets; it does not state that assets are considered for eligibility.",
+    "agent dropped programs.state_programs: judge: Quote mentions Medicaid help from coordinators but not the phone number or a free appointment.",
+    "agent dropped apply.submit_methods: judge: Quote mentions mail, fax and visiting, but not the mailing address or the Westerly location address."
+   ],
+   "eve_verified": {
+    "on": "2026-10-23",
+    "sources_fetched": 0,
+    "sources_total": 3,
+    "sources_missing": [
+     "https://www.westerlyhospital.org/-/media/Files/YNHHS/financial-assistance-policy/2026/ENG226-YNHHS-Financial-Assistance-Program-Policyapprv-22825.ashx",
+     "https://www.westerlyhospital.org/-/media/Files/YNHHS/financial-assistance-policy/2025/6304/F6304_FAP_Plain_Language_Summary_and_Application_040125.ashx",
+     "https://www.westerlyhospital.org/patients-visitors/billing-insurance/Financial-assistance"
+    ],
+    "sha256_match": {
+     "fap-11332fbdd8f42903": null,
+     "fap-66030d848647953e": null,
+     "web-2d4a6bda45289f39": null
+    },
+    "sources_dir": "/Users/grey/waive-atlas/sources",
+    "accepted": [],
+    "rejected": [
+     [
+      "eligibility.free_care_max_fpl",
+      "source text missing"
+     ],
+     [
+      "eligibility.discount_tiers",
+      "source text missing"
+     ],
+     [
+      "eligibility.residency",
+      "source text missing"
+     ],
+     [
+      "eligibility.insured_patients_covered",
+      "source text missing"
+     ],
+     [
+      "programs.presumptive",
+      "source text missing"
+     ],
+     [
+      "apply.documents_required",
+      "source text missing"
+     ],
+     [
+      "collections.eca_wait_days",
+      "source text missing"
+     ],
+     [
+      "contacts.phone",
+      "source text missing"
+     ],
+     [
+      "contacts.hours",
+      "source text missing"
+     ],
+     [
+      "contacts.languages",
+      "source text missing"
+     ]
+    ],
+    "pruned": [],
+    "income_rule_verified": false,
+    "core_completeness": 0.0
+   }
+  }
+ ]
+}
