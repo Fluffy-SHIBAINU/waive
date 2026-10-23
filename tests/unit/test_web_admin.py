@@ -7,6 +7,7 @@ from fastapi.testclient import TestClient
 from pydantic import SecretStr
 
 from waive.atlas import repo
+from waive.atlas.eve_import import record_owner_rulings
 from waive.atlas.pipeline import build_hospital
 from waive.atlas.publish import publish_sheet
 from waive.atlas.samples import SAMPLE_POLICY_TEXT, st_example_sheet
@@ -31,6 +32,7 @@ from tests.unit.test_pipeline import (
     FakeAI,
     FakeGateway,
     GroundedAI,
+    owner_ruling,
 )
 from tests.unit.test_web_senior import HOSPITAL
 
@@ -218,6 +220,23 @@ def test_contribution_approval_rebuild_and_sheet_diffs(tmp_path):
     assert "eligibility.free_care_max_fpl" in rebuilt.text
     assert "was:</span> 250" in rebuilt.text and "now:</span> 150" in rebuilt.text
     assert "flag level: internal" in rebuilt.text
+
+
+def test_the_rebuild_button_keeps_the_owners_ruling(tmp_path):
+    # The button passes no decision and the server has no decisions file; the ruling stored with
+    # the hospital holds out the 250% the model reads as free care and the owner ruled a discount.
+    client = admin_client(tmp_path)
+    login(client)
+    client.app.state.deps.ai = FakeAI()
+    with session_scope(client.app.state.deps.engine) as session:
+        record_owner_rulings(session, {"229999": owner_ruling("discount")})
+    rebuilt = client.post("/admin/rebuild/229999", follow_redirects=True)
+    assert "owner review says 250% is a discount or assistance limit" in rebuilt.text
+    with session_scope(client.app.state.deps.engine) as session:
+        latest, _ = repo.latest_sheet(session, "229999")
+        assert latest.eligibility.free_care_max_fpl is None
+        assert latest.eligibility.assistance_ceiling_fpl.value == 250
+        assert "owner_decision" in {i.kind for i in repo.open_review_items(session, "229999")}
 
 
 def test_scoreboard_page_and_precheck_queue(tmp_path):

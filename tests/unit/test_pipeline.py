@@ -11,6 +11,7 @@ from pydantic import SecretStr
 from waive.ai.client import AIClient, AIOutputError, AIRequestRejected
 from waive.atlas import repo
 from waive.atlas.discover import MIN_CONFIDENCE
+from waive.atlas.eve_import import record_owner_rulings
 from waive.atlas.pipeline import build_hospital, build_state, clear_wrong_domain, coverage_report
 from waive.atlas.samples import SAMPLE_POLICY_TEXT, SAMPLE_SOURCE_ID
 from waive.atlas.schema import ProcedureSheet, SheetStatus, SourceDoc, SourceKind
@@ -2792,16 +2793,17 @@ RULING_NOTE = (
     "not free care; recorded as assistance_ceiling_fpl"
 )
 RULED_AT = "2026-10-23T17:31:54.394Z"
+RULED_LATER_AT = "2026-10-24T09:00:00.000Z"
 
 
-def owner_ruling(decision, value="250", ccn="229999"):
+def owner_ruling(decision, value="250", ccn="229999", at=RULED_AT):
     """One entry of data/atlas-eve/_decisions.json, as the review page writes it."""
     return {
         "ccn": ccn,
         "decision": decision,
         "value": value,
         "note": "",
-        "at": RULED_AT,
+        "at": at,
         "hospital": "St. Example Medical Center",
         "state": "MA",
         "bucket": "hedged",
@@ -2962,3 +2964,83 @@ def test_build_state_hands_each_hospital_its_own_ruling():
         assert [item.ccn for item in repo.open_review_items(session, kind="owner_decision")] == [
             "220031"
         ]
+
+
+# The rulings are also stored with the hospitals (`import-eve --db` records them), because the
+# paths that rebuild a sheet other than `waive atlas build` pass no decision of their own: the
+# admin console's Rebuild button, `waive learn rebuild`, the refresh and the scheduler, on a
+# server that has no decisions file.
+
+
+def test_a_stored_ruling_holds_a_build_that_is_given_no_decision():
+    engine = make_engine_with_hospital()
+    with session_scope(engine) as session:
+        assert record_owner_rulings(session, {"229999": owner_ruling("discount")}) == 1
+        result = build_hospital(session, FakeGateway(), FakeAI(), "229999", TODAY)
+        sheet, _ = repo.latest_sheet(session, "229999")
+        assert sheet.eligibility.free_care_max_fpl is None
+        ceiling = sheet.eligibility.assistance_ceiling_fpl
+        assert (ceiling.value, ceiling.quote) == (250, FREE_CARE_QUOTE)
+        assert RULING_NOTE in result.notes
+        assert review_detail(session, "229999", "owner_decision") == {
+            "decision": "discount",
+            "value": "250",
+            "kept_as": "assistance_ceiling_fpl",
+            "decided_at": RULED_AT,
+        }
+
+
+def test_a_decision_passed_in_wins_over_the_stored_ruling_that_would_apply():
+    engine = make_engine_with_hospital()
+    with session_scope(engine) as session:
+        record_owner_rulings(session, {"229999": owner_ruling("discount")})
+        accepted = owner_ruling("accept", at=RULED_LATER_AT)
+        result = build_hospital(
+            session, FakeGateway(), FakeAI(), "229999", TODAY, decision=accepted
+        )
+        sheet, _ = repo.latest_sheet(session, "229999")
+        assert sheet.eligibility.free_care_max_fpl.value == 250
+        assert sheet.eligibility.assistance_ceiling_fpl is None
+        assert not any("owner review" in note for note in result.notes)
+        assert "owner_decision" not in {i.kind for i in repo.open_review_items(session, "229999")}
+
+
+def test_a_decision_passed_in_is_the_one_a_build_records_over_a_stored_one():
+    engine = make_engine_with_hospital()
+    with session_scope(engine) as session:
+        record_owner_rulings(session, {"229999": owner_ruling("accept")})
+        later = owner_ruling("discount", at=RULED_LATER_AT)
+        build_hospital(session, FakeGateway(), FakeAI(), "229999", TODAY, decision=later)
+        sheet, _ = repo.latest_sheet(session, "229999")
+        assert sheet.eligibility.free_care_max_fpl is None
+        detail = review_detail(session, "229999", "owner_decision")
+        assert (detail["decision"], detail["decided_at"]) == ("discount", RULED_LATER_AT)
+
+
+def test_the_latest_stored_ruling_is_the_one_a_build_uses():
+    engine = make_engine_with_hospital()
+    with session_scope(engine) as session:
+        # The owner ruled 250 a discount, then changed their mind and accepted it as free care.
+        record_owner_rulings(session, {"229999": owner_ruling("discount")})
+        record_owner_rulings(session, {"229999": owner_ruling("accept", at=RULED_LATER_AT)})
+        result = build_hospital(session, FakeGateway(), FakeAI(), "229999", TODAY)
+        sheet, _ = repo.latest_sheet(session, "229999")
+        assert sheet.eligibility.free_care_max_fpl.value == 250
+        assert not any("owner review" in note for note in result.notes)
+
+
+def test_build_state_gives_a_hospital_the_file_does_not_name_its_stored_ruling():
+    second = {**REAL_HOSPITAL, "ccn": "220010", "name": "NEW HOSPITAL"}
+    engine = make_engine_with_hospital(REAL_HOSPITAL, second)
+    with session_scope(engine) as session:
+        record_owner_rulings(session, {"220031": owner_ruling("discount", ccn="220031")})
+        # The decisions file names the other hospital only; each one gets what is meant for it.
+        file_says = {"220010": owner_ruling("accept", ccn="220010")}
+        results = build_state(session, FakeGateway(), FakeAI(), "MA", TODAY, decisions=file_says)
+        assert sorted(r.ccn for r in results) == ["220010", "220031"]
+        ruled, _ = repo.latest_sheet(session, "220031")
+        other, _ = repo.latest_sheet(session, "220010")
+        assert ruled.eligibility.free_care_max_fpl is None
+        assert ruled.eligibility.assistance_ceiling_fpl.value == 250
+        assert other.eligibility.free_care_max_fpl.value == 250
+        assert [i.ccn for i in repo.open_review_items(session, kind="owner_decision")] == ["220031"]

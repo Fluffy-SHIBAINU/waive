@@ -8,6 +8,7 @@ from fastapi.testclient import TestClient
 from pydantic import SecretStr
 
 from waive.atlas import repo
+from waive.atlas.eve_import import record_owner_rulings
 from waive.atlas.schedule import (
     ADVANCED_CREDITS_PER_HOSPITAL,
     CREDITS_PER_HOSPITAL,
@@ -39,6 +40,7 @@ from tests.unit.test_pipeline import (
     FakeAI,
     FakeGateway,
     make_engine_with_hospital,
+    owner_ruling,
 )
 
 # 229999 is the demo hospital and stays out of every queue, so the tests use real-looking CCNs.
@@ -246,6 +248,23 @@ def test_run_once_builds_the_queue_notes_rescouts_and_stops_when_empty(tmp_path)
             session, SpendingGateway(governor), FakeAI(), governor, TODAY, daily_cap=100
         )
         assert again.results == [] and again.used_before == again.used_after
+
+
+def test_run_once_builds_a_hospital_with_the_owners_stored_ruling(tmp_path):
+    # The scheduler passes no decision to the build; the ruling stored with the hospital holds.
+    engine = make_engine_with_hospital(NEW, THIRD)
+    governor = make_governor_for(tmp_path)
+    with session_scope(engine) as session:
+        record_owner_rulings(session, {"220010": owner_ruling("discount", ccn="220010")})
+        report = run_once(
+            session, SpendingGateway(governor), FakeAI(), governor, TODAY, daily_cap=100
+        )
+        assert sorted(r.ccn for r in report.results) == ["220010", "220045"]
+        ruled, _ = repo.latest_sheet(session, "220010")
+        other, _ = repo.latest_sheet(session, "220045")
+        assert ruled.eligibility.free_care_max_fpl is None
+        assert ruled.eligibility.assistance_ceiling_fpl.value == 250
+        assert other.eligibility.free_care_max_fpl.value == 250
 
 
 def test_run_once_respects_limit_and_survives_a_failing_build(tmp_path):

@@ -19,7 +19,10 @@ import does not leave behind. The registry rows come from the CMS seed and have 
 ``set_eve_websites`` sets each hospital's website from its draft, scored by discovery's own rule on
 the documents already stored (no search). And the owner's rulings on free-care values
 (``_decisions.json``) were applied once, at import; ``keep_owner_decision`` applies them again to
-whatever a model reads on a rebuild.
+whatever a model reads on a rebuild. The rulings are also kept in the database
+(``record_owner_rulings``, read back by ``stored_ruling``), because the paths that rebuild a
+sheet without ``waive atlas build`` (the admin console's Rebuild button, ``waive learn rebuild``,
+the refresh, the scheduler) run where there is no ``data/`` folder.
 """
 
 from __future__ import annotations
@@ -117,6 +120,10 @@ GUESSED_WEBSITE = 0.6
 FREE_CARE_PATH = "eligibility.free_care_max_fpl"
 # The verdicts that rule a free-care value out; `accept` keeps it and anything else is not a ruling.
 RULED_OUT = ("discount", "unsure", "hold")
+# The review item that keeps an entry of `_decisions.json` with its hospital, and the entry's own
+# fields it holds (the CCN is the item's).
+OWNER_RULING = "owner_ruling"
+OWNER_RULING_FIELDS = ("decision", "value", "note", "at", "hospital", "state", "bucket")
 
 # Colorado's Hospital Discounted Care (C.R.S. 25.5-3-501 and following) caps what a patient at or
 # below 250% FPL pays. Policies show it as a screening row, a "$0 copay" row, or a sentence about
@@ -823,3 +830,33 @@ def keep_owner_decision(
     return kept.model_copy(update={"eligibility": eligibility}), [
         says + "recorded as assistance_ceiling_fpl"
     ]
+
+
+def record_owner_rulings(session: Session, rulings: Mapping[str, Mapping[str, Any]]) -> int:
+    """Keep the owner's rulings (the entries of `_decisions.json`, by CCN) with their hospitals,
+    one `owner_ruling` item each, so a rebuild finds them wherever it runs: the admin console's
+    Rebuild button, `waive learn rebuild`, the refresh and the scheduler pass no decision of their
+    own, and the container image carries no data/ folder. A ruling is a settled decision, not work
+    for the admin queue, so its item is resolved and appears in no list of open items. A CCN that
+    already has an item with the ruling's `at` gets none, which makes a rerun record nothing; a
+    new `at` is a new ruling and adds an item. Rulings for hospitals with no sheet are recorded
+    too. Returns how many items were recorded."""
+    recorded = 0
+    for ccn, ruling in rulings.items():
+        known = {
+            item.detail.get("at") for item in repo.review_items_of_kind(session, ccn, OWNER_RULING)
+        }
+        if ruling.get("at") in known:
+            continue
+        detail = {key: ruling[key] for key in OWNER_RULING_FIELDS if key in ruling}
+        item = repo.add_review_item(session, ccn, OWNER_RULING, detail)
+        repo.set_review_status(session, item.id, "resolved")
+        recorded += 1
+    return recorded
+
+
+def stored_ruling(session: Session, ccn: str) -> dict[str, Any] | None:
+    """The owner's latest ruling on a hospital as `record_owner_rulings` stored it (the newest
+    item, whatever its status), in the shape `keep_owner_decision` takes, or None."""
+    items = repo.review_items_of_kind(session, ccn, OWNER_RULING)
+    return dict(items[-1].detail) if items else None

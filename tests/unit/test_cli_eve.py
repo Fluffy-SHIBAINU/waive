@@ -216,6 +216,46 @@ def test_a_decisions_file_that_cannot_be_read_stops_the_run_before_any_build(
         assert isinstance(result.exception, ValueError)  # json.JSONDecodeError
 
 
+def test_import_eve_with_db_records_the_owner_rulings_and_a_rerun_records_none(workdir, tmp_path):
+    # The server has no data/ folder, so the rulings go into the database with the hospitals:
+    # one resolved `owner_ruling` item each, for hospitals with a sheet and without.
+    drafts = tmp_path / "drafts"
+    drafts.mkdir()
+    write_decisions(tmp_path)
+    file = tmp_path / "decisions.json"
+    args = ["atlas", "import-eve", "--dir", str(drafts), "--out", str(tmp_path / "out")]
+    args += ["--db", "--decisions", str(file)]
+    assert f"recorded 2 owner rulings from {file}" in run(*args)
+    with session_scope(workdir) as session:
+        for entry in DECISIONS:
+            [item] = repo.review_items_of_kind(session, entry["ccn"], "owner_ruling")
+            assert item.status == "resolved"
+            assert item.detail == {key: value for key, value in entry.items() if key != "ccn"}
+        # Settled decisions are not work for the admin queue or the public atlas.
+        assert repo.open_review_items(session) == []
+    assert f"recorded 0 owner rulings from {file}" in run(*args)
+    with session_scope(workdir) as session:
+        assert len(repo.review_items_of_kind(session, "220010", "owner_ruling")) == 1
+    # The owner decides again: the new time is a new ruling, recorded beside the old one.
+    changed = {**DECISIONS[0], "decision": "accept", "at": "2026-10-24T09:00:00.000Z"}
+    file.write_text(json.dumps([changed]), encoding="utf-8")
+    assert f"recorded 1 owner rulings from {file}" in run(*args)
+    with session_scope(workdir) as session:
+        items = repo.review_items_of_kind(session, "220010", "owner_ruling")
+        assert [item.detail["decision"] for item in items] == ["discount", "accept"]
+
+
+def test_import_eve_without_db_records_nothing(workdir, tmp_path):
+    drafts = tmp_path / "drafts"
+    drafts.mkdir()
+    write_decisions(tmp_path)
+    args = ["atlas", "import-eve", "--dir", str(drafts), "--out", str(tmp_path / "out")]
+    args += ["--decisions", str(tmp_path / "decisions.json")]
+    assert "recorded" not in run(*args)
+    with session_scope(workdir) as session:
+        assert repo.review_items_of_kind(session, "220010", "owner_ruling") == []
+
+
 def test_the_decisions_path_is_a_setting(monkeypatch, tmp_path):
     monkeypatch.delenv("WAIVE_EVE_DECISIONS", raising=False)
     assert Settings(_env_file=None).eve_decisions == Path("data/atlas-eve/_decisions.json")

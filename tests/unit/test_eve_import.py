@@ -4,7 +4,9 @@ The Eve import takes registry rows from the CMS seed, which has no website, so a
 stored documents would first run a paid Tavily search for each hospital. `eve_website` and
 `set_eve_websites` score the draft's domain with discovery's own rule on the documents already
 stored. `keep_owner_decision` holds a model's reading to the owner's ruling, as `import-eve` does
-when it converts a draft. Every test builds its own hospitals, sheets and documents in memory."""
+when it converts a draft; `record_owner_rulings` and `stored_ruling` keep the rulings in the
+database, where every rebuild finds them. Every test builds its own hospitals, sheets and
+documents in memory."""
 
 from collections.abc import Sequence
 from datetime import date
@@ -18,7 +20,9 @@ from waive.atlas.eve_import import (
     EveWebsites,
     eve_website,
     keep_owner_decision,
+    record_owner_rulings,
     set_eve_websites,
+    stored_ruling,
 )
 from waive.atlas.publish import drop_fields
 from waive.atlas.samples import SAMPLE_SOURCE_ID, st_example_sheet
@@ -435,3 +439,70 @@ def test_a_ruling_that_does_not_apply_changes_nothing(decision):
 def test_a_sheet_without_a_free_care_value_is_left_alone():
     sheet = drop_fields(st_example_sheet(), ["eligibility.free_care_max_fpl"])
     assert keep_owner_decision(sheet, ruling("discount")) == (sheet, [])
+
+
+# --- the rulings kept with the hospitals ---------------------------------------------------
+
+RULING_FIELDS = ("decision", "value", "note", "at", "hospital", "state", "bucket")
+
+
+def recorded(entry: dict[str, object]) -> dict[str, object]:
+    """What an `owner_ruling` item holds of an entry of `_decisions.json`: its own fields."""
+    return {key: entry[key] for key in RULING_FIELDS}
+
+
+def test_rulings_are_recorded_as_resolved_items_and_a_rerun_records_none():
+    first = ruling("discount", "300", ccn="220010")
+    second = ruling(
+        "unsure", "200", ccn="220045", at="2026-10-23T17:35:00.000Z", note="cannot tell"
+    )
+    rulings = {"220010": first, "220045": second}
+    with session_scope(make_atlas()) as session:
+        # Neither hospital has a sheet, or even a registry row: its ruling is recorded all the same.
+        assert record_owner_rulings(session, rulings) == 2
+        for ccn, entry in rulings.items():
+            [item] = repo.review_items_of_kind(session, ccn, "owner_ruling")
+            assert item.status == "resolved"
+            assert item.detail == recorded(entry)
+        # A settled decision is not work for the admin queue, so nothing is open.
+        assert repo.open_review_items(session) == []
+        assert repo.open_review_items(session, kind="owner_ruling") == []
+        # Rerunning records nothing: each CCN already holds an item with that ruling's time.
+        assert record_owner_rulings(session, rulings) == 0
+        assert len(repo.review_items_of_kind(session, "220010", "owner_ruling")) == 1
+        assert len(repo.review_items_of_kind(session, "220045", "owner_ruling")) == 1
+
+
+def test_a_ruling_with_a_new_time_is_a_new_item_and_the_latest_is_the_stored_ruling():
+    older = ruling("discount", "300", ccn="220010")
+    newer = ruling("accept", "300", ccn="220010", at="2026-10-24T09:00:00.000Z")
+    with session_scope(make_atlas()) as session:
+        assert stored_ruling(session, "220010") is None
+        assert record_owner_rulings(session, {"220010": older}) == 1
+        assert stored_ruling(session, "220010") == recorded(older)
+        # The owner changed their mind: the new time adds an item, and it is the one that counts.
+        assert record_owner_rulings(session, {"220010": newer}) == 1
+        items = repo.review_items_of_kind(session, "220010", "owner_ruling")
+        assert [item.detail["decision"] for item in items] == ["discount", "accept"]
+        assert [item.status for item in items] == ["resolved", "resolved"]
+        assert stored_ruling(session, "220010") == recorded(newer)
+        # Reading the older file again brings nothing back: its time is already recorded.
+        assert record_owner_rulings(session, {"220010": older}) == 0
+        assert stored_ruling(session, "220010") == recorded(newer)
+
+
+def test_a_stored_ruling_is_its_hospitals_whatever_the_status_of_its_item():
+    with session_scope(make_atlas()) as session:
+        record_owner_rulings(session, {"220010": ruling("discount", ccn="220010")})
+        [item] = repo.review_items_of_kind(session, "220010", "owner_ruling")
+        for status in ("resolved", "open", "dismissed"):
+            repo.set_review_status(session, item.id, status)
+            assert stored_ruling(session, "220010")["decision"] == "discount"
+        # Another hospital has no ruling of its own, and an item of another kind is no ruling.
+        repo.add_review_item(
+            session, "220045", "owner_decision", {"decision": "discount", "value": "250"}
+        )
+        assert stored_ruling(session, "220045") is None
+        # What comes back is a copy: changing it does not change the stored item.
+        stored_ruling(session, "220010")["decision"] = "accept"
+        assert stored_ruling(session, "220010")["decision"] == "discount"

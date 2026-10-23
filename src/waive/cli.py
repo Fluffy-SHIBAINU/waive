@@ -170,8 +170,9 @@ def atlas_build(
 ) -> None:
     """Discover, scout, structure, verify and publish procedure sheets. Spends Tavily credits.
     Hospitals on the skip list (the ones the Eve agent could not build) are never built. What a
-    model reads is held to the owner's rulings on the Eve sheets (WAIVE_EVE_DECISIONS), so a
-    free-care value the owner ruled out does not come back."""
+    model reads is held to the owner's rulings on the Eve sheets, so a free-care value the owner
+    ruled out does not come back: the ruling in the file WAIVE_EVE_DECISIONS names, or for a
+    hospital the file does not name, the one `import-eve --db` stored with it."""
     settings = Settings()
     skip = load_skip_list(settings.scout_skip_list)
     if ccn and ccn in skip:
@@ -362,12 +363,14 @@ def atlas_import_eve(
 ) -> None:
     """Convert Eve waive-agent drafts into draft procedure sheets: validates against the schema,
     writes data/atlas-eve/<state>.json with review notes, and optionally stores them as drafts
-    (with --db also an eve-skip review item for each hospital on the skip list)."""
+    (with --db also an eve-skip review item for each hospital on the skip list, and a resolved
+    owner_ruling item for each owner decision, which every later rebuild of that hospital reads)."""
     from waive.atlas import eve_import
 
     today = datetime.now(UTC).date()
     drafts = eve_import.read_drafts(draft_dir, (state.upper(),) if state else None)
-    decided = eve_import.load_decisions(decisions or Path("data/atlas-eve/_decisions.json"))
+    decisions_path = decisions or Path("data/atlas-eve/_decisions.json")
+    decided = eve_import.load_decisions(decisions_path)
     seeds: dict[str, dict[str, dict[str, Any]]] = {}
     results = []
     for draft in drafts:
@@ -389,11 +392,13 @@ def atlas_import_eve(
         with session_scope(_engine(settings)) as session:
             stored = eve_import.import_to_db(session, results, seeds, sources_dir)
             filed = file_skip_items(session, skip)
+            ruled = eve_import.record_owner_rulings(session, decided)
             session.commit()
         typer.echo(f"stored {stored} draft sheets (version 1, status draft) with review items")
         typer.echo(
             f"filed {filed} {EVE_SKIP} review items for the {len(skip)} hospitals on the skip list"
         )
+        typer.echo(f"recorded {ruled} owner rulings from {decisions_path}")
 
 
 @atlas_app.command("eve-websites")

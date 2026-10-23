@@ -22,7 +22,7 @@ from waive.atlas.discover import (
     place_unconfirmed,
     rejected_domains,
 )
-from waive.atlas.eve_import import keep_owner_decision
+from waive.atlas.eve_import import keep_owner_decision, stored_ruling
 from waive.atlas.fetch import is_asset_host
 from waive.atlas.publish import (
     carry_over_reported,
@@ -699,6 +699,11 @@ def build_hospital(
     if row is None:
         return BuildResult(ccn, "?", "failed", notes=["hospital not in registry"])
     result = BuildResult(ccn, row.name, "skipped")
+    if decision is None:
+        # The ruling stored with the hospital (`import-eve --db`) holds a build that is given no
+        # decision: the admin console's Rebuild button, `waive learn rebuild`, the refresh and the
+        # scheduler pass none, and the server has no decisions file. A decision passed in wins.
+        decision = stored_ruling(session, ccn)
 
     if not row.website_domain:
         found = discover_domain(gateway, repo.hospital_ref(row), rejected_domains(session, ccn))

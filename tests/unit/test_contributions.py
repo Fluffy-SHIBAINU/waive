@@ -4,6 +4,7 @@ from datetime import date
 import pytest
 
 from waive.atlas import repo
+from waive.atlas.eve_import import record_owner_rulings
 from waive.atlas.publish import publish_sheet
 from waive.atlas.samples import SAMPLE_POLICY_TEXT, st_example_sheet
 from waive.atlas.schema import SourceKind
@@ -21,6 +22,8 @@ from waive.learning.contributions import (
 )
 from waive.learning.hashing import case_hash
 
+from tests.unit.test_pipeline import FakeAI as DraftAI
+from tests.unit.test_pipeline import owner_ruling
 from tests.unit.test_web_senior import HOSPITAL
 
 TODAY = date(2026, 10, 2)
@@ -196,3 +199,16 @@ def test_reject_clears_text_and_rebuild_never_calls_tavily(session):
     repo.upsert_hospital(session, {**HOSPITAL, "ccn": "220031", "name": "REAL GENERAL HOSPITAL"})
     skipped = rebuild_from_sources(session, PhotoAI(), "220031", TODAY)
     assert skipped.outcome == "skipped" and "no stored documents" in skipped.notes[0]
+
+
+def test_a_rebuild_from_stored_documents_keeps_the_owners_ruling(session):
+    # The admin console's Rebuild button and `waive learn rebuild` pass no decision, and the
+    # server has no decisions file: the ruling stored with the hospital is what holds out the
+    # 250% that the model reads as free care and the owner ruled a discount.
+    record_owner_rulings(session, {"229999": owner_ruling("discount")})
+    result = rebuild_from_sources(session, DraftAI(), "229999", TODAY)
+    assert result.version == 2
+    latest, _ = repo.latest_sheet(session, "229999")
+    assert latest.eligibility.free_care_max_fpl is None
+    assert latest.eligibility.assistance_ceiling_fpl.value == 250
+    assert "owner_decision" in {item.kind for item in repo.open_review_items(session, "229999")}

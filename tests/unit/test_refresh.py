@@ -5,6 +5,7 @@ import httpx
 import respx
 
 from waive.atlas import repo
+from waive.atlas.eve_import import record_owner_rulings
 from waive.atlas.pipeline import build_hospital
 from waive.atlas.refresh import doc_class_of, fetch_texts, is_asset_host, refresh_hospital
 from waive.atlas.schema import SourceDoc, SourceKind
@@ -20,6 +21,7 @@ from tests.unit.test_pipeline import (
     FakeAI,
     FakeGateway,
     make_engine_with_hospital,
+    owner_ruling,
 )
 from tests.unit.test_scout import NAV_ONLY
 
@@ -102,6 +104,21 @@ def test_changed_document_is_stored_relinked_and_restructured():
         assert text == REVISED_TEXT and current.fetched_on == LATER
         assert session.get(SourceDocRow, old.id) is not None  # version 1 still cites it
         assert [s.id for s in sheet.sources] == [current.id]
+
+
+def test_a_restructure_after_a_changed_document_keeps_the_owners_ruling():
+    # The revised policy makes the model read 300 as free care, which the owner ruled a discount;
+    # a refresh passes no decision, so the ruling stored with the hospital holds it out.
+    engine = seeded_engine()
+    gateway = RefreshGateway({POLICY_URL: REVISED_TEXT})
+    with session_scope(engine) as session, httpx.Client() as http:
+        record_owner_rulings(session, {"229999": owner_ruling("discount", "300")})
+        result = refresh_hospital(session, gateway, RevisedAI(), "229999", LATER, http)
+        assert result.outcome == "restructured"
+        assert result.build is not None and result.build.version == 2
+        sheet, _ = repo.latest_sheet(session, "229999")
+        assert sheet.eligibility.free_care_max_fpl is None
+        assert "owner_decision" in {i.kind for i in repo.open_review_items(session, "229999")}
 
 
 @respx.mock
