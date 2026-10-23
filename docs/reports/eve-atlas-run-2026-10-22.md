@@ -1,0 +1,103 @@
+# Waive atlas expansion: run report and quality findings
+
+Run window: 2026-10-22 23:45 UTC to 2026-10-23 02:55 UTC. Agent: `waive-agent` on Vercel (Eve 0.82), team `maic-vercel-jfish`.
+
+## What was produced
+
+| Metric | Value |
+|---|---|
+| Draft sheets on disk | 1,039 |
+| States covered (previously 9 published states) | 27 new states |
+| Unique hospitals attempted | 1,200 |
+| Drafts built under Opus 5.5 structuring (untagged, first generation) | 645 |
+| Drafts built under Sonnet 5 structuring (tagged `models.structuring`) | 394 |
+| No official policy found by the scout | 153 |
+| Site blocked the fetcher (HTTP 403) | 52 |
+| Drafts with a free-care line | 821 (79%) |
+| Drafts with discount tiers | 555 (53%) |
+| Drafts with no fields at all | 14 |
+
+Largest new states: Wisconsin 105, Michigan 88, Indiana 70, Minnesota 62, Kentucky 58, Missouri 57, North Carolina 53, Virginia 53.
+
+Locations: live set at `~/waive-atlas/atlas-drafts/<STATE>/<CCN>.json` (symlinked from `data/atlas-drafts`), outcomes in `_log.jsonl`, structural validation in `_validation.jsonl` and `_validation-report.md`. Immutable snapshots with SHA-256 manifests: `~/waive-atlas-backup/opus-run-20261022-2227` (645 drafts) and `~/waive-atlas-backup/final-run-20261022-2255` (1,039 drafts plus all eval sets).
+
+Every draft has `status: "draft"`. Every non-null field carries a verbatim quote that was verified as an exact substring of its fetched source (or a typography-normalized match, flagged), the source id, the source SHA-256, and the check date.
+
+## Accuracy against published Waive sheets
+
+Method: rebuild hospitals Waive has already published, compare field by field. `scripts/eval-vs-atlas.ts`.
+
+### 22 hospitals (MA, NY, IL), prompt v3, Sonnet 5 structuring
+
+| Field | Agree | Disagree | Eve only | Waive only |
+|---|---|---|---|---|
+| free_care_max_fpl | 15 | 1 | 1 | 3 |
+| discount_tiers | 9 | 0 | 3 | 2 |
+| asset_test | 4 | 0 | 10 | 0 |
+| window_days_from_first_bill | 5 | 0 | 5 | 3 |
+| decision_days | 2 | 0 | 3 | 1 |
+| eca_wait_days | 1 | 0 | 3 | 0 |
+| phone | 10 | 6 | 6 | 0 |
+
+Before the prompt fixes (baseline, same hospitals): tiers 5 agree and 5 disagree, 14 ceilings over-read. After: tiers 9 agree and 0 disagree, 1 ceiling over-read.
+
+### Model comparison, same 8 hospitals
+
+| Configuration | free_care agree | tiers agree | tiers wrong |
+|---|---|---|---|
+| Sonnet 5 structuring | 6 | 4 | 0 |
+| Haiku 5.5 structuring, strict Haiku judge | 3 | 0 | 1 |
+| Haiku 5.5 structuring, annotate-only judge | 5 | 0 | 2 |
+
+Haiku folds the free-care row into the tier table. Sonnet 5 is the floor for structuring. The Haiku judge was too strict to be allowed to drop fields; it now writes `review_notes` only.
+
+## Findings for Waive's own pipeline
+
+1. Concatenated phone numbers in published sheets. Albany Medical Center `518262198118662627476`, Carlinville `21785450928552624778`, Illini Community `85535458962172773512`, Taylorville `21778847748005622829`. Two numbers glued into one field. Eve's extraction of the same documents gives single numbers.
+2. Asset tests missed. Ten of 22 published sheets have `asset_test` empty where the same policy states one.
+3. Application windows missed. Five published sheets lack `window_days_from_first_bill` where the policy states it.
+4. OSF Holy Family free-care line: published 350, Eve 250. Needs a human read of the PDF.
+5. Faulkner Hospital phone: published 617-983-7218, Eve 617-726-3884 (the system-wide line). Both are real; the sheet should say which.
+
+## Findings for the Eve pipeline (open issues in the drafts)
+
+Structural validator over 1,039 drafts: 601 clean, 99 errors, 578 warnings.
+
+| Check | Drafts | Meaning |
+|---|---|---|
+| no_income_rule | 200 | neither free-care line nor tiers captured; sheet cannot drive eligibility |
+| normalized_match | 145 | quote matched only after typography normalization; usually fine |
+| tier_values_in_quote | 98 | a tier bound or percent is not in the tiers quote; mostly Opus-era drafts |
+| value_in_quote | 62 | number not present as digits in quote; often words such as "forty-eight hours" |
+| form_url_absolute | 50 | link text instead of URL; HTML href extraction was added mid-run |
+| tier_discount_monotonic | 11 | discounts not decreasing with income; check manually |
+| ceiling_equals_free_no_tiers | 6 | residual ceiling over-reads from the Opus era |
+
+Judge review notes (annotate-only, Sonnet-era drafts): 361 drafts, 1,064 notes. Most are list fields where a quote covers only part of a list.
+
+Recommended before publishing any draft: (1) rebuild the 645 Opus-era drafts with the final prompt and Sonnet structuring, since they predate the tier, ceiling, URL, and insured-patient rules; (2) human review of every draft with a validator error or a review note on `eligibility.*`; (3) treat `no_income_rule` drafts as contact-only records.
+
+## Cost and incidents
+
+| Item | Value |
+|---|---|
+| Credit at start | $494.78 |
+| Credit at end | -$6.58 |
+| waive-agent share | about $460 |
+| Cost per hospital, Opus era | about $0.45 |
+| Cost per hospital, Sonnet structuring with Haiku root, scout, judge | $0.10 to $0.14 |
+
+What went wrong:
+
+1. The local `eve dev` REPL ships Eve's self-modification agent. At 01:51 UTC it rewrote `agent/agent.ts`, the scout, and `structure.ts` to `anthropic/claude-opus-5.5` and added a second Opus pass (`judge.ts`). Every deploy after that shipped Opus. That is where most of the credit went.
+2. Two batch runners ran at once near the end (one at concurrency 32 that this session did not start, one at 16). Together they spent $47 in ten minutes and overdrew the pool before the balance guard, which checks once a minute, could stop the 16-runner. The 32-runner predates the guard.
+3. Hospital sites behind WAFs return 403 to server-side fetches: Concord NH, FirstHealth NC, MyMichigan, Bronson, Johns Hopkins Howard County, and others. A headless-browser fetch would recover these.
+4. Killing processes by script name also killed the monitors, whose command text contained the name. Monitors now watch a pid file.
+
+## Next steps
+
+1. Rebuild the 645 Opus-era drafts with the final prompt (Sonnet 5): about $90.
+2. Finish the remaining uncovered hospitals, mostly critical-access: about 400 at $0.12 each.
+3. Recover the 52 blocked sites with a browser fetch.
+4. Import drafts into Waive: `data/atlas/<STATE>.json` is the repo's export format; a `waive atlas import` for draft sheets is needed, with `status: draft` preserved until a reviewer publishes.
+5. Fix the Waive phone-concatenation bug and backfill asset tests and application windows from the same sources.
