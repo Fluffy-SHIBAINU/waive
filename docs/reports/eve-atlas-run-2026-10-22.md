@@ -1,6 +1,29 @@
 # Waive atlas expansion: run report and quality findings
 
-Run window: 2026-10-22 23:45 UTC to 2026-10-23 02:55 UTC. Agent: `waive-agent` on Vercel (Eve 0.82), team `maic-vercel-jfish`.
+Run window: 2026-10-22 23:45 UTC to 2026-10-23 04:30 UTC. Agent: `waive-agent` on Vercel (Eve 0.82), team `maic-vercel-jfish`.
+
+## Final tally, run complete (2026-10-23 04:30 UTC)
+
+The national pass finished: every queued hospital was attempted. No gateway errors occurred; the run ended at a balance of -$57.82 on the user's instruction to finish on overdraft.
+
+| Metric | Value |
+|---|---|
+| Draft sheets on disk | 1,348 |
+| States with drafts | 42 (every state outside the 9 already published, plus DC) |
+| Unique hospitals attempted | 1,701 |
+| Built under Opus 5.5 structuring (first generation) | 645 |
+| Built under Sonnet 5 structuring (tagged) | 703 |
+| No official policy found by the scout | 196 |
+| Site blocked the fetcher (403) | 201 |
+| Drafts with a free-care line | 1,037 (77%) |
+| Drafts with discount tiers | 749 (56%); 649 survive Waive's tier-order schema |
+| Drafts with no fields | 20 |
+| Structural validator | 705 clean, 162 errors, 846 warnings |
+| Converted into Waive draft procedure sheets | 1,348 of 1,348, 42 state files in `data/atlas-eve/` |
+
+Largest: Wisconsin 105, Michigan 88, Indiana 70, Minnesota 62, Kentucky 58, Missouri 57, North Carolina 53, Virginia 53, Georgia 49.
+
+Snapshot: `~/waive-atlas-backup/complete-run-20261022-2332` with a SHA-256 manifest.
 
 ## What was produced
 

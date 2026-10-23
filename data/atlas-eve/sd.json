@@ -282,6 +282,2871 @@
     "agent judge on apply.form_url: The quote only names the \"Financial Assistance Application\" and gives no URL.",
     "agent judge on apply.documents_required: Quote requires pay stubs and the tax return, but the letter of explanation is only said to have \"been included\" on a form, not stated as a required document."
    ]
+  },
+  {
+   "hospital": {
+    "ccn": "431300",
+    "name": "MADISON REGIONAL HEALTH SYSTEM",
+    "city": "MADISON",
+    "state": "SD",
+    "zip": "57042",
+    "phone": "605-256-6551",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "madisonregionalhealth.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "150",
+     "layer": "documented",
+     "quote": "Patients whose household income does not exceed 150% of the Federal Poverty Guidelines may be eligible for 100% of their emergent or medical necessary bills to be written off as charity care.",
+     "source_id": "fap-1ff2db73fa6800bb",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "150",
+       "max_fpl_inclusive": "400",
+       "discount_percent": 95
+      }
+     ],
+     "layer": "documented",
+     "quote": "Patients whose household income is greater than 150% but less than 400% of Federal Poverty Guidelines may be eligible for financial assistance based on a sliding scale.",
+     "source_id": "fap-1ff2db73fa6800bb",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "assistance_ceiling_fpl": null,
+    "asset_test": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Patients with unencumbered assets in excess of $50,000 are not eligible for financial assistance.",
+     "source_id": "fap-1ff2db73fa6800bb",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "residency": null,
+    "insured_patients_covered": null,
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": {
+     "value": [
+      "Medicaid enrolled (out-of-state Medicaid)"
+     ],
+     "layer": "documented",
+     "quote": "An example would include an individual covered under an out-of-state Medicaid plan in which the facility does not participate.",
+     "source_id": "fap-1ff2db73fa6800bb",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "state_programs": {
+     "value": [
+      {
+       "name": "County Poor Relief",
+       "how_to_apply": "You can apply for County Poor Relief at your local County Court House."
+      }
+     ],
+     "layer": "documented",
+     "quote": "If you are a resident of South Dakota, you must also apply for County Poor Relief before applying for financial assistance. You can apply for County Poor Relief at your local County Court House.",
+     "source_id": "fap-aac46b42261d6b23",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
+   },
+   "apply": {
+    "form_url": {
+     "value": "https://madisonregionalhealth.org/wp-content/uploads/Financial-Assistance-Letter-Application.cleaned.pdf",
+     "layer": "documented",
+     "quote": "financial assistance application (english) [https://madisonregionalhealth.org/wp-content/uploads/Financial-Assistance-Letter-Application.cleaned.pdf]",
+     "source_id": "web-1f85aa5109cf4e3d",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "other",
+      "pay_stubs",
+      "bank_statements",
+      "tax_return",
+      "proof_of_residency"
+     ],
+     "layer": "documented",
+     "quote": "Enclosed Application Signed & Dated",
+     "source_id": "fap-aac46b42261d6b23",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "Madison Regional Health System, 323 SW 10th Street, Madison, SD 57042"
+      },
+      {
+       "kind": "in_person",
+       "detail": "Return all applications to: Madison Regional Health System, 323 SW 10th Street, Madison, SD 57042-3200"
+      },
+      {
+       "kind": "phone",
+       "detail": "(605)-256-6551"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Please respond to requests for additional information within 30 days and return it to our office by mail at Madison Regional Health System, 323 SW 10th Street, Madison, SD 57042.",
+     "source_id": "fap-aac46b42261d6b23",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": {
+     "value": 240,
+     "layer": "documented",
+     "quote": "The application period begins on the first date of service and ends on the 240th day after the first billing statement.",
+     "source_id": "fap-1ff2db73fa6800bb",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days": {
+     "value": 30,
+     "layer": "documented",
+     "quote": "A decision will be made within 30 days of receipt of a complete application.",
+     "source_id": "fap-1ff2db73fa6800bb",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": {
+     "value": 120,
+     "layer": "documented",
+     "quote": "The notification period begins on the first date of service and ends on the 120th day after the first billing statement.",
+     "source_id": "fap-1ff2db73fa6800bb",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "605-256-6551",
+     "layer": "documented",
+     "quote": "Our business office hours are 8am-5pm Monday-Friday. Please respond to requests for additional information within 30 days",
+     "source_id": "fap-aac46b42261d6b23",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": {
+     "value": "8am-5pm Monday-Friday",
+     "layer": "documented",
+     "quote": "Our business office hours are 8am-5pm Monday-Friday.",
+     "source_id": "fap-aac46b42261d6b23",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "languages": {
+     "value": [
+      "English",
+      "Spanish"
+     ],
+     "layer": "documented",
+     "quote": "financial assistance application (english) [https://madisonregionalhealth.org/wp-content/uploads/Financial-Assistance-Letter-Application.cleaned.pdf]",
+     "source_id": "web-1f85aa5109cf4e3d",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-1ff2db73fa6800bb",
+     "kind": "hospital_web",
+     "url": "https://madisonregionalhealth.org/wp-content/uploads/GA-075-Financial-Assistance-Program.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "1ff2db73fa6800bbce5bc696c96aef20f89f7b482efe582ccb9785e15563773f",
+     "effective_date": null
+    },
+    {
+     "id": "fap-aac46b42261d6b23",
+     "kind": "hospital_web",
+     "url": "https://madisonregionalhealth.org/wp-content/uploads/Financial-Assistance-Letter-Application.cleaned.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "aac46b42261d6b233cac2bfdc5a4ceb4fa64ecc9de126bf013071786a152bc91",
+     "effective_date": null
+    },
+    {
+     "id": "web-1f85aa5109cf4e3d",
+     "kind": "hospital_web",
+     "url": "https://madisonregionalhealth.org/patient-visitor-guide/",
+     "title": "Patients & Visitors - Madison Regional Health System",
+     "fetched_on": "2026-10-23",
+     "sha256": "1f85aa5109cf4e3db1b3c921b98491f4a7c22000ce0cae96d553dd3229b5631b",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: Partial charity care discounts will be up to 95% of the amounts generally billed.",
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Copies of the two most recent pay stubs for each wage earner in the household. | Tax Return (Federal, State if applicable)",
+    "contacts.languages: 1 more verbatim excerpt(s) supported this value: financial assistance application (Spanish) [https://madisonregionalhealth.org/wp-content/uploads/FinancialAssistanceAppl",
+    "agent judge on eligibility.discount_tiers: Quote says 'less than 400%' (exclusive), not inclusive. It gives no sliding-scale percent per tier, only 'up to 95%'.",
+    "agent judge on programs.presumptive: Quote gives an example of an out-of-state Medicaid enrollee where the facility does not participate, but does not call it presumptive eligibility.",
+    "agent judge on apply.documents_required: Quote lists only 3 of the 8 recorded documents (signed application, two recent pay stubs, federal/state tax return).",
+    "agent judge on apply.submit_methods: Quote gives only the mail address (zip 57042, no -3200). The phone number and in-person method are not in the quote.",
+    "agent judge on collections.eca_wait_days: Quote describes a notification period ending 120 days after first billing statement, not a wait before collection actions.",
+    "agent judge on contacts.phone: Quote contains business hours and a 30-day response note, but no phone number."
+   ]
+  },
+  {
+   "hospital": {
+    "ccn": "431301",
+    "name": "FAULKTON AREA MEDICAL CENTER",
+    "city": "FAULKTON",
+    "state": "SD",
+    "zip": "57438",
+    "phone": "605-598-6262",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "faulktonmedical.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "Patients whose family income is at or below 200% of the FPL are eligible to receive free care.",
+     "source_id": "fap-3ff236874dea86d6",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "200",
+       "max_fpl_inclusive": "250",
+       "discount_percent": 80
+      },
+      {
+       "min_fpl_exclusive": "250",
+       "max_fpl_inclusive": "300",
+       "discount_percent": 60
+      },
+      {
+       "min_fpl_exclusive": "300",
+       "max_fpl_inclusive": "350",
+       "discount_percent": 40
+      },
+      {
+       "min_fpl_exclusive": "350",
+       "max_fpl_inclusive": "404",
+       "discount_percent": 20
+      }
+     ],
+     "layer": "documented",
+     "quote": "Patient whose family income is over 201% and below 250% of the FPL would be eligible for up to an 80% discount.",
+     "source_id": "fap-3ff236874dea86d6",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "assistance_ceiling_fpl": null,
+    "asset_test": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Assets, expenses, household size, among others will also be taken into account in determining the level of charity care granted.",
+     "source_id": "fap-3ff236874dea86d6",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "residency": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Patients/guarantors who have insurance coverage but have balances due to portions not paid by their health insurance (including but not limited to",
+     "source_id": "fap-3ff236874dea86d6",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": {
+     "value": [
+      "State-funded prescription programs",
+      "Homeless or received care from a homeless clinic",
+      "Participation in Women, Infants and Children programs (WIC)",
+      "Food stamp eligibility",
+      "Eligibility for other state or local assistance program that are unfunded",
+      "Low income/subsidized housing is provided as a valid address",
+      "Patient is deceased with no known estate"
+     ],
+     "layer": "documented",
+     "quote": "1. State-funded prescription programs; 2. Homeless or received care from a homeless clinic; 3. Participation in Women, Infants and Children programs (WIC); 4. Food stamp eligibility;",
+     "source_id": "fap-3ff236874dea86d6",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "photo_id",
+      "tax_return",
+      "pay_stubs",
+      "other"
+     ],
+     "layer": "documented",
+     "quote": "Identification/Address: Driver\u2019s License \u2022 Copy of your most recent Federal 1040 tax return, including all applicable schedules OR Proof of non-filing from the IRS (call (800) 908-9946 to obtain a copy) \u2022 Copy of last three pay stubs for any wage earner contributing to household income \u2022 Last 3 months of bank or Investment statement showing the transaction data and current account balance",
+     "source_id": "fap-409a006d34debdc7",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "MAIL to: Faulkton Area Medical Center, ATTN: PFS Manager, PO Box 100, Faulkton, SD 57438"
+      },
+      {
+       "kind": "fax",
+       "detail": "SECURE FAX at 605-598-4186"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Please respond to this request for information within 30 days and return it to our office by SECURE FAX at 605-598-4186 or MAIL to: Faulkton Area Medical Center, ATTN: PFS Manager, PO Box 100, Faulkton, SD 57438.",
+     "source_id": "fap-409a006d34debdc7",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": {
+     "value": 240,
+     "layer": "documented",
+     "quote": "The application period begins on the first date of service and ends on the 240th day after the first billing statement.",
+     "source_id": "fap-3ff236874dea86d6",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days": {
+     "value": 30,
+     "layer": "documented",
+     "quote": "A decision will be made within 30 days of receipt of a complete application.",
+     "source_id": "fap-3ff236874dea86d6",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": {
+     "value": 120,
+     "layer": "documented",
+     "quote": "The notification period begins on the first date of service and ends on the 120th day after the first billing statement.",
+     "source_id": "fap-3ff236874dea86d6",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "605-598-1138",
+     "layer": "documented",
+     "quote": "please contact FAMC Patient Financial Services at (605)598-1138 or (605)598-1140",
+     "source_id": "fap-409a006d34debdc7",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": {
+     "value": "Monday \u2013Friday 7am \u2013 5pm",
+     "layer": "documented",
+     "quote": "Our business hours are Monday \u2013Friday 7am \u2013 5pm.",
+     "source_id": "fap-409a006d34debdc7",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "languages": null
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-3ff236874dea86d6",
+     "kind": "hospital_web",
+     "url": "https://faulktonmedical.org/wp-content/uploads/03-012-Financial-Assistance-Policy-2026.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "3ff236874dea86d600eb0d173b939eb436bae743b0d76cce53c24662febb2371",
+     "effective_date": null
+    },
+    {
+     "id": "fap-409a006d34debdc7",
+     "kind": "hospital_web",
+     "url": "https://faulktonmedical.org/wp-content/uploads/03-012b-FINANCIAL-ASSISTANCE-LETTER-APP.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "409a006d34debdc7c8e64befb160bb6d677dfafeb2de72dd83614143f935b08e",
+     "effective_date": null
+    },
+    {
+     "id": "web-e737ee419b9d978b",
+     "kind": "hospital_web",
+     "url": "https://faulktonmedical.org/insurancemedicare-information/",
+     "title": "Insurance/Medicare Information | Faulkton Area Medical Center",
+     "fetched_on": "2026-10-23",
+     "sha256": "e737ee419b9d978bd645437b0f4b41e4580c476669ded8be80cbc25f1ce68842",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: Patient whose family income is over 251% and below 300% of the FPL would be eligible for up to a 60% discount. | Patient whose family income is over 301% and below 350% of the FPL would be eligible for up to a 40% discount."
+   ]
+  },
+  {
+   "hospital": {
+    "ccn": "431305",
+    "name": "DOUGLAS COUNTY MEMORIAL HOSPITAL-CAH",
+    "city": "ARMOUR",
+    "state": "SD",
+    "zip": "57313",
+    "phone": "605-724-2159",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "dcmhsd.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "125",
+     "layer": "documented",
+     "quote": "0-125% of Poverty Guidelines 100% Discount",
+     "source_id": "fap-129f4de2a628f482",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "125",
+       "max_fpl_inclusive": "150",
+       "discount_percent": 75
+      },
+      {
+       "min_fpl_exclusive": "150",
+       "max_fpl_inclusive": "175",
+       "discount_percent": 50
+      },
+      {
+       "min_fpl_exclusive": "175",
+       "max_fpl_inclusive": "200",
+       "discount_percent": 35
+      }
+     ],
+     "layer": "documented",
+     "quote": "126-150% of Poverty Guidelines 75% Discount",
+     "source_id": "fap-129f4de2a628f482",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "assistance_ceiling_fpl": null,
+    "asset_test": {
+     "value": true,
+     "layer": "documented",
+     "quote": "assets (only those convertible to cash, and unnecessary for the patient\u2019s daily living)",
+     "source_id": "fap-129f4de2a628f482",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "residency": null,
+    "insured_patients_covered": null,
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": {
+     "value": [
+      "known public assistance programs",
+      "homelessness",
+      "lack of unemployment",
+      "law enforcement information",
+      "physicians",
+      "nurses",
+      "business office personnel",
+      "community groups",
+      "religious groups",
+      "third party vendors"
+     ],
+     "layer": "documented",
+     "quote": "These may include known public assistance programs, homelessness, lack of unemployment, law enforcement information, physicians, nurses, business office personnel, community groups, religious groups, third party vendors, or other sources.",
+     "source_id": "fap-129f4de2a628f482",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "tax_return",
+      "pay_stubs",
+      "social_security_letter"
+     ],
+     "layer": "documented",
+     "quote": "Copy of the most recent federal tax return. . Copy of the last two paystubs. . Completed & signed financial assistance application.",
+     "source_id": "fap-129f4de2a628f482",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "in_person",
+       "detail": "These documents must be turned into the Business Office located at 708 8th Street, Amour, SD 57313."
+      },
+      {
+       "kind": "phone",
+       "detail": "Business Office, and they can be contacted at 605-724-2159"
+      }
+     ],
+     "layer": "documented",
+     "quote": "These documents must be turned into the Business Office located at 708 8th Street, Amour, SD 57313.",
+     "source_id": "fap-129f4de2a628f482",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": {
+     "value": 240,
+     "layer": "documented",
+     "quote": "All patients will have the opportunity to apply for financial assistance for at least the first 240 days from the first post discharge billing statement.",
+     "source_id": "fap-129f4de2a628f482",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days": null,
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": {
+     "value": 120,
+     "layer": "documented",
+     "quote": "There will be no extraordinary collection activities (ECA) taken by DCMH during the first 120 days from the first post discharge statement.",
+     "source_id": "fap-129f4de2a628f482",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "605-724-2159",
+     "layer": "documented",
+     "quote": "they can be contacted at 605-724-2159",
+     "source_id": "fap-129f4de2a628f482",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": null,
+    "languages": null
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-129f4de2a628f482",
+     "kind": "hospital_web",
+     "url": "https://dcmhsd.org/wp-content/uploads/2024/10/Financial-Assistance-Policy.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "129f4de2a628f482febe7305d5c2b9639be9bf02bac59d0a309a42edf7a6bd7e",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: 151-175% of Poverty Guidelines 50% Discount | 176-200% of Poverty Guidelines 35% Discount",
+    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Business Office, and they can be contacted at 605-724-2159."
+   ]
+  },
+  {
+   "hospital": {
+    "ccn": "431309",
+    "name": "COMMUNITY MEMORIAL HOSPITAL",
+    "city": "BURKE",
+    "state": "SD",
+    "zip": "57523",
+    "phone": "605-775-2621",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "cmhburke.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "150",
+     "layer": "documented",
+     "quote": "0-150% of Poverty Guidelines 100% Discount",
+     "source_id": "fap-f4c1481fa5e1e8c5",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "150",
+       "max_fpl_inclusive": "200",
+       "discount_percent": 75
+      },
+      {
+       "min_fpl_exclusive": "200",
+       "max_fpl_inclusive": "250",
+       "discount_percent": 50
+      },
+      {
+       "min_fpl_exclusive": "250",
+       "max_fpl_inclusive": "300",
+       "discount_percent": 25
+      }
+     ],
+     "layer": "documented",
+     "quote": "151-200% of Poverty Guidelines 75% Discount",
+     "source_id": "fap-f4c1481fa5e1e8c5",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "assistance_ceiling_fpl": {
+     "value": "300",
+     "layer": "documented",
+     "quote": "301% or above of Poverty Guidelines 0% Discount",
+     "source_id": "fap-f4c1481fa5e1e8c5",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "asset_test": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Take into account the patient\u2019s available assets, and all other financial resources available to the patient",
+     "source_id": "fap-f4c1481fa5e1e8c5",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "residency": {
+     "value": [
+      "Applicants should apply for Medicaid and any other potential financial assistance programs before completing the application for Financial Assistance including County Poor Relief if applicant is a South Dakota resident."
+     ],
+     "layer": "documented",
+     "quote": "Applicants should apply for Medicaid and any other potential financial assistance programs before completing the application for Financial Assistance including County Poor Relief if applicant is a South Dakota resident.",
+     "source_id": "fap-f4c1481fa5e1e8c5",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Community Memorial Hospital shall determine whether or not patients are eligible to receive charity for deductibles, co-insurance, or co-payment responsibilities.",
+     "source_id": "fap-f4c1481fa5e1e8c5",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": {
+     "value": [
+      "State-funded prescription programs",
+      "Homeless or received care from a homeless clinic",
+      "Participation in Women, Infants and Children programs (WIC)",
+      "Food stamp eligibility",
+      "Subsidized school lunch program eligibility",
+      "Eligibility for other state or local assistance program that are unfunded (e.g., Medicaid spend-down)",
+      "Low income/subsidized housing is provided as a valid address",
+      "Patient is deceased with no known estate"
+     ],
+     "layer": "documented",
+     "quote": "1. State-funded prescription programs;",
+     "source_id": "fap-f4c1481fa5e1e8c5",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "state_programs": {
+     "value": [
+      {
+       "name": "County Poor Relief",
+       "how_to_apply": "You can apply for County Poor Relief at your local County Court House."
+      }
+     ],
+     "layer": "documented",
+     "quote": "If you are a resident of South Dakota, you should also apply for County Poor Relief before applying for Financial Assistance. You can apply for County Poor Relief at your local County Court House.",
+     "source_id": "fap-df75674563f0ab0f",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
+   },
+   "apply": {
+    "form_url": {
+     "value": "https://www.cmhburke.org/_files/ugd/d34dac_749db016462a47e298ece4287e049dfd.pdf",
+     "layer": "documented",
+     "quote": "Financial Assistance [https://www.cmhburke.org/_files/ugd/d34dac_749db016462a47e298ece4287e049dfd.pdf]",
+     "source_id": "web-3b66fcd1991cfc38",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "tax_return",
+      "bank_statements"
+     ],
+     "layer": "documented",
+     "quote": "the patient must furnish a copy of last year\u2019s tax return, last three month\u2019s income or a bank statement for proof of income, checking and savings account balances and investment account balances",
+     "source_id": "fap-f4c1481fa5e1e8c5",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "Please return your completed application, along with supporting documentation to the Business Office at Community Memorial Hospital."
+      },
+      {
+       "kind": "phone",
+       "detail": "(605) 775-2621"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Please return your completed application, along with supporting documentation to the Business Office at Community Memorial Hospital.",
+     "source_id": "fap-df75674563f0ab0f",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": {
+     "value": 240,
+     "layer": "documented",
+     "quote": "Accounts eligible for Charity Care are to be addressed within 240 days of first bill.",
+     "source_id": "fap-f4c1481fa5e1e8c5",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days": {
+     "value": 30,
+     "layer": "documented",
+     "quote": "Community Memorial Hospital shall notify the patient or applicant in writing within 30 days of receipt of a completed application.",
+     "source_id": "fap-f4c1481fa5e1e8c5",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "605-775-2621",
+     "layer": "documented",
+     "quote": "Call 605-775-2621",
+     "source_id": "web-3b66fcd1991cfc38",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": {
+     "value": "8:00 AM - 5:00 PM, Monday to Friday",
+     "layer": "documented",
+     "quote": "Our office hours are 8:00 AM - 5:00 PM, Monday to Friday.",
+     "source_id": "web-3b66fcd1991cfc38",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "languages": null
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-f4c1481fa5e1e8c5",
+     "kind": "hospital_web",
+     "url": "https://3eaca508-1f5c-46af-8f5e-0e582443dc7d.filesusr.com/ugd/facd1a_12baa3f946d84d798686e2fdb9761234.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "f4c1481fa5e1e8c583637b416c51fc46735b00336f41b244a6c521545ab4d4e7",
+     "effective_date": null
+    },
+    {
+     "id": "fap-df75674563f0ab0f",
+     "kind": "hospital_web",
+     "url": "https://www.cmhburke.org/_files/ugd/d34dac_c71ddba0e9f445958c002bb0b72b6e47.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "df75674563f0ab0f1030b2ea47b9e9cf3d57c3457faf8d218e95488fe3252ce4",
+     "effective_date": null
+    },
+    {
+     "id": "web-3b66fcd1991cfc38",
+     "kind": "hospital_web",
+     "url": "https://www.cmhburke.org/patientsandvisitors",
+     "title": "Patients & Visitors | Community Memorial Hospital",
+     "fetched_on": "2026-10-23",
+     "sha256": "3b66fcd1991cfc38529141ec3224a39eba9fdc4bcc2f7c9036b619efc1ecc890",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: 201-250% of Poverty Guidelines 50% Discount | 251-300% of Poverty Guidelines 25% Discount",
+    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: 2. Homeless or received care from a homeless clinic; | 7. Low income/subsidized housing is provided as a valid address; and, 8. Patient is deceased with no known estate.",
+    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Community Memorial Hospital Business Office Manager at (605) 775-2621",
+    "agent judge on programs.presumptive: Quote shows only items 1, 2, 7, and 8. Value includes WIC, food stamp, school lunch, and other state/local program items that the quote does not show."
+   ]
+  },
+  {
+   "hospital": {
+    "ccn": "431313",
+    "name": "FREEMAN MEDICAL CENTER - CAH",
+    "city": "FREEMAN",
+    "state": "SD",
+    "zip": "57029",
+    "phone": "605-925-4000",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "freemanregional.com",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "150",
+     "layer": "documented",
+     "quote": "who have family incomes not in excess of 150% of the Federal Poverty Guidelines may be eligible to receive 100% Charity care based on their financial assistance application",
+     "source_id": "fap-e06f13c6f4405bd3",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "150",
+       "max_fpl_inclusive": "400",
+       "discount_percent": 50
+      }
+     ],
+     "layer": "documented",
+     "quote": "Uninsured and underinsured patients whose income/family income is greater than 150% of the Federal Poverty Guidelines may be granted up to 50% forgiveness of their charges for emergent or medically necessary care based on a sliding scale.",
+     "source_id": "fap-e06f13c6f4405bd3",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "assistance_ceiling_fpl": null,
+    "asset_test": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Patient\u2019s assets will be taken into account for eligibility even if his or her income/family income is at or below 400% of the Federal Poverty Guidelines.",
+     "source_id": "fap-e06f13c6f4405bd3",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "residency": {
+     "value": [
+      "Freeman Regional offers financial assistance to patients who live in our service area that have healthcare needs and are uninsured, underinsured, or are not eligible for a government or any other insurance programs."
+     ],
+     "layer": "documented",
+     "quote": "Freeman Regional offers financial assistance to patients who live in our service area that have healthcare needs and are uninsured, underinsured, or are not eligible for a government or any other insurance programs.",
+     "source_id": "web-aa881d995b9758b6",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "insured_patients_covered": null,
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": {
+     "value": [
+      "Homeless or received care from a homeless clinic",
+      "No income",
+      "Participation in Women's, Infant's and Children's programs (WIC)",
+      "Food stamp eligibility"
+     ],
+     "layer": "documented",
+     "quote": "Homeless or received care from a homeless clinic No income Participation in Women\u2019s, Infant\u2019s and Children\u2019s programs (WIC) Food stamp eligibility",
+     "source_id": "fap-e06f13c6f4405bd3",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "state_programs": {
+     "value": [
+      {
+       "name": "County Poor Relief",
+       "how_to_apply": "If you are a resident of South Dakota, you must also apply for County Poor Relief before applying for Financial Assistance."
+      }
+     ],
+     "layer": "documented",
+     "quote": "If you are a resident of South Dakota, you must also apply for County Poor Relief before applying for Financial Assistance.",
+     "source_id": "fap-e06f13c6f4405bd3",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
+   },
+   "apply": {
+    "form_url": {
+     "value": "https://freemanregional.com/wp-content/uploads/2025/05/CharityCare-2025-english-3.pdf",
+     "layer": "documented",
+     "quote": "Click here for the English version [https://freemanregional.com/wp-content/uploads/2025/05/CharityCare-2025-english-3.pdf]",
+     "source_id": "web-aa881d995b9758b6",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "other",
+      "tax_return",
+      "pay_stubs",
+      "bank_statements"
+     ],
+     "layer": "documented",
+     "quote": "Copies of documents to substantiate income levels and assets shall be provided by the patient/guarantor (e.g.: W-2, most recent Tax Return, Pay Stubs, and/or Bank Statements)",
+     "source_id": "fap-e06f13c6f4405bd3",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "Mail completed applications and forms to PO Box 370, Freeman, SD 57029"
+      },
+      {
+       "kind": "in_person",
+       "detail": "drop them off at the business office"
+      },
+      {
+       "kind": "phone",
+       "detail": "Contact the business office at 605-925-4000"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Mail completed applications and forms with your most recent W-2, tax returns, pay stubs and bank statements to PO Box 370, Freeman, SD 57029 or drop them off at the business office.",
+     "source_id": "web-aa881d995b9758b6",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": {
+     "value": 240,
+     "layer": "documented",
+     "quote": "FRHS will allow 240 days from the first post discharge billing statement for patients to apply for financial assistance.",
+     "source_id": "fap-e06f13c6f4405bd3",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days": {
+     "value": 21,
+     "layer": "documented",
+     "quote": "Applications will be scored and determination letters sent to the patient or guardian within 3 weeks of receipt.",
+     "source_id": "fap-e06f13c6f4405bd3",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": {
+     "value": 120,
+     "layer": "documented",
+     "quote": "FRHS will allow all patients 120 days from the first post discharge statement to apply for financial assistance before initiating any extraordinary collection activities (ECA).",
+     "source_id": "fap-e06f13c6f4405bd3",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "605-925-4000",
+     "layer": "documented",
+     "quote": "Please contact 605-925-4000 for assistance.",
+     "source_id": "fap-e06f13c6f4405bd3",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": null,
+    "languages": {
+     "value": [
+      "English",
+      "Spanish"
+     ],
+     "layer": "documented",
+     "quote": "Click here for the English version [https://freemanregional.com/wp-content/uploads/2025/05/CharityCare-2025-english-3.pdf]",
+     "source_id": "web-aa881d995b9758b6",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-e06f13c6f4405bd3",
+     "kind": "hospital_web",
+     "url": "https://freemanregional.com/wp-content/uploads/2025/05/CharityCare-2025-english-3.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "e06f13c6f4405bd3063ecaea7f2543fdcbe868bc1991524e44a37829a5beab6b",
+     "effective_date": null
+    },
+    {
+     "id": "fap-ab9dbde804cbd224",
+     "kind": "hospital_web",
+     "url": "https://freemanregional.com/wp-content/uploads/2025/05/FRHSClarity.Spanish-2.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "ab9dbde804cbd22405d0b9f94593379b0fa8607f09888b6e39678d268d72f0cf",
+     "effective_date": null
+    },
+    {
+     "id": "web-aa881d995b9758b6",
+     "kind": "hospital_web",
+     "url": "https://freemanregional.com/financial-assistance/",
+     "title": "Financial Assistance \u2013 Freeman Regional Health Services",
+     "fetched_on": "2026-10-23",
+     "sha256": "aa881d995b9758b691e0f92b82f99ad958f0a3117f2bb455bab3066f3313d427",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Contact the business office at 605-925-4000. Let them know you\u2019re requesting financial assistance.",
+    "contacts.languages: 1 more verbatim excerpt(s) supported this value: Click here for the Spanish version [https://freemanregional.com/wp-content/uploads/2025/05/FRHSClarity.Spanish-2.pdf]",
+    "agent judge on eligibility.discount_tiers: Quote gives the 150% lower bound and up to 50% forgiveness on a sliding scale, but does not state the 400% upper bound."
+   ]
+  },
+  {
+   "hospital": {
+    "ccn": "431319",
+    "name": "HANS P PETERSON MEMORIAL HOSPITAL - CAH",
+    "city": "PHILIP",
+    "state": "SD",
+    "zip": "57567",
+    "phone": "605-859-2511",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "philiphealthservices.com",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "100",
+     "layer": "documented",
+     "quote": "If the household gross income is less than or equal to 100% of the FPG, 100% of the patient\u2019s eligible balance will be forgiven.",
+     "source_id": "fap-a0332452c78e4223",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": null,
+    "assistance_ceiling_fpl": null,
+    "asset_test": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Net worth will also be considered when determining eligibility. Regardless of income, your debt to Philip Health Services, Inc. must be more than 20% of your net worth (assets minus liabilities) to be eligible for financial assistance.",
+     "source_id": "fap-a0332452c78e4223",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "residency": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "offers financial assistance to qualified patients who are exempt from insurance in accordance with the ACA (Affordable Care Act) or are underinsured and do not have adequate resources to pay for medically necessary services",
+     "source_id": "fap-a0332452c78e4223",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
+    "state_programs": {
+     "value": [
+      {
+       "name": "SD Medicaid",
+       "how_to_apply": "CALL 605-773-4678 TO APPLY BY PHONE FOR SD MEDICAID Or login at www.dds.sd.gov"
+      }
+     ],
+     "layer": "documented",
+     "quote": "CALL 605-773-4678 TO APPLY BY PHONE FOR SD MEDICAID Or login at www.dds.sd.gov",
+     "source_id": "fap-b13272b33fa43265",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
+   },
+   "apply": {
+    "form_url": {
+     "value": "https://www.philiphealthservices.com/wp-content/uploads/2026/01/FINANCIAL-ASSISTANCE-Application-Attachment-B-2026.pdf",
+     "layer": "documented",
+     "quote": "FINANCIAL ASSISTANCE [https://www.philiphealthservices.com/wp-content/uploads/2026/01/FINANCIAL-ASSISTANCE-Application-Attachment-B-2026.pdf]",
+     "source_id": "web-199b6b52eb1e380f",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "pay_stubs",
+      "other",
+      "tax_return",
+      "proof_of_income",
+      "bank_statements",
+      "social_security_letter"
+     ],
+     "layer": "documented",
+     "quote": "Documentation of income for 3 months \u2013 current pay stubs",
+     "source_id": "fap-b13272b33fa43265",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "phone",
+       "detail": "(605) 859-2511"
+      },
+      {
+       "kind": "mail",
+       "detail": "Philip Health Services, Inc., P.O. Box 790, Philip, SD 57567"
+      },
+      {
+       "kind": "portal",
+       "detail": "www. philiphealthservices.com"
+      }
+     ],
+     "layer": "documented",
+     "quote": "1. Telephone: (605) 859-2511",
+     "source_id": "fap-a0332452c78e4223",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": {
+     "value": 180,
+     "layer": "documented",
+     "quote": "The application must be received within 180 days after discharge.",
+     "source_id": "fap-a0332452c78e4223",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days": {
+     "value": 30,
+     "layer": "documented",
+     "quote": "A written determination of your eligibility will be provided within 30 days of receipt of the completed application with all necessary supporting documentation.",
+     "source_id": "fap-b13272b33fa43265",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "(605) 859-2511",
+     "layer": "documented",
+     "quote": "call us at (605) 859-2511, ext. 3905.",
+     "source_id": "web-199b6b52eb1e380f",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": null,
+    "languages": {
+     "value": [
+      "English"
+     ],
+     "layer": "documented",
+     "quote": "Each document is available in English and in the primary language of any populations with limited proficiency in English",
+     "source_id": "fap-a0332452c78e4223",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-a0332452c78e4223",
+     "kind": "hospital_web",
+     "url": "https://www.philiphealthservices.com/wp-content/uploads/2021/06/Financial-Assistance-Policy-PHS-2018-1.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "a0332452c78e4223824c81314db0b28e1d20fdf3033b0d2ff90a73fd43edd542",
+     "effective_date": null
+    },
+    {
+     "id": "fap-b13272b33fa43265",
+     "kind": "hospital_web",
+     "url": "https://www.philiphealthservices.com/wp-content/uploads/2026/01/FINANCIAL-ASSISTANCE-Application-Attachment-B-2026.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "b13272b33fa43265bd735a6cd6a8903ee4013400e040e9c427f8c718e2b0e22d",
+     "effective_date": null
+    },
+    {
+     "id": "web-199b6b52eb1e380f",
+     "kind": "hospital_web",
+     "url": "https://www.philiphealthservices.com/patients-visitors/financial-assistance/",
+     "title": "Financial Assistance - Philip Health",
+     "fetched_on": "2026-10-23",
+     "sha256": "199b6b52eb1e380f20e6da356c699139d391fea610f6b8d600d2cb26d80bf8d1",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Completed Financial Statement \u2013 attached | Tax Return \u2013 including ALL pages and ALL Applicable W-2\u2019s",
+    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: 2. Address: Philip Health Services, Inc., P.O. Box 790, Philip, SD 57567 | 3. Website: www. philiphealthservices.com",
+    "agent dropped eligibility.discount_tiers: excerpt not in source: Household Size Income Household Size Income Income 100 % Wri",
+    "agent dropped eligibility.assistance_ceiling_fpl: quote is not a substring of the source",
+    "agent dropped programs.presumptive: quote is not a substring of the source",
+    "agent judge on apply.window_days_from_first_bill: Quote says application must be received within 180 days after discharge, not days from first bill.",
+    "agent judge on contacts.languages: Quote says documents are available in English and other primary languages of limited-English populations, so English alone is not the full value."
+   ]
+  },
+  {
+   "hospital": {
+    "ccn": "431320",
+    "name": "MONUMENT HEALTH LEAD-DEADWOOD HOSPITAL",
+    "city": "DEADWOOD",
+    "state": "SD",
+    "zip": "57732",
+    "phone": "605-717-6000",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "monument.health",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": null,
+    "discount_tiers": null,
+    "assistance_ceiling_fpl": null,
+    "asset_test": null,
+    "residency": null,
+    "insured_patients_covered": null,
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": {
+     "value": "https://monument.health/wp-content/uploads/2025/04/Financial-Assistance-Application.pdf",
+     "layer": "documented",
+     "quote": "Financial Assistance Application",
+     "source_id": "fap-f82e64dbdf7adf1d",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "form_version": null,
+    "documents_required": null,
+    "documents_reported": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "USPS mail all documents to PO Box 6000, Rapid City, SD 57709."
+      },
+      {
+       "kind": "in_person",
+       "detail": "Return to any Monument Health patient registration area"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Return to any Monument Health patient registration area or USPS mail all documents to PO Box 6000, Rapid City, SD 57709.",
+     "source_id": "fap-f82e64dbdf7adf1d",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": null,
+    "decision_days": null,
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "605-755-2455",
+     "layer": "documented",
+     "quote": "For more information please call us at 605-755-2455 weekdays 8 a.m. to 4:30 p.m.",
+     "source_id": "web-a26e7901d7350861",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": {
+     "value": "weekdays 8 a.m. to 4:30 p.m.",
+     "layer": "documented",
+     "quote": "For more information please call us at 605-755-2455 weekdays 8 a.m. to 4:30 p.m.",
+     "source_id": "web-a26e7901d7350861",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "languages": null
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-31fb54b5c070ec85",
+     "kind": "hospital_web",
+     "url": "https://monument.health/wp-content/uploads/2025/01/Monument-Health-Charity-Care-Discounting-Policy.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "31fb54b5c070ec854ea89ec8a2d4a34d1b78526f78a5c68f01e404cf677a4376",
+     "effective_date": null
+    },
+    {
+     "id": "fap-f82e64dbdf7adf1d",
+     "kind": "hospital_web",
+     "url": "https://monument.health/wp-content/uploads/2025/04/Financial-Assistance-Application.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "f82e64dbdf7adf1d4e75d254db290afe28aa7c90989fc7182e0e01aed158abae",
+     "effective_date": null
+    },
+    {
+     "id": "web-a26e7901d7350861",
+     "kind": "hospital_web",
+     "url": "https://monument.health/billing-and-payments/",
+     "title": "Billing and Payments - Monument Health",
+     "fetched_on": "2026-10-23",
+     "sha256": "a26e7901d73508613bc71009df02d2a22302bf5b0d0d6d53c3fddc33ebc08084",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "agent dropped apply.documents_required: excerpt not in source: The employment information is fully complete for all applica",
+    "agent judge on apply.form_url: Quote gives the form's title only; it does not state the URL value."
+   ]
+  },
+  {
+   "hospital": {
+    "ccn": "431321",
+    "name": "MONUMENT HEALTH STURGIS HOSPITAL",
+    "city": "STURGIS",
+    "state": "SD",
+    "zip": "57785",
+    "phone": "605-720-2400",
+    "ownership": "Voluntary non-profit - Other",
+    "website_domain": "monument.health",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": null,
+    "discount_tiers": null,
+    "assistance_ceiling_fpl": null,
+    "asset_test": null,
+    "residency": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "My employer offers health insurance and I am covered by the plan.",
+     "source_id": "fap-f82e64dbdf7adf1d",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "pay_stubs",
+      "tax_return",
+      "other"
+     ],
+     "layer": "documented",
+     "quote": "Documented proof of all income is required and must accompany your application:",
+     "source_id": "fap-f82e64dbdf7adf1d",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "in_person",
+       "detail": "Return to any Monument Health patient registration area"
+      },
+      {
+       "kind": "mail",
+       "detail": "USPS mail all documents to PO Box 6000, Rapid City, SD 57709"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Return to any Monument Health patient registration area or USPS mail all documents to PO Box 6000, Rapid City, SD 57709.",
+     "source_id": "fap-f82e64dbdf7adf1d",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": null,
+    "decision_days": null,
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "605-755-2455",
+     "layer": "documented",
+     "quote": "For more information please call us at 605-755-2455 weekdays 8 a.m. to 4:30 p.m.",
+     "source_id": "web-a26e7901d7350861",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": {
+     "value": "weekdays 8 a.m. to 4:30 p.m.",
+     "layer": "documented",
+     "quote": "For more information please call us at 605-755-2455 weekdays 8 a.m. to 4:30 p.m.",
+     "source_id": "web-a26e7901d7350861",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "languages": null
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-31fb54b5c070ec85",
+     "kind": "hospital_web",
+     "url": "https://monument.health/wp-content/uploads/2025/01/Monument-Health-Charity-Care-Discounting-Policy.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "31fb54b5c070ec854ea89ec8a2d4a34d1b78526f78a5c68f01e404cf677a4376",
+     "effective_date": null
+    },
+    {
+     "id": "fap-f82e64dbdf7adf1d",
+     "kind": "hospital_web",
+     "url": "https://monument.health/wp-content/uploads/2025/04/Financial-Assistance-Application.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "f82e64dbdf7adf1d4e75d254db290afe28aa7c90989fc7182e0e01aed158abae",
+     "effective_date": null
+    },
+    {
+     "id": "web-a26e7901d7350861",
+     "kind": "hospital_web",
+     "url": "https://monument.health/billing-and-payments/",
+     "title": "Billing and Payments - Monument Health",
+     "fetched_on": "2026-10-23",
+     "sha256": "a26e7901d73508613bc71009df02d2a22302bf5b0d0d6d53c3fddc33ebc08084",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: HOUSEHOLD EMPLOYMENT INCOME INFORMATION Supporting Documents Needed: 3 mo Current and All Consecutive Pay Stubs | OTHER HOUSEHOLD INCOME SOURCES Must Provide Copies of All Supporting Documents",
+    "agent dropped eligibility.asset_test: quote is not a substring of the source",
+    "agent judge on eligibility.insured_patients_covered: Quote says the patient is covered by an employer plan; it does not state that insured patients are covered by financial assistance."
+   ]
+  },
+  {
+   "hospital": {
+    "ccn": "431323",
+    "name": "MONUMENT HEALTH CUSTER HOSPITAL",
+    "city": "CUSTER",
+    "state": "SD",
+    "zip": "57730",
+    "phone": "605-673-9400",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "monument.health",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": null,
+    "discount_tiers": null,
+    "assistance_ceiling_fpl": null,
+    "asset_test": null,
+    "residency": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "This includes deductibles and/or co-pay amounts.",
+     "source_id": "web-a26e7901d7350861",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": {
+     "value": "https://monument.health/wp-content/uploads/2025/04/Financial-Assistance-Application.pdf",
+     "layer": "documented",
+     "quote": "Financial Assistance Application",
+     "source_id": "fap-f82e64dbdf7adf1d",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "pay_stubs",
+      "tax_return",
+      "proof_of_income"
+     ],
+     "layer": "documented",
+     "quote": "Documented proof of all income is required and must accompany your application:",
+     "source_id": "fap-f82e64dbdf7adf1d",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "USPS mail all documents to PO Box 6000, Rapid City, SD 57709"
+      },
+      {
+       "kind": "in_person",
+       "detail": "Return to any Monument Health patient registration area"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Return to any Monument Health patient registration area or USPS mail all documents to PO Box 6000, Rapid City, SD 57709.",
+     "source_id": "fap-f82e64dbdf7adf1d",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": null,
+    "decision_days": null,
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "605-755-2455",
+     "layer": "documented",
+     "quote": "For more information please call us at 605-755-2455 weekdays 8 a.m. to 4:30 p.m.",
+     "source_id": "web-a26e7901d7350861",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": {
+     "value": "weekdays 8 a.m. to 4:30 p.m.",
+     "layer": "documented",
+     "quote": "For more information please call us at 605-755-2455 weekdays 8 a.m. to 4:30 p.m.",
+     "source_id": "web-a26e7901d7350861",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "languages": null
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-31fb54b5c070ec85",
+     "kind": "hospital_web",
+     "url": "https://monument.health/wp-content/uploads/2025/01/Monument-Health-Charity-Care-Discounting-Policy.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "31fb54b5c070ec854ea89ec8a2d4a34d1b78526f78a5c68f01e404cf677a4376",
+     "effective_date": null
+    },
+    {
+     "id": "fap-f82e64dbdf7adf1d",
+     "kind": "hospital_web",
+     "url": "https://monument.health/wp-content/uploads/2025/04/Financial-Assistance-Application.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "f82e64dbdf7adf1d4e75d254db290afe28aa7c90989fc7182e0e01aed158abae",
+     "effective_date": null
+    },
+    {
+     "id": "web-a26e7901d7350861",
+     "kind": "hospital_web",
+     "url": "https://monument.health/billing-and-payments/",
+     "title": "Billing and Payments - Monument Health",
+     "fetched_on": "2026-10-23",
+     "sha256": "a26e7901d73508613bc71009df02d2a22302bf5b0d0d6d53c3fddc33ebc08084",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: 3 months of current and consecutive paystubs are included. | If self-employed, the most recent federal tax returns are provided, including Schedules C, E, and F.",
+    "agent dropped eligibility.asset_test: quote is not a substring of the source",
+    "agent judge on eligibility.insured_patients_covered: Quote only says the program includes deductibles and/or co-pay amounts; it does not state whether insured patients are covered.",
+    "agent judge on apply.form_url: Quote gives the form name 'Financial Assistance Application' but no URL; the URL itself is not stated in the quote."
+   ]
+  },
+  {
+   "hospital": {
+    "ccn": "431325",
+    "name": "MOBRIDGE REGIONAL HOSPITAL - CAH",
+    "city": "MOBRIDGE",
+    "state": "SD",
+    "zip": "57601",
+    "phone": "605-845-3692",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "mobridgehospital.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "100",
+     "layer": "documented",
+     "quote": "Patients whose family income is at or below 100% of the FPL are eligible to receive free care for professional services rendered by a medical provider.",
+     "source_id": "fap-23f074ddc7a0b452",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "100",
+       "max_fpl_inclusive": "200",
+       "discount_percent": 50
+      }
+     ],
+     "layer": "documented",
+     "quote": "Patient whose family income is over 100% and below 200% of the FPL would be eligible for up to a 50% discount.",
+     "source_id": "fap-23f074ddc7a0b452",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "assistance_ceiling_fpl": null,
+    "asset_test": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Checking Account (balance, name of bank):___________________________________________________ Savings Account (balance name of bank):_____________________________________________________",
+     "source_id": "fap-ddc49bb106f8623e",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "residency": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "This policy serves to establish a fair and consistent method for uninsured and under-insured patients to apply and be considered for financial assistance related to emergency and other medically necessary hospital care.",
+     "source_id": "fap-23f074ddc7a0b452",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": {
+     "value": [
+      "State-funded prescription programs",
+      "Homeless or received care from a homeless clinic",
+      "Participation in Women, Infants and Children programs (WIC)",
+      "Food stamp eligibility",
+      "Subsidized school lunch program eligibility",
+      "Eligibility for other state or local assistance program that are unfunded (e.g., Medicaid spend-down)",
+      "Low income/subsidized housing is provided as a valid address",
+      "Patient is deceased with no known estate"
+     ],
+     "layer": "documented",
+     "quote": "1. State-funded prescription programs;",
+     "source_id": "fap-23f074ddc7a0b452",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "tax_return",
+      "other",
+      "pay_stubs"
+     ],
+     "layer": "documented",
+     "quote": "[]Signed Federal Income Tax Return(most recent filed year) []W-2 Withholding Forms(1040) []Pay Stubs(one month) []Approval/Denial Form for Worker\u2019s Compensation []Oral or written verification from Public Welfare Agency/ County Social Services",
+     "source_id": "fap-ddc49bb106f8623e",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": null,
+    "window_days_from_first_bill": {
+     "value": 240,
+     "layer": "documented",
+     "quote": "Accounts eligible for Financial Assistance are to be addressed within 240 days of first bill.",
+     "source_id": "fap-23f074ddc7a0b452",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days": {
+     "value": 30,
+     "layer": "documented",
+     "quote": "Mobridge Regional Hospital and Clinic shall notify the patient or applicant in writing within 30 days of receipt of a completed application.",
+     "source_id": "fap-23f074ddc7a0b452",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "(605) 845-3692",
+     "layer": "documented",
+     "quote": "Phone: (605) 845-3692",
+     "source_id": "web-3082d817869f4b34",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": null,
+    "languages": {
+     "value": [
+      "primary language",
+      "any other language spoken by 5% of the community population"
+     ],
+     "layer": "documented",
+     "quote": "Such notices and summary information shall be provided in the primary language spoken and any other language spoken by 5% of the community population serviced by Mobridge Regional Hospital and Clinic.",
+     "source_id": "fap-23f074ddc7a0b452",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-23f074ddc7a0b452",
+     "kind": "hospital_web",
+     "url": "https://www.mobridgehospital.org/image/cache/Financial_Assistance_Policy_1-1-26.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "23f074ddc7a0b452be21cdee2652aaf7f1b2248aadee7c8069aed9785b5d60d2",
+     "effective_date": null
+    },
+    {
+     "id": "fap-ddc49bb106f8623e",
+     "kind": "hospital_web",
+     "url": "https://mobridgehospital.org/image/cache/FINANCIAL_ASSISTANCE_APPLICATION-updated_05.01.23.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "ddc49bb106f8623eac0427792bf559b1e856797eb94787bddde819cfefad2c9e",
+     "effective_date": null
+    },
+    {
+     "id": "web-3082d817869f4b34",
+     "kind": "hospital_web",
+     "url": "https://www.mobridgehospital.org/patients-and-visitors/pay-a-bill/financial-assistance/",
+     "title": "Financial Assistance - Mobridge Regional Hospital and Clinics",
+     "fetched_on": "2026-10-23",
+     "sha256": "3082d817869f4b3461e052a08293e3fa87fb202b8eb99969f9831a7d4eb43ce7",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "eligibility.discount_tiers: 200-200% at 0% is no discount; skipped",
+    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: Patients whose family income exceeds 200% of the FPL may be eligible to receive discounted rates on a case-by-case basis",
+    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: 2. Homeless or received care from a homeless clinic; | 3. Participation in Women, Infants and Children programs (WIC);",
+    "apply.form_url: not an absolute URL ('/image/cache/FINANCIAL_ASSISTANCE_APPLICATION-ADMIN05MKT.pdf'); dropped",
+    "agent judge on eligibility.discount_tiers: Quote gives up to 50% discount for over 100% to below 200% FPL, but for above 200% only says case-by-case discounted rates; no 0% tier stated, and the 200-200 tier is not in the quote.",
+    "agent judge on eligibility.asset_test: Quote is a blank form showing bank account fields; it does not state that assets are considered.",
+    "agent judge on eligibility.insured_patients_covered: Quote says the policy covers uninsured and under-insured patients; it does not say insured patients are covered, so value true is not stated.",
+    "agent judge on programs.presumptive: Quote lists only three presumptive programs (state-funded prescriptions, homeless care, WIC); the remaining five values are not in the quote.",
+    "agent judge on apply.documents_required: Quote lists tax return, W-2, pay stubs, worker's comp form, and welfare verification with checkboxes; checkbox form does not clearly state these are required, and pay stubs say one month.",
+    "agent judge on contacts.languages: Quote says notices are provided in the primary language and any language spoken by 5% of the community; these are descriptions, not language names, so the recorded values are placeholders."
+   ]
+  },
+  {
+   "hospital": {
+    "ccn": "431328",
+    "name": "PIONEER MEMORIAL HOSPITAL - CAH",
+    "city": "VIBORG",
+    "state": "SD",
+    "zip": "57070",
+    "phone": "605-326-5161",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "pioneermemorial.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": null,
+    "discount_tiers": null,
+    "assistance_ceiling_fpl": {
+     "value": "350",
+     "layer": "documented",
+     "quote": "To qualify for financial assistance, your household income must be at or below 350 percent of the federal poverty level.",
+     "source_id": "web-6e14bf06e7dcab02",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "asset_test": null,
+    "residency": null,
+    "insured_patients_covered": null,
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": {
+     "value": "https://intuviosolutions.blob.core.windows.net/templator-uploads/Uploads/documents/45/New%20Finanical%20Assistance%20Application%20Revised%2001-01-2021.pdf",
+     "layer": "documented",
+     "quote": "Financial Assistance Application [https://intuviosolutions.blob.core.windows.net/templator-uploads/Uploads/documents/45/New%20Finanical%20Assistance%20Application%20Revised%2001-01-2021.pdf]",
+     "source_id": "web-6e14bf06e7dcab02",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "tax_return",
+      "pay_stubs"
+     ],
+     "layer": "documented",
+     "quote": "a financial assistance application must be submitted along with required documentation, such as income tax forms and pay stubs",
+     "source_id": "web-6e14bf06e7dcab02",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": null,
+    "window_days_from_first_bill": {
+     "value": 240,
+     "layer": "documented",
+     "quote": "extends through the 240th day after the first billing statement is sent to the patient or guarantor",
+     "source_id": "web-6e14bf06e7dcab02",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days": null,
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "605.326.5161",
+     "layer": "documented",
+     "quote": "605.326.5161 \u00b7 315 North Washington, PO Box 368, Viborg, SD 57070 \u00b7",
+     "source_id": "web-6e14bf06e7dcab02",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": null,
+    "languages": {
+     "value": [
+      "Spanish"
+     ],
+     "layer": "documented",
+     "quote": "To view the Pioneer Memorial Financial Assistance documents in Spanish (Espa\u00f1ol), please access the links below:",
+     "source_id": "web-6e14bf06e7dcab02",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "web-6e14bf06e7dcab02",
+     "kind": "hospital_web",
+     "url": "https://www.pioneermemorial.org/custom/financial-assistance",
+     "title": "Financial Assistance",
+     "fetched_on": "2026-10-23",
+     "sha256": "6e14bf06e7dcab0281848651484b310c233c40c70befd2ae0b2cabe0e0a8bb4d",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "agent dropped apply.submit_methods: excerpt not in source: Patient Financial Services, PO Box 368, Viborg, SD 57070-036",
+    "agent judge on contacts.languages: Quote only says the financial assistance documents are available in Spanish. It does not say contacts or staff speak Spanish."
+   ]
+  },
+  {
+   "hospital": {
+    "ccn": "431331",
+    "name": "AVERA DELLS AREA HOSPITAL  - CAH",
+    "city": "DELL RAPIDS",
+    "state": "SD",
+    "zip": "57022",
+    "phone": "605-428-5431",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "avera.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "250",
+     "layer": "documented",
+     "quote": "who have family incomes not in excess of 250% of the Federal Poverty Guidelines may be eligible to receive 100% charity care",
+     "source_id": "fap-db61ff74cd6247dd",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "250",
+       "max_fpl_inclusive": "400",
+       "discount_percent": 90
+      }
+     ],
+     "layer": "documented",
+     "quote": "Uninsured and under-insured patients whose income/family income is greater than 250% of the Federal Poverty Guidelines may be granted up to 90% forgiveness of their charges for emergent or medically necessary care based on a sliding scale.",
+     "source_id": "fap-db61ff74cd6247dd",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "assistance_ceiling_fpl": null,
+    "asset_test": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Patient's assets will be taken into account for eligibility even if his or her income/family income is at or below 400% of the Federal Poverty Guidelines.",
+     "source_id": "fap-db61ff74cd6247dd",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "residency": {
+     "value": [
+      "A patient is considered a member of the Avera service area if their county of residence is within the Avera Marketing defined service area."
+     ],
+     "layer": "documented",
+     "quote": "A patient is considered a member of the Avera service area if their county of residence is within the Avera Marketing defined service area.",
+     "source_id": "fap-db61ff74cd6247dd",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Charitable reductions provided by Avera to insured, under-insured and uninsured are compliant with all state and federal regulations.",
+     "source_id": "fap-db61ff74cd6247dd",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": {
+     "value": [
+      "Patient income below 250% Federal Poverty Guidelines and considered self-pay",
+      "Homeless or received care from a free Avera clinic",
+      "Participation in Women, Infant and Children program (WIC)",
+      "Food stamp eligibility",
+      "Subsidized school lunch program eligibility",
+      "Medicaid eligible patients"
+     ],
+     "layer": "documented",
+     "quote": "Patient income below 250% Federal Poverty Guidelines and considered self-pay",
+     "source_id": "fap-db61ff74cd6247dd",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "tax_return",
+      "pay_stubs",
+      "bank_statements"
+     ],
+     "layer": "documented",
+     "quote": "income levels and assets shall be provided by the patient/guarantor (e.g.: Tax Return or W-2 if most recent Tax Returns are not available. If these documents are not available, then the most recent Pay Stubs and Bank Statements will be accepted.)",
+     "source_id": "fap-db61ff74cd6247dd",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "in_person",
+       "detail": "contacting the business office"
+      },
+      {
+       "kind": "portal",
+       "detail": "visiting www.avera.org to obtain all application materials"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Patients can apply for financial assistance by contacting the business office or by visiting www.avera.org to obtain all application materials.",
+     "source_id": "fap-db61ff74cd6247dd",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": {
+     "value": 240,
+     "layer": "documented",
+     "quote": "Avera organizations will allow 240 days from the first post discharge billing statement for individuals to apply for financial assistance.",
+     "source_id": "fap-db61ff74cd6247dd",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days": {
+     "value": 21,
+     "layer": "documented",
+     "quote": "Applications will be scored and determination letters sent to the patient or guardian within three weeks of receipt.",
+     "source_id": "fap-db61ff74cd6247dd",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": {
+     "value": 120,
+     "layer": "documented",
+     "quote": "Avera organizations will allow all individuals 120 days from the first post discharge statement to apply for financial assistance before initiating any extraordinary collection activities (ECA).",
+     "source_id": "fap-db61ff74cd6247dd",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "888-370-6525",
+     "layer": "documented",
+     "quote": "please contact our customer service department at 888-370-6525",
+     "source_id": "fap-db61ff74cd6247dd",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": null,
+    "languages": null
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-db61ff74cd6247dd",
+     "kind": "hospital_web",
+     "url": "http://www.avera.org/app/files/public/6b12ae61-682d-4d4e-83e9-9294397befb7/avera-financial-assistance-policy.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "db61ff74cd6247dd4525157d5e25bef9a3dc2c9276a35cb66d5c7458303a5c40",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Homeless or received care from a free Avera clinic | Participation in Women, Infant and Children program (WIC)",
+    "agent judge on eligibility.discount_tiers: Quote gives the 250% lower bound and 90% discount but never states the 400% upper bound, which the value requires.",
+    "agent judge on programs.presumptive: Quote lists only three presumptive categories (self-pay under 250%, homeless/free clinic, WIC). Food stamps, school lunch and Medicaid in the value are not in the quote."
+   ]
+  },
+  {
+   "hospital": {
+    "ccn": "431334",
+    "name": "WINNER REGIONAL HEALTHCARE CENTER - CAH",
+    "city": "WINNER",
+    "state": "SD",
+    "zip": "57580",
+    "phone": "605-842-7100",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "winnerregional.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "100",
+     "layer": "documented",
+     "quote": "Patients whose family income is at or below 100% of the FPL are eligible to receive free care;",
+     "source_id": "fap-e70e454f0903b11a",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "100",
+       "max_fpl_inclusive": "150",
+       "discount_percent": 50
+      }
+     ],
+     "layer": "documented",
+     "quote": "Patients whose family income is over 100% and below 150% of the FPL will be eligible for up to a 50% discount.",
+     "source_id": "fap-e70e454f0903b11a",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "assistance_ceiling_fpl": null,
+    "asset_test": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Take into account the patient\u2019s available assets, and all other financial resources available to the patient",
+     "source_id": "fap-e70e454f0903b11a",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "residency": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "Winner Regional Healthcare shall determine whether or not patients are eligible to receive financial assistance for deductibles, co-insurance, or co-payment responsibilities.",
+     "source_id": "fap-e70e454f0903b11a",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": {
+     "value": [
+      "State-funded prescription programs",
+      "Homeless or received care from a homeless clinic",
+      "Participation in Women, Infants and Children programs (WIC)",
+      "Food stamp eligibility",
+      "Subsidized school lunch program eligibility",
+      "Eligibility for other state or local assistance programs that are unfunded (e.g., Medicaid spend-down)",
+      "Low income/subsidized housing is provided as a valid address",
+      "Patient is deceased with no known estate"
+     ],
+     "layer": "documented",
+     "quote": "State-funded prescription programs;",
+     "source_id": "fap-e70e454f0903b11a",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "tax_return",
+      "pay_stubs"
+     ],
+     "layer": "documented",
+     "quote": "Submit sufficient documentation to establish financial need, including documents such as latest filed IRS tax return and the two most recent pay stubs.",
+     "source_id": "fap-e70e454f0903b11a",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "phone",
+       "detail": "605-842-7175"
+      },
+      {
+       "kind": "mail",
+       "detail": "745 East 8th Street, Winner, SD 57580"
+      },
+      {
+       "kind": "portal",
+       "detail": "www.winnerregional.org"
+      }
+     ],
+     "layer": "documented",
+     "quote": "By telephone at 605-842-7175",
+     "source_id": "fap-e70e454f0903b11a",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": {
+     "value": 240,
+     "layer": "documented",
+     "quote": "Accounts eligible for financial assistance are to be addressed within 240 days of first bill.",
+     "source_id": "fap-e70e454f0903b11a",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days": {
+     "value": 30,
+     "layer": "documented",
+     "quote": "Make a determination of the eligibility for financial assistance with 30 days of receipt a completed Financial Assistance Application.",
+     "source_id": "fap-e70e454f0903b11a",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": null,
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "605-842-7175",
+     "layer": "documented",
+     "quote": "By telephone at 605-842-7175",
+     "source_id": "fap-e70e454f0903b11a",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": null,
+    "languages": {
+     "value": [
+      "English"
+     ],
+     "layer": "documented",
+     "quote": "Such notices and summary information shall be provided in English and the primary language of any populations with limited English",
+     "source_id": "fap-e70e454f0903b11a",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-e70e454f0903b11a",
+     "kind": "hospital_web",
+     "url": "https://www.winnerregional.org/_files/ugd/be6ebf_0dd297385ebb42b3b3722a281e520523.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "e70e454f0903b11afede168c8c6aba3735a395d1ad6b3fbee89dcc62d06db85e",
+     "effective_date": null
+    },
+    {
+     "id": "fap-fb1141cd4232e14e",
+     "kind": "hospital_web",
+     "url": "https://www.winnerregional.org/_files/ugd/be6ebf_5a037956db914d1395ef53c01006b03f.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "fb1141cd4232e14ea225c5378bf99c1060e28c70b7d68b4c0bfa8486761f46a2",
+     "effective_date": null
+    },
+    {
+     "id": "web-28dd8ae062686486",
+     "kind": "hospital_web",
+     "url": "https://www.winnerregional.org/insurance-billing",
+     "title": "Insurance & Billing | Winner Regional Health",
+     "fetched_on": "2026-10-23",
+     "sha256": "28dd8ae062686486343ff76959c524b2b443abcd43bd0f5f637db8b1a1ad639a",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Homeless or received care from a homeless clinic; | Low income/subsidized housing is provided as a valid address; and",
+    "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: By Mail at 745 East 8th Street, Winner, SD 57580 | By visiting www.winnerregional.org",
+    "agent judge on eligibility.discount_tiers: Quote says 'below 150%' (exclusive), but value sets max_fpl_inclusive to 150. The bound does not match.",
+    "agent judge on eligibility.insured_patients_covered: Quote says the hospital will determine whether patients are eligible for help with cost-sharing. It does not state insured patients are covered.",
+    "agent judge on programs.presumptive: Quote lists only three presumptive categories (state-funded prescriptions, homeless, subsidized housing). Value lists eight, including WIC, food stamps, and deceased patients.",
+    "agent judge on apply.documents_required: Quote gives the tax return and pay stubs only as examples ('documents such as'), not as a required list.",
+    "agent judge on contacts.languages: Quote says notices are provided in English and the primary language of populations with limited English, so English alone is incomplete."
+   ]
+  },
+  {
+   "hospital": {
+    "ccn": "431335",
+    "name": "HURON REGIONAL MEDICAL CENTER",
+    "city": "HURON",
+    "state": "SD",
+    "zip": "57350",
+    "phone": "605-353-6200",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "huronregional.org",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": null,
+    "discount_tiers": null,
+    "assistance_ceiling_fpl": null,
+    "asset_test": null,
+    "residency": null,
+    "insured_patients_covered": null,
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": null,
+    "form_version": null,
+    "documents_required": null,
+    "documents_reported": null,
+    "submit_methods": null,
+    "window_days_from_first_bill": {
+     "value": 240,
+     "layer": "documented",
+     "quote": "Financial Assistance is available up to 240 days from the first billing statement sent to the guarantor.",
+     "source_id": "fap-c197aa76a5da7eda",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days": null,
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": {
+     "value": 120,
+     "layer": "documented",
+     "quote": "statements will be sent and courtesy calls made over the next 120 days. If the account is not paid as agreed a final notice will be mailed and extraordinary collection actions will be pursued.",
+     "source_id": "fap-c197aa76a5da7eda",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "605-353-6223",
+     "layer": "documented",
+     "quote": "You are encouraged to contact them with your questions by calling 605-353-6223",
+     "source_id": "web-a1c1e8b59a1bde97",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": {
+     "value": "Monday-Friday from 8:00 a.m. - 5:00 p.m.",
+     "layer": "documented",
+     "quote": "Their hours are Monday-Friday from 8:00 a.m. - 5:00 p.m.",
+     "source_id": "web-a1c1e8b59a1bde97",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "languages": {
+     "value": [
+      "English",
+      "Spanish"
+     ],
+     "layer": "documented",
+     "quote": "Applications are available in both English and Spanish and may be obtained at HRMC Business Office",
+     "source_id": "fap-c197aa76a5da7eda",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-c197aa76a5da7eda",
+     "kind": "hospital_web",
+     "url": "https://www.huronregional.org/Content/Uploads/huron_regional/images/Summarized%20Financial%20Assistance%20Policy.8.25.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "c197aa76a5da7eda345710759a4a8ebee4026bc39e35b3892a463a003434d33b",
+     "effective_date": null
+    },
+    {
+     "id": "fap-afe23506d255265d",
+     "kind": "hospital_web",
+     "url": "https://www.huronregional.org/Content/Uploads/huron_regional/files/Financial%20Assistance%20Application.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "afe23506d255265d239bc970ade6944e895f8d5d84712dbb7ff59f40378a6b40",
+     "effective_date": null
+    },
+    {
+     "id": "web-a1c1e8b59a1bde97",
+     "kind": "hospital_web",
+     "url": "https://www.huronregional.org/patients/follow-up/billing-insurance-financial-assistance",
+     "title": "Billing, Insurance, and Financial Assistance | Huron Regional Medical Center",
+     "fetched_on": "2026-10-23",
+     "sha256": "a1c1e8b59a1bde971ced69d70ecf7637c52589477033e13c82a8b7471be28f2e",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "apply.form_url: not an absolute URL ('/Content/Uploads/huron_regional/files/Financial%20Assistance'); dropped",
+    "agent dropped apply.submit_methods: excerpt not in source: Printed applications are available in both English and Spani"
+   ]
+  },
+  {
+   "hospital": {
+    "ccn": "431339",
+    "name": "COTEAU DES PRAIRIES HEALTH CARE SYSTEM",
+    "city": "SISSETON",
+    "state": "SD",
+    "zip": "57262",
+    "phone": "605-698-7647",
+    "ownership": "Voluntary non-profit - Private",
+    "website_domain": "cdphealth.com",
+    "system": null
+   },
+   "version": 1,
+   "status": "draft",
+   "eligibility": {
+    "free_care_max_fpl": {
+     "value": "150",
+     "layer": "documented",
+     "quote": "Patients who qualify as Financially Indigent and whose Family Income is at or below 150% of the FPL receive a 100% discount on eligible care.",
+     "source_id": "fap-3ba7273ae4ad8195",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "150",
+       "max_fpl_inclusive": "175",
+       "discount_percent": 90
+      },
+      {
+       "min_fpl_exclusive": "175",
+       "max_fpl_inclusive": "400",
+       "discount_percent": 25
+      }
+     ],
+     "layer": "documented",
+     "quote": "Patients who qualify as Financially Indigent and whose Family Income is over 150% of the FPL and does not exceed 175% of the FPL receive a 90% discount off of gross charges on eligible care.",
+     "source_id": "fap-3ba7273ae4ad8195",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "assistance_ceiling_fpl": {
+     "value": "400",
+     "layer": "documented",
+     "quote": "the patient's total household income shall be at or below 400% of the current Federal poverty Income Guidelines and their hospital medical expenses for the proceeding 12month period exceeds 25% of the annual gross income",
+     "source_id": "fap-3ba7273ae4ad8195",
+     "checked_on": "2026-10-23",
+     "confidence": 0.8,
+     "support_count": 0
+    },
+    "asset_test": {
+     "value": true,
+     "layer": "documented",
+     "quote": "patients who satisfy the minimum Family Income criteria but have a Net Worth in excess of 20% of total outstanding medical bills do not qualify as Financially Indigent",
+     "source_id": "fap-3ba7273ae4ad8195",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "residency": {
+     "value": [
+      "Coteau des Prairies Health Care System's mission is to provide quality services to everyone in our service area."
+     ],
+     "layer": "documented",
+     "quote": "Coteau des Prairies Health Care System's mission is to provide quality services to everyone in our service area.",
+     "source_id": "fap-3ba7273ae4ad8195",
+     "checked_on": "2026-10-23",
+     "confidence": 0.8,
+     "support_count": 0
+    },
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "CDPH shall determine whether underinsured patients are eligible to receive financial assistance for deductibles, co-insurance, or co-payment responsibilities based upon the managed care agreement between CDPH and the insurer.",
+     "source_id": "fap-3ba7273ae4ad8195",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "min_balance": null,
+    "services_excluded": null
+   },
+   "programs": {
+    "presumptive": null,
+    "state_programs": null
+   },
+   "apply": {
+    "form_url": {
+     "value": "https://cdphealth.com/wp-content/uploads/2023/02/Financial-Assistance-Application-Form-CDP-Health-Care-System-Digital-Fill-or-Print.pdf",
+     "layer": "documented",
+     "quote": "Financial Assistance Application [https://cdphealth.com/wp-content/uploads/2023/02/Financial-Assistance-Application-Form-CDP-Health-Care-System-Digital-Fill-or-Print.pdf]",
+     "source_id": "web-a20bb4d17ce1bd75",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "form_version": null,
+    "documents_required": {
+     "value": [
+      "proof_of_income",
+      "tax_return",
+      "other"
+     ],
+     "layer": "documented",
+     "quote": "Proof of all income (i.e. Last two pay stubs for any wage earner contributing to household income, SS, SSI, SSDI, Public Assistance, Rental Income, Retirement, Pension, VA Benefits, Unemployment, Workers Comp, Child Support, Alimony, etc.)",
+     "source_id": "fap-71af4fbc02d98f71",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "documents_reported": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "Return to our office by MAIL to Coteau des Prairies Health Care System, 205 Orchard Drive, Sisseton, SD 57262"
+      },
+      {
+       "kind": "portal",
+       "detail": "Submit the completed form through our website"
+      }
+     ],
+     "layer": "documented",
+     "quote": "You may submit the completed form through our website OR return to our office by MAIL to Coteau des Prairies Health Care System, 205 Orchard Drive, Sisseton, SD 57262.",
+     "source_id": "fap-71af4fbc02d98f71",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": {
+     "value": 240,
+     "layer": "documented",
+     "quote": "ends on the later of (i) the 240th day after the date the first post-discharge (whether inpatient or outpatient) billing statement is provided to the patient",
+     "source_id": "fap-3ba7273ae4ad8195",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days": {
+     "value": 30,
+     "layer": "documented",
+     "quote": "requests for financial assistance shall be processed promptly within 30 days of receipt of a completed application",
+     "source_id": "fap-3ba7273ae4ad8195",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days_reported": null
+   },
+   "collections": {
+    "eca_wait_days": {
+     "value": 120,
+     "layer": "documented",
+     "quote": "Does not take ECAs against the patient for at least 120 days from the date CDPH provides the patient with the first post-discharge bill for care",
+     "source_id": "fap-3ba7273ae4ad8195",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "collection_agencies": null
+   },
+   "contacts": {
+    "phone": {
+     "value": "605-698-7647",
+     "layer": "documented",
+     "quote": "by calling 605-698-7647, (ii) by e-mailing CDP.FA@cdphospital.com",
+     "source_id": "fap-3ba7273ae4ad8195",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "hours": {
+     "value": "Monday-Friday, 8am-4pm",
+     "layer": "documented",
+     "quote": "Our business hours are Monday-Friday, 8am-4pm.",
+     "source_id": "fap-71af4fbc02d98f71",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "languages": {
+     "value": [
+      "English",
+      "Spanish"
+     ],
+     "layer": "documented",
+     "quote": "Financial Assistance Policy- English [https://cdphealth.com/wp-content/uploads/2021/10/FinancialAssistancePolicyRevised2018.pdf]",
+     "source_id": "web-a20bb4d17ce1bd75",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
+   },
+   "coverage": {
+    "facilities": null,
+    "provider_list_url": null,
+    "covered_providers": null
+   },
+   "sources": [
+    {
+     "id": "fap-3ba7273ae4ad8195",
+     "kind": "hospital_web",
+     "url": "https://cdphealth.com/wp-content/uploads/2021/10/FinancialAssistancePolicyRevised2018.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "3ba7273ae4ad8195609e961f35fb5906204c2547e577174d9608d56cb7daa58e",
+     "effective_date": null
+    },
+    {
+     "id": "fap-71af4fbc02d98f71",
+     "kind": "hospital_web",
+     "url": "https://cdphealth.com/wp-content/uploads/2023/02/Financial-Assistance-Application-Form-CDP-Health-Care-System-Digital-Fill-or-Print.pdf",
+     "title": "",
+     "fetched_on": "2026-10-23",
+     "sha256": "71af4fbc02d98f71ac044a35cf9f9c7c9dd08c2367e7510bbfc558eab5a094f4",
+     "effective_date": null
+    },
+    {
+     "id": "web-a20bb4d17ce1bd75",
+     "kind": "hospital_web",
+     "url": "https://cdphealth.com/resources/financial-assistance/",
+     "title": "Financial Assistance - CDP Health Care System",
+     "fetched_on": "2026-10-23",
+     "sha256": "a20bb4d17ce1bd759dca86bfb073b0ea7aed3c6717d985cec0413328bf992dfb",
+     "effective_date": null
+    }
+   ],
+   "accuracy": null,
+   "eve_review": [
+    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: Patients who qualify as Medically Indigent will receive assistance at the highest income category under the financially ",
+    "eligibility.assistance_ceiling_fpl: quote matched the source only after typography normalization",
+    "eligibility.residency: quote matched the source only after typography normalization",
+    "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Copy of your most recent 1040 tax return, including all applicable schedules | Copy of your property tax assessment statement from county for any owned property",
+    "contacts.languages: 1 more verbatim excerpt(s) supported this value: Financial Assistance Policy- Spanish [https://cdphealth.com/wp-content/uploads/2021/10/Financial-Assistance-Policy-revis",
+    "agent dropped programs.presumptive: excerpt not in source: 6. Eligibility for other state or local assistance program t",
+    "agent judge on eligibility.discount_tiers: Quote gives 90% for >150% to 175% FPL, but the 25% tier's 175-400% bounds are not stated; the 25% is only tied to Medically Indigent status, with no 400% bound.",
+    "agent judge on eligibility.assistance_ceiling_fpl: Quote says income must be at or below 400% FPL plus a medical-expense test. It is a qualifying condition, not a statement that no assistance is offered above 400%.",
+    "agent judge on eligibility.residency: Quote is a mission statement about serving everyone in the service area; it says nothing about residency requirements.",
+    "agent judge on eligibility.insured_patients_covered: Quote only says CDPH decides whether underinsured patients may get help with deductibles, co-insurance, or co-payments; it does not state insured patients are covered."
+   ]
   }
  ]
 }
