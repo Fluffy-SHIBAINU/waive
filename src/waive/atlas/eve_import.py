@@ -192,7 +192,7 @@ def _submit_methods(items: Any, notes: list[str]) -> list[dict[str, str]]:
     return out
 
 
-def _tiers(items: Any, notes: list[str]) -> list[dict[str, Any]] | None:
+def _tiers(items: Any, notes: list[str], quote: str | None = None) -> list[dict[str, Any]] | None:
     tiers: list[dict[str, Any]] = []
     for item in items or []:
         if not isinstance(item, dict):
@@ -211,6 +211,16 @@ def _tiers(items: Any, notes: list[str]) -> list[dict[str, Any]] | None:
         if pct < 1:
             notes.append(
                 f"eligibility.discount_tiers: {lo}-{hi}% at {pct}% is no discount; skipped"
+            )
+            continue
+        if quote and re.search(
+            rf"up to (?:a |an )?{int(pct) if pct == pct.to_integral_value() else pct}\s?%",
+            quote,
+            re.I,
+        ):
+            notes.append(
+                f"eligibility.discount_tiers: {lo}-{hi}% says 'up to {pct}%', a cap rather than "
+                "a fixed discount; skipped"
             )
             continue
         tiers.append({"min_fpl_exclusive": lo, "max_fpl_inclusive": hi, "discount_percent": pct})
@@ -264,6 +274,13 @@ def convert_draft(
     residency = val(e, "residency")
     if isinstance(residency, str):
         residency = [residency]
+    free_value = _decimal(val(e, "free_care_max_fpl"))
+    if free_value is not None and free_value < 100:
+        notes.append(
+            f"eligibility.free_care_max_fpl: {free_value}% FPL is below the poverty line; "
+            "left for review, not recorded"
+        )
+        free_value = None
 
     body: dict[str, Any] = {
         "hospital": hospital_ref,
@@ -272,14 +289,20 @@ def convert_draft(
         "eligibility": {
             "free_care_max_fpl": _cited(
                 e.get("free_care_max_fpl"),
-                _decimal(val(e, "free_care_max_fpl")),
+                free_value,
                 today,
                 notes,
                 "eligibility.free_care_max_fpl",
             ),
             "discount_tiers": _cited(
                 e.get("discount_tiers"),
-                _tiers(val(e, "discount_tiers"), notes),
+                _tiers(
+                    val(e, "discount_tiers"),
+                    notes,
+                    e["discount_tiers"].get("quote")
+                    if isinstance(e.get("discount_tiers"), dict)
+                    else None,
+                ),
                 today,
                 notes,
                 "eligibility.discount_tiers",

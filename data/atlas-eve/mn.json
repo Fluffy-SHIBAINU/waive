@@ -8995,21 +8995,7 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "discount_tiers": {
-     "value": [
-      {
-       "min_fpl_exclusive": "125",
-       "max_fpl_inclusive": "400",
-       "discount_percent": 90
-      }
-     ],
-     "layer": "documented",
-     "quote": "Uninsured and underinsured patients whose income/family income is greater than 125% of the Federal Poverty Guidelines may be granted up to 90% forgiveness of their charges for emergent or medically necessary care based on a sliding scale.",
-     "source_id": "fap-9668c20e07b58c3a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "discount_tiers": null,
     "assistance_ceiling_fpl": null,
     "asset_test": {
      "value": true,
@@ -9149,6 +9135,7 @@
    ],
    "accuracy": null,
    "eve_review": [
+    "eligibility.discount_tiers: 125-400% says 'up to 90%', a cap rather than a fixed discount; skipped",
     "agent judge on eligibility.discount_tiers: Quote gives only the 125% threshold and up to 90% forgiveness on a sliding scale; it does not state the upper bound of 400% as the tier max.",
     "agent judge on eligibility.insured_patients_covered: Quote says insured patients with HRAs or MSAs have deposits considered as a resource; it does not say they are covered by the policy for assistance eligibility."
    ]
@@ -11257,11 +11244,11 @@
    ],
    "accuracy": null,
    "eve_review": [
+    "eligibility.discount_tiers: 200-250% says 'up to 99.98%', a cap rather than a fixed discount; skipped",
     "apply.documents_required: 2 more verbatim excerpt(s) supported this value: 5. A copy of most recent statements for savings and checking accounts, certificates of deposit, stocks and bond accounts | 6. A copy of the letter of denial for Medical Assistance or be currently eligible for Medical Assistance.",
     "agent judge on eligibility.free_care_max_fpl: Quote says the hospital \"may provide uncompensated care\" for income \"less than 200%\"; it does not state 100% free care at 200%.",
     "agent judge on eligibility.asset_test: Quote only lists resource types (savings, checking, CDs, stocks, bonds) and never says assets are considered.",
-    "agent judge on apply.submit_methods: Quote gives a mailing address for returning the application; the phone number is for questions, not submission.",
-    "eligibility.discount_tiers: rejected by schema (1 validation error for ProcedureSheet); dropped"
+    "agent judge on apply.submit_methods: Quote gives a mailing address for returning the application; the phone number is for questions, not submission."
    ]
   },
   {

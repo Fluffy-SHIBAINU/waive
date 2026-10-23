@@ -2864,15 +2864,7 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": {
-     "value": "0",
-     "layer": "documented",
-     "quote": "Those individuals whose income falls at or below the minimum criteria would be eligible for 100% Financial Assistance allowance.",
-     "source_id": "fap-349e5b85b52a3fef",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "free_care_max_fpl": null,
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
     "asset_test": {
@@ -2998,6 +2990,7 @@
    ],
    "accuracy": null,
    "eve_review": [
+    "eligibility.free_care_max_fpl: 0% FPL is below the poverty line; left for review, not recorded",
     "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Patients may request applications at hospital or clinic registration areas, by calling the LPH Business Office at 701-25",
     "agent judge on eligibility.free_care_max_fpl: Quote gives no percent of FPL. It says those at or below the 'minimum criteria' get 100% assistance, so the value 0 is not stated.",
     "agent judge on apply.documents_required: Quote requires Medicaid denial proof plus at least two of three listed items. The value lists all four as required, omitting the 'at least two of three' condition.",
@@ -4034,21 +4027,7 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "discount_tiers": {
-     "value": [
-      {
-       "min_fpl_exclusive": "100",
-       "max_fpl_inclusive": "300",
-       "discount_percent": 90
-      }
-     ],
-     "layer": "documented",
-     "quote": "who has family incomes in excess of 100%, but not exceeding 300% of the Federal Poverty Guidelines, will be eligible to receive Partial Community Care",
-     "source_id": "fap-20c77b7cacf36003",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "discount_tiers": null,
     "assistance_ceiling_fpl": null,
     "asset_test": {
      "value": true,
@@ -4203,7 +4182,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: but may nevertheless be eligible to receive up to an 90% discount off gross charges",
+    "eligibility.discount_tiers: 100-300% says 'up to 90%', a cap rather than a fixed discount; skipped",
     "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Family/friend provides undocumented information establishing the patient\u2019s inability to pay | Members of religious organizations who have taken the vow of poverty",
     "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Pay stubs from the past 6 pay periods | Bank statements",
     "agent dropped apply.submit_methods: excerpt not in source: Applications can also be obtained at Central Valley Health.",

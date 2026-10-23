@@ -5872,15 +5872,7 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": {
-     "value": "70",
-     "layer": "documented",
-     "quote": "Patient/guarantors that fall below Level 1, 70% of FPL, will receive a 100% discount.",
-     "source_id": "fap-8a9df7c66dc1169a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "free_care_max_fpl": null,
     "discount_tiers": null,
     "assistance_ceiling_fpl": {
      "value": "200",
@@ -6055,6 +6047,7 @@
    ],
    "accuracy": null,
    "eve_review": [
+    "eligibility.free_care_max_fpl: 70% FPL is below the poverty line; left for review, not recorded",
     "eligibility.assistance_ceiling_fpl: quote matched the source only after typography normalization",
     "eligibility.asset_test: quote matched the source only after typography normalization",
     "apply.documents_required: 2 more verbatim excerpt(s) supported this value: iii. Two Most Recent copies of bank statements for both checking and savings accounts. | vi. Medicaid coverage denial letter if applicable.",

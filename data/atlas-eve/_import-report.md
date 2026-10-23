@@ -47,7 +47,7 @@
 | WV | 28 |
 | WY | 2 |
 
-Sheets with a free-care line: 1095. With discount tiers: 671.
+Sheets with a free-care line: 1091. With discount tiers: 657.
 
 ## Rejected
 
@@ -55,4 +55,4 @@ Sheets with a free-care line: 1095. With discount tiers: 671.
 
 ## Review notes
 
-5742 notes across 1249 sheets. Each sheet's notes are in its `eve_review` list in the state file.
+5762 notes across 1249 sheets. Each sheet's notes are in its `eve_review` list in the state file.

@@ -364,15 +364,7 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": {
-     "value": "40.9",
-     "layer": "documented",
-     "quote": "Patients whose family income is not more than 40.9% of the FPL are eligible to receive a 100% discount off billed charges.",
-     "source_id": "fap-127bd5b8667e7fa8",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "free_care_max_fpl": null,
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
     "asset_test": {
@@ -534,6 +526,7 @@
    ],
    "accuracy": null,
    "eve_review": [
+    "eligibility.free_care_max_fpl: 40.9% FPL is below the poverty line; left for review, not recorded",
     "eligibility.discount_tiers: 40.9-250% at 100% is the free-care band, not a tier; skipped",
     "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Verified \u201chomeless\u201d or \u201ctransient\u201d status, without a signed financial assistance application on file | Account is identified in official bankruptcy and there are no estate assets",
     "programs.state_programs: 1 more verbatim excerpt(s) supported this value: Medicaid - All household members birth certificate or passport - State issued ID with current address",
@@ -2432,21 +2425,7 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "discount_tiers": {
-     "value": [
-      {
-       "min_fpl_exclusive": "100",
-       "max_fpl_inclusive": "150",
-       "discount_percent": 50
-      }
-     ],
-     "layer": "documented",
-     "quote": "Patient whose family income is over 100% and below 150% of the FPL would be eligible for up to a 50% discount.",
-     "source_id": "fap-20ad7d5cc3820570",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "discount_tiers": null,
     "assistance_ceiling_fpl": null,
     "asset_test": {
      "value": true,
@@ -2629,6 +2608,7 @@
    ],
    "accuracy": null,
    "eve_review": [
+    "eligibility.discount_tiers: 100-150% says 'up to 50%', a cap rather than a fixed discount; skipped",
     "agent dropped programs.state_programs: quote is not a substring of the source",
     "agent dropped apply.submit_methods: excerpt not in source: applications are available at no cost via mail, online and a",
     "agent judge on eligibility.discount_tiers: Quote says 'below 150%' and 'up to a 50% discount'. It does not state 150% is inclusive, so max_fpl_inclusive:150 is not supported.",
@@ -3649,15 +3629,7 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": {
-     "value": "40",
-     "layer": "documented",
-     "quote": "Z 0 - 40% and Homeless",
-     "source_id": "fap-b1c851a9f3b55b35",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "free_care_max_fpl": null,
     "discount_tiers": {
      "value": [
       {
@@ -3894,6 +3866,7 @@
    ],
    "accuracy": null,
    "eve_review": [
+    "eligibility.free_care_max_fpl: 40% FPL is below the poverty line; left for review, not recorded",
     "eligibility.discount_tiers: 0-40% at 100% is the free-care band, not a tier; skipped",
     "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: Ambulatory Surgery (HB) $0 $15 $65 $105 $155 $220 $300 $390 $535 $600 $630 AGB AGB",
     "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Employer and income information for each working adult household member | Liquid Resources - Liquid resources are resources that can be converted to cash immediately.",

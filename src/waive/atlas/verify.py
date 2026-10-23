@@ -1099,7 +1099,8 @@ def trim_quotes(sheet: ProcedureSheet, documents: dict[str, str]) -> ProcedureSh
         if cited.layer is Layer.REPORTED or not cited.quote:
             continue
         text = documents.get(cited.source_id or "")
-        if text is None:
+        if text is None or SPAN_SEPARATOR in cited.quote:
+            # A multi-span quote is verified span by span by quote_found; trimming would keep one.
             continue
         free_care = path == "eligibility.free_care_max_fpl"
         usable = partial(_free_limit_stated, cited.value) if free_care else None

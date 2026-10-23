@@ -5381,21 +5381,7 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "discount_tiers": {
-     "value": [
-      {
-       "min_fpl_exclusive": "150",
-       "max_fpl_inclusive": "400",
-       "discount_percent": 90
-      }
-     ],
-     "layer": "documented",
-     "quote": "Uninsured and underinsured patients whose income/family income is greater than 150% of the Federal Poverty Guidelines may be granted up to 90% forgiveness of their charges for emergent or medically necessary care based on a sliding scale.",
-     "source_id": "fap-80911c49c192441e",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "discount_tiers": null,
     "assistance_ceiling_fpl": null,
     "asset_test": {
      "value": true,
@@ -5547,6 +5533,7 @@
    ],
    "accuracy": null,
    "eve_review": [
+    "eligibility.discount_tiers: 150-400% says 'up to 90%', a cap rather than a fixed discount; skipped",
     "programs.presumptive: 2 more verbatim excerpt(s) supported this value: No income | Participation in Women\u2019s, Infant\u2019s and Children\u2019s programs (WIC)",
     "contacts.languages: 1 more verbatim excerpt(s) supported this value: Charity Care Cover Letter \u2013 Espa\u00f1ol",
     "apply.form_url: not an absolute URL ('/wp-content/uploads/2022/07/FA-Application.pdf'); dropped",
@@ -6196,21 +6183,7 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "discount_tiers": {
-     "value": [
-      {
-       "min_fpl_exclusive": "150",
-       "max_fpl_inclusive": "400",
-       "discount_percent": 90
-      }
-     ],
-     "layer": "documented",
-     "quote": "Uninsured and underinsured patients whose income/family income does not exceed 150% of the current Federal Poverty Guidelines may be granted up to 90% forgiveness of their charges for emergent or medically necessary care.",
-     "source_id": "fap-19d5391bd8e00241",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "discount_tiers": null,
     "assistance_ceiling_fpl": null,
     "asset_test": {
      "value": true,
@@ -6371,7 +6344,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: Uninsured and underinsured patients whose income/family income is greater than 150% of the Federal Poverty Guidelines ma",
+    "eligibility.discount_tiers: 150-400% says 'up to 90%', a cap rather than a fixed discount; skipped",
     "agent judge on eligibility.discount_tiers: Quote gives 90% forgiveness for income up to 150% FPL and a sliding scale above 150%; it does not state the 400% upper bound as a tier limit.",
     "agent judge on eligibility.insured_patients_covered: Quote says uninsured, underinsured, or those unable to pay may qualify; it does not say insured patients are covered, so value is overstated.",
     "agent judge on apply.submit_methods: Quote mentions contacting the business office and visiting the website; it does not mention in-person visits as a distinct method or phone calls to the statement number.",

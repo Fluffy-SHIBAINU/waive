@@ -2166,31 +2166,7 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "discount_tiers": {
-     "value": [
-      {
-       "min_fpl_exclusive": "200",
-       "max_fpl_inclusive": "250",
-       "discount_percent": 75
-      },
-      {
-       "min_fpl_exclusive": "250",
-       "max_fpl_inclusive": "300",
-       "discount_percent": 50
-      },
-      {
-       "min_fpl_exclusive": "300",
-       "max_fpl_inclusive": "400",
-       "discount_percent": 25
-      }
-     ],
-     "layer": "documented",
-     "quote": "201% to 250% of FPL: Eligible for up to 75% financial assistance",
-     "source_id": "fap-5468ff59230fc3bd",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "discount_tiers": null,
     "assistance_ceiling_fpl": {
      "value": "400",
      "layer": "documented",
@@ -2308,7 +2284,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: 251% to 300% of FPL: Eligible for up to 50% financial assistance | 301% to 400% of FPL: Eligible for up to 25% financial assistance",
+    "eligibility.discount_tiers: 200-250% says 'up to 75%', a cap rather than a fixed discount; skipped",
+    "eligibility.discount_tiers: 250-300% says 'up to 50%', a cap rather than a fixed discount; skipped",
+    "eligibility.discount_tiers: 300-400% says 'up to 25%', a cap rather than a fixed discount; skipped",
     "agent judge on eligibility.assistance_ceiling_fpl: Quote says above 400% is generally not eligible for standard assistance but may be considered for a payment plan or exception review, so assistance is still offered.",
     "agent judge on apply.window_days_from_first_bill: Quote says 31 days after the time of service, not after the first bill.",
     "agent judge on collections.eca_wait_days: Quote gives a timeframe from first patient statement through 120 days but does not state a wait before collection actions."
