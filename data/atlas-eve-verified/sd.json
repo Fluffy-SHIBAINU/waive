@@ -160,6 +160,7 @@
    ],
    "accuracy": null,
    "eve_review": [
+    "eligibility.discount_tiers: 250-400% says 'up to 90%', a cap rather than a fixed discount; skipped",
     "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Homeless or received care from a free Avera clinic | Medicaid eligible patients when the following applies:",
     "agent judge on eligibility.discount_tiers: Quote gives the 250% lower bound and 90% discount but no 400% upper bound. The 400% figure appears only in the separate asset-test sentence.",
     "agent judge on apply.submit_methods: Quote says patients can contact the business office or visit www.avera.org to obtain application materials. It does not state online submission."
@@ -185,10 +186,6 @@
      "contacts.phone"
     ],
     "rejected": [
-     [
-      "eligibility.discount_tiers",
-      "value not in quote"
-     ],
      [
       "apply.decision_days",
       "value not in quote"
@@ -364,6 +361,7 @@
    ],
    "accuracy": null,
    "eve_review": [
+    "eligibility.discount_tiers: 250-400% says 'up to 90%', a cap rather than a fixed discount; skipped",
     "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Homeless or received care from a free Avera clinic | Medicaid eligible patients when the following applies:",
     "agent judge on eligibility.discount_tiers: Quote gives the 250% lower bound and 90% forgiveness but never states the 400% upper bound; 400 appears only in the asset-test sentence."
    ],
@@ -389,10 +387,6 @@
      "contacts.phone"
     ],
     "rejected": [
-     [
-      "eligibility.discount_tiers",
-      "value not in quote"
-     ],
      [
       "apply.decision_days",
       "value not in quote"
@@ -1181,7 +1175,7 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: Partial charity care discounts will be up to 95% of the amounts generally billed.",
+    "eligibility.discount_tiers: 150-400% says 'up to 95%', a cap rather than a fixed discount; skipped",
     "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Copies of the two most recent pay stubs for each wage earner in the household. | Tax Return (Federal, State if applicable)",
     "contacts.languages: 1 more verbatim excerpt(s) supported this value: financial assistance application (Spanish) [https://madisonregionalhealth.org/wp-content/uploads/FinancialAssistanceAppl",
     "agent judge on eligibility.discount_tiers: Quote says 'less than 400%' (exclusive), not inclusive. It gives no sliding-scale percent per tier, only 'up to 95%'.",
@@ -1213,10 +1207,6 @@
      "contacts.hours"
     ],
     "rejected": [
-     [
-      "eligibility.discount_tiers",
-      "value not in quote"
-     ],
      [
       "eligibility.asset_test",
       "quote does not support the asset-test value"
@@ -1429,6 +1419,9 @@
    ],
    "accuracy": null,
    "eve_review": [
+    "eligibility.discount_tiers: 200-250% says 'up to 80%', a cap rather than a fixed discount; skipped",
+    "eligibility.discount_tiers: 250-300% says 'up to 60%', a cap rather than a fixed discount; skipped",
+    "eligibility.discount_tiers: 300-350% says 'up to 40%', a cap rather than a fixed discount; skipped",
     "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: Patient whose family income is over 251% and below 300% of the FPL would be eligible for up to a 60% discount. | Patient whose family income is over 301% and below 350% of the FPL would be eligible for up to a 40% discount."
    ],
    "eve_verified": {
@@ -2048,6 +2041,7 @@
    ],
    "accuracy": null,
    "eve_review": [
+    "eligibility.discount_tiers: 150-400% says 'up to 50%', a cap rather than a fixed discount; skipped",
     "apply.submit_methods: 1 more verbatim excerpt(s) supported this value: Contact the business office at 605-925-4000. Let them know you\u2019re requesting financial assistance.",
     "contacts.languages: 1 more verbatim excerpt(s) supported this value: Click here for the Spanish version [https://freemanregional.com/wp-content/uploads/2025/05/FRHSClarity.Spanish-2.pdf]",
     "agent judge on eligibility.discount_tiers: Quote gives the 150% lower bound and up to 50% forgiveness on a sliding scale, but does not state the 400% upper bound."
@@ -2076,10 +2070,6 @@
      "contacts.phone"
     ],
     "rejected": [
-     [
-      "eligibility.discount_tiers",
-      "value not in quote"
-     ],
      [
       "apply.form_url",
       "quote not found in source"
@@ -2471,7 +2461,7 @@
     "sha256_match": {
      "fap-31fb54b5c070ec85": true,
      "fap-f82e64dbdf7adf1d": true,
-     "web-f338f64cfa9d321f": true
+     "web-f338f64cfa9d321f": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
@@ -2651,7 +2641,7 @@
     "sha256_match": {
      "fap-31fb54b5c070ec85": true,
      "fap-f82e64dbdf7adf1d": true,
-     "web-30fd91e790f34d36": true
+     "web-30fd91e790f34d36": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
@@ -2857,21 +2847,7 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "discount_tiers": {
-     "value": [
-      {
-       "min_fpl_exclusive": "100",
-       "max_fpl_inclusive": "200",
-       "discount_percent": 50
-      }
-     ],
-     "layer": "documented",
-     "quote": "Patient whose family income is over 100% and below 200% of the FPL would be eligible for up to a 50% discount.",
-     "source_id": "fap-23f074ddc7a0b452",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "discount_tiers": null,
     "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": null,
@@ -2993,8 +2969,8 @@
    ],
    "accuracy": null,
    "eve_review": [
+    "eligibility.discount_tiers: 100-200% says 'up to 50%', a cap rather than a fixed discount; skipped",
     "eligibility.discount_tiers: 200-200% at 0% is no discount; skipped",
-    "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: Patients whose family income exceeds 200% of the FPL may be eligible to receive discounted rates on a case-by-case basis",
     "programs.presumptive: 2 more verbatim excerpt(s) supported this value: 2. Homeless or received care from a homeless clinic; | 3. Participation in Women, Infants and Children programs (WIC);",
     "apply.form_url: not an absolute URL ('/image/cache/FINANCIAL_ASSISTANCE_APPLICATION-ADMIN05MKT.pdf'); dropped",
     "agent judge on eligibility.discount_tiers: Quote gives up to 50% discount for over 100% to below 200% FPL, but for above 200% only says case-by-case discounted rates; no 0% tier stated, and the 200-200 tier is not in the quote.",
@@ -3017,7 +2993,6 @@
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
-     "eligibility.discount_tiers",
      "eligibility.insured_patients_covered",
      "apply.documents_required",
      "apply.window_days_from_first_bill",
@@ -3035,7 +3010,7 @@
      "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)"
     ],
     "income_rule_verified": true,
-    "core_completeness": 0.67
+    "core_completeness": 0.5
    }
   },
   {
@@ -3428,6 +3403,7 @@
    ],
    "accuracy": null,
    "eve_review": [
+    "eligibility.discount_tiers: 250-400% says 'up to 90%', a cap rather than a fixed discount; skipped",
     "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Homeless or received care from a free Avera clinic | Participation in Women, Infant and Children program (WIC)",
     "agent judge on eligibility.discount_tiers: Quote gives the 250% lower bound and 90% discount but never states the 400% upper bound, which the value requires.",
     "agent judge on programs.presumptive: Quote lists only three presumptive categories (self-pay under 250%, homeless/free clinic, WIC). Food stamps, school lunch and Medicaid in the value are not in the quote."
@@ -3453,10 +3429,6 @@
      "contacts.phone"
     ],
     "rejected": [
-     [
-      "eligibility.discount_tiers",
-      "value not in quote"
-     ],
      [
       "apply.decision_days",
       "value not in quote"
@@ -3493,21 +3465,7 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "discount_tiers": {
-     "value": [
-      {
-       "min_fpl_exclusive": "100",
-       "max_fpl_inclusive": "150",
-       "discount_percent": 50
-      }
-     ],
-     "layer": "documented",
-     "quote": "Patients whose family income is over 100% and below 150% of the FPL will be eligible for up to a 50% discount.",
-     "source_id": "fap-e70e454f0903b11a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "discount_tiers": null,
     "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": null,
@@ -3640,6 +3598,7 @@
    ],
    "accuracy": null,
    "eve_review": [
+    "eligibility.discount_tiers: 100-150% says 'up to 50%', a cap rather than a fixed discount; skipped",
     "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Homeless or received care from a homeless clinic; | Low income/subsidized housing is provided as a valid address; and",
     "apply.submit_methods: 2 more verbatim excerpt(s) supported this value: By Mail at 745 East 8th Street, Winner, SD 57580 | By visiting www.winnerregional.org",
     "agent judge on eligibility.discount_tiers: Quote says 'below 150%' (exclusive), but value sets max_fpl_inclusive to 150. The bound does not match.",
@@ -3661,7 +3620,6 @@
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
-     "eligibility.discount_tiers",
      "eligibility.insured_patients_covered",
      "apply.documents_required",
      "apply.submit_methods",
@@ -3681,7 +3639,7 @@
      "apply.submit_methods: 2 items not named in the trimmed quote"
     ],
     "income_rule_verified": true,
-    "core_completeness": 0.83
+    "core_completeness": 0.67
    }
   },
   {

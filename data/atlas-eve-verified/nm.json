@@ -241,27 +241,74 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": null,
+    "free_care_max_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "Patients whose family income is at or below 200% of the FPG are eligible to receive emergency or other medically necessary services at no charge",
+     "source_id": "fap-ada5b1150e0e963a",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": null,
-    "insured_patients_covered": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "The term \u201cunderinsured\u201d includes individuals enrolled in health insurance who are unable to pay for out-of-pocket expenses and fall below 400% of the federal poverty guidelines.",
+     "source_id": "fap-ada5b1150e0e963a",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "min_balance": null,
     "services_excluded": null
    },
    "programs": {
-    "presumptive": null,
+    "presumptive": {
+     "value": [
+      "Patients determined to be homeless",
+      "Participation in Women, Infants and Children programs (WIC)",
+      "Participation in the food stamp program"
+     ],
+     "layer": "documented",
+     "quote": "1. Participation or enrollment in state-funded prescription programs; 2. Patients determined to be homeless; 3. Participation in Women, Infants and Children programs (WIC); 4. Participation in the food stamp program;",
+     "source_id": "fap-ada5b1150e0e963a",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "state_programs": null
    },
    "apply": {
     "form_url": null,
     "form_version": null,
-    "documents_required": null,
+    "documents_required": {
+     "value": [
+      "tax_return",
+      "pay_stubs"
+     ],
+     "layer": "documented",
+     "quote": "a. A completed financial assistance application b. Prior year\u2019s tax return(s) c. Minimum of two most recent pay stubs",
+     "source_id": "fap-ada5b1150e0e963a",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "documents_reported": null,
     "submit_methods": null,
     "window_days_from_first_bill": null,
-    "decision_days": null,
+    "decision_days": {
+     "value": 30,
+     "layer": "documented",
+     "quote": "will notify the patient or applicant in writing of its decision within 30 days of receipt of a completed application",
+     "source_id": "fap-ada5b1150e0e963a",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "decision_days_reported": null
    },
    "collections": {
@@ -269,7 +316,15 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": null,
+    "phone": {
+     "value": "505-923-6600",
+     "layer": "documented",
+     "quote": "By contacting a customer service representative at 505-923-6600.",
+     "source_id": "fap-ada5b1150e0e963a",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "hours": null,
     "languages": null
    },
@@ -318,63 +373,47 @@
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 2,
+    "sources_fetched": 3,
     "sources_total": 3,
-    "sources_missing": [
-     "https://onbaseext.phs.org/PEL/DisplayDocument?ContentID=PEL_00176420"
-    ],
+    "sources_missing": [],
     "sha256_match": {
-     "fap-ada5b1150e0e963a": false,
+     "fap-ada5b1150e0e963a": true,
      "fap-2483a7670c61bdc5": true,
      "web-6f898c014fbd8102": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
-    "accepted": [],
+    "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.insured_patients_covered",
+     "programs.presumptive",
+     "apply.documents_required",
+     "apply.decision_days",
+     "contacts.phone"
+    ],
     "rejected": [
      [
-      "eligibility.free_care_max_fpl",
-      "source text missing"
-     ],
-     [
       "eligibility.discount_tiers",
-      "source text missing"
+      "value not in quote"
      ],
      [
       "eligibility.assistance_ceiling_fpl",
-      "source text missing"
-     ],
-     [
-      "eligibility.insured_patients_covered",
-      "source text missing"
-     ],
-     [
-      "programs.presumptive",
-      "source text missing"
+      "value not in quote"
      ],
      [
       "apply.form_url",
       "quote not found in source"
      ],
      [
-      "apply.documents_required",
-      "source text missing"
-     ],
-     [
-      "apply.decision_days",
-      "source text missing"
-     ],
-     [
-      "contacts.phone",
-      "source text missing"
-     ],
-     [
       "contacts.languages",
       "quote not found in source"
      ]
     ],
-    "pruned": [],
-    "income_rule_verified": false,
-    "core_completeness": 0.0
+    "pruned": [
+     "programs.presumptive: 5 items not named in the trimmed quote",
+     "apply.documents_required: 1 item not named in the trimmed quote"
+    ],
+    "income_rule_verified": true,
+    "core_completeness": 0.5
    }
   },
   {
@@ -392,27 +431,84 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": null,
+    "free_care_max_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "Patients whose family income is at or below 200% of the FPG are eligible to receive emergency or other medically necessary services at no charge",
+     "source_id": "fap-ada5b1150e0e963a",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
     "asset_test": null,
-    "residency": null,
-    "insured_patients_covered": null,
+    "residency": {
+     "value": [
+      "Eligible residents of Bernalillo County will be referred to UNM for their care except for emergency treatment or care not available from UNM."
+     ],
+     "layer": "documented",
+     "quote": "Accordingly, eligible residents of Bernalillo County will be referred to UNM for their care except for emergency treatment or care not available from UNM.",
+     "source_id": "fap-ada5b1150e0e963a",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "The term \u201cunderinsured\u201d includes individuals enrolled in health insurance who are unable to pay for out-of-pocket expenses and fall below 400% of the federal poverty guidelines.",
+     "source_id": "fap-ada5b1150e0e963a",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "min_balance": null,
     "services_excluded": null
    },
    "programs": {
-    "presumptive": null,
+    "presumptive": {
+     "value": [
+      "Patients determined to be homeless",
+      "Participation in Women, Infants and Children programs (WIC)",
+      "Participation in the food stamp program"
+     ],
+     "layer": "documented",
+     "quote": "2. Patients determined to be homeless; 3. Participation in Women, Infants and Children programs (WIC); 4. Participation in the food stamp program;",
+     "source_id": "fap-ada5b1150e0e963a",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "state_programs": null
    },
    "apply": {
     "form_url": null,
     "form_version": null,
-    "documents_required": null,
+    "documents_required": {
+     "value": [
+      "tax_return",
+      "pay_stubs"
+     ],
+     "layer": "documented",
+     "quote": "a. A completed financial assistance application b. Prior year\u2019s tax return(s) c. Minimum of two most recent pay stubs",
+     "source_id": "fap-ada5b1150e0e963a",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "documents_reported": null,
     "submit_methods": null,
     "window_days_from_first_bill": null,
-    "decision_days": null,
+    "decision_days": {
+     "value": 30,
+     "layer": "documented",
+     "quote": "will notify the patient or applicant in writing of its decision within 30 days of receipt of a completed application.",
+     "source_id": "fap-ada5b1150e0e963a",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "decision_days_reported": null
    },
    "collections": {
@@ -420,7 +516,15 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": null,
+    "phone": {
+     "value": "505-923-6600",
+     "layer": "documented",
+     "quote": "By contacting a customer service representative at 505-923-6600.",
+     "source_id": "fap-ada5b1150e0e963a",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "hours": null,
     "languages": {
      "value": [
@@ -479,66 +583,45 @@
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 1,
+    "sources_fetched": 3,
     "sources_total": 3,
-    "sources_missing": [
-     "https://onbaseext.phs.org/PEL/DisplayDocument?ContentID=PEL_00176420",
-     "https://onbaseext.phs.org/PEL/DisplayDocument?ContentID=PEL_00228889"
-    ],
+    "sources_missing": [],
     "sha256_match": {
-     "fap-ada5b1150e0e963a": false,
-     "fap-2483a7670c61bdc5": false,
+     "fap-ada5b1150e0e963a": true,
+     "fap-2483a7670c61bdc5": true,
      "web-6f898c014fbd8102": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.residency",
+     "eligibility.insured_patients_covered",
+     "programs.presumptive",
+     "apply.documents_required",
+     "apply.decision_days",
+     "contacts.phone",
      "contacts.languages"
     ],
     "rejected": [
      [
-      "eligibility.free_care_max_fpl",
-      "source text missing"
-     ],
-     [
       "eligibility.discount_tiers",
-      "source text missing"
+      "value not in quote"
      ],
      [
       "eligibility.assistance_ceiling_fpl",
-      "source text missing"
-     ],
-     [
-      "eligibility.residency",
-      "source text missing"
-     ],
-     [
-      "eligibility.insured_patients_covered",
-      "source text missing"
-     ],
-     [
-      "programs.presumptive",
-      "source text missing"
+      "value not in quote"
      ],
      [
       "apply.form_url",
       "quote not found in source"
-     ],
-     [
-      "apply.documents_required",
-      "source text missing"
-     ],
-     [
-      "apply.decision_days",
-      "source text missing"
-     ],
-     [
-      "contacts.phone",
-      "source text missing"
      ]
     ],
-    "pruned": [],
-    "income_rule_verified": false,
-    "core_completeness": 0.0
+    "pruned": [
+     "programs.presumptive: 5 items not named in the trimmed quote",
+     "apply.documents_required: 1 item not named in the trimmed quote"
+    ],
+    "income_rule_verified": true,
+    "core_completeness": 0.5
    }
   },
   {
@@ -1500,12 +1583,38 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": null,
+    "free_care_max_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "Patients whose family income is at or below 200% of the FPG are eligible to receive emergency or other medically necessary services at no charge",
+     "source_id": "fap-ada5b1150e0e963a",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
     "asset_test": null,
-    "residency": null,
-    "insured_patients_covered": null,
+    "residency": {
+     "value": [
+      "Eligible residents of Bernalillo County will be referred to UNM for their care except for emergency treatment or care not available from UNM."
+     ],
+     "layer": "documented",
+     "quote": "Accordingly, eligible residents of Bernalillo County will be referred to UNM for their care except for emergency treatment or care not available from UNM.",
+     "source_id": "fap-ada5b1150e0e963a",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "The term \u201cunderinsured\u201d includes individuals enrolled in health insurance who are unable to pay for out-of-pocket expenses and fall below 400% of the federal poverty guidelines.",
+     "source_id": "fap-ada5b1150e0e963a",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "min_balance": null,
     "services_excluded": null
    },
@@ -1520,7 +1629,15 @@
     "documents_reported": null,
     "submit_methods": null,
     "window_days_from_first_bill": null,
-    "decision_days": null,
+    "decision_days": {
+     "value": 30,
+     "layer": "documented",
+     "quote": "will notify the patient or applicant in writing of its decision within 30 days of receipt of a completed application",
+     "source_id": "fap-ada5b1150e0e963a",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "decision_days_reported": null
    },
    "collections": {
@@ -1528,7 +1645,15 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": null,
+    "phone": {
+     "value": "505-923-6600",
+     "layer": "documented",
+     "quote": "By contacting a customer service representative at 505-923-6600.",
+     "source_id": "fap-ada5b1150e0e963a",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "hours": null,
     "languages": null
    },
@@ -1579,72 +1704,50 @@
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 1,
+    "sources_fetched": 3,
     "sources_total": 3,
-    "sources_missing": [
-     "https://onbaseext.phs.org/PEL/DisplayDocument?ContentID=PEL_00176420",
-     "https://onbaseext.phs.org/PEL/DisplayDocument?ContentID=PEL_00228889"
-    ],
+    "sources_missing": [],
     "sha256_match": {
-     "fap-ada5b1150e0e963a": false,
-     "fap-2483a7670c61bdc5": false,
+     "fap-ada5b1150e0e963a": true,
+     "fap-2483a7670c61bdc5": true,
      "web-42bb46f242472246": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
-    "accepted": [],
+    "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.residency",
+     "eligibility.insured_patients_covered",
+     "apply.decision_days",
+     "contacts.phone"
+    ],
     "rejected": [
      [
-      "eligibility.free_care_max_fpl",
-      "source text missing"
-     ],
-     [
       "eligibility.discount_tiers",
-      "source text missing"
+      "value not in quote"
      ],
      [
       "eligibility.assistance_ceiling_fpl",
-      "source text missing"
+      "value not in quote"
      ],
      [
       "eligibility.asset_test",
-      "source text missing"
-     ],
-     [
-      "eligibility.residency",
-      "source text missing"
-     ],
-     [
-      "eligibility.insured_patients_covered",
-      "source text missing"
-     ],
-     [
-      "programs.presumptive",
-      "source text missing"
+      "quote does not support the asset-test value"
      ],
      [
       "apply.form_url",
       "quote not found in source"
      ],
      [
-      "apply.documents_required",
-      "source text missing"
-     ],
-     [
-      "apply.decision_days",
-      "source text missing"
-     ],
-     [
-      "contacts.phone",
-      "source text missing"
-     ],
-     [
       "contacts.languages",
       "quote not found in source"
      ]
     ],
-    "pruned": [],
-    "income_rule_verified": false,
-    "core_completeness": 0.0
+    "pruned": [
+     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
+     "apply.documents_required: none of the listed documents is named in the quote (after trimming)"
+    ],
+    "income_rule_verified": true,
+    "core_completeness": 0.33
    }
   },
   {
@@ -1662,12 +1765,38 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": null,
+    "free_care_max_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "Patients whose family income is at or below 200% of the FPG are eligible to receive emergency or other medically necessary services at no charge",
+     "source_id": "fap-ada5b1150e0e963a",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
     "asset_test": null,
-    "residency": null,
-    "insured_patients_covered": null,
+    "residency": {
+     "value": [
+      "Eligible residents of Bernalillo County will be referred to UNM for their care except for emergency treatment or care not available from UNM."
+     ],
+     "layer": "documented",
+     "quote": "Accordingly, eligible residents of Bernalillo County will be referred to UNM for their care except for emergency treatment or care not available from UNM.",
+     "source_id": "fap-ada5b1150e0e963a",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "The term \u201cunderinsured\u201d includes individuals enrolled in health insurance who are unable to pay for out-of-pocket expenses and fall below 400% of the federal poverty guidelines.",
+     "source_id": "fap-ada5b1150e0e963a",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "min_balance": null,
     "services_excluded": null
    },
@@ -1678,11 +1807,30 @@
    "apply": {
     "form_url": null,
     "form_version": null,
-    "documents_required": null,
+    "documents_required": {
+     "value": [
+      "tax_return",
+      "pay_stubs"
+     ],
+     "layer": "documented",
+     "quote": "a. A completed financial assistance application b. Prior year\u2019s tax return(s) c. Minimum of two most recent pay stubs",
+     "source_id": "fap-ada5b1150e0e963a",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "documents_reported": null,
     "submit_methods": null,
     "window_days_from_first_bill": null,
-    "decision_days": null,
+    "decision_days": {
+     "value": 30,
+     "layer": "documented",
+     "quote": "will notify the patient or applicant in writing of its decision within 30 days of receipt of a completed application",
+     "source_id": "fap-ada5b1150e0e963a",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "decision_days_reported": null
    },
    "collections": {
@@ -1690,7 +1838,15 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": null,
+    "phone": {
+     "value": "505-923-6600",
+     "layer": "documented",
+     "quote": "By contacting a customer service representative at 505-923-6600.",
+     "source_id": "fap-ada5b1150e0e963a",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "hours": null,
     "languages": null
    },
@@ -1739,68 +1895,47 @@
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 1,
+    "sources_fetched": 3,
     "sources_total": 3,
-    "sources_missing": [
-     "https://onbaseext.phs.org/PEL/DisplayDocument?ContentID=PEL_00176420",
-     "https://onbaseext.phs.org/PEL/DisplayDocument?ContentID=PEL_00228889"
-    ],
+    "sources_missing": [],
     "sha256_match": {
-     "fap-ada5b1150e0e963a": false,
-     "fap-2483a7670c61bdc5": false,
+     "fap-ada5b1150e0e963a": true,
+     "fap-2483a7670c61bdc5": true,
      "web-42bb46f242472246": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
-    "accepted": [],
+    "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.residency",
+     "eligibility.insured_patients_covered",
+     "apply.documents_required",
+     "apply.decision_days",
+     "contacts.phone"
+    ],
     "rejected": [
      [
-      "eligibility.free_care_max_fpl",
-      "source text missing"
-     ],
-     [
       "eligibility.discount_tiers",
-      "source text missing"
+      "value not in quote"
      ],
      [
       "eligibility.assistance_ceiling_fpl",
-      "source text missing"
-     ],
-     [
-      "eligibility.residency",
-      "source text missing"
-     ],
-     [
-      "eligibility.insured_patients_covered",
-      "source text missing"
-     ],
-     [
-      "programs.presumptive",
-      "source text missing"
+      "value not in quote"
      ],
      [
       "apply.form_url",
       "quote not found in source"
      ],
      [
-      "apply.documents_required",
-      "source text missing"
-     ],
-     [
-      "apply.decision_days",
-      "source text missing"
-     ],
-     [
-      "contacts.phone",
-      "source text missing"
-     ],
-     [
       "contacts.languages",
       "quote not found in source"
      ]
     ],
-    "pruned": [],
-    "income_rule_verified": false,
-    "core_completeness": 0.0
+    "pruned": [
+     "programs.presumptive: none of the listed programs is named in the quote (after trimming)",
+     "apply.documents_required: 1 item not named in the trimmed quote"
+    ],
+    "income_rule_verified": true,
+    "core_completeness": 0.5
    }
   },
   {
@@ -2126,7 +2261,9 @@
    ],
    "accuracy": null,
    "eve_review": [
-    "eligibility.discount_tiers: 2 more verbatim excerpt(s) supported this value: 251% to 300% of FPL: Eligible for up to 50% financial assistance | 301% to 400% of FPL: Eligible for up to 25% financial assistance",
+    "eligibility.discount_tiers: 200-250% says 'up to 75%', a cap rather than a fixed discount; skipped",
+    "eligibility.discount_tiers: 250-300% says 'up to 50%', a cap rather than a fixed discount; skipped",
+    "eligibility.discount_tiers: 300-400% says 'up to 25%', a cap rather than a fixed discount; skipped",
     "agent judge on eligibility.assistance_ceiling_fpl: Quote says above 400% is generally not eligible for standard assistance but may be considered for a payment plan or exception review, so assistance is still offered.",
     "agent judge on apply.window_days_from_first_bill: Quote says 31 days after the time of service, not after the first bill.",
     "agent judge on collections.eca_wait_days: Quote gives a timeframe from first patient statement through 120 days but does not state a wait before collection actions."
@@ -2151,10 +2288,6 @@
      "contacts.phone"
     ],
     "rejected": [
-     [
-      "eligibility.discount_tiers",
-      "value not in quote"
-     ],
      [
       "eligibility.assistance_ceiling_fpl",
       "quote states the percentage as a floor (above, over, at least), not a ceiling"

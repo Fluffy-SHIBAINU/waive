@@ -3769,11 +3769,43 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": null,
-    "discount_tiers": null,
+    "free_care_max_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "patients with a family income at or below 200% of the current Federal Poverty Guidelines receives a 100% adjustment patient owed portion of the billed charges (full write-off)",
+     "source_id": "fap-b00445b7170c1883",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "200",
+       "max_fpl_inclusive": "400",
+       "discount_percent": 55
+      }
+     ],
+     "layer": "documented",
+     "quote": "Patients with a family income between 201% and 400% of the current Federal Poverty Guidelines receive an adjustment based on Billings Clinic\u2019s sliding-scale for discounts for the patient owed portion of the billed charges. It should be noted that any percentage between 300% to 400% receive the 55% discount regardless of where they may fall on the sliding scale.",
+     "source_id": "fap-b00445b7170c1883",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "assistance_ceiling_fpl": null,
     "asset_test": null,
-    "residency": null,
+    "residency": {
+     "value": [
+      "providing emergency, medications and medically necessary health care services to residents of Stillwater Billings Clinic Health System service area regardless of their financial status and ability to pay"
+     ],
+     "layer": "documented",
+     "quote": "residents of Stillwater Billings Clinic Health System service area regardless of their financial status and ability to pay",
+     "source_id": "fap-b00445b7170c1883",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "insured_patients_covered": null,
     "min_balance": null,
     "services_excluded": null
@@ -3785,11 +3817,54 @@
    "apply": {
     "form_url": null,
     "form_version": null,
-    "documents_required": null,
+    "documents_required": {
+     "value": [
+      "tax_return"
+     ],
+     "layer": "documented",
+     "quote": "a) Complete IRS tax returns for the most recently completed calendar year of all responsible parties.",
+     "source_id": "fap-b00445b7170c1883",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "documents_reported": null,
-    "submit_methods": null,
-    "window_days_from_first_bill": null,
-    "decision_days": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "Hand-deliver or Mail to Patient Financial Services Office located at 2800 10th Ave North, Billings, MT 59101"
+      },
+      {
+       "kind": "in_person",
+       "detail": "Hand-deliver or Mail to Patient Financial Services Office located at 2800 10th Ave North, Billings, MT 59101"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Hand-deliver or Mail to Patient Financial Services Office located at 2800 10th Ave North, Billings, MT 59101",
+     "source_id": "fap-b00445b7170c1883",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "window_days_from_first_bill": {
+     "value": 240,
+     "layer": "documented",
+     "quote": "Financial Assistance Applications are considered if received at any time during the 240-day period following the first post-discharge billing statement issued by Stillwater Billings Clinic to the patient for such care.",
+     "source_id": "fap-b00445b7170c1883",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "decision_days": {
+     "value": 45,
+     "layer": "documented",
+     "quote": "Billings Clinic notifies the patient and/or Responsible Party in writing of the final determination within forty-five (45) calendar days of Billings Clinic\u2019s receipt of a completed application.",
+     "source_id": "fap-b00445b7170c1883",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "decision_days_reported": null
    },
    "collections": {
@@ -3797,9 +3872,27 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": null,
+    "phone": {
+     "value": "406-238-2601",
+     "layer": "documented",
+     "quote": "A Billings Clinic Financial Services Counselor is contacted at (406) 238-2601 for assistance in completing the application or to answer questions",
+     "source_id": "fap-b00445b7170c1883",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "hours": null,
-    "languages": null
+    "languages": {
+     "value": [
+      "primary languages spoken by the population serviced by Stillwater Billings Clinic"
+     ],
+     "layer": "documented",
+     "quote": "Such information shall be provided in the primary languages spoken by the population serviced by Stillwater Billings Clinic.",
+     "source_id": "fap-b00445b7170c1883",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
    },
    "coverage": {
     "facilities": null,
@@ -3834,70 +3927,42 @@
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 1,
+    "sources_fetched": 2,
     "sources_total": 2,
-    "sources_missing": [
-     "https://stillwaterbillingsclinic.com/wp-content/uploads/O-136_Financial_Assistance_Stillwater.pdf"
-    ],
+    "sources_missing": [],
     "sha256_match": {
-     "fap-b00445b7170c1883": null,
+     "fap-b00445b7170c1883": true,
      "web-b97a90daaf280983": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
-    "accepted": [],
+    "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
+     "eligibility.residency",
+     "apply.documents_required",
+     "apply.submit_methods",
+     "apply.window_days_from_first_bill",
+     "apply.decision_days",
+     "contacts.phone",
+     "contacts.languages"
+    ],
     "rejected": [
      [
-      "eligibility.free_care_max_fpl",
-      "source text missing"
-     ],
-     [
-      "eligibility.discount_tiers",
-      "source text missing"
-     ],
-     [
       "eligibility.asset_test",
-      "source text missing"
-     ],
-     [
-      "eligibility.residency",
-      "source text missing"
-     ],
-     [
-      "programs.presumptive",
-      "source text missing"
-     ],
-     [
-      "apply.documents_required",
-      "source text missing"
-     ],
-     [
-      "apply.submit_methods",
-      "source text missing"
-     ],
-     [
-      "apply.window_days_from_first_bill",
-      "source text missing"
-     ],
-     [
-      "apply.decision_days",
-      "source text missing"
+      "quote does not support the asset-test value"
      ],
      [
       "collections.eca_wait_days",
-      "source text missing"
-     ],
-     [
-      "contacts.phone",
-      "source text missing"
-     ],
-     [
-      "contacts.languages",
-      "source text missing"
+      "value not in quote"
      ]
     ],
-    "pruned": [],
-    "income_rule_verified": false,
-    "core_completeness": 0.0
+    "pruned": [
+     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
+     "apply.documents_required: 2 items not named in the trimmed quote",
+     "apply.submit_methods: 1 item not named in the trimmed quote"
+    ],
+    "income_rule_verified": true,
+    "core_completeness": 0.83
    }
   },
   {
@@ -4945,8 +5010,35 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": null,
-    "discount_tiers": null,
+    "free_care_max_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "a 100% Charity Care reduction may be provided to patients as adjusted for family size and the family\u2019s gross income is below 200% of the Federal Income Poverty Guidelines",
+     "source_id": "fap-45ebd8a9f38e249b",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "200",
+       "max_fpl_inclusive": "300",
+       "discount_percent": 80
+      },
+      {
+       "min_fpl_exclusive": "300",
+       "max_fpl_inclusive": "400",
+       "discount_percent": 60
+      }
+     ],
+     "layer": "documented",
+     "quote": "0-200% 100% 201% TO 300% 80% 301% TO 400% + 60%",
+     "source_id": "fap-45ebd8a9f38e249b",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": null,
@@ -4961,11 +5053,42 @@
    "apply": {
     "form_url": null,
     "form_version": null,
-    "documents_required": null,
+    "documents_required": {
+     "value": [
+      "tax_return"
+     ],
+     "layer": "documented",
+     "quote": "a. Complete IRS tax returns for the most recently completed calendar year of all responsible parties.",
+     "source_id": "fap-45ebd8a9f38e249b",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "documents_reported": null,
-    "submit_methods": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "in_person",
+       "detail": "return to the front desk"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Please complete the following information and return to the front desk to determine if you or members of your family are eligible for a discount.",
+     "source_id": "fap-45ebd8a9f38e249b",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "window_days_from_first_bill": null,
-    "decision_days": null,
+    "decision_days": {
+     "value": 45,
+     "layer": "documented",
+     "quote": "notify the patient, patient\u2019s legal guardian, and/or responsible party in writing of the final determination within forty-five (45) calendar days of DMHC\u2019s receipt of a completed application",
+     "source_id": "fap-45ebd8a9f38e249b",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "decision_days_reported": null
    },
    "collections": {
@@ -5021,56 +5144,39 @@
    ],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 1,
+    "sources_fetched": 2,
     "sources_total": 2,
-    "sources_missing": [
-     "https://www.danielsmemorialhealthcare.org/wp-content/uploads/2026/05/BUSINESS-OFFICE-PP-Chaity-Financial-Assistance-2026.pdf"
-    ],
+    "sources_missing": [],
     "sha256_match": {
-     "fap-45ebd8a9f38e249b": null,
-     "web-c8e087cacac87af0": false
+     "fap-45ebd8a9f38e249b": true,
+     "web-c8e087cacac87af0": true
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
+     "apply.documents_required",
+     "apply.submit_methods",
+     "apply.decision_days",
      "contacts.phone"
     ],
     "rejected": [
      [
-      "eligibility.free_care_max_fpl",
-      "source text missing"
-     ],
-     [
-      "eligibility.discount_tiers",
-      "source text missing"
-     ],
-     [
       "eligibility.asset_test",
-      "source text missing"
-     ],
-     [
-      "programs.presumptive",
-      "source text missing"
+      "quote does not support the asset-test value"
      ],
      [
       "apply.form_url",
       "quote not found in source"
-     ],
-     [
-      "apply.documents_required",
-      "source text missing"
-     ],
-     [
-      "apply.submit_methods",
-      "source text missing"
-     ],
-     [
-      "apply.decision_days",
-      "source text missing"
      ]
     ],
-    "pruned": [],
-    "income_rule_verified": false,
-    "core_completeness": 0.17
+    "pruned": [
+     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
+     "apply.documents_required: 1 item not named in the trimmed quote",
+     "apply.submit_methods: 1 item not named in the trimmed quote"
+    ],
+    "income_rule_verified": true,
+    "core_completeness": 0.83
    }
   },
   {

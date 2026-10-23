@@ -299,8 +299,8 @@
     "sources_total": 3,
     "sources_missing": [],
     "sha256_match": {
-     "web-68a199587f0f1910": true,
-     "web-d6aef92969f62fa3": true,
+     "web-68a199587f0f1910": false,
+     "web-d6aef92969f62fa3": false,
      "web-bc080e1cc0faa513": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
@@ -335,15 +335,7 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": {
-     "value": "40.9",
-     "layer": "documented",
-     "quote": "Patients whose family income is not more than 40.9% of the FPL are eligible to receive a 100% discount off billed charges.",
-     "source_id": "fap-127bd5b8667e7fa8",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "free_care_max_fpl": null,
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
     "asset_test": {
@@ -489,6 +481,7 @@
    ],
    "accuracy": null,
    "eve_review": [
+    "eligibility.free_care_max_fpl: 40.9% FPL is below the poverty line; left for review, not recorded",
     "eligibility.discount_tiers: 40.9-250% at 100% is the free-care band, not a tier; skipped",
     "programs.presumptive: 2 more verbatim excerpt(s) supported this value: Verified \u201chomeless\u201d or \u201ctransient\u201d status, without a signed financial assistance application on file | Account is identified in official bankruptcy and there are no estate assets",
     "programs.state_programs: 1 more verbatim excerpt(s) supported this value: Medicaid - All household members birth certificate or passport - State issued ID with current address",
@@ -509,7 +502,6 @@
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
-     "eligibility.free_care_max_fpl",
      "eligibility.asset_test",
      "eligibility.residency",
      "eligibility.insured_patients_covered",
@@ -524,8 +516,8 @@
      "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
      "apply.documents_required: 3 items not named in the trimmed quote"
     ],
-    "income_rule_verified": true,
-    "core_completeness": 0.67
+    "income_rule_verified": false,
+    "core_completeness": 0.5
    }
   },
   {
@@ -1342,8 +1334,8 @@
     "sources_total": 3,
     "sources_missing": [],
     "sha256_match": {
-     "web-68a199587f0f1910": true,
-     "web-d6aef92969f62fa3": true,
+     "web-68a199587f0f1910": false,
+     "web-d6aef92969f62fa3": false,
      "web-63b5b44b445867d1": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
@@ -2141,8 +2133,8 @@
     "sources_total": 3,
     "sources_missing": [],
     "sha256_match": {
-     "web-68a199587f0f1910": true,
-     "web-d6aef92969f62fa3": true,
+     "web-68a199587f0f1910": false,
+     "web-d6aef92969f62fa3": false,
      "web-cdc2bb5c62f6aebe": true
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
@@ -2235,7 +2227,7 @@
     "sources_total": 1,
     "sources_missing": [],
     "sha256_match": {
-     "web-68a199587f0f1910": true
+     "web-68a199587f0f1910": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [],
@@ -2502,21 +2494,7 @@
      "confidence": 1.0,
      "support_count": 0
     },
-    "discount_tiers": {
-     "value": [
-      {
-       "min_fpl_exclusive": "100",
-       "max_fpl_inclusive": "150",
-       "discount_percent": 50
-      }
-     ],
-     "layer": "documented",
-     "quote": "Patient whose family income is over 100% and below 150% of the FPL would be eligible for up to a 50% discount.",
-     "source_id": "fap-20ad7d5cc3820570",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "discount_tiers": null,
     "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": {
@@ -2660,6 +2638,7 @@
    ],
    "accuracy": null,
    "eve_review": [
+    "eligibility.discount_tiers: 100-150% says 'up to 50%', a cap rather than a fixed discount; skipped",
     "agent dropped programs.state_programs: quote is not a substring of the source",
     "agent dropped apply.submit_methods: excerpt not in source: applications are available at no cost via mail, online and a",
     "agent judge on eligibility.discount_tiers: Quote says 'below 150%' and 'up to a 50% discount'. It does not state 150% is inclusive, so max_fpl_inclusive:150 is not supported.",
@@ -2679,7 +2658,6 @@
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
      "eligibility.free_care_max_fpl",
-     "eligibility.discount_tiers",
      "eligibility.residency",
      "eligibility.insured_patients_covered",
      "eligibility.min_balance",
@@ -2709,7 +2687,7 @@
      "apply.documents_required: 1 item not named in the trimmed quote"
     ],
     "income_rule_verified": true,
-    "core_completeness": 0.67
+    "core_completeness": 0.5
    }
   },
   {
@@ -3737,15 +3715,7 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": {
-     "value": "40",
-     "layer": "documented",
-     "quote": "Z 0 - 40% and Homeless",
-     "source_id": "fap-b1c851a9f3b55b35",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "free_care_max_fpl": null,
     "discount_tiers": null,
     "assistance_ceiling_fpl": {
      "value": "400",
@@ -3905,6 +3875,7 @@
    ],
    "accuracy": null,
    "eve_review": [
+    "eligibility.free_care_max_fpl: 40% FPL is below the poverty line; left for review, not recorded",
     "eligibility.discount_tiers: 0-40% at 100% is the free-care band, not a tier; skipped",
     "eligibility.discount_tiers: 1 more verbatim excerpt(s) supported this value: Ambulatory Surgery (HB) $0 $15 $65 $105 $155 $220 $300 $390 $535 $600 $630 AGB AGB",
     "apply.documents_required: 2 more verbatim excerpt(s) supported this value: Employer and income information for each working adult household member | Liquid Resources - Liquid resources are resources that can be converted to cash immediately.",
@@ -3925,7 +3896,6 @@
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
-     "eligibility.free_care_max_fpl",
      "eligibility.assistance_ceiling_fpl",
      "eligibility.residency",
      "eligibility.insured_patients_covered",
@@ -3949,8 +3919,8 @@
      "apply.documents_required: none of the listed documents is named in the quote (after trimming)",
      "apply.submit_methods: 1 item not named in the trimmed quote"
     ],
-    "income_rule_verified": true,
-    "core_completeness": 0.5
+    "income_rule_verified": false,
+    "core_completeness": 0.33
    }
   },
   {
@@ -4105,7 +4075,7 @@
     "sources_total": 3,
     "sources_missing": [],
     "sha256_match": {
-     "web-fe2c648b3f49295a": false,
+     "web-fe2c648b3f49295a": true,
      "fap-18cf743c04f5d6c4": true,
      "web-221b2d8ec507d137": false
     },
@@ -7310,7 +7280,7 @@
     "sha256_match": {
      "fap-25532ca6f93012bf": true,
      "fap-a1c34c3ee4644cdf": true,
-     "web-5010898e23c37c21": false
+     "web-5010898e23c37c21": true
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [

@@ -6171,15 +6171,7 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": {
-     "value": "70",
-     "layer": "documented",
-     "quote": "Patient/guarantors that fall below Level 1, 70% of FPL, will receive a 100% discount.",
-     "source_id": "fap-8a9df7c66dc1169a",
-     "checked_on": "2026-10-23",
-     "confidence": 1.0,
-     "support_count": 0
-    },
+    "free_care_max_fpl": null,
     "discount_tiers": null,
     "assistance_ceiling_fpl": {
      "value": "200",
@@ -6339,6 +6331,7 @@
    ],
    "accuracy": null,
    "eve_review": [
+    "eligibility.free_care_max_fpl: 70% FPL is below the poverty line; left for review, not recorded",
     "eligibility.assistance_ceiling_fpl: quote matched the source only after typography normalization",
     "eligibility.asset_test: quote matched the source only after typography normalization",
     "apply.documents_required: 2 more verbatim excerpt(s) supported this value: iii. Two Most Recent copies of bank statements for both checking and savings accounts. | vi. Medicaid coverage denial letter if applicable.",
@@ -6360,7 +6353,6 @@
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
-     "eligibility.free_care_max_fpl",
      "eligibility.assistance_ceiling_fpl",
      "eligibility.asset_test",
      "apply.documents_required",
@@ -6381,8 +6373,8 @@
      "apply.documents_required: 3 items not named in the trimmed quote",
      "apply.submit_methods: 1 item not named in the trimmed quote"
     ],
-    "income_rule_verified": true,
-    "core_completeness": 0.67
+    "income_rule_verified": false,
+    "core_completeness": 0.5
    }
   },
   {
@@ -8083,8 +8075,8 @@
     "sources_total": 3,
     "sources_missing": [],
     "sha256_match": {
-     "web-68a199587f0f1910": true,
-     "web-f04e7201a90480f3": true,
+     "web-68a199587f0f1910": false,
+     "web-f04e7201a90480f3": false,
      "web-53a50de171cb0497": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",

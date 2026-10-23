@@ -1833,7 +1833,7 @@
     "sources_total": 2,
     "sources_missing": [],
     "sha256_match": {
-     "web-df8460799d975e4e": false,
+     "web-df8460799d975e4e": true,
      "web-8b99f8a62f1ac610": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
@@ -2221,7 +2221,7 @@
     "sha256_match": {
      "fap-1d2f509c39aa10bf": true,
      "fap-93f191dff05eeab8": true,
-     "web-f0ef0ad8aabe460c": true
+     "web-f0ef0ad8aabe460c": false
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
     "accepted": [
@@ -2941,12 +2941,28 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": null,
+    "free_care_max_fpl": {
+     "value": "225",
+     "layer": "documented",
+     "quote": "Have a household income at or below 225 percent of the U.S. Federal Poverty Guidelines",
+     "source_id": "web-62e617a8c1290c3f",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "discount_tiers": null,
     "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": null,
-    "insured_patients_covered": null,
+    "insured_patients_covered": {
+     "value": true,
+     "layer": "documented",
+     "quote": "This reduction applies to uninsured and insured patients who owe balances after insurance payments have been made.",
+     "source_id": "web-62e617a8c1290c3f",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "min_balance": null,
     "services_excluded": null
    },
@@ -2957,9 +2973,39 @@
    "apply": {
     "form_url": null,
     "form_version": null,
-    "documents_required": null,
+    "documents_required": {
+     "value": [
+      "tax_return",
+      "pay_stubs",
+      "proof_of_income",
+      "other"
+     ],
+     "layer": "documented",
+     "quote": "Complete a copy of your most recent Federal Income Tax Return and all schedules. Include copies of last year's W-2 forms; Copies of the three most recent, paycheck stubs or a statement from the employer",
+     "source_id": "web-62e617a8c1290c3f",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "documents_reported": null,
-    "submit_methods": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "Request the information in writing by USPS mail or by visiting a Concord Hospital Financial Counselor at 250 Pleasant Street, Concord, NH 03301"
+      },
+      {
+       "kind": "in_person",
+       "detail": "Request a financial assistance application at any check-in or registration area at any of our locations"
+      }
+     ],
+     "layer": "documented",
+     "quote": "Request the information in writing by USPS mail or by visiting a Concord Hospital Financial Counselor at 250 Pleasant Street, Concord, NH 03301",
+     "source_id": "web-62e617a8c1290c3f",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "window_days_from_first_bill": null,
     "decision_days": null,
     "decision_days_reported": null
@@ -2969,9 +3015,28 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": null,
+    "phone": {
+     "value": "(603) 227-7101",
+     "layer": "documented",
+     "quote": "calling our Financial Counseling at (603) 227-7101 or (800) 562-1542",
+     "source_id": "web-62e617a8c1290c3f",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "hours": null,
-    "languages": null
+    "languages": {
+     "value": [
+      "English",
+      "Spanish"
+     ],
+     "layer": "documented",
+     "quote": "Our financial assistance policy, application form and plain language summary can be offered in English and Spanish or any other language upon request.",
+     "source_id": "web-62e617a8c1290c3f",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    }
    },
    "coverage": {
     "facilities": null,
@@ -3002,55 +3067,40 @@
    "eve_review": [],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 0,
+    "sources_fetched": 1,
     "sources_total": 2,
     "sources_missing": [
-     "https://web.archive.org/web/20260612113636/https://www.concordhospital.org/patients-visitors/billing-insurance-financial-assistance/financial-assistance-plain-language-summary/",
      "https://web.archive.org/web/20260418171029/https://www.concordhospital.org/patients-visitors/billing-insurance-financial-assistance/"
     ],
     "sha256_match": {
-     "web-62e617a8c1290c3f": null,
+     "web-62e617a8c1290c3f": false,
      "web-f994afb30994b07e": null
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
-    "accepted": [],
+    "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.insured_patients_covered",
+     "apply.documents_required",
+     "apply.submit_methods",
+     "contacts.phone",
+     "contacts.languages"
+    ],
     "rejected": [
      [
-      "eligibility.free_care_max_fpl",
-      "source text missing"
-     ],
-     [
       "eligibility.assistance_ceiling_fpl",
-      "source text missing"
-     ],
-     [
-      "eligibility.insured_patients_covered",
-      "source text missing"
+      "quote does not say the hospital's financial assistance reaches it"
      ],
      [
       "apply.form_url",
-      "source text missing"
-     ],
-     [
-      "apply.documents_required",
-      "source text missing"
-     ],
-     [
-      "apply.submit_methods",
-      "source text missing"
-     ],
-     [
-      "contacts.phone",
-      "source text missing"
-     ],
-     [
-      "contacts.languages",
-      "source text missing"
+      "quote not found in source"
      ]
     ],
-    "pruned": [],
-    "income_rule_verified": false,
-    "core_completeness": 0.0
+    "pruned": [
+     "apply.documents_required: 2 items not named in the trimmed quote",
+     "apply.submit_methods: 2 items not named in the trimmed quote"
+    ],
+    "income_rule_verified": true,
+    "core_completeness": 0.67
    }
   },
   {

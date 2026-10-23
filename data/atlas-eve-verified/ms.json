@@ -3845,8 +3845,35 @@
    "version": 1,
    "status": "draft",
    "eligibility": {
-    "free_care_max_fpl": null,
-    "discount_tiers": null,
+    "free_care_max_fpl": {
+     "value": "200",
+     "layer": "documented",
+     "quote": "If total income is 200% or less of Federal Poverty Guideline \u2013 The paMent will qualify for 100% indigent care write-off.",
+     "source_id": "fap-f46ce0c56ee45803",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
+    "discount_tiers": {
+     "value": [
+      {
+       "min_fpl_exclusive": "200",
+       "max_fpl_inclusive": "250",
+       "discount_percent": 75
+      },
+      {
+       "min_fpl_exclusive": "250",
+       "max_fpl_inclusive": "300",
+       "discount_percent": 50
+      }
+     ],
+     "layer": "documented",
+     "quote": "If total income is between 200%/250% then 75 % indigent care write off will be applied If total income is between 250%/300% then 50% indigent care write off will be applied",
+     "source_id": "fap-f46ce0c56ee45803",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "assistance_ceiling_fpl": null,
     "asset_test": null,
     "residency": null,
@@ -3859,13 +3886,60 @@
     "state_programs": null
    },
    "apply": {
-    "form_url": null,
+    "form_url": {
+     "value": "https://lackeymemorialhospital.com/wp-content/uploads/2025/01/Lackey-Memorial-Hospital-Financial-Assistance-Sliding-Fee-Application.pdf",
+     "layer": "documented",
+     "quote": "BUSINESS OFFICE FORM: BO2 FINANCIAL ASSISTANCE/SLIDING FEE APPLICATION",
+     "source_id": "fap-408b453bd4197c38",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "form_version": null,
-    "documents_required": null,
+    "documents_required": {
+     "value": [
+      "medicaid_denial",
+      "tax_return",
+      "pay_stubs",
+      "proof_of_income",
+      "other"
+     ],
+     "layer": "documented",
+     "quote": "Medicaid denial leKer if requested by facility Most recent prior years tax returns Proof of income: Pay check stubs for last month, if receiving unemployment, provide check stub.",
+     "source_id": "fap-f46ce0c56ee45803",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "documents_reported": null,
-    "submit_methods": null,
+    "submit_methods": {
+     "value": [
+      {
+       "kind": "mail",
+       "detail": "Lackey Memorial Hospital, 330 North Broad Street, Forest, Mississippi 39074"
+      },
+      {
+       "kind": "in_person",
+       "detail": "Return this application and the requested information to the Business Office where services were received."
+      }
+     ],
+     "layer": "documented",
+     "quote": "Please return this application and the requested information to the Business Office where services were received.",
+     "source_id": "fap-408b453bd4197c38",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "window_days_from_first_bill": null,
-    "decision_days": null,
+    "decision_days": {
+     "value": 15,
+     "layer": "documented",
+     "quote": "A leKer will be sent to the guarantor with a list of all accounts and amounts approved / not approved within 15 days of the receipt of the completed applicaMon.",
+     "source_id": "fap-f46ce0c56ee45803",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "decision_days_reported": null
    },
    "collections": {
@@ -3873,7 +3947,15 @@
     "collection_agencies": null
    },
    "contacts": {
-    "phone": null,
+    "phone": {
+     "value": "601-469-4151",
+     "layer": "documented",
+     "quote": "601-469-4151",
+     "source_id": "web-263f91fc4dbb87ac",
+     "checked_on": "2026-10-23",
+     "confidence": 1.0,
+     "support_count": 0
+    },
     "hours": null,
     "languages": null
    },
@@ -3915,61 +3997,36 @@
    "eve_review": [],
    "eve_verified": {
     "on": "2026-10-23",
-    "sources_fetched": 0,
+    "sources_fetched": 3,
     "sources_total": 3,
-    "sources_missing": [
-     "https://lackeymemorialhospital.com/wp-content/uploads/2024/08/Lackey-Financial-Assistance-Policy.pdf",
-     "https://lackeymemorialhospital.com/billing-information/",
-     "http://lackeymemorialhospital.com/wp-content/uploads/2025/01/Lackey-Memorial-Hospital-Financial-Assistance-Sliding-Fee-Application.pdf"
-    ],
+    "sources_missing": [],
     "sha256_match": {
-     "fap-f46ce0c56ee45803": null,
-     "web-263f91fc4dbb87ac": null,
-     "fap-408b453bd4197c38": null
+     "fap-f46ce0c56ee45803": true,
+     "web-263f91fc4dbb87ac": true,
+     "fap-408b453bd4197c38": true
     },
     "sources_dir": "/Users/grey/waive-atlas/sources",
-    "accepted": [],
+    "accepted": [
+     "eligibility.free_care_max_fpl",
+     "eligibility.discount_tiers",
+     "apply.form_url",
+     "apply.documents_required",
+     "apply.submit_methods",
+     "apply.decision_days",
+     "contacts.phone"
+    ],
     "rejected": [
      [
-      "eligibility.free_care_max_fpl",
-      "source text missing"
-     ],
-     [
-      "eligibility.discount_tiers",
-      "source text missing"
-     ],
-     [
       "eligibility.assistance_ceiling_fpl",
-      "source text missing"
-     ],
-     [
-      "programs.presumptive",
-      "source text missing"
-     ],
-     [
-      "apply.form_url",
-      "source text missing"
-     ],
-     [
-      "apply.documents_required",
-      "source text missing"
-     ],
-     [
-      "apply.submit_methods",
-      "source text missing"
-     ],
-     [
-      "apply.decision_days",
-      "source text missing"
-     ],
-     [
-      "contacts.phone",
-      "source text missing"
+      "quote does not state the ceiling as a percentage of the poverty level"
      ]
     ],
-    "pruned": [],
-    "income_rule_verified": false,
-    "core_completeness": 0.0
+    "pruned": [
+     "programs.presumptive: quote does not describe presumptive (automatic) eligibility (after trimming)",
+     "apply.documents_required: 2 items not named in the trimmed quote"
+    ],
+    "income_rule_verified": true,
+    "core_completeness": 1.0
    }
   },
   {
