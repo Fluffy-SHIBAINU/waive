@@ -2,6 +2,7 @@
 
 from datetime import UTC, datetime
 from pathlib import Path
+from typing import Any
 
 import httpx
 import typer
@@ -309,6 +310,58 @@ def atlas_recheck(
             f"{'it' if one else 'them'}, then Confirm website or Wrong website in the admin "
             "console (/admin/review)"
         )
+
+
+@atlas_app.command("import-eve")
+def atlas_import_eve(
+    draft_dir: Path = typer.Option(  # noqa: B008
+        ..., "--dir", help="Folder of <STATE>/<CCN>.json drafts from the Eve waive-agent"
+    ),
+    out: Path = typer.Option(  # noqa: B008
+        Path("data/atlas-eve"), "--out", help="Where the per-state draft exports go"
+    ),
+    seed_dir: Path = typer.Option(Path("data/seed"), "--seed-dir"),  # noqa: B008
+    db: bool = typer.Option(
+        False, "--db/--no-db", help="Also store each sheet as a version 1 draft in the database"
+    ),
+    state: str | None = typer.Option(None, "--state", help="Only this state"),
+    sources_dir: Path | None = typer.Option(  # noqa: B008
+        None, "--sources-dir", help="Folder of <source id>.txt documents to store with the sheets"
+    ),
+    decisions: Path | None = typer.Option(  # noqa: B008
+        None,
+        "--decisions",
+        help="Owner decisions JSON from the review page (default data/atlas-eve/_decisions.json)",
+    ),
+) -> None:
+    """Convert Eve waive-agent drafts into draft procedure sheets: validates against the schema,
+    writes data/atlas-eve/<state>.json with review notes, and optionally stores them as drafts."""
+    from waive.atlas import eve_import
+
+    today = datetime.now(UTC).date()
+    drafts = eve_import.read_drafts(draft_dir, (state.upper(),) if state else None)
+    decided = eve_import.load_decisions(decisions or Path("data/atlas-eve/_decisions.json"))
+    seeds: dict[str, dict[str, dict[str, Any]]] = {}
+    results = []
+    for draft in drafts:
+        st = str((draft.get("hospital") or {}).get("state", "")).upper()
+        if st not in seeds:
+            seeds[st] = eve_import.load_seed(seed_dir, st)
+        ccn = str((draft.get("hospital") or {}).get("ccn", ""))
+        results.append(eve_import.convert_draft(draft, seeds[st].get(ccn), today, decided.get(ccn)))
+    counts = eve_import.write_exports(results, out, today)
+    report = eve_import.write_report(results, out, today)
+    converted = sum(counts.values())
+    typer.echo(
+        f"converted {converted} of {len(results)} drafts into {len(counts)} state files under {out}; "
+        f"{len(decided)} owner decisions applied; report {report}"
+    )
+    if db:
+        settings = Settings()
+        with session_scope(_engine(settings)) as session:
+            stored = eve_import.import_to_db(session, results, seeds, sources_dir)
+            session.commit()
+        typer.echo(f"stored {stored} draft sheets (version 1, status draft) with review items")
 
 
 @atlas_app.command("report")

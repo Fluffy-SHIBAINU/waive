@@ -1521,3 +1521,30 @@ def test_the_top_of_a_later_band_is_no_free_care_limit():
     docs = {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT + "\n" + first + "\n"}
     report = verify_sheet(with_free_limit(200, first), docs)
     assert not any(p == "eligibility.free_care_max_fpl" for p, _ in report.rejected)
+
+
+def test_a_tier_lower_bound_accepts_the_written_inclusive_start() -> None:
+    from waive.atlas.schema import DiscountTier
+    from waive.atlas.verify import _lower_bound_in, value_in_quote
+
+    assert _lower_bound_in(Decimal(200), "above 200% of FPL")
+    assert _lower_bound_in(Decimal(200), "201% to 400% of FPL: 50% discount")
+    assert _lower_bound_in(Decimal(200), "200.1 to 400% 50%")
+    assert _lower_bound_in(Decimal(200), "200.01% - 400% 50%")
+    assert not _lower_bound_in(Decimal(200), "250% to 400% of FPL: 50% discount")
+    tier = DiscountTier(
+        min_fpl_exclusive=Decimal(200), max_fpl_inclusive=Decimal(400), discount_percent=Decimal(50)
+    )
+    assert value_in_quote([tier], "201% to 400% of FPL: 50% discount")
+    assert not value_in_quote([tier], "201% to 400% of FPL: 60% discount")
+
+
+def test_a_multi_span_quote_is_found_when_every_span_is() -> None:
+    from waive.atlas.verify import quote_found
+
+    document = "Income 0 to 200% of FPL: free care. Income 201% to 400% of FPL: 50% discount."
+    assert quote_found("0 to 200% of FPL: free care || 201% to 400% of FPL: 50% discount", document)
+    assert not quote_found(
+        "0 to 200% of FPL: free care || 401% to 500% of FPL: 25% discount", document
+    )
+    assert not quote_found(" || ", document)
