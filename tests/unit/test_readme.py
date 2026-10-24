@@ -107,7 +107,7 @@ def test_readme_has_the_required_sections_and_no_placeholders():
     ):
         assert heading in text, heading
     assert "```mermaid" in text
-    assert "Apache-2.0" in text and "CC BY 4.0" in text
+    assert "Apache-2.0" in text and "Atlas data:** private" in text
     assert "Deployment status" in text  # the one line to update when Phase 6 task 6.8 closes
     assert "TBD" not in text
 
@@ -120,7 +120,8 @@ def test_license_is_the_canonical_apache_2_text():
     assert "Version 2.0, January 2004" in text
 
 
-def test_atlas_data_license_note_exists():
-    note = (ROOT / "data" / "atlas" / "LICENSE.md").read_text(encoding="utf-8")
-    assert "CC BY 4.0" in note
-    assert "https://creativecommons.org/licenses/by/4.0/" in note
+def test_readme_grants_no_open_data_license():
+    """The atlas data is private (kept out of the public repository, 2026-10-24): the README
+    offers it under no open license."""
+    text = (ROOT / "README.md").read_text(encoding="utf-8")
+    assert "CC BY" not in text

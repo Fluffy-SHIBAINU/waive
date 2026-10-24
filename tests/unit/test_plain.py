@@ -2,6 +2,8 @@ import json
 from decimal import Decimal
 from pathlib import Path
 
+import pytest
+
 from waive.atlas.samples import st_example_sheet
 from waive.atlas.schema import DiscountTier, DocType, ProcedureSheet, StateProgram, SubmitMethod
 from waive.web.plain import plain_lines
@@ -163,9 +165,11 @@ def test_the_sample_sheet_renders_without_repr_markers():
 
 
 def test_the_published_atlas_renders_without_repr_markers():
-    """Every cited value in the open-data export reads as plain text on /atlas/{ccn}. The
+    """Every cited value in the atlas export reads as plain text on /atlas/{ccn}. The
     renderer passes strings through, so a stringified list in the data shows its brackets; the
     set of such fields must be exactly the ones already waiting for a rebuild."""
+    if not PUBLISHED_ATLAS.exists():
+        pytest.skip("the atlas exports are private data, not in the public repository")
     payload = json.loads(PUBLISHED_ATLAS.read_text(encoding="utf-8"))
     showing_reprs: set[tuple[str, str]] = set()
     for data in payload["sheets"]:

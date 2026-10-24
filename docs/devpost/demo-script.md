@@ -43,7 +43,7 @@ endpoint is live, record the phone shots against the public URL instead and say 
 | 6 | 1:32–1:59 | 27 | Laptop: `/atlas` list → `/atlas/220031` (Boston Medical Center) → `/metrics` | Scroll the list; open Boston Medical Center; scroll a field: the quote sits under each value with its source link and date; scroll to "Sources"; open `/metrics` and show the MA row and the national total | "Behind the app is an open atlas. For each hospital, Tavily finds the official site and scouts the financial assistance policy, the application and the collections policy. Nemotron 3 Super turns them into a procedure sheet; Nemotron 3 Nano cross-checks it; every field keeps an exact quote that must verify against the source, or it is dropped. Thirty-two of forty-six Massachusetts hospitals are published, out of twenty-seven hundred nonprofit hospitals seeded nationally." |
 | 7 | 1:59–2:21 | 22 | Terminal: `uv run waive atlas build --state MA --ccn 220031 --reuse-sources` (Nemotron Super + Nano on stored documents, about $0.01, no Tavily) then `uv run waive atlas schedule --dry-run` (free) | Run the build; cut the wait so the result table shows `220031 · BOSTON MEDICAL CENTER · published · <version>` and the "Spend so far" line; run the dry run and let the queue table and the "Daily budget" line show | "Here Nemotron 3 Super and Nemotron 3 Nano rebuild Boston Medical Center's sheet live from stored documents — a new version only if a value changed. Scouting runs on a priority queue inside a daily credit budget. And when a hospital's real decision contradicts a sheet, Waive re-scouts, versions it, and after enough cases flags the hospital." |
 | 8 | 2:21–2:40 | 19 | Architecture card: `docs/devpost/gallery/diagram-01.png` | Hold the diagram; a highlight moves from the phone to Token Factory to Tavily | Variant A (deployed): "One Python service: FastAPI on Nebius AI Cloud; NVIDIA Nemotron models and MiniCPM-V on Nebius Token Factory, with zero data retention; Tavily for the web. Photos never touch disk, personal fields are encrypted, links are scoped and revocable, and one tap deletes everything. Every budget has a hard cap." — Variant B (not deployed): replace the first clause with "One Python service: FastAPI, built for Nebius AI Cloud; NVIDIA Nemotron models and MiniCPM-V on Nebius Token Factory, with zero data retention; …" — Both variants say "with zero data retention": gate U0.4 is closed (zero data retention confirmed 2026-10-09 by the project owner, `WAIVE_ZDR_CONFIRMED=true`). |
-| 9 | 2:40–2:50 | 10 | Closing card: repository URL, "Code Apache-2.0 · Atlas data CC BY 4.0 · Waive never asks for money" | Hold; end | "Waive never asks for money. The code is Apache-2.0, the atlas is CC BY 4.0. Rosa keeps her eighteen hundred fifty dollars." |
+| 9 | 2:40–2:50 | 10 | Closing card: repository URL, "Code Apache-2.0 · Waive never asks for money" | Hold; end | "Waive never asks for money. The code is Apache-2.0. Rosa keeps her eighteen hundred fifty dollars." |
 
 Total: **2:50**.
 
@@ -79,7 +79,7 @@ Total: **2:50**.
 
 - Card 1: "Waive" (large) — "Free or discounted hospital care you're owed, from a photo of the
   bill." — "Nebius x NVIDIA Global AI Hackathon · Personal AI track".
-- Card 9: repository URL `https://github.com/Fluffy-SHIBAINU/waive` — "Code: Apache-2.0 · Atlas data: CC BY 4.0"
+- Card 9: repository URL `https://github.com/Fluffy-SHIBAINU/waive` — "Code: Apache-2.0"
   — "Waive never asks for money, card numbers or bank logins."
 
 ## Recording, cutting and uploading
