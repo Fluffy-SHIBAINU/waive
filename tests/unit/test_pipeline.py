@@ -3462,6 +3462,27 @@ def test_a_ceiling_read_from_free_care_words_holds_the_sheet_ruled_or_not():
             assert ruling_conflicts(session, "220031") == []
 
 
+def test_a_ceiling_that_is_not_the_ruled_value_is_not_the_owners():
+    # A stale ceiling of 70 from the free-care line under a later ruling of 200: only a ceiling
+    # equal to the ruled value is the owner's, so this one is rejected and held as with no
+    # ruling, and nothing goes to the owner.
+    from waive.atlas.pipeline import withdraw_rejected
+
+    engine = make_engine_with_hospital(REAL_HOSPITAL)
+    with session_scope(engine) as session:
+        build_hospital(session, RussellGateway(), FakeAI(), "220031", TODAY)
+        sheet, _ = repo.latest_sheet(session, "220031")
+        ceiling = cited_from(sheet, Decimal(70), RUSSELL_FREE_LINE)
+        store_with(session, "220031", assistance_ceiling_fpl=ceiling)
+        record_owner_rulings(session, {"220031": owner_ruling("discount", "200", ccn="220031")})
+        [result] = withdraw_rejected(session, "MA")
+        assert (result.outcome, result.version) == ("held", 3)
+        assert f"{CEILING_PATH}: {CEILING_FREE_BAND_REASON}" in result.notes
+        latest, _ = repo.latest_sheet(session, "220031")
+        assert latest.eligibility.assistance_ceiling_fpl is None
+        assert ruling_conflicts(session, "220031") == []
+
+
 # Baptist Health (180104, 180130 and the others ruled "discount 300"): the ruling makes the 300%
 # "full assistance" line the ceiling, next to the 301-400% partial-assistance band.
 BAPTIST_FULL = (
@@ -5202,7 +5223,15 @@ def test_the_loan_rules_guards_keep_what_reaches_the_borrowers_state_lent_across
             "CHI St. Vincent Hospital Hot Springs, Hot Springs. ",
         ),
     }
+    # A sibling of the borrower's state lent it too, and holds it itself: the loan reaches the
+    # borrower from its own state as well.
+    guarded["also-lent-in-state"] = lent_doc("also-lent-in-state", SAN_JUAN)
     set_aside = lent_doc("set-aside", SAN_JUAN)
+    # Two Colorado hospitals that lent one document to each other, neither holding it on its own:
+    # the trace stops, and the loan stays in the state. A lender the registry does not know adds
+    # no origin.
+    cycle = lent_doc("lent-in-a-cycle", SAN_JUAN)
+    unknown = lent_doc("unknown-lender", SAN_JUAN)
     engine = make_engine_with_hospital(*GUARD_REGISTRY)
     with session_scope(engine) as session:
         store_docs(session, "050444", set_aside, *guarded.values())
@@ -5211,6 +5240,11 @@ def test_the_loan_rules_guards_keep_what_reaches_the_borrowers_state_lent_across
         own.created_at = datetime.now(UTC) - timedelta(days=30)
         session.flush()
         lend(session, "060003", "050444", "set-aside", *guarded)
+        store_docs(session, "060015", guarded["also-lent-in-state"], cycle)
+        lend(session, "060003", "060015", "also-lent-in-state", "lent-in-a-cycle")
+        lend(session, "060015", "060003", "lent-in-a-cycle")
+        store_docs(session, "060003", unknown)
+        lend(session, "060003", "999999", "unknown-lender")
         assert lent_to(session, "060003") == {"set-aside"}
 
 

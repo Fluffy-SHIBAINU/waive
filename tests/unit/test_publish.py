@@ -447,6 +447,10 @@ def test_a_gap_between_the_sheets_income_bands_holds_the_sheet():
     labels = with_tiers(with_free_limit(SAMPLE, 100), [(100, 170, 75), (171, 250, 55)])
     assert sheet_inconsistencies(labels) == []
     assert sheet_inconsistencies(with_tiers(with_free_limit(SAMPLE, 100), [(101, 200, 75)])) == []
+    # Two points above it is a gap.
+    assert sheet_inconsistencies(with_tiers(with_free_limit(SAMPLE, 100), [(102, 200, 75)])) == [
+        "eligibility.discount_tiers: no rule covers incomes from 100% to 102%"
+    ]
     # No free limit and a first band above 0 is no gap the sheet itself shows.
     table_only = drop_fields(with_tiers(SAMPLE, [(200, 300, 75), (300, 400, 50)]), [FREE_CARE])
     assert sheet_inconsistencies(table_only) == []

@@ -102,6 +102,34 @@ def test_lists_what_recheck_and_withdraw_would_do_without_touching_the_atlas(atl
     engine.dispose()
 
 
+def test_lists_each_reading_an_owner_ruling_is_kept_over(atlas, capsys):
+    # The line comes from the withdraw's note (pipeline._record_ruling_conflicts): a reworded
+    # note would drop it and zero the count.
+    from decimal import Decimal
+
+    from waive.atlas.eve_import import record_owner_rulings
+    from waive.atlas.verify import CEILING_FREE_BAND_REASON
+
+    from tests.unit.test_pipeline import cited_from, owner_ruling, store_with
+
+    engine = make_engine(f"sqlite:///{atlas}")
+    with session_scope(engine) as session:
+        sheet, _ = repo.latest_sheet(session, "220032")
+        ceiling = cited_from(sheet, Decimal(250), FREE_CARE_QUOTE)
+        store_with(session, "220032", assistance_ceiling_fpl=ceiling)
+        record_owner_rulings(session, {"220032": owner_ruling("discount", "250", ccn="220032")})
+    engine.dispose()
+    assert load_script().main(["--db", str(atlas)]) == 0
+    lines = capsys.readouterr().out.splitlines()
+    assert (
+        "MA 220032 kept as the owner ruled: eligibility.assistance_ceiling_fpl: the owner's ruling "
+        f'(250%) is kept over "{CEILING_FREE_BAND_REASON}"; recorded for the owner'
+    ) in lines
+    assert lines[-1] == (
+        "3 sheets listed, 1 field dropped, 1 sheet held, 1 kept as the owner ruled"
+    )
+
+
 def test_writes_to_out_and_refuses_a_missing_atlas(atlas, tmp_path, capsys):
     script = load_script()
     out = tmp_path / "check.txt"

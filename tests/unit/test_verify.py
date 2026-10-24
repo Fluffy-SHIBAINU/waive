@@ -1334,11 +1334,18 @@ _RESIDENCY_CASES = [
     (["VT"], "be a Vermont resident as defined in the \"Definitions\" section of this policy or a "
      "resident of the following counties located outside of Vermont Rensselaer (NY), Washington "
      "(NY) and Berkshire (MA).", None),
+    # The counties' own states in parentheses are no whole states either.
+    (["VT", "NY", "MA"], "be a Vermont resident as defined in the \"Definitions\" section of "
+     "this policy or a resident of the following counties located outside of Vermont Rensselaer "
+     "(NY), Washington (NY) and Berkshire (MA).", "missing"),
     (["KS", "MO"], "residents of Kansas (KS) and Missouri (MO)", None),
     (["VT"], "Vermont residents must sign the Declaration of Residency (VT)", None),
     # Postal codes count only as upper-case tokens in mixed-case text, with the same guards.
     (["NJ"], "Must be a resident of the State of NJ or the crime had to occur in this State.", None),
     (["IN"], "Patients must live IN the service area.", "missing"),
+    # In an all-caps quote every word is upper case, so no upper-case token is a postal code
+    # there: this "MD" is a doctor.
+    (["MD"], "PATIENTS REFERRED BY THEIR MD QUALIFY FOR ASSISTANCE", "missing"),
     (["MD"], "patient must reside in Cecil County, MD or one of the following surrounding "
      "counties to be eligible for charity:", "missing"),
     (["SC"], "Horry County, Lancaster County, and York County, SC.", "missing"),
@@ -1356,6 +1363,9 @@ _RESIDENCY_CASES = [
      "in accordance with their state's FPL", "both"),
     (["NC"], "All North Carolina residents and non-North Carolina residents within a Novant "
      "Health Service Area (see attached) are eligible to apply", "both"),
+    # Only a listed state's "and non-" residents count: Maine's are not New Hampshire's.
+    (["NH"], "New Hampshire residents qualify. Maine residents and non-Maine residents may apply.",
+     None),
     (["NC"], "The applicant must be a North Carolina resident (the criteria for determining "
      "residency is attached as Appendix A to this policy);", None),
 ]  # fmt: skip
@@ -2494,6 +2504,19 @@ _INSURED_TABLE_CASES = [
      "below applies.", False),
     # Dartmouth Health (301304, 301305, 471302): the quote is the insured paragraph.
     (DARTMOUTH_INSURED_TIERS, DARTMOUTH_AWARDS, True),
+    # An "Insured Patients:" heading before a table with an uninsured column of its own: the
+    # quote names both populations (Alexian Brothers' two-column table, 140258).
+    (ALEXIAN_TABLE, "Insured Patients:\n" + ALEXIAN_TABLE, False),
+    # The last population named before the table is uninsured patients, after an insured heading
+    # that leads nowhere.
+    (HENRY_FORD_INSURED_TABLE, "The discounts are below. Insured Patients: N/A. Uninsured "
+     "Patients:\n" + HENRY_FORD_INSURED_TABLE, False),
+    # A lead-in for both populations names no insured-only table, right after an insured heading
+    # too.
+    (HENRY_FORD_INSURED_TABLE, "For qualifying uninsured or insured patients the table below "
+     "applies:\n" + HENRY_FORD_INSURED_TABLE, False),
+    (HENRY_FORD_INSURED_TABLE, "Insured Patients. Uninsured & Insured Patients:\n"
+     + HENRY_FORD_INSURED_TABLE, False),
 ]  # fmt: skip
 
 
