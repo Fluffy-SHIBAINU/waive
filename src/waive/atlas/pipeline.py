@@ -61,6 +61,7 @@ from waive.atlas.verify import (
     PATIENT_SHARE_REASON,
     TRANSLATION_REASON,
     VerificationReport,
+    income_limit_problem,
     prune_lists,
     trim_quotes,
     verify_sheet,
@@ -586,14 +587,22 @@ def _structure_and_verify(
         result.notes.extend(skipped)
         result.notes.extend(f"{path}: {reason}" for path, reason in report.rejected)
     holds = _holding_reasons(report.rejected)
-    if PATIENT_SHARE_REASON in holds:
-        # The table says what the patient pays (co-pay, X% of charges); the schema cannot express
-        # that band, and publishing the free-care remainder alone would deny the co-pay band.
-        tiers = sheet.eligibility.discount_tiers
-        repo.add_review_item(
-            session, ccn, "patient_share_table", {"quote": tiers.quote if tiers else None}
-        )
+    _file_patient_share_table(session, ccn, sheet, holds)
     return drop_fields(sheet, [path for path, _ in report.rejected]), holds
+
+
+def _file_patient_share_table(
+    session: Session, ccn: str, sheet: ProcedureSheet, holds: list[str]
+) -> None:
+    """The table says what the patient pays (co-pay, X% of charges); the schema cannot express
+    that band, and publishing the free-care remainder alone would deny the co-pay band. The item
+    keeps the dropped table's quote for the admin."""
+    if PATIENT_SHARE_REASON not in holds:
+        return
+    tiers = sheet.eligibility.discount_tiers
+    repo.add_review_item(
+        session, ccn, "patient_share_table", {"quote": tiers.quote if tiers else None}
+    )
 
 
 def _holding_reasons(rejected: list[tuple[str, str]]) -> list[str]:
@@ -641,8 +650,12 @@ def _ruling_conflict(
 def _keep_owner_ruled_ceiling(
     sheet: ProcedureSheet, report: VerificationReport, decision: Mapping[str, Any] | None
 ) -> tuple[VerificationReport, list[dict[str, Any]]]:
-    """`report` without the rejections the owner's ruled ceiling wins over, and those conflicts."""
-    if _owner_ruled_ceiling(sheet, decision) is None:
+    """`report` without the rejection the owner's ruled ceiling wins over, and that conflict. The
+    ruling wins over the free-band reading only: verify_sheet stops at it, so the checks after it
+    (another state's band or facilities, another benchmark) run here on the ruled ceiling, and a
+    rejection they give stands, with no conflict, since the ruling kept nothing."""
+    ceiling = sheet.eligibility.assistance_ceiling_fpl
+    if ceiling is None or _owner_ruled_ceiling(sheet, decision) is None:
         return report, []
     overridden = [
         (path, reason)
@@ -651,10 +664,10 @@ def _keep_owner_ruled_ceiling(
     ]
     if not overridden:
         return report, []
-    kept = VerificationReport(
-        accepted=[*report.accepted, CEILING_PATH],
-        rejected=[rejected for rejected in report.rejected if rejected not in overridden],
-    )
+    rest = [rejected for rejected in report.rejected if rejected not in overridden]
+    if reason := income_limit_problem(ceiling.quote or "", sheet.hospital.state, ceiling.value):
+        return VerificationReport(report.accepted, [*rest, (CEILING_PATH, reason)]), []
+    kept = VerificationReport(accepted=[*report.accepted, CEILING_PATH], rejected=rest)
     return kept, [_ruling_conflict(sheet, decision, reason) for _, reason in overridden]
 
 
@@ -673,22 +686,35 @@ def _ruled_ceiling_problems(
     ]
 
 
+def _conflict_key(detail: Mapping[str, Any]) -> tuple[Any, ...]:
+    """What makes two conflicts one: the rule, the field and the ruling (its value and date). The
+    quote may be re-trimmed between runs; the owner settles the reading, not the wording."""
+    return tuple(detail.get(key) for key in ("path", "reason", "ruled_value", "decided_at"))
+
+
 def _record_ruling_conflicts(
     session: Session, ccn: str, conflicts: list[dict[str, Any]], notes: list[str]
-) -> None:
-    """One open `owner_ruling_conflict` item per conflict, unless the same one is open already
-    (a recheck runs again and again), and a note for each."""
+) -> int:
+    """An open `owner_ruling_conflict` item for each conflict never filed before, open or settled
+    (a recheck runs again and again; one the owner resolved stays resolved; a new ruling is a new
+    conflict), and a note for each. Returns how many items were filed."""
     if not conflicts:
-        return
-    already = [item.detail for item in repo.open_review_items(session, ccn, OWNER_RULING_CONFLICT)]
+        return 0
+    filed = {
+        _conflict_key(item.detail or {})
+        for item in repo.review_items_of_kind(session, ccn, OWNER_RULING_CONFLICT)
+    }
+    new = 0
     for conflict in conflicts:
         notes.append(
             f"{conflict['path']}: the owner's ruling ({conflict['ruled_value']}%) is kept over "
             f'"{conflict["reason"]}"; recorded for the owner'
         )
-        if conflict not in already:
+        if _conflict_key(conflict) not in filed:
             repo.add_review_item(session, ccn, OWNER_RULING_CONFLICT, conflict)
-            already.append(conflict)
+            filed.add(_conflict_key(conflict))
+            new += 1
+    return new
 
 
 def _tiebreak(
@@ -1151,9 +1177,10 @@ class Recheck:
         """Listed only for the sheet-level checks, the unconfirmed website among them: a rebuild
         would be held again, so the remedy is `--withdraw`, then the admin's Confirm website
         (which also stands the place check down) or Wrong website."""
-        return all(path == "sheet" for path, _ in self.rejected) and any(
-            reason.startswith(DOMAIN_UNCONFIRMED_REASON) for _, reason in self.rejected
-        )
+        website = (PLACE_UNCONFIRMED_REASON, DOMAIN_UNCONFIRMED_REASON)
+        return all(
+            path == "sheet" and reason.startswith(website) for path, reason in self.rejected
+        ) and any(reason.startswith(DOMAIN_UNCONFIRMED_REASON) for _, reason in self.rejected)
 
 
 def recheck_sheets(session: Session, state: str | None = None) -> list[Recheck]:
@@ -1174,10 +1201,18 @@ def recheck_sheets(session: Session, state: str | None = None) -> list[Recheck]:
         sources = repo.sources_for(session, row.ccn)
         texts = {source.id: text for source, text in sources}
         set_aside = _documents_set_aside(repo.hospital_ref(row), sources)
+        decision = stored_ruling(session, row.ccn)
         report, _overruled = _keep_owner_ruled_ceiling(
-            sheet, verify_sheet(sheet, texts, set_aside), stored_ruling(session, row.ccn)
+            sheet, verify_sheet(sheet, texts, set_aside), decision
         )
         rejected = list(report.rejected)
+        if sheet.status is SheetStatus.PUBLISHED:
+            # The income rules left once the rejected fields go, as withdraw_rejected judges them.
+            withdrawn = drop_fields(sheet, [path for path, _ in report.rejected])
+            ruled, _spared = _ruled_ceiling_problems(withdrawn, decision)
+            rejected.extend(
+                ("sheet", problem) for problem in sheet_inconsistencies(withdrawn, ruled)
+            )
         if sheet.status is SheetStatus.PUBLISHED and (unplaced := _unplaced(row, sources)):
             rejected.append(("sheet", f"{PLACE_UNCONFIRMED_REASON}: {unplaced}"))
         if sheet.status is SheetStatus.PUBLISHED and (unconfirmed := _unconfirmed_domain(row)):
@@ -1221,10 +1256,19 @@ def withdraw_rejected(
         ruled, spared = _ruled_ceiling_problems(withdrawn, decision)
         conflict_notes: list[str] = []
         # Filed even when nothing else changes: the conflict is the owner's to settle.
-        _record_ruling_conflicts(session, row.ccn, [*overruled, *spared], conflict_notes)
-        unplaced = _unplaced(row, sources) if sheet.status is SheetStatus.PUBLISHED else None
-        unconfirmed = _unconfirmed_domain(row) if sheet.status is SheetStatus.PUBLISHED else None
-        if not pruned and not report.rejected and not unplaced and not unconfirmed:
+        filed = _record_ruling_conflicts(session, row.ccn, [*overruled, *spared], conflict_notes)
+        is_published = sheet.status is SheetStatus.PUBLISHED
+        unplaced = _unplaced(row, sources) if is_published else None
+        unconfirmed = _unconfirmed_domain(row) if is_published else None
+        # The sheet-level checks too: a published sheet with no rejected field may still leave
+        # incomes no rule covers (Henry County, 361309: free care to 100%, bands from 200%).
+        inconsistent = sheet_inconsistencies(withdrawn, ruled) if is_published else []
+        if not (pruned or report.rejected or unplaced or unconfirmed or inconsistent):
+            if filed:
+                # Nothing to withdraw, but the owner was sent something: say what.
+                results.append(
+                    BuildResult(row.ccn, row.name, "skipped", sheet.version, conflict_notes)
+                )
             continue
         result = BuildResult(row.ccn, row.name, "skipped")
         result.notes.extend(pruned)
@@ -1233,6 +1277,10 @@ def withdraw_rejected(
         # A ceiling read from the free-care band (Russell Regional, 171350) or a band from another
         # state's facilities (Trinity Bettendorf, 160104) leaves a worse sheet once dropped.
         holds = _holding_reasons(report.rejected)
+        _file_patient_share_table(session, row.ccn, grounded, holds)
+        if inconsistent:
+            repo.add_review_item(session, row.ccn, "inconsistent", {"problems": inconsistent})
+            result.notes.extend(inconsistent)
         if unplaced:
             # The fields stay for the admin to compare; the sheet leaves the public atlas.
             repo.add_review_item(
@@ -1379,6 +1427,7 @@ def confirm_domain(session: Session, ccn: str, domain: str) -> BuildResult:
         repo.add_review_item(
             session, ccn, "recheck", {"pruned": pruned, "rejected": report.rejected}
         )
+    _file_patient_share_table(session, ccn, grounded, _holding_reasons(report.rejected))
     reverified = drop_fields(grounded, [path for path, _ in report.rejected])
     ruled, spared = _ruled_ceiling_problems(reverified, decision)
     _record_ruling_conflicts(session, ccn, [*overruled, *spared], result.notes)

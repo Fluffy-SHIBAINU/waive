@@ -2816,6 +2816,25 @@ _CEILING_FREE_BAND_CASES = [
     ("| Household Size | 100% FPL | 200% FPL (Free Care) | 400% FPL (Discounted) |", 400, False),
     ("Patients who are uninsured and whose family income is at or below 300% of the FPG are "
      "eligible to receive care at a fully discounted rate.", 300, True),
+    # A ceiling quote that ties another percentage to the poverty level states more than the free
+    # band, and an AGB price is partial help.
+    ("FPL Tier 0% – 200% FPL 201% - 400% FPL Expected Patient Payment $0 PMT / 100% write-off "
+     "AGB Percentage times remaining self-pay balance", 400, False),
+    ("Financial assistance is available to patients with income up to 300% of the federal "
+     "poverty level, with free care below 200% of the federal poverty level.", 300, False),
+    ("Patients at or below 300% of the FPL receive a 100% discount; amounts generally billed apply "
+     "to the rest.", 300, False),
+    # Real ceilings read from the free band, which stay rejected: Cherokee (161362), NMC Health
+    # (170103) and West Allis (520139).
+    ("Full charity care shall be provided to underinsured and uninsured patients earning 200% or "
+     "less of the Federal Poverty Income Guideline (FPIG).", 200, True),
+    ("Patients who are determined to be financially indigent with a gross household income of 0% "
+     "to 275% of Federal Poverty Guidelines, as updated by the U.S. Department of Health and Human "
+     "Services, may be eligible for a financial assistance discount of 100% less the nominal flat "
+     "fee outlined in section 6.0.", 275, True),
+    ("Uninsured patients meeting all the above criteria with a household income between 0% and "
+     "300% of the Federal Poverty Guidelines (FPG) are eligible for 100% ﬁnancial assistance.",
+     300, True),
     # Ceiling wording names every kind of help, so it is no free band either.
     ("Generally, patients with family income at or below 400% of the federal poverty level will "
      "be eligible for charity (free) care or discounted (reduced) care.", 400, False),

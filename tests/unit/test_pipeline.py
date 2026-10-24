@@ -3360,7 +3360,10 @@ def test_withdraw_keeps_an_owner_ruled_ceiling_from_the_free_care_line_and_files
         )
         record_owner_rulings(session, {"220031": owner_ruling("discount", "70", ccn="220031")})
         assert recheck_sheets(session, "MA") == []
-        assert withdraw_rejected(session, "MA") == []
+        # Nothing is withdrawn; what went to the owner is reported.
+        [result] = withdraw_rejected(session, "MA")
+        assert (result.outcome, result.version) == ("skipped", 2)
+        assert sum("recorded for the owner" in note for note in result.notes) == 2
         latest, _ = repo.latest_sheet(session, "220031")
         assert (latest.version, latest.status) == (2, SheetStatus.PUBLISHED)
         assert latest.eligibility.assistance_ceiling_fpl.value == 70
@@ -3370,6 +3373,20 @@ def test_withdraw_keeps_an_owner_ruled_ceiling_from_the_free_care_line_and_files
         ]
         assert withdraw_rejected(session, "MA") == []
         assert len(ruling_conflicts(session, "220031")) == 2  # filed once, not on every recheck
+        # Settled by the owner, a conflict is not filed again; a new ruling is a new conflict.
+        for item in repo.open_review_items(session, "220031", "owner_ruling_conflict"):
+            item.status = "resolved"
+        session.flush()
+        assert withdraw_rejected(session, "MA") == []
+        assert ruling_conflicts(session, "220031") == []
+        later = owner_ruling("discount", "70", ccn="220031", at=RULED_LATER_AT)
+        record_owner_rulings(session, {"220031": later})
+        [result] = withdraw_rejected(session, "MA")
+        assert result.outcome == "skipped"
+        assert {conflict["decided_at"] for conflict in ruling_conflicts(session, "220031")} == {
+            RULED_LATER_AT
+        }
+        assert len(ruling_conflicts(session, "220031")) == 2
 
 
 # Baptist Health (180104, 180130 and the others ruled "discount 300"): the ruling makes the 300%
@@ -3462,3 +3479,141 @@ def test_confirming_the_website_holds_a_ceiling_under_the_table_unless_the_owner
         assert ruling_conflicts(session, "220031") == [
             ruling_conflict(CEILING_UNDER_THE_TABLE, "300", BAPTIST_FULL)
         ]
+
+
+def store_with(session, ccn, **fields):
+    """A new version of the latest sheet, its status kept, with these eligibility fields set."""
+    sheet, _ = repo.latest_sheet(session, ccn)
+    stale = sheet.model_copy(
+        update={
+            "eligibility": sheet.eligibility.model_copy(update=fields),
+            "version": sheet.version + 1,
+        }
+    )
+    repo.add_sheet_version(session, stale, {f"eligibility.{name}": {} for name in fields})
+    return stale
+
+
+def cited_from(sheet, value, quote):
+    from waive.atlas.schema import Cited
+
+    source_id = sheet.eligibility.free_care_max_fpl.source_id
+    return Cited(value=value, quote=quote, source_id=source_id, checked_on=TODAY)
+
+
+# Henry County (361309) published free care to 100% and bands from 200%, its 101-200% band
+# missing. No field is rejected, so only the sheet-level check finds it.
+HENRY_TABLE = (
+    "Patients with household income above 300% and at or below 400% of the Federal Poverty "
+    "Guidelines receive a 50% discount."
+)
+
+
+class HenryGateway(FakeGateway):
+    def extract(self, urls, **kwargs):
+        return [ExtractedPage(url, POLICY_TEXT + HENRY_TABLE + "\n") for url in urls]
+
+
+def test_recheck_lists_and_withdraw_holds_a_published_sheet_with_a_gap_between_its_bands():
+    from waive.atlas.pipeline import recheck_sheets, withdraw_rejected
+    from waive.atlas.schema import DiscountTier
+
+    engine = make_engine_with_hospital(REAL_HOSPITAL)
+    with session_scope(engine) as session:
+        assert build_hospital(session, HenryGateway(), FakeAI(), "220031", TODAY).outcome == (
+            "published"
+        )
+        sheet, _ = repo.latest_sheet(session, "220031")
+        tier = DiscountTier(min_fpl_exclusive=300, max_fpl_inclusive=400, discount_percent=50)
+        store_with(session, "220031", discount_tiers=cited_from(sheet, [tier], HENRY_TABLE))
+        gap = "eligibility.discount_tiers: no rule covers incomes from 250% to 300%"
+        [entry] = recheck_sheets(session, "MA")
+        assert entry.rejected == [("sheet", gap)]
+        assert not entry.waits_on_website
+        [result] = withdraw_rejected(session, "MA")
+        assert (result.outcome, result.version) == ("held", 3)
+        assert gap in result.notes
+        assert review_detail(session, "220031", "inconsistent") == {"problems": [gap]}
+        latest, _ = repo.latest_sheet(session, "220031")
+        assert latest.status is SheetStatus.HELD
+        assert latest.eligibility.discount_tiers is not None  # kept for the admin to compare
+        assert recheck_sheets(session, "MA") == []  # held sheets are not listed again
+
+
+# The ruling wins over the free-band reading only: the ruled ceiling quoted from UnityPoint's
+# Illinois schedule, for a Massachusetts hospital, is still another state's band.
+UPH_IL_FREE_LINE = (
+    "An IL UPH Hospital shall provide a charitable discount of 100% of its charges to any "
+    "Uninsured Patient with family income of not more than 70% of the federal poverty income "
+    "guidelines."
+)
+
+
+class UnityPointLineGateway(FakeGateway):
+    def extract(self, urls, **kwargs):
+        return [ExtractedPage(url, POLICY_TEXT + UPH_IL_FREE_LINE + "\n") for url in urls]
+
+
+def test_an_owner_ruled_ceiling_from_another_states_facilities_is_rejected_and_held():
+    from waive.atlas.pipeline import BuildResult, _structure_and_verify, withdraw_rejected
+
+    def reads_the_illinois_line():
+        ai = FakeAI(
+            free_limit_for_fast=("70", UPH_IL_FREE_LINE),
+            free_limit_for_tiebreak=("70", UPH_IL_FREE_LINE),
+        )
+        ai.free_limits["reason"] = ("70", UPH_IL_FREE_LINE)
+        return ai
+
+    ruling = owner_ruling("discount", "70")
+    engine = make_engine_with_hospital()
+    with session_scope(engine) as session:
+        result = build_hospital(
+            session, UnityPointLineGateway(), reads_the_illinois_line(), "229999", TODAY,
+            decision=ruling,
+        )  # fmt: skip
+        assert result.outcome == "held"
+        assert f"{CEILING_PATH}: {OTHER_STATE_FACILITY_REASON}" in result.notes
+        sheet, _ = repo.latest_sheet(session, "229999")
+        assert sheet.eligibility.assistance_ceiling_fpl is None
+        assert ruling_conflicts(session, "229999") == []  # the ruling kept nothing here
+        row = repo.get_hospital(session, "229999")
+        _sheet, holds = _structure_and_verify(
+            session,
+            reads_the_illinois_line(),
+            repo.hospital_ref(row),
+            repo.sources_for(session, "229999"),
+            TODAY,
+            BuildResult("229999", row.name, "skipped"),
+            ruling,
+        )
+        assert holds == [OTHER_STATE_FACILITY_REASON]
+    engine = make_engine_with_hospital(REAL_HOSPITAL)
+    with session_scope(engine) as session:
+        build_hospital(session, UnityPointLineGateway(), FakeAI(), "220031", TODAY)
+        sheet, _ = repo.latest_sheet(session, "220031")
+        ceiling = cited_from(sheet, Decimal(70), UPH_IL_FREE_LINE)
+        store_with(session, "220031", assistance_ceiling_fpl=ceiling)
+        record_owner_rulings(session, {"220031": owner_ruling("discount", "70", ccn="220031")})
+        [result] = withdraw_rejected(session, "MA")
+        assert (result.outcome, result.version) == ("held", 3)
+        assert f"{CEILING_PATH}: {OTHER_STATE_FACILITY_REASON}" in result.notes
+        latest, _ = repo.latest_sheet(session, "220031")
+        assert latest.eligibility.assistance_ceiling_fpl is None
+        assert ruling_conflicts(session, "220031") == []
+
+
+def test_withdraw_files_the_patient_share_table_it_holds_a_sheet_for():
+    from waive.atlas.pipeline import withdraw_rejected
+    from waive.atlas.schema import DiscountTier
+
+    engine = make_engine_with_hospital(REAL_HOSPITAL)
+    with session_scope(engine) as session:
+        build_hospital(session, MercyGateway(), FakeAI(), "220031", TODAY)
+        sheet, _ = repo.latest_sheet(session, "220031")
+        tier = DiscountTier(min_fpl_exclusive=200, max_fpl_inclusive=250, discount_percent=15)
+        store_with(session, "220031", discount_tiers=cited_from(sheet, [tier], MERCY_TABLE))
+        [result] = withdraw_rejected(session, "MA")
+        assert (result.outcome, result.version) == ("held", 3)
+        assert f"eligibility.discount_tiers: {PATIENT_SHARE_REASON}" in result.notes
+        assert review_detail(session, "220031", "patient_share_table") == {"quote": MERCY_TABLE}

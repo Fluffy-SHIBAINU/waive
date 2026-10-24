@@ -1258,6 +1258,20 @@ def _income_limits(value: Any) -> list[Decimal]:
     return [Decimal(value)]
 
 
+def income_limit_problem(quote: str, state: str, value: Any) -> str | None:
+    """Why an income field's quote (INCOME_LIMIT_PATHS) gives another state's or another
+    measure's limit, or None: a band under another state's heading, a band for another state's
+    facilities named by postal code, or a percentage of another benchmark than the poverty
+    level. The pipeline also runs it on an owner-ruled ceiling, which no ruling excuses from it."""
+    if bands_under_another_state(quote, state, value):
+        return OTHER_STATE_REASON
+    if names_other_state_facility(quote, state):
+        return OTHER_STATE_FACILITY_REASON
+    if any(percent_of_other_basis(quote, limit) for limit in _income_limits(value)):
+        return OTHER_BASIS_REASON
+    return None
+
+
 CEILING_UNTIED_REASON = "quote does not state the ceiling as a percentage of the poverty level"
 CEILING_FLOOR_REASON = (
     "quote states the percentage as a floor (above, over, at least), not a ceiling"
@@ -1308,10 +1322,11 @@ def _about_own_assistance(text: str) -> bool:
 # 050122; "100% discounts ... up to 600% FPL and lower discounts ... up to 800% FPL", NYU, 330214).
 # "Discounted" in any form is partial help ("free care up to 200% FPL, discounted to 250% FPL",
 # "Discounted or free care is available up to 400%"); "fully discounted" is free-care wording and
-# goes with it.
+# goes with it. So is a price at the amounts generally billed ("100% write-off AGB Percentage times
+# remaining self-pay balance").
 _PARTIAL_HELP = re.compile(
     r"\bsliding\b|\bpartial\w*|\breduced\b|\breduction in charges\b"
-    r"|\bdiscounted\b|\bdiscounts?\b(?! of 100)(?! ?\(100)"
+    r"|\bdiscounted\b|\bdiscounts?\b(?! of 100)(?! ?\(100)|\bagb\b|\bamounts? generally billed\b"
     r"|(?<![\d.])[1-9]\d?(?:\.\d+)? ?(?:%|percent) (?:discount|reduction|adjustment|write"
     r"|financial assistance|charity|of (?:agb|charges))"
 )
@@ -1349,7 +1364,11 @@ def ceiling_problem(quote: str, value: Decimal) -> str | None:
         return CEILING_NOT_ASSISTANCE_REASON
     if _OTHER_PROGRAM.search(stripped) is not None:
         return CEILING_OTHER_PROGRAM_REASON
-    if _quotes_only_the_free_band(normalize(quote)):
+    # Only a quote whose one poverty-level percentage is the ceiling: "up to 300% ..., with free
+    # care below 200%" states the ceiling beside the free band.
+    if {number for number, _ in tied} <= {Decimal(value)} and _quotes_only_the_free_band(
+        normalize(quote)
+    ):
         return CEILING_FREE_BAND_REASON
     return None
 
@@ -1958,18 +1977,9 @@ def verify_sheet(
         ):
             report.rejected.append((path, reason))
         elif path in INCOME_LIMIT_PATHS and (
-            bands_under_another_state(cited.quote or "", sheet.hospital.state, cited.value)
+            reason := income_limit_problem(cited.quote or "", sheet.hospital.state, cited.value)
         ):
-            report.rejected.append((path, OTHER_STATE_REASON))
-        elif path in INCOME_LIMIT_PATHS and names_other_state_facility(
-            cited.quote or "", sheet.hospital.state
-        ):
-            report.rejected.append((path, OTHER_STATE_FACILITY_REASON))
-        elif path in INCOME_LIMIT_PATHS and any(
-            percent_of_other_basis(cited.quote or "", limit)
-            for limit in _income_limits(cited.value)
-        ):
-            report.rejected.append((path, OTHER_BASIS_REASON))
+            report.rejected.append((path, reason))
         elif path == "eligibility.free_care_max_fpl" and not _free_limit_stated(
             cited.value, cited.quote or ""
         ):

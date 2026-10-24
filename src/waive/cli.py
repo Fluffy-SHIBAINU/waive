@@ -310,7 +310,15 @@ def atlas_recheck(
                 "; ".join(result.notes)[:160],
             )
         console.print(table)
-        console.print(f"{len(results)} sheets re-verified and republished without rejected fields")
+        republished = [result for result in results if result.outcome != "skipped"]
+        console.print(
+            f"{len(republished)} sheets re-verified and republished without rejected fields"
+        )
+        if kept := len(results) - len(republished):
+            console.print(
+                f"{kept} kept as the owner ruled; the conflicting readings went to the owner "
+                "(open owner_ruling_conflict items)"
+            )
         return
     with session_scope(_engine(settings)) as session:
         found = recheck_sheets(session, state)
