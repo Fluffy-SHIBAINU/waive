@@ -150,12 +150,62 @@ _RANGE_AFTER = re.compile(
     rf"(?:(at least|up to)\s+)?{_PERCENT}(?:\s*(?:to|-)\s*{_PERCENT})?"
     r"\s*(?:discount|reduction|off\b|write)"
 )
+# The two patterns above need a percent sign after each number. A range is also written with one
+# sign, or with "percent" spelled out. Never inside "$1,000" or "2023": "$1,000 - 20% discount" is
+# no range from 0 to 20.
+_RANGE_NUMBER = r"(?<![\d.,$])(\d+(?:\.\d+)?)"
+_RANGE_SIGN = r"(?:\s*%|\s*percent\b|\s*per cent\b)"
+_RANGE_NOUN = r"(?:discounts?|reductions?|reduc\w+|write[- ]?offs?|adjustments?)"
+# "and" joins a range only after "between": "when 90% and 80% discounts apply" lists two discounts.
+_RANGE_SPAN = (
+    rf"(?:between\s+{_RANGE_NUMBER}{_RANGE_SIGN}?\s*(?:-|to|and)\s*{_RANGE_NUMBER}{_RANGE_SIGN}"
+    rf"|{_RANGE_NUMBER}{_RANGE_SIGN}?\s*(?:-|to|through)\s*{_RANGE_NUMBER}{_RANGE_SIGN})"
+)
+# The range first: "will qualify for a 15-75% discount" (Hartford HealthCare, 070011, 070017,
+# 070021, 070035, task 7.17), "(35%-75%) adjustment" (Johns Hopkins Medicine).
+_RANGE_SPAN_FIRST = re.compile(rf"{_RANGE_SPAN}\)?\s*(?:discount|reduction|adjustment|off\b|write)")
+# The discount word first, with a connective: "a discount of 15-75%", "discounts ranging from 40
+# to 90 percent", "the discount will be between 25% and 75%", "adjustments ranging from 35-100%"
+# (Freeman). Between the word and its connective only a verb or what is discounted ("discounts off
+# charges from 60 percent to 96 percent"). Atrium's table header "charity discount 0 - 100% 100%"
+# (360076) has no connective: an income band follows it, not the discount.
+_RANGE_NOUN_FIRST = re.compile(
+    rf"\b{_RANGE_NOUN}\s+"
+    r"(?:(?:will|can|may|shall)\s+(?:be\s+)?|is\s+|are\s+|var(?:y|ies)\s+"
+    r"|off\s+(?:of\s+)?(?:the\s+)?(?:gross\s+|total\s+)?(?:charges|balance)\s+)?"
+    r"(?P<ranging>(?:that\s+)?(?:ranging|ranges?)\s+)?(?:of\s+|from\s+|(?=between))"
+    rf"{_RANGE_SPAN}"
+)
+# A scale phrase between the discount word and the range: "may qualify for a discount from a scale
+# of 10% to 75%" (Holton, 171319, task 7.17), "a discount on a sliding scale from 25% to 75%".
+_RANGE_ON_SCALE = re.compile(
+    rf"\b{_RANGE_NOUN}\s+(?:(?:from|on|based on|according to)\s+)?(?:a|the)\s+"
+    r"(?:sliding[- ]?(?:fee\s+)?)?scale\s+(?:(?:ranging\s+)?from\s+|of\s+)?"
+    rf"{_RANGE_NUMBER}{_RANGE_SIGN}?\s*(?:-|to|through)\s*{_RANGE_NUMBER}{_RANGE_SIGN}"
+)
+
+
+def _range_ends(match: re.Match[str]) -> tuple[Decimal, Decimal] | None:
+    """The two numbers of a range one of the patterns above matched, when they are a discount
+    range: never past 100 ("201-300%" is an income band), and running upward unless the policy
+    says "ranging" ("a sliding scale discount ranging from 100 % to 60 %")."""
+    first, second = (
+        Decimal(group)
+        for group in match.groups()
+        if group is not None and re.fullmatch(r"\d+(?:\.\d+)?", group)
+    )
+    ranging = "ranging" in match.re.groupindex and match.group("ranging") is not None
+    if max(first, second) <= 100 and (first < second or (ranging and first > second)):
+        return first, second
+    return None
 
 
 def discount_range_in_quote(quote: str) -> set[Decimal]:
     """The endpoints of a discount the quote gives as a range ("55% to 75%") or a bound ("at
     least 25%", "up to 75%"). A fixed "60% discount" contributes nothing. Alliance (360131) and
-    ACMH (390163) published one endpoint as the whole band's discount (task 7.9)."""
+    ACMH (390163) published one endpoint as the whole band's discount (task 7.9), Hartford
+    HealthCare (070011 and three siblings) and Holton (171319) one end of "a 15-75% discount" and
+    of "a discount from a scale of 10% to 75%" (task 7.17)."""
     text = normalize(quote)
     found: set[Decimal] = set()
     for pattern in (_RANGE_BEFORE, _RANGE_AFTER):
@@ -165,6 +215,11 @@ def discount_range_in_quote(quote: str) -> set[Decimal]:
                 found |= {Decimal(first), Decimal(second)}
             elif bound is not None:
                 found.add(Decimal(first))
+    for pattern in (_RANGE_SPAN_FIRST, _RANGE_NOUN_FIRST, _RANGE_ON_SCALE):
+        for match in pattern.finditer(text):
+            ends = _range_ends(match)
+            if ends is not None:
+                found |= set(ends)
     return found
 
 

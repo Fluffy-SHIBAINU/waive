@@ -1,6 +1,8 @@
 from datetime import date
 from decimal import Decimal
 
+import pytest
+
 from waive.atlas.samples import SAMPLE_POLICY_TEXT, SAMPLE_SOURCE_ID, st_example_sheet
 from waive.atlas.schema import Cited, DiscountTier
 from waive.atlas.verify import (
@@ -653,6 +655,168 @@ def test_a_discount_ranging_from_one_percentage_to_another_is_a_range():
     docs = {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT + "\n" + mercyhealth + "\n"}
     report = verify_sheet(with_tiers_quote(mercyhealth, [(250, 350, 20)]), docs)
     assert ("eligibility.discount_tiers", RANGE_REASON) in report.rejected
+
+
+# (quote, stored tier percents, the stored percents read as a range endpoint). The tiers field is
+# rejected exactly when the last is not empty.
+_ONE_SIGN_AND_SCALE_RANGES = [
+    # Hartford HealthCare (070011, 070017, 070021, 070035): one percent sign, after the second
+    # number. The sheets stored a flat 75, or 15 for MidState (070017).
+    (
+        "(ii) If family income is verified between 250% and 550% of the Federal\nPoverty Level "
+        "Guidelines, the patient will qualify for a 15-75%\ndiscount against the patient’s "
+        "account balance.",
+        (75,),
+        (75,),
+    ),
+    (
+        "(ii) If family income is verified between 250% and 550% of the Federal Poverty Level "
+        "Guidelines, the patient will qualify for a 15-75% discount against the patient’s account "
+        "balance.",
+        (15,),
+        (15,),
+    ),
+    # Holton (171319): a scale phrase between the discount word and the range.
+    (
+        "Patients with a household income of 100% – 200% of the FPL may qualify for a discount "
+        "from a scale of 10% to 75%.",
+        (75,),
+        (75,),
+    ),
+    (
+        "Patients with a household income of 100% – 200% of the FPL may qualify for a discount "
+        "from a scale of 10% to 75%.",
+        (10,),
+        (10,),
+    ),
+    ("will qualify for a 15-75% discount", (40,), ()),  # not an endpoint
+    ("a discount of 15-75% off the balance", (15,), (15,)),
+    ("a discount on a sliding scale from 25% to 75%", (25,), (25,)),
+    ("a discount based on a sliding scale of 20%-80%", (80,), (80,)),
+    # Income bands and fixed discounts, which are no discount range.
+    ("Patients 201-300% FPL receive a 75% discount", (75,), ()),
+    ("201-300% discount 75%", (75,), ()),
+    ("0-100% of federal poverty level 100% discount", (100,), ()),
+    (
+        "0-100% of federal poverty level 100% discount ii. 101% - 200% of federal poverty level "
+        "75% discount",
+        (75,),
+        (),
+    ),  # Day Kimball (070003)
+    (
+        "- 100% financial assistance for income levels at or below 250% - 95% financial "
+        "assistance for income levels between 251% and 275%",
+        (95,),
+        (),
+    ),  # HealthSource Saginaw (230275)
+    ("receive a 60% discount", (60,), ()),
+    ("FPL 0-100% 100% 101-140% 90% 141-160% 80% 161-180% 75%", (90, 80, 75), ()),
+    ("a discount of 2023-24% applies", (24,), ()),
+    # The ranges the existing patterns already read.
+    ("may qualify for a reduction of 55% to 75% of total charges.", (55,), (55,)),  # Alliance
+    ("may be eligible for a discount of at least 25%.", (25,), (25,)),  # ACMH
+    ("a 30% to 50% discount off charges", (30,), (30,)),
+    # Range wordings found in stored hospital documents.
+    (
+        "Patients ... between 201% and 500% of the federal poverty guidelines. The discount will "
+        "be between 25% and 75%.",
+        (75,),
+        (75,),
+    ),
+    (
+        "reduced-cost care (35%-75%) adjustment to the initial gross charges",
+        (35,),
+        (35,),
+    ),  # Johns Hopkins Medicine
+    (
+        "other discounts ranging from 40 to 90 percent apply if the patient's total household "
+        "income is over 200 percent",
+        (90,),
+        (90,),
+    ),
+    ("discounts off charges from 60 percent to 96 percent : any eligible patient", (60,), (60,)),
+    (
+        "receive adjustments ranging from 35-100% of the patient portion of the bill",
+        (35,),
+        (35,),
+    ),  # Freeman
+    (
+        "the financial assistance adjustment can be from 20% to 100% of your patient balance",
+        (20,),
+        (20,),
+    ),
+    (
+        "the amount of the discount varies between 25 and 100 percent of the patient's portion",
+        (25,),
+        (25,),
+    ),
+    (
+        "generally receive a sliding scale discount ranging from 100 % to 60 % for emergency",
+        (60,),
+        (60,),
+    ),
+    ("will receive discounts ranging between 95% and 5%.", (95,), (95,)),
+    ("discounts ranging from 100 percent to 60 percent", (60,), (60,)),
+    ("a discount of 75 to 25 percent", (25,), ()),  # runs downward without "ranging"
+    ("a 15 to 75 percent discount", (15,), (15,)),
+    ("a 15 to 75 per cent discount", (15,), (15,)),
+    # Lists, patient shares, tables and dollar amounts, which are no discount range.
+    ("when 90% and 80% discounts apply: for uninsured patients", (90, 80), ()),
+    (
+        "a. up to $100 - 5% discount b. $101 to $999 - 10% discount c. $1,000 - 20% discount",
+        (5, 10, 20),
+        (),
+    ),
+    (
+        "if patients on the 20% to 80% sliding fee scale are responsible for qualified "
+        "out-of-pocket",
+        (80, 60, 40, 20),
+        (),
+    ),
+    (
+        "medical financial hardship adjustment medical bill as % of annual family income "
+        "adjustment 20 - 29% 15% 30 - 39% 20%",
+        (15, 20),
+        (),
+    ),
+    (
+        "a. patients that qualify for 0-20% will receive a 20% adjustment b. patients that "
+        "qualify for 21-50% will receive a 50% adjustment.",
+        (20, 50),
+        (),
+    ),
+    (
+        "total household income discount from gross charges less than 100% of fpl 100% discount "
+        "between 101% - 150% of fpl 90% discount between 151% - 200% of fpl 75% discount",
+        (90, 75),
+        (),
+    ),
+    (
+        "annual family income maximum discount 200% or less fpl 100% 201% - 250% 75% 251% - 300% "
+        "50% 301% - 350% 24%",
+        (75, 50, 24),
+        (),
+    ),
+    ("fpl 0-50% 51-100% discount 100% 90%", (90,), ()),
+    (
+        "income (of fpg) % of poverty level uninsured charity discount insured charity discount "
+        "0 - 100% 100% 100% 100% - 200% 100% 100% 200% - 300% 80%/agb 80%/agb",
+        (80,),
+        (),
+    ),  # Atrium (360076)
+    ("a 50% discount from 201-300% fpl", (50,), ()),
+]
+
+
+@pytest.mark.parametrize(("quote", "stored", "expected"), _ONE_SIGN_AND_SCALE_RANGES)
+def test_discount_range_in_quote_reads_one_sign_ranges_and_scale_phrases(quote, stored, expected):
+    from waive.atlas.verify import discount_range_in_quote
+
+    # Hartford HealthCare's "a 15-75% discount" and Holton's "a discount from a scale of 10% to
+    # 75%" (task 7.17) were each published as one flat percent: the range was written with one
+    # percent sign, or behind a scale phrase, and read as nothing.
+    stored_percents = {Decimal(percent) for percent in stored}
+    assert discount_range_in_quote(quote) & stored_percents == {Decimal(p) for p in expected}
 
 
 def test_a_true_asset_test_is_not_supported_by_a_quote_that_rules_assets_out():
