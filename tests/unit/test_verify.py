@@ -2424,6 +2424,32 @@ DARTMOUTH_AWARDS = (
     "20% of the household income, then the amount \nowed shall be reduced so that it is equal to "
     "20% of the patient’s household’s \nincome."
 )
+
+# Novant Health: the uninsured paragraph, then the insured one, whose table its hospitals quoted
+# with its heading (340014, 340171), from its lead-in (340158) or alone (340015, 340053).
+NOVANT_UNINSURED = (
+    "Uninsured Patients. Uninsured Patients meeting the requirements above and any uninsured "
+    "patients presumed to be eligible to receive Financial Assistance under this Policy will obtain "
+    "a 100% adjustment to any charges for services covered under this Policy. "
+)
+NOVANT_INSURED_TABLE = (
+    "Income below 200% of FPL: 100% discount. Income between 200%-250% of FPL: 75% discount. "
+    "Income between 250%-300% FPL: 50% discount."
+)
+NOVANT_INSURED_PARAGRAPH = (
+    "Insured patients meeting the requirements above and any insured patients presumed to be "
+    "eligible to receive Financial Assistance under this Policy will obtain a discount on the "
+    "applicable patient responsibility (minus copays) as follows: " + NOVANT_INSURED_TABLE
+)
+NOVANT_INSURED_HEADED = (
+    "Insured Patients. FOR NORTH CAROLINA RESIDENTS ONLY: " + NOVANT_INSURED_PARAGRAPH
+)
+NOVANT_AWARDS = "B. Financial Assistance. " + NOVANT_UNINSURED + NOVANT_INSURED_HEADED
+INSURED_HELP = "Insured Patients: Insured patients receive help with copays and deductibles. "
+UNINSURED_FIRST = (
+    "Uninsured Patients: Uninsured patients with income at or below 300% of FPL receive a 100% "
+    "adjustment. "
+)
 DARTMOUTH_BANDS = [(250, 300, 75), (300, 350, 50), (350, 400, 40)]
 # The same policy with the uninsured 351-400% band at another discount, or left out.
 _DARTMOUTH_LAST_UNINSURED = "• 351%-400% of FPL, the discount will be 40% \n \nIn catastrophic"
@@ -2528,7 +2554,198 @@ _INSURED_TABLE_CASES = [
      "applies:\n" + HENRY_FORD_INSURED_TABLE, False),
     (HENRY_FORD_INSURED_TABLE, "Insured Patients. Uninsured & Insured Patients:\n"
      + HENRY_FORD_INSURED_TABLE, False),
+    # Not caught (7.17.10, ruled 2026-10-24): Novant 340015 and 340053 quote the table after
+    # "... and any insured patients presumed to be eligible ... as follows:", and 340014 and 340171
+    # quote it from its own "Insured Patients." heading. Six review rounds found that every
+    # widening that catches them also rejects tables for everyone; they stay held for the owner.
+    # Novant Health Brunswick (340158): the quote starts at the lead-in's first sentence.
+    (NOVANT_INSURED_PARAGRAPH, NOVANT_AWARDS, True),
+    # The only insured patients named since the uninsured paragraph are the amounts-generally-billed
+    # clause's, which introduce no table.
+    (NOVANT_INSURED_TABLE, NOVANT_UNINSURED + "Amounts generally billed are based on claims for "
+     "commercially insured patients. The discount scale is as follows: " + NOVANT_INSURED_TABLE,
+     False),
+    # An insured heading in the quote, then a lead-in for both populations: the quote names
+    # uninsured patients.
+    ("Insured Patients. Uninsured and insured patients receive the following: "
+     + NOVANT_INSURED_TABLE, NOVANT_UNINSURED + "Insured Patients. Uninsured and insured patients "
+     "receive the following: " + NOVANT_INSURED_TABLE, False),
+    # An insured heading, then another population's section, "insured or not", or the
+    # amounts-generally-billed clause's commercially insured patients (reviews of 7.17.10): the
+    # last population named before the table is no insured lead-in. A look-back that starts
+    # inside "Uninsured" reads no heading from its tail.
+    (NOVANT_INSURED_TABLE, "Insured Patients: Insured patients receive a discount on copays and "
+     "deductibles. Non-Insured Patients: The following discounts apply: " + NOVANT_INSURED_TABLE,
+     False),
+    (NOVANT_INSURED_TABLE, "Insured Patients: Insured patients receive a discount on copays and "
+     "deductibles. Patients Who Are Not Insured: The following discounts apply: "
+     + NOVANT_INSURED_TABLE, False),
+    (NOVANT_INSURED_TABLE, "Insured Patients: Insured patients who qualify may have copays, "
+     "deductibles and coinsurance reduced. Discount Schedule: The discounts below apply to every "
+     "eligible patient, insured or not: " + NOVANT_INSURED_TABLE, False),
+    (NOVANT_INSURED_TABLE, "Insured Patients: Insured patients may receive help with their "
+     "balance after insurance. Amounts Generally Billed: No eligible patient is charged more than "
+     "amounts generally billed to commercially insured patients. Discount Schedule: "
+     + NOVANT_INSURED_TABLE, False),
+    (NOVANT_INSURED_TABLE, "Insured Patients: Insured patients receive help with copays and "
+     "deductibles. Self-Pay Patients: Self-pay patients, like insured patients, receive the "
+     "discounts below: " + NOVANT_INSURED_TABLE, False),
+    # The 250 characters before the table start inside "Uninsured": its tail is no insured heading.
+    (NOVANT_INSURED_TABLE, "B. Discounts. Uninsured patients receive discounts off the amount "
+     "generally billed, computed each year by the look-back method from claims allowed by Medicare "
+     "and private insurers for commercially insured patients during the past year. The discounts "
+     "are as follows: " + NOVANT_INSURED_TABLE, False),
+    # Thirty characters before "the insured patients" start inside "Uninsured": both get the table.
+    (NOVANT_INSURED_TABLE, "Discounts. Uninsured patients and also the insured patients receive "
+     "these discounts: " + NOVANT_INSURED_TABLE, False),
+    # Self-pay balances, non-insured services and insured patients named again right after an
+    # insured heading still make an insured-only table (reviews of 7.17.10).
+    (NOVANT_INSURED_TABLE, UNINSURED_FIRST + "Insured Patients: For qualifying insured patients, the "
+     "self-pay balance after insurance is discounted as follows: " + NOVANT_INSURED_TABLE, True),
+    (NOVANT_INSURED_TABLE, UNINSURED_FIRST + "Insured Patients: For qualifying insured patients, the "
+     "remaining self-pay portion is discounted as follows: " + NOVANT_INSURED_TABLE, True),
+    (NOVANT_INSURED_TABLE, UNINSURED_FIRST + "Insured Patients: For insured patients, non-insured "
+     "services are discounted as follows: " + NOVANT_INSURED_TABLE, True),
+    (NOVANT_INSURED_TABLE, UNINSURED_FIRST + "B. Insured Patients: If insured patients qualify, the "
+     "discount is as follows: " + NOVANT_INSURED_TABLE, True),
+    (NOVANT_INSURED_TABLE, UNINSURED_FIRST + "B. Insured Patients: Qualified insured patients "
+     "receive the following discount: " + NOVANT_INSURED_TABLE, True),
+    (NOVANT_INSURED_TABLE, UNINSURED_FIRST + "B. Insured Patients: insured balances are discounted "
+     "as follows: " + NOVANT_INSURED_TABLE, True),
+    # Insured patients named among everyone the table is for, after an insured heading.
+    (NOVANT_INSURED_TABLE, "Insured Patients: Insured patients must apply within 240 days of the "
+     "first bill. Discount Schedule: The schedule below applies to all patients, including the "
+     "insured patients described above: " + NOVANT_INSURED_TABLE, False),
+    (NOVANT_INSURED_TABLE, "Insured Patients: Insured patients must apply within 240 days. All "
+     "Patients: The discounts below apply to every patient, as well as to the insured patients: "
+     + NOVANT_INSURED_TABLE, False),
+    # The amounts-generally-billed clause names insured patients without "commercially".
+    (NOVANT_INSURED_TABLE, "Insured Patients: Insured patients receive help with copays. Amounts "
+     "Generally Billed: No eligible patient is charged more than amounts billed to insured "
+     "patients. Discount Schedule: " + NOVANT_INSURED_TABLE, False),
+    # An insured heading, then a later sentence for other patients or for everyone (reviews of
+    # 7.17.10): the last population named before the table decides.
+    (NOVANT_INSURED_TABLE, INSURED_HELP + "Discount Schedule: The discounts below apply regardless of whether a patient is insured: "
+     + NOVANT_INSURED_TABLE, False),
+    (NOVANT_INSURED_TABLE, INSURED_HELP + "Discount Schedule: The discounts below apply to a patient whether or not insured: "
+     + NOVANT_INSURED_TABLE, False),
+    (NOVANT_INSURED_TABLE, INSURED_HELP + "Patients without insurance receive the same discounts as insured patients, as follows: "
+     + NOVANT_INSURED_TABLE, False),
+    (NOVANT_INSURED_TABLE, INSURED_HELP + "Discount Schedule: The following discounts apply to patients excluding insured patients: "
+     + NOVANT_INSURED_TABLE, False),
+    (NOVANT_INSURED_TABLE, INSURED_HELP + "Patients Not Insured: The following discounts apply: "
+     + NOVANT_INSURED_TABLE, False),
+    (NOVANT_INSURED_TABLE, INSURED_HELP + "Patients who were not insured on the date of service receive the following discounts: "
+     + NOVANT_INSURED_TABLE, False),
+    (NOVANT_INSURED_TABLE, INSURED_HELP + "Discount Schedule: These discounts are available to insured patients and to patients without insurance: "
+     + NOVANT_INSURED_TABLE, False),
+    (NOVANT_INSURED_TABLE, INSURED_HELP + "Discount Schedule: Every eligible patient, even if insured, receives the following discount: "
+     + NOVANT_INSURED_TABLE, False),
+    (NOVANT_INSURED_TABLE, "Insured Patients: Insured patients may receive help with their "
+     "balance after insurance. Amounts Generally Billed: No eligible patient is charged more than "
+     "amounts generally billed to commercially-insured patients. Discount Schedule: "
+     + NOVANT_INSURED_TABLE, False),
+    (NOVANT_INSURED_TABLE, "Insured Patients: Insured patients may receive help with their "
+     "balance after insurance. Amounts Generally Billed: No eligible patient is charged more than "
+     "amounts generally billed to privately-insured patients. Discount Schedule: "
+     + NOVANT_INSURED_TABLE, False),
+    # A patient's balance or responsibility in the lead-in names no one else.
+    (NOVANT_INSURED_TABLE, UNINSURED_FIRST + "Insured Patients: For qualifying insured "
+     "patients, each patient's out-of-pocket balance is discounted as follows: " + NOVANT_INSURED_TABLE, True),
+    (NOVANT_INSURED_TABLE, UNINSURED_FIRST + "Insured Patients: For qualifying insured "
+     "patients, all patient responsibility is discounted as follows: " + NOVANT_INSURED_TABLE, True),
+    (NOVANT_INSURED_TABLE, UNINSURED_FIRST + "Insured Patients: For qualifying insured "
+     "patients, every patient balance after insurance is discounted as follows: " + NOVANT_INSURED_TABLE, True),
+    # Insured-only tables the rule catches (reviews of 7.17.10).
+    (NOVANT_INSURED_TABLE, NOVANT_AWARDS.split("Insured Patients.")[0] + "Insured Patients. "
+     "Eligible insured patients meeting the requirements above will obtain a discount on the "
+     "applicable patient responsibility (minus copays) as follows: " + NOVANT_INSURED_TABLE, True),
+    (NOVANT_INSURED_TABLE, UNINSURED_FIRST + "Insured Patients: For qualifying insured patients, "
+     "the self-pay patient balance remaining after insurance is discounted as follows: "
+     + NOVANT_INSURED_TABLE, True),
+    (NOVANT_INSURED_TABLE, UNINSURED_FIRST + "Insured Patients. For fully insured patients the "
+     "discount is as follows: " + NOVANT_INSURED_TABLE, True),
+    (NOVANT_INSURED_TABLE, UNINSURED_FIRST + "Insured Patients: For qualifying insured patients, "
+     "the hospital will discount the amount owed after insurance. All patients must apply within "
+     "240 days. " + NOVANT_INSURED_TABLE, True),
+    # Tables for everyone the rule keeps (reviews of 7.17.10): an insured
+    # sentence inside the quote's own words, an amounts-generally-billed clause, a quote joined
+    # from a title and the rows, self-pay and insured patients alike.
+    ("Insured patients may also qualify for financial assistance. Discounts are based on household "
+     "income as follows: " + NOVANT_INSURED_TABLE, "Financial Assistance Discounts. Insured "
+     "patients may also qualify for financial assistance. Discounts are based on household income "
+     "as follows: " + NOVANT_INSURED_TABLE, False),
+    ("No patient eligible for financial assistance will be charged more than the amounts generally "
+     "billed for insured patients. Eligible patients receive the following discounts: "
+     + NOVANT_INSURED_TABLE, "Discounts. No patient eligible for financial assistance will be "
+     "charged more than the amounts generally billed for insured patients. Eligible patients "
+     "receive the following discounts: " + NOVANT_INSURED_TABLE, False),
+    ("Sliding Fee Scale || " + NOVANT_INSURED_TABLE, UNINSURED_FIRST + "Insured Patients: Insured "
+     "patients may receive a discount under the Sliding Fee Scale on their balance after "
+     "insurance. Sliding Fee Scale\nThe following scale applies to every eligible patient:\n"
+     + NOVANT_INSURED_TABLE, False),
+    (NOVANT_INSURED_TABLE, UNINSURED_FIRST + "Insured Patients: The following sliding scale "
+     "applies to self-pay and insured patients alike: " + NOVANT_INSURED_TABLE, False),
+    # A quote that opens with an insured heading, then gives the table to every patient.
+    ("Insured Patients: Insured patients receive help with copays. All patients receive the "
+     "following discounts: " + NOVANT_INSURED_TABLE, NOVANT_UNINSURED + "Insured Patients: Insured "
+     "patients receive help with copays. All patients receive the following discounts: "
+     + NOVANT_INSURED_TABLE, False),
+    # Tables for everyone or for others the rule keeps (reviews of 7.17.10): a quote that opens
+    # with an insured heading, then names others; an insured lead-in
+    # whose sentence also names others, or that a later sentence follows; bullets; an
+    # amounts-generally-billed clause at the window's edge.
+    ("Insured Patients: Insured patients receive a discount on copays and deductibles. Non-Insured Patients: The following discounts apply: "
+     + NOVANT_INSURED_TABLE, "Insured Patients: Insured patients receive a discount on copays and deductibles. Non-Insured Patients: The following discounts apply: "
+     + NOVANT_INSURED_TABLE, False),
+    ("Insured Patients: Insured patients must apply within 240 days of the first bill. Discount Schedule: The schedule below applies to all patients, including the insured patients described above: "
+     + NOVANT_INSURED_TABLE, "Insured Patients: Insured patients must apply within 240 days of the first bill. Discount Schedule: The schedule below applies to all patients, including the insured patients described above: "
+     + NOVANT_INSURED_TABLE, False),
+    ("Insured Patients: Insured patients are eligible for the same discounts as all other patients, as follows: "
+     + NOVANT_INSURED_TABLE, "Uninsured Patients: Uninsured patients may apply for financial assistance for their total charges. "
+     "Insured Patients: Insured patients are eligible for the same discounts as all other patients, as follows: " + NOVANT_INSURED_TABLE, False),
+    ("Insured Patients: Insured patients receive the discounts that apply to any eligible patient: "
+     + NOVANT_INSURED_TABLE, "Uninsured Patients: Uninsured patients may apply for financial assistance for their total charges. "
+     "Insured Patients: Insured patients receive the discounts that apply to any eligible patient: " + NOVANT_INSURED_TABLE, False),
+    ("Insured Patients: Discounts apply to everyone who qualifies: "
+     + NOVANT_INSURED_TABLE, "Uninsured Patients: Uninsured patients may apply for financial assistance for their total charges. "
+     "Insured Patients: Discounts apply to everyone who qualifies: " + NOVANT_INSURED_TABLE, False),
+    ("Insured Patients: Insured patients receive discounts regardless of insurance status: "
+     + NOVANT_INSURED_TABLE, "Uninsured Patients: Uninsured patients may apply for financial assistance for their total charges. "
+     "Insured Patients: Insured patients receive discounts regardless of insurance status: " + NOVANT_INSURED_TABLE, False),
+    ("Insured Patients: Insured patients and patients without insurance receive the following discounts: "
+     + NOVANT_INSURED_TABLE, "Uninsured Patients: Uninsured patients may apply for financial assistance for their total charges. "
+     "Insured Patients: Insured patients and patients without insurance receive the following discounts: " + NOVANT_INSURED_TABLE, False),
+    ("Insured Patients: " + NOVANT_INSURED_TABLE, "Discounts. Uninsured and Insured Patients: " + NOVANT_INSURED_TABLE, False),
+    (NOVANT_INSURED_TABLE, "No eligible patient pays more than amounts generally billed for insured patients. "
+     + "x" * 199 + " The discounts are as follows: " + NOVANT_INSURED_TABLE, False),
+    (NOVANT_INSURED_TABLE, UNINSURED_FIRST + "Insured patients and self-pay patients meeting the requirements above and any insured patients presumed to be eligible will obtain the following discount: "
+     + NOVANT_INSURED_TABLE, False),
+    (NOVANT_INSURED_TABLE, UNINSURED_FIRST + "Insured patients meeting the requirements above, patients without insurance, and any insured patients presumed to be eligible will obtain the following discount: "
+     + NOVANT_INSURED_TABLE, False),
+    (NOVANT_INSURED_TABLE, UNINSURED_FIRST + "Insured patients meeting the requirements above and any insured patients presumed eligible receive help with copays and deductibles. Patients with no insurance receive the following discounts: "
+     + NOVANT_INSURED_TABLE, False),
+    (NOVANT_INSURED_TABLE, UNINSURED_FIRST + "Insured Patients\n• For eligible insured patients, copays are reduced\n• Deductibles are reduced and all insured patients are billed at AGB\nDiscount Schedule for All Patients\n"
+     + NOVANT_INSURED_TABLE, False),
+    (NOVANT_INSURED_TABLE, UNINSURED_FIRST + "Insured patients meeting the requirements above and any insured patients presumed eligible, as well as patients regardless of insurance status, will obtain a discount as follows: "
+     + NOVANT_INSURED_TABLE, False),
+    (NOVANT_INSURED_TABLE, UNINSURED_FIRST + "Insured Patients: For qualifying insured patients, copays are reduced, and all insured patients are billed no more than AGB. Patients without insurance receive the following discounts: "
+     + NOVANT_INSURED_TABLE, False),
 ]  # fmt: skip
+
+
+def test_a_lead_window_starting_inside_uninsured_reads_no_insured_heading():
+    """The 250 characters before the table start inside "Uninsured", with no other population
+    named after it: its tail "insured patients" is no heading of an insured table."""
+    from waive.atlas.verify import insured_only_table, normalize
+
+    opening = "Uninsured patients receive the discounts in this section. "
+    tail = " The discounts are as follows: "
+    filler = "x" * (252 - len(opening) - len(tail))
+    document = opening + filler + tail + NOVANT_INSURED_TABLE
+    text = normalize(document)
+    assert text.find(normalize(NOVANT_INSURED_TABLE)) - text.find("uninsured") == 252
+    assert insured_only_table(NOVANT_INSURED_TABLE, document) is False
 
 
 @pytest.mark.parametrize(("quote", "document", "expected"), _INSURED_TABLE_CASES)
@@ -2644,21 +2861,6 @@ def test_verify_sheet_keeps_a_discount_table_read_right(quote, bands, state, doc
 
 # Novant Health (340085, 340158, 340190, 340195): uninsured patients get a 100% adjustment up to
 # 300%, and the insured patients' paragraph after it gives 100% below 200% and 75% and 50% above.
-NOVANT_INSURED_TABLE = (
-    "Income below 200% of FPL: 100% discount. Income between 200%-250% of FPL: 75% discount. "
-    "Income between 250%-300% FPL: 50% discount."
-)
-NOVANT_INSURED_PARAGRAPH = (
-    "Insured patients meeting the requirements above and any insured patients presumed to be "
-    "eligible to receive Financial Assistance under this Policy will obtain a discount on the "
-    "applicable patient responsibility (minus copays) as follows: " + NOVANT_INSURED_TABLE
-)
-NOVANT_AWARDS = (
-    "B. Financial Assistance. Uninsured Patients. Uninsured Patients meeting the requirements "
-    "above and any uninsured patients presumed to be eligible to receive Financial Assistance "
-    "under this Policy will obtain a 100% adjustment to any charges for services covered under "
-    "this Policy. Insured Patients. FOR NORTH CAROLINA RESIDENTS ONLY: " + NOVANT_INSURED_PARAGRAPH
-)
 NOVANT_BANDS = [(200, 250, 75), (250, 300, 50)]
 DARTMOUTH_INSURED_AWARDS = (
     "For insured patients whose household income is at or below 250% of FPL, we will waive (i.e., "
@@ -2720,6 +2922,109 @@ def test_verify_sheet_keeps_free_care_from_a_table_everyone_gets(
     sheet = with_free_limit_and_tiers(value, free_quote, tiers_quote, bands, "NH")
     report = verify_sheet(sheet, docs)
     assert not [r for r in report.rejected if r[0].startswith("eligibility.")]
+
+
+# A free limit quoted from a sentence before the insured table, naming uninsured patients or no
+# population at all: it ends before the table starts.
+@pytest.mark.parametrize(
+    "uninsured",
+    [
+        "Uninsured patients with income at or below 300% of FPL will obtain a 100% adjustment.",
+        "Patients with income at or below 300% of FPL will obtain a 100% adjustment.",
+    ],
+)
+def test_free_care_quoted_before_an_insured_table_is_not_rejected_for_it(uninsured):
+    from waive.atlas.verify import INSURED_TABLE_REASON
+
+    docs = {
+        SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT
+        + "\n"
+        + uninsured
+        + " Insured Patients. FOR NORTH CAROLINA RESIDENTS ONLY: "
+        + NOVANT_INSURED_PARAGRAPH
+        + "\n"
+    }
+    sheet = with_free_limit_and_tiers(300, uninsured, NOVANT_INSURED_PARAGRAPH, NOVANT_BANDS, "NC")
+    report = verify_sheet(sheet, docs)
+    assert ("eligibility.discount_tiers", INSURED_TABLE_REASON) in report.rejected
+    assert ("eligibility.free_care_max_fpl", INSURED_TABLE_REASON) not in report.rejected
+
+
+INSURED_LEAD_300 = (
+    "For qualifying insured patients with incomes less than 300% of FPL, patient responsibility is "
+    "discounted based on the table below."
+)
+# Free-care limits from elsewhere in the document, beside an insured table (reviews of 7.17.10):
+# a general sentence beside a table quoted from spans, a short free-care span that also occurs in
+# the table, and the uninsured paragraph joined to the table's first row.
+_FREE_LIMITS_ELSEWHERE_BESIDE_AN_INSURED_TABLE = [
+    (200, "Patients with income at or below 200% of FPL receive free care for all services.",
+     INSURED_LEAD_300 + " || Household Income || " + NOVANT_INSURED_TABLE,
+     "Definitions. Household Income: the income of everyone in the patient's family. Free Care. "
+     "Patients with income at or below 200% of FPL receive free care for all services. Insured "
+     "Patients: " + INSURED_LEAD_300 + " Household Income Discount " + NOVANT_INSURED_TABLE),
+    (200, "Patients with income at or below 200% of FPL qualify for free care, a || 100% discount",
+     NOVANT_INSURED_PARAGRAPH,
+     "Free Care. Patients with income at or below 200% of FPL qualify for free care, a\n- Page 3 -\n"
+     "100% discount off all charges. " + NOVANT_UNINSURED + NOVANT_INSURED_HEADED),
+    (300, "Uninsured patients with income at or below 300% of FPL will obtain a 100% adjustment. || "
+     "Income below 200% of FPL: 100% discount.", NOVANT_INSURED_PARAGRAPH,
+     "Uninsured Patients. Uninsured patients with income at or below 300% of FPL will obtain a "
+     "100% adjustment. " + NOVANT_INSURED_HEADED),
+]  # fmt: skip
+
+
+@pytest.mark.parametrize(
+    ("value", "free_quote", "tiers_quote", "document"),
+    _FREE_LIMITS_ELSEWHERE_BESIDE_AN_INSURED_TABLE,
+)
+def test_free_care_from_elsewhere_beside_an_insured_table_is_not_rejected_for_it(
+    value, free_quote, tiers_quote, document
+):
+    from waive.atlas.verify import INSURED_TABLE_REASON
+
+    docs = {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT + "\n" + document + "\n"}
+    sheet = with_free_limit_and_tiers(value, free_quote, tiers_quote, NOVANT_BANDS, "NC")
+    report = verify_sheet(sheet, docs)
+    assert ("eligibility.discount_tiers", INSURED_TABLE_REASON) in report.rejected
+    assert ("eligibility.free_care_max_fpl", INSURED_TABLE_REASON) not in report.rejected
+
+
+INSURED_REMAINING = (
+    "Insured Patients: For qualifying insured patients, the remaining balance after insurance is "
+    "discounted as follows: "
+)
+# Free-care limits beside an insured table that the rule keeps (reviews of 7.17.10): a general
+# sentence that states the limit and runs into the table, a limit in
+# words beside a row's "100% discount", and short spans that also occur in the table.
+_FREE_LIMITS_STATED_OUTSIDE_AN_INSURED_TABLE = [
+    (200, "Patients with income at or below 200% of FPL receive free care. " + INSURED_REMAINING
+     + "Income below 200% of FPL: 100% discount.",
+     "Patients with income at or below 200% of FPL receive free care. " + INSURED_REMAINING
+     + NOVANT_INSURED_TABLE),
+    (100, "Patients whose household income is at or below the federal poverty level receive free "
+     "care. || Income below 200% of FPL: 100% discount.",
+     "Free Care. Patients whose household income is at or below the federal poverty level "
+     "receive free care. " + INSURED_REMAINING + NOVANT_INSURED_TABLE),
+    (200, "Income below 200% of FPL || All services are free of charge.",
+     "Free Care Eligibility\nIncome below 200% of FPL\nAll services are free of charge.\n"
+     + INSURED_REMAINING + NOVANT_INSURED_TABLE),
+]  # fmt: skip
+
+
+@pytest.mark.parametrize(
+    ("value", "free_quote", "document"), _FREE_LIMITS_STATED_OUTSIDE_AN_INSURED_TABLE
+)
+def test_free_care_stated_outside_an_insured_table_is_not_rejected_for_it(
+    value, free_quote, document
+):
+    from waive.atlas.verify import INSURED_TABLE_REASON
+
+    docs = {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT + "\n" + document + "\n"}
+    sheet = with_free_limit_and_tiers(value, free_quote, NOVANT_INSURED_TABLE, NOVANT_BANDS, "NC")
+    report = verify_sheet(sheet, docs)
+    assert ("eligibility.discount_tiers", INSURED_TABLE_REASON) in report.rejected
+    assert ("eligibility.free_care_max_fpl", INSURED_TABLE_REASON) not in report.rejected
 
 
 def test_free_care_from_an_insured_table_in_another_document_is_not_rejected_for_it():

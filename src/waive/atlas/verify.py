@@ -348,14 +348,17 @@ def insured_only_table(quote: str, document_text: str) -> bool:
     at = text.find(normalize(quote)[:80])
     if at < 0:
         return False
-    lead = text[max(0, at - _LEAD_CHARS) : at]
-    mentions = list(_POPULATION.finditer(lead))
+    # Positions in the whole text, never a slice: a look-back that starts inside "uninsured"
+    # never reads its tail as an "insured patients" heading, and ^ matches only at the start.
+    start = max(0, at - _LEAD_CHARS)
+    mentions = list(_POPULATION.finditer(text, start, at))
     if not mentions or mentions[-1].group(1):
         return False
     last = mentions[-1]
+    window = (max(start, last.start() - 30), min(at, last.end() + 12))
     return (
-        _INSURED_LEAD.search(lead[max(0, last.start() - 30) : last.end() + 12]) is not None
-        and _BOTH_POPULATIONS.search(lead[: last.start()]) is None
+        _INSURED_LEAD.search(text, *window) is not None
+        and _BOTH_POPULATIONS.search(text, start, last.start()) is None
     )
 
 
