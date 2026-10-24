@@ -1,7 +1,7 @@
 import hashlib
 import json
 import logging
-from datetime import date
+from datetime import UTC, date, datetime
 from decimal import Decimal
 
 import httpx
@@ -4429,19 +4429,26 @@ def test_documents_set_aside_puts_foreign_and_other_state_documents_after_the_ex
         FOREIGN_OWNER_REASON,
         OTHER_REGION_REASON,
         OTHER_STATE_DOCUMENT_REASON,
+        SCHEDULE_OWNER_REASON,
         SIBLING_POLICY_REASON,
     )
 
-    assert _documents_set_aside(ref_of(CLARKE), CLARKE_DOCS, registry_rows(IOWA)) == {
+    # Clarke's UnityPoint policy meets clause S too, but it is off Clarke's website and unlinked:
+    # A2's reason says so. Carle West's sits on carle.org itself: only the schedule clause holds.
+    assert _documents_set_aside(ref_of(CLARKE), CLARKE_DOCS, registry_rows(IOWA), set()) == {
         "fap-uph-policy": FOREIGN_OWNER_REASON,
         "fap-uph-application": FOREIGN_OWNER_REASON,
     }
-    assert _documents_set_aside(ref_of(CANTON_POTSDAM), RRH_DOCS, registry_rows(NEW_YORK)) == {
-        "billing-rgh-policy": SIBLING_POLICY_REASON
-    }
+    hoopeston_docs = [CARLE_WEST_POLICY, CARLE_PAGE]
+    assert _documents_set_aside(
+        ref_of(HOOPESTON), hoopeston_docs, registry_rows(ILLINOIS), set()
+    ) == {"fap-carle-west": SCHEDULE_OWNER_REASON}
+    assert _documents_set_aside(
+        ref_of(CANTON_POTSDAM), RRH_DOCS, registry_rows(NEW_YORK), set()
+    ) == {"billing-rgh-policy": SIBLING_POLICY_REASON}
     # Every stored document another state's: set aside all the same (the plan's ruling), for no
     # reader should be shown Maryland's policy as a Texas hospital's.
-    assert _documents_set_aside(ref_of(PROVIDENCE), [MARYLAND_PAGE, FLORIDA_PAGE], []) == {
+    assert _documents_set_aside(ref_of(PROVIDENCE), [MARYLAND_PAGE, FLORIDA_PAGE], [], set()) == {
         "fap-ascension-maryland": OTHER_STATE_DOCUMENT_REASON,
         "fap-ascension-florida": OTHER_STATE_DOCUMENT_REASON,
     }
@@ -4451,9 +4458,11 @@ def test_documents_set_aside_puts_foreign_and_other_state_documents_after_the_ex
         "380091", "KAISER SUNNYSIDE MEDICAL CENTER", "CLACKAMAS", "OR", "kaiserpermanente.org"
     )
     scal = web_doc("fap-scal", KAISER_DOCS + SCAL_PATH, SCAL_TEXT, MFA_TITLE)
-    assert _documents_set_aside(ref_of(sunnyside), [scal], []) == {"fap-scal": OTHER_REGION_REASON}
+    assert _documents_set_aside(ref_of(sunnyside), [scal], [], {"fap-scal"}) == {
+        "fap-scal": OTHER_REGION_REASON
+    }
     dental = web_doc("fap-dental", KAISER_DOCS + "dfa/oregon/" + DENTAL_PATH, DENTAL_TEXT)
-    assert _documents_set_aside(ref_of(KAISER_LOS_ANGELES), [dental], []) == {
+    assert _documents_set_aside(ref_of(KAISER_LOS_ANGELES), [dental], [], set()) == {
         "fap-dental": DENTAL_REASON
     }
 
@@ -4469,6 +4478,7 @@ def test_recheck_withdraw_and_confirmation_set_aside_foreign_sibling_and_other_s
     from waive.atlas.verify import (
         FOREIGN_OWNER_REASON,
         OTHER_STATE_DOCUMENT_REASON,
+        SCHEDULE_OWNER_REASON,
         SIBLING_POLICY_REASON,
     )
 
@@ -4512,12 +4522,16 @@ def test_recheck_withdraw_and_confirmation_set_aside_foreign_sibling_and_other_s
         publish_quoting(session, "141316", carle_west[0])
         result = confirm_domain(session, "141316", "carle.org")
         assert (result.outcome, result.version) == ("held", 2)
-        assert f"eligibility.free_care_max_fpl: {FOREIGN_OWNER_REASON}" in result.notes
+        assert f"eligibility.free_care_max_fpl: {SCHEDULE_OWNER_REASON}" in result.notes
         assert repo.latest_sheet(session, "141316")[0].field_paths() == []
 
 
 def test_foreign_documents_and_sibling_policies_are_detached_at_build_time():
-    from waive.atlas.verify import FOREIGN_OWNER_REASON, SIBLING_POLICY_REASON
+    from waive.atlas.verify import (
+        FOREIGN_OWNER_REASON,
+        SCHEDULE_OWNER_REASON,
+        SIBLING_POLICY_REASON,
+    )
 
     engine = make_engine_with_hospital(*IOWA)
     with session_scope(engine) as session:
@@ -4529,9 +4543,15 @@ def test_foreign_documents_and_sibling_policies_are_detached_at_build_time():
             {
                 "id": "fap-uph-application",
                 "url": UPH_APPLICATION[0].url,
+                "clause": "A2",
                 "reason": FOREIGN_OWNER_REASON,
             },
-            {"id": "fap-uph-policy", "url": UPH_POLICY[0].url, "reason": FOREIGN_OWNER_REASON},
+            {
+                "id": "fap-uph-policy",
+                "url": UPH_POLICY[0].url,
+                "clause": "A2",
+                "reason": FOREIGN_OWNER_REASON,
+            },
         ]
         listed = ", ".join(entry["id"] for entry in detail["sources"])
         assert result.notes[0] == (
@@ -4551,7 +4571,22 @@ def test_foreign_documents_and_sibling_policies_are_detached_at_build_time():
                 {
                     "id": "billing-rgh-policy",
                     "url": RGH_POLICY[0].url,
+                    "clause": "B",
                     "reason": SIBLING_POLICY_REASON,
+                }
+            ]
+        }
+    engine = make_engine_with_hospital(*ILLINOIS)
+    with session_scope(engine) as session:
+        store_docs(session, "141316", CARLE_WEST_POLICY, CARLE_PAGE)
+        build_hospital(session, NoSpend(), GroundedAI(), "141316", TODAY, reuse_sources=True)
+        assert review_detail(session, "141316", "foreign_documents") == {
+            "sources": [
+                {
+                    "id": "fap-carle-west",
+                    "url": CARLE_WEST_POLICY[0].url,
+                    "clause": "S",
+                    "reason": SCHEDULE_OWNER_REASON,
                 }
             ]
         }
@@ -4582,6 +4617,9 @@ def test_other_state_documents_are_detached_at_build_time_even_when_they_are_all
 
 
 MERCY_MERCED = hospital_entry("050444", "MERCY MEDICAL CENTER", "MERCED", "CA", "commonspirit.org")
+MERCY_SAN_JUAN = hospital_entry(
+    "050516", "MERCY SAN JUAN MEDICAL CENTER", "CARMICHAEL", "CA", "commonspirit.org"
+)
 LONGMONT = hospital_entry(
     "060003", "LONGMONT UNITED HOSPITAL", "LONGMONT", "CO", "commonspirit.org"
 )
@@ -4593,7 +4631,7 @@ MERCY_SAN_JUAN_APPLICATION = web_doc(
     "application-mercy-san-juan",
     COMMONSPIRIT_DAM + "commonspiritorg/en/dhsac/casa/finance/assistance/"
     "msjmc-financial-assistance-app-en.pdf",
-    "Mercy San Juan Medical Center Financial Assistance Application. " + POLICY_TEXT,
+    "Mercy San Juan Medical Center, Carmichael. Financial Assistance Application. " + POLICY_TEXT,
     "[PDF] Mercy San Juan Medical Center Financial Assistance Application ...",
 )
 COMMONSPIRIT_POLICY = web_doc(
@@ -4632,7 +4670,7 @@ def test_other_state_documents_are_never_lent_and_siblings_lend_only_within_the_
     # Nor does a sibling in the state pass on what it borrowed from another state's: St. Anthony
     # held Mercy San Juan's application from its own borrowing, and Longmont would have had it
     # from St. Anthony instead.
-    engine = make_engine_with_hospital(MERCY_MERCED, LONGMONT, ST_ANTHONY)
+    engine = make_engine_with_hospital(MERCY_MERCED, MERCY_SAN_JUAN, LONGMONT, ST_ANTHONY)
     with session_scope(engine) as session:
         store_docs(session, "050444", MERCY_SAN_JUAN_APPLICATION)
         publish_quoting(session, "050444", MERCY_SAN_JUAN_APPLICATION[0])
@@ -4654,3 +4692,149 @@ def test_other_state_documents_are_never_lent_and_siblings_lend_only_within_the_
         store_docs(session, "060015", COMMONSPIRIT_POLICY)
         borrowed = _share_sibling_sources(session, longmont, [], result)
         assert borrowed is not None and borrowed.shared_ids == {"fap-commonspirit"}
+
+
+def lend(session, borrower, lender, *source_ids):
+    """What _share_sibling_sources records when a sibling lends documents."""
+    for source_id in source_ids:
+        repo.link_source(session, borrower, source_id)
+    detail = {"from_ccn": lender, "domain": "commonspirit.org", "sources": list(source_ids)}
+    return repo.add_review_item(session, borrower, "shared_sources", detail)
+
+
+BRAZOSPORT = hospital_entry(
+    "450072", "CHI ST LUKE'S HEALTH BRAZOSPORT", "LAKE JACKSON", "TX", "commonspirit.org"
+)
+MERCY_REDDING = hospital_entry(
+    "051319", "MERCY MEDICAL CENTER", "REDDING", "CA", "commonspirit.org"
+)
+BRAZOSPORT_APPLICATION = web_doc(
+    "application-brazosport",
+    COMMONSPIRIT_DAM + "commonspiritorg/en/stluh/soho/finance/assistance/"
+    "stlukes-health-brazosport-financial-assistance-app-en.pdf",
+    "CHI St. Luke's Health Brazosport, Lake Jackson. Financial Assistance Application. "
+    + POLICY_TEXT,
+    "Brazosport Hospital Financial Assistance Application Form ...",
+)
+OKLAHOMA = [
+    hospital_entry("260065", "MERCY HOSPITAL SPRINGFIELD", "SPRINGFIELD", "MO", "mercy.net"),
+    hospital_entry("371304", "MERCY HOSPITAL TISHOMINGO INC", "TISHOMINGO", "OK", "mercy.net"),
+]
+MERCY_REGIONS_PAGE = web_doc(
+    "web-mercy-regions",
+    "https://www.mercy.net/patients-visitors/billing/financial-assistance/",
+    "Financial assistance at Mercy Hospital Springfield, Springfield. " + POLICY_TEXT,
+    "Financial Assistance AR, OK, Springfield & St. Louis | Mercy",
+)
+ST_LUKES_PAGE = web_doc(
+    "fap-st-lukes",
+    "https://www.commonspirit.org/patient-resources/stlukes-health-financial-assistance",
+    "Financial assistance at CHI St. Luke's Health Brazosport, Lake Jackson, and Baylor St. "
+    "Luke's Medical Center, Houston. " + POLICY_TEXT,
+    "St. Luke's Health Financial Assistance | CommonSpirit Health",
+)
+BAYLOR_ST_LUKES = hospital_entry(
+    "450193", "BAYLOR ST LUKES MEDICAL CENTER", "HOUSTON", "TX", "commonspirit.org"
+)
+LENT_NOTE = (
+    "1 stored document is lent by another state's hospital (application-mercy-san-juan); left "
+    "out of the structurer and still linked"
+)
+
+
+def test_documents_lent_across_states_are_set_aside_for_the_borrower_only():
+    # The atlas of 2026-10-24 holds 25 loans from a sibling in another state, made before siblings
+    # lent only within the state: Mercy Medical Center Merced (050444, California) lent Mercy San
+    # Juan's application to Longmont United (060003, Colorado), whose published sheet quotes its
+    # decision deadline. Nothing in a lent document's address names California. A document the
+    # borrower held itself before the loan (a sheet of its own read it) is its own, and stays; a
+    # loan from an in-state sibling that had the document from another state is traced back to
+    # that state (Mercy Redding, 051319, from Merced, of Brazosport's Texas application). A
+    # system-wide document lent across states stays too: CommonSpirit's policy names no hospital
+    # of the state it came from, and Mercy's page names Oklahoma in its title.
+    from waive.atlas.pipeline import _lent_from_another_state, recheck_sheets, withdraw_rejected
+    from waive.atlas.verify import OTHER_STATE_DOCUMENT_REASON
+
+    def lent(ccn):
+        row = repo.get_hospital(session, ccn)
+        registry = repo.list_hospitals(session, state=row.state)
+        return _lent_from_another_state(
+            session, repo.hospital_ref(row), repo.sources_for(session, ccn), registry
+        )
+
+    engine = make_engine_with_hospital(
+        MERCY_MERCED,
+        MERCY_SAN_JUAN,
+        LONGMONT,
+        ST_ANTHONY,
+        BRAZOSPORT,
+        BAYLOR_ST_LUKES,
+        MERCY_REDDING,
+        *OKLAHOMA,
+    )
+    with session_scope(engine) as session:
+        # Merced holds the Texas St. Luke's hospitals' page itself (it names two of them), and
+        # lent it with the rest.
+        store_docs(session, "050444", MERCY_SAN_JUAN_APPLICATION, COMMONSPIRIT_POLICY)
+        store_docs(session, "050444", ST_LUKES_PAGE)
+        publish_quoting(session, "050444", MERCY_SAN_JUAN_APPLICATION[0])
+        lend(
+            session,
+            "060003",
+            "050444",
+            "application-mercy-san-juan",
+            "fap-commonspirit",
+            "fap-st-lukes",
+        )
+        publish_quoting(session, "060003", MERCY_SAN_JUAN_APPLICATION[0])
+        # St. Anthony scouted CommonSpirit's policy and published from it before the same loan.
+        store_docs(session, "060015", COMMONSPIRIT_POLICY)
+        own = publish_quoting(session, "060015", COMMONSPIRIT_POLICY[0])
+        own.created_at = datetime(2026, 10, 1, tzinfo=UTC)
+        session.flush()
+        lend(session, "060015", "050444", "fap-commonspirit")
+        # Merced borrowed Brazosport's application from Texas and passed it on to Redding.
+        store_docs(session, "450072", BRAZOSPORT_APPLICATION)
+        lend(session, "050444", "450072", "application-brazosport")
+        lend(session, "051319", "050444", "application-brazosport")
+        publish_quoting(session, "051319", BRAZOSPORT_APPLICATION[0])
+        # Mercy Springfield (Missouri) lent its "AR, OK, Springfield & St. Louis" page to
+        # Tishomingo (Oklahoma): it covers Oklahoma, and stays.
+        store_docs(session, "260065", MERCY_REGIONS_PAGE)
+        lend(session, "371304", "260065", "web-mercy-regions")
+        assert lent("060003") == {"application-mercy-san-juan", "fap-st-lukes"}
+        assert lent("060015") == set()
+        assert lent("050444") == {"application-brazosport"}
+        assert lent("051319") == {"application-brazosport"}
+        assert lent("371304") == set()
+        quoted = [path for path, _ in repo.latest_sheet(session, "060003")[0].field_paths()]
+        assert {entry.ccn: entry.rejected for entry in recheck_sheets(session)} == {
+            "060003": [(path, OTHER_STATE_DOCUMENT_REASON) for path in quoted],
+            "051319": [(path, OTHER_STATE_DOCUMENT_REASON) for path in quoted],
+        }
+        withdrawn = withdraw_rejected(session)
+        assert sorted((r.ccn, r.outcome) for r in withdrawn) == [
+            ("051319", "held"),
+            ("060003", "held"),
+        ]
+        # The links stay: a set-aside never deletes one.
+        assert {s.id for s, _ in repo.sources_for(session, "060003")} == {
+            "application-mercy-san-juan",
+            "fap-commonspirit",
+            "fap-st-lukes",
+        }
+    # A rebuild from stored documents leaves the loan out of the structurer as well, so it cannot
+    # publish the fields again, and holds the sheet when nothing else is left.
+    engine = make_engine_with_hospital(MERCY_MERCED, MERCY_SAN_JUAN, LONGMONT)
+    with session_scope(engine) as session:
+        store_docs(session, "050444", MERCY_SAN_JUAN_APPLICATION)
+        publish_quoting(session, "050444", MERCY_SAN_JUAN_APPLICATION[0])
+        lend(session, "060003", "050444", "application-mercy-san-juan")
+        publish_quoting(session, "060003", MERCY_SAN_JUAN_APPLICATION[0])
+        quoted = [path for path, _ in repo.latest_sheet(session, "060003")[0].field_paths()]
+        result = build_hospital(session, NoSpend(), NoModel(), "060003", TODAY, reuse_sources=True)
+        assert (result.outcome, result.version) == ("held", 2)
+        assert result.notes == [LENT_NOTE, NOTHING_LEFT_NOTE, held_note(quoted)]
+        assert [s.id for s, _ in repo.sources_for(session, "060003")] == [
+            "application-mercy-san-juan"
+        ]
