@@ -10,7 +10,15 @@ from typing import Any
 from sqlalchemy.orm import Session
 
 from waive.atlas import repo
-from waive.atlas.schema import Cited, Layer, ProcedureSheet, SheetStatus, SourceDoc, SourceKind
+from waive.atlas.schema import (
+    Cited,
+    DiscountTier,
+    Layer,
+    ProcedureSheet,
+    SheetStatus,
+    SourceDoc,
+    SourceKind,
+)
 from waive.atlas.verify import (
     assistance_limits_stated,
     free_care_limits_stated,
@@ -141,10 +149,54 @@ def resolve_conflicts(
 FREE_CARE_REVIEW_FPL = Decimal(400)
 
 
-def sheet_inconsistencies(sheet: ProcedureSheet) -> list[str]:
+# How far above the last income covered a band may start: band labels give whole percents ("0-170%",
+# "171-250%"), so a band from 171 after one to 170 leaves no gap (291314).
+BAND_LABEL_STEP = Decimal(1)
+
+
+def _below_own_rules(
+    ceiling: Decimal, free: Cited[Decimal] | None, tiers: Cited[list[DiscountTier]] | None
+) -> bool:
+    """Whether an assistance ceiling is below the free-care limit or the top of a band of the same
+    sheet. Russell Regional (171350) published a ceiling of 70 under a table that runs to 200%:
+    the ceiling was its free-care line."""
+    tops = [tier.max_fpl_inclusive for tier in tiers.value] if tiers is not None else []
+    if free is not None:
+        tops.append(free.value)
+    return any(ceiling < top for top in tops)
+
+
+def _income_gaps(
+    free: Cited[Decimal] | None, tiers: Cited[list[DiscountTier]] | None
+) -> list[tuple[Decimal, Decimal]]:
+    """The incomes (from, to) that fall between the free-care limit and the first band, or between
+    two bands, more than a band label's step apart. University Health Lakewood (260102) published
+    free care to 100% and its first band from 300%, the 101-300% band missing; Henry County (361309)
+    free care to 100% and bands from 200%, while its table gives 101-200% a 100% discount. A sheet
+    with no free-care limit is not checked below its first band: its documents may state no free
+    band, and a sheet whose free-care limit verification dropped publishes from its first band
+    (Day Kimball, 070003, from 200%: its limit was quoted as the top of a later band). A limit
+    dropped because the free band itself is misstated holds a sheet that keeps its table instead
+    (verify.HOLDING_BESIDE_A_TABLE_REASONS)."""
+    if tiers is None or not tiers.value:
+        return []
+    gaps: list[tuple[Decimal, Decimal]] = []
+    covered = free.value if free is not None else None
+    for tier in sorted(tiers.value, key=lambda tier: tier.min_fpl_exclusive):
+        if covered is not None and tier.min_fpl_exclusive > covered + BAND_LABEL_STEP:
+            gaps.append((covered, tier.min_fpl_exclusive))
+        top = tier.max_fpl_inclusive
+        covered = top if covered is None else max(covered, top)
+    return gaps
+
+
+def sheet_inconsistencies(sheet: ProcedureSheet, ruled_ceiling: Decimal | None = None) -> list[str]:
     """Income rules that contradict each other or read like a misread ceiling. Checked at publish
     time rather than as a schema rule, so stored versions stay loadable and the structurer's
-    fallback never drops a correct table to satisfy a wrong limit."""
+    fallback never drops a correct table to satisfy a wrong limit. An assistance ceiling equal to
+    `ruled_ceiling`, the value of the owner's `discount` ruling (eve_import.ruled_ceiling), is the
+    owner's and is not held below the sheet's own rules: owner rulings win, and the pipeline
+    records the conflict for the owner instead."""
     problems: list[str] = []
     tiers = sheet.eligibility.discount_tiers
     if tiers is not None and tiers.value and tiers_rise_with_income(tiers.value):
@@ -157,6 +209,20 @@ def sheet_inconsistencies(sheet: ProcedureSheet) -> list[str]:
             "reads as the patient's share, not a sliding scale"
         )
     free = sheet.eligibility.free_care_max_fpl
+    ceiling = sheet.eligibility.assistance_ceiling_fpl
+    if (
+        ceiling is not None
+        and ceiling.value != ruled_ceiling
+        and _below_own_rules(ceiling.value, free, tiers)
+    ):
+        problems.append(
+            f"eligibility.assistance_ceiling_fpl: {ceiling.value:.0f}% is below the sheet's own "
+            "income rules"
+        )
+    for start, end in _income_gaps(free, tiers):
+        problems.append(
+            f"eligibility.discount_tiers: no rule covers incomes from {start:.0f}% to {end:.0f}%"
+        )
     if free is None:
         return problems
     if tiers is not None and tiers.value:
@@ -224,12 +290,16 @@ def document_conflicts(sheet: ProcedureSheet, documents: dict[str, str]) -> list
 
 
 def decide_status(
-    sheet: ProcedureSheet, conflicts: list[str], holds: list[str] | None = None
+    sheet: ProcedureSheet,
+    conflicts: list[str],
+    holds: list[str] | None = None,
+    ruled_ceiling: Decimal | None = None,
 ) -> SheetStatus:
     """`holds` are reasons an admin must look first that are not model disagreements, such as
     a discount table that turned out to describe the patient's share. A sheet needs an income
     rule to publish: a free-care band, a table, or, when the documents give neither, a verified
-    assistance ceiling (decision 7.9a-2, task 7.14)."""
+    assistance ceiling (decision 7.9a-2, task 7.14). `ruled_ceiling` goes to
+    sheet_inconsistencies: the owner's ruled ceiling is not held below the sheet's own rules."""
     if conflicts or holds:
         return SheetStatus.HELD
     eligibility = sheet.eligibility
@@ -239,7 +309,7 @@ def decide_status(
         and eligibility.assistance_ceiling_fpl is None
     ):
         return SheetStatus.HELD
-    if sheet_inconsistencies(sheet):
+    if sheet_inconsistencies(sheet, ruled_ceiling):
         return SheetStatus.HELD
     return SheetStatus.PUBLISHED
 

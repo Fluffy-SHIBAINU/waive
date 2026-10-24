@@ -832,6 +832,14 @@ def keep_owner_decision(
     ]
 
 
+def ruled_ceiling(decision: Mapping[str, Any] | None) -> Decimal | None:
+    """The assistance ceiling the owner's ruling makes, or None: the value of a `discount` ruling,
+    which `keep_owner_decision` records as assistance_ceiling_fpl."""
+    if decision is None or str(decision.get("decision") or "") != "discount":
+        return None
+    return _decimal(decision.get("value"))
+
+
 def record_owner_rulings(session: Session, rulings: Mapping[str, Mapping[str, Any]]) -> int:
     """Keep the owner's rulings (the entries of `_decisions.json`, by CCN) with their hospitals,
     one `owner_ruling` item each, so a rebuild finds them wherever it runs: the admin console's

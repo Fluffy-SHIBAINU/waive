@@ -325,7 +325,7 @@ Where the revised rule and the candidate differ, the revised rule wins.
   - Set aside:
     - UnityPoint 1.BR.34 for Clarke County (161348): the attached Schedule lists other Iowa UPH hospitals and not Clarke County.
     - Carle West Region's Schedule D (Methodist, Pekin, Proctor) for Carle Hoopeston (141316), even though it sits on the hospital's own domain.
-    - Emory's "Hospitals include:" list, which leaves out Emory Houston, for 110129.
+    - Emory's "Hospitals include:" list, which leaves out St. Francis-Emory, for 110129.
   - Not set aside:
     - A CommonSpirit G-003 policy with no covered-hospital list (CHI Oakes, 351315).
     - Corewell's application on assets.contentstack.io.

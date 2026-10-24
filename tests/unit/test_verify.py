@@ -1,6 +1,8 @@
 from datetime import date
 from decimal import Decimal
 
+import pytest
+
 from waive.atlas.samples import SAMPLE_POLICY_TEXT, SAMPLE_SOURCE_ID, st_example_sheet
 from waive.atlas.schema import Cited, DiscountTier
 from waive.atlas.verify import (
@@ -282,15 +284,20 @@ ADVENTIST_TABLE = (
 )
 
 
-def with_tiers_quote(quote, bands):
-    sheet = st_example_sheet()
-    tiers = [
+def tiers_of(bands):
+    return [
         DiscountTier(
             min_fpl_exclusive=Decimal(low), max_fpl_inclusive=Decimal(high), discount_percent=pct
         )
         for low, high, pct in bands
     ]
-    cited = sheet.eligibility.discount_tiers.model_copy(update={"value": tiers, "quote": quote})
+
+
+def with_tiers_quote(quote, bands):
+    sheet = st_example_sheet()
+    cited = sheet.eligibility.discount_tiers.model_copy(
+        update={"value": tiers_of(bands), "quote": quote}
+    )
     return sheet.model_copy(
         update={"eligibility": sheet.eligibility.model_copy(update={"discount_tiers": cited})}
     )
@@ -329,6 +336,20 @@ def test_a_discount_that_rises_with_income_is_upside_down():
     assert verify_sheet(sheet, docs).ok
     flat = with_tiers_quote(falling, [(200, 300, 50), (300, 400, 50)])
     assert not tiers_rise_with_income(flat.eligibility.discount_tiers.value)
+
+
+def test_a_rising_table_is_the_patients_share_before_its_benchmark_is_read():
+    # The patient's share holds the sheet; another benchmark or another state's heading only
+    # drops the table, so the share is read first, as before those rules.
+    rising = (
+        "Patients with household income above 200% and at or below 300% of the area median "
+        "income receive a 25% discount; above 300% and at or below 400% of the area median "
+        "income, a 50% discount."
+    )
+    docs = {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT + "\n" + rising + "\n"}
+    sheet = with_tiers_quote(rising, [(200, 300, 25), (300, 400, 50)])
+    rejected = dict(verify_sheet(sheet, docs).rejected)
+    assert rejected["eligibility.discount_tiers"] == PATIENT_SHARE_REASON
 
 
 ARNOT_SENTENCE = (
@@ -501,7 +522,7 @@ def test_an_asset_test_value_must_be_supported_by_its_quote():
 
 
 def test_an_insured_patients_value_needs_a_quote_about_insured_patients():
-    from waive.atlas.verify import INSURED_REASON, quote_addresses_insured
+    from waive.atlas.verify import INSURED_LEFT_OUT_REASON, INSURED_REASON
 
     path = "eligibility.insured_patients_covered"
     # 7.9: eight sheets took the value from sentences about uninsured patients only, EMTALA or
@@ -528,7 +549,7 @@ def test_an_insured_patients_value_needs_a_quote_about_insured_patients():
             False,
             "Financial assistance and discounts are available only for necessary hospital care.",
         )
-        == INSURED_REASON
+        == INSURED_LEFT_OUT_REASON
     )
     assert (
         verdict(
@@ -536,7 +557,7 @@ def test_an_insured_patients_value_needs_a_quote_about_insured_patients():
             False,
             "In order to receive CCP financial assistance, the patient must apply for Medicaid and be denied.",
         )
-        == INSURED_REASON
+        == INSURED_LEFT_OUT_REASON
     )
     # A false value needs the quote to exclude insured patients, not merely to mention them.
     assert (
@@ -545,23 +566,26 @@ def test_an_insured_patients_value_needs_a_quote_about_insured_patients():
             False,
             "Financial Assistance is offered to patients who are uninsured and underinsured.",
         )
-        == INSURED_REASON
+        == INSURED_LEFT_OUT_REASON
     )
+    # Holyoke (220024, held): an applicant's requirement that reads as a definition of the
+    # uninsured patient, not a rule that leaves insured patients out.
     assert (
         verdict(
             path,
             False,
             "Does not have any form of insurance to cover services rendered that are medically necessary",
         )
-        == "accepted"
+        == INSURED_LEFT_OUT_REASON
     )
+    # Leaving out co-pays and deductibles leaves insured patients in for the rest (Tufts, 220116).
     assert (
         verdict(
             path,
             False,
             "It is also not intended to provide discounts on insurance co-payments, co-insurance, or deductibles.",
         )
-        == "accepted"
+        == INSURED_LEFT_OUT_REASON
     )
     assert (
         verdict(
@@ -593,8 +617,181 @@ def test_an_insured_patients_value_needs_a_quote_about_insured_patients():
         )
         == "accepted"
     )
-    assert not quote_addresses_insured("care for all uninsured patients", True)
-    assert quote_addresses_insured("even if you have some insurance", True)
+
+
+MIZELL_INSURED = (
+    "If an individual has sufficient insurance coverage or assets available to pay for care, "
+    "he/she may be deemed ineligible for financial assistance."
+)
+WRMC_STATEMENT = (
+    "Insured patients will receive a statement for their applicable out-of-pocket responsibility "
+    "as determined by their insurance company."
+)
+# (quote, stored value, the reason insured_field_problem gives: None to accept, or a key below)
+_INSURED_CASES = [
+    # The 2026-10-24 audit. False stored where the policy helps underinsured patients or only
+    # says insured patients "may be deemed ineligible" (Mizell, 010007; Caldwell, 181322) or
+    # where the quote is the uninsured self-pay discount (Mackinac, 231306).
+    (MIZELL_INSURED, False, "left out"),
+    ("Patients shall be able to get financial assistance if uninsured, underinsured, not eligible "
+     "for a government program, or not qualify for governmental assistance (for example, Medicare "
+     "or Medicaid).", False, "left out"),
+    ("Uninsured patients who do not qualify for Mackinac Straits Health System's financial "
+     "assistance program (e.g., due to income and family size) will receive a discount of 30% on "
+     "gross charges for medically necessary services to ensure they do not pay more for care than "
+     "insured individuals.", False, "price cap"),
+    # True cited to a billing statement (Washington Regional, 040004), a payment plan (Western
+    # Maryland, 210027), the AGB cap (Hutchinson Health, 240187) or a bare heading (Madelia,
+    # 241323).
+    (WRMC_STATEMENT, True, "payment"),
+    ("Payment plans are available to patients with family income between 200 and 500 percent of "
+     "the Federal Poverty Level for those patients who request assistance, regardless of their "
+     "insurance status.", True, "payment"),
+    ("After a patient’s eligibility for financial assistance under this policy is determined, a "
+     "financial assistance-eligible patient will not be charged more than AGB to insured patients "
+     "by the HealthPartners care delivery location for emergency or other medically necessary "
+     "care.", True, "price cap"),
+    ("Underinsured:", True, "label"),
+    # A genuine exclusion still supports false; insured patients named as helped support true.
+    ("Patients with insurance are not eligible for financial assistance", False, None),
+    ("Insured patients who do not have the ability to pay for emergent or medically necessary "
+     "portions not covered by insurance who meet the eligibility criteria outlined in this "
+     "policy.", True, None),
+    # Not a rule about financial assistance: a self-pay rate, a conditional, a criterion that
+    # admits inadequate coverage, public insurance programs.
+    ("Insured patients are not eligible for uninsured/true self pay rates.", False, "left out"),
+    ("If you have insurance or assets to pay for your care, you may not be eligible for financial "
+     "assistance.", False, "left out"),
+    ("Have no insurance or inadequate insurance coverage (high deductible plan)", False,
+     "left out"),
+    ("You may qualify if: * You do not qualify for public insurance programs in your home state, "
+     "and", False, "left out"),
+    ("If you qualify for fnancial assistance, you will not be charged more for emergency or other "
+     "medically necessary care than patients who are covered by Medicare or other insurance.",
+     True, "price cap"),
+    ("Montefiore Medical Center also provides payment arrangements to patients that have "
+     "insurance coverage but have an out-of-pocket expense that they cannot afford or deem a "
+     "hardship.", True, "payment"),
+    # Exclusions of insured patients, including the "only uninsured" wording that has no insured
+    # word of its own.
+    ("Financial assistance is available only to uninsured patients.", False, None),
+    ("This policy applies only to uninsured patients who meet the income criteria.", False, None),
+    ("Insured patients are not eligible for financial assistance under this policy.", False, None),
+    ("Patients with health insurance are not eligible for the charity care program.", False, None),
+    ("The program is not available to patients with insurance.", False, None),
+    ("Applicants must be uninsured.", False, None),
+    ("Applicant cannot be covered by private insurance", False, None),  # Bacon County, 111327
+    ("*Must be self-pay", False, None),  # Rockcastle County, 180115
+    # The amounts-generally-billed cap, whichever value it was read as (UMass Memorial, 220163).
+    (AGB_SENTENCE, True, "agb"),
+    (AGB_SENTENCE, False, "agb"),
+    # Insured patients named as helped, with or beside an AGB clause.
+    ("Uninsured and underinsured patients who qualify will not be charged more than the amounts "
+     "generally billed to insured patients.", True, None),
+    ("Eligible patients with insurance coverage are not personally responsible to pay more than "
+     "AGB after all payments by the health insurer have been applied.", True, None),
+    ("The Financial Assistance Adjustment based on the AGB percentage will also be applied to the "
+     "outstanding balance, after payments by insurance, if any, of patients with Catastrophic "
+     "Medical Expenses, as defined above, who are not eligible for financial assistance based on "
+     "the other provisions of this policy.", True, None),
+    ("Insured patients with family income less than 450% of current Federal Poverty Level and "
+     "excessive medical costs, may qualify for partially discounted care and extended payment "
+     "plans.", True, None),
+    ("Underinsured: The patient has some level of insurance or third-party assistance but still "
+     "has out-of-pocket expenses that exceed his/her financial abilities.", True, None),
+    ("Insured Patient Free And Discounted Care (set forth on Appendix B)", True, None),
+    ("Insured patients will not have the AGB applied 2. The FA discount will be applied directly "
+     "to the balance", True, None),
+    ("Underinsured patients will not be charged more than amounts generally billed to patients "
+     "with insurance.", True, None),
+    ("Only patients with active insurance coverage are eligible for financial assistance.", True,
+     None),
+    # Leaving insured patients out of a self-pay, uninsured, prompt-pay or cash price says nothing
+    # about financial assistance (231306, 141332, 310041); "not only" is no exclusion.
+    ("Self-pay discounts are offered only to uninsured patients.", False, "left out"),
+    ("The uninsured discount is available only to uninsured patients.", False, "left out"),
+    ("Patients with insurance are not eligible for the 40% self-pay discount.", False, "left out"),
+    ("Insured patients are not eligible for the prompt pay discount.", False, "left out"),
+    ("The Discounted Cash Price is NOT available to governmentally covered or commercially "
+     "insured patients.", False, "left out"),
+    ("Financial assistance is offered not only to the uninsured but also to insured patients with "
+     "high deductibles.", False, "left out"),
+    # The price-cap clause stops at ", and ...".
+    ("Patients who qualify will pay no more than 10% of charges, and insured patients may also "
+     "qualify.", True, None),
+    # Insurance named only as absent, or as something to buy (Geisinger, 390006; Houston
+    # Methodist, 450358), against coverage that pays only part of the bill (Maine).
+    ("Patient does not have insurance coverage and was denied Medicaid or any other Medical "
+     "Assistance benefits.", True, "absent"),
+    ("Individuals with the financial capacity to purchase health insurance will be encouraged to "
+     "do so, as a means of providing access to health care services.", True, "absent"),
+    ("Have no health insurance coverage or have coverage that pays only part of the bill; and",
+     True, None),
+    ("Have limited or no health insurance", True, None),
+    ("We encourage patients to apply for financial assistance and patients with or without "
+     "insurance are eligible.", True, None),
+    ("If you do not have insurance and/or will have difficulty in paying your portion of the bill, "
+     "we will review your eligibility for financial assistance", True, None),
+    ("If you are not insured or insured for only part of your expenses, please talk with one of "
+     "our financial counselors. They can help you establish a payment plan or apply for financial "
+     "assistance.", True, None),
+    ("Patients without insurance or with Medicare may qualify for financial assistance.", True,
+     None),
+    ("Payment in full is required at the time of service from all patients who owe co-pays, "
+     "coinsurance, have not met their deductible, or do not have insurance coverage.", True,
+     "payment"),  # 250094
+    ("Financial assistance is available regardless of insurance status.", True, None),
+    ("care for all uninsured patients", True, "insured"),
+    ("even if you have some insurance", True, None),
+    # Plain exclusions in other words.
+    ("Patients with insurance coverage are not eligible for financial assistance.", False, None),
+    ("Patients who are insured are not eligible for financial assistance.", False, None),
+    ("This policy does not apply to insured patients.", False, None),
+    # Cabell Huntington (510055, published v2, and its v1 draft): anyone whose bill any payor,
+    # health insurance included, pays a portion of is not eligible. McKenzie (351302, held)
+    # leaves out only patients whose insurer lists it as out of network, so it stays rejected.
+    ("Patients are not eligible for financial assis tance, as provided for in this Policy, if the "
+     "patient is eligible to receive reimbursement for any portion of a patient’s bill from any "
+     "first or third party payor, including health insurance, workers’ compensation or liability "
+     "payors,", False, None),
+    ("Patients are not eligible for financial assistance, as provided for in this Policy, if the "
+     "patient is eligible to receive reimbursement for any portion of a patient’s bill from any "
+     "first or third party payor, including health insurance", False, None),
+    ("Patients are not eligible for financial assistance if the applicable health insurance lists "
+     "McKenzie Health as out-of-network or if the patient’s health insurance covers services on a "
+     "non-contracted basis unless the services are emergency medical care provided in an "
+     "emergency department or are pre-determined to be unique to McKenzie Health and such "
+     "treatment is not available at another healthcare provider;", False, "left out"),
+]  # fmt: skip
+
+
+@pytest.mark.parametrize(("quote", "value", "expected"), _INSURED_CASES)
+def test_insured_field_problem(quote, value, expected):
+    from waive.atlas.verify import (
+        ABSENT_REASON,
+        BARE_LABEL_REASON,
+        INSURED_LEFT_OUT_REASON,
+        INSURED_REASON,
+        PAYMENT_PLAN_REASON,
+        PRICE_CAP_REASON,
+        insured_field_problem,
+    )
+
+    reasons = {
+        None: None,
+        "agb": AGB_CAP_REASON,
+        "insured": INSURED_REASON,
+        "left out": INSURED_LEFT_OUT_REASON,
+        "price cap": PRICE_CAP_REASON,
+        "label": BARE_LABEL_REASON,
+        "payment": PAYMENT_PLAN_REASON,
+        "absent": ABSENT_REASON,
+    }
+    assert insured_field_problem(quote, value) == reasons[expected]
+    # verify_sheet rejects the field with the same reason.
+    assert verdict("eligibility.insured_patients_covered", value, quote) == (
+        reasons[expected] or "accepted"
+    )
 
 
 def test_a_discount_given_as_a_range_or_a_floor_is_not_one_tier():
@@ -653,6 +850,176 @@ def test_a_discount_ranging_from_one_percentage_to_another_is_a_range():
     docs = {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT + "\n" + mercyhealth + "\n"}
     report = verify_sheet(with_tiers_quote(mercyhealth, [(250, 350, 20)]), docs)
     assert ("eligibility.discount_tiers", RANGE_REASON) in report.rejected
+
+
+# (quote, stored tier percents, the stored percents read as a range endpoint). The tiers field is
+# rejected exactly when the last is not empty.
+_ONE_SIGN_AND_SCALE_RANGES = [
+    # Hartford HealthCare (070011, 070017, 070021, 070035): one percent sign, after the second
+    # number. The sheets stored a flat 75, or 15 for MidState (070017).
+    (
+        "(ii) If family income is verified between 250% and 550% of the Federal\nPoverty Level "
+        "Guidelines, the patient will qualify for a 15-75%\ndiscount against the patient’s "
+        "account balance.",
+        (75,),
+        (75,),
+    ),
+    (
+        "(ii) If family income is verified between 250% and 550% of the Federal Poverty Level "
+        "Guidelines, the patient will qualify for a 15-75% discount against the patient’s account "
+        "balance.",
+        (15,),
+        (15,),
+    ),
+    # Holton (171319): a scale phrase between the discount word and the range.
+    (
+        "Patients with a household income of 100% – 200% of the FPL may qualify for a discount "
+        "from a scale of 10% to 75%.",
+        (75,),
+        (75,),
+    ),
+    (
+        "Patients with a household income of 100% – 200% of the FPL may qualify for a discount "
+        "from a scale of 10% to 75%.",
+        (10,),
+        (10,),
+    ),
+    ("will qualify for a 15-75% discount", (40,), ()),  # not an endpoint
+    ("a discount of 15-75% off the balance", (15,), (15,)),
+    ("a discount on a sliding scale from 25% to 75%", (25,), (25,)),
+    ("a discount based on a sliding scale of 20%-80%", (80,), (80,)),
+    # Income bands and fixed discounts, which are no discount range.
+    ("Patients 201-300% FPL receive a 75% discount", (75,), ()),
+    ("201-300% discount 75%", (75,), ()),
+    ("0-100% of federal poverty level 100% discount", (100,), ()),
+    (
+        "0-100% of federal poverty level 100% discount ii. 101% - 200% of federal poverty level "
+        "75% discount",
+        (75,),
+        (),
+    ),  # Day Kimball (070003)
+    (
+        "- 100% financial assistance for income levels at or below 250% - 95% financial "
+        "assistance for income levels between 251% and 275%",
+        (95,),
+        (),
+    ),  # HealthSource Saginaw (230275)
+    ("receive a 60% discount", (60,), ()),
+    ("FPL 0-100% 100% 101-140% 90% 141-160% 80% 161-180% 75%", (90, 80, 75), ()),
+    ("a discount of 2023-24% applies", (24,), ()),
+    # The ranges the existing patterns already read.
+    ("may qualify for a reduction of 55% to 75% of total charges.", (55,), (55,)),  # Alliance
+    ("may be eligible for a discount of at least 25%.", (25,), (25,)),  # ACMH
+    ("a 30% to 50% discount off charges", (30,), (30,)),
+    # Range wordings found in stored hospital documents.
+    (
+        "Patients ... between 201% and 500% of the federal poverty guidelines. The discount will "
+        "be between 25% and 75%.",
+        (75,),
+        (75,),
+    ),
+    (
+        "reduced-cost care (35%-75%) adjustment to the initial gross charges",
+        (35,),
+        (35,),
+    ),  # Johns Hopkins Medicine
+    (
+        "other discounts ranging from 40 to 90 percent apply if the patient's total household "
+        "income is over 200 percent",
+        (90,),
+        (90,),
+    ),
+    ("discounts off charges from 60 percent to 96 percent : any eligible patient", (60,), (60,)),
+    (
+        "receive adjustments ranging from 35-100% of the patient portion of the bill",
+        (35,),
+        (35,),
+    ),  # Freeman
+    (
+        "the financial assistance adjustment can be from 20% to 100% of your patient balance",
+        (20,),
+        (20,),
+    ),
+    (
+        "the amount of the discount varies between 25 and 100 percent of the patient's portion",
+        (25,),
+        (25,),
+    ),
+    (
+        "generally receive a sliding scale discount ranging from 100 % to 60 % for emergency",
+        (60,),
+        (60,),
+    ),
+    ("will receive discounts ranging between 95% and 5%.", (95,), (95,)),
+    ("discounts ranging from 100 percent to 60 percent", (60,), (60,)),
+    ("a discount of 75 to 25 percent", (25,), ()),  # runs downward without "ranging"
+    ("a 15 to 75 percent discount", (15,), (15,)),
+    ("a 15 to 75 per cent discount", (15,), (15,)),
+    # Lists, patient shares, tables and dollar amounts, which are no discount range.
+    ("when 90% and 80% discounts apply: for uninsured patients", (90, 80), ()),
+    (
+        "a. up to $100 - 5% discount b. $101 to $999 - 10% discount c. $1,000 - 20% discount",
+        (5, 10, 20),
+        (),
+    ),
+    (
+        "if patients on the 20% to 80% sliding fee scale are responsible for qualified "
+        "out-of-pocket",
+        (80, 60, 40, 20),
+        (),
+    ),
+    (
+        "medical financial hardship adjustment medical bill as % of annual family income "
+        "adjustment 20 - 29% 15% 30 - 39% 20%",
+        (15, 20),
+        (),
+    ),
+    (
+        "a. patients that qualify for 0-20% will receive a 20% adjustment b. patients that "
+        "qualify for 21-50% will receive a 50% adjustment.",
+        (20, 50),
+        (),
+    ),
+    (
+        "total household income discount from gross charges less than 100% of fpl 100% discount "
+        "between 101% - 150% of fpl 90% discount between 151% - 200% of fpl 75% discount",
+        (90, 75),
+        (),
+    ),
+    (
+        "annual family income maximum discount 200% or less fpl 100% 201% - 250% 75% 251% - 300% "
+        "50% 301% - 350% 24%",
+        (75, 50, 24),
+        (),
+    ),
+    ("fpl 0-50% 51-100% discount 100% 90%", (90,), ()),
+    (
+        "income (of fpg) % of poverty level uninsured charity discount insured charity discount "
+        "0 - 100% 100% 100% 100% - 200% 100% 100% 200% - 300% 80%/agb 80%/agb",
+        (80,),
+        (),
+    ),  # Atrium (360076)
+    ("a 50% discount from 201-300% fpl", (50,), ()),
+    # A numbered label, or an income band, before a dash and one discount.
+    ("tier 2 - 75% discount", (75,), ()),
+    ("level 2 - 75% discount", (75,), ()),
+    ("category 3 - 40% discount", (40,), ()),
+    ("section 4.2 - 50% discount", (50,), ()),
+    ("0-50% fpl 51-75% discount", (75,), ()),
+    ("0-50% 51-75% discount", (75,), ()),
+    ("will qualify for a 15–75% discount", (75,), (75,)),  # an en dash, as Hartford's may be
+]
+
+
+@pytest.mark.parametrize(("quote", "stored", "expected"), _ONE_SIGN_AND_SCALE_RANGES)
+def test_discount_range_in_quote_reads_one_sign_ranges_and_scale_phrases(quote, stored, expected):
+    from waive.atlas.verify import discount_range_in_quote
+
+    # Hartford HealthCare's "a 15-75% discount" and Holton's "a discount from a scale of 10% to
+    # 75%" (task 7.17) were each published as one flat percent: the range was written with one
+    # percent sign, or behind a scale phrase, and read as nothing.
+    stored_percents = {Decimal(percent) for percent in stored}
+    assert discount_range_in_quote(quote) & stored_percents == {Decimal(p) for p in expected}
 
 
 def test_a_true_asset_test_is_not_supported_by_a_quote_that_rules_assets_out():
@@ -721,6 +1088,334 @@ def test_a_band_stated_for_another_states_facilities_is_not_the_hospitals():
         update={"eligibility": sheet.eligibility.model_copy(update={"discount_tiers": cited})}
     )
     assert ("eligibility.discount_tiers", OTHER_STATE_REASON) in verify_sheet(sheet, docs).rejected
+
+
+UMMS_FREE_CARE = (
+    "Those with income up to 200% of the income eligibility limits established by the Maryland "
+    "Department of Health are eligible for free care."
+)
+# (quote, value, whether the value is a percentage of a benchmark other than the poverty level)
+_OTHER_BASIS_CASES = [
+    # University of Maryland Medical System (task 7.17): Maryland's Medicaid limits, not the FPL.
+    ("200% of the income eligibility limits established by the Maryland Department of Health", 200, True),
+    (UMMS_FREE_CARE, 200, True),
+    ("Free Care - " + UMMS_FREE_CARE, 200, True),
+    ("Reduced Cost Care - Those between 200% and 300% of the income eligibility limits established "
+     "by the Maryland Department of Health are eligible for discounts on a sliding scale", 300, True),
+    ("Those between 200% and 300% of the income eligibility limits established by the Maryland "
+     "Department of Health are eligible for discounts", 200, False),  # the next number comes first
+    ("Those with income up to two hundred percent (200%) of the income eligibility limits "
+     "established by the Maryland Department of Health", 200, True),
+    ("Those with income up to 200% of the limits established by the Maryland Department of Health",
+     200, True),
+    # Other benchmarks, after "of" or right after the percent sign.
+    ("Free care is available to households with income at or below 80% of the Area Median Income "
+     "(AMI).", 80, True),
+    ("Patients with income up to 250% of the State Median Income qualify for a full write-off.",
+     250, True),
+    ("Free care for income at or below 150% of the Medicaid income limit.", 150, True),
+    ("Free care for incomes up to 200% of MDH limits.", 200, True),
+    ("Free care: income at or below 200% of the Maryland Medicaid limit", 200, True),
+    ("Free care: income at or below 200% MDH limits", 200, True),
+    ("Free care for incomes up to 80% AMI", 80, True),
+    # The benchmark must start within ten words after "of".
+    ("Free care up to 200% of the levels the hospital sets each year by its income eligibility "
+     "standards", 200, True),
+    ("Free care up to 200% of the levels the hospital sets each year by its own income eligibility "
+     "standards", 200, False),
+    # The poverty level, whoever publishes it, and however far its words come after the number.
+    ("200% of the Federal Poverty Level", 200, False),
+    ("Patients with income up to 200% of the Federal Poverty Guidelines published by the "
+     "Department of Health and Human Services receive free care.", 200, False),
+    ("Household income must be at or below one-hundred percent (100%) of the poverty income "
+     "guidelines established by the Department of Health and Human Services.", 100, False),
+    ('Household income is less than or equal to 200% of the Federal Poverty Guidelines ("FPG") '
+     "established by the U.S. Department of Health and Human Services.", 200, False),
+    ("at or below 200 percent of the current Federal Poverty Guidelines as established by the "
+     "United States Department of Health and Human Services (USDHHS).", 200, False),
+    ("Patients with income at or below 200% of the guidelines set by the Department of Health and "
+     "Human Services receive free care.", 200, False),
+    ("Free care for income up to 200% of the guidelines issued by the U.S. Department of Health & "
+     "Human Services.", 200, False),
+    ("we may be able to write off as much as 100% of your bill, based on the U.S. Department of "
+     "Health and Human Services poverty guidelines.", 100, False),  # UK King's Daughters (180009)
+    ("free care up to 200% of the income eligibility limits (Federal Poverty Guidelines)", 200, False),
+    # An abbreviation's period ends no sentence before the poverty words.
+    ("Free care up to 200% of the income eligibility levels set by the U.S. Department of Health "
+     "and Human Services poverty guidelines.", 200, False),
+    ("Free care up to 200% of the income eligibility limits, i.e. the Federal Poverty Guidelines.",
+     200, False),
+    ("A 100% discount is available to individuals and families with annual incomes at or below "
+     "200% of the FPG.", 200, False),
+    ("the Medicaid income limit of 133% of the federal poverty guidelines", 133, False),
+    ("free care at or below 250% of the State's poverty guidelines", 250, False),
+    ("at or below 400% of the FPL; patients must first apply for Medicaid", 400, False),
+    ("income up to 200% of the poverty guidelines; patients eligible under the Maryland "
+     "Department of Health programs", 200, False),
+    # Agencies that are not an income measure of their own: California's HCAI, New Jersey's
+    # Health Care for the Uninsured.
+    ("Free care for income up to 400% of the guidelines published by the California Department of "
+     "Health Care Access and Information", 400, False),
+    ("income up to 200% of the New Jersey Department of Health Care for the Uninsured Income "
+     "Criteria", 200, False),
+    # No benchmark named, or one only after the sentence ends.
+    ("| less than or equal to 200% | 0%", 200, False),
+    ("Up to 200% Eligible for Medicaid Rates", 200, False),
+    ("Patients may be eligible for free care with income up to 100% of the income limits shown in "
+     "Attachment A.", 100, False),
+    ("Uninsured patients pay 100% of the Medicaid rate.", 100, False),
+    ("Medical debt that exceeds 25% of that family's annual income. MDH Limits refers to the "
+     "income eligibility limits established by the Maryland Department of Health.", 25, False),
+]  # fmt: skip
+
+
+@pytest.mark.parametrize(("quote", "value", "expected"), _OTHER_BASIS_CASES)
+def test_percent_of_other_basis(quote, value, expected):
+    from waive.atlas.verify import percent_of_other_basis
+
+    assert percent_of_other_basis(quote, Decimal(value)) is expected
+
+
+def test_verify_sheet_rejects_an_income_limit_on_another_benchmark():
+    from waive.atlas.verify import OTHER_BASIS_REASON
+
+    # UM Capital Region (210003), UM Baltimore Washington (210043), UM Upper Chesapeake (210049)
+    # and UM Rehabilitation & Orthopaedic Institute (210058) published free care up to 200% FPL
+    # from this sentence (task 7.17).
+    free, tiers = "eligibility.free_care_max_fpl", "eligibility.discount_tiers"
+    docs = {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT + "\n" + UMMS_FREE_CARE + "\n"}
+    assert (free, OTHER_BASIS_REASON) in verify_sheet(
+        with_free_limit(200, UMMS_FREE_CARE), docs
+    ).rejected
+    # A tier's top or its bottom on such a benchmark is rejected the same way.
+    for quote, band in (
+        (
+            "Those with income between 100% and 200% of the income eligibility limits established "
+            "by the Maryland Department of Health receive a 75% discount.",
+            (100, 200, 75),
+        ),
+        (
+            "Those above 200% of the income eligibility limits established by the Maryland "
+            "Department of Health and up to 300% of the Federal Poverty Level receive a 50% "
+            "discount.",
+            (200, 300, 50),
+        ),
+    ):
+        docs = {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT + "\n" + quote + "\n"}
+        assert (tiers, OTHER_BASIS_REASON) in verify_sheet(
+            with_tiers_quote(quote, [band]), docs
+        ).rejected, quote
+    # The poverty level as its publisher names it stays a free-care limit.
+    fpl = (
+        "Patients with income up to 200% of the Federal Poverty Guidelines published by the "
+        "Department of Health and Human Services receive free care."
+    )
+    docs = {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT + "\n" + fpl + "\n"}
+    assert not any(p == free for p, _ in verify_sheet(with_free_limit(200, fpl), docs).rejected)
+
+
+MEDSTAR_RESIDENCY = (
+    "All patients must provide proof of residency within Maryland, northern Virginia, or within "
+    "the District of Columbia."
+)
+MEDSTAR_PROOF = (
+    "Proof of residency documentation would include gas and electric bills, pay stubs, bank "
+    "statements, rent statements, etc. Patient must first apply for Medical Assistance, Medical "
+    "Assistance Emergency Services, and other coverage program(s) eligibility."
+)
+# (stored states, quote, None when the quote names each one as a whole state, "missing" when it
+# does not, "both" when it says residents of other states qualify too)
+_RESIDENCY_CASES = [
+    # MedStar §3.1.1 (210015, 210018, 210024, 210034, 210062, task 7.17): only northern Virginia.
+    (["MD", "VA", "DC"], MEDSTAR_RESIDENCY, "missing"),
+    (["MD", "DC"], MEDSTAR_RESIDENCY, None),
+    (["MD", "DC", "VA"], "for patients who reside within Maryland, the District of \nColumbia, or "
+     "northern Virginia.", "missing"),
+    (["MD", "VA", "DC"], MEDSTAR_PROOF, "missing"),  # names no state at all
+    (["MD"], "Patients must provide proof of residency to qualify.", "missing"),
+    # A region word before the name: a part of the state.
+    (["ND", "MT"], "residing in North Dakota or Northeastern Montana and have received care at a "
+     "Trinity Health facility", "missing"),
+    (["WV"], "Patients who reside in southern West Virginia are eligible.", "missing"),
+    (["NC"], "residents of western North Carolina", "missing"),
+    (["NY"], "residents of Western New York", "missing"),
+    (["TX"], "residents of Central Texas counties", "missing"),
+    (["TN"], "“Community” means the twelve (13) Counties of Middle Tennessee which include: "
+     "Cannon, Davidson", "missing"),
+    # Whole states, longest name first: West Virginia is not Virginia.
+    (["NC", "SC", "GA", "AL"], "Uninsured patients who reside in North Carolina, South Carolina, "
+     "Georgia, or Alabama", None),
+    (["WV"], "Patients who reside in West Virginia are eligible.", None),
+    (["VA"], "Patients who reside in West Virginia are eligible.", "missing"),
+    (["VA", "WV"], "Financial assistance is open to residents of Virginia or West Virginia.", None),
+    (["NY"], "residents of New York State", None),
+    (["TX"], "residents of the State of Texas", None),
+    (["CA"], "Was the patient a resident of California at the time of service?", None),
+    (["MN"], "who are residents of Minnesota", None),
+    (["MO", "KS"], "residents of Missouri and Kansas", None),
+    (["OR", "WA"], "Financial assistance is offered to eligible residents of Oregon or Washington.",
+     None),
+    (["IL"], "Illinois Resident means a Patient who lives in Illinois and intends to continue "
+     "living in Illinois indefinitely.", None),
+    (["IL"], "Illinois residents. Hospital charges", None),
+    (["NJ"], "Proof of New Jersey residence as of the date of service", None),
+    (["MI", "OH"], "Having a personal residence within the state of Michigan or Ohio, within "
+     "approximately 25 miles of a McLaren HealthCare facility.", None),
+    (["KY"], "Service area includes the State of Kentucky. CCMH reserves the right to add to or "
+     "subtract from the list in its service area.", None),
+    (["MD"], "All residents of Meritus’ service area, and all Maryland residents, will be "
+     "considered for financial assistance", None),
+    # "non-New Jersey" still names New Jersey (RWJBarnabas, 310075, 310041).
+    (["NJ"], "Charity Care may be available to non-New Jersey residents, requiring immediate "
+     "medical attention", None),
+    (["NJ"], "Residency Criteria Charity Care may be available to non-New Jersey residents, "
+     "requiring immediate medical attention for an emergency medical condition.", None),
+    # A footnote mark glued to the name does not hide it (fap-d9c5de9c9fa6dd89).
+    (["IL", "WI", "NC", "SC", "GA", "AL"], "Uninsured patients who reside in Illinois, Wisconsin1, "
+     "North Carolina, South Carolina, Georgia or Alabama.", None),
+    # Paired North and South name both.
+    (["NC", "SC"], "residents of North and South Carolina", None),
+    (["ND", "SD"], "residents of North or South Dakota", None),
+    # A place word after the name: a county, a city, a beach, a region, a campus, a facility.
+    (["WA"], "Patients who live in Washington County are eligible for assistance.", "missing"),
+    (["KS"], "Patients who live in Kansas City are eligible for assistance.", "missing"),
+    (["VA"], "residents of the City of Virginia Beach", "missing"),
+    (["LA"], "Verification of Louisiana Region 5 Residency is required for any financial "
+     "assistance request.", "missing"),
+    (["CA"], "have established residency within the CommonSpirit Entity Service Area as defined "
+     "by the most recent Hospital Facility CHNA, unless the visit is urgent or emergent or occurs "
+     "within a California Hospital Facility", "missing"),
+    (["WI"], "“Community” means any county in Wisconsin that has an Ascension WI facility or "
+     "clinic", "missing"),
+    # ... and a place word before it.
+    (["MO"], "You live in Kansas City, Missouri, or Jackson County, Missouri", "missing"),
+    (["MO"], "The applicant must currently reside, with the intent to stay, in the City of Kansas "
+     "City, Missouri or Jackson County, Missouri.", "missing"),
+    (["GA"], "reside in Grady, Mitchell, Brooks or Thomas County, Georgia, or reside in a county "
+     "in Georgia which does not include a hospital", "missing"),
+    (["NE"], "for patients residing in Richardson County, Nebraska and for patients with "
+     "established long term primary care", "missing"),
+    (["WI"], "Services provided at all Vernon Health, Inc. Hospital and Clinics located in Vernon "
+     "and Crawford Counties, Wisconsin.", "missing"),
+    (["OR", "WA"], "You must be a resident of the state of Oregon or bordering county in the state "
+     "of Washington (Benton, Clark)", "missing"),
+    (["OR"], "You must be a resident of the state of Oregon or bordering county in the state of "
+     "Washington (Benton, Clark)", None),
+    (["VT", "NH"], "the patient/guarantor must be a resident of the State of Vermont, or Sullivan "
+     "or Cheshire Counties in New Hampshire.", "missing"),
+    (["DE", "PA", "MD", "NJ"], "The Financial Assistance Policy applies to residents living "
+     "within ChristianaCare’s primary service areas in Delaware, Pennsylvania, Maryland and New "
+     "Jersey", "missing"),
+    # A beach, a region or a panhandle before the name locates a town or a part of the state.
+    (["VA"], "residents of the City of Virginia Beach, Virginia", "missing"),
+    (["FL"], "Patients who live in Palm Beach, Florida are eligible.", "missing"),
+    (["CA"], "Patients who live in Long Beach, California are eligible.", "missing"),
+    (["WV"], "residents of the northern panhandle of West Virginia", "missing"),
+    (["OH"], "patients who live in our service region in Ohio", "missing"),
+    (["FL"], "Florida residents, including those in Palm Beach, Florida, qualify.", None),
+    (["NC"], "Care at a facility in North Carolina is open to North Carolina residents.", None),
+    # An empty list would turn every household away.
+    ([], "Patients who reside in Maryland are eligible.", "empty"),
+    # One whole mention is enough, whatever place names follow (Phoebe Putney's "which county").
+    (["GA"], "Georgia residents who are existing patients of PPG physicians will be deemed to have "
+     "met the residency requirement regardless of which county in Georgia they currently reside.",
+     None),
+    (["KS"], "Residents of Kansas, including Kansas City, qualify for assistance.", None),
+    (["VA"], "Virginia residents, including residents of Virginia Beach, qualify.", None),
+    (["WA"], "Washington residents, including those in Washington County, qualify.", None),
+    # Washington, D.C. is the District, not Washington; a county's own state in parentheses.
+    (["DC"], "residents of Washington, D.C. and its suburbs", None),
+    (["WA"], "residents of Washington, D.C. and its suburbs", "missing"),
+    (["DC"], "residents of Washington, DC and its suburbs", None),
+    (["MD", "DC", "VA"], "Residents of Maryland, DC or Virginia qualify for assistance.", None),
+    (["VT", "WA", "NY", "MA"], "be a Vermont resident as defined in the \"Definitions\" section of "
+     "this policy or a resident of the following counties located outside of Vermont Rensselaer "
+     "(NY), Washington (NY) and Berkshire (MA).", "missing"),
+    (["VT"], "be a Vermont resident as defined in the \"Definitions\" section of this policy or a "
+     "resident of the following counties located outside of Vermont Rensselaer (NY), Washington "
+     "(NY) and Berkshire (MA).", None),
+    # The counties' own states in parentheses are no whole states either.
+    (["VT", "NY", "MA"], "be a Vermont resident as defined in the \"Definitions\" section of "
+     "this policy or a resident of the following counties located outside of Vermont Rensselaer "
+     "(NY), Washington (NY) and Berkshire (MA).", "missing"),
+    (["KS", "MO"], "residents of Kansas (KS) and Missouri (MO)", None),
+    (["VT"], "Vermont residents must sign the Declaration of Residency (VT)", None),
+    # Postal codes count only as upper-case tokens in mixed-case text, with the same guards.
+    (["NJ"], "Must be a resident of the State of NJ or the crime had to occur in this State.", None),
+    (["IN"], "Patients must live IN the service area.", "missing"),
+    # In an all-caps quote every word is upper case, so no upper-case token is a postal code
+    # there: this "MD" is a doctor.
+    (["MD"], "PATIENTS REFERRED BY THEIR MD QUALIFY FOR ASSISTANCE", "missing"),
+    (["MD"], "patient must reside in Cecil County, MD or one of the following surrounding "
+     "counties to be eligible for charity:", "missing"),
+    (["SC"], "Horry County, Lancaster County, and York County, SC.", "missing"),
+    (["NH"], "Charity care is only available to residents of Southern NH Health’s primary and "
+     "secondary service areas.", "missing"),
+    (["NH", "VT"], "Live within UCVH’s catchment area which includes all of NH and VT and Oxford "
+     "County in ME.", None),
+    (["ME", "NH", "VT"], "The patient lives within our catchment area which includes all of NH "
+     "and VT and Oxford County in Maine.", "missing"),
+    # Residents of other states qualify too, so a list of states would turn them away (ECU, Novant).
+    (["MN"], "Minnesota residents and non-Minnesota residents are eligible to apply.", "both"),
+    (["ME"], "Financial assistance for Emergency Care is available to Maine Residents and "
+     "non-Maine residents", "both"),
+    (["NC"], "Additionally, this policy applies to North Carolina and non-North Carolina residents "
+     "in accordance with their state's FPL", "both"),
+    (["NC"], "All North Carolina residents and non-North Carolina residents within a Novant "
+     "Health Service Area (see attached) are eligible to apply", "both"),
+    # Only a listed state's "and non-" residents count: Maine's are not New Hampshire's.
+    (["NH"], "New Hampshire residents qualify. Maine residents and non-Maine residents may apply.",
+     None),
+    (["NC"], "The applicant must be a North Carolina resident (the criteria for determining "
+     "residency is attached as Appendix A to this policy);", None),
+]  # fmt: skip
+
+
+@pytest.mark.parametrize(("value", "quote", "expected"), _RESIDENCY_CASES)
+def test_residency_problem(value, quote, expected):
+    from waive.atlas.verify import (
+        RESIDENCY_BOTH_REASON,
+        RESIDENCY_EMPTY_REASON,
+        RESIDENCY_REASON,
+        residency_problem,
+    )
+
+    reasons = {
+        None: None,
+        "missing": RESIDENCY_REASON,
+        "both": RESIDENCY_BOTH_REASON,
+        "empty": RESIDENCY_EMPTY_REASON,
+    }
+    assert RESIDENCY_EMPTY_REASON == "the residency list names no state"
+    assert residency_problem(value, quote) == reasons[expected]
+
+
+def test_residency_problem_reads_state_codes_in_any_case():
+    from waive.atlas.verify import RESIDENCY_REASON, residency_problem
+
+    assert residency_problem(["md", "dc"], MEDSTAR_RESIDENCY) is None
+    assert residency_problem(["md", "va", "dc"], MEDSTAR_RESIDENCY) == RESIDENCY_REASON
+
+
+def test_verify_sheet_rejects_residency_the_quote_does_not_name_as_whole_states():
+    from waive.atlas.verify import RESIDENCY_BOTH_REASON, RESIDENCY_REASON, prune_lists
+
+    path = "eligibility.residency"
+    docs = {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT + "\n" + MEDSTAR_RESIDENCY + "\n"}
+    # MedStar Southern Maryland (210062) published [MD, VA, DC]; Richmond and Norfolk residents
+    # passed the residency step under the bare VA.
+    sheet = with_list(path, ["MD", "VA", "DC"], MEDSTAR_RESIDENCY)
+    report = verify_sheet(sheet, docs)
+    assert report.rejected == [(path, RESIDENCY_REASON)]
+    # The field is rejected, never pruned to [MD, DC]: that would turn northern Virginia away.
+    pruned, notes = prune_lists(sheet, docs)
+    assert pruned.eligibility.residency.value == ["MD", "VA", "DC"] and notes == []
+    assert verify_sheet(with_list(path, ["MD", "DC"], MEDSTAR_RESIDENCY), docs).ok
+    both = "North Carolina residents and non-North Carolina residents are eligible to apply."
+    docs = {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT + "\n" + both + "\n"}
+    assert verify_sheet(with_list(path, ["NC"], both), docs).rejected == [
+        (path, RESIDENCY_BOTH_REASON)
+    ]
 
 
 def with_list(path, value, quote):
@@ -1603,3 +2298,883 @@ def test_assistance_that_may_reach_up_to_100_percent_is_a_limit_not_free_care():
         assert not any(
             p == free for p, _ in verify_sheet(with_free_limit(value, quote), docs).rejected
         ), quote
+
+
+# Discount tables the publication audit (2026-10-24) found misread: rules R1', R2, R9, R10 and
+# R11. A quote named for a hospital is the one it published, or its policy's own text.
+CECIL_HARDSHIP = (
+    "Patients with household income between 401-450% of FPL and with a financial hardship will "
+    "receive a 40% adjustment. Patients with household income between 451-500% will receive a 35% "
+    "adjustment."
+)
+MASS_HEALTH_PARTIAL = (
+    "Patients whose MAGI Household Income or Medical Hardship Family Countable Income is between "
+    "150.1% and 300% of the FPL receive a 20% discount."
+)
+UNITYPOINT_AGB_TABLE = (
+    "2.3 Hospital bills will be further reduced by the following amounts for patients in \n"
+    "each FPIG category below:   \n0-200% of FPIG :  100% discount off AGB \n"
+    "201-225% of FPIG :  65% discount off AGB \n226-250% of FPIG :  45% discount off AGB \n"
+    "251-300% of FPIG :  25% discount off AGB \n301-400% of FPIG :  5% discount off AGB"
+)
+LAKEWOOD_TIERS = (
+    "B. 0-100% FPL – patient service fee\n1. Outpatient office visit $5\n"
+    "2. Emergency Department $10\n3. Inpatient 100% financial assistance\n"
+    "C. 101-300% FPL – patient service fee\n1. Outpatient office visit $25\n"
+    "2. Emergency Department $50\n3. Inpatient $100 per inpatient day\n"
+    "D. 301-400% FPL: Services will be discounted by the current Uninsured Discount amount, with "
+    "an additional 25% discount on the remaining balance"
+)
+HENRY_FORD_INSURED_TABLE = (
+    "Household Income Discount Off of Balance Due\n351% - 400% of the FPL 25%\n"
+    "301% - 350% of the FPL 50%\n251% - 300% of the FPL 75%\n<250% of the FPL 100%"
+)
+HENRY_FORD_TABLES = (
+    "Sliding Scale Discount Tables: \nUninsured Patients: \nFor qualifying uninsured patients "
+    "with incomes less than 400% of FPL, patient responsibility is adjusted to \nthe percentage of "
+    "the Medicare allowable amount based on the table below: \n  Household Income % of Medicare "
+    "Rate \n351% - 400% of the FPL 91% \n301% - 350% of the FPL 61% \n251% - 300% of the FPL 30% "
+    "\n<250% of the FPL 0% \nQualifying uninsured patients with incomes below 250% are given a "
+    "100% discount \nInsured Patients: \nFor qualifying insured patients with incomes less than "
+    "400% of FPL, patient responsibility is discounted \nbased on the table below \n"
+    + HENRY_FORD_INSURED_TABLE
+)
+HENRY_FORD_BANDS = [(250, 300, 75), (300, 350, 50), (350, 400, 25)]
+HEART_OF_TEXAS_TABLE = (
+    "Family Income as % of FPG Discount Patient LIability Up to 300% of FPG 100% 0% Over 300% & "
+    "up to 350% 75% 25%"
+)
+HEART_OF_TEXAS_TERMS = (
+    "2. Patients whose family income is above 300% but not more than 350% of the FPL are eligible "
+    "to receive services at amounts no greater than the amounts generally billed to (received by "
+    "the hospital for) commercially insured [or Medicare] patients; Current levels of discount and "
+    "patient liability are: " + HEART_OF_TEXAS_TABLE
+)
+ALEXIAN_TABLE = (
+    "(FPL – Federal Poverty Level Income) Uninsured Patient Sliding Scale % Insured Patient "
+    "Sliding Scale % 0% - 250% FPL 100% 0% - 250% FPL 100% 251% - 300% FPL 95% 251% - 300% FPL "
+    "95% 301% - 400% FPL 90% 301% - 400% FPL 90% 401% - 600% FPL 85%"
+)
+MEDSTAR_REDUCED_COST_TABLE = (
+    "Financial Assistance Level  \nFree / Reduced-Cost Care  \n\nAdjusted Percentage of  \n"
+    "Poverty Level  \n\nHSCRC-Regulated  \nServices  \nWashington Hospitals,  \n"
+    "Hospital-Based Physician  \nPractices, and non-HSCRC  \nRegulated Services  \n"
+    "0% to 200% 100% 100%  \n201% to 250% 75% % 80%  \n251% to 300% 60% 60%  \n"
+    "301% to 350%   40%  \n351% to 400%    20%"
+)
+MEDSTAR_HSCRC_COLUMN = [(200, 250, 75), (250, 300, 60), (300, 350, 40), (350, 400, 20)]
+MEDSTAR_WASHINGTON_COLUMN = [(200, 250, 80), (250, 300, 60), (300, 350, 40), (350, 400, 20)]
+TUFTS_SERVICE_TABLE = (
+    "Family Size\n\n100% FPL\nUp to\n150% FPL\nUp to\n300% FPL\nGreater than\n301% FPL\n"
+    "1 $13,596 $20,388 $40,776 $40,777\n2 $18,312 $27,468 $54,936 $54,937\n"
+    "3 $23,040 $34,548 $69,096 $69,097\n4 $27,756 $41,628 $83,256 $83,257\n"
+    "5 $32,472 $48,708 $97,416 $97,417\n6 $37,200 $55,788 $111,576 $111,577\n"
+    "7 $41,916 $62,868 $125,736 $125,737\n8 $46,632 $69,948 $139,896 $139,897\n"
+    "Each Person > 8 $4,728 $7,080 $14,160 $14,161\n\nTM Lowell General Hospital\n"
+    "Inpatient Discount\n100% 63.28% 30%\nTM Lowell General Hospital\nOutpatient Discount \n"
+    "70.54%\n\nTM Melrose Wakefield Hospital\nInpatient Discount\n100% 36.84% 30%\n"
+    "TM Melrose Wakefield Hospital\nOutpatient Discount\n65.91%\n\n"
+    "TM Tufts Medical Center Hospital\nInpatient Discount\n100% 49.50% 30%\n"
+    "TM Tufts Medical Center Hospital\nOutpatient Discount\n69.50%"
+)
+BERKSHIRE_SERVICE_TABLE = (
+    "Family Income as % of FPG\nBerkshire Medical Center\nFairview Hospital\nInpatient\n"
+    "Outpatient\nInpatient\nOutpatient\n0 – 400\n46.07%\n63.14%\n48.58%\n53.17%"
+)
+ONE_TABLE_FOR_BOTH = (
+    "Inpatient and outpatient services will be discounted by the following percentages: "
+    "201-250% 80%"
+)
+GRANDVIEW_SPANS = (
+    "Grandview Hospital 16% 95% 89% 84% 84% || Federal Poverty Level 251-300% 301-350% 351-400% "
+    "Catastrophic"
+)
+UVM_UNINSURED = (
+    "Eligible uninsured patients with modified adjusted gross household income between 250% and "
+    "400% of the FPLG shall receive an additional 40% discount from the amount generally billed "
+    "for the services received."
+)
+UVM_AWARDS = (
+    UVM_UNINSURED + "\n• Eligible patients with insurance or other coverage for the services "
+    "delivered and with household income between 250% and 400% of the FPLG shall receive a n "
+    "additional 40% discount on the patient’s out-of-pocket costs, after insurance \npayments or "
+    "payments from other coverage."
+)
+DARTMOUTH_INSURED_TIERS = (
+    "For insured patients whose household income is: •  251%-300% of FPL, the discount will be 75% "
+    "•  301%-350% of FPL, the discount will be 50% •  351%-400% of FPL, the discount will be 40%"
+)
+DARTMOUTH_AWARDS = (
+    "If an individual is approved for financial assistance, the amount of such assistance to be "
+    "\nprovided for applicable care will be as follows: \nInsured patients: Insured patients shall "
+    "have a discount applied to their out-of-pocket \nexpenses. \n \nFor insured patients whose "
+    "household income is at or below 250% of FPL, we will \nwaive (i.e., 100% discount) all "
+    "out-of-pocket costs for emergency and medically \nnecessary services rendered (i.e., the care "
+    "is free). For insured patients whose household \nincome is: \n•  251%-300% of FPL, the "
+    "discount will be 75% \n•  301%-350% of FPL, the discount will be 50% \n•  351%-400% of FPL, "
+    "the discount will be 40% \n \nUninsured patients: Uninsured patients who are eligible for "
+    "financial assistance shall \nhave a discount applied to the amount generally billed for the "
+    "emergency and medically \nnecessary services rendered. \n \nFor uninsured patients whose "
+    "household income is at or below 250% of FPL, we will \nwaive (i.e., 100% discount) the amount "
+    "generally billed for emergency and medically \nnecessary services rendered (i.e., the care is "
+    "free). For uninsured patients whose household \nincome is: \n•  251%-300% of FPL, the "
+    "discount will be 75% \n•   301%-350% of FPL, the discount will be 50% \n• 351%-400% of FPL, "
+    "the discount will be 40% \n \nIn catastrophic situations, for uninsured or insured patients: "
+    "If the total amount owed for emergency \nand medically necessary services rendered exceeds "
+    "20% of the household income, then the amount \nowed shall be reduced so that it is equal to "
+    "20% of the patient’s household’s \nincome."
+)
+DARTMOUTH_BANDS = [(250, 300, 75), (300, 350, 50), (350, 400, 40)]
+# The same policy with the uninsured 351-400% band at another discount, or left out.
+_DARTMOUTH_LAST_UNINSURED = "• 351%-400% of FPL, the discount will be 40% \n \nIn catastrophic"
+DARTMOUTH_UNINSURED_30 = DARTMOUTH_AWARDS.replace(
+    _DARTMOUTH_LAST_UNINSURED, _DARTMOUTH_LAST_UNINSURED.replace("40%", "30%")
+)
+DARTMOUTH_UNINSURED_SHORT = DARTMOUTH_AWARDS.replace(
+    _DARTMOUTH_LAST_UNINSURED, "\n \nIn catastrophic"
+)
+
+
+def with_tiers_in(quote, bands, state):
+    sheet = with_tiers_quote(quote, bands)
+    return sheet.model_copy(update={"hospital": sheet.hospital.model_copy(update={"state": state})})
+
+
+_HARDSHIP_TIER_CASES = [
+    # Union Hospital of Cecil County (210032): the 401-450% band needs a financial hardship
+    # (Maryland's reduced-cost care for medical debt); both bands were published as income bands.
+    (CECIL_HARDSHIP, [(400, 450, 40), (450, 500, 35)], True),
+    ("Patients with a medical hardship and income between 301% and 500% of the FPL receive a 50% "
+     "discount.", [(300, 500, 50)], True),
+    ("Patients with medical debt above 25% of family income and income between 401% and 500% of "
+     "the FPL receive a 50% discount.", [(400, 500, 50)], True),
+    ("Patients with catastrophic medical expenses and income between 401% and 500% of the FPL "
+     "receive a 30% discount.", [(400, 500, 30)], True),
+    # MassHealth's "Medical Hardship Family Countable Income" is an income measure, no condition.
+    (MASS_HEALTH_PARTIAL, [(150, 300, 20)], False),
+    (UNITYPOINT_AGB_TABLE, [(200, 225, 65), (225, 250, 45), (250, 300, 25), (300, 400, 5)], False),
+    # The hardship sentence states none of the tiers' discounts.
+    ("Patients with a financial hardship may apply for further help. Patients between 201% and "
+     "300% of the FPL receive a 50% discount.", [(200, 300, 50)], False),
+    # UCHealth Grandview (060130): the spans are two rows of one table, so its "Catastrophic"
+    # column header conditions none of the income tiers.
+    (GRANDVIEW_SPANS, [(250, 300, 95), (300, 350, 89), (350, 400, 84)], False),
+]  # fmt: skip
+
+
+@pytest.mark.parametrize(("quote", "bands", "expected"), _HARDSHIP_TIER_CASES)
+def test_tiers_need_hardship(quote, bands, expected):
+    from waive.atlas.verify import tiers_need_hardship
+
+    assert tiers_need_hardship(quote, tiers_of(bands)) is expected
+
+
+_ADDITIONAL_TIER_CASES = [
+    # University Health Lakewood (260102): the 301-400% band gets the uninsured discount first and
+    # 25% more on what is left, so 25 is not that band's discount.
+    (LAKEWOOD_TIERS, [(300, 400, 25)], True),
+    ("Patients between 301% and 400% of the FPL receive an additional 20 percent reduction after "
+     "the self-pay discount.", [(300, 400, 20)], True),
+    ("Patients between 201% and 300% of FPL receive a 50% discount. Add $5,680 for each "
+     "additional person.", [(200, 300, 50)], False),
+    # The added discount is not a stored tier's.
+    ("Patients between 201% and 300% of the FPL receive a 75% discount, and an additional 10% "
+     "discount for prompt payment.", [(200, 300, 75)], False),
+    # UVM Health (470001, 470003) bases every uninsured award on the amount generally billed and
+    # every insured one on the patient's out-of-pocket costs, so 40 is the band's own discount,
+    # read like UnityPoint's "65% discount off AGB".
+    (UVM_UNINSURED, [(250, 400, 40)], False),
+    (UVM_AWARDS, [(250, 400, 40)], False),
+    ("Patients between 201% and 300% of the FPL receive an additional 20% off AGB.",
+     [(200, 300, 20)], False),
+    ("Patients between 201% and 300% of the FPL receive an additional 20% discount off the "
+     "self-pay rate.", [(200, 300, 20)], True),
+]  # fmt: skip
+
+
+@pytest.mark.parametrize(("quote", "bands", "expected"), _ADDITIONAL_TIER_CASES)
+def test_tier_is_additional(quote, bands, expected):
+    from waive.atlas.verify import tier_is_additional
+
+    assert tier_is_additional(quote, tiers_of(bands)) is expected
+
+
+_INSURED_TABLE_CASES = [
+    # Henry Ford (230047, 230053, 230092, 230302): the "Discount Off of Balance Due" table follows
+    # "Insured Patients: For qualifying insured patients"; uninsured patients have their own table.
+    (HENRY_FORD_INSURED_TABLE, HENRY_FORD_TABLES, True),
+    (HENRY_FORD_INSURED_TABLE, "Insured Patients:\n" + HENRY_FORD_INSURED_TABLE, True),
+    (HENRY_FORD_INSURED_TABLE, "Financial assistance is available to both uninsured and insured "
+     "patients. Discounts are based on the table below: \n" + HENRY_FORD_INSURED_TABLE, False),
+    # Heart of Texas (451348): the AGB clause's "commercially insured patients" introduces no table.
+    (HEART_OF_TEXAS_TABLE, HEART_OF_TEXAS_TERMS, False),
+    # Alexian Brothers (140258): the quote has an uninsured column of its own.
+    (ALEXIAN_TABLE, "The sliding scale discount is as follows: " + ALEXIAN_TABLE, False),
+    # The quote is not in the document: nothing comes before it.
+    (HENRY_FORD_INSURED_TABLE, "Insured Patients: For qualifying insured patients the table "
+     "below applies.", False),
+    # Dartmouth Health (301304, 301305, 471302): the quote is the insured paragraph.
+    (DARTMOUTH_INSURED_TIERS, DARTMOUTH_AWARDS, True),
+    # An "Insured Patients:" heading before a table with an uninsured column of its own: the
+    # quote names both populations (Alexian Brothers' two-column table, 140258).
+    (ALEXIAN_TABLE, "Insured Patients:\n" + ALEXIAN_TABLE, False),
+    # The last population named before the table is uninsured patients, after an insured heading
+    # that leads nowhere.
+    (HENRY_FORD_INSURED_TABLE, "The discounts are below. Insured Patients: N/A. Uninsured "
+     "Patients:\n" + HENRY_FORD_INSURED_TABLE, False),
+    # A lead-in for both populations names no insured-only table, right after an insured heading
+    # too.
+    (HENRY_FORD_INSURED_TABLE, "For qualifying uninsured or insured patients the table below "
+     "applies:\n" + HENRY_FORD_INSURED_TABLE, False),
+    (HENRY_FORD_INSURED_TABLE, "Insured Patients. Uninsured & Insured Patients:\n"
+     + HENRY_FORD_INSURED_TABLE, False),
+]  # fmt: skip
+
+
+@pytest.mark.parametrize(("quote", "document", "expected"), _INSURED_TABLE_CASES)
+def test_insured_only_table(quote, document, expected):
+    from waive.atlas.verify import insured_only_table
+
+    assert insured_only_table(quote, document) is expected
+
+
+_SAME_TIERS_CASES = [
+    # Dartmouth Health's policy gives uninsured patients the insured patients' 75/50/40 for the
+    # same bands, so the insured paragraph's tiers are everyone's.
+    (DARTMOUTH_AWARDS, DARTMOUTH_BANDS, True),
+    # Henry Ford's uninsured patients pay a share of the Medicare rate instead.
+    (HENRY_FORD_TABLES, HENRY_FORD_BANDS, False),
+    (DARTMOUTH_UNINSURED_30, DARTMOUTH_BANDS, False),
+    (DARTMOUTH_UNINSURED_SHORT, DARTMOUTH_BANDS, False),
+    (DARTMOUTH_AWARDS, [], False),
+]
+
+
+@pytest.mark.parametrize(("document", "bands", "expected"), _SAME_TIERS_CASES)
+def test_uninsured_get_same_tiers(document, bands, expected):
+    from waive.atlas.verify import uninsured_get_same_tiers
+
+    assert DARTMOUTH_UNINSURED_30 != DARTMOUTH_AWARDS != DARTMOUTH_UNINSURED_SHORT
+    assert uninsured_get_same_tiers(document, tiers_of(bands)) is expected
+
+
+_REGULATED_COLUMN_CASES = [
+    # MedStar Montgomery (210018) and MedStar Southern Maryland (210062) published 80 for the
+    # 201-250% band, read from the Washington hospitals' column; a Maryland hospital's is 75.
+    (MEDSTAR_REDUCED_COST_TABLE, "MD", MEDSTAR_WASHINGTON_COLUMN, True),
+    (MEDSTAR_REDUCED_COST_TABLE, "MD", MEDSTAR_HSCRC_COLUMN, False),
+    # A Washington, D.C. hospital (MedStar Washington, 090011) reads the last column.
+    (MEDSTAR_REDUCED_COST_TABLE, "DC", MEDSTAR_WASHINGTON_COLUMN, False),
+    (MEDSTAR_REDUCED_COST_TABLE, "DC", MEDSTAR_HSCRC_COLUMN, True),
+    # Two columns without the HSCRC headers: no rule says which one is the hospital's.
+    ("201% to 250% 75% 80%", "MD", [(200, 250, 80)], False),
+]
+
+
+@pytest.mark.parametrize(("quote", "state", "bands", "expected"), _REGULATED_COLUMN_CASES)
+def test_wrong_regulated_column(quote, state, bands, expected):
+    from waive.atlas.verify import wrong_regulated_column
+
+    assert wrong_regulated_column(quote, state, tiers_of(bands)) is expected
+
+
+_SPLIT_BY_SERVICE_CASES = [
+    # Tufts Medical Center (220116) published 30% for 150-300%, one hospital's inpatient column;
+    # its outpatients get 69.50%. Berkshire Medical Center (220046) published 46.07%, its
+    # inpatient column; outpatients get 63.14%.
+    (TUFTS_SERVICE_TABLE, True),
+    (BERKSHIRE_SERVICE_TABLE, True),
+    ("Income In-patient: Out-patient 201-300% 50% 60%", True),
+    (ONE_TABLE_FOR_BOTH, False),
+    (LAKEWOOD_TIERS, False),
+]
+
+
+@pytest.mark.parametrize(("quote", "expected"), _SPLIT_BY_SERVICE_CASES)
+def test_tiers_split_by_service(quote, expected):
+    from waive.atlas.verify import tiers_split_by_service
+
+    assert tiers_split_by_service(quote) is expected
+
+
+_MISREAD_TIER_SHEETS = [
+    ("HARDSHIP_TIER_REASON", CECIL_HARDSHIP, [(400, 450, 40), (450, 500, 35)], "MD",
+     CECIL_HARDSHIP),
+    ("ADDITIONAL_TIER_REASON", LAKEWOOD_TIERS, [(300, 400, 25)], "MO", LAKEWOOD_TIERS),
+    ("INSURED_TABLE_REASON", HENRY_FORD_INSURED_TABLE, HENRY_FORD_BANDS, "MI", HENRY_FORD_TABLES),
+    ("INSURED_TABLE_REASON", DARTMOUTH_INSURED_TIERS, DARTMOUTH_BANDS, "NH",
+     DARTMOUTH_UNINSURED_30),
+    ("REGULATED_COLUMN_REASON", MEDSTAR_REDUCED_COST_TABLE, MEDSTAR_WASHINGTON_COLUMN, "MD",
+     MEDSTAR_REDUCED_COST_TABLE),
+    ("TIERS_SPLIT_REASON", TUFTS_SERVICE_TABLE, [(150, 300, 30)], "MA", TUFTS_SERVICE_TABLE),
+    ("TIERS_SPLIT_REASON", BERKSHIRE_SERVICE_TABLE, [(0, 400, "46.07")], "MA",
+     BERKSHIRE_SERVICE_TABLE),
+]  # fmt: skip
+
+
+@pytest.mark.parametrize(("reason", "quote", "bands", "state", "document"), _MISREAD_TIER_SHEETS)
+def test_verify_sheet_rejects_a_misread_discount_table(reason, quote, bands, state, document):
+    from waive.atlas import verify
+
+    docs = {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT + "\n" + document + "\n"}
+    report = verify_sheet(with_tiers_in(quote, bands, state), docs)
+    assert ("eligibility.discount_tiers", getattr(verify, reason)) in report.rejected
+
+
+_TIER_SHEETS_READ_RIGHT = [
+    (MEDSTAR_REDUCED_COST_TABLE, MEDSTAR_HSCRC_COLUMN, "MD", MEDSTAR_REDUCED_COST_TABLE),
+    (MEDSTAR_REDUCED_COST_TABLE, MEDSTAR_WASHINGTON_COLUMN, "DC", MEDSTAR_REDUCED_COST_TABLE),
+    (MASS_HEALTH_PARTIAL, [(150, 300, 20)], "MA", MASS_HEALTH_PARTIAL),
+    (ONE_TABLE_FOR_BOTH, [(200, 250, 80)], "ID", ONE_TABLE_FOR_BOTH),
+    (HENRY_FORD_INSURED_TABLE, HENRY_FORD_BANDS, "MI", "Financial assistance is available to both "
+     "uninsured and insured patients. Discounts are based on the table below: \n"
+     + HENRY_FORD_INSURED_TABLE),
+    (DARTMOUTH_INSURED_TIERS, DARTMOUTH_BANDS, "NH", DARTMOUTH_AWARDS),
+    (UVM_AWARDS, [(250, 400, 40)], "VT", UVM_AWARDS),
+    (GRANDVIEW_SPANS, [(250, 300, 95), (300, 350, 89), (350, 400, 84)], "CO", GRANDVIEW_SPANS),
+]  # fmt: skip
+
+
+@pytest.mark.parametrize(("quote", "bands", "state", "document"), _TIER_SHEETS_READ_RIGHT)
+def test_verify_sheet_keeps_a_discount_table_read_right(quote, bands, state, document):
+    docs = {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT + "\n" + document + "\n"}
+    report = verify_sheet(with_tiers_in(quote, bands, state), docs)
+    assert not [r for r in report.rejected if r[0] == "eligibility.discount_tiers"]
+
+
+# Novant Health (340085, 340158, 340190, 340195): uninsured patients get a 100% adjustment up to
+# 300%, and the insured patients' paragraph after it gives 100% below 200% and 75% and 50% above.
+NOVANT_INSURED_TABLE = (
+    "Income below 200% of FPL: 100% discount. Income between 200%-250% of FPL: 75% discount. "
+    "Income between 250%-300% FPL: 50% discount."
+)
+NOVANT_INSURED_PARAGRAPH = (
+    "Insured patients meeting the requirements above and any insured patients presumed to be "
+    "eligible to receive Financial Assistance under this Policy will obtain a discount on the "
+    "applicable patient responsibility (minus copays) as follows: " + NOVANT_INSURED_TABLE
+)
+NOVANT_AWARDS = (
+    "B. Financial Assistance. Uninsured Patients. Uninsured Patients meeting the requirements "
+    "above and any uninsured patients presumed to be eligible to receive Financial Assistance "
+    "under this Policy will obtain a 100% adjustment to any charges for services covered under "
+    "this Policy. Insured Patients. FOR NORTH CAROLINA RESIDENTS ONLY: " + NOVANT_INSURED_PARAGRAPH
+)
+NOVANT_BANDS = [(200, 250, 75), (250, 300, 50)]
+DARTMOUTH_INSURED_AWARDS = (
+    "For insured patients whose household income is at or below 250% of FPL, we will waive (i.e., "
+    "100% discount) all out-of-pocket costs for emergency and medically necessary services "
+    "rendered (i.e., the care is free). " + DARTMOUTH_INSURED_TIERS
+)
+
+
+def with_free_limit_and_tiers(value, free_quote, tiers_quote, bands, state):
+    sheet = with_tiers_in(tiers_quote, bands, state)
+    cited = sheet.eligibility.free_care_max_fpl.model_copy(
+        update={"value": Decimal(value), "quote": free_quote}
+    )
+    return sheet.model_copy(
+        update={"eligibility": sheet.eligibility.model_copy(update={"free_care_max_fpl": cited})}
+    )
+
+
+# Novant Brunswick (340158) quoted free care to 300% from the insured patients' table, where 300%
+# tops a 50% band; its siblings free care to 200% from the whole paragraph.
+_FREE_LIMITS_IN_AN_INSURED_TABLE = [
+    (300, NOVANT_INSURED_TABLE),
+    (200, NOVANT_INSURED_PARAGRAPH),
+    (200, "Income below 200% of FPL: 100% discount."),
+]
+
+
+@pytest.mark.parametrize(("value", "quote"), _FREE_LIMITS_IN_AN_INSURED_TABLE)
+def test_verify_sheet_rejects_free_care_quoted_from_a_table_for_insured_patients_only(value, quote):
+    from waive.atlas.verify import INSURED_TABLE_REASON
+
+    docs = {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT + "\n" + NOVANT_AWARDS + "\n"}
+    sheet = with_free_limit_and_tiers(value, quote, NOVANT_INSURED_PARAGRAPH, NOVANT_BANDS, "NC")
+    report = verify_sheet(sheet, docs)
+    assert ("eligibility.discount_tiers", INSURED_TABLE_REASON) in report.rejected
+    assert ("eligibility.free_care_max_fpl", INSURED_TABLE_REASON) in report.rejected
+
+
+_FREE_LIMITS_BESIDE_A_TABLE_READ_RIGHT = [
+    # A table for both populations: the free band in it is everyone's.
+    (200, "Income below 200% of FPL: 100% discount.", NOVANT_INSURED_TABLE,
+     "Financial assistance is available to both uninsured and insured patients, as follows: "
+     + NOVANT_INSURED_TABLE),
+    # Dartmouth Health (301304, 301305, 471302): uninsured patients get the insured patients' free
+    # band and tiers too.
+    (250, "For insured patients whose household income is at or below 250% of FPL, we will waive "
+     "(i.e., 100% discount) all out-of-pocket costs", DARTMOUTH_INSURED_AWARDS, DARTMOUTH_AWARDS),
+]  # fmt: skip
+
+
+@pytest.mark.parametrize(
+    ("value", "free_quote", "tiers_quote", "document"), _FREE_LIMITS_BESIDE_A_TABLE_READ_RIGHT
+)
+def test_verify_sheet_keeps_free_care_from_a_table_everyone_gets(
+    value, free_quote, tiers_quote, document
+):
+    docs = {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT + "\n" + document + "\n"}
+    bands = DARTMOUTH_BANDS if tiers_quote == DARTMOUTH_INSURED_AWARDS else NOVANT_BANDS
+    sheet = with_free_limit_and_tiers(value, free_quote, tiers_quote, bands, "NH")
+    report = verify_sheet(sheet, docs)
+    assert not [r for r in report.rejected if r[0].startswith("eligibility.")]
+
+
+def test_free_care_from_an_insured_table_in_another_document_is_not_rejected_for_it():
+    from waive.atlas.verify import INSURED_TABLE_REASON
+
+    docs = {
+        SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT + "\n" + NOVANT_AWARDS + "\n",
+        "fap-uninsured": "Uninsured patients: Income below 200% of FPL: 100% discount.",
+    }
+    sheet = with_free_limit_and_tiers(
+        200,
+        "Income below 200% of FPL: 100% discount.",
+        NOVANT_INSURED_PARAGRAPH,
+        NOVANT_BANDS,
+        "NC",
+    )
+    free = sheet.eligibility.free_care_max_fpl.model_copy(update={"source_id": "fap-uninsured"})
+    sheet = sheet.model_copy(
+        update={"eligibility": sheet.eligibility.model_copy(update={"free_care_max_fpl": free})}
+    )
+    report = verify_sheet(sheet, docs)
+    assert ("eligibility.discount_tiers", INSURED_TABLE_REASON) in report.rejected
+    assert not [r for r in report.rejected if r[0] == "eligibility.free_care_max_fpl"]
+
+
+# Free-care limits the publication audit (2026-10-24) found misread: rules R3' and R8'. A quote
+# named for a hospital is the one it published, or its policy's own text.
+LAKEWOOD_FREE_BAND = (
+    "0-100% FPL – patient service fee\n1. Outpatient office visit $5\n"
+    "2. Emergency Department $10\n3. Inpatient 100% financial assistance"
+)
+CAYUGA_NOMINAL = (
+    "A patient whose household income, as determined by the application income worksheet, is "
+    "equal to or less than 100% of the most recent Federal Poverty Guidelines qualifies for a "
+    "nominal payment limit as designated by major service category, the rest will be written off."
+)
+EMORY_FREE_LIMIT = (
+    "If Family Income of a patient not enrolled in Medicaid is less than \nor equal to 200% of the "
+    "Federal Poverty Guidelines, the patient will \nreceive 100% charity care adjustment for "
+    "Eligible Health Care \nServices (consistent with Indigent Care Trust Fund requirements)."
+)
+EMORY_AWARDS = (
+    "b. " + EMORY_FREE_LIMIT + "  \nc. If Family Income of a patient who is not enrolled in "
+    "Medicaid and \nis uninsured is at least 201 % but less than or equal to 350% of the \nFederal "
+    "Poverty Guidelines, the patient will receive 100% financial \nassistance for the patient’s "
+    "personal responsibility for Eligible \nHealth Care Services. \n3. Family Income must be "
+    "verified through either the Application Process or \nthe External Screening Process, as "
+    "further described below. \n6. NOTE: Uninsured patients whose Family Income is greater than "
+    "350% of \nthe U.S. Federal Poverty Guidelines may qualify for a 65% self-pay \ndiscount on "
+    "Gross Charges when payment arrangements are established \nwith Emory Healthcare."
+)
+ENLOE_FREE_LIMIT = "Families with income less than 150% of the Federal Poverty Level may be eligible for free care."
+ENLOE_HOSPITAL_CHARGES = (
+    "## Hospital Charges\n\nFinancially qualified families:\n\n*   " + ENLOE_FREE_LIMIT + "\n*   "
+    "Families with incomes between 151% and 300% of the Federal Poverty Level are eligible for "
+    "free care after a $100 per visit co-pay.\n*   Families with incomes between 301% and 400% of "
+    "the Federal Poverty Level are eligible for Medicare pricing or the self-pay discount of 55%, "
+    "whichever is less.\n"
+)
+LIMA_FREE_LIMIT = (
+    "offers emergency and other medically necessary hospital-level services free of charge if the "
+    "patient is a resident of Ohio and the patient’s income is at or below 100% of the Federal "
+    "Poverty Guidelines (the FPG)"
+)
+LIMA_AWARDS = (
+    "As a participant in the HCAP Program, LMHS " + LIMA_FREE_LIMIT + ". • General Financial "
+    "Assistance Policy In addition to HCAP, under LMHS’s Financial Assistance Policy, LMHS "
+    "provides financial assistance for emergency and other medically necessary care as a discount "
+    "from our gross hospital charges if the patient is a resident in the Hospital Service Area "
+    "and meets one of the following criteria as determined by the patient’s insurance status: "
+    "Insured vs. Uninsured o Insured. For those patients who have insurance and do not qualify "
+    "for HCAP but fall within 101-200% of the FPG, they will be eligible for a 100% discount on "
+    "any co-pay, co-insurance, and deductible after insurance. o Uninsured. For patients without "
+    "insurance, a discount of up to 100% will be extended to those whose family income is at or "
+    "below 200% of the FPG. Patients whose family income falls between 200% and 400% of the FPG "
+    "will receive a standard discount of 95%"
+)
+
+
+_FREE_BAND_FEE_CASES = [
+    # University Health Lakewood (260102) published free care to 100% from its 0-100% band, which
+    # still charges $5 an office visit and $10 in the emergency department.
+    (LAKEWOOD_FREE_BAND, True),
+    ("Patients at or below 100% of the FPL pay $5 per outpatient visit and nothing for inpatient "
+     "care.", True),
+    # Cayuga Medical Center (330307): at or below 100% the patient still owes a nominal payment.
+    (CAYUGA_NOMINAL, True),
+    ("Patients at or below 200% FPL receive free care; patient fees are waived.", False),
+    ("Patients at or below 100% of the FPL receive free care, but patient fees are not waived.",
+     True),
+    ("Patients at or below 200% of the FPL receive free care with no patient fees.", False),
+    ("For incomes up to 200% of the FPL, service fees will not be charged and care is free.",
+     False),
+    ("For patients with incomes below 200% of the FPL, BronxCare will waive all charges and no "
+     "nominal payment will be collected.", False),
+    ("For eligible individuals with incomes up to 200% of the FPL: charges waived, no nominal "
+     "payments due.", False),
+    ("Family gross income at 0 to 200% of FPL Full Financial Assistance; $0 is billable to the "
+     "patient.", False),
+    ("Patients at or below 200% of the FPL receive a 100% discount. Add $5,680 per person for "
+     "families larger than 8 people.", False),
+    # Advocate Lutheran General (140223) and Good Samaritan (140288): the dollar figure is an income.
+    ("Patients with household income at or below 300% FPL (~$47,880/yr single) qualify for full "
+     "financial assistance, meaning zero out-of-pocket cost", False),
+    ("Patients at or below 200% of the FPL, about $31,920 per year for one person, receive free "
+     "care.", False),
+    ("Patients at or below 200% of the FPL, $62,400 per calendar year for four, receive free care.",
+     False),
+    # A fee priced per period still charges: Exeter (300023) bills "$15.00 per 30 day period".
+    ("Patients at or below 100% of the FPL pay a $10 per month fee.", True),
+    ("Recurring (such as $15.00 per 30 day \nperiod Oncology/Radiation, Rehab, Sleep, Wound)", True),
+    # Lake Charles Memorial (190060): free care "subject to a minimal fee".
+    ("Patients whose gross family income does not exceed 201% of the current Federal Poverty "
+     "Guidelines (FPG) will qualify for full coverage of any hospital and/or physician charges, "
+     "subject to a minimal fee based on a sliding scale.", True),
+    # North Shore University (330106): "at no charge or at the nominal payment level" may charge.
+    ("Patients whose family income is at or below 100% of the FPG are eligible to receive "
+     "emergency or medically necessary services at no charge or at the nominal payment level "
+     "defined by the NYSDOH;", True),
+    # Linton Regional (351328): "Patients will not be required a nominal fee."
+    ("Patients will not be required a nominal fee.", False),
+    ("Patients at or below 200% of the FPL will not be charged a nominal fee.", False),
+    ("Patients at or below 200% of the FPL will not be charged any patient fees.", False),
+    # A clinic's copay with no amount is not caught (Mizell, 010007: hospital care is free).
+    ("If the patient's income is under 200% of the FPG, the patient is approved for financial "
+     "assistance at 100% with no patient financial responsibility except for any applicable "
+     "clinic visit copays.", False),
+]  # fmt: skip
+
+
+@pytest.mark.parametrize(("quote", "expected"), _FREE_BAND_FEE_CASES)
+def test_free_band_charges_patient(quote, expected):
+    from waive.atlas.verify import free_band_charges_patient
+
+    assert free_band_charges_patient(quote) is expected
+
+
+_FULL_HELP_ABOVE_CASES = [
+    # Emory (110069, and St Francis-Emory, 110129) published free care to 200% from clause b,
+    # while clause c of the same policy gives uninsured patients at 201%-350% 100% financial
+    # assistance.
+    (200, EMORY_AWARDS, True),
+    (250, EMORY_AWARDS, False),
+    (200, "Patients between 201% and 300% of the FPL receive a 100% discount.", True),
+    (100, "Uninsured patients between 101% and 200% of the FPL receive a 100% discount.", True),
+    # Enloe (050039): the 151%-300% band is free only after a $100 co-pay a visit.
+    (150, ENLOE_HOSPITAL_CHARGES, False),
+    # Lima Memorial (360009): the 101%-200% band waives an insured patient's co-pays only.
+    (100, LIMA_AWARDS, False),
+    # Decision B: "may ... up to 100%" is no free band.
+    (200, "Patients whose income is between 201% and 300% of the FPL may be eligible for up to a "
+     "100% discount.", False),
+    (200, "Patients between 201% and 300% of the FPL may receive up to 100% financial assistance.",
+     False),
+    (200, "Insured patients between 201% and 300% of the FPL receive a 100% discount.", False),
+    (200, "Non-insured patients between 201% and 300% of the FPL receive free care.", True),
+    (200, "Patients between 201% and 300% of the FPL receive a 100% discount on deductibles.",
+     False),
+    (200, "Patients between 201% and 300% of the FPL receive a 100% discount after a $25 per "
+     "visit fee.", False),
+    (200, "Income 0-200% of FPL: 100% discount. Income 201-300% of FPL: 75% discount. Income "
+     "301-400% of FPL: 50% discount.", False),
+    # A band that starts well above the limit is no free band next to it, though a flattened
+    # table header puts a full-help column right after it: SVMC (470012), Hampton Regional
+    # (420072) and Holland (230072) publish these limits rightly.
+    (250, "income requirements are: family size <=250% fpl 251%-300% 300%-400% fpl 100% discount "
+     "75% discount 70% discount", False),
+    (200, "100% 200% 201% - 300% 301% - 400% family size poverty level maximum income for 100% "
+     "write off", False),
+]  # fmt: skip
+
+
+@pytest.mark.parametrize(("value", "document", "expected"), _FULL_HELP_ABOVE_CASES)
+def test_full_help_band_above(value, document, expected):
+    from waive.atlas.verify import full_help_band_above
+
+    assert full_help_band_above(Decimal(value), document) is expected
+
+
+def with_free_limit_in(value, quote, state):
+    sheet = with_free_limit(value, quote)
+    return sheet.model_copy(update={"hospital": sheet.hospital.model_copy(update={"state": state})})
+
+
+_MISREAD_FREE_LIMITS = [
+    ("FREE_BAND_FEE_REASON", 100, LAKEWOOD_FREE_BAND, "MO", LAKEWOOD_TIERS),
+    ("FREE_BAND_FEE_REASON", 100, CAYUGA_NOMINAL, "NY", CAYUGA_NOMINAL),
+    ("FREE_LIMIT_BELOW_FULL_HELP_REASON", 200, EMORY_FREE_LIMIT, "GA", EMORY_AWARDS),
+]
+
+
+@pytest.mark.parametrize(("reason", "value", "quote", "state", "document"), _MISREAD_FREE_LIMITS)
+def test_verify_sheet_rejects_a_misread_free_care_limit(reason, value, quote, state, document):
+    from waive.atlas import verify
+
+    docs = {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT + "\n" + document + "\n"}
+    report = verify_sheet(with_free_limit_in(value, quote, state), docs)
+    assert ("eligibility.free_care_max_fpl", getattr(verify, reason)) in report.rejected
+
+
+_FREE_LIMITS_READ_RIGHT = [
+    (150, ENLOE_FREE_LIMIT, "CA", ENLOE_HOSPITAL_CHARGES),
+    (100, LIMA_FREE_LIMIT, "OH", LIMA_AWARDS),
+    (200, "Patients at or below 200% of the FPL receive free care. Patients between 201% and 300% "
+     "of the FPL may receive up to 100% financial assistance.", "MA", ""),
+    # SVMC (470012): the 300%-400% band before the table's full-help column is not the free band.
+    (250, "Patients with household income at or below 250% of the Federal Poverty Guidelines "
+     "receive a 100% discount.", "VT", "Income requirements are: Family Size <=250% FPL "
+     "251%-300% 300%-400% FPL 100% Discount 75% Discount 70% Discount"),
+]  # fmt: skip
+
+
+@pytest.mark.parametrize(("value", "quote", "state", "document"), _FREE_LIMITS_READ_RIGHT)
+def test_verify_sheet_keeps_a_free_care_limit_read_right(value, quote, state, document):
+    docs = {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT + "\n" + document + "\n" + quote + "\n"}
+    report = verify_sheet(with_free_limit_in(value, quote, state), docs)
+    assert not [r for r in report.rejected if r[0] == "eligibility.free_care_max_fpl"]
+
+
+# Russell Regional (171350) published an assistance ceiling of 70 from its free-care line, while
+# its table runs on to 200%, the policy's real ceiling.
+RUSSELL_FREE_LINE = (
+    "Patient/guarantors that fall below Level 1, 70% of FPL, will receive a 100% discount."
+)
+RUSSELL_FREE_CARE_LINE = (
+    "Patient/guarantors that fall below Level 1, 70% of FPL, will receive free care."
+)
+_CEILING_FREE_BAND_CASES = [
+    (RUSSELL_FREE_LINE, 70, True),
+    # The same misread worded with no assistance word is still the free band, not a sentence
+    # about something other than the hospital's help.
+    (RUSSELL_FREE_CARE_LINE, 70, True),
+    ("Patients with household income at or below 250% of the Federal Poverty Guidelines are "
+     "eligible for free care.", 250, True),
+    # Decision B: "may ... up to 100%" is a ceiling on help, not a free-care band.
+    ("You may qualify for a discount of up to 100% if your income is at or below 400% of the "
+     "Federal Poverty Level.", 400, False),
+    ("You may receive a discount of up to 100 percent if your household income is at or below "
+     "400% of the Federal Poverty Level.", 400, False),
+    # The same hedge beside free-care words: only decision B's guard keeps these (Flagler, 100090,
+    # one of the quotes decision B names; Holy Family, 161346).
+    ("Patients with income at or below 400% of the FPL may be eligible for up to 100% free care.",
+     400, False),
+    ("Uninsured patients at or below 250% of the FPL may qualify for free care of up to 100% of "
+     "the bill.", 250, False),
+    ("If your family adjusted income is less than 200% of federal poverty guidelines, you may be "
+     "eligible for up to a 100% discount.", 200, False),
+    ("who have family incomes not in excess of 150% of the Federal Poverty Guidelines may be "
+     "eligible to receive up to 100% Charity care based on their financial assistance "
+     "application", 150, False),
+    # A sentence that gives the free band and partial help too still states the ceiling: Dameron
+    # (050122), NYU (330214), MDI (201304), 140101 and a sliding scale.
+    ("You may qualify for a discount if your family income is at or below 400% of the Federal "
+     "Poverty Level, and for free care if your family income is below 150% of the Federal "
+     "Poverty Level.", 400, False),
+    ("The hospital provides 100% discounts for eligible patients up to 600% FPL and lower "
+     "discounts for eligible patients up to 800% FPL.", 800, False),
+    ("MDI Hospital gives free care to Maine residents with family income at 200% or less of the "
+     "Federal Poverty Income Guidelines and reduced care to those at 201-250% of the Federal "
+     "Poverty Level.", 250, False),
+    ("Generally speaking, patients eligible for discounted charges must have family incomes under "
+     "600% of the Federal Poverty Guidelines, while patients eligible for free care must have "
+     "family incomes under 200% of the Federal Poverty Guidelines.", 600, False),
+    ("Patients at or below 400% of the Federal Poverty Level qualify for a sliding scale; those "
+     "at or below 200% of the Federal Poverty Level receive free care.", 400, False),
+    ("Patients at or below 400% of the Federal Poverty Level receive a 100% write-off below 200% "
+     "and a 50% reduction above it.", 400, False),
+    # "Discounted" in any form is partial help: stored documents (fap-cd9ff81781f7678d,
+    # summary-521291f8eee52a63, fap-aeade0445a4616b8).
+    ("Public safety-net hospital, free care up to 200% FPL, discounted to 250% FPL", 250, False),
+    ("Discounted or free care is available up to 400% of the Federal Poverty guidelines below.",
+     400, False),
+    ("| Household Size | 100% FPL | 200% FPL (Free Care) | 400% FPL (Discounted) |", 400, False),
+    ("Patients who are uninsured and whose family income is at or below 300% of the FPG are "
+     "eligible to receive care at a fully discounted rate.", 300, True),
+    # A ceiling quote that ties another percentage to the poverty level states more than the free
+    # band, and an AGB price is partial help.
+    ("FPL Tier 0% – 200% FPL 201% - 400% FPL Expected Patient Payment $0 PMT / 100% write-off "
+     "AGB Percentage times remaining self-pay balance", 400, False),
+    ("Financial assistance is available to patients with income up to 300% of the federal "
+     "poverty level, with free care below 200% of the federal poverty level.", 300, False),
+    ("Patients at or below 300% of the FPL receive a 100% discount; amounts generally billed apply "
+     "to the rest.", 300, False),
+    # Real ceilings read from the free band, which stay rejected: Cherokee (161362), NMC Health
+    # (170103) and West Allis (520139).
+    ("Full charity care shall be provided to underinsured and uninsured patients earning 200% or "
+     "less of the Federal Poverty Income Guideline (FPIG).", 200, True),
+    ("Patients who are determined to be financially indigent with a gross household income of 0% "
+     "to 275% of Federal Poverty Guidelines, as updated by the U.S. Department of Health and Human "
+     "Services, may be eligible for a financial assistance discount of 100% less the nominal flat "
+     "fee outlined in section 6.0.", 275, True),
+    ("Uninsured patients meeting all the above criteria with a household income between 0% and "
+     "300% of the Federal Poverty Guidelines (FPG) are eligible for 100% ﬁnancial assistance.",
+     300, True),
+    # Ceiling wording names every kind of help, so it is no free band either.
+    ("Generally, patients with family income at or below 400% of the federal poverty level will "
+     "be eligible for charity (free) care or discounted (reduced) care.", 400, False),
+    (CEILING_SENTENCE, 300, False),
+]  # fmt: skip
+
+
+@pytest.mark.parametrize(("quote", "value", "free_band"), _CEILING_FREE_BAND_CASES)
+def test_a_ceiling_quoted_from_the_free_care_band_is_rejected(quote, value, free_band):
+    from waive.atlas.verify import CEILING_FREE_BAND_REASON, ceiling_problem
+
+    expected = CEILING_FREE_BAND_REASON if free_band else None
+    assert ceiling_problem(quote, Decimal(value)) == expected
+
+
+@pytest.mark.parametrize(
+    ("quote", "reason"),
+    [
+        (RUSSELL_FREE_CARE_LINE, "CEILING_NOT_ASSISTANCE_REASON"),
+        ("Patients at or below 200% of the FPL may qualify for Medicaid.",
+         "CEILING_OTHER_PROGRAM_REASON"),
+        ("Patients at or below 300% of the FPL may qualify for assistance from the Health Safety "
+         "Net.", "CEILING_OTHER_PROGRAM_REASON"),
+        (RUSSELL_FREE_LINE, None),
+        ("Patients who are not eligible for Medicaid and earn up to 400% of the FPL qualify for "
+         "financial assistance.", None),
+    ],
+)  # fmt: skip
+def test_ceiling_assistance_problem(quote, reason):
+    # The tests ceiling_problem runs after the free-band reading, which the pipeline runs again
+    # on an owner's ruled ceiling (pipeline._keep_owner_ruled_ceiling).
+    from waive.atlas import verify
+
+    expected = getattr(verify, reason) if reason else None
+    assert verify.ceiling_assistance_problem(quote) == expected
+
+
+def test_verify_sheet_keeps_a_hedged_ceiling_beside_free_care_words():
+    # Decision B: the sheet is neither rejected nor held for it.
+    quote = (
+        "Patients with income at or below 400% of the FPL may be eligible for up to 100% free care."
+    )
+    docs = {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT + "\n" + quote + "\n"}
+    report = verify_sheet(with_ceiling(400, quote), docs)
+    assert "eligibility.assistance_ceiling_fpl" in report.accepted
+
+
+def test_verify_sheet_rejects_a_ceiling_quoted_from_the_free_care_band():
+    from waive.atlas.verify import CEILING_FREE_BAND_REASON
+
+    docs = {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT + "\n" + RUSSELL_FREE_LINE + "\n"}
+    report = verify_sheet(with_ceiling(70, RUSSELL_FREE_LINE), docs)
+    assert ("eligibility.assistance_ceiling_fpl", CEILING_FREE_BAND_REASON) in report.rejected
+
+
+# UnityPoint's policy (fap-ec276fb294e1a7f3) gives its Illinois hospitals a Schedule B of their
+# own, and Trinity Bettendorf (160104), in Iowa, published free care to 200% from it.
+UNITYPOINT_IL_SCHEDULE = (
+    "B.  An IL UPH Hospital shall provide a charitable discount of 100% of its charges\nfor all "
+    "medically necessary health care services exceeding $ 150 in any one \ninpatient admission "
+    "or outpatient encounter to any Uninsured Patient who \napplies for a discount and has family "
+    "income of not more than 200% of the \nfederal poverty income guidelines."
+)
+_OTHER_STATE_FACILITY_CASES = [
+    (UNITYPOINT_IL_SCHEDULE, "IA", True),
+    (UNITYPOINT_IL_SCHEDULE, "IL", False),
+    ("Each IL UPH Hospital shall provide a discount of 65% to incomes from 201% to 225% of the "
+     "FPIG.", "IA", True),
+    # Lower-case words are never postal codes.
+    ("An in UPH Hospital shall provide a charitable discount of 100% of its charges.", "IA", False),
+    ("Care at any or UPH Hospital is free up to 200% of the FPL.", "IA", False),
+    ("Patients of all me UPH Hospitals receive free care up to 200% of the FPL.", "IA", False),
+    # Capitals with no determiner and acronym: Northwestern's NM hospitals (IL), Northern Light's
+    # CA Dean and A.R. Gould (ME), a VA facility (Veterans Affairs), Aultman's capital OR (OH).
+    ("9. NM Huntley, NM McHenry and NM Woodstock Hospitals 10. Palos Community Hospital", "IL",
+     False),
+    ("Acadia Hospital A.R. Gould Hospital Blue Hill Hospital CA Dean Hospital Eastern Maine "
+     "Medical Center", "ME", False),
+    ("services are provided to Veterans Administration recipients who refuse transfer to a VA "
+     "facility", "GA", False),
+    ("Aultman/Aultman Orrville OR Aultman Alliance Hospital Patient Outreach Services", "OH",
+     False),
+    ("CARE PROVIDED IN HOSPITAL FACILITIES OR CLINICS is covered for patients at or below 200% of "
+     "FPL.", "OH", False),
+]  # fmt: skip
+
+
+@pytest.mark.parametrize(("quote", "state", "expected"), _OTHER_STATE_FACILITY_CASES)
+def test_names_other_state_facility(quote, state, expected):
+    from waive.atlas.verify import names_other_state_facility
+
+    assert names_other_state_facility(quote, state) is expected
+
+
+def test_verify_sheet_rejects_an_income_limit_from_another_states_facility_section():
+    from waive.atlas.verify import OTHER_STATE_FACILITY_REASON, OTHER_STATE_REASON
+
+    docs = {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT + "\n" + UNITYPOINT_IL_SCHEDULE + "\n"}
+    free = "eligibility.free_care_max_fpl"
+    report = verify_sheet(with_free_limit_in(200, UNITYPOINT_IL_SCHEDULE, "IA"), docs)
+    assert (free, OTHER_STATE_FACILITY_REASON) in report.rejected
+    assert OTHER_STATE_FACILITY_REASON != OTHER_STATE_REASON
+    report = verify_sheet(with_free_limit_in(200, UNITYPOINT_IL_SCHEDULE, "IL"), docs)
+    assert not [rejected for rejected in report.rejected if rejected[0] == free]
+
+
+def test_the_set_aside_reasons_fit_the_withdraw_table():
+    # `waive atlas recheck --withdraw` cuts each sheet's notes at NOTES_CHARS: the first note,
+    # "<path>: <reason>", must read whole for the longest path (Clarke County, 161348, and
+    # St. Francis-Emory, 110129, lost the end of FOREIGN_OWNER_REASON).
+    from waive import cli
+    from waive.atlas import verify
+    from waive.atlas.schema import SECTIONS, ProcedureSheet
+
+    reasons = [
+        verify.TRANSLATION_REASON,
+        verify.DENTAL_REASON,
+        verify.OTHER_REGION_REASON,
+        verify.OTHER_STATE_DOCUMENT_REASON,
+        verify.LENT_DOCUMENT_REASON,
+        verify.FOREIGN_OWNER_REASON,
+        verify.SCHEDULE_OWNER_REASON,
+        verify.SIBLING_POLICY_REASON,
+    ]
+    sections = {name: ProcedureSheet.model_fields[name].annotation for name in SECTIONS}
+    paths = [f"{name}.{field}" for name, model in sections.items() for field in model.model_fields]
+    longest = max(paths, key=len)
+    assert longest == "eligibility.insured_patients_covered"
+    assert all(len(f"{longest}: {reason}") <= cli.NOTES_CHARS for reason in reasons)
+
+
+def test_holding_reasons():
+    from waive.atlas.verify import (
+        CEILING_FREE_BAND_REASON,
+        HOLDING_REASONS,
+        OTHER_STATE_FACILITY_REASON,
+        OTHER_STATE_REASON,
+    )
+
+    assert HOLDING_REASONS == (
+        PATIENT_SHARE_REASON,
+        CEILING_FREE_BAND_REASON,
+        OTHER_STATE_FACILITY_REASON,
+    )
+    assert CEILING_FREE_BAND_REASON == "quote states the free-care band, not the ceiling"
+    assert OTHER_STATE_FACILITY_REASON == (
+        "quote states the band for another state's facilities, named by its postal code"
+    )
+    assert OTHER_STATE_REASON not in HOLDING_REASONS
+
+
+def test_free_band_reasons_hold_only_beside_a_table():
+    from waive.atlas.verify import (
+        FREE_BAND_FEE_REASON,
+        FREE_LIMIT_BELOW_FULL_HELP_REASON,
+        HOLDING_BESIDE_A_TABLE_REASONS,
+        HOLDING_REASONS,
+    )
+
+    assert HOLDING_BESIDE_A_TABLE_REASONS == (
+        FREE_BAND_FEE_REASON,
+        FREE_LIMIT_BELOW_FULL_HELP_REASON,
+    )
+    assert not set(HOLDING_BESIDE_A_TABLE_REASONS) & set(HOLDING_REASONS)

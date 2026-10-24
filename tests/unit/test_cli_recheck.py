@@ -8,7 +8,17 @@ from waive.atlas.pipeline import build_hospital
 from waive.cli import app
 from waive.db import init_db, make_engine, session_scope
 
-from tests.unit.test_pipeline import REAL_HOSPITAL, TODAY, FakeAI, FakeGateway
+from tests.unit.test_audit_rules_check import SiteGateway
+from tests.unit.test_pipeline import (
+    FREE_CARE_QUOTE,
+    REAL_HOSPITAL,
+    TODAY,
+    FakeAI,
+    FakeGateway,
+    cited_from,
+    owner_ruling,
+    store_with,
+)
 
 
 @pytest.fixture
@@ -59,3 +69,67 @@ def test_a_sheet_with_a_rejected_field_keeps_its_rebuild_command(atlas):
     text = recheck()
     assert "Rebuild: uv run waive atlas build --state MA --ccn 220031 --reuse-sources" in text
     assert "unconfirmed website" not in text
+
+
+def test_a_sheet_level_problem_on_an_unconfirmed_website_gets_the_website_advice(atlas):
+    # A rebuild would be held again for the website; withdraw holds the gap with it, and Confirm
+    # website re-checks it in place.
+    from waive.atlas.schema import DiscountTier
+
+    with session_scope(atlas) as session:
+        repo.get_hospital(session, "220031").domain_confidence = 0.6
+        sheet, _ = repo.latest_sheet(session, "220031")
+        tier = DiscountTier(min_fpl_exclusive=300, max_fpl_inclusive=400, discount_percent=60)
+        # Two spans of the stored policy: the 60% band, read from 300% (the 250-300% band lost).
+        quote = (
+            "Patients with household income above 250% and at or below 400% of the Federal "
+            "Poverty Guidelines receive a 60% discount. || Patients with household income at or "
+            "below 300% of the Federal Poverty Guidelines"
+        )
+        tiers = sheet.eligibility.free_care_max_fpl.model_copy(
+            update={"value": [tier], "quote": quote}
+        )
+        stale = sheet.model_copy(
+            update={
+                "eligibility": sheet.eligibility.model_copy(update={"discount_tiers": tiers}),
+                "version": 2,
+            }
+        )
+        repo.add_sheet_version(session, stale, {"eligibility.discount_tiers": {"old": None}})
+    text = recheck()
+    assert "1 sheet with fields the current rules reject" in text  # the gap, listed
+    assert "Rebuild:" not in text
+    assert (
+        "1 sheet waits only on an unconfirmed website (a rebuild would be held again): "
+        "`uv run waive atlas recheck --withdraw` holds it, then Confirm website or Wrong "
+        "website in the admin console (/admin/review)"
+    ) in text
+
+
+def test_withdraw_counts_the_sheets_it_republished_and_the_ones_kept_as_the_owner_ruled(atlas):
+    # Real General's ceiling is its free-care line, ruled a discount limit by the owner: nothing
+    # is withdrawn, the conflict goes to the owner, and the sheet is not counted as republished.
+    # Second General keeps an asset test its quote does not support: it is republished without
+    # it.
+    from decimal import Decimal
+
+    from waive.atlas.eve_import import record_owner_rulings
+
+    with session_scope(atlas) as session:
+        sheet, _ = repo.latest_sheet(session, "220031")
+        ceiling = cited_from(sheet, Decimal(250), FREE_CARE_QUOTE)
+        store_with(session, "220031", assistance_ceiling_fpl=ceiling)
+        record_owner_rulings(session, {"220031": owner_ruling("discount", "250", ccn="220031")})
+        repo.upsert_hospital(session, {**REAL_HOSPITAL, "ccn": "220032"})
+        result = build_hospital(session, SiteGateway("second.org"), FakeAI(), "220032", TODAY)
+        assert result.outcome == "published"
+        sheet, _ = repo.latest_sheet(session, "220032")
+        store_with(session, "220032", asset_test=cited_from(sheet, False, FREE_CARE_QUOTE))
+    result = CliRunner().invoke(app, ["atlas", "recheck", "--withdraw"])
+    assert result.exit_code == 0, result.output
+    text = " ".join(result.output.split())
+    assert "1 sheets re-verified and republished without rejected fields" in text
+    assert (
+        "1 kept as the owner ruled; the conflicting readings went to the owner (open "
+        "owner_ruling_conflict items)"
+    ) in text

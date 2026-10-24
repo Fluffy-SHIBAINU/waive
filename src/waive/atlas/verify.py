@@ -9,7 +9,7 @@ from functools import partial
 from typing import Any
 
 from waive.atlas.schema import DiscountTier, DocType, Layer, ProcedureSheet, SubmitMethod
-from waive.atlas.states import CODE_OF_NAME, STATE_NAME
+from waive.atlas.states import CODE_OF_NAME, STATE_CODE, STATE_NAME, code_tokens
 
 MIN_QUOTE_CHARS = 12
 
@@ -150,12 +150,83 @@ _RANGE_AFTER = re.compile(
     rf"(?:(at least|up to)\s+)?{_PERCENT}(?:\s*(?:to|-)\s*{_PERCENT})?"
     r"\s*(?:discount|reduction|off\b|write)"
 )
+# The two patterns above need a percent sign after each number. A range is also written with one
+# sign, or with "percent" spelled out. Never inside "$1,000" or "2023": "$1,000 - 20% discount" is
+# no range from 0 to 20.
+_RANGE_NUMBER = r"(?<![\d.,$])(\d+(?:\.\d+)?)"
+_RANGE_SIGN = r"(?:\s*%|\s*percent\b|\s*per cent\b)"
+_RANGE_NOUN = r"(?:discounts?|reductions?|reduc\w+|write[- ]?offs?|adjustments?)"
+# A number right after a label or an income band starts no discount range: "tier 2 - 75%
+# discount" and "section 4.2 - 50% discount" name one discount, and "0-50% fpl 51-75% discount"
+# gives the next band's income (review of task 7.17).
+_RANGE_NOT_AFTER = "".join(
+    rf"(?<!{word} )"
+    for word in (
+        "level",
+        "tier",
+        "category",
+        "step",
+        "class",
+        "group",
+        "section",
+        "band",
+        "fpl",
+        "fpg",
+        "poverty",
+        "%",
+    )
+)
+# "and" joins a range only after "between": "when 90% and 80% discounts apply" lists two discounts.
+_RANGE_SPAN = (
+    rf"(?:between\s+{_RANGE_NUMBER}{_RANGE_SIGN}?\s*(?:-|to|and)\s*{_RANGE_NUMBER}{_RANGE_SIGN}"
+    rf"|{_RANGE_NOT_AFTER}{_RANGE_NUMBER}{_RANGE_SIGN}?\s*(?:-|to|through)\s*"
+    rf"{_RANGE_NUMBER}{_RANGE_SIGN})"
+)
+# The range first: "will qualify for a 15-75% discount" (Hartford HealthCare, 070011, 070017,
+# 070021, 070035, task 7.17), "(35%-75%) adjustment" (Johns Hopkins Medicine).
+_RANGE_SPAN_FIRST = re.compile(rf"{_RANGE_SPAN}\)?\s*(?:discount|reduction|adjustment|off\b|write)")
+# The discount word first, with a connective: "a discount of 15-75%", "discounts ranging from 40
+# to 90 percent", "the discount will be between 25% and 75%", "adjustments ranging from 35-100%"
+# (Freeman). Between the word and its connective only a verb or what is discounted ("discounts off
+# charges from 60 percent to 96 percent"). Atrium's table header "charity discount 0 - 100% 100%"
+# (360076) has no connective: an income band follows it, not the discount.
+_RANGE_NOUN_FIRST = re.compile(
+    rf"\b{_RANGE_NOUN}\s+"
+    r"(?:(?:will|can|may|shall)\s+(?:be\s+)?|is\s+|are\s+|var(?:y|ies)\s+"
+    r"|off\s+(?:of\s+)?(?:the\s+)?(?:gross\s+|total\s+)?(?:charges|balance)\s+)?"
+    r"(?P<ranging>(?:that\s+)?(?:ranging|ranges?)\s+)?(?:of\s+|from\s+|(?=between))"
+    rf"{_RANGE_SPAN}"
+)
+# A scale phrase between the discount word and the range: "may qualify for a discount from a scale
+# of 10% to 75%" (Holton, 171319, task 7.17), "a discount on a sliding scale from 25% to 75%".
+_RANGE_ON_SCALE = re.compile(
+    rf"\b{_RANGE_NOUN}\s+(?:(?:from|on|based on|according to)\s+)?(?:a|the)\s+"
+    r"(?:sliding[- ]?(?:fee\s+)?)?scale\s+(?:(?:ranging\s+)?from\s+|of\s+)?"
+    rf"{_RANGE_NUMBER}{_RANGE_SIGN}?\s*(?:-|to|through)\s*{_RANGE_NUMBER}{_RANGE_SIGN}"
+)
+
+
+def _range_ends(match: re.Match[str]) -> tuple[Decimal, Decimal] | None:
+    """The two numbers of a range one of the patterns above matched, when they are a discount
+    range: never past 100 ("201-300%" is an income band), and running upward unless the policy
+    says "ranging" ("a sliding scale discount ranging from 100 % to 60 %")."""
+    first, second = (
+        Decimal(group)
+        for group in match.groups()
+        if group is not None and re.fullmatch(r"\d+(?:\.\d+)?", group)
+    )
+    ranging = "ranging" in match.re.groupindex and match.group("ranging") is not None
+    if max(first, second) <= 100 and (first < second or (ranging and first > second)):
+        return first, second
+    return None
 
 
 def discount_range_in_quote(quote: str) -> set[Decimal]:
     """The endpoints of a discount the quote gives as a range ("55% to 75%") or a bound ("at
     least 25%", "up to 75%"). A fixed "60% discount" contributes nothing. Alliance (360131) and
-    ACMH (390163) published one endpoint as the whole band's discount (task 7.9)."""
+    ACMH (390163) published one endpoint as the whole band's discount (task 7.9), Hartford
+    HealthCare (070011 and three siblings) and Holton (171319) one end of "a 15-75% discount" and
+    of "a discount from a scale of 10% to 75%" (task 7.17)."""
     text = normalize(quote)
     found: set[Decimal] = set()
     for pattern in (_RANGE_BEFORE, _RANGE_AFTER):
@@ -165,6 +236,11 @@ def discount_range_in_quote(quote: str) -> set[Decimal]:
                 found |= {Decimal(first), Decimal(second)}
             elif bound is not None:
                 found.add(Decimal(first))
+    for pattern in (_RANGE_SPAN_FIRST, _RANGE_NOUN_FIRST, _RANGE_ON_SCALE):
+        for match in pattern.finditer(text):
+            ends = _range_ends(match)
+            if ends is not None:
+                found |= set(ends)
     return found
 
 
@@ -178,6 +254,228 @@ def tiers_rise_with_income(tiers: list[DiscountTier]) -> bool:
         later.discount_percent > earlier.discount_percent
         for earlier, later in zip(ordered, ordered[1:], strict=False)
     )
+
+
+# Discount tables the publication audit (2026-10-24) found misread. Each reason rejects the tiers
+# alone, and INSURED_TABLE_REASON a free-care limit quoted from inside the table too
+# (_insured_table): none holds the sheet or writes a value.
+HARDSHIP_TIER_REASON = "the band needs a financial hardship, so it is not an income band"
+ADDITIONAL_TIER_REASON = "the discount is added to another one"
+INSURED_TABLE_REASON = "the table is for insured patients only"
+REGULATED_COLUMN_REASON = "the tier is read from the wrong column of the table for this hospital"
+TIERS_SPLIT_REASON = "the table gives different discounts for inpatient and outpatient care"
+# A condition besides income. MassHealth's "Medical Hardship Family Countable Income" is how the
+# Health Safety Net measures income, never a condition ("MAGI Household Income or Medical Hardship
+# Family Countable Income is between 150.1% and 300%").
+_HARDSHIP = re.compile(
+    r"\b(?:financial|medical) hardship\b(?! family countable)|\bmedical debt\b|\bcatastrophic\b"
+)
+# The quote's sentences, split before normalizing, which would join a table's rows into one line.
+# A span-joined quote's spans are rows of their own: UCHealth Grandview's (060130) "Catastrophic"
+# column header, in the span after the discounts, conditions none of its income tiers.
+_QUOTE_SENTENCES = re.compile(r"(?<=[.;])\s+|\n+|" + re.escape(SPAN_SEPARATOR))
+
+
+def tiers_need_hardship(quote: str, tiers: list[DiscountTier]) -> bool:
+    """Whether a sentence of the quote that states a tier's discount also asks for a financial or
+    medical hardship, medical debt or catastrophic expenses. Such a band is not open to every
+    household whose income falls in it: Union Hospital of Cecil County (210032) published 40% for
+    401-450% from "between 401-450% of FPL and with a financial hardship will receive a 40%
+    adjustment", Maryland's reduced-cost care for medical debt."""
+    for sentence in _QUOTE_SENTENCES.split(quote):
+        text = normalize(sentence)
+        if _HARDSHIP.search(text) and any(
+            _number_in(tier.discount_percent, text) for tier in tiers
+        ):
+            return True
+    return False
+
+
+# "with an additional 25% discount on the remaining balance": a percentage taken off what another
+# discount leaves. "Add $5,680 for each additional person" is no discount.
+_ADDITIONAL = re.compile(
+    r"\badditional (\d+(?:\.\d+)?) ?(?:%|percent) (?:discount|reduction|off\b|adjustment|write)"
+)
+# An added discount followed by its own base is the band's discount after all: UVM Health
+# (470001, 470003) bases every uninsured award on the amount generally billed and every insured
+# one on the patient's out-of-pocket costs, so "an additional 40% discount from the amount
+# generally billed" reads like UnityPoint's "65% discount off AGB".
+_OWN_BASE = re.compile(
+    r"\S* (?:(?:from|off|of|on) )?(?:the )?"
+    r"(?:amounts? generally billed|agb\b|patient'?s? out ?-?of ?-?pocket)"
+)
+
+
+def tier_is_additional(quote: str, tiers: list[DiscountTier]) -> bool:
+    """Whether a stored tier's discount is one the quote adds to another discount. The band's
+    discount is then both together, which the one percentage misstates: University Health
+    Lakewood (260102) published 25% for 301-400% from "discounted by the current Uninsured
+    Discount amount, with an additional 25% discount on the remaining balance"."""
+    text = normalize(quote)
+    added = {
+        Decimal(match.group(1))
+        for match in _ADDITIONAL.finditer(text)
+        if not _OWN_BASE.match(text, match.end())
+    }
+    return bool(added & {tier.discount_percent for tier in tiers})
+
+
+# Who a table is for: "insured" as its own word, or inside "uninsured" or "underinsured" (group 1).
+_POPULATION = re.compile(r"\b(un-?|under-?)?insured\b")
+# Insured patients named as the table's own lead-in: an "Insured Patients:" heading, or "for
+# qualifying insured patients".
+_INSURED_LEAD = re.compile(
+    r"(?:^|[.:;] |\bfor (?:qualifying |eligible |all )?)insured "
+    r"(?:patients?|individuals?|persons?)\b"
+)
+_BOTH_POPULATIONS = re.compile(r"\b(?:un-?|under-?)insured (?:and|or|&|/) ?$")
+_OTHER_POPULATION = re.compile(r"\b(?:un-?|under-?)insured\b|\bself[- ]pay\b")
+_LEAD_CHARS = 250
+
+
+def insured_only_table(quote: str, document_text: str) -> bool:
+    """Whether the document introduces the quoted table for insured patients only: the last
+    population named in the 250 characters before the quote is insured patients, in an "Insured
+    Patients:" heading or a "for qualifying insured patients" lead-in, and the quote itself names
+    no uninsured, underinsured or self-pay patients. Henry Ford (230047, 230053, 230092, 230302)
+    published as its discount scale the "Discount Off of Balance Due" table its policy gives
+    insured patients; uninsured patients pay a share of the Medicare rate under another table.
+    "Uninsured and insured patients" introduces a table for both, and the amounts-generally-billed
+    clause's "billed to commercially insured patients" introduces none (Heart of Texas, 451348)."""
+    if _OTHER_POPULATION.search(normalize(quote)):
+        return False
+    text = normalize(document_text)
+    at = text.find(normalize(quote)[:80])
+    if at < 0:
+        return False
+    lead = text[max(0, at - _LEAD_CHARS) : at]
+    mentions = list(_POPULATION.finditer(lead))
+    if not mentions or mentions[-1].group(1):
+        return False
+    last = mentions[-1]
+    return (
+        _INSURED_LEAD.search(lead[max(0, last.start() - 30) : last.end() + 12]) is not None
+        and _BOTH_POPULATIONS.search(lead[: last.start()]) is None
+    )
+
+
+# A table row: its band's label, then each column's percentage up to the next band's label.
+_ROW_PERCENT = re.compile(r"(?<![\d.$])(\d{1,3}(?:\.\d+)?) ?%")
+_ROW_LABEL = r"(?<![\d.]){low} ?%? ?(?:-|to|through|thru) ?{high} ?%"
+_NEXT_ROW_LABEL = re.compile(r"(?<![\d.])\d{1,3} ?%? ?(?:-|to|through|thru) ?\d{2,3} ?%")
+
+
+def _row_percents(text: str, tier: DiscountTier) -> list[Decimal] | None:
+    """The percentages in the tier's own row of a normalized table ("201% to 250% 75% % 80%" for
+    a tier above 200 up to 250), or None when no row carries the tier's band as its label."""
+    low, high = int(tier.min_fpl_exclusive), int(tier.max_fpl_inclusive)
+    for start in (low + 1, low):
+        label = re.search(_ROW_LABEL.format(low=start, high=high), text)
+        if label:
+            rest = text[label.end() :]
+            following = _NEXT_ROW_LABEL.search(rest)
+            row = rest[: following.start() if following else 60]
+            return [Decimal(number) for number in _ROW_PERCENT.findall(row)]
+    return None
+
+
+# Where the document turns to uninsured patients, and where it turns back to insured ones. North
+# Country (471304) writes "for unsured patients whose household income is".
+_UNINSURED_LEAD = re.compile(
+    r"\b(?:un-?insured|unsured|self[- ]pay) (?:patients?|individuals?|persons?)\b"
+)
+_BARE_INSURED = re.compile(r"(?<![\w-])insured (?:patients?|individuals?|persons?)\b")
+_SEGMENT = re.compile(r"•|(?<=[.;]) ")
+_UNINSURED_SPAN_CHARS = 900
+
+
+def _band_stated(window: str, tier: DiscountTier) -> bool:
+    """Whether the normalized `window` gives the tier's band its discount: in the band's table
+    row, or else in one bullet or sentence that names the band's ends and the discount."""
+    row = _row_percents(window, tier)
+    if row is not None:
+        return tier.discount_percent in row
+    lows = (tier.min_fpl_exclusive + 1, tier.min_fpl_exclusive)
+    return any(
+        any(_number_in(low, segment) for low in lows)
+        and _number_in(tier.max_fpl_inclusive, segment)
+        and _number_in(tier.discount_percent, segment)
+        for segment in _SEGMENT.split(window)
+    )
+
+
+def uninsured_get_same_tiers(document_text: str, tiers: list[DiscountTier]) -> bool:
+    """Whether the document gives uninsured patients every one of these tiers too: some passage
+    that starts at uninsured (or self-pay) patients, and runs up to 900 characters or to where
+    insured patients come back, states each band with the same discount. The tiers of an
+    insured-only table are then everyone's: Dartmouth Health (301304, 301305, 471302) quoted the
+    insured paragraph, and its uninsured paragraph gives the same 75/50/40 for 251-300%, 301-350%
+    and 351-400%. Henry Ford's uninsured patients pay a share of the Medicare rate instead."""
+    if not tiers:
+        return False
+    text = normalize(document_text)
+    for lead in _UNINSURED_LEAD.finditer(text):
+        end = min(len(text), lead.end() + _UNINSURED_SPAN_CHARS)
+        insured = _BARE_INSURED.search(text, lead.end(), end)
+        window = text[lead.start() : insured.start() if insured else end]
+        if all(_band_stated(window, tier) for tier in tiers):
+            return True
+    return False
+
+
+def _insured_table(sheet: ProcedureSheet, documents: Mapping[str, str]) -> tuple[str, str] | None:
+    """The source id and normalized quote of the sheet's discount table when its document gives
+    it to insured patients only and not to uninsured patients too (INSURED_TABLE_REASON), or
+    None. A free-care limit quoted from inside that table is the insured patients' as well:
+    Novant Health Brunswick (340158) quoted free care to 300% from Novant's insured paragraph,
+    where 300% tops a 50% band, and its siblings (340085, 340190, 340195) free care to 200% from
+    it, while uninsured patients get a 100% adjustment up to 300%."""
+    tiers = sheet.eligibility.discount_tiers
+    if tiers is None or tiers.layer is Layer.REPORTED or not tiers.quote:
+        return None
+    text = documents.get(tiers.source_id or "")
+    if text is None or not quote_found(tiers.quote, text):
+        return None
+    if not insured_only_table(tiers.quote, text) or uninsured_get_same_tiers(text, tiers.value):
+        return None
+    return tiers.source_id or "", normalize(tiers.quote)
+
+
+def wrong_regulated_column(quote: str, state: str, tiers: list[DiscountTier]) -> bool:
+    """Whether a tier is read from the wrong column of MedStar's two-column table, "HSCRC-Regulated
+    Services | Washington Hospitals, Hospital-Based Physician Practices, and non-HSCRC Regulated
+    Services": a Maryland hospital's discount is the first column, any other state's hospital's
+    the last. MedStar Montgomery (210018) and MedStar Southern Maryland (210062) published 80% for
+    201-250% from "201% to 250% 75% % 80%", where their own column gives 75%. A row with one
+    percentage, or the same one in both columns, is skipped."""
+    text = normalize(quote)
+    if "hscrc-regulated" not in text or "non-hscrc" not in text:
+        return False
+    for tier in tiers:
+        percents = _row_percents(text, tier)
+        if not percents or len(set(percents)) < 2:
+            continue
+        expected = percents[0] if state.upper() == "MD" else percents[-1]
+        if tier.discount_percent != expected:
+            return True
+    return False
+
+
+# Columns or rows for each kind of care: an "Inpatient Outpatient" header (Berkshire, 220046), or
+# an "Inpatient Discount" row with an "Outpatient Discount" row after it (Tufts, 220116).
+_SERVICE_COLUMNS = re.compile(
+    r"\bin-?patient:? out-?patient\b|\bin-?patient discount\b.{0,400}?\bout-?patient discount\b"
+)
+
+
+def tiers_split_by_service(quote: str) -> bool:
+    """Whether the quoted table gives inpatient and outpatient care different discounts. One
+    percentage per band holds only one of them, and either misleads, as with free-care limits
+    (FREE_LIMIT_SPLIT_REASON): Tufts Medical Center (220116) published 30% for 150-300%, an
+    inpatient column, where its outpatients get 69.50%, and Berkshire Medical Center (220046)
+    46.07% for 0-400%, its inpatient column, where outpatients get 63.14%. "Inpatient and
+    outpatient services will be discounted by" is one table for both."""
+    return _SERVICE_COLUMNS.search(normalize(quote)) is not None
 
 
 CEILING_REASON = "quote states an eligibility ceiling for any assistance, not a free-care band"
@@ -292,26 +590,170 @@ _INSURED_WORDS = re.compile(
     r"(?<!un-)\binsured\b|\bunder-?insured\b|\binsurance\b|\bdeductibles?\b|\bco-?pay\w*"
     r"|\bco-?insurance\b|\bout-of-pocket\b"
 )
-_INSURED_EXCLUDED = re.compile(
-    r"\bonly (?:to |for )?(?:the )?uninsured\b|\buninsured (?:patients |individuals )?only\b"
-    r"|\bnot (?:available|offered|open) to\b|\bexclud\w+|\bineligible\b|\b(?:do|does) not qualify\b"
-    r"|\bnot (?:be )?eligible\b|\b(?:do|does) not have (?:any (?:form of )?)?(?:health )?insurance\b"
-    r"|\bwithout (?:health )?insurance\b|\bno (?:health )?insurance\b|\bmust be uninsured\b"
-    r"|\bnot intended to\b|\bnot (?:cover|apply to|provide)\b"
+# The 2026-10-24 publication audit found insured_patients_covered wrong both ways. False stood
+# on quotes that help underinsured patients or only say a patient with enough insurance "may be
+# deemed ineligible" (Mizell, 010007; Caldwell, 181322), and on the uninsured self-pay discount
+# (Mackinac Straits, 231306). True stood on a billing statement (Washington Regional, 040004), a
+# payment plan (Western Maryland, 210027), the AGB cap (Hutchinson Health, 240187) and the bare
+# heading "Underinsured:" (Madelia, 241323): any sentence that mentioned insurance passed.
+INSURED_LEFT_OUT_REASON = "quote does not say insured patients are left out of financial assistance"
+PRICE_CAP_REASON = "quote states a price cap benchmarked on insured patients, not who may apply"
+BARE_LABEL_REASON = "quote is only a heading"
+PAYMENT_PLAN_REASON = "quote is about payment terms, not financial assistance"
+ABSENT_REASON = "quote names insurance only to say the patient has none"
+# Wording that leaves insured patients out: "available only to uninsured patients", "must be
+# uninsured", "insured patients are not eligible", "does not apply to insured patients",
+# "cannot be covered by private insurance" (Bacon County, 111327), "must be self-pay"
+# (Rockcastle County, 180115), and Cabell Huntington's (510055) "not eligible for financial
+# assistance ... if the patient is eligible to receive reimbursement for any portion of a
+# patient's bill from any first or third party payor, including health insurance". McKenzie's
+# (351302) "not eligible ... if the applicable health insurance lists McKenzie Health as
+# out-of-network" leaves out only some insured patients. "Not only to the uninsured" is no
+# exclusion.
+_INSURED_LEFT_OUT = re.compile(
+    r"(?<!not )\bonly (?:to |for )?(?:the )?uninsured\b"
+    r"|\buninsured (?:patients |individuals |persons )?only\b"
+    r"|\bmust (?:be|remain) uninsured\b"
+    r"|\b(?:limited|restricted) to (?:the )?uninsured\b"
+    r"|(?<!not )\bonly (?:to |for )?(?:patients|individuals|persons|people|those) "
+    r"(?:who (?:do not|don't|does not) have|with no|without) (?:any )?(?:health )?"
+    r"(?:insurance|coverage)\b"
+    r"|(?<![\w-])insured (?:patients?|individuals?|persons?|people) (?:are|is|will|shall|do|does)"
+    r"(?: be)? (?:not|never) (?:be )?(?:eligible|covered|qualify|considered for)\b"
+    r"|\b(?:patients|individuals|persons|people|those) (?:with|who have) (?:health |private "
+    r"|commercial |third[- ]party )?(?:insurance|coverage)(?: coverage)? "
+    r"(?:are|is|will|shall|do|does)(?: be)? not (?:be )?(?:eligible|covered|qualify)\b"
+    r"|\b(?:patients|individuals|persons|people) who are insured (?:are|is|will|shall|do|does)"
+    r"(?: be)? not (?:be )?(?:eligible|covered|qualify)\b"
+    r"|\bnot (?:available|offered|open|extended) to (?:insured|patients (?:with|who have) "
+    r"(?:health )?insurance)\b"
+    r"|\b(?:does|do|shall|will) not apply to (?:insured|patients (?:with|who have) "
+    r"(?:health )?insurance)\b"
+    r"|\bnot (?:be )?eligible for financial assis ?tance\b[^.;]{0,80}?\bif (?:the patient|they"
+    r"|you) (?:is|are) eligible to receive (?:reimbursement|payment) for any portion\b"
+    r"[^.;]{0,120}\binsurance\b"
+    r"|\bexclud\w* (?:all )?(?:insured|patients (?:with|who have) (?:health )?insurance)\b"
+    r"|\b(?:cannot|can not|may not|must not) be covered by (?:any |private |health |commercial "
+    r"|third[- ]party )*insurance\b"
+    r"|\bmust be self[- ]?pay\b"
+)
+# Wording that names insured people as helped: underinsured, limited or inadequate coverage,
+# "with or without insurance", and the "sufficient insurance coverage or assets" conditional
+# (Mizell, 010007), which turns away only those whose insurance is enough.
+_INSURED_HELPED = re.compile(
+    r"\bunder[- ]?insured\b"
+    r"|\b(?:limited|inadequate|insufficient|partial)(?: or no)? (?:health )?(?:insurance|coverage)\b"
+    r"|\bwith or without (?:an? )?(?:health )?insurance\b"
+    r"|\b(?:sufficient|adequate|enough) (?:health )?insurance\b|\binsurance (?:coverage )?or assets\b"
+)
+# A rate that is not financial assistance: the self-pay, uninsured, cash or prompt-pay discount.
+# Leaving insured patients out of one says nothing about the FAP (Mackinac Straits, 231306;
+# Hillsboro, 141332; RWJBarnabas, 310041).
+_NON_FAP_RATE = re.compile(
+    r"\b(?:true )?(?:self[- ]?pay|uninsured|cash|prompt[- ]?pay(?:ment)?) "
+    r"(?:discounts?|rates?|prices?|pricing)\b"
+    r"|\bdiscounted cash price\b"
+)
+# A price cap ("not be charged more than AGB to insured patients", "pay more for care than
+# insured individuals"), up to the end of its clause but not past ", and ..." or ", but ...", so
+# "will pay no more than 10% of charges, and insured patients may also qualify" keeps its
+# second clause.
+_CAP_TAIL = r"(?:(?!,\s*(?:and|but|while|however|although)\b)[^.;])*"
+_PRICE_CAP_CLAUSE = re.compile(
+    r"\b(?:charged|billed|pay|paid|owe|responsible to pay)\b[^.;]{0,15}?\b(?:more|greater|higher)\b"
+    r"[^.;]{0,80}?\bthan\b" + _CAP_TAIL + r"|amounts? generally billed" + _CAP_TAIL
+)
+_BARE_LABEL = re.compile(r"^[^.;:]{1,40}:$")
+# Payment terms: a payment plan, a prompt-pay discount, payment in full, a (billing) statement.
+_PAYMENT_ONLY = re.compile(
+    r"\bpayment (?:plans?|arrangements?)\b|\bprompt[- ]?pay(?:ment)? discounts?\b"
+    r"|\b(?:payment|paid) in full\b|\b(?:billing )?statements?\b"
+)
+_FAP_WORDS = re.compile(
+    r"\bfinancial (?:assistance|aid)\b|\bcharity\b|\bfree\b|\bdiscount\w*|\bwrite[- ]?offs?\b"
+    r"|\bwritten off\b|\bforgiv\w+|\breduc\w+|\bsliding\b|\bfap\b"
+)
+# Insurance named only to say the patient has none (Geisinger, 390006: "does not have insurance
+# coverage and was denied Medicaid"), or to tell people to buy some (Houston Methodist, 450358).
+_NOT_INSURED = re.compile(
+    r"\b(?:(?:do|does|did) not|don't|doesn't) have (?:any )?(?:form of )?(?:health |medical )?"
+    r"(?:insurance|coverage)(?: coverage)?\b"
+    r"|\b(?:has|have|with) no (?:health |medical )?(?:insurance|coverage)(?: coverage)?\b"
+    r"|\bwithout (?:any )?(?:health |medical )?(?:insurance|coverage)(?: coverage)?\b"
+    r"|\bno (?:health |medical )?insurance(?: coverage)?\b"
+    r"|\bnot insured\b"
+    r"|\b(?:purchase|obtain|buy|enroll in|apply for) (?:health )?(?:insurance|coverage)\b"
+)
+# Another payer beside the missing insurance, as in Maine's "have no health insurance coverage
+# or have coverage that pays only part of the bill" or "your portion of the bill".
+_OTHER_PAYER = re.compile(
+    r"\bcoverage\b|\bmedicare\b|\bthird[- ]party\b|\bpay[eo]rs?\b|\bcovered\b"
+    r"|\bportion of (?:the|your|their) bill\b"
 )
 
 
-def quote_addresses_insured(quote: str, value: bool) -> bool:
-    """Whether the quote speaks of insured patients at all, and, for a False value, says they
-    are left out. Sentences about "all uninsured patients", emergency care for everyone or
-    physician fees were read both ways in the first national batch (task 7.9)."""
-    text = normalize(quote)
-    if _INSURED_WORDS.search(text) is None:
+def _quote_excludes_insured(text: str) -> bool:
+    """Whether the normalised quote leaves insured patients out of financial assistance, without
+    naming insured people as helped or speaking of a self-pay rate instead."""
+    return (
+        _INSURED_LEFT_OUT.search(text) is not None
+        and _INSURED_HELPED.search(text) is None
+        and _NON_FAP_RATE.search(text) is None
+    )
+
+
+def _quotes_only_a_price_cap(text: str) -> bool:
+    """Whether the quote's only insured words sit in a price cap, which benchmarks a price on
+    insured patients and says nothing about who may apply."""
+    if _PRICE_CAP_CLAUSE.search(text) is None:
         return False
-    return value or _INSURED_EXCLUDED.search(text) is not None
+    return _INSURED_WORDS.search(_PRICE_CAP_CLAUSE.sub(" ", text)) is None
+
+
+def _quotes_only_payment_terms(text: str) -> bool:
+    """Whether the quote is about payment terms and, once those are set aside, names no
+    assistance; the prompt-pay discount is a payment term, not a discount under the policy."""
+    if _PAYMENT_ONLY.search(text) is None:
+        return False
+    return _FAP_WORDS.search(_PAYMENT_ONLY.sub(" ", text)) is None
+
+
+def _names_insurance_only_as_absent(text: str) -> bool:
+    """Whether every mention of insurance says the patient has none, with no other payer or
+    partial coverage beside it."""
+    if _NOT_INSURED.search(text) is None or _INSURED_HELPED.search(text):
+        return False
+    rest = _NOT_INSURED.sub(" ", text)
+    return _INSURED_WORDS.search(rest) is None and _OTHER_PAYER.search(rest) is None
+
+
+def insured_field_problem(quote: str, value: bool) -> str | None:
+    """Why an insured_patients_covered value does not stand on its quote, or None. Either value
+    fails on the AGB cap, another price cap or a bare heading. True needs a quote that speaks of
+    insured patients and is not only about payment terms or the lack of insurance; false needs a
+    quote that leaves insured patients out of financial assistance."""
+    text = normalize(quote)
+    if quotes_only_the_agb_cap(quote):
+        return AGB_CAP_REASON
+    if _quotes_only_a_price_cap(text):
+        return PRICE_CAP_REASON
+    if _BARE_LABEL.match(text):
+        return BARE_LABEL_REASON
+    if value:
+        if _INSURED_WORDS.search(text) is None:
+            return INSURED_REASON
+        if _quotes_only_payment_terms(text):
+            return PAYMENT_PLAN_REASON
+        if _names_insurance_only_as_absent(text):
+            return ABSENT_REASON
+        return None
+    return None if _quote_excludes_insured(text) else INSURED_LEFT_OUT_REASON
 
 
 OTHER_STATE_REASON = "quote states the band for another state's facilities"
+OTHER_STATE_FACILITY_REASON = (
+    "quote states the band for another state's facilities, named by its postal code"
+)
 # The fields that carry an income limit, any of which a system policy may state per state.
 INCOME_LIMIT_PATHS = (
     "eligibility.free_care_max_fpl",
@@ -357,6 +799,131 @@ def bands_under_another_state(quote: str, state: str, value: Any) -> bool:
             for tier in value
         )
     return not _number_in(Decimal(value), own)
+
+
+# UnityPoint's system policy (fap-ec276fb294e1a7f3) gives its Illinois hospitals a schedule of
+# their own, "B. An IL UPH Hospital shall provide a charitable discount of 100% ... not more than
+# 200%", and Trinity Bettendorf (160104), in Iowa, published free care to 200% from it. The state
+# is a postal code, so _STATE_HEADING never sees it. Read as written, never lower-cased ("in",
+# "or", "me"), and only after a determiner and before a system's all-caps acronym: Northwestern's
+# "NM Woodstock Hospitals" (Illinois), Northern Light's "CA Dean Hospital" (Maine), "a VA
+# facility" (Veterans Affairs) and Aultman's capital "OR Aultman Alliance Hospital" name no state.
+_FACILITY_OF_STATE = re.compile(
+    rf"\b(?:[Aa]n?|[Tt]he|[Ee]ach|[Aa]ny|[Aa]ll|[Ee]very|[Ss]uch) ({STATE_CODE}) [A-Z]{{2,6}} "
+    r"(?:[Hh]ospitals?|[Ff]acilit(?:y|ies)|[Ee]ntit(?:y|ies)|[Ll]ocations?)\b"
+)
+
+
+def names_other_state_facility(quote: str, state: str) -> bool:
+    """Whether the quote, read in its original case, states its rule for the facilities of a
+    state other than `state`, named by postal code: "An IL UPH Hospital", "Each IL UPH Hospital"."""
+    return any(
+        match.group(1) != state for match in _FACILITY_OF_STATE.finditer(" ".join(quote.split()))
+    )
+
+
+# Task 7.17: MedStar's policy covers residents of "Maryland, northern Virginia, or within the
+# District of Columbia", and five MedStar sheets (210015, 210018, 210024, 210034, 210062) stored
+# [MD, VA, DC], so a Richmond or Norfolk resident passed the residency step under a bare VA; two
+# of them quoted sentences that name no state at all. Each stored state must be named in its
+# quote as a whole state: not after a region word ("northern Virginia", "Northeastern Montana"),
+# and not as the state of a place ("Washington County", "Kansas City, Missouri", "Virginia
+# Beach", "Oxford County in Maine", "Washington, D.C."). The field is rejected, never pruned:
+# [MD, DC] would turn northern Virginia away.
+RESIDENCY_REASON = "quote does not name every listed state as a whole state"
+# "North Carolina and non-North Carolina residents" (drafts for ECU Health North, 340151, and
+# Bertie, 341304; Novant Health Forsyth, 340014): a list of states would turn away the patients
+# from other states the policy also covers.
+RESIDENCY_BOTH_REASON = "quote says residents of other states qualify too"
+# A list of no states would turn every household away, whatever the quote says.
+RESIDENCY_EMPTY_REASON = "the residency list names no state"
+# Letters only as boundaries, so a footnote mark glued to a name still names the state
+# ("Wisconsin1", fap-d9c5de9c9fa6dd89); longest name first, so "west virginia" is one state.
+_WHOLE_STATE = re.compile(rf"(?<![a-z])({STATE_NAME})(?![a-z])")
+# The guards ignore case: they read the normalised quote for names and the quote as written for
+# postal codes ("Cecil County, MD", "Southern NH Health", "the following PA counties").
+_REGION_WORD = (
+    r"(?:north|south)(?:east|west)?(?:ern)?|east(?:ern)?|west(?:ern)?|central|middle|upstate"
+    r"|downstate|upper|lower|coastal|mid|greater|rural|metro(?:politan)?"
+)
+_REGION_BEFORE = re.compile(rf"(?<![a-z])(?:{_REGION_WORD})[- ]+$", re.IGNORECASE)
+# "Thomas County, Georgia", "Kansas City, Missouri", "Oxford County in Maine", "bordering county
+# in the state of Washington", "primary service areas in Delaware", and the state of a town or a
+# part of it: "Virginia Beach, Virginia", "Palm Beach, Florida", "the northern panhandle of West
+# Virginia".
+_PLACE_BEFORE = re.compile(
+    r"(?<![a-z])(?:(?:count(?:y|ies)|city|beach|regions?|panhandle|parish(?:es)?|borough|township)"
+    r"(?:\s*,|\s+(?:located\s+)?(?:in|of))|areas?\s+(?:located\s+)?(?:in|of))"
+    r"\s+(?:the\s+state\s+of\s+)?$",
+    re.IGNORECASE,
+)
+# "Washington County", "Kansas City", "Virginia Beach", "Louisiana Region 5", "a California
+# Hospital Facility", "the Washington campus".
+_PLACE_AFTER = re.compile(
+    r"[- ]+(?:count(?:y|ies)|city|beach|parish(?:es)?|region|metro(?:politan)?|panhandle|campus"
+    r"|clinics?|hospitals?|facilit(?:y|ies))(?![a-z])",
+    re.IGNORECASE,
+)
+# "Washington, D.C." and "Washington DC" are the District, not the state.
+_DC_AFTER = re.compile(r"\s*,?\s*d\.?\s?c(?![a-z])", re.IGNORECASE)
+# "Rensselaer (NY), Washington (NY) and Berkshire (MA)": a county followed by its own state.
+_PAREN_CODE = re.compile(r"\s*\(([a-z]{2})\)", re.IGNORECASE)
+_COUNTY_WORD = re.compile(r"(?<![a-z])count(?:y|ies)(?![a-z])")
+_NORTH_AND_SOUTH = re.compile(r"(?<![a-z])north (?:and|or|&) south (carolina|dakota)(?![a-z])")
+_DC_DOTTED = re.compile(r"(?<![a-z])d\. ?c\.")
+_STATE_AND_NON_STATE = re.compile(
+    rf"(?<![a-z])({STATE_NAME})(?: residents?)? (?:and|or) non-? ?\1(?![a-z])"
+)
+
+
+def _part_of_a_state(text: str, start: int, end: int, code: str | None = None) -> bool:
+    """Whether the state named at text[start:end] is only a region of it or the state of a place
+    in it. `code` is the state a written-out name stands for; a different state's code in
+    parentheses after it makes the name a county's ("Washington (NY)")."""
+    paren = _PAREN_CODE.match(text, end)
+    return bool(
+        _REGION_BEFORE.search(text, 0, start)
+        or _PLACE_BEFORE.search(text, 0, start)
+        or _PLACE_AFTER.match(text, end)
+        or (code == "WA" and _DC_AFTER.match(text, end))
+        or (code and paren and paren.group(1).upper() != code)
+    )
+
+
+def _whole_states_named(quote: str) -> set[str]:
+    """The codes of the states the quote names as whole states, by name or by postal code."""
+    text = normalize(quote)
+    found: set[str] = set()
+    for match in _WHOLE_STATE.finditer(text):
+        code = CODE_OF_NAME[match.group(1)]
+        if not _part_of_a_state(text, match.start(), match.end(), code):
+            found.add(code)
+    for match in _NORTH_AND_SOUTH.finditer(text):
+        found.update(CODE_OF_NAME[f"{side} {match.group(1)}"] for side in ("north", "south"))
+    if _DC_DOTTED.search(text):
+        found.add("DC")
+    written = " ".join(quote.split())
+    if written != written.upper():  # an all-caps quote's "IN" or "ME" is a word, not a state
+        counties = _COUNTY_WORD.search(text) is not None
+        for match in code_tokens(written):
+            start, end = match.start(), match.end()
+            in_parentheses = written[start - 1 : start] == "(" and written[end : end + 1] == ")"
+            if not (in_parentheses and counties) and not _part_of_a_state(written, start, end):
+                found.add(match.group(1))
+    return found
+
+
+def residency_problem(value: list[str], quote: str) -> str | None:
+    """Why a residency list does not stand on its quote, or None: the list must hold a state, the
+    quote must name each one as a whole state, and must not say residents of other states
+    qualify too."""
+    codes = {code.upper() for code in value}
+    if not codes:
+        return RESIDENCY_EMPTY_REASON
+    for match in _STATE_AND_NON_STATE.finditer(normalize(quote)):
+        if CODE_OF_NAME[match.group(1)] in codes:
+            return RESIDENCY_BOTH_REASON
+    return RESIDENCY_REASON if codes - _whole_states_named(quote) else None
 
 
 # Lists whose every item must be named by the quote (task 7.9 and its review: the structurer
@@ -643,6 +1210,89 @@ def names_percent_of_poverty_level(quote: str, value: Decimal) -> bool:
     return any(number == Decimal(value) for number, _ in _tied_percents(_poverty_text(quote)))
 
 
+# The University of Maryland Medical System's policy gives free care "up to 200% of the income
+# eligibility limits established by the Maryland Department of Health": Maryland's Medicaid limits,
+# not the poverty level. UM Capital Region (210003), UM Baltimore Washington (210043), UM Upper
+# Chesapeake (210049) and UM Rehabilitation & Orthopaedic Institute (210058) published it as free
+# care up to 200% FPL (task 7.17).
+OTHER_BASIS_REASON = "quote measures income against another benchmark than the poverty level"
+_OTHER_BASIS = re.compile(
+    r"\bincome eligibility (?:limits?|levels?|standards?|thresholds?)\b"
+    r"|\b(?:medicaid|medical assistance|mdh|state)(?:'s)?(?: income)?(?: eligibility)?"
+    r" (?:income )?(?:limits?|levels?|standards?|thresholds?)\b"
+    r"|\bmedian (?:family |household )?income\b|\b(?:ami|smi)\b"
+    # HHS publishes the poverty guidelines ("Department of Health & Human Services" too), and
+    # California's HCAI and New Jersey's "Health Care for the Uninsured" are no income measure.
+    r"|\bdepartment of health\b(?! ?(?:and|&) ?human\b)(?! care\b)|\bmdh\b"
+    r"|\bself[- ]sufficiency standard\b|\bliving wage\b"
+)
+_CLAUSE_END = re.compile(r"(?<=[.;])\s")
+# Read far enough that "... the Department of Health and Human Services" is whole, ...
+OTHER_BASIS_WORDS = 20
+# ... and let the measure start that far after "of": "of the income eligibility limits
+# established by the Maryland Department of Health".
+OTHER_BASIS_STARTS_WITHIN = 10
+# How much text after each occurrence is read: more than OTHER_BASIS_WORDS words of agency names.
+OTHER_BASIS_CHARS = 300
+# _PERCENT_SIGN, _NEXT_NUMBER and _POVERTY_AFTER are defined with states_income_limit below.
+
+
+def percent_of_other_basis(quote: str, value: Decimal) -> bool:
+    """Whether the quote gives `value` as a percentage of an income measure other than the poverty
+    level. Some occurrence of it (a whole number, never a decimal's whole part or a dollar figure)
+    is followed by a percent sign and then, before the next number and the end of the sentence,
+    by the measure's name: within ten words after "of" ("200% of the income eligibility limits
+    established by the Maryland Department of Health", "80% of the Area Median Income") or right
+    after the sign ("80% AMI"). The poverty level's words anywhere before the next number keep it
+    the poverty level ("of the income eligibility limits (Federal Poverty Guidelines)", "of the
+    guidelines set by the Department of Health and Human Services"), even past a period that only
+    ends an abbreviation ("set by the U.S. Department of Health and Human Services poverty
+    guidelines", "limits, i.e. the Federal Poverty Guidelines")."""
+    text = _poverty_text(quote).replace(",", "")
+    for match in re.finditer(rf"(?<![\d.$]){_number_pattern(Decimal(value))}", text):
+        after = text[match.end() : match.end() + OTHER_BASIS_CHARS]
+        sign = _PERCENT_SIGN.match(after)
+        if sign is None:
+            continue
+        until_next = _NEXT_NUMBER.split(after[sign.end() :], maxsplit=1)[0]
+        words = " ".join(until_next.split()[:OTHER_BASIS_WORDS])
+        if _POVERTY_AFTER.search(words) is not None:
+            continue
+        # The measure itself must be named in the same sentence: "exceeds 25% of that family's
+        # annual income. MDH Limits refers to ..." gives no limit on MDH's.
+        segment = _CLAUSE_END.split(words, maxsplit=1)[0]
+        basis = _OTHER_BASIS.search(segment)
+        if basis is None:
+            continue
+        lead = segment[: basis.start()].split()  # "of" and the words up to the measure
+        if lead in ([], ["the"]) or (lead[0] == "of" and len(lead) <= OTHER_BASIS_STARTS_WITHIN):
+            return True
+    return False
+
+
+def _income_limits(value: Any) -> list[Decimal]:
+    """The income limits an income field carries: its value, or each tier's two bounds."""
+    if isinstance(value, list):
+        return [
+            bound for tier in value for bound in (tier.min_fpl_exclusive, tier.max_fpl_inclusive)
+        ]
+    return [Decimal(value)]
+
+
+def income_limit_problem(quote: str, state: str, value: Any) -> str | None:
+    """Why an income field's quote (INCOME_LIMIT_PATHS) gives another state's or another
+    measure's limit, or None: a band under another state's heading, a band for another state's
+    facilities named by postal code, or a percentage of another benchmark than the poverty
+    level. The pipeline also runs it on an owner-ruled ceiling, which no ruling excuses from it."""
+    if bands_under_another_state(quote, state, value):
+        return OTHER_STATE_REASON
+    if names_other_state_facility(quote, state):
+        return OTHER_STATE_FACILITY_REASON
+    if any(percent_of_other_basis(quote, limit) for limit in _income_limits(value)):
+        return OTHER_BASIS_REASON
+    return None
+
+
 CEILING_UNTIED_REASON = "quote does not state the ceiling as a percentage of the poverty level"
 CEILING_FLOOR_REASON = (
     "quote states the percentage as a floor (above, over, at least), not a ceiling"
@@ -650,6 +1300,7 @@ CEILING_FLOOR_REASON = (
 CEILING_NOT_TOP_REASON = "quote names a higher income limit than the ceiling"
 CEILING_NOT_ASSISTANCE_REASON = "quote does not say the hospital's financial assistance reaches it"
 CEILING_OTHER_PROGRAM_REASON = "quote is about another program or a payment plan"
+CEILING_FREE_BAND_REASON = "quote states the free-care band, not the ceiling"
 # A floor just before the percentage, the number perhaps spelled out first ("more than four
 # hundred percent (400%)").
 _FLOOR_BEFORE = re.compile(
@@ -683,12 +1334,46 @@ def _about_own_assistance(text: str) -> bool:
     )
 
 
+# Russell Regional (171350) published an assistance ceiling of 70 from "Patient/guarantors that
+# fall below Level 1, 70% of FPL, will receive a 100% discount": its free-care line, while its
+# table runs on to 200%, the policy's ceiling. A ceiling quote that promises free care and states
+# no partial help is that free band. Decision B stands ("you may receive a discount of up to 100
+# percent ... at or below 400%" is a ceiling), and so does a sentence that gives the free band and
+# partial help ("a discount if ... at or below 400% ..., and free care if ... below 150%", Dameron,
+# 050122; "100% discounts ... up to 600% FPL and lower discounts ... up to 800% FPL", NYU, 330214).
+# "Discounted" in any form is partial help ("free care up to 200% FPL, discounted to 250% FPL",
+# "Discounted or free care is available up to 400%"); "fully discounted" is free-care wording and
+# goes with it. So is a price at the amounts generally billed ("100% write-off AGB Percentage times
+# remaining self-pay balance").
+_PARTIAL_HELP = re.compile(
+    r"\bsliding\b|\bpartial\w*|\breduced\b|\breduction in charges\b"
+    r"|\bdiscounted\b|\bdiscounts?\b(?! of 100)(?! ?\(100)|\bagb\b|\bamounts? generally billed\b"
+    r"|(?<![\d.])[1-9]\d?(?:\.\d+)? ?(?:%|percent) (?:discount|reduction|adjustment|write"
+    r"|financial assistance|charity|of (?:agb|charges))"
+)
+
+
+def _quotes_only_the_free_band(text: str) -> bool:
+    """Whether a normalized ceiling quote promises free care and nothing less: no hedged "up to
+    100%", no ceiling wording ("full or partial"), and no partial help once its free-care words
+    are taken out."""
+    if _UP_TO_FULL.search(text) or _HEDGED_UP_TO_FULL.search(text):
+        return False
+    if _CEILING_WORDING.search(text) or _FREE_SENTENCE.search(text) is None:
+        return False
+    return _PARTIAL_HELP.search(_FREE_SENTENCE.sub(" ", text)) is None
+
+
 def ceiling_problem(quote: str, value: Decimal) -> str | None:
     """Why `quote` cannot carry an assistance ceiling of `value`, or None when it can: it must
     name the value as a percentage of the poverty level, as the top of the limits it names and not
-    as a floor ("above 400%"), in a sentence about the hospital's own help. Review of 7.14: a state
-    program's 300%, Medicaid screening at 138%, a payment plan, catastrophic help above 400% and
-    the first band of a sliding scale all verified as ceilings before."""
+    as a floor ("above 400%"), in a sentence that is more than its free-care band and is about the
+    hospital's own help (ceiling_assistance_problem). Review of 7.14: a state program's 300%,
+    Medicaid screening at 138%, a payment plan, catastrophic help above 400% and the first band of
+    a sliding scale all verified as ceilings before. The free-band reading comes before the
+    sentence's subject: Russell Regional's misread (171350) worded "will receive free care" names
+    no assistance, and dropped as not about it, it would hold nothing (CEILING_FREE_BAND_REASON
+    holds the sheet)."""
     text = _poverty_text(quote)
     tied = _tied_percents(text)
     starts = [start for number, start in tied if number == Decimal(value)]
@@ -698,12 +1383,36 @@ def ceiling_problem(quote: str, value: Decimal) -> str | None:
         return CEILING_FLOOR_REASON
     if any(number > Decimal(value) for number, _ in tied):
         return CEILING_NOT_TOP_REASON
-    stripped = _NEGATED_PROGRAM.sub(" ", text)
+    # Only a quote whose one poverty-level percentage is the ceiling: "up to 300% ..., with free
+    # care below 200%" states the ceiling beside the free band.
+    if {number for number, _ in tied} <= {Decimal(value)} and _quotes_only_the_free_band(
+        normalize(quote)
+    ):
+        return CEILING_FREE_BAND_REASON
+    return ceiling_assistance_problem(quote)
+
+
+def ceiling_assistance_problem(quote: str) -> str | None:
+    """Why a ceiling quote is not about the hospital's own help, or None: it must speak of
+    assistance, a discount or charity, and not of another program or a payment plan. These are
+    the tests ceiling_problem runs after the free-band reading, so the pipeline runs them again
+    on a ruled ceiling the owner's ruling spares from that reading
+    (pipeline._keep_owner_ruled_ceiling)."""
+    stripped = _NEGATED_PROGRAM.sub(" ", _poverty_text(quote))
     if _ASSISTANCE_WORDS.search(stripped) is None:
         return CEILING_NOT_ASSISTANCE_REASON
     if _OTHER_PROGRAM.search(stripped) is not None:
         return CEILING_OTHER_PROGRAM_REASON
     return None
+
+
+# A rejection for one of these reasons holds the sheet rather than only dropping the field: the
+# rest of the sheet would then publish a worse answer. A patient-share table hides the co-pay
+# band; without Russell's misread ceiling its table starts at 70% with nothing below; without
+# Trinity Bettendorf's Illinois free-care band its table starts at 200% with nothing below. A
+# ceiling an owner's ruling made is the owner's: the pipeline keeps it and records the conflict
+# (pipeline.OWNER_RULING_CONFLICT), as it does with Russell's own "discount 70" ruling.
+HOLDING_REASONS = (PATIENT_SHARE_REASON, CEILING_FREE_BAND_REASON, OTHER_STATE_FACILITY_REASON)
 
 
 FREE_LIMIT_UNTIED_REASON = "quote does not state the free-care limit as an income limit"
@@ -762,6 +1471,114 @@ def free_limit_split_by_service(quote: str) -> bool:
     if not (_INPATIENT.search(text) and _OUTPATIENT.search(text)):
         return False
     return len({number for number, _ in _tied_percents(_poverty_text(quote))}) >= 2
+
+
+# Free-care limits the publication audit (2026-10-24) found misread. Each reason rejects the limit
+# alone and writes no value; neither holds the sheet unless its discount table stays.
+FREE_BAND_FEE_REASON = "quote charges the patient within the free band"
+FREE_LIMIT_BELOW_FULL_HELP_REASON = "the document gives full assistance to a band above this limit"
+# A free-care limit rejected for one of these holds the sheet while its discount table stays
+# (pipeline._holding_reasons): the table would publish with nothing below its first band, where
+# the policy's free band is, and the band-gap check (publish.sheet_inconsistencies) sees only the
+# fields that stay. Henry County's shape (361309): free care to 100%, a line that gives 101-200% a
+# 100% discount, bands from 200%; University Health Lakewood's (260102): a 0-100% band that still
+# charges a fee, a table from 300%.
+HOLDING_BESIDE_A_TABLE_REASONS = (FREE_BAND_FEE_REASON, FREE_LIMIT_BELOW_FULL_HELP_REASON)
+# What a free band still charges: a patient, service, visit or flat fee, a nominal or minimal
+# payment (Lake Charles Memorial, 190060: "subject to a minimal fee"), a dollar amount per visit,
+# day or 30-day period ("$100 per inpatient day"), or one after a kind of care ("Emergency
+# Department $10"). "$5,680 per person" sizes a household and "$0" charges nothing. An amount per
+# year or month is an income, as in Advocate's (140223, 140288) "at or below 300% FPL (~$47,880/yr
+# single)", unless a fee follows it: "a $10 per month fee".
+_CHARGES_PATIENT = re.compile(
+    r"\b(?:patient|service|visit|flat) fees?\b"
+    r"|\b(?:nominal|minimal) (?:payments?|fees?|amounts?|charges?)\b"
+    r"(?! (?:will be |is |are )?(?:waived|collected|due))"
+    r"|\$ ?[1-9][\d,]*(?:\.\d\d)? ?(?:/|per\b)"
+    r"(?! ?(?:additional |each |extra )?(?:person|member|family|individual|dependent|household)"
+    r"| ?(?:calendar )?(?:yr|year|annum|mo|month|wk|week|hr|hour)s?\b"
+    r"(?! (?:fees?|charges?|co-?pays?)\b))"
+    r"|\b(?:visit|department|room|clinic)s?\b:? ?\$ ?[1-9]"
+)
+# A fee the quote says is not charged: up to three words before it "no patient fees", "will not
+# be charged a nominal fee" (Linton Regional, 351328: "Patients will not be required a nominal
+# fee"), or within three words after it "patient fees are waived", "service fees will not be
+# charged". "Patient fees are not waived" still charges, and so does "at no charge or at the
+# nominal payment level" (North Shore University, 330106), whose "no" is four words back.
+_FEE_NEGATED_BEFORE = re.compile(r"\b(?:no|without|waives?|waived|not)\b(?: \S+){0,3} ?$")
+_FEE_WAIVED_AFTER = re.compile(
+    r"\W{0,3}(?:(?!not )\S+ ){0,3}?(?:is |are |will be |shall be )?"
+    r"(?:waived|not (?:be )?(?:charged|collected|required|apply))"
+)
+
+
+def free_band_charges_patient(quote: str) -> bool:
+    """Whether a free-care quote still charges the patient something within its band: a fee, a
+    nominal payment or an amount per visit that the quote does not waive. University Health
+    Lakewood (260102) published free care to 100% from "0-100% FPL - patient service fee 1.
+    Outpatient office visit $5 2. Emergency Department $10", and Cayuga Medical Center (330307)
+    from a band that "qualifies for a nominal payment limit". A clinic's copay named without an
+    amount is not caught (Mizell, 010007, where hospital care is free)."""
+    text = normalize(quote)
+    return any(
+        _FEE_NEGATED_BEFORE.search(text, 0, match.start()) is None
+        and _FEE_WAIVED_AFTER.match(text, match.end()) is None
+        for match in _CHARGES_PATIENT.finditer(text)
+    )
+
+
+# A band of the poverty level written with both ends: "151% and 300%", "101-200%", "201 % but less
+# than or equal to 350%".
+_BAND_END = r"(\d{2,3}(?:\.\d+)?) ?(?:%|percent)?"
+_FPL_BAND = re.compile(
+    rf"(?<![\d.$]){_BAND_END} ?(?:-|to|through|thru|and|but (?:less than or equal to"
+    rf"|not (?:more|greater) than|no more than|up to)|and (?:up to|less than or equal to)) ?"
+    rf"{_BAND_END} ?(?:%|percent)"
+)
+# Full help within 120 characters after the band, with no other number between.
+_FULL_HELP_AFTER = re.compile(
+    r"[^%\d]{0,120}?(?:\b100 ?(?:%|percent) (?:financial assistance|charity|discount|adjustment"
+    r"|write[- ]?off|reduction|of (?:the )?(?:charges|balance)|free)|\bfree care\b"
+    r"|\bfree of charge\b|\bno cost\b|\bat no charge\b)"
+)
+# Sentences whose full help is not a free band: cost sharing waived (Lima Memorial, 360009: "a 100%
+# discount on any co-pay, co-insurance, and deductible after insurance"), or insured patients only.
+_COST_SHARING = re.compile(
+    r"\bco-?pays?\b|\bco-?payments?\b|\bco-?insurance\b|\bdeductibles?\b|\bout[- ]of[- ]pocket\b"
+)
+# "Un-insured", "non-insured" and "under-insured" patients are deliberately not insured-only.
+_INSURED_ONLY = re.compile(
+    r"\b(?:have|has|with) (?:health )?insurance\b|(?<![\w-])insured patients?\b"
+    r"|\bafter insurance\b"
+)
+
+
+def full_help_band_above(value: Decimal, document_text: str) -> bool:
+    """Whether the field's own document gives full help, free care or 100% assistance, to a band
+    that starts just above the free-care limit `value` and ends above it. The limit then stops
+    short of the free band: Emory Houston (110069) and St Francis-Emory (110129) published free care
+    to 200% from clause b of Emory's policy, whose clause c gives uninsured patients "at least 201 %
+    but less than or equal to 350%" of the guidelines "100% financial assistance". A sentence of
+    the form "may ... up to 100%" is no free band (decision B), and neither is one that waives
+    cost sharing, is about insured patients only, or still charges a fee: Enloe (050039) gives
+    151%-300% "free care after a $100 per visit co-pay"."""
+    limit = Decimal(value)
+    for sentence in _SENTENCES.split(_poverty_text(document_text)):
+        if not any(
+            limit < Decimal(band.group(1)) <= limit + 1
+            and Decimal(band.group(2)) > limit
+            and _FULL_HELP_AFTER.match(sentence, band.end())
+            for band in _FPL_BAND.finditer(sentence)
+        ):
+            continue
+        if not (
+            _HEDGED_UP_TO_FULL.search(sentence)
+            or _COST_SHARING.search(sentence)
+            or _INSURED_ONLY.search(sentence)
+            or free_band_charges_patient(sentence)
+        ):
+            return True
+    return False
 
 
 # Task 7.15a: Oneida (330115) published free care up to 100% of the poverty level from "Sliding
@@ -1151,6 +1968,29 @@ TRANSLATION_REASON = "quote is from a translation while an English document stat
 # aside before structuring; a sheet built before still quotes them while they stay linked.
 DENTAL_REASON = "quote is from a dental assistance program's document, not the hospital's policy"
 OTHER_REGION_REASON = "quote is from another Kaiser region's policy, not the hospital's state's"
+# The 2026-10-24 publication audit: published sheets quoted a policy whose own list of covered
+# hospitals leaves the hospital out (UnityPoint's 1.BR.34 for Clarke County, 161348; Carle Health
+# West Region's Schedule D for Carle Hoopeston, 141316; Emory Healthcare's "Hospitals include:" for
+# St. Francis-Emory, 110129), another hospital's policy beside the one the hospital's site links as
+# its own (Rochester General's for Canton-Potsdam, 330197), and another state's version of a system
+# policy (Ascension Saint Agnes, Maryland, for Ascension Providence in Waco, 450042). The pipeline
+# names those documents too (pipeline.foreign_documents, sibling_policies, other_state_documents).
+# The schedule clause has its own reason: Carle West's policy sits on Carle Hoopeston's own website.
+# Each set-aside reason fits the withdraw table's notes after the longest field path
+# (cli.NOTES_CHARS). The document is the policy or one that goes with it, such as UnityPoint's
+# application for Clarke County; the policy's list of covered hospitals leaves the hospital out.
+FOREIGN_OWNER_REASON = (
+    "quote is from another organisation's document; its policy leaves the hospital out and the "
+    "hospital's site does not link it"
+)
+SCHEDULE_OWNER_REASON = (
+    "quote is from a policy whose own list of covered hospitals leaves this hospital out"
+)
+SIBLING_POLICY_REASON = "quote is from another hospital's policy; the hospital's site links its own"
+OTHER_STATE_DOCUMENT_REASON = "quote is from another state's version of the system policy"
+# Mercy Merced (050444, California) lent Mercy San Juan's application to Longmont United (060003,
+# Colorado) before siblings lent only within the state; nothing in its address names California.
+LENT_DOCUMENT_REASON = "quote is from a document lent by another state's hospital"
 
 
 @dataclass
@@ -1170,9 +2010,11 @@ def verify_sheet(
 ) -> VerificationReport:
     """Each documented field held to its quote and its source text; `set_aside` names the
     documents no field may be quoted from, each with the reason (TRANSLATION_REASON,
-    DENTAL_REASON, OTHER_REGION_REASON)."""
+    DENTAL_REASON, OTHER_REGION_REASON, OTHER_STATE_DOCUMENT_REASON, LENT_DOCUMENT_REASON,
+    FOREIGN_OWNER_REASON, SCHEDULE_OWNER_REASON, SIBLING_POLICY_REASON)."""
     set_aside = set_aside or {}
     report = VerificationReport()
+    insured_table = _insured_table(sheet, documents)
     for path, cited in sheet.field_paths():
         if cited.layer is Layer.REPORTED:
             report.accepted.append(path)
@@ -1199,10 +2041,16 @@ def verify_sheet(
             reason := ceiling_problem(cited.quote or "", cited.value)
         ):
             report.rejected.append((path, reason))
-        elif path in INCOME_LIMIT_PATHS and (
-            bands_under_another_state(cited.quote or "", sheet.hospital.state, cited.value)
+        elif path == "eligibility.discount_tiers" and (
+            quotes_patient_share(cited.quote or "") or tiers_rise_with_income(cited.value)
         ):
-            report.rejected.append((path, OTHER_STATE_REASON))
+            # Before the income-limit tests: the patient's share holds the sheet, and a table
+            # measured on another benchmark, or under another state's heading, only goes.
+            report.rejected.append((path, PATIENT_SHARE_REASON))
+        elif path in INCOME_LIMIT_PATHS and (
+            reason := income_limit_problem(cited.quote or "", sheet.hospital.state, cited.value)
+        ):
+            report.rejected.append((path, reason))
         elif path == "eligibility.free_care_max_fpl" and not _free_limit_stated(
             cited.value, cited.quote or ""
         ):
@@ -1221,30 +2069,59 @@ def verify_sheet(
             cited.quote or "", sheet.hospital.state
         ):
             report.rejected.append((path, OTHER_STATE_REASON))
+        elif path == "eligibility.free_care_max_fpl" and free_band_charges_patient(
+            cited.quote or ""
+        ):
+            report.rejected.append((path, FREE_BAND_FEE_REASON))
+        elif path == "eligibility.free_care_max_fpl" and full_help_band_above(cited.value, text):
+            report.rejected.append((path, FREE_LIMIT_BELOW_FULL_HELP_REASON))
         elif path == "eligibility.free_care_max_fpl" and quotes_assistance_ceiling(
             cited.quote or ""
         ):
             report.rejected.append((path, CEILING_REASON))
-        elif path == "eligibility.discount_tiers" and (
-            quotes_patient_share(cited.quote or "") or tiers_rise_with_income(cited.value)
+        elif (
+            path == "eligibility.free_care_max_fpl"
+            and insured_table is not None
+            and cited.source_id == insured_table[0]
+            and normalize(cited.quote or "") in insured_table[1]
         ):
-            report.rejected.append((path, PATIENT_SHARE_REASON))
+            report.rejected.append((path, INSURED_TABLE_REASON))
         elif path == "eligibility.discount_tiers" and discount_range_in_quote(cited.quote or "") & {
             Decimal(tier.discount_percent) for tier in cited.value
         }:
             report.rejected.append((path, RANGE_REASON))
-        elif path == "eligibility.insured_patients_covered" and quotes_only_the_agb_cap(
-            cited.quote or ""
+        elif path == "eligibility.discount_tiers" and tiers_need_hardship(
+            cited.quote or "", cited.value
         ):
-            report.rejected.append((path, AGB_CAP_REASON))
-        elif path == "eligibility.insured_patients_covered" and not quote_addresses_insured(
-            cited.quote or "", bool(cited.value)
+            report.rejected.append((path, HARDSHIP_TIER_REASON))
+        elif path == "eligibility.discount_tiers" and tier_is_additional(
+            cited.quote or "", cited.value
         ):
-            report.rejected.append((path, INSURED_REASON))
+            report.rejected.append((path, ADDITIONAL_TIER_REASON))
+        elif (
+            path == "eligibility.discount_tiers"
+            and insured_only_table(cited.quote or "", text)
+            and not uninsured_get_same_tiers(text, cited.value)
+        ):
+            report.rejected.append((path, INSURED_TABLE_REASON))
+        elif path == "eligibility.discount_tiers" and wrong_regulated_column(
+            cited.quote or "", sheet.hospital.state, cited.value
+        ):
+            report.rejected.append((path, REGULATED_COLUMN_REASON))
+        elif path == "eligibility.discount_tiers" and tiers_split_by_service(cited.quote or ""):
+            report.rejected.append((path, TIERS_SPLIT_REASON))
+        elif path == "eligibility.insured_patients_covered" and (
+            reason := insured_field_problem(cited.quote or "", bool(cited.value))
+        ):
+            report.rejected.append((path, reason))
         elif path == "eligibility.asset_test" and not quote_supports_asset_test(
             cited.quote or "", bool(cited.value)
         ):
             report.rejected.append((path, ASSET_REASON))
+        elif path == "eligibility.residency" and (
+            reason := residency_problem(cited.value, cited.quote or "")
+        ):
+            report.rejected.append((path, reason))
         else:
             report.accepted.append(path)
     return report

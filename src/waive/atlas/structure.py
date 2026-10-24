@@ -22,7 +22,14 @@ from waive.atlas.schema import (
     SourceDoc,
     SubmitMethod,
 )
-from waive.atlas.states import CODE_OF_NAME, STATE_NAMES, US_STATES, states_named
+from waive.atlas.states import (
+    CODE_OF_NAME,
+    STATE_CODE,
+    STATE_NAMES,
+    US_STATES,
+    code_tokens,
+    states_named,
+)
 from waive.atlas.verify import (
     normalize,
     quotes_assistance_ceiling,
@@ -260,22 +267,10 @@ def _str_list(value: Any) -> list[str]:
 
 
 MIN_WINDOW_DAYS = 240
-_CODE = "|".join(US_STATES)
-# Codes count only as upper-case tokens inside mixed-case text ("KS, MO or IL") ...
-_STATE_CODES = re.compile(rf"\b({_CODE})\b")
-# ... and the ones that are English words only inside a list of codes: "Residents of Indiana OR
-# Illinois" names two states, not Oregon (review of 7.9).
-WORD_CODES = frozenset({"OR", "IN", "ME", "OK", "HI"})
-_CODE_LIST = re.compile(
-    rf"\b(?:{_CODE})(?:\s*,\s*(?:{_CODE}))*\s*,?\s+(?i:and|or|&)\s+(?:{_CODE})\b"
-)
 
 
 def _codes_in(text: str) -> list[str]:
-    listed: set[str] = set()
-    for match in _CODE_LIST.finditer(text):
-        listed.update(_STATE_CODES.findall(match.group(0)))
-    return [code for code in _STATE_CODES.findall(text) if code not in WORD_CODES or code in listed]
+    return [match.group(1) for match in code_tokens(text)]
 
 
 def _states(value: Any) -> list[str]:
@@ -296,7 +291,7 @@ def _states(value: Any) -> list[str]:
     return codes
 
 
-_PARENTHESISED_CODE = re.compile(rf"\(({_CODE})\)")
+_PARENTHESISED_CODE = re.compile(rf"\(({STATE_CODE})\)")
 # Kaiser Permanente runs its regions from one site and files each region's documents under the
 # region's marker, not a state's name: kp.org/mfa/mas is the Mid-Atlantic States' aid page,
 # .../support/mfa-summary-nw-2023-english.pdf Kaiser Northwest's (Oregon and Washington) summary,
