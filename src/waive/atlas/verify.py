@@ -256,6 +256,150 @@ def tiers_rise_with_income(tiers: list[DiscountTier]) -> bool:
     )
 
 
+# Discount tables the publication audit (2026-10-24) found misread. Each reason rejects the tiers
+# alone: none holds the sheet or writes a value.
+HARDSHIP_TIER_REASON = "the band needs a financial hardship, so it is not an income band"
+ADDITIONAL_TIER_REASON = "the discount is added to another one"
+INSURED_TABLE_REASON = "the table is for insured patients only"
+REGULATED_COLUMN_REASON = "the tier is read from the wrong column of the table for this hospital"
+TIERS_SPLIT_REASON = "the table gives different discounts for inpatient and outpatient care"
+# A condition besides income. MassHealth's "Medical Hardship Family Countable Income" is how the
+# Health Safety Net measures income, never a condition ("MAGI Household Income or Medical Hardship
+# Family Countable Income is between 150.1% and 300%").
+_HARDSHIP = re.compile(
+    r"\b(?:financial|medical) hardship\b(?! family countable)|\bmedical debt\b|\bcatastrophic\b"
+)
+# The quote's sentences, split before normalizing, which would join a table's rows into one line.
+_QUOTE_SENTENCES = re.compile(r"(?<=[.;])\s+|\n+")
+
+
+def tiers_need_hardship(quote: str, tiers: list[DiscountTier]) -> bool:
+    """Whether a sentence of the quote that states a tier's discount also asks for a financial or
+    medical hardship, medical debt or catastrophic expenses. Such a band is not open to every
+    household whose income falls in it: Union Hospital of Cecil County (210032) published 40% for
+    401-450% from "between 401-450% of FPL and with a financial hardship will receive a 40%
+    adjustment", Maryland's reduced-cost care for medical debt."""
+    for sentence in _QUOTE_SENTENCES.split(quote):
+        text = normalize(sentence)
+        if _HARDSHIP.search(text) and any(
+            _number_in(tier.discount_percent, text) for tier in tiers
+        ):
+            return True
+    return False
+
+
+# "with an additional 25% discount on the remaining balance": a percentage taken off what another
+# discount leaves. "Add $5,680 for each additional person" is no discount.
+_ADDITIONAL = re.compile(
+    r"\badditional (\d+(?:\.\d+)?) ?(?:%|percent) (?:discount|reduction|off\b|adjustment|write)"
+)
+
+
+def tier_is_additional(quote: str, tiers: list[DiscountTier]) -> bool:
+    """Whether a stored tier's discount is one the quote adds to another discount. The band's
+    discount is then both together, which the one percentage misstates: University Health
+    Lakewood (260102) published 25% for 301-400% from "discounted by the current Uninsured
+    Discount amount, with an additional 25% discount on the remaining balance"."""
+    added = {Decimal(match.group(1)) for match in _ADDITIONAL.finditer(normalize(quote))}
+    return bool(added & {tier.discount_percent for tier in tiers})
+
+
+# Who a table is for: "insured" as its own word, or inside "uninsured" or "underinsured" (group 1).
+_POPULATION = re.compile(r"\b(un-?|under-?)?insured\b")
+# Insured patients named as the table's own lead-in: an "Insured Patients:" heading, or "for
+# qualifying insured patients".
+_INSURED_LEAD = re.compile(
+    r"(?:^|[.:;] |\bfor (?:qualifying |eligible |all )?)insured "
+    r"(?:patients?|individuals?|persons?)\b"
+)
+_BOTH_POPULATIONS = re.compile(r"\b(?:un-?|under-?)insured (?:and|or|&|/) ?$")
+_OTHER_POPULATION = re.compile(r"\b(?:un-?|under-?)insured\b|\bself[- ]pay\b")
+_LEAD_CHARS = 250
+
+
+def insured_only_table(quote: str, document_text: str) -> bool:
+    """Whether the document introduces the quoted table for insured patients only: the last
+    population named in the 250 characters before the quote is insured patients, in an "Insured
+    Patients:" heading or a "for qualifying insured patients" lead-in, and the quote itself names
+    no uninsured, underinsured or self-pay patients. Henry Ford (230047, 230053, 230092, 230302)
+    published as its discount scale the "Discount Off of Balance Due" table its policy gives
+    insured patients; uninsured patients pay a share of the Medicare rate under another table.
+    "Uninsured and insured patients" introduces a table for both, and the amounts-generally-billed
+    clause's "billed to commercially insured patients" introduces none (Heart of Texas, 451348)."""
+    if _OTHER_POPULATION.search(normalize(quote)):
+        return False
+    text = normalize(document_text)
+    at = text.find(normalize(quote)[:80])
+    if at < 0:
+        return False
+    lead = text[max(0, at - _LEAD_CHARS) : at]
+    mentions = list(_POPULATION.finditer(lead))
+    if not mentions or mentions[-1].group(1):
+        return False
+    last = mentions[-1]
+    return (
+        _INSURED_LEAD.search(lead[max(0, last.start() - 30) : last.end() + 12]) is not None
+        and _BOTH_POPULATIONS.search(lead[: last.start()]) is None
+    )
+
+
+# A table row: its band's label, then each column's percentage up to the next band's label.
+_ROW_PERCENT = re.compile(r"(?<![\d.$])(\d{1,3}(?:\.\d+)?) ?%")
+_ROW_LABEL = r"(?<![\d.]){low} ?%? ?(?:-|to|through|thru) ?{high} ?%"
+_NEXT_ROW_LABEL = re.compile(r"(?<![\d.])\d{1,3} ?%? ?(?:-|to|through|thru) ?\d{2,3} ?%")
+
+
+def _row_percents(text: str, tier: DiscountTier) -> list[Decimal] | None:
+    """The percentages in the tier's own row of a normalized table ("201% to 250% 75% % 80%" for
+    a tier above 200 up to 250), or None when no row carries the tier's band as its label."""
+    low, high = int(tier.min_fpl_exclusive), int(tier.max_fpl_inclusive)
+    for start in (low + 1, low):
+        label = re.search(_ROW_LABEL.format(low=start, high=high), text)
+        if label:
+            rest = text[label.end() :]
+            following = _NEXT_ROW_LABEL.search(rest)
+            row = rest[: following.start() if following else 60]
+            return [Decimal(number) for number in _ROW_PERCENT.findall(row)]
+    return None
+
+
+def wrong_regulated_column(quote: str, state: str, tiers: list[DiscountTier]) -> bool:
+    """Whether a tier is read from the wrong column of MedStar's two-column table, "HSCRC-Regulated
+    Services | Washington Hospitals, Hospital-Based Physician Practices, and non-HSCRC Regulated
+    Services": a Maryland hospital's discount is the first column, any other state's hospital's
+    the last. MedStar Montgomery (210018) and MedStar Southern Maryland (210062) published 80% for
+    201-250% from "201% to 250% 75% % 80%", where their own column gives 75%. A row with one
+    percentage, or the same one in both columns, is skipped."""
+    text = normalize(quote)
+    if "hscrc-regulated" not in text or "non-hscrc" not in text:
+        return False
+    for tier in tiers:
+        percents = _row_percents(text, tier)
+        if not percents or len(set(percents)) < 2:
+            continue
+        expected = percents[0] if state.upper() == "MD" else percents[-1]
+        if tier.discount_percent != expected:
+            return True
+    return False
+
+
+# Columns or rows for each kind of care: an "Inpatient Outpatient" header (Berkshire, 220046), or
+# an "Inpatient Discount" row with an "Outpatient Discount" row after it (Tufts, 220116).
+_SERVICE_COLUMNS = re.compile(
+    r"\bin-?patient:? out-?patient\b|\bin-?patient discount\b.{0,400}?\bout-?patient discount\b"
+)
+
+
+def tiers_split_by_service(quote: str) -> bool:
+    """Whether the quoted table gives inpatient and outpatient care different discounts. One
+    percentage per band holds only one of them, and either misleads, as with free-care limits
+    (FREE_LIMIT_SPLIT_REASON): Tufts Medical Center (220116) published 30% for 150-300%, an
+    inpatient column, where its outpatients get 69.50%, and Berkshire Medical Center (220046)
+    46.07% for 0-400%, its inpatient column, where outpatients get 63.14%. "Inpatient and
+    outpatient services will be discounted by" is one table for both."""
+    return _SERVICE_COLUMNS.search(normalize(quote)) is not None
+
+
 CEILING_REASON = "quote states an eligibility ceiling for any assistance, not a free-care band"
 # "you may qualify for full or partial financial assistance if your household income is at or
 # below 400%" (Arnot Ogden, 330090, task 7.9) bounds every kind of help; it is free care only
@@ -1626,6 +1770,22 @@ def verify_sheet(
             Decimal(tier.discount_percent) for tier in cited.value
         }:
             report.rejected.append((path, RANGE_REASON))
+        elif path == "eligibility.discount_tiers" and tiers_need_hardship(
+            cited.quote or "", cited.value
+        ):
+            report.rejected.append((path, HARDSHIP_TIER_REASON))
+        elif path == "eligibility.discount_tiers" and tier_is_additional(
+            cited.quote or "", cited.value
+        ):
+            report.rejected.append((path, ADDITIONAL_TIER_REASON))
+        elif path == "eligibility.discount_tiers" and insured_only_table(cited.quote or "", text):
+            report.rejected.append((path, INSURED_TABLE_REASON))
+        elif path == "eligibility.discount_tiers" and wrong_regulated_column(
+            cited.quote or "", sheet.hospital.state, cited.value
+        ):
+            report.rejected.append((path, REGULATED_COLUMN_REASON))
+        elif path == "eligibility.discount_tiers" and tiers_split_by_service(cited.quote or ""):
+            report.rejected.append((path, TIERS_SPLIT_REASON))
         elif path == "eligibility.insured_patients_covered" and (
             reason := insured_field_problem(cited.quote or "", bool(cited.value))
         ):

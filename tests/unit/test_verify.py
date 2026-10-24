@@ -2258,3 +2258,254 @@ def test_assistance_that_may_reach_up_to_100_percent_is_a_limit_not_free_care():
         assert not any(
             p == free for p, _ in verify_sheet(with_free_limit(value, quote), docs).rejected
         ), quote
+
+
+# Discount tables the publication audit (2026-10-24) found misread: rules R1', R2, R9, R10 and
+# R11. A quote named for a hospital is the one it published, or its policy's own text.
+CECIL_HARDSHIP = (
+    "Patients with household income between 401-450% of FPL and with a financial hardship will "
+    "receive a 40% adjustment. Patients with household income between 451-500% will receive a 35% "
+    "adjustment."
+)
+MASS_HEALTH_PARTIAL = (
+    "Patients whose MAGI Household Income or Medical Hardship Family Countable Income is between "
+    "150.1% and 300% of the FPL receive a 20% discount."
+)
+UNITYPOINT_AGB_TABLE = (
+    "2.3 Hospital bills will be further reduced by the following amounts for patients in \n"
+    "each FPIG category below:   \n0-200% of FPIG :  100% discount off AGB \n"
+    "201-225% of FPIG :  65% discount off AGB \n226-250% of FPIG :  45% discount off AGB \n"
+    "251-300% of FPIG :  25% discount off AGB \n301-400% of FPIG :  5% discount off AGB"
+)
+LAKEWOOD_TIERS = (
+    "B. 0-100% FPL – patient service fee\n1. Outpatient office visit $5\n"
+    "2. Emergency Department $10\n3. Inpatient 100% financial assistance\n"
+    "C. 101-300% FPL – patient service fee\n1. Outpatient office visit $25\n"
+    "2. Emergency Department $50\n3. Inpatient $100 per inpatient day\n"
+    "D. 301-400% FPL: Services will be discounted by the current Uninsured Discount amount, with "
+    "an additional 25% discount on the remaining balance"
+)
+HENRY_FORD_INSURED_TABLE = (
+    "Household Income Discount Off of Balance Due\n351% - 400% of the FPL 25%\n"
+    "301% - 350% of the FPL 50%\n251% - 300% of the FPL 75%\n<250% of the FPL 100%"
+)
+HENRY_FORD_TABLES = (
+    "Sliding Scale Discount Tables: \nUninsured Patients: \nFor qualifying uninsured patients "
+    "with incomes less than 400% of FPL, patient responsibility is adjusted to \nthe percentage of "
+    "the Medicare allowable amount based on the table below: \n  Household Income % of Medicare "
+    "Rate \n351% - 400% of the FPL 91% \n301% - 350% of the FPL 61% \n251% - 300% of the FPL 30% "
+    "\n<250% of the FPL 0% \nQualifying uninsured patients with incomes below 250% are given a "
+    "100% discount \nInsured Patients: \nFor qualifying insured patients with incomes less than "
+    "400% of FPL, patient responsibility is discounted \nbased on the table below \n"
+    + HENRY_FORD_INSURED_TABLE
+)
+HENRY_FORD_BANDS = [(250, 300, 75), (300, 350, 50), (350, 400, 25)]
+HEART_OF_TEXAS_TABLE = (
+    "Family Income as % of FPG Discount Patient LIability Up to 300% of FPG 100% 0% Over 300% & "
+    "up to 350% 75% 25%"
+)
+HEART_OF_TEXAS_TERMS = (
+    "2. Patients whose family income is above 300% but not more than 350% of the FPL are eligible "
+    "to receive services at amounts no greater than the amounts generally billed to (received by "
+    "the hospital for) commercially insured [or Medicare] patients; Current levels of discount and "
+    "patient liability are: " + HEART_OF_TEXAS_TABLE
+)
+ALEXIAN_TABLE = (
+    "(FPL – Federal Poverty Level Income) Uninsured Patient Sliding Scale % Insured Patient "
+    "Sliding Scale % 0% - 250% FPL 100% 0% - 250% FPL 100% 251% - 300% FPL 95% 251% - 300% FPL "
+    "95% 301% - 400% FPL 90% 301% - 400% FPL 90% 401% - 600% FPL 85%"
+)
+MEDSTAR_REDUCED_COST_TABLE = (
+    "Financial Assistance Level  \nFree / Reduced-Cost Care  \n\nAdjusted Percentage of  \n"
+    "Poverty Level  \n\nHSCRC-Regulated  \nServices  \nWashington Hospitals,  \n"
+    "Hospital-Based Physician  \nPractices, and non-HSCRC  \nRegulated Services  \n"
+    "0% to 200% 100% 100%  \n201% to 250% 75% % 80%  \n251% to 300% 60% 60%  \n"
+    "301% to 350%   40%  \n351% to 400%    20%"
+)
+MEDSTAR_HSCRC_COLUMN = [(200, 250, 75), (250, 300, 60), (300, 350, 40), (350, 400, 20)]
+MEDSTAR_WASHINGTON_COLUMN = [(200, 250, 80), (250, 300, 60), (300, 350, 40), (350, 400, 20)]
+TUFTS_SERVICE_TABLE = (
+    "Family Size\n\n100% FPL\nUp to\n150% FPL\nUp to\n300% FPL\nGreater than\n301% FPL\n"
+    "1 $13,596 $20,388 $40,776 $40,777\n2 $18,312 $27,468 $54,936 $54,937\n"
+    "3 $23,040 $34,548 $69,096 $69,097\n4 $27,756 $41,628 $83,256 $83,257\n"
+    "5 $32,472 $48,708 $97,416 $97,417\n6 $37,200 $55,788 $111,576 $111,577\n"
+    "7 $41,916 $62,868 $125,736 $125,737\n8 $46,632 $69,948 $139,896 $139,897\n"
+    "Each Person > 8 $4,728 $7,080 $14,160 $14,161\n\nTM Lowell General Hospital\n"
+    "Inpatient Discount\n100% 63.28% 30%\nTM Lowell General Hospital\nOutpatient Discount \n"
+    "70.54%\n\nTM Melrose Wakefield Hospital\nInpatient Discount\n100% 36.84% 30%\n"
+    "TM Melrose Wakefield Hospital\nOutpatient Discount\n65.91%\n\n"
+    "TM Tufts Medical Center Hospital\nInpatient Discount\n100% 49.50% 30%\n"
+    "TM Tufts Medical Center Hospital\nOutpatient Discount\n69.50%"
+)
+BERKSHIRE_SERVICE_TABLE = (
+    "Family Income as % of FPG\nBerkshire Medical Center\nFairview Hospital\nInpatient\n"
+    "Outpatient\nInpatient\nOutpatient\n0 – 400\n46.07%\n63.14%\n48.58%\n53.17%"
+)
+ONE_TABLE_FOR_BOTH = (
+    "Inpatient and outpatient services will be discounted by the following percentages: "
+    "201-250% 80%"
+)
+
+
+def tiers_of(bands):
+    return [
+        DiscountTier(
+            min_fpl_exclusive=Decimal(low), max_fpl_inclusive=Decimal(high), discount_percent=pct
+        )
+        for low, high, pct in bands
+    ]
+
+
+def with_tiers_in(quote, bands, state):
+    sheet = with_tiers_quote(quote, bands)
+    return sheet.model_copy(update={"hospital": sheet.hospital.model_copy(update={"state": state})})
+
+
+_HARDSHIP_TIER_CASES = [
+    # Union Hospital of Cecil County (210032): the 401-450% band needs a financial hardship
+    # (Maryland's reduced-cost care for medical debt); both bands were published as income bands.
+    (CECIL_HARDSHIP, [(400, 450, 40), (450, 500, 35)], True),
+    ("Patients with a medical hardship and income between 301% and 500% of the FPL receive a 50% "
+     "discount.", [(300, 500, 50)], True),
+    ("Patients with medical debt above 25% of family income and income between 401% and 500% of "
+     "the FPL receive a 50% discount.", [(400, 500, 50)], True),
+    ("Patients with catastrophic medical expenses and income between 401% and 500% of the FPL "
+     "receive a 30% discount.", [(400, 500, 30)], True),
+    # MassHealth's "Medical Hardship Family Countable Income" is an income measure, no condition.
+    (MASS_HEALTH_PARTIAL, [(150, 300, 20)], False),
+    (UNITYPOINT_AGB_TABLE, [(200, 225, 65), (225, 250, 45), (250, 300, 25), (300, 400, 5)], False),
+    # The hardship sentence states none of the tiers' discounts.
+    ("Patients with a financial hardship may apply for further help. Patients between 201% and "
+     "300% of the FPL receive a 50% discount.", [(200, 300, 50)], False),
+]  # fmt: skip
+
+
+@pytest.mark.parametrize(("quote", "bands", "expected"), _HARDSHIP_TIER_CASES)
+def test_tiers_need_hardship(quote, bands, expected):
+    from waive.atlas.verify import tiers_need_hardship
+
+    assert tiers_need_hardship(quote, tiers_of(bands)) is expected
+
+
+_ADDITIONAL_TIER_CASES = [
+    # University Health Lakewood (260102): the 301-400% band gets the uninsured discount first and
+    # 25% more on what is left, so 25 is not that band's discount.
+    (LAKEWOOD_TIERS, [(300, 400, 25)], True),
+    ("Patients between 301% and 400% of the FPL receive an additional 20 percent reduction after "
+     "the self-pay discount.", [(300, 400, 20)], True),
+    ("Patients between 201% and 300% of FPL receive a 50% discount. Add $5,680 for each "
+     "additional person.", [(200, 300, 50)], False),
+    # The added discount is not a stored tier's.
+    ("Patients between 201% and 300% of the FPL receive a 75% discount, and an additional 10% "
+     "discount for prompt payment.", [(200, 300, 75)], False),
+]  # fmt: skip
+
+
+@pytest.mark.parametrize(("quote", "bands", "expected"), _ADDITIONAL_TIER_CASES)
+def test_tier_is_additional(quote, bands, expected):
+    from waive.atlas.verify import tier_is_additional
+
+    assert tier_is_additional(quote, tiers_of(bands)) is expected
+
+
+_INSURED_TABLE_CASES = [
+    # Henry Ford (230047, 230053, 230092, 230302): the "Discount Off of Balance Due" table follows
+    # "Insured Patients: For qualifying insured patients"; uninsured patients have their own table.
+    (HENRY_FORD_INSURED_TABLE, HENRY_FORD_TABLES, True),
+    (HENRY_FORD_INSURED_TABLE, "Insured Patients:\n" + HENRY_FORD_INSURED_TABLE, True),
+    (HENRY_FORD_INSURED_TABLE, "Financial assistance is available to both uninsured and insured "
+     "patients. Discounts are based on the table below: \n" + HENRY_FORD_INSURED_TABLE, False),
+    # Heart of Texas (451348): the AGB clause's "commercially insured patients" introduces no table.
+    (HEART_OF_TEXAS_TABLE, HEART_OF_TEXAS_TERMS, False),
+    # Alexian Brothers (140258): the quote has an uninsured column of its own.
+    (ALEXIAN_TABLE, "The sliding scale discount is as follows: " + ALEXIAN_TABLE, False),
+    # The quote is not in the document: nothing comes before it.
+    (HENRY_FORD_INSURED_TABLE, "Insured Patients: For qualifying insured patients the table "
+     "below applies.", False),
+]  # fmt: skip
+
+
+@pytest.mark.parametrize(("quote", "document", "expected"), _INSURED_TABLE_CASES)
+def test_insured_only_table(quote, document, expected):
+    from waive.atlas.verify import insured_only_table
+
+    assert insured_only_table(quote, document) is expected
+
+
+_REGULATED_COLUMN_CASES = [
+    # MedStar Montgomery (210018) and MedStar Southern Maryland (210062) published 80 for the
+    # 201-250% band, read from the Washington hospitals' column; a Maryland hospital's is 75.
+    (MEDSTAR_REDUCED_COST_TABLE, "MD", MEDSTAR_WASHINGTON_COLUMN, True),
+    (MEDSTAR_REDUCED_COST_TABLE, "MD", MEDSTAR_HSCRC_COLUMN, False),
+    # A Washington, D.C. hospital (MedStar Washington, 090011) reads the last column.
+    (MEDSTAR_REDUCED_COST_TABLE, "DC", MEDSTAR_WASHINGTON_COLUMN, False),
+    (MEDSTAR_REDUCED_COST_TABLE, "DC", MEDSTAR_HSCRC_COLUMN, True),
+    # Two columns without the HSCRC headers: no rule says which one is the hospital's.
+    ("201% to 250% 75% 80%", "MD", [(200, 250, 80)], False),
+]
+
+
+@pytest.mark.parametrize(("quote", "state", "bands", "expected"), _REGULATED_COLUMN_CASES)
+def test_wrong_regulated_column(quote, state, bands, expected):
+    from waive.atlas.verify import wrong_regulated_column
+
+    assert wrong_regulated_column(quote, state, tiers_of(bands)) is expected
+
+
+_SPLIT_BY_SERVICE_CASES = [
+    # Tufts Medical Center (220116) published 30% for 150-300%, one hospital's inpatient column;
+    # its outpatients get 69.50%. Berkshire Medical Center (220046) published 46.07%, its
+    # inpatient column; outpatients get 63.14%.
+    (TUFTS_SERVICE_TABLE, True),
+    (BERKSHIRE_SERVICE_TABLE, True),
+    ("Income In-patient: Out-patient 201-300% 50% 60%", True),
+    (ONE_TABLE_FOR_BOTH, False),
+    (LAKEWOOD_TIERS, False),
+]
+
+
+@pytest.mark.parametrize(("quote", "expected"), _SPLIT_BY_SERVICE_CASES)
+def test_tiers_split_by_service(quote, expected):
+    from waive.atlas.verify import tiers_split_by_service
+
+    assert tiers_split_by_service(quote) is expected
+
+
+_MISREAD_TIER_SHEETS = [
+    ("HARDSHIP_TIER_REASON", CECIL_HARDSHIP, [(400, 450, 40), (450, 500, 35)], "MD",
+     CECIL_HARDSHIP),
+    ("ADDITIONAL_TIER_REASON", LAKEWOOD_TIERS, [(300, 400, 25)], "MO", LAKEWOOD_TIERS),
+    ("INSURED_TABLE_REASON", HENRY_FORD_INSURED_TABLE, HENRY_FORD_BANDS, "MI", HENRY_FORD_TABLES),
+    ("REGULATED_COLUMN_REASON", MEDSTAR_REDUCED_COST_TABLE, MEDSTAR_WASHINGTON_COLUMN, "MD",
+     MEDSTAR_REDUCED_COST_TABLE),
+    ("TIERS_SPLIT_REASON", TUFTS_SERVICE_TABLE, [(150, 300, 30)], "MA", TUFTS_SERVICE_TABLE),
+    ("TIERS_SPLIT_REASON", BERKSHIRE_SERVICE_TABLE, [(0, 400, "46.07")], "MA",
+     BERKSHIRE_SERVICE_TABLE),
+]  # fmt: skip
+
+
+@pytest.mark.parametrize(("reason", "quote", "bands", "state", "document"), _MISREAD_TIER_SHEETS)
+def test_verify_sheet_rejects_a_misread_discount_table(reason, quote, bands, state, document):
+    from waive.atlas import verify
+
+    docs = {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT + "\n" + document + "\n"}
+    report = verify_sheet(with_tiers_in(quote, bands, state), docs)
+    assert ("eligibility.discount_tiers", getattr(verify, reason)) in report.rejected
+
+
+_TIER_SHEETS_READ_RIGHT = [
+    (MEDSTAR_REDUCED_COST_TABLE, MEDSTAR_HSCRC_COLUMN, "MD", MEDSTAR_REDUCED_COST_TABLE),
+    (MEDSTAR_REDUCED_COST_TABLE, MEDSTAR_WASHINGTON_COLUMN, "DC", MEDSTAR_REDUCED_COST_TABLE),
+    (MASS_HEALTH_PARTIAL, [(150, 300, 20)], "MA", MASS_HEALTH_PARTIAL),
+    (ONE_TABLE_FOR_BOTH, [(200, 250, 80)], "ID", ONE_TABLE_FOR_BOTH),
+    (HENRY_FORD_INSURED_TABLE, HENRY_FORD_BANDS, "MI", "Financial assistance is available to both "
+     "uninsured and insured patients. Discounts are based on the table below: \n"
+     + HENRY_FORD_INSURED_TABLE),
+]  # fmt: skip
+
+
+@pytest.mark.parametrize(("quote", "bands", "state", "document"), _TIER_SHEETS_READ_RIGHT)
+def test_verify_sheet_keeps_a_discount_table_read_right(quote, bands, state, document):
+    docs = {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT + "\n" + document + "\n"}
+    report = verify_sheet(with_tiers_in(quote, bands, state), docs)
+    assert not [r for r in report.rejected if r[0] == "eligibility.discount_tiers"]
