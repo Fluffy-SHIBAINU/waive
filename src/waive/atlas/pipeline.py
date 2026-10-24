@@ -75,6 +75,7 @@ from waive.atlas.verify import (
     SIBLING_POLICY_REASON,
     TRANSLATION_REASON,
     VerificationReport,
+    ceiling_assistance_problem,
     income_limit_problem,
     prune_lists,
     trim_quotes,
@@ -1272,10 +1273,10 @@ def _keep_owner_ruled_ceiling(
 ) -> tuple[VerificationReport, list[dict[str, Any]]]:
     """`report` without the rejection the owner's ruled ceiling wins over, and that conflict. The
     ruling wins over the free-band reading only: verify_sheet stops at it, so the checks after it
-    (another state's band or facilities, another benchmark) run here on the ruled ceiling. A
-    rejection they give overturns the ruling, which then keeps nothing: the free-band rejection
-    stays beside it, so the sheet is held as the same reading with no ruling is, and no conflict
-    goes to the owner."""
+    (whether the sentence is about the hospital's own help, another state's band or facilities,
+    another benchmark) run here on the ruled ceiling. A rejection they give overturns the ruling,
+    which then keeps nothing: the free-band rejection stays beside it, so the sheet is held as the
+    same reading with no ruling is, and no conflict goes to the owner."""
     ceiling = sheet.eligibility.assistance_ceiling_fpl
     if ceiling is None or _owner_ruled_ceiling(sheet, decision) is None:
         return report, []
@@ -1286,7 +1287,10 @@ def _keep_owner_ruled_ceiling(
     ]
     if not overridden:
         return report, []
-    if reason := income_limit_problem(ceiling.quote or "", sheet.hospital.state, ceiling.value):
+    quote = ceiling.quote or ""
+    if reason := ceiling_assistance_problem(quote) or income_limit_problem(
+        quote, sheet.hospital.state, ceiling.value
+    ):
         return VerificationReport(report.accepted, [*report.rejected, (CEILING_PATH, reason)]), []
     rest = [rejected for rejected in report.rejected if rejected not in overridden]
     kept = VerificationReport(accepted=[*report.accepted, CEILING_PATH], rejected=rest)

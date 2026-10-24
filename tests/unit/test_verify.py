@@ -2896,8 +2896,14 @@ def test_verify_sheet_keeps_a_free_care_limit_read_right(value, quote, state, do
 RUSSELL_FREE_LINE = (
     "Patient/guarantors that fall below Level 1, 70% of FPL, will receive a 100% discount."
 )
+RUSSELL_FREE_CARE_LINE = (
+    "Patient/guarantors that fall below Level 1, 70% of FPL, will receive free care."
+)
 _CEILING_FREE_BAND_CASES = [
     (RUSSELL_FREE_LINE, 70, True),
+    # The same misread worded with no assistance word is still the free band, not a sentence
+    # about something other than the hospital's help.
+    (RUSSELL_FREE_CARE_LINE, 70, True),
     ("Patients with household income at or below 250% of the Federal Poverty Guidelines are "
      "eligible for free care.", 250, True),
     # Decision B: "may ... up to 100%" is a ceiling on help, not a free-care band.
@@ -2973,6 +2979,28 @@ def test_a_ceiling_quoted_from_the_free_care_band_is_rejected(quote, value, free
 
     expected = CEILING_FREE_BAND_REASON if free_band else None
     assert ceiling_problem(quote, Decimal(value)) == expected
+
+
+@pytest.mark.parametrize(
+    ("quote", "reason"),
+    [
+        (RUSSELL_FREE_CARE_LINE, "CEILING_NOT_ASSISTANCE_REASON"),
+        ("Patients at or below 200% of the FPL may qualify for Medicaid.",
+         "CEILING_OTHER_PROGRAM_REASON"),
+        ("Patients at or below 300% of the FPL may qualify for assistance from the Health Safety "
+         "Net.", "CEILING_OTHER_PROGRAM_REASON"),
+        (RUSSELL_FREE_LINE, None),
+        ("Patients who are not eligible for Medicaid and earn up to 400% of the FPL qualify for "
+         "financial assistance.", None),
+    ],
+)  # fmt: skip
+def test_ceiling_assistance_problem(quote, reason):
+    # The tests ceiling_problem runs after the free-band reading, which the pipeline runs again
+    # on an owner's ruled ceiling (pipeline._keep_owner_ruled_ceiling).
+    from waive.atlas import verify
+
+    expected = getattr(verify, reason) if reason else None
+    assert verify.ceiling_assistance_problem(quote) == expected
 
 
 def test_verify_sheet_keeps_a_hedged_ceiling_beside_free_care_words():

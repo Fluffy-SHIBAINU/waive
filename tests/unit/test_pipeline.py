@@ -3414,6 +3414,54 @@ def test_withdraw_keeps_an_owner_ruled_ceiling_from_the_free_care_line_and_files
         assert len(ruling_conflicts(session, "220031")) == 2
 
 
+# Russell's misread worded "will receive free care" has no assistance word: dropped as not about
+# assistance, it held nothing, and the table published from 70% with nothing below.
+RUSSELL_FREE_CARE_LINE = (
+    "Patient/guarantors that fall below Level 1, 70% of FPL, will receive free care."
+)
+
+
+class RussellFreeCareGateway(FakeGateway):
+    def extract(self, urls, **kwargs):
+        text = POLICY_TEXT + RUSSELL_FREE_CARE_LINE + "\n" + RUSSELL_TABLE + "\n"
+        return [ExtractedPage(url, text) for url in urls]
+
+
+def test_a_ceiling_read_from_free_care_words_holds_the_sheet_ruled_or_not():
+    # The free-band reading comes first, and a ruled ceiling the owner exemption spares is checked
+    # again for what the reading skipped: not about assistance overturns the ruling, which then
+    # keeps nothing, as for another state's band.
+    from waive.atlas.pipeline import withdraw_rejected
+    from waive.atlas.schema import DiscountTier
+
+    for ruled in (False, True):
+        engine = make_engine_with_hospital(REAL_HOSPITAL)
+        with session_scope(engine) as session:
+            gateway = RussellFreeCareGateway()
+            assert build_hospital(session, gateway, FakeAI(), "220031", TODAY).outcome == (
+                "published"
+            )
+            sheet, _ = repo.latest_sheet(session, "220031")
+            tier = DiscountTier(min_fpl_exclusive=70, max_fpl_inclusive=200, discount_percent=60)
+            store_with(
+                session,
+                "220031",
+                free_care_max_fpl=None,
+                discount_tiers=cited_from(sheet, [tier], RUSSELL_TABLE),
+                assistance_ceiling_fpl=cited_from(sheet, Decimal(70), RUSSELL_FREE_CARE_LINE),
+            )
+            if ruled:
+                ruling = owner_ruling("discount", "70", ccn="220031")
+                record_owner_rulings(session, {"220031": ruling})
+            [result] = withdraw_rejected(session, "MA")
+            assert (result.outcome, result.version) == ("held", 3)
+            assert f"{CEILING_PATH}: {CEILING_FREE_BAND_REASON}" in result.notes
+            assert (f"{CEILING_PATH}: {CEILING_NOT_ASSISTANCE_REASON}" in result.notes) is ruled
+            latest, _ = repo.latest_sheet(session, "220031")
+            assert latest.eligibility.assistance_ceiling_fpl is None
+            assert ruling_conflicts(session, "220031") == []
+
+
 # Baptist Health (180104, 180130 and the others ruled "discount 300"): the ruling makes the 300%
 # "full assistance" line the ceiling, next to the 301-400% partial-assistance band.
 BAPTIST_FULL = (

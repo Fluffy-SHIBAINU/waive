@@ -1365,10 +1365,13 @@ def _quotes_only_the_free_band(text: str) -> bool:
 def ceiling_problem(quote: str, value: Decimal) -> str | None:
     """Why `quote` cannot carry an assistance ceiling of `value`, or None when it can: it must
     name the value as a percentage of the poverty level, as the top of the limits it names and not
-    as a floor ("above 400%"), in a sentence about the hospital's own help that is more than its
-    free-care band. Review of 7.14: a state program's 300%, Medicaid screening at 138%, a payment
-    plan, catastrophic help above 400% and the first band of a sliding scale all verified as
-    ceilings before."""
+    as a floor ("above 400%"), in a sentence that is more than its free-care band and is about the
+    hospital's own help (ceiling_assistance_problem). Review of 7.14: a state program's 300%,
+    Medicaid screening at 138%, a payment plan, catastrophic help above 400% and the first band of
+    a sliding scale all verified as ceilings before. The free-band reading comes before the
+    sentence's subject: Russell Regional's misread (171350) worded "will receive free care" names
+    no assistance, and dropped as not about it, it would hold nothing (CEILING_FREE_BAND_REASON
+    holds the sheet)."""
     text = _poverty_text(quote)
     tied = _tied_percents(text)
     starts = [start for number, start in tied if number == Decimal(value)]
@@ -1378,17 +1381,26 @@ def ceiling_problem(quote: str, value: Decimal) -> str | None:
         return CEILING_FLOOR_REASON
     if any(number > Decimal(value) for number, _ in tied):
         return CEILING_NOT_TOP_REASON
-    stripped = _NEGATED_PROGRAM.sub(" ", text)
-    if _ASSISTANCE_WORDS.search(stripped) is None:
-        return CEILING_NOT_ASSISTANCE_REASON
-    if _OTHER_PROGRAM.search(stripped) is not None:
-        return CEILING_OTHER_PROGRAM_REASON
     # Only a quote whose one poverty-level percentage is the ceiling: "up to 300% ..., with free
     # care below 200%" states the ceiling beside the free band.
     if {number for number, _ in tied} <= {Decimal(value)} and _quotes_only_the_free_band(
         normalize(quote)
     ):
         return CEILING_FREE_BAND_REASON
+    return ceiling_assistance_problem(quote)
+
+
+def ceiling_assistance_problem(quote: str) -> str | None:
+    """Why a ceiling quote is not about the hospital's own help, or None: it must speak of
+    assistance, a discount or charity, and not of another program or a payment plan. These are
+    the tests ceiling_problem runs after the free-band reading, so the pipeline runs them again
+    on a ruled ceiling the owner's ruling spares from that reading
+    (pipeline._keep_owner_ruled_ceiling)."""
+    stripped = _NEGATED_PROGRAM.sub(" ", _poverty_text(quote))
+    if _ASSISTANCE_WORDS.search(stripped) is None:
+        return CEILING_NOT_ASSISTANCE_REASON
+    if _OTHER_PROGRAM.search(stripped) is not None:
+        return CEILING_OTHER_PROGRAM_REASON
     return None
 
 
