@@ -76,6 +76,33 @@ def order(ccn_file: str = ""):
     return [r for r in rows if has_text(r["ccn"])], [r for r in rows if not has_text(r["ccn"])]
 
 
+def build(st, ccn, env):
+    """One `waive atlas build --reuse-sources` run: its combined output and return code."""
+    try:
+        p = subprocess.run(
+            [
+                "uv",
+                "run",
+                "waive",
+                "atlas",
+                "build",
+                "--state",
+                st,
+                "--ccn",
+                ccn,
+                "--reuse-sources",
+            ],
+            cwd=REPO,
+            env=env,
+            capture_output=True,
+            text=True,
+            timeout=900,
+        )
+        return p.stdout + p.stderr, p.returncode
+    except subprocess.TimeoutExpired as e:
+        return f"timeout {e}", -9
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--after", default="", help="resume after this CCN in the order")
@@ -88,6 +115,13 @@ def main():
         "--ccns", default="", help='rebuild these ("ST CCN" per line), not _rebuild.json'
     )
     ap.add_argument("--reverse", action="store_true", help="work the order from its end")
+    ap.add_argument(
+        "--retry-unavailable",
+        type=int,
+        default=0,
+        help="retry a build up to N times when Token Factory answers HTTP 503, waiting 30 s, "
+        "then 60 s, then 120 s (capped) between tries",
+    )
     ap.add_argument(
         "--skip-rebuilt",
         action="store_true",
@@ -125,29 +159,13 @@ def main():
                 counts["already-rebuilt"] = counts.get("already-rebuilt", 0) + 1
                 continue
             t0 = time.time()
-            try:
-                p = subprocess.run(
-                    [
-                        "uv",
-                        "run",
-                        "waive",
-                        "atlas",
-                        "build",
-                        "--state",
-                        st,
-                        "--ccn",
-                        ccn,
-                        "--reuse-sources",
-                    ],
-                    cwd=REPO,
-                    env=env,
-                    capture_output=True,
-                    text=True,
-                    timeout=900,
-                )
-                text, rc = p.stdout + p.stderr, p.returncode
-            except subprocess.TimeoutExpired as e:
-                text, rc = f"timeout {e}", -9
+            for attempt in range(a.retry_unavailable + 1):
+                text, rc = build(st, ccn, env)
+                if not (rc and "HTTP 503" in text) or attempt == a.retry_unavailable:
+                    break
+                wait = min(30 * 2**attempt, 120)
+                print(f"  {ccn}: Token Factory answered 503; retrying in {wait} s", flush=True)
+                time.sleep(wait)
             after = latest(ccn)
             flat = " ".join(text.split())
             m = re.search(rf"{ccn}\s*│\s*[^│]*│\s*(\w+)\s*│", text)
