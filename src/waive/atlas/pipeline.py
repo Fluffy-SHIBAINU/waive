@@ -600,10 +600,14 @@ def _owner_clauses(
     return clauses
 
 
-# "Kansas City", "Washington County", "Virginia Beach", "Delaware Valley", "Oklahoma City": a
-# place, not the state. verify._PLACE_AFTER also reads "California Hospitals" as a place, which is
-# just what another state's version of a policy calls itself, so it is not reused here.
-_PLACE_NAME_AFTER = re.compile(r"[- ]+(?:count(?:y|ies)|city|beach|valley)(?![a-z])")
+# "Kansas City", "Washington County", "Virginia Beach", "Delaware Valley", "Oklahoma City",
+# "Washington Parish", "Texas Panhandle": a place, not the state. verify._PLACE_AFTER also reads
+# "California Hospitals" as a place, which is just what another state's version of a policy calls
+# itself, so it is not reused here.
+_PLACE_NAME_AFTER = re.compile(
+    r"[- ]+(?:count(?:y|ies)|city|beach|valley|parish(?:es)?|regions?|campus|metro(?:politan)?"
+    r"|panhandle)(?![a-z])"
+)
 
 
 def _states_as_states(text: str) -> set[str]:
@@ -686,8 +690,8 @@ def _loan_origins(
 ) -> list[HospitalRow]:
     """The registry hospitals loans of `source_id` from `lenders` trace back to: a lender that
     holds the document on its own, or, for one that holds it only through a loan too, that loan's
-    origins (Mercy Redding, 051319, had Brazosport's Texas application from Mercy Merced, 050444,
-    which had it from Brazosport, 450072)."""
+    origins (Mercy Mount Shasta, 051319, had Brazosport's Texas application from Mercy Merced,
+    050444, which had it from Brazosport, 450072)."""
     origins: list[HospitalRow] = []
     for lender_ccn in lenders:
         lender = repo.get_hospital(session, lender_ccn) if lender_ccn not in seen else None

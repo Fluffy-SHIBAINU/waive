@@ -4263,6 +4263,20 @@ WASHINGTON_COUNTY_PAGE = web_doc(
     "https://www.meritushealth.com/washington-county-hospital/financial-assistance",
     "Financial assistance at Meritus Medical Center.\n",
 )
+# A Virginia Beach page for a North Carolina hospital is not Virginia's, nor a Washington Parish
+# page for Our Lady of the Angels (Bogalusa, Louisiana) Washington's.
+BOGALUSA = hospital_entry("190312", "OUR LADY OF THE ANGELS HOSPITAL", "BOGALUSA", "LA")
+VIRGINIA_BEACH_PAGE = web_doc(
+    "fap-virginia-beach",
+    "https://www.example.org/virginia-beach/financial-assistance",
+    "Financial assistance for our patients.\n",
+    "Financial Assistance in Virginia Beach",
+)
+WASHINGTON_PARISH_PAGE = web_doc(
+    "fap-washington-parish",
+    "https://www.example.org/washington-parish/financial-assistance",
+    "Financial assistance for our patients.\n",
+)
 DELAWARE_VALLEY_PAGE = web_doc(
     "fap-delaware-valley",
     "https://www.jefferson.edu/delaware-valley/financial-assistance",
@@ -4422,6 +4436,8 @@ OWNER_SCOPE_CASES = [
     (C, LEES_SUMMIT, [KANSAS_CITY_PAGE], [], "fap-kansas-city", False, "kansas-city-is-missouri"),
     (C, HAGERSTOWN, [WASHINGTON_COUNTY_PAGE], [], "fap-washington-county", False, "county"),
     (C, ABINGTON, [DELAWARE_VALLEY_PAGE], [], "fap-delaware-valley", False, "valley"),
+    (C, CANNON, [VIRGINIA_BEACH_PAGE], [], "fap-virginia-beach", False, "beach"),
+    (C, BOGALUSA, [WASHINGTON_PARISH_PAGE], [], "fap-washington-parish", False, "parish"),
     # Clause B: the hospital's site links its own policy, and links this one under another
     # hospital's name.
     (B, CANTON_POTSDAM, RRH_DOCS, NEW_YORK, "billing-rgh-policy", True, "330197-rgh-policy"),
@@ -4779,8 +4795,8 @@ def lend(session, borrower, lender, *source_ids):
 BRAZOSPORT = hospital_entry(
     "450072", "CHI ST LUKE'S HEALTH BRAZOSPORT", "LAKE JACKSON", "TX", "commonspirit.org"
 )
-MERCY_REDDING = hospital_entry(
-    "051319", "MERCY MEDICAL CENTER", "REDDING", "CA", "commonspirit.org"
+MERCY_MOUNT_SHASTA = hospital_entry(
+    "051319", "MERCY MEDICAL CENTER OF MT SHASTA", "MOUNT SHASTA", "CA", "commonspirit.org"
 )
 BRAZOSPORT_APPLICATION = web_doc(
     "application-brazosport",
@@ -4837,7 +4853,7 @@ def test_documents_lent_across_states_are_set_aside_for_the_borrower_only():
     # decision deadline. Nothing in a lent document's address names California. A document the
     # borrower held itself before the loan (a sheet of its own read it) is its own, and stays; a
     # loan from an in-state sibling that had the document from another state is traced back to
-    # that state (Mercy Redding, 051319, from Merced, of Brazosport's Texas application). A
+    # that state (Mercy Mount Shasta, 051319, from Merced, of Brazosport's Texas application). A
     # system-wide document lent across states stays too: CommonSpirit's policy names no hospital
     # of the state it came from, and Mercy's page names Oklahoma in its title.
     from waive.atlas.pipeline import recheck_sheets, withdraw_rejected
@@ -4853,7 +4869,7 @@ def test_documents_lent_across_states_are_set_aside_for_the_borrower_only():
         ST_ANTHONY,
         BRAZOSPORT,
         BAYLOR_ST_LUKES,
-        MERCY_REDDING,
+        MERCY_MOUNT_SHASTA,
         *OKLAHOMA,
     )
     with session_scope(engine) as session:
@@ -4877,7 +4893,7 @@ def test_documents_lent_across_states_are_set_aside_for_the_borrower_only():
         own.created_at = datetime(2026, 10, 1, tzinfo=UTC)
         session.flush()
         lend(session, "060015", "050444", "fap-commonspirit")
-        # Merced borrowed Brazosport's application from Texas and passed it on to Redding.
+        # Merced borrowed Brazosport's application from Texas and passed it on to Mount Shasta.
         store_docs(session, "450072", BRAZOSPORT_APPLICATION)
         lend(session, "050444", "450072", "application-brazosport")
         lend(session, "051319", "050444", "application-brazosport")
@@ -5023,5 +5039,36 @@ def test_a_rebuild_carries_no_state_programmes_over_from_a_foreign_document_it_d
         publish_sheet(session, sheet.model_copy(update={"programs": programs}))
         build_hospital(session, NoSpend(), GroundedAI(), "161348", TODAY, reuse_sources=True)
         latest, _ = repo.latest_sheet(session, "161348")
+        assert latest.version == 3
+        assert latest.programs.state_programs is None
+
+
+def test_a_rebuild_carries_no_state_programmes_over_from_a_translation_it_kept_back_foreign():
+    # The carry-over leaves out the translations a build keeps from the structurer too, not only
+    # the documents it detaches: they stay linked, and quoting one is what task 7.15a stopped.
+    from waive.atlas.publish import publish_sheet
+    from waive.atlas.schema import Cited, StateProgram
+
+    engine = make_engine_with_hospital()
+    with session_scope(engine) as session:
+        build_hospital(session, FakeGateway(), FakeAI(), "229999", TODAY)
+        tagalog = store_translation(session, "229999")
+        sheet = repo.latest_sheet(session, "229999")[0]
+        program = Cited[list[StateProgram]](
+            value=[StateProgram(name="Health Safety Net", how_to_apply="Ask the hospital")],
+            quote="Buong Pinansyal na Tulong",
+            source_id="fap-tagalog",
+            checked_on=TODAY,
+        )
+        programs = sheet.programs.model_copy(update={"state_programs": program})
+        quoting = sheet.model_copy(
+            update={"programs": programs, "sources": [*sheet.sources, tagalog]}
+        )
+        assert publish_sheet(session, quoting).version == 2
+        result = build_hospital(
+            session, FakeGateway(), GroundedAI(), "229999", TODAY, reuse_sources=True
+        )
+        assert TRANSLATION_NOTE in result.notes
+        latest, _ = repo.latest_sheet(session, "229999")
         assert latest.version == 3
         assert latest.programs.state_programs is None
