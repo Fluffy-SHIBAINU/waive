@@ -26,7 +26,11 @@ PRIVATE_PATHS=(
 LEAK='^(data/|docs/reports/(atlas-|eve-atlas-|free-care-wording-|publication-audit|website-check-)|docs/superpowers/plans/[^/]+/(audit-2-)?flags\.json$)'
 
 ROOT="$(git rev-parse --show-toplevel)"
-WORK="$(mktemp -d)"
+# A fixed folder under var/ (not committed): the log filter redacts tracebacks whose file paths
+# carry long digit runs, as macOS temporary folders do, which would fail a log test.
+WORK="$ROOT/var/publish-public"
+rm -rf "$WORK"
+mkdir -p "$WORK"
 trap 'rm -rf "$WORK"' EXIT
 git clone --quiet --no-local --single-branch --branch main "$ROOT" "$WORK/waive"
 cd "$WORK/waive"
