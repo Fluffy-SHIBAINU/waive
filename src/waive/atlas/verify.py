@@ -9,7 +9,7 @@ from functools import partial
 from typing import Any
 
 from waive.atlas.schema import DiscountTier, DocType, Layer, ProcedureSheet, SubmitMethod
-from waive.atlas.states import CODE_OF_NAME, STATE_NAME, code_tokens
+from waive.atlas.states import CODE_OF_NAME, STATE_CODE, STATE_NAME, code_tokens
 
 MIN_QUOTE_CHARS = 12
 
@@ -732,6 +732,9 @@ def insured_field_problem(quote: str, value: bool) -> str | None:
 
 
 OTHER_STATE_REASON = "quote states the band for another state's facilities"
+OTHER_STATE_FACILITY_REASON = (
+    "quote states the band for another state's facilities, named by its postal code"
+)
 # The fields that carry an income limit, any of which a system policy may state per state.
 INCOME_LIMIT_PATHS = (
     "eligibility.free_care_max_fpl",
@@ -777,6 +780,27 @@ def bands_under_another_state(quote: str, state: str, value: Any) -> bool:
             for tier in value
         )
     return not _number_in(Decimal(value), own)
+
+
+# UnityPoint's system policy (fap-ec276fb294e1a7f3) gives its Illinois hospitals a schedule of
+# their own, "B. An IL UPH Hospital shall provide a charitable discount of 100% ... not more than
+# 200%", and Trinity Bettendorf (160104), in Iowa, published free care to 200% from it. The state
+# is a postal code, so _STATE_HEADING never sees it. Read as written, never lower-cased ("in",
+# "or", "me"), and only after a determiner and before a system's all-caps acronym: Northwestern's
+# "NM Woodstock Hospitals" (Illinois), Northern Light's "CA Dean Hospital" (Maine), "a VA
+# facility" (Veterans Affairs) and Aultman's capital "OR Aultman Alliance Hospital" name no state.
+_FACILITY_OF_STATE = re.compile(
+    rf"\b(?:[Aa]n?|[Tt]he|[Ee]ach|[Aa]ny|[Aa]ll|[Ee]very|[Ss]uch) ({STATE_CODE}) [A-Z]{{2,6}} "
+    r"(?:[Hh]ospitals?|[Ff]acilit(?:y|ies)|[Ee]ntit(?:y|ies)|[Ll]ocations?)\b"
+)
+
+
+def names_other_state_facility(quote: str, state: str) -> bool:
+    """Whether the quote, read in its original case, states its rule for the facilities of a
+    state other than `state`, named by postal code: "An IL UPH Hospital", "Each IL UPH Hospital"."""
+    return any(
+        match.group(1) != state for match in _FACILITY_OF_STATE.finditer(" ".join(quote.split()))
+    )
 
 
 # Task 7.17: MedStar's policy covers residents of "Maryland, northern Virginia, or within the
@@ -1241,6 +1265,7 @@ CEILING_FLOOR_REASON = (
 CEILING_NOT_TOP_REASON = "quote names a higher income limit than the ceiling"
 CEILING_NOT_ASSISTANCE_REASON = "quote does not say the hospital's financial assistance reaches it"
 CEILING_OTHER_PROGRAM_REASON = "quote is about another program or a payment plan"
+CEILING_FREE_BAND_REASON = "quote states the free-care band, not the ceiling"
 # A floor just before the percentage, the number perhaps spelled out first ("more than four
 # hundred percent (400%)").
 _FLOOR_BEFORE = re.compile(
@@ -1274,12 +1299,42 @@ def _about_own_assistance(text: str) -> bool:
     )
 
 
+# Russell Regional (171350) published an assistance ceiling of 70 from "Patient/guarantors that
+# fall below Level 1, 70% of FPL, will receive a 100% discount": its free-care line, while its
+# table runs on to 200%, the policy's ceiling. A ceiling quote that promises free care and states
+# no partial help is that free band. Decision B stands ("you may receive a discount of up to 100
+# percent ... at or below 400%" is a ceiling), and so does a sentence that gives the free band and
+# partial help ("a discount if ... at or below 400% ..., and free care if ... below 150%", Dameron,
+# 050122; "100% discounts ... up to 600% FPL and lower discounts ... up to 800% FPL", NYU, 330214).
+# "Discounted" in any form is partial help ("free care up to 200% FPL, discounted to 250% FPL",
+# "Discounted or free care is available up to 400%"); "fully discounted" is free-care wording and
+# goes with it.
+_PARTIAL_HELP = re.compile(
+    r"\bsliding\b|\bpartial\w*|\breduced\b|\breduction in charges\b"
+    r"|\bdiscounted\b|\bdiscounts?\b(?! of 100)(?! ?\(100)"
+    r"|(?<![\d.])[1-9]\d?(?:\.\d+)? ?(?:%|percent) (?:discount|reduction|adjustment|write"
+    r"|financial assistance|charity|of (?:agb|charges))"
+)
+
+
+def _quotes_only_the_free_band(text: str) -> bool:
+    """Whether a normalized ceiling quote promises free care and nothing less: no hedged "up to
+    100%", no ceiling wording ("full or partial"), and no partial help once its free-care words
+    are taken out."""
+    if _UP_TO_FULL.search(text) or _HEDGED_UP_TO_FULL.search(text):
+        return False
+    if _CEILING_WORDING.search(text) or _FREE_SENTENCE.search(text) is None:
+        return False
+    return _PARTIAL_HELP.search(_FREE_SENTENCE.sub(" ", text)) is None
+
+
 def ceiling_problem(quote: str, value: Decimal) -> str | None:
     """Why `quote` cannot carry an assistance ceiling of `value`, or None when it can: it must
     name the value as a percentage of the poverty level, as the top of the limits it names and not
-    as a floor ("above 400%"), in a sentence about the hospital's own help. Review of 7.14: a state
-    program's 300%, Medicaid screening at 138%, a payment plan, catastrophic help above 400% and
-    the first band of a sliding scale all verified as ceilings before."""
+    as a floor ("above 400%"), in a sentence about the hospital's own help that is more than its
+    free-care band. Review of 7.14: a state program's 300%, Medicaid screening at 138%, a payment
+    plan, catastrophic help above 400% and the first band of a sliding scale all verified as
+    ceilings before."""
     text = _poverty_text(quote)
     tied = _tied_percents(text)
     starts = [start for number, start in tied if number == Decimal(value)]
@@ -1294,7 +1349,16 @@ def ceiling_problem(quote: str, value: Decimal) -> str | None:
         return CEILING_NOT_ASSISTANCE_REASON
     if _OTHER_PROGRAM.search(stripped) is not None:
         return CEILING_OTHER_PROGRAM_REASON
+    if _quotes_only_the_free_band(normalize(quote)):
+        return CEILING_FREE_BAND_REASON
     return None
+
+
+# A rejection for one of these reasons holds the sheet rather than only dropping the field: the
+# rest of the sheet would then publish a worse answer. A patient-share table hides the co-pay
+# band; without Russell's misread ceiling its table starts at 70% with nothing below; without
+# Trinity Bettendorf's Illinois free-care band its table starts at 200% with nothing below.
+HOLDING_REASONS = (PATIENT_SHARE_REASON, CEILING_FREE_BAND_REASON, OTHER_STATE_FACILITY_REASON)
 
 
 FREE_LIMIT_UNTIED_REASON = "quote does not state the free-care limit as an income limit"
@@ -1895,6 +1959,10 @@ def verify_sheet(
             bands_under_another_state(cited.quote or "", sheet.hospital.state, cited.value)
         ):
             report.rejected.append((path, OTHER_STATE_REASON))
+        elif path in INCOME_LIMIT_PATHS and names_other_state_facility(
+            cited.quote or "", sheet.hospital.state
+        ):
+            report.rejected.append((path, OTHER_STATE_FACILITY_REASON))
         elif path in INCOME_LIMIT_PATHS and any(
             percent_of_other_basis(cited.quote or "", limit)
             for limit in _income_limits(cited.value)

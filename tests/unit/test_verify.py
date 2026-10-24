@@ -2775,3 +2775,136 @@ def test_verify_sheet_keeps_a_free_care_limit_read_right(value, quote, state, do
     docs = {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT + "\n" + document + "\n" + quote + "\n"}
     report = verify_sheet(with_free_limit_in(value, quote, state), docs)
     assert not [r for r in report.rejected if r[0] == "eligibility.free_care_max_fpl"]
+
+
+# Russell Regional (171350) published an assistance ceiling of 70 from its free-care line, while
+# its table runs on to 200%, the policy's real ceiling.
+RUSSELL_FREE_LINE = (
+    "Patient/guarantors that fall below Level 1, 70% of FPL, will receive a 100% discount."
+)
+_CEILING_FREE_BAND_CASES = [
+    (RUSSELL_FREE_LINE, 70, True),
+    ("Patients with household income at or below 250% of the Federal Poverty Guidelines are "
+     "eligible for free care.", 250, True),
+    # Decision B: "may ... up to 100%" is a ceiling on help, not a free-care band.
+    ("You may qualify for a discount of up to 100% if your income is at or below 400% of the "
+     "Federal Poverty Level.", 400, False),
+    ("You may receive a discount of up to 100 percent if your household income is at or below "
+     "400% of the Federal Poverty Level.", 400, False),
+    # A sentence that gives the free band and partial help too still states the ceiling: Dameron
+    # (050122), NYU (330214), MDI (201304), 140101 and a sliding scale.
+    ("You may qualify for a discount if your family income is at or below 400% of the Federal "
+     "Poverty Level, and for free care if your family income is below 150% of the Federal "
+     "Poverty Level.", 400, False),
+    ("The hospital provides 100% discounts for eligible patients up to 600% FPL and lower "
+     "discounts for eligible patients up to 800% FPL.", 800, False),
+    ("MDI Hospital gives free care to Maine residents with family income at 200% or less of the "
+     "Federal Poverty Income Guidelines and reduced care to those at 201-250% of the Federal "
+     "Poverty Level.", 250, False),
+    ("Generally speaking, patients eligible for discounted charges must have family incomes under "
+     "600% of the Federal Poverty Guidelines, while patients eligible for free care must have "
+     "family incomes under 200% of the Federal Poverty Guidelines.", 600, False),
+    ("Patients at or below 400% of the Federal Poverty Level qualify for a sliding scale; those "
+     "at or below 200% of the Federal Poverty Level receive free care.", 400, False),
+    ("Patients at or below 400% of the Federal Poverty Level receive a 100% write-off below 200% "
+     "and a 50% reduction above it.", 400, False),
+    # "Discounted" in any form is partial help: stored documents (fap-cd9ff81781f7678d,
+    # summary-521291f8eee52a63, fap-aeade0445a4616b8).
+    ("Public safety-net hospital, free care up to 200% FPL, discounted to 250% FPL", 250, False),
+    ("Discounted or free care is available up to 400% of the Federal Poverty guidelines below.",
+     400, False),
+    ("| Household Size | 100% FPL | 200% FPL (Free Care) | 400% FPL (Discounted) |", 400, False),
+    ("Patients who are uninsured and whose family income is at or below 300% of the FPG are "
+     "eligible to receive care at a fully discounted rate.", 300, True),
+    # Ceiling wording names every kind of help, so it is no free band either.
+    ("Generally, patients with family income at or below 400% of the federal poverty level will "
+     "be eligible for charity (free) care or discounted (reduced) care.", 400, False),
+    (CEILING_SENTENCE, 300, False),
+]  # fmt: skip
+
+
+@pytest.mark.parametrize(("quote", "value", "free_band"), _CEILING_FREE_BAND_CASES)
+def test_a_ceiling_quoted_from_the_free_care_band_is_rejected(quote, value, free_band):
+    from waive.atlas.verify import CEILING_FREE_BAND_REASON, ceiling_problem
+
+    expected = CEILING_FREE_BAND_REASON if free_band else None
+    assert ceiling_problem(quote, Decimal(value)) == expected
+
+
+def test_verify_sheet_rejects_a_ceiling_quoted_from_the_free_care_band():
+    from waive.atlas.verify import CEILING_FREE_BAND_REASON
+
+    docs = {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT + "\n" + RUSSELL_FREE_LINE + "\n"}
+    report = verify_sheet(with_ceiling(70, RUSSELL_FREE_LINE), docs)
+    assert ("eligibility.assistance_ceiling_fpl", CEILING_FREE_BAND_REASON) in report.rejected
+
+
+# UnityPoint's policy (fap-ec276fb294e1a7f3) gives its Illinois hospitals a Schedule B of their
+# own, and Trinity Bettendorf (160104), in Iowa, published free care to 200% from it.
+UNITYPOINT_IL_SCHEDULE = (
+    "B.  An IL UPH Hospital shall provide a charitable discount of 100% of its charges\nfor all "
+    "medically necessary health care services exceeding $ 150 in any one \ninpatient admission "
+    "or outpatient encounter to any Uninsured Patient who \napplies for a discount and has family "
+    "income of not more than 200% of the \nfederal poverty income guidelines."
+)
+_OTHER_STATE_FACILITY_CASES = [
+    (UNITYPOINT_IL_SCHEDULE, "IA", True),
+    (UNITYPOINT_IL_SCHEDULE, "IL", False),
+    ("Each IL UPH Hospital shall provide a discount of 65% to incomes from 201% to 225% of the "
+     "FPIG.", "IA", True),
+    # Lower-case words are never postal codes.
+    ("An in UPH Hospital shall provide a charitable discount of 100% of its charges.", "IA", False),
+    ("Care at any or UPH Hospital is free up to 200% of the FPL.", "IA", False),
+    ("Patients of all me UPH Hospitals receive free care up to 200% of the FPL.", "IA", False),
+    # Capitals with no determiner and acronym: Northwestern's NM hospitals (IL), Northern Light's
+    # CA Dean and A.R. Gould (ME), a VA facility (Veterans Affairs), Aultman's capital OR (OH).
+    ("9. NM Huntley, NM McHenry and NM Woodstock Hospitals 10. Palos Community Hospital", "IL",
+     False),
+    ("Acadia Hospital A.R. Gould Hospital Blue Hill Hospital CA Dean Hospital Eastern Maine "
+     "Medical Center", "ME", False),
+    ("services are provided to Veterans Administration recipients who refuse transfer to a VA "
+     "facility", "GA", False),
+    ("Aultman/Aultman Orrville OR Aultman Alliance Hospital Patient Outreach Services", "OH",
+     False),
+    ("CARE PROVIDED IN HOSPITAL FACILITIES OR CLINICS is covered for patients at or below 200% of "
+     "FPL.", "OH", False),
+]  # fmt: skip
+
+
+@pytest.mark.parametrize(("quote", "state", "expected"), _OTHER_STATE_FACILITY_CASES)
+def test_names_other_state_facility(quote, state, expected):
+    from waive.atlas.verify import names_other_state_facility
+
+    assert names_other_state_facility(quote, state) is expected
+
+
+def test_verify_sheet_rejects_an_income_limit_from_another_states_facility_section():
+    from waive.atlas.verify import OTHER_STATE_FACILITY_REASON, OTHER_STATE_REASON
+
+    docs = {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT + "\n" + UNITYPOINT_IL_SCHEDULE + "\n"}
+    free = "eligibility.free_care_max_fpl"
+    report = verify_sheet(with_free_limit_in(200, UNITYPOINT_IL_SCHEDULE, "IA"), docs)
+    assert (free, OTHER_STATE_FACILITY_REASON) in report.rejected
+    assert OTHER_STATE_FACILITY_REASON != OTHER_STATE_REASON
+    report = verify_sheet(with_free_limit_in(200, UNITYPOINT_IL_SCHEDULE, "IL"), docs)
+    assert not [rejected for rejected in report.rejected if rejected[0] == free]
+
+
+def test_holding_reasons():
+    from waive.atlas.verify import (
+        CEILING_FREE_BAND_REASON,
+        HOLDING_REASONS,
+        OTHER_STATE_FACILITY_REASON,
+        OTHER_STATE_REASON,
+    )
+
+    assert HOLDING_REASONS == (
+        PATIENT_SHARE_REASON,
+        CEILING_FREE_BAND_REASON,
+        OTHER_STATE_FACILITY_REASON,
+    )
+    assert CEILING_FREE_BAND_REASON == "quote states the free-care band, not the ceiling"
+    assert OTHER_STATE_FACILITY_REASON == (
+        "quote states the band for another state's facilities, named by its postal code"
+    )
+    assert OTHER_STATE_REASON not in HOLDING_REASONS

@@ -10,7 +10,15 @@ from typing import Any
 from sqlalchemy.orm import Session
 
 from waive.atlas import repo
-from waive.atlas.schema import Cited, Layer, ProcedureSheet, SheetStatus, SourceDoc, SourceKind
+from waive.atlas.schema import (
+    Cited,
+    DiscountTier,
+    Layer,
+    ProcedureSheet,
+    SheetStatus,
+    SourceDoc,
+    SourceKind,
+)
 from waive.atlas.verify import (
     assistance_limits_stated,
     free_care_limits_stated,
@@ -141,6 +149,44 @@ def resolve_conflicts(
 FREE_CARE_REVIEW_FPL = Decimal(400)
 
 
+# How far above the last income covered a band may start: band labels give whole percents ("0-170%",
+# "171-250%"), so a band from 171 after one to 170 leaves no gap (291314).
+BAND_LABEL_STEP = Decimal(1)
+
+
+def _below_own_rules(
+    ceiling: Decimal, free: Cited[Decimal] | None, tiers: Cited[list[DiscountTier]] | None
+) -> bool:
+    """Whether an assistance ceiling is below the free-care limit or the top of a band of the same
+    sheet. Russell Regional (171350) published a ceiling of 70 under a table that runs to 200%:
+    the ceiling was its free-care line."""
+    tops = [tier.max_fpl_inclusive for tier in tiers.value] if tiers is not None else []
+    if free is not None:
+        tops.append(free.value)
+    return any(ceiling < top for top in tops)
+
+
+def _income_gaps(
+    free: Cited[Decimal] | None, tiers: Cited[list[DiscountTier]] | None
+) -> list[tuple[Decimal, Decimal]]:
+    """The incomes (from, to) that fall between the free-care limit and the first band, or between
+    two bands, more than a band label's step apart. University Health Lakewood (260102) published
+    free care to 100% and its first band from 300%, the 101-300% band missing; Henry County (361309)
+    free care to 100% and bands from 200%, while its table gives 101-200% a 100% discount. A sheet
+    with no free-care limit is not checked below its first band: many tables start above 0
+    rightly (070003)."""
+    if tiers is None or not tiers.value:
+        return []
+    gaps: list[tuple[Decimal, Decimal]] = []
+    covered = free.value if free is not None else None
+    for tier in sorted(tiers.value, key=lambda tier: tier.min_fpl_exclusive):
+        if covered is not None and tier.min_fpl_exclusive > covered + BAND_LABEL_STEP:
+            gaps.append((covered, tier.min_fpl_exclusive))
+        top = tier.max_fpl_inclusive
+        covered = top if covered is None else max(covered, top)
+    return gaps
+
+
 def sheet_inconsistencies(sheet: ProcedureSheet) -> list[str]:
     """Income rules that contradict each other or read like a misread ceiling. Checked at publish
     time rather than as a schema rule, so stored versions stay loadable and the structurer's
@@ -157,6 +203,16 @@ def sheet_inconsistencies(sheet: ProcedureSheet) -> list[str]:
             "reads as the patient's share, not a sliding scale"
         )
     free = sheet.eligibility.free_care_max_fpl
+    ceiling = sheet.eligibility.assistance_ceiling_fpl
+    if ceiling is not None and _below_own_rules(ceiling.value, free, tiers):
+        problems.append(
+            f"eligibility.assistance_ceiling_fpl: {ceiling.value:.0f}% is below the sheet's own "
+            "income rules"
+        )
+    for start, end in _income_gaps(free, tiers):
+        problems.append(
+            f"eligibility.discount_tiers: no rule covers incomes from {start:.0f}% to {end:.0f}%"
+        )
     if free is None:
         return problems
     if tiers is not None and tiers.value:

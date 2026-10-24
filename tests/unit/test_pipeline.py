@@ -2,6 +2,7 @@ import hashlib
 import json
 import logging
 from datetime import date
+from decimal import Decimal
 
 import httpx
 import pytest
@@ -19,7 +20,13 @@ from waive.atlas.scout import source_id_for
 from waive.atlas.skiplist import SkipEntry
 from waive.atlas.structure import DraftField, SheetDraft
 from waive.atlas.tavily_gateway import ExtractedPage, SearchHit
-from waive.atlas.verify import CEILING_NOT_ASSISTANCE_REASON, PATIENT_SHARE_REASON, verify_sheet
+from waive.atlas.verify import (
+    CEILING_FREE_BAND_REASON,
+    CEILING_NOT_ASSISTANCE_REASON,
+    OTHER_STATE_FACILITY_REASON,
+    PATIENT_SHARE_REASON,
+    verify_sheet,
+)
 from waive.config import Settings
 from waive.db import init_db, make_engine, session_scope
 from waive.governor import Governor, Ledger
@@ -429,6 +436,113 @@ def test_a_patient_share_table_holds_the_sheet_instead_of_publishing_a_15_percen
         assert sheet.status is SheetStatus.HELD
         assert sheet.eligibility.discount_tiers is None  # never published as a discount
         assert sheet.eligibility.free_care_max_fpl.value == 100  # the co-pay band stays unexpressed
+
+
+# Russell Regional (171350) published an assistance ceiling of 70 read from its free-care line.
+RUSSELL_FREE_LINE = (
+    "Patient/guarantors that fall below Level 1, 70% of FPL, will receive a 100% discount."
+)
+
+
+class RussellGateway(FakeGateway):
+    def extract(self, urls, **kwargs):
+        return [ExtractedPage(url, POLICY_TEXT + RUSSELL_FREE_LINE + "\n") for url in urls]
+
+
+class FreeLineCeilingAI(FakeAI):
+    """Both models read no band and no table, only an assistance ceiling of 70 quoted from the
+    free-care line."""
+
+    def __init__(self):
+        super().__init__(free_limit_for_fast=None)
+        self.free_limits["reason"] = None
+
+    def complete_json(self, role, messages, schema, *, phi, purpose, max_tokens=2000):
+        draft = super().complete_json(role, messages, schema, phi=phi, purpose=purpose)
+        draft.assistance_ceiling_fpl = DraftField(
+            value="70", quote=RUSSELL_FREE_LINE, source_id=draft.phone.source_id
+        )
+        return draft
+
+
+def test_a_ceiling_quoted_from_the_free_care_band_holds_the_sheet():
+    engine = make_engine_with_hospital()
+    with session_scope(engine) as session:
+        result = build_hospital(session, RussellGateway(), FreeLineCeilingAI(), "229999", TODAY)
+        assert result.outcome == "held"
+        assert f"eligibility.assistance_ceiling_fpl: {CEILING_FREE_BAND_REASON}" in result.notes
+        sheet, _ = repo.latest_sheet(session, "229999")
+        assert sheet.status is SheetStatus.HELD
+        assert sheet.eligibility.assistance_ceiling_fpl is None  # never published as a ceiling
+        # Dropping the ceiling left no income rule here, which holds a sheet anyway; the
+        # rejection's own hold is what the primary pass reports.
+        from waive.atlas.pipeline import BuildResult, _structure_and_verify
+
+        row = repo.get_hospital(session, "229999")
+        _sheet, holds = _structure_and_verify(
+            session,
+            FreeLineCeilingAI(),
+            repo.hospital_ref(row),
+            repo.sources_for(session, "229999"),
+            TODAY,
+            BuildResult("229999", row.name, "skipped"),
+        )
+        assert holds == [CEILING_FREE_BAND_REASON]
+
+
+# UnityPoint's Illinois-only Schedule B (fap-ec276fb294e1a7f3), quoted for Trinity Bettendorf
+# (160104) in Iowa; here the hospital is St. Example, in Massachusetts.
+UNITYPOINT_IL_SCHEDULE = (
+    "B.  An IL UPH Hospital shall provide a charitable discount of 100% of its charges for all "
+    "medically necessary health care services to any Uninsured Patient who applies for a "
+    "discount and has family income of not more than 200% of the federal poverty income "
+    "guidelines."
+)
+UPH_TABLE = (
+    "Patients with household income above 200% and at or below 400% of the Federal Poverty "
+    "Guidelines receive a 60% discount."
+)
+
+
+class UnityPointGateway(FakeGateway):
+    def extract(self, urls, **kwargs):
+        text = POLICY_TEXT + UNITYPOINT_IL_SCHEDULE + "\n" + UPH_TABLE + "\n"
+        return [ExtractedPage(url, text) for url in urls]
+
+
+class OtherStateScheduleAI(FakeAI):
+    """Both models read free care to 200% from the Illinois hospitals' schedule, and the table
+    above it from the hospital's own."""
+
+    def __init__(self):
+        super().__init__(free_limit_for_fast=("200", UNITYPOINT_IL_SCHEDULE))
+        self.free_limits["reason"] = ("200", UNITYPOINT_IL_SCHEDULE)
+
+    def complete_json(self, role, messages, schema, *, phi, purpose, max_tokens=2000):
+        draft = super().complete_json(role, messages, schema, phi=phi, purpose=purpose)
+        draft.discount_tiers = DraftField(
+            value=[{"min_fpl_exclusive": 200, "max_fpl_inclusive": 400, "discount_percent": 60}],
+            quote=UPH_TABLE,
+            source_id=draft.free_care_max_fpl.source_id,
+        )
+        return draft
+
+
+def test_a_band_from_another_states_facilities_holds_the_sheet_with_its_table():
+    # Dropping the free-care limit alone would publish the table from 200% with nothing below it.
+    engine = make_engine_with_hospital()
+    with session_scope(engine) as session:
+        result = build_hospital(
+            session, UnityPointGateway(), OtherStateScheduleAI(), "229999", TODAY
+        )
+        assert result.outcome == "held"
+        assert f"eligibility.free_care_max_fpl: {OTHER_STATE_FACILITY_REASON}" in result.notes
+        kinds = sorted(item.kind for item in repo.open_review_items(session, "229999"))
+        assert kinds == ["verification"]
+        sheet, _ = repo.latest_sheet(session, "229999")
+        assert sheet.status is SheetStatus.HELD
+        assert sheet.eligibility.free_care_max_fpl is None
+        assert [tier.discount_percent for tier in sheet.eligibility.discount_tiers.value] == [60]
 
 
 def test_build_hospital_survives_a_failed_cross_check():
@@ -2010,6 +2124,43 @@ def test_recheck_lists_stored_fields_the_current_rules_reject_and_withdraw_repub
         assert withdraw_rejected(session, "MA") == []  # nothing left to withdraw
 
 
+def test_withdraw_holds_a_published_sheet_whose_ceiling_is_quoted_from_the_free_care_band():
+    # Russell Regional (171350): dropping the ceiling alone would leave the sheet published.
+    from waive.atlas.pipeline import recheck_sheets, withdraw_rejected
+    from waive.atlas.schema import Cited
+
+    engine = make_engine_with_hospital(REAL_HOSPITAL)
+    with session_scope(engine) as session:
+        build_hospital(session, RussellGateway(), FakeAI(), "220031", TODAY)
+        sheet, _ = repo.latest_sheet(session, "220031")
+        assert sheet.status is SheetStatus.PUBLISHED
+        ceiling = Cited(
+            value=Decimal(70),
+            quote=RUSSELL_FREE_LINE,
+            source_id=sheet.eligibility.free_care_max_fpl.source_id,
+            checked_on=TODAY,
+        )
+        stale = sheet.model_copy(
+            update={
+                "eligibility": sheet.eligibility.model_copy(
+                    update={"assistance_ceiling_fpl": ceiling}
+                ),
+                "version": 2,
+            }
+        )
+        repo.add_sheet_version(
+            session, stale, {"eligibility.assistance_ceiling_fpl": {"old": None}}
+        )
+        [entry] = recheck_sheets(session, "MA")
+        assert entry.rejected == [("eligibility.assistance_ceiling_fpl", CEILING_FREE_BAND_REASON)]
+        [result] = withdraw_rejected(session, "MA")
+        assert (result.outcome, result.version) == ("held", 3)
+        latest, _ = repo.latest_sheet(session, "220031")
+        assert latest.status is SheetStatus.HELD
+        assert latest.eligibility.assistance_ceiling_fpl is None
+        assert latest.eligibility.free_care_max_fpl.value == 250  # kept for the admin to compare
+
+
 def test_documents_that_never_name_the_hospitals_state_hold_the_sheet_until_the_domain_is_set():
     # National batch 2: Bellevue Hospital (Ohio) was published from Overlake Medical Center's
     # policy (Bellevue, Washington). The scouted policy here is St. Example's, of Boston, MA.
@@ -2307,6 +2458,64 @@ def test_confirming_the_website_keeps_a_patient_share_table_held():
         )
         sheet, _ = repo.latest_sheet(session, "220031")
         assert sheet.status is SheetStatus.HELD and sheet.eligibility.discount_tiers is None
+
+
+def test_confirming_the_website_keeps_a_band_from_another_states_facilities_held():
+    # Verification dropped the free-care limit, so the stored table alone would look publishable;
+    # the build's verification item is the record of why it was held.
+    from waive.atlas.pipeline import confirm_domain
+
+    engine = make_engine_with_hospital(UNSURE_HOSPITAL)
+    with session_scope(engine) as session:
+        result = build_hospital(
+            session, UnityPointGateway(), OtherStateScheduleAI(), "220031", TODAY
+        )
+        assert result.outcome == "held"
+        result = confirm_domain(session, "220031", "example.org")
+        assert (result.outcome, result.version) == ("held", 1)
+        assert (
+            f"eligibility.free_care_max_fpl: {OTHER_STATE_FACILITY_REASON}; {REBUILD_NOTE}"
+        ) in result.notes
+        sheet, _ = repo.latest_sheet(session, "220031")
+        assert sheet.status is SheetStatus.HELD and sheet.eligibility.free_care_max_fpl is None
+
+
+def test_confirming_the_website_holds_a_stored_ceiling_quoted_from_the_free_care_band():
+    # The re-verification itself finds the rejection: it holds the sheet, and nothing about it
+    # needs a rebuild to re-check.
+    from waive.atlas.pipeline import confirm_domain
+    from waive.atlas.schema import Cited
+
+    engine = make_engine_with_hospital(UNSURE_HOSPITAL)
+    with session_scope(engine) as session:
+        assert build_hospital(session, RussellGateway(), FakeAI(), "220031", TODAY).outcome == (
+            "held"
+        )
+        sheet, _ = repo.latest_sheet(session, "220031")
+        ceiling = Cited(
+            value=Decimal(70),
+            quote=RUSSELL_FREE_LINE,
+            source_id=sheet.eligibility.free_care_max_fpl.source_id,
+            checked_on=TODAY,
+        )
+        stale = sheet.model_copy(
+            update={
+                "eligibility": sheet.eligibility.model_copy(
+                    update={"assistance_ceiling_fpl": ceiling}
+                ),
+                "version": 2,
+            }
+        )
+        repo.add_sheet_version(
+            session, stale, {"eligibility.assistance_ceiling_fpl": {"old": None}}
+        )
+        result = confirm_domain(session, "220031", "example.org")
+        assert (result.outcome, result.version) == ("held", 3)
+        assert f"eligibility.assistance_ceiling_fpl: {CEILING_FREE_BAND_REASON}" in result.notes
+        assert not any(REBUILD_NOTE in note for note in result.notes)
+        latest, _ = repo.latest_sheet(session, "220031")
+        assert latest.eligibility.assistance_ceiling_fpl is None
+        assert latest.eligibility.free_care_max_fpl.value == 250
 
 
 def test_an_admin_marking_the_website_wrong_clears_it_and_keeps_the_sheet_held():
@@ -2794,6 +3003,25 @@ RULING_NOTE = (
 )
 RULED_AT = "2026-10-23T17:31:54.394Z"
 RULED_LATER_AT = "2026-10-24T09:00:00.000Z"
+# The owner ruled on hedged readings ("you may be eligible for full assistance", 150044 and
+# 180103), which the ceiling they become can carry. A definite free-care sentence cannot: Russell
+# Regional's (171350) ruled 70% was its 100%-discount line, and that ceiling is rejected.
+RULED_SENTENCE = (
+    "Patients with household income at or below 250% of the Federal Poverty Guidelines may be "
+    "eligible for full assistance."
+)
+
+
+class RulingGateway(FakeGateway):
+    def extract(self, urls, **kwargs):
+        return [ExtractedPage(url, POLICY_TEXT + RULED_SENTENCE + "\n") for url in urls]
+
+
+def ruled_ai(fast=("250", RULED_SENTENCE)):
+    """FakeAI reading the ruled 250 from the hedged sentence, in every role but `fast`'s."""
+    ai = FakeAI(free_limit_for_fast=fast, free_limit_for_tiebreak=("250", RULED_SENTENCE))
+    ai.free_limits["reason"] = ("250", RULED_SENTENCE)
+    return ai
 
 
 def owner_ruling(decision, value="250", ccn="229999", at=RULED_AT):
@@ -2811,18 +3039,20 @@ def owner_ruling(decision, value="250", ccn="229999", at=RULED_AT):
 
 
 def test_a_discount_ruling_keeps_the_ruled_out_free_care_value_off_the_rebuilt_sheet():
-    # FakeAI reads 250 as free care; the owner ruled that 250 is a discount limit, not free care.
+    # The model reads 250 as free care; the owner ruled that 250 is a discount limit, not free care.
     engine = make_engine_with_hospital()
     with session_scope(engine) as session:
         ruling = owner_ruling("discount")
-        result = build_hospital(session, FakeGateway(), FakeAI(), "229999", TODAY, decision=ruling)
+        result = build_hospital(
+            session, RulingGateway(), ruled_ai(), "229999", TODAY, decision=ruling
+        )
         sheet, _ = repo.latest_sheet(session, "229999")
         assert sheet.eligibility.free_care_max_fpl is None
         # The reading is kept, as the cited ceiling it is, and verified as one: the only field the
         # verifier rejects is the unrelated unverifiable "hours". (The sample policy does say
         # "free care" at 250%, so a document conflict holds this ceiling-only sheet for an admin.)
         ceiling = sheet.eligibility.assistance_ceiling_fpl
-        assert (ceiling.value, ceiling.quote) == (250, FREE_CARE_QUOTE)
+        assert (ceiling.value, ceiling.quote) == (250, RULED_SENTENCE)
         rejected = review_detail(session, "229999", "verification")["rejected"]
         assert rejected == [["contacts.hours", "quote not found in source"]]
         assert RULING_NOTE in result.notes
@@ -2837,6 +3067,21 @@ def test_a_discount_ruling_keeps_the_ruled_out_free_care_value_off_the_rebuilt_s
         ) == 1
         # What the model read besides it is judged as before.
         assert sheet.contacts.phone.value == "617-555-0100" and sheet.contacts.hours is None
+
+
+def test_a_discount_ruling_on_a_free_care_sentence_leaves_no_ceiling_and_holds_the_sheet():
+    # Russell Regional (171350): the owner ruled its 70% a discount limit, and the 100%-discount
+    # line it was read from became the ceiling. Moved, it is still verified as a ceiling.
+    engine = make_engine_with_hospital()
+    with session_scope(engine) as session:
+        ruling = owner_ruling("discount")
+        result = build_hospital(session, FakeGateway(), FakeAI(), "229999", TODAY, decision=ruling)
+        assert result.outcome == "held"
+        assert RULING_NOTE in result.notes
+        assert f"{CEILING_PATH}: {CEILING_FREE_BAND_REASON}" in result.notes
+        sheet, _ = repo.latest_sheet(session, "229999")
+        assert sheet.eligibility.free_care_max_fpl is None
+        assert sheet.eligibility.assistance_ceiling_fpl is None
 
 
 @pytest.mark.parametrize(
@@ -2888,8 +3133,10 @@ def test_the_cross_check_read_is_held_to_the_ruling_too():
     engine = make_engine_with_hospital()
     with session_scope(engine) as session:
         result = build_hospital(
-            session, FakeGateway(), FakeAI(), "229999", TODAY, decision=owner_ruling("discount")
+            session, RulingGateway(), ruled_ai(), "229999", TODAY, decision=owner_ruling("discount")
         )
+        sheet, _ = repo.latest_sheet(session, "229999")
+        assert sheet.eligibility.assistance_ceiling_fpl.value == 250
         kinds = {item.kind for item in repo.open_review_items(session, "229999")}
         assert "conflict" not in kinds and "tiebreak" not in kinds
         assert not any(note.startswith("critical fields disagree") for note in result.notes)
@@ -2901,9 +3148,9 @@ def test_the_tie_break_read_is_held_to_the_ruling_too():
     # that is the primary's ceiling, so the primary stands.
     engine = make_engine_with_hospital()
     with session_scope(engine) as session:
-        ai = FakeAI(free_limit_for_fast=("400", DISCOUNT_QUOTE), free_limit_for_tiebreak="250")
+        ai = ruled_ai(fast=("400", DISCOUNT_QUOTE))
         result = build_hospital(
-            session, FakeGateway(), ai, "229999", TODAY, decision=owner_ruling("discount")
+            session, RulingGateway(), ai, "229999", TODAY, decision=owner_ruling("discount")
         )
         detail = review_detail(session, "229999", "tiebreak")["eligibility.assistance_ceiling_fpl"]
         assert detail == {
@@ -2954,7 +3201,9 @@ def test_build_state_hands_each_hospital_its_own_ruling():
     engine = make_engine_with_hospital(REAL_HOSPITAL, second)
     decisions = {"220031": owner_ruling("discount", ccn="220031")}
     with session_scope(engine) as session:
-        results = build_state(session, FakeGateway(), FakeAI(), "MA", TODAY, decisions=decisions)
+        results = build_state(
+            session, RulingGateway(), ruled_ai(), "MA", TODAY, decisions=decisions
+        )
         assert sorted(r.ccn for r in results) == ["220010", "220031"]
         ruled, _ = repo.latest_sheet(session, "220031")
         other, _ = repo.latest_sheet(session, "220010")
@@ -2976,11 +3225,11 @@ def test_a_stored_ruling_holds_a_build_that_is_given_no_decision():
     engine = make_engine_with_hospital()
     with session_scope(engine) as session:
         assert record_owner_rulings(session, {"229999": owner_ruling("discount")}) == 1
-        result = build_hospital(session, FakeGateway(), FakeAI(), "229999", TODAY)
+        result = build_hospital(session, RulingGateway(), ruled_ai(), "229999", TODAY)
         sheet, _ = repo.latest_sheet(session, "229999")
         assert sheet.eligibility.free_care_max_fpl is None
         ceiling = sheet.eligibility.assistance_ceiling_fpl
-        assert (ceiling.value, ceiling.quote) == (250, FREE_CARE_QUOTE)
+        assert (ceiling.value, ceiling.quote) == (250, RULED_SENTENCE)
         assert RULING_NOTE in result.notes
         assert review_detail(session, "229999", "owner_decision") == {
             "decision": "discount",
@@ -3036,7 +3285,9 @@ def test_build_state_gives_a_hospital_the_file_does_not_name_its_stored_ruling()
         record_owner_rulings(session, {"220031": owner_ruling("discount", ccn="220031")})
         # The decisions file names the other hospital only; each one gets what is meant for it.
         file_says = {"220010": owner_ruling("accept", ccn="220010")}
-        results = build_state(session, FakeGateway(), FakeAI(), "MA", TODAY, decisions=file_says)
+        results = build_state(
+            session, RulingGateway(), ruled_ai(), "MA", TODAY, decisions=file_says
+        )
         assert sorted(r.ccn for r in results) == ["220010", "220031"]
         ruled, _ = repo.latest_sheet(session, "220031")
         other, _ = repo.latest_sheet(session, "220010")

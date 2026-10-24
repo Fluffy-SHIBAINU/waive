@@ -210,5 +210,7 @@ def test_a_rebuild_from_stored_documents_keeps_the_owners_ruling(session):
     assert result.version == 2
     latest, _ = repo.latest_sheet(session, "229999")
     assert latest.eligibility.free_care_max_fpl is None
-    assert latest.eligibility.assistance_ceiling_fpl.value == 250
+    # The ruling moved 250 to the ceiling, whose quote is the sample's free-care sentence: no
+    # ceiling can carry that (Russell Regional, 171350), so verification drops it.
+    assert latest.eligibility.assistance_ceiling_fpl is None
     assert "owner_decision" in {item.kind for item in repo.open_review_items(session, "229999")}

@@ -54,6 +54,7 @@ from waive.atlas.structure import (
 from waive.atlas.tavily_gateway import Depth, TavilyGateway
 from waive.atlas.verify import (
     DENTAL_REASON,
+    HOLDING_REASONS,
     OTHER_REGION_REASON,
     PATIENT_SHARE_REASON,
     TRANSLATION_REASON,
@@ -579,16 +580,22 @@ def _structure_and_verify(
         )
         result.notes.extend(skipped)
         result.notes.extend(f"{path}: {reason}" for path, reason in report.rejected)
-    holds: list[str] = []
-    if any(reason == PATIENT_SHARE_REASON for _, reason in report.rejected):
+    holds = _holding_reasons(report.rejected)
+    if PATIENT_SHARE_REASON in holds:
         # The table says what the patient pays (co-pay, X% of charges); the schema cannot express
         # that band, and publishing the free-care remainder alone would deny the co-pay band.
         tiers = sheet.eligibility.discount_tiers
         repo.add_review_item(
             session, ccn, "patient_share_table", {"quote": tiers.quote if tiers else None}
         )
-        holds.append(PATIENT_SHARE_REASON)
     return drop_fields(sheet, [path for path, _ in report.rejected]), holds
+
+
+def _holding_reasons(rejected: list[tuple[str, str]]) -> list[str]:
+    """The reasons among `rejected` that hold the sheet rather than only drop the field
+    (verify.HOLDING_REASONS), each once: what is left would publish a worse answer (a table from
+    70% with nothing below, once Russell Regional's misread ceiling goes)."""
+    return list(dict.fromkeys(reason for _, reason in rejected if reason in HOLDING_REASONS))
 
 
 def _tiebreak(
@@ -1115,7 +1122,9 @@ def withdraw_rejected(
         result.notes.extend(pruned)
         result.notes.extend(f"{path}: {reason}" for path, reason in report.rejected)
         withdrawn = drop_fields(grounded, [path for path, _ in report.rejected])
-        holds: list[str] = []
+        # A ceiling read from the free-care band (Russell Regional, 171350) or a band from another
+        # state's facilities (Trinity Bettendorf, 160104) leaves a worse sheet once dropped.
+        holds = _holding_reasons(report.rejected)
         if unplaced:
             # The fields stay for the admin to compare; the sheet leaves the public atlas.
             repo.add_review_item(
@@ -1166,15 +1175,17 @@ def _close_website_questions(session: Session, ccn: str, domain: str) -> None:
     session.flush()
 
 
-def _recorded_holds(session: Session, ccn: str) -> tuple[list[str], bool]:
-    """What the builds since the sheet was last published (every build, when it never was)
-    recorded and a stored sheet cannot show: the critical fields the two models disputed and no
-    tie-break settled, and whether a discount table stated the patient's share. A published
-    version means its build had neither left, so older review items do not count."""
+def _recorded_holds(session: Session, ccn: str) -> tuple[list[str], list[tuple[str, str]]]:
+    """What the builds and rechecks since the sheet was last published (all of them, when it never
+    was) recorded and a stored sheet cannot show: the critical fields the two models disputed and
+    no tie-break settled, and each dropped field whose reason holds the sheet (path, reason): a
+    discount table that stated the patient's share, a ceiling read from the free-care band, a band
+    from another state's facilities. A published version means its build had none left, so older
+    review items do not count."""
     published = SheetStatus.PUBLISHED.value
     last = next((row for row in repo.sheet_versions(session, ccn) if row.status == published), None)
     disputed: set[str] = set()
-    patient_share = False
+    held: dict[tuple[str, str], None] = {}
     for item in repo.review_items_since(session, ccn, last.created_at if last else None):
         detail = item.detail or {}
         if item.kind == "conflict" and detail.get("paths") != ["programs.presumptive"]:
@@ -1186,8 +1197,12 @@ def _recorded_holds(session: Session, ccn: str) -> tuple[list[str], bool]:
                 if entry.get("verdict") in ("primary", "secondary")
             )
         elif item.kind == "patient_share_table":
-            patient_share = True
-    return sorted(disputed), patient_share
+            held[("eligibility.discount_tiers", PATIENT_SHARE_REASON)] = None
+        elif item.kind in ("verification", "recheck"):
+            for path, reason in detail.get("rejected", []):
+                if reason in HOLDING_REASONS:
+                    held[(path, reason)] = None
+    return sorted(disputed), list(held)
 
 
 def confirm_domain(session: Session, ccn: str, domain: str) -> BuildResult:
@@ -1245,22 +1260,18 @@ def confirm_domain(session: Session, ccn: str, domain: str) -> BuildResult:
     report = verify_sheet(grounded, texts, _documents_set_aside(repo.hospital_ref(row), sources))
     result.notes.extend(pruned)
     result.notes.extend(f"{path}: {reason}" for path, reason in report.rejected)
+    # Read before this re-check files its own item: what it rejects is noted above, not recorded.
+    disputed, recorded = _recorded_holds(session, ccn)
     if pruned or report.rejected:
         repo.add_review_item(
             session, ccn, "recheck", {"pruned": pruned, "rejected": report.rejected}
         )
     reverified = drop_fields(grounded, [path for path, _ in report.rejected])
-    disputed, patient_share = _recorded_holds(session, ccn)
     if disputed:
         listed = ", ".join(disputed)
         result.notes.append(f"critical fields disagree: {listed}; {REBUILD_TO_RECHECK}")
-    holds: list[str] = []
-    if patient_share:
-        result.notes.append(
-            f"eligibility.discount_tiers: {PATIENT_SHARE_REASON}; {REBUILD_TO_RECHECK}"
-        )
-    if patient_share or any(reason == PATIENT_SHARE_REASON for _, reason in report.rejected):
-        holds.append(PATIENT_SHARE_REASON)
+    result.notes.extend(f"{path}: {reason}; {REBUILD_TO_RECHECK}" for path, reason in recorded)
+    holds = _holding_reasons([*recorded, *report.rejected])
     disagreeing = document_conflicts(reverified, texts)
     if disagreeing:
         reason = conflict_reason(reverified)

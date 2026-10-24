@@ -398,3 +398,56 @@ def test_a_ceiling_only_sheet_conflicts_with_help_its_documents_give_above_the_c
         "Payment plans are available up to 700% of the FPL."
     )
     assert document_conflicts(with_ceiling(SAMPLE, 400), {SAMPLE_SOURCE_ID: within}) == []
+
+
+def with_ceiling_beside(sheet, value, quote=CEILING_SENTENCE):
+    """`sheet` with an assistance ceiling added, its band and table kept."""
+    cited = sheet.eligibility.free_care_max_fpl.model_copy(
+        update={"value": Decimal(value), "quote": quote}
+    )
+    eligibility = sheet.eligibility.model_copy(update={"assistance_ceiling_fpl": cited})
+    return sheet.model_copy(update={"eligibility": eligibility})
+
+
+RUSSELL_TIERS = [(70, 100, 95), (100, 125, 80), (125, 150, 60), (150, 175, 40), (175, 200, 25)]
+
+
+def test_a_ceiling_below_the_sheets_own_income_rules_holds_the_sheet():
+    # Russell Regional (171350): a ceiling of 70 read from the free-care line, under a table that
+    # runs to 200%.
+    russell = drop_fields(with_ceiling_beside(with_tiers(SAMPLE, RUSSELL_TIERS), 70), [FREE_CARE])
+    assert sheet_inconsistencies(russell) == [
+        "eligibility.assistance_ceiling_fpl: 70% is below the sheet's own income rules"
+    ]
+    assert decide_status(russell, []) is SheetStatus.HELD
+    under_free = drop_fields(with_ceiling_beside(SAMPLE, 200), ["eligibility.discount_tiers"])
+    assert sheet_inconsistencies(under_free) == [
+        "eligibility.assistance_ceiling_fpl: 200% is below the sheet's own income rules"
+    ]
+    # A ceiling at or above every band and the free limit is the normal shape.
+    usual = with_ceiling_beside(with_tiers(with_free_limit(SAMPLE, 200), [(200, 400, 60)]), 400)
+    assert sheet_inconsistencies(usual) == []
+    assert decide_status(usual, []) is SheetStatus.PUBLISHED
+    assert sheet_inconsistencies(with_ceiling_beside(SAMPLE, 600)) == []
+
+
+def test_a_gap_between_the_sheets_income_bands_holds_the_sheet():
+    # University Health Lakewood (260102): free care to 100%, the first tier from 300%; the
+    # 101-300% band is missing.
+    lakewood = with_tiers(with_free_limit(SAMPLE, 100), [(300, 400, 25)])
+    assert sheet_inconsistencies(lakewood) == [
+        "eligibility.discount_tiers: no rule covers incomes from 100% to 300%"
+    ]
+    assert decide_status(lakewood, []) is SheetStatus.HELD
+    between = with_tiers(with_free_limit(SAMPLE, 100), [(100, 200, 75), (250, 400, 50)])
+    assert sheet_inconsistencies(between) == [
+        "eligibility.discount_tiers: no rule covers incomes from 200% to 250%"
+    ]
+    # Bands written "171%" after "170%" leave no gap, nor does a band from the next whole percent.
+    labels = with_tiers(with_free_limit(SAMPLE, 100), [(100, 170, 75), (171, 250, 55)])
+    assert sheet_inconsistencies(labels) == []
+    assert sheet_inconsistencies(with_tiers(with_free_limit(SAMPLE, 100), [(101, 200, 75)])) == []
+    # No free limit and a first band above 0 is no gap the sheet itself shows.
+    table_only = drop_fields(with_tiers(SAMPLE, [(200, 300, 75), (300, 400, 50)]), [FREE_CARE])
+    assert sheet_inconsistencies(table_only) == []
+    assert decide_status(table_only, []) is SheetStatus.PUBLISHED
