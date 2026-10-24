@@ -459,9 +459,11 @@ _REGION_WORD = (
 )
 _REGION_BEFORE = re.compile(rf"(?<![a-z])(?:{_REGION_WORD})[- ]+$", re.IGNORECASE)
 # "Thomas County, Georgia", "Kansas City, Missouri", "Oxford County in Maine", "bordering county
-# in the state of Washington", "primary service areas in Delaware".
+# in the state of Washington", "primary service areas in Delaware", and the state of a town or a
+# part of it: "Virginia Beach, Virginia", "Palm Beach, Florida", "the northern panhandle of West
+# Virginia".
 _PLACE_BEFORE = re.compile(
-    r"(?<![a-z])(?:(?:count(?:y|ies)|city|parish(?:es)?|borough|township)"
+    r"(?<![a-z])(?:(?:count(?:y|ies)|city|beach|regions?|panhandle|parish(?:es)?|borough|township)"
     r"(?:\s*,|\s+(?:located\s+)?(?:in|of))|areas?\s+(?:located\s+)?(?:in|of))"
     r"\s+(?:the\s+state\s+of\s+)?$",
     re.IGNORECASE,
@@ -523,9 +525,12 @@ def _whole_states_named(quote: str) -> set[str]:
 
 
 def residency_problem(value: list[str], quote: str) -> str | None:
-    """Why a residency list does not stand on its quote, or None: the quote must name each stored
-    state as a whole state, and must not say residents of other states qualify too."""
+    """Why a residency list does not stand on its quote, or None: the list must hold a state, the
+    quote must name each one as a whole state, and must not say residents of other states
+    qualify too."""
     codes = {code.upper() for code in value}
+    if not codes:  # an empty list turns every household away
+        return RESIDENCY_REASON
     for match in _STATE_AND_NON_STATE.finditer(normalize(quote)):
         if CODE_OF_NAME[match.group(1)] in codes:
             return RESIDENCY_BOTH_REASON

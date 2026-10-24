@@ -1111,6 +1111,16 @@ _RESIDENCY_CASES = [
     (["DE", "PA", "MD", "NJ"], "The Financial Assistance Policy applies to residents living "
      "within ChristianaCare’s primary service areas in Delaware, Pennsylvania, Maryland and New "
      "Jersey", "missing"),
+    # A beach, a region or a panhandle before the name locates a town or a part of the state.
+    (["VA"], "residents of the City of Virginia Beach, Virginia", "missing"),
+    (["FL"], "Patients who live in Palm Beach, Florida are eligible.", "missing"),
+    (["CA"], "Patients who live in Long Beach, California are eligible.", "missing"),
+    (["WV"], "residents of the northern panhandle of West Virginia", "missing"),
+    (["OH"], "patients who live in our service region in Ohio", "missing"),
+    (["FL"], "Florida residents, including those in Palm Beach, Florida, qualify.", None),
+    (["NC"], "Care at a facility in North Carolina is open to North Carolina residents.", None),
+    # An empty list would turn every household away.
+    ([], "Patients who reside in Maryland are eligible.", "missing"),
     # One whole mention is enough, whatever place names follow (Phoebe Putney's "which county").
     (["GA"], "Georgia residents who are existing patients of PPG physicians will be deemed to have "
      "met the residency requirement regardless of which county in Georgia they currently reside.",
