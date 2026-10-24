@@ -652,8 +652,10 @@ def _keep_owner_ruled_ceiling(
 ) -> tuple[VerificationReport, list[dict[str, Any]]]:
     """`report` without the rejection the owner's ruled ceiling wins over, and that conflict. The
     ruling wins over the free-band reading only: verify_sheet stops at it, so the checks after it
-    (another state's band or facilities, another benchmark) run here on the ruled ceiling, and a
-    rejection they give stands, with no conflict, since the ruling kept nothing."""
+    (another state's band or facilities, another benchmark) run here on the ruled ceiling. A
+    rejection they give overturns the ruling, which then keeps nothing: the free-band rejection
+    stays beside it, so the sheet is held as the same reading with no ruling is, and no conflict
+    goes to the owner."""
     ceiling = sheet.eligibility.assistance_ceiling_fpl
     if ceiling is None or _owner_ruled_ceiling(sheet, decision) is None:
         return report, []
@@ -664,9 +666,9 @@ def _keep_owner_ruled_ceiling(
     ]
     if not overridden:
         return report, []
-    rest = [rejected for rejected in report.rejected if rejected not in overridden]
     if reason := income_limit_problem(ceiling.quote or "", sheet.hospital.state, ceiling.value):
-        return VerificationReport(report.accepted, [*rest, (CEILING_PATH, reason)]), []
+        return VerificationReport(report.accepted, [*report.rejected, (CEILING_PATH, reason)]), []
+    rest = [rejected for rejected in report.rejected if rejected not in overridden]
     kept = VerificationReport(accepted=[*report.accepted, CEILING_PATH], rejected=rest)
     return kept, [_ruling_conflict(sheet, decision, reason) for _, reason in overridden]
 
@@ -1176,11 +1178,11 @@ class Recheck:
     def waits_on_website(self) -> bool:
         """Listed only for the sheet-level checks, the unconfirmed website among them: a rebuild
         would be held again, so the remedy is `--withdraw`, then the admin's Confirm website
-        (which also stands the place check down) or Wrong website."""
-        website = (PLACE_UNCONFIRMED_REASON, DOMAIN_UNCONFIRMED_REASON)
-        return all(
-            path == "sheet" and reason.startswith(website) for path, reason in self.rejected
-        ) and any(reason.startswith(DOMAIN_UNCONFIRMED_REASON) for _, reason in self.rejected)
+        (which also stands the place check down and re-checks the sheet in place, a gap between
+        its bands included) or Wrong website."""
+        return all(path == "sheet" for path, _ in self.rejected) and any(
+            reason.startswith(DOMAIN_UNCONFIRMED_REASON) for _, reason in self.rejected
+        )
 
 
 def recheck_sheets(session: Session, state: str | None = None) -> list[Recheck]:
@@ -1231,9 +1233,14 @@ def withdraw_rejected(
     quotes and texts, so a verifier fix reaches published sheets the same day without spending
     on a rebuild (the Massachusetts batch predates the 7.9 asset, insured and list rules; review
     of 7.9). A held sheet stays held; a published one keeps its status unless it loses its income
-    rules, its documents cannot be tied to the hospital's place, or its website was matched with
-    low confidence and nobody confirmed it (decision 7.9a-1). A `recheck` review item records
-    what went, when anything did."""
+    rules, a rejection holds it (verify.HOLDING_REASONS), its income rules contradict each other
+    (publish.sheet_inconsistencies: a published sheet is held for that even when no field is
+    rejected, as Henry County, 361309, is for incomes from 100% to 200% no rule covers), its
+    documents cannot be tied to the hospital's place, or its website was matched with low
+    confidence and nobody confirmed it (decision 7.9a-1). A `recheck` review item records what
+    went, when anything did; an `inconsistent` item the contradiction; an open
+    `owner_ruling_conflict` item a reading an owner's ruling was kept over (a "skipped" result
+    says which went to the owner)."""
     results: list[BuildResult] = []
     for row in repo.list_hospitals(session, state=state):
         if repo.is_demo(row.ccn):
@@ -1445,7 +1452,11 @@ def confirm_domain(session: Session, ccn: str, domain: str) -> BuildResult:
         result.notes.append(
             "no free-care band, discount table or assistance ceiling is left to publish"
         )
-    result.notes.extend(sheet_inconsistencies(reverified, ruled))
+    inconsistent = sheet_inconsistencies(reverified, ruled)
+    if inconsistent:
+        # Recorded as a build and a withdraw record it: the note goes with this one request.
+        repo.add_review_item(session, ccn, "inconsistent", {"problems": inconsistent})
+    result.notes.extend(inconsistent)
     status = decide_status(reverified, disputed, holds, ruled)
     published = publish_sheet(session, reverified.model_copy(update={"status": status}))
     result.outcome = "published" if status is SheetStatus.PUBLISHED else "held"

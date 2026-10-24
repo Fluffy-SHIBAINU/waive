@@ -59,3 +59,38 @@ def test_a_sheet_with_a_rejected_field_keeps_its_rebuild_command(atlas):
     text = recheck()
     assert "Rebuild: uv run waive atlas build --state MA --ccn 220031 --reuse-sources" in text
     assert "unconfirmed website" not in text
+
+
+def test_a_sheet_level_problem_on_an_unconfirmed_website_gets_the_website_advice(atlas):
+    # A rebuild would be held again for the website; withdraw holds the gap with it, and Confirm
+    # website re-checks it in place.
+    from waive.atlas.schema import DiscountTier
+
+    with session_scope(atlas) as session:
+        repo.get_hospital(session, "220031").domain_confidence = 0.6
+        sheet, _ = repo.latest_sheet(session, "220031")
+        tier = DiscountTier(min_fpl_exclusive=300, max_fpl_inclusive=400, discount_percent=60)
+        # Two spans of the stored policy: the 60% band, read from 300% (the 250-300% band lost).
+        quote = (
+            "Patients with household income above 250% and at or below 400% of the Federal "
+            "Poverty Guidelines receive a 60% discount. || Patients with household income at or "
+            "below 300% of the Federal Poverty Guidelines"
+        )
+        tiers = sheet.eligibility.free_care_max_fpl.model_copy(
+            update={"value": [tier], "quote": quote}
+        )
+        stale = sheet.model_copy(
+            update={
+                "eligibility": sheet.eligibility.model_copy(update={"discount_tiers": tiers}),
+                "version": 2,
+            }
+        )
+        repo.add_sheet_version(session, stale, {"eligibility.discount_tiers": {"old": None}})
+    text = recheck()
+    assert "1 sheet with fields the current rules reject" in text  # the gap, listed
+    assert "Rebuild:" not in text
+    assert (
+        "1 sheet waits only on an unconfirmed website (a rebuild would be held again): "
+        "`uv run waive atlas recheck --withdraw` holds it, then Confirm website or Wrong "
+        "website in the admin console (/admin/review)"
+    ) in text

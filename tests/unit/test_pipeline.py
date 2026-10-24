@@ -24,6 +24,7 @@ from waive.atlas.verify import (
     CEILING_FREE_BAND_REASON,
     CEILING_NOT_ASSISTANCE_REASON,
     OTHER_STATE_FACILITY_REASON,
+    OTHER_STATE_REASON,
     PATIENT_SHARE_REASON,
     verify_sheet,
 )
@@ -3467,6 +3468,10 @@ def test_confirming_the_website_holds_a_ceiling_under_the_table_unless_the_owner
         result = confirm_domain(session, "220031", "example.org")
         assert result.outcome == "held"
         assert CEILING_UNDER_THE_TABLE in result.notes
+        # The reason is recorded, not only noted, as a build and a withdraw record it.
+        assert review_detail(session, "220031", "inconsistent") == {
+            "problems": [CEILING_UNDER_THE_TABLE]
+        }
         assert ruling_conflicts(session, "220031") == []
     engine = make_engine_with_hospital(UNSURE_HOSPITAL)
     with session_scope(engine) as session:
@@ -3474,6 +3479,7 @@ def test_confirming_the_website_holds_a_ceiling_under_the_table_unless_the_owner
         record_owner_rulings(session, {"220031": owner_ruling("discount", "300", ccn="220031")})
         result = confirm_domain(session, "220031", "example.org")
         assert (result.outcome, result.version) == ("published", 3)
+        assert "inconsistent" not in {i.kind for i in repo.open_review_items(session, "220031")}
         latest, _ = repo.latest_sheet(session, "220031")
         assert latest.eligibility.assistance_ceiling_fpl.value == 300
         assert ruling_conflicts(session, "220031") == [
@@ -3587,7 +3593,7 @@ def test_an_owner_ruled_ceiling_from_another_states_facilities_is_rejected_and_h
             BuildResult("229999", row.name, "skipped"),
             ruling,
         )
-        assert holds == [OTHER_STATE_FACILITY_REASON]
+        assert holds == [CEILING_FREE_BAND_REASON, OTHER_STATE_FACILITY_REASON]
     engine = make_engine_with_hospital(REAL_HOSPITAL)
     with session_scope(engine) as session:
         build_hospital(session, UnityPointLineGateway(), FakeAI(), "220031", TODAY)
@@ -3617,3 +3623,65 @@ def test_withdraw_files_the_patient_share_table_it_holds_a_sheet_for():
         assert (result.outcome, result.version) == ("held", 3)
         assert f"eligibility.discount_tiers: {PATIENT_SHARE_REASON}" in result.notes
         assert review_detail(session, "220031", "patient_share_table") == {"quote": MERCY_TABLE}
+
+
+# A ruled ceiling that another check overturns keeps nothing for the owner: it is held as the same
+# reading with no ruling is (a Kansas hospital whose free line sits in a system policy's Illinois
+# section).
+ILLINOIS_FREE_LINE = (
+    "For Illinois facilities: Patients with household income at or below 70% of the FPL will "
+    "receive a 100% discount."
+)
+KANSAS_HOSPITAL = {
+    **REAL_HOSPITAL,
+    "state": "KS",
+    "website_domain": "example.org",
+    "domain_confidence": 1.0,  # confirmed: the Boston sample names no Kansas place
+}
+
+
+class IllinoisLineGateway(FakeGateway):
+    def extract(self, urls, **kwargs):
+        return [ExtractedPage(url, POLICY_TEXT + ILLINOIS_FREE_LINE + "\n") for url in urls]
+
+
+def test_a_ruled_ceiling_another_check_overturns_is_held_as_without_the_ruling():
+    from waive.atlas.pipeline import BuildResult, _structure_and_verify, withdraw_rejected
+
+    for ruled in (False, True):
+        engine = make_engine_with_hospital(KANSAS_HOSPITAL)
+        with session_scope(engine) as session:
+            assert (
+                build_hospital(session, IllinoisLineGateway(), FakeAI(), "220031", TODAY).outcome
+                == "published"
+            )
+            sheet, _ = repo.latest_sheet(session, "220031")
+            ceiling = cited_from(sheet, Decimal(70), ILLINOIS_FREE_LINE)
+            store_with(session, "220031", assistance_ceiling_fpl=ceiling)
+            if ruled:
+                ruling = owner_ruling("discount", "70", ccn="220031")
+                record_owner_rulings(session, {"220031": ruling})
+            [result] = withdraw_rejected(session, "KS")
+            assert (result.outcome, result.version) == ("held", 3), ruled
+            assert f"{CEILING_PATH}: {CEILING_FREE_BAND_REASON}" in result.notes
+            assert (f"{CEILING_PATH}: {OTHER_STATE_REASON}" in result.notes) is ruled
+            assert ruling_conflicts(session, "220031") == []
+    # The build holds it for the free-band reading too, beside the other state's band.
+    engine = make_engine_with_hospital(KANSAS_HOSPITAL)
+    with session_scope(engine) as session:
+        ai = FakeAI(free_limit_for_fast=("70", ILLINOIS_FREE_LINE))
+        ai.free_limits["reason"] = ("70", ILLINOIS_FREE_LINE)
+        ruling = owner_ruling("discount", "70", ccn="220031")
+        build_hospital(session, IllinoisLineGateway(), ai, "220031", TODAY, decision=ruling)
+        row = repo.get_hospital(session, "220031")
+        _sheet, holds = _structure_and_verify(
+            session,
+            ai,
+            repo.hospital_ref(row),
+            repo.sources_for(session, "220031"),
+            TODAY,
+            BuildResult("220031", row.name, "skipped"),
+            ruling,
+        )
+        assert holds == [CEILING_FREE_BAND_REASON]
+        assert ruling_conflicts(session, "220031") == []
