@@ -805,6 +805,14 @@ _ONE_SIGN_AND_SCALE_RANGES = [
         (),
     ),  # Atrium (360076)
     ("a 50% discount from 201-300% fpl", (50,), ()),
+    # A numbered label, or an income band, before a dash and one discount.
+    ("tier 2 - 75% discount", (75,), ()),
+    ("level 2 - 75% discount", (75,), ()),
+    ("category 3 - 40% discount", (40,), ()),
+    ("section 4.2 - 50% discount", (50,), ()),
+    ("0-50% fpl 51-75% discount", (75,), ()),
+    ("0-50% 51-75% discount", (75,), ()),
+    ("will qualify for a 15–75% discount", (75,), (75,)),  # an en dash, as Hartford's may be
 ]
 
 

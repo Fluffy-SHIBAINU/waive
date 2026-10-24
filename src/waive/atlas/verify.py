@@ -156,10 +156,31 @@ _RANGE_AFTER = re.compile(
 _RANGE_NUMBER = r"(?<![\d.,$])(\d+(?:\.\d+)?)"
 _RANGE_SIGN = r"(?:\s*%|\s*percent\b|\s*per cent\b)"
 _RANGE_NOUN = r"(?:discounts?|reductions?|reduc\w+|write[- ]?offs?|adjustments?)"
+# A number right after a label or an income band starts no discount range: "tier 2 - 75%
+# discount" and "section 4.2 - 50% discount" name one discount, and "0-50% fpl 51-75% discount"
+# gives the next band's income (review of task 7.17).
+_RANGE_NOT_AFTER = "".join(
+    rf"(?<!{word} )"
+    for word in (
+        "level",
+        "tier",
+        "category",
+        "step",
+        "class",
+        "group",
+        "section",
+        "band",
+        "fpl",
+        "fpg",
+        "poverty",
+        "%",
+    )
+)
 # "and" joins a range only after "between": "when 90% and 80% discounts apply" lists two discounts.
 _RANGE_SPAN = (
     rf"(?:between\s+{_RANGE_NUMBER}{_RANGE_SIGN}?\s*(?:-|to|and)\s*{_RANGE_NUMBER}{_RANGE_SIGN}"
-    rf"|{_RANGE_NUMBER}{_RANGE_SIGN}?\s*(?:-|to|through)\s*{_RANGE_NUMBER}{_RANGE_SIGN})"
+    rf"|{_RANGE_NOT_AFTER}{_RANGE_NUMBER}{_RANGE_SIGN}?\s*(?:-|to|through)\s*"
+    rf"{_RANGE_NUMBER}{_RANGE_SIGN})"
 )
 # The range first: "will qualify for a 15-75% discount" (Hartford HealthCare, 070011, 070017,
 # 070021, 070035, task 7.17), "(35%-75%) adjustment" (Johns Hopkins Medicine).
