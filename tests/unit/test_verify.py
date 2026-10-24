@@ -2675,6 +2675,23 @@ _FREE_BAND_FEE_CASES = [
      "financial assistance, meaning zero out-of-pocket cost", False),
     ("Patients at or below 200% of the FPL, about $31,920 per year for one person, receive free "
      "care.", False),
+    ("Patients at or below 200% of the FPL, $62,400 per calendar year for four, receive free care.",
+     False),
+    # A fee priced per period still charges: Exeter (300023) bills "$15.00 per 30 day period".
+    ("Patients at or below 100% of the FPL pay a $10 per month fee.", True),
+    ("Recurring (such as $15.00 per 30 day \nperiod Oncology/Radiation, Rehab, Sleep, Wound)", True),
+    # Lake Charles Memorial (190060): free care "subject to a minimal fee".
+    ("Patients whose gross family income does not exceed 201% of the current Federal Poverty "
+     "Guidelines (FPG) will qualify for full coverage of any hospital and/or physician charges, "
+     "subject to a minimal fee based on a sliding scale.", True),
+    # North Shore University (330106): "at no charge or at the nominal payment level" may charge.
+    ("Patients whose family income is at or below 100% of the FPG are eligible to receive "
+     "emergency or medically necessary services at no charge or at the nominal payment level "
+     "defined by the NYSDOH;", True),
+    # Linton Regional (351328): "Patients will not be required a nominal fee."
+    ("Patients will not be required a nominal fee.", False),
+    ("Patients at or below 200% of the FPL will not be charged a nominal fee.", False),
+    ("Patients at or below 200% of the FPL will not be charged any patient fees.", False),
     # A clinic's copay with no amount is not caught (Mizell, 010007: hospital care is free).
     ("If the patient's income is under 200% of the FPG, the patient is approved for financial "
      "assistance at 100% with no patient financial responsibility except for any applicable "
@@ -2707,6 +2724,7 @@ _FULL_HELP_ABOVE_CASES = [
     (200, "Patients between 201% and 300% of the FPL may receive up to 100% financial assistance.",
      False),
     (200, "Insured patients between 201% and 300% of the FPL receive a 100% discount.", False),
+    (200, "Non-insured patients between 201% and 300% of the FPL receive free care.", True),
     (200, "Patients between 201% and 300% of the FPL receive a 100% discount on deductibles.",
      False),
     (200, "Patients between 201% and 300% of the FPL receive a 100% discount after a $25 per "

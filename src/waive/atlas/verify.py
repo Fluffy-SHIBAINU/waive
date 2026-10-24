@@ -1359,23 +1359,28 @@ def free_limit_split_by_service(quote: str) -> bool:
 # alone: neither holds the sheet or writes a value.
 FREE_BAND_FEE_REASON = "quote charges the patient within the free band"
 FREE_LIMIT_BELOW_FULL_HELP_REASON = "the document gives full assistance to a band above this limit"
-# What a free band still charges: a patient, service, visit or flat fee, a nominal payment, a
-# dollar amount per visit or day ("$100 per inpatient day"), or one after a kind of care
-# ("Emergency Department $10"). "$5,680 per person" sizes a household, "$0" charges nothing, and
-# Advocate's (140223, 140288) "at or below 300% FPL (~$47,880/yr single)" is an income.
+# What a free band still charges: a patient, service, visit or flat fee, a nominal or minimal
+# payment (Lake Charles Memorial, 190060: "subject to a minimal fee"), a dollar amount per visit,
+# day or 30-day period ("$100 per inpatient day"), or one after a kind of care ("Emergency
+# Department $10"). "$5,680 per person" sizes a household and "$0" charges nothing. An amount per
+# year or month is an income, as in Advocate's (140223, 140288) "at or below 300% FPL (~$47,880/yr
+# single)", unless a fee follows it: "a $10 per month fee".
 _CHARGES_PATIENT = re.compile(
     r"\b(?:patient|service|visit|flat) fees?\b"
-    r"|\bnominal (?:payments?|fees?|amounts?|charges?)\b"
+    r"|\b(?:nominal|minimal) (?:payments?|fees?|amounts?|charges?)\b"
     r"(?! (?:will be |is |are )?(?:waived|collected|due))"
     r"|\$ ?[1-9][\d,]*(?:\.\d\d)? ?(?:/|per\b)"
     r"(?! ?(?:additional |each |extra )?(?:person|member|family|individual|dependent|household)"
-    r"| ?(?:yr|year|annum|mo|month|wk|week|hr|hour)s?\b)"
+    r"| ?(?:calendar )?(?:yr|year|annum|mo|month|wk|week|hr|hour)s?\b"
+    r"(?! (?:fees?|charges?|co-?pays?)\b))"
     r"|\b(?:visit|department|room|clinic)s?\b:? ?\$ ?[1-9]"
 )
-# A fee the quote says is not charged: "no patient fees", "without a service fee" before it, or
-# within three words after it "patient fees are waived", "service fees will not be charged".
-# "Patient fees are not waived" still charges.
-_FEE_NEGATED_BEFORE = re.compile(r"\b(?:no|without|waives?|waived|not)\b(?: \S+){0,2} ?$")
+# A fee the quote says is not charged: up to three words before it "no patient fees", "will not
+# be charged a nominal fee" (Linton Regional, 351328: "Patients will not be required a nominal
+# fee"), or within three words after it "patient fees are waived", "service fees will not be
+# charged". "Patient fees are not waived" still charges, and so does "at no charge or at the
+# nominal payment level" (North Shore University, 330106), whose "no" is four words back.
+_FEE_NEGATED_BEFORE = re.compile(r"\b(?:no|without|waives?|waived|not)\b(?: \S+){0,3} ?$")
 _FEE_WAIVED_AFTER = re.compile(
     r"\W{0,3}(?:(?!not )\S+ ){0,3}?(?:is |are |will be |shall be )?"
     r"(?:waived|not (?:be )?(?:charged|collected|required|apply))"
@@ -1416,6 +1421,7 @@ _FULL_HELP_AFTER = re.compile(
 _COST_SHARING = re.compile(
     r"\bco-?pays?\b|\bco-?payments?\b|\bco-?insurance\b|\bdeductibles?\b|\bout[- ]of[- ]pocket\b"
 )
+# "Un-insured", "non-insured" and "under-insured" patients are deliberately not insured-only.
 _INSURED_ONLY = re.compile(
     r"\b(?:have|has|with) (?:health )?insurance\b|(?<![\w-])insured patients?\b"
     r"|\bafter insurance\b"
