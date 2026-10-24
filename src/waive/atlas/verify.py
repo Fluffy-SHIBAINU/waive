@@ -835,6 +835,8 @@ RESIDENCY_REASON = "quote does not name every listed state as a whole state"
 # Bertie, 341304; Novant Health Forsyth, 340014): a list of states would turn away the patients
 # from other states the policy also covers.
 RESIDENCY_BOTH_REASON = "quote says residents of other states qualify too"
+# A list of no states would turn every household away, whatever the quote says.
+RESIDENCY_EMPTY_REASON = "the residency list names no state"
 # Letters only as boundaries, so a footnote mark glued to a name still names the state
 # ("Wisconsin1", fap-d9c5de9c9fa6dd89); longest name first, so "west virginia" is one state.
 _WHOLE_STATE = re.compile(rf"(?<![a-z])({STATE_NAME})(?![a-z])")
@@ -916,8 +918,8 @@ def residency_problem(value: list[str], quote: str) -> str | None:
     quote must name each one as a whole state, and must not say residents of other states
     qualify too."""
     codes = {code.upper() for code in value}
-    if not codes:  # an empty list turns every household away
-        return RESIDENCY_REASON
+    if not codes:
+        return RESIDENCY_EMPTY_REASON
     for match in _STATE_AND_NON_STATE.finditer(normalize(quote)):
         if CODE_OF_NAME[match.group(1)] in codes:
             return RESIDENCY_BOTH_REASON
@@ -1974,9 +1976,12 @@ OTHER_REGION_REASON = "quote is from another Kaiser region's policy, not the hos
 # policy (Ascension Saint Agnes, Maryland, for Ascension Providence in Waco, 450042). The pipeline
 # names those documents too (pipeline.foreign_documents, sibling_policies, other_state_documents).
 # The schedule clause has its own reason: Carle West's policy sits on Carle Hoopeston's own website.
+# Each set-aside reason fits the withdraw table's notes after the longest field path
+# (cli.NOTES_CHARS). The document is the policy or one that goes with it, such as UnityPoint's
+# application for Clarke County; the policy's list of covered hospitals leaves the hospital out.
 FOREIGN_OWNER_REASON = (
-    "quote is from another organisation's policy whose list of covered hospitals leaves this "
-    "hospital out, and the hospital's own website does not link to it"
+    "quote is from another organisation's document; its policy leaves the hospital out and the "
+    "hospital's site does not link it"
 )
 SCHEDULE_OWNER_REASON = (
     "quote is from a policy whose own list of covered hospitals leaves this hospital out"

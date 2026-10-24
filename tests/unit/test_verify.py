@@ -1315,7 +1315,7 @@ _RESIDENCY_CASES = [
     (["FL"], "Florida residents, including those in Palm Beach, Florida, qualify.", None),
     (["NC"], "Care at a facility in North Carolina is open to North Carolina residents.", None),
     # An empty list would turn every household away.
-    ([], "Patients who reside in Maryland are eligible.", "missing"),
+    ([], "Patients who reside in Maryland are eligible.", "empty"),
     # One whole mention is enough, whatever place names follow (Phoebe Putney's "which county").
     (["GA"], "Georgia residents who are existing patients of PPG physicians will be deemed to have "
      "met the residency requirement regardless of which county in Georgia they currently reside.",
@@ -1373,9 +1373,20 @@ _RESIDENCY_CASES = [
 
 @pytest.mark.parametrize(("value", "quote", "expected"), _RESIDENCY_CASES)
 def test_residency_problem(value, quote, expected):
-    from waive.atlas.verify import RESIDENCY_BOTH_REASON, RESIDENCY_REASON, residency_problem
+    from waive.atlas.verify import (
+        RESIDENCY_BOTH_REASON,
+        RESIDENCY_EMPTY_REASON,
+        RESIDENCY_REASON,
+        residency_problem,
+    )
 
-    reasons = {None: None, "missing": RESIDENCY_REASON, "both": RESIDENCY_BOTH_REASON}
+    reasons = {
+        None: None,
+        "missing": RESIDENCY_REASON,
+        "both": RESIDENCY_BOTH_REASON,
+        "empty": RESIDENCY_EMPTY_REASON,
+    }
+    assert RESIDENCY_EMPTY_REASON == "the residency list names no state"
     assert residency_problem(value, quote) == reasons[expected]
 
 
@@ -3107,6 +3118,31 @@ def test_verify_sheet_rejects_an_income_limit_from_another_states_facility_secti
     assert OTHER_STATE_FACILITY_REASON != OTHER_STATE_REASON
     report = verify_sheet(with_free_limit_in(200, UNITYPOINT_IL_SCHEDULE, "IL"), docs)
     assert not [rejected for rejected in report.rejected if rejected[0] == free]
+
+
+def test_the_set_aside_reasons_fit_the_withdraw_table():
+    # `waive atlas recheck --withdraw` cuts each sheet's notes at NOTES_CHARS: the first note,
+    # "<path>: <reason>", must read whole for the longest path (Clarke County, 161348, and
+    # St. Francis-Emory, 110129, lost the end of FOREIGN_OWNER_REASON).
+    from waive import cli
+    from waive.atlas import verify
+    from waive.atlas.schema import SECTIONS, ProcedureSheet
+
+    reasons = [
+        verify.TRANSLATION_REASON,
+        verify.DENTAL_REASON,
+        verify.OTHER_REGION_REASON,
+        verify.OTHER_STATE_DOCUMENT_REASON,
+        verify.LENT_DOCUMENT_REASON,
+        verify.FOREIGN_OWNER_REASON,
+        verify.SCHEDULE_OWNER_REASON,
+        verify.SIBLING_POLICY_REASON,
+    ]
+    sections = {name: ProcedureSheet.model_fields[name].annotation for name in SECTIONS}
+    paths = [f"{name}.{field}" for name, model in sections.items() for field in model.model_fields]
+    longest = max(paths, key=len)
+    assert longest == "eligibility.insured_patients_covered"
+    assert all(len(f"{longest}: {reason}") <= cli.NOTES_CHARS for reason in reasons)
 
 
 def test_holding_reasons():

@@ -173,8 +173,11 @@ def _income_gaps(
     two bands, more than a band label's step apart. University Health Lakewood (260102) published
     free care to 100% and its first band from 300%, the 101-300% band missing; Henry County (361309)
     free care to 100% and bands from 200%, while its table gives 101-200% a 100% discount. A sheet
-    with no free-care limit is not checked below its first band: many tables start above 0
-    rightly (070003)."""
+    with no free-care limit is not checked below its first band: its documents may state no free
+    band, and a sheet whose free-care limit verification dropped publishes from its first band
+    (Day Kimball, 070003, from 200%: its limit was quoted as the top of a later band). A limit
+    dropped because the free band itself is misstated holds a sheet that keeps its table instead
+    (verify.HOLDING_BESIDE_A_TABLE_REASONS)."""
     if tiers is None or not tiers.value:
         return []
     gaps: list[tuple[Decimal, Decimal]] = []
