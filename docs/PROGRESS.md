@@ -214,7 +214,7 @@ Plan: `docs/superpowers/plans/2026-10-02-waive-phase-7-scale.md` (601f318; 7 tas
   - [x] 7.17.5 Discount-tier readings (hardship, additional, insured-only, wrong column, service split) (9353d77, 625a589: 10 published tier fields; UVM's tiers off AGB and Dartmouth's shared scale kept)
   - [x] 7.17.6 Free-care readings (fees in the free band, a full-help band above the limit) (5a3b996, 21f0e88: published 260102, 330307, 110069, 110129)
   - [x] 7.17.7 Ceilings from the free band, other-state facility bands, band gaps (hold the sheet) (da490e7, 1888c45, 8df8a7a, 93ac369: holds 160104, 361309 on recheck and 270057, 271389, 520089 on Confirm website; owner rulings win, conflicts filed for the owner: Russell 171350, Baptist 180104/180130)
-  - [ ] 7.17.8 Documents of another hospital or another state; siblings lend only within the state
+  - [x] 7.17.8 Documents of another hospital or another state; siblings lend only within the state (5cf66a4, 03ac3c0, 11f4a44, d72f9fd: published 141316, 161348, 450042 held; 110129, 330197 lose more fields; 060003, 060015, 171388 lose only decision_days; siblings never lend across states)
   - [ ] 7.17.9 Dry recheck on a copy of the atlas, then the real recheck, exports and report
   - Owner rows (no rule): the four hedged free-care sheets and the one-offs in the spec's "For the owner" section.
 - [ ] 7.5 State repositories as sources (CA HCAI, WA DOH)
