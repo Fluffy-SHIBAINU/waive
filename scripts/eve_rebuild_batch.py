@@ -11,7 +11,9 @@ Runs `uv run waive atlas build --state XX --ccn NNNNNN --reuse-sources` one hosp
 with the Tavily cap pinned at the credits already used (any search is refused before it happens)
 and the Token Factory cap at the block's budget. Order: _rebuild.json sorted by (state, ccn),
 minus the skip list and the hospitals with no stored text. Resumes after --after CCN.
-Writes one JSON line per hospital to --out and prints a summary.
+Writes one JSON line per hospital to --out and prints a summary. Two runners can share one
+list: one forward and one with --reverse, both with --skip-rebuilt, meet in the middle (SQLite
+takes one writer at a time, but most of a build is the model's answer, which they overlap).
 """
 
 import argparse
@@ -85,8 +87,17 @@ def main():
     ap.add_argument(
         "--ccns", default="", help='rebuild these ("ST CCN" per line), not _rebuild.json'
     )
+    ap.add_argument("--reverse", action="store_true", help="work the order from its end")
+    ap.add_argument(
+        "--skip-rebuilt",
+        action="store_true",
+        help="pass over a hospital whose newest sheet is past version 1 (rebuilt already), so two "
+        "runners can share one list from opposite ends",
+    )
     a = ap.parse_args()
     eligible, no_text = order(a.ccns)
+    if a.reverse:
+        eligible = eligible[::-1]
     if a.list:
         print(f"eligible {len(eligible)}; without stored text {len(no_text)}")
         print("no text:", " ".join(r["ccn"] for r in no_text))
@@ -110,6 +121,9 @@ def main():
         for i, r in enumerate(batch, 1):
             ccn, st = r["ccn"], r["state"]
             before = latest(ccn)
+            if a.skip_rebuilt and before and before[0] > 1:
+                counts["already-rebuilt"] = counts.get("already-rebuilt", 0) + 1
+                continue
             t0 = time.time()
             try:
                 p = subprocess.run(
