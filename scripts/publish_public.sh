@@ -42,7 +42,7 @@ if git log --name-only --format= main | grep -E "$LEAK" | sort -u | head -5 | gr
 fi
 echo "history clean: $(git rev-list --count main) commits, no private path in any of them"
 
-uv run --frozen pytest -q -p no:cacheprovider -o addopts="" | tail -1
+uv run --frozen pytest -q -p no:cacheprovider -o addopts="" -rf | grep -E "^FAILED| passed| failed"
 
 if [[ "${1:-}" == "--dry-run" ]]; then
   echo "dry run: not pushed"
