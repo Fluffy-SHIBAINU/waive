@@ -3,6 +3,8 @@
 import re
 from pathlib import Path
 
+import pytest
+
 DEVPOST = Path(__file__).resolve().parents[2] / "docs" / "devpost"
 REPORTS = DEVPOST.parent / "reports"
 README = DEVPOST.parents[1] / "README.md"
@@ -116,6 +118,8 @@ def test_public_figures_match_the_committed_reports():
     # `waive atlas report` writes to docs/reports/; a figures refresh must carry all three along
     # (8.9 review: the README lagged the national report by one review item, the narration by
     # two published hospitals).
+    if not (REPORTS / "atlas-ma.md").exists():
+        pytest.skip("the atlas reports are private data, not in the public repository")
     readme = README.read_text(encoding="utf-8")
     submission = (DEVPOST / "submission.md").read_text(encoding="utf-8")
     script = (DEVPOST / "demo-script.md").read_text(encoding="utf-8")

@@ -33,7 +33,7 @@ cd "$WORK/waive"
 
 quoted=""
 for path in "${PRIVATE_PATHS[@]}"; do quoted+=" '$path'"; done
-FILTER_BRANCH_SQUELCH_WARNING=1 git filter-branch --quiet --prune-empty \
+FILTER_BRANCH_SQUELCH_WARNING=1 git filter-branch --prune-empty \
   --index-filter "git rm -r -q --cached --ignore-unmatch --$quoted" -- main >/dev/null
 
 if git log --name-only --format= main | grep -E "$LEAK" | sort -u | head -5 | grep .; then
