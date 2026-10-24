@@ -2036,6 +2036,12 @@ def verify_sheet(
             reason := ceiling_problem(cited.quote or "", cited.value)
         ):
             report.rejected.append((path, reason))
+        elif path == "eligibility.discount_tiers" and (
+            quotes_patient_share(cited.quote or "") or tiers_rise_with_income(cited.value)
+        ):
+            # Before the income-limit tests: the patient's share holds the sheet, and a table
+            # measured on another benchmark, or under another state's heading, only goes.
+            report.rejected.append((path, PATIENT_SHARE_REASON))
         elif path in INCOME_LIMIT_PATHS and (
             reason := income_limit_problem(cited.quote or "", sheet.hospital.state, cited.value)
         ):
@@ -2075,10 +2081,6 @@ def verify_sheet(
             and normalize(cited.quote or "") in insured_table[1]
         ):
             report.rejected.append((path, INSURED_TABLE_REASON))
-        elif path == "eligibility.discount_tiers" and (
-            quotes_patient_share(cited.quote or "") or tiers_rise_with_income(cited.value)
-        ):
-            report.rejected.append((path, PATIENT_SHARE_REASON))
         elif path == "eligibility.discount_tiers" and discount_range_in_quote(cited.quote or "") & {
             Decimal(tier.discount_percent) for tier in cited.value
         }:

@@ -338,6 +338,20 @@ def test_a_discount_that_rises_with_income_is_upside_down():
     assert not tiers_rise_with_income(flat.eligibility.discount_tiers.value)
 
 
+def test_a_rising_table_is_the_patients_share_before_its_benchmark_is_read():
+    # The patient's share holds the sheet; another benchmark or another state's heading only
+    # drops the table, so the share is read first, as before those rules.
+    rising = (
+        "Patients with household income above 200% and at or below 300% of the area median "
+        "income receive a 25% discount; above 300% and at or below 400% of the area median "
+        "income, a 50% discount."
+    )
+    docs = {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT + "\n" + rising + "\n"}
+    sheet = with_tiers_quote(rising, [(200, 300, 25), (300, 400, 50)])
+    rejected = dict(verify_sheet(sheet, docs).rejected)
+    assert rejected["eligibility.discount_tiers"] == PATIENT_SHARE_REASON
+
+
 ARNOT_SENTENCE = (
     "Whether you are uninsured or insured, you may qualify for full or partial financial "
     "assistance if your household income is at or below 400% of the Federal Poverty Level for "
