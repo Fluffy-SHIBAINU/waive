@@ -605,6 +605,20 @@ def test_merge_refetched_adds_to_the_list_sorted_and_ignores_lines_that_are_not_
     assert path.read_text(encoding="utf-8") == "AL 010001\nMA 220031\nRI 410001\n"
 
 
+def test_merge_refetched_that_fails_mid_write_leaves_the_old_list_whole(tmp_path, monkeypatch):
+    path = tmp_path / "eve-refetched.txt"
+    path.write_text("MA 220010\n", encoding="utf-8")
+
+    def interrupted(source, target):
+        raise KeyboardInterrupt
+
+    monkeypatch.setattr("waive.atlas.eve_refetch.os.replace", interrupted)
+    with pytest.raises(KeyboardInterrupt):
+        merge_refetched(path, [("RI", "410001")])
+    assert path.read_text(encoding="utf-8") == "MA 220010\n"
+    assert sorted(p.name for p in tmp_path.iterdir()) == ["eve-refetched.txt"]
+
+
 def test_merge_refetched_leaves_the_file_as_it_was_when_a_run_gained_nothing(tmp_path):
     path = tmp_path / "eve-refetched.txt"
     written = "RI 410001\nMA 220010\n"  # not sorted: untouched, not rewritten

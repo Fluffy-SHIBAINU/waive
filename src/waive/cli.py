@@ -42,6 +42,13 @@ from waive.atlas.schedule import (
 )
 from waive.atlas.skiplist import EVE_SKIP, SKIP_LIST, file_skip_items, load_skip_list
 from waive.atlas.tavily_gateway import make_tavily_gateway
+from waive.atlas.website_confirm import (
+    CONFIRMED_LIST,
+    ConfirmReport,
+    candidates,
+    planned_credits,
+    run_confirm,
+)
 from waive.auth import sessions
 from waive.cases.evaluate import evaluate_corpus, write_report
 from waive.cases.service import purge_cases
@@ -490,6 +497,82 @@ def atlas_eve_refetch(
     listed = merge_refetched(out, report.gained)
     typer.echo(
         f"{len(report.gained)} hospitals gained a source; {len(listed)} listed in {out} "
+        "for the rebuilds"
+    )
+    if report.failed:
+        raise typer.Exit(code=1)
+
+
+@atlas_app.command("confirm-websites")
+def atlas_confirm_websites(
+    state: str | None = typer.Option(None, "--state", help="Only this state"),
+    limit: int | None = typer.Option(None, "--limit", help="Search at most this many hospitals"),
+    dry_run: bool = typer.Option(
+        True, "--dry-run/--run", help="Print the plan and spend nothing (default), or search"
+    ),
+    out: Path = typer.Option(  # noqa: B008
+        CONFIRMED_LIST,
+        "--out",
+        help="With --run: the hospitals confirmed are added to this list, one 'ST CCN' per "
+        "line, for the rebuilds",
+    ),
+) -> None:
+    """Confirm the websites of held sheets with Waive's own discovery search. A hospital whose
+    newest sheet is held, carries an income rule and waits only on a website matched with low
+    confidence gets one Tavily search (one credit, booked by the governor) by the rule discovery
+    uses to find a website. When that search is sure (0.9) of the website already stored, its
+    confidence becomes 0.9 and the hospital joins the --out list for the rebuilds. A sure answer
+    naming another website changes nothing; it is filed as an open website_searched item for an
+    admin. Confidence 1.0 stays the admin's: a hospital is read again before its search and
+    skipped, unsearched, if it stopped waiting since the plan (an admin confirmed it meanwhile),
+    and locked and checked again before the write. A hospital on the skip list is never searched.
+    The default is a dry run that prints the plan; --run spends credits, commits after each
+    search, adds each confirmed hospital to the --out list right after its commit (so an
+    interrupt loses none) and stops cleanly when the budget does. A run that ends on another
+    error still keeps and lists what it confirmed before it, then exits with status 1."""
+    settings = Settings()
+    skip = load_skip_list(settings.scout_skip_list)
+    report = ConfirmReport()
+    with session_scope(_engine(settings)) as session:
+        rows = candidates(session, states=(state.upper(),) if state else None, skip=skip)[:limit]
+        typer.echo(
+            f"website search plan: {len(rows)} held sheets on unconfirmed websites; "
+            f"about {planned_credits(len(rows))} Tavily credits (one search each)"
+        )
+        if dry_run:
+            return
+        report = ConfirmReport(total=len(rows))
+        governor = make_governor(settings)
+        if rows:
+            gateway = make_tavily_gateway(settings, governor)
+            report = run_confirm(session, gateway, rows, governor=governor, out=out)
+    changed = ""
+    if report.count("skipped"):
+        changed += f"; {report.count('skipped')} skipped (changed since the plan, not searched)"
+    if report.count("changed"):
+        changed += f"; {report.count('changed')} changed during the search (nothing written)"
+    typer.echo(
+        f"searched {report.searched} of {report.total} held sheets: "
+        f"{report.count('confirmed')} confirmed, {report.count('other_site')} other site, "
+        f"{report.count('unconfirmed')} unconfirmed{changed}; "
+        f"{report.credits_spent} Tavily credits spent"
+    )
+    for found in report.other_sites:
+        typer.echo(
+            f"other site: {found.state} {found.ccn}: stored {found.stored_domain}, "
+            f"the search found {found.found_domain}"
+        )
+    if report.stopped:
+        typer.echo(f"stopped: {report.stopped.rstrip('.')}. The results so far are kept.")
+    if report.failed:
+        typer.echo(f"failed: {report.failed}. The results so far are kept.")
+    try:
+        listed = merge_refetched(out, report.confirmed)
+    except OSError as error:
+        typer.echo(f"could not write {out}: {error}")
+        raise typer.Exit(code=1) from None
+    typer.echo(
+        f"{len(report.confirmed)} hospitals confirmed; {len(listed)} listed in {out} "
         "for the rebuilds"
     )
     if report.failed:
