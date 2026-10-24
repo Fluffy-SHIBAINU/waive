@@ -2834,6 +2834,13 @@ _FULL_HELP_ABOVE_CASES = [
      "visit fee.", False),
     (200, "Income 0-200% of FPL: 100% discount. Income 201-300% of FPL: 75% discount. Income "
      "301-400% of FPL: 50% discount.", False),
+    # A band that starts well above the limit is no free band next to it, though a flattened
+    # table header puts a full-help column right after it: SVMC (470012), Hampton Regional
+    # (420072) and Holland (230072) publish these limits rightly.
+    (250, "income requirements are: family size <=250% fpl 251%-300% 300%-400% fpl 100% discount "
+     "75% discount 70% discount", False),
+    (200, "100% 200% 201% - 300% 301% - 400% family size poverty level maximum income for 100% "
+     "write off", False),
 ]  # fmt: skip
 
 
@@ -2870,6 +2877,10 @@ _FREE_LIMITS_READ_RIGHT = [
     (100, LIMA_FREE_LIMIT, "OH", LIMA_AWARDS),
     (200, "Patients at or below 200% of the FPL receive free care. Patients between 201% and 300% "
      "of the FPL may receive up to 100% financial assistance.", "MA", ""),
+    # SVMC (470012): the 300%-400% band before the table's full-help column is not the free band.
+    (250, "Patients with household income at or below 250% of the Federal Poverty Guidelines "
+     "receive a 100% discount.", "VT", "Income requirements are: Family Size <=250% FPL "
+     "251%-300% 300%-400% FPL 100% Discount 75% Discount 70% Discount"),
 ]  # fmt: skip
 
 
@@ -2894,6 +2905,17 @@ _CEILING_FREE_BAND_CASES = [
      "Federal Poverty Level.", 400, False),
     ("You may receive a discount of up to 100 percent if your household income is at or below "
      "400% of the Federal Poverty Level.", 400, False),
+    # The same hedge beside free-care words: only decision B's guard keeps these (Flagler, 100090,
+    # one of the quotes decision B names; Holy Family, 161346).
+    ("Patients with income at or below 400% of the FPL may be eligible for up to 100% free care.",
+     400, False),
+    ("Uninsured patients at or below 250% of the FPL may qualify for free care of up to 100% of "
+     "the bill.", 250, False),
+    ("If your family adjusted income is less than 200% of federal poverty guidelines, you may be "
+     "eligible for up to a 100% discount.", 200, False),
+    ("who have family incomes not in excess of 150% of the Federal Poverty Guidelines may be "
+     "eligible to receive up to 100% Charity care based on their financial assistance "
+     "application", 150, False),
     # A sentence that gives the free band and partial help too still states the ceiling: Dameron
     # (050122), NYU (330214), MDI (201304), 140101 and a sliding scale.
     ("You may qualify for a discount if your family income is at or below 400% of the Federal "
@@ -2951,6 +2973,16 @@ def test_a_ceiling_quoted_from_the_free_care_band_is_rejected(quote, value, free
 
     expected = CEILING_FREE_BAND_REASON if free_band else None
     assert ceiling_problem(quote, Decimal(value)) == expected
+
+
+def test_verify_sheet_keeps_a_hedged_ceiling_beside_free_care_words():
+    # Decision B: the sheet is neither rejected nor held for it.
+    quote = (
+        "Patients with income at or below 400% of the FPL may be eligible for up to 100% free care."
+    )
+    docs = {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT + "\n" + quote + "\n"}
+    report = verify_sheet(with_ceiling(400, quote), docs)
+    assert "eligibility.assistance_ceiling_fpl" in report.accepted
 
 
 def test_verify_sheet_rejects_a_ceiling_quoted_from_the_free_care_band():
