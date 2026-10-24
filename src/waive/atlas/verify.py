@@ -1355,6 +1355,101 @@ def free_limit_split_by_service(quote: str) -> bool:
     return len({number for number, _ in _tied_percents(_poverty_text(quote))}) >= 2
 
 
+# Free-care limits the publication audit (2026-10-24) found misread. Each reason rejects the limit
+# alone: neither holds the sheet or writes a value.
+FREE_BAND_FEE_REASON = "quote charges the patient within the free band"
+FREE_LIMIT_BELOW_FULL_HELP_REASON = "the document gives full assistance to a band above this limit"
+# What a free band still charges: a patient, service, visit or flat fee, a nominal payment, a
+# dollar amount per visit or day ("$100 per inpatient day"), or one after a kind of care
+# ("Emergency Department $10"). "$5,680 per person" sizes a household, "$0" charges nothing, and
+# Advocate's (140223, 140288) "at or below 300% FPL (~$47,880/yr single)" is an income.
+_CHARGES_PATIENT = re.compile(
+    r"\b(?:patient|service|visit|flat) fees?\b"
+    r"|\bnominal (?:payments?|fees?|amounts?|charges?)\b"
+    r"(?! (?:will be |is |are )?(?:waived|collected|due))"
+    r"|\$ ?[1-9][\d,]*(?:\.\d\d)? ?(?:/|per\b)"
+    r"(?! ?(?:additional |each |extra )?(?:person|member|family|individual|dependent|household)"
+    r"| ?(?:yr|year|annum|mo|month|wk|week|hr|hour)s?\b)"
+    r"|\b(?:visit|department|room|clinic)s?\b:? ?\$ ?[1-9]"
+)
+# A fee the quote says is not charged: "no patient fees", "without a service fee" before it, or
+# within three words after it "patient fees are waived", "service fees will not be charged".
+# "Patient fees are not waived" still charges.
+_FEE_NEGATED_BEFORE = re.compile(r"\b(?:no|without|waives?|waived|not)\b(?: \S+){0,2} ?$")
+_FEE_WAIVED_AFTER = re.compile(
+    r"\W{0,3}(?:(?!not )\S+ ){0,3}?(?:is |are |will be |shall be )?"
+    r"(?:waived|not (?:be )?(?:charged|collected|required|apply))"
+)
+
+
+def free_band_charges_patient(quote: str) -> bool:
+    """Whether a free-care quote still charges the patient something within its band: a fee, a
+    nominal payment or an amount per visit that the quote does not waive. University Health
+    Lakewood (260102) published free care to 100% from "0-100% FPL - patient service fee 1.
+    Outpatient office visit $5 2. Emergency Department $10", and Cayuga Medical Center (330307)
+    from a band that "qualifies for a nominal payment limit". A clinic's copay named without an
+    amount is not caught (Mizell, 010007, where hospital care is free)."""
+    text = normalize(quote)
+    return any(
+        _FEE_NEGATED_BEFORE.search(text, 0, match.start()) is None
+        and _FEE_WAIVED_AFTER.match(text, match.end()) is None
+        for match in _CHARGES_PATIENT.finditer(text)
+    )
+
+
+# A band of the poverty level written with both ends: "151% and 300%", "101-200%", "201 % but less
+# than or equal to 350%".
+_BAND_END = r"(\d{2,3}(?:\.\d+)?) ?(?:%|percent)?"
+_FPL_BAND = re.compile(
+    rf"(?<![\d.$]){_BAND_END} ?(?:-|to|through|thru|and|but (?:less than or equal to"
+    rf"|not (?:more|greater) than|no more than|up to)|and (?:up to|less than or equal to)) ?"
+    rf"{_BAND_END} ?(?:%|percent)"
+)
+# Full help within 120 characters after the band, with no other number between.
+_FULL_HELP_AFTER = re.compile(
+    r"[^%\d]{0,120}?(?:\b100 ?(?:%|percent) (?:financial assistance|charity|discount|adjustment"
+    r"|write[- ]?off|reduction|of (?:the )?(?:charges|balance)|free)|\bfree care\b"
+    r"|\bfree of charge\b|\bno cost\b|\bat no charge\b)"
+)
+# Sentences whose full help is not a free band: cost sharing waived (Lima Memorial, 360009: "a 100%
+# discount on any co-pay, co-insurance, and deductible after insurance"), or insured patients only.
+_COST_SHARING = re.compile(
+    r"\bco-?pays?\b|\bco-?payments?\b|\bco-?insurance\b|\bdeductibles?\b|\bout[- ]of[- ]pocket\b"
+)
+_INSURED_ONLY = re.compile(
+    r"\b(?:have|has|with) (?:health )?insurance\b|(?<![\w-])insured patients?\b"
+    r"|\bafter insurance\b"
+)
+
+
+def full_help_band_above(value: Decimal, document_text: str) -> bool:
+    """Whether the field's own document gives full help, free care or 100% assistance, to a band
+    that starts just above the free-care limit `value` and ends above it. The limit then stops
+    short of the free band: Emory Houston (110069) and St Francis-Emory (110129) published free care
+    to 200% from clause b of Emory's policy, whose clause c gives uninsured patients "at least 201 %
+    but less than or equal to 350%" of the guidelines "100% financial assistance". A sentence of
+    the form "may ... up to 100%" is no free band (decision B), and neither is one that waives
+    cost sharing, is about insured patients only, or still charges a fee: Enloe (050039) gives
+    151%-300% "free care after a $100 per visit co-pay"."""
+    limit = Decimal(value)
+    for sentence in _SENTENCES.split(_poverty_text(document_text)):
+        if not any(
+            limit < Decimal(band.group(1)) <= limit + 1
+            and Decimal(band.group(2)) > limit
+            and _FULL_HELP_AFTER.match(sentence, band.end())
+            for band in _FPL_BAND.finditer(sentence)
+        ):
+            continue
+        if not (
+            _HEDGED_UP_TO_FULL.search(sentence)
+            or _COST_SHARING.search(sentence)
+            or _INSURED_ONLY.search(sentence)
+            or free_band_charges_patient(sentence)
+        ):
+            return True
+    return False
+
+
 # Task 7.15a: Oneida (330115) published free care up to 100% of the poverty level from "Sliding
 # Scale 100% 100% 89% 89% ...", whose 100s are discounts (its table gives free care to about 133%),
 # and Holzer (360054) and Grady (360210) read 100 from a discount column too. Asking for "% of the
@@ -1817,6 +1912,12 @@ def verify_sheet(
             cited.quote or "", sheet.hospital.state
         ):
             report.rejected.append((path, OTHER_STATE_REASON))
+        elif path == "eligibility.free_care_max_fpl" and free_band_charges_patient(
+            cited.quote or ""
+        ):
+            report.rejected.append((path, FREE_BAND_FEE_REASON))
+        elif path == "eligibility.free_care_max_fpl" and full_help_band_above(cited.value, text):
+            report.rejected.append((path, FREE_LIMIT_BELOW_FULL_HELP_REASON))
         elif path == "eligibility.free_care_max_fpl" and quotes_assistance_ceiling(
             cited.quote or ""
         ):

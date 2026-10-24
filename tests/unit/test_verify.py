@@ -2592,3 +2592,168 @@ def test_verify_sheet_keeps_a_discount_table_read_right(quote, bands, state, doc
     docs = {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT + "\n" + document + "\n"}
     report = verify_sheet(with_tiers_in(quote, bands, state), docs)
     assert not [r for r in report.rejected if r[0] == "eligibility.discount_tiers"]
+
+
+# Free-care limits the publication audit (2026-10-24) found misread: rules R3' and R8'. A quote
+# named for a hospital is the one it published, or its policy's own text.
+LAKEWOOD_FREE_BAND = (
+    "0-100% FPL – patient service fee\n1. Outpatient office visit $5\n"
+    "2. Emergency Department $10\n3. Inpatient 100% financial assistance"
+)
+CAYUGA_NOMINAL = (
+    "A patient whose household income, as determined by the application income worksheet, is "
+    "equal to or less than 100% of the most recent Federal Poverty Guidelines qualifies for a "
+    "nominal payment limit as designated by major service category, the rest will be written off."
+)
+EMORY_FREE_LIMIT = (
+    "If Family Income of a patient not enrolled in Medicaid is less than \nor equal to 200% of the "
+    "Federal Poverty Guidelines, the patient will \nreceive 100% charity care adjustment for "
+    "Eligible Health Care \nServices (consistent with Indigent Care Trust Fund requirements)."
+)
+EMORY_AWARDS = (
+    "b. " + EMORY_FREE_LIMIT + "  \nc. If Family Income of a patient who is not enrolled in "
+    "Medicaid and \nis uninsured is at least 201 % but less than or equal to 350% of the \nFederal "
+    "Poverty Guidelines, the patient will receive 100% financial \nassistance for the patient’s "
+    "personal responsibility for Eligible \nHealth Care Services. \n3. Family Income must be "
+    "verified through either the Application Process or \nthe External Screening Process, as "
+    "further described below. \n6. NOTE: Uninsured patients whose Family Income is greater than "
+    "350% of \nthe U.S. Federal Poverty Guidelines may qualify for a 65% self-pay \ndiscount on "
+    "Gross Charges when payment arrangements are established \nwith Emory Healthcare."
+)
+ENLOE_FREE_LIMIT = "Families with income less than 150% of the Federal Poverty Level may be eligible for free care."
+ENLOE_HOSPITAL_CHARGES = (
+    "## Hospital Charges\n\nFinancially qualified families:\n\n*   " + ENLOE_FREE_LIMIT + "\n*   "
+    "Families with incomes between 151% and 300% of the Federal Poverty Level are eligible for "
+    "free care after a $100 per visit co-pay.\n*   Families with incomes between 301% and 400% of "
+    "the Federal Poverty Level are eligible for Medicare pricing or the self-pay discount of 55%, "
+    "whichever is less.\n"
+)
+LIMA_FREE_LIMIT = (
+    "offers emergency and other medically necessary hospital-level services free of charge if the "
+    "patient is a resident of Ohio and the patient’s income is at or below 100% of the Federal "
+    "Poverty Guidelines (the FPG)"
+)
+LIMA_AWARDS = (
+    "As a participant in the HCAP Program, LMHS " + LIMA_FREE_LIMIT + ". • General Financial "
+    "Assistance Policy In addition to HCAP, under LMHS’s Financial Assistance Policy, LMHS "
+    "provides financial assistance for emergency and other medically necessary care as a discount "
+    "from our gross hospital charges if the patient is a resident in the Hospital Service Area "
+    "and meets one of the following criteria as determined by the patient’s insurance status: "
+    "Insured vs. Uninsured o Insured. For those patients who have insurance and do not qualify "
+    "for HCAP but fall within 101-200% of the FPG, they will be eligible for a 100% discount on "
+    "any co-pay, co-insurance, and deductible after insurance. o Uninsured. For patients without "
+    "insurance, a discount of up to 100% will be extended to those whose family income is at or "
+    "below 200% of the FPG. Patients whose family income falls between 200% and 400% of the FPG "
+    "will receive a standard discount of 95%"
+)
+
+
+_FREE_BAND_FEE_CASES = [
+    # University Health Lakewood (260102) published free care to 100% from its 0-100% band, which
+    # still charges $5 an office visit and $10 in the emergency department.
+    (LAKEWOOD_FREE_BAND, True),
+    ("Patients at or below 100% of the FPL pay $5 per outpatient visit and nothing for inpatient "
+     "care.", True),
+    # Cayuga Medical Center (330307): at or below 100% the patient still owes a nominal payment.
+    (CAYUGA_NOMINAL, True),
+    ("Patients at or below 200% FPL receive free care; patient fees are waived.", False),
+    ("Patients at or below 100% of the FPL receive free care, but patient fees are not waived.",
+     True),
+    ("Patients at or below 200% of the FPL receive free care with no patient fees.", False),
+    ("For incomes up to 200% of the FPL, service fees will not be charged and care is free.",
+     False),
+    ("For patients with incomes below 200% of the FPL, BronxCare will waive all charges and no "
+     "nominal payment will be collected.", False),
+    ("For eligible individuals with incomes up to 200% of the FPL: charges waived, no nominal "
+     "payments due.", False),
+    ("Family gross income at 0 to 200% of FPL Full Financial Assistance; $0 is billable to the "
+     "patient.", False),
+    ("Patients at or below 200% of the FPL receive a 100% discount. Add $5,680 per person for "
+     "families larger than 8 people.", False),
+    # Advocate Lutheran General (140223) and Good Samaritan (140288): the dollar figure is an income.
+    ("Patients with household income at or below 300% FPL (~$47,880/yr single) qualify for full "
+     "financial assistance, meaning zero out-of-pocket cost", False),
+    ("Patients at or below 200% of the FPL, about $31,920 per year for one person, receive free "
+     "care.", False),
+    # A clinic's copay with no amount is not caught (Mizell, 010007: hospital care is free).
+    ("If the patient's income is under 200% of the FPG, the patient is approved for financial "
+     "assistance at 100% with no patient financial responsibility except for any applicable "
+     "clinic visit copays.", False),
+]  # fmt: skip
+
+
+@pytest.mark.parametrize(("quote", "expected"), _FREE_BAND_FEE_CASES)
+def test_free_band_charges_patient(quote, expected):
+    from waive.atlas.verify import free_band_charges_patient
+
+    assert free_band_charges_patient(quote) is expected
+
+
+_FULL_HELP_ABOVE_CASES = [
+    # Emory (110069, and St Francis-Emory, 110129) published free care to 200% from clause b,
+    # while clause c of the same policy gives uninsured patients at 201%-350% 100% financial
+    # assistance.
+    (200, EMORY_AWARDS, True),
+    (250, EMORY_AWARDS, False),
+    (200, "Patients between 201% and 300% of the FPL receive a 100% discount.", True),
+    (100, "Uninsured patients between 101% and 200% of the FPL receive a 100% discount.", True),
+    # Enloe (050039): the 151%-300% band is free only after a $100 co-pay a visit.
+    (150, ENLOE_HOSPITAL_CHARGES, False),
+    # Lima Memorial (360009): the 101%-200% band waives an insured patient's co-pays only.
+    (100, LIMA_AWARDS, False),
+    # Decision B: "may ... up to 100%" is no free band.
+    (200, "Patients whose income is between 201% and 300% of the FPL may be eligible for up to a "
+     "100% discount.", False),
+    (200, "Patients between 201% and 300% of the FPL may receive up to 100% financial assistance.",
+     False),
+    (200, "Insured patients between 201% and 300% of the FPL receive a 100% discount.", False),
+    (200, "Patients between 201% and 300% of the FPL receive a 100% discount on deductibles.",
+     False),
+    (200, "Patients between 201% and 300% of the FPL receive a 100% discount after a $25 per "
+     "visit fee.", False),
+    (200, "Income 0-200% of FPL: 100% discount. Income 201-300% of FPL: 75% discount. Income "
+     "301-400% of FPL: 50% discount.", False),
+]  # fmt: skip
+
+
+@pytest.mark.parametrize(("value", "document", "expected"), _FULL_HELP_ABOVE_CASES)
+def test_full_help_band_above(value, document, expected):
+    from waive.atlas.verify import full_help_band_above
+
+    assert full_help_band_above(Decimal(value), document) is expected
+
+
+def with_free_limit_in(value, quote, state):
+    sheet = with_free_limit(value, quote)
+    return sheet.model_copy(update={"hospital": sheet.hospital.model_copy(update={"state": state})})
+
+
+_MISREAD_FREE_LIMITS = [
+    ("FREE_BAND_FEE_REASON", 100, LAKEWOOD_FREE_BAND, "MO", LAKEWOOD_TIERS),
+    ("FREE_BAND_FEE_REASON", 100, CAYUGA_NOMINAL, "NY", CAYUGA_NOMINAL),
+    ("FREE_LIMIT_BELOW_FULL_HELP_REASON", 200, EMORY_FREE_LIMIT, "GA", EMORY_AWARDS),
+]
+
+
+@pytest.mark.parametrize(("reason", "value", "quote", "state", "document"), _MISREAD_FREE_LIMITS)
+def test_verify_sheet_rejects_a_misread_free_care_limit(reason, value, quote, state, document):
+    from waive.atlas import verify
+
+    docs = {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT + "\n" + document + "\n"}
+    report = verify_sheet(with_free_limit_in(value, quote, state), docs)
+    assert ("eligibility.free_care_max_fpl", getattr(verify, reason)) in report.rejected
+
+
+_FREE_LIMITS_READ_RIGHT = [
+    (150, ENLOE_FREE_LIMIT, "CA", ENLOE_HOSPITAL_CHARGES),
+    (100, LIMA_FREE_LIMIT, "OH", LIMA_AWARDS),
+    (200, "Patients at or below 200% of the FPL receive free care. Patients between 201% and 300% "
+     "of the FPL may receive up to 100% financial assistance.", "MA", ""),
+]  # fmt: skip
+
+
+@pytest.mark.parametrize(("value", "quote", "state", "document"), _FREE_LIMITS_READ_RIGHT)
+def test_verify_sheet_keeps_a_free_care_limit_read_right(value, quote, state, document):
+    docs = {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT + "\n" + document + "\n" + quote + "\n"}
+    report = verify_sheet(with_free_limit_in(value, quote, state), docs)
+    assert not [r for r in report.rejected if r[0] == "eligibility.free_care_max_fpl"]
