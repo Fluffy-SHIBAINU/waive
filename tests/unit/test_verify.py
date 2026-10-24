@@ -1019,6 +1019,179 @@ def test_verify_sheet_rejects_an_income_limit_on_another_benchmark():
     assert not any(p == free for p, _ in verify_sheet(with_free_limit(200, fpl), docs).rejected)
 
 
+MEDSTAR_RESIDENCY = (
+    "All patients must provide proof of residency within Maryland, northern Virginia, or within "
+    "the District of Columbia."
+)
+MEDSTAR_PROOF = (
+    "Proof of residency documentation would include gas and electric bills, pay stubs, bank "
+    "statements, rent statements, etc. Patient must first apply for Medical Assistance, Medical "
+    "Assistance Emergency Services, and other coverage program(s) eligibility."
+)
+# (stored states, quote, None when the quote names each one as a whole state, "missing" when it
+# does not, "both" when it says residents of other states qualify too)
+_RESIDENCY_CASES = [
+    # MedStar §3.1.1 (210015, 210018, 210024, 210034, 210062, task 7.17): only northern Virginia.
+    (["MD", "VA", "DC"], MEDSTAR_RESIDENCY, "missing"),
+    (["MD", "DC"], MEDSTAR_RESIDENCY, None),
+    (["MD", "DC", "VA"], "for patients who reside within Maryland, the District of \nColumbia, or "
+     "northern Virginia.", "missing"),
+    (["MD", "VA", "DC"], MEDSTAR_PROOF, "missing"),  # names no state at all
+    (["MD"], "Patients must provide proof of residency to qualify.", "missing"),
+    # A region word before the name: a part of the state.
+    (["ND", "MT"], "residing in North Dakota or Northeastern Montana and have received care at a "
+     "Trinity Health facility", "missing"),
+    (["WV"], "Patients who reside in southern West Virginia are eligible.", "missing"),
+    (["NC"], "residents of western North Carolina", "missing"),
+    (["NY"], "residents of Western New York", "missing"),
+    (["TX"], "residents of Central Texas counties", "missing"),
+    (["TN"], "“Community” means the twelve (13) Counties of Middle Tennessee which include: "
+     "Cannon, Davidson", "missing"),
+    # Whole states, longest name first: West Virginia is not Virginia.
+    (["NC", "SC", "GA", "AL"], "Uninsured patients who reside in North Carolina, South Carolina, "
+     "Georgia, or Alabama", None),
+    (["WV"], "Patients who reside in West Virginia are eligible.", None),
+    (["VA"], "Patients who reside in West Virginia are eligible.", "missing"),
+    (["VA", "WV"], "Financial assistance is open to residents of Virginia or West Virginia.", None),
+    (["NY"], "residents of New York State", None),
+    (["TX"], "residents of the State of Texas", None),
+    (["CA"], "Was the patient a resident of California at the time of service?", None),
+    (["MN"], "who are residents of Minnesota", None),
+    (["MO", "KS"], "residents of Missouri and Kansas", None),
+    (["OR", "WA"], "Financial assistance is offered to eligible residents of Oregon or Washington.",
+     None),
+    (["IL"], "Illinois Resident means a Patient who lives in Illinois and intends to continue "
+     "living in Illinois indefinitely.", None),
+    (["IL"], "Illinois residents. Hospital charges", None),
+    (["NJ"], "Proof of New Jersey residence as of the date of service", None),
+    (["MI", "OH"], "Having a personal residence within the state of Michigan or Ohio, within "
+     "approximately 25 miles of a McLaren HealthCare facility.", None),
+    (["KY"], "Service area includes the State of Kentucky. CCMH reserves the right to add to or "
+     "subtract from the list in its service area.", None),
+    (["MD"], "All residents of Meritus’ service area, and all Maryland residents, will be "
+     "considered for financial assistance", None),
+    # "non-New Jersey" still names New Jersey (RWJBarnabas, 310075, 310041).
+    (["NJ"], "Charity Care may be available to non-New Jersey residents, requiring immediate "
+     "medical attention", None),
+    (["NJ"], "Residency Criteria Charity Care may be available to non-New Jersey residents, "
+     "requiring immediate medical attention for an emergency medical condition.", None),
+    # A footnote mark glued to the name does not hide it (fap-d9c5de9c9fa6dd89).
+    (["IL", "WI", "NC", "SC", "GA", "AL"], "Uninsured patients who reside in Illinois, Wisconsin1, "
+     "North Carolina, South Carolina, Georgia or Alabama.", None),
+    # Paired North and South name both.
+    (["NC", "SC"], "residents of North and South Carolina", None),
+    (["ND", "SD"], "residents of North or South Dakota", None),
+    # A place word after the name: a county, a city, a beach, a region, a campus, a facility.
+    (["WA"], "Patients who live in Washington County are eligible for assistance.", "missing"),
+    (["KS"], "Patients who live in Kansas City are eligible for assistance.", "missing"),
+    (["VA"], "residents of the City of Virginia Beach", "missing"),
+    (["LA"], "Verification of Louisiana Region 5 Residency is required for any financial "
+     "assistance request.", "missing"),
+    (["CA"], "have established residency within the CommonSpirit Entity Service Area as defined "
+     "by the most recent Hospital Facility CHNA, unless the visit is urgent or emergent or occurs "
+     "within a California Hospital Facility", "missing"),
+    (["WI"], "“Community” means any county in Wisconsin that has an Ascension WI facility or "
+     "clinic", "missing"),
+    # ... and a place word before it.
+    (["MO"], "You live in Kansas City, Missouri, or Jackson County, Missouri", "missing"),
+    (["MO"], "The applicant must currently reside, with the intent to stay, in the City of Kansas "
+     "City, Missouri or Jackson County, Missouri.", "missing"),
+    (["GA"], "reside in Grady, Mitchell, Brooks or Thomas County, Georgia, or reside in a county "
+     "in Georgia which does not include a hospital", "missing"),
+    (["NE"], "for patients residing in Richardson County, Nebraska and for patients with "
+     "established long term primary care", "missing"),
+    (["WI"], "Services provided at all Vernon Health, Inc. Hospital and Clinics located in Vernon "
+     "and Crawford Counties, Wisconsin.", "missing"),
+    (["OR", "WA"], "You must be a resident of the state of Oregon or bordering county in the state "
+     "of Washington (Benton, Clark)", "missing"),
+    (["OR"], "You must be a resident of the state of Oregon or bordering county in the state of "
+     "Washington (Benton, Clark)", None),
+    (["VT", "NH"], "the patient/guarantor must be a resident of the State of Vermont, or Sullivan "
+     "or Cheshire Counties in New Hampshire.", "missing"),
+    (["DE", "PA", "MD", "NJ"], "The Financial Assistance Policy applies to residents living "
+     "within ChristianaCare’s primary service areas in Delaware, Pennsylvania, Maryland and New "
+     "Jersey", "missing"),
+    # One whole mention is enough, whatever place names follow (Phoebe Putney's "which county").
+    (["GA"], "Georgia residents who are existing patients of PPG physicians will be deemed to have "
+     "met the residency requirement regardless of which county in Georgia they currently reside.",
+     None),
+    (["KS"], "Residents of Kansas, including Kansas City, qualify for assistance.", None),
+    (["VA"], "Virginia residents, including residents of Virginia Beach, qualify.", None),
+    (["WA"], "Washington residents, including those in Washington County, qualify.", None),
+    # Washington, D.C. is the District, not Washington; a county's own state in parentheses.
+    (["DC"], "residents of Washington, D.C. and its suburbs", None),
+    (["WA"], "residents of Washington, D.C. and its suburbs", "missing"),
+    (["DC"], "residents of Washington, DC and its suburbs", None),
+    (["MD", "DC", "VA"], "Residents of Maryland, DC or Virginia qualify for assistance.", None),
+    (["VT", "WA", "NY", "MA"], "be a Vermont resident as defined in the \"Definitions\" section of "
+     "this policy or a resident of the following counties located outside of Vermont Rensselaer "
+     "(NY), Washington (NY) and Berkshire (MA).", "missing"),
+    (["VT"], "be a Vermont resident as defined in the \"Definitions\" section of this policy or a "
+     "resident of the following counties located outside of Vermont Rensselaer (NY), Washington "
+     "(NY) and Berkshire (MA).", None),
+    (["KS", "MO"], "residents of Kansas (KS) and Missouri (MO)", None),
+    (["VT"], "Vermont residents must sign the Declaration of Residency (VT)", None),
+    # Postal codes count only as upper-case tokens in mixed-case text, with the same guards.
+    (["NJ"], "Must be a resident of the State of NJ or the crime had to occur in this State.", None),
+    (["IN"], "Patients must live IN the service area.", "missing"),
+    (["MD"], "patient must reside in Cecil County, MD or one of the following surrounding "
+     "counties to be eligible for charity:", "missing"),
+    (["SC"], "Horry County, Lancaster County, and York County, SC.", "missing"),
+    (["NH"], "Charity care is only available to residents of Southern NH Health’s primary and "
+     "secondary service areas.", "missing"),
+    (["NH", "VT"], "Live within UCVH’s catchment area which includes all of NH and VT and Oxford "
+     "County in ME.", None),
+    (["ME", "NH", "VT"], "The patient lives within our catchment area which includes all of NH "
+     "and VT and Oxford County in Maine.", "missing"),
+    # Residents of other states qualify too, so a list of states would turn them away (ECU, Novant).
+    (["MN"], "Minnesota residents and non-Minnesota residents are eligible to apply.", "both"),
+    (["ME"], "Financial assistance for Emergency Care is available to Maine Residents and "
+     "non-Maine residents", "both"),
+    (["NC"], "Additionally, this policy applies to North Carolina and non-North Carolina residents "
+     "in accordance with their state's FPL", "both"),
+    (["NC"], "All North Carolina residents and non-North Carolina residents within a Novant "
+     "Health Service Area (see attached) are eligible to apply", "both"),
+    (["NC"], "The applicant must be a North Carolina resident (the criteria for determining "
+     "residency is attached as Appendix A to this policy);", None),
+]  # fmt: skip
+
+
+@pytest.mark.parametrize(("value", "quote", "expected"), _RESIDENCY_CASES)
+def test_residency_problem(value, quote, expected):
+    from waive.atlas.verify import RESIDENCY_BOTH_REASON, RESIDENCY_REASON, residency_problem
+
+    reasons = {None: None, "missing": RESIDENCY_REASON, "both": RESIDENCY_BOTH_REASON}
+    assert residency_problem(value, quote) == reasons[expected]
+
+
+def test_residency_problem_reads_state_codes_in_any_case():
+    from waive.atlas.verify import RESIDENCY_REASON, residency_problem
+
+    assert residency_problem(["md", "dc"], MEDSTAR_RESIDENCY) is None
+    assert residency_problem(["md", "va", "dc"], MEDSTAR_RESIDENCY) == RESIDENCY_REASON
+
+
+def test_verify_sheet_rejects_residency_the_quote_does_not_name_as_whole_states():
+    from waive.atlas.verify import RESIDENCY_BOTH_REASON, RESIDENCY_REASON, prune_lists
+
+    path = "eligibility.residency"
+    docs = {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT + "\n" + MEDSTAR_RESIDENCY + "\n"}
+    # MedStar Southern Maryland (210062) published [MD, VA, DC]; Richmond and Norfolk residents
+    # passed the residency step under the bare VA.
+    sheet = with_list(path, ["MD", "VA", "DC"], MEDSTAR_RESIDENCY)
+    report = verify_sheet(sheet, docs)
+    assert report.rejected == [(path, RESIDENCY_REASON)]
+    # The field is rejected, never pruned to [MD, DC]: that would turn northern Virginia away.
+    pruned, notes = prune_lists(sheet, docs)
+    assert pruned.eligibility.residency.value == ["MD", "VA", "DC"] and notes == []
+    assert verify_sheet(with_list(path, ["MD", "DC"], MEDSTAR_RESIDENCY), docs).ok
+    both = "North Carolina residents and non-North Carolina residents are eligible to apply."
+    docs = {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT + "\n" + both + "\n"}
+    assert verify_sheet(with_list(path, ["NC"], both), docs).rejected == [
+        (path, RESIDENCY_BOTH_REASON)
+    ]
+
+
 def with_list(path, value, quote):
     section_name, field_name = path.split(".")
     sheet = st_example_sheet()

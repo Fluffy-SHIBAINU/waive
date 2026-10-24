@@ -9,7 +9,7 @@ from functools import partial
 from typing import Any
 
 from waive.atlas.schema import DiscountTier, DocType, Layer, ProcedureSheet, SubmitMethod
-from waive.atlas.states import CODE_OF_NAME, STATE_NAME
+from waive.atlas.states import CODE_OF_NAME, STATE_NAME, code_tokens
 
 MIN_QUOTE_CHARS = 12
 
@@ -433,6 +433,103 @@ def bands_under_another_state(quote: str, state: str, value: Any) -> bool:
             for tier in value
         )
     return not _number_in(Decimal(value), own)
+
+
+# Task 7.17: MedStar's policy covers residents of "Maryland, northern Virginia, or within the
+# District of Columbia", and five MedStar sheets (210015, 210018, 210024, 210034, 210062) stored
+# [MD, VA, DC], so a Richmond or Norfolk resident passed the residency step under a bare VA; two
+# of them quoted sentences that name no state at all. Each stored state must be named in its
+# quote as a whole state: not after a region word ("northern Virginia", "Northeastern Montana"),
+# and not as the state of a place ("Washington County", "Kansas City, Missouri", "Virginia
+# Beach", "Oxford County in Maine", "Washington, D.C."). The field is rejected, never pruned:
+# [MD, DC] would turn northern Virginia away.
+RESIDENCY_REASON = "quote does not name every listed state as a whole state"
+# "North Carolina and non-North Carolina residents" (drafts for ECU Health North, 340151, and
+# Bertie, 341304; Novant Health Forsyth, 340014): a list of states would turn away the patients
+# from other states the policy also covers.
+RESIDENCY_BOTH_REASON = "quote says residents of other states qualify too"
+# Letters only as boundaries, so a footnote mark glued to a name still names the state
+# ("Wisconsin1", fap-d9c5de9c9fa6dd89); longest name first, so "west virginia" is one state.
+_WHOLE_STATE = re.compile(rf"(?<![a-z])({STATE_NAME})(?![a-z])")
+# The guards ignore case: they read the normalised quote for names and the quote as written for
+# postal codes ("Cecil County, MD", "Southern NH Health", "the following PA counties").
+_REGION_WORD = (
+    r"(?:north|south)(?:east|west)?(?:ern)?|east(?:ern)?|west(?:ern)?|central|middle|upstate"
+    r"|downstate|upper|lower|coastal|mid|greater|rural|metro(?:politan)?"
+)
+_REGION_BEFORE = re.compile(rf"(?<![a-z])(?:{_REGION_WORD})[- ]+$", re.IGNORECASE)
+# "Thomas County, Georgia", "Kansas City, Missouri", "Oxford County in Maine", "bordering county
+# in the state of Washington", "primary service areas in Delaware".
+_PLACE_BEFORE = re.compile(
+    r"(?<![a-z])(?:(?:count(?:y|ies)|city|parish(?:es)?|borough|township)"
+    r"(?:\s*,|\s+(?:located\s+)?(?:in|of))|areas?\s+(?:located\s+)?(?:in|of))"
+    r"\s+(?:the\s+state\s+of\s+)?$",
+    re.IGNORECASE,
+)
+# "Washington County", "Kansas City", "Virginia Beach", "Louisiana Region 5", "a California
+# Hospital Facility", "the Washington campus".
+_PLACE_AFTER = re.compile(
+    r"[- ]+(?:count(?:y|ies)|city|beach|parish(?:es)?|region|metro(?:politan)?|panhandle|campus"
+    r"|clinics?|hospitals?|facilit(?:y|ies))(?![a-z])",
+    re.IGNORECASE,
+)
+# "Washington, D.C." and "Washington DC" are the District, not the state.
+_DC_AFTER = re.compile(r"\s*,?\s*d\.?\s?c(?![a-z])", re.IGNORECASE)
+# "Rensselaer (NY), Washington (NY) and Berkshire (MA)": a county followed by its own state.
+_PAREN_CODE = re.compile(r"\s*\(([a-z]{2})\)", re.IGNORECASE)
+_COUNTY_WORD = re.compile(r"(?<![a-z])count(?:y|ies)(?![a-z])")
+_NORTH_AND_SOUTH = re.compile(r"(?<![a-z])north (?:and|or|&) south (carolina|dakota)(?![a-z])")
+_DC_DOTTED = re.compile(r"(?<![a-z])d\. ?c\.")
+_STATE_AND_NON_STATE = re.compile(
+    rf"(?<![a-z])({STATE_NAME})(?: residents?)? (?:and|or) non-? ?\1(?![a-z])"
+)
+
+
+def _part_of_a_state(text: str, start: int, end: int, code: str | None = None) -> bool:
+    """Whether the state named at text[start:end] is only a region of it or the state of a place
+    in it. `code` is the state a written-out name stands for; a different state's code in
+    parentheses after it makes the name a county's ("Washington (NY)")."""
+    paren = _PAREN_CODE.match(text, end)
+    return bool(
+        _REGION_BEFORE.search(text, 0, start)
+        or _PLACE_BEFORE.search(text, 0, start)
+        or _PLACE_AFTER.match(text, end)
+        or (code == "WA" and _DC_AFTER.match(text, end))
+        or (code and paren and paren.group(1).upper() != code)
+    )
+
+
+def _whole_states_named(quote: str) -> set[str]:
+    """The codes of the states the quote names as whole states, by name or by postal code."""
+    text = normalize(quote)
+    found: set[str] = set()
+    for match in _WHOLE_STATE.finditer(text):
+        code = CODE_OF_NAME[match.group(1)]
+        if not _part_of_a_state(text, match.start(), match.end(), code):
+            found.add(code)
+    for match in _NORTH_AND_SOUTH.finditer(text):
+        found.update(CODE_OF_NAME[f"{side} {match.group(1)}"] for side in ("north", "south"))
+    if _DC_DOTTED.search(text):
+        found.add("DC")
+    written = " ".join(quote.split())
+    if written != written.upper():  # an all-caps quote's "IN" or "ME" is a word, not a state
+        counties = _COUNTY_WORD.search(text) is not None
+        for match in code_tokens(written):
+            start, end = match.start(), match.end()
+            in_parentheses = written[start - 1 : start] == "(" and written[end : end + 1] == ")"
+            if not (in_parentheses and counties) and not _part_of_a_state(written, start, end):
+                found.add(match.group(1))
+    return found
+
+
+def residency_problem(value: list[str], quote: str) -> str | None:
+    """Why a residency list does not stand on its quote, or None: the quote must name each stored
+    state as a whole state, and must not say residents of other states qualify too."""
+    codes = {code.upper() for code in value}
+    for match in _STATE_AND_NON_STATE.finditer(normalize(quote)):
+        if CODE_OF_NAME[match.group(1)] in codes:
+            return RESIDENCY_BOTH_REASON
+    return RESIDENCY_REASON if codes - _whole_states_named(quote) else None
 
 
 # Lists whose every item must be named by the quote (task 7.9 and its review: the structurer
@@ -1395,6 +1492,10 @@ def verify_sheet(
             cited.quote or "", bool(cited.value)
         ):
             report.rejected.append((path, ASSET_REASON))
+        elif path == "eligibility.residency" and (
+            reason := residency_problem(cited.value, cited.quote or "")
+        ):
+            report.rejected.append((path, reason))
         else:
             report.accepted.append(path)
     return report
