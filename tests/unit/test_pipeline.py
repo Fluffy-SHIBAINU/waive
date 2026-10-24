@@ -23,6 +23,8 @@ from waive.atlas.tavily_gateway import ExtractedPage, SearchHit
 from waive.atlas.verify import (
     CEILING_FREE_BAND_REASON,
     CEILING_NOT_ASSISTANCE_REASON,
+    FREE_BAND_FEE_REASON,
+    FREE_LIMIT_BELOW_FULL_HELP_REASON,
     OTHER_STATE_FACILITY_REASON,
     OTHER_STATE_REASON,
     PATIENT_SHARE_REASON,
@@ -3566,6 +3568,152 @@ def test_recheck_lists_and_withdraw_holds_a_published_sheet_with_a_gap_between_i
         assert latest.status is SheetStatus.HELD
         assert latest.eligibility.discount_tiers is not None  # kept for the admin to compare
         assert recheck_sheets(session, "MA") == []  # held sheets are not listed again
+
+
+# A free-care limit rejected for a fee in its band, or for stopping short of a full-help band,
+# takes the band-gap check's input with it: the table would publish with nothing below it.
+# Henry County's shape (361309): free care to 100%, a line that gives 101-200% a 100% discount,
+# bands from 200%; and University Health Lakewood's (260102): a 0-100% band that still charges a
+# fee, and a table from 300%.
+HENRY_FREE_LINE = (
+    "Patients with household income at or below 100% of the Federal Poverty Guidelines are "
+    "eligible for free care."
+)
+HENRY_FULL_HELP = "Uninsured patients between 101% and 200% of the FPL receive a 100% discount."
+HENRY_BANDS = (
+    "Patients with household income above 200% and at or below 300% of the Federal Poverty "
+    "Guidelines receive a 50% discount."
+)
+LAKEWOOD_FEE_BAND = (
+    "0-100% FPL – patient service fee\n1. Outpatient office visit $5\n"
+    "2. Emergency Department $10\n3. Inpatient 100% financial assistance"
+)
+LAKEWOOD_BANDS = (
+    "Patients with household income above 300% and at or below 400% of the Federal Poverty "
+    "Guidelines receive a 25% discount."
+)
+_FREE_BANDS_THAT_HOLD_WITH_A_TABLE = [
+    (
+        HENRY_FREE_LINE,
+        HENRY_FULL_HELP + "\n" + HENRY_BANDS,
+        (200, 300, 50),
+        HENRY_BANDS,
+        FREE_LIMIT_BELOW_FULL_HELP_REASON,
+    ),
+    (LAKEWOOD_FEE_BAND, LAKEWOOD_BANDS, (300, 400, 25), LAKEWOOD_BANDS, FREE_BAND_FEE_REASON),
+]
+
+
+class FreeBandGateway(FakeGateway):
+    def __init__(self, free_line, rest):
+        self.text = POLICY_TEXT + free_line + "\n" + rest + "\n"
+
+    def extract(self, urls, **kwargs):
+        return [ExtractedPage(url, self.text) for url in urls]
+
+
+class FreeBandAI(FakeAI):
+    """Both models read free care to 100% from `free_line`, and one band from `table`."""
+
+    def __init__(self, free_line, band, table):
+        super().__init__(free_limit_for_fast=("100", free_line))
+        self.free_limits["reason"] = ("100", free_line)
+        self.band, self.table = band, table
+
+    def complete_json(self, role, messages, schema, *, phi, purpose, max_tokens=2000):
+        draft = super().complete_json(role, messages, schema, phi=phi, purpose=purpose)
+        low, high, percent = self.band
+        draft.discount_tiers = DraftField(
+            value=[
+                {"min_fpl_exclusive": low, "max_fpl_inclusive": high, "discount_percent": percent}
+            ],
+            quote=self.table,
+            source_id=draft.free_care_max_fpl.source_id,
+        )
+        return draft
+
+
+@pytest.mark.parametrize(
+    ("free_line", "rest", "band", "table", "reason"), _FREE_BANDS_THAT_HOLD_WITH_A_TABLE
+)
+def test_a_free_band_dropped_beside_a_table_holds_the_sheet(free_line, rest, band, table, reason):
+    from waive.atlas.pipeline import withdraw_rejected
+    from waive.atlas.schema import DiscountTier
+
+    gateway = FreeBandGateway(free_line, rest)
+    # The build: free care goes, the table stays, and the sheet is held.
+    engine = make_engine_with_hospital()
+    with session_scope(engine) as session:
+        ai = FreeBandAI(free_line, band, table)
+        result = build_hospital(session, gateway, ai, "229999", TODAY)
+        assert result.outcome == "held"
+        assert f"eligibility.free_care_max_fpl: {reason}" in result.notes
+        sheet, _ = repo.latest_sheet(session, "229999")
+        assert sheet.status is SheetStatus.HELD
+        assert sheet.eligibility.free_care_max_fpl is None
+        assert sheet.eligibility.discount_tiers is not None  # kept for the admin to compare
+    # The withdraw of a published sheet that carries both.
+    engine = make_engine_with_hospital(REAL_HOSPITAL)
+    with session_scope(engine) as session:
+        assert build_hospital(session, gateway, FakeAI(), "220031", TODAY).outcome == "published"
+        sheet, _ = repo.latest_sheet(session, "220031")
+        low, high, percent = band
+        tier = DiscountTier(min_fpl_exclusive=low, max_fpl_inclusive=high, discount_percent=percent)
+        store_with(
+            session,
+            "220031",
+            free_care_max_fpl=cited_from(sheet, Decimal(100), free_line),
+            discount_tiers=cited_from(sheet, [tier], table),
+        )
+        [result] = withdraw_rejected(session, "MA")
+        assert (result.outcome, result.version) == ("held", 3)
+        assert f"eligibility.free_care_max_fpl: {reason}" in result.notes
+        latest, _ = repo.latest_sheet(session, "220031")
+        assert latest.eligibility.free_care_max_fpl is None
+        assert latest.eligibility.discount_tiers is not None
+
+
+def test_confirming_the_website_keeps_a_free_band_dropped_beside_a_table_held():
+    # The stored sheet no longer shows the free-care limit its build dropped; the build's record
+    # keeps the sheet held, as for the holding reasons.
+    from waive.atlas.pipeline import confirm_domain
+
+    free_line, rest, band, table, reason = _FREE_BANDS_THAT_HOLD_WITH_A_TABLE[0]
+    engine = make_engine_with_hospital(UNSURE_HOSPITAL)
+    with session_scope(engine) as session:
+        gateway = FreeBandGateway(free_line, rest)
+        ai = FreeBandAI(free_line, band, table)
+        assert build_hospital(session, gateway, ai, "220031", TODAY).outcome == "held"
+        result = confirm_domain(session, "220031", "example.org")
+        assert result.outcome == "held"
+        assert f"eligibility.free_care_max_fpl: {reason}; {REBUILD_NOTE}" in result.notes
+        latest, _ = repo.latest_sheet(session, "220031")
+        assert latest.status is SheetStatus.HELD
+        assert latest.eligibility.discount_tiers is not None
+
+
+def test_a_free_band_dropped_with_no_table_left_does_not_hold_the_sheet_for_it():
+    # With no table, nothing publishes below a band, and the sheet stands on its other rules.
+    from waive.atlas.pipeline import withdraw_rejected
+
+    free_line, rest, _band, _table, reason = _FREE_BANDS_THAT_HOLD_WITH_A_TABLE[1]
+    engine = make_engine_with_hospital(REAL_HOSPITAL)
+    with session_scope(engine) as session:
+        gateway = FreeBandGateway(free_line, rest + "\n" + CEILING_SENTENCE)
+        assert build_hospital(session, gateway, FakeAI(), "220031", TODAY).outcome == "published"
+        sheet, _ = repo.latest_sheet(session, "220031")
+        store_with(
+            session,
+            "220031",
+            free_care_max_fpl=cited_from(sheet, Decimal(100), free_line),
+            assistance_ceiling_fpl=cited_from(sheet, Decimal(400), CEILING_SENTENCE),
+        )
+        [result] = withdraw_rejected(session, "MA")
+        assert (result.outcome, result.version) == ("published", 3)
+        assert f"eligibility.free_care_max_fpl: {reason}" in result.notes
+        latest, _ = repo.latest_sheet(session, "220031")
+        assert latest.eligibility.free_care_max_fpl is None
+        assert latest.eligibility.assistance_ceiling_fpl.value == 400
 
 
 # The ruling wins over the free-band reading only: the ruled ceiling quoted from UnityPoint's

@@ -1460,9 +1460,16 @@ def free_limit_split_by_service(quote: str) -> bool:
 
 
 # Free-care limits the publication audit (2026-10-24) found misread. Each reason rejects the limit
-# alone: neither holds the sheet or writes a value.
+# alone and writes no value; neither holds the sheet unless its discount table stays.
 FREE_BAND_FEE_REASON = "quote charges the patient within the free band"
 FREE_LIMIT_BELOW_FULL_HELP_REASON = "the document gives full assistance to a band above this limit"
+# A free-care limit rejected for one of these holds the sheet while its discount table stays
+# (pipeline._holding_reasons): the table would publish with nothing below its first band, where
+# the policy's free band is, and the band-gap check (publish.sheet_inconsistencies) sees only the
+# fields that stay. Henry County's shape (361309): free care to 100%, a line that gives 101-200% a
+# 100% discount, bands from 200%; University Health Lakewood's (260102): a 0-100% band that still
+# charges a fee, a table from 300%.
+HOLDING_BESIDE_A_TABLE_REASONS = (FREE_BAND_FEE_REASON, FREE_LIMIT_BELOW_FULL_HELP_REASON)
 # What a free band still charges: a patient, service, visit or flat fee, a nominal or minimal
 # payment (Lake Charles Memorial, 190060: "subject to a minimal fee"), a dollar amount per visit,
 # day or 30-day period ("$100 per inpatient day"), or one after a kind of care ("Emergency

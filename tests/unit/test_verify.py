@@ -3030,3 +3030,18 @@ def test_holding_reasons():
         "quote states the band for another state's facilities, named by its postal code"
     )
     assert OTHER_STATE_REASON not in HOLDING_REASONS
+
+
+def test_free_band_reasons_hold_only_beside_a_table():
+    from waive.atlas.verify import (
+        FREE_BAND_FEE_REASON,
+        FREE_LIMIT_BELOW_FULL_HELP_REASON,
+        HOLDING_BESIDE_A_TABLE_REASONS,
+        HOLDING_REASONS,
+    )
+
+    assert HOLDING_BESIDE_A_TABLE_REASONS == (
+        FREE_BAND_FEE_REASON,
+        FREE_LIMIT_BELOW_FULL_HELP_REASON,
+    )
+    assert not set(HOLDING_BESIDE_A_TABLE_REASONS) & set(HOLDING_REASONS)

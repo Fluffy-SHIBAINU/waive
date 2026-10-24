@@ -65,6 +65,7 @@ from waive.atlas.verify import (
     CEILING_FREE_BAND_REASON,
     DENTAL_REASON,
     FOREIGN_OWNER_REASON,
+    HOLDING_BESIDE_A_TABLE_REASONS,
     HOLDING_REASONS,
     LENT_DOCUMENT_REASON,
     OTHER_REGION_REASON,
@@ -1193,7 +1194,7 @@ def _structure_and_verify(
         )
         result.notes.extend(skipped)
         result.notes.extend(f"{path}: {reason}" for path, reason in report.rejected)
-    holds = _holding_reasons(report.rejected)
+    holds = _holding_reasons(report.rejected, report.accepted)
     _file_patient_share_table(session, ccn, sheet, holds)
     return drop_fields(sheet, [path for path, _ in report.rejected]), holds
 
@@ -1212,11 +1213,23 @@ def _file_patient_share_table(
     )
 
 
-def _holding_reasons(rejected: list[tuple[str, str]]) -> list[str]:
-    """The reasons among `rejected` that hold the sheet rather than only drop the field
-    (verify.HOLDING_REASONS), each once: what is left would publish a worse answer (a table from
-    70% with nothing below, once Russell Regional's misread ceiling goes)."""
-    return list(dict.fromkeys(reason for _, reason in rejected if reason in HOLDING_REASONS))
+TIERS_PATH = "eligibility.discount_tiers"
+
+
+def _holds_the_sheet(reason: str, kept: Collection[str]) -> bool:
+    """Whether a rejection for `reason` holds the sheet rather than only drop the field, `kept`
+    being the paths verification kept: verify.HOLDING_REASONS always, and
+    verify.HOLDING_BESIDE_A_TABLE_REASONS while the discount table stays."""
+    return reason in HOLDING_REASONS or (
+        reason in HOLDING_BESIDE_A_TABLE_REASONS and TIERS_PATH in kept
+    )
+
+
+def _holding_reasons(rejected: list[tuple[str, str]], kept: Collection[str]) -> list[str]:
+    """The reasons among `rejected` that hold the sheet (_holds_the_sheet), each once: what is
+    left would publish a worse answer (a table from 70% with nothing below, once Russell
+    Regional's misread ceiling goes, or once a free band that still charges a fee goes)."""
+    return list(dict.fromkeys(reason for _, reason in rejected if _holds_the_sheet(reason, kept)))
 
 
 # Owner rulings (data/atlas-eve/_decisions.json, review decision 2026-10-23) win over these
@@ -1854,7 +1867,7 @@ def withdraw_rejected(
     quotes and texts, so a verifier fix reaches published sheets the same day without spending
     on a rebuild (the Massachusetts batch predates the 7.9 asset, insured and list rules; review
     of 7.9). A held sheet stays held; a published one keeps its status unless it loses its income
-    rules, a rejection holds it (verify.HOLDING_REASONS), its income rules contradict each other
+    rules, a rejection holds it (_holds_the_sheet), its income rules contradict each other
     (publish.sheet_inconsistencies: a published sheet is held for that even when no field is
     rejected, as Henry County, 361309, is for incomes from 100% to 200% no rule covers), its
     documents cannot be tied to the hospital's place, or its website was matched with low
@@ -1904,9 +1917,10 @@ def withdraw_rejected(
         result.notes.extend(pruned)
         result.notes.extend(f"{path}: {reason}" for path, reason in report.rejected)
         result.notes.extend(conflict_notes)
-        # A ceiling read from the free-care band (Russell Regional, 171350) or a band from another
-        # state's facilities (Trinity Bettendorf, 160104) leaves a worse sheet once dropped.
-        holds = _holding_reasons(report.rejected)
+        # A ceiling read from the free-care band (Russell Regional, 171350), a band from another
+        # state's facilities (Trinity Bettendorf, 160104) or a free band dropped beside a table
+        # leaves a worse sheet once dropped.
+        holds = _holding_reasons(report.rejected, report.accepted)
         _file_patient_share_table(session, row.ccn, grounded, holds)
         if inconsistent:
             repo.add_review_item(session, row.ccn, "inconsistent", {"problems": inconsistent})
@@ -1961,13 +1975,16 @@ def _close_website_questions(session: Session, ccn: str, domain: str) -> None:
     session.flush()
 
 
-def _recorded_holds(session: Session, ccn: str) -> tuple[list[str], list[tuple[str, str]]]:
+def _recorded_holds(
+    session: Session, ccn: str, kept: Collection[str]
+) -> tuple[list[str], list[tuple[str, str]]]:
     """What the builds and rechecks since the sheet was last published (all of them, when it never
     was) recorded and a stored sheet cannot show: the critical fields the two models disputed and
     no tie-break settled, and each dropped field whose reason holds the sheet (path, reason): a
     discount table that stated the patient's share, a ceiling read from the free-care band, a band
-    from another state's facilities. A published version means its build had none left, so older
-    review items do not count."""
+    from another state's facilities, a free band dropped beside the discount table the stored
+    sheet still keeps (`kept`, the paths its re-check kept). A published version means its build
+    had none left, so older review items do not count."""
     published = SheetStatus.PUBLISHED.value
     last = next((row for row in repo.sheet_versions(session, ccn) if row.status == published), None)
     disputed: set[str] = set()
@@ -1986,7 +2003,7 @@ def _recorded_holds(session: Session, ccn: str) -> tuple[list[str], list[tuple[s
             held[("eligibility.discount_tiers", PATIENT_SHARE_REASON)] = None
         elif item.kind in ("verification", "recheck"):
             for path, reason in detail.get("rejected", []):
-                if reason in HOLDING_REASONS:
+                if _holds_the_sheet(reason, kept):
                     held[(path, reason)] = None
     return sorted(disputed), list(held)
 
@@ -2051,12 +2068,14 @@ def confirm_domain(session: Session, ccn: str, domain: str) -> BuildResult:
     result.notes.extend(pruned)
     result.notes.extend(f"{path}: {reason}" for path, reason in report.rejected)
     # Read before this re-check files its own item: what it rejects is noted above, not recorded.
-    disputed, recorded = _recorded_holds(session, ccn)
+    disputed, recorded = _recorded_holds(session, ccn, report.accepted)
     if pruned or report.rejected:
         repo.add_review_item(
             session, ccn, "recheck", {"pruned": pruned, "rejected": report.rejected}
         )
-    _file_patient_share_table(session, ccn, grounded, _holding_reasons(report.rejected))
+    _file_patient_share_table(
+        session, ccn, grounded, _holding_reasons(report.rejected, report.accepted)
+    )
     reverified = drop_fields(grounded, [path for path, _ in report.rejected])
     ruled, spared = _ruled_ceiling_problems(reverified, decision)
     _record_ruling_conflicts(session, ccn, [*overruled, *spared], result.notes)
@@ -2064,7 +2083,7 @@ def confirm_domain(session: Session, ccn: str, domain: str) -> BuildResult:
         listed = ", ".join(disputed)
         result.notes.append(f"critical fields disagree: {listed}; {REBUILD_TO_RECHECK}")
     result.notes.extend(f"{path}: {reason}; {REBUILD_TO_RECHECK}" for path, reason in recorded)
-    holds = _holding_reasons([*recorded, *report.rejected])
+    holds = _holding_reasons([*recorded, *report.rejected], report.accepted)
     disagreeing = document_conflicts(reverified, texts)
     if disagreeing:
         reason = conflict_reason(reverified)
