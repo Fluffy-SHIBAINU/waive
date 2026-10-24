@@ -29,7 +29,7 @@ from waive.atlas.verify import (
     verify_sheet,
 )
 from waive.config import Settings
-from waive.db import init_db, make_engine, session_scope
+from waive.db import HospitalRow, init_db, make_engine, session_scope
 from waive.governor import Governor, Ledger
 
 TODAY = date(2026, 10, 2)
@@ -1234,15 +1234,37 @@ def test_other_state_versions_of_a_system_policy_are_set_aside():
         result = build_hospital(session, FakeGateway(), ai, "229999", TODAY, reuse_sources=True)
         assert ai.prompts and all("fap-hawaii" not in p for p in ai.prompts)
         assert any("fap-hawaii: HI" in note for note in result.notes)
-    # When every stored document is another state's there is nothing to prefer: all stay.
+    # When every stored document is another state's, one whose address or title names only other
+    # states is set aside all the same (the 2026-10-24 ruling; Ascension Providence, 450042):
+    # nothing is left to structure.
     engine = make_engine_with_hospital()
     with session_scope(engine) as session:
         repo.get_hospital(session, "229999").website_domain = "example.org"
         repo.save_source(session, hawaii, hawaii_text, "229999")
+        result = build_hospital(session, NoSpend(), NoModel(), "229999", TODAY, reuse_sources=True)
+        assert result.notes == [
+            "1 stored document is another state's version of the system policy (fap-hawaii: HI); "
+            "detached and left out of the structurer",
+            NOTHING_LEFT_NOTE,
+        ]
+        assert "fap-hawaii" not in {s.id for s, _ in repo.sources_for(session, "229999")}
+    # A state named only by a code in parentheses is weaker evidence: when such documents are all
+    # there is, there is nothing to prefer, and they stay.
+    engine = make_engine_with_hospital()
+    with session_scope(engine) as session:
+        repo.get_hospital(session, "229999").website_domain = "example.org"
+        coded = hawaii.model_copy(
+            update={
+                "id": "fap-coded",
+                "url": "https://www.example.org/documents/billing-and-collection-policy.pdf",
+                "title": "Billing and Collection Policy (HI)",
+            }
+        )
+        repo.save_source(session, coded, hawaii_text, "229999")
         ai = GroundedAI()
         build_hospital(session, FakeGateway(), ai, "229999", TODAY, reuse_sources=True)
-        assert ai.prompts and all("fap-hawaii" in p for p in ai.prompts)
-        assert "fap-hawaii" in {s.id for s, _ in repo.sources_for(session, "229999")}
+        assert ai.prompts and all("fap-coded" in p for p in ai.prompts)
+        assert "fap-coded" in {s.id for s, _ in repo.sources_for(session, "229999")}
 
 
 def test_a_state_inside_the_hospitals_own_name_does_not_make_its_policy_another_states():
@@ -3685,3 +3707,950 @@ def test_a_ruled_ceiling_another_check_overturns_is_held_as_without_the_ruling()
         )
         assert holds == [CEILING_FREE_BAND_REASON]
         assert ruling_conflicts(session, "220031") == []
+
+
+# Task 8 of the 2026-10-24 publication audit: documents that belong to another hospital or another
+# state. The stand-ins below keep the shape of the stored documents the owner-scope diagnosis tested
+# on (docs/superpowers/plans/2026-10-24-waive-audit-rules/owner-scope/): the covered-hospital list,
+# the host, the links on the hospital's own pages and the words that name the hospital.
+
+
+def hospital_entry(ccn, name, city, state, website_domain=None, **extra):
+    """A registry hospital whose website an admin confirmed, so the place check stands down."""
+    return {
+        **HOSPITAL,
+        "ccn": ccn,
+        "name": name,
+        "city": city,
+        "state": state,
+        "website_domain": website_domain,
+        "domain_confidence": 1.0,
+        **extra,
+    }
+
+
+def registry_rows(entries):
+    """The state's hospitals as repo.list_hospitals returns them."""
+    return [HospitalRow(**entry) for entry in entries]
+
+
+def ref_of(entry, **changes):
+    return repo.hospital_ref(HospitalRow(**entry)).model_copy(update=changes)
+
+
+def web_doc(source_id, url, text, title=""):
+    source = SourceDoc(
+        id=source_id,
+        kind=SourceKind.HOSPITAL_WEB,
+        url=url,
+        title=title,
+        fetched_on=TODAY,
+        sha256=hashlib.sha256(text.encode()).hexdigest(),
+    )
+    return source, text
+
+
+def with_text(doc, extra):
+    return doc[0], doc[1] + extra
+
+
+# Iowa. Clarke County Hospital (161348) quoted UnityPoint Health's 1.BR.34 from files.unitypoint.org,
+# whose Schedule D lists other UnityPoint hospitals and not Clarke; its own page links only
+# chart.myunitypoint.org.
+CLARKE = hospital_entry(
+    "161348", "CLARKE COUNTY HOSPITAL", "OSCEOLA", "IA", "clarkehosp.org", zip="50213"
+)
+BETTENDORF = hospital_entry("160104", "TRINITY - BETTENDORF", "BETTENDORF", "IA", "unitypoint.org")
+IOWA = [
+    CLARKE,
+    BETTENDORF,
+    hospital_entry("160069", "ALLEN HOSPITAL", "WATERLOO", "IA", "unitypoint.org"),
+    hospital_entry("160117", "FINLEY HOSPITAL", "DUBUQUE", "IA", "unitypoint.org"),
+]
+UPH_FILES = "https://files.unitypoint.org/api/public/content/"
+UPH_POLICY = web_doc(
+    "fap-uph-policy",
+    UPH_FILES + "4af34da08b024422b2259af05dd622ae?v=",
+    "Title: Financial Assistance – Hospital Facilities 1.BR.34\n"
+    "SCOPE: UnityPoint Health hospitals and hospital organizations (referred to collectively as "
+    "“UPH Hospitals”) that are 501(c )(3) tax -exempt, in Illinois and Iowa, and included in "
+    "attached Schedule D.\n"
+    "0-200% of FPIG : 100% discount off AGB\n"
+    "SCHEDULE D – Covered Services and Provider Practices by Hospital (Updated July 1, 2023) The "
+    "following UnityPoint Health Hospitals and Hospital Organizations are covered under Policy "
+    "1.BR.34, Financial Assistance – Hospital Facilities.\n"
+    "Allen Hospital, Waterloo, Iowa\nFinley Hospital, Dubuque, Iowa\n"
+    "UnityPoint Health – Trinity Bettendorf, Bettendorf, Iowa\n",
+)
+UPH_APPLICATION = web_doc(
+    "fap-uph-application",
+    UPH_FILES + "80a01a24ad2644c7a68fc69d210d5a5b?v=39acd7fe",
+    "UnityPoint Health Financial Assistance Application for Iowa and Illinois hospitals. Return "
+    "the completed application to: UnityPoint Health Financial Assistance PO Box 809330 Chicago, "
+    "IL 60680-9330\n",
+)
+CLARKE_PAGE = web_doc(
+    "web-clarke",
+    "https://www.clarkehosp.org/patients/options-to-estimate-your-health-care-costs",
+    "Clarke County Hospital, 800 S Fillmore St, Osceola, IA 50213. Estimate your costs in "
+    "[MyUnityPoint](https://chart.myunitypoint.org/mychart/) before your visit.\n",
+)
+CLARKE_LINKS_UPH = web_doc(
+    "web-clarke-fap",
+    "https://www.clarkehosp.org/financial-assistance",
+    "Clarke County Hospital follows the [Financial Assistance Policy]"
+    "(https://files.unitypoint.org/api/public/content/4af34da08b024422.pdf).\n",
+)
+
+# Georgia. St. Francis Hospital-Emory Healthcare (110129, Columbus) cited Emory Healthcare's policy,
+# whose "Hospitals include:" list leaves it out; mystfrancis.com never links Emory.
+ST_FRANCIS = hospital_entry(
+    "110129", "ST FRANCIS HOSPITAL- EMORY HEALTHCARE", "COLUMBUS", "GA", "mystfrancis.com"
+)
+PIEDMONT_ATHENS = hospital_entry(
+    "110074", "PIEDMONT ATHENS REGIONAL MEDICAL CENTER", "ATHENS", "GA", "piedmont.org"
+)
+GEORGIA = [
+    ST_FRANCIS,
+    PIEDMONT_ATHENS,
+    hospital_entry("110010", "EMORY UNIVERSITY HOSPITAL", "ATLANTA", "GA", "emoryhealthcare.org"),
+    hospital_entry("110076", "EMORY DECATUR HOSPITAL", "DECATUR", "GA", "emoryhealthcare.org"),
+    hospital_entry("110083", "PIEDMONT ATLANTA HOSPITAL", "ATLANTA", "GA", "piedmont.org"),
+]
+EMORY_POLICY = web_doc(
+    "fap-emory",
+    "https://www.emoryhealthcare.org/-/media/Project/EH/Emory/ui/pdfs/insurance/"
+    "financial-assistance/emory-healthcare-financial-assistance-policy-final.pdf",
+    "POLICY STATEMENT This Policy applies to Emergency and other Medically Necessary Care provided "
+    "at Emory Healthcare Hospitals (listed below) and their outpatient departments.\n"
+    "Emory Healthcare Hospitals include:\n• Emory University Hospital, Atlanta\n"
+    "• Emory Decatur Hospital, Decatur\n• Houston Hospital - Perry\n"
+    "Patients with family income at or below 200% of the Federal Poverty Level qualify for free "
+    "care.\n",
+)
+ST_FRANCIS_PAGE = web_doc(
+    "web-st-francis",
+    "https://www.mystfrancis.com/pay-my-bill/billing-policies",
+    "St. Francis Hospital, Columbus, Georgia. Our Financial Assistance Program helps patients who "
+    "cannot pay. Call 706.596.4412. [Facebook](https://www.facebook.com/mystfrancis)\n",
+    "Billing Policies | St. Francis - Emory Healthcare",
+)
+PIEDMONT_APPLICATION = web_doc(
+    "fap-piedmont-application",
+    "https://cd.piedmont-jss.production.merge-digital.com/-/media/files/patients-and-visitors/"
+    "financial-assistance/2025-06-phc-financial-assistance-application.pdf",
+    "Piedmont Healthcare Financial Assistance Application. Piedmont hospitals include: Piedmont "
+    "Atlanta Hospital, Atlanta.\n",
+)
+PIEDMONT_PAGE = web_doc(
+    "web-piedmont",
+    "https://www.piedmont.org/patients-and-visitors/billing-and-financial-resources",
+    "Billing and financial resources at Piedmont. Ask us about financial assistance.\n",
+)
+
+# Connecticut. Hartford HealthCare's policy names its hospitals in an appendix, not a list of its
+# own; Charlotte Hungerford's page (070011) links hartfordhealthcare.org.
+CHARLOTTE_HUNGERFORD = hospital_entry(
+    "070011", "CHARLOTTE HUNGERFORD HOSPITAL", "TORRINGTON", "CT", "charlottehungerford.org"
+)
+CONNECTICUT = [
+    CHARLOTTE_HUNGERFORD,
+    hospital_entry("070025", "HARTFORD HOSPITAL", "HARTFORD", "CT", "hartfordhospital.org"),
+]
+HHC_POLICY = web_doc(
+    "fap-hhc",
+    "https://hartfordhealthcare.org/file%20library/fap/fap-policy-english.pdf",
+    "Hartford HealthCare Financial Assistance Policy. This policy applies to each Hartford "
+    "HealthCare entity as listed in Appendix D, Hartford Hospital in Hartford among them. Patients "
+    "with household income at or below 250% of the Federal Poverty Level receive free care.\n",
+)
+CHARLOTTE_HUNGERFORD_PAGE = web_doc(
+    "web-charlotte-hungerford",
+    "https://www.charlottehungerford.org/patients-visitors/billing-insurance/financial-assistance",
+    "Charlotte Hungerford Hospital, Torrington, CT. Read the [Financial Assistance Policy]"
+    "(https://hartfordhealthcare.org/financial-assistance).\n",
+)
+
+# North Dakota. CHI Oakes (351315) is correct on CommonSpirit's G-003, which carries no list of
+# covered hospitals; its own page says the policy applies but links only commonspirit.myfa.app.
+CHI_OAKES = hospital_entry("351315", "CHI OAKES HOSPITAL", "OAKES", "ND", "oakeshospital.com")
+NORTH_DAKOTA = [
+    CHI_OAKES,
+    hospital_entry(
+        "350002", "CHI ST ALEXIUS HEALTH BISMARCK", "BISMARCK", "ND", "chistalexiushealth.org"
+    ),
+]
+G003_POLICY = web_doc(
+    "fap-g003",
+    "https://www.commonspirit.org/content/dam/shared/en/pdfs/finance/assistance/"
+    "g-003-financial-assistance-policy-en.pdf",
+    "CommonSpirit Health Financial Assistance Policy G-003. Scope: CommonSpirit Health and each of "
+    "its Hospital Organizations, CHI St. Alexius Health Bismarck in Bismarck among them. Patients "
+    "with household income at or below 200% of the Federal Poverty Level receive a 100% "
+    "discount.\n",
+)
+CHI_APPLICATION = web_doc(
+    "fap-chi-application",
+    "https://chilakewoodhealth.com/wp-content/uploads/2026/08/en_app_ndmn.pdf",
+    "CHI Financial Assistance Application for North Dakota and Minnesota. Send it to CHI St. "
+    "Alexius Health, Bismarck, ND.\n",
+)
+CHI_OAKES_PAGE = web_doc(
+    "web-chi-oakes",
+    "https://oakeshospital.com/financial/financial-assistance/",
+    "CHI Oakes Hospital, Oakes, North Dakota. The CommonSpirit Health Financial Assistance Policy "
+    "applies to CHI Oakes Hospital. [Apply online](https://commonspirit.myfa.app/)\n",
+    "Financial Assistance - CHI Oakes Hospital",
+)
+
+# System documents on a CDN or the system's own domain, each with a covered-hospital list: the
+# website's own name (Corewell, Piedmont, Sentara, UNC Health Appalachian) or "Applies to: All"
+# (Franciscan) says they are the hospital's system's.
+ROYAL_OAK = hospital_entry(
+    "230130", "BEAUMONT HOSPITAL ROYAL OAK", "ROYAL OAK", "MI", "corewellhealth.org"
+)
+MICHIGAN = [
+    ROYAL_OAK,
+    hospital_entry(
+        "230038",
+        "COREWELL HEALTH BUTTERWORTH HOSPITAL",
+        "GRAND RAPIDS",
+        "MI",
+        "corewellhealth.org",
+    ),
+]
+COREWELL_APPLICATION = web_doc(
+    "fap-corewell-application",
+    "https://assets.contentstack.io/v3/assets/blt3055f692fe7bf193/blt96841f74da7cff06/"
+    "confidential-financial-assistance-application-english.pdf",
+    "Corewell Health Confidential Financial Assistance Application. The following Corewell Health "
+    "hospitals are covered by this application: Corewell Health Butterworth Hospital, Grand "
+    "Rapids.\n",
+)
+COREWELL_PAGE = web_doc(
+    "web-corewell",
+    "https://corewellhealth.org/billing/financial-assistance",
+    "Financial assistance at Corewell Health. Ask about our programs.\n",
+)
+SENTARA_VIRGINIA_BEACH = hospital_entry(
+    "490057", "SENTARA VIRGINIA BEACH GENERAL HOSPITAL", "VIRGINIA BEACH", "VA", "sentara.com"
+)
+VIRGINIA = [
+    SENTARA_VIRGINIA_BEACH,
+    hospital_entry("490007", "SENTARA NORFOLK GENERAL HOSPITAL", "NORFOLK", "VA", "sentara.com"),
+]
+SENTARA_FORM = web_doc(
+    "fap-sentara-form",
+    "https://shc-p-001.sitecorecontenthub.cloud/api/public/content/"
+    "ce32340acc4c46e4bb42003f9e27546e?v=c7b9a7b6",
+    "Sentara Health Financial Assistance Application. The following hospital facilities are "
+    "covered under the Financial Assistance Policy: Sentara Norfolk General Hospital, Norfolk.\n",
+)
+SENTARA_PAGE = web_doc(
+    "web-sentara",
+    "https://www.sentara.com/en/health-care/billing/financial-assistance",
+    "Sentara offers financial assistance to patients who qualify.\n",
+)
+RENSSELAER = hospital_entry(
+    "151324", "FRANCISCAN HEALTH RENSSELAER, INC", "RENSSELAER", "IN", "franciscanhealth.org"
+)
+ANDERSON = hospital_entry(
+    "150088", "ASCENSION ST VINCENT ANDERSON", "ANDERSON", "IN", "ascension.org"
+)
+INDIANA = [
+    RENSSELAER,
+    ANDERSON,
+    hospital_entry(
+        "150126", "FRANCISCAN HEALTH CROWN POINT", "CROWN POINT", "IN", "franciscanhealth.org"
+    ),
+]
+FRANCISCAN_POLICY = web_doc(
+    "fap-franciscan",
+    "https://statements.franciscanalliance.org/images/PolicyENG.pdf",
+    "Policy Number: 301.01 Applies to: All Franciscan Alliance Hospitals (See Entity Listing)\n"
+    "The following Franciscan Alliance hospitals are covered under this policy: Franciscan Crown "
+    "Point, Crown Point.\n0-200% of the Federal Poverty Guidelines: 100% discount\n",
+)
+CANNON = hospital_entry(
+    "341323",
+    "CHARLES A CANNON JR MEMORIAL HOSPITAL",
+    "LINVILLE",
+    "NC",
+    "unchealthappalachian.org",
+)
+NORTH_CAROLINA = [
+    CANNON,
+    hospital_entry("340041", "CALDWELL MEMORIAL HOSPITAL", "LENOIR", "NC", "unchealth.org"),
+]
+UNC_POLICY = web_doc(
+    "fap-unc",
+    "https://www.unchealth.org/pdfs/finance/pdf-system-Patient_Financial_Assistance_and_Hospital_"
+    "Medical_Debt_Mitigation_Policy.pdf",
+    "Patient Financial Assistance and Hospital Medical Debt Mitigation Policy APPLICABILITY: This "
+    'policy applies to the following entities (collectively referred to as "UNC Health" in this '
+    "policy): ✓ Caldwell Memorial Hospital, Lenoir ✓ UNC Health Appalachian\n",
+)
+BARNES_JEWISH = hospital_entry(
+    "260032", "BARNES JEWISH HOSPITAL", "SAINT LOUIS", "MO", "barnesjewish.org"
+)
+MISSOURI = [
+    BARNES_JEWISH,
+    hospital_entry("260091", "ST LUKES HOSPITAL", "CHESTERFIELD", "MO", "stlukes-stl.com"),
+]
+BJC_APPLICATION = web_doc(
+    "fap-bjc-application",
+    "https://www.saintlukeskc.org/sites/slkc/files/2026-05/"
+    "3259250-Financial%20Assistance%20Application.pdf",
+    "BJC HealthCare Financial Assistance Application. Mail the completed form to BJC Patient "
+    "Financial Services.\n",
+)
+WEST_ALLIS = hospital_entry(
+    "520139", "WEST ALLIS MEMORIAL HOSPITAL", "WEST ALLIS", "WI", "aurorahealthcare.org"
+)
+WISCONSIN = [
+    WEST_ALLIS,
+    hospital_entry(
+        "520138", "AURORA ST LUKES MEDICAL CENTER", "MILWAUKEE", "WI", "aurorahealthcare.org"
+    ),
+]
+ADVOCATE_POLICY = web_doc(
+    "fap-advocate",
+    "https://cdn.atriumhealth.org/-/media/chs/files/for-patients-visitors/financial-assistance/"
+    "advocate-financial-assistance-policies/advocate-enterprise-fap.pdf",
+    "Advocate Health Enterprise Financial Assistance Policy. It applies to Advocate Health "
+    "hospitals, Aurora St. Luke's Medical Center in Milwaukee among them. Patients with household "
+    "income at or below 300% of the Federal Poverty Guidelines receive free care.\n",
+)
+
+# Illinois. Carle Hoopeston (141316) quoted Carle Health West Region's 1.BR.34 on carle.org, its
+# own domain: the policy covers the hospitals "included in attached Schedule D", which lists
+# Methodist, Pekin and Proctor only.
+HOOPESTON = hospital_entry(
+    "141316", "CARLE HOOPESTON REGIONAL HEALTH CENTER", "HOOPESTON", "IL", "carle.org"
+)
+PROCTOR = hospital_entry("140013", "CARLE HEALTH PROCTOR HOSPITAL", "PEORIA", "IL", "carle.org")
+ILLINOIS = [
+    HOOPESTON,
+    PROCTOR,
+    hospital_entry("140209", "CARLE HEALTH METHODIST HOSPITAL", "PEORIA", "IL", "carle.org"),
+    hospital_entry("140120", "CARLE HEALTH PEKIN HOSPITAL", "PEKIN", "IL", "carle.org"),
+]
+CARLE_WEST_POLICY = web_doc(
+    "fap-carle-west",
+    "https://carle.org/getmedia/9e26c950-72c2-4b1f-9c81-433c1c9144c6/"
+    "PeoriaFinancialAssistancePolicyEnglish-FINAL.pdf",
+    "SCOPE: Carle Health – West Region hospitals and hospital organizations (referred to "
+    "collectively as “CHWR Hospitals”) that are 501(c)(3) tax-exempt and included in attached "
+    "Schedule D.\n0-200% of FPIG : 100% discount off AGB\n"
+    "SCHEDULE D – Covered Services and Provider Practices by Hospital. The following Carle Health "
+    "– West Region f/k/a Methodist Health Services Corporation Hospitals and Hospital "
+    "Organizations are covered under Policy 1.BR.34: Carle Health Methodist Hospital, Peoria; "
+    "Carle Health Pekin Hospital, Pekin; Carle Health Proctor Hospital, Peoria.\n",
+    "Title: Financial Assistance – Hospital Facilities 1.BR.34",
+)
+CARLE_PAGE = web_doc(
+    "web-carle",
+    "https://carle.org/patients-visitors/financial-assistance",
+    "Financial assistance at Carle Health hospitals, Carle Hoopeston Regional Health Center among "
+    "them.\n",
+    "Financial Assistance - Apply Today | Carle Health",
+)
+
+# Kansas and New York: documents a hospital's own pages link, its own domain's, and an asset
+# host's.
+WAMEGO = hospital_entry("171337", "WAMEGO HEALTH CENTER", "WAMEGO", "KS", "wamegohealthcenter.org")
+MARYSVILLE = hospital_entry(
+    "171363", "COMMUNITY MEMORIAL HEALTHCARE, INC.", "MARYSVILLE", "KS", "cmhcare.org"
+)
+KANSAS = [
+    WAMEGO,
+    MARYSVILLE,
+    hospital_entry("170122", "ASCENSION VIA CHRISTI ST FRANCIS", "WICHITA", "KS", "ascension.org"),
+]
+ASCENSION_FILES = "https://healthcare.ascension.org/-/media/healthcare/financial-assistance/"
+KANSAS_POLICY = web_doc(
+    "fap-ascension-kansas",
+    ASCENSION_FILES + "kansas/fap/runningfile_kswic_english_financial-assistance-policy.pdf",
+    "Ascension Via Christi Financial Assistance Policy. This policy applies to all emergency and "
+    "other medically necessary care provided by the Organization, Wamego Health Center among its "
+    "hospitals. Patients with household income at or below 200% of the Federal Poverty Guidelines "
+    "receive free care.\n",
+)
+KANSAS_APPLICATION = web_doc(
+    "fap-ascension-kansas-application",
+    ASCENSION_FILES
+    + "kansas/fap-application/runningfile_kswic_english_financial-assistance-application.pdf",
+    "Ascension Financial Assistance Application. Hospitals include: Ascension Via Christi St. "
+    "Francis, Wichita.\n",
+)
+WAMEGO_PAGE = web_doc(
+    "web-wamego",
+    "https://wamegohealthcenter.org/patients-visitors/billing-and-insurance-information/",
+    "Wamego Health Center, Wamego, Kansas. Read the [Ascension financial assistance policy]"
+    "(https://healthcare.ascension.org/financial-assistance).\n",
+    "Billing and Insurance Information | Wamego Health Center",
+)
+MARYSVILLE_POLICY = web_doc(
+    "fap-marysville",
+    "https://www.cmhcare.org/docs/2022_Financial_Assistance_Policy.pdf",
+    "Financial Assistance Policy. Hospitals include: Ascension Via Christi St. Francis, Wichita, "
+    "for transfers. Patients with household income at or below 200% of the Federal Poverty "
+    "Guidelines receive free care.\n",
+)
+CANTON_POTSDAM = hospital_entry(
+    "330197", "CANTON-POTSDAM HOSPITAL", "POTSDAM", "NY", "rochesterregional.org"
+)
+ROCHESTER_GENERAL = hospital_entry("330125", "ROCHESTER GENERAL HOSPITAL", "ROCHESTER", "NY")
+DELAWARE_VALLEY = hospital_entry(
+    "331312", "DELAWARE VALLEY HOSPITAL, INC", "WALTON", "NY", "nyuhs.org"
+)
+NEW_YORK = [
+    CANTON_POTSDAM,
+    ROCHESTER_GENERAL,
+    DELAWARE_VALLEY,
+    hospital_entry("330011", "UHS BINGHAMTON GENERAL HOSPITAL", "BINGHAMTON", "NY", "nyuhs.org"),
+]
+NYUHS_FORM = web_doc(
+    "application-nyuhs",
+    "https://nyuhs.widen.net/s/m8mqhlqzkx/nyuhsuniformhospital_fa_app0226f",
+    "UHS Financial Assistance Application. Hospitals include: UHS Binghamton General Hospital, "
+    "Binghamton.\n",
+    "**Financial Assistance Application (English)**",
+)
+
+# Canton-Potsdam (330197) quoted "Financial Assistance Program for Rochester General Hospital",
+# while Rochester Regional's page also links a Canton-Potsdam Hospital policy that was never
+# stored.
+RRH_FILES = (
+    "https://edge.sitecorecloud.io/rochesterred189-rrh4822-prodb67b-4284/media/project/rrh/rrh/"
+    "files/billing-and-insurance/"
+)
+RGH_POLICY = web_doc(
+    "billing-rgh-policy",
+    RRH_FILES + "financial-assistance-policy-rgh.pdf",
+    "Financial Assistance Program for Rochester General Hospital and all Rochester Regional "
+    "Health Employed Physicians. Patients with household income at or below 400% of the Federal "
+    "Poverty Guidelines qualify for free care.\n",
+    "Rochester General Hospital Financial Assistance Policy",
+)
+RRH_PAGE = web_doc(
+    "billing-rrh",
+    "https://www.rochesterregional.org/billing-and-insurance/financial-assistance",
+    "Financial Assistance at Rochester Regional Health.\n"
+    f"- [Rochester General Hospital Financial Assistance Policy]({RRH_FILES}"
+    "financial-assistance-policy-rgh.pdf)\n"
+    f"- [Canton-Potsdam Hospital Financial Assistance Policy]({RRH_FILES}"
+    "financial-assistance-policy-cph.pdf)\n"
+    f"- [Download the Financial Assistance Application - English]({RRH_FILES}"
+    "uniform-application-english.pdf)\n",
+    "Financial Assistance | Rochester Regional Health",
+)
+RRH_APPLICATION = web_doc(
+    "application-rrh",
+    RRH_FILES + "uniform-application-english.pdf",
+    "NYS Uniform Hospital Financial Assistance Application. Return it to the hospital's patient "
+    "financial services office.\n",
+    "Download the Financial Assistance Application - English",
+)
+
+# Pennsylvania. Penn Medicine's summary names The Chester County Hospital (390179), though a page
+# also links it under Lancaster General's name.
+CHESTER_COUNTY = hospital_entry(
+    "390179", "CHESTER COUNTY HOSPITAL", "WEST CHESTER", "PA", "pennmedicine.org"
+)
+PENNSYLVANIA = [
+    CHESTER_COUNTY,
+    hospital_entry("390100", "LANCASTER GENERAL HOSPITAL", "LANCASTER", "PA", "pennmedicine.org"),
+    hospital_entry("390203", "DOYLESTOWN HOSPITAL", "DOYLESTOWN", "PA", "doylestownhealth.org"),
+]
+PENN_POLICIES = "https://www.pennmedicine.org/patient-resources/policies/financial-assistance"
+PENN_PAGE = web_doc(
+    "fap-penn",
+    PENN_POLICIES,
+    "[Financial Assistance Policy - Penn Medicine, Chester County Hospital, and Doylestown Health]"
+    f"({PENN_POLICIES}/financial-assistance-policy)\n"
+    "[Lancaster General Health financial assistance policy summary]"
+    f"({PENN_POLICIES}/financial-assistance-policy-plain-language)\n",
+    "Financial assistance",
+)
+PENN_SUMMARY = web_doc(
+    "summary-penn",
+    PENN_POLICIES + "/financial-assistance-policy-plain-language",
+    "Financial Assistance Plain Language Summary. Penn Medicine hospitals, The Chester County "
+    "Hospital in West Chester among them, give free care at or below 400% of the Federal Poverty "
+    "Guidelines.\n",
+    "Financial Assistance Plain Language Summary",
+)
+
+# Another state's version of the system policy, named by the address or the title's first
+# segment: Ascension Providence (450042, Waco) stored only other states' pages and quoted
+# Maryland's free-care limit.
+TEHACHAPI = hospital_entry(
+    "051301", "ADVENTIST HEALTH TEHACHAPI VALLEY", "TEHACHAPI", "CA", "adventisthealth.org"
+)
+HAWAII_BILLING = web_doc(
+    "billing-adventist-hawaii",
+    "https://www.adventisthealth.org/documents/system/self-pay-billing-and-collection-policy-"
+    "hawaii.pdf",
+    "Adventist Health Self Pay Billing and Collection Policy for its Hawaii hospital.\n",
+    "[PDF] Self Pay Billing and Collection Policy (HI) - Adventist Health",
+)
+PROVIDENCE = hospital_entry("450042", "ASCENSION PROVIDENCE", "WACO", "TX", "ascension.org")
+MARYLAND_PAGE = web_doc(
+    "fap-ascension-maryland",
+    "https://healthcare.ascension.org/financial-assistance/"
+    "maryland-ascension-saint-agnes-financial-assistance",
+    "Financial assistance at Ascension Saint Agnes. Locations: Ascension Saint Agnes Hospital, "
+    "Ascension Providence. Patients with household income at or below 250% of the Federal Poverty "
+    "Guidelines receive free care.\n",
+    "Financial assistance Ascension Saint Agnes in Maryland | Ascension",
+)
+FLORIDA_PAGE = web_doc(
+    "fap-ascension-florida",
+    "https://healthcare.ascension.org/financial-assistance/"
+    "florida-ascension-st-vincents-financial-assistance",
+    "Financial assistance at Ascension St. Vincent's. Bring a photo ID and proof of income.\n",
+    "Financial assistance at Ascension St. Vincent’s in FL | Ascension",
+)
+MARION = hospital_entry("010044", "MARION REGIONAL MEDICAL CENTER", "HAMILTON", "AL", "nmhs.net")
+NMHS_PAGE = web_doc(
+    "fap-nmhs",
+    "https://www.nmhs.net/patients-and-visitors/financial-assistance",
+    "North Mississippi Health Services offers financial assistance at Marion Regional Medical "
+    "Center, Hamilton, Alabama.\n",
+    "Financial Assistance | North Mississippi Health Services",
+)
+INDIANA_POLICY = web_doc(
+    "fap-ascension-indiana",
+    ASCENSION_FILES
+    + "indiana/fap/english/runningfile_inasc_anderson_english_financial-assistance-policy.pdf",
+    "Ascension St. Vincent Anderson Financial Assistance Policy. Send payments to PO Box 4471, "
+    "Chicago, Illinois 60680.\n",
+)
+
+A, B, C = "foreign_documents", "sibling_policies", "other_state_documents"
+CLARKE_DOCS = [UPH_POLICY, UPH_APPLICATION, CLARKE_PAGE]
+WAMEGO_DOCS = [KANSAS_POLICY, KANSAS_APPLICATION, WAMEGO_PAGE]
+RRH_DOCS = [RGH_POLICY, RRH_PAGE, RRH_APPLICATION]
+OWNER_SCOPE_CASES = [
+    # Clause A2: off the hospital's site and the asset hosts, unlinked, unnamed, with a
+    # covered-hospital list naming other hospitals of the state.
+    (A, CLARKE, CLARKE_DOCS, IOWA, "fap-uph-policy", True, "161348-uph-policy"),
+    (A, CLARKE, CLARKE_DOCS, IOWA, "fap-uph-application", True, "161348-uph-application"),
+    (A, CLARKE, CLARKE_DOCS, IOWA, "web-clarke", False, "161348-own-page"),
+    (A, CLARKE, [UPH_POLICY, CLARKE_LINKS_UPH], IOWA, "fap-uph-policy", False, "linked"),
+    (
+        A,
+        CLARKE,
+        [with_text(UPH_POLICY, "Clarke County Hospital, Osceola, Iowa\n"), CLARKE_PAGE],
+        IOWA,
+        "fap-uph-policy",
+        False,
+        "names-clarke",
+    ),
+    (A, ST_FRANCIS, [EMORY_POLICY, ST_FRANCIS_PAGE], GEORGIA, "fap-emory", True, "110129-emory"),
+    (
+        A,
+        CHARLOTTE_HUNGERFORD,
+        [HHC_POLICY, CHARLOTTE_HUNGERFORD_PAGE],
+        CONNECTICUT,
+        "fap-hhc",
+        False,
+        "070011-linked",
+    ),
+    (A, CHARLOTTE_HUNGERFORD, [HHC_POLICY], CONNECTICUT, "fap-hhc", False, "070011-no-list"),
+    (
+        A,
+        CHI_OAKES,
+        [G003_POLICY, CHI_APPLICATION, CHI_OAKES_PAGE],
+        NORTH_DAKOTA,
+        "fap-g003",
+        False,
+        "351315-g003",
+    ),
+    (
+        A,
+        CHI_OAKES,
+        [G003_POLICY, CHI_APPLICATION, CHI_OAKES_PAGE],
+        NORTH_DAKOTA,
+        "fap-chi-application",
+        False,
+        "351315-application",
+    ),
+    (
+        A,
+        ROYAL_OAK,
+        [COREWELL_APPLICATION, COREWELL_PAGE],
+        MICHIGAN,
+        "fap-corewell-application",
+        False,
+        "230130-contentstack",
+    ),
+    (
+        A,
+        PIEDMONT_ATHENS,
+        [PIEDMONT_APPLICATION, PIEDMONT_PAGE],
+        GEORGIA,
+        "fap-piedmont-application",
+        False,
+        "110074-merge-digital",
+    ),
+    (
+        A,
+        SENTARA_VIRGINIA_BEACH,
+        [SENTARA_FORM, SENTARA_PAGE],
+        VIRGINIA,
+        "fap-sentara-form",
+        False,
+        "490057-sitecorecontenthub",
+    ),
+    (A, RENSSELAER, [FRANCISCAN_POLICY], INDIANA, "fap-franciscan", False, "151324-applies-to-all"),
+    (A, CANNON, [UNC_POLICY], NORTH_CAROLINA, "fap-unc", False, "341323-website-name"),
+    (A, BARNES_JEWISH, [BJC_APPLICATION], MISSOURI, "fap-bjc-application", False, "260032-bjc"),
+    (A, WEST_ALLIS, [ADVOCATE_POLICY], WISCONSIN, "fap-advocate", False, "520139-advocate"),
+    # Clause S: the Schedule D template's own scope, on any host, the hospital's own included.
+    (
+        A,
+        HOOPESTON,
+        [CARLE_WEST_POLICY, CARLE_PAGE],
+        ILLINOIS,
+        "fap-carle-west",
+        True,
+        "141316-schedule-d",
+    ),
+    (A, HOOPESTON, [CARLE_WEST_POLICY, CARLE_PAGE], ILLINOIS, "web-carle", False, "141316-page"),
+    (
+        A,
+        HOOPESTON,
+        [with_text(CARLE_WEST_POLICY, "Carle Hoopeston Regional Health Center, Hoopeston\n")],
+        ILLINOIS,
+        "fap-carle-west",
+        False,
+        "names-hoopeston",
+    ),
+    (A, PROCTOR, [CARLE_WEST_POLICY], ILLINOIS, "fap-carle-west", False, "140013-in-schedule"),
+    (A, BETTENDORF, CLARKE_DOCS, IOWA, "fap-uph-policy", False, "160104-in-schedule"),
+    (A, WAMEGO, WAMEGO_DOCS, KANSAS, "fap-ascension-kansas", False, "171337-names-wamego"),
+    (
+        A,
+        WAMEGO,
+        WAMEGO_DOCS,
+        KANSAS,
+        "fap-ascension-kansas-application",
+        False,
+        "171337-linked",
+    ),
+    (A, DELAWARE_VALLEY, [NYUHS_FORM], NEW_YORK, "application-nyuhs", False, "331312-asset-host"),
+    (A, MARYSVILLE, [MARYSVILLE_POLICY], KANSAS, "fap-marysville", False, "171363-own-domain"),
+    (
+        A,
+        {**CLARKE, "website_domain": None},
+        [UPH_POLICY, CLARKE_PAGE],
+        IOWA,
+        "fap-uph-policy",
+        False,
+        "no-website",
+    ),
+    # Clause C: the address or the title's first segment names states, none of them the
+    # hospital's.
+    (C, TEHACHAPI, [HAWAII_BILLING], [], "billing-adventist-hawaii", True, "051301-hawaii"),
+    (C, PROVIDENCE, [MARYLAND_PAGE], [], "fap-ascension-maryland", True, "450042-maryland"),
+    (C, PROVIDENCE, [FLORIDA_PAGE], [], "fap-ascension-florida", True, "450042-florida"),
+    (C, MARION, [NMHS_PAGE], [], "fap-nmhs", False, "010044-site-name"),
+    (C, WAMEGO, WAMEGO_DOCS, [], "fap-ascension-kansas", False, "171337-kansas"),
+    (C, ANDERSON, [INDIANA_POLICY], [], "fap-ascension-indiana", False, "150088-indiana"),
+    # Clause B: the hospital's site links its own policy, and links this one under another
+    # hospital's name.
+    (B, CANTON_POTSDAM, RRH_DOCS, NEW_YORK, "billing-rgh-policy", True, "330197-rgh-policy"),
+    (B, CANTON_POTSDAM, RRH_DOCS, NEW_YORK, "application-rrh", False, "330197-application"),
+    (
+        B,
+        ROCHESTER_GENERAL,
+        [RGH_POLICY, RRH_PAGE],
+        NEW_YORK,
+        "billing-rgh-policy",
+        False,
+        "330125-own",
+    ),
+    (
+        B,
+        CANTON_POTSDAM,
+        [with_text(RGH_POLICY, "Canton-Potsdam Hospital\n"), RRH_PAGE],
+        NEW_YORK,
+        "billing-rgh-policy",
+        False,
+        "names-canton-potsdam",
+    ),
+    (
+        B,
+        CANTON_POTSDAM,
+        [
+            RGH_POLICY,
+            (
+                RRH_PAGE[0],
+                RRH_PAGE[1].replace("Canton-Potsdam Hospital Financial", "Other Financial"),
+            ),
+        ],
+        NEW_YORK,
+        "billing-rgh-policy",
+        False,
+        "no-own-link",
+    ),
+    (
+        B,
+        CHESTER_COUNTY,
+        [PENN_PAGE, PENN_SUMMARY],
+        PENNSYLVANIA,
+        "summary-penn",
+        False,
+        "390179-names-chester-county",
+    ),
+]
+
+
+@pytest.mark.parametrize(
+    ("clause", "hospital", "documents", "registry", "source_id", "set_aside"),
+    [pytest.param(*case[:-1], id=case[-1]) for case in OWNER_SCOPE_CASES],
+)
+def test_foreign_sibling_policies_and_other_state_documents_by_clause(
+    clause, hospital, documents, registry, source_id, set_aside
+):
+    from waive.atlas import pipeline
+
+    judge = getattr(pipeline, clause)
+    args = (ref_of(hospital), documents) + (() if clause == C else (registry_rows(registry),))
+    assert (source_id in judge(*args)) is set_aside
+
+
+def test_documents_set_aside_puts_foreign_and_other_state_documents_after_the_existing_ones():
+    from waive.atlas.pipeline import _documents_set_aside
+    from waive.atlas.verify import (
+        DENTAL_REASON,
+        FOREIGN_OWNER_REASON,
+        OTHER_REGION_REASON,
+        OTHER_STATE_DOCUMENT_REASON,
+        SIBLING_POLICY_REASON,
+    )
+
+    assert _documents_set_aside(ref_of(CLARKE), CLARKE_DOCS, registry_rows(IOWA)) == {
+        "fap-uph-policy": FOREIGN_OWNER_REASON,
+        "fap-uph-application": FOREIGN_OWNER_REASON,
+    }
+    assert _documents_set_aside(ref_of(CANTON_POTSDAM), RRH_DOCS, registry_rows(NEW_YORK)) == {
+        "billing-rgh-policy": SIBLING_POLICY_REASON
+    }
+    # Every stored document another state's: set aside all the same (the plan's ruling), for no
+    # reader should be shown Maryland's policy as a Texas hospital's.
+    assert _documents_set_aside(ref_of(PROVIDENCE), [MARYLAND_PAGE, FLORIDA_PAGE], []) == {
+        "fap-ascension-maryland": OTHER_STATE_DOCUMENT_REASON,
+        "fap-ascension-florida": OTHER_STATE_DOCUMENT_REASON,
+    }
+    # The existing reasons come first: another Kaiser region's policy, whose address names
+    # California, and a dental program's whose address names Oregon.
+    sunnyside = hospital_entry(
+        "380091", "KAISER SUNNYSIDE MEDICAL CENTER", "CLACKAMAS", "OR", "kaiserpermanente.org"
+    )
+    scal = web_doc("fap-scal", KAISER_DOCS + SCAL_PATH, SCAL_TEXT, MFA_TITLE)
+    assert _documents_set_aside(ref_of(sunnyside), [scal], []) == {"fap-scal": OTHER_REGION_REASON}
+    dental = web_doc("fap-dental", KAISER_DOCS + "dfa/oregon/" + DENTAL_PATH, DENTAL_TEXT)
+    assert _documents_set_aside(ref_of(KAISER_LOS_ANGELES), [dental], []) == {
+        "fap-dental": DENTAL_REASON
+    }
+
+
+def store_docs(session, ccn, *docs):
+    for source, text in docs:
+        repo.save_source(session, source, text, ccn)
+
+
+def test_recheck_withdraw_and_confirmation_set_aside_foreign_sibling_and_other_state_documents():
+    from waive.atlas.eve_import import stored_ruling
+    from waive.atlas.pipeline import confirm_domain, recheck_sheets, withdraw_rejected
+    from waive.atlas.verify import (
+        FOREIGN_OWNER_REASON,
+        OTHER_STATE_DOCUMENT_REASON,
+        SIBLING_POLICY_REASON,
+    )
+
+    quoted_uph = with_text(UPH_POLICY, POLICY_TEXT)
+    quoted_maryland = with_text(MARYLAND_PAGE, POLICY_TEXT)
+    quoted_rgh = with_text(RGH_POLICY, POLICY_TEXT)
+    engine = make_engine_with_hospital(*IOWA, PROVIDENCE, *NEW_YORK)
+    with session_scope(engine) as session:
+        store_docs(session, "161348", quoted_uph, UPH_APPLICATION, CLARKE_PAGE)
+        store_docs(session, "450042", quoted_maryland, FLORIDA_PAGE)
+        store_docs(session, "330197", quoted_rgh, RRH_PAGE, RRH_APPLICATION)
+        for ccn, (source, _) in (
+            ("161348", quoted_uph),
+            ("450042", quoted_maryland),
+            ("330197", quoted_rgh),
+        ):
+            publish_quoting(session, ccn, source)
+        ruling = owner_ruling("discount", ccn="161348")
+        record_owner_rulings(session, {"161348": ruling})
+        before = stored_ruling(session, "161348")
+        quoted = [path for path, _ in repo.latest_sheet(session, "161348")[0].field_paths()]
+        assert {entry.ccn: entry.rejected for entry in recheck_sheets(session)} == {
+            "161348": [(path, FOREIGN_OWNER_REASON) for path in quoted],
+            "450042": [(path, OTHER_STATE_DOCUMENT_REASON) for path in quoted],
+            "330197": [(path, SIBLING_POLICY_REASON) for path in quoted],
+        }
+        withdrawn = withdraw_rejected(session)
+        assert sorted((r.ccn, r.outcome, r.version) for r in withdrawn) == [
+            ("161348", "held", 2),
+            ("330197", "held", 2),
+            ("450042", "held", 2),
+        ]
+        assert recheck_sheets(session) == []
+        # A set-aside never changes the owner's ruling.
+        assert stored_ruling(session, "161348") == before
+    # Confirming the website re-verifies the sheet the same way.
+    engine = make_engine_with_hospital({**HOOPESTON, "domain_confidence": 0.6}, *ILLINOIS[1:])
+    with session_scope(engine) as session:
+        carle_west = with_text(CARLE_WEST_POLICY, POLICY_TEXT)
+        store_docs(session, "141316", carle_west, CARLE_PAGE)
+        publish_quoting(session, "141316", carle_west[0])
+        result = confirm_domain(session, "141316", "carle.org")
+        assert (result.outcome, result.version) == ("held", 2)
+        assert f"eligibility.free_care_max_fpl: {FOREIGN_OWNER_REASON}" in result.notes
+        assert repo.latest_sheet(session, "141316")[0].field_paths() == []
+
+
+def test_foreign_documents_and_sibling_policies_are_detached_at_build_time():
+    from waive.atlas.verify import FOREIGN_OWNER_REASON, SIBLING_POLICY_REASON
+
+    engine = make_engine_with_hospital(*IOWA)
+    with session_scope(engine) as session:
+        store_docs(session, "161348", *CLARKE_DOCS)
+        ai = GroundedAI()
+        result = build_hospital(session, NoSpend(), ai, "161348", TODAY, reuse_sources=True)
+        detail = review_detail(session, "161348", "foreign_documents")
+        assert sorted(detail["sources"], key=lambda entry: entry["id"]) == [
+            {
+                "id": "fap-uph-application",
+                "url": UPH_APPLICATION[0].url,
+                "reason": FOREIGN_OWNER_REASON,
+            },
+            {"id": "fap-uph-policy", "url": UPH_POLICY[0].url, "reason": FOREIGN_OWNER_REASON},
+        ]
+        listed = ", ".join(entry["id"] for entry in detail["sources"])
+        assert result.notes[0] == (
+            "2 stored documents are another organisation's or another hospital's policy that does "
+            f"not cover the hospital ({listed}); detached and left out of the structurer"
+        )
+        assert ai.prompts and all("fap-uph" not in prompt for prompt in ai.prompts)
+        assert [s.id for s, _ in repo.sources_for(session, "161348")] == ["web-clarke"]
+    engine = make_engine_with_hospital(*NEW_YORK)
+    with session_scope(engine) as session:
+        store_docs(session, "330197", *RRH_DOCS)
+        ai = GroundedAI()
+        build_hospital(session, NoSpend(), ai, "330197", TODAY, reuse_sources=True)
+        assert ai.prompts and all("billing-rgh-policy" not in prompt for prompt in ai.prompts)
+        assert review_detail(session, "330197", "foreign_documents") == {
+            "sources": [
+                {
+                    "id": "billing-rgh-policy",
+                    "url": RGH_POLICY[0].url,
+                    "reason": SIBLING_POLICY_REASON,
+                }
+            ]
+        }
+
+
+def test_other_state_documents_are_detached_at_build_time_even_when_they_are_all_there_is():
+    # Ascension Providence (450042, Waco) stored only Maryland's, Florida's and other states'
+    # pages, and published Maryland's 250% free-care limit: the 7.9 "nothing to prefer" fallback
+    # kept them. A document whose address or title names only other states is set aside now,
+    # whatever else is stored, and the sheet is held without the fields it quoted.
+    engine = make_engine_with_hospital(PROVIDENCE)
+    with session_scope(engine) as session:
+        quoted_maryland = with_text(MARYLAND_PAGE, POLICY_TEXT)
+        store_docs(session, "450042", quoted_maryland, FLORIDA_PAGE)
+        publish_quoting(session, "450042", quoted_maryland[0])
+        quoted = [path for path, _ in repo.latest_sheet(session, "450042")[0].field_paths()]
+        result = build_hospital(session, NoSpend(), NoModel(), "450042", TODAY, reuse_sources=True)
+        assert (result.outcome, result.version) == ("held", 2)
+        assert result.notes[1:] == [NOTHING_LEFT_NOTE, held_note(quoted)]
+        assert result.notes[0].startswith("2 stored documents are another state's version")
+        assert repo.sources_for(session, "450042") == []
+        detail = review_detail(session, "450042", "other_state_documents")
+        assert detail["state"] == "TX"
+        assert sorted((entry["id"], entry["states"]) for entry in detail["sources"]) == [
+            ("fap-ascension-florida", ["FL"]),
+            ("fap-ascension-maryland", ["MD"]),
+        ]
+
+
+MERCY_MERCED = hospital_entry("050444", "MERCY MEDICAL CENTER", "MERCED", "CA", "commonspirit.org")
+LONGMONT = hospital_entry(
+    "060003", "LONGMONT UNITED HOSPITAL", "LONGMONT", "CO", "commonspirit.org"
+)
+ST_ANTHONY = hospital_entry(
+    "060015", "CENTURA HEALTH-ST ANTHONY HOSPITAL", "LAKEWOOD", "CO", "commonspirit.org"
+)
+COMMONSPIRIT_DAM = "https://www.commonspirit.org/content/dam/"
+MERCY_SAN_JUAN_APPLICATION = web_doc(
+    "application-mercy-san-juan",
+    COMMONSPIRIT_DAM + "commonspiritorg/en/dhsac/casa/finance/assistance/"
+    "msjmc-financial-assistance-app-en.pdf",
+    "Mercy San Juan Medical Center Financial Assistance Application. " + POLICY_TEXT,
+    "[PDF] Mercy San Juan Medical Center Financial Assistance Application ...",
+)
+COMMONSPIRIT_POLICY = web_doc(
+    "fap-commonspirit",
+    COMMONSPIRIT_DAM + "shared/en/pdfs/finance/assistance/g-003-financial-assistance-policy-en.pdf",
+    "CommonSpirit Health Financial Assistance Policy G-003. " + POLICY_TEXT,
+)
+CALIFORNIA_POLICY = web_doc(
+    "fap-commonspirit-california",
+    COMMONSPIRIT_DAM + "shared/en/pdfs/finance/assistance/california/financial-assistance.pdf",
+    "Dignity Health Financial Assistance Policy. " + POLICY_TEXT,
+    "Financial Assistance Policy for California Hospitals",
+)
+
+
+def test_other_state_documents_are_never_lent_and_siblings_lend_only_within_the_state():
+    # Longmont United (060003, Colorado) and two Colorado and Kansas siblings on commonspirit.org
+    # borrowed Mercy Medical Center Merced's (050444, California) documents, Mercy San Juan's
+    # application among them, and published its 30-day decision. repo.siblings_on_domain has no
+    # state filter.
+    from waive.atlas.pipeline import BuildResult, _share_sibling_sources
+
+    engine = make_engine_with_hospital(MERCY_MERCED, LONGMONT, ST_ANTHONY)
+    with session_scope(engine) as session:
+        store_docs(session, "050444", MERCY_SAN_JUAN_APPLICATION)
+        publish_quoting(session, "050444", MERCY_SAN_JUAN_APPLICATION[0])
+        longmont = repo.get_hospital(session, "060003")
+        result = BuildResult("060003", longmont.name, "skipped")
+        assert _share_sibling_sources(session, longmont, [], result) is None
+        # A sibling in the state lends its policy, but not another state's version beside it.
+        store_docs(session, "060015", COMMONSPIRIT_POLICY, CALIFORNIA_POLICY)
+        publish_quoting(session, "060015", COMMONSPIRIT_POLICY[0])
+        borrowed = _share_sibling_sources(session, longmont, [], result)
+        assert borrowed is not None and borrowed.shared_ids == {"fap-commonspirit"}
+        assert [s.id for s, _ in repo.sources_for(session, "060003")] == ["fap-commonspirit"]
+    # Nor does a sibling in the state pass on what it borrowed from another state's: St. Anthony
+    # held Mercy San Juan's application from its own borrowing, and Longmont would have had it
+    # from St. Anthony instead.
+    engine = make_engine_with_hospital(MERCY_MERCED, LONGMONT, ST_ANTHONY)
+    with session_scope(engine) as session:
+        store_docs(session, "050444", MERCY_SAN_JUAN_APPLICATION)
+        publish_quoting(session, "050444", MERCY_SAN_JUAN_APPLICATION[0])
+        repo.link_source(session, "060015", "application-mercy-san-juan")
+        repo.add_review_item(
+            session,
+            "060015",
+            "shared_sources",
+            {
+                "from_ccn": "050444",
+                "domain": "commonspirit.org",
+                "sources": ["application-mercy-san-juan"],
+            },
+        )
+        publish_quoting(session, "060015", MERCY_SAN_JUAN_APPLICATION[0])
+        longmont = repo.get_hospital(session, "060003")
+        result = BuildResult("060003", longmont.name, "skipped")
+        assert _share_sibling_sources(session, longmont, [], result) is None
+        store_docs(session, "060015", COMMONSPIRIT_POLICY)
+        borrowed = _share_sibling_sources(session, longmont, [], result)
+        assert borrowed is not None and borrowed.shared_ids == {"fap-commonspirit"}

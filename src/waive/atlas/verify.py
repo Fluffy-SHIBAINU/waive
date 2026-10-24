@@ -1928,6 +1928,19 @@ TRANSLATION_REASON = "quote is from a translation while an English document stat
 # aside before structuring; a sheet built before still quotes them while they stay linked.
 DENTAL_REASON = "quote is from a dental assistance program's document, not the hospital's policy"
 OTHER_REGION_REASON = "quote is from another Kaiser region's policy, not the hospital's state's"
+# The 2026-10-24 publication audit: published sheets quoted a policy whose own list of covered
+# hospitals leaves the hospital out (UnityPoint's 1.BR.34 for Clarke County, 161348; Carle Health
+# West Region's Schedule D for Carle Hoopeston, 141316; Emory Healthcare's "Hospitals include:" for
+# St. Francis-Emory, 110129), another hospital's policy beside the one the hospital's site links as
+# its own (Rochester General's for Canton-Potsdam, 330197), and another state's version of a system
+# policy (Ascension Saint Agnes, Maryland, for Ascension Providence in Waco, 450042). The pipeline
+# names those documents too (pipeline.foreign_documents, sibling_policies, other_state_documents).
+FOREIGN_OWNER_REASON = (
+    "quote is from another organisation's policy whose list of covered hospitals leaves this "
+    "hospital out, and the hospital's own website does not link to it"
+)
+SIBLING_POLICY_REASON = "quote is from another hospital's policy; the hospital's site links its own"
+OTHER_STATE_DOCUMENT_REASON = "quote is from another state's version of the system policy"
 
 
 @dataclass
@@ -1947,7 +1960,8 @@ def verify_sheet(
 ) -> VerificationReport:
     """Each documented field held to its quote and its source text; `set_aside` names the
     documents no field may be quoted from, each with the reason (TRANSLATION_REASON,
-    DENTAL_REASON, OTHER_REGION_REASON)."""
+    DENTAL_REASON, OTHER_REGION_REASON, OTHER_STATE_DOCUMENT_REASON, FOREIGN_OWNER_REASON,
+    SIBLING_POLICY_REASON)."""
     set_aside = set_aside or {}
     report = VerificationReport()
     for path, cited in sheet.field_paths():
