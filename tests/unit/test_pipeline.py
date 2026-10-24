@@ -4228,6 +4228,48 @@ INDIANA_POLICY = web_doc(
     "Chicago, Illinois 60680.\n",
 )
 
+
+def with_newline_applies(doc):
+    """PDF text breaks the line inside "Applies to: All"."""
+    return doc[0], doc[1].replace("Applies to: All", "Applies\nto:\u00a0All")
+
+
+EMORY_POLICY_WITHOUT_TOWNS = (
+    EMORY_POLICY[0],
+    EMORY_POLICY[1]
+    .replace("Emory University Hospital, Atlanta", "Emory University Hospital")
+    .replace("• Emory Decatur Hospital, Decatur\n", ""),  # its town is in its name
+)
+# Place names that hold a state's name: Saint Luke's East (Lee's Summit, Missouri) has a Kansas City
+# page, Meritus (Hagerstown, Maryland) is Washington County's hospital, Abington (Pennsylvania) is in
+# the Delaware Valley.
+LEES_SUMMIT = hospital_entry(
+    "260216", "SAINT LUKES EAST HOSPITAL", "LEES SUMMIT", "MO", "saintlukeskc.org"
+)
+HAGERSTOWN = hospital_entry(
+    "210001", "MERITUS MEDICAL CENTER", "HAGERSTOWN", "MD", "meritushealth.com"
+)
+ABINGTON = hospital_entry(
+    "390231", "JEFFERSON ABINGTON HOSPITAL", "ABINGTON", "PA", "jefferson.edu"
+)
+KANSAS_CITY_PAGE = web_doc(
+    "fap-kansas-city",
+    "https://www.saintlukeskc.org/kansas-city/financial-assistance",
+    "Financial assistance at Saint Luke's.\n",
+    "Saint Lukes Kansas City financial assistance | Saint Luke's",
+)
+WASHINGTON_COUNTY_PAGE = web_doc(
+    "fap-washington-county",
+    "https://www.meritushealth.com/washington-county-hospital/financial-assistance",
+    "Financial assistance at Meritus Medical Center.\n",
+)
+DELAWARE_VALLEY_PAGE = web_doc(
+    "fap-delaware-valley",
+    "https://www.jefferson.edu/delaware-valley/financial-assistance",
+    "Financial assistance at Jefferson hospitals.\n",
+    "Financial Assistance in the Delaware Valley",
+)
+
 A, B, C = "foreign_documents", "sibling_policies", "other_state_documents"
 CLARKE_DOCS = [UPH_POLICY, UPH_APPLICATION, CLARKE_PAGE]
 WAMEGO_DOCS = [KANSAS_POLICY, KANSAS_APPLICATION, WAMEGO_PAGE]
@@ -4305,6 +4347,24 @@ OWNER_SCOPE_CASES = [
         "490057-sitecorecontenthub",
     ),
     (A, RENSSELAER, [FRANCISCAN_POLICY], INDIANA, "fap-franciscan", False, "151324-applies-to-all"),
+    (
+        A,
+        RENSSELAER,
+        [with_newline_applies(FRANCISCAN_POLICY)],
+        INDIANA,
+        "fap-franciscan",
+        False,
+        "applies-to-all-across-a-line",
+    ),
+    (
+        A,
+        ST_FRANCIS,
+        [EMORY_POLICY_WITHOUT_TOWNS, ST_FRANCIS_PAGE],
+        GEORGIA,
+        "fap-emory",
+        False,
+        "list-without-towns",
+    ),
     (A, CANNON, [UNC_POLICY], NORTH_CAROLINA, "fap-unc", False, "341323-website-name"),
     (A, BARNES_JEWISH, [BJC_APPLICATION], MISSOURI, "fap-bjc-application", False, "260032-bjc"),
     (A, WEST_ALLIS, [ADVOCATE_POLICY], WISCONSIN, "fap-advocate", False, "520139-advocate"),
@@ -4359,6 +4419,9 @@ OWNER_SCOPE_CASES = [
     (C, MARION, [NMHS_PAGE], [], "fap-nmhs", False, "010044-site-name"),
     (C, WAMEGO, WAMEGO_DOCS, [], "fap-ascension-kansas", False, "171337-kansas"),
     (C, ANDERSON, [INDIANA_POLICY], [], "fap-ascension-indiana", False, "150088-indiana"),
+    (C, LEES_SUMMIT, [KANSAS_CITY_PAGE], [], "fap-kansas-city", False, "kansas-city-is-missouri"),
+    (C, HAGERSTOWN, [WASHINGTON_COUNTY_PAGE], [], "fap-washington-county", False, "county"),
+    (C, ABINGTON, [DELAWARE_VALLEY_PAGE], [], "fap-delaware-valley", False, "valley"),
     # Clause B: the hospital's site links its own policy, and links this one under another
     # hospital's name.
     (B, CANTON_POTSDAM, RRH_DOCS, NEW_YORK, "billing-rgh-policy", True, "330197-rgh-policy"),
@@ -4639,6 +4702,11 @@ COMMONSPIRIT_POLICY = web_doc(
     COMMONSPIRIT_DAM + "shared/en/pdfs/finance/assistance/g-003-financial-assistance-policy-en.pdf",
     "CommonSpirit Health Financial Assistance Policy G-003. " + POLICY_TEXT,
 )
+SYSTEM_POLICY = web_doc(
+    "fap-system",
+    COMMONSPIRIT_DAM + "shared/en/pdfs/finance/assistance/system-policy.pdf",
+    "CommonSpirit Health system policy. " + POLICY_TEXT,
+)
 CALIFORNIA_POLICY = web_doc(
     "fap-commonspirit-california",
     COMMONSPIRIT_DAM + "shared/en/pdfs/finance/assistance/california/financial-assistance.pdf",
@@ -4689,9 +4757,15 @@ def test_other_state_documents_are_never_lent_and_siblings_lend_only_within_the_
         longmont = repo.get_hospital(session, "060003")
         result = BuildResult("060003", longmont.name, "skipped")
         assert _share_sibling_sources(session, longmont, [], result) is None
-        store_docs(session, "060015", COMMONSPIRIT_POLICY)
+        # Nor a system-wide policy it holds only through a loan from California, though its own
+        # set-aside would keep that one (it names no hospital): lending is strict.
+        store_docs(session, "050444", COMMONSPIRIT_POLICY)
+        lend(session, "060015", "050444", "fap-commonspirit")
+        assert lent_to(session, "060015") == {"application-mercy-san-juan"}
+        assert _share_sibling_sources(session, longmont, [], result) is None
+        store_docs(session, "060015", SYSTEM_POLICY)
         borrowed = _share_sibling_sources(session, longmont, [], result)
-        assert borrowed is not None and borrowed.shared_ids == {"fap-commonspirit"}
+        assert borrowed is not None and borrowed.shared_ids == {"fap-system"}
 
 
 def lend(session, borrower, lender, *source_ids):
@@ -4736,6 +4810,20 @@ ST_LUKES_PAGE = web_doc(
 BAYLOR_ST_LUKES = hospital_entry(
     "450193", "BAYLOR ST LUKES MEDICAL CENTER", "HOUSTON", "TX", "commonspirit.org"
 )
+
+
+def lent_to(session, ccn):
+    """What _lent_from_another_state finds for a hospital in the database."""
+    from waive.atlas.pipeline import _lent_from_another_state
+
+    row = repo.get_hospital(session, ccn)
+    registry = repo.list_hospitals(session, state=row.state)
+    found = _lent_from_another_state(
+        session, repo.hospital_ref(row), repo.sources_for(session, ccn), registry
+    )
+    return set(found)
+
+
 LENT_NOTE = (
     "1 stored document is lent by another state's hospital (application-mercy-san-juan); left "
     "out of the structurer and still linked"
@@ -4752,15 +4840,11 @@ def test_documents_lent_across_states_are_set_aside_for_the_borrower_only():
     # that state (Mercy Redding, 051319, from Merced, of Brazosport's Texas application). A
     # system-wide document lent across states stays too: CommonSpirit's policy names no hospital
     # of the state it came from, and Mercy's page names Oklahoma in its title.
-    from waive.atlas.pipeline import _lent_from_another_state, recheck_sheets, withdraw_rejected
-    from waive.atlas.verify import OTHER_STATE_DOCUMENT_REASON
+    from waive.atlas.pipeline import recheck_sheets, withdraw_rejected
+    from waive.atlas.verify import LENT_DOCUMENT_REASON
 
     def lent(ccn):
-        row = repo.get_hospital(session, ccn)
-        registry = repo.list_hospitals(session, state=row.state)
-        return _lent_from_another_state(
-            session, repo.hospital_ref(row), repo.sources_for(session, ccn), registry
-        )
+        return lent_to(session, ccn)
 
     engine = make_engine_with_hospital(
         MERCY_MERCED,
@@ -4809,8 +4893,8 @@ def test_documents_lent_across_states_are_set_aside_for_the_borrower_only():
         assert lent("371304") == set()
         quoted = [path for path, _ in repo.latest_sheet(session, "060003")[0].field_paths()]
         assert {entry.ccn: entry.rejected for entry in recheck_sheets(session)} == {
-            "060003": [(path, OTHER_STATE_DOCUMENT_REASON) for path in quoted],
-            "051319": [(path, OTHER_STATE_DOCUMENT_REASON) for path in quoted],
+            "060003": [(path, LENT_DOCUMENT_REASON) for path in quoted],
+            "051319": [(path, LENT_DOCUMENT_REASON) for path in quoted],
         }
         withdrawn = withdraw_rejected(session)
         assert sorted((r.ccn, r.outcome) for r in withdrawn) == [
@@ -4838,3 +4922,106 @@ def test_documents_lent_across_states_are_set_aside_for_the_borrower_only():
         assert [s.id for s, _ in repo.sources_for(session, "060003")] == [
             "application-mercy-san-juan"
         ]
+        # One open item tells the admin what to unlink, however often the build runs.
+        build_hospital(session, NoSpend(), NoModel(), "060003", TODAY, reuse_sources=True)
+        items = repo.open_review_items(session, "060003", "lent_documents")
+        assert [item.detail for item in items] == [
+            {
+                "sources": [
+                    {"id": "application-mercy-san-juan", "lender": "050444", "origin_state": "CA"}
+                ]
+            }
+        ]
+
+
+# Registry hospitals the loan-rule guards read: a Colorado sibling, Texas and Arkansas hospitals.
+GUARD_REGISTRY = [
+    MERCY_MERCED,
+    MERCY_SAN_JUAN,
+    LONGMONT,
+    ST_ANTHONY,
+    BRAZOSPORT,
+    hospital_entry("450193", "BAYLOR ST LUKES MEDICAL CENTER", "HOUSTON", "TX"),
+    hospital_entry("040007", "CHI-ST VINCENT INFIRMARY", "LITTLE ROCK", "AR"),
+    hospital_entry("040026", "CHI ST. VINCENT HOSPITAL HOT SPRINGS", "HOT SPRINGS", "AR"),
+    hospital_entry("050152", "UCSF HEALTH SAINT FRANCIS HOSPITAL", "SAN FRANCISCO", "CA"),
+]
+SAN_JUAN = "Mercy San Juan Medical Center, Carmichael. "
+
+
+def lent_doc(source_id, text):
+    return web_doc(source_id, f"{COMMONSPIRIT_DAM}lent/{source_id}.pdf", text + POLICY_TEXT)
+
+
+def test_the_loan_rules_guards_keep_what_reaches_the_borrowers_state_lent_across():
+    # Each document below was lent by Mercy Merced (050444, California) to Longmont United
+    # (060003, Colorado) and names Mercy San Juan (050516) by name and town, as the one set aside
+    # does, unless the case is about that: one guard each keeps it.
+    from datetime import timedelta
+
+    guarded = {
+        # The borrower held it itself before the loan: a sheet of its own read it.
+        "own-before-the-loan": lent_doc("own-before-the-loan", SAN_JUAN),
+        # It names the borrower's state (HSHS's programme names Wisconsin, 520075).
+        "names-colorado": lent_doc("names-colorado", SAN_JUAN + "For our Colorado patients. "),
+        # It names another hospital of the borrower's state by name and town (181329).
+        "names-st-anthony": lent_doc(
+            "names-st-anthony", SAN_JUAN + "Centura Health St. Anthony Hospital, Lakewood. "
+        ),
+        # It names the borrower's town.
+        "names-longmont": lent_doc("names-longmont", SAN_JUAN + "Patients in Longmont. "),
+        # One hospital of a state the loan did not come from: Texas, not California.
+        "one-texas-hospital": lent_doc(
+            "one-texas-hospital", "CHI St. Luke's Health Brazosport, Lake Jackson. "
+        ),
+        # Mercy San Juan's name without its town.
+        "name-without-town": lent_doc("name-without-town", "Mercy San Juan Medical Center. "),
+        # UCSF Health Saint Francis's name with its town's words apart: no San Francisco.
+        "town-words-apart": lent_doc(
+            "town-words-apart",
+            "UCSF Health Saint Francis Hospital, San Jose office, Francisco St. ",
+        ),
+        # Two hospitals in each of three states: a system's page, not a state's version.
+        "three-states": lent_doc(
+            "three-states",
+            SAN_JUAN
+            + "Mercy Medical Center, Merced. CHI St. Luke's Health Brazosport, Lake Jackson. "
+            "Baylor St. Luke's Medical Center, Houston. CHI St. Vincent Infirmary, Little Rock. "
+            "CHI St. Vincent Hospital Hot Springs, Hot Springs. ",
+        ),
+    }
+    set_aside = lent_doc("set-aside", SAN_JUAN)
+    engine = make_engine_with_hospital(*GUARD_REGISTRY)
+    with session_scope(engine) as session:
+        store_docs(session, "050444", set_aside, *guarded.values())
+        store_docs(session, "060003", guarded["own-before-the-loan"])
+        own = publish_quoting(session, "060003", guarded["own-before-the-loan"][0])
+        own.created_at = datetime.now(UTC) - timedelta(days=30)
+        session.flush()
+        lend(session, "060003", "050444", "set-aside", *guarded)
+        assert lent_to(session, "060003") == {"set-aside"}
+
+
+def test_a_rebuild_carries_no_state_programmes_over_from_a_foreign_document_it_detached():
+    # St. Francis-Emory (110129) quoted Georgia's programmes from Emory Healthcare's policy; a
+    # rebuild that detaches the policy must not carry the old quote back onto the new sheet.
+    from waive.atlas.publish import publish_sheet
+    from waive.atlas.schema import Cited, StateProgram
+
+    engine = make_engine_with_hospital(*IOWA)
+    with session_scope(engine) as session:
+        store_docs(session, "161348", *CLARKE_DOCS)
+        publish_quoting(session, "161348", UPH_POLICY[0])
+        sheet = repo.latest_sheet(session, "161348")[0]
+        program = Cited[list[StateProgram]](
+            value=[StateProgram(name="Iowa charity care", how_to_apply="Ask the hospital")],
+            quote="0-200% of FPIG : 100% discount off AGB",
+            source_id="fap-uph-policy",
+            checked_on=TODAY,
+        )
+        programs = sheet.programs.model_copy(update={"state_programs": program})
+        publish_sheet(session, sheet.model_copy(update={"programs": programs}))
+        build_hospital(session, NoSpend(), GroundedAI(), "161348", TODAY, reuse_sources=True)
+        latest, _ = repo.latest_sheet(session, "161348")
+        assert latest.version == 3
+        assert latest.programs.state_programs is None

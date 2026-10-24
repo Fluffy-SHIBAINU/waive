@@ -1945,6 +1945,9 @@ SCHEDULE_OWNER_REASON = (
 )
 SIBLING_POLICY_REASON = "quote is from another hospital's policy; the hospital's site links its own"
 OTHER_STATE_DOCUMENT_REASON = "quote is from another state's version of the system policy"
+# Mercy Merced (050444, California) lent Mercy San Juan's application to Longmont United (060003,
+# Colorado) before siblings lent only within the state; nothing in its address names California.
+LENT_DOCUMENT_REASON = "quote is from a document lent by another state's hospital"
 
 
 @dataclass
@@ -1964,8 +1967,8 @@ def verify_sheet(
 ) -> VerificationReport:
     """Each documented field held to its quote and its source text; `set_aside` names the
     documents no field may be quoted from, each with the reason (TRANSLATION_REASON,
-    DENTAL_REASON, OTHER_REGION_REASON, OTHER_STATE_DOCUMENT_REASON, FOREIGN_OWNER_REASON,
-    SCHEDULE_OWNER_REASON, SIBLING_POLICY_REASON)."""
+    DENTAL_REASON, OTHER_REGION_REASON, OTHER_STATE_DOCUMENT_REASON, LENT_DOCUMENT_REASON,
+    FOREIGN_OWNER_REASON, SCHEDULE_OWNER_REASON, SIBLING_POLICY_REASON)."""
     set_aside = set_aside or {}
     report = VerificationReport()
     for path, cited in sheet.field_paths():

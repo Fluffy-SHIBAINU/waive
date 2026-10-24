@@ -2,10 +2,12 @@
 
 import logging
 import re
-from collections.abc import Iterable, Mapping
+from collections import Counter
+from collections.abc import Collection, Iterable, Mapping
 from dataclasses import dataclass, field
 from datetime import UTC, date, datetime
 from decimal import Decimal
+from functools import cache
 from typing import Any, Literal
 from urllib.parse import unquote, urljoin, urlparse
 
@@ -18,6 +20,7 @@ from waive.atlas.discover import (
     DOMAIN_UNCONFIRMED_REASON,
     MIN_CONFIDENCE,
     PLACE_UNCONFIRMED_REASON,
+    _names_city,
     _names_hospital,
     _plain,
     discover_domain,
@@ -49,7 +52,7 @@ from waive.atlas.scout import (
     store_scouted,
 )
 from waive.atlas.skiplist import SkipEntry
-from waive.atlas.states import states_named
+from waive.atlas.states import CODE_OF_NAME, STATE_NAMES
 from waive.atlas.structure import (
     another_kaiser_region,
     document_states,
@@ -63,6 +66,7 @@ from waive.atlas.verify import (
     DENTAL_REASON,
     FOREIGN_OWNER_REASON,
     HOLDING_REASONS,
+    LENT_DOCUMENT_REASON,
     OTHER_REGION_REASON,
     OTHER_STATE_DOCUMENT_REASON,
     PATIENT_SHARE_REASON,
@@ -108,11 +112,17 @@ class BuildResult:
     notes: list[str] = field(default_factory=list)
 
 
-def carry_over_state_programs(sheet: ProcedureSheet, previous: ProcedureSheet) -> ProcedureSheet:
-    """A rebuild re-reads hospital documents only; the state overlay (and its source) must survive."""
+def carry_over_state_programs(
+    sheet: ProcedureSheet, previous: ProcedureSheet, set_aside: Collection[str] = ()
+) -> ProcedureSheet:
+    """A rebuild re-reads hospital documents only; the state overlay (and its source) must survive.
+    One quoted from a document the build set aside does not: St. Francis-Emory's (110129) state
+    programmes were quoted from Emory Healthcare's policy, which a rebuild detaches."""
     if sheet.programs.state_programs is not None or previous.programs.state_programs is None:
         return sheet
     cited = previous.programs.state_programs
+    if cited.source_id in set_aside:
+        return sheet
     sources = list(sheet.sources)
     if cited.source_id and all(source.id != cited.source_id for source in sources):
         sources.extend(s for s in previous.sources if s.id == cited.source_id)
@@ -152,7 +162,7 @@ def _drop_navigation_shells(
         f"(the same {chars}-character menu page at {len(shells)} URLs); detached and left out "
         "of the structurer"
     )
-    return [(source, text) for source, text in sources_with_text if source.url not in shells]
+    return _without(sources_with_text, {source.id for source in dropped})
 
 
 def _drop_dental_documents(
@@ -183,8 +193,7 @@ def _drop_dental_documents(
         f"{len(dental)} stored document{plural} about a dental assistance program, not the "
         f"hospital's financial assistance ({listed}); detached and left out of the structurer"
     )
-    gone = {source.id for source in dental}
-    return [(source, text) for source, text in sources_with_text if source.id not in gone]
+    return _without(sources_with_text, {source.id for source in dental})
 
 
 def _drop_other_state_documents(
@@ -245,8 +254,7 @@ def _drop_other_state_documents(
         f"{len(other)} stored document{plural} another state's version of the system policy "
         f"({listed}); detached and left out of the structurer"
     )
-    gone = {source.id for source in other}
-    return [(source, text) for source, text in sources_with_text if source.id not in gone]
+    return _without(sources_with_text, {source.id for source in other})
 
 
 def _drop_foreign_documents(
@@ -288,6 +296,9 @@ def _drop_foreign_documents(
     return _without(sources_with_text, clauses)
 
 
+LENT_DOCUMENTS = "lent_documents"
+
+
 def _leave_out_lent_documents(
     session: Session,
     hospital: HospitalRef,
@@ -297,12 +308,20 @@ def _leave_out_lent_documents(
 ) -> list[tuple[SourceDoc, str]]:
     """Another state's documents the hospital holds only through a loan from that state
     (_lent_from_another_state; `registry` is the hospitals of its own state) are kept from the
-    structurer, as _documents_set_aside keeps every field from quoting them, and they stay
-    linked: a rebuild of Longmont United (060003) from its stored documents would otherwise
-    publish Mercy San Juan's decision deadline again."""
+    structurer, as _documents_set_aside keeps every field from quoting them. They stay linked, and
+    one open `lent_documents` item lists each with its lender and the state the loan came from,
+    for an admin to unlink: a rebuild of Longmont United (060003) from its stored documents would
+    otherwise publish Mercy San Juan's (050516) decision deadline again."""
     lent = _lent_from_another_state(session, hospital, sources_with_text, registry)
     if not lent:
         return sources_with_text
+    detail = {
+        "sources": [
+            {"id": source_id, "lender": loan.lender, "origin_state": loan.origin_state}
+            for source_id, loan in sorted(lent.items())
+        ]
+    }
+    _file_once(session, hospital.ccn, LENT_DOCUMENTS, detail)
     listed = ", ".join(source.id for source, _ in sources_with_text if source.id in lent)
     plural = "s are" if len(lent) > 1 else " is"
     result.notes.append(
@@ -369,7 +388,7 @@ _COVERED_LIST = re.compile(
     r"|the\s+following\b.{0,120}?\b(?:hospitals|facilities)\b.{0,60}?\bare\s+covered\b",
     re.IGNORECASE | re.DOTALL,
 )
-_APPLIES_TO_ALL = re.compile(r"\bappl(?:y|ies) to\s*:?\s*all\b", re.IGNORECASE)
+_APPLIES_TO_ALL = re.compile(r"\bappl(?:y|ies)\s+to\s*:?\s*all\b", re.IGNORECASE)
 # What follows a title's first " | " or " - " is the site's name, not the document's subject.
 _TITLE_SEGMENT = re.compile(r"\s+[|–—-]\s+")
 
@@ -387,24 +406,47 @@ def _single_spaced(text: str) -> str:
     return " ".join(_plain(text).split())
 
 
-def _names_town(hospital: HospitalRef | HospitalRow, plain: str) -> bool:
-    """Whether `plain` (_single_spaced) names the hospital's town as whole words."""
-    town = _single_spaced(hospital.city)
-    pattern = rf"(?<![a-z0-9]){re.escape(town)}(?![a-z0-9])"
-    return bool(town) and re.search(pattern, plain) is not None
+_WORD = re.compile(r"[a-z0-9]+")
+
+
+@cache
+def _town_words(city: str) -> frozenset[str]:
+    return frozenset(_WORD.findall(_plain(city)))
+
+
+@cache
+def _has_distinctive_name(name: str) -> bool:
+    return bool(name_tokens(name))
+
+
+def _hospitals_named(plain: str, rows: Iterable[HospitalRow]) -> list[HospitalRow]:
+    """The registry rows `plain` (_single_spaced) names by name (discover._names_hospital) and by
+    town (discover._names_city). A named town's words are all words of the text, so that cheap
+    test leaves out nearly every row first: a recheck reads documents against the whole registry
+    (_lent_from_another_state)."""
+    words = set(_WORD.findall(plain))
+    return [
+        row
+        for row in rows
+        if (town := _town_words(row.city))
+        and town <= words
+        and _has_distinctive_name(row.name)
+        and _names_hospital(row, plain)  # a registry row carries the name it reads
+        and _names_city(row, plain)
+    ]
 
 
 def _names_hospital_or_town(hospital: HospitalRef, text: str) -> bool:
     plain = _single_spaced(text)
-    return _names_town(hospital, plain) or _names_hospital(hospital, plain)
+    return _names_city(hospital, plain) or _names_hospital(hospital, plain)
 
 
 def _lists_other_hospitals(hospital: HospitalRef, text: str, registry: list[HospitalRow]) -> bool:
     """Whether `text` covers less than all of a system's hospitals and names another registry
-    hospital of the state, by its name (discover._names_hospital) and its town."""
+    hospital of the state, by its name and its town (_hospitals_named)."""
     if _APPLIES_TO_ALL.search(text):
         return False
-    return _names_a_hospital_of(_single_spaced(text), registry, besides=hospital.ccn)
+    return any(row.ccn != hospital.ccn for row in _hospitals_named(_single_spaced(text), registry))
 
 
 def foreign_documents(
@@ -558,13 +600,32 @@ def _owner_clauses(
     return clauses
 
 
+# "Kansas City", "Washington County", "Virginia Beach", "Delaware Valley", "Oklahoma City": a
+# place, not the state. verify._PLACE_AFTER also reads "California Hospitals" as a place, which is
+# just what another state's version of a policy calls itself, so it is not reused here.
+_PLACE_NAME_AFTER = re.compile(r"[- ]+(?:count(?:y|ies)|city|beach|valley)(?![a-z])")
+
+
+def _states_as_states(text: str) -> set[str]:
+    """The codes of the states `text` names by name (states.states_named), but not where the name
+    is a place's: a Missouri hospital's Kansas City page is not Kansas's (Saint Luke's East,
+    260216, Lee's Summit), nor Delaware Valley Hospital (331312, New York) Delaware's."""
+    lowered = text.lower()
+    return {
+        CODE_OF_NAME[match.group(1)]
+        for match in STATE_NAMES.finditer(lowered)
+        if not _PLACE_NAME_AFTER.match(lowered, match.end())
+    }
+
+
 def _states_claimed(hospital: HospitalRef, source: SourceDoc) -> set[str]:
     """The states the document's address path and the subject of its title name, the states in
-    the hospital's own name or town left out (Sierra Nevada Memorial's policy is California's)."""
+    the hospital's own name or town left out (Sierra Nevada Memorial's policy, 050150, is
+    California's)."""
     path = unquote(urlparse(source.url or "").path)
     subject = _TITLE_SEGMENT.split(source.title or "")[0]
-    named = states_named(re.sub(r"[-_./%+]", " ", f"{subject} {path}"))
-    return named - states_named(f"{hospital.name} {hospital.city}")
+    named = _states_as_states(re.sub(r"[-_./%+]", " ", f"{subject} {path}"))
+    return named - _states_as_states(f"{hospital.name} {hospital.city}")
 
 
 def other_state_documents(hospital: HospitalRef, sources: list[tuple[SourceDoc, str]]) -> set[str]:
@@ -626,7 +687,7 @@ def _loan_origins(
     """The registry hospitals loans of `source_id` from `lenders` trace back to: a lender that
     holds the document on its own, or, for one that holds it only through a loan too, that loan's
     origins (Mercy Redding, 051319, had Brazosport's Texas application from Mercy Merced, 050444,
-    which had it from Brazosport)."""
+    which had it from Brazosport, 450072)."""
     origins: list[HospitalRow] = []
     for lender_ccn in lenders:
         lender = repo.get_hospital(session, lender_ccn) if lender_ccn not in seen else None
@@ -640,32 +701,52 @@ def _loan_origins(
     return origins
 
 
-def _names_a_hospital_of(plain: str, rows: list[HospitalRow], besides: str = "") -> bool:
-    """Whether `plain` (_single_spaced) names one of `rows`, but `besides`, by its name and its
-    town."""
-    return any(
-        row.ccn != besides
-        and name_tokens(row.name)
-        and _names_hospital(row, plain)  # a registry row carries the name it reads
-        and _names_town(row, plain)
-        for row in rows
-    )
+@dataclass(frozen=True)
+class Loan:
+    """How a hospital holds a document only through loans: its lenders' CCNs and the registry
+    hospitals the loans trace back to (_loan_origins)."""
+
+    lenders: list[str]
+    origins: list[HospitalRow]
+
+    @property
+    def lender(self) -> str:
+        """The first lender its `shared_sources` items name."""
+        return next((ccn for ccn in self.lenders if ccn), "")
+
+    @property
+    def origin_state(self) -> str:
+        return "/".join(sorted({origin.state for origin in self.origins}))
+
+
+def _loans_from_another_state(session: Session, ccn: str, state: str) -> dict[str, Loan]:
+    """The documents hospital `ccn` holds only through loans (_held_through_loans) that trace back
+    to a registry hospital of a state other than `state`, whatever they say."""
+    loans: dict[str, Loan] = {}
+    for source_id, lenders in _held_through_loans(session, ccn).items():
+        origins = _loan_origins(session, lenders, source_id, frozenset({ccn}))
+        if any(origin.state != state for origin in origins):
+            loans[source_id] = Loan(lenders, origins)
+    return loans
 
 
 def _covers_the_state(
     hospital: HospitalRef, source: SourceDoc, text: str, registry: list[HospitalRow]
 ) -> bool:
     """Whether the document says it reaches the hospital's state: it names the hospital or its
-    town, another hospital of the state (`registry`) by name and town, or the state by name, or by
-    its code in the subject of its title ("Financial Assistance AR, OK, Springfield & St. Louis",
-    Mercy's page for its Oklahoma hospitals)."""
+    town, another hospital of the state (`registry`) by name and town (Saint Joseph's page names
+    Kentucky's Saint Joseph hospitals, for Berea, 181329), the state by name (HSHS's programme names
+    Wisconsin, for St. Vincent, 520075), or the state's code in the subject of its title
+    ("Financial Assistance AR, OK, Springfield & St. Louis", Mercy's page for Tishomingo,
+    371304)."""
     if _names_hospital_or_town(hospital, text):
         return True
-    if hospital.state in states_named(f"{source.title} {text}"):
+    if hospital.state in _states_as_states(f"{source.title} {text}"):
         return True
     if hospital.state in re.findall(r"\b[A-Z]{2}\b", _TITLE_SEGMENT.split(source.title or "")[0]):
         return True
-    return _names_a_hospital_of(_single_spaced(text), registry, besides=hospital.ccn)
+    named = _hospitals_named(_single_spaced(text), registry)
+    return any(row.ccn != hospital.ccn for row in named)
 
 
 def _another_states_document(
@@ -674,15 +755,15 @@ def _another_states_document(
     """Whether `plain` (_single_spaced) is a hospital's document of another state: it names, by
     name and town, a hospital of a state a loan came from (`origins`), or two hospitals of one
     other state. A single name from anywhere is not enough: "Mission Regional Medical Center"
-    (Mission, Texas) is in every "our mission", and Washington Hospital (Washington,
-    Pennsylvania) in CommonSpirit's Washington provisions."""
-    named: dict[str, int] = {}
-    for row in hospitals_elsewhere:
-        if name_tokens(row.name) and _names_hospital(row, plain) and _names_town(row, plain):
-            if row.state in origins:
-                return True
-            named[row.state] = named.get(row.state, 0) + 1
-    return any(count >= 2 for count in named.values())
+    (450176, Mission, Texas) is in every "our mission", and Washington Hospital (390042,
+    Washington, Pennsylvania) in CommonSpirit's Washington provisions. A document naming two
+    hospitals each in three states or more is a system's, not a state's version: CommonSpirit's
+    financial assistance landing page lists hospitals of California, Iowa, Nebraska, New York,
+    North Dakota and Texas."""
+    named = Counter(row.state for row in _hospitals_named(plain, hospitals_elsewhere))
+    if sum(1 for count in named.values() if count >= 2) >= 3:
+        return False
+    return any(named[state] for state in origins) or any(count >= 2 for count in named.values())
 
 
 def _lent_from_another_state(
@@ -690,38 +771,33 @@ def _lent_from_another_state(
     hospital: HospitalRef,
     sources_with_text: list[tuple[SourceDoc, str]],
     registry: list[HospitalRow],
-) -> set[str]:
-    """The documents the hospital holds only through loans from registry hospitals of other states
-    that are another state's (_another_states_document) and say nothing that reaches the
-    hospital's own state (_covers_the_state; `registry` is the hospitals of that state). Before
-    siblings lent only within the state, 25 loans crossed one: Mercy Medical Center Merced
-    (050444, California) lent Mercy San Juan's application to Longmont United (060003,
-    Colorado), St. Anthony (060015) and Bob Wilson Memorial (171388, Kansas), whose published
-    sheets quote its decision deadline, and nothing in its address or title names California, so
+) -> dict[str, Loan]:
+    """The documents the hospital holds only through loans tracing back to registry hospitals of
+    other states alone (_loans_from_another_state) that are another state's
+    (_another_states_document) and say nothing that reaches the hospital's own state
+    (_covers_the_state; `registry` is the hospitals of that state). Before siblings lent only
+    within the state, 25 loans crossed one: Mercy Medical Center Merced (050444, California)
+    lent Mercy San Juan's (050516) application to Longmont United (060003, Colorado), St.
+    Anthony (060015) and Bob Wilson Memorial (171388, Kansas), whose published sheets quote its
+    decision deadline, and nothing in its address or title names California, so
     other_state_documents cannot tell. Merced lent CHI St. Vincent's Arkansas page with it. A
     system-wide document lent across states stays: CommonSpirit's G-003 names no hospital, and
-    those sheets quote it for their income rules, as CHI Oakes (351315) correctly does; HSHS's
-    programme names its Wisconsin hospitals."""
-    loans = _held_through_loans(session, hospital.ccn)
-    if not loans:
-        return set()
+    those sheets quote it for their income rules, as CHI Oakes (351315) correctly does."""
+    loans = _loans_from_another_state(session, hospital.ccn, hospital.state)
     held = {source.id: (source, text) for source, text in sources_with_text}
     elsewhere: list[HospitalRow] | None = None
-    lent: set[str] = set()
-    for source_id, lenders in loans.items():
-        if source_id not in held:
-            continue
-        origins = _loan_origins(session, lenders, source_id, frozenset({hospital.ccn}))
-        if not origins or any(origin.state == hospital.state for origin in origins):
+    lent: dict[str, Loan] = {}
+    for source_id, loan in loans.items():
+        if source_id not in held or any(o.state == hospital.state for o in loan.origins):
             continue
         source, text = held[source_id]
         if _covers_the_state(hospital, source, text, registry):
             continue
         if elsewhere is None:
             elsewhere = [row for row in repo.list_hospitals(session) if row.state != hospital.state]
-        states = {origin.state for origin in origins}
+        states = {origin.state for origin in loan.origins}
         if _another_states_document(_single_spaced(text), states, elsewhere):
-            lent.add(source_id)
+            lent[source_id] = loan
     return lent
 
 
@@ -729,33 +805,35 @@ def _documents_set_aside(
     hospital: HospitalRef,
     sources_with_text: list[tuple[SourceDoc, str]],
     registry: list[HospitalRow],
-    lent: set[str],
+    lent: Collection[str],
 ) -> dict[str, str]:
-    """The stored web documents no field may be quoted from, each with verify_sheet's reason: a
-    dental program's and another Kaiser region's (DENTAL_REASON, OTHER_REGION_REASON), which a
-    build detaches before structuring; then, among the rest, another state's version of the system
-    policy (other_state_documents, OTHER_STATE_DOCUMENT_REASON), even when every document is
-    another state's, and a document `lent` by another state's hospital that is that state's
-    (_lent_from_another_state; its link stays); then another organisation's or another hospital's policy that does not cover the
-    hospital (foreign_documents, sibling_policies; FOREIGN_OWNER_REASON, SCHEDULE_OWNER_REASON,
-    SIBLING_POLICY_REASON), judged against `registry`, the hospitals of its state. A build keeps
-    all of those from the structurer (_drop_other_state_documents, _leave_out_lent_documents,
-    _drop_foreign_documents). Last, among what is left, the
-    translations while a web document in English states the income rules (TRANSLATION_REASON;
-    _set_aside_translations keeps them from the structurer). A sheet built before a rule still
-    quotes such a document while it stays linked: the nine published Kaiser California sheets
-    quoting Kaiser Northwest's dental policy passed recheck (review of 7.16)."""
+    """The stored web documents no field may be quoted from, each with verify_sheet's reason, in
+    this order:
+    - a dental program's and another Kaiser region's (DENTAL_REASON, OTHER_REGION_REASON);
+    - another state's version of the system policy (other_state_documents,
+      OTHER_STATE_DOCUMENT_REASON), even when every document is another state's;
+    - another state's document `lent` by a hospital of that state (_lent_from_another_state,
+      LENT_DOCUMENT_REASON), whose link stays;
+    - another organisation's or another hospital's policy that does not cover the hospital
+      (foreign_documents, sibling_policies; FOREIGN_OWNER_REASON, SCHEDULE_OWNER_REASON,
+      SIBLING_POLICY_REASON), judged against `registry`, the hospitals of its state;
+    - among what is left, the translations while a web document in English states the income
+      rules (TRANSLATION_REASON).
+    A build keeps each of those from the structurer (_documents_for_structurer). A sheet built
+    before a rule still quotes such a document while it stays linked: the nine published Kaiser
+    California sheets quoting Kaiser Northwest's dental policy passed recheck (review of 7.16)."""
     set_aside = {
         source.id: reason
         for source, text in sources_with_text
         if (reason := _never_the_hospitals(source, text, hospital))
     }
     rest = _without(sources_with_text, set_aside)
-    other_state = other_state_documents(hospital, rest) | {
-        source.id for source, _ in rest if source.id in lent
-    }
+    other_state = other_state_documents(hospital, rest)
     set_aside.update((source_id, OTHER_STATE_DOCUMENT_REASON) for source_id in other_state)
     rest = _without(rest, other_state)
+    loaned = {source.id for source, _ in rest if source.id in lent}
+    set_aside.update((source_id, LENT_DOCUMENT_REASON) for source_id in loaned)
+    rest = _without(rest, loaned)
     clauses = _owner_clauses(hospital, rest, registry)
     set_aside.update((source_id, CLAUSE_REASONS[clause]) for source_id, clause in clauses.items())
     rest = _without(rest, clauses)
@@ -763,6 +841,31 @@ def _documents_set_aside(
     if english_rules:
         set_aside.update((source.id, TRANSLATION_REASON) for source, _ in translations)
     return set_aside
+
+
+def _set_aside_for(
+    session: Session,
+    row: HospitalRow,
+    sources_with_text: list[tuple[SourceDoc, str]],
+    registry: list[HospitalRow],
+) -> dict[str, str]:
+    """_documents_set_aside for a registry hospital, the documents another state's hospital lent
+    it looked up (_lent_from_another_state), as recheck_sheets, withdraw_rejected and
+    confirm_domain need it."""
+    hospital = repo.hospital_ref(row)
+    lent = _lent_from_another_state(session, hospital, sources_with_text, registry)
+    return _documents_set_aside(hospital, sources_with_text, registry, lent)
+
+
+def _file_once(session: Session, ccn: str, kind: str, detail: dict[str, Any]) -> None:
+    """One open item of `kind` per hospital, its detail brought up to date: a build that runs
+    again does not file it twice."""
+    for item in repo.open_review_items(session, ccn, kind):
+        if item.detail != detail:
+            item.detail = detail
+            session.flush()
+        return
+    repo.add_review_item(session, ccn, kind, detail)
 
 
 ENGLISH_POLICY_MISSING = "english_policy_missing"
@@ -775,13 +878,7 @@ def _ask_for_the_english_policy(session: Session, ccn: str, translation_ids: lis
         "translations": translation_ids,
         "reason": "only translations state the income rules; scout the English policy",
     }
-    for item in repo.open_review_items(session, ccn):
-        if item.kind == ENGLISH_POLICY_MISSING:
-            if item.detail != detail:
-                item.detail = detail
-                session.flush()
-            return
-    repo.add_review_item(session, ccn, ENGLISH_POLICY_MISSING, detail)
+    _file_once(session, ccn, ENGLISH_POLICY_MISSING, detail)
 
 
 def _set_aside_translations(
@@ -814,9 +911,7 @@ def _set_aside_translations(
         f"{len(translations)} stored document{plural} not in English ({listed}); left out of the "
         "structurer while an English one states the income rules, and still linked"
     )
-    gone = {source.id for source, _ in translations}
-    kept = [(source, text) for source, text in sources_with_text if source.id not in gone]
-    return kept, translations
+    return _without(sources_with_text, {source.id for source, _ in translations}), translations
 
 
 def _documents_for_structurer(
@@ -917,34 +1012,31 @@ def _share_sibling_sources(
     dental program's or another Kaiser region's document is never lent: the build would detach
     it at once, and a sibling that has nothing else to lend does not end the search (Los Angeles,
     050138, held the dental policy and Kaiser Northwest's beside California's; review of 7.16).
-    Only a sibling in the hospital's state lends, never another state's version of the policy
-    (other_state_documents), and never what it borrowed itself from another state's hospital:
-    Mercy Medical Center Merced (050444, California) lent Mercy San Juan's application on
-    commonspirit.org to Longmont United (060003, Colorado), to St. Anthony (060015, Colorado) and
-    to Bob Wilson Memorial (171388, Kansas), whose sheets published its decision deadline, and
-    St. Anthony would have passed it on to Longmont (the 2026-10-24 audit)."""
+    Only a sibling in the hospital's state lends, and never another state's version of the policy
+    (other_state_documents) nor a document it holds only through a loan tracing back to a
+    hospital of another state (_loans_from_another_state), whatever the document says: Mercy
+    Medical Center Merced (050444, California) lent Mercy San Juan's (050516) application on
+    commonspirit.org to Longmont United (060003, Colorado), St. Anthony (060015, Colorado) and Bob
+    Wilson Memorial (171388, Kansas), whose sheets published its decision deadline, and St.
+    Anthony would have passed it on to Longmont (the 2026-10-24 audit)."""
     domain = row.website_domain
     if not domain:
         return None
     hospital = repo.hospital_ref(row)
     own_ids = {source.id for source, _ in own}
-    registry = repo.list_hospitals(session, state=row.state)
     for sibling in repo.siblings_on_domain(session, domain, row.ccn):
         if sibling.state != row.state:
             continue
         latest = repo.latest_sheet(session, sibling.ccn)
         if latest is None or latest[0].status is not SheetStatus.PUBLISHED:
             continue
-        # A sibling never passes on another state's document it borrowed from that state: St.
+        # A sibling never passes on a loan from another state's hospital, whatever it says: St.
         # Anthony (060015, Colorado) held Mercy San Juan's application from Mercy Merced
         # (050444, California), and Longmont United (060003) would have had it from St. Anthony.
-        stored = repo.sources_for(session, sibling.ccn)
-        from_elsewhere = _lent_from_another_state(
-            session, repo.hospital_ref(sibling), stored, registry
-        )
+        from_elsewhere = _loans_from_another_state(session, sibling.ccn, row.state)
         policies = [
             (source, text)
-            for source, text in stored
+            for source, text in repo.sources_for(session, sibling.ccn)
             if source.kind is SourceKind.HOSPITAL_WEB
             and source.id not in own_ids
             and source.id not in from_elsewhere
@@ -1516,7 +1608,8 @@ def build_hospital(
 
     previous = repo.latest_sheet(session, ccn)
     if previous is not None:
-        sheet = carry_over_state_programs(sheet, previous[0])
+        set_aside = detached | {source.id for source, _ in translations}
+        sheet = carry_over_state_programs(sheet, previous[0], set_aside)
         sheet = carry_over_reported(sheet, previous[0])
     ruled, overruled = _ruled_ceiling_problems(sheet, decision)
     _record_ruling_conflicts(session, ccn, overruled, result.notes)
@@ -1726,10 +1819,7 @@ def recheck_sheets(session: Session, state: str | None = None) -> list[Recheck]:
         sheet = latest[0]
         sources = repo.sources_for(session, row.ccn)
         texts = {source.id: text for source, text in sources}
-        hospital = repo.hospital_ref(row)
-        registry = registries[row.state]
-        lent = _lent_from_another_state(session, hospital, sources, registry)
-        set_aside = _documents_set_aside(hospital, sources, registry, lent)
+        set_aside = _set_aside_for(session, row, sources, registries[row.state])
         decision = stored_ruling(session, row.ccn)
         report, _overruled = _keep_owner_ruled_ceiling(
             sheet, verify_sheet(sheet, texts, set_aside), decision
@@ -1783,10 +1873,7 @@ def withdraw_rejected(
         sources = repo.sources_for(session, row.ccn)
         texts = {source.id: text for source, text in sources}
         grounded, pruned = _ground(sheet, texts)
-        hospital = repo.hospital_ref(row)
-        registry = registries[row.state]
-        lent = _lent_from_another_state(session, hospital, sources, registry)
-        set_aside = _documents_set_aside(hospital, sources, registry, lent)
+        set_aside = _set_aside_for(session, row, sources, registries[row.state])
         decision = stored_ruling(session, row.ccn)
         report, overruled = _keep_owner_ruled_ceiling(
             grounded, verify_sheet(grounded, texts, set_aside), decision
@@ -1953,10 +2040,7 @@ def confirm_domain(session: Session, ccn: str, domain: str) -> BuildResult:
     texts = {source.id: text for source, text in sources}
     grounded, pruned = _ground(sheet, texts)
     decision = stored_ruling(session, ccn)
-    registry = repo.list_hospitals(session, state=row.state)
-    hospital = repo.hospital_ref(row)
-    lent = _lent_from_another_state(session, hospital, sources, registry)
-    set_aside = _documents_set_aside(hospital, sources, registry, lent)
+    set_aside = _set_aside_for(session, row, sources, repo.list_hospitals(session, state=row.state))
     report, overruled = _keep_owner_ruled_ceiling(
         grounded, verify_sheet(grounded, texts, set_aside), decision
     )
