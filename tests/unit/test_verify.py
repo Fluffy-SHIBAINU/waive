@@ -284,15 +284,20 @@ ADVENTIST_TABLE = (
 )
 
 
-def with_tiers_quote(quote, bands):
-    sheet = st_example_sheet()
-    tiers = [
+def tiers_of(bands):
+    return [
         DiscountTier(
             min_fpl_exclusive=Decimal(low), max_fpl_inclusive=Decimal(high), discount_percent=pct
         )
         for low, high, pct in bands
     ]
-    cited = sheet.eligibility.discount_tiers.model_copy(update={"value": tiers, "quote": quote})
+
+
+def with_tiers_quote(quote, bands):
+    sheet = st_example_sheet()
+    cited = sheet.eligibility.discount_tiers.model_copy(
+        update={"value": tiers_of(bands), "quote": quote}
+    )
     return sheet.model_copy(
         update={"eligibility": sheet.eligibility.model_copy(update={"discount_tiers": cited})}
     )
@@ -2345,15 +2350,54 @@ ONE_TABLE_FOR_BOTH = (
     "Inpatient and outpatient services will be discounted by the following percentages: "
     "201-250% 80%"
 )
-
-
-def tiers_of(bands):
-    return [
-        DiscountTier(
-            min_fpl_exclusive=Decimal(low), max_fpl_inclusive=Decimal(high), discount_percent=pct
-        )
-        for low, high, pct in bands
-    ]
+GRANDVIEW_SPANS = (
+    "Grandview Hospital 16% 95% 89% 84% 84% || Federal Poverty Level 251-300% 301-350% 351-400% "
+    "Catastrophic"
+)
+UVM_UNINSURED = (
+    "Eligible uninsured patients with modified adjusted gross household income between 250% and "
+    "400% of the FPLG shall receive an additional 40% discount from the amount generally billed "
+    "for the services received."
+)
+UVM_AWARDS = (
+    UVM_UNINSURED + "\n• Eligible patients with insurance or other coverage for the services "
+    "delivered and with household income between 250% and 400% of the FPLG shall receive a n "
+    "additional 40% discount on the patient’s out-of-pocket costs, after insurance \npayments or "
+    "payments from other coverage."
+)
+DARTMOUTH_INSURED_TIERS = (
+    "For insured patients whose household income is: •  251%-300% of FPL, the discount will be 75% "
+    "•  301%-350% of FPL, the discount will be 50% •  351%-400% of FPL, the discount will be 40%"
+)
+DARTMOUTH_AWARDS = (
+    "If an individual is approved for financial assistance, the amount of such assistance to be "
+    "\nprovided for applicable care will be as follows: \nInsured patients: Insured patients shall "
+    "have a discount applied to their out-of-pocket \nexpenses. \n \nFor insured patients whose "
+    "household income is at or below 250% of FPL, we will \nwaive (i.e., 100% discount) all "
+    "out-of-pocket costs for emergency and medically \nnecessary services rendered (i.e., the care "
+    "is free). For insured patients whose household \nincome is: \n•  251%-300% of FPL, the "
+    "discount will be 75% \n•  301%-350% of FPL, the discount will be 50% \n•  351%-400% of FPL, "
+    "the discount will be 40% \n \nUninsured patients: Uninsured patients who are eligible for "
+    "financial assistance shall \nhave a discount applied to the amount generally billed for the "
+    "emergency and medically \nnecessary services rendered. \n \nFor uninsured patients whose "
+    "household income is at or below 250% of FPL, we will \nwaive (i.e., 100% discount) the amount "
+    "generally billed for emergency and medically \nnecessary services rendered (i.e., the care is "
+    "free). For uninsured patients whose household \nincome is: \n•  251%-300% of FPL, the "
+    "discount will be 75% \n•   301%-350% of FPL, the discount will be 50% \n• 351%-400% of FPL, "
+    "the discount will be 40% \n \nIn catastrophic situations, for uninsured or insured patients: "
+    "If the total amount owed for emergency \nand medically necessary services rendered exceeds "
+    "20% of the household income, then the amount \nowed shall be reduced so that it is equal to "
+    "20% of the patient’s household’s \nincome."
+)
+DARTMOUTH_BANDS = [(250, 300, 75), (300, 350, 50), (350, 400, 40)]
+# The same policy with the uninsured 351-400% band at another discount, or left out.
+_DARTMOUTH_LAST_UNINSURED = "• 351%-400% of FPL, the discount will be 40% \n \nIn catastrophic"
+DARTMOUTH_UNINSURED_30 = DARTMOUTH_AWARDS.replace(
+    _DARTMOUTH_LAST_UNINSURED, _DARTMOUTH_LAST_UNINSURED.replace("40%", "30%")
+)
+DARTMOUTH_UNINSURED_SHORT = DARTMOUTH_AWARDS.replace(
+    _DARTMOUTH_LAST_UNINSURED, "\n \nIn catastrophic"
+)
 
 
 def with_tiers_in(quote, bands, state):
@@ -2377,6 +2421,9 @@ _HARDSHIP_TIER_CASES = [
     # The hardship sentence states none of the tiers' discounts.
     ("Patients with a financial hardship may apply for further help. Patients between 201% and "
      "300% of the FPL receive a 50% discount.", [(200, 300, 50)], False),
+    # UCHealth Grandview (060130): the spans are two rows of one table, so its "Catastrophic"
+    # column header conditions none of the income tiers.
+    (GRANDVIEW_SPANS, [(250, 300, 95), (300, 350, 89), (350, 400, 84)], False),
 ]  # fmt: skip
 
 
@@ -2398,6 +2445,15 @@ _ADDITIONAL_TIER_CASES = [
     # The added discount is not a stored tier's.
     ("Patients between 201% and 300% of the FPL receive a 75% discount, and an additional 10% "
      "discount for prompt payment.", [(200, 300, 75)], False),
+    # UVM Health (470001, 470003) bases every uninsured award on the amount generally billed and
+    # every insured one on the patient's out-of-pocket costs, so 40 is the band's own discount,
+    # read like UnityPoint's "65% discount off AGB".
+    (UVM_UNINSURED, [(250, 400, 40)], False),
+    (UVM_AWARDS, [(250, 400, 40)], False),
+    ("Patients between 201% and 300% of the FPL receive an additional 20% off AGB.",
+     [(200, 300, 20)], False),
+    ("Patients between 201% and 300% of the FPL receive an additional 20% discount off the "
+     "self-pay rate.", [(200, 300, 20)], True),
 ]  # fmt: skip
 
 
@@ -2422,6 +2478,8 @@ _INSURED_TABLE_CASES = [
     # The quote is not in the document: nothing comes before it.
     (HENRY_FORD_INSURED_TABLE, "Insured Patients: For qualifying insured patients the table "
      "below applies.", False),
+    # Dartmouth Health (301304, 301305, 471302): the quote is the insured paragraph.
+    (DARTMOUTH_INSURED_TIERS, DARTMOUTH_AWARDS, True),
 ]  # fmt: skip
 
 
@@ -2430,6 +2488,26 @@ def test_insured_only_table(quote, document, expected):
     from waive.atlas.verify import insured_only_table
 
     assert insured_only_table(quote, document) is expected
+
+
+_SAME_TIERS_CASES = [
+    # Dartmouth Health's policy gives uninsured patients the insured patients' 75/50/40 for the
+    # same bands, so the insured paragraph's tiers are everyone's.
+    (DARTMOUTH_AWARDS, DARTMOUTH_BANDS, True),
+    # Henry Ford's uninsured patients pay a share of the Medicare rate instead.
+    (HENRY_FORD_TABLES, HENRY_FORD_BANDS, False),
+    (DARTMOUTH_UNINSURED_30, DARTMOUTH_BANDS, False),
+    (DARTMOUTH_UNINSURED_SHORT, DARTMOUTH_BANDS, False),
+    (DARTMOUTH_AWARDS, [], False),
+]
+
+
+@pytest.mark.parametrize(("document", "bands", "expected"), _SAME_TIERS_CASES)
+def test_uninsured_get_same_tiers(document, bands, expected):
+    from waive.atlas.verify import uninsured_get_same_tiers
+
+    assert DARTMOUTH_UNINSURED_30 != DARTMOUTH_AWARDS != DARTMOUTH_UNINSURED_SHORT
+    assert uninsured_get_same_tiers(document, tiers_of(bands)) is expected
 
 
 _REGULATED_COLUMN_CASES = [
@@ -2476,6 +2554,8 @@ _MISREAD_TIER_SHEETS = [
      CECIL_HARDSHIP),
     ("ADDITIONAL_TIER_REASON", LAKEWOOD_TIERS, [(300, 400, 25)], "MO", LAKEWOOD_TIERS),
     ("INSURED_TABLE_REASON", HENRY_FORD_INSURED_TABLE, HENRY_FORD_BANDS, "MI", HENRY_FORD_TABLES),
+    ("INSURED_TABLE_REASON", DARTMOUTH_INSURED_TIERS, DARTMOUTH_BANDS, "NH",
+     DARTMOUTH_UNINSURED_30),
     ("REGULATED_COLUMN_REASON", MEDSTAR_REDUCED_COST_TABLE, MEDSTAR_WASHINGTON_COLUMN, "MD",
      MEDSTAR_REDUCED_COST_TABLE),
     ("TIERS_SPLIT_REASON", TUFTS_SERVICE_TABLE, [(150, 300, 30)], "MA", TUFTS_SERVICE_TABLE),
@@ -2501,6 +2581,9 @@ _TIER_SHEETS_READ_RIGHT = [
     (HENRY_FORD_INSURED_TABLE, HENRY_FORD_BANDS, "MI", "Financial assistance is available to both "
      "uninsured and insured patients. Discounts are based on the table below: \n"
      + HENRY_FORD_INSURED_TABLE),
+    (DARTMOUTH_INSURED_TIERS, DARTMOUTH_BANDS, "NH", DARTMOUTH_AWARDS),
+    (UVM_AWARDS, [(250, 400, 40)], "VT", UVM_AWARDS),
+    (GRANDVIEW_SPANS, [(250, 300, 95), (300, 350, 89), (350, 400, 84)], "CO", GRANDVIEW_SPANS),
 ]  # fmt: skip
 
 

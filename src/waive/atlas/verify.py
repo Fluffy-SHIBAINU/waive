@@ -270,7 +270,9 @@ _HARDSHIP = re.compile(
     r"\b(?:financial|medical) hardship\b(?! family countable)|\bmedical debt\b|\bcatastrophic\b"
 )
 # The quote's sentences, split before normalizing, which would join a table's rows into one line.
-_QUOTE_SENTENCES = re.compile(r"(?<=[.;])\s+|\n+")
+# A span-joined quote's spans are rows of their own: UCHealth Grandview's (060130) "Catastrophic"
+# column header, in the span after the discounts, conditions none of its income tiers.
+_QUOTE_SENTENCES = re.compile(r"(?<=[.;])\s+|\n+|" + re.escape(SPAN_SEPARATOR))
 
 
 def tiers_need_hardship(quote: str, tiers: list[DiscountTier]) -> bool:
@@ -293,6 +295,14 @@ def tiers_need_hardship(quote: str, tiers: list[DiscountTier]) -> bool:
 _ADDITIONAL = re.compile(
     r"\badditional (\d+(?:\.\d+)?) ?(?:%|percent) (?:discount|reduction|off\b|adjustment|write)"
 )
+# An added discount followed by its own base is the band's discount after all: UVM Health
+# (470001, 470003) bases every uninsured award on the amount generally billed and every insured
+# one on the patient's out-of-pocket costs, so "an additional 40% discount from the amount
+# generally billed" reads like UnityPoint's "65% discount off AGB".
+_OWN_BASE = re.compile(
+    r"\S* (?:(?:from|off|of|on) )?(?:the )?"
+    r"(?:amounts? generally billed|agb\b|patient'?s? out ?-?of ?-?pocket)"
+)
 
 
 def tier_is_additional(quote: str, tiers: list[DiscountTier]) -> bool:
@@ -300,7 +310,12 @@ def tier_is_additional(quote: str, tiers: list[DiscountTier]) -> bool:
     discount is then both together, which the one percentage misstates: University Health
     Lakewood (260102) published 25% for 301-400% from "discounted by the current Uninsured
     Discount amount, with an additional 25% discount on the remaining balance"."""
-    added = {Decimal(match.group(1)) for match in _ADDITIONAL.finditer(normalize(quote))}
+    text = normalize(quote)
+    added = {
+        Decimal(match.group(1))
+        for match in _ADDITIONAL.finditer(text)
+        if not _OWN_BASE.match(text, match.end())
+    }
     return bool(added & {tier.discount_percent for tier in tiers})
 
 
@@ -361,6 +376,50 @@ def _row_percents(text: str, tier: DiscountTier) -> list[Decimal] | None:
             row = rest[: following.start() if following else 60]
             return [Decimal(number) for number in _ROW_PERCENT.findall(row)]
     return None
+
+
+# Where the document turns to uninsured patients, and where it turns back to insured ones. North
+# Country (471304) writes "for unsured patients whose household income is".
+_UNINSURED_LEAD = re.compile(
+    r"\b(?:un-?insured|unsured|self[- ]pay) (?:patients?|individuals?|persons?)\b"
+)
+_BARE_INSURED = re.compile(r"(?<![\w-])insured (?:patients?|individuals?|persons?)\b")
+_SEGMENT = re.compile(r"•|(?<=[.;]) ")
+_UNINSURED_SPAN_CHARS = 900
+
+
+def _band_stated(window: str, tier: DiscountTier) -> bool:
+    """Whether the normalized `window` gives the tier's band its discount: in the band's table
+    row, or else in one bullet or sentence that names the band's ends and the discount."""
+    row = _row_percents(window, tier)
+    if row is not None:
+        return tier.discount_percent in row
+    lows = (tier.min_fpl_exclusive + 1, tier.min_fpl_exclusive)
+    return any(
+        any(_number_in(low, segment) for low in lows)
+        and _number_in(tier.max_fpl_inclusive, segment)
+        and _number_in(tier.discount_percent, segment)
+        for segment in _SEGMENT.split(window)
+    )
+
+
+def uninsured_get_same_tiers(document_text: str, tiers: list[DiscountTier]) -> bool:
+    """Whether the document gives uninsured patients every one of these tiers too: some passage
+    that starts at uninsured (or self-pay) patients, and runs up to 900 characters or to where
+    insured patients come back, states each band with the same discount. The tiers of an
+    insured-only table are then everyone's: Dartmouth Health (301304, 301305, 471302) quoted the
+    insured paragraph, and its uninsured paragraph gives the same 75/50/40 for 251-300%, 301-350%
+    and 351-400%. Henry Ford's uninsured patients pay a share of the Medicare rate instead."""
+    if not tiers:
+        return False
+    text = normalize(document_text)
+    for lead in _UNINSURED_LEAD.finditer(text):
+        end = min(len(text), lead.end() + _UNINSURED_SPAN_CHARS)
+        insured = _BARE_INSURED.search(text, lead.end(), end)
+        window = text[lead.start() : insured.start() if insured else end]
+        if all(_band_stated(window, tier) for tier in tiers):
+            return True
+    return False
 
 
 def wrong_regulated_column(quote: str, state: str, tiers: list[DiscountTier]) -> bool:
@@ -1778,7 +1837,11 @@ def verify_sheet(
             cited.quote or "", cited.value
         ):
             report.rejected.append((path, ADDITIONAL_TIER_REASON))
-        elif path == "eligibility.discount_tiers" and insured_only_table(cited.quote or "", text):
+        elif (
+            path == "eligibility.discount_tiers"
+            and insured_only_table(cited.quote or "", text)
+            and not uninsured_get_same_tiers(text, cited.value)
+        ):
             report.rejected.append((path, INSURED_TABLE_REASON))
         elif path == "eligibility.discount_tiers" and wrong_regulated_column(
             cited.quote or "", sheet.hospital.state, cited.value
