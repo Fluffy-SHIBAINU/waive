@@ -263,9 +263,7 @@ def test_run_once_builds_a_hospital_with_the_owners_stored_ruling(tmp_path):
         ruled, _ = repo.latest_sheet(session, "220010")
         other, _ = repo.latest_sheet(session, "220045")
         assert ruled.eligibility.free_care_max_fpl is None
-        # The ceiling the ruling made is quoted from the free-care sentence, which no ceiling can
-        # carry (Russell Regional, 171350): verification drops it.
-        assert ruled.eligibility.assistance_ceiling_fpl is None
+        assert ruled.eligibility.assistance_ceiling_fpl.value == 250
         assert other.eligibility.free_care_max_fpl.value == 250
 
 

@@ -187,10 +187,13 @@ def _income_gaps(
     return gaps
 
 
-def sheet_inconsistencies(sheet: ProcedureSheet) -> list[str]:
+def sheet_inconsistencies(sheet: ProcedureSheet, ruled_ceiling: Decimal | None = None) -> list[str]:
     """Income rules that contradict each other or read like a misread ceiling. Checked at publish
     time rather than as a schema rule, so stored versions stay loadable and the structurer's
-    fallback never drops a correct table to satisfy a wrong limit."""
+    fallback never drops a correct table to satisfy a wrong limit. An assistance ceiling equal to
+    `ruled_ceiling`, the value of the owner's `discount` ruling (eve_import.ruled_ceiling), is the
+    owner's and is not held below the sheet's own rules: owner rulings win, and the pipeline
+    records the conflict for the owner instead."""
     problems: list[str] = []
     tiers = sheet.eligibility.discount_tiers
     if tiers is not None and tiers.value and tiers_rise_with_income(tiers.value):
@@ -204,7 +207,11 @@ def sheet_inconsistencies(sheet: ProcedureSheet) -> list[str]:
         )
     free = sheet.eligibility.free_care_max_fpl
     ceiling = sheet.eligibility.assistance_ceiling_fpl
-    if ceiling is not None and _below_own_rules(ceiling.value, free, tiers):
+    if (
+        ceiling is not None
+        and ceiling.value != ruled_ceiling
+        and _below_own_rules(ceiling.value, free, tiers)
+    ):
         problems.append(
             f"eligibility.assistance_ceiling_fpl: {ceiling.value:.0f}% is below the sheet's own "
             "income rules"
@@ -280,12 +287,16 @@ def document_conflicts(sheet: ProcedureSheet, documents: dict[str, str]) -> list
 
 
 def decide_status(
-    sheet: ProcedureSheet, conflicts: list[str], holds: list[str] | None = None
+    sheet: ProcedureSheet,
+    conflicts: list[str],
+    holds: list[str] | None = None,
+    ruled_ceiling: Decimal | None = None,
 ) -> SheetStatus:
     """`holds` are reasons an admin must look first that are not model disagreements, such as
     a discount table that turned out to describe the patient's share. A sheet needs an income
     rule to publish: a free-care band, a table, or, when the documents give neither, a verified
-    assistance ceiling (decision 7.9a-2, task 7.14)."""
+    assistance ceiling (decision 7.9a-2, task 7.14). `ruled_ceiling` goes to
+    sheet_inconsistencies: the owner's ruled ceiling is not held below the sheet's own rules."""
     if conflicts or holds:
         return SheetStatus.HELD
     eligibility = sheet.eligibility
@@ -295,7 +306,7 @@ def decide_status(
         and eligibility.assistance_ceiling_fpl is None
     ):
         return SheetStatus.HELD
-    if sheet_inconsistencies(sheet):
+    if sheet_inconsistencies(sheet, ruled_ceiling):
         return SheetStatus.HELD
     return SheetStatus.PUBLISHED
 

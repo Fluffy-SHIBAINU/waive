@@ -451,3 +451,22 @@ def test_a_gap_between_the_sheets_income_bands_holds_the_sheet():
     table_only = drop_fields(with_tiers(SAMPLE, [(200, 300, 75), (300, 400, 50)]), [FREE_CARE])
     assert sheet_inconsistencies(table_only) == []
     assert decide_status(table_only, []) is SheetStatus.PUBLISHED
+
+
+def test_an_owner_ruled_ceiling_is_not_held_below_the_sheets_own_rules():
+    # Owner rulings win (review decision 2026-10-23): Baptist Health's "discount 300" makes 300
+    # the ceiling next to its 301-400% band. Only the ruled value is spared.
+    baptist = drop_fields(
+        with_ceiling_beside(with_tiers(SAMPLE, [(300, 400, 50)]), 300), [FREE_CARE]
+    )
+    below = ["eligibility.assistance_ceiling_fpl: 300% is below the sheet's own income rules"]
+    assert sheet_inconsistencies(baptist) == below
+    assert decide_status(baptist, []) is SheetStatus.HELD
+    assert sheet_inconsistencies(baptist, ruled_ceiling=Decimal(300)) == []
+    assert decide_status(baptist, [], ruled_ceiling=Decimal(300)) is SheetStatus.PUBLISHED
+    assert sheet_inconsistencies(baptist, ruled_ceiling=Decimal(200)) == below
+    # The other checks still read a ruled sheet: a gap between its bands holds it.
+    gapped = with_tiers(baptist, [(300, 350, 50), (380, 400, 25)])
+    assert sheet_inconsistencies(gapped, ruled_ceiling=Decimal(300)) == [
+        "eligibility.discount_tiers: no rule covers incomes from 350% to 380%"
+    ]

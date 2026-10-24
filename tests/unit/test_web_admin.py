@@ -235,9 +235,7 @@ def test_the_rebuild_button_keeps_the_owners_ruling(tmp_path):
     with session_scope(client.app.state.deps.engine) as session:
         latest, _ = repo.latest_sheet(session, "229999")
         assert latest.eligibility.free_care_max_fpl is None
-        # The ceiling the ruling made is quoted from the free-care sentence, which no ceiling can
-        # carry (Russell Regional, 171350): verification drops it.
-        assert latest.eligibility.assistance_ceiling_fpl is None
+        assert latest.eligibility.assistance_ceiling_fpl.value == 250
         assert "owner_decision" in {i.kind for i in repo.open_review_items(session, "229999")}
 
 

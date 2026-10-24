@@ -1357,7 +1357,9 @@ def ceiling_problem(quote: str, value: Decimal) -> str | None:
 # A rejection for one of these reasons holds the sheet rather than only dropping the field: the
 # rest of the sheet would then publish a worse answer. A patient-share table hides the co-pay
 # band; without Russell's misread ceiling its table starts at 70% with nothing below; without
-# Trinity Bettendorf's Illinois free-care band its table starts at 200% with nothing below.
+# Trinity Bettendorf's Illinois free-care band its table starts at 200% with nothing below. A
+# ceiling an owner's ruling made is the owner's: the pipeline keeps it and records the conflict
+# (pipeline.OWNER_RULING_CONFLICT), as it does with Russell's own "discount 70" ruling.
 HOLDING_REASONS = (PATIENT_SHARE_REASON, CEILING_FREE_BAND_REASON, OTHER_STATE_FACILITY_REASON)
 
 

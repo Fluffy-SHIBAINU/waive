@@ -5,6 +5,7 @@ import re
 from collections.abc import Mapping
 from dataclasses import dataclass, field
 from datetime import date
+from decimal import Decimal
 from typing import Any, Literal
 
 from sqlalchemy.orm import Session
@@ -22,7 +23,7 @@ from waive.atlas.discover import (
     place_unconfirmed,
     rejected_domains,
 )
-from waive.atlas.eve_import import keep_owner_decision, stored_ruling
+from waive.atlas.eve_import import keep_owner_decision, ruled_ceiling, stored_ruling
 from waive.atlas.fetch import is_asset_host
 from waive.atlas.publish import (
     carry_over_reported,
@@ -53,11 +54,13 @@ from waive.atlas.structure import (
 )
 from waive.atlas.tavily_gateway import Depth, TavilyGateway
 from waive.atlas.verify import (
+    CEILING_FREE_BAND_REASON,
     DENTAL_REASON,
     HOLDING_REASONS,
     OTHER_REGION_REASON,
     PATIENT_SHARE_REASON,
     TRANSLATION_REASON,
+    VerificationReport,
     prune_lists,
     trim_quotes,
     verify_sheet,
@@ -517,8 +520,9 @@ def _apply_owner_decision(
     """The primary read held to the owner's ruling on its free-care value
     (eve_import.keep_owner_decision), before it is grounded and verified: a value the owner ruled
     out cannot come back on a rebuild, and one moved to the assistance ceiling is judged by the
-    ceiling rules like any other. The notes go to the result and one `owner_decision` item records
-    what was done."""
+    ceiling rules like any other, but for the two readings the ruling wins over (a free-care band,
+    a ceiling below the sheet's own rules; OWNER_RULING_CONFLICT). The notes go to the result and
+    one `owner_decision` item records what was done."""
     if decision is None:
         return sheet
     kept, notes = keep_owner_decision(sheet, decision)
@@ -573,7 +577,8 @@ def _structure_and_verify(
     sheet = _apply_owner_decision(session, ccn, sheet, decision, result)
     sheet, pruned = _ground(sheet, texts)
     skipped = [*skipped, *pruned]
-    report = verify_sheet(sheet, texts)
+    report, overruled = _keep_owner_ruled_ceiling(sheet, verify_sheet(sheet, texts), decision)
+    _record_ruling_conflicts(session, ccn, overruled, result.notes)
     if skipped or report.rejected:
         repo.add_review_item(
             session, ccn, "verification", {"skipped": skipped, "rejected": report.rejected}
@@ -596,6 +601,94 @@ def _holding_reasons(rejected: list[tuple[str, str]]) -> list[str]:
     (verify.HOLDING_REASONS), each once: what is left would publish a worse answer (a table from
     70% with nothing below, once Russell Regional's misread ceiling goes)."""
     return list(dict.fromkeys(reason for _, reason in rejected if reason in HOLDING_REASONS))
+
+
+# Owner rulings (data/atlas-eve/_decisions.json, review decision 2026-10-23) win over these
+# readings. A `discount` ruling makes its value the assistance ceiling (keep_owner_decision), and
+# that ceiling is neither rejected as the free-care band (verify.CEILING_FREE_BAND_REASON) nor held
+# below the sheet's own rules (publish.sheet_inconsistencies). Each conflict is recorded instead,
+# as an open item that reaches the owner: Russell Regional (171350) ruled 70% a discount limit,
+# quoted from its 100%-discount line under a table to 200%; Baptist Health's "discount 300"
+# sheets (180104, 180130 and others) put 300 in the ceiling next to a 301-400% band.
+OWNER_RULING_CONFLICT = "owner_ruling_conflict"
+CEILING_PATH = "eligibility.assistance_ceiling_fpl"
+RULING_WINS_OVER = (CEILING_FREE_BAND_REASON,)
+
+
+def _owner_ruled_ceiling(
+    sheet: ProcedureSheet, decision: Mapping[str, Any] | None
+) -> Decimal | None:
+    """The sheet's assistance ceiling when it is the owner's: its value is the ruled value of a
+    `discount` ruling. None otherwise."""
+    ruled = ruled_ceiling(decision)
+    ceiling = sheet.eligibility.assistance_ceiling_fpl
+    return ruled if ceiling is not None and ruled is not None and ceiling.value == ruled else None
+
+
+def _ruling_conflict(
+    sheet: ProcedureSheet, decision: Mapping[str, Any] | None, reason: str
+) -> dict[str, Any]:
+    ceiling = sheet.eligibility.assistance_ceiling_fpl
+    return {
+        "path": CEILING_PATH,
+        "reason": reason,
+        "ruled_value": str(decision.get("value")) if decision else None,
+        "quote": ceiling.quote if ceiling else None,
+        "decided_at": decision.get("at") if decision else None,
+    }
+
+
+def _keep_owner_ruled_ceiling(
+    sheet: ProcedureSheet, report: VerificationReport, decision: Mapping[str, Any] | None
+) -> tuple[VerificationReport, list[dict[str, Any]]]:
+    """`report` without the rejections the owner's ruled ceiling wins over, and those conflicts."""
+    if _owner_ruled_ceiling(sheet, decision) is None:
+        return report, []
+    overridden = [
+        (path, reason)
+        for path, reason in report.rejected
+        if path == CEILING_PATH and reason in RULING_WINS_OVER
+    ]
+    if not overridden:
+        return report, []
+    kept = VerificationReport(
+        accepted=[*report.accepted, CEILING_PATH],
+        rejected=[rejected for rejected in report.rejected if rejected not in overridden],
+    )
+    return kept, [_ruling_conflict(sheet, decision, reason) for _, reason in overridden]
+
+
+def _ruled_ceiling_problems(
+    sheet: ProcedureSheet, decision: Mapping[str, Any] | None
+) -> tuple[Decimal | None, list[dict[str, Any]]]:
+    """The owner's ruled ceiling on `sheet` (for sheet_inconsistencies and decide_status), and the
+    sheet-level problems it is spared, as conflicts for the owner."""
+    ruled = _owner_ruled_ceiling(sheet, decision)
+    if ruled is None:
+        return None, []
+    spared = sheet_inconsistencies(sheet)
+    kept = sheet_inconsistencies(sheet, ruled)
+    return ruled, [
+        _ruling_conflict(sheet, decision, problem) for problem in spared if problem not in kept
+    ]
+
+
+def _record_ruling_conflicts(
+    session: Session, ccn: str, conflicts: list[dict[str, Any]], notes: list[str]
+) -> None:
+    """One open `owner_ruling_conflict` item per conflict, unless the same one is open already
+    (a recheck runs again and again), and a note for each."""
+    if not conflicts:
+        return
+    already = [item.detail for item in repo.open_review_items(session, ccn, OWNER_RULING_CONFLICT)]
+    for conflict in conflicts:
+        notes.append(
+            f"{conflict['path']}: the owner's ruling ({conflict['ruled_value']}%) is kept over "
+            f'"{conflict["reason"]}"; recorded for the owner'
+        )
+        if conflict not in already:
+            repo.add_review_item(session, ccn, OWNER_RULING_CONFLICT, conflict)
+            already.append(conflict)
 
 
 def _tiebreak(
@@ -625,7 +718,7 @@ def _tiebreak(
     merged, remaining, detail = resolve_conflicts(primary, secondary, third, conflicts)
     texts = {source.id: text for source, text in sources_with_text}
     merged, _pruned = _ground(merged, texts)
-    report = verify_sheet(merged, texts)
+    report, _overruled = _keep_owner_ruled_ceiling(merged, verify_sheet(merged, texts), decision)
     if report.rejected:
         # The primary was verified before, so a rejection here is a cross-check field whose quote
         # does not hold up; it settles nothing, the primary's field returns and the conflict stands.
@@ -847,7 +940,10 @@ def build_hospital(
             # ceiling the ruling made of a value both models read.
             secondary, _ = keep_owner_decision(secondary, decision)
             secondary, _pruned = _ground(secondary, texts)
-            ungrounded = [path for path, _ in verify_sheet(secondary, texts).rejected]
+            checked, _overruled = _keep_owner_ruled_ceiling(
+                secondary, verify_sheet(secondary, texts), decision
+            )
+            ungrounded = [path for path, _ in checked.rejected]
             if ungrounded:
                 secondary = drop_fields(secondary, ungrounded)
                 result.notes.append(
@@ -881,7 +977,9 @@ def build_hospital(
     if previous is not None:
         sheet = carry_over_state_programs(sheet, previous[0])
         sheet = carry_over_reported(sheet, previous[0])
-    inconsistent = sheet_inconsistencies(sheet)
+    ruled, overruled = _ruled_ceiling_problems(sheet, decision)
+    _record_ruling_conflicts(session, ccn, overruled, result.notes)
+    inconsistent = sheet_inconsistencies(sheet, ruled)
     if inconsistent:
         # Both models can make the same misread (a ceiling as free care), so the cross-check
         # never sees it; the sheet is held and an admin decides.
@@ -923,7 +1021,7 @@ def build_hospital(
     unconfirmed = _unconfirmed_domain(row)
     if unconfirmed:
         _hold_for_domain(session, row, unconfirmed, holds, result)
-    status = decide_status(sheet, conflicts, holds)
+    status = decide_status(sheet, conflicts, holds, ruled)
     published = publish_sheet(session, sheet.model_copy(update={"status": status}))
     result.outcome = "published" if status.value == "published" else "held"
     result.version = (
@@ -1076,7 +1174,9 @@ def recheck_sheets(session: Session, state: str | None = None) -> list[Recheck]:
         sources = repo.sources_for(session, row.ccn)
         texts = {source.id: text for source, text in sources}
         set_aside = _documents_set_aside(repo.hospital_ref(row), sources)
-        report = verify_sheet(sheet, texts, set_aside)
+        report, _overruled = _keep_owner_ruled_ceiling(
+            sheet, verify_sheet(sheet, texts, set_aside), stored_ruling(session, row.ccn)
+        )
         rejected = list(report.rejected)
         if sheet.status is SheetStatus.PUBLISHED and (unplaced := _unplaced(row, sources)):
             rejected.append(("sheet", f"{PLACE_UNCONFIRMED_REASON}: {unplaced}"))
@@ -1113,7 +1213,15 @@ def withdraw_rejected(
         texts = {source.id: text for source, text in sources}
         grounded, pruned = _ground(sheet, texts)
         set_aside = _documents_set_aside(repo.hospital_ref(row), sources)
-        report = verify_sheet(grounded, texts, set_aside)
+        decision = stored_ruling(session, row.ccn)
+        report, overruled = _keep_owner_ruled_ceiling(
+            grounded, verify_sheet(grounded, texts, set_aside), decision
+        )
+        withdrawn = drop_fields(grounded, [path for path, _ in report.rejected])
+        ruled, spared = _ruled_ceiling_problems(withdrawn, decision)
+        conflict_notes: list[str] = []
+        # Filed even when nothing else changes: the conflict is the owner's to settle.
+        _record_ruling_conflicts(session, row.ccn, [*overruled, *spared], conflict_notes)
         unplaced = _unplaced(row, sources) if sheet.status is SheetStatus.PUBLISHED else None
         unconfirmed = _unconfirmed_domain(row) if sheet.status is SheetStatus.PUBLISHED else None
         if not pruned and not report.rejected and not unplaced and not unconfirmed:
@@ -1121,7 +1229,7 @@ def withdraw_rejected(
         result = BuildResult(row.ccn, row.name, "skipped")
         result.notes.extend(pruned)
         result.notes.extend(f"{path}: {reason}" for path, reason in report.rejected)
-        withdrawn = drop_fields(grounded, [path for path, _ in report.rejected])
+        result.notes.extend(conflict_notes)
         # A ceiling read from the free-care band (Russell Regional, 171350) or a band from another
         # state's facilities (Trinity Bettendorf, 160104) leaves a worse sheet once dropped.
         holds = _holding_reasons(report.rejected)
@@ -1138,7 +1246,7 @@ def withdraw_rejected(
         if unconfirmed:
             _hold_for_domain(session, row, unconfirmed, holds, result)
         status = (
-            decide_status(withdrawn, [], holds)
+            decide_status(withdrawn, [], holds, ruled)
             if sheet.status is SheetStatus.PUBLISHED
             else SheetStatus.HELD
         )
@@ -1257,7 +1365,12 @@ def confirm_domain(session: Session, ccn: str, domain: str) -> BuildResult:
     sources = repo.sources_for(session, ccn)
     texts = {source.id: text for source, text in sources}
     grounded, pruned = _ground(sheet, texts)
-    report = verify_sheet(grounded, texts, _documents_set_aside(repo.hospital_ref(row), sources))
+    decision = stored_ruling(session, ccn)
+    report, overruled = _keep_owner_ruled_ceiling(
+        grounded,
+        verify_sheet(grounded, texts, _documents_set_aside(repo.hospital_ref(row), sources)),
+        decision,
+    )
     result.notes.extend(pruned)
     result.notes.extend(f"{path}: {reason}" for path, reason in report.rejected)
     # Read before this re-check files its own item: what it rejects is noted above, not recorded.
@@ -1267,6 +1380,8 @@ def confirm_domain(session: Session, ccn: str, domain: str) -> BuildResult:
             session, ccn, "recheck", {"pruned": pruned, "rejected": report.rejected}
         )
     reverified = drop_fields(grounded, [path for path, _ in report.rejected])
+    ruled, spared = _ruled_ceiling_problems(reverified, decision)
+    _record_ruling_conflicts(session, ccn, [*overruled, *spared], result.notes)
     if disputed:
         listed = ", ".join(disputed)
         result.notes.append(f"critical fields disagree: {listed}; {REBUILD_TO_RECHECK}")
@@ -1281,8 +1396,8 @@ def confirm_domain(session: Session, ccn: str, domain: str) -> BuildResult:
         result.notes.append(
             "no free-care band, discount table or assistance ceiling is left to publish"
         )
-    result.notes.extend(sheet_inconsistencies(reverified))
-    status = decide_status(reverified, disputed, holds)
+    result.notes.extend(sheet_inconsistencies(reverified, ruled))
+    status = decide_status(reverified, disputed, holds, ruled)
     published = publish_sheet(session, reverified.model_copy(update={"status": status}))
     result.outcome = "published" if status is SheetStatus.PUBLISHED else "held"
     result.version = published.version if published else sheet.version
