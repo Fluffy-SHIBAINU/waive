@@ -724,11 +724,25 @@ _INSURED_CASES = [
     ("Financial assistance is available regardless of insurance status.", True, None),
     ("care for all uninsured patients", True, "insured"),
     ("even if you have some insurance", True, None),
-    # Cabell Huntington (510055, draft) states a real exclusion, but in the shape of McKenzie's
-    # (351302) out-of-network-only one, so the field is dropped and the sheet is not held.
+    # Plain exclusions in other words.
+    ("Patients with insurance coverage are not eligible for financial assistance.", False, None),
+    ("Patients who are insured are not eligible for financial assistance.", False, None),
+    ("This policy does not apply to insured patients.", False, None),
+    # Cabell Huntington (510055, published v2, and its v1 draft): anyone whose bill any payor,
+    # health insurance included, pays a portion of is not eligible. McKenzie (351302, held)
+    # leaves out only patients whose insurer lists it as out of network, so it stays rejected.
+    ("Patients are not eligible for financial assis tance, as provided for in this Policy, if the "
+     "patient is eligible to receive reimbursement for any portion of a patient’s bill from any "
+     "first or third party payor, including health insurance, workers’ compensation or liability "
+     "payors,", False, None),
     ("Patients are not eligible for financial assistance, as provided for in this Policy, if the "
-     "patient is eligible to receive reimbursement for any portion of a patient's bill from any "
-     "first or third party payor, including health insurance", False, "left out"),
+     "patient is eligible to receive reimbursement for any portion of a patient’s bill from any "
+     "first or third party payor, including health insurance", False, None),
+    ("Patients are not eligible for financial assistance if the applicable health insurance lists "
+     "McKenzie Health as out-of-network or if the patient’s health insurance covers services on a "
+     "non-contracted basis unless the services are emergency medical care provided in an "
+     "emergency department or are pre-determined to be unique to McKenzie Health and such "
+     "treatment is not available at another healthcare provider;", False, "left out"),
 ]  # fmt: skip
 
 

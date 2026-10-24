@@ -380,9 +380,14 @@ BARE_LABEL_REASON = "quote is only a heading"
 PAYMENT_PLAN_REASON = "quote is about payment terms, not financial assistance"
 ABSENT_REASON = "quote names insurance only to say the patient has none"
 # Wording that leaves insured patients out: "available only to uninsured patients", "must be
-# uninsured", "insured patients are not eligible", "cannot be covered by private insurance"
-# (Bacon County, 111327), "must be self-pay" (Rockcastle County, 180115). "Not only to the
-# uninsured" is no exclusion.
+# uninsured", "insured patients are not eligible", "does not apply to insured patients",
+# "cannot be covered by private insurance" (Bacon County, 111327), "must be self-pay"
+# (Rockcastle County, 180115), and Cabell Huntington's (510055) "not eligible for financial
+# assistance ... if the patient is eligible to receive reimbursement for any portion of a
+# patient's bill from any first or third party payor, including health insurance". McKenzie's
+# (351302) "not eligible ... if the applicable health insurance lists McKenzie Health as
+# out-of-network" leaves out only some insured patients. "Not only to the uninsured" is no
+# exclusion.
 _INSURED_LEFT_OUT = re.compile(
     r"(?<!not )\bonly (?:to |for )?(?:the )?uninsured\b"
     r"|\buninsured (?:patients |individuals |persons )?only\b"
@@ -394,10 +399,17 @@ _INSURED_LEFT_OUT = re.compile(
     r"|(?<![\w-])insured (?:patients?|individuals?|persons?|people) (?:are|is|will|shall|do|does)"
     r"(?: be)? (?:not|never) (?:be )?(?:eligible|covered|qualify|considered for)\b"
     r"|\b(?:patients|individuals|persons|people|those) (?:with|who have) (?:health |private "
-    r"|commercial |third[- ]party )?(?:insurance|coverage) (?:are|is|will|shall|do|does)(?: be)? "
-    r"not (?:be )?(?:eligible|covered|qualify)\b"
+    r"|commercial |third[- ]party )?(?:insurance|coverage)(?: coverage)? "
+    r"(?:are|is|will|shall|do|does)(?: be)? not (?:be )?(?:eligible|covered|qualify)\b"
+    r"|\b(?:patients|individuals|persons|people) who are insured (?:are|is|will|shall|do|does)"
+    r"(?: be)? not (?:be )?(?:eligible|covered|qualify)\b"
     r"|\bnot (?:available|offered|open|extended) to (?:insured|patients (?:with|who have) "
     r"(?:health )?insurance)\b"
+    r"|\b(?:does|do|shall|will) not apply to (?:insured|patients (?:with|who have) "
+    r"(?:health )?insurance)\b"
+    r"|\bnot (?:be )?eligible for financial assis ?tance\b[^.;]{0,80}?\bif (?:the patient|they"
+    r"|you) (?:is|are) eligible to receive (?:reimbursement|payment) for any portion\b"
+    r"[^.;]{0,120}\binsurance\b"
     r"|\bexclud\w* (?:all )?(?:insured|patients (?:with|who have) (?:health )?insurance)\b"
     r"|\b(?:cannot|can not|may not|must not) be covered by (?:any |private |health |commercial "
     r"|third[- ]party )*insurance\b"
