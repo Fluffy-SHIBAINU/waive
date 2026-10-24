@@ -719,6 +719,67 @@ def names_percent_of_poverty_level(quote: str, value: Decimal) -> bool:
     return any(number == Decimal(value) for number, _ in _tied_percents(_poverty_text(quote)))
 
 
+# The University of Maryland Medical System's policy gives free care "up to 200% of the income
+# eligibility limits established by the Maryland Department of Health": Maryland's Medicaid limits,
+# not the poverty level. UM Capital Region (210003), UM Baltimore Washington (210043), UM Upper
+# Chesapeake (210049) and UM Rehabilitation & Orthopaedic Institute (210058) published it as free
+# care up to 200% FPL (task 7.17).
+OTHER_BASIS_REASON = "quote measures income against another benchmark than the poverty level"
+_OTHER_BASIS = re.compile(
+    r"\bincome eligibility (?:limits?|levels?|standards?|thresholds?)\b"
+    r"|\b(?:medicaid|medical assistance|mdh|state)(?:'s)?(?: income)?(?: eligibility)?"
+    r" (?:income )?(?:limits?|levels?|standards?|thresholds?)\b"
+    r"|\bmedian (?:family |household )?income\b|\b(?:ami|smi)\b"
+    # HHS publishes the poverty guidelines ("Department of Health & Human Services" too), and
+    # California's HCAI and New Jersey's "Health Care for the Uninsured" are no income measure.
+    r"|\bdepartment of health\b(?! ?(?:and|&) ?human\b)(?! care\b)|\bmdh\b"
+    r"|\bself[- ]sufficiency standard\b|\bliving wage\b"
+)
+_CLAUSE_END = re.compile(r"(?<=[.;])\s")
+# Read far enough that "... the Department of Health and Human Services" is whole, ...
+OTHER_BASIS_WORDS = 20
+# ... and let the measure start that far after "of": "of the income eligibility limits
+# established by the Maryland Department of Health".
+OTHER_BASIS_STARTS_WITHIN = 10
+OTHER_BASIS_CHARS = 300
+
+
+def percent_of_other_basis(quote: str, value: Decimal) -> bool:
+    """Whether the quote gives `value` as a percentage of an income measure other than the poverty
+    level. Some occurrence of it (a whole number, never a decimal's whole part or a dollar figure)
+    is followed by a percent sign and then, before the next number and the end of the sentence,
+    by the measure's name: within ten words after "of" ("200% of the income eligibility limits
+    established by the Maryland Department of Health", "80% of the Area Median Income") or right
+    after the sign ("80% AMI"). The poverty level's words anywhere in that text keep it the poverty
+    level ("of the income eligibility limits (Federal Poverty Guidelines)", "of the guidelines
+    set by the Department of Health and Human Services")."""
+    text = _poverty_text(quote).replace(",", "")
+    for match in re.finditer(rf"(?<![\d.$]){_number_pattern(Decimal(value))}", text):
+        after = text[match.end() : match.end() + OTHER_BASIS_CHARS]
+        sign = _PERCENT_SIGN.match(after)
+        if sign is None:
+            continue
+        until_next = _NEXT_NUMBER.split(after[sign.end() :], maxsplit=1)[0]
+        clause = _CLAUSE_END.split(until_next, maxsplit=1)[0]
+        segment = " ".join(clause.split()[:OTHER_BASIS_WORDS])
+        basis = _OTHER_BASIS.search(segment)
+        if basis is None or _POVERTY_AFTER.search(segment) is not None:
+            continue
+        lead = segment[: basis.start()].split()  # "of" and the words up to the measure
+        if lead in ([], ["the"]) or (lead[0] == "of" and len(lead) <= OTHER_BASIS_STARTS_WITHIN):
+            return True
+    return False
+
+
+def _income_limits(value: Any) -> list[Decimal]:
+    """The income limits an income field carries: its value, or each tier's two bounds."""
+    if isinstance(value, list):
+        return [
+            bound for tier in value for bound in (tier.min_fpl_exclusive, tier.max_fpl_inclusive)
+        ]
+    return [Decimal(value)]
+
+
 CEILING_UNTIED_REASON = "quote does not state the ceiling as a percentage of the poverty level"
 CEILING_FLOOR_REASON = (
     "quote states the percentage as a floor (above, over, at least), not a ceiling"
@@ -1279,6 +1340,11 @@ def verify_sheet(
             bands_under_another_state(cited.quote or "", sheet.hospital.state, cited.value)
         ):
             report.rejected.append((path, OTHER_STATE_REASON))
+        elif path in INCOME_LIMIT_PATHS and any(
+            percent_of_other_basis(cited.quote or "", limit)
+            for limit in _income_limits(cited.value)
+        ):
+            report.rejected.append((path, OTHER_BASIS_REASON))
         elif path == "eligibility.free_care_max_fpl" and not _free_limit_stated(
             cited.value, cited.quote or ""
         ):

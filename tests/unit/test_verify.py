@@ -895,6 +895,125 @@ def test_a_band_stated_for_another_states_facilities_is_not_the_hospitals():
     assert ("eligibility.discount_tiers", OTHER_STATE_REASON) in verify_sheet(sheet, docs).rejected
 
 
+UMMS_FREE_CARE = (
+    "Those with income up to 200% of the income eligibility limits established by the Maryland "
+    "Department of Health are eligible for free care."
+)
+# (quote, value, whether the value is a percentage of a benchmark other than the poverty level)
+_OTHER_BASIS_CASES = [
+    # University of Maryland Medical System (task 7.17): Maryland's Medicaid limits, not the FPL.
+    ("200% of the income eligibility limits established by the Maryland Department of Health", 200, True),
+    (UMMS_FREE_CARE, 200, True),
+    ("Free Care - " + UMMS_FREE_CARE, 200, True),
+    ("Reduced Cost Care - Those between 200% and 300% of the income eligibility limits established "
+     "by the Maryland Department of Health are eligible for discounts on a sliding scale", 300, True),
+    ("Those between 200% and 300% of the income eligibility limits established by the Maryland "
+     "Department of Health are eligible for discounts", 200, False),  # the next number comes first
+    ("Those with income up to two hundred percent (200%) of the income eligibility limits "
+     "established by the Maryland Department of Health", 200, True),
+    ("Those with income up to 200% of the limits established by the Maryland Department of Health",
+     200, True),
+    # Other benchmarks, after "of" or right after the percent sign.
+    ("Free care is available to households with income at or below 80% of the Area Median Income "
+     "(AMI).", 80, True),
+    ("Patients with income up to 250% of the State Median Income qualify for a full write-off.",
+     250, True),
+    ("Free care for income at or below 150% of the Medicaid income limit.", 150, True),
+    ("Free care for incomes up to 200% of MDH limits.", 200, True),
+    ("Free care: income at or below 200% of the Maryland Medicaid limit", 200, True),
+    ("Free care: income at or below 200% MDH limits", 200, True),
+    ("Free care for incomes up to 80% AMI", 80, True),
+    # The benchmark must start within ten words after "of".
+    ("Free care up to 200% of the levels the hospital sets each year by its income eligibility "
+     "standards", 200, True),
+    ("Free care up to 200% of the levels the hospital sets each year by its own income eligibility "
+     "standards", 200, False),
+    # The poverty level, whoever publishes it, and however far its words come after the number.
+    ("200% of the Federal Poverty Level", 200, False),
+    ("Patients with income up to 200% of the Federal Poverty Guidelines published by the "
+     "Department of Health and Human Services receive free care.", 200, False),
+    ("Household income must be at or below one-hundred percent (100%) of the poverty income "
+     "guidelines established by the Department of Health and Human Services.", 100, False),
+    ('Household income is less than or equal to 200% of the Federal Poverty Guidelines ("FPG") '
+     "established by the U.S. Department of Health and Human Services.", 200, False),
+    ("at or below 200 percent of the current Federal Poverty Guidelines as established by the "
+     "United States Department of Health and Human Services (USDHHS).", 200, False),
+    ("Patients with income at or below 200% of the guidelines set by the Department of Health and "
+     "Human Services receive free care.", 200, False),
+    ("Free care for income up to 200% of the guidelines issued by the U.S. Department of Health & "
+     "Human Services.", 200, False),
+    ("we may be able to write off as much as 100% of your bill, based on the U.S. Department of "
+     "Health and Human Services poverty guidelines.", 100, False),  # UK King's Daughters (180009)
+    ("free care up to 200% of the income eligibility limits (Federal Poverty Guidelines)", 200, False),
+    ("A 100% discount is available to individuals and families with annual incomes at or below "
+     "200% of the FPG.", 200, False),
+    ("the Medicaid income limit of 133% of the federal poverty guidelines", 133, False),
+    ("free care at or below 250% of the State's poverty guidelines", 250, False),
+    ("at or below 400% of the FPL; patients must first apply for Medicaid", 400, False),
+    ("income up to 200% of the poverty guidelines; patients eligible under the Maryland "
+     "Department of Health programs", 200, False),
+    # Agencies that are not an income measure of their own: California's HCAI, New Jersey's
+    # Health Care for the Uninsured.
+    ("Free care for income up to 400% of the guidelines published by the California Department of "
+     "Health Care Access and Information", 400, False),
+    ("income up to 200% of the New Jersey Department of Health Care for the Uninsured Income "
+     "Criteria", 200, False),
+    # No benchmark named, or one only after the sentence ends.
+    ("| less than or equal to 200% | 0%", 200, False),
+    ("Up to 200% Eligible for Medicaid Rates", 200, False),
+    ("Patients may be eligible for free care with income up to 100% of the income limits shown in "
+     "Attachment A.", 100, False),
+    ("Uninsured patients pay 100% of the Medicaid rate.", 100, False),
+    ("Medical debt that exceeds 25% of that family's annual income. MDH Limits refers to the "
+     "income eligibility limits established by the Maryland Department of Health.", 25, False),
+]  # fmt: skip
+
+
+@pytest.mark.parametrize(("quote", "value", "expected"), _OTHER_BASIS_CASES)
+def test_percent_of_other_basis(quote, value, expected):
+    from waive.atlas.verify import percent_of_other_basis
+
+    assert percent_of_other_basis(quote, Decimal(value)) is expected
+
+
+def test_verify_sheet_rejects_an_income_limit_on_another_benchmark():
+    from waive.atlas.verify import OTHER_BASIS_REASON
+
+    # UM Capital Region (210003), UM Baltimore Washington (210043), UM Upper Chesapeake (210049)
+    # and UM Rehabilitation & Orthopaedic Institute (210058) published free care up to 200% FPL
+    # from this sentence (task 7.17).
+    free, tiers = "eligibility.free_care_max_fpl", "eligibility.discount_tiers"
+    docs = {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT + "\n" + UMMS_FREE_CARE + "\n"}
+    assert (free, OTHER_BASIS_REASON) in verify_sheet(
+        with_free_limit(200, UMMS_FREE_CARE), docs
+    ).rejected
+    # A tier's top or its bottom on such a benchmark is rejected the same way.
+    for quote, band in (
+        (
+            "Those with income between 100% and 200% of the income eligibility limits established "
+            "by the Maryland Department of Health receive a 75% discount.",
+            (100, 200, 75),
+        ),
+        (
+            "Those above 200% of the income eligibility limits established by the Maryland "
+            "Department of Health and up to 300% of the Federal Poverty Level receive a 50% "
+            "discount.",
+            (200, 300, 50),
+        ),
+    ):
+        docs = {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT + "\n" + quote + "\n"}
+        assert (tiers, OTHER_BASIS_REASON) in verify_sheet(
+            with_tiers_quote(quote, [band]), docs
+        ).rejected, quote
+    # The poverty level as its publisher names it stays a free-care limit.
+    fpl = (
+        "Patients with income up to 200% of the Federal Poverty Guidelines published by the "
+        "Department of Health and Human Services receive free care."
+    )
+    docs = {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT + "\n" + fpl + "\n"}
+    assert not any(p == free for p, _ in verify_sheet(with_free_limit(200, fpl), docs).rejected)
+
+
 def with_list(path, value, quote):
     section_name, field_name = path.split(".")
     sheet = st_example_sheet()
