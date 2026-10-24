@@ -945,6 +945,11 @@ _OTHER_BASIS_CASES = [
     ("we may be able to write off as much as 100% of your bill, based on the U.S. Department of "
      "Health and Human Services poverty guidelines.", 100, False),  # UK King's Daughters (180009)
     ("free care up to 200% of the income eligibility limits (Federal Poverty Guidelines)", 200, False),
+    # An abbreviation's period ends no sentence before the poverty words.
+    ("Free care up to 200% of the income eligibility levels set by the U.S. Department of Health "
+     "and Human Services poverty guidelines.", 200, False),
+    ("Free care up to 200% of the income eligibility limits, i.e. the Federal Poverty Guidelines.",
+     200, False),
     ("A 100% discount is available to individuals and families with annual incomes at or below "
      "200% of the FPG.", 200, False),
     ("the Medicaid income limit of 133% of the federal poverty guidelines", 133, False),

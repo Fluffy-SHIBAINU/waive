@@ -741,7 +741,9 @@ OTHER_BASIS_WORDS = 20
 # ... and let the measure start that far after "of": "of the income eligibility limits
 # established by the Maryland Department of Health".
 OTHER_BASIS_STARTS_WITHIN = 10
+# How much text after each occurrence is read: more than OTHER_BASIS_WORDS words of agency names.
 OTHER_BASIS_CHARS = 300
+# _PERCENT_SIGN, _NEXT_NUMBER and _POVERTY_AFTER are defined with states_income_limit below.
 
 
 def percent_of_other_basis(quote: str, value: Decimal) -> bool:
@@ -750,9 +752,11 @@ def percent_of_other_basis(quote: str, value: Decimal) -> bool:
     is followed by a percent sign and then, before the next number and the end of the sentence,
     by the measure's name: within ten words after "of" ("200% of the income eligibility limits
     established by the Maryland Department of Health", "80% of the Area Median Income") or right
-    after the sign ("80% AMI"). The poverty level's words anywhere in that text keep it the poverty
-    level ("of the income eligibility limits (Federal Poverty Guidelines)", "of the guidelines
-    set by the Department of Health and Human Services")."""
+    after the sign ("80% AMI"). The poverty level's words anywhere before the next number keep it
+    the poverty level ("of the income eligibility limits (Federal Poverty Guidelines)", "of the
+    guidelines set by the Department of Health and Human Services"), even past a period that only
+    ends an abbreviation ("set by the U.S. Department of Health and Human Services poverty
+    guidelines", "limits, i.e. the Federal Poverty Guidelines")."""
     text = _poverty_text(quote).replace(",", "")
     for match in re.finditer(rf"(?<![\d.$]){_number_pattern(Decimal(value))}", text):
         after = text[match.end() : match.end() + OTHER_BASIS_CHARS]
@@ -760,10 +764,14 @@ def percent_of_other_basis(quote: str, value: Decimal) -> bool:
         if sign is None:
             continue
         until_next = _NEXT_NUMBER.split(after[sign.end() :], maxsplit=1)[0]
-        clause = _CLAUSE_END.split(until_next, maxsplit=1)[0]
-        segment = " ".join(clause.split()[:OTHER_BASIS_WORDS])
+        words = " ".join(until_next.split()[:OTHER_BASIS_WORDS])
+        if _POVERTY_AFTER.search(words) is not None:
+            continue
+        # The measure itself must be named in the same sentence: "exceeds 25% of that family's
+        # annual income. MDH Limits refers to ..." gives no limit on MDH's.
+        segment = _CLAUSE_END.split(words, maxsplit=1)[0]
         basis = _OTHER_BASIS.search(segment)
-        if basis is None or _POVERTY_AFTER.search(segment) is not None:
+        if basis is None:
             continue
         lead = segment[: basis.start()].split()  # "of" and the words up to the measure
         if lead in ([], ["the"]) or (lead[0] == "of" and len(lead) <= OTHER_BASIS_STARTS_WITHIN):
