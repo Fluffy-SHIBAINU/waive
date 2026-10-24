@@ -257,7 +257,8 @@ def tiers_rise_with_income(tiers: list[DiscountTier]) -> bool:
 
 
 # Discount tables the publication audit (2026-10-24) found misread. Each reason rejects the tiers
-# alone: none holds the sheet or writes a value.
+# alone, and INSURED_TABLE_REASON a free-care limit quoted from inside the table too
+# (_insured_table): none holds the sheet or writes a value.
 HARDSHIP_TIER_REASON = "the band needs a financial hardship, so it is not an income band"
 ADDITIONAL_TIER_REASON = "the discount is added to another one"
 INSURED_TABLE_REASON = "the table is for insured patients only"
@@ -420,6 +421,24 @@ def uninsured_get_same_tiers(document_text: str, tiers: list[DiscountTier]) -> b
         if all(_band_stated(window, tier) for tier in tiers):
             return True
     return False
+
+
+def _insured_table(sheet: ProcedureSheet, documents: Mapping[str, str]) -> tuple[str, str] | None:
+    """The source id and normalized quote of the sheet's discount table when its document gives
+    it to insured patients only and not to uninsured patients too (INSURED_TABLE_REASON), or
+    None. A free-care limit quoted from inside that table is the insured patients' as well:
+    Novant Health Brunswick (340158) quoted free care to 300% from Novant's insured paragraph,
+    where 300% tops a 50% band, and its siblings (340085, 340190, 340195) free care to 200% from
+    it, while uninsured patients get a 100% adjustment up to 300%."""
+    tiers = sheet.eligibility.discount_tiers
+    if tiers is None or tiers.layer is Layer.REPORTED or not tiers.quote:
+        return None
+    text = documents.get(tiers.source_id or "")
+    if text is None or not quote_found(tiers.quote, text):
+        return None
+    if not insured_only_table(tiers.quote, text) or uninsured_get_same_tiers(text, tiers.value):
+        return None
+    return tiers.source_id or "", normalize(tiers.quote)
 
 
 def wrong_regulated_column(quote: str, state: str, tiers: list[DiscountTier]) -> bool:
@@ -1971,6 +1990,7 @@ def verify_sheet(
     FOREIGN_OWNER_REASON, SCHEDULE_OWNER_REASON, SIBLING_POLICY_REASON)."""
     set_aside = set_aside or {}
     report = VerificationReport()
+    insured_table = _insured_table(sheet, documents)
     for path, cited in sheet.field_paths():
         if cited.layer is Layer.REPORTED:
             report.accepted.append(path)
@@ -2029,6 +2049,13 @@ def verify_sheet(
             cited.quote or ""
         ):
             report.rejected.append((path, CEILING_REASON))
+        elif (
+            path == "eligibility.free_care_max_fpl"
+            and insured_table is not None
+            and cited.source_id == insured_table[0]
+            and normalize(cited.quote or "") in insured_table[1]
+        ):
+            report.rejected.append((path, INSURED_TABLE_REASON))
         elif path == "eligibility.discount_tiers" and (
             quotes_patient_share(cited.quote or "") or tiers_rise_with_income(cited.value)
         ):

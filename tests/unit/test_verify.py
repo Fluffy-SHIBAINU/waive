@@ -2594,6 +2594,109 @@ def test_verify_sheet_keeps_a_discount_table_read_right(quote, bands, state, doc
     assert not [r for r in report.rejected if r[0] == "eligibility.discount_tiers"]
 
 
+# Novant Health (340085, 340158, 340190, 340195): uninsured patients get a 100% adjustment up to
+# 300%, and the insured patients' paragraph after it gives 100% below 200% and 75% and 50% above.
+NOVANT_INSURED_TABLE = (
+    "Income below 200% of FPL: 100% discount. Income between 200%-250% of FPL: 75% discount. "
+    "Income between 250%-300% FPL: 50% discount."
+)
+NOVANT_INSURED_PARAGRAPH = (
+    "Insured patients meeting the requirements above and any insured patients presumed to be "
+    "eligible to receive Financial Assistance under this Policy will obtain a discount on the "
+    "applicable patient responsibility (minus copays) as follows: " + NOVANT_INSURED_TABLE
+)
+NOVANT_AWARDS = (
+    "B. Financial Assistance. Uninsured Patients. Uninsured Patients meeting the requirements "
+    "above and any uninsured patients presumed to be eligible to receive Financial Assistance "
+    "under this Policy will obtain a 100% adjustment to any charges for services covered under "
+    "this Policy. Insured Patients. FOR NORTH CAROLINA RESIDENTS ONLY: " + NOVANT_INSURED_PARAGRAPH
+)
+NOVANT_BANDS = [(200, 250, 75), (250, 300, 50)]
+DARTMOUTH_INSURED_AWARDS = (
+    "For insured patients whose household income is at or below 250% of FPL, we will waive (i.e., "
+    "100% discount) all out-of-pocket costs for emergency and medically necessary services "
+    "rendered (i.e., the care is free). " + DARTMOUTH_INSURED_TIERS
+)
+
+
+def with_free_limit_and_tiers(value, free_quote, tiers_quote, bands, state):
+    sheet = with_tiers_in(tiers_quote, bands, state)
+    cited = sheet.eligibility.free_care_max_fpl.model_copy(
+        update={"value": Decimal(value), "quote": free_quote}
+    )
+    return sheet.model_copy(
+        update={"eligibility": sheet.eligibility.model_copy(update={"free_care_max_fpl": cited})}
+    )
+
+
+# Novant Brunswick (340158) quoted free care to 300% from the insured patients' table, where 300%
+# tops a 50% band; its siblings free care to 200% from the whole paragraph.
+_FREE_LIMITS_IN_AN_INSURED_TABLE = [
+    (300, NOVANT_INSURED_TABLE),
+    (200, NOVANT_INSURED_PARAGRAPH),
+    (200, "Income below 200% of FPL: 100% discount."),
+]
+
+
+@pytest.mark.parametrize(("value", "quote"), _FREE_LIMITS_IN_AN_INSURED_TABLE)
+def test_verify_sheet_rejects_free_care_quoted_from_a_table_for_insured_patients_only(value, quote):
+    from waive.atlas.verify import INSURED_TABLE_REASON
+
+    docs = {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT + "\n" + NOVANT_AWARDS + "\n"}
+    sheet = with_free_limit_and_tiers(value, quote, NOVANT_INSURED_PARAGRAPH, NOVANT_BANDS, "NC")
+    report = verify_sheet(sheet, docs)
+    assert ("eligibility.discount_tiers", INSURED_TABLE_REASON) in report.rejected
+    assert ("eligibility.free_care_max_fpl", INSURED_TABLE_REASON) in report.rejected
+
+
+_FREE_LIMITS_BESIDE_A_TABLE_READ_RIGHT = [
+    # A table for both populations: the free band in it is everyone's.
+    (200, "Income below 200% of FPL: 100% discount.", NOVANT_INSURED_TABLE,
+     "Financial assistance is available to both uninsured and insured patients, as follows: "
+     + NOVANT_INSURED_TABLE),
+    # Dartmouth Health (301304, 301305, 471302): uninsured patients get the insured patients' free
+    # band and tiers too.
+    (250, "For insured patients whose household income is at or below 250% of FPL, we will waive "
+     "(i.e., 100% discount) all out-of-pocket costs", DARTMOUTH_INSURED_AWARDS, DARTMOUTH_AWARDS),
+]  # fmt: skip
+
+
+@pytest.mark.parametrize(
+    ("value", "free_quote", "tiers_quote", "document"), _FREE_LIMITS_BESIDE_A_TABLE_READ_RIGHT
+)
+def test_verify_sheet_keeps_free_care_from_a_table_everyone_gets(
+    value, free_quote, tiers_quote, document
+):
+    docs = {SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT + "\n" + document + "\n"}
+    bands = DARTMOUTH_BANDS if tiers_quote == DARTMOUTH_INSURED_AWARDS else NOVANT_BANDS
+    sheet = with_free_limit_and_tiers(value, free_quote, tiers_quote, bands, "NH")
+    report = verify_sheet(sheet, docs)
+    assert not [r for r in report.rejected if r[0].startswith("eligibility.")]
+
+
+def test_free_care_from_an_insured_table_in_another_document_is_not_rejected_for_it():
+    from waive.atlas.verify import INSURED_TABLE_REASON
+
+    docs = {
+        SAMPLE_SOURCE_ID: SAMPLE_POLICY_TEXT + "\n" + NOVANT_AWARDS + "\n",
+        "fap-uninsured": "Uninsured patients: Income below 200% of FPL: 100% discount.",
+    }
+    sheet = with_free_limit_and_tiers(
+        200,
+        "Income below 200% of FPL: 100% discount.",
+        NOVANT_INSURED_PARAGRAPH,
+        NOVANT_BANDS,
+        "NC",
+    )
+    free = sheet.eligibility.free_care_max_fpl.model_copy(update={"source_id": "fap-uninsured"})
+    sheet = sheet.model_copy(
+        update={"eligibility": sheet.eligibility.model_copy(update={"free_care_max_fpl": free})}
+    )
+    report = verify_sheet(sheet, docs)
+    assert ("eligibility.discount_tiers", INSURED_TABLE_REASON) in report.rejected
+    assert not [r for r in report.rejected if r[0] == "eligibility.free_care_max_fpl"]
+
+
 # Free-care limits the publication audit (2026-10-24) found misread: rules R3' and R8'. A quote
 # named for a hospital is the one it published, or its policy's own text.
 LAKEWOOD_FREE_BAND = (
