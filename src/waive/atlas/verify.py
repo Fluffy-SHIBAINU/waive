@@ -368,23 +368,152 @@ _INSURED_WORDS = re.compile(
     r"(?<!un-)\binsured\b|\bunder-?insured\b|\binsurance\b|\bdeductibles?\b|\bco-?pay\w*"
     r"|\bco-?insurance\b|\bout-of-pocket\b"
 )
-_INSURED_EXCLUDED = re.compile(
-    r"\bonly (?:to |for )?(?:the )?uninsured\b|\buninsured (?:patients |individuals )?only\b"
-    r"|\bnot (?:available|offered|open) to\b|\bexclud\w+|\bineligible\b|\b(?:do|does) not qualify\b"
-    r"|\bnot (?:be )?eligible\b|\b(?:do|does) not have (?:any (?:form of )?)?(?:health )?insurance\b"
-    r"|\bwithout (?:health )?insurance\b|\bno (?:health )?insurance\b|\bmust be uninsured\b"
-    r"|\bnot intended to\b|\bnot (?:cover|apply to|provide)\b"
+# The 2026-10-24 publication audit found insured_patients_covered wrong both ways. False stood
+# on quotes that help underinsured patients or only say a patient with enough insurance "may be
+# deemed ineligible" (Mizell, 010007; Caldwell, 181322), and on the uninsured self-pay discount
+# (Mackinac Straits, 231306). True stood on a billing statement (Washington Regional, 040004), a
+# payment plan (Western Maryland, 210027), the AGB cap (Hutchinson Health, 240187) and the bare
+# heading "Underinsured:" (Madelia, 241323): any sentence that mentioned insurance passed.
+INSURED_LEFT_OUT_REASON = "quote does not say insured patients are left out of financial assistance"
+PRICE_CAP_REASON = "quote states a price cap benchmarked on insured patients, not who may apply"
+BARE_LABEL_REASON = "quote is only a heading"
+PAYMENT_PLAN_REASON = "quote is about payment terms, not financial assistance"
+ABSENT_REASON = "quote names insurance only to say the patient has none"
+# Wording that leaves insured patients out: "available only to uninsured patients", "must be
+# uninsured", "insured patients are not eligible", "cannot be covered by private insurance"
+# (Bacon County, 111327), "must be self-pay" (Rockcastle County, 180115). "Not only to the
+# uninsured" is no exclusion.
+_INSURED_LEFT_OUT = re.compile(
+    r"(?<!not )\bonly (?:to |for )?(?:the )?uninsured\b"
+    r"|\buninsured (?:patients |individuals |persons )?only\b"
+    r"|\bmust (?:be|remain) uninsured\b"
+    r"|\b(?:limited|restricted) to (?:the )?uninsured\b"
+    r"|(?<!not )\bonly (?:to |for )?(?:patients|individuals|persons|people|those) "
+    r"(?:who (?:do not|don't|does not) have|with no|without) (?:any )?(?:health )?"
+    r"(?:insurance|coverage)\b"
+    r"|(?<![\w-])insured (?:patients?|individuals?|persons?|people) (?:are|is|will|shall|do|does)"
+    r"(?: be)? (?:not|never) (?:be )?(?:eligible|covered|qualify|considered for)\b"
+    r"|\b(?:patients|individuals|persons|people|those) (?:with|who have) (?:health |private "
+    r"|commercial |third[- ]party )?(?:insurance|coverage) (?:are|is|will|shall|do|does)(?: be)? "
+    r"not (?:be )?(?:eligible|covered|qualify)\b"
+    r"|\bnot (?:available|offered|open|extended) to (?:insured|patients (?:with|who have) "
+    r"(?:health )?insurance)\b"
+    r"|\bexclud\w* (?:all )?(?:insured|patients (?:with|who have) (?:health )?insurance)\b"
+    r"|\b(?:cannot|can not|may not|must not) be covered by (?:any |private |health |commercial "
+    r"|third[- ]party )*insurance\b"
+    r"|\bmust be self[- ]?pay\b"
+)
+# Wording that names insured people as helped: underinsured, limited or inadequate coverage,
+# "with or without insurance", and the "sufficient insurance coverage or assets" conditional
+# (Mizell, 010007), which turns away only those whose insurance is enough.
+_INSURED_HELPED = re.compile(
+    r"\bunder[- ]?insured\b"
+    r"|\b(?:limited|inadequate|insufficient|partial)(?: or no)? (?:health )?(?:insurance|coverage)\b"
+    r"|\bwith or without (?:an? )?(?:health )?insurance\b"
+    r"|\b(?:sufficient|adequate|enough) (?:health )?insurance\b|\binsurance (?:coverage )?or assets\b"
+)
+# A rate that is not financial assistance: the self-pay, uninsured, cash or prompt-pay discount.
+# Leaving insured patients out of one says nothing about the FAP (Mackinac Straits, 231306;
+# Hillsboro, 141332; RWJBarnabas, 310041).
+_NON_FAP_RATE = re.compile(
+    r"\b(?:true )?(?:self[- ]?pay|uninsured|cash|prompt[- ]?pay(?:ment)?) "
+    r"(?:discounts?|rates?|prices?|pricing)\b"
+    r"|\bdiscounted cash price\b"
+)
+# A price cap ("not be charged more than AGB to insured patients", "pay more for care than
+# insured individuals"), up to the end of its clause but not past ", and ..." or ", but ...", so
+# "will pay no more than 10% of charges, and insured patients may also qualify" keeps its
+# second clause.
+_CAP_TAIL = r"(?:(?!,\s*(?:and|but|while|however|although)\b)[^.;])*"
+_PRICE_CAP_CLAUSE = re.compile(
+    r"\b(?:charged|billed|pay|paid|owe|responsible to pay)\b[^.;]{0,15}?\b(?:more|greater|higher)\b"
+    r"[^.;]{0,80}?\bthan\b" + _CAP_TAIL + r"|amounts? generally billed" + _CAP_TAIL
+)
+_BARE_LABEL = re.compile(r"^[^.;:]{1,40}:$")
+# Payment terms: a payment plan, a prompt-pay discount, payment in full, a (billing) statement.
+_PAYMENT_ONLY = re.compile(
+    r"\bpayment (?:plans?|arrangements?)\b|\bprompt[- ]?pay(?:ment)? discounts?\b"
+    r"|\b(?:payment|paid) in full\b|\b(?:billing )?statements?\b"
+)
+_FAP_WORDS = re.compile(
+    r"\bfinancial (?:assistance|aid)\b|\bcharity\b|\bfree\b|\bdiscount\w*|\bwrite[- ]?offs?\b"
+    r"|\bwritten off\b|\bforgiv\w+|\breduc\w+|\bsliding\b|\bfap\b"
+)
+# Insurance named only to say the patient has none (Geisinger, 390006: "does not have insurance
+# coverage and was denied Medicaid"), or to tell people to buy some (Houston Methodist, 450358).
+_NOT_INSURED = re.compile(
+    r"\b(?:(?:do|does|did) not|don't|doesn't) have (?:any )?(?:form of )?(?:health |medical )?"
+    r"(?:insurance|coverage)(?: coverage)?\b"
+    r"|\b(?:has|have|with) no (?:health |medical )?(?:insurance|coverage)(?: coverage)?\b"
+    r"|\bwithout (?:any )?(?:health |medical )?(?:insurance|coverage)(?: coverage)?\b"
+    r"|\bno (?:health |medical )?insurance(?: coverage)?\b"
+    r"|\bnot insured\b"
+    r"|\b(?:purchase|obtain|buy|enroll in|apply for) (?:health )?(?:insurance|coverage)\b"
+)
+# Another payer beside the missing insurance, as in Maine's "have no health insurance coverage
+# or have coverage that pays only part of the bill" or "your portion of the bill".
+_OTHER_PAYER = re.compile(
+    r"\bcoverage\b|\bmedicare\b|\bthird[- ]party\b|\bpay[eo]rs?\b|\bcovered\b"
+    r"|\bportion of (?:the|your|their) bill\b"
 )
 
 
-def quote_addresses_insured(quote: str, value: bool) -> bool:
-    """Whether the quote speaks of insured patients at all, and, for a False value, says they
-    are left out. Sentences about "all uninsured patients", emergency care for everyone or
-    physician fees were read both ways in the first national batch (task 7.9)."""
-    text = normalize(quote)
-    if _INSURED_WORDS.search(text) is None:
+def _quote_excludes_insured(text: str) -> bool:
+    """Whether the normalised quote leaves insured patients out of financial assistance, without
+    naming insured people as helped or speaking of a self-pay rate instead."""
+    return (
+        _INSURED_LEFT_OUT.search(text) is not None
+        and _INSURED_HELPED.search(text) is None
+        and _NON_FAP_RATE.search(text) is None
+    )
+
+
+def _quotes_only_a_price_cap(text: str) -> bool:
+    """Whether the quote's only insured words sit in a price cap, which benchmarks a price on
+    insured patients and says nothing about who may apply."""
+    if _PRICE_CAP_CLAUSE.search(text) is None:
         return False
-    return value or _INSURED_EXCLUDED.search(text) is not None
+    return _INSURED_WORDS.search(_PRICE_CAP_CLAUSE.sub(" ", text)) is None
+
+
+def _quotes_only_payment_terms(text: str) -> bool:
+    """Whether the quote is about payment terms and, once those are set aside, names no
+    assistance; the prompt-pay discount is a payment term, not a discount under the policy."""
+    if _PAYMENT_ONLY.search(text) is None:
+        return False
+    return _FAP_WORDS.search(_PAYMENT_ONLY.sub(" ", text)) is None
+
+
+def _names_insurance_only_as_absent(text: str) -> bool:
+    """Whether every mention of insurance says the patient has none, with no other payer or
+    partial coverage beside it."""
+    if _NOT_INSURED.search(text) is None or _INSURED_HELPED.search(text):
+        return False
+    rest = _NOT_INSURED.sub(" ", text)
+    return _INSURED_WORDS.search(rest) is None and _OTHER_PAYER.search(rest) is None
+
+
+def insured_field_problem(quote: str, value: bool) -> str | None:
+    """Why an insured_patients_covered value does not stand on its quote, or None. Either value
+    fails on the AGB cap, another price cap or a bare heading. True needs a quote that speaks of
+    insured patients and is not only about payment terms or the lack of insurance; false needs a
+    quote that leaves insured patients out of financial assistance."""
+    text = normalize(quote)
+    if quotes_only_the_agb_cap(quote):
+        return AGB_CAP_REASON
+    if _quotes_only_a_price_cap(text):
+        return PRICE_CAP_REASON
+    if _BARE_LABEL.match(text):
+        return BARE_LABEL_REASON
+    if value:
+        if _INSURED_WORDS.search(text) is None:
+            return INSURED_REASON
+        if _quotes_only_payment_terms(text):
+            return PAYMENT_PLAN_REASON
+        if _names_insurance_only_as_absent(text):
+            return ABSENT_REASON
+        return None
+    return None if _quote_excludes_insured(text) else INSURED_LEFT_OUT_REASON
 
 
 OTHER_STATE_REASON = "quote states the band for another state's facilities"
@@ -1485,14 +1614,10 @@ def verify_sheet(
             Decimal(tier.discount_percent) for tier in cited.value
         }:
             report.rejected.append((path, RANGE_REASON))
-        elif path == "eligibility.insured_patients_covered" and quotes_only_the_agb_cap(
-            cited.quote or ""
+        elif path == "eligibility.insured_patients_covered" and (
+            reason := insured_field_problem(cited.quote or "", bool(cited.value))
         ):
-            report.rejected.append((path, AGB_CAP_REASON))
-        elif path == "eligibility.insured_patients_covered" and not quote_addresses_insured(
-            cited.quote or "", bool(cited.value)
-        ):
-            report.rejected.append((path, INSURED_REASON))
+            report.rejected.append((path, reason))
         elif path == "eligibility.asset_test" and not quote_supports_asset_test(
             cited.quote or "", bool(cited.value)
         ):

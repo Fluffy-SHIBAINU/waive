@@ -503,7 +503,7 @@ def test_an_asset_test_value_must_be_supported_by_its_quote():
 
 
 def test_an_insured_patients_value_needs_a_quote_about_insured_patients():
-    from waive.atlas.verify import INSURED_REASON, quote_addresses_insured
+    from waive.atlas.verify import INSURED_LEFT_OUT_REASON, INSURED_REASON
 
     path = "eligibility.insured_patients_covered"
     # 7.9: eight sheets took the value from sentences about uninsured patients only, EMTALA or
@@ -530,7 +530,7 @@ def test_an_insured_patients_value_needs_a_quote_about_insured_patients():
             False,
             "Financial assistance and discounts are available only for necessary hospital care.",
         )
-        == INSURED_REASON
+        == INSURED_LEFT_OUT_REASON
     )
     assert (
         verdict(
@@ -538,7 +538,7 @@ def test_an_insured_patients_value_needs_a_quote_about_insured_patients():
             False,
             "In order to receive CCP financial assistance, the patient must apply for Medicaid and be denied.",
         )
-        == INSURED_REASON
+        == INSURED_LEFT_OUT_REASON
     )
     # A false value needs the quote to exclude insured patients, not merely to mention them.
     assert (
@@ -547,23 +547,26 @@ def test_an_insured_patients_value_needs_a_quote_about_insured_patients():
             False,
             "Financial Assistance is offered to patients who are uninsured and underinsured.",
         )
-        == INSURED_REASON
+        == INSURED_LEFT_OUT_REASON
     )
+    # Holyoke (220024, held): an applicant's requirement that reads as a definition of the
+    # uninsured patient, not a rule that leaves insured patients out.
     assert (
         verdict(
             path,
             False,
             "Does not have any form of insurance to cover services rendered that are medically necessary",
         )
-        == "accepted"
+        == INSURED_LEFT_OUT_REASON
     )
+    # Leaving out co-pays and deductibles leaves insured patients in for the rest (Tufts, 220116).
     assert (
         verdict(
             path,
             False,
             "It is also not intended to provide discounts on insurance co-payments, co-insurance, or deductibles.",
         )
-        == "accepted"
+        == INSURED_LEFT_OUT_REASON
     )
     assert (
         verdict(
@@ -595,8 +598,167 @@ def test_an_insured_patients_value_needs_a_quote_about_insured_patients():
         )
         == "accepted"
     )
-    assert not quote_addresses_insured("care for all uninsured patients", True)
-    assert quote_addresses_insured("even if you have some insurance", True)
+
+
+MIZELL_INSURED = (
+    "If an individual has sufficient insurance coverage or assets available to pay for care, "
+    "he/she may be deemed ineligible for financial assistance."
+)
+WRMC_STATEMENT = (
+    "Insured patients will receive a statement for their applicable out-of-pocket responsibility "
+    "as determined by their insurance company."
+)
+# (quote, stored value, the reason insured_field_problem gives: None to accept, or a key below)
+_INSURED_CASES = [
+    # The 2026-10-24 audit. False stored where the policy helps underinsured patients or only
+    # says insured patients "may be deemed ineligible" (Mizell, 010007; Caldwell, 181322) or
+    # where the quote is the uninsured self-pay discount (Mackinac, 231306).
+    (MIZELL_INSURED, False, "left out"),
+    ("Patients shall be able to get financial assistance if uninsured, underinsured, not eligible "
+     "for a government program, or not qualify for governmental assistance (for example, Medicare "
+     "or Medicaid).", False, "left out"),
+    ("Uninsured patients who do not qualify for Mackinac Straits Health System's financial "
+     "assistance program (e.g., due to income and family size) will receive a discount of 30% on "
+     "gross charges for medically necessary services to ensure they do not pay more for care than "
+     "insured individuals.", False, "price cap"),
+    # True cited to a billing statement (Washington Regional, 040004), a payment plan (Western
+    # Maryland, 210027), the AGB cap (Hutchinson Health, 240187) or a bare heading (Madelia,
+    # 241323).
+    (WRMC_STATEMENT, True, "payment"),
+    ("Payment plans are available to patients with family income between 200 and 500 percent of "
+     "the Federal Poverty Level for those patients who request assistance, regardless of their "
+     "insurance status.", True, "payment"),
+    ("After a patient’s eligibility for financial assistance under this policy is determined, a "
+     "financial assistance-eligible patient will not be charged more than AGB to insured patients "
+     "by the HealthPartners care delivery location for emergency or other medically necessary "
+     "care.", True, "price cap"),
+    ("Underinsured:", True, "label"),
+    # A genuine exclusion still supports false; insured patients named as helped support true.
+    ("Patients with insurance are not eligible for financial assistance", False, None),
+    ("Insured patients who do not have the ability to pay for emergent or medically necessary "
+     "portions not covered by insurance who meet the eligibility criteria outlined in this "
+     "policy.", True, None),
+    # Not a rule about financial assistance: a self-pay rate, a conditional, a criterion that
+    # admits inadequate coverage, public insurance programs.
+    ("Insured patients are not eligible for uninsured/true self pay rates.", False, "left out"),
+    ("If you have insurance or assets to pay for your care, you may not be eligible for financial "
+     "assistance.", False, "left out"),
+    ("Have no insurance or inadequate insurance coverage (high deductible plan)", False,
+     "left out"),
+    ("You may qualify if: * You do not qualify for public insurance programs in your home state, "
+     "and", False, "left out"),
+    ("If you qualify for fnancial assistance, you will not be charged more for emergency or other "
+     "medically necessary care than patients who are covered by Medicare or other insurance.",
+     True, "price cap"),
+    ("Montefiore Medical Center also provides payment arrangements to patients that have "
+     "insurance coverage but have an out-of-pocket expense that they cannot afford or deem a "
+     "hardship.", True, "payment"),
+    # Exclusions of insured patients, including the "only uninsured" wording that has no insured
+    # word of its own.
+    ("Financial assistance is available only to uninsured patients.", False, None),
+    ("This policy applies only to uninsured patients who meet the income criteria.", False, None),
+    ("Insured patients are not eligible for financial assistance under this policy.", False, None),
+    ("Patients with health insurance are not eligible for the charity care program.", False, None),
+    ("The program is not available to patients with insurance.", False, None),
+    ("Applicants must be uninsured.", False, None),
+    ("Applicant cannot be covered by private insurance", False, None),  # Bacon County, 111327
+    ("*Must be self-pay", False, None),  # Rockcastle County, 180115
+    # The amounts-generally-billed cap, whichever value it was read as (UMass Memorial, 220163).
+    (AGB_SENTENCE, True, "agb"),
+    (AGB_SENTENCE, False, "agb"),
+    # Insured patients named as helped, with or beside an AGB clause.
+    ("Uninsured and underinsured patients who qualify will not be charged more than the amounts "
+     "generally billed to insured patients.", True, None),
+    ("Eligible patients with insurance coverage are not personally responsible to pay more than "
+     "AGB after all payments by the health insurer have been applied.", True, None),
+    ("The Financial Assistance Adjustment based on the AGB percentage will also be applied to the "
+     "outstanding balance, after payments by insurance, if any, of patients with Catastrophic "
+     "Medical Expenses, as defined above, who are not eligible for financial assistance based on "
+     "the other provisions of this policy.", True, None),
+    ("Insured patients with family income less than 450% of current Federal Poverty Level and "
+     "excessive medical costs, may qualify for partially discounted care and extended payment "
+     "plans.", True, None),
+    ("Underinsured: The patient has some level of insurance or third-party assistance but still "
+     "has out-of-pocket expenses that exceed his/her financial abilities.", True, None),
+    ("Insured Patient Free And Discounted Care (set forth on Appendix B)", True, None),
+    ("Insured patients will not have the AGB applied 2. The FA discount will be applied directly "
+     "to the balance", True, None),
+    ("Underinsured patients will not be charged more than amounts generally billed to patients "
+     "with insurance.", True, None),
+    ("Only patients with active insurance coverage are eligible for financial assistance.", True,
+     None),
+    # Leaving insured patients out of a self-pay, uninsured, prompt-pay or cash price says nothing
+    # about financial assistance (231306, 141332, 310041); "not only" is no exclusion.
+    ("Self-pay discounts are offered only to uninsured patients.", False, "left out"),
+    ("The uninsured discount is available only to uninsured patients.", False, "left out"),
+    ("Patients with insurance are not eligible for the 40% self-pay discount.", False, "left out"),
+    ("Insured patients are not eligible for the prompt pay discount.", False, "left out"),
+    ("The Discounted Cash Price is NOT available to governmentally covered or commercially "
+     "insured patients.", False, "left out"),
+    ("Financial assistance is offered not only to the uninsured but also to insured patients with "
+     "high deductibles.", False, "left out"),
+    # The price-cap clause stops at ", and ...".
+    ("Patients who qualify will pay no more than 10% of charges, and insured patients may also "
+     "qualify.", True, None),
+    # Insurance named only as absent, or as something to buy (Geisinger, 390006; Houston
+    # Methodist, 450358), against coverage that pays only part of the bill (Maine).
+    ("Patient does not have insurance coverage and was denied Medicaid or any other Medical "
+     "Assistance benefits.", True, "absent"),
+    ("Individuals with the financial capacity to purchase health insurance will be encouraged to "
+     "do so, as a means of providing access to health care services.", True, "absent"),
+    ("Have no health insurance coverage or have coverage that pays only part of the bill; and",
+     True, None),
+    ("Have limited or no health insurance", True, None),
+    ("We encourage patients to apply for financial assistance and patients with or without "
+     "insurance are eligible.", True, None),
+    ("If you do not have insurance and/or will have difficulty in paying your portion of the bill, "
+     "we will review your eligibility for financial assistance", True, None),
+    ("If you are not insured or insured for only part of your expenses, please talk with one of "
+     "our financial counselors. They can help you establish a payment plan or apply for financial "
+     "assistance.", True, None),
+    ("Patients without insurance or with Medicare may qualify for financial assistance.", True,
+     None),
+    ("Payment in full is required at the time of service from all patients who owe co-pays, "
+     "coinsurance, have not met their deductible, or do not have insurance coverage.", True,
+     "payment"),  # 250094
+    ("Financial assistance is available regardless of insurance status.", True, None),
+    ("care for all uninsured patients", True, "insured"),
+    ("even if you have some insurance", True, None),
+    # Cabell Huntington (510055, draft) states a real exclusion, but in the shape of McKenzie's
+    # (351302) out-of-network-only one, so the field is dropped and the sheet is not held.
+    ("Patients are not eligible for financial assistance, as provided for in this Policy, if the "
+     "patient is eligible to receive reimbursement for any portion of a patient's bill from any "
+     "first or third party payor, including health insurance", False, "left out"),
+]  # fmt: skip
+
+
+@pytest.mark.parametrize(("quote", "value", "expected"), _INSURED_CASES)
+def test_insured_field_problem(quote, value, expected):
+    from waive.atlas.verify import (
+        ABSENT_REASON,
+        BARE_LABEL_REASON,
+        INSURED_LEFT_OUT_REASON,
+        INSURED_REASON,
+        PAYMENT_PLAN_REASON,
+        PRICE_CAP_REASON,
+        insured_field_problem,
+    )
+
+    reasons = {
+        None: None,
+        "agb": AGB_CAP_REASON,
+        "insured": INSURED_REASON,
+        "left out": INSURED_LEFT_OUT_REASON,
+        "price cap": PRICE_CAP_REASON,
+        "label": BARE_LABEL_REASON,
+        "payment": PAYMENT_PLAN_REASON,
+        "absent": ABSENT_REASON,
+    }
+    assert insured_field_problem(quote, value) == reasons[expected]
+    # verify_sheet rejects the field with the same reason.
+    assert verdict("eligibility.insured_patients_covered", value, quote) == (
+        reasons[expected] or "accepted"
+    )
 
 
 def test_a_discount_given_as_a_range_or_a_floor_is_not_one_tier():
