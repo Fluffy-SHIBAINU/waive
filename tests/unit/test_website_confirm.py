@@ -25,6 +25,7 @@ from waive.atlas.website_confirm import (
     SearchOutcome,
     candidates,
     confirm_by_search,
+    run_confirm,
 )
 from waive.cli import app
 from waive.db import init_db, make_engine, session_scope
@@ -71,17 +72,27 @@ MENTION_STORED = hit(
 class FakeGateway:
     """Answers `search` from a list of hits and records every call as (query, kwargs). Call
     number `budget_at` (counting from zero) raises BudgetExceeded, as the governor does before a
-    call it cannot pay for, and call number `fail_at` raises a network error."""
+    call it cannot pay for, call number `fail_at` raises a network error and call number
+    `interrupt_at` a Ctrl-C. `during_search` runs inside every call, before it answers: what
+    another session (an admin at the console, say) does while the search is in flight."""
 
-    def __init__(self, hits=(), *, budget_at=None, fail_at=None):
+    def __init__(
+        self, hits=(), *, budget_at=None, fail_at=None, interrupt_at=None, during_search=None
+    ):
         self.hits = list(hits)
         self.budget_at = budget_at
         self.fail_at = fail_at
+        self.interrupt_at = interrupt_at
+        self.during_search = during_search
         self.attempts = 0
         self.calls: list[tuple[str, dict]] = []
 
     def search(self, query, **kwargs):
         attempt, self.attempts = self.attempts, self.attempts + 1
+        if self.during_search is not None:
+            self.during_search()
+        if attempt == self.interrupt_at:
+            raise KeyboardInterrupt
         if attempt == self.budget_at:
             raise BudgetExceeded("Tavily cap of 2 credits would be exceeded (used 2).")
         if attempt == self.fail_at:
@@ -279,14 +290,6 @@ def test_the_stored_website_may_be_written_with_www_and_the_hit_on_a_subdomain()
         assert (row.website_domain, row.domain_confidence) == ("www.harborview.org", 0.9)
 
 
-def test_a_search_never_lowers_a_confidence_an_admin_set():
-    with session_scope(fresh_engine()) as session:
-        row = seed(session, "220010", confidence=1.0)
-        outcome = confirm_by_search(session, FakeGateway([SURE_STORED]), row)
-        assert outcome.outcome == "confirmed"
-        assert row.domain_confidence == 1.0
-
-
 def test_a_sure_answer_naming_another_website_changes_nothing_and_asks_a_person():
     with session_scope(fresh_engine()) as session:
         row = seed(session, "220010")
@@ -359,6 +362,277 @@ def test_the_budget_stopping_a_search_propagates_and_leaves_the_hospital_alone()
             confirm_by_search(session, FakeGateway(budget_at=0), row)
         assert (row.website_domain, row.domain_confidence) == ("harborview.org", 0.6)
         assert repo.review_items_of_kind(session, "220010", WEBSITE_SEARCHED) == []
+
+
+# A hospital changes while the run is on it. Sessions keep what they loaded (expire_on_commit is
+# off), so the plan's row is stale as soon as an admin, a build or another run touches the
+# hospital through another session; these tests use a database file and a second session.
+
+
+def file_engine(tmp_path):
+    engine = make_engine(f"sqlite:///{tmp_path / 'race.db'}")
+    init_db(engine)
+    return engine
+
+
+def change(engine, ccn, **fields):
+    """What another session does to the hospital: set its columns, and commit."""
+    with session_scope(engine) as other:
+        row = repo.get_hospital(other, ccn)
+        for name, value in fields.items():
+            setattr(row, name, value)
+
+
+def admin_confirms(engine, ccn):
+    """The console's "Confirm website" (pipeline.confirm_domain): 1.0, and the question closed."""
+    with session_scope(engine) as other:
+        repo.get_hospital(other, ccn).domain_confidence = 1.0
+        for item in repo.open_review_items(other, ccn, "domain_unconfirmed"):
+            item.status = "resolved"
+
+
+def admin_clears(engine, ccn):
+    """The console's "Wrong website" (pipeline.reject_domain): no website, question closed."""
+    change(engine, ccn, website_domain=None, domain_confidence=None)
+    with session_scope(engine) as other:
+        for item in repo.open_review_items(other, ccn, "domain_unconfirmed"):
+            item.status = "resolved"
+
+
+def confidence_set_alone(engine, ccn):
+    """The confidence changes and the open question stays: only the hospital's row says so."""
+    change(engine, ccn, domain_confidence=1.0)
+
+
+def build_publishes(engine, ccn):
+    """A rebuild publishes a newer version of the sheet."""
+    with session_scope(engine) as other:
+        newer = sheet_for(ccn, "MA", SheetStatus.PUBLISHED, "tiers").model_copy(
+            update={"version": 2}
+        )
+        repo.add_sheet_version(other, newer, None)
+
+
+def item_resolved(engine, ccn):
+    with session_scope(engine) as other:
+        for item in repo.open_review_items(other, ccn, "domain_unconfirmed"):
+            item.status = "resolved"
+
+
+def stored_state(engine, ccn):
+    """The hospital as a fresh session reads it: (website, confidence)."""
+    with session_scope(engine) as other:
+        row = repo.get_hospital(other, ccn)
+        return row.website_domain, row.domain_confidence
+
+
+def searched_items(engine, ccn):
+    with session_scope(engine) as other:
+        return [
+            (item.detail["outcome"], item.status)
+            for item in repo.review_items_of_kind(other, ccn, WEBSITE_SEARCHED)
+        ]
+
+
+@pytest.mark.parametrize(
+    "meanwhile",
+    [admin_confirms, admin_clears, confidence_set_alone, build_publishes, item_resolved],
+)
+def test_a_hospital_that_stopped_waiting_since_the_plan_is_skipped_without_a_search(
+    tmp_path, meanwhile
+):
+    engine = file_engine(tmp_path)
+    with session_scope(engine) as session:
+        seed(session, "220010")
+    gateway = FakeGateway([SURE_STORED])
+    with session_scope(engine) as session:
+        [row] = candidates(session)
+        meanwhile(engine, "220010")
+        outcome = confirm_by_search(session, gateway, row)
+        assert outcome == SearchOutcome("220010", "MA", "skipped", None, None, None)
+    # No credit spent, nothing written over the other session's change, no record of a search.
+    assert gateway.calls == []
+    assert searched_items(engine, "220010") == []
+    assert stored_state(engine, "220010")[1] != 0.9
+
+
+def test_a_skipped_admin_confirmation_stays_at_one_point_zero(tmp_path):
+    engine = file_engine(tmp_path)
+    with session_scope(engine) as session:
+        seed(session, "220010")
+    with session_scope(engine) as session:
+        [row] = candidates(session)
+        admin_confirms(engine, "220010")
+        confirm_by_search(session, FakeGateway([SURE_STORED]), row)
+        assert row.domain_confidence == 1.0  # the row was read again, not left as planned
+    assert stored_state(engine, "220010") == ("harborview.org", 1.0)
+
+
+def test_the_search_compares_against_the_website_as_it_is_now_not_as_planned(tmp_path):
+    engine = file_engine(tmp_path)
+    with session_scope(engine) as session:
+        seed(session, "220010")
+    with session_scope(engine) as session:
+        [row] = candidates(session)
+        # Still unconfirmed, but the website moved to another site since the plan.
+        change(engine, "220010", website_domain="harborviewhealth.org")
+        outcome = confirm_by_search(session, FakeGateway([SURE_OTHER]), row)
+        assert outcome.outcome == "confirmed" and outcome.found_domain == "harborviewhealth.org"
+    assert stored_state(engine, "220010") == ("harborviewhealth.org", 0.9)
+
+
+def test_a_sure_answer_for_the_planned_website_is_not_taken_for_the_moved_one(tmp_path):
+    engine = file_engine(tmp_path)
+    with session_scope(engine) as session:
+        seed(session, "220010")
+    with session_scope(engine) as session:
+        [row] = candidates(session)
+        change(engine, "220010", website_domain="harborviewhealth.org")
+        outcome = confirm_by_search(session, FakeGateway([SURE_STORED]), row)
+        assert outcome.outcome == "other_site"
+    assert stored_state(engine, "220010") == ("harborviewhealth.org", 0.6)
+    with session_scope(engine) as session:
+        [item] = repo.review_items_of_kind(session, "220010", WEBSITE_SEARCHED)
+        assert item.detail["stored"] == "harborviewhealth.org"
+
+
+def test_an_admin_confirming_during_the_search_is_not_overwritten_and_the_search_is_recorded(
+    tmp_path,
+):
+    engine = file_engine(tmp_path)
+    with session_scope(engine) as session:
+        seed(session, "220010")
+    gateway = FakeGateway([SURE_STORED], during_search=lambda: admin_confirms(engine, "220010"))
+    with session_scope(engine) as session:
+        [row] = candidates(session)
+        outcome = confirm_by_search(session, gateway, row)
+        # The search was paid for and its answer is reported, but nothing is written.
+        assert outcome == SearchOutcome(
+            "220010", "MA", "changed", "harborview.org", 0.9, SURE_STORED.url
+        )
+    assert len(gateway.calls) == 1
+    assert stored_state(engine, "220010") == ("harborview.org", 1.0)
+    assert searched_items(engine, "220010") == [("changed", "resolved")]
+
+
+def test_the_website_changing_during_the_search_is_not_written_over(tmp_path):
+    engine = file_engine(tmp_path)
+    with session_scope(engine) as session:
+        seed(session, "220010")
+    gateway = FakeGateway(
+        [SURE_STORED],
+        during_search=lambda: change(engine, "220010", website_domain="harborviewhealth.org"),
+    )
+    with session_scope(engine) as session:
+        [row] = candidates(session)
+        outcome = confirm_by_search(session, gateway, row)
+        assert outcome.outcome == "changed"
+    assert stored_state(engine, "220010") == ("harborviewhealth.org", 0.6)
+    assert searched_items(engine, "220010") == [("changed", "resolved")]
+
+
+def test_a_run_skips_the_hospital_an_admin_confirmed_after_the_plan_and_pays_for_no_search(
+    tmp_path,
+):
+    engine = file_engine(tmp_path)
+    with session_scope(engine) as session:
+        seed(session, "220010")
+        seed(
+            session,
+            "220045",
+            name="CEDAR GROVE HOSPITAL",
+            city="WORCESTER",
+            domain="cedargrove.org",
+        )
+    # While the first hospital is searched, an admin confirms the second.
+    gateway = NamedGateway(during_search=lambda: admin_confirms(engine, "220045"))
+    with session_scope(engine) as session:
+        report = run_confirm(session, gateway, candidates(session))
+    assert [(found.ccn, found.outcome) for found in report.outcomes] == [
+        ("220010", "confirmed"),
+        ("220045", "skipped"),
+    ]
+    assert report.confirmed == [("MA", "220010")]
+    assert len(gateway.calls) == 1
+    assert stored_state(engine, "220010") == ("harborview.org", 0.9)
+    assert stored_state(engine, "220045") == ("cedargrove.org", 1.0)
+
+
+# A commit that fails, or a run that is interrupted, must not lose a hospital that is already
+# committed at 0.9 from the list the rebuilds read: it is no longer a candidate, and the list is
+# its only road to a rebuild.
+
+
+class FailsToCommit:
+    """A session whose Nth commit raises, as a full disk or a lost connection does; everything
+    else is the real session's."""
+
+    def __init__(self, session, fail_on):
+        self._session = session
+        self._fail_on = fail_on
+        self.commits = 0
+
+    def commit(self):
+        self.commits += 1
+        if self.commits == self._fail_on:
+            raise RuntimeError("could not commit")
+        self._session.commit()
+
+    def __getattr__(self, name):
+        return getattr(self._session, name)
+
+
+def test_a_failed_commit_ends_the_run_and_the_hospital_before_it_stays_in_the_out_file(tmp_path):
+    engine = file_engine(tmp_path)
+    with session_scope(engine) as session:
+        seed(session, "220010")
+        seed(session, "220011")  # the same name and website, so the same search confirms it
+    out = tmp_path / "confirmed.txt"
+    with session_scope(engine) as session:
+        report = run_confirm(
+            FailsToCommit(session, fail_on=2),
+            FakeGateway([SURE_STORED]),
+            candidates(session),
+            out=out,
+        )
+    assert report.failed == "RuntimeError: could not commit"
+    assert [found.ccn for found in report.outcomes] == ["220010"]
+    assert report.confirmed == [("MA", "220010")]
+    assert out.read_text(encoding="utf-8") == "MA 220010\n"
+    assert stored_state(engine, "220010") == ("harborview.org", 0.9)  # committed
+    assert stored_state(engine, "220011") == ("harborview.org", 0.6)  # rolled back
+    assert searched_items(engine, "220011") == []
+
+
+def test_each_confirmed_hospital_is_listed_as_soon_as_it_is_committed(tmp_path):
+    engine = file_engine(tmp_path)
+    with session_scope(engine) as session:
+        seed(session, "220010")
+        seed(session, "220011")
+        seed(session, "220012")
+    out = tmp_path / "var" / "confirmed.txt"
+    out.parent.mkdir()
+    out.write_text("RI 410001\n", encoding="utf-8")
+    seen = []
+    gateway = FakeGateway(
+        [SURE_STORED],
+        during_search=lambda: seen.append(out.read_text(encoding="utf-8")),
+    )
+    with session_scope(engine) as session:
+        report = run_confirm(session, gateway, candidates(session), out=out)
+    # What the file held when each search began: the earlier confirmations were already in it.
+    assert seen == [
+        "RI 410001\n",
+        "MA 220010\nRI 410001\n",
+        "MA 220010\nMA 220011\nRI 410001\n",
+    ]
+    assert report.confirmed == [("MA", "220010"), ("MA", "220011"), ("MA", "220012")]
+    assert out.read_text(encoding="utf-8").splitlines() == [
+        "MA 220010",
+        "MA 220011",
+        "MA 220012",
+        "RI 410001",
+    ]
 
 
 # The command
@@ -633,6 +907,56 @@ def test_run_that_fails_on_another_error_writes_what_it_confirmed_and_exits_1(
     # The rerun the failure asks for plans only what is still unconfirmed.
     tavily(monkeypatch, NamedGateway())
     assert invoke("--run", "--out", str(out))[0] == PLAN.format(n=2)
+
+
+def test_an_interrupt_keeps_the_hospitals_already_committed_and_listed_for_the_rebuilds(
+    workdir, monkeypatch, tmp_path
+):
+    gateway = NamedGateway(interrupt_at=1)  # Ctrl-C during the second search
+    tavily(monkeypatch, gateway)
+    out = tmp_path / "confirmed.txt"
+    result = CliRunner().invoke(app, ["atlas", "confirm-websites", "--run", "--out", str(out)])
+    assert result.exit_code != 0  # Click turns Ctrl-C into an abort
+    assert len(gateway.calls) == 1
+    # 220010 is committed at 0.9, so it is no candidate any more; the list must already name it.
+    assert confidences(workdir)["220010"] == 0.9
+    assert out.read_text(encoding="utf-8") == "MA 220010\n"
+
+
+def test_run_reports_the_hospital_that_changed_after_the_plan_and_was_not_searched(
+    workdir, monkeypatch, tmp_path
+):
+    # While the first hospital is searched, an admin confirms Bayside's website.
+    gateway = NamedGateway(during_search=lambda: admin_confirms(workdir, "410001"))
+    tavily(monkeypatch, gateway)
+    out = tmp_path / "confirmed.txt"
+    assert invoke("--run", "--out", str(out)) == [
+        PLAN.format(n=3),
+        "searched 2 of 3 held sheets: 1 confirmed, 1 other site, 0 unconfirmed; "
+        "1 skipped (changed since the plan, not searched); 0 Tavily credits spent",
+        "other site: MA 220045: stored cedargrove.org, the search found cedargrovehealth.org",
+        f"1 hospitals confirmed; 1 listed in {out} for the rebuilds",
+    ]
+    assert len(gateway.calls) == 2
+    assert confidences(workdir)["410001"] == 1.0  # the admin's, untouched
+
+
+def test_run_reports_the_hospital_that_changed_during_its_search_and_writes_nothing_for_it(
+    workdir, monkeypatch, tmp_path
+):
+    # An admin confirms Harbor View's website while its search is in flight.
+    gateway = NamedGateway(during_search=lambda: admin_confirms(workdir, "220010"))
+    tavily(monkeypatch, gateway)
+    out = tmp_path / "confirmed.txt"
+    assert invoke("--run", "--out", str(out)) == [
+        PLAN.format(n=3),
+        "searched 3 of 3 held sheets: 0 confirmed, 1 other site, 1 unconfirmed; "
+        "1 changed during the search (nothing written); 0 Tavily credits spent",
+        "other site: MA 220045: stored cedargrove.org, the search found cedargrovehealth.org",
+        f"0 hospitals confirmed; 0 listed in {out} for the rebuilds",
+    ]
+    assert confidences(workdir)["220010"] == 1.0
+    assert out.read_text(encoding="utf-8") == ""
 
 
 def test_run_with_nothing_to_search_builds_no_gateway_and_still_writes_the_list(

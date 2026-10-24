@@ -523,10 +523,13 @@ def atlas_confirm_websites(
     uses to find a website. When that search is sure (0.9) of the website already stored, its
     confidence becomes 0.9 and the hospital joins the --out list for the rebuilds. A sure answer
     naming another website changes nothing; it is filed as an open website_searched item for an
-    admin. Confidence 1.0 stays the admin's. A hospital on the skip list is never searched. The
-    default is a dry run that prints the plan; --run spends credits, commits after each search and
-    stops cleanly when the budget does. A run that ends on another error still keeps and lists
-    what it confirmed before it, then exits with status 1."""
+    admin. Confidence 1.0 stays the admin's: a hospital is read again before its search and
+    skipped, unsearched, if it stopped waiting since the plan (an admin confirmed it meanwhile),
+    and locked and checked again before the write. A hospital on the skip list is never searched.
+    The default is a dry run that prints the plan; --run spends credits, commits after each
+    search, adds each confirmed hospital to the --out list right after its commit (so an
+    interrupt loses none) and stops cleanly when the budget does. A run that ends on another
+    error still keeps and lists what it confirmed before it, then exits with status 1."""
     settings = Settings()
     skip = load_skip_list(settings.scout_skip_list)
     stored: dict[str, str | None] = {}
@@ -544,11 +547,17 @@ def atlas_confirm_websites(
         governor = make_governor(settings)
         if rows:
             gateway = make_tavily_gateway(settings, governor)
-            report = run_confirm(session, gateway, rows, governor=governor)
+            report = run_confirm(session, gateway, rows, governor=governor, out=out)
+    changed = ""
+    if report.count("skipped"):
+        changed += f"; {report.count('skipped')} skipped (changed since the plan, not searched)"
+    if report.count("changed"):
+        changed += f"; {report.count('changed')} changed during the search (nothing written)"
     typer.echo(
-        f"searched {len(report.outcomes)} of {report.total} held sheets: "
+        f"searched {report.searched} of {report.total} held sheets: "
         f"{report.count('confirmed')} confirmed, {report.count('other_site')} other site, "
-        f"{report.count('unconfirmed')} unconfirmed; {report.credits_spent} Tavily credits spent"
+        f"{report.count('unconfirmed')} unconfirmed{changed}; "
+        f"{report.credits_spent} Tavily credits spent"
     )
     for found in report.other_sites:
         typer.echo(
