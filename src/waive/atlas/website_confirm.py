@@ -54,6 +54,8 @@ Outcome = Literal["confirmed", "other_site", "unconfirmed", "skipped", "changed"
 class SearchOutcome:
     """What one hospital's search came to. `found_domain`, `confidence` and `evidence_url` are the
     search's answer (all None when it found no usable site), whatever the outcome.
+    `stored_domain` is the website the answer was compared with: the one stored when the search
+    ran, which may differ from the plan's (None when the hospital was skipped).
 
     Two outcomes mean the hospital changed under the run (an admin confirmed or cleared its
     website, a build published its sheet) and nothing was written for it: `skipped` before the
@@ -66,6 +68,7 @@ class SearchOutcome:
     found_domain: str | None
     confidence: float | None
     evidence_url: str | None
+    stored_domain: str | None = None
 
 
 def _has_income_rule(sheet: ProcedureSheet) -> bool:
@@ -205,7 +208,9 @@ def confirm_by_search(session: Session, gateway: TavilyGateway, row: HospitalRow
     if outcome != "other_site":
         repo.set_review_status(session, item.id, "resolved")
     session.flush()
-    return SearchOutcome(ccn, state, outcome, *(found or (None, None, None)))
+    return SearchOutcome(
+        ccn, state, outcome, *(found or (None, None, None)), stored_domain=searched_for
+    )
 
 
 @dataclass

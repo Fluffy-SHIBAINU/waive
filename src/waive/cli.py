@@ -532,7 +532,6 @@ def atlas_confirm_websites(
     error still keeps and lists what it confirmed before it, then exits with status 1."""
     settings = Settings()
     skip = load_skip_list(settings.scout_skip_list)
-    stored: dict[str, str | None] = {}
     report = ConfirmReport()
     with session_scope(_engine(settings)) as session:
         rows = candidates(session, states=(state.upper(),) if state else None, skip=skip)[:limit]
@@ -542,7 +541,6 @@ def atlas_confirm_websites(
         )
         if dry_run:
             return
-        stored = {row.ccn: row.website_domain for row in rows}
         report = ConfirmReport(total=len(rows))
         governor = make_governor(settings)
         if rows:
@@ -561,14 +559,18 @@ def atlas_confirm_websites(
     )
     for found in report.other_sites:
         typer.echo(
-            f"other site: {found.state} {found.ccn}: stored {stored[found.ccn]}, "
+            f"other site: {found.state} {found.ccn}: stored {found.stored_domain}, "
             f"the search found {found.found_domain}"
         )
     if report.stopped:
         typer.echo(f"stopped: {report.stopped.rstrip('.')}. The results so far are kept.")
     if report.failed:
         typer.echo(f"failed: {report.failed}. The results so far are kept.")
-    listed = merge_refetched(out, report.confirmed)
+    try:
+        listed = merge_refetched(out, report.confirmed)
+    except OSError as error:
+        typer.echo(f"could not write {out}: {error}")
+        raise typer.Exit(code=1) from None
     typer.echo(
         f"{len(report.confirmed)} hospitals confirmed; {len(listed)} listed in {out} "
         "for the rebuilds"

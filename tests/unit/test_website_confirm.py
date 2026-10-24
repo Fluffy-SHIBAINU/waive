@@ -257,7 +257,7 @@ def test_a_sure_answer_naming_the_stored_website_confirms_it_at_the_searchs_own_
         row = seed(session, "220010")
         outcome = confirm_by_search(session, gateway, row)
         assert outcome == SearchOutcome(
-            "220010", "MA", "confirmed", "harborview.org", 0.9, SURE_STORED.url
+            "220010", "MA", "confirmed", "harborview.org", 0.9, SURE_STORED.url, "harborview.org"
         )
         assert (row.website_domain, row.domain_confidence) == ("harborview.org", 0.9)
         item = only_item(session, "220010")
@@ -295,7 +295,13 @@ def test_a_sure_answer_naming_another_website_changes_nothing_and_asks_a_person(
         row = seed(session, "220010")
         outcome = confirm_by_search(session, FakeGateway([SURE_OTHER]), row)
         assert outcome == SearchOutcome(
-            "220010", "MA", "other_site", "harborviewhealth.org", 0.9, SURE_OTHER.url
+            "220010",
+            "MA",
+            "other_site",
+            "harborviewhealth.org",
+            0.9,
+            SURE_OTHER.url,
+            "harborview.org",
         )
         assert (row.website_domain, row.domain_confidence) == ("harborview.org", 0.6)
         item = only_item(session, "220010")
@@ -315,7 +321,7 @@ def test_a_guess_at_the_stored_website_is_not_a_confirmation():
         row = seed(session, "220010")
         outcome = confirm_by_search(session, FakeGateway([GUESS_STORED]), row)
         assert outcome == SearchOutcome(
-            "220010", "MA", "unconfirmed", "harborview.org", 0.6, GUESS_STORED.url
+            "220010", "MA", "unconfirmed", "harborview.org", 0.6, GUESS_STORED.url, "harborview.org"
         )
         assert (row.website_domain, row.domain_confidence) == ("harborview.org", 0.6)
         assert only_item(session, "220010").detail["outcome"] == "unconfirmed"
@@ -338,7 +344,9 @@ def test_a_search_with_no_usable_hit_is_unconfirmed_and_says_so():
         row = seed(session, "220010")
         for hits in ([], [directory]):
             outcome = confirm_by_search(session, FakeGateway(hits), row)
-            assert outcome == SearchOutcome("220010", "MA", "unconfirmed", None, None, None)
+            assert outcome == SearchOutcome(
+                "220010", "MA", "unconfirmed", None, None, None, "harborview.org"
+            )
         assert (row.website_domain, row.domain_confidence) == ("harborview.org", 0.6)
         items = repo.review_items_of_kind(session, "220010", WEBSITE_SEARCHED)
         assert [item.detail["outcome"] for item in items] == ["unconfirmed", "unconfirmed"]
@@ -490,6 +498,8 @@ def test_a_sure_answer_for_the_planned_website_is_not_taken_for_the_moved_one(tm
         change(engine, "220010", website_domain="harborviewhealth.org")
         outcome = confirm_by_search(session, FakeGateway([SURE_STORED]), row)
         assert outcome.outcome == "other_site"
+        # What the CLI prints as "stored" is the website compared with, not the plan's.
+        assert outcome.stored_domain == "harborviewhealth.org"
     assert stored_state(engine, "220010") == ("harborviewhealth.org", 0.6)
     with session_scope(engine) as session:
         [item] = repo.review_items_of_kind(session, "220010", WEBSITE_SEARCHED)
@@ -508,7 +518,7 @@ def test_an_admin_confirming_during_the_search_is_not_overwritten_and_the_search
         outcome = confirm_by_search(session, gateway, row)
         # The search was paid for and its answer is reported, but nothing is written.
         assert outcome == SearchOutcome(
-            "220010", "MA", "changed", "harborview.org", 0.9, SURE_STORED.url
+            "220010", "MA", "changed", "harborview.org", 0.9, SURE_STORED.url, "harborview.org"
         )
     assert len(gateway.calls) == 1
     assert stored_state(engine, "220010") == ("harborview.org", 1.0)
@@ -972,6 +982,15 @@ def test_run_with_nothing_to_search_builds_no_gateway_and_still_writes_the_list(
     ]
     assert built == []
     assert (tmp_path / "none.txt").read_text(encoding="utf-8") == ""
+
+
+def test_run_that_cannot_write_the_list_says_so_and_exits_1(workdir, monkeypatch, tmp_path):
+    tavily(monkeypatch, NamedGateway())
+    folder = tmp_path / "a-folder"
+    folder.mkdir()
+    lines = invoke("--run", "--state", "AK", "--out", str(folder), status=1)
+    assert lines[-1].startswith(f"could not write {folder}: ")
+    assert folder.is_dir() and list(folder.iterdir()) == []
 
 
 def test_run_without_a_tavily_key_says_so_before_anything_is_searched(workdir, tmp_path):

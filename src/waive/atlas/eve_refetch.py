@@ -15,6 +15,7 @@ books the credits after it), and a hospital on the skip list is never refetched.
 """
 
 import json
+import os
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass, field
 from datetime import date
@@ -215,11 +216,19 @@ def merge_refetched(path: Path, gained: Sequence[tuple[str, str]]) -> list[tuple
     list, sorted. The list is what the rebuilds read, so a run only ever adds to it: a run that
     stopped on the budget or an error, and the rerun after it, together name every hospital, and
     a rerun that gains nothing leaves the file as it was. A first run writes the file even when it
-    gained nothing, so the rebuilds find a list that says so."""
+    gained nothing, so the rebuilds find a list that says so. The new list is written beside the
+    old one and moved over it, so an interrupt mid-write leaves the old list whole."""
     if gained or not path.exists():
         merged = sorted({*read_refetched(path), *gained})
         path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text("".join(f"{state} {ccn}\n" for state, ccn in merged), encoding="utf-8")
+        partial = path.with_name(f".{path.name}.partial")
+        try:
+            partial.write_text(
+                "".join(f"{state} {ccn}\n" for state, ccn in merged), encoding="utf-8"
+            )
+            os.replace(partial, path)
+        finally:
+            partial.unlink(missing_ok=True)
         return merged
     return sorted(set(read_refetched(path)))
 
