@@ -1,0 +1,76 @@
+"""Revised owner checks (challenge of scratch-owner-scope/candidate_final.py)."""
+import re, sys
+from urllib.parse import unquote, urlparse
+sys.path.insert(0, "/private/tmp/claude-501/-Users-grey-Desktop-dev-eventhorizon/b529e6d4-a357-482a-ba81-d6830b9a174d/scratchpad/waive/audit-rest/scratch-owner-scope")
+from candidate_final import names_hospital_or_town, sibling_policies, _LINK, SIBLING_POLICY_REASON
+from waive.atlas.discover import _names_hospital, _plain, host_of, name_tokens, states_named
+from waive.atlas.fetch import is_asset_host
+from waive.atlas.schema import SourceKind
+
+FOREIGN_OWNER_REASON = ("quote is from another organisation's policy whose list of covered hospitals "
+                        "leaves this hospital out, and the hospital's own website does not link to it")
+OTHER_STATE_REASON = "quote is from another state's version of the system policy"
+# A covered-hospital list: "Emory Healthcare Hospitals include:", "Hospitals (listed below)", "included
+# in attached Schedule D", "The following ... Hospitals and Hospital Organizations are covered under
+# Policy 1.BR.34", "applies to the following entities". PDF text doubles spaces, hence \s+.
+SCHEDULE = re.compile(r"included\s+in\s+(?:the\s+)?attached\s+schedule\s+[a-z]\b", re.I)
+ROSTER = re.compile(r"hospitals\s+include\s*:|facilities\s+include\s*:|\(listed\s+below\)"
+                    r"|applies\s+to\s+the\s+following\s+(?:hospitals|facilities|entities)"
+                    r"|the\s+following\b.{0,120}?\b(?:hospitals|facilities)\b.{0,60}?\bare\s+covered\b", re.I | re.S)
+ALL_SCOPE = re.compile(r"\bappl(?:y|ies) to\s*:?\s*all\b", re.I)
+
+def _town_in(h, plain):
+    town = " ".join(_plain(h.city).split())
+    return bool(town) and re.search(rf"(?<![a-z0-9]){re.escape(town)}(?![a-z0-9])", plain) is not None
+
+def roster_names(text, registry, exclude):
+    plain = " ".join(_plain(text).split())
+    return [o for o in registry if o.ccn != exclude and name_tokens(o.name)
+            and _names_hospital(o, plain) and _town_in(o, plain)]
+
+def _web(sources):
+    return [(s, t) for s, t in sources if s.kind is SourceKind.HOSPITAL_WEB and s.url]
+
+def foreign_documents(h, sources, registry):
+    """Clause A, narrowed. Off the hospital's registered site and the asset hosts, not linked from a
+    stored page on that site, naming neither the hospital, its town nor its website's name (the domain's first label, spaces and
+    punctuation ignored), AND carrying its
+    own covered-hospital list (ROSTER cue, no "applies to all") that names another registry hospital
+    of the state. Then every other document on the same host that never names the hospital or its
+    town goes with it (UnityPoint's application beside its policy)."""
+    if not h.website_domain:
+        return set()
+    home = host_of(f"https://www.{h.website_domain}")
+    label = home.split(".")[0]  # "unchealthappalachian" is named by "UNC Health Appalachian"
+    docs = _web(sources)
+    linked = {host_of(l) for s, t in docs if host_of(s.url) == home for l in _LINK.findall(t)}
+    def candidate(s, t):
+        host = host_of(s.url)
+        return (host != home and not is_asset_host(s.url) and host not in linked
+                and not names_hospital_or_town(h, t) and label not in re.sub(r"[^a-z0-9]", "", t.lower()))
+    out = {s.id for s, t in docs if candidate(s, t) and (ROSTER.search(t) or SCHEDULE.search(t))
+           and not ALL_SCOPE.search(t) and roster_names(t, registry, h.ccn)}
+    # On any host, the 1.BR.34 template's own scope ("included in attached Schedule D") with a
+    # Schedule that names the state's other hospitals and never this one or its town: Carle
+    # Hoopeston (141316) quoted Carle Health West Region's policy (Methodist, Pekin, Proctor).
+    out |= {s.id for s, t in docs if SCHEDULE.search(t) and not ALL_SCOPE.search(t)
+            and (host_of(s.url) == home or host_of(s.url) not in linked)
+            and not names_hospital_or_town(h, t) and roster_names(t, registry, h.ccn)}
+    hosts = {host_of(s.url) for s, t in docs if s.id in out}
+    out |= {s.id for s, t in docs if host_of(s.url) in hosts and candidate(s, t)}
+    return out
+
+_SEGMENT = re.compile(r"\s+[|–—-]\s+")
+def other_state_documents(h, sources):
+    """Clause C. The document's URL path or the first segment of its title (the site's name after
+    " | " left out: "North Mississippi Health Services") names states, none of them the hospital's.
+    Unlike _drop_other_state_documents, it applies when every stored document is another state's."""
+    out = set()
+    own = states_named(f"{h.name} {h.city}")
+    for s, t in _web(sources):
+        path = unquote(urlparse(s.url).path)
+        first = _SEGMENT.split(s.title or "")[0]
+        named = states_named(re.sub(r"[-_./%+]", " ", f"{first} {path}")) - own
+        if named and h.state not in named:
+            out.add(s.id)
+    return out

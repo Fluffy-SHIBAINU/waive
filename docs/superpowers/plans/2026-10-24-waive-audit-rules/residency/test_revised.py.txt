@@ -1,0 +1,55 @@
+import json, sys
+sys.path.insert(0, "/private/tmp/claude-501/-Users-grey-Desktop-dev-eventhorizon/b529e6d4-a357-482a-ba81-d6830b9a174d/scratchpad/waive/audit-rest/scratch-residency-challenge")
+sys.path.insert(1, "/private/tmp/claude-501/-Users-grey-Desktop-dev-eventhorizon/b529e6d4-a357-482a-ba81-d6830b9a174d/scratchpad/waive/audit-rest/scratch-residency")
+from revised_rule import residency_problem, whole_states_named
+import residency_rule as old
+TESTS = old.TESTS + [
+    (["IL","WI","NC","SC","GA","AL"], "Uninsured patients who reside in Illinois, Wisconsin1, North Carolina, South Carolina, Georgia or Alabama.", False),
+    (["MO"], "You live in Kansas City, Missouri, or Jackson County, Missouri", True),
+    (["MO"], "The applicant must currently reside, with the intent to stay, in the City of Kansas City, Missouri or Jackson County, Missouri.", True),
+    (["MD"], "patient must reside in Cecil County, MD or one of the following surrounding counties to be eligible for charity:", True),
+    (["SC"], "Horry County, Lancaster County, and York County, SC.", True),
+    (["NH"], "Charity care is only available to residents of Southern NH Health’s primary and secondary service areas.", True),
+    (["NH","VT"], "Live within UCVH’s catchment area which includes all of NH and VT and Oxford County in ME.", False),
+    (["ME","NH","VT"], "The patient lives within our catchment area which includes all of NH and VT and Oxford County in Maine.", True),
+    (["OR","WA"], "You must be a resident of the state of Oregon or bordering county in the state of Washington (Benton, Clark)", True),
+    (["OR"], "You must be a resident of the state of Oregon or bordering county in the state of Washington (Benton, Clark)", False),
+    (["VT","WA","NY","MA"], "be a Vermont resident as defined in the \"Definitions\" section of this policy or a resident of the following counties located outside of Vermont Rensselaer (NY), Washington (NY) and Berkshire (MA).", True),
+    (["VT"], "be a Vermont resident as defined in the \"Definitions\" section of this policy or a resident of the following counties located outside of Vermont Rensselaer (NY), Washington (NY) and Berkshire (MA).", False),
+    (["VT","NH"], "the patient/guarantor must be a resident of the State of Vermont, or Sullivan or Cheshire Counties in New Hampshire.", True),
+    (["TN"], "“Community” means the twelve (13) Counties of Middle Tennessee which include: Cannon, Davidson", True),
+    (["GA"], "reside in Grady, Mitchell, Brooks or Thomas County, Georgia, or reside in a county in Georgia which does not include a hospital", True),
+    (["NE"], "for patients residing in Richardson County, Nebraska and for patients with established long term primary care", True),
+    (["LA"], "Verification of Louisiana Region 5 Residency is required for any financial assistance request.", True),
+    (["CA"], "have established residency within the CommonSpirit Entity Service Area as defined by the most recent Hospital Facility CHNA, unless the visit is urgent or emergent or occurs within a California Hospital Facility", True),
+    (["WA"], "residents of Washington, D.C. and its suburbs", True),
+    (["DC"], "residents of Washington, DC and its suburbs", False),
+    (["KS","MO"], "residents of Kansas (KS) and Missouri (MO)", False),
+    (["VT"], "Vermont residents must sign the Declaration of Residency (VT)", False),
+    (["GA"], "Georgia residents who are existing patients of PPG physicians will be deemed to have met the residency requirement regardless of which county in Georgia they currently reside.", False),
+    (["WI"], "“Community” means any county in Wisconsin that has an Ascension WI facility or clinic", True),
+    (["ME"], "Financial assistance for Emergency Care is available to Maine Residents and non-Maine residents", True),
+    (["NC"], "Additionally, this policy applies to North Carolina and non-North Carolina residents in accordance with their state's FPL", True),
+    (["NC"], "All North Carolina residents and non-North Carolina residents within a Novant Health Service Area (see attached) are eligible to apply", True),
+    (["NC"], "The applicant must be a North Carolina resident (the criteria for determining residency is attached as Appendix A to this policy);", False),
+    (["DE","PA","MD","NJ"], "The Financial Assistance Policy applies to residents living within ChristianaCare’s primary service areas in Delaware, Pennsylvania, Maryland and New Jersey", True),
+    (["WI"], "Services provided at all Vernon Health, Inc. Hospital and Clinics located in Vernon and Crawford Counties, Wisconsin.", True),
+    (["KY"], "Service area includes the State of Kentucky. CCMH reserves the right to add to or subtract from the list in its service area.", False),
+    (["MD"], "All residents of Meritus’ service area, and all Maryland residents, will be considered for financial assistance", False),
+    (["MI","OH"], "Having a personal residence within the state of Michigan or Ohio, within approximately 25 miles of a McLaren HealthCare facility.", False),  # known limit: radius
+    (["IL"], "Illinois residents. Hospital charges", False),
+]
+bad = 0
+for value, quote, expect in TESTS:
+    got = residency_problem(value, quote)
+    ok = (got is not None) == expect
+    bad += not ok
+    print("ok " if ok else "BAD", expect, value, (got or "")[:60], "::", quote[:80])
+print("failing", bad, "of", len(TESTS))
+if len(sys.argv) > 1:
+    for line in open(sys.argv[1]):
+        row = json.loads(line)
+        if row["field"] != "eligibility.residency":
+            continue
+        r = residency_problem(row["value"], row["quote"])
+        print(("HIT  " if r else "pass ") + row["ccn"], row["value"], r or "")

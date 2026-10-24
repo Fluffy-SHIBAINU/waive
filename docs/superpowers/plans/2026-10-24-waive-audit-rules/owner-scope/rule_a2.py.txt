@@ -1,0 +1,36 @@
+import re, sys, collections
+sys.path.insert(0, "/private/tmp/claude-501/-Users-grey-Desktop-dev-eventhorizon/b529e6d4-a357-482a-ba81-d6830b9a174d/scratchpad/waive/audit-rest/scratch-owner-scope")
+from candidate_final import names_hospital_or_town, _LINK
+from waive.atlas.discover import _names_hospital, _plain, host_of, name_tokens
+from waive.atlas.fetch import is_asset_host
+from waive.atlas.schema import SourceKind
+
+def _town_in(h, plain):
+    town = " ".join(_plain(h.city).split())
+    return bool(town) and re.search(rf"(?<![a-z0-9]){re.escape(town)}(?![a-z0-9])", plain) is not None
+
+def hospitals_named(text, registry, exclude):
+    """Registry hospitals the text names by name (two evidence tokens) and town."""
+    plain = " ".join(_plain(text).split())
+    return [o for o in registry if o.ccn != exclude and name_tokens(o.name) and _names_hospital(o, plain) and _town_in(o, plain)]
+
+def foreign_owner(h, sources, registry, min_named=2):
+    """Clause A, revised: off the hospital's site and the asset hosts, names neither the hospital nor its
+    town nor its website, not linked from a stored page of the hospital's own site, and names at least
+    `min_named` other registry hospitals of the state (its own covered-hospital list)."""
+    if not h.website_domain:
+        return {}
+    home = host_of(f"https://www.{h.website_domain}")
+    web = [(s, t) for s, t in sources if s.kind is SourceKind.HOSPITAL_WEB and s.url]
+    linked = {host_of(l) for s, t in web if host_of(s.url) == home for l in _LINK.findall(t)}
+    out = {}
+    for s, t in web:
+        host = host_of(s.url)
+        if host == home or is_asset_host(s.url) or host in linked:
+            continue
+        if names_hospital_or_town(h, t) or home in t.lower():
+            continue
+        named = hospitals_named(t, registry, h.ccn)
+        if len(named) >= min_named:
+            out[s.id] = [o.name for o in named]
+    return out

@@ -1,0 +1,125 @@
+"""Candidate replacement for the insured_patients_covered checks in verify.py (throwaway)."""
+import re
+
+from waive.atlas.verify import _INSURED_WORDS, normalize
+
+# --- False: the quote must say insured patients are left out, in a clause about them. -------
+# A "not eligible"/"do not qualify" anywhere in the quote is not enough: it is as often about a
+# government program ("do not qualify for public insurance programs"), the self-pay rate
+# ("not eligible for uninsured/true self pay rates") or an uninsured patient who fails the FAP.
+# "No insurance" / "do not have insurance" describes who IS helped (the uninsured), not who is
+# left out, unless "only" limits help to them.
+_NOT_FOR_SELF_PAY = r"(?! for (?:the )?(?:uninsured|self[- ]?pay|true self))"
+_INSURED_LEFT_OUT = re.compile(
+    r"\bonly (?:to |for )?(?:the )?uninsured\b"
+    r"|\buninsured (?:patients |individuals |persons )?only\b"
+    r"|\bmust (?:be|remain) uninsured\b"
+    r"|\b(?:limited|restricted) to (?:the )?uninsured\b"
+    r"|\bonly (?:to |for )?(?:patients|individuals|persons|people|those) (?:who (?:do not|don't|does not) have"
+    r"|with no|without) (?:any )?(?:health )?(?:insurance|coverage)\b"
+    r"|(?<![\w-])insured (?:patients?|individuals?|persons?|people) (?:are|is|will|shall|do|does)(?: be)?"
+    r" (?:not|never) (?:be )?(?:eligible|covered|qualify|considered)\b" + _NOT_FOR_SELF_PAY +
+    r"|\b(?:patients|individuals|persons|people|those) (?:with|who have) (?:health |private |commercial "
+    r"|third[- ]party )?(?:insurance|coverage) (?:are|is|will|shall|do|does)(?: be)? not (?:be )?"
+    r"(?:eligible|covered|qualify)\b" + _NOT_FOR_SELF_PAY +
+    r"|\bnot (?:available|offered|open|extended) to (?:insured|patients (?:with|who have) (?:health )?insurance)\b"
+    r"|\bexclud\w* (?:all )?(?:insured|patients (?:with|who have) (?:health )?insurance)\b"
+)
+# The quote names people with insurance among those helped, or leaves out only those whose
+# insurance is enough ("sufficient insurance coverage or assets ... may be deemed ineligible").
+_INSURED_HELPED = re.compile(
+    r"\bunder[- ]?insured\b"
+    r"|\b(?:limited|inadequate|insufficient|partial)(?: or no)? (?:health )?(?:insurance|coverage)\b"
+    r"|\bwith or without (?:an? )?(?:health )?insurance\b"
+    r"|\b(?:sufficient|adequate|enough) (?:health )?insurance\b|\binsurance (?:coverage )?or assets\b"
+)
+
+
+def quote_excludes_insured(quote: str) -> bool:
+    text = normalize(quote)
+    return _INSURED_LEFT_OUT.search(text) is not None and _INSURED_HELPED.search(text) is None
+
+
+# --- True: three off-topic shapes. ------------------------------------------------------------
+# (1) A price cap that benchmarks against insured patients ("not be charged more than AGB to
+# insured patients", "not be charged more ... than patients who are covered by Medicare or other
+# insurance", "do not pay more for care than insured individuals"); the existing
+# quotes_only_the_agb_cap needs "amounts generally billed" spelled out, and counts the
+# "insur" inside "uninsured".
+_PRICE_CAP_CLAUSE = re.compile(
+    r"\b(?:charged|billed|pay|paid|owe|responsible to pay)\b[^.;]{0,15}?\b(?:more|greater|higher)\b"
+    r"[^.;]{0,80}?\bthan\b[^.;]*"
+    r"|amounts? generally billed[^.;]*"
+)
+
+
+def quotes_only_a_price_cap(quote: str) -> bool:
+    text = normalize(quote)
+    if _PRICE_CAP_CLAUSE.search(text) is None:
+        return False
+    return _INSURED_WORDS.search(_PRICE_CAP_CLAUSE.sub(" ", text)) is None
+
+
+# (2) A bare label: "Underinsured:".
+_BARE_LABEL = re.compile(r"^[^.;:]{1,40}:$")
+
+
+def quote_is_bare_label(quote: str) -> bool:
+    return _BARE_LABEL.match(normalize(quote)) is not None
+
+
+# (3) Payment plans, which are not financial assistance.
+_PAYMENT_PLAN = re.compile(r"\bpayment (?:plans?|arrangements?)\b")
+_ASSISTANCE_WORDS = re.compile(
+    r"\bfinancial (?:assistance|aid)\b|\bcharity\b|\bfree\b|\bdiscount\w*|\bwrite[- ]?offs?\b|\bwritten off\b"
+    r"|\bforgiv\w+|\breduc\w+|\bsliding\b|\bfap\b"
+)
+
+
+def quotes_only_payment_plans(quote: str) -> bool:
+    text = normalize(quote)
+    return _PAYMENT_PLAN.search(text) is not None and _ASSISTANCE_WORDS.search(text) is None
+
+
+INSURED_LEFT_OUT_REASON = "quote does not say insured patients are left out"
+PRICE_CAP_REASON = "quote states a price cap benchmarked on insured patients, not who may apply"
+BARE_LABEL_REASON = "quote is only a heading"
+PAYMENT_PLAN_REASON = "quote is about payment plans, not financial assistance"
+
+
+def insured_problem(quote: str, value: bool) -> str | None:
+    """Reason to reject an insured_patients_covered field, or None (on top of the current checks)."""
+    if quotes_only_a_price_cap(quote):
+        return PRICE_CAP_REASON
+    if quote_is_bare_label(quote):
+        return BARE_LABEL_REASON
+    if value:
+        if quotes_only_payment_plans(quote):
+            return PAYMENT_PLAN_REASON
+        return None
+    if not quote_excludes_insured(quote):
+        return INSURED_LEFT_OUT_REASON
+    return None
+
+
+from waive.atlas.verify import AGB_CAP_REASON, INSURED_REASON, quotes_only_the_agb_cap
+
+
+def insured_field_problem(quote: str, value: bool) -> str | None:
+    """Full replacement for the two insured branches of verify_sheet: None to accept."""
+    text = normalize(quote)
+    if quotes_only_the_agb_cap(quote):
+        return AGB_CAP_REASON
+    if quotes_only_a_price_cap(quote):
+        return PRICE_CAP_REASON
+    if quote_is_bare_label(quote):
+        return BARE_LABEL_REASON
+    if value:
+        if _INSURED_WORDS.search(text) is None:
+            return INSURED_REASON
+        if quotes_only_payment_plans(quote):
+            return PAYMENT_PLAN_REASON
+        return None
+    if not quote_excludes_insured(quote):
+        return INSURED_LEFT_OUT_REASON
+    return None

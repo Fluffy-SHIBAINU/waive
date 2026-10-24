@@ -1,0 +1,118 @@
+import re
+from waive.atlas.verify import (_INSURED_WORDS, normalize, AGB_CAP_REASON, INSURED_REASON,
+                                quotes_only_the_agb_cap)
+
+# A rate or price that is not financial assistance: the self-pay / uninsured / cash / prompt-pay
+# discount. A quote that leaves insured patients out of one of these says nothing about the FAP.
+_NON_FAP_RATE = re.compile(
+    r"\b(?:true )?(?:self[- ]?pay|uninsured|cash|prompt[- ]?pay(?:ment)?) (?:discounts?|rates?|prices?|pricing)\b"
+    r"|\bdiscounted cash price\b"
+)
+_INSURED_LEFT_OUT = re.compile(
+    r"(?<!not )\bonly (?:to |for )?(?:the )?uninsured\b"
+    r"|\buninsured (?:patients |individuals |persons )?only\b"
+    r"|\bmust (?:be|remain) uninsured\b"
+    r"|\b(?:limited|restricted) to (?:the )?uninsured\b"
+    r"|(?<!not )\bonly (?:to |for )?(?:patients|individuals|persons|people|those) (?:who (?:do not|don't|does not) have"
+    r"|with no|without) (?:any )?(?:health )?(?:insurance|coverage)\b"
+    r"|(?<![\w-])insured (?:patients?|individuals?|persons?|people) (?:are|is|will|shall|do|does)(?: be)?"
+    r" (?:not|never) (?:be )?(?:eligible|covered|qualify|considered for)\b"
+    r"|\b(?:patients|individuals|persons|people|those) (?:with|who have) (?:health |private |commercial "
+    r"|third[- ]party )?(?:insurance|coverage) (?:are|is|will|shall|do|does)(?: be)? not (?:be )?"
+    r"(?:eligible|covered|qualify)\b"
+    r"|\bnot (?:available|offered|open|extended) to (?:insured|patients (?:with|who have) (?:health )?insurance)\b"
+    r"|\bexclud\w* (?:all )?(?:insured|patients (?:with|who have) (?:health )?insurance)\b"
+    r"|\b(?:cannot|can not|may not|must not) be covered by (?:any |private |health |commercial |third[- ]party )*insurance\b"
+    r"|\bmust be self[- ]?pay\b"
+)
+_INSURED_HELPED = re.compile(
+    r"\bunder[- ]?insured\b"
+    r"|\b(?:limited|inadequate|insufficient|partial)(?: or no)? (?:health )?(?:insurance|coverage)\b"
+    r"|\bwith or without (?:an? )?(?:health )?insurance\b"
+    r"|\b(?:sufficient|adequate|enough) (?:health )?insurance\b|\binsurance (?:coverage )?or assets\b"
+)
+
+def quote_excludes_insured(quote: str) -> bool:
+    text = normalize(quote)
+    return (_INSURED_LEFT_OUT.search(text) is not None and _INSURED_HELPED.search(text) is None
+            and _NON_FAP_RATE.search(text) is None)
+
+# The comparison clause runs to the end of its sentence, but not past ", and ..." / ", but ...".
+_TAIL = r"(?:(?!,\s*(?:and|but|while|however|although)\b)[^.;])*"
+_PRICE_CAP_CLAUSE = re.compile(
+    r"\b(?:charged|billed|pay|paid|owe|responsible to pay)\b[^.;]{0,15}?\b(?:more|greater|higher)\b"
+    r"[^.;]{0,80}?\bthan\b" + _TAIL +
+    r"|amounts? generally billed" + _TAIL
+)
+
+def quotes_only_a_price_cap(quote: str) -> bool:
+    text = normalize(quote)
+    if _PRICE_CAP_CLAUSE.search(text) is None:
+        return False
+    return _INSURED_WORDS.search(_PRICE_CAP_CLAUSE.sub(" ", text)) is None
+
+_BARE_LABEL = re.compile(r"^[^.;:]{1,40}:$")
+
+def quote_is_bare_label(quote: str) -> bool:
+    return _BARE_LABEL.match(normalize(quote)) is not None
+
+_PAYMENT_ONLY = re.compile(
+    r"\bpayment (?:plans?|arrangements?)\b|\bprompt[- ]?pay(?:ment)? discounts?\b"
+    r"|\b(?:payment|paid) in full\b|\b(?:billing )?statements?\b"
+)
+_ASSISTANCE_WORDS = re.compile(
+    r"\bfinancial (?:assistance|aid)\b|\bcharity\b|\bfree\b|\bdiscount\w*|\bwrite[- ]?offs?\b|\bwritten off\b"
+    r"|\bforgiv\w+|\breduc\w+|\bsliding\b|\bfap\b"
+)
+
+def quotes_only_payment_terms(quote: str) -> bool:
+    text = normalize(quote)
+    if _PAYMENT_ONLY.search(text) is None:
+        return False
+    return _ASSISTANCE_WORDS.search(_PAYMENT_ONLY.sub(" ", text)) is None
+
+# Insurance named only to say the patient has none, or to tell people to get some.
+_NOT_INSURED = re.compile(
+    r"\b(?:(?:do|does|did) not|don't|doesn't) have (?:any )?(?:form of )?(?:health |medical )?(?:insurance|coverage)(?: coverage)?\b"
+    r"|\b(?:has|have|with) no (?:health |medical )?(?:insurance|coverage)(?: coverage)?\b"
+    r"|\bwithout (?:any )?(?:health |medical )?(?:insurance|coverage)(?: coverage)?\b"
+    r"|\bno (?:health |medical )?insurance(?: coverage)?\b"
+    r"|\bnot insured\b"
+    r"|\b(?:purchase|obtain|buy|enroll in|apply for) (?:health )?(?:insurance|coverage)\b"
+)
+_OTHER_PAYER = re.compile(
+    r"\bcoverage\b|\bmedicare\b|\bthird[- ]party\b|\bpay[eo]rs?\b|\bcovered\b|\bportion of (?:the|your|their) bill\b"
+)
+
+def names_insurance_only_as_absent(quote: str) -> bool:
+    text = normalize(quote)
+    if _NOT_INSURED.search(text) is None or _INSURED_HELPED.search(text):
+        return False
+    rest = _NOT_INSURED.sub(" ", text)
+    return _INSURED_WORDS.search(rest) is None and _OTHER_PAYER.search(rest) is None
+
+INSURED_LEFT_OUT_REASON = "quote does not say insured patients are left out of financial assistance"
+PRICE_CAP_REASON = "quote states a price cap benchmarked on insured patients, not who may apply"
+BARE_LABEL_REASON = "quote is only a heading"
+PAYMENT_PLAN_REASON = "quote is about payment terms, not financial assistance"
+ABSENT_REASON = "quote names insurance only to say the patient has none"
+
+def insured_field_problem(quote: str, value: bool) -> str | None:
+    text = normalize(quote)
+    if quotes_only_the_agb_cap(quote):
+        return AGB_CAP_REASON
+    if quotes_only_a_price_cap(quote):
+        return PRICE_CAP_REASON
+    if quote_is_bare_label(quote):
+        return BARE_LABEL_REASON
+    if value:
+        if _INSURED_WORDS.search(text) is None:
+            return INSURED_REASON
+        if quotes_only_payment_terms(quote):
+            return PAYMENT_PLAN_REASON
+        if names_insurance_only_as_absent(quote):
+            return ABSENT_REASON
+        return None
+    if not quote_excludes_insured(quote):
+        return INSURED_LEFT_OUT_REASON
+    return None

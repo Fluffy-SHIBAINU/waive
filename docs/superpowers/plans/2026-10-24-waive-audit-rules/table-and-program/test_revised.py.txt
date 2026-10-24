@@ -1,0 +1,49 @@
+import sys; sys.path.insert(0, "/private/tmp/claude-501/-Users-grey-Desktop-dev-eventhorizon/b529e6d4-a357-482a-ba81-d6830b9a174d/scratchpad/waive/audit-rest/scratch-table-and-program-challenge")
+from common import *
+from revised import *
+from revised import _CODE_FACILITY_V2
+from candidate import free_band_charges_patient, names_other_state_facility_by_code, _CODE_FACILITY
+print("== R8' over all sheets (own document only)")
+for ccn, s in SHEETS.items():
+    fc = s.get("eligibility.free_care_max_fpl")
+    if not fc: continue
+    t = text_of(fc)
+    if t:
+        h = full_help_band_above_v2(fc["value"], t)
+        if h: print("  ", ccn, fc["state"], fc["name"][:30], fc["value"], tag(fc), "|", h[0][:200])
+print("== R8' over all sheets (any of its documents)")
+for ccn, s in SHEETS.items():
+    fc = s.get("eligibility.free_care_max_fpl")
+    if not fc: continue
+    for sid in {x["source_id"] for x in s.values() if x["source_id"]}:
+        t = SOURCES.get(sid, {}).get("text")
+        if t and full_help_band_above_v2(fc["value"], t): print("  ", ccn, sid, tag(fc))
+print("== R7' over all quotes")
+for r in ROWS:
+    if names_other_state_facility_by_code_v2(r["quote"] or "", r["state"]): print("  ", r["ccn"], r["field"], tag(r))
+print("== R7' over document text (codes not equal to any citing sheet's state)")
+ds = defaultdict(set)
+for r in ROWS:
+    if r["source_id"]: ds[r["source_id"]].add(r["state"])
+from collections import Counter
+c = Counter()
+for sid, d in SOURCES.items():
+    for m in _CODE_FACILITY_V2.finditer(d["text"] or ""):
+        if m.group(1) not in ds.get(sid, set()): c[(sid, m.group(0))] += 1
+print("  ", c.most_common(10))
+print("== R3' over free-care quotes")
+for r in ROWS:
+    if r["field"] == "eligibility.free_care_max_fpl" and free_band_charges_patient_v2(r["quote"]): print("  ", r["ccn"], tag(r))
+for s in ["Patients at or below 200% FPL receive free care; patient fees are waived.",
+          "For incomes up to 200% of the FPL, service fees will be waived and care is free.",
+          "0-100% FPL - patient service fee 1. Outpatient office visit $5 2. Emergency Department $10",
+          "qualifies for a nominal payment limit as designated by major service category, the rest will be written off."]:
+    print("   synthetic:", free_band_charges_patient(s), free_band_charges_patient_v2(s), "|", s)
+print("== R1' over tier quotes")
+for r in ROWS:
+    if r["field"] == "eligibility.discount_tiers" and tiers_need_hardship_v2(r["quote"], tiers(r)): print("  ", r["ccn"], tag(r))
+from candidate import tiers_need_hardship
+from waive.atlas.schema import DiscountTier
+q = "Health Safety Net - Partial: patients whose MAGI Household Income or Medical Hardship Family Countable Income is between 150.1% and 300% of the FPL receive a 20% discount."
+ts = [DiscountTier(min_fpl_exclusive=150, max_fpl_inclusive=300, discount_percent=20)]
+print("   synthetic MA HSN:", tiers_need_hardship(q, ts), tiers_need_hardship_v2(q, ts))

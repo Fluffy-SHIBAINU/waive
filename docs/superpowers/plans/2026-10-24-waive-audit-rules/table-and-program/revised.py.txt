@@ -1,0 +1,99 @@
+"""Revised predicates (scratch only)."""
+import re
+from decimal import Decimal
+import sys
+sys.path.insert(0, "/private/tmp/claude-501/-Users-grey-Desktop-dev-eventhorizon/b529e6d4-a357-482a-ba81-d6830b9a174d/scratchpad/waive/audit-rest/scratch-table-and-program")
+from candidate import _BAND, _FULL_AFTER, _CHARGES_PATIENT, _NEGATION_BEFORE, _HARDSHIP, _QSENT
+from waive.atlas.states import US_STATES
+from waive.atlas.verify import _HEDGED_UP_TO_FULL, _SENTENCES, _poverty_text, normalize, _number_in
+
+# R8': a full-help band above the published limit in the field's own document, skipping bands that
+# still charge (co-pay, fee, $N per visit) or that only waive an insured patient's cost sharing.
+_COST_SHARE = re.compile(r"\bco-?pays?\b|\bco-?payments?\b|\bco-?insurance\b|\bdeductibles?\b|\bout[- ]of[- ]pocket\b")
+_INSURED_ONLY = re.compile(r"\b(?:have|has|with) (?:health )?insurance\b|(?<!un)(?<!under)(?<!under-)\binsured patients?\b|\bafter insurance\b")
+def full_help_band_above_v2(value, document_text):
+    v = Decimal(value); found = []
+    for sentence in _SENTENCES.split(_poverty_text(document_text)):
+        if _HEDGED_UP_TO_FULL.search(sentence):
+            continue
+        if _COST_SHARE.search(sentence) or _INSURED_ONLY.search(sentence):
+            continue
+        if any(_NEGATION_BEFORE.search(sentence[: m.start()]) is None for m in _CHARGES_PATIENT.finditer(sentence)):
+            continue
+        for m in _BAND.finditer(sentence):
+            low, high = Decimal(m.group(1)), Decimal(m.group(2))
+            if v < low <= v + 1 and high > v and _FULL_AFTER.search(sentence[m.end():]):
+                found.append(sentence[max(0, m.start() - 100): m.end() + 140])
+    return found
+
+# R7': another state's postal code used as a facility qualifier with a determiner and a system acronym
+_CODES = "|".join(US_STATES)
+_CODE_FACILITY_V2 = re.compile(
+    rf"\b(?:[Aa]n?|[Tt]he|[Ee]ach|[Aa]ny|[Aa]ll|[Ee]very|[Ss]uch) ({_CODES}) [A-Z]{{2,6}} (?:[Hh]ospitals?|[Ff]acilit(?:y|ies)|[Ee]ntit(?:y|ies)|[Ll]ocations?)\b"
+)
+def names_other_state_facility_by_code_v2(quote, state):
+    return any(m.group(1) != state for m in _CODE_FACILITY_V2.finditer(quote))
+
+# R3': fee wording, but a fee that is waived/not charged after the word does not count either
+_WAIVED_AFTER = re.compile(r"^\W{0,3}(?:\S+ ){0,3}?(?:is |are |will be |shall be )?(?:waived|not (?:be )?(?:charged|collected|required|apply))")
+def free_band_charges_patient_v2(quote):
+    text = normalize(quote)
+    for m in _CHARGES_PATIENT.finditer(text):
+        if _NEGATION_BEFORE.search(text[: m.start()]) is not None:
+            continue
+        if _WAIVED_AFTER.search(text[m.end():]):
+            continue
+        return True
+    return False
+
+# R1': hardship condition, not MassHealth's "Medical Hardship Family Countable Income" measure
+_HARDSHIP_V2 = re.compile(r"\b(?:financial|medical) hardship\b(?! family countable)|\bmedical debt\b|\bcatastrophic\b")
+def tiers_need_hardship_v2(quote, tiers):
+    for sentence in _QSENT.split(quote):
+        text = normalize(sentence)
+        if _HARDSHIP_V2.search(text) and any(_number_in(Decimal(t.discount_percent), text) for t in tiers):
+            return True
+    return False
+
+# R4': the ceiling quote is a free-care line and nothing else: no partial help in it
+from waive.atlas.verify import _CEILING_WORDING, _FREE_SENTENCE, _UP_TO_FULL
+_PARTIAL_HELP = re.compile(
+    r"\bsliding\b|\bpartial\w*|\breduced\b|\breduction in charges\b|\bdiscounted (?:care|charges?|fees?|rates?|services)\b|\bdiscounts?\b(?! of 100)(?! ?\(100)"
+    r"|(?<![\d.])(?:[1-9]\d?(?:\.\d+)?) ?(?:%|percent) (?:discount|reduction|adjustment|write|financial assistance|charity|of (?:agb|charges))"
+)
+def ceiling_quotes_free_band_v2(quote):
+    text = normalize(quote)
+    if _HEDGED_UP_TO_FULL.search(text) or _UP_TO_FULL.search(text) or _CEILING_WORDING.search(text):
+        return False
+    if _FREE_SENTENCE.search(text) is None:
+        return False
+    return _PARTIAL_HELP.search(_FREE_SENTENCE.sub(" ", text)) is None
+
+# R11: a tier table whose band row splits by inpatient / outpatient (one percent per band cannot hold it)
+_INP = re.compile(r"\bin-?patient\b"); _OUTP = re.compile(r"\bout-?patient\b")
+_PCT2 = re.compile(r"(?<![\d.$])(\d{1,3}(?:\.\d+)?) ?%")
+_LABEL2 = r"(?<![\d.]){lo} ?%? ?(?:-|to|through|thru) ?{hi}(?![\d.]) ?%?"
+_NEXT2 = re.compile(r"(?<![\d.])\d{1,3} ?%? ?(?:-|to|through|thru) ?\d{2,3}(?![\d.])")
+def tiers_split_by_service(quote, tiers):
+    text = normalize(quote)
+    if not (_INP.search(text) and _OUTP.search(text)):
+        return False
+    for t in tiers:
+        lo, hi = int(t.min_fpl_exclusive), int(t.max_fpl_inclusive)
+        for start in (lo + 1, lo):
+            m = re.search(_LABEL2.format(lo=start, hi=hi), text)
+            if m:
+                rest = text[m.end():]; n = _NEXT2.search(rest)
+                vals = {Decimal(x) for x in _PCT2.findall(rest[: n.start() if n else 80])}
+                if len(vals) >= 2:
+                    return True
+                break
+    return False
+
+# R11': a tier table with separate inpatient and outpatient columns or rows ("Inpatient Outpatient"
+# headers, "Inpatient Discount ... Outpatient Discount" rows): one percent per band cannot hold it.
+_SERVICE_COLUMNS = re.compile(
+    r"\bin-?patient:? out-?patient\b|\bin-?patient discount\b.{0,400}?\bout-?patient discount\b"
+)
+def tiers_split_by_service_v2(quote):
+    return _SERVICE_COLUMNS.search(normalize(quote)) is not None

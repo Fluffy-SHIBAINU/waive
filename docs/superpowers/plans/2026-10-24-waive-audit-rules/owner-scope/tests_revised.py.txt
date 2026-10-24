@@ -1,0 +1,75 @@
+import sqlite3, sys
+from datetime import date
+sys.path.insert(0, "/private/tmp/claude-501/-Users-grey-Desktop-dev-eventhorizon/b529e6d4-a357-482a-ba81-d6830b9a174d/scratchpad/waive/audit-rest/scratch-owner-scope")
+sys.path.insert(0, "/private/tmp/claude-501/-Users-grey-Desktop-dev-eventhorizon/b529e6d4-a357-482a-ba81-d6830b9a174d/scratchpad/waive/audit-rest/scratch-owner-challenge")
+from candidate_final import sibling_policies
+import revised
+from waive.atlas.schema import HospitalRef, SourceDoc, SourceKind
+con = sqlite3.connect("file:/Users/grey/Desktop/dev/nebius_hackathon/var/waive.db?mode=ro", uri=True)
+Q = "select ccn,name,city,state,zip,phone,ownership,website_domain from hospitals"
+def ref(r, **o):
+    d = dict(ccn=r[0], name=r[1], city=r[2], state=r[3], zip=r[4], phone=r[5], ownership=r[6], website_domain=r[7]); d.update(o); return HospitalRef(**d)
+def H(ccn, **o): return ref(con.execute(Q + " where ccn=?", (ccn,)).fetchone(), **o)
+REG = {}
+for r in con.execute(Q): REG.setdefault(r[3], []).append(ref(r))
+def doc(sid):
+    r = con.execute("select id,kind,url,title,text from source_docs where id=?", (sid,)).fetchone()
+    return (SourceDoc(id=r[0], kind=SourceKind(r[1]), url=r[2], title=r[3] or "", fetched_on=date(2026,10,1), sha256="0"*64), r[4])
+def fake(sid, url, text): return (SourceDoc(id=sid, kind=SourceKind.HOSPITAL_WEB, url=url, title="", fetched_on=date(2026,10,1), sha256="0"*64), text)
+def A(h, docs, sid): return sid in revised.foreign_documents(h, docs, REG[h.state])
+def C(h, docs, sid): return sid in revised.other_state_documents(h, docs)
+def L(ccn): return [doc(r[0]) for r in con.execute("select source_id from hospital_sources where ccn=?", (ccn,))]
+def B(h, docs, sid): return sid in sibling_policies(h, docs, REG[h.state])
+UPH, UPH_APP, CLARKE = doc("fap-ec276fb294e1a7f3"), doc("fap-8cb546853b4d5aee"), doc("web-b931b400861284c2")
+HHC, CHH = doc("fap-dc06d545589e6a88"), doc("web-af4f198405493f00")
+EMORY, SF = doc("fap-0e1bb40253c56386"), doc("web-1e170f9756eb1dba")
+WFAP, WAPP, WPAGE = doc("fap-02f0838acdca19c6"), doc("fap-da8116e972384e4d"), doc("web-71c1c2741a8a3dd3")
+RGH, RRH_PAGE, RRH_APP = doc("billing-e49ebb7a9a323126"), doc("billing-c751ae443d704121"), doc("application-6bdaefe8ec940f91")
+PENN = doc("summary-26d8ffa01a616326")
+pdocs = [(s, t) for s, t in [doc(x) for x in [r[0] for r in con.execute("select source_id from hospital_sources where ccn='390179'")]]]
+cases = [
+ ("A", "161348 Clarke <- UnityPoint 1.BR.34 (files.unitypoint.org; Schedule D omits Clarke)", lambda: A(H("161348"), [UPH, UPH_APP, CLARKE], UPH[0].id), True),
+ ("A", "161348 Clarke <- UnityPoint IA/IL application form", lambda: A(H("161348"), [UPH, UPH_APP, CLARKE], UPH_APP[0].id), True),
+ ("A", "161348 Clarke's own clarkehosp.org page", lambda: A(H("161348"), [UPH, UPH_APP, CLARKE], CLARKE[0].id), False),
+ ("A", "Clarke, own page linking files.unitypoint.org", lambda: A(H("161348"), [UPH, fake("w", "https://www.clarkehosp.org/fa", "[FAP](https://files.unitypoint.org/x.pdf)")], UPH[0].id), False),
+ ("A", "Clarke, UPH policy naming Clarke County Hospital, Osceola", lambda: A(H("161348"), [(UPH[0], UPH[1] + " Clarke County Hospital, Osceola"), CLARKE], UPH[0].id), False),
+ ("A", "110129 St Francis-Emory <- Emory policy (11 Emory hospitals listed, not St Francis)", lambda: A(H("110129"), [EMORY, SF], EMORY[0].id), True),
+ ("A", "070011 Charlotte Hungerford <- HHC policy; own page links hartfordhealthcare.org", lambda: A(H("070011"), [HHC, CHH], HHC[0].id), False),
+ ("A", "070011 HHC policy with no own page stored (CHANGED: no covered-hospital list, so kept)", lambda: A(H("070011"), [HHC], HHC[0].id), False),
+ ("A", "351315 CHI Oakes <- CommonSpirit G-003 + CHI ND/MN application, own page names CommonSpirit but stored text has no link", lambda: bool({"fap-174bfaef7b79efbc","fap-e4142b1248b8adbd"} & revised.foreign_documents(H("351315"), L("351315"), REG["ND"])), False),
+ ("A", "230130 Beaumont Royal Oak <- Corewell application on assets.contentstack.io", lambda: A(H("230130"), L("230130"), "fap-b2bcfc6f1e59539b"), False),
+ ("A", "110074 Piedmont Athens <- Piedmont application on merge-digital.com", lambda: A(H("110074"), L("110074"), "fap-029de26fb39a7afa"), False),
+ ("A", "490057 Sentara VB General <- Sentara form on sitecorecontenthub.cloud", lambda: A(H("490057"), L("490057"), "fap-649a60b29bb66598"), False),
+ ("A", "151324 Franciscan Rensselaer <- Franciscan Alliance policy (Applies to: All Franciscan Alliance Hospitals)", lambda: A(H("151324"), L("151324"), "fap-6e38016b2eb07094"), False),
+ ("A", "341323 Cannon Memorial <- UNC Health policy listing UNC Health Appalachian", lambda: A(H("341323"), L("341323"), "fap-17604b377ebc8366"), False),
+ ("A", "260032 Barnes-Jewish <- BJC Health System application on saintlukeskc.org", lambda: A(H("260032"), L("260032"), "fap-779a0414a63dc869"), False),
+ ("A", "520139 West Allis <- Advocate Health enterprise FAP on cdn.atriumhealth.org", lambda: A(H("520139"), L("520139"), "fap-d9c5de9c9fa6dd89"), False),
+ ("A", "141316 Carle Hoopeston <- Carle West Region 1.BR.34 on carle.org (Schedule D: Methodist, Pekin, Proctor)", lambda: A(H("141316"), L("141316"), "fap-b10d2e17617aa892"), True),
+ ("A", "141316 with the same policy naming Hoopeston", lambda: A(H("141316"), [(s, t + " Carle Hoopeston Regional Health Center, Hoopeston") if s.id == "fap-b10d2e17617aa892" else (s, t) for s, t in L("141316")], "fap-b10d2e17617aa892"), False),
+ ("A", "140013 Carle Proctor <- the same policy (Proctor is in Schedule D)", lambda: A(H("140013"), L("140013"), "fap-b10d2e17617aa892"), False),
+ ("A", "160104 Trinity Bettendorf <- UPH 1.BR.34 (Bettendorf is in Schedule D)", lambda: A(H("160104"), L("160104"), "fap-ec276fb294e1a7f3"), False),
+ ("C", "051301 Adventist Tehachapi (CA) <- '(HI)' billing and collection policy", lambda: any("adventisthealth" in (s.url or "") for s, t in L("051301") if s.id in revised.other_state_documents(H("051301"), L("051301"))), True),
+ ("C", "450042 Ascension Providence (Waco TX) <- Ascension Saint Agnes Maryland page", lambda: C(H("450042"), L("450042"), "fap-bfa27011b572dca1"), True),
+ ("C", "450042 <- Ascension St. Vincents Florida page", lambda: C(H("450042"), L("450042"), "fap-03526e8a56a74887"), True),
+ ("C", "010044 Marion Regional (AL) <- page titled Financial Assistance | North Mississippi Health Services", lambda: bool(revised.other_state_documents(H("010044"), L("010044"))), False),
+ ("C", "171337 Wamego (KS) <- Ascension /kansas/ FAP", lambda: C(H("171337"), [WFAP, WAPP, WPAGE], WFAP[0].id), False),
+ ("C", "150088 Ascension St Vincent Anderson (IN) <- /indiana/ FAP with an Illinois PO box", lambda: bool(revised.other_state_documents(H("150088"), L("150088"))), False),
+ ("A", "171337 Wamego <- Ascension Kansas FAP that names Wamego", lambda: A(H("171337"), [WFAP, WAPP, WPAGE], WFAP[0].id), False),
+ ("A", "171337 Wamego <- Ascension application; own page links ascension.org", lambda: A(H("171337"), [WFAP, WAPP, WPAGE], WAPP[0].id), False),
+ ("A", "331312 Delaware Valley <- NYUHS form on widen.net (asset host)", lambda: A(H("331312"), [doc("application-8ca1290907d3da45")], "application-8ca1290907d3da45"), False),
+ ("A", "171363 own-domain policy that never names the hospital", lambda: A(H("171363"), [doc("fap-64194b6aa1d4fa57")], "fap-64194b6aa1d4fa57"), False),
+ ("A", "hospital with no website", lambda: A(H("161348", website_domain=None), [UPH, CLARKE], UPH[0].id), False),
+ ("B", "330197 Canton-Potsdam <- 'Rochester General Hospital Financial Assistance Policy' while the RRH page lists a Canton-Potsdam policy", lambda: B(H("330197"), [RGH, RRH_PAGE, RRH_APP], RGH[0].id), True),
+ ("B", "330197 RRH NYS uniform application (label names no hospital)", lambda: B(H("330197"), [RGH, RRH_PAGE, RRH_APP], RRH_APP[0].id), False),
+ ("B", "Rochester General itself <- its own policy", lambda: B(H("330125"), [RGH, RRH_PAGE], RGH[0].id), False),
+ ("B", "330197 with the RGH policy naming Canton-Potsdam", lambda: B(H("330197"), [(RGH[0], RGH[1] + " Canton-Potsdam Hospital"), RRH_PAGE], RGH[0].id), False),
+ ("B", "330197 with no own-labelled policy link on the page", lambda: B(H("330197"), [RGH, (RRH_PAGE[0], RRH_PAGE[1].replace("Canton-Potsdam Hospital Financial", "Other Financial"))], RGH[0].id), False),
+ ("B", "390179 Chester County <- Penn summary (names The Chester County Hospital)", lambda: B(H("390179"), pdocs, PENN[0].id), False),
+]
+ok = True
+for clause, label, fn, expect in cases:
+    pass
+for clause, label, fn, expect in cases:
+    got = fn(); ok &= got == expect
+    print("PASS" if got == expect else "FAIL", clause, "expect_reject=%s" % expect, label)
+print("ALL PASS" if ok else "SOME FAIL")

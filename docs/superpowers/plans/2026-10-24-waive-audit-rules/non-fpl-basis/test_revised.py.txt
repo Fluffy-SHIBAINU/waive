@@ -1,0 +1,78 @@
+import sys, json, re, sqlite3, collections
+from decimal import Decimal
+sys.path.insert(0, "/private/tmp/claude-501/-Users-grey-Desktop-dev-eventhorizon/b529e6d4-a357-482a-ba81-d6830b9a174d/scratchpad/waive/audit-rest/scratch-nonfpl-challenge")
+from revised import percent_of_other_basis as rev
+from candidate import percent_of_other_basis as cand
+from waive.atlas import verify as v
+D="/private/tmp/claude-501/-Users-grey-Desktop-dev-eventhorizon/b529e6d4-a357-482a-ba81-d6830b9a174d/scratchpad/waive/audit-rest"
+theirs=[
+("Those with income up to 200% of the income eligibility limits established by the Maryland Department of Health are eligible for free care.","200",True),
+("Free Care - Those with income up to 200% of the income eligibility limits established by the Maryland Department of Health are eligible for free care.","200",True),
+("Reduced Cost Care - Those between 200% and 300% of the income eligibility limits established by the Maryland Department of Health are eligible for discounts on a sliding scale","300",True),
+("Free care is available to households with income at or below 80% of the Area Median Income (AMI).","80",True),
+("Patients with income up to 250% of the State Median Income qualify for a full write-off.","250",True),
+("Free care for income at or below 150% of the Medicaid income limit.","150",True),
+("Free care for incomes up to 200% of MDH limits.","200",True),
+("Household income must be at or below one-hundred percent (100%) of the poverty income guidelines established by the Department of Health and Human Services.","100",False),
+("Household income is less than or equal to 200% of the Federal Poverty Guidelines (\"FPG\") established by the U.S. Department of Health and Human Services.","200",False),
+("at or below 200 percent of the current Federal Poverty Guidelines as established by the United States Department of Health and Human Services (USDHHS).","200",False),
+("A 100% discount is available to individuals and families with annual incomes at or below 200% of the FPG.","200",False),
+("| less than or equal to 200% | 0%","200",False),
+("Up to 200% Eligible for Medicaid Rates","200",False),
+("the Medicaid income limit of 133% of the federal poverty guidelines","133",False),
+("income up to 200% of the poverty guidelines; patients eligible under the Maryland Department of Health programs","200",False),
+("Patients may be eligible for free care with income up to 100% of the income limits shown in Attachment A.","100",False),
+("free care at or below 250% of the State's poverty guidelines","250",False),
+("Uninsured patients pay 100% of the Medicaid rate.","100",False),
+("at or below 400% of the FPL; patients must first apply for Medicaid","400",False),
+("Those between 200% and 300% of the income eligibility limits established by the Maryland Department of Health are eligible for discounts","200",False),
+]
+mine=[
+ ("Patients with income at or below 200% of the guidelines set by the Department of Health and Human Services receive free care.","200",False),
+ ("Free care for income up to 200% of the guidelines issued by the U.S. Department of Health & Human Services.","200",False),
+ ("we may be able to write off as much as 100% of your bill, based on the U.S. Department of Health and Human Services poverty guidelines.","100",False),
+ ("free care up to 200% of the income eligibility limits (Federal Poverty Guidelines)","200",False),
+ ("Free care for income up to 400% of the guidelines published by the California Department of Health Care Access and Information","400",False),
+ ("income up to 200% of the New Jersey Department of Health Care for the Uninsured Income Criteria","200",False),
+ ("Free care: income at or below 200% MDH limits","200",True),
+ ("Free care for incomes up to 80% AMI","80",True),
+ ("Free care: income at or below 200% of the Maryland Medicaid limit","200",True),
+ ("Those with income up to two hundred percent (200%) of the income eligibility limits established by the Maryland Department of Health","200",True),
+ ("Those with income up to 200% of the limits established by the Maryland Department of Health","200",True),
+]
+bad=0
+for name,cases in (("theirs",theirs),("mine",mine)):
+    for q,x,exp in cases:
+        r=rev(q,Decimal(x)); c=cand(q,Decimal(x))
+        if r!=exp: bad+=1
+        print(name,'rev', 'OK ' if r==exp else 'BAD', '| cand','OK ' if c==exp else 'BAD','|',q[:110])
+print('revised unit failures',bad)
+
+def vals(field,val):
+    if field.endswith(('free_care_max_fpl','assistance_ceiling_fpl')):
+        return [Decimal(str(val))] if val is not None else []
+    if field.endswith('discount_tiers') and val:
+        return [Decimal(str(t[k])) for t in val for k in ('max_fpl_inclusive','min_fpl_exclusive') if t.get(k) is not None]
+    return []
+# published
+rows=[json.loads(l) for l in open(D+"/published-fields.jsonl")]
+for name,p in (("cand",cand),("rev",rev)):
+    hits=[(r['ccn'],r['field']) for r in rows if any(p(r['quote'] or '',x) for x in vals(r['field'],r['value']))]
+    print(name,'published hits',len(hits),hits)
+# every sheet version in DB
+con=sqlite3.connect("file:/Users/grey/Desktop/dev/nebius_hackathon/var/waive.db?mode=ro",uri=True)
+nf=0; H=collections.defaultdict(set)
+for ccn,ver,st,body in con.execute("select ccn,version,status,body from sheets"):
+    b=json.loads(body); el=b.get('eligibility') or {}
+    for k in ('free_care_max_fpl','assistance_ceiling_fpl','discount_tiers'):
+        c=el.get(k)
+        if not c or c.get('value') in (None,[]): continue
+        nf+=1
+        for name,p in (("cand",cand),("rev",rev)):
+            if any(p(c.get('quote') or '',x) for x in vals(k,c['value'])):
+                H[name].add((ccn,k,c.get('source_id'),(c.get('quote') or '')[:90]))
+print('sheet income fields (all versions)',nf)
+for name in ("cand","rev"):
+    print(name,len(H[name]))
+    for h in sorted(H[name]): print('   ',h)
+print('diff cand-rev',H['cand']-H['rev']); print('diff rev-cand',H['rev']-H['cand'])

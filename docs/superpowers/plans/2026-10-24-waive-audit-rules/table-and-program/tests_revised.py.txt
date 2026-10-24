@@ -1,0 +1,61 @@
+import sys; sys.path.insert(0, "/private/tmp/claude-501/-Users-grey-Desktop-dev-eventhorizon/b529e6d4-a357-482a-ba81-d6830b9a174d/scratchpad/waive/audit-rest/scratch-table-and-program-challenge")
+from common import *
+from revised import *
+from candidate import ceiling_quotes_free_band, names_other_state_facility_by_code, full_help_band_above
+from waive.atlas.schema import DiscountTier
+ok = 0; bad = []
+def check(name, got, want):
+    global ok
+    if got == want: ok += 1
+    else: bad.append((name, got, want))
+# R4' vs R4
+for s, want in [
+    ("Patient/guarantors that fall below Level 1, 70% of FPL, will receive a 100% discount.", True),
+    ("You may qualify for a discount if your family income is at or below 400% of the Federal Poverty Level, and for free care if your family income is below 150% of the Federal Poverty Level.", False),
+    ("The hospital provides 100% discounts for eligible patients up to 600% FPL and lower discounts for eligible patients up to 800% FPL.", False),
+    ("MDI Hospital gives free care to Maine residents with family income at 200% or less of the Federal Poverty Income Guidelines and reduced care to those at 201-250% of the Federal Poverty Level.", False),
+    ("Generally speaking, patients eligible for discounted charges must have family incomes under 600% of the Federal Poverty Guidelines, while patients eligible for free care must have family incomes under 200% of the Federal Poverty Guidelines.", False),
+    ("You may receive a discount of up to 100 percent if your household income is at or below 400% of the Federal Poverty Level.", False),
+]:
+    check("R4' " + s[:40], ceiling_quotes_free_band_v2(s), want)
+check("R4 v1 wrongly fires on mixed ceiling", ceiling_quotes_free_band("You may qualify for a discount if your family income is at or below 400% of the Federal Poverty Level, and for free care if your family income is below 150% of the Federal Poverty Level."), True)
+# R7'
+for s, st, want in [
+    ("B. An IL UPH Hospital shall provide a charitable discount of 100% of its charges", "IA", True),
+    ("B. An IL UPH Hospital shall provide a charitable discount of 100% of its charges", "IL", False),
+    ("9. NM Huntley, NM McHenry and NM Woodstock Hospitals 10. Palos Community Hospital", "IL", False),
+    ("Acadia Hospital A.R. Gould Hospital Blue Hill Hospital CA Dean Hospital Eastern Maine Medical Center", "ME", False),
+    ("services are provided to Veterans Administration recipients who refuse transfer to a VA facility", "GA", False),
+    ("Aultman/Aultman Orrville OR Aultman Alliance Hospital Patient Outreach Services", "OH", False),
+]:
+    check("R7' " + s[:30], names_other_state_facility_by_code_v2(s, st), want)
+check("R7 v1 fires on NM Woodstock Hospitals (IL)", names_other_state_facility_by_code("9. NM Huntley, NM McHenry and NM Woodstock Hospitals", "IL"), True)
+check("R7 v1 fires on CA Dean Hospital (ME)", names_other_state_facility_by_code("Blue Hill Hospital CA Dean Hospital Eastern Maine", "ME"), True)
+check("R7 v1 fires on a VA facility (GA)", names_other_state_facility_by_code("refuse transfer to a VA facility", "GA"), True)
+# R3'
+for s, want in [
+    ("0-100% FPL - patient service fee 1. Outpatient office visit $5 2. Emergency Department $10 3. Inpatient 100% financial assistance", True),
+    ("a patient whose household income is equal to or less than 100% of the most recent Federal Poverty Guidelines qualifies for a nominal payment limit as designated by major service category, the rest will be written off.", True),
+    ("Patients at or below 200% FPL receive free care; patient fees are waived.", False),
+    ("For eligible individuals with incomes up to 200% of the FPL: charges waived, no nominal payments due.", False),
+]:
+    check("R3' " + s[:30], free_band_charges_patient_v2(s), want)
+# R8'
+enloe = SOURCES["fap-25c1a8dcbaacede6"]["text"]; lima = SOURCES["billing-511d1f580f76fef1"]["text"]; emory = SOURCES["fap-8a08f6f7c0aa0384"]["text"]
+check("R8 v1 Enloe fires", bool(full_help_band_above("150", enloe)), True)
+check("R8' Enloe", bool(full_help_band_above_v2("150", enloe)), False)
+check("R8 v1 Lima fires", bool(full_help_band_above("100", lima)), True)
+check("R8' Lima", bool(full_help_band_above_v2("100", lima)), False)
+check("R8' Emory", bool(full_help_band_above_v2("200", emory)), True)
+check("R8' decision B hedged band", bool(full_help_band_above_v2("200", "Patients at or below 200% of the FPL receive free care. Patients between 201% and 300% of the FPL may receive a discount of up to 100%.")), False)
+# R1'
+ts = [DiscountTier(min_fpl_exclusive=400, max_fpl_inclusive=450, discount_percent=40), DiscountTier(min_fpl_exclusive=450, max_fpl_inclusive=500, discount_percent=35)]
+check("R1' 210032", tiers_need_hardship_v2("Patients with household income between 401-450% of FPL and with a financial hardship will receive a 40% adjustment. Patients with household income between 451-500% will receive a 35% adjustment.", ts), True)
+check("R1' MA HSN measure", tiers_need_hardship_v2("Patients whose MAGI Household Income or Medical Hardship Family Countable Income is between 150.1% and 300% of the FPL receive a 20% discount.", [DiscountTier(min_fpl_exclusive=150, max_fpl_inclusive=300, discount_percent=20)]), False)
+# R11
+check("R11 Berkshire", tiers_split_by_service_v2("Family Income as % of FPG Berkshire Medical Center Fairview Hospital Inpatient Outpatient Inpatient Outpatient 0 – 400 46.07% 63.14% 48.58% 53.17%"), True)
+check("R11 Tufts", tiers_split_by_service_v2(SHEETS["220116"]["eligibility.discount_tiers"]["quote"]), True)
+check("R11 Gritman (one table for both)", tiers_split_by_service_v2("RMC's AGB charges for inpatient and outpatient services will be discounted by the following percentages: 201-250% 80%"), False)
+check("R11 260102", tiers_split_by_service_v2(SHEETS["260102"]["eligibility.discount_tiers"]["quote"]), False)
+print("passed", ok, "failed", len(bad))
+for b in bad: print("FAIL", b)

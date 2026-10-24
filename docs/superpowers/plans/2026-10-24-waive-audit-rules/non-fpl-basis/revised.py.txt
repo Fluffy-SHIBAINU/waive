@@ -1,0 +1,41 @@
+"""Revised: a percentage income limit measured against a named benchmark other than the poverty level."""
+import re
+from decimal import Decimal
+from waive.atlas.verify import _NEXT_NUMBER, _PERCENT_SIGN, _POVERTY_AFTER, _number_pattern, _poverty_text
+
+_OTHER_BASIS = re.compile(
+    r"\bincome eligibility (?:limits?|levels?|standards?|thresholds?)\b"
+    r"|\b(?:medicaid|medical assistance|mdh|state)(?:'s)?(?: income)?(?: eligibility)?"
+    r" (?:income )?(?:limits?|levels?|standards?|thresholds?)\b"
+    r"|\bmedian (?:family |household )?income\b|\b(?:ami|smi)\b"
+    # HHS publishes the poverty guidelines; California's HCAI and New Jersey's "Health Care for
+    # the Uninsured" are not income measures of their own.
+    r"|\bdepartment of health\b(?! ?(?:and|&) ?human\b)(?! care\b)|\bmdh\b"
+    r"|\bself[- ]sufficiency standard\b|\bliving wage\b"
+)
+BASIS_STARTS_WITHIN = 10   # "of the income eligibility limits established by the Maryland Department"
+SEGMENT_WORDS = 20         # read far enough that "... Department of Health and Human Services" is whole
+_CLAUSE_END = re.compile(r"(?<=[.;])\s|\n")
+
+def percent_of_other_basis(quote: str, value: Decimal) -> bool:
+    text = _poverty_text(quote).replace(",", "")
+    for match in re.finditer(rf"(?<![\d.$]){_number_pattern(Decimal(value))}", text):
+        after = text[match.end() : match.end() + 300]
+        sign = _PERCENT_SIGN.match(after)
+        if sign is None:
+            continue
+        rest = after[sign.end() :]
+        # up to the next number or the end of the sentence, whichever comes first
+        clause = _CLAUSE_END.split(_NEXT_NUMBER.split(rest, maxsplit=1)[0], maxsplit=1)[0]
+        words = clause.split()[:SEGMENT_WORDS]
+        segment = " ".join(words)
+        if _POVERTY_AFTER.search(segment):
+            continue
+        basis = _OTHER_BASIS.search(segment)
+        if basis is None:
+            continue
+        lead = segment[: basis.start()].split()
+        # "200% of the income eligibility limits ...", or the benchmark right after the sign ("80% AMI")
+        if (lead and lead[0] == "of" and len(lead) < BASIS_STARTS_WITHIN) or not lead or lead == ["the"]:
+            return True
+    return False

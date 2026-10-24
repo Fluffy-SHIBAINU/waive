@@ -1,0 +1,88 @@
+"""Revised residency predicate (throwaway; not repo code)."""
+import re
+from waive.atlas.states import CODE_OF_NAME, STATE_NAME, US_STATES
+from waive.atlas.structure import WORD_CODES, _CODE_LIST, _STATE_CODES
+from waive.atlas.verify import normalize
+
+RESIDENCY_REASON = "quote does not name every listed state as a whole state"
+BOTH_REASON = "quote says residents of other states qualify too"
+
+_REGION_WORD = (
+    r"(?:north|south)(?:east|west)?(?:ern)?|east(?:ern)?|west(?:ern)?|central|middle|upstate"
+    r"|downstate|upper|lower|coastal|mid|greater|rural|metro(?:politan)?"
+)
+# letters only as boundaries: "Wisconsin1" (a footnote mark) still names Wisconsin
+_NAMES = re.compile(rf"(?<![a-z])({STATE_NAME})(?![a-z])")
+_REGION_BEFORE = re.compile(rf"(?<![a-z])(?:{_REGION_WORD})[- ]+$")
+# "Thomas County, Georgia", "Kansas City, Missouri", "Cecil County, MD", "Oxford County in
+# Maine", "bordering county in the state of Washington", "service areas in Delaware"
+_PLACE_BEFORE = re.compile(
+    r"(?<![a-z])(?:(?:count(?:y|ies)|city|parish(?:es)?|borough|township)"
+    r"(?:\s*,|\s+(?:located\s+)?(?:in|of))|areas?\s+(?:located\s+)?(?:in|of))"
+    r"\s+(?:the\s+state\s+of\s+)?$"
+)
+# "Washington County", "Kansas City", "Virginia Beach", "Louisiana Region 5", "California
+# Hospital Facility", "the Washington campus", "Washington, D.C.", "Washington (NY)"
+_PLACE_AFTER = re.compile(
+    r"^(?:[- ]+(?:count(?:y|ies)|city|beach|parish(?:es)?|region|metro(?:politan)?|panhandle"
+    r"|campus|clinics?|hospitals?|facilit(?:y|ies))(?![a-z])"
+    r"|\s*,?\s*d\.?\s?c(?![a-z]))"
+)
+_PAREN_CODE = re.compile(r"^\s*\(([a-z]{2})\)")
+_PAIRED = re.compile(r"(?<![a-z])north (?:and|or|&) south (carolina|dakota)(?![a-z])")
+_DC = re.compile(r"(?<![a-z])d\. ?c\.")
+_BOTH = re.compile(rf"(?<![a-z])({STATE_NAME})(?: residents?)? (?:and|or) non-? ?\1(?![a-z])")
+
+
+def _qualified(text: str, start: int, end: int, code: str | None = None) -> bool:
+    before, after = text[:start], text[end:]
+    paren = _PAREN_CODE.match(after)
+    return bool(
+        _REGION_BEFORE.search(before)
+        or _PLACE_BEFORE.search(before)
+        or _PLACE_AFTER.match(after)
+        or (paren and code and paren.group(1).upper() != code)  # "Washington (NY)": a county
+    )
+
+
+def whole_states_named(quote: str) -> set[str]:
+    text = normalize(quote)
+    found: set[str] = set()
+    for m in _NAMES.finditer(text):
+        code = CODE_OF_NAME[m.group(1)]
+        if not _qualified(text, m.start(), m.end(), code):
+            found.add(code)
+    for m in _PAIRED.finditer(text):
+        found |= {CODE_OF_NAME[f"north {m.group(1)}"], CODE_OF_NAME[f"south {m.group(1)}"]}
+    if _DC.search(text):
+        found.add("DC")
+    raw = " ".join(quote.split())
+    if raw != raw.upper():
+        lower = raw.lower()
+        listed: set[str] = set()
+        for m in _CODE_LIST.finditer(raw):
+            listed.update(_STATE_CODES.findall(m.group(0)))
+        for m in _STATE_CODES.finditer(raw):
+            code = m.group(1)
+            if code in WORD_CODES and code not in listed:
+                continue
+            if (
+                lower[m.start() - 1 : m.start()] == "("
+                and lower[m.end() : m.end() + 1] == ")"
+                and "count" in lower
+            ):
+                continue  # "Rensselaer (NY), Washington (NY) ... counties": a county's state
+            if _qualified(lower, m.start(), m.end()):
+                continue
+            found.add(code)
+    return found
+
+
+def residency_problem(value: list[str], quote: str) -> str | None:
+    text = normalize(quote)
+    codes = {c.upper() for c in value}
+    for m in _BOTH.finditer(text):
+        if CODE_OF_NAME[m.group(1)] in codes:
+            return BOTH_REASON
+    missing = codes - whole_states_named(quote)
+    return f"{RESIDENCY_REASON}: {', '.join(sorted(missing))}" if missing else None

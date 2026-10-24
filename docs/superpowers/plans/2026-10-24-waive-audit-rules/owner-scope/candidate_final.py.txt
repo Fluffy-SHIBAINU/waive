@@ -1,0 +1,92 @@
+"""Owner-scope check (candidate). A web document is not the hospital's, and no field may be quoted
+from it, when the stored documents never tie it to the hospital:
+
+A. foreign_documents: it lives outside the hospital's website and the asset hosts (where the scout
+   never fetches for this hospital, fetch.host_allowed_for), names neither the hospital
+   (discover._names_hospital) nor its town, and no stored page on the hospital's own website links
+   to its site. Clarke County Hospital (161348) quoted UnityPoint Health's 1.BR.34 from
+   files.unitypoint.org, whose Schedule D lists 21 UPH hospitals and not Clarke.
+B. sibling_policies: a stored page of the hospital links a policy under a label naming this
+   hospital, and links the cited document under a label naming another registry hospital of the
+   state, and the document never names this hospital or its town (RRH lists a Canton-Potsdam
+   policy; 330197 quoted "Rochester General Hospital Financial Assistance Policy")."""
+import re
+from collections.abc import Iterable, Sequence
+from urllib.parse import unquote, urljoin
+
+from waive.atlas.discover import _names_hospital, _plain, host_of
+from waive.atlas.fetch import is_asset_host
+from waive.atlas.schema import HospitalRef, SourceDoc, SourceKind
+
+FOREIGN_OWNER_REASON = (
+    "quote is from another organisation's document that never names the hospital and that the "
+    "hospital's own website does not link to"
+)
+SIBLING_POLICY_REASON = "quote is from another hospital's policy; the hospital's site links its own"
+_LINK = re.compile(r"https?://[^\s)\]\"'<>|]+", re.IGNORECASE)
+_MARKDOWN_LINK = re.compile(r"\[([^\]]{3,200})\]\(\s*([^)\s]+)")
+_POLICY_LABEL = re.compile(r"financial assistance|charity|financial aid|\bpolicy\b|\bfap\b", re.I)
+
+
+def names_hospital_or_town(hospital: HospitalRef, text: str) -> bool:
+    plain = " ".join(_plain(text).split())
+    town = " ".join(_plain(hospital.city).split())
+    if town and re.search(rf"(?<![a-z0-9]){re.escape(town)}(?![a-z0-9])", plain):
+        return True
+    return _names_hospital(hospital, plain)
+
+
+def _web(sources: Iterable[tuple[SourceDoc, str]]) -> list[tuple[SourceDoc, str]]:
+    return [(s, t) for s, t in sources if s.kind is SourceKind.HOSPITAL_WEB and s.url]
+
+
+def foreign_documents(hospital: HospitalRef, sources: Iterable[tuple[SourceDoc, str]]) -> set[str]:
+    if not hospital.website_domain:
+        return set()
+    home = host_of(f"https://www.{hospital.website_domain}")
+    docs = _web(sources)
+    linked = {
+        host_of(link)
+        for source, text in docs
+        if host_of(source.url) == home
+        for link in _LINK.findall(text)
+    }
+    return {
+        source.id
+        for source, text in docs
+        if host_of(source.url) != home
+        and not is_asset_host(source.url)
+        and host_of(source.url) not in linked
+        and not names_hospital_or_town(hospital, text)
+    }
+
+
+def _same_url(url: str) -> str:
+    return unquote(url).rstrip("/").lower().replace("http://", "https://").replace("://www.", "://")
+
+
+def sibling_policies(
+    hospital: HospitalRef,
+    sources: Iterable[tuple[SourceDoc, str]],
+    state_registry: Sequence[HospitalRef],
+) -> set[str]:
+    docs = _web(sources)
+    labels: dict[str, list[str]] = {}
+    for source, text in docs:
+        for label, href in _MARKDOWN_LINK.findall(text):
+            label = " ".join(label.split())
+            if _POLICY_LABEL.search(label):
+                labels.setdefault(_same_url(urljoin(source.url, href)), []).append(label)
+    own = {url for url, found in labels.items() if any(names_hospital_or_town(hospital, l) for l in found)}
+    if not own:
+        return set()
+    others = [h for h in state_registry if h.ccn != hospital.ccn]
+    out: set[str] = set()
+    for source, text in docs:
+        url = _same_url(source.url)
+        found = labels.get(url, [])
+        if url in own or not found or names_hospital_or_town(hospital, text):
+            continue
+        if any(_names_hospital(o, " ".join(_plain(l).split())) for o in others for l in found):
+            out.add(source.id)
+    return out

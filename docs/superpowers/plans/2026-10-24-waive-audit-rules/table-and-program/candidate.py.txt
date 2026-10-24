@@ -1,0 +1,185 @@
+"""Candidate predicates for the table-and-program misreads (scratch; not repo code)."""
+import re
+from decimal import Decimal
+
+from waive.atlas.states import US_STATES
+from waive.atlas.verify import (
+    _CEILING_WORDING, _FREE_SENTENCE, _HEDGED_UP_TO_FULL, _SENTENCES, _UP_TO_FULL,
+    _number_in, _poverty_text, normalize,
+)
+
+# --- R1 (discount_tiers): a band conditioned on financial/medical hardship (MD COMAR 10.37.10.26.A-2
+# reduced-cost care) is not an income band. Reject when a sentence of the quote that carries a tier's
+# discount also names the hardship condition.
+_HARDSHIP = re.compile(r"\b(?:financial|medical) hardship\b|\bmedical debt\b|\bcatastrophic\b")
+_QSENT = re.compile(r"(?<=[.;])\s+|\n+")
+
+def tiers_need_hardship(quote, tiers):
+    for sentence in _QSENT.split(quote):
+        text = normalize(sentence)
+        if _HARDSHIP.search(text) and any(_number_in(Decimal(t.discount_percent), text) for t in tiers):
+            return True
+    return False
+
+# --- R2 (discount_tiers): "an additional 25% discount on the remaining balance" stacks on another
+# discount; the stored percent is not the band's discount.
+_ADDITIONAL = re.compile(
+    r"\b(?:an? )?additional (\d+(?:\.\d+)?) ?(?:%|percent) (?:discount|reduction|off\b|adjustment|write)"
+)
+
+def tier_is_additional(quote, tiers):
+    stated = {Decimal(m.group(1)) for m in _ADDITIONAL.finditer(normalize(quote))}
+    return bool(stated & {Decimal(t.discount_percent) for t in tiers})
+
+# --- R3 (free_care_max_fpl): the free band still charges the patient: a service fee, a nominal
+# payment, or a dollar amount per visit/day/discharge.
+_CHARGES_PATIENT = re.compile(
+    r"\b(?:patient|service|visit|flat) fees?\b"
+    r"|\bnominal (?:payments?|fees?|amounts?|charges?)\b(?! (?:will be |is |are )?(?:waived|collected|due))"
+    r"|\$ ?[1-9][\d,]*(?:\.\d\d)? ?(?:/|per\b)(?! ?(?:additional |each |extra )?(?:person|member|family|individual|dependent|household))"
+    r"|\b(?:visit|department|room|clinic)s?\b:? ?\$ ?[1-9]"
+)
+_NEGATION_BEFORE = re.compile(r"\b(?:no|without|waives?|waived|not)\b(?: \S+){0,2} ?$")
+
+
+def free_band_charges_patient(quote):
+    """The free band still charges the patient something: a service fee, a nominal payment, or a
+    dollar amount per visit, day or discharge (University Health, 260102: "0-100% FPL - patient
+    service fee ... Emergency Department $10"). "No nominal payment", "$0 is billable" and a
+    family-size increment ("add $5,680 per person") are not charges."""
+    text = normalize(quote)
+    return any(
+        _NEGATION_BEFORE.search(text[: m.start()]) is None for m in _CHARGES_PATIENT.finditer(text)
+    )
+
+# --- R4 (assistance_ceiling_fpl): the quote is a definite free-care line ("will receive a 100%
+# discount"), i.e. the free band's limit, not the ceiling on all help. Decision B: a hedged
+# "may ... up to 100%" quote IS a ceiling and must pass; so must "free or discounted" wording.
+def ceiling_quotes_free_band(quote):
+    text = normalize(quote)
+    if _HEDGED_UP_TO_FULL.search(text) or _UP_TO_FULL.search(text) or _CEILING_WORDING.search(text):
+        return False
+    return _FREE_SENTENCE.search(text) is not None
+
+# --- R5 (sheet, publish.sheet_inconsistencies): a ceiling below the sheet's own free limit or the
+# top of its own discount table is no ceiling.
+def ceiling_below_own_rules(ceiling, free, tiers):
+    if ceiling is None:
+        return False
+    tops = [Decimal(t.max_fpl_inclusive) for t in (tiers or [])]
+    if free is not None:
+        tops.append(Decimal(free))
+    return any(Decimal(ceiling) < top for top in tops)
+
+# --- R6 (sheet, publish.sheet_inconsistencies): a hole between the free band and the first
+# tier, or between tiers, wider than the one-point rounding of "201%" style bands.
+def income_bands_gap(free, tiers):
+    if not tiers:
+        return False
+    ordered = sorted(tiers, key=lambda t: t.min_fpl_exclusive)
+    if free is not None and ordered[0].min_fpl_exclusive > Decimal(free) + 1:
+        return True
+    return any(b.min_fpl_exclusive > a.max_fpl_inclusive + 1 for a, b in zip(ordered, ordered[1:]))
+
+# --- R7 (income-limit paths, verify.bands_under_another_state): a section headed by another
+# state's postal code as written ("An IL UPH Hospital shall ..."), read on the ORIGINAL-case quote
+# because lower-cased codes collide with words (in, or, me, oh, ok, hi, pa, de ...).
+_CODES = "|".join(US_STATES)
+_CODE_FACILITY = re.compile(
+    rf"\b({_CODES})\b(?: [A-Z][A-Za-z]{{1,10}}){{0,2}} (?:[Hh]ospitals?|[Ff]acilit(?:y|ies)|[Ee]ntit(?:y|ies)|[Ll]ocations?)\b"
+)
+
+def names_other_state_facility_by_code(quote, state):
+    return any(m.group(1) != state for m in _CODE_FACILITY.finditer(quote))
+
+# --- R8 (sheet, publish.document_conflicts extended to the free limit's OWN document): the
+# document grants 100% help / free care to a band that starts just above the published limit
+# ("at least 201% but less than or equal to 350% ... will receive 100% financial assistance").
+_NUM = r"(\d{2,3}(?:\.\d+)?) ?(?:%|percent)?"
+_BAND = re.compile(
+    rf"(?<![\d.$]){_NUM} ?(?:-|to|through|thru|and|but (?:less than or equal to|not (?:more|greater) than"
+    rf"|no more than|up to)|and (?:up to|less than or equal to)) ?{_NUM} ?(?:%|percent)"
+)
+_FULL_AFTER = re.compile(
+    r"^[^%\d]{0,120}?(?:\b100 ?(?:%|percent) (?:financial assistance|charity|discount|adjustment"
+    r"|write[- ]?off|reduction|of (?:the )?(?:charges|balance)|free)|\bfree care\b|\bfree of charge\b"
+    r"|\bno cost\b|\bat no charge\b)"
+)
+
+def full_help_band_above(value, document_text):
+    v = Decimal(value)
+    found = []
+    for sentence in _SENTENCES.split(_poverty_text(document_text)):
+        for m in _BAND.finditer(sentence):
+            low, high = Decimal(m.group(1)), Decimal(m.group(2))
+            if _HEDGED_UP_TO_FULL.search(sentence):
+                continue  # decision B: "may ... up to 100%" is no free band
+            if v < low <= v + 1 and high > v and _FULL_AFTER.search(sentence[m.end():]):
+                found.append(sentence[max(0, m.start() - 100): m.end() + 140])
+    return found
+
+# --- R9 (discount_tiers, needs the document): the table's lead-in in the source restricts it to
+# insured patients ("Insured Patients: For qualifying insured patients ... discounted based on the
+# table below"); the schema has no population qualifier and uninsured readers get another table.
+_POPULATION = re.compile(r"\b(un-?|under-?)?insured\b")
+# The table is introduced FOR insured patients: a heading ("Insured Patients:") or "for (qualifying)
+# insured patients"; never the AGB clause's "billed to commercially insured patients".
+_INSURED_LEAD = re.compile(
+    r"(?:^|[.:;] |\bfor (?:qualifying |eligible |all )?)insured (?:patients?|individuals?|persons?)\b"
+)
+LEAD_CHARS = 250
+
+
+def _locate(quote, document_text):
+    nq, nt = normalize(quote), normalize(document_text)
+    return nt, nt.find(nq[:80])
+
+
+def insured_only_table(quote, document_text):
+    """The source introduces the quoted table for insured patients only (Henry Ford, 230047:
+    "Insured Patients: For qualifying insured patients ... discounted based on the table below",
+    after a separate uninsured table on a Medicare-rate basis). The quote itself never says so."""
+    if re.search(r"\b(?:un-?|under-?)insured\b|\bself[- ]pay\b", normalize(quote)):
+        return False
+    nt, at = _locate(quote, document_text)
+    if at < 0:
+        return False
+    lead = nt[max(0, at - LEAD_CHARS): at]
+    mentions = list(_POPULATION.finditer(lead))
+    if not mentions or mentions[-1].group(1):
+        return False
+    last = mentions[-1]
+    return _INSURED_LEAD.search(lead[max(0, last.start() - 30): last.end() + 12]) is not None and (
+        re.search(r"\b(?:un-?|under-?)insured (?:and|or|&|/) ?$", lead[: last.start()]) is None
+    )
+
+
+# --- R10 (discount_tiers, MedStar's two-column table): a row with two different percentages under
+# "HSCRC-Regulated Services" | "... non-HSCRC Regulated Services" headers. Maryland hospitals'
+# services are HSCRC rate-regulated, so a Maryland hospital takes the first column, others the last.
+_PCT = re.compile(r"(?<![\d.$])(\d{1,3}(?:\.\d+)?) ?%")
+_BAND_LABEL = r"(?<![\d.]){lo} ?%? ?(?:-|to|through|thru) ?{hi} ?%"
+_NEXT_LABEL = re.compile(r"(?<![\d.])\d{1,3} ?%? ?(?:-|to|through|thru) ?\d{2,3} ?%")
+
+def _row_values(text, tier):
+    lo, hi = int(tier.min_fpl_exclusive), int(tier.max_fpl_inclusive)
+    for start in (lo + 1, lo):
+        m = re.search(_BAND_LABEL.format(lo=start, hi=hi), text)
+        if m:
+            rest = text[m.end():]
+            nxt = _NEXT_LABEL.search(rest)
+            return [Decimal(x) for x in _PCT.findall(rest[: nxt.start() if nxt else 60])]
+    return None
+
+def wrong_regulated_column(quote, state, tiers):
+    text = normalize(quote)
+    if "hscrc-regulated" not in text or "non-hscrc" not in text:
+        return False
+    for tier in tiers:
+        values = _row_values(text, tier)
+        if not values or len(set(values)) < 2:
+            continue
+        expected = values[0] if state == "MD" else values[-1]
+        if Decimal(tier.discount_percent) != expected:
+            return True
+    return False

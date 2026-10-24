@@ -1,0 +1,60 @@
+import sys
+from decimal import Decimal
+sys.path.insert(0, "/private/tmp/claude-501/-Users-grey-Desktop-dev-eventhorizon/b529e6d4-a357-482a-ba81-d6830b9a174d/scratchpad/waive/audit-rest/scratch-table-and-program")
+from common import SHEETS, SOURCES, text_of
+from candidate import *
+from waive.atlas.schema import DiscountTier
+def T(*bands):
+    return [DiscountTier(min_fpl_exclusive=Decimal(a), max_fpl_inclusive=Decimal(b), discount_percent=d) for a, b, d in bands]
+MEDSTAR = SHEETS["210018"]["eligibility.discount_tiers"]["quote"]
+CECIL = SHEETS["210032"]["eligibility.discount_tiers"]["quote"]
+UH_TIER = SHEETS["260102"]["eligibility.discount_tiers"]["quote"]
+UH_FREE = SHEETS["260102"]["eligibility.free_care_max_fpl"]["quote"]
+CAYUGA = SHEETS["330307"]["eligibility.free_care_max_fpl"]["quote"]
+UNITY = SHEETS["160104"]["eligibility.free_care_max_fpl"]["quote"]
+UNITY_23 = SHEETS["160104"]["eligibility.discount_tiers"]["quote"]
+RUSSELL = SHEETS["171350"]["eligibility.assistance_ceiling_fpl"]["quote"]
+HF = SHEETS["230047"]["eligibility.discount_tiers"]
+HOT = SHEETS["451348"]["eligibility.discount_tiers"]
+ALEX = SHEETS["140258"]["eligibility.discount_tiers"]
+EMORY = SHEETS["110069"]["eligibility.free_care_max_fpl"]
+mt = T(("200","250",80),("250","300",60),("300","350",40),("350","400",20))
+cases = [
+ ("R10", MEDSTAR, "MD 201-250% @80 (Washington/non-HSCRC column)", wrong_regulated_column(MEDSTAR, "MD", mt), True),
+ ("R10", MEDSTAR, "MD 201-250% @75 (HSCRC column)", wrong_regulated_column(MEDSTAR, "MD", T(("200","250",75),("250","300",60),("300","350",40),("350","400",20))), False),
+ ("R10", MEDSTAR, "DC 201-250% @80", wrong_regulated_column(MEDSTAR, "DC", mt), False),
+ ("R1", CECIL, "400-450 @40, 450-500 @35", tiers_need_hardship(CECIL, T(("400","450",40),("450","500",35))), True),
+ ("R1", UNITY_23, "200-225 @65 ... 300-400 @5", tiers_need_hardship(UNITY_23, T(("200","225",65),("225","250",45),("250","300",25),("300","400",5))), False),
+ ("R2", UH_TIER, "300-400 @25", tier_is_additional(UH_TIER, T(("300","400",25))), True),
+ ("R2", "Patients between 201% and 300% of FPL receive a 50% discount. Add $5,680 for each additional person.", "200-300 @50", tier_is_additional("Patients between 201% and 300% of FPL receive a 50% discount. Add $5,680 for each additional person.", T(("200","300",50))), False),
+ ("R3", UH_FREE, "free_care_max_fpl=100", free_band_charges_patient(UH_FREE), True),
+ ("R3", CAYUGA, "free_care_max_fpl=100", free_band_charges_patient(CAYUGA), True),
+ ("R3", "For patients with incomes below 200% of the FPL, BronxCare will waive all charges and no nominal payment will be collected.", "200", free_band_charges_patient("For patients with incomes below 200% of the FPL, BronxCare will waive all charges and no nominal payment will be collected."), False),
+ ("R3", "For eligible individuals with incomes up to 200% of the FPL: charges waived, no nominal payments due.", "200", free_band_charges_patient("For eligible individuals with incomes up to 200% of the FPL: charges waived, no nominal payments due."), False),
+ ("R3", "Family gross income at 0 to 200% of FPL Full Financial Assistance; $0 is billable to the patient.", "200", free_band_charges_patient("Family gross income at 0 to 200% of FPL Full Financial Assistance; $0 is billable to the patient."), False),
+ ("R3", SHEETS["140137"]["eligibility.free_care_max_fpl"]["quote"], "200 (HSHS table with 'add $5,680 per person')", free_band_charges_patient(SHEETS["140137"]["eligibility.free_care_max_fpl"]["quote"]), False),
+ ("R3", SHEETS["010007"]["eligibility.free_care_max_fpl"]["quote"], "200 (Mizell, clinic copays only; deliberately not caught)", free_band_charges_patient(SHEETS["010007"]["eligibility.free_care_max_fpl"]["quote"]), False),
+ ("R4", RUSSELL, "assistance_ceiling_fpl=70", ceiling_quotes_free_band(RUSSELL), True),
+ ("R4", "You may receive a discount of up to 100 percent if your household income is at or below 400% of the Federal Poverty Level.", "ceiling 400 (decision B: hedged up-to-100 stays a ceiling)", ceiling_quotes_free_band("You may receive a discount of up to 100 percent if your household income is at or below 400% of the Federal Poverty Level."), False),
+ ("R4", SHEETS["330090"]["eligibility.assistance_ceiling_fpl"]["quote"], "ceiling 400 (full or partial)", ceiling_quotes_free_band(SHEETS["330090"]["eligibility.assistance_ceiling_fpl"]["quote"]), False),
+ ("R4", SHEETS["050367"]["eligibility.assistance_ceiling_fpl"]["quote"], "ceiling 400 (charity (free) care or discounted)", ceiling_quotes_free_band(SHEETS["050367"]["eligibility.assistance_ceiling_fpl"]["quote"]), False),
+ ("R5", "(structural) ceiling 70; tiers 70-100 ... 175-200", "ceiling 70 < top tier 200", ceiling_below_own_rules("70", None, T(("70","100",95),("175","200",25))), True),
+ ("R5", "(structural) ceiling 400; tiers to 400", "ceiling 400 = top tier 400", ceiling_below_own_rules("400", "200", T(("200","400",50))), False),
+ ("R6", "(structural) free 100; tiers 300-400", "gap 100->300", income_bands_gap("100", T(("300","400",25))), True),
+ ("R6", "(structural) South Lyon: 100-170 @75, 171-250 @55", "1-point rounding gap", income_bands_gap(None, T(("100","170",75),("171","250",55))), False),
+ ("R7", UNITY, "IA hospital, free_care_max_fpl=200", names_other_state_facility_by_code(UNITY, "IA"), True),
+ ("R7", UNITY, "same quote for an Illinois UnityPoint hospital", names_other_state_facility_by_code(UNITY, "IL"), False),
+ ("R7", "CARE PROVIDED IN HOSPITAL FACILITIES OR CLINICS is covered for patients at or below 200% of FPL.", "IN/OR in all-caps text", names_other_state_facility_by_code("CARE PROVIDED IN HOSPITAL FACILITIES OR CLINICS is covered for patients at or below 200% of FPL.", "OH"), False),
+ ("R8", EMORY["quote"], "free 200; own document gives uninsured 201-350% 100% assistance", bool(full_help_band_above("200", text_of(EMORY))), True),
+ ("R8", "0-200% 100% discount; 201-300% 75% discount; 301-400% 50% discount of the federal poverty level.", "free 200 with an ordinary sliding scale", bool(full_help_band_above("200", "Income 0-200% of FPL: 100% discount. Income 201-300% of FPL: 75% discount. Income 301-400% of FPL: 50% discount.")), False),
+ ("R8", "Patients between 201% and 300% of the FPL may receive a discount of up to 100%.", "decision B: hedged band above the limit", bool(full_help_band_above("200", "Patients at or below 200% of the FPL receive free care. Patients between 201% and 300% of the FPL may receive a discount of up to 100%.")), False),
+ ("R9", HF["quote"], "Henry Ford insured-only table (needs source lead-in)", insured_only_table(HF["quote"], text_of(HF)), True),
+ ("R9", HOT["quote"], "Heart of Texas: AGB clause 'commercially insured patients' before the table", insured_only_table(HOT["quote"], text_of(HOT)), False),
+ ("R9", ALEX["quote"], "Alexian: uninsured and insured columns", insured_only_table(ALEX["quote"], text_of(ALEX)), False),
+]
+bad = 0
+for rule, q, v, got, want in cases:
+    ok = got == want
+    bad += not ok
+    print("PASS" if ok else "FAIL", rule, v, "->", got)
+print("failures:", bad, "of", len(cases))

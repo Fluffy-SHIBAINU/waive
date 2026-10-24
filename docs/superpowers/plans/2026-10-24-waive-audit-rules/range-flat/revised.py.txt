@@ -1,0 +1,62 @@
+"""Revised candidate for discount_range_in_quote (range-flat challenge)."""
+import re
+from decimal import Decimal
+
+from waive.atlas.verify import discount_range_in_quote, normalize
+
+_N = r"(\d+(?:\.\d+)?)"
+_LB = r"(?<![\d.,$])"                                  # never inside "$1,000" or "2023"
+_P = r"(?:\s*%|\s*percent\b|\s*per cent\b)"            # "75%", "75 percent"
+_NOUN = r"(?:discounts?|reductions?|reduc\w+|write[- ]?offs?|adjustments?)"
+# Between the discount noun and its connective only a verb ("the discount will be between 25% and
+# 75%", "varies between 25 and 100 percent", "the adjustment can be from 20% to 100%") or what is
+# discounted ("discounts off charges from 60 percent to 96 percent"). Atrium's header "charity
+# discount 0 - 100% 100%" (360076) has no connective and stays unread.
+_FILLER = (
+    r"(?:(?:will|can|may|shall)\s+(?:be\s+)?|is\s+|are\s+|var(?:y|ies)\s+"
+    r"|off\s+(?:of\s+)?(?:the\s+)?(?:gross\s+|total\s+)?(?:charges|balance)\s+)?"
+)
+# "and" joins a range only after "between": "a 90% and 80% discount" lists two discounts.
+_RANGE = rf"{_LB}{_N}{_P}?\s*(?:-|to|through|(?<=between {{0}})and)\s*{_N}{_P}"
+_SPAN = rf"(?:between\s+{_LB}{_N}{_P}?\s*(?:-|to|and)\s*{_N}{_P}|{_LB}{_N}{_P}?\s*(?:-|to|through)\s*{_N}{_P})"
+# (a) range first: "a 15-75% discount" (Hartford HealthCare), "(35%-75%) adjustment" (JHM).
+_RANGE_FIRST = re.compile(rf"{_SPAN}\)?\s*(?:discount|reduction|adjustment|off\b|write)")
+# (b) noun first with a connective: "a discount of 15-75%", "discounts ranging from 40 to 90
+# percent", "the discount will be between 25% and 75%", "adjustments ranging from 35-100%".
+_NOUN_FIRST = re.compile(
+    rf"\b{_NOUN}\s+{_FILLER}(?P<ranging>(?:that\s+)?(?:ranging|ranges?)\s+)?(?:of\s+|from\s+|(?=between))"
+    rf"{_SPAN}"
+)
+# (c) a scale phrase between them: "a discount from a scale of 10% to 75%" (Holton 171319).
+_ON_SCALE = re.compile(
+    rf"\b{_NOUN}\s+(?:(?:from|on|based on|according to)\s+)?(?:a|the)\s+"
+    rf"(?:sliding[- ]?(?:fee\s+)?)?scale\s+(?:(?:ranging\s+)?from\s+|of\s+)?"
+    rf"{_LB}{_N}{_P}?\s*(?:-|to|through)\s*{_N}{_P}"
+)
+PATTERNS = (_RANGE_FIRST, _NOUN_FIRST, _ON_SCALE)
+
+
+def _pair(match):
+    nums = [g for g in match.groups() if g is not None and re.fullmatch(r"\d+(?:\.\d+)?", g)]
+    return Decimal(nums[0]), Decimal(nums[1])
+
+
+def revised_range_in_quote(quote: str) -> set[Decimal]:
+    found = set(discount_range_in_quote(quote))
+    text = normalize(quote)
+    for pattern in PATTERNS:
+        for match in pattern.finditer(text):
+            first, second = _pair(match)
+            ranging = "ranging" in pattern.groupindex and match.group("ranging")
+            # A discount range never passes 100 ("201-300%" is an income band) and runs upward,
+            # unless the policy says "ranging": "discounts range from 100% - 60%" (OhioHealth).
+            if max(first, second) <= 100 and (first < second or (ranging and first > second)):
+                found |= {first, second}
+    return found
+
+
+def rejects(path, value, quote) -> bool:
+    if path != "eligibility.discount_tiers" or not isinstance(value, list):
+        return False
+    percents = {Decimal(str(t["discount_percent"] if isinstance(t, dict) else t.discount_percent)) for t in value}
+    return bool(revised_range_in_quote(quote) & percents)

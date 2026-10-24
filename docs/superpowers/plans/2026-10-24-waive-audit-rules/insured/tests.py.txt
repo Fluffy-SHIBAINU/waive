@@ -1,0 +1,57 @@
+import sys
+sys.path.insert(0, sys.argv[1])
+import cand, revised
+T = [  # (quote, value, expect_reject)
+ # engineer's tests
+ ("If an individual has sufficient insurance coverage or assets available to pay for care, he/she may be deemed ineligible for financial assistance.", False, True),
+ ("Patients shall be able to get financial assistance if uninsured, underinsured, not eligible for a government program, or not qualify for governmental assistance (for example, Medicare or Medicaid).", False, True),
+ ("Uninsured patients who do not qualify for Mackinac Straits Health System's financial assistance program (e.g., due to income and family size) will receive a discount of 30% on gross charges for medically necessary services to ensure they do not pay more for care than insured individuals.", False, True),
+ ("Payment plans are available to patients with family income between 200 and 500 percent of the Federal Poverty Level for those patients who request assistance, regardless of their insurance status.", True, True),
+ ("After a patient’s eligibility for financial assistance under this policy is determined, a financial assistance-eligible patient will not be charged more than AGB to insured patients by the HealthPartners care delivery location for emergency or other medically necessary care.", True, True),
+ ("Underinsured:", True, True),
+ ("Insured patients are not eligible for uninsured/true self pay rates.", False, True),
+ ("If you have insurance or assets to pay for your care, you may not be eligible for financial assistance.", False, True),
+ ("Have no insurance or inadequate insurance coverage (high deductible plan)", False, True),
+ ("You may qualify if: * You do not qualify for public insurance programs in your home state, and", False, True),
+ ("If you qualify for fnancial assistance, you will not be charged more for emergency or other medically necessary care than patients who are covered by Medicare or other insurance.", True, True),
+ ("Montefiore Medical Center also provides payment arrangements to patients that have insurance coverage but have an out-of-pocket expense that they cannot afford or deem a hardship.", True, True),
+ ("Financial assistance is available only to uninsured patients.", False, False),
+ ("This policy applies only to uninsured patients who meet the income criteria.", False, False),
+ ("Insured patients are not eligible for financial assistance under this policy.", False, False),
+ ("Patients with health insurance are not eligible for the charity care program.", False, False),
+ ("The program is not available to patients with insurance.", False, False),
+ ("Applicants must be uninsured.", False, False),
+ ("Eligible patients with insurance coverage are not personally responsible to pay more than AGB after all payments by the health insurer have been applied.", True, False),
+ ("The Financial Assistance Adjustment based on the AGB percentage will also be applied to the outstanding balance, after payments by insurance, if any, of patients with Catastrophic Medical Expenses, as defined above, who are not eligible for financial assistance based on the other provisions of this policy.", True, False),
+ ("Insured patients with family income less than 450% of current Federal Poverty Level and excessive medical costs, may qualify for partially discounted care and extended payment plans.", True, False),
+ ("Underinsured: The patient has some level of insurance or third-party assistance but still has out-of-pocket expenses that exceed his/her financial abilities.", True, False),
+ ("Insured Patient Free And Discounted Care (set forth on Appendix B)", True, False),
+ ("Insured patients will not have the AGB applied 2. The FA discount will be applied directly to the balance", True, False),
+ ("Underinsured patients will not be charged more than amounts generally billed to patients with insurance.", True, False),
+ ("Only patients with active insurance coverage are eligible for financial assistance.", True, False),
+ # my adversarial ones
+ ("Self-pay discounts are offered only to uninsured patients.", False, True),
+ ("The uninsured discount is available only to uninsured patients.", False, True),
+ ("Patients with insurance are not eligible for the 40% self-pay discount.", False, True),
+ ("Insured patients are not eligible for the prompt pay discount.", False, True),
+ ("The Discounted Cash Price is NOT available to governmentally covered or commercially insured patients.", False, True),
+ ("Financial assistance is offered not only to the uninsured but also to insured patients with high deductibles.", False, True),
+ ("Patients who qualify will pay no more than 10% of charges, and insured patients may also qualify.", True, False),
+ ("Patient does not have insurance coverage and was denied Medicaid or any other Medical Assistance benefits.", True, True),
+ ("Individuals with the financial capacity to purchase health insurance will be encouraged to do so, as a means of providing access to health care services.", True, True),
+ ("Have no health insurance coverage or have coverage that pays only part of the bill; and", True, False),
+ ("Have limited or no health insurance", True, False),
+ ("We encourage patients to apply for financial assistance and patients with or without insurance are eligible.", True, False),
+ ("If you do not have insurance and/or will have difficulty in paying your portion of the bill, we will review your eligibility for financial assistance", True, False),
+ ("If you are not insured or insured for only part of your expenses, please talk with one of our financial counselors. They can help you establish a payment plan or apply for financial assistance.", True, False),
+ ("Patients without insurance or with Medicare may qualify for financial assistance.", True, False),
+ ("Payment in full is required at the time of service from all patients who owe co-pays, coinsurance, have not met their deductible, or do not have insurance coverage.", True, True),
+ ("Financial assistance is available regardless of insurance status.", True, False),
+]
+for name, mod in (("cand", cand), ("revised", revised)):
+    bad = []
+    for q, v, exp in T:
+        got = bool(mod.insured_field_problem(q, v))
+        if got != exp: bad.append((v, exp, got, q[:110]))
+    print(f"{name}: {len(T)-len(bad)}/{len(T)} pass")
+    for b in bad: print("   FAIL value=%s expect_reject=%s got=%s | %s" % b)

@@ -1,0 +1,22 @@
+import sys, json, collections
+sys.path.insert(0, "/private/tmp/claude-501/-Users-grey-Desktop-dev-eventhorizon/b529e6d4-a357-482a-ba81-d6830b9a174d/scratchpad/waive/audit-rest/scratch-owner-challenge")
+sys.path.insert(0, "/private/tmp/claude-501/-Users-grey-Desktop-dev-eventhorizon/b529e6d4-a357-482a-ba81-d6830b9a174d/scratchpad/waive/audit-rest/scratch-owner-scope")
+from dbload import D, ref, sources
+from candidate_final import names_hospital_or_town
+from waive.atlas.structure import document_states
+from sheet_fields import walk
+for scope in ("published", "draft", "held"):
+    n = 0
+    for ccn, (v, st, body) in sorted(D["latest"].items()):
+        if st != scope: continue
+        h = ref(ccn)
+        cited = collections.defaultdict(list)
+        for p, val, sid in walk(json.loads(body)): cited[sid].append(p.split(".")[-1])
+        for sid, fields in cited.items():
+            d = D["docs"].get(sid)
+            if not d or d["kind"] != "hospital_web": continue
+            named = document_states(d["title"], d["url"] or "", h)
+            if named and h.state not in named:
+                n += 1
+                print(scope, ccn, h.state, h.name[:30], sorted(named), "namesH" if names_hospital_or_town(h, d["text"]) else "-", "|", d["title"][:60], "|", (d["url"] or "")[:70], "|", ",".join(fields)[:70])
+    print(scope, n)
